@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanex.CRM.BackgroundJob", "Fanex.CRM.BackgroundJob\Fanex.CRM.BackgroundJob.csproj", "{2F70F572-0EFD-4CC3-9ECE-B6AF22F96E5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.BackgroundJob", "CRM.BackgroundJob\CRM.BackgroundJob.csproj", "{2F70F572-0EFD-4CC3-9ECE-B6AF22F96E5E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{F47FBCA5-0211-4344-86EC-91DD51A27F0C}"
 EndProject

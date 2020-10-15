@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Fanex.CRM.BackgroundJob\Fanex.CRM.BackgroundJob.csproj" />
+    <ProjectReference Include="..\..\CRM.BackgroundJob\CRM.BackgroundJob.csproj" />
   </ItemGroup>
 
 </Project>
