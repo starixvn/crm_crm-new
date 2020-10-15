@@ -118,6 +118,8 @@ export const closeUpdateGroupMappingPopup = () => {
         dispatch(setUpdateGroupMappingData(false, null));
         dispatch(setGroupMappingResult(null));
         dispatch(setLetstalkVerifationData([]));
+        dispatch(setRecipientData([]));
+        dispatch(setGroupHeadlineData([]));
     };
 };
 
