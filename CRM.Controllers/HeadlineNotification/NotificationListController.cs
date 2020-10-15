@@ -16,9 +16,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmAuthorize]
     [CrmPermission(FunctionKey = FunctionKey.NotificationList, Policy = Policy.Read)]
-    public class NotificationListController : Controller
+    public class NotificationListController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;

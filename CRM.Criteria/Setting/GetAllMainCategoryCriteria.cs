@@ -1,0 +1,14 @@
+﻿namespace CRM.Criteria.Setting
+{
+    using CRM.Core.Constants;
+    using Fanex.Data.Repository;
+
+    public class GetAllMainCategoryCriteria : CriteriaBase
+    {
+        public byte UserRole { get; } = Constants.UserRole;
+
+        public override string GetSettingKey() => "Acc_CRM_MainCategoryList";
+
+        public override bool IsValid() => true;
+    }
+}

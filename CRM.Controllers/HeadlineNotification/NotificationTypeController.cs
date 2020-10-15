@@ -13,9 +13,8 @@ namespace CRM.Controllers
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmAuthorize]
     [CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Read)]
-    public class NotificationTypeController : Controller
+    public class NotificationTypeController : BaseController
     {
         private readonly INotificationTypeService notificationTypeService;
         private readonly INapSession napSession;

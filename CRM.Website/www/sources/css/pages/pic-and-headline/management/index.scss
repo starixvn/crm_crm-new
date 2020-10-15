@@ -1,0 +1,61 @@
+@import "../../../components/form-filter";
+@import "../../../components/react-grid/react-grid";
+@import "../../../components/forms";
+@import "../../../components/modal";
+@import "../../../components/icons";
+@import "../../../components/messages";
+@import "../../../components/tables";
+@import "../../../components/multiple-select/style";
+
+table.table {
+    tbody {
+        tr {
+            td {
+                &.td-remark {
+                    white-space: pre-line;
+                }
+                .checkbox-cell-style {
+                    width: 13px;
+                    height: 13px;
+                    margin: auto;
+                    cursor: pointer;
+                    &:disabled {
+                        cursor: not-allowed;
+                    }
+                }
+            }
+        }
+    }
+}
+.modal-body {
+    .form-group {
+        .tool-action {
+            padding-left: 0;
+            align-self: center;
+            .fa {
+                cursor: pointer;
+                &.fa-times:hover {
+                    color: #fe3a3a;
+                }
+                &.fa-plus:hover {
+                    color: #00b050;
+                }
+            }
+        }
+        .select-communication {
+            display: flex;
+            span.required {
+                color: #ff0101;
+                margin-left: 2.5px;
+            }
+            select.form-control {
+                width: 90%;
+                padding-left: 0;
+            }
+        }
+    }
+}
+
+.modal-backdrop {
+    z-index: 1050 !important;
+}

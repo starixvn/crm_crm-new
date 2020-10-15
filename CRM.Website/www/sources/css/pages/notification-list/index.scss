@@ -5,8 +5,6 @@
 @import '../../abstracts/variables';
 @import '../../components/modal';
 @import '../../components/tables';
-@import '../../components/react-select';
-@import '../../components/select-with-search';
 
 .link-click {
     cursor: pointer;
@@ -178,4 +176,12 @@ input:focus {
             background-color: #f0f0f0;
         }
     }
+}
+
+.Select-placeholder {
+    display: none;
+}
+
+.Select-arrow-zone {
+    display: none;
 }

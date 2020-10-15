@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Translation from './translation';
 import { MAX_SELECTED_ITEM_FOR_DISPLAY } from './constants';
+
 
 export default class MultipleSelectLabel extends Component {
     static propTypes = {
-        language: PropTypes.string,
+        textOptions: PropTypes.object,
         selectedItems: PropTypes.arrayOf(PropTypes.object).isRequired,
         maxDisplayItemCount: PropTypes.number
     }
 
     static defaultProps = {
-        language: 'en-US',
         maxDisplayItemCount: MAX_SELECTED_ITEM_FOR_DISPLAY
     }
 
@@ -20,21 +19,23 @@ export default class MultipleSelectLabel extends Component {
     }
 
     get selectedItemsString() {
-        const { selectedItems, maxDisplayItemCount } = this.props;
+        const { selectedItems, maxDisplayItemCount, textOptions } = this.props;
         const selectedValues = selectedItems.map(item => item.value);
-        const texts = this.props.texts || Translation[this.props.language];
 
-        let displayText = texts.SelectOptions;
+        let displayText = textOptions['SelectOptions'];
         const selectedItemCount = selectedValues.length;
 
         if (this.props.isAllTextShown && selectedItemCount === this.props.dataSourceSize) {
-            displayText = texts.All;
+            displayText = textOptions['Texts'];
         }
         else if (selectedItemCount > maxDisplayItemCount) {
-            displayText = texts.SelectedItemCount.replace('#', selectedItemCount);
+            displayText = textOptions['SelectedItemCount'].replace('#', selectedItemCount);
         }
         else if (selectedItemCount >= 1) {
             displayText = selectedValues.join(', ');
+        }
+        else if(!this.props.dataSourceSize){
+            displayText = textOptions['NoData'];
         }
 
         return displayText;
@@ -42,7 +43,7 @@ export default class MultipleSelectLabel extends Component {
 
     render() {
         return (
-            <button type='button' className='multiple-select-default multiple-select-label'
+            <button type='button' disabled = {this.props.isDisable} className='multiple-select-default multiple-select-label'
                 onClick={this.props.onToggle}
             >
                 <span className='text-display'>{this.selectedItemsString}</span>

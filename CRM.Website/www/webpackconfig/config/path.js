@@ -10,7 +10,16 @@ const cssPaths = {
     notification_list: ['./www/sources/css/pages/notification-list/index.scss'],
     notification_template: ['./www/sources/css/pages/notification-template/index.scss'],
     notification_type: ['./www/sources/css/pages/notification-type/index.scss'],
-    chattype_mapping: ['./www/sources/css/pages/chat-type-mapping/index.scss']
+    chattype_mapping: ['./www/sources/css/pages/chat-type-mapping/index.scss'],
+    communication_setting: ['./www/sources/css/pages/communication-setting/index.scss'],
+    pic_assignment: ['./www/sources/css/pages/pic-and-headline/pic-assignment/index.scss'],
+    pic_management: ['./www/sources/css/pages/pic-and-headline/management/index.scss'],
+
+    /*--report--*/
+    report_settlement: ['./www/sources/css/pages/report/settlement/index.scss'],
+
+    /*--FeedbackSubjectManagement--*/
+    feedback_subject: ['./www/sources/css/pages/feedback-subject/index.scss'],
 };
 
 const scriptPaths = {
@@ -22,7 +31,16 @@ const scriptPaths = {
     notification_list: ['./www/sources/js/pages/notification-list/index.js'],
     notification_template: ['./www/sources/js/pages/notification-template/index.js'],
     notification_type: ['./www/sources/js/pages/notification-type/index.js'],
-    chattype_mapping: ['./www/sources/js/pages/chat-type-mapping/index.js']
+    chattype_mapping: ['./www/sources/js/pages/chat-type-mapping/index.js'],
+    communication_setting: ['./www/sources/js/pages/communication-setting/index.js'],
+    pic_assignment: ['./www/sources/js/pages/pic-and-headline/pic-assignment/index.js'],
+    pic_management: ['./www/sources/js/pages/pic-and-headline/management/index.js'],
+
+    /*--report--*/
+    report_settlement: ['./www/sources/js/pages/report/settlement/index.js'],
+
+    /*--FeedbackSubjectManagement--*/
+    feedback_subject: ['./www/sources/js/pages/feedback-subject/index.js'],
 };
 
 module.exports = {

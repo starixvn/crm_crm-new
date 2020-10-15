@@ -1,0 +1,98 @@
+﻿namespace CRM.Services
+{
+    using System.Drawing;
+    using System.IO;
+    using CRM.Models.Report.SettlementReport;
+    using Microsoft.AspNetCore.Hosting;
+    using OfficeOpenXml;
+
+    public interface ISettlementReportExportExcel
+    {
+        byte[] Export(SettlementReportInfo reportInfo);
+    }
+    public class SettlementReportExportExcel : BaseExportExcel, ISettlementReportExportExcel
+    {
+        private const string CustomPath = "ExcelTemplates/Settlement_Issues_Report.xlsx";
+        private const int widthColumnSmall = 15;
+        private const int widthColumnLarge = 25;
+        private const int widthColumnNormal = 20;
+        private const byte RowStartBody = 5;
+        private const byte LastColumns = 4;
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        public SettlementReportExportExcel(IHostingEnvironment hostingEnvironment)
+        {
+            this.hostingEnvironment = hostingEnvironment;
+        }
+
+        public byte[] Export(SettlementReportInfo reportInfo)
+        {
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, CustomPath);
+            using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
+            {
+                using (var xlPackage = new ExcelPackage())
+                {
+                    var template = templatePackage.Workbook.Worksheets[0];
+                    var worksheet = xlPackage.Workbook.Worksheets.Add(reportInfo.Name);
+                    SetDefaultStyle(worksheet);
+                    var rowIndex = 1;
+                    template.Cells[1, 1, RowStartBody - 1, LastColumns].Copy(worksheet.Cells[1, 1, RowStartBody - 1, LastColumns]);
+                    worksheet.Cells[1, 1].Value = reportInfo.Name;
+                    rowIndex = RowStartBody;
+                    foreach(var report in reportInfo.ChildReports)
+                    {
+                        SetValueRow(rowIndex, report, worksheet);
+                        rowIndex += report.ChildReports.Count;
+                    }
+                    SetValueRow(rowIndex, reportInfo.Total, worksheet);
+
+                    SetBackgroundTotalRow(worksheet.Cells[rowIndex, 1, rowIndex + reportInfo.Total.ChildReports.Count - 1, LastColumns]);
+                    rowIndex += reportInfo.Total.ChildReports.Count - 1;
+                    DrawBorderCell(worksheet.Cells[RowStartBody, 1, rowIndex, LastColumns]);
+                    return xlPackage.GetAsByteArray();
+                }
+            }
+        }
+
+        private void SetValueRow(int rowIndex, SettlementReportInfo report, ExcelWorksheet worksheet)
+        {
+            const byte colIndex = 1;
+            if (report.ChildReports.Count > 1)
+            {
+                int rowMerge = rowIndex + report.ChildReports.Count - 1;
+                StyleMergeCell(worksheet, rowIndex, 1, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, LastColumns, rowMerge);
+            }
+            worksheet.Cells[rowIndex, colIndex].Value = report.Name;
+            StyleHorizontalAlignmentCenter(worksheet.Cells[rowIndex, colIndex]);
+            
+            for (int i = 0; i < report.ChildReports.Count; i++)
+            {
+                var colIndexChild = colIndex + 1;
+                worksheet.Cells[rowIndex + i, colIndexChild++].Value = report.ChildReports[i].Name;
+                worksheet.Cells[rowIndex + i, colIndexChild].Value = report.ChildReports[i].NumberOfIssues;
+            }
+
+            worksheet.Cells[rowIndex, LastColumns].Value = report.NumberOfIssues;
+            StyleHorizontalAlignmentCenter(worksheet.Cells[rowIndex, LastColumns]);
+        }
+
+        private void SetBackgroundTotalRow(ExcelRange cell)
+        {
+            SetBackgroudColor(cell, HeaderTitleColor);
+            cell.Style.Font.Color.SetColor(Color.White);
+            cell.Style.Font.Bold = true;
+        }
+
+        private void SetDefaultStyle(ExcelWorksheet worksheet)
+        {
+            StyleDefault(worksheet);
+            const byte CountryColumn = 2;
+            const byte AmountColumn = 3;
+            worksheet.Column(1).Width = widthColumnSmall;
+            worksheet.Column(LastColumns).Width = widthColumnNormal;
+            worksheet.Column(CountryColumn).Width = widthColumnLarge;
+            worksheet.Column(AmountColumn).Width = widthColumnLarge;
+        }
+    }
+}

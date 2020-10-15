@@ -120,6 +120,12 @@
   <data name="ChatTypeMapping" xml:space="preserve">
     <value>Chat Type Mapping</value>
   </data>
+  <data name="DefaultCommunicationSetting" xml:space="preserve">
+    <value>Default Communication Setting</value>
+  </data>
+  <data name="FeedbackSubject" xml:space="preserve">
+    <value>Feedback Subject</value>
+  </data>
   <data name="LetstalkInvalidMessage" xml:space="preserve">
     <value>{0} does not exist in Letstalk application.</value>
   </data>
@@ -131,6 +137,15 @@
   </data>
   <data name="NotificationType" xml:space="preserve">
     <value>Notification Type</value>
+  </data>
+  <data name="PicAssignment" xml:space="preserve">
+    <value>Pic Assignment</value>
+  </data>
+  <data name="PicManagement" xml:space="preserve">
+    <value>PIC Management</value>
+  </data>
+  <data name="SettlementIssuesReport" xml:space="preserve">
+    <value>Settlement Issues Report</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>

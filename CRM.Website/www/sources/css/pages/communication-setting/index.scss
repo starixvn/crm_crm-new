@@ -1,0 +1,85 @@
+﻿@import '../../components/form-filter';
+@import '../../components/react-grid/react-grid';
+@import '../../components/multiple-select/style';
+@import '../../components/forms';
+@import '../../components/messages';
+@import '../../components/modal';
+@import '../../components/icons';
+@import '../../components/tables';
+
+.form-filter {
+    .form-row {
+        .form-group {
+            width: 350px;
+        }
+    }
+}
+
+.multiple-select-options-container {
+    width: 300px;
+}
+
+.tooltipCatagory [class$="inner"] {
+    min-width: 100px;
+    max-width: 550px;
+    min-height: 100px;
+    max-height: 920px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: left
+}
+
+#tooltip-customers [class$="inner"] {
+    min-width: 300px;
+    text-align: left;
+}
+
+.modal-content {
+    .modal-body {
+        .customerShow {
+            border-left: 18px solid green;
+        }
+
+        .guestShow {
+            border-left: 18px solid #06c;
+        }
+
+        .invalidShow {
+            border-left: 18px solid red;
+        }
+
+        .customersList {
+            border: 1px solid #ced4da;
+        }
+
+        .txt-customer, .txt-guest, .txt-invalid {
+            display: flex;
+            align-items: center;
+            border: 1px solid #8e8e8e;
+            border-radius: 5px;
+
+            .fa-times {
+                cursor: pointer;
+            }
+        }
+
+        .txt-customer {
+            color: green;
+        }
+
+        .txt-guest {
+            color: #06c
+        }
+
+        .txt-invalid {
+            color: red;
+        }
+
+        .fa-question-circle-o {
+            font-size: 14px;
+            color: #0789d1;
+            position: absolute;
+            right: 0;
+        }
+    }
+}

@@ -1,4 +1,4 @@
-﻿namespace CRM.Services.Interfaces
+﻿namespace CRM.Services
 {
     using System;
     using System.Collections.Generic;

@@ -6,6 +6,7 @@ $font-size-sm: 1rem;
 @import '~font-awesome/scss/font-awesome';
 @import '~react-toastify/scss/main';
 @import '../css/components/buttons';
+@import '../css/components/react-select';
 
 html {
     position: relative;
@@ -67,5 +68,27 @@ body {
         .Toastify__toast {
             min-height: 50px;
         }
+    }
+}
+
+.container-fluid {
+    padding: 15px;
+}
+
+.loading-process {
+    background: rgba(255, 255, 255, 0.7) no-repeat;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+
+    .icon-loading {
+        position: absolute;
+        top: 30%;
+        width: 64px;
+        height: 64px;
+        left: 50%;
+        margin: -10px 0 0 -70px;
     }
 }

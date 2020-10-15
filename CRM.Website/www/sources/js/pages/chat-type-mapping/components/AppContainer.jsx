@@ -1,4 +1,7 @@
 ﻿import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions/index';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import Layout from '../../../components/Layout';
@@ -20,3 +23,13 @@ export class AppContainer extends Component {
 }
 
 export default AppContainer;
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { gridParams } = state;
+    return {
+        gridParams
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

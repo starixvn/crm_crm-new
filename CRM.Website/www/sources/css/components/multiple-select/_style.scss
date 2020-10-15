@@ -156,3 +156,7 @@ $sub-menu-border: 1px solid #b7b7b7;
         display: block;
     }
 }
+
+button[disabled] {
+    opacity: 0.5;
+}

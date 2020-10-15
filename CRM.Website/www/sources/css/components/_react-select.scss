@@ -1,48 +1,24 @@
-@import '~react-select/scss/default';
+@import '../abstracts/variables';
 
-.Select {
-    height: 100%;
+.react-select-container {
+    .react-select__control {
+        .react-select__indicators {
+            .react-select__indicator {
+                padding: 4px;
 
-    .Select-control {
-        height: 100%;
-        border-radius: 0;
-    
-        .Select-multi-value-wrapper {
-            .Select-input {
-                height: 100%;
-                overflow: hidden;
-        
-                input {
-                    padding: 0;
-                    line-height: 2em;
-                    font-size: 13px;
+                svg {
+                    width: 18px;
+                    height: 18px;
                 }
-            }
 
-            .Select-placeholder {
-                display: none;
-            }
-    
-            .Select-value {
-                display: flex;
-                align-items: center;
-    
-                span {
-                    line-height: 100%;
-                    overflow: hidden;
-                    width: 100%;
-                    text-overflow: ellipsis;
+                &.react-select__clear-indicator {
+                    padding-right: 0px;
+                }
+
+                &.react-select__dropdown-indicator {
+                    padding-left: 0px;
                 }
             }
         }
-
-        .Select-arrow-zone {
-            display: none;
-        }
-    }
-
-    .Select-menu-outer {
-        width: auto;
-        min-width: 100%;
     }
 }

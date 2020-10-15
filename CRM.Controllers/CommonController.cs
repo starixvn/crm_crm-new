@@ -7,8 +7,7 @@
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
 
-    [CrmAuthorize]
-    public class CommonController : Controller
+    public class CommonController : BaseController
     {
         private readonly INotificationTypeService notificationTypeService;
         private readonly ICommonService commonService;

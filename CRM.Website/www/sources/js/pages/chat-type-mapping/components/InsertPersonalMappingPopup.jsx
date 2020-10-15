@@ -188,6 +188,7 @@ export class InsertPersonalMappingPopup extends Component {
                     setTimeout(() => {
                         this.props.closeInsertPersonalMappingPopup();
                         this.props.getGridData(this.props.gridParams);
+                        this.props.setInsertPersonalMappingResult(null);
                     }, 3000);
                 } else {
                     this.setState({ isSubmitting: false });

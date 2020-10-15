@@ -6,7 +6,7 @@
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Services;
     using CRM.Letstalk.Client.Services.Interfaces;
-    using CRM.Services.Interfaces;
+    using CRM.Services;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class ServiceDIExtensions
@@ -20,6 +20,15 @@
             services.AddTransient<INotificationTypeService, NotificationTypeService>();
             services.AddTransient<ICommonService, CommonService>();
             services.AddTransient<IChatTypeMappingService, ChatTypeMappingService>();
+            services.AddTransient<ICommunicationToolSettingService, CommunicationToolSettingService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IPicAssignmentService, PicAssignmentService>();
+            services.AddTransient<IPicAssignmentExportExcel, PicAssignmentExportExcel>();
+            services.AddTransient<ISettlementReportService, SettlementReportService>();
+            services.AddTransient<ISettlementReportExportExcel, SettlementReportExportExcel>();
+            services.AddTransient<IFeedbackSubjectService, FeedbackSubjectService>();
+            services.AddTransient<IPicManagementService, PicManagementService>();
+            services.AddTransient<IPicManagementExportExcel, PicManagementExportExcel>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)

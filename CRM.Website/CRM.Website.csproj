@@ -37,6 +37,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Fanex.Caching" Version="2.2.1" />
     <PackageReference Include="Fanex.Data" Version="4.2.2" />
     <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.2" />
     <PackageReference Include="Fanex.NAP.Client.AspNetCore" Version="1.0.0-beta5" />
@@ -67,5 +68,8 @@
     <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
     <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
     <ProjectReference Include="..\CRM.Services\CRM.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="www\sources\js\pages\pic-and-headline\pic-assignment\" />
   </ItemGroup>
 </Project>

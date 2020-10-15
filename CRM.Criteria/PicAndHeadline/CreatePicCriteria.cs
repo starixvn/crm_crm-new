@@ -1,0 +1,41 @@
+﻿namespace CRM.Criteria.PicAndHeadline
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using CRM.Core.Extensions.XML;
+    using CRM.Core.Models;
+    using CRM.Models.PicAndHeadline;
+    using Fanex.Data;
+
+    public class CreatePicCriteria : BaseNonQueryCommand
+    {
+        public string PicName { get; set; }
+
+        public int Role { get; set; }
+
+        [SpParam(Ignored = true)]
+        public IEnumerable<PicCommunicationTool> PicCommunicationTools { get; set; }
+
+        public string CommunicationTools => XMLIO.ToXML(PicCommunicationTools, "ROOT").ToString();
+
+        public string Language { get; set; }
+
+        public int Country { get; set; }
+
+        public string Remark { get; set; }
+
+        public int UserId { get; set; }
+
+        public string LoginIP { get; set; }
+
+        public override string GetSettingKey()
+        {
+            return "Acc_CRM_PicIns";
+        }
+
+        public override bool IsValid()
+        {
+            return PicName.Length > 0 && Role > 0 && PicCommunicationTools.Any();
+        }
+    }
+}

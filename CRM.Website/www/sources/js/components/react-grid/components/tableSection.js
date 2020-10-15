@@ -68,9 +68,9 @@ const createTableSection = (extendedContainerProps, extendedTableProps) => {
                 sortBy: sortBy,
                 sortOrder: sortOrder
             },
-                () => {
-                    onSort && onSort(sortBy, sortOrder);
-                });
+            () => {
+                onSort && onSort(sortBy, sortOrder)
+            })
         }
 
         render() {

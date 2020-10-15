@@ -14,7 +14,6 @@
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
-    using CRM.Services.Interfaces;
     using CRM.ViewModels.ChatTypeMapping;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -22,9 +21,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmAuthorize]
     [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Read)]
-    public class ChatTypeMappingController : Controller
+    public class ChatTypeMappingController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;

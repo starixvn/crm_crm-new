@@ -11,5 +11,6 @@
 .form-control, .form-control {
     &:invalid, &.is-invalid {
         background-image: unset;
+        padding-right: unset;
     }
 }

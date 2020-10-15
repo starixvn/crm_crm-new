@@ -4,6 +4,7 @@ import MultipleSelectLabel from './MultipleSelectLabel';
 import MultipleSelectOptionList from './MultipleSelectOptionList';
 import OptionAll from './OptionAll';
 import { KEY_NAME, VALUE_NAME, STATUS_NAME } from './constants';
+import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 import functions from './functions';
 
 let id = 1;
@@ -15,21 +16,23 @@ export default class MultipleSelect extends Component {
         hasSearchBox: PropTypes.bool,
         isAllTextShown: PropTypes.bool,
         keyField: PropTypes.string,
-        language: PropTypes.string,
+        textOptions: PropTypes.object,
         maxDisplayItemCount: PropTypes.number,
         onChange: PropTypes.func,
         statusField: PropTypes.string,
         texts: PropTypes.object,
-        valueField: PropTypes.string
+        valueField: PropTypes.string,
+        isDisable: PropTypes.bool
     }
 
     static defaultProps = {
-        language: 'en-US',
         keyField: KEY_NAME,
         valueField: VALUE_NAME,
         statusField: STATUS_NAME,
         hasAllOption: true,
-        hasSearchBox: false
+        hasSearchBox: false,
+        isDisable: false,
+        textOptions: MULTI_SELECT_TEXT_OPTIONS
     }
 
     constructor(props) {
@@ -92,12 +95,14 @@ export default class MultipleSelect extends Component {
     }
 
     onToggle = () => {
-        this.setState(prevState => { return { showOptionList: !prevState.showOptionList }; },
-            () => {
-                if (this.searchInputBox && this.state.showOptionList) {
-                    this.searchInputBox.focus();
-                }
-            });
+        if (!this.props.isDisable) {
+            this.setState((prevState) => { return { showOptionList: !prevState.showOptionList }; },
+                () => {
+                    if (this.searchInputBox && this.state.showOptionList) {
+                        this.searchInputBox.focus();
+                    }
+                });
+        }
     }
 
     checkAllHandler = checked => {
@@ -166,7 +171,7 @@ export default class MultipleSelect extends Component {
         if (this.props.hasAllOption && this.props.dataSource.length > 0) {
             const checkedItemCount = this.state.dataSource.filter(x => x.checked).length;
             const checkedAll = checkedItemCount === this.state.dataSource.length;
-            return (<OptionAll id={this.id} checked={checkedAll} language={this.props.language} onChange={this.checkAllHandler} />);
+            return (<OptionAll id={this.id} checked={checkedAll} textOptions={this.props.textOptions} onChange={this.checkAllHandler} />);
         }
 
         return null;
@@ -191,7 +196,7 @@ export default class MultipleSelect extends Component {
         return (<div style={{ width: '100%' }}>
             <input autoFocus onChange={e => this.onChangeSearchText(e.target.value)}
                 ref={element => this.searchInputBox = element}
-                value={this.state.searchText} type='text' placeholder='Search data'
+                value={this.state.searchText} type='text' placeholder='Search'
                 style={{
                     width: '100%', border: '1px solid #ccc', padding: '5px 10px',
                     boxSizing: 'border-box'
@@ -203,19 +208,19 @@ export default class MultipleSelect extends Component {
 
     render() {
         const { maxDisplayItemCount } = this.props;
-
         return (
             <div className={`multiple-select-container ${this.props.isInvalid ? 'invalid' : ''}`}
                 id={this.id} ref={element => this.wrapper = element}
             >
                 <MultipleSelectLabel
-                    language={this.props.language}
+                    textOptions={this.props.textOptions}
                     selectedItems={this.selectedItems}
                     dataSourceSize={this.state.dataSource.length}
                     onToggle={this.onToggle}
                     texts={this.props.texts}
                     isAllTextShown={this.props.isAllTextShown}
                     maxDisplayItemCount={maxDisplayItemCount}
+                    isDisable = {this.props.isDisable}
                 />
                 <div className='multiple-select-default multiple-select-options-container'
                     style={{ display: this.state.showOptionList ? 'block' : 'none' }}

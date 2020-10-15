@@ -7,7 +7,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { handleNewResendOptions } from '../functions';
-import SelectWithSearch from 'react-select';
+import Select from '@jsroot/components/CustomReactSelect';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import Site from '@jsroot/common/site';
 import { toast } from 'react-toastify';
@@ -280,9 +280,8 @@ export class Filter extends Component {
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
                         <div className='form-control-wrapper'>
-                            <SelectWithSearch
-                                className='basic-single'
-                                name='headline'
+                            <Select
+                                isClearable
                                 onChange={value => this.handleHeadlineChange(value)}
                                 options={this.props.headlineOptions}
                                 onInputChange={searchText => this.debounceHandleHeadlineInputChange(searchText)}
@@ -293,9 +292,8 @@ export class Filter extends Component {
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('Recipient')}</Form.Label>
                         <div className='form-control-wrapper'>
-                            <SelectWithSearch
-                                className='basic-single'
-                                name='recipient'
+                            <Select
+                                isClearable
                                 onChange={value => this.handleRecipientChange(value)}
                                 options={this.props.recipientOptions}
                                 onInputChange={searchText => this.debounceHandleRecipientInputChange(searchText)}

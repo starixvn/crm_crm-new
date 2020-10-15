@@ -70,6 +70,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default Communication Setting.
+        /// </summary>
+        public static string DefaultCommunicationSetting {
+            get {
+                return ResourceManager.GetString("DefaultCommunicationSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback Subject.
+        /// </summary>
+        public static string FeedbackSubject {
+            get {
+                return ResourceManager.GetString("FeedbackSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} does not exist in Letstalk application..
         /// </summary>
         public static string LetstalkInvalidMessage {
@@ -102,6 +120,33 @@ namespace CRM.Resources {
         public static string NotificationType {
             get {
                 return ResourceManager.GetString("NotificationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pic Assignment.
+        /// </summary>
+        public static string PicAssignment {
+            get {
+                return ResourceManager.GetString("PicAssignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PIC Management.
+        /// </summary>
+        public static string PicManagement {
+            get {
+                return ResourceManager.GetString("PicManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settlement Issues Report.
+        /// </summary>
+        public static string SettlementIssuesReport {
+            get {
+                return ResourceManager.GetString("SettlementIssuesReport", resourceCulture);
             }
         }
         

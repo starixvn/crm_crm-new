@@ -1,11 +1,32 @@
 ﻿namespace CRM.Models.Setting
 {
-    public class Setting
+    using System;
+    using System.Xml.Serialization;
+
+    [Serializable]
+    [XmlType("Setting")]
+    public class Setting : BaseModel
     {
+        [XmlAttribute("Id")]
         public int SettingId { get; set; }
+
         public string SettingName { get; set; }
+
+        [XmlAttribute("Value")]
         public string SettingValue { get; set; }
+
         public int DisplayOrder { get; set; }
+
         public bool IsActive { get; set; }
+
+        public bool IsChild { get; set; }
+
+        public int MainCategoryID { get; set; }
+
+        public int SubCategoryId { get; set; }
+
+        public int ParentID { get; set; }
+
+        public string SettingSource { get; set; }
     }
 }

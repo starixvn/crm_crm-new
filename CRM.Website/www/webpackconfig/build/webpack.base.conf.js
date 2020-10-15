@@ -21,6 +21,14 @@ function generateConfig(environment) {
             [`${jsPath}/pages/notificationtemplate/index`]: pathConfig.scriptPaths.notification_template,
             [`${jsPath}/pages/notificationtype/index`]: pathConfig.scriptPaths.notification_type,
             [`${jsPath}/pages/chattypemapping/index`]: pathConfig.scriptPaths.chattype_mapping,
+            [`${jsPath}/pages/communicationsetting/index`]: pathConfig.scriptPaths.communication_setting,
+            [`${jsPath}/pages/picandheadline/picassignment/index`]: pathConfig.scriptPaths.pic_assignment,
+            [`${jsPath}/pages/picandheadline/management/index`]: pathConfig.scriptPaths.pic_management,
+
+            /*report*/
+            [`${jsPath}/pages/report/settlement/index`]: pathConfig.scriptPaths.report_settlement,
+            /*feedback subject management*/
+            [`${jsPath}/pages/feedbacksubject/index`]: pathConfig.scriptPaths.feedback_subject,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -28,7 +36,16 @@ function generateConfig(environment) {
             [`${cssPath}/pages/notificationlist/index`]: pathConfig.cssPaths.notification_list,
             [`${cssPath}/pages/notificationtemplate/index`]: pathConfig.cssPaths.notification_template,
             [`${cssPath}/pages/notificationtype/index`]: pathConfig.cssPaths.notification_type,
-            [`${cssPath}/pages/chattypemapping/index`]: pathConfig.cssPaths.chattype_mapping
+            [`${cssPath}/pages/chattypemapping/index`]: pathConfig.cssPaths.chattype_mapping,
+            [`${cssPath}/pages/communicationsetting/index`]: pathConfig.cssPaths.communication_setting,
+            [`${cssPath}/pages/picandheadline/picassignment/index`]: pathConfig.cssPaths.pic_assignment,
+            [`${cssPath}/pages/picandheadline/management/index`]: pathConfig.cssPaths.pic_management,
+
+            /*report*/
+            [`${cssPath}/pages/report/settlement/index`]: pathConfig.cssPaths.report_settlement,
+
+            /*feedback subject management*/
+            [`${cssPath}/pages/feedbacksubject/index`]: pathConfig.cssPaths.feedback_subject,
         },
         output: {
             path: pathConfig.projectRoot,

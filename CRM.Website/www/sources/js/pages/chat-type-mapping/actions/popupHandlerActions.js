@@ -166,6 +166,7 @@ const actions = {
     setInsertPersonalMappingResult,
     openUpdatePersonalMappingPopup,
     updatePersonalMapping,
+    setUpdatePersonalMappingResult,
     closeUpdatePersonalMappingPopup,
     setUpdatePersonalMappingResult,
     openUpdateGroupMappingPopup,
