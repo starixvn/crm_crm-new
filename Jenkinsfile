@@ -17,7 +17,7 @@ pipeline {
     stage('Build') {
       steps {
         script{
-          pipelineLib.beginSonarQubeForMsBuild("CRM-New", "CRM-New", "/d:sonar.cs.opencover.reportsPaths=\"${WORKSPACE}\\CoverageReports\\*.xml\" /d:sonar.cs.vstest.reportsPaths=\"${WORKSPACE}\\TestResults\\*.trx\"")
+          pipelineLib.beginSonarQubeForMsBuild("CRM-New", "CRM New", "/d:sonar.cs.opencover.reportsPaths=\"${WORKSPACE}\\CoverageReports\\*.xml\" /d:sonar.cs.vstest.reportsPaths=\"${WORKSPACE}\\TestResults\\*.trx\"")
 
           pipelineLib.restoreNuget()
 
