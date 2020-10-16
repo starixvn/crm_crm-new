@@ -14,7 +14,6 @@
     public class LetstalkService : ILetstalkService
     {
         private const int payloadId = 100;
-        private const string NotSuchDataMessage = "Not such data";
         private readonly BotConfig botConfig;
         private readonly IRestClientService restClientService;
         private readonly ICryptographyService cryptographyService;
@@ -123,11 +122,6 @@
                     { "receiver", accountIdToLowerList },
                     { "payload", JsonConvert.SerializeObject(payload, DefaultJsonSerializeSetting) }
                 });
-
-            if (result.Status == 22)
-            {
-                result.Message = NotSuchDataMessage;
-            }
 
             return result;
         }
