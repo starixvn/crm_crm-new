@@ -1,6 +1,5 @@
 import DefaultPicWrapper, { DefaultPic } from '../DefaultPic';
 import React from 'react';
-import LangHelper from '@jsroot/common/langHelper';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import functions from '../../common.functions';

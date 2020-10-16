@@ -1,7 +1,6 @@
 import FilterWrapper, { Filter } from '../Filter';
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, Form } from 'react-bootstrap';
-import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import functions from '../../common.functions';
 import { shallow } from 'enzyme';

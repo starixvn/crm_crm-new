@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import DataGridWrapper, { DataGrid } from '../DataGrid';
-import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import { Table, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
-import functions, { assignPic } from '../../common.functions';
+import functions from '../../common.functions';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
