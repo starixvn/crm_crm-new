@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <CodeAnalysisRuleSet>..\..\SonarQube\crmcsharp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\.sonarlint\crm-newcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\..\SonarQube\crm\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    <AdditionalFiles Include="..\.sonarlint\crm-new\CSharp\SonarLint.xml" Link="SonarLint.xml" />
     <Content Include="App_Data\Development\SpNames.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -54,5 +53,4 @@
     <ProjectReference Include="..\CRM.Letstalk.Client\CRM.Letstalk.Client.csproj" />
     <ProjectReference Include="..\CRM.Letstalk.Core\CRM.Letstalk.Core.csproj" />
   </ItemGroup>
-
 </Project>

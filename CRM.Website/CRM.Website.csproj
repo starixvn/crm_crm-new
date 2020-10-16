@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <CodeAnalysisRuleSet>..\..\SonarQube\crmcsharp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\.sonarlint\crm-newcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="App_Data\Development\SpNames.xml" />
@@ -13,9 +13,7 @@
     <None Remove="logs\log.txt" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\SonarQube\crm\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-  </ItemGroup>
-  <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\crm-new\CSharp\SonarLint.xml" Link="SonarLint.xml" />
     <Content Include="App_Data\Development\SpNames.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

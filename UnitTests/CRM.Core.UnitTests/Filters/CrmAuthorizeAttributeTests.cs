@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Net;
     using CRM.Core.Filters;
+    using Fanex.Logging;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
@@ -21,6 +22,7 @@
         {
             // Arrange
             var napSession = Substitute.For<INapSession>();
+            var logger = Substitute.For<ILogger>();
             var authService = Substitute.For<IAuthenticationService>();
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
@@ -36,7 +38,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmAuthorizeAttribute(napSession);
+            var filter = new CrmAuthorizeAttribute(napSession, logger);
 
             // Act
             filter.OnAuthorization(context);
@@ -52,6 +54,7 @@
         {
             // Arrange
             var napSession = Substitute.For<INapSession>();
+            var logger = Substitute.For<ILogger>();
             napSession.UserId = 1;
             napSession.UserName = "tim.trinh";
 
@@ -71,7 +74,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmAuthorizeAttribute(napSession);
+            var filter = new CrmAuthorizeAttribute(napSession, logger);
 
             // Act
             filter.OnAuthorization(context);
