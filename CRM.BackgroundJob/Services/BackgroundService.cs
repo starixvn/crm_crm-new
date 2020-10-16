@@ -17,6 +17,8 @@
         Task ScanAndSenLetstalkNotification();
 
         Task MonitorLetstalkService();
+
+        Task CreateFeedbackForWinLossLimit();
     }
 
     public class BackgroundService : IBackgroundService
@@ -26,6 +28,7 @@
         private readonly IChatBotJobService chatBotJobService;
         private readonly ICRMLogService logService;
         private readonly ISendNotificationService sendNotificationService;
+        private readonly IAutoWinLossFeedbackService winLossService;
         private readonly IMonitorService monitorService;
 
         public BackgroundService(
@@ -34,6 +37,7 @@
             IChatBotJobService chatBotJobService,
             ICRMLogService logService,
             ISendNotificationService sendNotificationService,
+            IAutoWinLossFeedbackService winLossService,
             IMonitorService monitorService)
         {
             this.maintenanceService = maintenanceService;
@@ -41,6 +45,7 @@
             this.chatBotJobService = chatBotJobService;
             this.logService = logService;
             this.sendNotificationService = sendNotificationService;
+            this.winLossService = winLossService;
             this.monitorService = monitorService;
         }
 
@@ -114,6 +119,27 @@
             try
             {
                 await monitorService.MonitorLetstalkService();
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        [Queue(QueuePriority.Critical)]
+        public async Task CreateFeedbackForWinLossLimit()
+        {
+            try
+            {
+                bool isUM = await CheckUM();
+                if (isUM)
+                {
+                    logService.LogInformation("UM time.");
+                    return;
+                }
+
+                await winLossService.WinLossExecuteJobAsync();
             }
             catch (Exception ex)
             {

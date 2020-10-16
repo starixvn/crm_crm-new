@@ -30,6 +30,7 @@
         protected override void OnStarted()
         {
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
+            jobRunningChecker.ClearRunning(JobName.CreateFeedbackForWinLossLimit);
             RunHangfireJobs();
             base.OnStarted();
         }
@@ -74,6 +75,14 @@
                   job => job.MonitorLetstalkService(),
                   cronExpression,
                   TimeZoneInfo.Local);
+            }
+
+            if (IsEnabledJob(HangfireJobName.CreateFeedbackForWinLossLimit))
+            {
+                recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For Win Loss Limit",
+                   job => job.CreateFeedbackForWinLossLimit(),
+                   Cron.Minutely,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
             }
         }
 

@@ -18,6 +18,7 @@
     using Fanex.Logging.Extensions.AspNetCore;
     using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Sentry;
+    using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Extensions;
     using global::CRM.Letstalk.Services.Extentions;
     using global::CRM.Letstalk.Services.Services;
@@ -185,8 +186,10 @@
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<IWinLossFeedbackService, WinLossFeedbackService>();
             services.AddScoped<IFeedbackTicketVoidingService, FeedbackTicketVoidingService>();
             services.AddScoped<IAutoFeedbackService, AutoFeedbackService>();
+            services.AddScoped<IAutoWinLossFeedbackService, AutoWinLossFeedbackService>();
             services.AddScoped<IChatBotTicketVoidingService, ChatBotTicketVoidingService>();
             services.AddScoped<IChatBotJobService, ChatBotJobService>();
             services.AddScoped<IBackgroundService, BackgroundService>();

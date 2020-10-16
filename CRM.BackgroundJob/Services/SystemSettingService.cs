@@ -6,6 +6,8 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Criteria.WinLossLimit;
+    using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
@@ -19,6 +21,8 @@
         Task<CommandResult> EditJobStatusAsync(string status);
 
         Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync();
+
+        Task<WinLossSystemSetting> GetWinLossSettingAsync();
     }
 
     public class SystemSettingService : ISystemSettingService
@@ -58,6 +62,12 @@
         {
             var criteria = new GetChatBotSystemSettingCriteria();
             return await baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(criteria);
+        }
+
+        public async Task<WinLossSystemSetting> GetWinLossSettingAsync()
+        {
+            var criteria = new GetWinLossSystemSettingCriteria();
+            return await baseService.GetDataEntityAsync<WinLossSystemSetting>(criteria);
         }
     }
 }

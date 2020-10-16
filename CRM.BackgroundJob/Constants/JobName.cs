@@ -3,5 +3,6 @@
     public static class JobName
     {
         public const string CreateFeedbackForVoidingAbnormalBet = "CreateFeedbackForVoidingAbnormalBet";
+        public const string CreateFeedbackForWinLossLimit = "CreateFeedbackForWinLossLimit";
     }
 }
