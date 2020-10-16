@@ -23,7 +23,7 @@
             services.AddTransient<ICommunicationToolSettingService, CommunicationToolSettingService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IPicAssignmentService, PicAssignmentService>();
-            services.AddTransient<IPicAssignmentExportExcel, PicAssignmentExportExcel>();
+            services.AddTransient<IPicAssignmentExcel, PicAssignmentExcel>();
             services.AddTransient<ISettlementReportService, SettlementReportService>();
             services.AddTransient<ISettlementReportExportExcel, SettlementReportExportExcel>();
             services.AddTransient<IFeedbackSubjectService, FeedbackSubjectService>();

@@ -12,12 +12,12 @@
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
-    public interface IPicAssignmentExportExcel
+    public interface IPicAssignmentExcel
     {
         byte[] Export(IEnumerable<PICAssignmentInfo> assignments);
     }
 
-    public class PicAssignmentExportExcel : IPicAssignmentExportExcel
+    public class PicAssignmentExcel : IPicAssignmentExcel
     {
         private const string CustomPath = "ExcelTemplates/PicAssignment.xlsx";
         private const byte RowStartBody = 5;
@@ -27,7 +27,7 @@
         private const byte TotalColumns = 10;
         private readonly IHostingEnvironment hostingEnvironment;
 
-        public PicAssignmentExportExcel(IHostingEnvironment hostingEnvironment)
+        public PicAssignmentExcel(IHostingEnvironment hostingEnvironment)
         {
             this.hostingEnvironment = hostingEnvironment;
         }
@@ -41,17 +41,16 @@
                 {
                     var template = templatePackage.Workbook.Worksheets[Labels.PicAssignment];
                     var worksheet = xlPackage.Workbook.Worksheets.Add(Labels.PicAssignment);
-                    var rowIndex = 1;
+                    RenderTitleAndHeader(template, worksheet);
                     var colIndex = 1;
-                    template.Cells[rowIndex, colIndex, RowStartBody - 1, TotalColumns].Copy(worksheet.Cells[rowIndex, colIndex, RowStartBody - 1, TotalColumns]);
-                    rowIndex = RowStartBody;
+                    int rowIndex = RowStartBody;
                     var rowNum = 1;
                     var mergeHeadline = 0;
                     var mergePic = 0;
-                    foreach (var assignment in assignments)
+                    foreach (PICAssignmentInfo assignment in assignments)
                     {
                         colIndex = 1;
-                        DrawBorderCell(worksheet.Cells[rowIndex, colIndex]);
+                        template.Cells[RowStartBody, 1].Copy(worksheet.Cells[rowIndex, colIndex]);
                         worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
                         if (mergeHeadline == 0)
                         {
@@ -110,7 +109,13 @@
             }
         }
 
-        private static byte GetTemplateRowIndex(string status)
+        protected internal void RenderTitleAndHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+            templateWorksheet.Cells[1, 1, RowStartBody - 1, TotalColumns]
+                .Copy(worksheet.Cells[1, 1, RowStartBody - 1, TotalColumns]);
+        }
+
+        protected internal byte GetTemplateRowIndex(string status)
         {
             if (status == CustomerStatus.Closed.ToString())
             {

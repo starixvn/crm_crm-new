@@ -35,7 +35,7 @@
         private INapSettings napSettings;
         private IUserService userService;
         private IPicAssignmentService picAssignmentService;
-        private IPicAssignmentExportExcel excelService;
+        private IPicAssignmentExcel excelService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -405,7 +405,7 @@
             napSettings = Substitute.For<INapSettings>();
             userService = Substitute.For<IUserService>();
             picAssignmentService = Substitute.For<IPicAssignmentService>();
-            excelService = Substitute.For<IPicAssignmentExportExcel>();
+            excelService = Substitute.For<IPicAssignmentExcel>();
             return new PicAssignmentController(
                 settingService,
                 baseService,

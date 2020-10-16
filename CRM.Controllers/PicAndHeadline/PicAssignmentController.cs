@@ -30,7 +30,7 @@
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
         private readonly IPicAssignmentService picAssignmentService;
-        private readonly IPicAssignmentExportExcel excelService;
+        private readonly IPicAssignmentExcel excelService;
 
         public PicAssignmentController(
             ISettingService settingService,
@@ -39,7 +39,7 @@
             INapSettings napSettings,
             IUserService userService,
             IPicAssignmentService picAssignmentService,
-            IPicAssignmentExportExcel excelService)
+            IPicAssignmentExcel excelService)
         {
             this.settingService = settingService;
             this.baseService = baseService;

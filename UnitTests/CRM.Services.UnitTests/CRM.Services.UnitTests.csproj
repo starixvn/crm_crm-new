@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ExportExcel\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\CRM.Services\CRM.Services.csproj" />
   </ItemGroup>
 

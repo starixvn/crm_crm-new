@@ -16,12 +16,13 @@
 
         byte[] Export(PicReport picReport);
     }
+
     public class PicManagementExportExcel : BaseExportExcel, IPicManagementExportExcel
     {
         public IEnumerable<BaseModel> CommunicationTools { get; set; }
 
         private const string CustomPath = "ExcelTemplates/PicManagement.xlsx";
-        
+
         private const byte RowStartBody = 6;
         private const byte RowStartHeader = 4;
         private const byte BaseColumnIndex = 9;
@@ -47,13 +48,13 @@
                 {
                     var template = templatePackage.Workbook.Worksheets[0];
                     var worksheet = xlPackage.Workbook.Worksheets.Add(Labels.PICManagement);
-                    totalColumn = BaseColumnIndex + CommunicationTools.Count() -1;
+                    totalColumn = BaseColumnIndex + CommunicationTools.Count() - 1;
                     var rowIndex = 1;
                     template.Cells[1, 1, RowStartBody - 1, StartComToolsIndex - 1].Copy(worksheet.Cells[1, 1, RowStartBody - 1, StartComToolsIndex - 1]);
                     RenderHeader(worksheet);
                     rowIndex = RowStartBody;
 
-                    for(var index = 0; index < picReport.DataList.Count; index++)
+                    for (var index = 0; index < picReport.DataList.Count; index++)
                     {
                         RenderRow(worksheet, picReport.DataList[index], index + 1, rowIndex++);
                     }
@@ -71,7 +72,7 @@
             var tools = CommunicationTools.ToList();
             worksheet.Cells[RowStartHeader, StartComToolsIndex].Value = Labels.CommunicationTool;
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader, StartComToolsIndex + tools.Count - 1].Merge = true;
-            for (var index = 0; index < tools.Count; index++) 
+            for (var index = 0; index < tools.Count; index++)
             {
                 worksheet.Cells[RowStartHeader + 1, StartComToolsIndex + index].Value = tools[index].Name;
             }
@@ -92,7 +93,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = picInfo.GroupHeadline;
 
             var tools = CommunicationTools.ToList();
-            for(var i = 0; i < tools.Count; i++)
+            for (var i = 0; i < tools.Count; i++)
             {
                 var item = picInfo.CommunicationTools.Find(t => t.SettingId == tools[i].Id);
                 worksheet.Cells[rowIndex, colIndex++].Value = item == null ? string.Empty : item.Value;

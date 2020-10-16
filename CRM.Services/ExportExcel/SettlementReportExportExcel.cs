@@ -10,6 +10,7 @@
     {
         byte[] Export(SettlementReportInfo reportInfo);
     }
+
     public class SettlementReportExportExcel : BaseExportExcel, ISettlementReportExportExcel
     {
         private const string CustomPath = "ExcelTemplates/Settlement_Issues_Report.xlsx";
@@ -39,7 +40,7 @@
                     template.Cells[1, 1, RowStartBody - 1, LastColumns].Copy(worksheet.Cells[1, 1, RowStartBody - 1, LastColumns]);
                     worksheet.Cells[1, 1].Value = reportInfo.Name;
                     rowIndex = RowStartBody;
-                    foreach(var report in reportInfo.ChildReports)
+                    foreach (var report in reportInfo.ChildReports)
                     {
                         SetValueRow(rowIndex, report, worksheet);
                         rowIndex += report.ChildReports.Count;
@@ -65,7 +66,7 @@
             }
             worksheet.Cells[rowIndex, colIndex].Value = report.Name;
             StyleHorizontalAlignmentCenter(worksheet.Cells[rowIndex, colIndex]);
-            
+
             for (int i = 0; i < report.ChildReports.Count; i++)
             {
                 var colIndexChild = colIndex + 1;
