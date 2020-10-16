@@ -130,7 +130,7 @@ export class DefaultPic extends Component {
         return <Fragment>
             <Modal
                 show backdrop='static' keyboard={false} size='lg' centered
-                onHide={this.handleCancel} dialogAs={DraggableModalDialog}
+                onHide={() => this.handleCancel()} dialogAs={DraggableModalDialog}
             >
                 <Modal.Header closeButton>
                     <Modal.Title as='div'>
@@ -161,7 +161,7 @@ export class DefaultPic extends Component {
                             <Col sm='8' md='9'>
                                 <Select
                                     isMulti
-                                    onChange={this.handlePicChange}
+                                    onChange={() => this.handlePicChange()}
                                     options={this.state.picOptions}
                                     value={this.state.pics}
                                     placeholder={LangHelper.getResource('PleaseSelect')}
@@ -185,7 +185,7 @@ export class DefaultPic extends Component {
                         >
                             {LangHelper.getResource('Save')}
                         </Button>
-                        <Button variant='primary' size='sm' onClick={this.handleCancel}>
+                        <Button variant='primary' size='sm' onClick={() => this.handleCancel()}>
                             {LangHelper.getResource('Cancel')}
                         </Button>
                     </Modal.Footer>
@@ -199,8 +199,8 @@ export class DefaultPic extends Component {
                         content={
                             <div>{LangHelper.getResource('ThereAreSomeChangesConfirmMessage')}</div>
                         }
-                        onSubmit={this.closeAll}
-                        onClose={this.toggleConfirmPopup}
+                        onSubmit={() => this.closeAll()}
+                        onClose={() => this.toggleConfirmPopup()}
                     />
             }
         </Fragment>;
