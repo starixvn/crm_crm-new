@@ -16,12 +16,12 @@
     public class SettlementReportController : BaseController
     {
         private readonly ISettlementReportService settlementReportService;
-        private readonly ISettlementReportExportExcel settlementReportExcel;
+        private readonly ISettlementReportExcel settlementReportExcel;
         private readonly AppSettings appSettings;
 
         public SettlementReportController(
             ISettlementReportService settlementReportService,
-            ISettlementReportExportExcel settlementReportExcel,
+            ISettlementReportExcel settlementReportExcel,
             IOptionsSnapshot<AppSettings> appSettings)
         {
             this.settlementReportService = settlementReportService;

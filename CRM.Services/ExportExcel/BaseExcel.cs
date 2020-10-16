@@ -4,17 +4,22 @@
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
-    public class BaseExportExcel
+    public abstract class BaseExcel
     {
-        public static readonly Color HeaderTitleColor = Color.FromArgb(60, 94, 165);
-        public static readonly Color EvenRowColor = Color.FromArgb(228, 242, 253);
+        protected static readonly Color HeaderTitleColor = Color.FromArgb(60, 94, 165);
+        protected static readonly Color EvenRowColor = Color.FromArgb(228, 242, 253);
 
-        public virtual void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)
+        protected internal virtual void RenderTitleAndHeader(ExcelWorksheet template, ExcelWorksheet worksheet, int endRow, int endCol)
+        {
+            template.Cells[1, 1, endRow, endCol].Copy(worksheet.Cells[1, 1, endRow, endCol]);
+        }
+
+        protected internal virtual void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)
         {
             worksheet.Cells[startRow, colIndex, endRow, colIndex].Merge = true;
         }
 
-        public virtual void DrawBorderCell(ExcelRange cell)
+        protected internal virtual void DrawBorderCell(ExcelRange cell)
         {
             cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
             cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -22,12 +27,12 @@
             cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
         }
 
-        public virtual void StyleHorizontalAlignmentCenter(ExcelRange cell)
+        protected internal virtual void StyleHorizontalAlignmentCenter(ExcelRange cell)
         {
             cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
-        public virtual void StyleDefault(ExcelWorksheet worksheet)
+        protected internal virtual void StyleDefault(ExcelWorksheet worksheet)
         {
             const int FontSize = 8;
             const string FontName = "Tahoma";
@@ -37,7 +42,7 @@
             worksheet.Cells.Style.WrapText = true;
         }
 
-        public virtual void SetBackgroudColor(ExcelRange cell, Color color)
+        protected internal virtual void SetBackgroudColor(ExcelRange cell, Color color)
         {
             cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
             cell.Style.Fill.BackgroundColor.SetColor(color);

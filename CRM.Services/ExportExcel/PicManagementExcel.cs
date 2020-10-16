@@ -10,14 +10,14 @@
     using Microsoft.AspNetCore.Hosting;
     using OfficeOpenXml;
 
-    public interface IPicManagementExportExcel
+    public interface IPicManagementExcel
     {
         IEnumerable<BaseModel> CommunicationTools { get; set; }
 
         byte[] Export(PicReport picReport);
     }
 
-    public class PicManagementExportExcel : BaseExportExcel, IPicManagementExportExcel
+    public class PicManagementExcel : BaseExcel, IPicManagementExcel
     {
         public IEnumerable<BaseModel> CommunicationTools { get; set; }
 
@@ -34,7 +34,7 @@
         private const byte WidthLarge = 22;
         private readonly IHostingEnvironment hostingEnvironment;
 
-        public PicManagementExportExcel(IHostingEnvironment hostingEnvironment)
+        public PicManagementExcel(IHostingEnvironment hostingEnvironment)
         {
             this.hostingEnvironment = hostingEnvironment;
         }
@@ -50,7 +50,7 @@
                     var worksheet = xlPackage.Workbook.Worksheets.Add(Labels.PICManagement);
                     totalColumn = BaseColumnIndex + CommunicationTools.Count() - 1;
                     var rowIndex = 1;
-                    template.Cells[1, 1, RowStartBody - 1, StartComToolsIndex - 1].Copy(worksheet.Cells[1, 1, RowStartBody - 1, StartComToolsIndex - 1]);
+                    RenderTitleAndHeader(template, worksheet, RowStartBody - 1, StartComToolsIndex - 1);
                     RenderHeader(worksheet);
                     rowIndex = RowStartBody;
 

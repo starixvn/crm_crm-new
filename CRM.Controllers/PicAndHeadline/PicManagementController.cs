@@ -25,7 +25,7 @@
         private readonly IUserService userService;
         private readonly INapSettings napSettings;
         private readonly IPicManagementService picManagementService;
-        private readonly IPicManagementExportExcel picManagementExportExcel;
+        private readonly IPicManagementExcel picManagementExportExcel;
 
         public PicManagementController(
             INapSession napSession,
@@ -33,7 +33,7 @@
             IUserService userService,
             INapSettings napSettings,
             IPicManagementService picManagementService,
-            IPicManagementExportExcel picManagementExportExcel)
+            IPicManagementExcel picManagementExportExcel)
         {
             this.napSession = napSession;
             this.settingService = settingService;

@@ -6,12 +6,12 @@
     using Microsoft.AspNetCore.Hosting;
     using OfficeOpenXml;
 
-    public interface ISettlementReportExportExcel
+    public interface ISettlementReportExcel
     {
         byte[] Export(SettlementReportInfo reportInfo);
     }
 
-    public class SettlementReportExportExcel : BaseExportExcel, ISettlementReportExportExcel
+    public class SettlementReportExcel : BaseExcel, ISettlementReportExcel
     {
         private const string CustomPath = "ExcelTemplates/Settlement_Issues_Report.xlsx";
         private const int widthColumnSmall = 15;
@@ -21,7 +21,7 @@
         private const byte LastColumns = 4;
         private readonly IHostingEnvironment hostingEnvironment;
 
-        public SettlementReportExportExcel(IHostingEnvironment hostingEnvironment)
+        public SettlementReportExcel(IHostingEnvironment hostingEnvironment)
         {
             this.hostingEnvironment = hostingEnvironment;
         }
@@ -37,7 +37,7 @@
                     var worksheet = xlPackage.Workbook.Worksheets.Add(reportInfo.Name);
                     SetDefaultStyle(worksheet);
                     var rowIndex = 1;
-                    template.Cells[1, 1, RowStartBody - 1, LastColumns].Copy(worksheet.Cells[1, 1, RowStartBody - 1, LastColumns]);
+                    RenderTitleAndHeader(template, worksheet, RowStartBody - 1, LastColumns);
                     worksheet.Cells[1, 1].Value = reportInfo.Name;
                     rowIndex = RowStartBody;
                     foreach (var report in reportInfo.ChildReports)
@@ -55,7 +55,7 @@
             }
         }
 
-        private void SetValueRow(int rowIndex, SettlementReportInfo report, ExcelWorksheet worksheet)
+        protected internal void SetValueRow(int rowIndex, SettlementReportInfo report, ExcelWorksheet worksheet)
         {
             const byte colIndex = 1;
             if (report.ChildReports.Count > 1)
@@ -78,14 +78,14 @@
             StyleHorizontalAlignmentCenter(worksheet.Cells[rowIndex, LastColumns]);
         }
 
-        private void SetBackgroundTotalRow(ExcelRange cell)
+        protected internal void SetBackgroundTotalRow(ExcelRange cell)
         {
             SetBackgroudColor(cell, HeaderTitleColor);
             cell.Style.Font.Color.SetColor(Color.White);
             cell.Style.Font.Bold = true;
         }
 
-        private void SetDefaultStyle(ExcelWorksheet worksheet)
+        protected internal void SetDefaultStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
             const byte CountryColumn = 2;

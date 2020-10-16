@@ -25,10 +25,10 @@
             services.AddTransient<IPicAssignmentService, PicAssignmentService>();
             services.AddTransient<IPicAssignmentExcel, PicAssignmentExcel>();
             services.AddTransient<ISettlementReportService, SettlementReportService>();
-            services.AddTransient<ISettlementReportExportExcel, SettlementReportExportExcel>();
+            services.AddTransient<ISettlementReportExcel, SettlementReportExcel>();
             services.AddTransient<IFeedbackSubjectService, FeedbackSubjectService>();
             services.AddTransient<IPicManagementService, PicManagementService>();
-            services.AddTransient<IPicManagementExportExcel, PicManagementExportExcel>();
+            services.AddTransient<IPicManagementExcel, PicManagementExcel>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)
