@@ -971,4 +971,183 @@ describe('DataGrid', () => {
             dataList
         });
     });
+
+    it('handleChangeRemoveCheckbox runs correctly', () => {
+        // Arrange
+        const props = {
+            picAssignmentGridData: {},
+            gridParams: {},
+            removeOptions: {
+                isCheckedAll: false,
+                isHadAll: true,
+                dataList: [
+                    {
+                        picList: [ 'value' ],
+                        isRemoved: false
+                    },
+                    {
+                        picList: [ 'value' ],
+                        isRemoved: false
+                    }
+                ]
+            },
+            setRemoveOptions: jest.fn()
+        };
+
+        const index = 0;
+        const dataList = props.removeOptions.dataList.map(item => {
+            return { ...item };
+        });
+
+        dataList[index].isRemoved = true;
+        const dataGrid = shallow(<DataGrid {...props} />);
+
+        // Action
+        dataGrid.instance().handleChangeRemoveCheckbox(index);
+
+        // Assert
+        expect(props.setRemoveOptions).toHaveBeenCalledWith({
+            isCheckedAll: false,
+            isDisabledRemove: false,
+            isHadAll: props.removeOptions.isHadAll,
+            shouldResetScrollPosition: false,
+            dataList
+        });
+    });
+
+    it('handleOpenRemovePopup runs correctly', () => {
+        // Arrange
+        const props = {
+            picAssignmentGridData: {},
+            gridParams: {},
+            removeOptions: {},
+            setRemovePicAssignmentPopup: jest.fn()
+        };
+
+        const dataGrid = shallow(<DataGrid {...props} />);
+
+        // Action
+        dataGrid.instance().handleOpenRemovePopup();
+
+        // Assert
+        expect(props.setRemovePicAssignmentPopup).toHaveBeenCalledWith({ show: true });
+    });
+
+    it('handleOpenDefaultPicPopup runs correctly', () => {
+        // Arrange
+        const props = {
+            picAssignmentGridData: {},
+            gridParams: {},
+            removeOptions: {},
+            setDefaultPicPopup: jest.fn()
+        };
+
+        const headline = {};
+        const pics = [];
+        const dataGrid = shallow(<DataGrid {...props} />);
+
+        // Action
+        dataGrid.instance().handleOpenDefaultPicPopup(headline, pics);
+
+        // Assert
+        expect(props.setDefaultPicPopup).toHaveBeenCalledWith({
+            show: true,
+            headline,
+            pics
+        });
+    });
+
+    describe('render', () => {
+        it('should return null when invalid picAssignmentGridData', () => {
+            // Arrange
+            const props = {
+                gridParams: {},
+                removeOptions: {}
+            };
+
+            const dataGrid = shallow(<DataGrid {...props} />);
+
+            // Action
+            const result = dataGrid.instance().render();
+
+            // Assert
+            expect(result).toBeNull;
+        });
+
+        it('should return null when invalid picAssignmentGridData data', () => {
+            // Arrange
+            const props = {
+                picAssignmentGridData: {},
+                gridParams: {},
+                removeOptions: {}
+            };
+
+            const dataGrid = shallow(<DataGrid {...props} />);
+
+            // Action
+            const result = dataGrid.instance().render();
+
+            // Assert
+            expect(result).toBeNull;
+        });
+
+        it('has regular components', () => {
+            // Arrange
+            const props = {
+                picAssignmentGridData: {
+                    data: [],
+                    totalItems: 100
+                },
+                gridParams: {
+                    pageIndex: 1,
+                    pageSize: 10
+                },
+                removeOptions: {
+                    shouldResetScrollPosition: true
+                }
+            };
+
+            const pageOptions = {
+                PageIndex: props.gridParams.pageIndex,
+                PageSize: props.gridParams.pageSize,
+                TotalItem: props.picAssignmentGridData.totalItems,
+                PageList: PAGING_SIZES
+            };
+
+            // Action
+            const dataGrid = shallow(<DataGrid {...props} />);
+
+            // Assert
+            expect(dataGrid.find('div').at(0).props().className).toBe('table-title d-flex justify-content-between');
+            expect(dataGrid.find('div').at(1).html()).toContain('PICAssignment');
+            expect(dataGrid.find('div').at(2).html()).toContain('ThereAreUnassignedDirectAccounts');
+            expect(dataGrid.find('span').props().className).toBe('fa fa-file-excel-o ml-3 icon-excel');
+            expect(dataGrid.find(Table).props().maxWidth).toEqual(document.getElementById('app-container').clientWidth);
+            expect(dataGrid.find(Table).props().autoWidth).toBeTrue;
+            expect(dataGrid.find(Table).props().isPaging).toBeTrue;
+            expect(dataGrid.find(Table).props().pageOption).toEqual(pageOptions);
+            expect(dataGrid.find(Table).props().containerPadding).toEqual(0);
+            expect(dataGrid.find(Table).props().shouldResetScrollPosition).toEqual(props.removeOptions.shouldResetScrollPosition);
+        });
+
+        it('has span onClick', () => {
+            // Arrange
+            const props = {
+                picAssignmentGridData: {
+                    data: []
+                },
+                gridParams: {},
+                removeOptions: {}
+            };
+
+            const dataGrid = shallow(<DataGrid {...props} />);
+            functions.exportExcel = jest.fn();
+
+            // Action
+            dataGrid.find('span').simulate('click');
+
+            // Assert
+            expect(functions.exportExcel).toHaveBeenCalledWith(props.gridParams);
+        });
+    });
 });
