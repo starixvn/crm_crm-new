@@ -5,6 +5,7 @@
     using CRM.Models.Report.SettlementReport;
     using Microsoft.AspNetCore.Hosting;
     using OfficeOpenXml;
+    using OfficeOpenXml.Style;
 
     public interface ISettlementReportExcel
     {
@@ -61,11 +62,11 @@
             if (report.ChildReports.Count > 1)
             {
                 int rowMerge = rowIndex + report.ChildReports.Count - 1;
-                StyleMergeCell(worksheet, rowIndex, 1, rowMerge);
-                StyleMergeCell(worksheet, rowIndex, LastColumns, rowMerge);
+                worksheet.Cells[rowIndex, 1, rowMerge, 1].Merge = true;
+                worksheet.Cells[rowIndex, LastColumns, rowMerge, LastColumns].Merge = true;
             }
             worksheet.Cells[rowIndex, colIndex].Value = report.Name;
-            StyleHorizontalAlignmentCenter(worksheet.Cells[rowIndex, colIndex]);
+            worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
             for (int i = 0; i < report.ChildReports.Count; i++)
             {
@@ -75,7 +76,7 @@
             }
 
             worksheet.Cells[rowIndex, LastColumns].Value = report.NumberOfIssues;
-            StyleHorizontalAlignmentCenter(worksheet.Cells[rowIndex, LastColumns]);
+            worksheet.Cells[rowIndex, LastColumns].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
         protected internal void SetBackgroundTotalRow(ExcelRange cell)

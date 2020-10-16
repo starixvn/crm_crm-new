@@ -24,20 +24,6 @@
         }
 
         [Fact]
-        public void StyleMergeCell_WhenCalled_MergeIsTrue()
-        {
-            // Arrange
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var service = new BaseExcelTestable();
-
-            // Act
-            service.Public_StyleMergeCell(worksheet, 1, 1, 2);
-
-            // Assert
-            Assert.True(worksheet.Cells[1, 1, 2, 1].Merge);
-        }
-
-        [Fact]
         public void DrawBorderCell_WhenCalled_CellHaveBorderStyleIsThin()
         {
             // Arrange
@@ -52,20 +38,6 @@
             Assert.Equal(ExcelBorderStyle.Thin, cell.Style.Border.Left.Style);
             Assert.Equal(ExcelBorderStyle.Thin, cell.Style.Border.Bottom.Style);
             Assert.Equal(ExcelBorderStyle.Thin, cell.Style.Border.Right.Style);
-        }
-
-        [Fact]
-        public void StyleHorizontalAlignmentCenter_WhenCalled_ExpectedStyle()
-        {
-            // Arrange
-            var cell = excelPackage.Worksheets.Add("data").Cells[1, 1];
-            var service = new BaseExcelTestable();
-
-            // Act
-            service.Public_StyleHorizontalAlignmentCenter(cell);
-
-            // Assert
-            Assert.Equal(ExcelHorizontalAlignment.Center, cell.Style.HorizontalAlignment);
         }
 
         [Fact]

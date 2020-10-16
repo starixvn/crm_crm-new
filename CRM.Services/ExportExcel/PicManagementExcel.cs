@@ -9,6 +9,7 @@
     using CRM.Resources;
     using Microsoft.AspNetCore.Hosting;
     using OfficeOpenXml;
+    using OfficeOpenXml.Style;
 
     public interface IPicManagementExcel
     {
@@ -48,7 +49,6 @@
                 {
                     var template = templatePackage.Workbook.Worksheets[0];
                     var worksheet = xlPackage.Workbook.Worksheets.Add(Labels.PICManagement);
-                    totalColumn = BaseColumnIndex + CommunicationTools.Count() - 1;
                     var rowIndex = 1;
                     RenderTitleAndHeader(template, worksheet, RowStartBody - 1, StartComToolsIndex - 1);
                     RenderHeader(worksheet);
@@ -67,8 +67,9 @@
             }
         }
 
-        private void RenderHeader(ExcelWorksheet worksheet)
+        protected internal void RenderHeader(ExcelWorksheet worksheet)
         {
+            totalColumn = BaseColumnIndex + CommunicationTools.Count() - 1;
             var tools = CommunicationTools.ToList();
             worksheet.Cells[RowStartHeader, StartComToolsIndex].Value = Labels.CommunicationTool;
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader, StartComToolsIndex + tools.Count - 1].Merge = true;
@@ -77,12 +78,12 @@
                 worksheet.Cells[RowStartHeader + 1, StartComToolsIndex + index].Value = tools[index].Name;
             }
             worksheet.Cells[RowStartHeader, totalColumn - 1].Value = Labels.Remark;
-            StyleMergeCell(worksheet, RowStartHeader, totalColumn - 1, RowStartHeader + 1);
+            worksheet.Cells[RowStartHeader, totalColumn - 1, RowStartHeader + 1, totalColumn - 1].Merge = true;
             worksheet.Cells[RowStartHeader, totalColumn].Value = Labels.Active;
-            StyleMergeCell(worksheet, RowStartHeader, totalColumn, RowStartHeader + 1);
+            worksheet.Cells[RowStartHeader, totalColumn, RowStartHeader + 1, totalColumn].Merge = true;
         }
 
-        private void RenderRow(ExcelWorksheet worksheet, PicInfo picInfo, int index, int rowIndex)
+        protected internal void RenderRow(ExcelWorksheet worksheet, PicInfo picInfo, int index, int rowIndex)
         {
             var colIndex = 1;
             worksheet.Cells[rowIndex, colIndex++].Value = index;
@@ -102,15 +103,15 @@
             worksheet.Cells[rowIndex, colIndex++].Value = picInfo.Remark;
             worksheet.Cells[rowIndex, colIndex].Value = picInfo.IsActive ? Labels.Yes : Labels.No;
 
-            StyleHorizontalAlignmentCenter(worksheet.Cells[rowIndex, 1]);
-            StyleHorizontalAlignmentCenter(worksheet.Cells[rowIndex, colIndex]);
+            worksheet.Cells[rowIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             if ((index & 1) == 0)
             {
                 SetBackgroudColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
             }
         }
 
-        private void SetStyle(ExcelWorksheet worksheet)
+        protected internal void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
             const byte firstRow = 1;
@@ -120,10 +121,10 @@
             SetBackgroudColor(worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn], HeaderTitleColor);
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.Font.Bold = true;
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.Font.Color.SetColor(Color.White);
-            StyleHorizontalAlignmentCenter(worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn]);
+            worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
-        private void SetWidthColumn(ExcelWorksheet worksheet)
+        protected internal void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const byte colRole = 3;
             const byte colGroupHeadline = 6;

@@ -4,7 +4,7 @@
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
-    public abstract class BaseExcel
+    public class BaseExcel
     {
         protected static readonly Color HeaderTitleColor = Color.FromArgb(60, 94, 165);
         protected static readonly Color EvenRowColor = Color.FromArgb(228, 242, 253);
@@ -14,22 +14,12 @@
             template.Cells[1, 1, endRow, endCol].Copy(worksheet.Cells[1, 1, endRow, endCol]);
         }
 
-        protected internal virtual void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)
-        {
-            worksheet.Cells[startRow, colIndex, endRow, colIndex].Merge = true;
-        }
-
         protected internal virtual void DrawBorderCell(ExcelRange cell)
         {
             cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
             cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
             cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
             cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
-        }
-
-        protected internal virtual void StyleHorizontalAlignmentCenter(ExcelRange cell)
-        {
-            cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
         protected internal virtual void StyleDefault(ExcelWorksheet worksheet)

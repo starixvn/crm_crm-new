@@ -7,7 +7,6 @@
     using Microsoft.AspNetCore.Hosting;
     using NSubstitute;
     using OfficeOpenXml;
-    using OfficeOpenXml.Style;
     using Xunit;
 
     public class SettlementReportExcelTests
@@ -15,27 +14,32 @@
         private IHostingEnvironment hostingEnvironment;
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
 
-        //[Fact]
-        //public void Export_WhenCalled_CallExpectedMethodAndReturnExpected()
-        //{
-        //    // Arrange
-        //    var excel = CreateExcel();
-        //    var report = CreateReportInfo();
-        //    var lastCol = 4;
+        [Fact]
+        public void Export_WhenCalled_CallExpectedMethodAndReturnExpected()
+        {
+            // Arrange
+            var excel = CreateExcel();
+            var report = CreateReportInfo();
+            var lastCol = 4;
 
-        //    // Act
-        //    var result = excel.Export(report);
+            // Act
+            var result = excel.Export(report);
 
-        //    // Assert
-        //    excel.Received().Protected("SetDefaultStyle", Arg.Any<ExcelWorksheet>());
-        //    excel.Received().Protected("RenderTitleAndHeader",
-        //        Arg.Any<ExcelWorksheet>(), Arg.Any<ExcelWorksheet>(), 4, lastCol);
-        //    excel.Received().Protected("SetValueRow", Arg.Any<int>(), report.ChildReports[0], Arg.Any<ExcelWorksheet>());
-        //    excel.Received().Protected("SetValueRow", Arg.Any<int>(), report.ChildReports[1], Arg.Any<ExcelWorksheet>());
-        //    excel.Received().Protected("SetValueRow", Arg.Any<int>(), report.Total, Arg.Any<ExcelWorksheet>());
-        //    excel.Received().Protected("SetBackgroundTotalRow", Arg.Any<ExcelRange>());
-        //    excel.Received().Protected("DrawBorderCell", Arg.Any<ExcelRange>());
-        //}
+            // Assert
+            excel.Received().Protected("SetDefaultStyle", Arg.Any<ExcelWorksheet>());
+            excel.Received().Protected("RenderTitleAndHeader",
+                Arg.Any<ExcelWorksheet>(), Arg.Any<ExcelWorksheet>(), 4, lastCol);
+            excel.Received().Protected("SetValueRow", Arg.Any<int>(), report.ChildReports[0], Arg.Any<ExcelWorksheet>());
+            excel.Received().Protected("SetValueRow", Arg.Any<int>(), report.ChildReports[1], Arg.Any<ExcelWorksheet>());
+            excel.Received().Protected("SetValueRow", Arg.Any<int>(), report.Total, Arg.Any<ExcelWorksheet>());
+            excel.Received().Protected("SetBackgroundTotalRow", Arg.Any<ExcelRange>());
+            excel.Received().Protected("DrawBorderCell", Arg.Any<ExcelRange>());
+            using (var stream = new MemoryStream(result))
+            using (var package = new ExcelPackage(stream))
+            {
+                Assert.Equal(report.Name, package.Workbook.Worksheets[0].Cells[1, 1].Value);
+            }
+        }
 
         [Fact]
         public void SetValueRow_WhenCalledWithChildReportsCountGreaterOne_ExpectedCellValue()
@@ -50,8 +54,8 @@
             excel.Public_SetValueRow(1, report, worksheet);
 
             // Assert
-            excel.Received().Protected("StyleMergeCell", worksheet, 1, 1, report.ChildReports.Count);
-            excel.Received().Protected("StyleMergeCell", worksheet, 1, lastCol, report.ChildReports.Count);
+            Assert.True(worksheet.Cells[1, 1, report.ChildReports.Count, 1].Merge);
+            Assert.True(worksheet.Cells[1, lastCol, report.ChildReports.Count, lastCol].Merge);
             Assert.Equal(report.Name, worksheet.Cells[1, 1].Value);
             Assert.Equal(report.ChildReports[0].Name, worksheet.Cells[1,2].Value);
             Assert.Equal(report.ChildReports[0].NumberOfIssues, worksheet.Cells[1, 3].Value);
@@ -79,8 +83,6 @@
             excel.Public_SetValueRow(1, report, worksheet);
 
             // Assert
-            excel.DidNotReceive().Protected("StyleMergeCell", worksheet, 1, 1, report.ChildReports.Count);
-            excel.DidNotReceive().Protected("StyleMergeCell", worksheet, 1, lastCol, report.ChildReports.Count);
             Assert.Equal(report.Name, worksheet.Cells[1, 1].Value);
             Assert.Equal(report.ChildReports[0].Name, worksheet.Cells[1, 2].Value);
             Assert.Equal(report.ChildReports[0].NumberOfIssues, worksheet.Cells[1, 3].Value);
@@ -128,8 +130,7 @@
         private SettlementReportExcelTestable CreateExcel()
         {
             hostingEnvironment = Substitute.For<IHostingEnvironment>();
-            hostingEnvironment.ContentRootPath = Directory.GetCurrentDirectory();
-            hostingEnvironment.ContentRootPath = "";
+            hostingEnvironment.ContentRootPath.Returns(Directory.GetCurrentDirectory() + "/ExcelTemplates");
             var excel = Substitute.For<SettlementReportExcelTestable>(hostingEnvironment);
             return excel;
         }
