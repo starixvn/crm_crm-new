@@ -30,7 +30,7 @@
         private IUserService userService;
         private INapSettings napSettings;
         private IPicManagementService picManagementService;
-        private IPicManagementExportExcel picManagementExcel;
+        private IPicManagementExcel picManagementExcel;
 
         [Fact]
         public void Index_WhenCalled_ReturnExpectedViewResult()
@@ -214,7 +214,7 @@
             userService = Substitute.For<IUserService>();
             napSettings = Substitute.For<INapSettings>();
             picManagementService = Substitute.For<IPicManagementService>();
-            picManagementExcel = Substitute.For<IPicManagementExportExcel>();
+            picManagementExcel = Substitute.For<IPicManagementExcel>();
             return new PicManagementController(napSession, settingService, userService, napSettings, picManagementService, picManagementExcel);
         }
 

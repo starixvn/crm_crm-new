@@ -17,7 +17,7 @@
     public class SettlementReportControllerTests
     {
         private ISettlementReportService settlementReportService;
-        private ISettlementReportExportExcel settlementReportExportExcel;
+        private ISettlementReportExcel settlementReportExportExcel;
         private AppSettings appSettings;
 
         [Fact]
@@ -83,7 +83,7 @@
         private SettlementReportController GetController()
         {
             settlementReportService = Substitute.For<ISettlementReportService>();
-            settlementReportExportExcel = Substitute.For<ISettlementReportExportExcel>();
+            settlementReportExportExcel = Substitute.For<ISettlementReportExcel>();
             var optionsAppSettings = Substitute.For<IOptionsSnapshot<AppSettings>>();
             appSettings = new AppSettings
             {
