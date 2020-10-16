@@ -2,6 +2,7 @@
 {
     using System;
     using System.Net;
+    using Fanex.Logging;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Resources;
@@ -16,14 +17,16 @@
     public class CrmAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
         private readonly INapSession napSession;
+        private readonly ILogger logger;
 
-        public CrmAuthorizeAttribute() : this(null)
+        public CrmAuthorizeAttribute() : this(null, null)
         {
         }
 
-        public CrmAuthorizeAttribute(INapSession napSession)
+        public CrmAuthorizeAttribute(INapSession napSession, ILogger logger)
         {
             this.napSession = napSession ?? NapClientManager.NapSession;
+            this.logger = logger ?? new Logger();
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -40,9 +43,10 @@
             }
         }
 
-        private static void CloseConnection(AuthorizationFilterContext context)
+        private void CloseConnection(AuthorizationFilterContext context)
         {
-            if (IsAjaxRequest(context.HttpContext.Request))
+            logger.Info(context.HttpContext.Request.Path);
+            if (IsAjaxRequest(context.HttpContext.Request) && !context.HttpContext.Response.HasStarted)
             {
                 var response = context.HttpContext.Response;
                 var messageContent = $"<center><b>{ViewResources.UnauthorizeMsg}</b></center>";
