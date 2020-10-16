@@ -32,8 +32,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
-  </ItemGroup>
-
 </Project>
