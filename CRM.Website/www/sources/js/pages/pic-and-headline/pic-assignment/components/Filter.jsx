@@ -142,13 +142,12 @@ export class Filter extends Component {
         this.props.getGridData(params, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
     }
 
-    handleOpenAssignPicPopup = () => {
-        this.props.setAssignPicPopup({ show: true });
-    }
+    handleOpenAssignPicPopup = () =>
+        this.props.setAssignPicPopup({ show: true })
 
     render() {
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter' onSubmit={() => this.handleSubmit()}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('Site')}</Form.Label>
