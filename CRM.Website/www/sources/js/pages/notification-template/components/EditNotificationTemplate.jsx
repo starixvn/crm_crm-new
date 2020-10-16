@@ -65,8 +65,8 @@ export class EditNotificationTemplate extends Component {
                         </Form.Label>
                         <Col sm="8" md="9">
                             <Form.Control as="select" size="sm" className="shadow-none"
-                                isInvalid={touched.notificationTypeId && errors.notificationTypeId}
                                 name="notificationTypeId" id="notificationTypeId"
+                                isInvalid={touched.notificationTypeId && errors.notificationTypeId}
                                 onChange={handleChange}
                                 value={values.notificationTypeId}
                             >
@@ -81,8 +81,8 @@ export class EditNotificationTemplate extends Component {
                         </Form.Label>
                         <Col sm="8" md="9">
                             <Form.Control type="text" size="sm" value={values.notificationTemplateName}
-                                name="notificationTemplateName" id="notificationTemplateName"
                                 className="shadow-none" autoComplete="off"
+                                name="notificationTemplateName" id="notificationTemplateName"
                                 isInvalid={touched.notificationTemplateName && errors.notificationTemplateName}
                                 onChange={handleChange}
                             />
@@ -94,8 +94,8 @@ export class EditNotificationTemplate extends Component {
                         </Form.Label>
                         <Col sm="8" md="9">
                             <Form.Control type="text" size="sm" value={values.title}
-                                name="title" id="title"
                                 className="shadow-none" autoComplete="off"
+                                name="title" id="title"
                                 isInvalid={touched.title && errors.title}
                                 onChange={handleChange}
                             />
@@ -110,8 +110,8 @@ export class EditNotificationTemplate extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="9">
                                         <Form.Control as="textarea" value={values['language_' + item.settingId]}
-                                            name={'language_' + item.settingId} id={'language_' + item.settingId} rows="4"
                                             className="shadow-none form-control"
+                                            name={'language_' + item.settingId} id={'language_' + item.settingId} rows="4"
                                             isInvalid={touched['language_' + item.settingId] && errors['language_' + item.settingId]}
                                             onChange={handleChange}
                                         />
@@ -177,16 +177,16 @@ export class EditNotificationTemplate extends Component {
 
         return (
             <Modal show className="notification-template-modal" dialogAs={DraggableModalDialog}
-                backdrop="static" keyboard={false} size="lg" centered
                 onHide={this.props.onClose}
+                backdrop="static" keyboard={false} size="lg" centered
             >
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('EditNotificationTemplate')}</Modal.Title>
                 </Modal.Header>
                 <Formik
-                    initialValues={initialValues}
                     validate={values => validateFormik(values, this.props.languages)}
                     onSubmit={this.handleSubmit}
+                    initialValues={initialValues}
                 >
                     {this.renderForm}
                 </Formik>
