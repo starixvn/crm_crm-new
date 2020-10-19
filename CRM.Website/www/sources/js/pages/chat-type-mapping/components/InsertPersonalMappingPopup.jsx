@@ -349,7 +349,7 @@ export class InsertPersonalMappingPopup extends Component {
                         <Form.Label column sm="3" md="2" >
                             {LangHelper.getResource('Remark')}
                         </Form.Label>
-                        <Col sm="9" md="10">
+                        <Col sm="9" md="10" name="insert-personal">
                             <Form.Control as="textarea" size="sm" className="shadow-none"
                                 rows={5}
                                 name="remark"

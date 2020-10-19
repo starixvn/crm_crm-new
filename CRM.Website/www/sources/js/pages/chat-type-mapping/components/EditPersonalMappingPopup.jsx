@@ -295,15 +295,15 @@ export class EditPersonalMappingPopup extends Component {
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
+                        <Form.Label column sm="3" md="2" name="edit-personal">
                             {LangHelper.getResource('ChatType')}
                         </Form.Label>
-                        <Form.Label column sm="9" md="10">
+                        <Form.Label sm="9" md="10" column>
                             {LangHelper.getResource('Personal')}
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
+                        <Form.Label column md="2" className="required" sm="3">
                             {LangHelper.getResource('RecipientType')}
                         </Form.Label>
                         <Col sm="9" md="10">
@@ -380,7 +380,7 @@ export class EditPersonalMappingPopup extends Component {
                         <Form.Label column sm="3" md="2" >
                             {LangHelper.getResource('Remark')}
                         </Form.Label>
-                        <Col sm="9" md="10">
+                        <Col sm="9" md="10" name="personal-edit">
                             <Form.Control as="textarea" size="sm" className="shadow-none"
                                 name="remark"
                                 value={this.state.form.remark}

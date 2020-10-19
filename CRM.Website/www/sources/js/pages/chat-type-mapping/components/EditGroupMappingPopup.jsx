@@ -388,11 +388,11 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" >
+                        <Form.Label column sm="3" md="2" name="group-edit-remark" >
                             {LangHelper.getResource('Remark')}
                         </Form.Label>
                         <Col sm="9" md="10">
-                            <Form.Control as="textarea" size="sm" className="shadow-none"
+                            <Form.Control as="textarea" className="shadow-none" size="sm"
                                 name="remark"
                                 rows={5}
                                 value={this.state.form.remark}
