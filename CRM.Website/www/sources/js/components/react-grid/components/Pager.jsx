@@ -64,7 +64,7 @@ export default class Pager extends Component {
         const pattern = /^\d*$/;
         const regex = new RegExp(pattern);
         const { value } = event.target;
-        const isValidNumber = regex.test(value);
+        const isValidNumber = regex.test(value); // NOSONAR
         if (isValidNumber) {
             this._updateState(value);
         }
