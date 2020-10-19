@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.Core.Enumerables;
     using CRM.Core.Models;
     using CRM.Models.Auth;
     using CRM.Services;
@@ -223,6 +224,60 @@
             var redirectResult = Assert.IsType<RedirectResult>(actual);
             Assert.Equal(externalSiteHostUrl.SignInUrl, redirectResult.Url);
         }
+
+        [Fact]
+        public void ReCheckIn_WhenCalled_ReturnExpectedViewResult()
+        {
+            // Arrange
+            var controller = GetController();
+
+            // Act
+            var actual = controller.ReCheckIn();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            Assert.Null(viewResult.ViewName);
+        }
+
+        #region CheckUserOnlineStatus
+
+        [Fact]
+        public async Task CheckUserOnlineStatus_IsSuccessfull_ReturnOkResult()
+        {
+            // Arrange
+            var controller = GetController();
+            authService.GetRecheckInStatusAsync().Returns(RecheckInStatus.Success);
+
+            // Act
+            var actual = await controller.CheckUserOnlineStatus();
+
+            // Assert
+            Assert.IsType<OkResult>(actual);
+        }
+
+        [Fact]
+        public async Task CheckUserOnlineStatus_IsUnsuccessfull_ReturnExpectedRedirectResult()
+        {
+            // Arrange
+            var controller = GetController();
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    RequestServices = MockServiceProvider()
+                }
+            };
+            authService.GetRecheckInStatusAsync().Returns(RecheckInStatus.KickOut);
+
+            //Act
+            var actual = await controller.CheckUserOnlineStatus();
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectResult>(actual);
+            Assert.Equal(externalSiteHostUrl.SignInUrl, redirectResult.Url);
+        }
+
+        #endregion CheckUserOnlineStatus
 
         #region Helpers
 
