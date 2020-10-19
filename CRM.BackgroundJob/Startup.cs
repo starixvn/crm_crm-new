@@ -116,7 +116,7 @@
                 options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration.GetSection("AuthSettings:SessionTimeout").Value));
             });
 
-            RegisterHangfire(services, Redis);
+            RegisterHangfire(services, Redis, Configuration);
 
             services.Configure<AppJobSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
             services.Configure<HangfireAuthentication>(options => Configuration.GetSection("HangfireSettings:Authentication").Bind(options));
@@ -194,13 +194,15 @@
             services.AddScoped<IMonitorService, MonitorService>();
         }
 
-        private static void RegisterHangfire(IServiceCollection services, ConnectionMultiplexer redis)
+        private static void RegisterHangfire(IServiceCollection services, ConnectionMultiplexer redis, IConfiguration configuration)
         {
             services.AddHangfire(x =>
             {
                 x.UseRedisStorage(redis, new RedisStorageOptions
                 {
-                    Prefix = "CRMHangfire_"
+                    Prefix = configuration.GetSection("HangfireSettings:Prefix")?.Value,
+                    SucceededListSize = int.Parse(configuration.GetSection("HangfireSettings:SucceededListSize")?.Value),
+                    DeletedListSize = int.Parse(configuration.GetSection("HangfireSettings:DeletedListSize")?.Value)
                 });
             });
         }
