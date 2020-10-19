@@ -5,6 +5,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { Table, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import functions from '../../common.functions';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
@@ -413,7 +414,12 @@ describe('RemovePicAssignment', () => {
             const index = 1;
             const mergeHeadline = 2;
             const cell = { value: 'value' };
-            const expected = <Cell key={index} rowSpan={mergeHeadline}>{cell.value}</Cell>;
+            const expected = <OverlayTrigger key={index} placement='top' overlay={
+                <Tooltip>{`${LangHelper.getResource('GroupHeadline')}: ${cell.value}`}</Tooltip>
+            }>
+                <Cell rowSpan={mergeHeadline}>{cell.value}</Cell>
+            </OverlayTrigger>;
+
             const removePicAssignment = shallow(<RemovePicAssignment {...props} />);
 
             // Action

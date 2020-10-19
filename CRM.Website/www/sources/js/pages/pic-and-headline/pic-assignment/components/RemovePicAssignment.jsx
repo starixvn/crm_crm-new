@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import functions from '../common.functions';
 
@@ -183,7 +184,11 @@ export class RemovePicAssignment extends Component {
 
     renderCell = (cell, index, mergeHeadline) => {
         if (mergeHeadline && index === 1) {
-            return <Cell key={index} rowSpan={mergeHeadline}>{cell.value}</Cell>;
+            return <OverlayTrigger key={index} placement='top' overlay={
+                <Tooltip>{`${LangHelper.getResource('GroupHeadline')}: ${cell.value}`}</Tooltip>
+            }>
+                <Cell rowSpan={mergeHeadline}>{cell.value}</Cell>
+            </OverlayTrigger>;
         }
 
         if (typeof cell.value === 'object') {
