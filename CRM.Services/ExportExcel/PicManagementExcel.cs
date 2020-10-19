@@ -36,7 +36,7 @@
         private readonly IHostingEnvironment hostingEnvironment;
 
         public PicManagementExcel(IHostingEnvironment hostingEnvironment, string templatePath, IEnumerable<PICAssignmentInfo> assignments)
-            : base(templatePath, 0, Labels.PicAssignment)
+            : base(templatePath, 0, ViewResources.PICAssignment)
         {
             this.hostingEnvironment = hostingEnvironment;
         }
@@ -61,9 +61,9 @@
                 using (var xlPackage = new ExcelPackage())
                 {
                     var template = templatePackage.Workbook.Worksheets[0];
-                    var worksheet = xlPackage.Workbook.Worksheets.Add(Labels.PICManagement);
+                    var worksheet = xlPackage.Workbook.Worksheets.Add(ViewResources.PICManagement);
                     var rowIndex = 1;
-                    RenderTitleAndHeader(template, worksheet, RowStartBody - 1, StartComToolsIndex - 1);
+                    ////RenderTitleAndHeader(template, worksheet, RowStartBody - 1, StartComToolsIndex - 1);
                     RenderHeader(worksheet);
                     rowIndex = RowStartBody;
 
@@ -84,15 +84,15 @@
         {
             totalColumn = BaseColumnIndex + CommunicationTools.Count() - 1;
             var tools = CommunicationTools.ToList();
-            worksheet.Cells[RowStartHeader, StartComToolsIndex].Value = Labels.CommunicationTool;
+            worksheet.Cells[RowStartHeader, StartComToolsIndex].Value = ViewResources.CommunicationTool;
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader, StartComToolsIndex + tools.Count - 1].Merge = true;
             for (var index = 0; index < tools.Count; index++)
             {
                 worksheet.Cells[RowStartHeader + 1, StartComToolsIndex + index].Value = tools[index].Name;
             }
-            worksheet.Cells[RowStartHeader, totalColumn - 1].Value = Labels.Remark;
+            worksheet.Cells[RowStartHeader, totalColumn - 1].Value = ViewResources.Remark;
             worksheet.Cells[RowStartHeader, totalColumn - 1, RowStartHeader + 1, totalColumn - 1].Merge = true;
-            worksheet.Cells[RowStartHeader, totalColumn].Value = Labels.Active;
+            worksheet.Cells[RowStartHeader, totalColumn].Value = ViewResources.Active;
             worksheet.Cells[RowStartHeader, totalColumn, RowStartHeader + 1, totalColumn].Merge = true;
         }
 
@@ -114,7 +114,7 @@
             }
 
             worksheet.Cells[rowIndex, colIndex++].Value = picInfo.Remark;
-            worksheet.Cells[rowIndex, colIndex].Value = picInfo.IsActive ? Labels.Yes : Labels.No;
+            worksheet.Cells[rowIndex, colIndex].Value = picInfo.IsActive ? ViewResources.Yes : ViewResources.No;
 
             worksheet.Cells[rowIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;

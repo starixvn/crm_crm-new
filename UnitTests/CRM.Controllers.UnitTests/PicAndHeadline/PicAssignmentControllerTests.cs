@@ -392,7 +392,7 @@
             Assert.Null(criteria.PageSize);
             Assert.Equal(expected, result.FileContents);
             Assert.Equal(MimeType.XLSX, result.ContentType);
-            Assert.Equal($"{Labels.PicAssignment}.xlsx", result.FileDownloadName);
+            Assert.Equal($"{ViewResources.PICAssignment}.xlsx", result.FileDownloadName);
         }
 
         #region Helpers

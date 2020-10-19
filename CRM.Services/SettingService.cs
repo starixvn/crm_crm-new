@@ -117,19 +117,19 @@
             {
                 return new List<Setting>
                      {
-                        new Setting { SettingId = RoleIdConstants.Super, SettingValue = Labels.Super },
-                        new Setting { SettingId = RoleIdConstants.Master, SettingValue = Labels.Master },
-                        new Setting { SettingId = RoleIdConstants.Agent, SettingValue = Labels.Agent },
-                        new Setting { SettingId = RoleIdConstants.Member, SettingValue = Labels.Member }
+                        new Setting { SettingId = RoleIdConstants.Super, SettingValue = ViewResources.Super },
+                        new Setting { SettingId = RoleIdConstants.Master, SettingValue = ViewResources.Master },
+                        new Setting { SettingId = RoleIdConstants.Agent, SettingValue = ViewResources.Agent },
+                        new Setting { SettingId = RoleIdConstants.Member, SettingValue = ViewResources.Member }
                      };
             }
             return new List<Setting>
             {
-                new Setting { SettingId = RoleIdConstants.Super, SettingValue = Labels.Super },
-                new Setting { SettingId = RoleIdConstants.Master, SettingValue = Labels.Master },
-                new Setting { SettingId = RoleIdConstants.Agent, SettingValue = Labels.Agent },
-                new Setting { SettingId = RoleIdConstants.Member, SettingValue = Labels.Member },
-                new Setting { SettingId = RoleIdConstants.Guest, SettingValue = Labels.Guest}
+                new Setting { SettingId = RoleIdConstants.Super, SettingValue = ViewResources.Super },
+                new Setting { SettingId = RoleIdConstants.Master, SettingValue = ViewResources.Master },
+                new Setting { SettingId = RoleIdConstants.Agent, SettingValue = ViewResources.Agent },
+                new Setting { SettingId = RoleIdConstants.Member, SettingValue = ViewResources.Member },
+                new Setting { SettingId = RoleIdConstants.Guest, SettingValue = ViewResources.Guest}
             };
         }
 
@@ -140,17 +140,17 @@
                 new Setting
                 {
                     SettingId = CustomerTypeConstants.All,
-                    SettingValue = Labels.All
+                    SettingValue = ViewResources.All
                 },
                 new Setting
                 {
                     SettingId = CustomerTypeConstants.Customer,
-                    SettingValue = Labels.Customer
+                    SettingValue = ViewResources.Customer
                 },
                 new Setting
                 {
                     SettingId = CustomerTypeConstants.Guest,
-                    SettingValue = Labels.Guest
+                    SettingValue = ViewResources.Guest
                 }
             };
         }

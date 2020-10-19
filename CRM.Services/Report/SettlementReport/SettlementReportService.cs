@@ -106,11 +106,11 @@
             {
                 ChildReports = new List<SettlementReportInfo>(),
                 Name = string.Format(
-                    Labels.SettlementReport_Title,
+                    ViewResources.SettlementReport_Title,
                     criteria.Year),
                 Total = new SettlementReportInfo
                 {
-                    Name = Labels.Grand_Total,
+                    Name = ViewResources.Grand_Total,
                     ChildReports = GetDummyCountryList(countryDictionary)
                 }
             };
@@ -135,7 +135,7 @@
                     {
                         Id = monthDetail.CountryId,
                         Name = monthDetail.CountryId == SettingConstants.NotApply ?
-                            Labels.Symbol_NotApply :
+                            ViewResources.Symbol_NotApply :
                             monthDetail.CountryName,
                         NumberOfIssues = monthDetail.NoOfIssues
                     };

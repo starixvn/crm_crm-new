@@ -81,7 +81,7 @@
             var report = await picManagementService.GetReportAsync(criteria);
             picManagementExportExcel.CommunicationTools = communicationTools;
             var bytes = picManagementExportExcel.Export(report);
-            return File(bytes, MimeType.XLSX, $"{Labels.PICManagement}.xlsx");
+            return File(bytes, MimeType.XLSX, $"{ViewResources.PICManagement}.xlsx");
         }
 
         [HttpPost]

@@ -26,7 +26,7 @@
         private readonly IHostingEnvironment hostingEnvironment;
 
         public SettlementReportExcel(IHostingEnvironment hostingEnvironment, string templatePath, IEnumerable<PICAssignmentInfo> assignments)
-            : base(templatePath, 0, Labels.PicAssignment)
+            : base(templatePath, 0, ViewResources.PICAssignment)
         {
             this.hostingEnvironment = hostingEnvironment;
         }
@@ -54,7 +54,7 @@
                     var worksheet = xlPackage.Workbook.Worksheets.Add(reportInfo.Name);
                     SetDefaultStyle(worksheet);
                     var rowIndex = 1;
-                    RenderTitleAndHeader(template, worksheet, RowStartBody - 1, LastColumns);
+                    ////RenderTitleAndHeader(template, worksheet, RowStartBody - 1, LastColumns);
                     worksheet.Cells[1, 1].Value = reportInfo.Name;
                     rowIndex = RowStartBody;
                     foreach (var report in reportInfo.ChildReports)

@@ -34,13 +34,13 @@
             excel.Public_RenderHeader(worksheet);
 
             // Assert
-            Assert.Equal(Labels.CommunicationTool, worksheet.Cells[RowStartHeader, StartComToolsIndex].Value);
+            Assert.Equal(ViewResources.CommunicationTool, worksheet.Cells[RowStartHeader, StartComToolsIndex].Value);
             Assert.True(worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader, StartComToolsIndex + tools.Count - 1].Merge);
             Assert.Equal(tools[0].Name, worksheet.Cells[RowStartHeader + 1, StartComToolsIndex].Value);
             Assert.Equal(tools[1].Name, worksheet.Cells[RowStartHeader + 1, StartComToolsIndex + 1].Value);
-            Assert.Equal(Labels.Remark, worksheet.Cells[RowStartHeader, totalColumn - 1].Value);
+            Assert.Equal(ViewResources.Remark, worksheet.Cells[RowStartHeader, totalColumn - 1].Value);
             Assert.True(worksheet.Cells[RowStartHeader, totalColumn - 1, RowStartHeader + 1, totalColumn - 1].Merge);
-            Assert.Equal(Labels.Active, worksheet.Cells[RowStartHeader, totalColumn].Value);
+            Assert.Equal(ViewResources.Active, worksheet.Cells[RowStartHeader, totalColumn].Value);
             Assert.True(worksheet.Cells[RowStartHeader, totalColumn, RowStartHeader + 1, totalColumn].Merge);
         }
 
@@ -67,7 +67,7 @@
             Assert.Equal(pic.CommunicationTools[0].Value, worksheet.Cells[1, 7].Value);
             Assert.Equal(string.Empty, worksheet.Cells[1, 8].Value);
             Assert.Equal(pic.Remark, worksheet.Cells[1, 9].Value);
-            Assert.Equal(Labels.Yes, worksheet.Cells[1, 10].Value);
+            Assert.Equal(ViewResources.Yes, worksheet.Cells[1, 10].Value);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 1].Style.HorizontalAlignment);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 10].Style.HorizontalAlignment);
             excel.DidNotReceive().Protected("SetBackgroudColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
@@ -96,7 +96,7 @@
             Assert.Equal(pic.CommunicationTools[0].Value, worksheet.Cells[1, 7].Value);
             Assert.Equal(string.Empty, worksheet.Cells[1, 8].Value);
             Assert.Equal(pic.Remark, worksheet.Cells[1, 9].Value);
-            Assert.Equal(Labels.Yes, worksheet.Cells[1, 10].Value);
+            Assert.Equal(ViewResources.Yes, worksheet.Cells[1, 10].Value);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 1].Style.HorizontalAlignment);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 10].Style.HorizontalAlignment);
             excel.Received().Protected("SetBackgroudColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());

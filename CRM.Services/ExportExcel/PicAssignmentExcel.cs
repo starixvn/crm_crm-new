@@ -20,7 +20,7 @@
         private readonly IEnumerable<PICAssignmentInfo> _assignments;
 
         public PicAssignmentExcel(string templatePath, IEnumerable<PICAssignmentInfo> assignments)
-            : base(templatePath, 0, Labels.PicAssignment)
+            : base(templatePath, 0, ViewResources.PICAssignment)
         {
             _assignments = assignments;
         }

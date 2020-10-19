@@ -188,7 +188,7 @@
             var picInfo = await baseService.GetDataAsync<PICAssignmentInfo>(criteria);
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo, criteria.PageIndex, criteria.PageSize);
             var bytes = excelService.ExportPICAssignment(assignments);
-            return File(bytes, MimeType.XLSX, $"{Labels.PicAssignment}.xlsx");
+            return File(bytes, MimeType.XLSX, $"{ViewResources.PICAssignment}.xlsx");
         }
 
         private static IEnumerable<PICAssignmentInfo> GeneratePicList(IEnumerable<PICAssignmentInfo> assignments, int? pageIndex, int? pageSize)

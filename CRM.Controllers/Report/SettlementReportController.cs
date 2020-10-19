@@ -53,7 +53,7 @@
             criteria.IsGetFullReport = true;
             var reports = await settlementReportService.GetSettlementReportAsync(criteria);
             var bytes = settlementReportExcel.Export(reports);
-            string reportName = string.Format(Labels.SettlementReport_ExcelTitle, criteria.Year);
+            string reportName = string.Format(ViewResources.SettlementReport_ExcelTitle, criteria.Year);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }

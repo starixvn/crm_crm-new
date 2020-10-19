@@ -117,8 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Agent" xml:space="preserve">
+    <value>Agent</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
   <data name="ChatTypeMapping" xml:space="preserve">
     <value>Chat Type Mapping</value>
+  </data>
+  <data name="CommunicationTool" xml:space="preserve">
+    <value>Communication Tool</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Customer</value>
   </data>
   <data name="DefaultCommunicationSetting" xml:space="preserve">
     <value>Default Communication Setting</value>
@@ -126,8 +144,32 @@
   <data name="FeedbackSubject" xml:space="preserve">
     <value>Feedback Subject</value>
   </data>
+  <data name="Grand_Total" xml:space="preserve">
+    <value>Grand Total</value>
+  </data>
+  <data name="GroupHeadline" xml:space="preserve">
+    <value>Group Headline</value>
+  </data>
+  <data name="Guest" xml:space="preserve">
+    <value>Guest</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="LetstalkInvalidMessage" xml:space="preserve">
     <value>{0} does not exist in Letstalk application.</value>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>Master</value>
+  </data>
+  <data name="Member" xml:space="preserve">
+    <value>Member</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
   </data>
   <data name="NotificationList" xml:space="preserve">
     <value>Notification List</value>
@@ -138,16 +180,43 @@
   <data name="NotificationType" xml:space="preserve">
     <value>Notification Type</value>
   </data>
-  <data name="PicAssignment" xml:space="preserve">
-    <value>Pic Assignment</value>
+  <data name="NumberColumn" xml:space="preserve">
+    <value>No.</value>
   </data>
-  <data name="PicManagement" xml:space="preserve">
+  <data name="PICAssignment" xml:space="preserve">
+    <value>PIC Assignment</value>
+  </data>
+  <data name="PICManagement" xml:space="preserve">
     <value>PIC Management</value>
+  </data>
+  <data name="Remark" xml:space="preserve">
+    <value>Remark</value>
+  </data>
+  <data name="ResultMessage_NoInfo" xml:space="preserve">
+    <value>There is no data.</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
   </data>
   <data name="SettlementIssuesReport" xml:space="preserve">
     <value>Settlement Issues Report</value>
   </data>
+  <data name="SettlementReport_ExcelTitle" xml:space="preserve">
+    <value>Settlement_Issues_Report_For_Year_{0}</value>
+  </data>
+  <data name="SettlementReport_Title" xml:space="preserve">
+    <value>Settlement Issues Report For Year {0}</value>
+  </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="Super" xml:space="preserve">
+    <value>Super</value>
+  </data>
+  <data name="Symbol_NotApply" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>
