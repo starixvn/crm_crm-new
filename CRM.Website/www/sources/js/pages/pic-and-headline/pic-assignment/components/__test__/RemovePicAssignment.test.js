@@ -1,11 +1,10 @@
 import RemovePicAssignmentWrapper, { RemovePicAssignment } from '../RemovePicAssignment';
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { Table, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
-import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import functions from '../../common.functions';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';

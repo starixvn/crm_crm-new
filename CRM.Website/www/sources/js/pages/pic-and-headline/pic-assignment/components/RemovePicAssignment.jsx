@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
-import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import functions from '../common.functions';
 
