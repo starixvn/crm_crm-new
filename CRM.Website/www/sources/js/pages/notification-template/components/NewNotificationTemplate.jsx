@@ -53,8 +53,8 @@ export class NewNotificationTemplate extends Component {
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 isInvalid={touched.notificationTypeId && errors.notificationTypeId}
                                 name="notificationTypeId" id="notificationTypeId"
-                                onChange={handleChange}
                                 value={values.notificationTypeId}
+                                onChange={handleChange}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                 {this.props.notificationTypes.map(renderNotificationTypeOption)}
@@ -95,9 +95,9 @@ export class NewNotificationTemplate extends Component {
                                         {LangHelper.getResource('Content')} ({item.settingValue})
                                     </Form.Label>
                                     <Col sm="8" md="9">
-                                        <Form.Control as="textarea" value={values['language_' + item.settingId]}
+                                        <Form.Control as="textarea" className="shadow-none form-control"
+                                            value={values['language_' + item.settingId]}
                                             name={'language_' + item.settingId} id={'language_' + item.settingId} rows="4"
-                                            className="shadow-none form-control"
                                             isInvalid={touched['language_' + item.settingId] && errors['language_' + item.settingId]}
                                             onChange={handleChange}
                                         />
@@ -108,12 +108,8 @@ export class NewNotificationTemplate extends Component {
                     }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                        {LangHelper.getResource('Save')}
-                    </Button>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>
-                        {LangHelper.getResource('Cancel')}
-                    </Button>
+                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>{LangHelper.getResource('Save')}</Button>
+                    <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
                 </Modal.Footer>
             </Form>
         );
