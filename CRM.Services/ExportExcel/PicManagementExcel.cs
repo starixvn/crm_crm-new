@@ -98,7 +98,7 @@
             worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             if ((index & 1) == 0)
             {
-                SetBackgroudColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
             }
         }
 
@@ -109,7 +109,7 @@
             const byte spaceRowTitle = 3;
             worksheet.Cells[firstRow, 1, firstRow + 1, totalColumn].Merge = true;
             worksheet.Cells[spaceRowTitle, 1, spaceRowTitle, totalColumn].Merge = true;
-            SetBackgroudColor(worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn], HeaderTitleColor);
+            SetBackgroundColor(worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn], HeaderTitleColor);
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.Font.Bold = true;
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.Font.Color.SetColor(Color.White);
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;

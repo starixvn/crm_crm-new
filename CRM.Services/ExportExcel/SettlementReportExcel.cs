@@ -79,7 +79,7 @@
 
         protected internal virtual void SetBackgroundTotalRow(ExcelRange cell)
         {
-            SetBackgroudColor(cell, HeaderTitleColor);
+            SetBackgroundColor(cell, HeaderTitleColor);
             cell.Style.Font.Color.SetColor(Color.White);
             cell.Style.Font.Bold = true;
         }

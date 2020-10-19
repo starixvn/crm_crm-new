@@ -139,7 +139,7 @@
             service.Public_SetBackgroundTotalRow(cell);
 
             // Assert
-            service.Received().Protected("SetBackgroudColor", cell, Arg.Any<Color>());
+            service.Received().Protected("SetBackgroundColor", cell, Arg.Any<Color>());
             Assert.Equal(expectedColor, cell.Style.Font.Color.Rgb);
             Assert.True(cell.Style.Font.Bold);
         }

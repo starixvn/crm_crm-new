@@ -68,7 +68,7 @@
             worksheet.Cells.Style.WrapText = true;
         }
 
-        protected internal virtual void SetBackgroudColor(ExcelRange cell, Color color)
+        protected internal virtual void SetBackgroundColor(ExcelRange cell, Color color)
         {
             cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
             cell.Style.Fill.BackgroundColor.SetColor(color);

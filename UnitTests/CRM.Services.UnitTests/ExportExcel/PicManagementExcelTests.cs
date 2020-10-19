@@ -116,7 +116,7 @@
             Assert.Equal(ViewResources.Yes, worksheet.Cells[1, 10].Value);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 1].Style.HorizontalAlignment);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 10].Style.HorizontalAlignment);
-            service.DidNotReceive().Protected("SetBackgroudColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
+            service.DidNotReceive().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
         [Fact]
@@ -142,7 +142,7 @@
             Assert.Equal(ViewResources.Yes, worksheet.Cells[1, 10].Value);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 1].Style.HorizontalAlignment);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 10].Style.HorizontalAlignment);
-            service.Received().Protected("SetBackgroudColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
+            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
         [Fact]
@@ -162,7 +162,7 @@
             excel.Received().Protected("StyleDefault", worksheet);
             Assert.True(worksheet.Cells[1, 1, 2, totalColumn].Merge);
             Assert.True(worksheet.Cells[3, 1, 3, totalColumn].Merge);
-            excel.Received().Protected("SetBackgroudColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
+            excel.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
             Assert.True(worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.Font.Bold);
             Assert.Equal(expectedColor,
                 worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.Font.Color.Rgb);
