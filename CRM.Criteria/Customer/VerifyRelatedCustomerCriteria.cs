@@ -9,10 +9,7 @@
 
         public byte UserRole { get; } = Constants.UserRole;
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_RelatedCustomerVerify";
-        }
+        public override string GetSettingKey() => "Acc_CRM_RelatedCustomerVerify";
 
         public override bool IsValid() => true;
     }
