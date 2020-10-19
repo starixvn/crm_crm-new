@@ -290,22 +290,22 @@ export class EditGroupMappingPopup extends Component {
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
+                        <Form.Label column md="2" sm="3">
                             {LangHelper.getResource('ChatType')}
                         </Form.Label>
-                        <Form.Label column sm="9" md="10">
+                        <Form.Label column md="10" sm="9">
                             {LangHelper.getResource('Group')}
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
+                        <Form.Label column sm="3" className="required" md="2">
                             {LangHelper.getResource('RecipientType')}
                         </Form.Label>
                         <Col sm="9" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="recipientTypeId"
-                                onChange={e => this.handleRecipientTypeChange(e.target.value)}
                                 value={this.state.form.recipientTypeId}
+                                onChange={e => this.handleRecipientTypeChange(e.target.value)}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                 {this.props.settings.recipientTypes.map(this.renderEditGroupMappingOptions)}
@@ -379,8 +379,8 @@ export class EditGroupMappingPopup extends Component {
                         <Col sm="9" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="languageId"
-                                onChange={e => this.handleChange('languageId', e.target.value)}
                                 value={this.state.form.languageId}
+                                onChange={e => this.handleChange('languageId', e.target.value)}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                 {this.props.settings.languages.map(this.renderEditGroupMappingOptions)}

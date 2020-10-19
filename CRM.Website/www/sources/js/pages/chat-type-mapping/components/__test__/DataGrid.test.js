@@ -305,7 +305,7 @@ describe('DataGrid', () => {
                 ],
                 totalItems: 1
             },
-            updateActiveStatusPopup: {},
+            updateActiveStatusPopup: { isChecked: true },
             updateActiveStatusResult: {},
             updatePersonalMappingData: {},
             updateGroupMappingData: {},
@@ -319,6 +319,14 @@ describe('DataGrid', () => {
             isChecked: event.target.checked,
             isShowPopup: true
         };
+
+        it('renderConfirmMessage will return correctly', () => {
+            const dataGrid = shallow(<DataGrid {...props} />);
+            const expected = (<div>The Personal/Group shall be received notification.
+                Are you sure you want to activate it ?</div>);
+            const actual = dataGrid.instance().renderConfirmMessage();
+            expect(actual).toBe(expected);
+        });
 
         it('should call props setUpateActivePopup on change active checkbox with expected params', () => {
             const dataGrid = mount(<DataGrid {...props} />);

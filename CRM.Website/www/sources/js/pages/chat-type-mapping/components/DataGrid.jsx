@@ -179,6 +179,16 @@ export class DataGrid extends Component {
         );
     }
 
+    renderConfirmMessage = () => {
+        const isChecked = this.props.updateActiveStatusPopup.isChecked;
+        return (
+            <div>
+                The Personal/Group shall be {!isChecked ? 'not ' : ''} received notification{!isChecked ? ' anymore' : ''}.
+                Are you sure you want to {isChecked ? 'activate' : 'deactivate'} it ?
+             </div>
+        );
+    }
+
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {
             return null;
@@ -194,6 +204,7 @@ export class DataGrid extends Component {
             TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
+        const confirmMsg = this.renderConfirmMessage();
         return (
             <Fragment>
                 <div className='table-title'>{LangHelper.getResource('ChatTypeMapping')}</div>
@@ -214,12 +225,7 @@ export class DataGrid extends Component {
                     <ConfirmPopup
                         size='lg'
                         title={LangHelper.getResource('Confirmation')}
-                        content={
-                            <div>
-                                The Personal/Group shall be {!this.props.updateActiveStatusPopup.isChecked ? 'not ' : ''}received notification{!this.props.updateActiveStatusPopup.isChecked ? ' anymore ' : ''}.
-                                Are you sure you want to {this.props.updateActiveStatusPopup.isChecked ? 'activate' : 'deactivate'} it?
-                            </div>
-                        }
+                        content={confirmMsg}
                         onSubmit={this.updateActiveStatus}
                         onClose={this.onCloseConfirmPopupChangeActiveStaus}
                     />
