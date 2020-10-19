@@ -50,5 +50,24 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void Properties_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new ChangePicStateCriteria
+            {
+                IsActive = true,
+                UserId = 1,
+                LoginIP = "IP"
+            };
+
+            // Act
+
+            // Assert
+            Assert.True(criteria.IsActive);
+            Assert.Equal(1, criteria.UserId);
+            Assert.Equal("IP", criteria.LoginIP);
+        }
     }
 }

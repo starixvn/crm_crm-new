@@ -104,5 +104,28 @@
             // Assert
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void Properties_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new CreatePicCriteria
+            {
+                Language = "language",
+                Country = 1,
+                Remark = "remark",
+                UserId = 2,
+                LoginIP = "IP"
+            };
+
+            // Act
+
+            // Assert
+            Assert.Equal("language", criteria.Language);
+            Assert.Equal(1, criteria.Country);
+            Assert.Equal("remark", criteria.Remark);
+            Assert.Equal(2, criteria.UserId);
+            Assert.Equal("IP", criteria.LoginIP);
+        }
     }
 }

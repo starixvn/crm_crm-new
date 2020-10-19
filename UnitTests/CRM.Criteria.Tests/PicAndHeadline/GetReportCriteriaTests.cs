@@ -31,5 +31,30 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void Properties_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetReportCriteria
+            {
+                Username = "name",
+                Role = "role",
+                HeadlineName = "headline",
+                TotalRows = 10,
+                PageSize = 100,
+                PageIndex = 1
+            };
+
+            // Act
+
+            // Assert
+            Assert.Equal("name", criteria.Username);
+            Assert.Equal("role", criteria.Role);
+            Assert.Equal("headline", criteria.HeadlineName);
+            Assert.Equal(10, criteria.TotalRows);
+            Assert.Equal(100, criteria.PageSize);
+            Assert.Equal(1, criteria.PageIndex);
+        }
     }
 }

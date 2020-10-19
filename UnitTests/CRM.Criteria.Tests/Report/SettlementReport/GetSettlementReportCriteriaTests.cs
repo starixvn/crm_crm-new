@@ -50,5 +50,28 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void Properties_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetSettlementReportCriteria
+            {
+                Year = 2020,
+                TimeSpan = -12,
+                PageIndex = 1,
+                PageSize = 100,
+                IsGetFullReport = true
+            };
+
+            // Act
+
+            // Assert
+            Assert.Equal(2020, criteria.Year);
+            Assert.Equal(-12, criteria.TimeSpan);
+            Assert.Equal(1, criteria.PageIndex);
+            Assert.Equal(100, criteria.PageSize);
+            Assert.True(criteria.IsGetFullReport);
+        }
     }
 }
