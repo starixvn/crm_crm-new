@@ -202,7 +202,8 @@
                 {
                     Prefix = configuration.GetSection("HangfireSettings:Prefix")?.Value,
                     SucceededListSize = int.Parse(configuration.GetSection("HangfireSettings:SucceededListSize")?.Value),
-                    DeletedListSize = int.Parse(configuration.GetSection("HangfireSettings:DeletedListSize")?.Value)
+                    DeletedListSize = int.Parse(configuration.GetSection("HangfireSettings:DeletedListSize")?.Value),
+                    Db = int.Parse(configuration.GetSection("HangfireSettings:Db")?.Value)
                 });
             });
         }
