@@ -37,9 +37,11 @@ export class ConfirmAssignedDirectAccount extends Component {
     renderDirectAccount = data => {
         const directAccount = data.split(',');
         if (directAccount.length > 20) {
-            return <a className='link-color cursor-pointer' onClick={() => this.openDirectAccountPopup(directAccount)}>
-                {directAccount.length} custommers
-            </a>;
+            return (
+                <a className='link-color cursor-pointer' onClick={() => this.openDirectAccountPopup(directAccount)}>
+                    {directAccount.length} custommers
+                </a>
+            );
         }
 
         return data;
@@ -109,44 +111,45 @@ export class ConfirmAssignedDirectAccount extends Component {
     }
 
     render() {
-        return <Fragment>
-            <Modal
-                show backdrop='static' keyboard={false} size='lg' centered
-                onHide={() => this.onClose()} dialogAs={DraggableModalDialog}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title as='div'>
-                        {LangHelper.getResource('ListOfAssignedDirectAccounts')}
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Table
-                        maxWidth={772}
-                        header={this.buildHeader()}
-                        body={this.buildBody()}
-                        containerPadding={0}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant='primary' size='sm'
-                        disabled={this.state.isSubmitting}
-                        onClick={() => this.assignPic(false)}
-                    >
-                        {LangHelper.getResource('RemoveAndAssign')}
-                    </Button>
-                    <Button variant='primary' size='sm'
-                        disabled={this.state.isSubmitting}
-                        onClick={() => this.assignPic(true)}
-                    >
-                        {LangHelper.getResource('KeepAssign')}
-                    </Button>
-                    <Button variant='primary' size='sm' onClick={() => this.onClose()}>
-                        {LangHelper.getResource('Cancel')}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            {
-                this.state.directAccountPopup.show &&
+        return (
+            <Fragment>
+                <Modal
+                    show backdrop='static' keyboard={false} size='lg' centered
+                    onHide={() => this.onClose()} dialogAs={DraggableModalDialog}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title as='div'>
+                            {LangHelper.getResource('ListOfAssignedDirectAccounts')}
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Table
+                            maxWidth={772}
+                            header={this.buildHeader()}
+                            body={this.buildBody()}
+                            containerPadding={0}
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant='primary' size='sm'
+                            disabled={this.state.isSubmitting}
+                            onClick={() => this.assignPic(false)}
+                        >
+                            {LangHelper.getResource('RemoveAndAssign')}
+                        </Button>
+                        <Button variant='primary' size='sm'
+                            disabled={this.state.isSubmitting}
+                            onClick={() => this.assignPic(true)}
+                        >
+                            {LangHelper.getResource('KeepAssign')}
+                        </Button>
+                        <Button variant='primary' size='sm' onClick={() => this.onClose()}>
+                            {LangHelper.getResource('Cancel')}
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                {
+                    this.state.directAccountPopup.show &&
                     <SweetModalDialog
                         onClose={this.closeDirectAccountPopup}
                         contents={this.state.directAccountPopup.data}
@@ -155,8 +158,9 @@ export class ConfirmAssignedDirectAccount extends Component {
                         </Button>]}
                         title={LangHelper.getResource('DirectAccount')}
                     />
-            }
-        </Fragment>;
+                }
+            </Fragment>
+        );
     }
 }
 

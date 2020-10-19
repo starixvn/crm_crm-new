@@ -78,7 +78,13 @@ class Table extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.header !== prevProps.header) {
+        if (this.props.maxWidth !== prevProps.maxWidth) {
+            const maxWidthValue = this.props.maxWidth || clientWidth;
+            this.diffWidth = clientWidth - maxWidthValue;
+            this.setState({ maxWidth: maxWidthValue });
+        }
+
+        if (this.props.header !== prevProps.header || this.props.maxWidth !== prevProps.maxWidth) {
             this.setState({ columnsWidth: this._getColumnsWidth(this.props.header) });
         }
 

@@ -50,7 +50,7 @@ export class RemovePicAssignment extends Component {
         this.setState({
             picIds,
             picNames,
-            checkedAllList: [ ...checkedAllList ],
+            checkedAllList: [...checkedAllList],
             matrix,
             dataList
         });
@@ -98,7 +98,7 @@ export class RemovePicAssignment extends Component {
         });
 
         if (this.state.picNames.length > 0) {
-            cells = [ ...cells, ...picCells ];
+            cells = [...cells, ...picCells];
         }
 
         return [
@@ -174,7 +174,7 @@ export class RemovePicAssignment extends Component {
             return { value: '' };
         });
 
-        cells = [ ...cells, ...picCells ];
+        cells = [...cells, ...picCells];
         return <Row key={index}>
             {
                 cells.map((cell, cellIndex) => this.renderCell(cell, cellIndex, mergeHeadline))
@@ -214,9 +214,9 @@ export class RemovePicAssignment extends Component {
     }
 
     handleChange = (rowNumber, colNumber) => {
-        const matrix = [ ...this.state.matrix ];
+        const matrix = [...this.state.matrix];
         matrix[rowNumber][colNumber] = !matrix[rowNumber][colNumber];
-        const checkedAllList = [ ...this.state.checkedAllList ];
+        const checkedAllList = [...this.state.checkedAllList];
         checkedAllList[colNumber] = this.isCheckedAll(colNumber);
         this.setState({
             matrix,
@@ -226,9 +226,9 @@ export class RemovePicAssignment extends Component {
 
     handleChangeCheckAll = colNumber => {
         const isChecked = !this.state.checkedAllList[colNumber];
-        const checkedAllList = [ ...this.state.checkedAllList ];
+        const checkedAllList = [...this.state.checkedAllList];
         checkedAllList[colNumber] = isChecked;
-        const matrix = [ ...this.state.matrix ];
+        const matrix = [...this.state.matrix];
         for (let rowNumber = 0; rowNumber < this.state.matrix.length; rowNumber++) {
             if (matrix[rowNumber][colNumber] !== null) {
                 matrix[rowNumber][colNumber] = isChecked;
@@ -300,45 +300,48 @@ export class RemovePicAssignment extends Component {
     }
 
     render() {
+        const maxWidth = this.state.picNames.length * 80 + 500;
         const { onClose } = this.props;
 
-        return <Fragment>
-            <Modal show backdrop='static' keyboard={false} size='lg' centered
-                onHide={() => onClose()} dialogAs={DraggableModalDialog}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title as='div'>
-                        {LangHelper.getResource('RemovePICAssignment')}
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='remove-pic-body'>
-                    <Table
-                        maxWidth={772}
-                        bodyHeight={500}
-                        autoWidth={false}
-                        autoHeight={false}
-                        header={this.buildHeader()}
-                        body={this.buildBody()}
-                        containerPadding={0}
-                        shouldResetScrollPosition={false}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={() => this.toggleConfirmRemovePopup()} variant='primary' size='sm'
-                        disabled={this.isNotHadChecked()}
-                    >{LangHelper.getResource('Remove')}</Button>
-                    <Button onClick={() => onClose()} variant='primary' size='sm'>{LangHelper.getResource('Close')}</Button>
-                </Modal.Footer>
-            </Modal>
-            {
-                this.state.isShowConfirmRemovePopup &&
+        return (
+            <Fragment>
+                <Modal show backdrop='static' keyboard={false} size='lg' centered
+                    onHide={() => onClose()} dialogAs={DraggableModalDialog}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title as='div'>
+                            {LangHelper.getResource('RemovePICAssignment')}
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='remove-pic-body'>
+                        <Table
+                            maxWidth={maxWidth}
+                            bodyHeight={500}
+                            autoWidth
+                            autoHeight={false}
+                            header={this.buildHeader()}
+                            body={this.buildBody()}
+                            containerPadding={0}
+                            shouldResetScrollPosition={false}
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={() => this.toggleConfirmRemovePopup()} variant='primary' size='sm'
+                            disabled={this.isNotHadChecked()}
+                        >{LangHelper.getResource('Remove')}</Button>
+                        <Button onClick={() => onClose()} variant='primary' size='sm'>{LangHelper.getResource('Close')}</Button>
+                    </Modal.Footer>
+                </Modal>
+                {
+                    this.state.isShowConfirmRemovePopup &&
                     <ConfirmPopup
                         onSubmit={() => this.handleSubmitRemoveAssignment()}
                         onClose={() => this.toggleConfirmRemovePopup()}
                         title={LangHelper.getResource('Confirmation')}
                         content={LangHelper.getResource('ConfirmRemoveDirectAccounts')} />
-            }
-        </Fragment>;
+                }
+            </Fragment>
+        );
     }
 }
 
