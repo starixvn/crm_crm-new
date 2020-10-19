@@ -299,7 +299,7 @@ export class RemovePicAssignment extends Component {
 
         return <Fragment>
             <Modal show backdrop='static' keyboard={false} size='lg' centered
-                onHide={onClose} dialogAs={DraggableModalDialog}
+                onHide={() => onClose()} dialogAs={DraggableModalDialog}
             >
                 <Modal.Header closeButton>
                     <Modal.Title as='div'>
@@ -319,17 +319,17 @@ export class RemovePicAssignment extends Component {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.toggleConfirmRemovePopup} variant='primary' size='sm'
+                    <Button onClick={() => this.toggleConfirmRemovePopup()} variant='primary' size='sm'
                         disabled={this.isNotHadChecked()}
                     >{LangHelper.getResource('Remove')}</Button>
-                    <Button onClick={onClose} variant='primary' size='sm'>{LangHelper.getResource('Close')}</Button>
+                    <Button onClick={() => onClose()} variant='primary' size='sm'>{LangHelper.getResource('Close')}</Button>
                 </Modal.Footer>
             </Modal>
             {
                 this.state.isShowConfirmRemovePopup &&
                     <ConfirmPopup
-                        onSubmit={this.handleSubmitRemoveAssignment}
-                        onClose={this.toggleConfirmRemovePopup}
+                        onSubmit={() => this.handleSubmitRemoveAssignment()}
+                        onClose={() => this.toggleConfirmRemovePopup()}
                         title={LangHelper.getResource('Confirmation')}
                         content={LangHelper.getResource('ConfirmRemoveDirectAccounts')} />
             }
