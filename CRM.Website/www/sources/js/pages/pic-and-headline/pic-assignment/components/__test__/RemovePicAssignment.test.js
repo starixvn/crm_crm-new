@@ -969,7 +969,7 @@ describe('RemovePicAssignment', () => {
 
             // Assert
             expect(result.props().className).toBe('remove-pic-body');
-            expect(result.find(Table).props().maxWidth).toEqual(772);
+            expect(result.find(Table).props().maxWidth).toEqual(500);
             expect(result.find(Table).props().bodyHeight).toEqual(500);
             expect(result.find(Table).props().autoWidth).toBeFalse;
             expect(result.find(Table).props().autoHeight).toBeFalse;
