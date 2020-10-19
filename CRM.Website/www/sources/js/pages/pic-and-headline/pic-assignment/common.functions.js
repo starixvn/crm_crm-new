@@ -64,12 +64,13 @@ export const setDefaultPic = async (params, done) => {
 };
 
 const exportExcel = async params => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('PicAssignment/ExportExcelReport');
     await DataService.getFileAsync(url, params).then(response => {
         let fileName = response.headers['content-disposition'].split('filename=')[1];
         fileName = fileName.split("\"")[1];
         Site.downloadFile(response.data, fileName);
-    });
+    }).then(() => Site.unblockUI());
 };
 
 const functions = {

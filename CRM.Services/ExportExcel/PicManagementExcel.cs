@@ -18,7 +18,7 @@
         byte[] Export(PicReport picReport);
     }
 
-    public class PicManagementExcel : BaseExcel, IPicManagementExcel
+    public class PicManagementExcel : ExcelBase, IPicManagementExcel
     {
         public IEnumerable<BaseModel> CommunicationTools { get; set; }
 
@@ -35,9 +35,22 @@
         private const byte WidthLarge = 22;
         private readonly IHostingEnvironment hostingEnvironment;
 
-        public PicManagementExcel(IHostingEnvironment hostingEnvironment)
+        public PicManagementExcel(IHostingEnvironment hostingEnvironment, string templatePath, IEnumerable<PICAssignmentInfo> assignments)
+            : base(templatePath, 0, Labels.PicAssignment)
         {
             this.hostingEnvironment = hostingEnvironment;
+        }
+
+        protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+        }
+
+        protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+        }
+
+        protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
         }
 
         public byte[] Export(PicReport picReport)

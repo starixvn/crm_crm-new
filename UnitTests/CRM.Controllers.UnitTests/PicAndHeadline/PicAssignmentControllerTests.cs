@@ -35,7 +35,7 @@
         private INapSettings napSettings;
         private IUserService userService;
         private IPicAssignmentService picAssignmentService;
-        private IPicAssignmentExcel excelService;
+        private IExportExcelService excelService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -382,7 +382,7 @@
             var controller = GetController();
             var criteria = fixture.Create<GetAssignmentCriteria>();
             var expected = fixture.Create<byte[]>();
-            excelService.Export(Arg.Any<IEnumerable<PICAssignmentInfo>>()).Returns(expected);
+            excelService.ExportPICAssignment(Arg.Any<IEnumerable<PICAssignmentInfo>>()).Returns(expected);
 
             // Action
             var result = await controller.ExportExcelReport(criteria) as FileContentResult;
@@ -405,7 +405,7 @@
             napSettings = Substitute.For<INapSettings>();
             userService = Substitute.For<IUserService>();
             picAssignmentService = Substitute.For<IPicAssignmentService>();
-            excelService = Substitute.For<IPicAssignmentExcel>();
+            excelService = Substitute.For<IExportExcelService>();
             return new PicAssignmentController(
                 settingService,
                 baseService,

@@ -1,8 +1,11 @@
 ﻿namespace CRM.Services
 {
+    using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
+    using CRM.Models.PicAndHeadline;
     using CRM.Models.Report.SettlementReport;
+    using CRM.Resources;
     using Microsoft.AspNetCore.Hosting;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
@@ -12,7 +15,7 @@
         byte[] Export(SettlementReportInfo reportInfo);
     }
 
-    public class SettlementReportExcel : BaseExcel, ISettlementReportExcel
+    public class SettlementReportExcel : ExcelBase, ISettlementReportExcel
     {
         private const string CustomPath = "ExcelTemplates/Settlement_Issues_Report.xlsx";
         private const int widthColumnSmall = 15;
@@ -22,9 +25,22 @@
         private const byte LastColumns = 4;
         private readonly IHostingEnvironment hostingEnvironment;
 
-        public SettlementReportExcel(IHostingEnvironment hostingEnvironment)
+        public SettlementReportExcel(IHostingEnvironment hostingEnvironment, string templatePath, IEnumerable<PICAssignmentInfo> assignments)
+            : base(templatePath, 0, Labels.PicAssignment)
         {
             this.hostingEnvironment = hostingEnvironment;
+        }
+
+        protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+        }
+
+        protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+        }
+
+        protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
         }
 
         public byte[] Export(SettlementReportInfo reportInfo)

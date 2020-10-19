@@ -30,7 +30,7 @@
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
         private readonly IPicAssignmentService picAssignmentService;
-        private readonly IPicAssignmentExcel excelService;
+        private readonly IExportExcelService excelService;
 
         public PicAssignmentController(
             ISettingService settingService,
@@ -39,7 +39,7 @@
             INapSettings napSettings,
             IUserService userService,
             IPicAssignmentService picAssignmentService,
-            IPicAssignmentExcel excelService)
+            IExportExcelService excelService)
         {
             this.settingService = settingService;
             this.baseService = baseService;
@@ -186,8 +186,8 @@
             criteria.PageIndex = null;
             criteria.PageSize = null;
             var picInfo = await baseService.GetDataAsync<PICAssignmentInfo>(criteria);
-            var assignments = GeneratePicList(picInfo, criteria.PageIndex, criteria.PageSize);
-            var bytes = excelService.Export(assignments);
+            IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo, criteria.PageIndex, criteria.PageSize);
+            var bytes = excelService.ExportPICAssignment(assignments);
             return File(bytes, MimeType.XLSX, $"{Labels.PicAssignment}.xlsx");
         }
 

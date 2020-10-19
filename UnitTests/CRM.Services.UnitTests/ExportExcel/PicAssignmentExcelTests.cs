@@ -1,12 +1,12 @@
 ﻿namespace CRM.Services.UnitTests.ExportExcel
 {
-    using Microsoft.AspNetCore.Hosting;
+    using System.Collections.Generic;
+    using CRM.Models.PicAndHeadline;
     using NSubstitute;
     using Xunit;
 
     public class PicAssignmentExcelTests
     {
-        private IHostingEnvironment hostingEnvironment;
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
 
         [Fact]
@@ -18,18 +18,17 @@
             var excel = CreateExcel();
 
             // Act
-            excel.Public_RenderTitleAndHeader(templateWorksheet, worksheet);
+            excel.Public_RenderTitle(templateWorksheet, worksheet);
 
             // Assert
-            Assert.Equal(templateWorksheet.Cells[1, 1, 4, 10], worksheet.Cells[1, 1, 4, 10]);
+            Assert.Equal(templateWorksheet.Cells[1, 1, 3, 10], worksheet.Cells[1, 1, 3, 10]);
         }
 
         #region Helpers
 
-        private PicAssignmentExcelTestable CreateExcel()
+        private PicAssignmentExcelTestable CreateExcel(IEnumerable<PICAssignmentInfo> assignments = null)
         {
-            hostingEnvironment = Substitute.For<IHostingEnvironment>();
-            var excel = Substitute.For<PicAssignmentExcelTestable>(hostingEnvironment);
+            var excel = Substitute.For<PicAssignmentExcelTestable>(string.Empty, assignments);
             return excel;
         }
 

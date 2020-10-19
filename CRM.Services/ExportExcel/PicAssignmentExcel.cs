@@ -1,121 +1,113 @@
 ﻿namespace CRM.Services
 {
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Text;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Models.PicAndHeadline;
     using CRM.Resources;
-    using Microsoft.AspNetCore.Hosting;
     using OfficeOpenXml;
-    using OfficeOpenXml.Style;
 
-    public interface IPicAssignmentExcel
+    public class PicAssignmentExcel : ExcelBase
     {
-        byte[] Export(IEnumerable<PICAssignmentInfo> assignments);
-    }
-
-    public class PicAssignmentExcel : IPicAssignmentExcel
-    {
-        private const string CustomPath = "ExcelTemplates/PicAssignment.xlsx";
+        private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
         private const byte RowClosed = 6;
         private const byte RowSuspended = 7;
         private const byte RowDisabled = 8;
         private const byte TotalColumns = 10;
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IEnumerable<PICAssignmentInfo> _assignments;
 
-        public PicAssignmentExcel(IHostingEnvironment hostingEnvironment)
+        public PicAssignmentExcel(string templatePath, IEnumerable<PICAssignmentInfo> assignments)
+            : base(templatePath, 0, Labels.PicAssignment)
         {
-            this.hostingEnvironment = hostingEnvironment;
+            _assignments = assignments;
         }
 
-        public byte[] Export(IEnumerable<PICAssignmentInfo> assignments)
+        protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, CustomPath);
-            using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
+            templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalColumns]
+                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalColumns]);
+        }
+
+        protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns]
+                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns]);
+        }
+
+        protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+            int rowIndex = RowStartBody;
+            var colIndex = 1;
+            var rowNum = 1;
+            var mergeHeadline = 0;
+            var mergePic = 0;
+            foreach (PICAssignmentInfo assignment in _assignments)
             {
-                using (var xlPackage = new ExcelPackage())
+                colIndex = 1;
+                templateWorksheet.Cells[RowStartBody, 1].Copy(worksheet.Cells[rowIndex, colIndex]);
+                worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
+                if (mergeHeadline == 0)
                 {
-                    var template = templatePackage.Workbook.Worksheets[Labels.PicAssignment];
-                    var worksheet = xlPackage.Workbook.Worksheets.Add(Labels.PicAssignment);
-                    RenderTitleAndHeader(template, worksheet);
-                    var colIndex = 1;
-                    int rowIndex = RowStartBody;
-                    var rowNum = 1;
-                    var mergeHeadline = 0;
-                    var mergePic = 0;
-                    foreach (PICAssignmentInfo assignment in assignments)
+                    mergeHeadline = _assignments.Count(assign => assign.HeadlineID == assignment.HeadlineID);
+                    var pics = _assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
+                    mergePic = pics.Count();
+                    StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
+                    worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineName;
+                    StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
+                    worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineType;
+                    StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
+                    worksheet.Cells[rowIndex, colIndex++].Value = GetPicCell(assignment.DefaultPicList);
+
+                    if (mergePic > 0)
                     {
-                        colIndex = 1;
-                        template.Cells[RowStartBody, 1].Copy(worksheet.Cells[rowIndex, colIndex]);
-                        worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
-                        if (mergeHeadline == 0)
-                        {
-                            mergeHeadline = assignments.Count(assign => assign.HeadlineID == assignment.HeadlineID);
-                            var pics = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
-                            mergePic = pics.Count();
-                            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
-                            worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineName;
-                            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
-                            worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineType;
-                            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
-                            worksheet.Cells[rowIndex, colIndex++].Value = GetPicCell(assignment.DefaultPicList);
-
-                            if (mergePic > 0)
-                            {
-                                var picCell = GetPicCell(assignment.PicList);
-                                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergePic - 1);
-                                worksheet.Cells[rowIndex, colIndex].Value = picCell;
-                            }
-
-                            colIndex++;
-                        }
-                        else if (mergePic == 0)
-                        {
-                            const int addCol = 3;
-                            colIndex += addCol;
-                            var pics = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
-                            mergePic = pics.Count();
-                            var picCell = GetPicCell(assignment.PicList);
-                            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergePic - 1);
-                            worksheet.Cells[rowIndex, colIndex++].Value = picCell;
-                        }
-                        else
-                        {
-                            const int addCol = 4;
-                            colIndex += addCol;
-                        }
-
-                        var templateRowIndex = GetTemplateRowIndex(assignment.Status);
-                        template.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns].Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
-                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.DirectAccount;
-                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.Status;
-                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.Site;
-                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.Currency;
-                        worksheet.Cells[rowIndex, colIndex].Value = assignment.Position;
-
-                        mergeHeadline--;
-                        mergePic--;
-                        rowIndex++;
+                        var picCell = GetPicCell(assignment.PicList);
+                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergePic - 1);
+                        worksheet.Cells[rowIndex, colIndex].Value = picCell;
                     }
 
-                    worksheet.Cells.AutoFitColumns();
-                    worksheet.View.FreezePanes(RowStartBody, TotalColumns + 1);
-                    return xlPackage.GetAsByteArray();
+                    colIndex++;
                 }
+                else if (mergePic == 0)
+                {
+                    const int addCol = 3;
+                    colIndex += addCol;
+                    var pics = _assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
+                    mergePic = pics.Count();
+                    var picCell = GetPicCell(assignment.PicList);
+                    StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergePic - 1);
+                    worksheet.Cells[rowIndex, colIndex++].Value = picCell;
+                }
+                else
+                {
+                    const int addCol = 4;
+                    colIndex += addCol;
+                }
+
+                var templateRowIndex = GetTemplateRowIndex(assignment.Status);
+                templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
+                    .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
+                worksheet.Cells[rowIndex, colIndex++].Value = assignment.DirectAccount;
+                worksheet.Cells[rowIndex, colIndex++].Value = assignment.Status;
+                worksheet.Cells[rowIndex, colIndex++].Value = assignment.Site;
+                worksheet.Cells[rowIndex, colIndex++].Value = assignment.Currency;
+                worksheet.Cells[rowIndex, colIndex].Value = assignment.Position;
+
+                mergeHeadline--;
+                mergePic--;
+                rowIndex++;
             }
         }
 
-        protected internal void RenderTitleAndHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        protected internal override void ProcessUI(ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[1, 1, RowStartBody - 1, TotalColumns]
-                .Copy(worksheet.Cells[1, 1, RowStartBody - 1, TotalColumns]);
+            worksheet.Cells.AutoFitColumns();
+            worksheet.View.FreezePanes(RowStartBody, TotalColumns + 1);
         }
 
-        protected internal byte GetTemplateRowIndex(string status)
+        protected internal static byte GetTemplateRowIndex(string status)
         {
             if (status == CustomerStatus.Closed.ToString())
             {
@@ -135,6 +127,13 @@
             return RowStartBody;
         }
 
+        protected internal virtual void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)
+        {
+            worksheet.Cells[startRow, colIndex, endRow, colIndex].Merge = true;
+            worksheet.Cells[startRow, colIndex, endRow, colIndex].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            DrawBorderCell(worksheet.Cells[startRow, colIndex]);
+        }
+
         private static string GetPicCell(IEnumerable<PicModel> picList)
         {
             if (picList == null || !picList.Any())
@@ -151,20 +150,6 @@
             }
 
             return buffer.ToString();
-        }
-
-        private static void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)
-        {
-            worksheet.Cells[startRow, colIndex, endRow, colIndex].Merge = true;
-            worksheet.Cells[startRow, colIndex, endRow, colIndex].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            DrawBorderCell(worksheet.Cells[startRow, colIndex]);
-        }
-
-        private static void DrawBorderCell(ExcelRange cell)
-        {
-            cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-            cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-            cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
         }
     }
 }

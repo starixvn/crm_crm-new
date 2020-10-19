@@ -2,11 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Drawing;
-    using System.IO;
     using System.Linq;
     using CRM.Models;
     using CRM.Models.PicAndHeadline;
-    using CRM.Models.Setting;
     using CRM.Resources;
     using Microsoft.AspNetCore.Hosting;
     using NSubstitute;
@@ -123,9 +121,9 @@
             Assert.True(worksheet.Cells[3, 1, 3, totalColumn].Merge);
             excel.Received().Protected("SetBackgroudColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
             Assert.True(worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.Font.Bold);
-            Assert.Equal(expectedColor, 
+            Assert.Equal(expectedColor,
                 worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.Font.Color.Rgb);
-            Assert.Equal(ExcelHorizontalAlignment.Center, 
+            Assert.Equal(ExcelHorizontalAlignment.Center,
                 worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.HorizontalAlignment);
         }
 
@@ -152,7 +150,6 @@
             Assert.Equal(WidthLarge, worksheet.Column(totalColumn - 1).Width);
             Assert.Equal(WidthExtraSmall, worksheet.Column(totalColumn).Width);
         }
-
 
         #region Helpers
 
