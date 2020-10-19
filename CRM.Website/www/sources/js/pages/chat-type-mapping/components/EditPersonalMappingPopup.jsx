@@ -142,7 +142,8 @@ export class EditPersonalMappingPopup extends Component {
                         name='conversationId' type="radio" id={`letstalkId-${key}`}
                         value={letstalkId}
                         onChange={this.handleLetstalkIdSelect}
-                        checked={this.state.form.conversationId === letstalkId} />
+                        checked={this.state.form.conversationId === letstalkId}
+                    />
                 );
             });
         }

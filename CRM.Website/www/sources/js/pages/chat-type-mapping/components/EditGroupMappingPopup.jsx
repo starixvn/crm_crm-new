@@ -388,7 +388,7 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" name="group-edit-remark" >
+                        <Form.Label column sm="3" md="2" htmlFor="groupEditRemark" >
                             {LangHelper.getResource('Remark')}
                         </Form.Label>
                         <Col sm="9" md="10">

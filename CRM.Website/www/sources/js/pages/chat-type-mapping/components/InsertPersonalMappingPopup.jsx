@@ -101,16 +101,19 @@ export class InsertPersonalMappingPopup extends Component {
         let result = null;
         if (this.state.letstalkIds) {
             const letstalkList = this.state.letstalkIds.split(',');
-            result = letstalkList.map((letstalkId, key) => (
-                <Form.Check key={key}
-                    inline label={letstalkId}
-                    name='letstalkId'
-                    type="radio"
-                    id={`letstalkId-${key}`}
-                    value={letstalkId}
-                    checked={this.state.form.letstalkId === letstalkId}
-                    onChange={this.handleLetstalkSelect} />
-            ));
+            result = letstalkList.map((letstalkId, key) => {
+                return (
+                    <Form.Check key={key}
+                        inline label={letstalkId}
+                        name='letstalkId'
+                        type="radio"
+                        id={`letstalkId-${key}`}
+                        value={letstalkId}
+                        checked={this.state.form.letstalkId === letstalkId}
+                        onChange={this.handleLetstalkSelect}
+                    />
+                );
+            });
         }
 
         return result;
