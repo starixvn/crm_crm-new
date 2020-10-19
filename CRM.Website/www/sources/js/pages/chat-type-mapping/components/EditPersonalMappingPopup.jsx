@@ -362,11 +362,11 @@ export class EditPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
+                        <Form.Label column sm="3" md="2" className="required" name="insert-personal-language-label">
                             {LangHelper.getResource('Language')}
                         </Form.Label>
                         <Col sm="9" md="10">
-                            <Form.Control as="select" size="sm" className="shadow-none"
+                            <Form.Control size="sm" className="shadow-none" as="select"
                                 name="languageId"
                                 onChange={e => this.handleChange('languageId', e.target.value)}
                                 value={this.state.form.languageId}
