@@ -63,10 +63,10 @@ describe('dataHandlerReducer.test', () => {
     it('should handle recipients', () => {
         const action = {
             type: types.RECIPIENT_DATA,
-            data: {}
+            data: []
         };
 
-        const result = recipients({}, action);
+        const result = recipients([], action.data);
         expect(result).toEqual(action.data);
     });
 

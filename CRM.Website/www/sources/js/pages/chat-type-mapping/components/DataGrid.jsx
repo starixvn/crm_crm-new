@@ -184,7 +184,7 @@ export class DataGrid extends Component {
         return (
             <div>
                 The Personal/Group shall be {!isChecked ? 'not ' : ''} received notification{!isChecked ? ' anymore' : ''}.
-                Are you sure you want to {isChecked ? 'activate' : 'deactivate'} it ?
+                Are you sure you want to {isChecked ? 'activate' : 'deactivate'} it?
              </div>
         );
     }

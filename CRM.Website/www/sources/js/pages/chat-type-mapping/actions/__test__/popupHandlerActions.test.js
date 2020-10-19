@@ -135,7 +135,9 @@ describe('popupHandlerActions', () => {
             const expectedActions = [
                 { type: types.GROUP_MAPPING_POPUP_DATA, data: { isShow: false, data: null } },
                 { type: types.GROUP_MAPPING_UPDATE_RESULT, data: null },
-                { type: types.GROUP_MAPPING_LETSTALK_VERIFICATION_DATA, data: [] }
+                { type: types.GROUP_MAPPING_LETSTALK_VERIFICATION_DATA, data: [] },
+                { type: types.RECIPIENT_DATA, data: [] },
+                { type: types.GROUP_HEADLINE_DATA, data: [] }
             ];
             store.dispatch(actions.closeUpdateGroupMappingPopup());
             expect(store.getActions()).toEqual(expectedActions);

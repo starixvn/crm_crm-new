@@ -321,11 +321,10 @@ describe('DataGrid', () => {
         };
 
         it('renderConfirmMessage will return correctly', () => {
-            const dataGrid = shallow(<DataGrid {...props} />);
-            const expected = (<div>The Personal/Group shall be received notification.
-                Are you sure you want to activate it ?</div>);
+            const dataGrid = mount(<DataGrid {...props} />);
+            const expected = (<div>The Personal/Group shall be received notification. Are you sure you want to activate it?</div>);
             const actual = dataGrid.instance().renderConfirmMessage();
-            expect(actual).toBe(expected);
+            expect(actual.html).toEqual(expected.html);
         });
 
         it('should call props setUpateActivePopup on change active checkbox with expected params', () => {

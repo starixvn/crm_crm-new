@@ -119,9 +119,9 @@ describe('EditPersonalMappingPopup', () => {
             popup.instance().handleGroupHeadlineChange = jest.fn();
             popup.instance().handleRecipientTypeChange = jest.fn();
             popup.instance().handleRecipientChange = jest.fn();
-            popup.instance().handleLetstalkSelect = jest.fn();
+            popup.instance().handleLetstalkIdSelect = jest.fn();
             popup.instance().handleChange = jest.fn();
-            popup.instance().onClosePopup = jest.fn();
+            popup.instance().onCloseEditPersonalPopup = jest.fn();
             popup.instance().handleEditPersonalSubmitForm = jest.fn();
 
             popup.find(Form.Group).at(0).find(Form.Control).at(0).simulate('change', event);
@@ -204,12 +204,12 @@ describe('EditPersonalMappingPopup', () => {
             expect(props.getGroupHeadlineByRecipient).toHaveBeenCalledWith('value');
         });
 
-        it('handleLetstalkSelect with call correct props with correct params', () => {
+        it('handleLetstalkIdSelect with call correct props with correct params', () => {
             const event = {
                 target: { value: 'value' }
             };
             popup.instance().handleChange = jest.fn();
-            popup.instance().handleLetstalkSelect(event);
+            popup.instance().handleLetstalkIdSelect(event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('conversationId', 'value');
             expect(props.getLetstalkDisplayName).toHaveBeenCalledWith(1, 'value');
             promise.then(() => {
@@ -221,7 +221,7 @@ describe('EditPersonalMappingPopup', () => {
             const item = {
                 id: 1, name: 'test'
             };
-            const expected = <option key={`${0}-${item.id}`} value={item.id}>{item.name}</option>;
+            const expected = <option key={`${0}-${item.name}`} value={item.id}>{item.name}</option>;
             const actual = popup.instance().renderEditPersonalSelectOptions(item, 0);
             expect(actual).toEqual(expected);
         });
@@ -385,24 +385,24 @@ describe('EditPersonalMappingPopup', () => {
             expect(actual).toBeFalse;
         });
 
-        it('onClosePopup when is dirty form will call setState', () => {
+        it('onCloseEditPersonalPopup when is dirty form will call setState', () => {
             const initState = {
                 dirtyFormConfirmation: { isShow: false }
             };
             popup.instance().setState(initState);
             popup.instance().isDirtyForm = jest.fn().mockReturnValue(true);
-            popup.instance().onClosePopup();
+            popup.instance().onCloseEditPersonalPopup();
             expect(popup.instance().state.isShowConfirmDirtyForm).toBeTrue;
             expect(props.closeUpdatePersonalMappingPopup).not.toHaveBeenCalled();
         });
 
-        it('onClosePopup when is not dirty form will call correct props', () => {
+        it('onCloseEditPersonalPopup when is not dirty form will call correct props', () => {
             const initState = {
                 isShowConfirmDirtyForm: false
             };
             popup.instance().setState(initState);
             popup.instance().isDirtyForm = jest.fn().mockReturnValue(false);
-            popup.instance().onClosePopup();
+            popup.instance().onCloseEditPersonalPopup();
             expect(popup.instance().state.isShowConfirmDirtyForm).toBeFalse;
             expect(props.closeUpdatePersonalMappingPopup).toHaveBeenCalled();
         });

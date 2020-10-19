@@ -6,8 +6,7 @@ import Layout from '../../../components/Layout';
 export class AppContainer extends Component {
     constructor(props) {
         super(props);
-
-        this.isHost = document.getElementById('is-host').checked;
+        this.isHost = document.getElementById('is-host') ? document.getElementById('is-host').checked : false;
     }
 
     render() {
