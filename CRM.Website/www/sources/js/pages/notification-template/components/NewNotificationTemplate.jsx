@@ -56,13 +56,15 @@ export class NewNotificationTemplate extends Component {
                                 value={values.notificationTypeId}
                                 onChange={handleChange}
                             >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
                                 {this.props.notificationTypes.map(renderNotificationTypeOption)}
                             </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" className="required" htmlFor="notificationTemplateName">
+                        <Form.Label column sm="4" md="3"
+                            className="required" htmlFor="notificationTemplateName"
+                        >
                             {LangHelper.getResource('TemplateName')}
                         </Form.Label>
                         <Col sm="8" md="9">
@@ -75,7 +77,9 @@ export class NewNotificationTemplate extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" className="required" htmlFor="title">
+                        <Form.Label column sm="4" md="3"
+                            className="required" htmlFor="title"
+                        >
                             {LangHelper.getResource('Title')}
                         </Form.Label>
                         <Col sm="8" md="9">
@@ -91,7 +95,9 @@ export class NewNotificationTemplate extends Component {
                         this.props.languages.map(item => {
                             return (
                                 <Form.Group key={`language${item.settingId}`} as={Row}>
-                                    <Form.Label column sm="4" md="3" className="required" htmlFor={'language_' + item.settingId}>
+                                    <Form.Label column sm="4" md="3"
+                                        className="required" htmlFor={'language_' + item.settingId}
+                                    >
                                         {LangHelper.getResource('Content')} ({item.settingValue})
                                     </Form.Label>
                                     <Col sm="8" md="9">
