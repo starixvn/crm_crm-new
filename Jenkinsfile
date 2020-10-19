@@ -30,6 +30,8 @@ pipeline {
       steps{
         script{
           pipelineLib.xUnitForNetCore()
+		  
+		  pipelineLib.jsJest("CRM.Website")
         }
       }
     }
