@@ -1,6 +1,6 @@
 @Library("JenkinsPipelineLibrary") _
 
-pipeline {
+pipeline{
   agent any
 
   options{
@@ -13,8 +13,8 @@ pipeline {
     gitlab(triggerOnPush: true, triggerOnMergeRequest: true, branchFilterType: 'All')
   }
 
-  stages {
-    stage('Build') {
+  stages{
+    stage('Build'){
       steps {
         script{
           pipelineLib.beginSonarQubeForMsBuild("CRM-New", "CRM New", "/d:sonar.cs.opencover.reportsPaths=\"${WORKSPACE}\\CoverageReports\\*.xml\" /d:sonar.cs.vstest.reportsPaths=\"${WORKSPACE}\\TestResults\\*.trx\"")
@@ -26,14 +26,24 @@ pipeline {
       }
     }
 	
-	stage("Unit Test"){
-      steps{
-        script{
-          pipelineLib.xUnitForNetCore()
-		  
-		  pipelineLib.jsJest("CRM.Website")
-        }
-      }
+	stage("Unit Test") {
+	  parallel{
+	    stage("C# Unit Test"){
+		  steps{
+            script{
+              pipelineLib.xUnitForNetCore()
+            }
+          }
+		}
+		
+		stage("JS Unit Test"){
+		  steps{
+            script{
+		      pipelineLib.jsJest("CRM.Website")
+            }
+          }
+		}
+	  }
     }
 
     stage("SonarQube Analysis"){
