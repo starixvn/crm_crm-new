@@ -25,7 +25,7 @@
         private const byte WidthLarge = 22;
 
         public PicManagementExcel(string templatePath, IEnumerable<BaseModel> communicationTools, PicReport picReport)
-            : base(templatePath, 0, ViewResources.PICAssignment)
+            : base(templatePath, 0, ViewResources.PICManagement)
         {
             this.communicationTools = communicationTools;
             this.picReport = picReport;
@@ -44,7 +44,7 @@
 
             totalColumn = BaseColumnIndex + communicationTools.Count() - 1;
             var tools = communicationTools.ToList();
-            worksheet.Cells[RowStartHeader, StartComToolsIndex].Value = Labels.CommunicationTool;
+            worksheet.Cells[RowStartHeader, StartComToolsIndex].Value = ViewResources.CommunicationTool;
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader, StartComToolsIndex + tools.Count - 1].Merge = true;
 
             for (var index = 0; index < tools.Count; index++)
@@ -52,9 +52,9 @@
                 worksheet.Cells[RowStartHeader + 1, StartComToolsIndex + index].Value = tools[index].Name;
             }
 
-            worksheet.Cells[RowStartHeader, totalColumn - 1].Value = Labels.Remark;
+            worksheet.Cells[RowStartHeader, totalColumn - 1].Value = ViewResources.Remark;
             worksheet.Cells[RowStartHeader, totalColumn - 1, RowStartHeader + 1, totalColumn - 1].Merge = true;
-            worksheet.Cells[RowStartHeader, totalColumn].Value = Labels.Active;
+            worksheet.Cells[RowStartHeader, totalColumn].Value = ViewResources.Active;
             worksheet.Cells[RowStartHeader, totalColumn, RowStartHeader + 1, totalColumn].Merge = true;
         }
 

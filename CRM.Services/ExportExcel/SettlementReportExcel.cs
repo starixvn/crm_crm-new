@@ -31,8 +31,8 @@
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[1, 1, RowStartHeader, LastColumns]
-                .Copy(worksheet.Cells[1, 1, RowStartHeader, LastColumns]);
+            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader, LastColumns]
+                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader, LastColumns]);
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)

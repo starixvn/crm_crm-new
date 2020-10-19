@@ -40,7 +40,7 @@
             service.Public_RenderHeader(template, worksheet);
 
             // Assert
-            Assert.Equal(template.Cells[1, 1, 4, 4], worksheet.Cells[1, 1, 4, 4]);
+            Assert.Equal(template.Cells[4, 1, 4, 4], worksheet.Cells[4, 1, 4, 4]);
         }
 
         [Fact]
