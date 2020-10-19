@@ -1,78 +1,60 @@
 ﻿namespace CRM.Services
 {
-    using System.Collections.Generic;
     using System.Drawing;
-    using System.IO;
-    using CRM.Models.PicAndHeadline;
     using CRM.Models.Report.SettlementReport;
-    using CRM.Resources;
-    using Microsoft.AspNetCore.Hosting;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
-    public interface ISettlementReportExcel
+    public class SettlementReportExcel : ExcelBase
     {
-        byte[] Export(SettlementReportInfo reportInfo);
-    }
-
-    public class SettlementReportExcel : ExcelBase, ISettlementReportExcel
-    {
-        private const string CustomPath = "ExcelTemplates/Settlement_Issues_Report.xlsx";
         private const int widthColumnSmall = 15;
         private const int widthColumnLarge = 25;
         private const int widthColumnNormal = 20;
+        private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
         private const byte LastColumns = 4;
-        private readonly IHostingEnvironment hostingEnvironment;
+        private int rowIndex = RowStartBody;
+        private readonly SettlementReportInfo reportInfo;
 
-        public SettlementReportExcel(IHostingEnvironment hostingEnvironment, string templatePath, IEnumerable<PICAssignmentInfo> assignments)
-            : base(templatePath, 0, ViewResources.PICAssignment)
+        public SettlementReportExcel(string templatePath, SettlementReportInfo report)
+            : base(templatePath, 0, report.Name)
         {
-            this.hostingEnvironment = hostingEnvironment;
+            this.reportInfo = report;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
+            templateWorksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]
+                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]);
+            worksheet.Cells[1, 1].Value = reportInfo.Name;
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
+            templateWorksheet.Cells[1, 1, RowStartHeader, LastColumns]
+                .Copy(worksheet.Cells[1, 1, RowStartHeader, LastColumns]);
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-        }
-
-        public byte[] Export(SettlementReportInfo reportInfo)
-        {
-            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, CustomPath);
-            using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
+            foreach (var report in reportInfo.ChildReports)
             {
-                using (var xlPackage = new ExcelPackage())
-                {
-                    var template = templatePackage.Workbook.Worksheets[0];
-                    var worksheet = xlPackage.Workbook.Worksheets.Add(reportInfo.Name);
-                    SetDefaultStyle(worksheet);
-                    var rowIndex = 1;
-                    ////RenderTitleAndHeader(template, worksheet, RowStartBody - 1, LastColumns);
-                    worksheet.Cells[1, 1].Value = reportInfo.Name;
-                    rowIndex = RowStartBody;
-                    foreach (var report in reportInfo.ChildReports)
-                    {
-                        SetValueRow(rowIndex, report, worksheet);
-                        rowIndex += report.ChildReports.Count;
-                    }
-                    SetValueRow(rowIndex, reportInfo.Total, worksheet);
-
-                    SetBackgroundTotalRow(worksheet.Cells[rowIndex, 1, rowIndex + reportInfo.Total.ChildReports.Count - 1, LastColumns]);
-                    rowIndex += reportInfo.Total.ChildReports.Count - 1;
-                    DrawBorderCell(worksheet.Cells[RowStartBody, 1, rowIndex, LastColumns]);
-                    return xlPackage.GetAsByteArray();
-                }
+                SetValueRow(report, worksheet);
+                rowIndex += report.ChildReports.Count;
             }
+
+            SetValueRow(reportInfo.Total, worksheet);
         }
 
-        protected internal void SetValueRow(int rowIndex, SettlementReportInfo report, ExcelWorksheet worksheet)
+        protected internal override void ProcessUI(ExcelWorksheet worksheet)
+        {
+            SetDefaultStyle(worksheet);
+            SetBackgroundTotalRow(worksheet.Cells[rowIndex, 1, rowIndex + reportInfo.Total.ChildReports.Count - 1, LastColumns]);
+            rowIndex += reportInfo.Total.ChildReports.Count - 1;
+            DrawBorderCell(worksheet.Cells[RowStartBody, 1, rowIndex, LastColumns]);
+        }
+
+        protected internal virtual void SetValueRow(SettlementReportInfo report, ExcelWorksheet worksheet)
         {
             const byte colIndex = 1;
             if (report.ChildReports.Count > 1)
@@ -95,14 +77,14 @@
             worksheet.Cells[rowIndex, LastColumns].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
-        protected internal void SetBackgroundTotalRow(ExcelRange cell)
+        protected internal virtual void SetBackgroundTotalRow(ExcelRange cell)
         {
             SetBackgroudColor(cell, HeaderTitleColor);
             cell.Style.Font.Color.SetColor(Color.White);
             cell.Style.Font.Bold = true;
         }
 
-        protected internal void SetDefaultStyle(ExcelWorksheet worksheet)
+        protected internal virtual void SetDefaultStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
             const byte CountryColumn = 2;

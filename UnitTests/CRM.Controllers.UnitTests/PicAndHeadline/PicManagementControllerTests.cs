@@ -30,7 +30,7 @@
         private IUserService userService;
         private INapSettings napSettings;
         private IPicManagementService picManagementService;
-        private IPicManagementExcel picManagementExcel;
+        private IExportExcelService excelService;
 
         [Fact]
         public void Index_WhenCalled_ReturnExpectedViewResult()
@@ -194,7 +194,7 @@
             var controller = GetController();
             picManagementService.GetReportAsync(param).Returns(templates);
             settingService.GetAsync(Arg.Is<GetSettingParam>(s => s.IsActive == true && s.SettingName == SettingName.PicCommunicationTool)).Returns(communicationTools);
-            picManagementExcel.Export(templates).Returns(expected);
+            excelService.ExportPICManagement(communicationTools, templates).Returns(expected);
 
             // Act
             var result = await controller.ExportExcel(param);
@@ -214,8 +214,8 @@
             userService = Substitute.For<IUserService>();
             napSettings = Substitute.For<INapSettings>();
             picManagementService = Substitute.For<IPicManagementService>();
-            picManagementExcel = Substitute.For<IPicManagementExcel>();
-            return new PicManagementController(napSession, settingService, userService, napSettings, picManagementService, picManagementExcel);
+            excelService = Substitute.For<IExportExcelService>();
+            return new PicManagementController(napSession, settingService, userService, napSettings, picManagementService, excelService);
         }
 
         #endregion Helpers

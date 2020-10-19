@@ -1,19 +1,35 @@
 ﻿namespace CRM.Services.UnitTests.ExportExcel
 {
+    using System.Collections.Generic;
+    using CRM.Models;
     using CRM.Models.PicAndHeadline;
-    using Microsoft.AspNetCore.Hosting;
     using OfficeOpenXml;
 
-    public class PicManagementExcelTestable: PicManagementExcel
+    public class PicManagementExcelTestable : PicManagementExcel
     {
-        public PicManagementExcelTestable(IHostingEnvironment hostingEnvironment)
-            : base(hostingEnvironment)
+        public PicManagementExcelTestable(string templatePath, IEnumerable<BaseModel> communicationTools, PicReport picReport)
+            : base(templatePath, communicationTools, picReport)
         {
         }
 
-        public void Public_RenderHeader(ExcelWorksheet worksheet)
+        public void Public_RenderTitle(ExcelWorksheet template, ExcelWorksheet worksheet)
         {
-            base.RenderHeader(worksheet);
+            base.RenderTitle(template, worksheet);
+        }
+
+        public void Public_RenderHeader(ExcelWorksheet template, ExcelWorksheet worksheet)
+        {
+            base.RenderHeader(template, worksheet);
+        }
+
+        public void Public_RenderBody(ExcelWorksheet template, ExcelWorksheet worksheet)
+        {
+            base.RenderBody(template, worksheet);
+        }
+
+        public void Public_ProcessUI(ExcelWorksheet worksheet)
+        {
+            base.ProcessUI(worksheet);
         }
 
         public void Public_RenderRow(ExcelWorksheet worksheet, PicInfo picInfo, int index, int rowIndex)

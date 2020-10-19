@@ -2,27 +2,17 @@
 {
     using System.Collections.Generic;
     using System.Drawing;
-    using System.IO;
     using System.Linq;
     using CRM.Models;
     using CRM.Models.PicAndHeadline;
     using CRM.Resources;
-    using Microsoft.AspNetCore.Hosting;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
-    public interface IPicManagementExcel
+    public class PicManagementExcel : ExcelBase
     {
-        IEnumerable<BaseModel> CommunicationTools { get; set; }
-
-        byte[] Export(PicReport picReport);
-    }
-
-    public class PicManagementExcel : ExcelBase, IPicManagementExcel
-    {
-        public IEnumerable<BaseModel> CommunicationTools { get; set; }
-
-        private const string CustomPath = "ExcelTemplates/PicManagement.xlsx";
+        private readonly IEnumerable<BaseModel> communicationTools;
+        private readonly PicReport picReport;
 
         private const byte RowStartBody = 6;
         private const byte RowStartHeader = 4;
@@ -33,70 +23,58 @@
         private const byte WidthSmall = 10;
         private const byte WidthNormal = 15;
         private const byte WidthLarge = 22;
-        private readonly IHostingEnvironment hostingEnvironment;
 
-        public PicManagementExcel(IHostingEnvironment hostingEnvironment, string templatePath, IEnumerable<PICAssignmentInfo> assignments)
+        public PicManagementExcel(string templatePath, IEnumerable<BaseModel> communicationTools, PicReport picReport)
             : base(templatePath, 0, ViewResources.PICAssignment)
         {
-            this.hostingEnvironment = hostingEnvironment;
+            this.communicationTools = communicationTools;
+            this.picReport = picReport;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
+            templateWorksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]
+                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-        }
+            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]
+                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]);
 
-        protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
-        {
-        }
-
-        public byte[] Export(PicReport picReport)
-        {
-            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, CustomPath);
-            using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
-            {
-                using (var xlPackage = new ExcelPackage())
-                {
-                    var template = templatePackage.Workbook.Worksheets[0];
-                    var worksheet = xlPackage.Workbook.Worksheets.Add(ViewResources.PICManagement);
-                    var rowIndex = 1;
-                    ////RenderTitleAndHeader(template, worksheet, RowStartBody - 1, StartComToolsIndex - 1);
-                    RenderHeader(worksheet);
-                    rowIndex = RowStartBody;
-
-                    for (var index = 0; index < picReport.DataList.Count; index++)
-                    {
-                        RenderRow(worksheet, picReport.DataList[index], index + 1, rowIndex++);
-                    }
-
-                    SetStyle(worksheet);
-                    SetWidthColumn(worksheet);
-                    DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumn]);
-                    return xlPackage.GetAsByteArray();
-                }
-            }
-        }
-
-        protected internal void RenderHeader(ExcelWorksheet worksheet)
-        {
-            totalColumn = BaseColumnIndex + CommunicationTools.Count() - 1;
-            var tools = CommunicationTools.ToList();
-            worksheet.Cells[RowStartHeader, StartComToolsIndex].Value = ViewResources.CommunicationTool;
+            totalColumn = BaseColumnIndex + communicationTools.Count() - 1;
+            var tools = communicationTools.ToList();
+            worksheet.Cells[RowStartHeader, StartComToolsIndex].Value = Labels.CommunicationTool;
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader, StartComToolsIndex + tools.Count - 1].Merge = true;
+
             for (var index = 0; index < tools.Count; index++)
             {
                 worksheet.Cells[RowStartHeader + 1, StartComToolsIndex + index].Value = tools[index].Name;
             }
-            worksheet.Cells[RowStartHeader, totalColumn - 1].Value = ViewResources.Remark;
+
+            worksheet.Cells[RowStartHeader, totalColumn - 1].Value = Labels.Remark;
             worksheet.Cells[RowStartHeader, totalColumn - 1, RowStartHeader + 1, totalColumn - 1].Merge = true;
-            worksheet.Cells[RowStartHeader, totalColumn].Value = ViewResources.Active;
+            worksheet.Cells[RowStartHeader, totalColumn].Value = Labels.Active;
             worksheet.Cells[RowStartHeader, totalColumn, RowStartHeader + 1, totalColumn].Merge = true;
         }
 
-        protected internal void RenderRow(ExcelWorksheet worksheet, PicInfo picInfo, int index, int rowIndex)
+        protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+            int rowIndex = RowStartBody;
+            for (var index = 0; index < picReport.DataList.Count; index++)
+            {
+                RenderRow(worksheet, picReport.DataList[index], index + 1, rowIndex++);
+            }
+        }
+
+        protected internal override void ProcessUI(ExcelWorksheet worksheet)
+        {
+            SetStyle(worksheet);
+            SetWidthColumn(worksheet);
+            DrawBorderCell(worksheet.Cells[1, 1, RowStartBody + picReport.DataList.Count - 1, totalColumn]);
+        }
+
+        protected internal virtual void RenderRow(ExcelWorksheet worksheet, PicInfo picInfo, int index, int rowIndex)
         {
             var colIndex = 1;
             worksheet.Cells[rowIndex, colIndex++].Value = index;
@@ -106,7 +84,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = picInfo.CountryName;
             worksheet.Cells[rowIndex, colIndex++].Value = picInfo.GroupHeadline;
 
-            var tools = CommunicationTools.ToList();
+            var tools = communicationTools.ToList();
             for (var i = 0; i < tools.Count; i++)
             {
                 var item = picInfo.CommunicationTools.Find(t => t.SettingId == tools[i].Id);
@@ -124,7 +102,7 @@
             }
         }
 
-        protected internal void SetStyle(ExcelWorksheet worksheet)
+        protected internal virtual void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
             const byte firstRow = 1;
@@ -137,7 +115,7 @@
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, totalColumn].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
-        protected internal void SetWidthColumn(ExcelWorksheet worksheet)
+        protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const byte colRole = 3;
             const byte colGroupHeadline = 6;

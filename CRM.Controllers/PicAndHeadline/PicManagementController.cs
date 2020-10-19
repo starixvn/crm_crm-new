@@ -25,7 +25,7 @@
         private readonly IUserService userService;
         private readonly INapSettings napSettings;
         private readonly IPicManagementService picManagementService;
-        private readonly IPicManagementExcel picManagementExportExcel;
+        private readonly IExportExcelService excelService;
 
         public PicManagementController(
             INapSession napSession,
@@ -33,14 +33,14 @@
             IUserService userService,
             INapSettings napSettings,
             IPicManagementService picManagementService,
-            IPicManagementExcel picManagementExportExcel)
+            IExportExcelService excelService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
             this.userService = userService;
             this.napSettings = napSettings;
             this.picManagementService = picManagementService;
-            this.picManagementExportExcel = picManagementExportExcel;
+            this.excelService = excelService;
         }
 
         public IActionResult Index()
@@ -79,8 +79,7 @@
             var communicationSetting = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool });
             var communicationTools = communicationSetting.Select(x => new BaseModel { Id = x.SettingId, Name = x.SettingValue });
             var report = await picManagementService.GetReportAsync(criteria);
-            picManagementExportExcel.CommunicationTools = communicationTools;
-            var bytes = picManagementExportExcel.Export(report);
+            var bytes = excelService.ExportPICManagement(communicationTools, report);
             return File(bytes, MimeType.XLSX, $"{ViewResources.PICManagement}.xlsx");
         }
 

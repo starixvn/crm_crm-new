@@ -16,16 +16,16 @@
     public class SettlementReportController : BaseController
     {
         private readonly ISettlementReportService settlementReportService;
-        private readonly ISettlementReportExcel settlementReportExcel;
+        private readonly IExportExcelService excelService;
         private readonly AppSettings appSettings;
 
         public SettlementReportController(
             ISettlementReportService settlementReportService,
-            ISettlementReportExcel settlementReportExcel,
+            IExportExcelService excelService,
             IOptionsSnapshot<AppSettings> appSettings)
         {
             this.settlementReportService = settlementReportService;
-            this.settlementReportExcel = settlementReportExcel;
+            this.excelService = excelService;
             this.appSettings = appSettings.Value;
         }
 
@@ -52,7 +52,7 @@
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             criteria.IsGetFullReport = true;
             var reports = await settlementReportService.GetSettlementReportAsync(criteria);
-            var bytes = settlementReportExcel.Export(reports);
+            var bytes = excelService.ExportSettlementReport(reports);
             string reportName = string.Format(ViewResources.SettlementReport_ExcelTitle, criteria.Year);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }

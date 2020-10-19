@@ -24,10 +24,8 @@
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IPicAssignmentService, PicAssignmentService>();
             services.AddTransient<ISettlementReportService, SettlementReportService>();
-            services.AddTransient<ISettlementReportExcel, SettlementReportExcel>();
             services.AddTransient<IFeedbackSubjectService, FeedbackSubjectService>();
             services.AddTransient<IPicManagementService, PicManagementService>();
-            services.AddTransient<IPicManagementExcel, PicManagementExcel>();
             services.AddScoped<IExportExcelService, ExportExcelService>();
         }
 

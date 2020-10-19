@@ -32,7 +32,7 @@
                 item.CommunicationTools = tuple.Item2.Where(c => c.PicId == item.PicId).ToList();
             }
             var DataList = tuple.Item1.ToList();
-            var expected =  new PicReport
+            var expected = new PicReport
             {
                 DataList = DataList,
                 Total = criteria.TotalRows
@@ -101,12 +101,14 @@
         }
 
         #region Helpers
+
         private PicManagementService GetService()
         {
             baseService = Substitute.For<IBaseService>();
             var service = new PicManagementService(baseService);
             return service;
         }
+
         #endregion Helpers
     }
 }

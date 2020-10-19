@@ -17,7 +17,7 @@
     public class SettlementReportControllerTests
     {
         private ISettlementReportService settlementReportService;
-        private ISettlementReportExcel settlementReportExportExcel;
+        private IExportExcelService excelService;
         private AppSettings appSettings;
 
         [Fact]
@@ -48,7 +48,7 @@
             var expected = fixture.Create<byte[]>();
             var controller = GetController();
             settlementReportService.GetSettlementReportAsync(criteria).Returns(templates);
-            settlementReportExportExcel.Export(Arg.Any<SettlementReportInfo>()).Returns(expected);
+            excelService.ExportSettlementReport(templates).Returns(expected);
 
             // Act
             var result = await controller.ExportSettlementReport(criteria);
@@ -83,14 +83,14 @@
         private SettlementReportController GetController()
         {
             settlementReportService = Substitute.For<ISettlementReportService>();
-            settlementReportExportExcel = Substitute.For<ISettlementReportExcel>();
+            excelService = Substitute.For<IExportExcelService>();
             var optionsAppSettings = Substitute.For<IOptionsSnapshot<AppSettings>>();
             appSettings = new AppSettings
             {
                 TimeSpan = 12
             };
             optionsAppSettings.Value.Returns(appSettings);
-            return new SettlementReportController(settlementReportService, settlementReportExportExcel, optionsAppSettings);
+            return new SettlementReportController(settlementReportService, excelService, optionsAppSettings);
         }
 
         private SettlementReportInfo GetSettlementReportInfo()
