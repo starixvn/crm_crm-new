@@ -21,7 +21,6 @@
             services.AddTransient<ICommonService, CommonService>();
             services.AddTransient<IChatTypeMappingService, ChatTypeMappingService>();
             services.AddTransient<ICommunicationToolSettingService, CommunicationToolSettingService>();
-            services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IPicAssignmentService, PicAssignmentService>();
             services.AddTransient<ISettlementReportService, SettlementReportService>();
             services.AddTransient<IFeedbackSubjectService, FeedbackSubjectService>();

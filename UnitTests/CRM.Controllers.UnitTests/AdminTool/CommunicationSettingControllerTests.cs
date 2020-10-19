@@ -92,7 +92,24 @@
         }
 
         [Fact]
-        public async Task GetById__WhenCalled_ReturnExpectedData()
+        public async Task GetById_CommunicationToolIsNotExist_ReturnNotFound()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            CommunicationToolSetting communicationTool = null;
+            var id = fixture.Create<int>();
+            var controller = GetController();
+            communicationToolService.GetByIdAsync(id).Returns(communicationTool);
+
+            // Act
+            var result = await controller.GetById(id);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task GetById__CommunicationToolIsExist_ReturnExpectedData()
         {
             // Arrange
             var fixture = new Fixture();

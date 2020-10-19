@@ -1,4 +1,4 @@
-﻿namespace CRM.Services.UnitTests
+﻿namespace CRM.Controllers.UnitTests
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -6,36 +6,39 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models;
+    using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
 
-    public class CustomerServiceTests
+    public class CustomerSettingControllerTests
     {
         private IBaseService baseService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
-        public async Task VerifyUsernameAsync_WhenCalled_ReturnAsExpected()
+        public async Task VerifyUsername_WhenCalled_ReturnExpectedJsonResult()
         {
             // Arrange
+            var controler = GetController();
             var criteria = fixture.Create<VerifyRelatedCustomerCriteria>();
             var expected = fixture.Create<IEnumerable<BaseModel>>();
-            var service = GetService();
             baseService.GetDataAsync<BaseModel>(criteria).Returns(expected);
 
             // Act
-            var actual = await service.VerifyUsernameAsync(criteria);
+            var result = await controler.VerifyUsername(criteria);
 
             // Assert
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var actual = Assert.IsAssignableFrom<IEnumerable<BaseModel>>(jsonResult.Value);
             Assert.Equal(expected, actual);
         }
 
         #region Helpers
 
-        private CustomerService GetService()
+        private CustomerSettingController GetController()
         {
             baseService = Substitute.For<IBaseService>();
-            return new CustomerService(baseService);
+            return new CustomerSettingController(baseService);
         }
 
         #endregion Helpers
