@@ -1,15 +1,15 @@
 ﻿namespace CRM.Services.UnitTests.ExportExcel
 {
     using System.Collections.Generic;
-    using CRM.Models.PicAndHeadline;
-    using NSubstitute;
-    using Xunit;
+    using System.Linq;
+    using System.Text;
     using AutoFixture;
     using CRM.Core.Constants;
-    using System.Text;
-    using System.Linq;
     using CRM.Core.Enumerables;
+    using CRM.Models.PicAndHeadline;
+    using NSubstitute;
     using OfficeOpenXml;
+    using Xunit;
 
     public class PicAssignmentExcelTests
     {
