@@ -18,7 +18,7 @@ describe('FormikErrorMessage', () => {
         it('returns null with empty errors', () => {
             // Arrange
             const props = {
-                errors: []
+                errors: {}
             };
 
             // Action
@@ -31,8 +31,8 @@ describe('FormikErrorMessage', () => {
         it('returns null with empty touched', () => {
             // Arrange
             const props = {
-                errors: [ { value: true } ],
-                touched: []
+                errors: { value: true },
+                touched: {}
             };
 
             // Action
@@ -46,8 +46,8 @@ describe('FormikErrorMessage', () => {
             it('has correct Alert', () => {
                 // Arrange
                 const props = {
-                    errors: [{ value: true }],
-                    touched: [{ value: true }]
+                    errors: { value: true },
+                    touched: { value: true }
                 };
     
                 // Action
@@ -60,8 +60,8 @@ describe('FormikErrorMessage', () => {
             it('has correct ul', () => {
                 // Arrange
                 const props = {
-                    errors: [{ value: true }],
-                    touched: [{ value: true }]
+                    errors: { value: true },
+                    touched: { value: true }
                 };
     
                 // Action
@@ -74,9 +74,15 @@ describe('FormikErrorMessage', () => {
             it('has ul with correct children', () => {
                 // Arrange
                 const props = {
-                    errors: [{ value: 'error1' }, { value: 'error2' }],
-                    touched: [{ value: false }, { value: false }],
-                    fieldNames: [ '0', '1' ]
+                    errors: {
+                        value1: 'error1',
+                        value2: 'error2'
+                    },
+                    touched: {
+                        value1: 'touched1',
+                        value2: 'touched2'
+                    },
+                    fieldNames: [ 'value1', 'value2' ]
                 };
 
                 const expected = props.fieldNames.map(field => <li key={field}>{props.errors[field]}</li>);
@@ -94,31 +100,41 @@ describe('FormikErrorMessage', () => {
     describe('validateFormikField', () => {
         it('runs with touched and error is true', () => {
             // Arrange
-            const props = {
-                errors: [false],
-                touched: [false]
-            };
-
-            const component = shallow(<FormikErrorMessage {...props} />);
+            const value = 'value';
+            const errors = { [value]: true };
+            const touched = { [value]: true };
+            const component = shallow(<FormikErrorMessage />);
 
             // Action
-            const result = component.instance().validateFormikField(props.errors, props.touched, 0);
+            const result = component.instance().validateFormikField(errors, touched, value);
 
             // Assert
             expect(result).toBeTrue;
         });
 
-        it('runs with touched and error is false', () => {
+        it('runs with touched is false', () => {
             // Arrange
-            const props = {
-                errors: [false],
-                touched: [true]
-            };
-
-            const component = shallow(<FormikErrorMessage {...props} />);
+            const value = 'value';
+            const errors = { [value]: true };
+            const touched = { [value]: false };
+            const component = shallow(<FormikErrorMessage />);
 
             // Action
-            const result = component.instance().validateFormikField(props.errors, props.touched, 0);
+            const result = component.instance().validateFormikField(errors, touched, value);
+
+            // Assert
+            expect(result).toBeFalse;
+        });
+
+        it('runs with errors is false', () => {
+            // Arrange
+            const value = 'value';
+            const errors = { [value]: false };
+            const touched = { [value]: true };
+            const component = shallow(<FormikErrorMessage />);
+
+            // Action
+            const result = component.instance().validateFormikField(errors, touched, value);
 
             // Assert
             expect(result).toBeFalse;
