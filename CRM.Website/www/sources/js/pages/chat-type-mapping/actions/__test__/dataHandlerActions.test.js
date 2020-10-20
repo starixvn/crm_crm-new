@@ -115,14 +115,14 @@ describe('dataHandlerActions', () => {
         expect(actions.setRecipientData(data)).toEqual(expectedAction);
     });
 
-    it('should handle setRecipientData when getRecipientByRecipientType and not call API when recipientTypeId equals zero', () => {
+    it('should handle setRecipientData when getRecipientByRecipientType and not call API when recipientTypeId equals zero', async () => {
         const recipientTypeId = 0;
-        const expectedActions = [{ type: types.RECIPIENT_DATA, data: [] }];
+        const expectedActions = [];
         const store = mockStore({ recipients: null });
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
 
-        store.dispatch(actions.getRecipientByRecipientType(recipientTypeId)).then(() => {
+        await store.dispatch(actions.getRecipientByRecipientType(recipientTypeId)).then(() => {
             expect(DataService.getDataAsync).not.toHaveBeenCalled();
             expect(store.getActions()).toEqual(expectedActions);
         });
