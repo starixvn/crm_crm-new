@@ -17,12 +17,12 @@
         private const byte RowSuspended = 7;
         private const byte RowDisabled = 8;
         private const byte TotalColumns = 10;
-        private readonly IEnumerable<PICAssignmentInfo> _assignments;
+        private readonly IEnumerable<PICAssignmentInfo> assignments;
 
         public PicAssignmentExcel(string templatePath, IEnumerable<PICAssignmentInfo> assignments)
             : base(templatePath, 0, ViewResources.PICAssignment)
         {
-            _assignments = assignments;
+            this.assignments = assignments;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -44,15 +44,15 @@
             var rowNum = 1;
             var mergeHeadline = 0;
             var mergePic = 0;
-            foreach (PICAssignmentInfo assignment in _assignments)
+            foreach (PICAssignmentInfo assignment in assignments)
             {
                 colIndex = 1;
                 templateWorksheet.Cells[RowStartBody, 1].Copy(worksheet.Cells[rowIndex, colIndex]);
                 worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
                 if (mergeHeadline == 0)
                 {
-                    mergeHeadline = _assignments.Count(assign => assign.HeadlineID == assignment.HeadlineID);
-                    var pics = _assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
+                    mergeHeadline = assignments.Count(assign => assign.HeadlineID == assignment.HeadlineID);
+                    var pics = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
                     mergePic = pics.Count();
                     StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
                     worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineName;
@@ -74,7 +74,7 @@
                 {
                     const int addCol = 3;
                     colIndex += addCol;
-                    var pics = _assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
+                    var pics = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
                     mergePic = pics.Count();
                     var picCell = GetPicCell(assignment.PicList);
                     StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergePic - 1);
@@ -107,7 +107,7 @@
             worksheet.View.FreezePanes(RowStartBody, TotalColumns + 1);
         }
 
-        protected internal static byte GetTemplateRowIndex(string status)
+        protected internal virtual byte GetTemplateRowIndex(string status)
         {
             if (status == CustomerStatus.Closed.ToString())
             {
@@ -134,7 +134,7 @@
             DrawBorderCell(worksheet.Cells[startRow, colIndex]);
         }
 
-        private static string GetPicCell(IEnumerable<PicModel> picList)
+        protected internal virtual string GetPicCell(IEnumerable<PicModel> picList)
         {
             if (picList == null || !picList.Any())
             {
