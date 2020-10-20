@@ -37,7 +37,7 @@ describe('DataGrid', () => {
         // Arrange
         const props = {
             notificationTypeGridParams: {},
-            notificationTypeGridData: null,
+            notificationTypeGridData: null
         };
 
         // Action
@@ -217,7 +217,7 @@ describe('DataGrid', () => {
                 notificationTypeGridParams: {},
                 notificationTypeGridData: {
                     data: []
-                },
+                }
             };
 
             // Action
@@ -297,7 +297,7 @@ describe('DataGrid', () => {
                 notificationTypeGridParams: {},
                 notificationTypeGridData: {
                     data: []
-                },
+                }
             };
             const isHost = true;
 
@@ -360,7 +360,7 @@ describe('DataGrid', () => {
                 recipientTypes: [{ recipientTypeName: 'name1' }, { recipientTypeName: 'name2' }],
                 chatTypes: [{ chatTypeName: 'name3' }, { chatTypeName: 'name4' }],
                 systemName: 'test'
-            }
+            };
 
             const dataGrid = shallow(<DataGrid {...props} />);
             dataGrid.instance().startIndex = startIndex;
@@ -394,7 +394,7 @@ describe('DataGrid', () => {
                 recipientTypes: [{ recipientTypeName: 'name1' }, { recipientTypeName: 'name2' }],
                 chatTypes: [{ chatTypeName: 'name3' }, { chatTypeName: 'name4' }],
                 systemName: 'test'
-            }
+            };
 
             const dataGrid = shallow(<DataGrid {...props} />);
             dataGrid.instance().startIndex = startIndex;

@@ -240,7 +240,7 @@ describe('InsertPersonalMappingPopup', () => {
                     groupHeadlines: '',
                     recipient: '',
                     letstalkId: '',
-                    languageId: '',
+                    languageId: ''
                 }
             };
             popup.instance().setState(state);

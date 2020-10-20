@@ -138,7 +138,7 @@ describe('AppContainer', () => {
         it('render component DeleteNotificationType correctly', () => {
             // Arrange
             const props = {
-                deleteNotificationTypePopup: { show: true, name: 'test123' },
+                deleteNotificationTypePopup: { show: true, name: 'test123' }
             };
 
             // Act

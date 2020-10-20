@@ -51,7 +51,7 @@ describe('NewNotificationType', () => {
                 show: true,
                 isSuccessful: false,
                 message: '' || 'InsertNotificationTypeSuccessfully'
-            },
+            }
         };
         const container = mount(<NewNotificationType {...props} />);
 
@@ -74,20 +74,20 @@ describe('NewNotificationType', () => {
                 createNotificationType: jest.fn(() => promise),
                 createNotificationTypeResult: { isSuccessful: true, message: '' },
                 onSuccess: jest.fn()
-            }
+            };
             const values = {
                 notificationTypeName: '',
                 chatTypeIds: '',
                 recipientTypeIds: '',
                 systemId: ''
-            }
+            };
             const container = shallow(<NewNotificationType {...props} />).instance();
 
             // Act
             container.handleSubmit(values, secondParam);
 
             await promise;
-            jest.runAllTimers()
+            jest.runAllTimers();
 
             // Assert
             expect(secondParam.setSubmitting).toHaveBeenCalledTimes(1);
@@ -105,19 +105,19 @@ describe('NewNotificationType', () => {
                 createNotificationType: jest.fn(() => promise),
                 createNotificationTypeResult: { isSuccessful: false, message: '' },
                 onSuccess: jest.fn()
-            }
+            };
             const values = {
                 notificationTypeName: '',
                 chatTypeIds: '',
                 recipientTypeIds: '',
                 systemId: ''
-            }
+            };
             const container = shallow(<NewNotificationType {...props} />).instance();
 
             // Act
             container.handleSubmit(values, secondParam);
             await promise;
-            jest.runAllTimers()
+            jest.runAllTimers();
 
             // Assert
             expect(secondParam.setSubmitting).toHaveBeenCalledTimes(2);

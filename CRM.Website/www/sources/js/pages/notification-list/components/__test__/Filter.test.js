@@ -835,7 +835,7 @@ describe('Filter', () => {
             invalidParams: {},
             getSettings: jest.fn(() => Promise.resolve({})),
             setResendOptions: jest.fn()
-        }
+        };
 
         var filter = shallow(<Filter {...props} />);
 

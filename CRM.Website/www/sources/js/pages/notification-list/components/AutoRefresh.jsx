@@ -15,23 +15,11 @@ export class AutoRefresh extends Component {
         };
 
         this.autoRefresh = React.createRef();
-        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
     componentDidMount = () => {
         this.countDownFunc();
         document.addEventListener('mousedown', this.handleClickOutside);
-    }
-
-    componentWillUnmount = () => {
-        clearInterval(this.countDownFunc);
-        document.removeEventListener('mousedown', this.handleClickOutside);
-    }
-
-    handleClickOutside(event) {
-        if (this.autoRefresh && !this.autoRefresh.current.contains(event.target) && this.state.isOpenDropdown) {
-            this.setState({ isOpenDropdown: false });
-        }
     }
 
     componentDidUpdate = prevProps => {
@@ -55,6 +43,17 @@ export class AutoRefresh extends Component {
 
             this.props.setGridParams(params);
             this.props.getGridData(params, data => functions.handleNewResendOptions(data, this.props.setResendOptions));
+        }
+    }
+
+    componentWillUnmount = () => {
+        clearInterval(this.countDownFunc);
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    handleClickOutside = event => {
+        if (this.autoRefresh && !this.autoRefresh.current.contains(event.target) && this.state.isOpenDropdown) {
+            this.setState({ isOpenDropdown: false });
         }
     }
 
@@ -94,20 +93,21 @@ export class AutoRefresh extends Component {
         this.setState({ isOpenDropdown: !this.state.isOpenDropdown })
 
     render() {
-        return <div className='d-flex align-items-center' ref={this.autoRefresh}>
-            <div className='auto-refresh'>
-                <div className='d-flex justify-content-between align-items-center auto-refresh-value'
-                    onClick={() => this.toggleAutoFreshDropdown()}
-                >
-                    <div>
-                        {this.props.autoRefresh.value !== 0 ?
-                            this.props.autoRefresh.countDown :
-                            LangHelper.getResource('NotRefresh')}
+        return (
+            <div className='d-flex align-items-center' ref={this.autoRefresh}>
+                <div className='auto-refresh'>
+                    <div className='d-flex justify-content-between align-items-center auto-refresh-value'
+                        onClick={() => this.toggleAutoFreshDropdown()}
+                    >
+                        <div>
+                            {this.props.autoRefresh.value !== 0 ?
+                                this.props.autoRefresh.countDown :
+                                LangHelper.getResource('NotRefresh')}
+                        </div>
+                        <span className={`fa fa-caret-${this.state.isOpenDropdown ? 'up' : 'down'}`} />
                     </div>
-                    <span className={`fa fa-caret-${this.state.isOpenDropdown ? 'up' : 'down'}`}/>
-                </div>
-                {
-                    this.state.isOpenDropdown &&
+                    {
+                        this.state.isOpenDropdown &&
                         <ul className='auto-refresh-dropdown'>
                             {
                                 AUTO_REFRESH_TIMES.map(time =>
@@ -115,11 +115,11 @@ export class AutoRefresh extends Component {
                             }
                             <li onClick={() => this.handleAutoRefreshChange(0)} value={0}>{LangHelper.getResource('NotRefresh')}</li>
                         </ul>
-                }
-
+                    }
+                </div>
+                <span className='fa fa-refresh link-click' onClick={() => this.handleRefresh()} />
             </div>
-            <span className='fa fa-refresh link-click' onClick={() => this.handleRefresh()}/>
-        </div>;
+        );
     }
 }
 

@@ -8,7 +8,7 @@ export const renderSystemOption = item => {
 };
 
 export const validateFormik = (values) => {
-    const errors = {}
+    const errors = {};
 
     if (!values.notificationTypeName || values.notificationTypeName.trim().length === 0) {
         errors.notificationTypeName = LangHelper.getResource('NotificationTypeNameRequired');

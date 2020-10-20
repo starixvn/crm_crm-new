@@ -322,7 +322,7 @@ describe('DataGrid', () => {
 
         it('renderConfirmMessage will return correctly', () => {
             const dataGrid = mount(<DataGrid {...props} />);
-            const expected = (<div>The Personal/Group shall be received notification. Are you sure you want to activate it?</div>);
+            const expected = <div>The Personal/Group shall be received notification. Are you sure you want to activate it?</div>;
             const actual = dataGrid.instance().renderConfirmMessage();
             expect(actual.html).toEqual(expected.html);
         });

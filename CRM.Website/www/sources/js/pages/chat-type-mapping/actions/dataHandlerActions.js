@@ -113,7 +113,7 @@ const actions = {
     setUpateActivePopup,
     updateActiveStatus,
     getRecipientByRecipientType,
-    getGroupHeadlineByRecipient,
+    getGroupHeadlineByRecipient
 };
 
 export default actions;

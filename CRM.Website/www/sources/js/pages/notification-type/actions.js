@@ -61,5 +61,5 @@ export const ActionCreators = {
     editNotificationType,
     setDeleteNotificationTypePopup,
     deleteNotificationType,
-    getSettings,
+    getSettings
 };

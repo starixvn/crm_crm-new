@@ -108,7 +108,7 @@ describe('EditNotificationType', () => {
                         name: 'chat 2'
                     }
                 ],
-                systems: [],
+                systems: []
             }
         };
         const recipientTypesOptions = props.settings.recipientTypes.map(x => {
@@ -146,19 +146,19 @@ describe('EditNotificationType', () => {
                 editNotificationType: jest.fn(() => promise),
                 editNotificationTypeResult: { isSuccessful: true, message: '' },
                 onSuccess: jest.fn()
-            }
+            };
             const values = {
                 notificationTypeName: '',
                 chatTypeIds: '',
                 recipientTypeIds: '',
                 systemId: ''
-            }
+            };
             const container = shallow(<EditNotificationType {...props} />).instance();
 
             // Act
             container.handleSubmit(values, secondParam);
             await promise;
-            jest.runAllTimers()
+            jest.runAllTimers();
 
             // Assert
             expect(secondParam.setSubmitting).toHaveBeenCalledTimes(1);
@@ -176,19 +176,19 @@ describe('EditNotificationType', () => {
                 editNotificationType: jest.fn(() => promise),
                 editNotificationTypeResult: { isSuccessful: false, message: '' },
                 onSuccess: jest.fn()
-            }
+            };
             const values = {
                 notificationTypeName: '',
                 chatTypeIds: '',
                 recipientTypeIds: '',
                 systemId: ''
-            }
+            };
             const container = shallow(<EditNotificationType {...props} />).instance();
 
             // Act
             container.handleSubmit(values, secondParam);
             await promise;
-            jest.runAllTimers()
+            jest.runAllTimers();
 
             // Assert
             expect(secondParam.setSubmitting).toHaveBeenCalledTimes(2);

@@ -221,7 +221,7 @@ describe('Filter', () => {
             const container = shallow(<Filter {...props} />);
 
             // Act
-            container.instance().handleOpenCreatePopup()
+            container.instance().handleOpenCreatePopup();
 
             // Assert
             expect(props.setCreateNotificationTypePopup).toHaveBeenCalledWith({ show: true });
@@ -235,7 +235,7 @@ describe('Filter', () => {
                         notificationTypeName: 'test',
                         recipientTypeIds: '1,2',
                         chatTypeIds: '1,2',
-                        systemId: '1,2',
+                        systemId: '1,2'
                     }
                 };
 
@@ -274,7 +274,7 @@ describe('Filter', () => {
                         notificationTypeName: 'test',
                         recipientTypeIds: null,
                         chatTypeIds: null,
-                        systemId: null,
+                        systemId: null
                     }
                 };
 
@@ -320,10 +320,10 @@ describe('Filter', () => {
                     settings: {},
                     getSettings: jest.fn(() => Promise.resolve({ data: {} })),
                     setNotificationTypeGridParams: jest.fn(),
-                    getNotificationTypeGridData: jest.fn(),
+                    getNotificationTypeGridData: jest.fn()
                 };
 
-                const filter = shallow(<Filter {...props} />)
+                const filter = shallow(<Filter {...props} />);
                 filter.instance().getParams = jest.fn();
                 filter.instance().getParams.mockReturnValueOnce(params);
 
@@ -347,10 +347,10 @@ describe('Filter', () => {
                     settings: {},
                     getSettings: jest.fn(() => Promise.resolve({ data: {} })),
                     setNotificationTypeGridParams: jest.fn(),
-                    getNotificationTypeGridData: jest.fn(),
+                    getNotificationTypeGridData: jest.fn()
                 };
 
-                const filter = shallow(<Filter {...props} />)
+                const filter = shallow(<Filter {...props} />);
 
                 // Action
                 filter.instance().submitHandler(event);

@@ -17,7 +17,7 @@ export class ViewDetail extends Component {
             modalWidth: 0
         };
     }
-    
+
     componentDidMount = () =>
         this.setState({
             remark: this.props.data.resolvedRemark ? this.props.data.resolvedRemark : '',
@@ -50,7 +50,7 @@ export class ViewDetail extends Component {
         )
 
     handleChange = e => {
-        this.setState({ [e.target.name]: e.target.value});
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     onClose = close => {
@@ -80,8 +80,8 @@ export class ViewDetail extends Component {
     render() {
         const { data, onClose } = this.props;
         const isResolved = this.state.isResolved || data.status === LangHelper.getResource('Resolved');
-        const resolvedBy = this.props.viewDetail.resolvedBy || data.resolvedBy
-        const title =  isResolved ?
+        const resolvedBy = this.props.viewDetail.resolvedBy || data.resolvedBy;
+        const title = isResolved ?
             LangHelper.getResource('ResolvedNotification') :
             LangHelper.getResource('ErrorNotification');
 
@@ -104,7 +104,7 @@ export class ViewDetail extends Component {
                     </div>
                     <div>
                         {`${LangHelper.getResource('SentAt')}: `}
-                    <b>{`${data.sendDateString} ${data.sendTimeString}`}</b>
+                        <b>{`${data.sendDateString} ${data.sendTimeString}`}</b>
                     </div>
                     <div className='error-occured-message error-resolved-row'>{LangHelper.getResource('ErrorOccuredWhileSendingTheNotificationToTheFollowingRecipient')}</div>
                     <Table
@@ -118,7 +118,7 @@ export class ViewDetail extends Component {
                         <div className='error-resolved-row'>{`${LangHelper.getResource('Remark')}: `}{isResolved && this.state.remark}</div>
                         {
                             !isResolved &&
-                                <textarea className='view-detail-remark' rows='3' onChange={e => this.handleChange(e)} name='remark' value={this.state.remark} />
+                            <textarea className='view-detail-remark' rows='3' onChange={e => this.handleChange(e)} name='remark' value={this.state.remark} />
                         }
                     </Fragment>
                     {
@@ -128,10 +128,10 @@ export class ViewDetail extends Component {
                 <Modal.Footer>
                     {
                         !isResolved &&
-                            <Button
-                                onClick={() => this.editNotificationList(data.notificationId)}
-                                variant='primary' size='sm'
-                            >{LangHelper.getResource('Resolve')}</Button>
+                        <Button
+                            onClick={() => this.editNotificationList(data.notificationId)}
+                            variant='primary' size='sm'
+                        >{LangHelper.getResource('Resolve')}</Button>
                     }
                     <Button
                         onClick={() => this.onClose(onClose)}
