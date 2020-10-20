@@ -1,18 +1,14 @@
 ﻿namespace CRM.BackgroundJob.Models.WinLossLimit
 {
     using System;
-
-    public class WinLimitFeedBackInfo
+    public class WinLimitFeedBackInfo : CustomerWinLimit
     {
-        public int LogId { get; set; }
-        public string CustID { get; set; }
-        public int HeadlineID { get; set; }
-        public int RelatedCustID { get; set; }
-        public byte LevelID { get; set; }
-        public double MaxWinLimitSetting { get; set; }
-        public double TotalWinAmt { get; set; }
-        public double TotalWinAmt_RM { get; set; }
-        public DateTime ReachedTime { get; set; }
-        public string BettypeIDList { get; set; }
+        public string Currency { get; set; }
+        public string UserName { get; set; }
+        public string Site { get; set; }
+        public int HeadlineId { get; set; }
+        public string HeadlineName { get; set; }
+        public string RelatedCustId { get; set; }
+        public string ProductName { get; set; }
     }
 }

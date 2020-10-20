@@ -195,6 +195,7 @@
             services.AddScoped<IBackgroundService, BackgroundService>();
             services.AddScoped<ISendNotificationService, SendNotificationService>();
             services.AddScoped<IMonitorService, MonitorService>();
+            services.AddScoped<IWinLossTransactionService, WinLossTransactionService>();
         }
 
         private static void RegisterHangfire(IServiceCollection services, ConnectionMultiplexer redis, IConfiguration configuration)

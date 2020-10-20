@@ -28,7 +28,7 @@
         private readonly IMessageService messageService;
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
-        private readonly IFeedbackTicketVoidingService ticketVoidingService;
+        private readonly IWinLossTransactionService transactionService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
         public WinLossFeedbackService(
@@ -39,7 +39,7 @@
             IMessageService messageService,
             ICustomerService customerService,
             ICRMLogService logService,
-            IFeedbackTicketVoidingService ticketVoidingService)
+            IWinLossTransactionService transactionService)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             this.appSettings = appSettings.Value;
@@ -49,7 +49,7 @@
             this.messageService = messageService;
             this.customerService = customerService;
             this.logService = logService;
-            this.ticketVoidingService = ticketVoidingService;
+            this.transactionService = transactionService;
         }
 
         public async Task CreateFeedbackForWinLossLimitAsync(WinLossSystemSetting setting)
@@ -60,6 +60,16 @@
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") }
             };
             await systemSettingService.EditSystemSettingAsync(settingJobStatus);
+
+            IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.getListCustReachLimitAsync();
+            var custIds = cusWinLimit.Select(x => x.CustID);
+            IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
+
+            ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>> winlossInfo = await transactionService.ImportWinLimitFeedbackInfoAsync(
+                cusWinLimit,
+                headlines
+                );
+
         }
     }
 }

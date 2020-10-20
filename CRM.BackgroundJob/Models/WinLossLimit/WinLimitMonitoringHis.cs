@@ -8,7 +8,7 @@
         public byte ProductID { get; set; }
         public decimal MaxWinLimit { get; set; }
         public decimal TotalWinAmt { get; set; }
-        public double WinAmt { get; set; }
+        public decimal WinAmt { get; set; }
         public byte LevelID { get; set; }
         public byte ActionID { get; set; }
         public DateTime ModifiedDate { get; set; }

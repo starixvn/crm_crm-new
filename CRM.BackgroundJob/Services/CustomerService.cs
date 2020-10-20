@@ -5,6 +5,8 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Repositories;
+    using global::CRM.BackgroundJob.Criteria.WinLossLimit;
+    using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Services;
 
     public interface ICustomerService
@@ -12,6 +14,8 @@
         Task<CustomerInfo> GetCustomerInfoAsync(string username, bool isGuest);
 
         Task<IEnumerable<GroupHeadline>> GetGroupHeadlineAsync(IEnumerable<int> custIds);
+
+        Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync();
     }
 
     public class CustomerService : ICustomerService
@@ -44,6 +48,12 @@
                 CustIds = string.Join(",", custIds)
             };
             return await baseService.GetDataAsync<GroupHeadline>(criteria);
+        }
+
+        public async Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync()
+        {
+            var criteria = new GetListCustomerReachLimitCriteria();
+            return await baseService.GetDataAsync<CustomerWinLimit>(criteria);
         }
     }
 }

@@ -49,7 +49,7 @@
                 }
 
                 var isRunning = setting.JobStatus.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
-                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForWinLossLimit);
+                //await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForWinLossLimit);
                 if (!isRunning)
                 {
                     await Task.WhenAll(
