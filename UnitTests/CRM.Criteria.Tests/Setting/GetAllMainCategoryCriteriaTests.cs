@@ -2,6 +2,7 @@
 {
     using Xunit;
     using CRM.Criteria.Setting;
+    using CRM.Core.Constants;
 
     public class GetAllMainCategoryCriteriaTests
     {
@@ -30,6 +31,18 @@
 
             // Assert
             Assert.True(actual);
+        }
+
+        [Fact]
+        public void UserRole_WhenGet_ReturnExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetAllMainCategoryCriteria();
+
+            // Act
+
+            // Assert
+            Assert.Equal(Constants.UserRole, criteria.UserRole);
         }
     }
 }

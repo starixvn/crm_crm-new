@@ -2,6 +2,7 @@
 {
     using Xunit;
     using CRM.Criteria.Setting;
+    using CRM.Core.Constants;
 
     public class GetAllSubCategoryCriteriaTests
     {
@@ -30,6 +31,22 @@
 
             // Assert
             Assert.True(actual);
+        }
+
+        [Fact]
+        public void Properties_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetAllSubCategoryCriteria
+            {
+                ParentId = 1,
+            };
+
+            // Act
+
+            // Assert
+            Assert.Equal(1, criteria.ParentId);
+            Assert.Equal(Constants.UserRole, criteria.UserRole);
         }
     }
 }

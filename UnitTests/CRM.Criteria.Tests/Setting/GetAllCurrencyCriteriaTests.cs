@@ -31,5 +31,24 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void Properties_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetAllCurrencyCriteria
+            {
+                IsTest = true,
+                Active = 1,
+                OfferSite = 2
+            };
+
+            // Act
+
+            // Assert
+            Assert.True(criteria.IsTest);
+            Assert.Equal(1, criteria.Active);
+            Assert.Equal(2, criteria.OfferSite);
+        }
     }
 }

@@ -1,18 +1,14 @@
 ﻿namespace CRM.Criteria.PicAndHeadline
 {
-    using Fanex.Data.Repository;
+    using CRM.Core.Models;
 
-    public class ValidateAssignmentCriteria : CriteriaBase
+    public class ValidateAssignmentCriteria : BaseNonQueryCommand
     {
         public int HeadlineId { get; set; }
 
         public string PicId { get; set; }
 
         public string Username { get; set; }
-
-        public int ErrCode { get; set; }
-
-        public string ErrMsg { get; set; }
 
         public override string GetSettingKey()
         {

@@ -31,5 +31,20 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void Properties_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetAllBetTypeCriteria
+            {
+                ProductID = 1
+            };
+
+            // Act
+
+            // Assert
+            Assert.Equal(1, criteria.ProductID);
+        }
     }
 }

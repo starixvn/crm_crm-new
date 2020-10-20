@@ -1,18 +1,14 @@
 ﻿namespace CRM.Criteria.PicAndHeadline
 {
-    using Fanex.Data.Repository;
+    using CRM.Core.Models;
 
-    public class RemoveAssignmentCommand : NonQueryCommand
+    public class RemoveAssignmentCommand : BaseNonQueryCommand
     {
         public string RemovedPICs { get; set; }
 
         public int UserId { get; set; }
 
         public string LoginIP { get; set; }
-
-        public string ErrCode { get; set; }
-
-        public string ErrMsg { get; set; }
 
         public override string GetSettingKey()
         {

@@ -31,5 +31,20 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void ViewType_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetAllStatusCriteria
+            {
+                ViewType = 1
+            };
+
+            // Act
+
+            // Assert
+            Assert.Equal(1, criteria.ViewType);
+        }
     }
 }

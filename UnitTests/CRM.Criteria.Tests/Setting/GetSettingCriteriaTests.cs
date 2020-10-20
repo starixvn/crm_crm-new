@@ -31,5 +31,22 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void Properties_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetSettingCriteria
+            {
+                SettingName = "setting",
+                IsActive = true
+            };
+
+            // Act
+
+            // Assert
+            Assert.True(criteria.IsActive);
+            Assert.Equal("setting", criteria.SettingName);
+        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace CRM.Criteria.PicAndHeadline
 {
-    using Fanex.Data.Repository;
+    using CRM.Core.Models;
 
-    public class SetDefaultPicCommand : NonQueryCommand
+    public class SetDefaultPicCommand : BaseNonQueryCommand
     {
         public int HeadlineId { get; set; }
 
@@ -11,10 +11,6 @@
         public int UserId { get; set; }
 
         public string LoginIP { get; set; }
-
-        public int ErrCode { get; set; }
-
-        public string ErrMsg { get; set; }
 
         public override string GetSettingKey()
         {

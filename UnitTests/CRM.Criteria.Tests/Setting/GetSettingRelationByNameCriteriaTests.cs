@@ -31,5 +31,22 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void Properties_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetSettingRelationByNameCriteria
+            {
+                SettingName = "setting",
+                ParentID = 1
+            };
+
+            // Act
+
+            // Assert
+            Assert.Equal("setting", criteria.SettingName);
+            Assert.Equal(1, criteria.ParentID);
+        }
     }
 }

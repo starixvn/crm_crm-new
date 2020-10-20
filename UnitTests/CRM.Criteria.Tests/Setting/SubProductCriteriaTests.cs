@@ -31,5 +31,20 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void ProductId_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new SubProductCriteria
+            {
+                ProductID = 1
+            };
+
+            // Act
+
+            // Assert
+            Assert.Equal(1, criteria.ProductID);
+        }
     }
 }

@@ -31,5 +31,20 @@
             // Assert
             Assert.True(actual);
         }
+
+        [Fact]
+        public void Settings_WhenSet_GetExpectedValue()
+        {
+            // Arrange
+            var criteria = new GetSourceSettingMappingCriteria
+            {
+                Settings = "setting"
+            };
+
+            // Act
+
+            // Assert
+            Assert.Equal("setting", criteria.Settings);
+        }
     }
 }
