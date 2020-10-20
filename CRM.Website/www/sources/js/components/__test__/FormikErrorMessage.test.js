@@ -1,7 +1,5 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { Alert } from 'react-bootstrap';
-import lodash from 'lodash';
 import FormikErrorMessage from '../FormikErrorMessage';
 import { shallow } from 'enzyme';
 

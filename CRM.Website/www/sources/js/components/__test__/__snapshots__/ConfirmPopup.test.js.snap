@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmPopup has correct snapshots 1`] = `ShallowWrapper {}`;
+
+exports[`ConfirmPopup should have correct snapshots 1`] = `ShallowWrapper {}`;
