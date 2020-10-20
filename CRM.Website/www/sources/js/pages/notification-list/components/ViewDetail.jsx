@@ -20,8 +20,8 @@ export class ViewDetail extends Component {
     
     componentDidMount = () =>
         this.setState({
-            remark: this.props.data.resolvedRemark ?? '',
-            oldRemark: this.props.data.resolvedRemark ?? '',
+            remark: this.props.data.resolvedRemark ? this.props.data.resolvedRemark : '',
+            oldRemark: this.props.data.resolvedRemark ? this.props.data.resolvedRemark : '',
             modalWidth: document.getElementById('view-detail-modal-body').clientWidth
         })
 
