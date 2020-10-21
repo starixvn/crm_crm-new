@@ -5,7 +5,7 @@
     public class CustomerWinLimit
     {
         public int LogID { get; set; }
-        public int CustID { get; set; }
+        public int CustId { get; set; }
         public int ProductID { get; set; }
         public string ProductGroup { get; set; }
         public string Level { get; set; }

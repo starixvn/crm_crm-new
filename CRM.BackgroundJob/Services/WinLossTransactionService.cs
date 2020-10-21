@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.WinLossLimit;
     using CRM.BackgroundJob.Models.WinLossLimit;
-    using global::CRM.Core.Extensions.XML;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Models;
     using System.Text;
@@ -39,8 +38,8 @@
                 decimal settingAmount = 0;
                 var hlname = "";
                 var headlineId = 0;
-                decimal TotalWinAmt = Decimal.Truncate(limitInfo.TotalWinAmt);
-                decimal TotalWinAmt_RM = Decimal.Truncate(limitInfo.TotalWinAmt_RM);
+                decimal TotalWinAmt = decimal.Truncate(limitInfo.TotalWinAmt);
+                decimal TotalWinAmt_RM = decimal.Truncate(limitInfo.TotalWinAmt_RM);
                 var BettypeIDList = limitInfo.BettypeIDList == null ? "" : limitInfo.BettypeIDList;
                 if (limitInfo.MaxWinLimitSetting == null || limitInfo.MaxWinLimitSetting == string.Empty)
                 {
@@ -60,16 +59,16 @@
                     settingAmount = getLimitSetting(setting, limitInfo.LevelID);
                 }
 
-                GroupHeadline headline = headlines.FirstOrDefault(x => x.CustId == limitInfo.CustID);
+                GroupHeadline headline = headlines.FirstOrDefault(x => x.CustId == limitInfo.CustId);
                 headlineId = headline != null ? headline.HeadlineId : 0;
                 hlname = headline != null ? headline.HeadlineName : "";
 
                 stringBuilder.AppendFormat(XmlTemplate,
                     limitInfo.LogID,
-                    limitInfo.CustID,
+                    limitInfo.CustId,
                     headlineId,
                     hlname,
-                    limitInfo.CustID,
+                    limitInfo.CustId,
                     limitInfo.ProductID,
                     limitInfo.ProductGroup,
                     limitInfo.Level,
@@ -112,7 +111,7 @@
                 default:
                     break;
             }
-            return Decimal.Truncate(amount);
+            return decimal.Truncate(amount);
 
         }
     }

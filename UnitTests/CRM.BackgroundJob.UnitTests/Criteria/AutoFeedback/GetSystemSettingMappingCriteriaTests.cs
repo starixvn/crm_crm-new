@@ -11,7 +11,7 @@
         {
             // Arrange
             var criteria = new GetSystemSettingMappingCriteria();
-            var expected = "Acc_CRM_SystemSettingMappingSel";
+            var expected = "Acc_CRM_SystemSettingMappingSel_xtest";
 
             // Act
             var actual = criteria.GetSettingKey();

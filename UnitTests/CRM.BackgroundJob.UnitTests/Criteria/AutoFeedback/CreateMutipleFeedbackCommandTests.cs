@@ -11,7 +11,7 @@
         {
             // Arrange
             var criteria = new CreateMutipleFeedbackCommand();
-            var expected = "Acc_CRM_GuestFeedbackIns_Multiple";
+            var expected = "Acc_CRM_GuestFeedbackIns_Multiple_xtest";
 
             // Act
             var actual = criteria.GetSettingKey();

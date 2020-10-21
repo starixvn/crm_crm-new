@@ -2,7 +2,7 @@
 {
     public class BettypeInfo
     {
-        public int Bettype { get; set; }
+        public string Bettype { get; set; }
         public string Name { get; set; }
     }
 }

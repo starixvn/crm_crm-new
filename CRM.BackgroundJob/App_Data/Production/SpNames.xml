@@ -7,7 +7,7 @@
     <Function Name="System Setting">
         <Setting Key="Acc_CRM_SystemSettingSel" SpName="Acc_CRM_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SystemSettingUpd" SpName="Acc_CRM_SystemSettingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_WinLimit_SystemSettingSel" SpName="Acc_CRM_WinLimit_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_WinLimit_SystemSettingSel_xtest" SpName="Acc_CRM_WinLimit_SystemSettingSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Feedback">
         <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -20,9 +20,9 @@
         <Setting Key="Acc_CRM_MessageAbnormalTicketsSel" SpName="Acc_CRM_MessageAbnormalTicketsSel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
         <Setting Key="Acc_CRM_AbnormalTicketsSel" SpName="Acc_CRM_AbnormalTicketsSel" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_GroupHeadlineSel" SpName="Acc_CRM_GroupHeadlineSel" DbName="DBACC.bodb02.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SystemSettingMappingSel" SpName="Acc_CRM_SystemSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SystemSettingMappingSel_xtest" SpName="Acc_CRM_SystemSettingMappingSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerFeedbackIns" SpName="Acc_CRM_CustomerFeedbackIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple_xtest" SpName="Acc_CRM_GuestFeedbackIns_Multiple_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot">
         <Setting Key="Acc_CRM_Chatbot_SystemSetting_Sel" SpName="Acc_CRM_Chatbot_SystemSetting_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
