@@ -129,7 +129,7 @@
         private bool IsValidTime(string time)
         {
             DateTime.TryParse(Cryptography.DecryptPassword(time.Replace(" ", "+")), out DateTime descryptTime1);
-            DateTime.TryParse(Cryptography.DecryptPassword(securityService.GetTime()), out DateTime descryptTime2);
+            DateTime.TryParse(securityService.GetTime(), out DateTime descryptTime2);
             var expiration = descryptTime2 - descryptTime1;
 
             return expiration.TotalSeconds <= appSettings.SingleSignOnExpiredTime;
