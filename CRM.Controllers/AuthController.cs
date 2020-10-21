@@ -112,7 +112,11 @@
         private ExternalRedirectMapping GetExternalRedirectMapping()
         {
             var request = HttpContext.Request;
-            var domain = string.Format("{0}://{1}", request.Scheme, request.Host);
+            var domain = string.Format("{0}://{1}{2}",
+                request.Scheme,
+                request.Host,
+                Url.Content("~"));
+            domain = domain.Substring(0, domain.Length - 1);
             return redirectMappings.First(x => x.Domain.Equals(domain, StringComparison.OrdinalIgnoreCase));
         }
 
