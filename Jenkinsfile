@@ -17,7 +17,7 @@ pipeline{
     stage('Build'){
       steps {
         script{
-          pipelineLib.beginSonarQubeForMsBuild("CRM-New", "CRM New", "/d:sonar.cs.opencover.reportsPaths=\"${WORKSPACE}\\CoverageReports\\*.xml\" /d:sonar.cs.vstest.reportsPaths=\"${WORKSPACE}\\TestResults\\*.trx\" /d:sonar.javascript.lcov.reportPaths=\"${WORKSPACE}\\js-lcov\\lcov.info\" /d:sonar.testExecutionReportPaths=\"${WORKSPACE}\\js-test-report.xml\" /d:sonar.tests=__tests__ /d:sonar.test.inclusions=**/*.test.js")
+          pipelineLib.beginSonarQubeForMsBuild("CRMNew", "Nexus / CRM New", "/d:sonar.cs.opencover.reportsPaths=\"${WORKSPACE}\\CoverageReports\\*.xml\" /d:sonar.cs.vstest.reportsPaths=\"${WORKSPACE}\\TestResults\\*.trx\" /d:sonar.javascript.lcov.reportPaths=\"${WORKSPACE}\\js-lcov\\lcov.info\" /d:sonar.testExecutionReportPaths=\"${WORKSPACE}\\js-test-report.xml\" /d:sonar.tests=__tests__ /d:sonar.test.inclusions=**/*.test.js")
 
           pipelineLib.restoreNuget()
 
