@@ -3,23 +3,10 @@ import PropTypes from 'prop-types';
 import MultipleSelectLabel from './MultipleSelectLabel';
 import MultipleSelectOptionList from './MultipleSelectOptionList';
 import OptionAll from './OptionAll';
-
-const KEY_NAME = 'key';
-const VALUE_NAME = 'value';
-const STATUS_NAME = 'checked';
+import { KEY_NAME, VALUE_NAME, STATUS_NAME } from './constants';
+import functions from './functions';
 
 let id = 1;
-const convertDataSourceToState = ({ keyField, valueField, statusField, dataSource }) => {
-    return dataSource.map(item => {
-        return {
-            [KEY_NAME]: item[keyField],
-            [VALUE_NAME]: item[valueField],
-            [STATUS_NAME]: item[statusField],
-            subData: item.subData ? item.subData : [],
-            visible: true
-        };
-    });
-};
 
 export default class MultipleSelect extends Component {
     static propTypes = {
@@ -67,7 +54,7 @@ export default class MultipleSelect extends Component {
         if (props.dataSource !== state.originalDataSource) {
             return {
                 originalDataSource: props.dataSource,
-                dataSource: convertDataSourceToState(props)
+                dataSource: functions.convertDataSourceToState(props)
             };
         }
 
