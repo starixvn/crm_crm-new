@@ -15,6 +15,7 @@
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Routing;
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
@@ -61,6 +62,7 @@
                     RequestServices = MockServiceProvider()
                 }
             };
+            controller.Url = MockUrlHelper();
             userService.GetAsync(model.Username).Returns(user);
 
             //Act
@@ -85,6 +87,7 @@
                     RequestServices = MockServiceProvider()
                 }
             };
+            controller.Url = MockUrlHelper();
             userService.GetAsync(model.Username).Returns(user);
             authService.HashText(Arg.Any<string>()).Returns("invalid-password");
 
@@ -115,6 +118,7 @@
                     RequestServices = MockServiceProvider()
                 }
             };
+            controller.Url = MockUrlHelper();
             userService.GetAsync(model.Username).Returns(user);
             authService.HashText(Arg.Any<string>()).Returns(model.Password);
 
@@ -149,6 +153,7 @@
                     RequestServices = MockServiceProvider()
                 }
             };
+            controller.Url = MockUrlHelper();
             securityService.GetTime().Returns(expirationTime.ToLongTimeString());
 
             //Act
@@ -180,6 +185,7 @@
                     RequestServices = MockServiceProvider()
                 }
             };
+            controller.Url = MockUrlHelper();
             securityService.GetTime().Returns(Cryptography.EncryptPassword(expirationTime.ToLongTimeString()));
             userService.GetAsync(1).Returns(user);
 
@@ -217,6 +223,7 @@
                     RequestServices = MockServiceProvider()
                 }
             };
+            controller.Url = MockUrlHelper();
             securityService.GetTime().Returns(Cryptography.EncryptPassword(expirationTime.ToLongTimeString()));
             userService.GetAsync(1).Returns(user);
 
@@ -245,6 +252,7 @@
                     RequestServices = MockServiceProvider()
                 }
             };
+            controller.Url = MockUrlHelper();
 
             //Act
             var actual = await controller.SignOut();
@@ -296,6 +304,7 @@
                     RequestServices = MockServiceProvider()
                 }
             };
+            controller.Url = MockUrlHelper();
             authService.GetRecheckInStatusAsync().Returns(RecheckInStatus.KickOut);
 
             //Act
@@ -350,6 +359,13 @@
             serviceProviderMock.GetService(typeof(IAuthenticationService))
                 .Returns(authServiceMock);
             return serviceProviderMock;
+        }
+
+        private IUrlHelper MockUrlHelper()
+        {
+            var urlHelperMock = Substitute.For<IUrlHelper>();
+            urlHelperMock.Action(Arg.Any<UrlActionContext>()).Returns(string.Empty);
+            return urlHelperMock;
         }
 
         #endregion Helpers
