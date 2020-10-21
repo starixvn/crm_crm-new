@@ -127,7 +127,7 @@
             var model = fixture.Create<SingleSignOn>();
             model.Time = Cryptography.EncryptPassword(time.ToLongTimeString());
             var controller = GetController();
-            securityService.GetTime().Returns(Cryptography.EncryptPassword(expirationTime.ToLongTimeString()));
+            securityService.GetTime().Returns(expirationTime.ToLongTimeString());
 
             //Act
             var actual = await controller.SingleSignOn(model);
