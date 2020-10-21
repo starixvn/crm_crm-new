@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Index from '../index';
 import MultipleSelectLabel from '../MultipleSelectLabel';
 import MultipleSelectOptionList from '../MultipleSelectOptionList';

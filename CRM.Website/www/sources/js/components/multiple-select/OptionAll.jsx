@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Option from './Option';
 import Translation from './translation';
-
-const DEFAULT_CHECKED = false;
+import { DEFAULT_CHECKED} from './constants';
 
 export default class OptionAll extends Component {
     static propTypes = {
