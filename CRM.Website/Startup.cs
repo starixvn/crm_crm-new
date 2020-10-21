@@ -115,7 +115,7 @@
             });
 
             services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
-            services.Configure<ExternalSiteHostUrl>(options => Configuration.GetSection("ExternalSiteHostUrl").Bind(options));
+            services.Configure<List<ExternalRedirectMapping>>(options => Configuration.GetSection("ExternalRedirectMapping").Bind(options));
             var botConfigs = Configuration.GetSection("LetstalkBotConfigurations");
             services.Configure<List<BotConfig>>(options => botConfigs.Bind(options));
 

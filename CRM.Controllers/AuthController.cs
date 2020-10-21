@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
@@ -26,7 +27,7 @@
         private readonly ISecurityService securityService;
         private readonly IAuthService authService;
         private readonly AppSettings appSettings;
-        private readonly ExternalSiteHostUrl externalSiteHostUrl;
+        private readonly IEnumerable<ExternalRedirectMapping> redirectMappings;
 
         public AuthController(
             IUserService userService,
@@ -34,14 +35,14 @@
             ISecurityService securityService,
             IAuthService authService,
             IOptionsSnapshot<AppSettings> appSettings,
-            IOptionsSnapshot<ExternalSiteHostUrl> externalSiteHostUrl)
+            IOptionsSnapshot<List<ExternalRedirectMapping>> redirectMappings)
         {
             this.userService = userService;
             this.napSession = napSession;
             this.securityService = securityService;
             this.authService = authService;
             this.appSettings = appSettings.Value;
-            this.externalSiteHostUrl = externalSiteHostUrl.Value;
+            this.redirectMappings = redirectMappings.Value;
         }
 
         public async Task<IActionResult> SignIn(SignIn model)
@@ -58,7 +59,8 @@
                 await DoSignInAsync(user, onUserId);
             }
 
-            return new RedirectResult(externalSiteHostUrl.DefaultPageUrl, false);
+            var mapping = GetExternalRedirectMapping();
+            return new RedirectResult(mapping?.ExternalHomePageUrl, false);
         }
 
         public async Task<IActionResult> SingleSignOn(SingleSignOn model)
@@ -74,14 +76,16 @@
                 }
             }
 
-            return new RedirectResult(externalSiteHostUrl.DefaultPageUrl, false);
+            var mapping = GetExternalRedirectMapping();
+            return new RedirectResult(mapping?.ExternalHomePageUrl, false);
         }
 
         public async Task<IActionResult> SignOut()
         {
             await DoSignOutAsync();
 
-            return new RedirectResult(externalSiteHostUrl.SignInUrl, false);
+            var mapping = GetExternalRedirectMapping();
+            return new RedirectResult(mapping?.ExternalSignInUrl, false);
         }
 
         [CrmAuthorize]
@@ -98,10 +102,18 @@
             if (recheckInStatus != RecheckInStatus.Success)
             {
                 await DoSignOutAsync();
-                return new RedirectResult(externalSiteHostUrl.SignInUrl, false);
+                var mapping = GetExternalRedirectMapping();
+                return new RedirectResult(mapping?.ExternalSignInUrl, false);
             }
 
             return Ok();
+        }
+
+        private ExternalRedirectMapping GetExternalRedirectMapping()
+        {
+            var request = HttpContext.Request;
+            var domain = string.Format("{0}://{1}", request.Scheme, request.Host);
+            return redirectMappings.First(x => x.Domain.Equals(domain, StringComparison.OrdinalIgnoreCase));
         }
 
         private bool IsValidPassword(User user, SignIn signIn)

@@ -1,6 +1,7 @@
 ﻿namespace CRM.Controllers.UnitTests
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Enumerables;
@@ -25,7 +26,7 @@
         private ISecurityService securityService;
         private IAuthService authService;
         private AppSettings appSettings;
-        private ExternalSiteHostUrl externalSiteHostUrl;
+        private IEnumerable<ExternalRedirectMapping> redirectMappings;
         private readonly Fixture fixture = new Fixture();
         private const int SingleSignOnExpiredTime = 30;
 
@@ -53,6 +54,13 @@
             User user = null;
             var model = fixture.Create<SignIn>();
             var controller = GetController();
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    RequestServices = MockServiceProvider()
+                }
+            };
             userService.GetAsync(model.Username).Returns(user);
 
             //Act
@@ -60,7 +68,7 @@
 
             // Assert
             var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal(externalSiteHostUrl.DefaultPageUrl, redirectResult.Url);
+            Assert.Equal("home/index", redirectResult.Url);
         }
 
         [Fact]
@@ -70,6 +78,13 @@
             User user = null;
             var model = fixture.Create<SignIn>();
             var controller = GetController();
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    RequestServices = MockServiceProvider()
+                }
+            };
             userService.GetAsync(model.Username).Returns(user);
             authService.HashText(Arg.Any<string>()).Returns("invalid-password");
 
@@ -78,7 +93,7 @@
 
             // Assert
             var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal(externalSiteHostUrl.DefaultPageUrl, redirectResult.Url);
+            Assert.Equal("home/index", redirectResult.Url);
         }
 
         [Fact]
@@ -108,7 +123,7 @@
 
             // Assert
             var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal(externalSiteHostUrl.DefaultPageUrl, redirectResult.Url);
+            Assert.Equal("home/index", redirectResult.Url);
             napSession.UserId = user.Id;
             napSession.UserName = user.Username;
             napSession.OnUserId = 1;
@@ -127,6 +142,13 @@
             var model = fixture.Create<SingleSignOn>();
             model.Time = Cryptography.EncryptPassword(time.ToLongTimeString());
             var controller = GetController();
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    RequestServices = MockServiceProvider()
+                }
+            };
             securityService.GetTime().Returns(expirationTime.ToLongTimeString());
 
             //Act
@@ -134,7 +156,7 @@
 
             // Assert
             var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal(externalSiteHostUrl.DefaultPageUrl, redirectResult.Url);
+            Assert.Equal("home/index", redirectResult.Url);
         }
 
         [Fact]
@@ -151,6 +173,13 @@
             };
             model.Time = Cryptography.EncryptPassword(time.ToLongTimeString());
             var controller = GetController();
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    RequestServices = MockServiceProvider()
+                }
+            };
             securityService.GetTime().Returns(Cryptography.EncryptPassword(expirationTime.ToLongTimeString()));
             userService.GetAsync(1).Returns(user);
 
@@ -159,7 +188,7 @@
 
             // Assert
             var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal(externalSiteHostUrl.DefaultPageUrl, redirectResult.Url);
+            Assert.Equal("home/index", redirectResult.Url);
         }
 
         [Fact]
@@ -196,7 +225,7 @@
 
             // Assert
             var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal(externalSiteHostUrl.DefaultPageUrl, redirectResult.Url);
+            Assert.Equal("home/index", redirectResult.Url);
             napSession.UserId = user.Id;
             napSession.UserName = user.Username;
             napSession.OnUserId = 2;
@@ -222,7 +251,7 @@
 
             // Assert
             var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal(externalSiteHostUrl.SignInUrl, redirectResult.Url);
+            Assert.Equal("auth/signin", redirectResult.Url);
         }
 
         [Fact]
@@ -274,7 +303,7 @@
 
             // Assert
             var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal(externalSiteHostUrl.SignInUrl, redirectResult.Url);
+            Assert.Equal("auth/signin", redirectResult.Url);
         }
 
         #endregion CheckUserOnlineStatus
@@ -288,26 +317,30 @@
             securityService = Substitute.For<ISecurityService>();
             authService = Substitute.For<IAuthService>();
             var settings = Substitute.For<IOptionsSnapshot<AppSettings>>();
-            var externalUrl = Substitute.For<IOptionsSnapshot<ExternalSiteHostUrl>>();
+            var mappings = Substitute.For<IOptionsSnapshot<List<ExternalRedirectMapping>>>();
             appSettings = new AppSettings
             {
                 SingleSignOnExpiredTime = SingleSignOnExpiredTime
             };
-            externalSiteHostUrl = new ExternalSiteHostUrl
+            redirectMappings = new List<ExternalRedirectMapping>
             {
-                DefaultPageUrl = "home/index",
-                SignInUrl = "auth/signin"
+                new ExternalRedirectMapping
+                {
+                    Domain = "://",
+                    ExternalHomePageUrl = "home/index",
+                    ExternalSignInUrl = "auth/signin"
+                }
             };
 
             settings.Value.Returns(appSettings);
-            externalUrl.Value.Returns(externalSiteHostUrl);
+            mappings.Value.Returns(redirectMappings);
             return new AuthController(
                 userService,
                 napSession,
                 securityService,
                 authService,
                 settings,
-                externalUrl);
+                mappings);
         }
 
         private IServiceProvider MockServiceProvider()
