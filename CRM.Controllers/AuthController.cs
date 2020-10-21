@@ -116,7 +116,6 @@
                 request.Scheme,
                 request.Host,
                 Url.Content("~"));
-            domain = domain.Substring(0, domain.Length - 1);
             return redirectMappings.First(x => x.Domain.Equals(domain, StringComparison.OrdinalIgnoreCase));
         }
 
