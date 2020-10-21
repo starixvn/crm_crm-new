@@ -140,11 +140,7 @@ export class EditPicManagement extends Component {
                             value={values[`communication-${item.unique}`].type}
                             name={`communication-${item.unique}.type`} id={`communication-${item.unique}.type`}
                             onChange={handleChange}
-<<<<<<< HEAD
-=======
-                            value={values[`communication-${item.unique}`].type}
                             defaultValue=""
->>>>>>> 000 - enhance code
                         >
                             <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                             {this.props.setting.communicationTools.map(com => renderOption(com, 'settingId', 'settingValue'))}
@@ -159,11 +155,7 @@ export class EditPicManagement extends Component {
                     <Col sm="8" md="9"  >
                         <Row>
                             <Col sm="11" md="11" >
-<<<<<<< HEAD
                                 <Form.Control type="text" size="sm"
-=======
-                                <Form.Control type="text" size="sm" value={values[`communication-${item.unique}`].value}
->>>>>>> 000 - enhance code
                                     name={`communication-${item.unique}.value`} id={`communication-${item.unique}.value`}
                                     value={values[`communication-${item.unique}`].value}
                                     className="shadow-none" autoComplete="off"
@@ -272,7 +264,10 @@ export class EditPicManagement extends Component {
                         <Col sm="8" md="9">
                             <Form.Control as="select" className="shadow-none" size="sm"
                                 name="countryId" id="countryId"
+<<<<<<< HEAD
                                 isInvalid={touched.countryId && errors.countryId}
+=======
+>>>>>>> 000 - fix code smell
                                 value={values.countryId}
                                 onChange={handleChange}
                             >
@@ -288,7 +283,10 @@ export class EditPicManagement extends Component {
                         <Col sm="8" md="9">
                             <Form.Control as="textarea"
                                 className="shadow-none form-control"
+<<<<<<< HEAD
                                 name="remark" id="remark" rows="4"
+=======
+>>>>>>> 000 - fix code smell
                                 value={values.remark}
                                 onChange={handleChange}
                             />
