@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Form } from 'react-bootstrap';
 
 export default class CustomInput extends React.PureComponent {
@@ -10,7 +10,10 @@ export default class CustomInput extends React.PureComponent {
         const { disabled, onClick, value } = this.props;
 
         return (
-            <Form.Control as='input' readOnly disabled={disabled} onClick={onClick} value={value} />
+            <Fragment>
+                <Form.Control as='input' readOnly disabled={disabled} onClick={onClick} value={value} />
+                <i className='date-picker-icon fa fa-calendar' onClick={onClick} />
+            </Fragment>
         );
     }
 }
