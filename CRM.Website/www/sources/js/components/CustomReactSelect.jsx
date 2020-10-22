@@ -6,7 +6,7 @@ export default class CustomReactSelect extends Component {
         const { components, styles, ...rest } = this.props;
 
         return (
-            <Select className='react-select-container' classNamePrefix="react-select"
+            <Select className='react-select-container' classNamePrefix='react-select'
                 {...rest}
                 components={{
                     IndicatorSeparator: () => null,
