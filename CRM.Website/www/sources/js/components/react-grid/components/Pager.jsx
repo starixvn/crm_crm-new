@@ -74,7 +74,7 @@ export default class Pager extends Component {
         this.setState({ inputValue });
     }
 
-    _renderPageSizeSelection(isDisable, pageIndex, pageSize) {
+    _renderPageSizeSelection(isDisable, pageSize) {
         return (
             <select className="pagesize-select" disabled={isDisable} value={pageSize}
                 onChange={event => this.goToPage(1, Number(event.target.value))}
@@ -129,7 +129,7 @@ export default class Pager extends Component {
 
         return (
             <div className="page-container" style={{ minWidth, maxWidth, display: `${isShow ? 'block' : 'none'}` }}>
-                Page size {this._renderPageSizeSelection(isDisable, PageIndex, PageSize)}
+                Page size {this._renderPageSizeSelection(isDisable, PageSize)}
                 {this._renderPageIcon('fa-angle-double-left', PageIndex === 1, () => this.goToPage(1, PageSize))}
                 {this._renderPageIcon('fa-angle-left', isDisable || PageIndex <= 1 || PageIndex > totalPage, () => this.goToPage(PageIndex - 1, PageSize))}
                 {isAllowInputPageIndex ? this._renderPageInput(inputValue, totalPage) : this._renderPageLabel(PageIndex, totalPage)}
