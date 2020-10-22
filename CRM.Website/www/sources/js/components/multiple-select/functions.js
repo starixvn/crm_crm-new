@@ -5,7 +5,7 @@ export const convertDataSourceToState = ({ keyField, valueField, statusField, da
         return {
             [KEY_NAME]: item[keyField],
             [VALUE_NAME]: item[valueField],
-            [STATUS_NAME]: item[statusField],
+            [STATUS_NAME]: item[statusField] ? item[statusField] : false,
             subData: item.subData ? item.subData : [],
             visible: true
         };
