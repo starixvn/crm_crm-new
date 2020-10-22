@@ -112,12 +112,10 @@
         private ExternalRedirectMapping GetExternalRedirectMapping()
         {
             var request = HttpContext.Request;
-            var roorUrl = Url.Content("~");
-            var domain = string.Format("{0}://{1}{2}",
-                request.Scheme,
-                request.Host,
-                roorUrl.EndsWith("/") ? roorUrl.Substring(0, roorUrl.Length - 1) : roorUrl);
-            return redirectMappings.First(x => x.Domain.Equals(domain, StringComparison.OrdinalIgnoreCase));
+            var config = redirectMappings.First(x => x.DomainUri.Host.Equals(request.Host.Host, StringComparison.OrdinalIgnoreCase)
+                && (!x.IncludePort || x.DomainUri.Port == request.Host.Port)
+                && x.DomainUri.LocalPath.Equals(Url.Content("~"), StringComparison.OrdinalIgnoreCase));
+            return config ?? new ExternalRedirectMapping();
         }
 
         private bool IsValidPassword(User user, SignIn signIn)
