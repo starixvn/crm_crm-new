@@ -195,7 +195,8 @@ export class NewCommunitionSetting extends PureComponent {
                             <Row>
                                 <Col>
                                     <Form.Control type="text" size="sm" value={values.customerNameInput}
-                                        name="customerNameInput" id="customerNameInput" onPaste={event => this.pasteCustomerHandler( event, values.customerNameInput, setFieldValue )}
+                                        name="customerNameInput" id="customerNameInput"
+                                        onPaste={event => this.pasteCustomerHandler( event, values.customerNameInput, setFieldValue )}
                                         isInvalid={touched.customerNameInput && errors.customerNameInput}
                                         className="shadow-none" autoComplete="off"
                                         onChange={handleChange}
