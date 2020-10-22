@@ -29,7 +29,7 @@ export default class Pager extends Component {
         super(props);
 
         this.state = {
-            inputValue: this.props.pageOption.PageIndex
+            inputValue: props.pageOption.PageIndex
         };
     }
 
