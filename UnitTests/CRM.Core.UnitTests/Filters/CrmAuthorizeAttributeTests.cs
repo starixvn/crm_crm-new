@@ -22,7 +22,6 @@
         {
             // Arrange
             var napSession = Substitute.For<INapSession>();
-            var logger = Substitute.For<ILogger>();
             var authService = Substitute.For<IAuthenticationService>();
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
@@ -38,7 +37,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmAuthorizeAttribute(napSession, logger);
+            var filter = new CrmAuthorizeAttribute(napSession);
 
             // Act
             filter.OnAuthorization(context);
@@ -54,14 +53,11 @@
         {
             // Arrange
             var napSession = Substitute.For<INapSession>();
-            var logger = Substitute.For<ILogger>();
             napSession.UserId = 1;
             napSession.UserName = "tim.trinh";
-
             var authService = Substitute.For<IAuthenticationService>();
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
-
             var httpContext = new DefaultHttpContext
             {
                 RequestServices = serviceProvider
@@ -74,7 +70,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmAuthorizeAttribute(napSession, logger);
+            var filter = new CrmAuthorizeAttribute(napSession);
 
             // Act
             filter.OnAuthorization(context);

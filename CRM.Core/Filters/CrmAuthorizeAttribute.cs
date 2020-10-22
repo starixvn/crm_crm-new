@@ -1,15 +1,9 @@
 ﻿namespace CRM.Core.Filters
 {
     using System;
-    using System.Net;
-    using Fanex.Logging;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Resources;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -17,16 +11,14 @@
     public class CrmAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
         private readonly INapSession napSession;
-        private readonly ILogger logger;
 
-        public CrmAuthorizeAttribute() : this(null, null)
+        public CrmAuthorizeAttribute() : this(null)
         {
         }
 
-        public CrmAuthorizeAttribute(INapSession napSession, ILogger logger)
+        public CrmAuthorizeAttribute(INapSession napSession)
         {
             this.napSession = napSession ?? NapClientManager.NapSession;
-            this.logger = logger ?? new Logger();
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -38,29 +30,8 @@
 
             if (napSession == null || napSession.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
             {
-                CloseConnection(context);
                 context.Result = new RedirectToActionResult("SignOut", "Auth", null);
             }
         }
-
-        private void CloseConnection(AuthorizationFilterContext context)
-        {
-            logger.Info(context.HttpContext.Request.Path);
-            if (IsAjaxRequest(context.HttpContext.Request) && !context.HttpContext.Response.HasStarted)
-            {
-                var response = context.HttpContext.Response;
-                var messageContent = $"<center><b>{ViewResources.UnauthorizeMsg}</b></center>";
-                response.StatusCode = (int)HttpStatusCode.Forbidden;
-                response.WriteAsync(messageContent);
-            }
-            else
-            {
-                context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            }
-        }
-
-        private static bool IsAjaxRequest(HttpRequest request)
-           => string.Equals(request.Query["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal) ||
-              string.Equals(request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal);
     }
 }
