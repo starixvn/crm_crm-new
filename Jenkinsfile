@@ -57,7 +57,7 @@ pipeline{
         always{
           script{
             if(manager.logContains(".*Quality gate status.*")){
-              pipelineLib.generateSonarQubeReport("CRM-New")
+              pipelineLib.generateSonarQubeReport("CRMNew")
             }
           }
 		  
