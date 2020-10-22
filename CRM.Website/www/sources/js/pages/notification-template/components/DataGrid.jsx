@@ -6,15 +6,12 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 
-export class DataGrid extends Component
-{
-    constructor( props )
-    {
+export class DataGrid extends Component {
+    constructor( props ) {
         super( props );
     }
 
-    onPaging = ( pageIndex, pageSize ) =>
-    {
+    onPaging = ( pageIndex, pageSize ) => {
         const params = { ...this.props.gridParams };
         params['pageIndex'] = pageIndex;
         params['pageSize'] = pageSize;
@@ -23,23 +20,19 @@ export class DataGrid extends Component
         this.props.getGridData( params );
     }
 
-    handleEdit = id =>
-    {
+    handleEdit = id => {
         this.props.getTemplateById( id, () => this.props.setEditTemplatePopup( { show: true } ) );
     }
 
-    handleViewContent = id =>
-    {
+    handleViewContent = id => {
         this.props.getTemplateById( id, () => this.props.setContentDetailPopup( { show: true } ) );
     }
 
-    handleDelete = ( id, name ) =>
-    {
+    handleDelete = ( id, name ) => {
         this.props.setDeleteTemplatePopup( { show: true, templateId: id, name: name } );
     }
 
-    buildGridHeader = isHost =>
-    {
+    buildGridHeader = isHost => {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={5}>{LangHelper.getResource( 'SymbolNo' )}</HeaderCell>
@@ -55,14 +48,12 @@ export class DataGrid extends Component
         );
     }
 
-    buildGridBody = isHost =>
-    {
+    buildGridBody = isHost => {
         const { pageIndex, pageSize } = this.props.gridParams;
 
         this.startIndex = ( pageIndex - 1 ) * pageSize + 1;
 
-        if ( this.props.gridData.data.length > 0 )
-        {
+        if ( this.props.gridData.data.length > 0 ) {
             return this.props.gridData.data.map( ( item, index ) => this.renderRow( item, index, isHost ) );
         }
 
@@ -89,10 +80,8 @@ export class DataGrid extends Component
         </Row>
     )
 
-    render()
-    {
-        if ( !this.props.gridData || !this.props.gridData.data )
-        {
+    render() {
+        if ( !this.props.gridData || !this.props.gridData.data ) {
             return null;
         }
 
@@ -128,8 +117,7 @@ export class DataGrid extends Component
 
 const mapDispatchToProps = dispatch => bindActionCreators( ActionCreators, dispatch );
 
-const mapStateToProps = state =>
-{
+const mapStateToProps = state => {
     const { gridParams, gridData } = state;
     return {
         gridParams,
