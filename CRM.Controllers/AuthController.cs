@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
@@ -112,9 +111,22 @@
         private ExternalRedirectMapping GetExternalRedirectMapping()
         {
             var request = HttpContext.Request;
-            var config = redirectMappings.First(x => x.DomainUri.Host.Equals(request.Host.Host, StringComparison.OrdinalIgnoreCase)
-                && (!x.IncludePort || x.DomainUri.Port == request.Host.Port)
-                && x.DomainUri.LocalPath.Equals(Url.Content("~"), StringComparison.OrdinalIgnoreCase));
+            var roorUrl = Url.Content("~");
+            roorUrl = roorUrl.EndsWith("/") ? roorUrl.Substring(0, roorUrl.Length - 1) : roorUrl;
+            var config = new ExternalRedirectMapping();
+            foreach (var element in redirectMappings)
+            {
+                var localPath = element.DomainUri.LocalPath.EndsWith("/")
+                           ? element.DomainUri.LocalPath.Substring(0, element.DomainUri.LocalPath.Length - 1)
+                           : element.DomainUri.LocalPath;
+                if (element.DomainUri.Host.Equals(request.Host.Host, StringComparison.OrdinalIgnoreCase)
+                    && (!element.IncludePort || element.DomainUri.Port == request.Host.Port)
+                    && localPath.Equals(roorUrl, StringComparison.OrdinalIgnoreCase))
+                {
+                    config = element;
+                }
+            }
+
             return config ?? new ExternalRedirectMapping();
         }
 

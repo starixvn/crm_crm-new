@@ -7,7 +7,7 @@
         public string Domain { get; set; }
         public Uri DomainUri => new Uri(Domain);
         public bool IncludePort { get; set; }
-        public string ExternalHomePageUrl { get; set; }
-        public string ExternalSignInUrl { get; set; }
+        public string ExternalHomePageUrl { get; set; } = string.Empty;
+        public string ExternalSignInUrl { get; set; } = string.Empty;
     }
 }
