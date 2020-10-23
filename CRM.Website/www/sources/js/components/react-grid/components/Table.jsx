@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import createTableSection from './tableSection';
 import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH } from '../constants';
 import Pager from './Pager';
-import { scrollToTop } from '../functions';
+import functions from '../functions';
 import Site from '@jsroot/common/site';
 
 const clientWidth = document.body.clientWidth;
@@ -89,7 +89,7 @@ class Table extends Component {
         }
 
         if (this.props.shouldResetScrollPosition && prevProps.body !== this.props.body) {
-            scrollToTop(this.bodyWrapper, 200);
+            functions.scrollToTop(this.bodyWrapper, 200);
         }
     }
     componentWillUnmount() {
