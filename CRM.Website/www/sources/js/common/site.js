@@ -31,7 +31,7 @@ export default class Site {
             let url;
             switch (error.response.status) {
                 case 401:
-                    url = 'auth/login';
+                    url = 'auth/SignOut';
                     break;
 
                 case 404:

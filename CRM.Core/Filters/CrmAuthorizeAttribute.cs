@@ -4,6 +4,7 @@
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -30,8 +31,20 @@
 
             if (napSession == null || napSession.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
             {
+                CloseConnection(context);
+            }
+        }
+
+        private static void CloseConnection(AuthorizationFilterContext context)
+        {
+            if (!IsAjaxRequest(context.HttpContext.Request))
+            {
                 context.Result = new RedirectToActionResult("SignOut", "Auth", null);
             }
         }
+
+        private static bool IsAjaxRequest(HttpRequest request)
+           => string.Equals(request.Query["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal) ||
+              string.Equals(request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal);
     }
 }
