@@ -55,13 +55,7 @@
             User user = null;
             var model = fixture.Create<SignIn>();
             var controller = GetController();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = MockServiceProvider()
-                }
-            };
+            controller.ControllerContext = MockControllerContext();
             controller.Url = MockUrlHelper();
             userService.GetAsync(model.Username).Returns(user);
 
@@ -80,13 +74,7 @@
             User user = null;
             var model = fixture.Create<SignIn>();
             var controller = GetController();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = MockServiceProvider()
-                }
-            };
+            controller.ControllerContext = MockControllerContext();
             controller.Url = MockUrlHelper();
             userService.GetAsync(model.Username).Returns(user);
             authService.HashText(Arg.Any<string>()).Returns("invalid-password");
@@ -111,13 +99,7 @@
                 Username = "sa"
             };
             var controller = GetController();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = MockServiceProvider()
-                }
-            };
+            controller.ControllerContext = MockControllerContext();
             controller.Url = MockUrlHelper();
             userService.GetAsync(model.Username).Returns(user);
             authService.HashText(Arg.Any<string>()).Returns(model.Password);
@@ -146,13 +128,7 @@
             var model = fixture.Create<SingleSignOn>();
             model.Time = Cryptography.EncryptPassword(time.ToLongTimeString());
             var controller = GetController();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = MockServiceProvider()
-                }
-            };
+            controller.ControllerContext = MockControllerContext();
             controller.Url = MockUrlHelper();
             securityService.GetTime().Returns(expirationTime.ToLongTimeString());
 
@@ -178,13 +154,7 @@
             };
             model.Time = Cryptography.EncryptPassword(time.ToLongTimeString());
             var controller = GetController();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = MockServiceProvider()
-                }
-            };
+            controller.ControllerContext = MockControllerContext();
             controller.Url = MockUrlHelper();
             securityService.GetTime().Returns(Cryptography.EncryptPassword(expirationTime.ToLongTimeString()));
             userService.GetAsync(1).Returns(user);
@@ -216,13 +186,7 @@
             };
             model.Time = Cryptography.EncryptPassword(time.ToLongTimeString());
             var controller = GetController();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = MockServiceProvider()
-                }
-            };
+            controller.ControllerContext = MockControllerContext();
             controller.Url = MockUrlHelper();
             securityService.GetTime().Returns(Cryptography.EncryptPassword(expirationTime.ToLongTimeString()));
             userService.GetAsync(1).Returns(user);
@@ -245,13 +209,7 @@
         {
             // Arrange
             var controller = GetController();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = MockServiceProvider()
-                }
-            };
+            controller.ControllerContext = MockControllerContext();
             controller.Url = MockUrlHelper();
 
             //Act
@@ -297,13 +255,7 @@
         {
             // Arrange
             var controller = GetController();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    RequestServices = MockServiceProvider()
-                }
-            };
+            controller.ControllerContext = MockControllerContext();
             controller.Url = MockUrlHelper();
             authService.GetRecheckInStatusAsync().Returns(RecheckInStatus.KickOut);
 
@@ -335,7 +287,7 @@
             {
                 new ExternalRedirectMapping
                 {
-                    Domain = "://",
+                    Domain = "http://localhost:8081",
                     ExternalHomePageUrl = "home/index",
                     ExternalSignInUrl = "auth/signin"
                 }
@@ -366,6 +318,19 @@
             var urlHelperMock = Substitute.For<IUrlHelper>();
             urlHelperMock.Action(Arg.Any<UrlActionContext>()).Returns(string.Empty);
             return urlHelperMock;
+        }
+
+        private ControllerContext MockControllerContext()
+        {
+            var request = Substitute.For<HttpRequest>();
+            request.Host.Returns(new HostString("localhost", 8081));
+            var httpContext = Substitute.For<HttpContext>();
+            httpContext.Request.Returns(request);
+            httpContext.RequestServices = MockServiceProvider();
+            return new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
         }
 
         #endregion Helpers
