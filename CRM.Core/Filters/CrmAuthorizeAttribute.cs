@@ -1,10 +1,8 @@
 ﻿namespace CRM.Core.Filters
 {
     using System;
-    using System.Net;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Resources;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -39,12 +37,9 @@
 
         private static void CloseConnection(AuthorizationFilterContext context)
         {
-            if (IsAjaxRequest(context.HttpContext.Request) && !context.HttpContext.Response.HasStarted)
+            if (IsAjaxRequest(context.HttpContext.Request))
             {
-                var response = context.HttpContext.Response;
-                var messageContent = $"<center><b>{ViewResources.UnauthorizeMsg}</b></center>";
-                response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                response.WriteAsync(messageContent);
+                context.Result = new UnauthorizedResult();
             }
             else
             {
