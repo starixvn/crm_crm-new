@@ -3,8 +3,10 @@
     using Fanex.Data.Repository;
     public class GetListCustomerReachLimitCriteria : CriteriaBase
     {
-        public override string GetSettingKey() => "Acc_CRM_CustWinLimitSel_xtest";
+        public int LastLogID { get; set; }
+        public int BatchSize { get; set; }
+        public override string GetSettingKey() => "Acc_CRM_CustWinLimitSel";
 
-        public override bool IsValid() => true;
+        public override bool IsValid() => LastLogID > 0 && BatchSize > 0;
     }
 }

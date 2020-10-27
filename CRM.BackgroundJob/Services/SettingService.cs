@@ -31,6 +31,8 @@
         {
             var criteria = new GetAllSettingCriteria();
             var settings = await baseService.GetDataAsync<SettingItem>(criteria);
+            var response = settings.Where(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
+                /* && x.SettingValue.Equals("Neutral", StringComparison.OrdinalIgnoreCase)*/);
             if (settings.Any())
             {
                 settings = settings.Where(x => x.IsActive);
@@ -40,6 +42,7 @@
                     setting.ParentIds = relations.Where(x => x.SettingId == setting.SettingId).Select(x => x.ParentId);
                 }
             }
+            
 
             return settings;
         }

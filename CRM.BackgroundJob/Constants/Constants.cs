@@ -15,6 +15,9 @@
         public const int Level101 = 101;
         public const int Level102 = 102;
 
+        public const string LineBreak = "<br /><br />";
+        public const string ThousanPase = "#,##0";
+
         public const string BeginRootTag = "<ROOT>";
         public const string EndRootTag = "</ROOT>";
     }

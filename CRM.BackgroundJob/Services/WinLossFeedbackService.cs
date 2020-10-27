@@ -25,18 +25,17 @@
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
         private readonly ISystemSettingService systemSettingService;
-        private readonly IMessageService messageService;
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
         private readonly IWinLossTransactionService transactionService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public WinLossFeedbackService(
             IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             ISystemSettingService systemSettingService,
-            IMessageService messageService,
             ICustomerService customerService,
             ICRMLogService logService,
             IWinLossTransactionService transactionService)
@@ -46,7 +45,6 @@
             this.baseService = baseService;
             this.settingService = settingService;
             this.systemSettingService = systemSettingService;
-            this.messageService = messageService;
             this.customerService = customerService;
             this.logService = logService;
             this.transactionService = transactionService;
@@ -57,17 +55,17 @@
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") }
+                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = setting.LastLogID.ToString() }
             };
             await systemSettingService.EditSystemSettingAsync(settingJobStatus);
 
-            IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.getListCustReachLimitAsync();
-            var custIds = cusWinLimit.Select(x => x.CustId);
+            IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.getListCustReachLimitAsync(setting.LastLogID, setting.BatchSize);
+            var custIds = cusWinLimit.Select(x => x.CustId).Distinct();
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
-            var settingNames = new[] { SettingName.SubProduct, SettingName.Bettype };
+            var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
-            IEnumerable<SiteSettingMapping> siteSettingMappings = await settingService.GetSiteSettingMappingAsync();
 
             ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>> winlossInfo = await transactionService.ImportWinLimitFeedbackInfoAsync(
                 cusWinLimit,
@@ -75,7 +73,7 @@
                 );
             if (!winlossInfo.Item1.Any())
             {
-                await EditSystemSettingAsync();
+                await EditSystemSettingAsync(setting.LastLogID);
                 return;
             }
 
@@ -84,30 +82,37 @@
                 await CreateWinLossFeedbackCreditAsync(
                         winLimit,
                         winlossInfo.Item2,
-                        headlines.Where(x => x.CustId == winLimit.CustId),
                         settings,
                         settingMappings);
             }
-            await EditSystemSettingAsync();
+            var maxLastLogID = winlossInfo.Item1.Max(x => x.LogID);
+            await EditSystemSettingAsync(maxLastLogID);
         }
 
         protected internal virtual async Task CreateWinLossFeedbackCreditAsync(
             WinLimitFeedBackInfo winLimit,
             IEnumerable<BettypeInfo> bettype,
-            IEnumerable<GroupHeadline> headlines,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Begin mapping common setting for customer: " + winLimit.UserName);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals("Closed", StringComparison.OrdinalIgnoreCase));
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
-                && x.SettingValue.Equals("Neutral", StringComparison.OrdinalIgnoreCase));
+                 && x.SettingValue.Equals("Neutral", StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
             var category = GetCategorySubCategory(settings);
+            string[] betTypeLists = winLimit.BettypeIDList.Split(",");
+            var betTypeMappings = new List<BettypeInfo>();
+            foreach (var bet in bettype)
+            {
+                if (betTypeLists.Contains(bet.Bettype))
+                {
+                    betTypeMappings.Add(bet);
+                }
+            }
 
             var criteria = new CreateMutipleFeedbackCommand
             {
@@ -127,65 +132,99 @@
                 AutoField = string.Empty,
                 AutoField1 = string.Empty,
                 AutoField2 = string.Format("Date Time & Tool: {0}/{1}/", feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
-                AutoField3 = $"{Environment.NewLine}System ID: "
+                AutoField3 = $"{Environment.NewLine}System ID: ",
+                LogID = winLimit.LogID,
+                CustomerXml = string.Format("<ROOT><Cust CustId='{0}' Username='{1}' /></ROOT>", winLimit.HeadlineId, winLimit.HeadlineName),
+                ProductXml = GetProductXml(winLimit, betTypeMappings, settings, settingMappings),
+                Solution = GetSolution(winLimit),
+                RelatedCustomerXml = GetRelatedCustomerXml(winLimit),
+                ListOrigCustIds = string.Join(",", winLimit.CustId),
+                Description = GetDescription(winLimit, betTypeMappings)
             };
-            logService.LogInformation("End mapping setting for customer: " + winLimit.UserName);
 
-            var headlineIds = headlines.Select(x => x.HeadlineId).Distinct();
-            foreach (var headlineId in headlineIds)
+            try
             {
-                GroupHeadline headline = headlines.First(x => x.HeadlineId == headlineId);
-                IEnumerable<int> relatedCustomerIds = headlines.Where(x => x.HeadlineId == headline.HeadlineId).Select(x => x.CustId);
-                criteria.CustomerXml = string.Format("<ROOT><Cust CustId='{0}' Username='{1}' /></ROOT>", headline.HeadlineId, headline.HeadlineName);
-
-                int totalCustomers = relatedCustomerIds.Count();
-                for (int i = 0; i < totalCustomers; i++)
+                logService.LogInformation(string.Format("Begin create win loss feedback : HeadlineId: {0} logID:{1}",
+                    winLimit.HeadlineId, winLimit.LogID));
+                CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
+                if (commandResult.IsSuccessful)
                 {
-                    criteria.ProductXml = GetProductXml(winLimit, bettype, settings, settingMappings);
-                    criteria.Solution = GetSolution(winLimit);
-                    criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, winLimit);
-                    criteria.ListOrigCustIds = string.Join(",", relatedCustomerIds);
+                    logService.LogInformation(string.Format("Create feedback successfully. HeadlineId: {0}: logID:{1}",
+                        winLimit.HeadlineId,
+                        winLimit.LogID));
+                }
+                else
+                {
+                    logService.LogInformation(string.Format("Create feedback failed. HeadlineId: {0}",
+                        winLimit.HeadlineId));
+                    await transactionService.EditFeedbackWinLossInfoAsync(winLimit.LogID, CreateFeedbackJobStatus.Fail, commandResult.Message);
+                    await logService.ErrorAsync(commandResult, criteria);
                 }
             }
-
+            catch (Exception ex)
+            {
+                logService.LogInformation(string.Format("Create feedback failed. HeadlineId: {0} logID:{1}",
+                    winLimit.HeadlineId,
+                    winLimit.LogID));
+                await transactionService.EditFeedbackWinLossInfoAsync(winLimit.LogID, CreateFeedbackJobStatus.Fail, ex.Message);
+                await logService.ErrorAsync(ex);
+            }
         }
 
         protected internal virtual string GetProductXml(
             WinLimitFeedBackInfo winLimit,
-            IEnumerable<BettypeInfo> bettype,
+            List<BettypeInfo> betTypeMappings,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Begin mapping product, sub-product, bet type.");
             const string XmlTemplate = "<Product ProductID='{0}' SubProductID='{1}' BetTypeID='{2}' />";
-            SettingItem subProducts = GetSubProduct(winLimit, settings, settingMappings);
-            //SettingItem product = GetProduct(winLimit, settings, settingMappings, subProducts.SettingId);
-            
-            //SettingItem product = GetProduct(settings, subProduct.SettingId);
-           IList<SettingItem> bettypes = GetBettype(subProducts.SettingId, settings, bettype, settingMappings);
+            SystemSettingMapping subProduct = GetSubProduct(winLimit, settingMappings);
+            IList<SystemSettingMapping> products = GetProduct(settingMappings, subProduct.SettingSource);
+            IList<SystemSettingMapping> tempBettypes = GetBettype(betTypeMappings, settingMappings);
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
 
-            logService.LogInformation("End mapping product, sub-product, bet type.");
+            foreach (SystemSettingMapping product in products)
+            {
+                if (tempBettypes.Any())
+                {
+                    foreach (SystemSettingMapping bettype in tempBettypes)
+                    {
+                        stringBuilder.AppendFormat(XmlTemplate, product.SettingId, subProduct.SettingId, bettype.SettingId);
+                    }
+                }
+                else
+                {
+                    stringBuilder.AppendFormat(XmlTemplate, product.SettingId, subProduct.SettingId, Constants.BettypeNA);
+                }
+            }
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
-        //protected internal virtual SettingItem GetProduct(IEnumerable<SettingItem> settings)
-        //{
-        //    var product = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
-        //        && x.SettingValue.Equals(winLimit.ProductName, StringComparison.OrdinalIgnoreCase));
+        protected internal virtual IList<SystemSettingMapping> GetProduct(
+            IEnumerable<SystemSettingMapping> settingMappings,
+            string subProduct)
+        {
+            IList<SystemSettingMapping> products = settingMappings.Where(product => product.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrWhiteSpace(product.SettingSource)
+                && product.SettingSource.Equals(subProduct, StringComparison.OrdinalIgnoreCase)).ToList();
 
-        //    return product ?? new SettingItem { SettingId = Constants.ProductNA };
-        //}
+            return products != null && products.Any()
+                ? products.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
+                : new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingId = Constants.ProductNA }
+                };
+        }
 
-        protected internal virtual SettingItem GetSubProduct(
+        protected internal virtual SystemSettingMapping GetSubProduct(
             WinLimitFeedBackInfo winLimit,
-            IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            SettingItem subProduct = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
-                 && x.SettingValue.Equals(winLimit.ProductName, StringComparison.OrdinalIgnoreCase));
+            SystemSettingMapping subProduct = settingMappings.FirstOrDefault(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrWhiteSpace(mapping.SettingSource)
+                && mapping.SettingSource.Equals(winLimit.ProductName, StringComparison.OrdinalIgnoreCase));
 
-            return subProduct ?? new SettingItem { SettingId = Constants.ProductNA };
+            return subProduct ?? new SystemSettingMapping { SettingId = Constants.SubProductNA };
         }
 
         protected internal virtual Tuple<int, int, string> GetCategorySubCategory(IEnumerable<SettingItem> settings)
@@ -211,25 +250,19 @@
                     subCategoryId));
         }
 
-        protected internal virtual IList<SettingItem> GetBettype(
-            int subProducts,
-            IEnumerable<SettingItem> settings,
-            IEnumerable<BettypeInfo> bettype,
+        protected internal virtual IList<SystemSettingMapping> GetBettype(
+            List<BettypeInfo> betTypeMappings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            IList<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+            IList<SystemSettingMapping> bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && bettype.Any(betInfo => betInfo.Name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
-            IList<SettingItem> bettypes = settings.Where(bet => bet.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
-                && bet.ParentIds.Any(parent => parent == subProducts)
-                && mappings != null
-                && mappings.Any(mapping => mapping.SettingId == bet.SettingId)).ToList();
+                && betTypeMappings.Any(betInfo => betInfo.Name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
 
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
-                : new List<SettingItem>
+                : new List<SystemSettingMapping>
                 {
-                    new SettingItem { SettingId = Constants.BettypeNA, ParentIds = new List<int> { Constants.SubProductNA } }
+                    new SystemSettingMapping { SettingId = Constants.BettypeNA }
                 };
         }
 
@@ -249,24 +282,22 @@
             const string greetingRedChinese = "您好，客服部在此通知 会员 ";
             const string greetingBlackChinese = "您好，客服部在此通知 会员 ";
 
-            const string templateInforChinese = "'{0} ({1})' 在 '{2}'. ";
+            const string templateInforChinese = "' {0} ({1})' 在 '{2}'. ";
+            const string templateInforOrangeChinese = "' {0} ({1})'. ";
 
             const string ThanksAttendtionChinese = "谢谢您的关注与支持!";
             const string ThanksKindlyChinese = "请您留意 谢谢!";
 
             if (winLimit.ProductName == "RNG Casino" && (winLimit.ProductGroup == "RNG Casino - Minor Jackpot" || winLimit.ProductGroup == "RNG Casino - Mega Jackpot"))
             {
-                stringBuilder.Append(greetingOrangeYellowGreyRNG);
-                stringBuilder.AppendFormat("'{0}', has currently won the Jackpot amount of  ", winLimit.UserName);
-                stringBuilder.AppendFormat("'{0} ({1})' in RNG Casino Baccarat Progressive Jackpot. ", winLimit.TotalWinAmt, winLimit.Currency);
-                stringBuilder.Append(ThanksAttendtion);
-                stringBuilder.Append("<br /><br />");
-
-                stringBuilder.Append(greetingOrangeYellowGreyRNGChinese);
-                stringBuilder.AppendFormat("'{0}', 目前在 娱乐城赢了百家乐聚宝奖金 为 ", winLimit.UserName);
-                stringBuilder.AppendFormat("'{0} ({1})'", winLimit.TotalWinAmt, winLimit.Currency);
-                stringBuilder.Append(ThanksAttendtionChinese);
-                stringBuilder.Append("<br /><br />");
+                stringBuilder.Append(
+                    GetSolutionRNG(
+                        winLimit,
+                        greetingOrangeYellowGreyRNG,
+                        ThanksAttendtion,
+                        greetingOrangeYellowGreyRNGChinese,
+                        ThanksAttendtionChinese
+                    ));
             }
             else
             {
@@ -275,65 +306,202 @@
                     case "Orange":
                     case "Yellow":
                     case "Grey":
-                        stringBuilder.Append(greetingOrangeYellowGreyRNG);
-                        stringBuilder.AppendFormat("'{0}', currently has " + winLimit.Level == "Grey" ? "loss" : "won" + " amounted to ", winLimit.UserName);
-                        stringBuilder.AppendFormat(templateInfor, winLimit.TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-                        stringBuilder.Append(ThanksAttendtion);
-                        stringBuilder.Append("<br /><br />");
-
-                        stringBuilder.Append(greetingOrangeYellowGreyRNGChinese);
-                        stringBuilder.AppendFormat("'{0}', 目前在 " + winLimit.Level == "Grey" ? "输了" : "赢了", winLimit.UserName);
-                        stringBuilder.AppendFormat(templateInforChinese, winLimit.TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-                        stringBuilder.Append(ThanksAttendtionChinese);
+                        stringBuilder.Append(
+                            GetSolutionLevelOrange(
+                                winLimit,
+                                greetingOrangeYellowGreyRNG,
+                                templateInfor,
+                                ThanksAttendtion,
+                                greetingOrangeYellowGreyRNGChinese,
+                                templateInforOrangeChinese,
+                                ThanksAttendtionChinese
+                            ));
                         break;
+
                     case "Red":
-                        stringBuilder.Append(greetingRed);
-                        stringBuilder.AppendFormat("'{0}', currently has won amount of ", winLimit.UserName);
-                        stringBuilder.AppendFormat(templateInfor, winLimit.TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-                        stringBuilder.Append(ThanksKindly);
-                        stringBuilder.Append("<br /><br />");
-
-                        stringBuilder.Append(greetingRedChinese);
-                        stringBuilder.AppendFormat("'{0}', 目前已达到 [赢取金额上限] 数目为 ", winLimit.UserName);
-                        stringBuilder.AppendFormat(templateInforChinese, winLimit.TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-                        stringBuilder.Append(ThanksKindlyChinese);
+                        stringBuilder.Append(
+                            GetSolutionLevelRed(
+                                winLimit,
+                                greetingRed,
+                                templateInfor,
+                                ThanksKindly,
+                                greetingRedChinese,
+                                templateInforChinese,
+                                ThanksKindlyChinese)
+                            );
                         break;
+
                     case "Black":
-                        stringBuilder.Append(greetingBlack);
-                        stringBuilder.AppendFormat("'{0}' has [hit Max Lose Limit] amounted to ", winLimit.UserName);
-                        stringBuilder.AppendFormat(templateInfor, winLimit.TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-                        stringBuilder.Append(ThanksKindly);
-                        stringBuilder.Append("<br /><br />");
-
-                        stringBuilder.Append(greetingBlackChinese);
-                        stringBuilder.AppendFormat("'{0}' 目前已达到 [最高输额上限] 数目为 ", winLimit.UserName);
-                        stringBuilder.AppendFormat(templateInforChinese, winLimit.TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-                        stringBuilder.Append(ThanksKindlyChinese);
-                        break;
-                    default:
+                        stringBuilder.Append(
+                            GetSolutionLevelBlack(
+                                winLimit,
+                                greetingBlack,
+                                templateInfor,
+                                ThanksKindly,
+                                greetingBlackChinese,
+                                templateInforChinese,
+                                ThanksKindlyChinese
+                                )
+                            );
                         break;
                 }
             }
             return stringBuilder.ToString();
         }
 
-        protected internal virtual string GetRelatedCustomerXml(int headlineId, WinLimitFeedBackInfo winLimit)
+        protected internal virtual StringBuilder GetSolutionRNG(
+            WinLimitFeedBackInfo winLimit,
+            string greeting,
+            string thanks,
+            string greetingChinese,
+            string thanksChinese
+            )
+        {
+            var stringBuilder = new StringBuilder();
+            var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
+            stringBuilder.Append(greeting);
+            stringBuilder.AppendFormat("'{0}', has currently won the Jackpot amount of  ", winLimit.UserName);
+            stringBuilder.AppendFormat("'{0} ({1})' in RNG Casino Baccarat Progressive Jackpot. ", TotalWinAmt, winLimit.Currency);
+            stringBuilder.Append(thanks);
+            stringBuilder.Append(Constants.LineBreak);
+
+            stringBuilder.Append(greetingChinese);
+            stringBuilder.AppendFormat("'{0}', 目前在 娱乐城赢了百家乐聚宝奖金 为 ", winLimit.UserName);
+            stringBuilder.AppendFormat("'{0} ({1})'", TotalWinAmt, winLimit.Currency);
+            stringBuilder.Append(thanksChinese);
+            stringBuilder.Append(Constants.LineBreak);
+
+            return stringBuilder;
+        }
+
+        protected internal virtual StringBuilder GetSolutionLevelOrange(
+            WinLimitFeedBackInfo winLimit,
+            string greetingOrangeYellowGreyRNG,
+            string templateInfor,
+            string ThanksAttendtion,
+            string greetingOrangeYellowGreyRNGChinese,
+            string templateInforOrangeChinese,
+            string ThanksAttendtionChinese
+            )
+        {
+            var stringBuilder = new StringBuilder();
+            var winLossTemp = winLimit.Level == "Grey" ? "loss" : "won";
+            var winLossTempChinese = winLimit.Level == "Grey" ? "输了" : "赢了";
+            var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
+            stringBuilder.Append(greetingOrangeYellowGreyRNG);
+            stringBuilder.AppendFormat("{0}, currently has ", winLimit.UserName);
+            stringBuilder.AppendFormat("{0} amounted to ", winLossTemp);
+            stringBuilder.AppendFormat(templateInfor, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
+            stringBuilder.Append(ThanksAttendtion);
+            stringBuilder.Append(Constants.LineBreak);
+
+            stringBuilder.Append(greetingOrangeYellowGreyRNGChinese);
+            stringBuilder.AppendFormat("'{0}', 目前在 {1} {2}", winLimit.UserName, winLimit.ProductName, winLossTempChinese);
+            stringBuilder.AppendFormat(templateInforOrangeChinese, TotalWinAmt, winLimit.Currency);
+            stringBuilder.Append(ThanksAttendtionChinese);
+            stringBuilder.Append(Constants.LineBreak);
+
+            return stringBuilder;
+        }
+
+        protected internal virtual StringBuilder GetSolutionLevelRed(
+            WinLimitFeedBackInfo winLimit,
+            string greetingRed,
+            string templateInfor,
+            string ThanksKindly,
+            string greetingRedChinese,
+            string templateInforChinese,
+            string ThanksKindlyChinese
+            )
+        {
+            var stringBuilder = new StringBuilder();
+            var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
+            stringBuilder.Append(greetingRed);
+            stringBuilder.AppendFormat("'{0}', currently has won amount of ", winLimit.UserName);
+            stringBuilder.AppendFormat(templateInfor, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
+            stringBuilder.Append(ThanksKindly);
+            stringBuilder.Append(Constants.LineBreak);
+
+            stringBuilder.Append(greetingRedChinese);
+            stringBuilder.AppendFormat("'{0}', 目前已达到 [赢取金额上限] 数目为 ", winLimit.UserName);
+            stringBuilder.AppendFormat(templateInforChinese, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
+            stringBuilder.Append(ThanksKindlyChinese);
+            stringBuilder.Append(Constants.LineBreak);
+
+            return stringBuilder;
+        }
+
+        protected internal virtual StringBuilder GetSolutionLevelBlack(
+            WinLimitFeedBackInfo winLimit,
+            string greetingBlack,
+            string templateInfor,
+            string ThanksKindly,
+            string greetingBlackChinese,
+            string templateInforChinese,
+            string ThanksKindlyChinese
+            )
+        {
+            var stringBuilder = new StringBuilder();
+            var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
+            stringBuilder.Append(greetingBlack);
+            stringBuilder.AppendFormat("'{0}' has [hit Max Lose Limit] amounted to ", winLimit.UserName);
+            stringBuilder.AppendFormat(templateInfor, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
+            stringBuilder.Append(ThanksKindly);
+            stringBuilder.Append(Constants.LineBreak);
+
+            stringBuilder.Append(greetingBlackChinese);
+            stringBuilder.AppendFormat("'{0}' 目前已达到 [最高输额上限] 数目为 ", winLimit.UserName);
+            stringBuilder.AppendFormat(templateInforChinese, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
+            stringBuilder.Append(ThanksKindlyChinese);
+            stringBuilder.Append(Constants.LineBreak);
+
+            return stringBuilder;
+        }
+
+        protected internal virtual string GetDescription(WinLimitFeedBackInfo winlimit, List<BettypeInfo> bettype)
+        {
+            const int numGames = 3;
+            List<BettypeInfo> numGamesDisplay = bettype.Count > 3 ? bettype.Take(numGames).ToList() : bettype;
+            var numGamesFormat = numGamesDisplay.Any() ? string.Join(", ", numGamesDisplay.Select(x => x.Name)) : "";
+            var MaxWinLimitSetting = Math.Truncate(Convert.ToDouble(winlimit.MaxWinLimitSetting)).ToString(Constants.ThousanPase);
+            var TotalWinAmt_RM = Math.Truncate(winlimit.TotalWinAmt_RM).ToString(Constants.ThousanPase);
+            var TotalWinAmt = Math.Truncate(winlimit.TotalWinAmt).ToString(Constants.ThousanPase);
+
+            var stringBuilder = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
+            stringBuilder.Append("<br />Informed Headline Win/Loss Alert for below member:");
+            stringBuilder.AppendFormat("<br />Product: {0}", winlimit.ProductName);
+            stringBuilder.Append("<br />Game Type: ");
+            if(numGamesFormat != null)
+            {
+                stringBuilder.AppendFormat("{0} ...", numGamesFormat);
+            }
+            stringBuilder.AppendFormat("<br /> UserName:{0}, Site:{1}", winlimit.UserName, winlimit.Site);
+            stringBuilder.AppendFormat("<br /> Winning/Lossing Ammount: {0} (RM), Winning/Lossing Ammount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
+            , MaxWinLimitSetting, TotalWinAmt_RM, TotalWinAmt, winlimit.Currency);
+            stringBuilder.AppendFormat("<br />Reached Limit Time: {0}, Reached Limit Level: {1}", winlimit.ReachedTime, winlimit.Level);
+            stringBuilder.Append(Constants.LineBreak);
+
+            return stringBuilder.ToString();
+        }
+
+        protected internal virtual string GetRelatedCustomerXml(WinLimitFeedBackInfo winLimit)
         {
             const string XmlTemplate = "<Row CustId='{0}' RelatedCustId='{1}' Username='{2}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            stringBuilder.AppendFormat(XmlTemplate, headlineId, winLimit.RelatedCustId, winLimit.UserName);
+            stringBuilder.AppendFormat(XmlTemplate, winLimit.HeadlineId, winLimit.RelatedCustId, winLimit.UserName);
 
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
-        protected internal virtual async Task<CommandResult> EditSystemSettingAsync()
+        protected internal virtual async Task<CommandResult> EditSystemSettingAsync(int LastLogID)
         {
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") }
+                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = LastLogID.ToString() }
             };
-            return await systemSettingService.EditSystemSettingAsync(settingJobStatus);
+            return await systemSettingService.EditWinLossSystemSettingAsync(settingJobStatus);
         }
     }
 }

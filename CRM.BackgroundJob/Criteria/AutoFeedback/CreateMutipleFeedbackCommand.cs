@@ -57,10 +57,13 @@
         public string RequestIds { get; set; }
         public string ListOrigCustIds { get; set; }
 
+        [SpParam(SqlParamName = "WinLimitLogID")]
+        public int LogID { get; set; }
+
         public int ErrCode { get; set; }
         public string ErrMsg { get; set; }
 
-        public override string GetSettingKey() => "Acc_CRM_GuestFeedbackIns_Multiple_xtest";
+        public override string GetSettingKey() => "Acc_CRM_GuestFeedbackIns_Multiple";
 
         public override bool IsValid() => true;
     }

@@ -49,7 +49,7 @@
                 }
 
                 var isRunning = setting.JobStatus.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
-                //await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForWinLossLimit);
+
                 if (!isRunning)
                 {
                     await Task.WhenAll(
@@ -66,8 +66,9 @@
                         logService.LogInformation("Return service.");
                         var settingJobStatus = new List<SystemSettingItem>
                         {
-                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                            new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") }
+                           new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
+                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                           new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = setting.LastLogID.ToString() }
                         };
                         await systemSettingService.EditSystemSettingAsync(settingJobStatus);
                     }

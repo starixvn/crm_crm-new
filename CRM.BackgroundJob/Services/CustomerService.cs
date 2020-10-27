@@ -15,7 +15,7 @@
 
         Task<IEnumerable<GroupHeadline>> GetGroupHeadlineAsync(IEnumerable<int> custIds);
 
-        Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync();
+        Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync(int lastLogID, int batchSize);
     }
 
     public class CustomerService : ICustomerService
@@ -50,9 +50,13 @@
             return await baseService.GetDataAsync<GroupHeadline>(criteria);
         }
 
-        public async Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync()
+        public async Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync(int lastLogID, int batchSize)
         {
-            var criteria = new GetListCustomerReachLimitCriteria();
+            var criteria = new GetListCustomerReachLimitCriteria
+            {
+                LastLogID = lastLogID,
+                BatchSize = batchSize
+            };
             return await baseService.GetDataAsync<CustomerWinLimit>(criteria);
         }
     }

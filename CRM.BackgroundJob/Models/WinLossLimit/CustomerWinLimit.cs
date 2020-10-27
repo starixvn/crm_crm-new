@@ -11,8 +11,8 @@
         public string Level { get; set; }
         public byte LevelID { get; set; }
         public string MaxWinLimitSetting { get; set; }
-        public decimal TotalWinAmt { get; set; }
-        public decimal TotalWinAmt_RM { get; set; }
+        public double TotalWinAmt { get; set; }
+        public double TotalWinAmt_RM { get; set; }
         public DateTime ReachedTime { get; set; }
         public string BettypeIDList { get; set; }
     }

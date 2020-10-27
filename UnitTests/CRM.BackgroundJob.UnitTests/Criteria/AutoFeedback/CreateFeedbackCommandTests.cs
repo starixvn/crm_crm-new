@@ -11,7 +11,7 @@
         {
             // Arrange
             var criteria = new CreateFeedbackCommand();
-            var expected = "Acc_CRM_CustomerFeedbackIns";
+            var expected = "Acc_CRM_CustomerFeedbackIns_xtest";
 
             // Act
             var actual = criteria.GetSettingKey();

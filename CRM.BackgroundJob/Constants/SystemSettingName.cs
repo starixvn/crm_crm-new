@@ -7,5 +7,6 @@
         public const string ConfigUAT = "ConfigUAT";
         public const string ConfigPRO = "ConfigPRO";
         public const string LastRuntime = "LastRuntime";
+        public const string LastLogID = "LastLogID";
     }
 }

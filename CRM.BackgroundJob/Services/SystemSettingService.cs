@@ -17,6 +17,7 @@
         Task<AbnormalBetSystemSetting> GetAbnormalBetSettingAsync();
 
         Task<CommandResult> EditSystemSettingAsync(IEnumerable<SystemSettingItem> settings);
+        Task<CommandResult> EditWinLossSystemSettingAsync(IEnumerable<SystemSettingItem> settings);
 
         Task<CommandResult> EditJobStatusAsync(string status);
 
@@ -68,6 +69,15 @@
         {
             var criteria = new GetWinLossSystemSettingCriteria();
             return await baseService.GetDataEntityAsync<WinLossSystemSetting>(criteria);
+        }
+
+        public async Task<CommandResult> EditWinLossSystemSettingAsync(IEnumerable<SystemSettingItem> settings)
+        {
+            var criteria = new EditWinLossSystemSettingCommand
+            {
+                Settings = settings.ToXML("ROOT").ToString()
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
     }
 }

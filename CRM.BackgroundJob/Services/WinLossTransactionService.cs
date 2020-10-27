@@ -11,12 +11,19 @@
     using System.Text;
     using Fanex.CRM.BackgroundJob.Constants;
     using System.Xml.Linq;
+    using CRM.Core.Models;
 
     public interface IWinLossTransactionService
     {
         Task<ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>> ImportWinLimitFeedbackInfoAsync(
            IEnumerable<CustomerWinLimit> cusWinLimit,
            IEnumerable<GroupHeadline> headlines);
+
+        Task<CommandResult> EditFeedbackWinLossInfoAsync(
+           int LogID,
+           string status,
+           string description);
+        
     }
     public class WinLossTransactionService : IWinLossTransactionService
     {
@@ -35,12 +42,12 @@
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (var limitInfo in cusWinLimit)
             {
-                decimal settingAmount = 0;
+                double settingAmount = 0;
                 var hlname = "";
                 var headlineId = 0;
-                decimal TotalWinAmt = decimal.Truncate(limitInfo.TotalWinAmt);
-                decimal TotalWinAmt_RM = decimal.Truncate(limitInfo.TotalWinAmt_RM);
-                var BettypeIDList = limitInfo.BettypeIDList == null ? "" : limitInfo.BettypeIDList;
+                double TotalWinAmt = limitInfo.TotalWinAmt;
+                double TotalWinAmt_RM = limitInfo.TotalWinAmt_RM;
+                var BettypeIDList = limitInfo.BettypeIDList ?? limitInfo.BettypeIDList;
                 if (limitInfo.MaxWinLimitSetting == null || limitInfo.MaxWinLimitSetting == string.Empty)
                 {
                     settingAmount = 0;
@@ -50,13 +57,13 @@
                     var element = XElement.Parse(limitInfo.MaxWinLimitSetting);
                     var setting = new MaxWinLimitSetting
                     {
-                        Level1 = (decimal)element.Attribute("Level1"),
-                        Level2 = (decimal)element.Attribute("Level2"),
-                        Level3 = (decimal)element.Attribute("Level3"),
-                        Level101 = (decimal)element.Attribute("Level101"),
-                        Level102 = (decimal)element.Attribute("Level102")
+                        Level1 = (double)element.Attribute("Level1"),
+                        Level2 = (double)element.Attribute("Level2"),
+                        Level3 = (double)element.Attribute("Level3"),
+                        Level101 = (double)element.Attribute("Level101"),
+                        Level102 = (double)element.Attribute("Level102")
                     };
-                    settingAmount = getLimitSetting(setting, limitInfo.LevelID);
+                    settingAmount = GetLimitSetting(setting, limitInfo.LevelID);
                 }
 
                 GroupHeadline headline = headlines.FirstOrDefault(x => x.CustId == limitInfo.CustId);
@@ -88,9 +95,9 @@
             return new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>(WinLossInfo.Item1, WinLossInfo.Item2);
         }
 
-        protected internal virtual decimal getLimitSetting(MaxWinLimitSetting setting, int levelID)
+        protected internal virtual double GetLimitSetting(MaxWinLimitSetting setting, int levelID)
         {
-            decimal amount = 0;
+            double amount = 0;
             switch (levelID)
             {
                 case Constants.Level1:
@@ -108,11 +115,23 @@
                 case Constants.Level102:
                     amount = setting.Level102;
                     break;
-                default:
-                    break;
             }
-            return decimal.Truncate(amount);
+            return amount;
 
+        }
+
+        public async Task<CommandResult> EditFeedbackWinLossInfoAsync(
+           int LogID,
+           string status,
+           string description)
+        {
+            var criteria = new EditFeedbackWinLossInfoCommand
+            {
+                LogID = LogID,
+                Status = status,
+                Description = description
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
     }
 }
