@@ -19,6 +19,8 @@
         private ICRMLogService logService;
         private ISendNotificationService sendNotificationService;
         private IMonitorService monitorService;
+        private IAutoWinLossFeedbackService winlossService;
+
 
         #region CreateFeedbackForVoidingAbnormalBet
 
@@ -66,6 +68,22 @@
 
             // Assert
             await feedbackService.Received().ExecuteJobAsync();
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForWinLossLimit_Exception_ExpectedWriteLog()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            maintenanceService.When(x => x.GetUnderMaintenanceTimeAsync()).Throw(exception);
+
+            // Act
+            await service.CreateFeedbackForWinLossLimit();
+
+            // Assert
+            await logService.Received().ErrorAsync(exception);
         }
 
         #endregion CreateFeedbackForVoidingAbnormalBet
@@ -209,6 +227,7 @@
             logService = Substitute.For<ICRMLogService>();
             sendNotificationService = Substitute.For<ISendNotificationService>();
             monitorService = Substitute.For<IMonitorService>();
+            winlossService = Substitute.For<IAutoWinLossFeedbackService>();
 
             return new BackgroundService(
                 maintenanceService,
@@ -216,6 +235,7 @@
                 chatBotJobService,
                 logService,
                 sendNotificationService,
+                winlossService,
                 monitorService);
         }
 

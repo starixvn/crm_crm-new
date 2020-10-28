@@ -273,7 +273,7 @@
             const string greetingRed = "Dear Sir, Customer Support would like to inform that there is [BIG Winner] under your line. Member username is ";
             const string greetingBlack = "Dear Sir, Customer Support would like to draw your attention towards member ";
 
-            const string templateInfor = "'{0} ({1})' in '{2}'. ";
+            const string templateInfor = "\"{0} ({1})\" in \"{2}\". ";
 
             const string ThanksAttendtion = "Thank you for your kind attention!";
             const string ThanksKindly = "Kindly take note, thank you!";
@@ -282,8 +282,8 @@
             const string greetingRedChinese = "您好，客服部在此通知 会员 ";
             const string greetingBlackChinese = "您好，客服部在此通知 会员 ";
 
-            const string templateInforChinese = "' {0} ({1})' 在 '{2}'. ";
-            const string templateInforOrangeChinese = "' {0} ({1})'. ";
+            const string templateInforChinese = "\" {0} ({1})\" 在 \"{2}\". ";
+            const string templateInforOrangeChinese = "\" {0} ({1})\". ";
 
             const string ThanksAttendtionChinese = "谢谢您的关注与支持!";
             const string ThanksKindlyChinese = "请您留意 谢谢!";
@@ -360,14 +360,14 @@
             var stringBuilder = new StringBuilder();
             var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
             stringBuilder.Append(greeting);
-            stringBuilder.AppendFormat("'{0}', has currently won the Jackpot amount of  ", winLimit.UserName);
-            stringBuilder.AppendFormat("'{0} ({1})' in RNG Casino Baccarat Progressive Jackpot. ", TotalWinAmt, winLimit.Currency);
+            stringBuilder.AppendFormat("\"{0}\", has currently won the Jackpot amount of  ", winLimit.UserName);
+            stringBuilder.AppendFormat("\"{0} ({1})\" in RNG Casino Baccarat Progressive Jackpot. ", TotalWinAmt, winLimit.Currency);
             stringBuilder.Append(thanks);
             stringBuilder.Append(Constants.LineBreak);
 
             stringBuilder.Append(greetingChinese);
-            stringBuilder.AppendFormat("'{0}', 目前在 娱乐城赢了百家乐聚宝奖金 为 ", winLimit.UserName);
-            stringBuilder.AppendFormat("'{0} ({1})'", TotalWinAmt, winLimit.Currency);
+            stringBuilder.AppendFormat("\"{0}\", 目前在 娱乐城赢了百家乐聚宝奖金 为 ", winLimit.UserName);
+            stringBuilder.AppendFormat("\"{0} ({1})\"", TotalWinAmt, winLimit.Currency);
             stringBuilder.Append(thanksChinese);
             stringBuilder.Append(Constants.LineBreak);
 
@@ -396,7 +396,7 @@
             stringBuilder.Append(Constants.LineBreak);
 
             stringBuilder.Append(greetingOrangeYellowGreyRNGChinese);
-            stringBuilder.AppendFormat("'{0}', 目前在 {1} {2}", winLimit.UserName, winLimit.ProductName, winLossTempChinese);
+            stringBuilder.AppendFormat("\"{0}\", 目前在 {1} {2}", winLimit.UserName, winLimit.ProductName, winLossTempChinese);
             stringBuilder.AppendFormat(templateInforOrangeChinese, TotalWinAmt, winLimit.Currency);
             stringBuilder.Append(ThanksAttendtionChinese);
             stringBuilder.Append(Constants.LineBreak);
@@ -417,13 +417,13 @@
             var stringBuilder = new StringBuilder();
             var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
             stringBuilder.Append(greetingRed);
-            stringBuilder.AppendFormat("'{0}', currently has won amount of ", winLimit.UserName);
+            stringBuilder.AppendFormat("\"{0}\", currently has won amount of ", winLimit.UserName);
             stringBuilder.AppendFormat(templateInfor, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
             stringBuilder.Append(ThanksKindly);
             stringBuilder.Append(Constants.LineBreak);
 
             stringBuilder.Append(greetingRedChinese);
-            stringBuilder.AppendFormat("'{0}', 目前已达到 [赢取金额上限] 数目为 ", winLimit.UserName);
+            stringBuilder.AppendFormat("\"{0}\", 目前已达到 [赢取金额上限] 数目为 ", winLimit.UserName);
             stringBuilder.AppendFormat(templateInforChinese, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
             stringBuilder.Append(ThanksKindlyChinese);
             stringBuilder.Append(Constants.LineBreak);
@@ -444,13 +444,13 @@
             var stringBuilder = new StringBuilder();
             var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
             stringBuilder.Append(greetingBlack);
-            stringBuilder.AppendFormat("'{0}' has [hit Max Lose Limit] amounted to ", winLimit.UserName);
+            stringBuilder.AppendFormat("\"{0}\" has [hit Max Lose Limit] amounted to ", winLimit.UserName);
             stringBuilder.AppendFormat(templateInfor, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
             stringBuilder.Append(ThanksKindly);
             stringBuilder.Append(Constants.LineBreak);
 
             stringBuilder.Append(greetingBlackChinese);
-            stringBuilder.AppendFormat("'{0}' 目前已达到 [最高输额上限] 数目为 ", winLimit.UserName);
+            stringBuilder.AppendFormat("\"{0}\" 目前已达到 [最高输额上限] 数目为 ", winLimit.UserName);
             stringBuilder.AppendFormat(templateInforChinese, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
             stringBuilder.Append(ThanksKindlyChinese);
             stringBuilder.Append(Constants.LineBreak);
@@ -472,7 +472,7 @@
             stringBuilder.AppendFormat("<br />Product: {0}", winlimit.ProductName);
             stringBuilder.Append("<br />Game Type: ");
             stringBuilder.AppendFormat(bettype.Count > numGames ? "{0} ..." : "{0}", numGamesFormat);
-            stringBuilder.AppendFormat("<br /> UserName:{0}, Site:{1}", winlimit.UserName, winlimit.Site);
+            stringBuilder.AppendFormat("<br /> UserName: {0}, Site: {1}", winlimit.UserName, winlimit.Site);
             stringBuilder.AppendFormat("<br /> Winning/Lossing Ammount: {0} (RM), Winning/Lossing Ammount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
             , MaxWinLimitSetting, TotalWinAmt_RM, TotalWinAmt, winlimit.Currency);
             stringBuilder.AppendFormat("<br />Reached Limit Time: {0}, Reached Limit Level: {1}", winlimit.ReachedTime, winlimit.Level);
