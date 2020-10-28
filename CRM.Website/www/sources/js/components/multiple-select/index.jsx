@@ -96,7 +96,7 @@ export default class MultipleSelect extends Component {
 
     onToggle = () => {
         if (!this.props.isDisable) {
-            this.setState((prevState) => { return { showOptionList: !prevState.showOptionList }; },
+            this.setState(prevState => { return { showOptionList: !prevState.showOptionList }; },
                 () => {
                     if (this.searchInputBox && this.state.showOptionList) {
                         this.searchInputBox.focus();

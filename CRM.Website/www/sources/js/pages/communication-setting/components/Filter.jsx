@@ -72,8 +72,8 @@ export class Filter extends Component {
             }
         }), () => {
             if (selectedItemsKey) {
-                const selectedSub = this.state.selectedSubCategoryIdsFilter.length > 1  ? this.state.selectedSubCategoryIdsFilter.split(',') 
-                                                                                        : this.state.selectedSubCategoryIdsFilter;
+                const selectedSubCategoryIds = this.state.selectedSubCategoryIdsFilter;
+                const selectedSub = selectedSubCategoryIds.length > 1 ? selectedSubCategoryIds.split(',') : selectedSubCategoryIds;
                 const selectedMain = selectedItemsKey.split(',');
                 const findSubByMain = this.props.settings.subCategories.filter(item => selectedMain.includes(item.mainCategoryID.toString()));
                 const resetSelectedSub = selectedSub.length === 0 ? [] : selectedSub.filter(selected => findSubByMain.some(sub => sub.subCategoryId.toString() === selected));
@@ -83,7 +83,7 @@ export class Filter extends Component {
                     selectedSubCategoryIdsFilter: resetSelectedSubJoin
                 }, () => {
                     const isCheckDefault = false;
-                    const setSubCatagories = getSubCategories(isCheckDefault, findSubByMain, this.state.selectedSubCategoryIdsFilter);
+                    const setSubCatagories = getSubCategories(isCheckDefault, findSubByMain, selectedSubCategoryIds);
                     this.setState({
                         subCategoryOptionsFilter: setSubCatagories
                     });

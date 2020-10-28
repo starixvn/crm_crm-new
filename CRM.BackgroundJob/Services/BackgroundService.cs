@@ -31,6 +31,8 @@
         private readonly IAutoWinLossFeedbackService winLossService;
         private readonly IMonitorService monitorService;
 
+        private const string umTime = "UM time.";
+
         public BackgroundService(
             IMaintenanceService maintenanceService,
             IAutoFeedbackService feedbackService,
@@ -58,7 +60,7 @@
                 bool isUM = await CheckUM();
                 if (isUM)
                 {
-                    logService.LogInformation("UM time.");
+                    logService.LogInformation(umTime);
                     return;
                 }
 
@@ -79,7 +81,7 @@
                 bool isUM = await CheckUM();
                 if (isUM)
                 {
-                    logService.LogInformation("UM time.");
+                    logService.LogInformation(umTime);
                     return;
                 }
 
@@ -100,7 +102,7 @@
                 bool isUM = await CheckUM();
                 if (isUM)
                 {
-                    logService.LogInformation("UM time.");
+                    logService.LogInformation(umTime);
                     return;
                 }
 
@@ -135,7 +137,7 @@
                 bool isUM = await CheckUM();
                 if (isUM)
                 {
-                    logService.LogInformation("UM time.");
+                    logService.LogInformation(umTime);
                     return;
                 }
 

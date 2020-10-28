@@ -115,6 +115,36 @@ export class EditCommunitionSetting extends PureComponent {
         return errors;
     }
 
+    handleSubmit = (values, { setSubmitting }) => {
+        setSubmitting(true);
+        const countCatagories = values.mainCategoryTypesEdit.split(',').length;
+        const countSubCatagories = values.subCategoryTypesEdit.split(',').length;
+        if (countCatagories === this.props.settings.mainCategories.length) {
+            values.mainCategoryTypesEdit = '0';
+        }
+
+        if (countSubCatagories === this.state.subCategoryOptionsEdit.length) {
+            values.subCategoryTypesEdit = '0';
+        }
+
+        const data = {
+            DefaultCommId: values.defaultCommId,
+            CategoryIds: values.mainCategoryTypesEdit,
+            SubCategoryIds: values.subCategoryTypesEdit,
+            CommunicationIds: values.comunicationToolTypesEdit
+        };
+
+        this.props.editCommunication(data).then(() => {
+            if (this.props.editCommunicationResult.isSuccessful) {
+                setTimeout(() => {
+                    this.props.onSuccess();
+                }, 3000);
+            } else {
+                setSubmitting(false);
+            }
+        });
+    }
+
     renderFormEditCommunication = ({
         values,
         errors,
@@ -205,45 +235,15 @@ export class EditCommunitionSetting extends PureComponent {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
+                    <Button size="sm" variant="primary" type="submit" disabled={isSubmitting}>
                         {LangHelper.getResource('Update')}
                     </Button>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>
+                    <Button size="sm" variant="primary" type="submit"   onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
             </Form>
         );
-    }
-
-    handleSubmit = (values, { setSubmitting }) => {
-        setSubmitting(true);
-        const countCatagories = values.mainCategoryTypesEdit.split(',').length;
-        const countSubCatagories = values.subCategoryTypesEdit.split(',').length;
-        if (countCatagories === this.props.settings.mainCategories.length) {
-            values.mainCategoryTypesEdit = '0';
-        }
-
-        if (countSubCatagories === this.state.subCategoryOptionsEdit.length) {
-            values.subCategoryTypesEdit = '0';
-        }
-
-        const data = {
-            DefaultCommId: values.defaultCommId,
-            CategoryIds: values.mainCategoryTypesEdit,
-            SubCategoryIds: values.subCategoryTypesEdit,
-            CommunicationIds: values.comunicationToolTypesEdit
-        };
-
-        this.props.editCommunication(data).then(() => {
-            if (this.props.editCommunicationResult.isSuccessful) {
-                setTimeout(() => {
-                    this.props.onSuccess();
-                }, 3000);
-            } else {
-                setSubmitting(false);
-            }
-        });
     }
 
     render() {
