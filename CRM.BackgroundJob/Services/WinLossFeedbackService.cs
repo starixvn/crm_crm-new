@@ -282,8 +282,8 @@
             const string greetingRedChinese = "您好，客服部在此通知 会员 ";
             const string greetingBlackChinese = "您好，客服部在此通知 会员 ";
 
-            const string templateInforChinese = "\" {0} ({1})\" 在 \"{2}\". ";
-            const string templateInforOrangeChinese = "\" {0} ({1})\". ";
+            const string templateInforChinese = "\"{0} ({1})\" 在 \"{2}\". ";
+            const string templateInforOrangeChinese = "\"{0} ({1})\". ";
 
             const string ThanksAttendtionChinese = "谢谢您的关注与支持!";
             const string ThanksKindlyChinese = "请您留意 谢谢!";
@@ -344,6 +344,9 @@
                                 )
                             );
                         break;
+
+                    default:
+                        break;
                 }
             }
             return stringBuilder.ToString();
@@ -396,7 +399,7 @@
             stringBuilder.Append(Constants.LineBreak);
 
             stringBuilder.Append(greetingOrangeYellowGreyRNGChinese);
-            stringBuilder.AppendFormat("\"{0}\", 目前在 {1} {2}", winLimit.UserName, winLimit.ProductName, winLossTempChinese);
+            stringBuilder.AppendFormat("\"{0}\", 目前在 {1} {2} ", winLimit.UserName, winLimit.ProductName, winLossTempChinese);
             stringBuilder.AppendFormat(templateInforOrangeChinese, TotalWinAmt, winLimit.Currency);
             stringBuilder.Append(ThanksAttendtionChinese);
             stringBuilder.Append(Constants.LineBreak);

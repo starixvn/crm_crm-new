@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Criteria.WinLossLimit;
+    using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -54,6 +56,26 @@
             Assert.Equal(expected, actual);
             Assert.Equal(string.Join(",", custIds), criteria.CustIds);
         }
+        [Fact]
+        public async Task getListCustReachLimitAsync_WhenCalled_ReturnExpectedLimitInfor()
+        {
+            // Arrange
+            var expected = fixture.Create<IEnumerable<CustomerWinLimit>>();
+            var lastLogID = fixture.Create<int>();
+            var batchSize = fixture.Create<int>();
+            var criteria = new GetListCustomerReachLimitCriteria();
+            var service = GetService();
+            baseService.GetDataAsync<CustomerWinLimit>(Arg.Do<GetListCustomerReachLimitCriteria>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.getListCustReachLimitAsync(lastLogID, batchSize);
+
+            // Assert
+            Assert.Equal(expected, actual);
+            Assert.Equal(lastLogID, criteria.LastLogID);
+            Assert.Equal(batchSize, criteria.BatchSize);
+        }
+
 
         #region Helpers
 

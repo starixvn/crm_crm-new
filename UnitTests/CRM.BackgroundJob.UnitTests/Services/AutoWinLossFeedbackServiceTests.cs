@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
@@ -36,6 +37,86 @@
             // Assert
             await logService.Received().ErrorAsync(exception);
             await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForWinLossLimit);
+        }
+
+        [Fact]
+        public async Task WinLossExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new WinLossSystemSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetWinLossSettingAsync().Returns(setting);
+
+            // Act
+            await service.WinLossExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service is shutdown.");
+        }
+
+        [Fact]
+        public async Task WinLossExecuteJobAsync_JobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        {
+            // Arrange
+            var setting = new WinLossSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetWinLossSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForWinLossLimit).Returns(true);
+
+            // Assert
+            await service.WinLossExecuteJobAsync();
+
+            // Act
+            logService.DidNotReceive().LogInformation(Arg.Any<string>());
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task WinLossExecuteJobAsync_JobIsRunningAndLastRuntimeIsGreaterThanNow_DoNothing()
+        {
+            // Arrange
+            var service = GetService();
+            var setting = new WinLossSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now.AddMinutes(-appSettings.RetryRuntime),
+                JobStatus = JobStatus.Running
+            };
+            systemSettingService.GetWinLossSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForWinLossLimit).Returns(false);
+
+            // Assert
+            await service.WinLossExecuteJobAsync();
+
+            // Act
+            logService.Received().LogInformation(Arg.Any<string>());
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task WinLossExecuteJobAsync_JobIsCompleted_ExpectedCallCreateFeedback()
+        {
+            // Arrange
+            var service = GetService();
+            var setting = new WinLossSystemSetting
+            {
+                ServiceFlag = true,
+                JobStatus = JobStatus.Completed
+            };
+            systemSettingService.GetWinLossSettingAsync().Returns(setting);
+
+            // Assert
+            await service.WinLossExecuteJobAsync();
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForWinLossLimit);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForWinLossLimit);
+            await winLossService.Received().CreateFeedbackForWinLossLimitAsync(setting);
         }
 
         #region Helpers
