@@ -103,7 +103,7 @@
             const int Level3 = 3;
             const int Level101 = 101;
             const int Level102 = 102;
-            
+
             switch (levelID)
             {
                 case Level1:
@@ -120,6 +120,8 @@
                     break;
                 case Level102:
                     amount = setting.Level102;
+                    break;
+                default:
                     break;
             }
             return amount;
