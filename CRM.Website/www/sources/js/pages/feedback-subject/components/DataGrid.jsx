@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { PAGING_SIZES } from '@jsroot/common/constants';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import { PAGING_SIZES } from '@jsroot/common/constants';
+
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -13,8 +14,8 @@ export class DataGrid extends Component {
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
-        params['pageIndex'] = pageIndex;
         params['pageSize'] = pageSize;
+        params['pageIndex'] = pageIndex;
         this.props.setGridParams(params);
         this.props.getFeedBackSubject(params);
     }

@@ -41,13 +41,13 @@ export class NewFeedbackSubject extends Component {
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
-                       this.props.createFeedbackSubjectResult &&
-                       <ResponseMessage isSuccessful={this.props.createFeedbackSubjectResult.isSuccessful}
-                           message={this.props.createFeedbackSubjectResult.message || LangHelper.getResource('InsertFeedbackSubjectTemplateSuccessfully')}
-                       />
+                        this.props.createFeedbackSubjectResult &&
+                        <ResponseMessage isSuccessful={this.props.createFeedbackSubjectResult.isSuccessful}
+                            message={this.props.createFeedbackSubjectResult.message || LangHelper.getResource('InsertFeedbackSubjectTemplateSuccessfully')}
+                        />
                     }
                     <Form.Group as={Row}>
-                    <Form.Label column sm="4" md="3" className="required" htmlFor="subject">
+                        <Form.Label column sm="4" md="3" className="required" htmlFor="subject">
                             {LangHelper.getResource('InsertFeedbackSubjectTemplate')}
                         </Form.Label>
                         <Col sm="8" md="9">

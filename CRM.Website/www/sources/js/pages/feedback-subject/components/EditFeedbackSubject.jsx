@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -9,7 +10,6 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 
 export class EditFeedbackSubject extends PureComponent {
     constructor(props) {
@@ -28,7 +28,7 @@ export class EditFeedbackSubject extends PureComponent {
     }
 
     static defaultProps = {
-        feedback:{
+        feedback: {
             templateId: 0,
             subject: '',
             isActive: true
@@ -45,22 +45,22 @@ export class EditFeedbackSubject extends PureComponent {
     }
 
     renderForm = ({
+        errors,
         values,
         handleChange,
         touched,
         handleSubmit,
-        isSubmitting,
-        errors
+        isSubmitting
     }) => {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
-                       this.props.editFeedbackSubjectResult &&
-                       <ResponseMessage isSuccessful={this.props.editFeedbackSubjectResult.isSuccessful}
-                           message={this.props.editFeedbackSubjectResult.message || LangHelper.getResource('EditFeedbackSubjectTemplateSuccessfully')}
-                       />
+                        this.props.editFeedbackSubjectResult &&
+                        <ResponseMessage isSuccessful={this.props.editFeedbackSubjectResult.isSuccessful}
+                            message={this.props.editFeedbackSubjectResult.message || LangHelper.getResource('EditFeedbackSubjectTemplateSuccessfully')}
+                        />
                     }
                     <Form.Group as={Row}>
                         <Form.Label column sm="4" md="3" >
@@ -72,24 +72,23 @@ export class EditFeedbackSubject extends PureComponent {
                     </Form.Group>
 
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" className="required" htmlFor="feedbackSubjectContent">
+                        <Form.Label className="required" column sm="4" md="3" htmlFor="feedbackSubjectContent">
                             {LangHelper.getResource('TemplateContent')}
                         </Form.Label>
-                        <Col sm="8" md="9">
-                            <Form.Control type="text" size="sm" value={values.subject}
-                                name="subject" id="subject"
+                        <Col md="9" sm="8">
+                            <Form.Control size="sm" type="text" value={values.subject} id="subject" name="subject"
+                                onChange={handleChange}
                                 isInvalid={touched.subject && errors.subject}
                                 className="shadow-none" autoComplete="off"
-                                onChange={handleChange}
                             />
                         </Col>
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
+                    <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button type="button" variant="primary" size="sm" onClick={this.handleConfirmCancelPopup}>
+                    <Button size="sm" type="button" variant="primary" size="sm" onClick={this.handleConfirmCancelPopup}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
@@ -101,7 +100,7 @@ export class EditFeedbackSubject extends PureComponent {
         setSubmitting(true);
         const data = {
             templateId: values.templateId,
-            subject:  values.subject
+            subject: values.subject
         };
         this.props.editFeedbackSubject(data).then(() => {
             if (this.props.editFeedbackSubjectResult.isSuccessful) {
@@ -157,7 +156,7 @@ export class EditFeedbackSubject extends PureComponent {
                     validate={this.validateFormik}
                     onSubmit={this.handleSubmit}
                 >
-                {this.renderForm}
+                    {this.renderForm}
                 </Formik>
                 {
                     this.state.showConfirmClose &&
@@ -167,17 +166,16 @@ export class EditFeedbackSubject extends PureComponent {
                             <div>{LangHelper.getResource('ConfirmDirtyMessage')}</div>
                         }
                         buttons={[
-                            <Button variant="primary" size="sm" onClick={this.props.onClose}>
+                            <Button size="sm" variant="primary" onClick={this.props.onClose}>
                                 {LangHelper.getResource('OK')}
                             </Button>,
-                            <Button variant="primary" size="sm" onClick={this.handleCloseConfirm}>
+                            <Button size="sm" variant="primary" onClick={this.handleCloseConfirm}>
                                 {LangHelper.getResource('Cancel')}
                             </Button>
                         ]}
                         onClose={this.handleCloseConfirm}
                     />
                 }
-                
             </Modal>
         );
     }
