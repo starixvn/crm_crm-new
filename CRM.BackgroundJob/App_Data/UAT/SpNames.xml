@@ -7,6 +7,7 @@
     <Function Name="System Setting">
         <Setting Key="Acc_CRM_SystemSettingSel" SpName="Acc_CRM_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SystemSettingUpd" SpName="Acc_CRM_SystemSettingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SystemSettingByServiceUpd" SpName="Acc_CRM_SystemSettingByServiceUpd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_WinLimit_SystemSettingSel" SpName="Acc_CRM_WinLimit_SystemSettingSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Feedback">
@@ -39,5 +40,10 @@
         <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_Chatbot_SendNotification_Status_Upd" SpName="Acc_CRM_Chatbot_SendNotification_Status_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_NotificationMsgLog_Ins" SpName="Acc_CRM_ChatBot_NotificationMsgLog_Ins_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+    </Function>
+    <Function Name="WinLoss Limit">
+      <Setting Key="Acc_CRM_CustWinLimitSel" SpName="Acc_CRM_CustWinLimitSel_xtest" DbName="DBCUST.CustDB.bodbAdminNet" />
+      <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoIns" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoIns_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+      <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoUpd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
 </Functions>
