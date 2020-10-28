@@ -30,8 +30,10 @@
 
             // Assert
             jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
+            jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForWinLossLimit);
             service.Received().Protected("RunHangfireJobs");
         }
+
 
         [Fact]
         public void OnStopping_WhenCalled_ExpectedRemoveCurrentHangfireServer()
@@ -132,6 +134,27 @@
             recurringJob.Received().AddOrUpdate("Monitor Letstalk Service",
                 Arg.Is<Job>(job => job.Method.Name == "MonitorLetstalkService"),
                 "CronExpression",
+                Arg.Any<RecurringJobOptions>());
+        }
+
+        [Fact]
+        public void RunHangfireJobs_EnabledCreateFeedbackForWinLossLimit_ExpectedAddRecurringJob()
+        {
+            // Arrange
+            var jobSettings = new List<HangfireJobSetting>
+            {
+                new HangfireJobSetting { JobName = "CreateFeedbackForWinLossLimit", IsEnabled = true }
+            };
+            var service = MockService(jobSettings);
+            service.Protected("IsEnabledJob", "CreateFeedbackForWinLossLimit").Returns(true);
+
+            // Act
+            service.Public_RunHangfireJobs();
+
+            // Assert
+            recurringJob.Received().AddOrUpdate("Create Feedback For Win Loss Limit",
+                Arg.Is<Job>(job => job.Method.Name == "CreateFeedbackForWinLossLimit"),
+                "* * * * *",
                 Arg.Any<RecurringJobOptions>());
         }
 

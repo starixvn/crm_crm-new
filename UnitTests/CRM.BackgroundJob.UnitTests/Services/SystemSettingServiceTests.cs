@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Criteria.WinLossLimit;
+    using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -89,6 +91,22 @@
 
             // Act
             var actual = await service.GetChatBotSystemSettingAsync();
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetWinLossSettingAsync_WhenCalled_ReturnExpectedSetting()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<WinLossSystemSetting>();
+            var service = GetSystemSettingService();
+            baseService.GetDataEntityAsync<WinLossSystemSetting>(Arg.Any<GetWinLossSystemSettingCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await service.GetWinLossSettingAsync();
 
             // Assert
             Assert.Equal(expected, actual);

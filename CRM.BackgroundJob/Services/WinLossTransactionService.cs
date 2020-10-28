@@ -69,13 +69,15 @@
                 GroupHeadline headline = headlines.FirstOrDefault(x => x.CustId == limitInfo.CustId);
                 headlineId = headline != null ? headline.HeadlineId : 0;
                 hlname = headline != null ? headline.HeadlineName : "";
+                var custId = limitInfo.CustId;
+                var related = limitInfo.CustId;
 
                 stringBuilder.AppendFormat(XmlTemplate,
                     limitInfo.LogID,
-                    limitInfo.CustId,
+                    custId,
                     headlineId,
                     hlname,
-                    limitInfo.CustId,
+                    related,
                     limitInfo.ProductID,
                     limitInfo.ProductGroup,
                     limitInfo.Level,
@@ -122,6 +124,7 @@
                     amount = setting.Level102;
                     break;
                 default:
+                    amount = 0;
                     break;
             }
             return amount;

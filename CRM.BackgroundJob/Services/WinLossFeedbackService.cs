@@ -346,6 +346,7 @@
                         break;
 
                     default:
+                        stringBuilder.Append("");
                         break;
                 }
             }
