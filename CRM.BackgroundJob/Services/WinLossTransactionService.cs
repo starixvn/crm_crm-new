@@ -98,26 +98,31 @@
         protected internal virtual double GetLimitSetting(MaxWinLimitSetting setting, int levelID)
         {
             double amount = 0;
+            const int Level1 = 1;
+            const int Level2 = 2;
+            const int Level3 = 3;
+            const int Level101 = 101;
+            const int Level102 = 102;
+            
             switch (levelID)
             {
-                case Constants.Level1:
+                case Level1:
                     amount = setting.Level1;
                     break;
-                case Constants.Level2:
+                case Level2:
                     amount = setting.Level2;
                     break;
-                case Constants.Level3:
+                case Level3:
                     amount = setting.Level3;
                     break;
-                case Constants.Level101:
+                case Level101:
                     amount = setting.Level101;
                     break;
-                case Constants.Level102:
+                case Level102:
                     amount = setting.Level102;
                     break;
             }
             return amount;
-
         }
 
         public async Task<CommandResult> EditFeedbackWinLossInfoAsync(

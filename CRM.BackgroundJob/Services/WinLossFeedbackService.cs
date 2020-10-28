@@ -471,10 +471,7 @@
             stringBuilder.Append("<br />Informed Headline Win/Loss Alert for below member:");
             stringBuilder.AppendFormat("<br />Product: {0}", winlimit.ProductName);
             stringBuilder.Append("<br />Game Type: ");
-            if(numGamesFormat != null)
-            {
-                stringBuilder.AppendFormat("{0} ...", numGamesFormat);
-            }
+            stringBuilder.AppendFormat(numGamesDisplay.Count > numGames ? "...": "" + "{0} ", numGamesFormat);
             stringBuilder.AppendFormat("<br /> UserName:{0}, Site:{1}", winlimit.UserName, winlimit.Site);
             stringBuilder.AppendFormat("<br /> Winning/Lossing Ammount: {0} (RM), Winning/Lossing Ammount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
             , MaxWinLimitSetting, TotalWinAmt_RM, TotalWinAmt, winlimit.Currency);

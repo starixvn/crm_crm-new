@@ -1,0 +1,82 @@
+2020-10-28 08:49:22.513 +07:00 [INF] User profile is available. Using 'C:\Users\teddy.le\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-10-28 08:49:22.878 +07:00 [INF] Starting Hangfire Server using job storage: 'redis://ha.nexdev.net:16379,password=foo1@bared,defaultDatabase=6/0'
+2020-10-28 08:49:22.879 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 5
+    Listening queues: 'critical', 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2020-10-28 08:49:23.017 +07:00 [INF] Server cp007-teddy:19300:c8dfb98a successfully announced in 20.2835 ms
+2020-10-28 08:49:23.042 +07:00 [INF] Server cp007-teddy:19300:c8dfb98a is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2020-10-28 08:49:23.167 +07:00 [INF] 2 servers were removed due to timeout
+2020-10-28 08:49:23.167 +07:00 [INF] Removing expired records from the 'succeeded' list...
+2020-10-28 08:49:23.245 +07:00 [INF] 1 timed out jobs were found in the 'critical' queue and re-queued.
+2020-10-28 08:49:23.313 +07:00 [INF] Removing 75 expired jobs from 'succeeded' list...
+2020-10-28 08:49:23.313 +07:00 [INF] Server cp007-teddy:19300:c8dfb98a all the dispatchers started
+2020-10-28 08:50:01.303 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419571
+2020-10-28 08:50:01.303 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419571
+2020-10-28 08:50:01.608 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419571
+2020-10-28 08:50:01.938 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419571
+2020-10-28 08:50:01.944 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419572
+2020-10-28 08:50:01.987 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419572
+2020-10-28 08:50:01.992 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419573
+2020-10-28 08:50:02.053 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419573
+2020-10-28 08:50:02.058 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419574
+2020-10-28 08:50:02.077 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419574
+2020-10-28 08:50:02.083 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419575
+2020-10-28 08:50:02.109 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419575
+2020-10-28 08:50:02.128 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419577
+2020-10-28 08:50:02.149 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419577
+2020-10-28 08:50:02.156 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419578
+2020-10-28 08:50:02.176 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419578
+2020-10-28 08:50:02.181 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419579
+2020-10-28 08:50:02.202 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419579
+2020-10-28 08:50:02.207 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419580
+2020-10-28 08:50:02.227 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419580
+2020-10-28 08:50:02.232 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419581
+2020-10-28 08:50:02.252 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419581
+2020-10-28 08:50:02.394 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419571
+2020-10-28 08:50:02.537 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419572
+2020-10-28 08:50:02.561 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419572
+2020-10-28 08:50:02.611 +07:00 [INF] Create feedback failed. HeadlineId: 1297 logID:419571
+2020-10-28 08:50:02.616 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419573
+2020-10-28 08:50:02.629 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419573
+2020-10-28 08:50:02.635 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419574
+2020-10-28 08:50:02.651 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419574
+2020-10-28 08:50:02.657 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419575
+2020-10-28 08:50:02.670 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419575
+2020-10-28 08:50:02.677 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419577
+2020-10-28 08:50:02.693 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419577
+2020-10-28 08:50:02.700 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419578
+2020-10-28 08:50:02.713 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419578
+2020-10-28 08:50:02.720 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419579
+2020-10-28 08:50:02.733 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419579
+2020-10-28 08:50:02.740 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419580
+2020-10-28 08:50:02.755 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419580
+2020-10-28 08:50:02.765 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419581
+2020-10-28 08:50:02.779 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419581
+2020-10-28 08:50:03.100 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419572
+2020-10-28 08:50:03.113 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419572
+2020-10-28 08:50:03.120 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419573
+2020-10-28 08:50:03.134 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419573
+2020-10-28 08:50:03.141 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419574
+2020-10-28 08:50:03.154 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419574
+2020-10-28 08:50:03.161 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419575
+2020-10-28 08:50:03.173 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419575
+2020-10-28 08:50:03.179 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419577
+2020-10-28 08:50:03.192 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419577
+2020-10-28 08:50:03.198 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419578
+2020-10-28 08:50:03.210 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419578
+2020-10-28 08:50:03.216 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419579
+2020-10-28 08:50:03.228 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419579
+2020-10-28 08:50:03.233 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419580
+2020-10-28 08:50:03.246 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419580
+2020-10-28 08:50:03.252 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419581
+2020-10-28 08:50:03.266 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419581
+2020-10-28 08:51:01.828 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419571
+2020-10-28 08:51:01.848 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419571
+2020-10-28 08:51:01.858 +07:00 [INF] Begin create win loss feedback : HeadlineId: 1297 logID:419582
+2020-10-28 08:51:01.880 +07:00 [INF] Create feedback successfully. HeadlineId: 1297: logID:419582
+2020-10-28 08:51:01.887 +07:00 [INF] Begin create win loss feedback : HeadlineId: 8576543 logID:419583
+2020-10-28 08:51:01.934 +07:00 [INF] Create feedback successfully. HeadlineId: 8576543: logID:419583
+2020-10-28 08:51:01.950 +07:00 [INF] Begin create win loss feedback : HeadlineId: 8576543 logID:419585
+2020-10-28 08:51:01.971 +07:00 [INF] Create feedback successfully. HeadlineI
