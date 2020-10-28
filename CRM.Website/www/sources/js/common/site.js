@@ -47,7 +47,7 @@ export default class Site {
                     break;
             }
 
-           //window.location = _rootUrl + url;
+            window.location = _rootUrl + url;
         }
     }
 
