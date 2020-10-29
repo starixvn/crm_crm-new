@@ -14,6 +14,7 @@ jest.mock('react-toastify');
 describe('AppContainer', () => {
     beforeAll(() => {
         LangHelper.getResource = jest.fn(key => key);
+        LangHelper.formatString = jest.fn();
         jest.useFakeTimers();
     });
     afterAll(() => {
@@ -71,23 +72,42 @@ describe('AppContainer', () => {
         expect(container.find(EditPicManagement).length).toBe(1);
     });
 
-    it('render Confirm component correctly', () => {
-        // Arrange
-        const props = {
-            confirmPopup: { show: true, username: '', picId: 1, checked: false }
-        };
+    describe('render Confirm component correctly', () => {
+        it('when checked is false', () => {
+            // Arrange
+            const props = {
+                confirmPopup: { show: true, username: 'username', picId: 1, checked: false }
+            };
+            const expected = 'Are you sure you want to deactivate PIC username? ';
 
-        // Act
-        const container = shallow(<AppContainer {...props} />);
+            // Act
+            const container = shallow(<AppContainer {...props} />);
 
-        // Assert
-        expect(container).toMatchSnapshot();
-        expect(container.find(ConfirmPopup).length).toBe(1);
+            // Assert
+            expect(container.find(ConfirmPopup).length).toBe(1);
+            expect(shallow(container.find(ConfirmPopup).props().content).text()).toEqual(expected);
+        });
+
+        it('when checked is true', () => {
+            // Arrange
+            const props = {
+                confirmPopup: { show: true, username: 'username', picId: 1, checked: true }
+            };
+            const expected = 'Are you sure you want to active PIC username? ';
+
+            // Act
+            const container = shallow(<AppContainer {...props} />);
+
+            // Assert
+            expect(container.find(ConfirmPopup).length).toBe(1);
+            expect(shallow(container.find(ConfirmPopup).props().content).text()).toEqual(expected);
+        });
     });
+
 
     describe('method', () => {
         describe('changeActiveStatus', () => {
-            it('should call exactly functions when change active status successfully', async () => {
+            it('should call exactly functions when change active status successfully with initial status is false', async () => {
                 // Arrange
                 const promise = Promise.resolve({});
                 const props = {
@@ -107,7 +127,31 @@ describe('AppContainer', () => {
 
                 // Assert
                 expect(container.closeConfirmActive).toHaveBeenCalled();
-                expect(toast.success).toHaveBeenCalled();
+                expect(toast.success).toHaveBeenCalledWith('DeactivatePICSuccess');
+                expect(props.getGridData).toHaveBeenCalledWith(props.gridParams);
+            });
+
+            it('should call exactly functions when change active status successfully with initial status is true', async () => {
+                // Arrange
+                const promise = Promise.resolve({});
+                const props = {
+                    confirmPopup: { show: true, username: '', picId: 1, checked: true },
+                    gridParams: { pageSize: 100, pageIndex: 1 },
+                    changeActiveStatus: jest.fn(() => promise),
+                    activeResult: { isSuccessful: true, message: '' },
+                    getGridData: jest.fn()
+                };
+                const container = shallow(<AppContainer {...props} />).instance();
+                container.closeConfirmActive = jest.fn();
+
+                // Act
+                container.changeActiveStatus();
+                await promise;
+                jest.runAllTimers();
+
+                // Assert
+                expect(container.closeConfirmActive).toHaveBeenCalled();
+                expect(toast.success).toHaveBeenCalledWith('ActivePICSuccess');
                 expect(props.getGridData).toHaveBeenCalledWith(props.gridParams);
             });
 

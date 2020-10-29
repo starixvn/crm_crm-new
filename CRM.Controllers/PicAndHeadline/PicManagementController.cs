@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
@@ -108,6 +109,13 @@
             criteria.LoginIP = ClientIP;
             CommandResult commandResult = await picManagementService.EditPicAsync(criteria);
             return Json(commandResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ValidateEditPic([FromBody] ValidateEditPicCriteria criteria)
+        {
+            var result = await picManagementService.ValidateEditPicAsync(criteria);
+            return Json(result);
         }
     }
 }

@@ -8,7 +8,8 @@ import picManagement, {
     setEditPicPopup,
     setEditPicResult,
     setActiveResult,
-    setConfirmPopup
+    setConfirmPopup,
+    setValidateEditPicResult
 } from '../picManagementSlice';
 
 describe('picManagement reducer', () => {
@@ -40,7 +41,8 @@ describe('picManagement reducer', () => {
                 username: '',
                 picId: null,
                 checked: false
-            }
+            },
+            validateEditPicResult: ''
         });
     });
 
@@ -175,6 +177,17 @@ describe('picManagement reducer', () => {
             })
         ).toEqual({
             confirmPopup: { show: false }
+        });
+    });
+
+    it('should handle setValidateEditPicResult', () => {
+        expect(
+            picManagement({}, {
+                type: setValidateEditPicResult.type,
+                payload: 'data'
+            })
+        ).toEqual({
+            validateEditPicResult: 'data'
         });
     });
 });

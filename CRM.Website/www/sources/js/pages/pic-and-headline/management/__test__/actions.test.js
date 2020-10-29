@@ -147,4 +147,23 @@ describe('actionCreators', () => {
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
+
+    describe('validateEditPic', () => {
+        it('should handle setValidateEditPicResult when request has been done', async () => {
+            // Arrange
+            const expectedParams = { picId: 1 };
+            const response = { data: 'expected' };
+            const expectedActions = [{ type: ActionCreators.setValidateEditPicResult.type, payload: response.data }];
+            const store = mockStore({ validateEditPicResult: null });
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+
+            // Act
+            await store.dispatch(ActionCreators.validateEditPic(expectedParams));
+
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('PicManagement/ValidateEditPic', expectedParams);
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
 });

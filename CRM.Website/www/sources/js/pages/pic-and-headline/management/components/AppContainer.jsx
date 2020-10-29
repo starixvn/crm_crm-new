@@ -77,7 +77,13 @@ export class AppContainer extends PureComponent {
                             <div>
                                 Are you sure you want to {this.props.confirmPopup.checked ? 'active' : 'deactivate'}
                                 {` PIC ${this.props.confirmPopup.username}? `}
-                                {this.props.confirmPopup.checked ? '' : 'The PIC assignment shall be removed'}
+                                {
+                                    this.props.confirmPopup.checked
+                                        ? ''
+                                        : LangHelper.formatString(
+                                            'The PIC assignment shall be removed, and the Recipient {0} shall be removed from Chat Type Mapping if it exists.',
+                                            this.props.confirmPopup.username)
+                                }
                             </div>
                         }
                         onSubmit={this.changeActiveStatus}

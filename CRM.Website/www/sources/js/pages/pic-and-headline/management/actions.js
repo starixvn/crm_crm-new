@@ -10,7 +10,8 @@ import {
     setEditPicPopup,
     setEditPicResult,
     setActiveResult,
-    setConfirmPopup
+    setConfirmPopup,
+    setValidateEditPicResult
 } from './picManagementSlice';
 
 const getAllSetting = () => async dispatch => {
@@ -57,6 +58,13 @@ const editPic = params => async dispatch => {
     });
 }
 
+const validateEditPic = params => async dispatch => {
+    const url = Site.resolveClientUrl('PicManagement/ValidateEditPic');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setValidateEditPicResult(response.data));
+    });
+}
+
 export const ActionCreators = {
     setSetting,
     setGridParams,
@@ -68,10 +76,12 @@ export const ActionCreators = {
     setEditPicResult,
     setActiveResult,
     setConfirmPopup,
+    setValidateEditPicResult,
     getAllSetting,
     getGridData,
     exportExcel,
     changeActiveStatus,
     createPic,
-    editPic
+    editPic,
+    validateEditPic
 };

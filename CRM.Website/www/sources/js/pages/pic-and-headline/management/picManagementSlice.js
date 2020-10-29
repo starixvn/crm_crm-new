@@ -29,7 +29,8 @@ const picManagementSlice = createSlice({
             username: '',
             picId: null,
             checked: false
-        }
+        },
+        validateEditPicResult: ''
     },
     reducers: {
         setSetting: (state, action) => {
@@ -61,6 +62,9 @@ const picManagementSlice = createSlice({
         },
         setConfirmPopup: (state, action) => {
             state.confirmPopup = action.payload;
+        },
+        setValidateEditPicResult: (state, action) => {
+            state.validateEditPicResult = action.payload;
         }
     }
 });
@@ -77,7 +81,8 @@ export const {
     setEditPicPopup,
     setEditPicResult,
     setActiveResult,
-    setConfirmPopup
+    setConfirmPopup,
+    setValidateEditPicResult
 } = actions;
 
 export default reducer;

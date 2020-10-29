@@ -16,6 +16,8 @@
         Task<CommandResult> EditPicAsync(EditPicCriteria criteria);
 
         Task<CommandResult> ChangePicStateAsync(ChangePicStateCriteria criteria);
+
+        Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria);
     }
     public class PicManagementService : IPicManagementService
     {
@@ -54,6 +56,11 @@
         public async Task<CommandResult> EditPicAsync(EditPicCriteria criteria)
         {
             return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria)
+        {
+            return await baseService.GetDataEntityAsync<string>(criteria);
         }
     }
 }

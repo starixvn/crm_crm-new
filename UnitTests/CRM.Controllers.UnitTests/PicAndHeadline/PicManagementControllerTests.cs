@@ -205,6 +205,25 @@
             Assert.Equal($"{fileName}.xlsx", excelResult.FileDownloadName);
         }
 
+        [Fact]
+        public async Task ValidateEditPic_WhenCalled_ReturnExpectedString()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var criteria = fixture.Create<ValidateEditPicCriteria>();
+            var expected = fixture.Create<string>();
+            var controller = GetController();
+            picManagementService.ValidateEditPicAsync(criteria).Returns(expected);
+
+            // Act
+            var actual = await controller.ValidateEditPic(criteria);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var commandResult = Assert.IsAssignableFrom<string>(jsonResult.Value);
+            Assert.Equal(expected, commandResult);
+        }
+
         #region Helpers
 
         private PicManagementController GetController()

@@ -100,6 +100,24 @@
             Assert.Equal(expected, result);
         }
 
+        [Fact]
+        public async Task ValidateEditPicAsync_WhenCalled_ReturnExpectedString()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var criteria = fixture.Create<ValidateEditPicCriteria>();
+            var expected = fixture.Create<string>();
+
+            var service = GetService();
+            baseService.GetDataEntityAsync<string>(criteria).Returns(expected);
+
+            // Act
+            var result = await service.ValidateEditPicAsync(criteria);
+
+            // Assert
+            Assert.Equal(expected, result);
+        }
+
         #region Helpers
 
         private PicManagementService GetService()

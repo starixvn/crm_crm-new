@@ -265,7 +265,7 @@ export class NewPicManagement extends Component {
                     <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.handleConfirmCancelPopup}>
+                    <Button variant="primary" size="sm" onClick={this.handleConfirmCancelPopup}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
