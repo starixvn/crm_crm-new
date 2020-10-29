@@ -57,7 +57,7 @@
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
             };
-            await systemSettingService.EditSystemSettingAsync(settingJobStatus);
+            await systemSettingService.EditWinLossSystemSettingAsync(settingJobStatus);
 
             IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.getListCustReachLimitAsync(setting.LastLogID, setting.BatchSize);
             var custIds = cusWinLimit.Select(x => x.CustId).Distinct();
@@ -73,7 +73,7 @@
             var maxLastLogIDCusWin = cusWinLimit.Max(x => x.LogID);
             if (!winlossInfo.Item1.Any())
             {
-                await EditSystemSettingAsync(maxLastLogIDCusWin);
+                await EditWinLossSystemSetting(maxLastLogIDCusWin);
                 return;
             }
 
@@ -86,7 +86,7 @@
                         settingMappings);
             }
             var maxLastLogID = winlossInfo.Item1.Max(x => x.LogID);
-            await EditSystemSettingAsync(maxLastLogID);
+            await EditWinLossSystemSetting(maxLastLogID);
         }
 
         protected internal virtual async Task CreateWinLossFeedbackCreditAsync(
@@ -494,7 +494,7 @@
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
-        protected internal virtual async Task<CommandResult> EditSystemSettingAsync(int LastLogID)
+        protected internal virtual async Task<CommandResult> EditWinLossSystemSetting(int LastLogID)
         {
             var settingJobStatus = new List<SystemSettingItem>
             {

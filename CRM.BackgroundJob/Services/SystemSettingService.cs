@@ -45,7 +45,8 @@
         {
             var criteria = new EditSystemSettingCommand
             {
-                Settings = settings.ToXML("ROOT").ToString()
+                Settings = settings.ToXML("ROOT").ToString(),
+                ServiceName = Constants.serviceNameAutoFB
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
@@ -73,9 +74,10 @@
 
         public async Task<CommandResult> EditWinLossSystemSettingAsync(IEnumerable<SystemSettingItem> settings)
         {
-            var criteria = new EditWinLossSystemSettingCommand
+            var criteria = new EditSystemSettingCommand
             {
-                Settings = settings.ToXML("ROOT").ToString()
+                Settings = settings.ToXML("ROOT").ToString(),
+                ServiceName = Constants.serviceWinLimitFB
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }

@@ -11,7 +11,7 @@
         {
             // Arrange
             var criteria = new EditSystemSettingCommand();
-            var expected = "Acc_CRM_SystemSettingUpd";
+            var expected = "Acc_CRM_SystemSettingByServiceUpd";
 
             // Act
             var actual = criteria.GetSettingKey();

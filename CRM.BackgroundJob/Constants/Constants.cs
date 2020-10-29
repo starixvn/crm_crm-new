@@ -14,5 +14,10 @@
 
         public const string BeginRootTag = "<ROOT>";
         public const string EndRootTag = "</ROOT>";
+
+        public const string serviceNameAutoFB = "AutoFB";
+        public const string serviceChatBot = "ChatBot - AbnormalBets";
+        public const string serviceWinLimitFB = "WinLimitFB";
+
     }
 }
