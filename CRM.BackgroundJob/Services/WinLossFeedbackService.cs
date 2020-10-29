@@ -69,7 +69,7 @@
                 );
             if (!winlossInfo.Item1.Any())
             {
-                var lastLogID = cusWinLimit.Max(x => x.LogID);
+                var lastLogID = cusWinLimit.Any() ? cusWinLimit.Max(x => x.LogID) : setting.LastLogID;
                 await EditWinLossSystemSettingAsync(lastLogID);
                 return;
             }
