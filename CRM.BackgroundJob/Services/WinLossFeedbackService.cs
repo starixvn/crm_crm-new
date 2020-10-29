@@ -56,7 +56,6 @@
             {
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
-                new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = setting.LastLogID.ToString() }
             };
             await systemSettingService.EditSystemSettingAsync(settingJobStatus);
 
@@ -71,9 +70,10 @@
                 cusWinLimit,
                 headlines
                 );
+            var maxLastLogIDCusWin = cusWinLimit.Max(x => x.LogID);
             if (!winlossInfo.Item1.Any())
             {
-                await EditSystemSettingAsync(setting.LastLogID);
+                await EditSystemSettingAsync(maxLastLogIDCusWin);
                 return;
             }
 

@@ -93,7 +93,6 @@
                 xml = stringBuilder.ToString()
             };
             var WinLossInfo = await baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo>(criteria);
-            
             return new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>(WinLossInfo.Item1, WinLossInfo.Item2);
         }
 
