@@ -16,8 +16,9 @@
     {
         Task<AbnormalBetSystemSetting> GetAbnormalBetSettingAsync();
 
-        Task<CommandResult> EditSystemSettingAsync(IEnumerable<SystemSettingItem> settings);
-        Task<CommandResult> EditWinLossSystemSettingAsync(IEnumerable<SystemSettingItem> settings);
+        Task<CommandResult> EditSystemSettingAsync(
+            IEnumerable<SystemSettingItem> settings,
+            string serviceName = Constants.ServiceName_AutoFB);
 
         Task<CommandResult> EditJobStatusAsync(string status);
 
@@ -41,12 +42,14 @@
             return await baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(criteria);
         }
 
-        public async Task<CommandResult> EditSystemSettingAsync(IEnumerable<SystemSettingItem> settings)
+        public async Task<CommandResult> EditSystemSettingAsync(
+            IEnumerable<SystemSettingItem> settings,
+            string serviceName = Constants.ServiceName_AutoFB)
         {
             var criteria = new EditSystemSettingCommand
             {
                 Settings = settings.ToXML("ROOT").ToString(),
-                ServiceName = Constants.serviceNameAutoFB
+                ServiceName = serviceName
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
@@ -70,16 +73,6 @@
         {
             var criteria = new GetWinLossSystemSettingCriteria();
             return await baseService.GetDataEntityAsync<WinLossSystemSetting>(criteria);
-        }
-
-        public async Task<CommandResult> EditWinLossSystemSettingAsync(IEnumerable<SystemSettingItem> settings)
-        {
-            var criteria = new EditSystemSettingCommand
-            {
-                Settings = settings.ToXML("ROOT").ToString(),
-                ServiceName = Constants.serviceWinLimitFB
-            };
-            return await baseService.ExecuteNonQueryAsync(criteria);
         }
     }
 }

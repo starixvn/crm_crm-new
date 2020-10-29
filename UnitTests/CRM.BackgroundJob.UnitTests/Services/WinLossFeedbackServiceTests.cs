@@ -46,7 +46,7 @@
             await service.CreateFeedbackForWinLossLimitAsync(setting);
 
             // Assert
-            service.Received().Protected("EditSystemSettingAsync", Arg.Any<int>());
+            service.Received().Protected("EditWinLossSystemSettingAsync", Arg.Any<int>());
             service.DidNotReceive().Protected(
                 "CreateWinLossFeedbackCreditAsync",
                 Arg.Any<WinLimitFeedBackInfo>(),
@@ -73,11 +73,12 @@
             var winlossInfo = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>(winLimit, betInfo);
             customerService.getListCustReachLimitAsync(setting.LastLogID, setting.BatchSize).Returns(cusWinLimit);
             transactionService.ImportWinLimitFeedbackInfoAsync(Arg.Any<IEnumerable<CustomerWinLimit>>(), Arg.Any<IEnumerable<GroupHeadline>>()).Returns(winlossInfo);
+
             // Act
             await service.CreateFeedbackForWinLossLimitAsync(setting);
 
             // Assert
-            service.Received().Protected("EditSystemSettingAsync", Arg.Any<int>());
+            service.Received().Protected("EditWinLossSystemSettingAsync", Arg.Any<int>());
             service.Received().Protected(
                 "CreateWinLossFeedbackCreditAsync",
                 Arg.Any<WinLimitFeedBackInfo>(),

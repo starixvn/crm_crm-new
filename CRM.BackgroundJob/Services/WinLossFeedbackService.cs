@@ -29,8 +29,6 @@
         private readonly ICRMLogService logService;
         private readonly IWinLossTransactionService transactionService;
 
-#pragma warning disable S107 // Methods should not have too many parameters
-
         public WinLossFeedbackService(
             IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
@@ -39,7 +37,6 @@
             ICustomerService customerService,
             ICRMLogService logService,
             IWinLossTransactionService transactionService)
-#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.appSettings = appSettings.Value;
             this.baseService = baseService;
@@ -57,7 +54,7 @@
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
             };
-            await systemSettingService.EditWinLossSystemSettingAsync(settingJobStatus);
+            await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
 
             IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.getListCustReachLimitAsync(setting.LastLogID, setting.BatchSize);
             var custIds = cusWinLimit.Select(x => x.CustId).Distinct();
@@ -70,10 +67,10 @@
                 cusWinLimit,
                 headlines
                 );
-            var maxLastLogIDCusWin = cusWinLimit.Max(x => x.LogID);
             if (!winlossInfo.Item1.Any())
             {
-                await EditWinLossSystemSetting(maxLastLogIDCusWin);
+                var lastLogID = cusWinLimit.Max(x => x.LogID);
+                await EditWinLossSystemSettingAsync(lastLogID);
                 return;
             }
 
@@ -86,7 +83,7 @@
                         settingMappings);
             }
             var maxLastLogID = winlossInfo.Item1.Max(x => x.LogID);
-            await EditWinLossSystemSetting(maxLastLogID);
+            await EditWinLossSystemSettingAsync(maxLastLogID);
         }
 
         protected internal virtual async Task CreateWinLossFeedbackCreditAsync(
@@ -494,7 +491,7 @@
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
-        protected internal virtual async Task<CommandResult> EditWinLossSystemSetting(int LastLogID)
+        protected internal virtual async Task<CommandResult> EditWinLossSystemSettingAsync(int LastLogID)
         {
             var settingJobStatus = new List<SystemSettingItem>
             {
@@ -502,7 +499,7 @@
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
                 new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = LastLogID.ToString() }
             };
-            return await systemSettingService.EditWinLossSystemSettingAsync(settingJobStatus);
+            return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
         }
     }
 }

@@ -31,10 +31,10 @@
             var service = GetService();
             systemSettingService.When(x => x.GetWinLossSettingAsync()).Throw(exception);
 
-            // Act
+            // Assert
             await service.WinLossExecuteJobAsync();
 
-            // Assert
+            // Act
             await logService.Received().ErrorAsync(exception);
             await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForWinLossLimit);
         }
@@ -68,10 +68,10 @@
             systemSettingService.GetWinLossSettingAsync().Returns(setting);
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForWinLossLimit).Returns(true);
 
-            // Assert
+            // Act
             await service.WinLossExecuteJobAsync();
 
-            // Act
+            // Assert
             logService.DidNotReceive().LogInformation(Arg.Any<string>());
             await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
         }
@@ -90,12 +90,12 @@
             systemSettingService.GetWinLossSettingAsync().Returns(setting);
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForWinLossLimit).Returns(false);
 
-            // Assert
+            // Act
             await service.WinLossExecuteJobAsync();
 
-            // Act
+            // Assert
             logService.Received().LogInformation(Arg.Any<string>());
-            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_WinLimitFB);
         }
 
         [Fact]
@@ -110,7 +110,7 @@
             };
             systemSettingService.GetWinLossSettingAsync().Returns(setting);
 
-            // Assert
+            // Act
             await service.WinLossExecuteJobAsync();
 
             // Assert
@@ -120,6 +120,7 @@
         }
 
         #region Helpers
+
         private AutoWinLossFeedbackService GetService()
         {
             appSettings = new AppJobSettings
