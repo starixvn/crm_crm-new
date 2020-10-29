@@ -48,9 +48,9 @@ export class NewCommunitionSetting extends PureComponent {
         const regex2 = new RegExp(/^,+|,+$/g);
         const regex3 = new RegExp(/,{2,}/g);
 
-        const customersInput = value.trim().replace(regex1, ',')
-            .replace(regex2, '')
-            .replace(regex3, ',');
+        const customersInput = value.trim().replace(regex1, ',') // NOSONAR
+            .replace(regex2, '') // NOSONAR
+            .replace(regex3, ','); // NOSONAR
         if (this.isValidCustomer(customersInput)) {
             this.props.verifyUserName({ Username: customersInput }).then(data => {
                 let customers = [...this.state.listOfCustomer, ...data];
