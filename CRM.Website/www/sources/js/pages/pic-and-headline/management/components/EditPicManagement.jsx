@@ -37,11 +37,7 @@ export class EditPicManagement extends Component {
         this.state = {
             communicationTools,
             languages,
-            showConfirmClose: false,
-            confirmSave: {
-                show: false,
-                message: ''
-            }
+            showConfirmClose: false
         };
     }
 
@@ -84,32 +80,6 @@ export class EditPicManagement extends Component {
         if (this.formik.values[`communication-${unique}`]) {
             delete this.formik.values[`communication-${unique}`];
         }
-    }
-
-    handleConfirmSavePopup = () => {
-        const { values } = this.formik;
-        const template = this.getTemplateEdit(values);
-        this.props.validateEditPic({
-            picId: template.picId,
-            picCommunicationTools: template.picCommunicationTools
-        }).then(() => {
-            if (this.props.validateEditPicResult) {
-                this.setState({ confirmSave: { show: true, message: this.props.validateEditPicResult } }, () => {
-                    this.props.setValidateEditPicResult(null);
-                });
-            } else {
-                this.formik.handleSubmit();
-            }
-        });
-    }
-
-    handleSubmitEditConfirm = () => {
-        this.handleCloseEditConfirm();
-        this.formik.handleSubmit();
-    }
-
-    handleCloseEditConfirm = () => {
-        this.setState({ confirmSave: { show: false, message: '' } });
     }
 
     handleSubmit = (values, { setSubmitting }) => {
@@ -318,13 +288,12 @@ export class EditPicManagement extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        size="sm"
+                        size="sm" type="submit"
                         variant="primary" disabled={isSubmitting}
-                        onClick={this.handleConfirmSavePopup}
                     >
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button size="sm" variant="primary" onClick={this.handleConfirmCancelPopup}>
+                    <Button size="sm" type="submit" variant="primary" onClick={this.handleConfirmCancelPopup}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
@@ -385,18 +354,6 @@ export class EditPicManagement extends Component {
                         onClose={this.handleCloseConfirm}
                     />
                 }
-                {
-                    this.state.confirmSave.show &&
-                    <ConfirmPopup
-                        title={LangHelper.getResource('Confirmation')}
-                        content={
-                            <div>{this.state.confirmSave.message}</div>
-                        }
-                        size='lg'
-                        onSubmit={this.handleSubmitEditConfirm}
-                        onClose={this.handleCloseEditConfirm}
-                    />
-                }
             </Modal>
         );
     }
@@ -405,9 +362,9 @@ export class EditPicManagement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { setting, gridParams, selectedPic, editPicResult, validateEditPicResult } = state;
+    const { setting, gridParams, selectedPic, editPicResult } = state;
     return {
-        setting, gridParams, selectedPic, editPicResult, validateEditPicResult
+        setting, gridParams, selectedPic, editPicResult
     };
 };
 
