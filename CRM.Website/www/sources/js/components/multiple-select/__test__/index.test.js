@@ -502,20 +502,12 @@ describe('index', () => {
                     }
                 ],
                 hasAllOption: true,
-                language: 'language'
-            };
-
-            const state = {
-                dataSource: [
-                    {
-                        checked: true
-                    }
-                ]
+                textOptions: {}
             };
 
             const id = 1;
             const checkAllHandler = jest.fn();
-            const expected = <OptionAll id={id} checked={true} language={props.language} onChange={checkAllHandler} />;
+            const expected = <OptionAll id={id} checked={true} textOptions={props.textOptions} onChange={checkAllHandler} />;
             const index = shallow(<Index {...props} />);
             index.instance().id = id;
             index.instance().checkAllHandler = checkAllHandler;
@@ -604,7 +596,7 @@ describe('index', () => {
             expect(result.find('input').props().autoFocus).toBeTrue;
             expect(result.find('input').props().value).toEqual(state.searchText);
             expect(result.find('input').props().type).toBe('text');
-            expect(result.find('input').props().placeholder).toBe('Search data');
+            expect(result.find('input').props().placeholder).toBe('Search');
             expect(result.find('input').props().style).toEqual({
                 width: '100%', border: '1px solid #ccc', padding: '5px 10px',
                 boxSizing: 'border-box'
@@ -648,7 +640,7 @@ describe('index', () => {
             const props = {
                 dataSource: [],
                 maxDisplayItemCount: 1,
-                language: 'language',
+                textOptions: {},
                 texts: {},
                 isAllTextShown: true,
                 maxDisplayItemCount: 10
@@ -675,7 +667,7 @@ describe('index', () => {
             // Assert
             expect(index.find('div').at(0).props().className).toBe('multiple-select-container ');
             expect(index.find('div').at(0).props().id).toEqual(id);
-            expect(index.find(MultipleSelectLabel).props().language).toEqual(props.language);
+            expect(index.find(MultipleSelectLabel).props().textOptions).toEqual(props.textOptions);
             expect(index.find(MultipleSelectLabel).props().selectedItems).toEqual(state.dataSource);
             expect(index.find(MultipleSelectLabel).props().dataSourceSize).toEqual(0);
             expect(index.find(MultipleSelectLabel).props().onToggle).toEqual(onToggle);

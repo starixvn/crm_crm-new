@@ -1,13 +1,19 @@
 import React from 'react';
 import OptionAll from '../OptionAll';
 import Option from '../Option';
-import Translation from '../translation';
 import { shallow } from 'enzyme';
 
 describe('OptionAll', () => {
     it('should have correct snapshots', () => {
+        // Arrange
+        const props = {
+            textOptions: {
+                Texts: 'Texts'
+            }
+        };
+
         // Action
-        const optionAll = shallow(<OptionAll />);
+        const optionAll = shallow(<OptionAll {...props} />);
 
         // Assert
         expect(optionAll).toMatchSnapshot();
@@ -17,6 +23,9 @@ describe('OptionAll', () => {
         // Arrange
         const checked = true;
         const props = {
+            textOptions: {
+                Texts: 'Texts'
+            },
             onChange: jest.fn()
         };
 
@@ -33,7 +42,10 @@ describe('OptionAll', () => {
         // Arrange
         const props = {
             id: 'id',
-            checked: true
+            checked: true,
+            textOptions: {
+                Texts: 'Texts'
+            }
         };
 
         const changeHandler = jest.fn();
@@ -48,7 +60,7 @@ describe('OptionAll', () => {
         expect(result.find(Option).props().id).toBe('id-optionItemAll');
         expect(result.find(Option).props().itemData).toEqual({
             key: 'All',
-            value: Translation['en-US'].All,
+            value: props.textOptions.Texts,
             checked: props.checked
         });
         expect(result.find(Option).props().onChange).toEqual(changeHandler);

@@ -7,7 +7,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import functions, { handleNewResendOptions } from '../../functions';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
-import SelectWithSearch from 'react-select';
+import Select from '@jsroot/components/CustomReactSelect';
 import { Form, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
@@ -1287,16 +1287,12 @@ describe('Filter', () => {
             expect(filter.find(Form.Group).at(2).find('div').find(DatePicker).props().selected).toEqual(initialState.filter.toDate);
             expect(filter.find(Form.Group).at(3).find(Form.Label).html()).toContain('GroupHeadline');
             expect(filter.find(Form.Group).at(3).find('div').props().className).toBe('form-control-wrapper');
-            expect(filter.find(Form.Group).at(3).find('div').find(SelectWithSearch).props().className).toBe('basic-single');
-            expect(filter.find(Form.Group).at(3).find('div').find(SelectWithSearch).props().name).toBe('headline');
-            expect(filter.find(Form.Group).at(3).find('div').find(SelectWithSearch).props().options).toEqual(props.headlineOptions);
-            expect(filter.find(Form.Group).at(3).find('div').find(SelectWithSearch).props().value).toEqual(initialState.filter.headline);
+            expect(filter.find(Form.Group).at(3).find('div').find(Select).props().options).toEqual(props.headlineOptions);
+            expect(filter.find(Form.Group).at(3).find('div').find(Select).props().value).toEqual(initialState.filter.headline);
             expect(filter.find(Form.Group).at(4).find(Form.Label).html()).toContain('Recipient');
             expect(filter.find(Form.Group).at(4).find('div').props().className).toBe('form-control-wrapper');
-            expect(filter.find(Form.Group).at(4).find('div').find(SelectWithSearch).props().className).toBe('basic-single');
-            expect(filter.find(Form.Group).at(4).find('div').find(SelectWithSearch).props().name).toBe('recipient');
-            expect(filter.find(Form.Group).at(4).find('div').find(SelectWithSearch).props().options).toEqual(props.recipientOptions);
-            expect(filter.find(Form.Group).at(4).find('div').find(SelectWithSearch).props().value).toEqual(initialState.filter.recipient);
+            expect(filter.find(Form.Group).at(4).find('div').find(Select).props().options).toEqual(props.recipientOptions);
+            expect(filter.find(Form.Group).at(4).find('div').find(Select).props().value).toEqual(initialState.filter.recipient);
             expect(filter.find(Form.Group).at(5).find(Form.Label).html()).toContain('MessageID');
             expect(filter.find(Form.Group).at(5).find(Form.Control).props().as).toBe('input');
             expect(filter.find(Form.Group).at(5).find(Form.Control).props().type).toBe('text');
@@ -1502,7 +1498,7 @@ describe('Filter', () => {
             expect(filter.instance().handleToDateChange).toHaveBeenCalledWith(value);
         });
 
-        it('headline SelectWithSearch change correctly', () => {
+        it('headline Select change correctly', () => {
             // Arrange
             const value = 'value';
             const props = {
@@ -1518,13 +1514,13 @@ describe('Filter', () => {
             filter.instance().handleHeadlineChange = jest.fn();
 
             // Action
-            filter.find(SelectWithSearch).at(0).simulate('change', value);
+            filter.find(Select).at(0).simulate('change', value);
 
             // Assert
             expect(filter.instance().handleHeadlineChange).toHaveBeenCalledWith(value);
         });
 
-        it('headline SelectWithSearch inputChange correctly', () => {
+        it('headline Select inputChange correctly', () => {
             // Arrange
             const searchText = 'searchText';
             const props = {
@@ -1540,13 +1536,13 @@ describe('Filter', () => {
             filter.instance().debounceHandleHeadlineInputChange = jest.fn();
 
             // Action
-            filter.find(SelectWithSearch).at(0).simulate('inputChange', searchText);
+            filter.find(Select).at(0).simulate('inputChange', searchText);
 
             // Assert
             expect(filter.instance().debounceHandleHeadlineInputChange).toHaveBeenCalledWith(searchText);
         });
 
-        it('recipient SelectWithSearch change correctly', () => {
+        it('recipient Select change correctly', () => {
             // Arrange
             const value = 'value';
             const props = {
@@ -1562,13 +1558,13 @@ describe('Filter', () => {
             filter.instance().handleRecipientChange = jest.fn();
 
             // Action
-            filter.find(SelectWithSearch).at(1).simulate('change', value);
+            filter.find(Select).at(1).simulate('change', value);
 
             // Assert
             expect(filter.instance().handleRecipientChange).toHaveBeenCalledWith(value);
         });
 
-        it('recipient SelectWithSearch inputChange correctly', () => {
+        it('recipient Select inputChange correctly', () => {
             // Arrange
             const searchText = 'searchText';
             const props = {
@@ -1584,7 +1580,7 @@ describe('Filter', () => {
             filter.instance().debounceHandleRecipientInputChange = jest.fn();
 
             // Action
-            filter.find(SelectWithSearch).at(1).simulate('inputChange', searchText);
+            filter.find(Select).at(1).simulate('inputChange', searchText);
 
             // Assert
             expect(filter.instance().debounceHandleRecipientInputChange).toHaveBeenCalledWith(searchText);

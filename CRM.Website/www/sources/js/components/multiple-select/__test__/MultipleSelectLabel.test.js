@@ -6,7 +6,8 @@ describe('MultipleSelectLabel', () => {
     it('should have correct snapshots', () => {
         // Arrange
         const props = {
-            selectedItems: []
+            selectedItems: [],
+            textOptions: {}
         };
 
         // Action
@@ -23,8 +24,8 @@ describe('MultipleSelectLabel', () => {
                 isAllTextShown: true,
                 dataSourceSize: 0,
                 selectedItems: [],
-                texts: {
-                    All: 'All'
+                textOptions: {
+                    Texts: 'Texts'
                 }
             }
     
@@ -34,7 +35,7 @@ describe('MultipleSelectLabel', () => {
             const result = multipleSelectLabel.instance().selectedItemsString;
 
             // Assert
-            expect(result).toEqual(props.texts.All);
+            expect(result).toEqual(props.textOptions.Texts);
         });
         
         it('should return SelectedItemCount when selectedItemCount greater than maxDisplayItemCount', () => {
@@ -46,7 +47,7 @@ describe('MultipleSelectLabel', () => {
                         value: 'value'
                     }
                 ],
-                texts: {
+                textOptions: {
                     SelectedItemCount: '# items'
                 }
             }
@@ -71,7 +72,8 @@ describe('MultipleSelectLabel', () => {
                     {
                         value: 'value1'
                     }
-                ]
+                ],
+                textOptions: {}
             }
     
             const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
@@ -83,13 +85,15 @@ describe('MultipleSelectLabel', () => {
             expect(result).toEqual('value, value1');
         });
         
-        it('should return SelectOptions when not having selectedItem', () => {
+        it('should return no data value when dataSourceSize equal 0', () => {
             // Arrange
             const props = {
+                maxDisplayItemCount: 10,
                 selectedItems: [],
-                texts: {
-                    SelectOptions: 'SelectOptions'
-                }
+                textOptions: {
+                    NoData: 'NoData'
+                },
+                dataSourceSize: 0
             }
     
             const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
@@ -98,7 +102,26 @@ describe('MultipleSelectLabel', () => {
             const result = multipleSelectLabel.instance().selectedItemsString;
 
             // Assert
-            expect(result).toEqual(props.texts.SelectOptions);
+            expect(result).toEqual(props.textOptions.NoData);
+        });
+        
+        it('should return SelectOptions when not having selectedItem', () => {
+            // Arrange
+            const props = {
+                selectedItems: [],
+                textOptions: {
+                    SelectOptions: 'SelectOptions'
+                },
+                dataSourceSize: 10
+            }
+    
+            const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
+    
+            // Action
+            const result = multipleSelectLabel.instance().selectedItemsString;
+
+            // Assert
+            expect(result).toEqual(props.textOptions.SelectOptions);
         });
     });
 
@@ -107,9 +130,10 @@ describe('MultipleSelectLabel', () => {
         const props = {
             selectedItems: [],
             onToggle: jest.fn(),
-            texts: {
+            textOptions: {
                 SelectOptions: 'SelectOptions'
-            }
+            },
+            dataSourceSize: 10
         }
 
         // Action
@@ -120,7 +144,7 @@ describe('MultipleSelectLabel', () => {
         expect(multipleSelectLabel.find('button').props().className).toBe('multiple-select-default multiple-select-label');
         expect(multipleSelectLabel.find('button').props().onClick).toEqual(props.onToggle);
         expect(multipleSelectLabel.find('span').props().className).toBe('text-display');
-        expect(multipleSelectLabel.find('span').html()).toContain(props.texts.SelectOptions);
+        expect(multipleSelectLabel.find('span').html()).toContain(props.textOptions.SelectOptions);
         expect(multipleSelectLabel.find('b').html()).toBe('<b class="caret"></b>');
     });
 });
