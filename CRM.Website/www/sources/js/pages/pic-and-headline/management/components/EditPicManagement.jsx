@@ -26,7 +26,7 @@ export class EditPicManagement extends Component {
             if (index >= 0) {
                 return { ...item, checked: true };
             }
-            return item
+            return item;
         });
         this.props.selectedPic.languages.forEach(item => {
             const index = languages.findIndex(language => language.settingId === item.settingId);
@@ -37,7 +37,11 @@ export class EditPicManagement extends Component {
         this.state = {
             communicationTools,
             languages,
-            showConfirmClose: false
+            showConfirmClose: false,
+            confirmSave: {
+                show: false,
+                message: ''
+            }
         };
     }
 
@@ -77,7 +81,35 @@ export class EditPicManagement extends Component {
         const index = data.findIndex(c => c.unique === unique);
         data.splice(index, 1);
         this.setState({ communicationTools: data });
-        delete this.formik.values?.[`communication-${unique}`];
+        if (this.formik.values[`communication-${unique}`]) {
+            delete this.formik.values[`communication-${unique}`];
+        }
+    }
+
+    handleConfirmSavePopup = () => {
+        const { values } = this.formik;
+        const template = this.getTemplateEdit(values);
+        this.props.validateEditPic({
+            picId: template.picId,
+            picCommunicationTools: template.picCommunicationTools
+        }).then(() => {
+            if (this.props.validateEditPicResult) {
+                this.setState({ confirmSave: { show: true, message: this.props.validateEditPicResult } }, () => {
+                    this.props.setValidateEditPicResult(null);
+                });
+            } else {
+                this.formik.handleSubmit();
+            }
+        });
+    }
+
+    handleSubmitEditConfirm = () => {
+        this.handleCloseEditConfirm();
+        this.formik.handleSubmit();
+    }
+
+    handleCloseEditConfirm = () => {
+        this.setState({ confirmSave: { show: false, message: '' } });
     }
 
     handleSubmit = (values, { setSubmitting }) => {
@@ -128,32 +160,35 @@ export class EditPicManagement extends Component {
     }) => {
         const { communicationTools } = this.state;
         return communicationTools.map((item, index) => {
-            const isInvalidFirstRow = index === 0 && touched.communication && errors.communication;
-            const isInvalid = (touched[`communication-${item.unique}`] && errors[`communication-${item.unique}`]) || isInvalidFirstRow;
+            const isInvalidFirstRowCommunicationTools = index === 0 && touched.communication && errors.communication;
+            const isInvalidCommunicationTools = (touched[`communication-${item.unique}`] && errors[`communication-${item.unique}`]) || isInvalidFirstRowCommunicationTools;
             return (
                 <Form.Group as={Row} key={item.unique}>
                     <Col sm="4" md="3" className="select-communication">
                         <Form.Control as="select" size="sm" className="shadow-none"
-                            isInvalid={isInvalid}
+                            isInvalid={isInvalidCommunicationTools}
+                            value={values[`communication-${item.unique}`].type}
                             name={`communication-${item.unique}.type`} id={`communication-${item.unique}.type`}
                             onChange={handleChange}
-                            value={values[`communication-${item.unique}`]?.type}
                         >
                             <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                             {this.props.setting.communicationTools.map(com => renderOption(com, 'settingId', 'settingValue'))}
                         </Form.Control>
                         {
                             index === 0 &&
-                            <span className="required">*</span>
+                            <span
+                                className="required"
+                            >*</span>
                         }
                     </Col>
                     <Col sm="8" md="9"  >
                         <Row>
                             <Col sm="11" md="11" >
-                                <Form.Control type="text" size="sm" value={values[`communication-${item.unique}`]?.value}
+                                <Form.Control type="text" size="sm"
                                     name={`communication-${item.unique}.value`} id={`communication-${item.unique}.value`}
+                                    value={values[`communication-${item.unique}`].value}
                                     className="shadow-none" autoComplete="off"
-                                    isInvalid={isInvalid}
+                                    isInvalid={isInvalidCommunicationTools}
                                     onChange={handleChange}
                                     placeholder={LangHelper.getResource('SeparatedByComma')}
                                 />
@@ -161,11 +196,17 @@ export class EditPicManagement extends Component {
                             <Col sm="1" md="1" className="tool-action" >
                                 {
                                     index > 0 &&
-                                    <span className="fa fa-times mr-2" onClick={() => this.handleRemoveRowCommunication(item.unique)} />
+                                    <span
+                                        onClick={() => this.handleRemoveRowCommunication(item.unique)}
+                                        className="fa fa-times mr-2"
+                                    />
                                 }
                                 {
                                     index === communicationTools.length - 1 &&
-                                    <span className="fa fa-plus" onClick={() => this.handleAddRowCommunication()} />
+                                    <span
+                                        onClick={() => this.handleAddRowCommunication()}
+                                        className="fa fa-plus"
+                                    />
                                 }
                             </Col>
                         </Row>
@@ -201,43 +242,43 @@ export class EditPicManagement extends Component {
                             {LangHelper.getResource('Name')}
                         </Form.Label>
                         <Col sm="8" md="9">
-                            <Form.Control type="text" size="sm" value={values.picName}
-                                name="picName" id="picName"
+                            <Form.Control type="text" size="sm" name="picName" id="picName"
                                 className="shadow-none" autoComplete="off"
                                 isInvalid={touched.picName && errors.picName}
+                                value={values.picName}
                                 onChange={handleChange}
                             />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" className="required" htmlFor="roleId">
+                        <Form.Label className="required" column sm="4" md="3" htmlFor="roleId">
                             {LangHelper.getResource('Role')}
                         </Form.Label>
                         <Col sm="8" md="9">
-                            <Form.Control as="select" size="sm" className="shadow-none"
+                            <Form.Control as="select" className="shadow-none" size="sm"
                                 isInvalid={touched.roleId && errors.roleId}
                                 name="roleId" id="roleId"
-                                onChange={handleChange}
                                 value={values.roleId}
+                                onChange={handleChange}
                             >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                <option disabled hidden value="">{LangHelper.getResource('PleaseSelect')}</option>
                                 {roleList.map(item => renderOption(item, 'settingId', 'settingValue'))}
                             </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" htmlFor="languageIds">
+                        <Form.Label htmlFor="languageIds" column sm="4" md="3" >
                             {LangHelper.getResource('Language')}
                         </Form.Label>
                         <Col sm="8" md="9">
                             <MultipleSelect
                                 id="languageIds"
                                 name="languageIds"
-                                dataSource={languages}
                                 keyField='settingId'
                                 isAllTextShown
                                 valueField='settingValue'
                                 statusField='checked'
+                                dataSource={languages}
                                 onChange={(currentItem, selectedItemsKey) => {
                                     handleChange('languageIds')(selectedItemsKey);
                                 }}
@@ -245,41 +286,45 @@ export class EditPicManagement extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" htmlFor="countryId">
+                        <Form.Label htmlFor="countryId" column sm="4" md="3">
                             {LangHelper.getResource('Country')}
                         </Form.Label>
                         <Col sm="8" md="9">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                isInvalid={touched.countryId && errors.countryId}
+                            <Form.Control as="select" className="shadow-none" size="sm"
                                 name="countryId" id="countryId"
-                                onChange={handleChange}
+                                isInvalid={touched.countryId && errors.countryId}
                                 value={values.countryId}
+                                onChange={handleChange}
                             >
-                                <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                <option value={0} hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
                                 {countries.map(item => renderOption(item, 'id', 'name'))}
                             </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" htmlFor="remark">
+                        <Form.Label htmlFor="remark" column sm="4" md="3" >
                             {LangHelper.getResource('Remark')}
                         </Form.Label>
                         <Col sm="8" md="9">
                             <Form.Control as="textarea"
-                                name="remark" id="remark" rows="4"
                                 className="shadow-none form-control"
-                                onChange={handleChange}
+                                name="remark" id="remark" rows="4"
                                 value={values.remark}
+                                onChange={handleChange}
                             />
                         </Col>
                     </Form.Group>
                     {this.renderCommunicationTool({ values, errors, touched, handleChange })}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
+                    <Button
+                        size="sm"
+                        variant="primary" disabled={isSubmitting}
+                        onClick={this.handleConfirmSavePopup}
+                    >
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.handleConfirmCancelPopup}>
+                    <Button size="sm" variant="primary" onClick={this.handleConfirmCancelPopup}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
@@ -316,11 +361,13 @@ export class EditPicManagement extends Component {
                 onHide={this.handleConfirmCancelPopup}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title as="div">{LangHelper.getResource('EditPIC')}</Modal.Title>
+                    <Modal.Title as="div">
+                        {LangHelper.getResource('EditPIC')}
+                    </Modal.Title>
                 </Modal.Header>
                 <Formik
-                    innerRef={p => (this.formik = p)}
                     initialValues={initialValues}
+                    innerRef={p => (this.formik = p)}
                     validate={validateFormik}
                     onSubmit={this.handleSubmit}
                 >
@@ -329,13 +376,25 @@ export class EditPicManagement extends Component {
                 {
                     this.state.showConfirmClose &&
                     <ConfirmPopup
-                        size='lg'
                         title={LangHelper.getResource('Confirmation')}
                         content={
                             <div>{LangHelper.getResource('ConfirmDirtyMessage')}</div>
                         }
+                        size='lg'
                         onSubmit={this.handleClosePopup}
                         onClose={this.handleCloseConfirm}
+                    />
+                }
+                {
+                    this.state.confirmSave.show &&
+                    <ConfirmPopup
+                        title={LangHelper.getResource('Confirmation')}
+                        content={
+                            <div>{this.state.confirmSave.message}</div>
+                        }
+                        size='lg'
+                        onSubmit={this.handleSubmitEditConfirm}
+                        onClose={this.handleCloseEditConfirm}
                     />
                 }
             </Modal>
@@ -346,9 +405,9 @@ export class EditPicManagement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { setting, gridParams, selectedPic, editPicResult } = state;
+    const { setting, gridParams, selectedPic, editPicResult, validateEditPicResult } = state;
     return {
-        setting, gridParams, selectedPic, editPicResult
+        setting, gridParams, selectedPic, editPicResult, validateEditPicResult
     };
 };
 

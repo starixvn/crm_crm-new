@@ -113,7 +113,7 @@ export class DataGrid extends PureComponent {
     renderHeaderCommunicationTools = communicationTools => {
         const header = [];
         communicationTools.forEach(item => {
-            header.push(<HeaderCell colWidth={20} key={item.settingId}>{item.settingValue}</HeaderCell>)
+            header.push(<HeaderCell colWidth={20} key={item.settingId}>{item.settingValue}</HeaderCell>);
         });
         return header;
     }
@@ -122,7 +122,8 @@ export class DataGrid extends PureComponent {
         const communicationToolsProps = this.props.setting.communicationTools;
         const data = [];
         communicationToolsProps.forEach(item => {
-            const value = communicationTools.find(c => c.settingId === item.settingId)?.value || '';
+            const tool = communicationTools.find(c => c.settingId === item.settingId);
+            const value = tool ? tool.value : '';
             data.push(<Cell key={item.settingId}>{value}</Cell>);
         });
         return data;

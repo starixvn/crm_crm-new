@@ -68,7 +68,11 @@ describe('EditPicManagement', () => {
         const initialState = {
             communicationTools,
             languages,
-            showConfirmClose: false
+            showConfirmClose: false,
+            confirmSave: {
+                show: false,
+                message: ''
+            }
         };
 
         // Act
@@ -444,6 +448,11 @@ describe('EditPicManagement', () => {
                 { type: 2, value: 'b', unique: 2 },
             ];
 
+            const values = {
+                'communication-1': { type: 1 },
+                'communication-2': { type: 2 }
+            }
+
             it('should render expected', () => {
                 // Arrange
                 const props = {
@@ -464,7 +473,7 @@ describe('EditPicManagement', () => {
 
                 // Act
                 const result = shallow(<div>
-                    {container.instance().renderCommunicationTool({ values: {}, errors: {}, touched: {} })}
+                    {container.instance().renderCommunicationTool({ values, errors: {}, touched: {} })}
                 </div>);
 
                 // Assert
@@ -493,7 +502,7 @@ describe('EditPicManagement', () => {
 
                 // Act
                 const result = shallow(<div>
-                    {container.instance().renderCommunicationTool({ values: {}, errors: {}, touched: {} })}
+                    {container.instance().renderCommunicationTool({ values, errors: {}, touched: {} })}
                 </div>);
                 result.find('.fa-times').first().simulate('click');
 
@@ -522,7 +531,7 @@ describe('EditPicManagement', () => {
 
                 // Act
                 const result = shallow(<div>
-                    {container.instance().renderCommunicationTool({ values: {}, errors: {}, touched: {} })}
+                    {container.instance().renderCommunicationTool({ values, errors: {}, touched: {} })}
                 </div>);
                 result.find('.fa-plus').simulate('click');
 
@@ -633,6 +642,145 @@ describe('EditPicManagement', () => {
                 expect(tempFunc).toHaveBeenCalledWith((selectedItemsKey));
             });
         });
-    });
 
+        describe('handleConfirmSavePopup', () => {
+            const templateCreate = {
+                picId: 1,
+                picName: 'a',
+                role: 1,
+                language: '',
+                picCommunicationTools: [
+                    { type: 1, value: 'a' }
+                ]
+            };
+
+            const values = {};
+
+            it('should call expected method when validateEditPicResult have value', async () => {
+                // Arrange
+                const promise = Promise.resolve({});
+                const props = {
+                    setting: {
+                        languages: []
+                    },
+                    selectedPic: {
+                        languages: [],
+                        communicationTools: []
+                    },
+                    validateEditPic: jest.fn(() => promise),
+                    validateEditPicResult: 'data',
+                    setValidateEditPicResult: jest.fn()
+                };
+                const container = shallow(<EditPicManagement {...props} />);
+                container.instance()['formik'] = {
+                    values
+                };
+
+                container.instance().getTemplateEdit = jest.fn(values => templateCreate);
+                const expectedParams = {
+                    picId: templateCreate.picId,
+                    picCommunicationTools: templateCreate.picCommunicationTools
+                }
+
+                // Act
+                container.instance().handleConfirmSavePopup();
+                await promise;
+                jest.runAllTimers();
+
+                // Assert
+                expect(container.instance().getTemplateEdit).toHaveBeenCalledWith(values);
+                expect(props.validateEditPic).toHaveBeenCalledWith(expectedParams);
+                expect(container.instance().state.confirmSave.show).toBeTrue;
+                expect(container.instance().state.confirmSave.message).toEqual(props.validateEditPicResult);
+                expect(props.setValidateEditPicResult).toHaveBeenCalledWith(null);
+            });
+
+            it('should call handleSubmit formik when validateEditPicResult is null', async () => {
+                // Arrange
+                const promise = Promise.resolve({});
+                const props = {
+                    setting: {
+                        languages: []
+                    },
+                    selectedPic: {
+                        languages: [],
+                        communicationTools: []
+                    },
+                    validateEditPic: jest.fn(() => promise),
+                    validateEditPicResult: null,
+                };
+                const container = shallow(<EditPicManagement {...props} />);
+                const formik = {
+                    values,
+                    handleSubmit: jest.fn()
+                };
+                container.instance()['formik'] = formik
+
+                container.instance().getTemplateEdit = jest.fn(values => templateCreate);
+                const expectedParams = {
+                    picId: templateCreate.picId,
+                    picCommunicationTools: templateCreate.picCommunicationTools
+                }
+
+                // Act
+                container.instance().handleConfirmSavePopup();
+                await promise;
+                jest.runAllTimers();
+
+                // Assert
+                expect(container.instance().getTemplateEdit).toHaveBeenCalledWith(values);
+                expect(props.validateEditPic).toHaveBeenCalledWith(expectedParams);
+                expect(formik.handleSubmit).toHaveBeenCalled();
+            });
+        });
+
+        describe('handleSubmitEditConfirm', () => {
+            it('should call handleCloseEditConfirm and submit formik', () => {
+                // Arrange
+                const formik = {
+                    handleSubmit: jest.fn()
+                };
+                const props = {
+                    setting: {
+                        languages: []
+                    },
+                    selectedPic: {
+                        languages: [],
+                        communicationTools: []
+                    }
+                };
+                const container = shallow(<EditPicManagement {...props} />);
+                container.instance()['formik'] = formik;
+                container.instance().handleCloseEditConfirm = jest.fn();
+
+                // Act
+                container.instance().handleSubmitEditConfirm();
+
+                // Assert
+                expect(container.instance().handleCloseEditConfirm).toHaveBeenCalled();
+                expect(formik.handleSubmit).toHaveBeenCalled();
+            });
+        });
+
+        it('handleCloseEditConfirm should set state confirmSave with show is false and message is empty', () => {
+            // Arrange
+            const props = {
+                setting: {
+                    languages: []
+                },
+                selectedPic: {
+                    languages: [],
+                    communicationTools: []
+                }
+            };
+            const container = shallow(<EditPicManagement {...props} />);
+
+            // Act
+            container.instance().handleCloseEditConfirm();
+
+            // Assert
+            expect(container.instance().state.confirmSave.show).toBeFalse;
+            expect(container.instance().state.confirmSave.message).toEqual('');
+        });
+    });
 });
