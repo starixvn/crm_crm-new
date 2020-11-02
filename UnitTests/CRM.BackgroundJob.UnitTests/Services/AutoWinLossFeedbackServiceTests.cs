@@ -94,7 +94,6 @@
             await service.WinLossExecuteJobAsync();
 
             // Assert
-            logService.Received().LogInformation(Arg.Any<string>());
             await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_WinLimitFB);
         }
 

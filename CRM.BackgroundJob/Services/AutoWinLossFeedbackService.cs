@@ -63,7 +63,7 @@
                     isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForWinLossLimit);
                     if (!isRunning && setting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
                     {
-                        logService.LogInformation("Return service.");
+                        logService.LogInformation("Return Winloss service.");
                         var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
