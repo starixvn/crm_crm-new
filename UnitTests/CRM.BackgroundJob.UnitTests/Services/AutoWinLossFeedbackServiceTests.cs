@@ -82,9 +82,9 @@
             // Arrange
             var service = GetService();
             var setting = new WinLossSystemSetting
-            {
+            { 
                 ServiceFlag = true,
-                LastRuntime = DateTime.Now.AddMinutes(-appSettings.RetryRuntime),
+                LastRuntime = DateTime.Now.AddMinutes(-appSettings.RetryRuntime - 1),
                 JobStatus = JobStatus.Running
             };
             systemSettingService.GetWinLossSettingAsync().Returns(setting);
@@ -94,7 +94,7 @@
             await service.WinLossExecuteJobAsync();
 
             // Assert
-            logService.Received().LogInformation("Return Winloss service.");
+            logService.Received().LogInformation("Rerun Winloss service.");
             await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_WinLimitFB);
         }
 
@@ -125,7 +125,7 @@
         {
             appSettings = new AppJobSettings
             {
-                RetryRuntime = 6
+                RetryRuntime = 5
             };
             var appJobSettings = Substitute.For<IOptionsSnapshot<AppJobSettings>>();
             appJobSettings.Value.Returns(appSettings);
