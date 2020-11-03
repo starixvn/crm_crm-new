@@ -94,6 +94,7 @@
             await service.WinLossExecuteJobAsync();
 
             // Assert
+            logService.Received().LogInformation("Return Winloss service.");
             await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_WinLimitFB);
         }
 
@@ -124,7 +125,7 @@
         {
             appSettings = new AppJobSettings
             {
-                RetryRuntime = 5
+                RetryRuntime = 6
             };
             var appJobSettings = Substitute.For<IOptionsSnapshot<AppJobSettings>>();
             appJobSettings.Value.Returns(appSettings);
