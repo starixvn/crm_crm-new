@@ -139,21 +139,31 @@
                 Description = GetDescription(winLimit, betTypeMappings)
             };
 
+            var checkValidParamBeforeInsert = CheckValidParams(criteria);
+            if(!checkValidParamBeforeInsert.Item1)
+            {
+                var messageInvalid = "Invalid Params: " + checkValidParamBeforeInsert.Item2;
+                logService.LogInformation(string.Format("Invalid Params. @Categorystr: {0} @Category: {1} @Product: {2} @StatusID: {3} @SubCategorystr:{4} @ResponseID:{5} @StationID:{6}",
+                        criteria.CategoryIds, criteria.CategoryXml, criteria.ProductXml, criteria.StatusId, criteria.SubCategoryIds, criteria.ResponseId, criteria.StationId));
+                await transactionService.EditFeedbackWinLossInfoAsync(winLimit.LogID, CreateFeedbackJobStatus.Fail, messageInvalid);
+                return;
+            }
             try
             {
-                logService.LogInformation(string.Format("Begin create win loss feedback : HeadlineId: {0} logID:{1}",
+                logService.LogInformation(string.Format("Begin create win loss feedback : HeadlineId {0} logID:{1}",
                     winLimit.HeadlineId, winLimit.LogID));
+
                 CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
                 if (commandResult.IsSuccessful)
                 {
-                    logService.LogInformation(string.Format("Create feedback successfully. HeadlineId: {0}: logID:{1}",
-                        winLimit.HeadlineId,
-                        winLimit.LogID));
+                    logService.LogInformation(string.Format("Create feedback successfully. HeadlineId: {0} logID:{1}",
+                        winLimit.HeadlineId, winLimit.LogID));
                 }
                 else
                 {
-                    logService.LogInformation(string.Format("Create feedback failed. HeadlineId: {0}",
-                        winLimit.HeadlineId));
+                    logService.LogInformation(string.Format("Create feedback failed. HeadlineId: {0} logID: {1}",
+                        winLimit.HeadlineId, winLimit.LogID));
+
                     await transactionService.EditFeedbackWinLossInfoAsync(winLimit.LogID, CreateFeedbackJobStatus.Fail, commandResult.Message);
                     await logService.ErrorAsync(commandResult, criteria);
                 }
@@ -166,6 +176,24 @@
                 await transactionService.EditFeedbackWinLossInfoAsync(winLimit.LogID, CreateFeedbackJobStatus.Fail, ex.Message);
                 await logService.ErrorAsync(ex);
             }
+        }
+
+        protected internal virtual ValueTuple<bool,string> CheckValidParams(CreateMutipleFeedbackCommand criteria)
+        {
+            var stringBuilder = new StringBuilder();
+            const string invalid = "{0} is null.";
+            var invalidParamsCategoryStr = string.IsNullOrEmpty(criteria.CategoryIds) ? "CategoryIds" : "";
+            var invalidParamsCategory = string.IsNullOrEmpty(criteria.CategoryXml) ? "CategoryXml" : "";
+            var invalidParamsProduct = string.IsNullOrEmpty(criteria.ProductXml) ? "Products" : "";
+            var invalidParamsSubCategory = string.IsNullOrEmpty(criteria.SubCategoryIds) ? "SubCategoryIds" : "";
+            var invalidParamsResponse = criteria.ResponseId == 0 ? "ResponseId" : "";
+            var invalidParamsStation = string.IsNullOrEmpty(criteria.StationId) ? "StationId" : "";
+            var invalidParamsStatus = criteria.StatusId == 0 ? "StatusId" : "";
+            var invalidParams = invalidParamsCategoryStr + invalidParamsCategory + invalidParamsProduct
+            + invalidParamsSubCategory + invalidParamsResponse + invalidParamsStation + invalidParamsStatus;
+            return string.IsNullOrEmpty(invalidParams) ?
+                new ValueTuple<bool, string>(true, "") :
+                new ValueTuple<bool, string>(false, stringBuilder.AppendFormat(invalid, invalidParams).ToString());
         }
 
         protected internal virtual string GetProductXml(
