@@ -8,6 +8,7 @@
     using CRM.BackgroundJob.Services;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
@@ -38,6 +39,13 @@
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             await base.CreateWinLossFeedbackCreditAsync(winLimit, bettype, settings, settingMappings);
+        }
+
+        public async Task Public_CheckValidParamsAndInsertFeedbackAsync(
+            WinLimitFeedBackInfo winLimit,
+            CreateMutipleFeedbackCommand criteria)
+        {
+            await base.CheckValidParamsAndInsertFeedbackAsync(winLimit, criteria);
         }
 
         public string Public_GetProductXml(

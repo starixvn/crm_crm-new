@@ -92,7 +92,7 @@
         #region CreateWinLossFeedbackCreditAsync
 
         [Fact]
-        public async Task CreateWinLossFeedbackCreditAsync__CreateSuccessful_ExpectedWriteLog()
+        public async Task CreateWinLossFeedbackCreditAsync__CreateNewCriteria_ExpectedToCallFunction()
         {
             // Arrange
             var winLimit = new WinLimitFeedBackInfo
@@ -117,11 +117,8 @@
                 new SettingItem { SettingId = 2022, SettingName = "Station" }
             };
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
-            var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
             var category = fixture.Create<Tuple<int, int, string>>();
-            var commandResult = new CommandResult { Code = 0 };
             var service = MockService();
-            baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
             service.Protected("GetCategorySubCategory", settings).Returns(category);
             service.Protected("GetProductXml", winLimit, Arg.Any<List<BettypeInfo>>(), settings, settingMappings).Returns("product xml");
             service.Protected("GetSolution", winLimit).Returns("solution");
@@ -137,14 +134,14 @@
                 );
 
             // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
+            service.Received().Protected("CheckValidParamsAndInsertFeedbackAsync", Arg.Any<WinLimitFeedBackInfo>()
+                , Arg.Any<CreateMutipleFeedbackCommand>());
         }
 
         [Fact]
-        public async Task CreateWinLossFeedbackCreditAsync__Exception_ExpectedWriteLogAndUpdateStatus()
+        public async Task CheckValidParamsAndInsertFeedbackAsync__CreateSuccessfull_ExpectedWriteLog()
         {
             // Arrange
-            var exception = fixture.Create<Exception>();
             var winLimit = new WinLimitFeedBackInfo
             {
                 LogID = 1,
@@ -155,34 +152,82 @@
                 RelatedCustId = "1",
                 UserName = "test"
             };
-            var betInfo = new List<BettypeInfo>
-            {
-                new BettypeInfo {Name = "Gaming", Bettype = "1"},
-                new BettypeInfo {Name = "Bet", Bettype = "2" }
-            };
-            var settings = new List<SettingItem>
-            {
-                new SettingItem { SettingId = 1, SettingName = "Status", SettingValue = "Closed" },
-                new SettingItem { SettingId = 2, SettingName = "Response", SettingValue = "Neutral" },
-                new SettingItem { SettingId = 2022, SettingName = "Station" }
-            };
-            var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
-            var category = fixture.Create<Tuple<int, int, string>>();
             var service = MockService();
-            baseService.When(x => x.ExecuteNonQueryAsync(criteria)).Throw(exception);
-            service.Protected("GetCategorySubCategory", settings).Returns(category);
-            service.Protected("GetProductXml", winLimit, Arg.Any<List<BettypeInfo>>(), settings, settingMappings).Returns("product xml");
-            service.Protected("GetSolution", winLimit).Returns("solution");
-            service.Protected("GetRelatedCustomerXml", winLimit).Returns("related customer xml");
-            service.Protected("GetDescription", winLimit, Arg.Any<List<BettypeInfo>>()).Returns("description");
+            service.Protected("CheckValidParams", criteria).Returns(new ValueTuple<bool, string>(true, ""));
+
+            var commandResult = new CommandResult { Code = 0 };
+            baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
 
             // Act
-            await service.Public_CreateWinLossFeedbackCreditAsync(
+            await service.Public_CheckValidParamsAndInsertFeedbackAsync(
                 winLimit,
-                betInfo,
-                settings,
-                settingMappings
+                criteria
+                );
+
+            // Assert
+            logService.Received(2).LogInformation(Arg.Any<string>());
+        }
+
+        [Fact]
+        public async Task CheckValidParamsAndInsertFeedbackAsync__InvalidParams_ExpectedReturnAndUpdateStatus()
+        {
+            // Arrange
+            var winLimit = new WinLimitFeedBackInfo
+            {
+                LogID = 1,
+                CustId = 1,
+                BettypeIDList = "1,2",
+                HeadlineId = 1,
+                HeadlineName = "headline",
+                RelatedCustId = "1",
+                UserName = "test"
+            };
+            var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
+            var service = MockService();
+            service.Protected("CheckValidParams", criteria).Returns(new ValueTuple<bool, string>(false, ""));
+
+            var commandResult = new CommandResult { Code = 0 };
+            baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
+
+            // Act
+            await service.Public_CheckValidParamsAndInsertFeedbackAsync(
+                winLimit,
+                criteria
+                );
+
+            // Assert
+            logService.Received(1).LogInformation(Arg.Any<string>());
+            await transactionService.EditFeedbackWinLossInfoAsync(winLimit.LogID, CreateFeedbackJobStatus.Fail, Arg.Any<string>());
+        }
+
+        [Fact]
+        public async Task CheckValidParamsAndInsertFeedbackAsync__Exception_ExpectedWriteLogAndUpdateStatus()
+        {
+            // Arrange
+            var winLimit = new WinLimitFeedBackInfo
+            {
+                LogID = 1,
+                CustId = 1,
+                BettypeIDList = "1,2",
+                HeadlineId = 1,
+                HeadlineName = "headline",
+                RelatedCustId = "1",
+                UserName = "test"
+            };
+            var exception = fixture.Create<Exception>();
+            var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
+            var service = MockService();
+            service.Protected("CheckValidParams",
+                criteria
+                ).Returns(new ValueTuple<bool, string>(true, ""));
+
+            baseService.When(x => x.ExecuteNonQueryAsync(criteria)).Throw(exception);
+
+            // Act
+            await service.Public_CheckValidParamsAndInsertFeedbackAsync(
+                winLimit,
+                criteria
                 );
 
             // Assert

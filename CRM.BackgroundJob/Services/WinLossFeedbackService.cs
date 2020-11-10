@@ -115,13 +115,13 @@
             {
                 CreatorId = appSettings.CreatorId,
                 UserId = appSettings.CreatorId,
-                UserRole = Constants.UserRole,
                 FeedbackDate = feedbackDate.Subtract(timeSpan),
                 ResolutionDate = feedbackDate.AddMinutes(1).Subtract(timeSpan),
                 IsCheckedDefaultComm = true,
                 StationId = station != null ? station.SettingId.ToString() : string.Empty,
                 StatusId = status != null ? status.SettingId : 0,
                 ResponseId = response != null ? response.SettingId : 0,
+                UserRole = Constants.UserRole,
                 CategoryXml = category.Item3,
                 CategoryIds = category.Item1.ToString(),
                 SubCategoryIds = category.Item2.ToString(),
@@ -139,6 +139,12 @@
                 Description = GetDescription(winLimit, betTypeMappings)
             };
 
+            await CheckValidParamsAndInsertFeedbackAsync(winLimit, criteria);
+        }
+
+        protected internal virtual async Task CheckValidParamsAndInsertFeedbackAsync(WinLimitFeedBackInfo winLimit,
+                                                                        CreateMutipleFeedbackCommand criteria)
+        {
             var checkValidParamBeforeInsert = CheckValidParams(criteria);
             if(!checkValidParamBeforeInsert.Item1)
             {
