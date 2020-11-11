@@ -56,7 +56,7 @@
             };
             await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
 
-            IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.getListCustReachLimitAsync(setting.LastLogID, setting.BatchSize);
+            IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.getListCustReachLimitAsync(setting);
             var custIds = cusWinLimit.Select(x => x.CustId).Distinct();
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };

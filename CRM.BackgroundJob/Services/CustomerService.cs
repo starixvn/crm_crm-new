@@ -15,7 +15,7 @@
 
         Task<IEnumerable<GroupHeadline>> GetGroupHeadlineAsync(IEnumerable<int> custIds);
 
-        Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync(int lastLogID, int batchSize);
+        Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync(WinLossSystemSetting setting);
     }
 
     public class CustomerService : ICustomerService
@@ -50,12 +50,17 @@
             return await baseService.GetDataAsync<GroupHeadline>(criteria);
         }
 
-        public async Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync(int lastLogID, int batchSize)
+
+        public async Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync(WinLossSystemSetting setting)
         {
             var criteria = new GetListCustomerReachLimitCriteria
             {
-                LastLogID = lastLogID,
-                BatchSize = batchSize
+                BatchSize = setting.BatchSize,
+                ConfigUAT = setting.ConfigUAT,
+                ConfigPRO = setting.ConfigPRO,
+                LastLogID = setting.LastLogID,
+                IsCredit = setting.IsCredit,
+                IsDeposit = setting.IsDeposit
             };
             return await baseService.GetDataAsync<CustomerWinLimit>(criteria);
         }
