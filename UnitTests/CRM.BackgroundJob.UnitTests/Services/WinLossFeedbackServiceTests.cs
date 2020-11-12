@@ -40,7 +40,7 @@
             var winLimit = new List<WinLimitFeedBackInfo>();
             var betInfo = fixture.Create<IEnumerable<BettypeInfo>>();
             var winlossInfo = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>(winLimit, betInfo);
-            customerService.getListCustReachLimitAsync(setting.LastLogID, setting.BatchSize).Returns(cusWinLimit);
+            customerService.getListCustReachLimitAsync(setting).Returns(cusWinLimit);
             transactionService.ImportWinLimitFeedbackInfoAsync(Arg.Any<IEnumerable<CustomerWinLimit>>(), Arg.Any<IEnumerable<GroupHeadline>>()).Returns(winlossInfo);
             // Act
             await service.CreateFeedbackForWinLossLimitAsync(setting);
@@ -71,7 +71,7 @@
                 new BettypeInfo {Name = "Gaming", Bettype = "1"}
             };
             var winlossInfo = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>(winLimit, betInfo);
-            customerService.getListCustReachLimitAsync(setting.LastLogID, setting.BatchSize).Returns(cusWinLimit);
+            customerService.getListCustReachLimitAsync(setting).Returns(cusWinLimit);
             transactionService.ImportWinLimitFeedbackInfoAsync(Arg.Any<IEnumerable<CustomerWinLimit>>(), Arg.Any<IEnumerable<GroupHeadline>>()).Returns(winlossInfo);
 
             // Act

@@ -61,19 +61,22 @@
         {
             // Arrange
             var expected = fixture.Create<IEnumerable<CustomerWinLimit>>();
-            var lastLogID = fixture.Create<int>();
-            var batchSize = fixture.Create<int>();
             var criteria = new GetListCustomerReachLimitCriteria();
+            var setting = fixture.Create<WinLossSystemSetting>();
             var service = GetService();
             baseService.GetDataAsync<CustomerWinLimit>(Arg.Do<GetListCustomerReachLimitCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.getListCustReachLimitAsync(lastLogID, batchSize);
+            var actual = await service.getListCustReachLimitAsync(setting);
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(lastLogID, criteria.LastLogID);
-            Assert.Equal(batchSize, criteria.BatchSize);
+            Assert.Equal(setting.BatchSize, criteria.BatchSize);
+            Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
+            Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
+            Assert.Equal(setting.LastLogID, criteria.LastLogID);
+            Assert.Equal(setting.IsCredit, criteria.IsCredit);
+            Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
         }
 
 
