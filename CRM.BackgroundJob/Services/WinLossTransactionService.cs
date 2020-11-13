@@ -96,7 +96,7 @@
             return new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>(WinLossInfo.Item1, WinLossInfo.Item2);
         }
 
-        public double GetLimitSetting(MaxWinLimitSetting setting, int levelID)
+        protected internal virtual double GetLimitSetting(MaxWinLimitSetting setting, int levelID)
         {
             double amount = 0;
             const int Level1 = 1;

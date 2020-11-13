@@ -17,6 +17,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
     {
         private IBaseService baseService;
         private readonly IFixture fixture = new Fixture();
+
         [Fact]
         public async Task EditFeedbackWinLossInfoAsync_WhenCalled_ReturnExpectedCommandResult()
         {
@@ -35,6 +36,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
         }
 
         #region ImportWinLimitFeedbackInfoAsync
+
         [Fact]
         public async Task ImportWinLimitFeedbackInfoAsync_CustomerLimitNull_ReturnValueTupleNull()
         {
@@ -96,7 +98,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo>(Arg.Do<ImportWinLossFeedbackInfoCriteria>(x => criteria = x)).Returns(winLimitReturn);
 
             // Act
-           await service.ImportWinLimitFeedbackInfoAsync(cusWinLimit, headlines);
+            await service.ImportWinLimitFeedbackInfoAsync(cusWinLimit, headlines);
 
             // Assert
 
@@ -111,7 +113,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             {
                 new CustomerWinLimit{
                     LogID = 1,
-                    MaxWinLimitSetting = "<MaxWinLimitSetting Level1='0.00' Level2='0.00' Level3='5000' Level101='0.00' Level102='0.00' />",
+                    MaxWinLimitSetting = "<MaxWinLimitSetting Level1='1000' Level2='2000' Level3='5000' Level101='0.00' Level102='0.00' />",
                     ProductID = 1,
                     ProductGroup = "1",
                     Level = "1",
@@ -134,10 +136,9 @@ namespace CRM.BackgroundJob.UnitTests.Services
             };
             var winLimit = new List<WinLimitFeedBackInfo>();
             var betTypes = new List<BettypeInfo>();
-            var setting = fixture.Create<MaxWinLimitSetting>();
             var winLimitReturn = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>(winLimit, betTypes);
             var XmlTemplate = "<ROOT><r logid='1' custid='1' hl='1' hlname='1' related='1' product='1' group='1' level='1' " +
-                                       "limitsetting='5000' winamount='1000' winamountRM='1000' time='11/13/2020 12:00:00 AM' bettype='1'/></ROOT>";
+                                       "limitsetting='0' winamount='1000' winamountRM='1000' time='11/13/2020 12:00:00 AM' bettype='1'/></ROOT>";
             var criteria = new ImportWinLossFeedbackInfoCriteria();
             var service = GetWinLossTransactionService();
             baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo>(Arg.Do<ImportWinLossFeedbackInfoCriteria>(x => criteria = x)).Returns(winLimitReturn);
@@ -153,11 +154,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
         #endregion ImportWinLimitFeedbackInfoAsync
 
         [Theory]
-        [InlineData(1,100)]
-        [InlineData(2,200)]
-        [InlineData(3,300)]
-        [InlineData(101,400)]
-        [InlineData(102,500)]
+        [InlineData(1, 100)]
+        [InlineData(2, 200)]
+        [InlineData(3, 300)]
+        [InlineData(101, 400)]
+        [InlineData(102, 500)]
         public void GetLimitSetting_WhenCalled_ReturnExpectedAmount(int levelID, int expect)
         {
             // Arrange
@@ -172,7 +173,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var service = GetWinLossTransactionService();
 
             // Act
-            var actual = service.GetLimitSetting(setting, levelID);
+            var actual = service.Public_GetLimitSetting(setting, levelID);
 
             // Assert
             Assert.Equal(expect, actual);
@@ -180,11 +181,26 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
         #region Helpers
 
-        private WinLossTransactionService GetWinLossTransactionService()
+        public class WinLossTransactionServiceTestable : WinLossTransactionService
+        {
+            public WinLossTransactionServiceTestable(
+            IBaseService baseService)
+            : base(baseService)
+            {
+            }
+
+            public double Public_GetLimitSetting(MaxWinLimitSetting setting, int levelID)
+            {
+                return base.GetLimitSetting(setting, levelID);
+            }
+        }
+
+        private WinLossTransactionServiceTestable GetWinLossTransactionService()
         {
             baseService = Substitute.For<IBaseService>();
-            return new WinLossTransactionService(baseService);
+            return Substitute.For<WinLossTransactionServiceTestable>(baseService);
         }
+
         #endregion Helpers
     }
 }
