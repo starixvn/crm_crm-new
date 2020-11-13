@@ -57,7 +57,7 @@
             Assert.Equal(string.Join(",", custIds), criteria.CustIds);
         }
         [Fact]
-        public async Task getListCustReachLimitAsync_WhenCalled_ReturnExpectedLimitInfor()
+        public async Task GetListCustReachLimitAsync_WhenCalled_ReturnExpectedLimitInfor()
         {
             // Arrange
             var expected = fixture.Create<IEnumerable<CustomerWinLimit>>();
@@ -67,7 +67,7 @@
             baseService.GetDataAsync<CustomerWinLimit>(Arg.Do<GetListCustomerReachLimitCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.getListCustReachLimitAsync(setting);
+            var actual = await service.GetListCustReachLimitAsync(setting);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -78,8 +78,6 @@
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
         }
-
-
         #region Helpers
 
         private CustomerService GetService()

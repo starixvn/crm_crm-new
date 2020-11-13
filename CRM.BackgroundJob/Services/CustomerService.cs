@@ -15,7 +15,7 @@
 
         Task<IEnumerable<GroupHeadline>> GetGroupHeadlineAsync(IEnumerable<int> custIds);
 
-        Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync(WinLossSystemSetting setting);
+        Task<IEnumerable<CustomerWinLimit>> GetListCustReachLimitAsync(WinLossSystemSetting setting);
     }
 
     public class CustomerService : ICustomerService
@@ -51,7 +51,7 @@
         }
 
 
-        public async Task<IEnumerable<CustomerWinLimit>> getListCustReachLimitAsync(WinLossSystemSetting setting)
+        public async Task<IEnumerable<CustomerWinLimit>> GetListCustReachLimitAsync(WinLossSystemSetting setting)
         {
             var criteria = new GetListCustomerReachLimitCriteria
             {

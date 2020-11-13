@@ -54,10 +54,12 @@
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
             };
+            logService.LogInformation(string.Format("Start run WL serivce with last log ID: {0}!", setting.LastLogID));
             await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
 
-            IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.getListCustReachLimitAsync(setting);
+            IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.GetListCustReachLimitAsync(setting);
             var custIds = cusWinLimit.Select(x => x.CustId).Distinct();
+            logService.LogInformation(string.Format("CustId reach limit: {0}", custIds));
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
@@ -92,6 +94,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
+            logService.LogInformation(string.Format("Start create win loss feedback custID: {0}!", winLimit.CustId));
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
@@ -100,7 +103,7 @@
                  && x.SettingValue.Equals("Neutral", StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
-            var category = GetCategorySubCategory(settings);
+            var category = GetCategorySubCategoryWinloss(settings);
             string[] betTypeLists = winLimit.BettypeIDList.Split(",");
             var betTypeMappings = new List<BettypeInfo>();
             foreach (var bet in bettype)
@@ -139,6 +142,7 @@
                 Description = GetDescription(winLimit, betTypeMappings)
             };
 
+            logService.LogInformation(string.Format("end create win loss feedback custID: {0}!", winLimit.CustId));
             await CheckValidParamsAndInsertFeedbackAsync(winLimit, criteria);
         }
 
@@ -258,27 +262,26 @@
             return subProduct ?? new SystemSettingMapping { SettingId = Constants.SubProductNA };
         }
 
-        protected internal virtual Tuple<int, int, string> GetCategorySubCategory(IEnumerable<SettingItem> settings)
+        protected internal virtual Tuple<int, int, string> GetCategorySubCategoryWinloss(IEnumerable<SettingItem> settings)
         {
             var category = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.MainCategory, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals("Special Notification", StringComparison.OrdinalIgnoreCase));
-            var subCategoryId = 0;
+            var subCategoryIdWL = 0;
 
             if (category != null)
             {
-                var subCategory = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.SubCategory, StringComparison.OrdinalIgnoreCase)
+                var subCategoryWL = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.SubCategory, StringComparison.OrdinalIgnoreCase)
                     && x.ParentIds.Any(y => y == category.SettingId)
                     && x.SettingValue.Equals("Company W/L Limit", StringComparison.OrdinalIgnoreCase));
 
-                subCategoryId = subCategory != null ? subCategory.SettingId : 0;
+                subCategoryIdWL = subCategoryWL != null ? subCategoryWL.SettingId : 0;
             }
 
             return new Tuple<int, int, string>(
-                category != null ? category.SettingId : 0,
-                subCategoryId,
+                category != null ? category.SettingId : 0, subCategoryIdWL,
                 string.Format("<ROOT><Category MainCategoryID='{0}' SubCategoryID='{1}' /></ROOT>",
                     category != null ? category.SettingId : 0,
-                    subCategoryId));
+                    subCategoryIdWL));
         }
 
         protected internal virtual IList<SystemSettingMapping> GetBettype(
