@@ -16,7 +16,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
     public class WinLossTransactionServiceTests
     {
         private IBaseService baseService;
-        private readonly IFixture fixture = new Fixture();
 
         [Fact]
         public async Task EditFeedbackWinLossInfoAsync_WhenCalled_ReturnExpectedCommandResult()

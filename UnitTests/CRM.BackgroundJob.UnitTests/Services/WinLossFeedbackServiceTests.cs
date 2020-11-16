@@ -193,7 +193,7 @@
             var service = MockService();
             service.Protected("CheckValidParams", criteria).Returns(new ValueTuple<bool, string>(true, ""));
 
-            var commandResult = new CommandResult { Code = 1, Message = ""};
+            var commandResult = new CommandResult { Code = 1, Message = "" };
             baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
 
             // Act
@@ -327,7 +327,7 @@
             result.Equals(expect);
         }
 
-        #endregion CreateWinLossFeedbackCreditAsync
+        #endregion CheckValidParams
 
         #region GetProductXml
 
@@ -445,7 +445,7 @@
             Assert.Equal(settingMappings.First(), actual.First());
         }
 
-        #endregion GetProductXml
+        #endregion GetProduct
 
         #region GetSubProduct
 
@@ -469,7 +469,6 @@
 
             // Assert
             Assert.Equal(Constants.SubProductNA, actual.SettingId);
-
         }
 
         [Fact]
@@ -558,7 +557,7 @@
             Assert.Equal("<ROOT><Category MainCategoryID='1' SubCategoryID='2' /></ROOT>", actual.Item3);
         }
 
-        #endregion GetSubProduct
+        #endregion GetCategorySubCategoryWinloss
 
         #region GetBettype
 
@@ -691,6 +690,23 @@
         }
 
         [Fact]
+        public void GetSolution_LevelNotBelongToTemplate_ReturnDefaultTemplate()
+        {
+            // Arrange
+            var winlimit = new WinLimitFeedBackInfo
+            {
+                Level = "Green"
+            };
+
+            var service = MockService();
+            // Act
+            var actual = service.Public_GetSolution(winlimit);
+
+            // Assert
+            Assert.Empty(actual);
+        }
+
+        [Fact]
         public void GetSolutionRNG_CallFunction_ReturnExpectTemplate()
         {
             // Arrange
@@ -735,7 +751,7 @@
         [InlineData("Grey", "loss", "输了")]
         [InlineData("Yellow", "won", "赢了")]
         [InlineData("Orange", "won", "赢了")]
-        public void GetSolutionLevelOrange_CallFunction_ReturnExpectTemplate(string level, string winloss,string winlossChinese)
+        public void GetSolutionLevelOrange_CallFunction_ReturnExpectTemplate(string level, string winloss, string winlossChinese)
         {
             // Arrange
             var winLimit = new WinLimitFeedBackInfo
@@ -874,7 +890,106 @@
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
         }
+
         #endregion GetSolution
+
+        #region GetDescription
+
+        public static IEnumerable<object[]> TestBetTypesCount()
+        {
+            return new List<object[]>
+           {
+                new object[] { new List<BettypeInfo>
+                {
+                    new BettypeInfo{Name = "a"},
+                    new BettypeInfo{Name = "b"},
+                    new BettypeInfo{Name = "c"},
+                    new BettypeInfo{Name = "d"}
+                }, "a, b, c"},
+                new object[] { new List<BettypeInfo>
+                {
+                    new BettypeInfo{Name = "a"},
+                    new BettypeInfo{Name = "b"},
+                }, "a, b"}
+           };
+        }
+
+        [Theory]
+        [MemberData(nameof(TestBetTypesCount))]
+        public void GetDescription_WhenCalled_ReturnExpectTemplate(
+                List<BettypeInfo> bettypes,
+                string numGamesFormat)
+        {
+            // Arrange
+            var winlimit = new WinLimitFeedBackInfo
+            {
+                MaxWinLimitSetting = "1000",
+                TotalWinAmt_RM = 1000,
+                TotalWinAmt = 1000,
+                UserName = "Test",
+                Site = "123",
+                Currency = "USD",
+                ReachedTime = new DateTime(2020, 11, 13),
+                Level = "Red"
+            };
+
+            var service = MockService();
+            var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
+            description.Append("<br />Informed Headline Win/Loss Alert for below member:");
+            description.AppendFormat("<br />Product: {0}", winlimit.ProductName);
+            description.Append("<br />Game Type: ");
+            description.AppendFormat(bettypes.Count > 3 ? "{0} ..." : "{0}", numGamesFormat);
+            description.AppendFormat("<br /> UserName: {0}, Site: {1}", winlimit.UserName, winlimit.Site);
+            description.AppendFormat("<br /> Winning/Lossing Ammount: {0} (RM), Winning/Lossing Ammount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
+            , "1,000", "1,000", "1,000", winlimit.Currency);
+            description.AppendFormat("<br />Reached Limit Time: {0}, Reached Limit Level: {1}", winlimit.ReachedTime, winlimit.Level);
+            description.Append(Constants.LineBreak);
+
+            // Act
+            var actual = service.Public_GetDescription(winlimit, bettypes);
+
+            // Assert
+            Assert.Equal(description.ToString(), actual);
+        }
+
+        #endregion GetDescription
+
+        #region GetRelatedCustomerXml
+        [Fact]
+        public void GetRelatedCustomerXml_CallFunction_ReturnExpectTemplate()
+        {
+            // Arrange
+            var winLimit = new WinLimitFeedBackInfo
+            {
+                HeadlineId = 1,
+                RelatedCustId = "1",
+                UserName = "test"
+            };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetRelatedCustomerXml(winLimit);
+
+            // Assert
+            Assert.Equal("<ROOT><Row CustId='1' RelatedCustId='1' Username='test' /></ROOT>", actual);
+        }
+        #endregion GetRelatedCustomerXml
+
+        [Fact]
+        public async Task EditWinLossSystemSettingAsync_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var commandResult = fixture.Create<CommandResult>();
+            var service = MockService();
+            systemSettingService.EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_WinLimitFB).Returns(commandResult);
+
+            // Act
+            var actual = await service.Public_EditWinLossSystemSettingAsync(1);
+
+            // Assert
+            Assert.Equal(commandResult, actual);
+        }
 
         #region Helpers
 
