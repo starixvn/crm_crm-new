@@ -1,20 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\.sonarlint\crm-newcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    <AdditionalFiles Include="..\.sonarlint\crm-new\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.9.0.19135">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.14.0.8411">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Labels.Designer.cs">
+      <DependentUpon>Labels.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="ViewResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -23,6 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Labels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Labels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="ViewResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ViewResources.Designer.cs</LastGenOutput>

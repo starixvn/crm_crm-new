@@ -9,6 +9,8 @@
         public bool ConfigUAT { get; set; }
         public bool ConfigPRO { get; set; }
         public bool ServiceFlag { get; set; }
+        public int LastLogId { get; set; }
+
         public DateTime LastRuntime { get; set; }
     }
 }

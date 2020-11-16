@@ -20,6 +20,8 @@
     using Fanex.Logging.Sentry;
     using Fanex.RemotingRef;
     using global::CRM.BackgroundJob.Services;
+    using Fanex.RemotingRef;
+    using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Extensions;
     using global::CRM.Letstalk.Services.Extentions;
     using global::CRM.Letstalk.Services.Services;
@@ -199,6 +201,7 @@
             services.AddScoped<IAutoFeedbackService, AutoFeedbackService>();
             services.AddScoped<IAutoWinLossFeedbackService, AutoWinLossFeedbackService>();
             services.AddScoped<IChatBotTicketVoidingService, ChatBotTicketVoidingService>();
+            services.AddScoped<IChatBotCWLService, ChatBotCWLService>();
             services.AddScoped<IChatBotJobService, ChatBotJobService>();
             services.AddScoped<IBackgroundService, BackgroundService>();
             services.AddScoped<ISendNotificationService, SendNotificationService>();

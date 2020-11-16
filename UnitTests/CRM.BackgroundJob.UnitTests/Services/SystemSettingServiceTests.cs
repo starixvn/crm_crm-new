@@ -90,7 +90,7 @@
             baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(Arg.Any<GetChatBotSystemSettingCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetChatBotSystemSettingAsync();
+            var actual = await service.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot);
 
             // Assert
             Assert.Equal(expected, actual);

@@ -22,7 +22,7 @@
 
         Task<CommandResult> EditJobStatusAsync(string status);
 
-        Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync();
+        Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync(string serviceName);
 
         Task<WinLossSystemSetting> GetWinLossSettingAsync();
     }
@@ -63,9 +63,12 @@
             return await EditSystemSettingAsync(settings);
         }
 
-        public async Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync()
+        public async Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync(string serviceName)
         {
-            var criteria = new GetChatBotSystemSettingCriteria();
+            var criteria = new GetChatBotSystemSettingCriteria
+            {
+                ServiceName = serviceName
+            };
             return await baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(criteria);
         }
 

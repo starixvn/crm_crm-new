@@ -7,6 +7,10 @@
     {
         public int NotificationId { get; set; }
 
+        public int ReferenceId { get; set; }
+
+        public string DataSource { get; set; }
+
         public int MessageId { get; set; }
 
         public string Sender { get; set; }

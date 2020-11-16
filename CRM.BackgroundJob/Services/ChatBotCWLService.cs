@@ -1,0 +1,85 @@
+﻿
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using CRM.BackgroundJob.Criteria.ChatBotCWL;
+using CRM.BackgroundJob.Models.ChatBotCWL;
+using CRM.Core.Models;
+using CRM.Core.Services;
+using Fanex.CRM.BackgroundJob.Constants;
+using Fanex.RemotingRef;
+namespace CRM.BackgroundJob.Services
+{
+    public interface IChatBotCWLService
+    {
+        Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(int LastLogId, int BatchSize);
+        Task<CommandResult> ImportCWLLogInfoAsync(IEnumerable<ChatBotCWLInfo> cwlInfors);
+    }
+    public class ChatBotCWLService : IChatBotCWLService
+    {
+        private readonly IBaseService baseService;
+        private readonly IRemotingRefService remotingRefService;
+
+        public ChatBotCWLService(IBaseService baseService,
+                                 IRemotingRefService remotingRefService)
+        {
+            this.baseService = baseService;
+            this.remotingRefService = remotingRefService;
+        }
+
+        public async Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(int LastLogId, int BatchSize)
+        {
+            var criteria = new GetCWLInfoByLogIdCriteria
+            {
+                LastLogId = LastLogId,
+                BatchSize = BatchSize
+            };
+            return await baseService.GetDataAsync<ChatBotCWLInfo>(criteria);
+        }
+
+        public async Task<CommandResult> ImportCWLLogInfoAsync(IEnumerable<ChatBotCWLInfo> cwlInfors)
+        {
+            const string XmlTemplate = "<r LogId='{0}' CustId='{1}' CurrencyName='{2}' " +
+                "Username='{3}' Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' " +
+                "Winloss='{7}' ProductNameEN='{8}' ProductNameSC='{9}' ProductNameTH='{10}' " +
+                "ProductNameVN='{11}' LevelId='{12}' GroupId='{13}'/>";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            foreach (ChatBotCWLInfo cwl in cwlInfors)
+            {
+                var productEN = GetProductName(cwl.ProductId.ToString(), "en-US");
+                var productSC = GetProductName(cwl.ProductId.ToString(), "zh-CN");
+                var productTH = GetProductName(cwl.ProductId.ToString(), "th-TH");
+                var productVN = GetProductName(cwl.ProductId.ToString(), "vi-VN");
+
+                stringBuilder.AppendFormat(XmlTemplate,
+                    cwl.LogId,
+                    cwl.CustId,
+                    cwl.CurrencyName,
+                    cwl.Username,
+                    cwl.Recommend,
+                    cwl.Mrecommend,
+                    cwl.Srecommend,
+                    cwl.Winloss,
+                    productEN,
+                    productSC,
+                    productTH,
+                    productVN,
+                    cwl.LevelId,
+                    cwl.GroupId);
+            }
+
+            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            var criteria = new ImportCWLLogInfoCommand
+            {
+                XmlData = stringBuilder.ToString(),
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public string GetProductName(string productId, string languageCode)
+        {
+            var productName = remotingRefService.GetResourceDataByRefIdAndResourceId("Product", productId, languageCode, string.Empty);
+            return productName;
+        }
+    }
+}

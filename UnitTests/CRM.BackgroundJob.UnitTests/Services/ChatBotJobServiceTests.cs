@@ -3,9 +3,11 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Services;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Letstalk.Services.Services.Interfaces;
+    using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
     using Fanex.CRM.BackgroundJob.Services;
@@ -18,6 +20,7 @@
         private ISystemSettingService systemSettingService;
         private IChatBotTicketVoidingService ticketVoidingService;
         private ISendNotificationService sendNotificationService;
+        private IChatBotCWLService chatBotCWLService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -26,7 +29,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync().Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot).Returns(setting);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
@@ -45,7 +48,7 @@
             var ticketInfos = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
             var commandResult = new CommandResult { Code = 1 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync().Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot).Returns(setting);
             ticketVoidingService.GetVoidingMessageAsync().Returns(voidingMessages);
             ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
             ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
@@ -69,7 +72,7 @@
             var ticketInfos = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
             var commandResult = new CommandResult { Code = 0 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync().Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot).Returns(setting);
             ticketVoidingService.GetVoidingMessageAsync().Returns(voidingMessages);
             ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
             ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
@@ -91,7 +94,8 @@
             systemSettingService = Substitute.For<ISystemSettingService>();
             ticketVoidingService = Substitute.For<IChatBotTicketVoidingService>();
             sendNotificationService = Substitute.For<ISendNotificationService>();
-            return new ChatBotJobService(logService, systemSettingService, ticketVoidingService, sendNotificationService);
+            chatBotCWLService = Substitute.For<IChatBotCWLService>();
+            return new ChatBotJobService(logService, systemSettingService, ticketVoidingService, sendNotificationService, chatBotCWLService);
         }
 
         #endregion Helpers

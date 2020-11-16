@@ -31,7 +31,7 @@ export class DataGrid extends Component {
             <HeaderCell colWidth={5}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
             <HeaderCell colWidth={15}>
                 <div>{LangHelper.getResource('NotificationID')}</div>
-                <div>{LangHelper.getResource('MessageID')}</div>
+                <div>{LangHelper.getResource('ReferenceId')}</div>
             </HeaderCell>
             <HeaderCell colWidth={23}>{LangHelper.getResource('Sender')}/{LangHelper.getResource('NotificationType')}</HeaderCell>
             <HeaderCell colWidth={12}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
@@ -122,7 +122,7 @@ export class DataGrid extends Component {
             <Cell className='text-center'>{index + this.startIndex}</Cell>
             <Cell className='text-center'>
                 <div>{item.notificationId}</div>
-                <div>{`(Msg: ${item.messageId})`}</div>
+                <div>{item.dataSource === 'LogId' ? `(Log: ${item.referenceId})` : `(Msg: ${item.messageId})`}</div>
                 {
                     this.isDuplicated(item.status) && <div>{`(Related ID: ${item.relatedNotificationIds})`}</div>
                 }

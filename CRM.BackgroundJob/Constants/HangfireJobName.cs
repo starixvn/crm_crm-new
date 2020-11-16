@@ -4,7 +4,9 @@
     {
         public const string CreateFeedbackForVoidingAbnormalBet = "CreateFeedbackForVoidingAbnormalBet";
         public const string PullMessageForChatBot = "PullMessageForChatBot";
+        public const string PullMessageCWLForChatBot = "PullMessageCWLForChatBot";
         public const string ScanAndSendLetstalkNotification = "ScanAndSendLetstalkNotification";
+        public const string SendLetstalkNotificationToHeadlineForCWL = "SendLetstalkNotificationToHeadlineForCWL";
         public const string MonitorLetstalkService = "MonitorLetstalkService";
         public const string CreateFeedbackForWinLossLimit = "CreateFeedbackForWinLossLimit";
     }

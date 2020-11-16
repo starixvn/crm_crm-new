@@ -60,6 +60,15 @@
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
 
+            if (IsEnabledJob(HangfireJobName.PullMessageCWLForChatBot))
+            {
+                var cronExpression = GetCronExpression(HangfireJobName.PullMessageCWLForChatBot);
+                recurringJob.AddOrUpdate<IBackgroundService>("Pull Message CWL For Chat Bot",
+                   job => job.PullMessageCWLForChatBotAsync(),
+                   cronExpression,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
+            }
+
             if (IsEnabledJob(HangfireJobName.ScanAndSendLetstalkNotification))
             {
                 recurringJob.AddOrUpdate<IBackgroundService>("Scan and send Letstalk Notification",
@@ -83,6 +92,14 @@
                    job => job.CreateFeedbackForWinLossLimit(),
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
+            }
+            
+             if (IsEnabledJob(HangfireJobName.SendLetstalkNotificationToHeadlineForCWL))
+            {
+                recurringJob.AddOrUpdate<IBackgroundService>("Send Letstalk Notification To Headline For CWL",
+                  job => job.SendLetstalkNotificationToHeadlineForCWL(),
+                  Cron.Minutely,
+                  TimeZoneInfo.Local, QueuePriority.Critical);
             }
         }
 

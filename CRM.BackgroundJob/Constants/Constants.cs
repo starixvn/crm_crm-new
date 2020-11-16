@@ -17,6 +17,8 @@
 
         public const string ServiceName_AutoFB = "AutoFB";
         public const string ServiceName_ChatBot = "ChatBot - AbnormalBets";
+
+        public const string ServiceName_ChatBot_CWL = "ChatBot - CWL";
         public const string ServiceName_WinLimitFB = "WinLimitFB";
     }
 }
