@@ -93,6 +93,7 @@
     LetstalkIdRequired: 'Letstalk ID is required!',
     ListOfAssignedDirectAccounts: 'List of assigned direct accounts',
     Listofcustomers: 'List of customers',
+    LogID: 'LogID',
     ListofcustomersRequired: 'List of customers are required!',
     MappingStatus: 'Mapping Status',
     MessageID: 'Message ID',

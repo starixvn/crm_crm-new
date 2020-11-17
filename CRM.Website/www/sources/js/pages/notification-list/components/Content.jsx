@@ -10,7 +10,8 @@ export default class Content extends Component {
 
     render() {
         const { data, onClose } = this.props;
-
+        const LogIdDisplay = `(${LangHelper.getResource('LogID')}: ${data.referenceId})`;
+        const messageIdDisplay = `(${LangHelper.getResource('MessageID')}: ${data.referenceId})`;
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
                 onHide={onClose}
@@ -18,7 +19,8 @@ export default class Content extends Component {
             >
                 <Modal.Header closeButton>
                     <Modal.Title as='div'>
-                        {`${LangHelper.getResource('NotificationID')}: ${data.notificationId} (${LangHelper.getResource('MessageID')}: ${data.messageId})`}
+                    {`${LangHelper.getResource('NotificationID')}: ${data.notificationId} `}
+                        {data.dataSource === 'LogId' ? LogIdDisplay : messageIdDisplay}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
