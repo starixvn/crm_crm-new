@@ -511,7 +511,7 @@
             stringBuilder.Append("<br />Game Type: ");
             stringBuilder.AppendFormat(bettype.Count > numGames ? "{0} ..." : "{0}", numGamesFormat);
             stringBuilder.AppendFormat("<br /> UserName: {0}, Site: {1}", winlimit.UserName, winlimit.Site);
-            stringBuilder.AppendFormat("<br /> Winning/Lossing Ammount: {0} (RM), Winning/Lossing Ammount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
+            stringBuilder.AppendFormat("<br /> Winning/Losing Limit Amount: {0} (RM), Winning/Losing Amount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
             , MaxWinLimitSetting, TotalWinAmt_RM, TotalWinAmt, winlimit.Currency);
             stringBuilder.AppendFormat("<br />Reached Limit Time: {0}, Reached Limit Level: {1}", winlimit.ReachedTime, winlimit.Level);
             stringBuilder.Append(Constants.LineBreak);
