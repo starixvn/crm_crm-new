@@ -238,7 +238,7 @@ describe('DataGrid', () => {
                 expect(header.find(HeaderCell).at(0).html()).toContain('SymbolNo');
                 expect(header.find(HeaderCell).at(1).props().colWidth).toBe(15);
                 expect(header.find(HeaderCell).at(1).find('div').at(0).html()).toContain('NotificationID');
-                expect(header.find(HeaderCell).at(1).find('div').at(1).html()).toContain('MessageID');
+                expect(header.find(HeaderCell).at(1).find('div').at(1).html()).toContain('ReferenceId');
                 expect(header.find(HeaderCell).at(2).props().colWidth).toBe(23);
                 expect(header.find(HeaderCell).at(2).html()).toContain('Sender');
                 expect(header.find(HeaderCell).at(2).html()).toContain('NotificationType');
@@ -702,7 +702,8 @@ describe('DataGrid', () => {
                 const recipients = 'recipients';
                 const item = {
                     notificationId: 'notificationId',
-                    messageId: 'messageId',
+                    dataSource: 'LogId',
+                    referenceId: '1',
                     sender: 'sender',
                     notificationTypeName: 'notificationTypeName',
                     sendDateString: 'sendDateString',
@@ -737,7 +738,7 @@ describe('DataGrid', () => {
                 expect(row.find(Cell).at(0).html()).toContain(index + startIndex);
                 expect(row.find(Cell).at(1).props().className).toBe('text-center');
                 expect(row.find(Cell).at(1).find('div').at(0).html()).toEqual(`<div>${item.notificationId}</div>`);
-                expect(row.find(Cell).at(1).find('div').at(1).html()).toEqual(`<div>(Msg: ${item.messageId})</div>`);
+                expect(row.find(Cell).at(1).find('div').at(1).html()).toEqual(`<div>(Log: ${item.referenceId})</div>`);
                 expect(row.find(Cell).at(2).find('div').at(0).html()).toEqual(`<div>${item.sender}</div>`);
                 expect(row.find(Cell).at(2).find('div').at(1).html()).toEqual(`<div>${item.notificationTypeName}</div>`);
                 expect(row.find(Cell).at(3).props().className).toBe('text-center');

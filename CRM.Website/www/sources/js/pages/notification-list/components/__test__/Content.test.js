@@ -45,14 +45,15 @@ describe('Content', () => {
         LangHelper.getResource = jest.fn(value => value);
         const props = {
             data: {
+                dataSource: 'LogId',
+                referenceId:'1',
                 notificationId: 1,
-                messageId: 1,
                 letstalkName: 'letstalkName',
                 content: 'content'
             }
         };
 
-        const expectedTilte = `NotificationID: ${props.data.notificationId} (MessageID: ${props.data.messageId})`;
+        const expectedTilte = `NotificationID: ${props.data.notificationId} (LogID: ${props.data.referenceId})`;
 
         // Action
         const content = shallow(<Content {...props} />);
