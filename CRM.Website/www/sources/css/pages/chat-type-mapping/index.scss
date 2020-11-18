@@ -98,3 +98,19 @@
 .modal-backdrop {
     z-index: 1050 !important;
 }
+
+.basic-single {
+    div[class*="-control"] {
+        min-height: unset;
+        height: 32px;
+        border-radius: 0;
+
+        div [class*="-singleValue"] {
+            top: 45%;
+        }
+
+        div [class*="-indicatorContainer"] {
+            padding: 5px;
+        }
+    }
+}

@@ -23,7 +23,8 @@ export class EditPersonalMappingPopup extends Component {
                 recipientType: this.props.updatePersonalMappingData.data.recipients.length > 0 ? this.props.updatePersonalMappingData.data.recipients[0].recipientTypeId : '',
                 groupHeadlines: this.props.updatePersonalMappingData.data.headlines.map(v => v.headlineId).toString(),
                 recipient: {
-                    value: this.props.updatePersonalMappingData.data.recipients.length > 0 ? this.props.updatePersonalMappingData.data.recipients[0].recipientId : ''
+                    value: this.props.updatePersonalMappingData.data.recipients.length > 0 ? this.props.updatePersonalMappingData.data.recipients[0].recipientId : '',
+                    label: this.props.updatePersonalMappingData.data.recipients.length > 0 ? this.props.updatePersonalMappingData.data.recipients[0].recipientName : ''
                 },
                 letstalkId: this.props.updatePersonalMappingData.data.conversationId,
                 languageId: this.props.updatePersonalMappingData.data.languageId,
@@ -328,7 +329,7 @@ export class EditPersonalMappingPopup extends Component {
                                 name='recipient'
                                 onChange={this.handleRecipientChange}
                                 options={this.state.settings.recipientOptions}
-                                value={this.state.form.recipient.value}
+                                value={this.state.form.recipient}
                                 isSearchable
                                 isClearable
                             />
