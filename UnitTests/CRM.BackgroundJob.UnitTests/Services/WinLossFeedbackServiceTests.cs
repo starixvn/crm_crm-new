@@ -940,7 +940,7 @@
             description.Append("<br />Game Type: ");
             description.AppendFormat(bettypes.Count > 3 ? "{0} ..." : "{0}", numGamesFormat);
             description.AppendFormat("<br /> UserName: {0}, Site: {1}", winlimit.UserName, winlimit.Site);
-            description.AppendFormat("<br /> Winning/Lossing Ammount: {0} (RM), Winning/Lossing Ammount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
+            description.AppendFormat("<br /> Winning/Losing Limit Amount: {0} (RM), Winning/Losing Amount in RM: {1} (RM), Winloss Amount in player currency: {2} ({3})"
             , "1,000", "1,000", "1,000", winlimit.Currency);
             description.AppendFormat("<br />Reached Limit Time: {0}, Reached Limit Level: {1}", winlimit.ReachedTime, winlimit.Level);
             description.Append(Constants.LineBreak);
