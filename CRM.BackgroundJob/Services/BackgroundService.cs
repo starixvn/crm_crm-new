@@ -21,6 +21,7 @@
         Task MonitorLetstalkService();
 
         Task CreateFeedbackForWinLossLimit();
+
         Task SendLetstalkNotificationToHeadlineForCWL();
     }
 
