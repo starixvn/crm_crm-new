@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Models.ChatBotCWL;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -81,6 +82,59 @@
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
+
+            // Assert
+            await sendNotificationService.Received().SendNotificationToLetstalk();
+        }
+
+        [Fact]
+        public async Task PullMessageCWLAndSendNotificationToHeadlineAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL).Returns(setting);
+
+            // Act
+            await service.PullMessageCWLAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            logService.Received().LogInformation("Chat Bot CWL Service is shutdown.");
+        }
+
+        [Fact]
+        public async Task PullMessageCWLAndSendNotificationToHeadlineAsync_ImportCWLLogInfoAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
+            var cwlInfors = fixture.Create<IEnumerable<ChatBotCWLInfo>>();
+            var commandResult = new CommandResult { Code = 1};
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL).Returns(setting);
+            chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(cwlInfors);
+            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors).Returns(commandResult);
+
+            // Act
+            await service.PullMessageCWLAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            logService.Received().LogInformation(commandResult.Message);
+        }
+
+        [Fact]
+        public async Task PullMessageCWLAndSendNotificationToHeadlineAsync_ImportCWLLogInfoAsyncsuccessful_ExpectedToCallSendNotificationToLetstalk()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
+            var cwlInfors = fixture.Create<IEnumerable<ChatBotCWLInfo>>();
+            var commandResult = new CommandResult { Code = 0 };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL).Returns(setting);
+            chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(cwlInfors);
+            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors).Returns(commandResult);
+
+            // Act
+            await service.PullMessageCWLAndSendNotificationToHeadlineAsync();
 
             // Assert
             await sendNotificationService.Received().SendNotificationToLetstalk();

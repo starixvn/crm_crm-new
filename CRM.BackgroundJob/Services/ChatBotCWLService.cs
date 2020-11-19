@@ -20,8 +20,7 @@ namespace CRM.BackgroundJob.Services
         private readonly IBaseService baseService;
         private readonly IRemotingRefService remotingRefService;
 
-        public ChatBotCWLService(IBaseService baseService,
-                                 IRemotingRefService remotingRefService)
+        public ChatBotCWLService(IBaseService baseService, IRemotingRefService remotingRefService)
         {
             this.baseService = baseService;
             this.remotingRefService = remotingRefService;
