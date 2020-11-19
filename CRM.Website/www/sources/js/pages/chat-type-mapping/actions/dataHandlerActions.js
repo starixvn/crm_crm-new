@@ -74,11 +74,10 @@ export const setRecipientData = data => {
 
 export const getRecipientByRecipientType = recipientTypeId => async dispatch => {
     if (recipientTypeId > 0) {
-        Site.blockUI();
         const url = Site.resolveClientUrl('ChatTypeMapping/GetRecipientByType');
         await DataService.getDataAsync(url, { recipientTypeId: recipientTypeId }).then(response => {
             dispatch(setRecipientData(response.data));
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).catch(Site.handleAxiosError);
     }
 
     return dispatch => {
@@ -96,11 +95,10 @@ export const setGroupHeadlineData = data => {
 
 export const getGroupHeadlineByRecipient = recipientIds => async dispatch => {
     if (recipientIds) {
-        Site.blockUI();
         const url = Site.resolveClientUrl('ChatTypeMapping/GetGroupHeadlineByRecipient');
         await DataService.getDataAsync(url, { recipientIds: recipientIds }).then(response => {
             dispatch(setGroupHeadlineData(response.data));
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).catch(Site.handleAxiosError));
     } else {
         dispatch(setGroupHeadlineData([]));
     }
