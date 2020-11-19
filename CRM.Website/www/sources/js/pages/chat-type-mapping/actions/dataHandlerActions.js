@@ -98,7 +98,7 @@ export const getGroupHeadlineByRecipient = recipientIds => async dispatch => {
         const url = Site.resolveClientUrl('ChatTypeMapping/GetGroupHeadlineByRecipient');
         await DataService.getDataAsync(url, { recipientIds: recipientIds }).then(response => {
             dispatch(setGroupHeadlineData(response.data));
-        }).catch(Site.handleAxiosError));
+        }).catch(Site.handleAxiosError);
     } else {
         dispatch(setGroupHeadlineData([]));
     }
