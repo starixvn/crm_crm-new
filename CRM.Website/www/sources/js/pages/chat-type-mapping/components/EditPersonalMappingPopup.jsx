@@ -7,7 +7,7 @@ import MultipleSelect from '../../../components/multiple-select/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
-import SelectWithSearch from 'react-select';
+import CustomReactSelect from '@jsroot/components/CustomReactSelect';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
 
@@ -324,7 +324,7 @@ export class EditPersonalMappingPopup extends Component {
                             {LangHelper.getResource('Recipient')}
                         </Form.Label>
                         <Col sm="9" md="10">
-                            <SelectWithSearch
+                            <CustomReactSelect
                                 className='basic-single'
                                 name='recipient'
                                 onChange={this.handleRecipientChange}
