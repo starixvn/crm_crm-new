@@ -59,3 +59,15 @@ table.table {
 .modal-backdrop {
     z-index: 1050 !important;
 }
+.form-filter .form-row .form-group {
+    &.field-name {
+        width: 220px;
+        #NamePIC {
+            width: auto;
+        }
+    }
+    .form-label {
+        width: auto;
+        margin-right: 10px;
+    }
+}

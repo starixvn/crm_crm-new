@@ -72,7 +72,7 @@ export class AppContainer extends PureComponent {
                     this.props.confirmPopup.show &&
                     <ConfirmPopup
                         size='lg'
-                        title={LangHelper.getResource('Confirmation')}
+                        title={LangHelper.getResource('ChangePICState')}
                         content={
                             <div>
                                 Are you sure you want to {this.props.confirmPopup.checked ? 'active' : 'deactivate'}

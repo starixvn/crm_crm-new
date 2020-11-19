@@ -210,6 +210,8 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
+                </Form.Row>
+                <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
                         <Form.Control as='input' size='sm' className='shadow-none'

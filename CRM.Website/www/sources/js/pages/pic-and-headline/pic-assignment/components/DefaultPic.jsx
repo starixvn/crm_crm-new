@@ -161,7 +161,7 @@ export class DefaultPic extends Component {
                             <Col sm='8' md='9'>
                                 <Select
                                     isMulti
-                                    onChange={() => this.handlePicChange()}
+                                    onChange={value => this.handlePicChange(value)}
                                     options={this.state.picOptions}
                                     value={this.state.pics}
                                     placeholder={LangHelper.getResource('PleaseSelect')}
@@ -172,12 +172,12 @@ export class DefaultPic extends Component {
                     <Modal.Footer>
                         {
                             this.props.defaultPicPopup.pics && this.props.defaultPicPopup.pics.length > 0 &&
-                                <Button variant='primary' size='sm'
-                                    disabled={this.state.isSubmitting}
-                                    onClick={() => this.handleRemoveDefaultPic(headline.id)}
-                                >
-                                    {LangHelper.getResource('Remove')}
-                                </Button>
+                            <Button variant='primary' size='sm'
+                                disabled={this.state.isSubmitting}
+                                onClick={() => this.handleRemoveDefaultPic(headline.id)}
+                            >
+                                {LangHelper.getResource('Remove')}
+                            </Button>
                         }
                         <Button variant='primary' size='sm'
                             disabled={this.state.isSubmitting}
@@ -193,15 +193,15 @@ export class DefaultPic extends Component {
             </Modal>
             {
                 this.state.isShowConfirmPopup &&
-                    <ConfirmPopup
-                        size='lg'
-                        title={LangHelper.getResource('Confirmation')}
-                        content={
-                            <div>{LangHelper.getResource('ThereAreSomeChangesConfirmMessage')}</div>
-                        }
-                        onSubmit={() => this.closeAll()}
-                        onClose={() => this.toggleConfirmPopup()}
-                    />
+                <ConfirmPopup
+                    size='lg'
+                    title={LangHelper.getResource('Confirmation')}
+                    content={
+                        <div>{LangHelper.getResource('ThereAreSomeChangesConfirmMessage')}</div>
+                    }
+                    onSubmit={() => this.closeAll()}
+                    onClose={() => this.toggleConfirmPopup()}
+                />
             }
         </Fragment>;
     }

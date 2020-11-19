@@ -170,7 +170,6 @@ export class EditPicManagement extends Component {
                             value={values[`communication-${item.unique}`].type}
                             name={`communication-${item.unique}.type`} id={`communication-${item.unique}.type`}
                             onChange={handleChange}
-                            defaultValue=""
                         >
                             <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                             {this.props.setting.communicationTools.map(com => renderOption(com, 'settingId', 'settingValue'))}
@@ -192,7 +191,6 @@ export class EditPicManagement extends Component {
                                     isInvalid={isInvalidCommunicationTools}
                                     onChange={handleChange}
                                     placeholder={LangHelper.getResource('SeparatedByComma')}
-                                    defaultValue=""
                                 />
                             </Col>
                             <Col sm="1" md="1" className="tool-action" >

@@ -94,7 +94,7 @@ export class Filter extends PureComponent {
         return (
             <Form className="form-filter" onSubmit={this.submitHandler}>
                 <Form.Row bsPrefix="form-row">
-                    <Form.Group>
+                    <Form.Group className='field-name'>
                         <Form.Label htmlFor="NamePIC">{LangHelper.getResource('Name')}</Form.Label>
                         <Form.Control type="text" size="sm" className="shadow-none"
                             id="NamePIC" autoComplete="off"
