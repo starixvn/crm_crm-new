@@ -90,6 +90,7 @@
     LanguageRequired: 'Language is required!',
     LetstalkID: 'Letstalk ID',
     LetstalkIdRequired: 'Letstalk ID is required!',
+    Listofcustomers: 'List of Customers',
     ListOfAssignedDirectAccounts: 'List of assigned direct accounts',
     Listofcustomers: 'List of customers',
     ListofcustomersRequired: 'List of customers are required!',

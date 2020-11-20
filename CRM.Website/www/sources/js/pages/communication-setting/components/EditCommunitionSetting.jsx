@@ -169,7 +169,7 @@ export class EditCommunitionSetting extends PureComponent {
                         <Form.Label column sm="2" md="2" htmlFor="customerNameInput">
                             {LangHelper.getResource('Customer')}
                         </Form.Label>
-                        <Col sm="3" md="3">
+                        <Col sm="3 mt-2" md="3 mt-2">
                             {values.userName}
                         </Col>
                     </Form.Group>
@@ -191,9 +191,11 @@ export class EditCommunitionSetting extends PureComponent {
                                 }}
                             />
                         </Col>
-                        <Form.Label column sm="2" md="2" className="required" htmlFor="subCategoryId">
-                            {LangHelper.getResource('SubCategory')}
-                        </Form.Label>
+                        <Col sm="2" md="2">
+                            <Form.Label className="required sub-category-left" htmlFor="subCategoryId">
+                                {LangHelper.getResource('SubCategory')}
+                            </Form.Label>
+                        </Col>
                         <Col sm="4" md="4">
                             <MultipleSelect
                                 isInvalid={touched.subCategoryTypesEdit && errors.subCategoryTypesEdit}
