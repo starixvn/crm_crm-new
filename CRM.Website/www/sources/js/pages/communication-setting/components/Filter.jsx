@@ -133,18 +133,21 @@ export class Filter extends Component {
     }
 
     getParams = () => {
-        let countCatagories = 0;
-        let countSubCatagories = 0;
-        if (!this.state.filter.isDisableCategorySubCategory) {
-            countCatagories = this.state.filter.mainCategoriesTypes.split(',').length;
-            countSubCatagories = this.state.filter.subCategoriesTypes.split(',').length;
+        const isDisabled = this.state.filter.isDisableCategorySubCategory;
+        let mainCategories = '';
+        let subCategories = '';
+        if (!isDisabled) {
+            const countCatagories = this.state.filter.mainCategoriesTypes.split(',').length;
+            const countSubCatagories = this.state.filter.subCategoriesTypes.split(',').length;
+            mainCategories = this.props.settings.mainCategories.length === countCatagories ? '0' : this.state.filter.mainCategoriesTypes;
+            subCategories = this.props.settings.subCategories.length === countSubCatagories ? '0' : this.state.filter.subCategoriesTypes;
         }
         return {
             username: this.state.filter.customerNameInput,
-            categoryIds: this.props.settings.mainCategories.length === countCatagories ? '0' : this.state.filter.mainCategoriesTypes,
-            subCategoryIds: this.props.settings.subCategories.length === countSubCatagories ? '0' : this.state.filter.subCategoriesTypes,
-            isDisableCategorySubCategory: this.state.filter.isDisableCategorySubCategory,
-            pageIndex: this.props.gridParamsCommunication.pageIndex,
+            categoryIds: mainCategories,
+            subCategoryIds: subCategories,
+            isDisableCategorySubCategory: isDisabled,
+            pageIndex: 1,
             pageSize: this.props.gridParamsCommunication.pageSize
         };
     }
@@ -165,16 +168,16 @@ export class Filter extends Component {
             <Form className="form-filter">
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
-                        <Form.Label htmlFor="customerName">{LangHelper.getResource('Customer')}</Form.Label>
+                        <Form.Label className="communication-setting" htmlFor="customerInput">{LangHelper.getResource('Customer')}</Form.Label>
                         <Form.Control type="text" size="sm" className="shadow-none"
-                            id="customerName"
+                            id="customerInput"
                             autoComplete="off"
                             value={this.state.filter.customerNameInput}
                             onChange={this.handlecustomerNameChange}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>{LangHelper.getResource('Category')}</Form.Label>
+                        <Form.Label className="communication-setting">{LangHelper.getResource('Category')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <MultipleSelect
                                 dataSource={this.state.mainCategoryOptionsFilter}
@@ -190,7 +193,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>{LangHelper.getResource('SubCategory')}</Form.Label>
+                        <Form.Label className="communication-setting">{LangHelper.getResource('SubCategory')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <MultipleSelect
                                 dataSource={this.state.subCategoryOptionsFilter}
@@ -208,13 +211,11 @@ export class Filter extends Component {
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group controlId="formBasicCheckbox">
-                        <Form.Check type="checkbox" label={LangHelper.getResource('DisableCatSubCatfilters')}
+                        <Form.Check className="mr-5" type="checkbox" label={LangHelper.getResource('DisableCatSubCatfilters')}
                             checked={this.state.filter.isDisableCategorySubCategory}
                             onChange={this.isDisableCatelogy}
                         />
-                    </Form.Group>
-                    <Form.Group>
-                        <Button className="mr-2" variant="primary" size="sm"
+                        <Button className="mr-4" variant="primary" size="sm"
                             disabled={!this.state.filter.isDisableCategorySubCategory && (this.state.filter.mainCategoriesTypes.length === 0
                                 || this.state.filter.subCategoriesTypes.length === 0)}
                             onClick={this.searchHandler}

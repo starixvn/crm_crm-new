@@ -79,7 +79,7 @@ describe('DataGrid', () => {
             const props = {
                 gridParamsCommunication: {
                     pageIndex: 1,
-                    pageSize: 100
+                    pageSize: 50
                 },
                 gridDataCommunication: {
                     totalItems: 1,
@@ -90,7 +90,7 @@ describe('DataGrid', () => {
                 PageIndex: props.gridParamsCommunication.pageIndex,
                 PageSize: props.gridParamsCommunication.pageSize,
                 TotalItem: props.gridDataCommunication.totalItems,
-                PageList: PAGING_SIZES
+                PageList: [50, 100, 200, 500]
             };
 
             // Action

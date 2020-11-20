@@ -217,7 +217,7 @@ export class NewCommunitionSetting extends PureComponent {
                         <Form.Label column sm="2" md="2" className="required" htmlFor="mainCategoryID">
                             {LangHelper.getResource('Category')}
                         </Form.Label>
-                        <Col sm="10" md="4">
+                        <Col sm="10" md="4" className="mr-4">
                             <MultipleSelect
                                 isInvalid={touched.mainCategoryTypesNew && errors.mainCategoryTypesNew}
                                 dataSource={this.state.mainCategoryOptionsNew}
@@ -231,7 +231,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 }}
                             />
                         </Col>
-                        <Form.Label column sm="2" md="2" className="required" htmlFor="subCategoryId">
+                        <Form.Label className="required" htmlFor="subCategoryId">
                             {LangHelper.getResource('SubCategory')}
                         </Form.Label>
                         <Col sm="10" md="4">

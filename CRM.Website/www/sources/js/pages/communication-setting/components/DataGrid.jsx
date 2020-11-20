@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import { PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -121,7 +120,7 @@ export class DataGrid extends Component {
             PageIndex: pageIndex,
             PageSize: pageSize,
             TotalItem: totalItems,
-            PageList: PAGING_SIZES
+            PageList: [50, 100, 200, 500]
         };
         return (
             <Fragment>

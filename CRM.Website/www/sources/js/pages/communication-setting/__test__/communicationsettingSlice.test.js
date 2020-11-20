@@ -25,7 +25,7 @@ describe('communicationSetting reducer', () => {
                 subCategoryIds: '',
                 isDisableCategorySubCategory: '',
                 pageIndex: 1,
-                pageSize: 100
+                pageSize: 50
             },
             gridDataCommunication: null,
             selectCommunication: null,

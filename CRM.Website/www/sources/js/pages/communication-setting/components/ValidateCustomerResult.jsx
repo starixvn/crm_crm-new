@@ -16,7 +16,7 @@ export default class ValidateCustomerResult extends PureComponent {
             <Fragment>
                 <Form.Group as={Row}>
                     <Form.Label column sm="2" md="2" />
-                    <Col sm="10" md="10" className="d-flex">
+                    <Col sm="9" md="9" className="d-flex">
                         <div className="pl-2 mr-5 customerShow">
                             {LangHelper.getResource('Customer')}
                         </div>
@@ -30,7 +30,7 @@ export default class ValidateCustomerResult extends PureComponent {
                 </Form.Group>
                 <Form.Group as={Row}>
                     <Form.Label column sm="2" md="2" />
-                    <Col sm="10" md="10">
+                    <Col sm="9" md="9">
                         <div className="d-flex flex-wrap customersList">
                             {
                                 listOfCustomers.map((item, index) => {

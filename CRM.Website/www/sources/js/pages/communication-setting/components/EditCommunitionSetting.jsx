@@ -256,7 +256,7 @@ export class EditCommunitionSetting extends PureComponent {
             defaultCommId: Communication.defaultCommId
         };
         return (
-            <Modal show className="communication-setting-edit-modal" dialogAs={DraggableModalDialog}
+            <Modal show className="communication-setting-modal" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl" centered
                 onHide={this.props.onClose}
             >
