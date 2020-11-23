@@ -89,6 +89,7 @@
     Language: 'Language',
     LanguageRequired: 'Language is required!',
     LetstalkID: 'Letstalk ID',
+    LetstalkName: 'Letstalk Name',
     LetstalkIdRequired: 'Letstalk ID is required!',
     ListOfAssignedDirectAccounts: 'List of assigned direct accounts',
     Listofcustomers: 'List of customers',

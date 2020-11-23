@@ -926,7 +926,7 @@ describe('Filter', () => {
             filter.instance().setState(state);
 
             // Action
-            const group = filter.find(Form.Row).at(1);
+            const group = filter.find(Form.Row).at(2);
 
             // Assert
             expect(group.find('div').at(0).props().className).toBe('filter-checkbox');
@@ -960,7 +960,7 @@ describe('Filter', () => {
             const event = {};
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
-            const input = filter.find(Form.Row).at(1).find('input').at(0);
+            const input = filter.find(Form.Row).at(2).find('input').at(0);
 
             // Action
             input.simulate('change', event);
@@ -981,7 +981,7 @@ describe('Filter', () => {
             const event = {};
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
-            const input = filter.find(Form.Row).at(1).find('input').at(1);
+            const input = filter.find(Form.Row).at(2).find('input').at(1);
 
             // Action
             input.simulate('change', event);
@@ -1002,7 +1002,7 @@ describe('Filter', () => {
             const event = {};
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
-            const input = filter.find(Form.Row).at(1).find('input').at(2);
+            const input = filter.find(Form.Row).at(2).find('input').at(2);
 
             // Action
             input.simulate('change', event);
@@ -1023,7 +1023,7 @@ describe('Filter', () => {
             const filter = shallow(<Filter {...props} />);
 
             // Action
-            const row = filter.find(Form.Row).at(2);
+            const row = filter.find(Form.Row).at(3);
 
             // Assert
             expect(row.find('div').props().className).toBe('button-row');
@@ -1048,7 +1048,7 @@ describe('Filter', () => {
 
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleSubmit = jest.fn();
-            const button = filter.find(Form.Row).at(2).find(Button).at(0);
+            const button = filter.find(Form.Row).at(3).find(Button).at(0);
 
             // Action
             button.simulate('click');
@@ -1068,7 +1068,7 @@ describe('Filter', () => {
 
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleOpenAssignPicPopup = jest.fn();
-            const button = filter.find(Form.Row).at(2).find(Button).at(1);
+            const button = filter.find(Form.Row).at(3).find(Button).at(1);
 
             // Action
             button.simulate('click');
