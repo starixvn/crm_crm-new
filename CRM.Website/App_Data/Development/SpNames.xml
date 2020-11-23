@@ -132,5 +132,4 @@
         <Setting Key="Acc_CRM_SubjectTemplateIns" SpName="Acc_CRM_SubjectTemplateIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SubjectTemplateDel" SpName="Acc_CRM_SubjectTemplateDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
- 
 </Functions>
