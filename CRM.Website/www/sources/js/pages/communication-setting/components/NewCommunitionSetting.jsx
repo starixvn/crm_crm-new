@@ -37,7 +37,7 @@ export class NewCommunitionSetting extends PureComponent {
     }
 
     isValidCustomer = customers => {
-        return customers.split(',').filter(function(value) {
+        return customers.split(',').filter(function (value) {
             return value.length > 50;
         }).length === 0;
     };
@@ -177,7 +177,6 @@ export class NewCommunitionSetting extends PureComponent {
                             message={this.props.createCommunicationResult.message || LangHelper.getResource('InsertCommunicationSettingSuccessfully')}
                         />
                     }
-
                     <Form.Group as={Row}>
 
                         <Col sm="2" md="2">
@@ -235,7 +234,7 @@ export class NewCommunitionSetting extends PureComponent {
                             <Form.Label className="sub-category-left required" htmlFor="subCategoryId">
                                 {LangHelper.getResource('SubCategory')}
                             </Form.Label>
-                        </Col>  
+                        </Col>
                         <Col sm="10" md="4">
                             <MultipleSelect
                                 isInvalid={touched.subCategoryTypesNew && errors.subCategoryTypesNew}
