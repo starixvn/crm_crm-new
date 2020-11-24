@@ -110,6 +110,7 @@
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             logService.LogInformation(string.Format("Start create win loss feedback custID: {0}!", winLimit.CustId));
+            var isVipHeadline = winLimit.Site == "789y" && winLimit.IsVip ? true : false;
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
@@ -151,7 +152,7 @@
                 LogID = winLimit.LogID,
                 CustomerXml = string.Format("<ROOT><Cust CustId='{0}' Username='{1}' /></ROOT>", winLimit.HeadlineId, winLimit.HeadlineName),
                 ProductXml = GetProductXml(winLimit, betTypeMappings, settings, settingMappings),
-                Solution = GetSolution(winLimit),
+                Solution = GetSolution(winLimit, isVipHeadline),
                 RelatedCustomerXml = GetRelatedCustomerXml(winLimit),
                 ListOrigCustIds = string.Join(",", winLimit.CustId),
                 Description = GetDescription(winLimit, betTypeMappings)
@@ -315,12 +316,11 @@
                 };
         }
 
-        protected internal virtual string GetSolution(WinLimitFeedBackInfo winLimit)
+        protected internal virtual string GetSolution(WinLimitFeedBackInfo winLimit, bool isVipHeadline)
         {
-            var isVipHeadline = winLimit.Site == "789y" && winLimit.IsVip ? true : false;
             var productEN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "en-US");
             var productSC = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "zh-CN");
-            var productVN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "vi-VN");
+            var productYN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "vi-VN");
 
             string productFormat = "";
             string templateYellow = "";
@@ -337,7 +337,7 @@
                 templateRed = redENYN;
                 templateBlack = blackENYN;
                 templateGrey = greyENYN;
-                productFormat = productVN;
+                productFormat = productYN;
             }
             else
             {
