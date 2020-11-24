@@ -18,6 +18,7 @@
     using Fanex.Logging.Extensions.AspNetCore;
     using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Sentry;
+    using Fanex.RemotingRef;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Extensions;
     using global::CRM.Letstalk.Services.Extentions;
@@ -79,6 +80,13 @@
                         Dsn = new Dsn(Configuration.GetSection("Fanex.Logging:SentryEngineOptions:Dsn").Value)
                     })
                 });
+
+            RefDataTypeContainer
+            .ConnectTo(new Uri(Configuration.GetSection("RemotingRefService:Fanex.RemotingRef.Service.Url").Value))
+            .FromApplication("CRM.BackgroundJob");
+            services.AddMvc();
+            services.Configure<IConfiguration>(Configuration);
+            services.AddSingleton<IRemotingRefService, RemotingRefService>();
 
             ExceptionHandler
                 .UseConfig(new LoggingConfiguration())
@@ -196,6 +204,7 @@
             services.AddScoped<ISendNotificationService, SendNotificationService>();
             services.AddScoped<IMonitorService, MonitorService>();
             services.AddScoped<IWinLossTransactionService, WinLossTransactionService>();
+            services.AddScoped<ICommonFeedback, CommonFeedback>();
         }
 
         private static void RegisterHangfire(IServiceCollection services, ConnectionMultiplexer redis, IConfiguration configuration)

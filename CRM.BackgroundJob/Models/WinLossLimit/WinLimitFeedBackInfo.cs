@@ -10,5 +10,6 @@
         public string HeadlineName { get; set; }
         public string RelatedCustId { get; set; }
         public string ProductName { get; set; }
+        public bool IsVip { get; set; }
     }
 }

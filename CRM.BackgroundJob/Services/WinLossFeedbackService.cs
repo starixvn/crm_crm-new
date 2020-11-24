@@ -28,7 +28,20 @@
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
         private readonly IWinLossTransactionService transactionService;
+        private readonly ICommonFeedback commonFeedback;
 
+        private readonly string blackENSC = "BlackTemplateENSC.cshtml";
+        private readonly string blackENYN = "BlackTemplateENYN.cshtml";
+        private readonly string greyENSC = "GreyTemplateENSC.cshtml";
+        private readonly string greyENYN = "GreyTemplateENYN.cshtml";
+        private readonly string orange_YellowENSC = "Orange_YellowTemplateENSC.cshtml";
+        private readonly string orange_YellowENYN = "Orange_YellowTemplateENYN.cshtml";
+        private readonly string redENSC = "RedTemplateENSC.cshtml";
+        private readonly string redENYN = "RedTemplateENYN.cshtml";
+        private readonly string rngENSC = "RNGTemplateENSC.cshtml";
+        private readonly string rngENYN = "RNGTemplateENYN.cshtml";
+
+#pragma warning disable S107 // Methods should not have too many parameters
         public WinLossFeedbackService(
             IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
@@ -36,7 +49,10 @@
             ISystemSettingService systemSettingService,
             ICustomerService customerService,
             ICRMLogService logService,
-            IWinLossTransactionService transactionService)
+            IWinLossTransactionService transactionService,
+            ICommonFeedback commonFeedback
+            )
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.appSettings = appSettings.Value;
             this.baseService = baseService;
@@ -45,6 +61,7 @@
             this.customerService = customerService;
             this.logService = logService;
             this.transactionService = transactionService;
+            this.commonFeedback = commonFeedback;
         }
 
         public async Task CreateFeedbackForWinLossLimitAsync(WinLossSystemSetting setting)
@@ -56,10 +73,8 @@
             };
             logService.LogInformation(string.Format("Start run WL serivce with last log ID: {0}!", setting.LastLogID));
             await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
-
             IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.GetListCustReachLimitAsync(setting);
             var custIds = cusWinLimit.Select(x => x.CustId).Distinct();
-            logService.LogInformation(string.Format("CustId reach limit: {0}", custIds));
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
@@ -146,8 +161,9 @@
             await CheckValidParamsAndInsertFeedbackAsync(winLimit, criteria);
         }
 
-        protected internal virtual async Task CheckValidParamsAndInsertFeedbackAsync(WinLimitFeedBackInfo winLimit,
-                                                                        CreateMutipleFeedbackCommand criteria)
+        protected internal virtual async Task CheckValidParamsAndInsertFeedbackAsync(
+            WinLimitFeedBackInfo winLimit,
+            CreateMutipleFeedbackCommand criteria)
         {
             var checkValidParamBeforeInsert = CheckValidParams(criteria);
             if(!checkValidParamBeforeInsert.Item1)
@@ -273,7 +289,6 @@
                 var subCategoryWL = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.SubCategory, StringComparison.OrdinalIgnoreCase)
                     && x.ParentIds.Any(y => y == category.SettingId)
                     && x.SettingValue.Equals("Company W/L Limit", StringComparison.OrdinalIgnoreCase));
-
                 subCategoryIdWL = subCategoryWL != null ? subCategoryWL.SettingId : 0;
             }
 
@@ -302,36 +317,49 @@
 
         protected internal virtual string GetSolution(WinLimitFeedBackInfo winLimit)
         {
+            var isVipHeadline = winLimit.Site == "789y" && winLimit.IsVip ? true : false;
+            var productEN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "en-US");
+            var productSC = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "zh-CN");
+            var productVN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "vi-VN");
+
+            string productFormat = "";
+            string templateYellow = "";
+            string templateRed = "";
+            string templateBlack = "";
+            string templateGrey = "";
+
+            var totalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
+            string templateRng = "";
+            if(isVipHeadline)
+            {
+                templateRng = rngENYN;
+                templateYellow = orange_YellowENYN;
+                templateRed = redENYN;
+                templateBlack = blackENYN;
+                templateGrey = greyENYN;
+                productFormat = productVN;
+            }
+            else
+            {
+                templateRng = rngENSC;
+                templateYellow = orange_YellowENSC;
+                templateRed = redENSC;
+                templateBlack = blackENSC;
+                templateGrey = greyENSC;
+                productFormat = productSC;
+            }
+
+            var formatTemplateRng = commonFeedback.getFeedbackTemplates(templateRng);
+            var formatTemplateYellow = commonFeedback.getFeedbackTemplates(templateYellow);
+            var formatTemplateRed = commonFeedback.getFeedbackTemplates(templateRed);
+            var formatTemplateBlack = commonFeedback.getFeedbackTemplates(templateBlack);
+            var formatTemplateGrey = commonFeedback.getFeedbackTemplates(templateGrey);
+
             var stringBuilder = new StringBuilder();
-            const string greetingOrangeYellowGreyRNG = "Dear Sir, Customer Support would like to inform that member ";
-            const string greetingRed = "Dear Sir, Customer Support would like to inform that there is [BIG Winner] under your line. Member username is ";
-            const string greetingBlack = "Dear Sir, Customer Support would like to draw your attention towards member ";
-
-            const string templateInfor = "\"{0} ({1})\" in \"{2}\". ";
-
-            const string ThanksAttendtion = "Thank you for your kind attention!";
-            const string ThanksKindly = "Kindly take note, thank you!";
-
-            const string greetingOrangeYellowGreyRNGChinese = "您好, 客服部在此通知 会员 ";
-            const string greetingRedChinese = "您好，客服部在此通知 会员 ";
-            const string greetingBlackChinese = "您好，客服部在此通知 会员 ";
-
-            const string templateInforChinese = "\"{0} ({1})\" 在 \"{2}\". ";
-            const string templateInforOrangeChinese = "\"{0} ({1})\". ";
-
-            const string ThanksAttendtionChinese = "谢谢您的关注与支持!";
-            const string ThanksKindlyChinese = "请您留意 谢谢!";
-
             if (winLimit.ProductName == "RNG Casino" && (winLimit.ProductGroup == "RNG Casino - Minor Jackpot" || winLimit.ProductGroup == "RNG Casino - Mega Jackpot"))
             {
-                stringBuilder.Append(
-                    GetSolutionRNG(
-                        winLimit,
-                        greetingOrangeYellowGreyRNG,
-                        ThanksAttendtion,
-                        greetingOrangeYellowGreyRNGChinese,
-                        ThanksAttendtionChinese
-                    ));
+                
+                stringBuilder.AppendFormat(formatTemplateRng, winLimit.UserName, totalWinAmt, winLimit.Currency);
             }
             else
             {
@@ -339,44 +367,17 @@
                 {
                     case "Orange":
                     case "Yellow":
-                    case "Grey":
-                        stringBuilder.Append(
-                            GetSolutionLevelOrange(
-                                winLimit,
-                                greetingOrangeYellowGreyRNG,
-                                templateInfor,
-                                ThanksAttendtion,
-                                greetingOrangeYellowGreyRNGChinese,
-                                templateInforOrangeChinese,
-                                ThanksAttendtionChinese
-                            ));
+                        stringBuilder.AppendFormat(formatTemplateYellow, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat);
                         break;
-
+                    case "Grey":
+                        stringBuilder.AppendFormat(formatTemplateGrey, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat);
+                        break;
                     case "Red":
-                        stringBuilder.Append(
-                            GetSolutionLevelRed(
-                                winLimit,
-                                greetingRed,
-                                templateInfor,
-                                ThanksKindly,
-                                greetingRedChinese,
-                                templateInforChinese,
-                                ThanksKindlyChinese)
-                            );
+                        stringBuilder.AppendFormat(formatTemplateRed, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat);
                         break;
 
                     case "Black":
-                        stringBuilder.Append(
-                            GetSolutionLevelBlack(
-                                winLimit,
-                                greetingBlack,
-                                templateInfor,
-                                ThanksKindly,
-                                greetingBlackChinese,
-                                templateInforChinese,
-                                ThanksKindlyChinese
-                                )
-                            );
+                        stringBuilder.AppendFormat(formatTemplateBlack, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat);
                         break;
 
                     default:
@@ -385,115 +386,6 @@
                 }
             }
             return stringBuilder.ToString();
-        }
-
-        protected internal virtual StringBuilder GetSolutionRNG(
-            WinLimitFeedBackInfo winLimit,
-            string greeting,
-            string thanks,
-            string greetingChinese,
-            string thanksChinese
-            )
-        {
-            var stringBuilder = new StringBuilder();
-            var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
-            stringBuilder.Append(greeting);
-            stringBuilder.AppendFormat("\"{0}\", has currently won the Jackpot amount of  ", winLimit.UserName);
-            stringBuilder.AppendFormat("\"{0} ({1})\" in RNG Casino Baccarat Progressive Jackpot. ", TotalWinAmt, winLimit.Currency);
-            stringBuilder.Append(thanks);
-            stringBuilder.Append(Constants.LineBreak);
-
-            stringBuilder.Append(greetingChinese);
-            stringBuilder.AppendFormat("\"{0}\", 目前在 娱乐城赢了百家乐聚宝奖金 为 ", winLimit.UserName);
-            stringBuilder.AppendFormat("\"{0} ({1})\"", TotalWinAmt, winLimit.Currency);
-            stringBuilder.Append(thanksChinese);
-            stringBuilder.Append(Constants.LineBreak);
-
-            return stringBuilder;
-        }
-
-        protected internal virtual StringBuilder GetSolutionLevelOrange(
-            WinLimitFeedBackInfo winLimit,
-            string greetingOrangeYellowGreyRNG,
-            string templateInfor,
-            string ThanksAttendtion,
-            string greetingOrangeYellowGreyRNGChinese,
-            string templateInforOrangeChinese,
-            string ThanksAttendtionChinese
-            )
-        {
-            var stringBuilder = new StringBuilder();
-            var winLossTemp = winLimit.Level == "Grey" ? "loss" : "won";
-            var winLossTempChinese = winLimit.Level == "Grey" ? "输了" : "赢了";
-            var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
-            stringBuilder.Append(greetingOrangeYellowGreyRNG);
-            stringBuilder.AppendFormat("{0}, currently has ", winLimit.UserName);
-            stringBuilder.AppendFormat("{0} amounted to ", winLossTemp);
-            stringBuilder.AppendFormat(templateInfor, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-            stringBuilder.Append(ThanksAttendtion);
-            stringBuilder.Append(Constants.LineBreak);
-
-            stringBuilder.Append(greetingOrangeYellowGreyRNGChinese);
-            stringBuilder.AppendFormat("\"{0}\", 目前在 {1} {2} ", winLimit.UserName, winLimit.ProductName, winLossTempChinese);
-            stringBuilder.AppendFormat(templateInforOrangeChinese, TotalWinAmt, winLimit.Currency);
-            stringBuilder.Append(ThanksAttendtionChinese);
-            stringBuilder.Append(Constants.LineBreak);
-
-            return stringBuilder;
-        }
-
-        protected internal virtual StringBuilder GetSolutionLevelRed(
-            WinLimitFeedBackInfo winLimit,
-            string greetingRed,
-            string templateInfor,
-            string ThanksKindly,
-            string greetingRedChinese,
-            string templateInforChinese,
-            string ThanksKindlyChinese
-            )
-        {
-            var stringBuilder = new StringBuilder();
-            var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
-            stringBuilder.Append(greetingRed);
-            stringBuilder.AppendFormat("\"{0}\", currently has won amount of ", winLimit.UserName);
-            stringBuilder.AppendFormat(templateInfor, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-            stringBuilder.Append(ThanksKindly);
-            stringBuilder.Append(Constants.LineBreak);
-
-            stringBuilder.Append(greetingRedChinese);
-            stringBuilder.AppendFormat("\"{0}\", 目前已达到 [赢取金额上限] 数目为 ", winLimit.UserName);
-            stringBuilder.AppendFormat(templateInforChinese, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-            stringBuilder.Append(ThanksKindlyChinese);
-            stringBuilder.Append(Constants.LineBreak);
-
-            return stringBuilder;
-        }
-
-        protected internal virtual StringBuilder GetSolutionLevelBlack(
-            WinLimitFeedBackInfo winLimit,
-            string greetingBlack,
-            string templateInfor,
-            string ThanksKindly,
-            string greetingBlackChinese,
-            string templateInforChinese,
-            string ThanksKindlyChinese
-            )
-        {
-            var stringBuilder = new StringBuilder();
-            var TotalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
-            stringBuilder.Append(greetingBlack);
-            stringBuilder.AppendFormat("\"{0}\" has [hit Max Lose Limit] amounted to ", winLimit.UserName);
-            stringBuilder.AppendFormat(templateInfor, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-            stringBuilder.Append(ThanksKindly);
-            stringBuilder.Append(Constants.LineBreak);
-
-            stringBuilder.Append(greetingBlackChinese);
-            stringBuilder.AppendFormat("\"{0}\" 目前已达到 [最高输额上限] 数目为 ", winLimit.UserName);
-            stringBuilder.AppendFormat(templateInforChinese, TotalWinAmt, winLimit.Currency, winLimit.ProductName);
-            stringBuilder.Append(ThanksKindlyChinese);
-            stringBuilder.Append(Constants.LineBreak);
-
-            return stringBuilder;
         }
 
         protected internal virtual string GetDescription(WinLimitFeedBackInfo winlimit, List<BettypeInfo> bettype)
