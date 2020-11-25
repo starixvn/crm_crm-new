@@ -85,9 +85,7 @@
 
             foreach (WinLimitFeedBackInfo winLimit in winlossInfo.Item1)
             {
-                var isVipHeadline = winLimit.Site == "789y" && winLimit.IsVip ? true : false;
                 await CreateWinLossFeedbackCreditAsync(
-                        isVipHeadline,
                         winLimit,
                         winlossInfo.Item2,
                         settings,
@@ -98,13 +96,13 @@
         }
 
         protected internal virtual async Task CreateWinLossFeedbackCreditAsync(
-            bool isVipHeadline,
             WinLimitFeedBackInfo winLimit,
             IEnumerable<BettypeInfo> bettype,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             logService.LogInformation(string.Format("Start create win loss feedback custID: {0}!", winLimit.CustId));
+            var isVipHeadline = winLimit.Site == "789y" && winLimit.IsVip ? true : false;
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)

@@ -41,7 +41,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            await base.CreateWinLossFeedbackCreditAsync(isVipHeadline, winLimit, bettype, settings, settingMappings);
+            await base.CreateWinLossFeedbackCreditAsync(winLimit, bettype, settings, settingMappings);
         }
 
         public async Task Public_CheckValidParamsAndInsertFeedbackAsync(

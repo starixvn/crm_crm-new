@@ -53,7 +53,6 @@
             service.Received().Protected("EditWinLossSystemSettingAsync", Arg.Any<int>());
             service.DidNotReceive().Protected(
                 "CreateWinLossFeedbackCreditAsync",
-                Arg.Any<bool>(),
                 Arg.Any<WinLimitFeedBackInfo>(),
                 Arg.Any<IEnumerable<BettypeInfo>>(),
                 Arg.Any<IEnumerable<SettingItem>>(),
@@ -86,7 +85,6 @@
             service.Received().Protected("EditWinLossSystemSettingAsync", Arg.Any<int>());
             service.Received().Protected(
                 "CreateWinLossFeedbackCreditAsync",
-                Arg.Any<bool>(),
                 Arg.Any<WinLimitFeedBackInfo>(),
                 Arg.Any<IEnumerable<BettypeInfo>>(),
                 Arg.Any<IEnumerable<SettingItem>>(),
