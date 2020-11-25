@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BackgroundJob.Models;
@@ -636,13 +637,14 @@
                 }
             };
             commonFeedback.GetFeedbackTemplates(Arg.Any<string>()).Returns(template);
-            var expect = "test 1000 USD" + Constants.LineBreak;
-
+            var expect = "test 1,000 USD" + Constants.LineBreak;
             // Act
             var result = service.Public_GetSolution(winlimit, false);
 
             // Assert
-            result.Equals(expect);
+            var expected = Regex.Replace(expect, @"\s", "");
+            var resulted = Regex.Replace(result, @"\s", "");
+            Assert.Equal(expected, resulted);
         }
 
         #endregion GetSolution
