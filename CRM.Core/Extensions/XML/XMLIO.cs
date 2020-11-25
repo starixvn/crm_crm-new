@@ -41,6 +41,23 @@
             }
         }
 
+        public static T DeserializeXMLFileToObject<T>(string XmlFilename)
+        {
+            T returnObject = default(T);
+            if (string.IsNullOrEmpty(XmlFilename))
+            {
+                return default(T);
+            }
+            XDocument xdoc = XDocument.Load(XmlFilename);
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            using (TextReader reader = new StringReader(xdoc.ToString()))
+            {
+                returnObject = (T)serializer.Deserialize(reader);
+            }
+
+            return returnObject;
+        }
+
         private static XName GetElementName(Type t)
         {
             var attr = t.GetCustomAttribute<XMLNameAttribute>();

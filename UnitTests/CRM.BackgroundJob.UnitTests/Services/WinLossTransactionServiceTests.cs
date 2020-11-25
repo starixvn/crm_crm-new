@@ -56,7 +56,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             Assert.Empty(actual.Item1);
             Assert.Empty(actual.Item2);
-            Assert.Equal("<ROOT></ROOT>", criteria.xml);
+            Assert.Equal("<ROOT></ROOT>", criteria.Xml);
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
 
-            Assert.Equal(XmlTemplate, criteria.xml);
+            Assert.Equal(XmlTemplate, criteria.Xml);
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
 
-            Assert.Equal(XmlTemplate, criteria.xml);
+            Assert.Equal(XmlTemplate, criteria.Xml);
         }
 
         #endregion ImportWinLimitFeedbackInfoAsync

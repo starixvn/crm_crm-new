@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
@@ -30,16 +31,7 @@
         private readonly IWinLossTransactionService transactionService;
         private readonly ICommonFeedback commonFeedback;
 
-        private readonly string blackENSC = "BlackTemplateENSC.cshtml";
-        private readonly string blackENYN = "BlackTemplateENYN.cshtml";
-        private readonly string greyENSC = "GreyTemplateENSC.cshtml";
-        private readonly string greyENYN = "GreyTemplateENYN.cshtml";
-        private readonly string orange_YellowENSC = "Orange_YellowTemplateENSC.cshtml";
-        private readonly string orange_YellowENYN = "Orange_YellowTemplateENYN.cshtml";
-        private readonly string redENSC = "RedTemplateENSC.cshtml";
-        private readonly string redENYN = "RedTemplateENYN.cshtml";
-        private readonly string rngENSC = "RNGTemplateENSC.cshtml";
-        private readonly string rngENYN = "RNGTemplateENYN.cshtml";
+        private readonly string templateXml = "FeedbackTemplate.xml";
 
 #pragma warning disable S107 // Methods should not have too many parameters
         public WinLossFeedbackService(
@@ -327,39 +319,34 @@
             string templateRed = "";
             string templateBlack = "";
             string templateGrey = "";
+            string templateRng = "";
 
             var totalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
-            string templateRng = "";
-            if(isVipHeadline)
+            FeedbackTemplate templates = commonFeedback.GetFeedbackTemplates(templateXml);
+            var formatTemplates = templates.Templates[0];
+            if (isVipHeadline)
             {
-                templateRng = rngENYN;
-                templateYellow = orange_YellowENYN;
-                templateRed = redENYN;
-                templateBlack = blackENYN;
-                templateGrey = greyENYN;
+                templateRng = formatTemplates.RNGTemplateENYN;
+                templateYellow = formatTemplates.YellowTemplateENYN;
+                templateRed = formatTemplates.RedTemplateENYN;
+                templateBlack = formatTemplates.BlackTemplateYN;
+                templateGrey = formatTemplates.GreyTemplateENYN;
                 productFormat = productYN;
             }
             else
             {
-                templateRng = rngENSC;
-                templateYellow = orange_YellowENSC;
-                templateRed = redENSC;
-                templateBlack = blackENSC;
-                templateGrey = greyENSC;
+                templateRng = formatTemplates.RNGTemplateENSC;
+                templateYellow = formatTemplates.YellowTemplateENSC;
+                templateRed = formatTemplates.RedTemplateENSC;
+                templateBlack = formatTemplates.BlackTemplateSC;
+                templateGrey = formatTemplates.GreyTemplateENSC;
                 productFormat = productSC;
             }
-
-            var formatTemplateRng = commonFeedback.getFeedbackTemplates(templateRng);
-            var formatTemplateYellow = commonFeedback.getFeedbackTemplates(templateYellow);
-            var formatTemplateRed = commonFeedback.getFeedbackTemplates(templateRed);
-            var formatTemplateBlack = commonFeedback.getFeedbackTemplates(templateBlack);
-            var formatTemplateGrey = commonFeedback.getFeedbackTemplates(templateGrey);
-
             var stringBuilder = new StringBuilder();
             if (winLimit.ProductName == "RNG Casino" && (winLimit.ProductGroup == "RNG Casino - Minor Jackpot" || winLimit.ProductGroup == "RNG Casino - Mega Jackpot"))
             {
-                
-                stringBuilder.AppendFormat(formatTemplateRng, winLimit.UserName, totalWinAmt, winLimit.Currency);
+
+                stringBuilder.AppendFormat(templateRng, winLimit.UserName, totalWinAmt, winLimit.Currency, Constants.LineBreak);
             }
             else
             {
@@ -367,17 +354,17 @@
                 {
                     case "Orange":
                     case "Yellow":
-                        stringBuilder.AppendFormat(formatTemplateYellow, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat);
+                        stringBuilder.AppendFormat(templateYellow, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
                         break;
                     case "Grey":
-                        stringBuilder.AppendFormat(formatTemplateGrey, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat);
+                        stringBuilder.AppendFormat(templateGrey, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
                         break;
                     case "Red":
-                        stringBuilder.AppendFormat(formatTemplateRed, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat);
+                        stringBuilder.AppendFormat(templateRed, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
                         break;
 
                     case "Black":
-                        stringBuilder.AppendFormat(formatTemplateBlack, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat);
+                        stringBuilder.AppendFormat(templateBlack, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
                         break;
 
                     default:

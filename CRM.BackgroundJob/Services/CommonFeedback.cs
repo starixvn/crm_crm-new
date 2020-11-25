@@ -1,13 +1,15 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
     using System.IO;
+    using CRM.BackgroundJob.Models;
+    using CRM.Core.Extensions.XML;
     using Fanex.RemotingRef;
     using Microsoft.AspNetCore.Hosting;
 
     public interface ICommonFeedback
     {
         string GetProductName(string productId, string languageCode);
-        string getFeedbackTemplates(string level);
+        FeedbackTemplate GetFeedbackTemplates(string fileXml);
     }
     public class CommonFeedback : ICommonFeedback
     {
@@ -24,12 +26,12 @@
             return productName;
         }
 
-        public string getFeedbackTemplates(string level)
+        public FeedbackTemplate GetFeedbackTemplates(string fileXml)
         {
             const string path = "Format_Templates\\Company-WinLoss-Limit";
-            var templateBlackLevelPath = Path.Combine(hostingEnvironment.ContentRootPath, path, level);
-            var templateBlackLevel = File.ReadAllText(templateBlackLevelPath);
-            return templateBlackLevel;
+            var templateBlackLevelPath = Path.Combine(hostingEnvironment.ContentRootPath, path, fileXml);
+            var listTemplate = XMLIO.DeserializeXMLFileToObject<FeedbackTemplate>(templateBlackLevelPath);
+            return listTemplate;
         }
     }
 }

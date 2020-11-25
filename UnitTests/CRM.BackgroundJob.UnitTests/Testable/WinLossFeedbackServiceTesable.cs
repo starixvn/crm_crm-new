@@ -21,14 +21,16 @@
             ISystemSettingService systemSettingService,
             ICustomerService customerService,
             ICRMLogService logService,
-            IWinLossTransactionService transactionService)
+            IWinLossTransactionService transactionService,
+            ICommonFeedback commonFeedback)
             : base(appSettings,
                 baseService,
                 settingService,
                 systemSettingService,
                 customerService,
                 logService,
-                transactionService)
+                transactionService,
+                commonFeedback)
         {
         }
 
@@ -90,64 +92,9 @@
             return base.GetBettype(betTypeMappings, settingMappings);
         }
 
-        public string Public_GetSolution(WinLimitFeedBackInfo winLimit)
+        public string Public_GetSolution(WinLimitFeedBackInfo winLimit, bool isVipHeadline)
         {
-            return base.GetSolution(winLimit);
-        }
-
-        public StringBuilder Public_GetSolutionRNG(
-            WinLimitFeedBackInfo winLimit,
-            string greeting,
-            string thanks,
-            string greetingChinese,
-            string thanksChinese)
-        {
-            return base.GetSolutionRNG(winLimit, greeting, thanks, greetingChinese, thanksChinese);
-        }
-
-        public StringBuilder Public_GetSolutionLevelOrange(
-            WinLimitFeedBackInfo winLimit,
-            string greetingOrangeYellowGreyRNG,
-            string templateInfor,
-            string ThanksAttendtion,
-            string greetingOrangeYellowGreyRNGChinese,
-            string templateInforOrangeChinese,
-            string ThanksAttendtionChinese)
-        {
-            return base.GetSolutionLevelOrange(
-                winLimit, greetingOrangeYellowGreyRNG, templateInfor, 
-                ThanksAttendtion, greetingOrangeYellowGreyRNGChinese,
-                templateInforOrangeChinese, ThanksAttendtionChinese);
-        }
-
-        public StringBuilder Public_GetSolutionLevelRed(
-            WinLimitFeedBackInfo winLimit,
-            string greetingRed,
-            string templateInfor,
-            string ThanksKindly,
-            string greetingRedChinese,
-            string templateInforChinese,
-            string ThanksKindlyChinese)
-        {
-            return base.GetSolutionLevelRed(
-                winLimit, greetingRed, templateInfor, 
-                ThanksKindly, greetingRedChinese,
-                templateInforChinese, ThanksKindlyChinese);
-        }
-
-        public StringBuilder Public_GetSolutionLevelBlack(
-            WinLimitFeedBackInfo winLimit,
-            string greetingBlack,
-            string templateInfor,
-            string ThanksKindly,
-            string greetingBlackChinese,
-            string templateInforChinese,
-            string ThanksKindlyChinese)
-        {
-            return base.GetSolutionLevelBlack(
-                winLimit, greetingBlack, templateInfor,
-                ThanksKindly, greetingBlackChinese,
-                templateInforChinese, ThanksKindlyChinese);
+            return base.GetSolution(winLimit, isVipHeadline);
         }
 
         public string Public_GetDescription(WinLimitFeedBackInfo winlimit, List<BettypeInfo> bettype)
