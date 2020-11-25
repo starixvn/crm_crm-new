@@ -345,7 +345,6 @@
             var stringBuilder = new StringBuilder();
             if (winLimit.ProductName == "RNG Casino" && (winLimit.ProductGroup == "RNG Casino - Minor Jackpot" || winLimit.ProductGroup == "RNG Casino - Mega Jackpot"))
             {
-
                 stringBuilder.AppendFormat(templateRng, winLimit.UserName, totalWinAmt, winLimit.Currency, Constants.LineBreak);
             }
             else
