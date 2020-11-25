@@ -93,14 +93,6 @@
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
-            
-             if (IsEnabledJob(HangfireJobName.SendLetstalkNotificationToHeadlineForCWL))
-            {
-                recurringJob.AddOrUpdate<IBackgroundService>("Send Letstalk Notification To Headline For CWL",
-                  job => job.SendLetstalkNotificationToHeadlineForCWL(),
-                  Cron.Minutely,
-                  TimeZoneInfo.Local, QueuePriority.Critical);
-            }
         }
 
         protected internal virtual void RemoveCurrentHangfireServer()

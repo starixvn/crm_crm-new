@@ -22,7 +22,6 @@
 
         Task CreateFeedbackForWinLossLimit();
 
-        Task SendLetstalkNotificationToHeadlineForCWL();
     }
 
     public class BackgroundService : IBackgroundService
@@ -121,27 +120,6 @@
         [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
         [Queue(QueuePriority.Critical)]
         public async Task ScanAndSenLetstalkNotification()
-        {
-            try
-            {
-                bool isUM = await CheckUM();
-                if (isUM)
-                {
-                    logService.LogInformation(umTime);
-                    return;
-                }
-
-                await sendNotificationService.SendNotificationToLetstalk();
-            }
-            catch (Exception ex)
-            {
-                await logService.ErrorAsync(ex);
-            }
-        }
-
-        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
-        [Queue(QueuePriority.Critical)]
-        public async Task SendLetstalkNotificationToHeadlineForCWL()
         {
             try
             {
