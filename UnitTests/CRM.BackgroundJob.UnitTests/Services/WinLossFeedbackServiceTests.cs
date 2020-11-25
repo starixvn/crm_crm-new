@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
@@ -52,6 +53,7 @@
             service.Received().Protected("EditWinLossSystemSettingAsync", Arg.Any<int>());
             service.DidNotReceive().Protected(
                 "CreateWinLossFeedbackCreditAsync",
+                Arg.Any<bool>(),
                 Arg.Any<WinLimitFeedBackInfo>(),
                 Arg.Any<IEnumerable<BettypeInfo>>(),
                 Arg.Any<IEnumerable<SettingItem>>(),
@@ -84,6 +86,7 @@
             service.Received().Protected("EditWinLossSystemSettingAsync", Arg.Any<int>());
             service.Received().Protected(
                 "CreateWinLossFeedbackCreditAsync",
+                Arg.Any<bool>(),
                 Arg.Any<WinLimitFeedBackInfo>(),
                 Arg.Any<IEnumerable<BettypeInfo>>(),
                 Arg.Any<IEnumerable<SettingItem>>(),
@@ -130,6 +133,7 @@
 
             // Act
             await service.Public_CreateWinLossFeedbackCreditAsync(
+                false,
                 winLimit,
                 betInfo,
                 settings,
@@ -611,102 +615,37 @@
 
         #region GetSolution
 
-        //[Fact]
-        //public void GetSolution_ProductNameRNGCasino_CallExactFunction()
-        //{
-        //    // Arrange
-        //    var winlimit = new WinLimitFeedBackInfo
-        //    {
-        //        ProductName = "RNG Casino",
-        //        ProductGroup = "RNG Casino - Minor Jackpot"
-        //    };
+        [Fact]
+        public void GetSolution_ProductNameRNGCasinoNotVipCustomer_CallExactFunction()
+        {
+            // Arrange
+            var winlimit = new WinLimitFeedBackInfo
+            {
+                UserName ="test",
+                TotalWinAmt = 1000,
+                Currency = "USD",
+                ProductID = 1,
+                ProductName = "RNG Casino",
+                ProductGroup = "RNG Casino - Minor Jackpot"
+            };
 
-        //    var service = MockService();
+            var service = MockService();
+            var template = new FeedbackTemplate
+            {
+                Templates = new List<Template>
+                {
+                    new Template{RNGTemplateENSC = "{0} {1} {2} {3}"}
+                }
+            };
+            commonFeedback.GetFeedbackTemplates(Arg.Any<string>()).Returns(template);
+            var expect = "test 1000 USD" + Constants.LineBreak;
 
+            // Act
+            var result = service.Public_GetSolution(winlimit, false);
 
-        //    // Act
-        //    service.Public_GetSolution(winlimit, false);
-
-        //    // Assert
-        //    service.Received().Protected("GetSolutionRNG", Arg.Any<WinLimitFeedBackInfo>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>()
-        //        );
-        //}
-
-        //[Theory]
-        //[InlineData("Orange", "GetSolutionLevelOrange")]
-        //[InlineData("Yellow", "GetSolutionLevelOrange")]
-        //[InlineData("Grey", "GetSolutionLevelOrange")]
-        //[InlineData("Red", "GetSolutionLevelRed")]
-        //[InlineData("Black", "GetSolutionLevelBlack")]
-        //public void GetSolution_LevelOrangeYellowYellow_CallExactFunction(string level, string expectFunction)
-        //{
-        //    // Arrange
-        //    var winlimit = new WinLimitFeedBackInfo
-        //    {
-        //        Level = level
-        //    };
-
-        //    var service = MockService();
-
-        //    // Act
-        //    service.Public_GetSolution(winlimit);
-
-        //    // Assert
-        //    service.Received().Protected(expectFunction, Arg.Any<WinLimitFeedBackInfo>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>()
-        //        );
-        //}
-
-        //[Fact]
-        //public void GetSolution_CallFunction_ReturnExpectTemplate()
-        //{
-        //    // Arrange
-        //    var winlimit = new WinLimitFeedBackInfo
-        //    {
-        //        ProductName = "RNG Casino",
-        //        ProductGroup = "RNG Casino - Minor Jackpot"
-        //    };
-
-        //    var service = MockService();
-        //    var stringBuilder = new StringBuilder();
-        //    StringBuilder solution = stringBuilder.Append("Dear Sir, Customer Support ");
-        //    service.Protected("GetSolutionRNG", winlimit, Arg.Any<string>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>(),
-        //         Arg.Any<string>()).Returns(solution);
-
-        //    // Act
-        //    var actual = service.Public_GetSolution(winlimit);
-
-        //    // Assert
-        //    Assert.Equal(solution.ToString(), actual);
-        //}
-
-        //[Fact]
-        //public void GetSolution_LevelNotBelongToTemplate_ReturnDefaultTemplate()
-        //{
-        //    // Arrange
-        //    var winlimit = new WinLimitFeedBackInfo
-        //    {
-        //        Level = "Green"
-        //    };
-
-        //    var service = MockService();
-        //    // Act
-        //    var actual = service.Public_GetSolution(winlimit);
-
-        //    // Assert
-        //    Assert.Empty(actual);
-        //}
+            // Assert
+            result.Equals(expect);
+        }
 
         #endregion GetSolution
 

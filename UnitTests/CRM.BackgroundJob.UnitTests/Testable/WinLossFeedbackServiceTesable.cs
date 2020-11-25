@@ -35,12 +35,13 @@
         }
 
         public async Task Public_CreateWinLossFeedbackCreditAsync(
+            bool isVipHeadline,
             WinLimitFeedBackInfo winLimit,
             IEnumerable<BettypeInfo> bettype,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            await base.CreateWinLossFeedbackCreditAsync(winLimit, bettype, settings, settingMappings);
+            await base.CreateWinLossFeedbackCreditAsync(isVipHeadline, winLimit, bettype, settings, settingMappings);
         }
 
         public async Task Public_CheckValidParamsAndInsertFeedbackAsync(
