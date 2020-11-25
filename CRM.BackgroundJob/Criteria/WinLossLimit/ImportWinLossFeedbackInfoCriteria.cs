@@ -4,9 +4,9 @@
 
     public class ImportWinLossFeedbackInfoCriteria : CriteriaBase
     {
-        public string Xml { get; set; }
+        public string xml { get; set; }
         public override string GetSettingKey() => "Acc_CRM_WinLimit_AutoFeedbackInfoIns";
 
-        public override bool IsValid() => !string.IsNullOrWhiteSpace(Xml);
+        public override bool IsValid() => !string.IsNullOrWhiteSpace(xml);
     }
 }
