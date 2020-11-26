@@ -57,7 +57,10 @@ export class EditPersonalMappingPopup extends Component {
                 const selectRecipient = nextProps.recipients.filter(r => r.id === recipientId);
                 letstalkIds = selectRecipient.length > 0 ? selectRecipient[0].letstalkIds : '';
             }
-            const recipientOptions = nextProps.recipients.map(item => { return { value: item.id, label: item.name, letstalkIds: item.letstalkIds }});
+            const recipientOptions = nextProps.recipients.map(item => { return { 
+                value: item.id, label: item.name, 
+                letstalkIds: item.letstalkIds 
+            }});
             const headlineOptions = nextProps.groupHeadline;
             headlineOptions.map(headline => { headline['checked'] = headlineIds.some(v => parseInt(v, 10) === parseInt(headline.id, 10))});
             const state = {

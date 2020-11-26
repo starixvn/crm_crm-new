@@ -62,8 +62,7 @@ export class EditGroupMappingPopup extends Component {
             const headlineIds = prevState.form.groupHeadlines.split(',');
             const headlineOptions = nextProps.groupHeadline;
             headlineOptions.map(headline => {
-                 headline['checked'] = headlineIds.some(
-                     v => parseInt(v, 10) === headline.id); 
+                 headline['checked'] = headlineIds.some(v => parseInt(v, 10) === headline.id); 
                 });
             const state = {
                 settings: {
