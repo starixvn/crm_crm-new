@@ -309,8 +309,34 @@
             result.Equals(expect);
         }
 
+        [Theory]
+        [InlineData("0", "ResponseId is null.")]
+        [InlineData("0", "StatusId is null.")]
+        public void CheckValidParams__InValidParamsResponseIdStatusIdCriteria_ExpectedReturnFalseAndMessage(string param, string message)
+        {
+            // Arrange
+            var criteria = new CreateMutipleFeedbackCommand
+            {
+                CategoryIds = "1",
+                CategoryXml = "1",
+                ProductXml = "1",
+                SubCategoryIds = "1",
+                ResponseId = short.Parse(param),
+                StationId = "1",
+                StatusId = short.Parse(param)
+            };
+            var expect = new ValueTuple<bool, string>(false, message);
+            var service = MockService();
+
+            // Act
+            var result = service.Public_CheckValidParams(criteria);
+
+            // Assert
+            result.Equals(expect);
+        }
+
         [Fact]
-        public void CheckValidParams__InValidParamsCriteria_ExpectedReturnFalseAndMessage()
+        public void CheckValidParams__InValidParamsCategoryIdsCriteria_ExpectedReturnFalseAndMessage()
         {
             // Arrange
             var criteria = new CreateMutipleFeedbackCommand
@@ -321,9 +347,104 @@
                 SubCategoryIds = "1",
                 ResponseId = 1,
                 StationId = "1",
-                StatusId = 1,
+                StatusId = 1
             };
             var expect = new ValueTuple<bool, string>(false, "CategoryIds is null.");
+            var service = MockService();
+
+            // Act
+            var result = service.Public_CheckValidParams(criteria);
+
+            // Assert
+            result.Equals(expect);
+        }
+
+        [Fact]
+        public void CheckValidParams__InValidParamsCategoryXmlCriteria_ExpectedReturnFalseAndMessage()
+        {
+            // Arrange
+            var criteria = new CreateMutipleFeedbackCommand
+            {
+                CategoryIds = "1",
+                CategoryXml = "",
+                ProductXml = "1",
+                SubCategoryIds = "1",
+                ResponseId = 1,
+                StationId = "1",
+                StatusId = 1
+            };
+            var expect = new ValueTuple<bool, string>(false, "CategoryXml is null.");
+            var service = MockService();
+
+            // Act
+            var result = service.Public_CheckValidParams(criteria);
+
+            // Assert
+            result.Equals(expect);
+        }
+
+        [Fact]
+        public void CheckValidParams__InValidParamsProductXmlCriteria_ExpectedReturnFalseAndMessage()
+        {
+            // Arrange
+            var criteria = new CreateMutipleFeedbackCommand
+            {
+                CategoryIds = "1",
+                CategoryXml = "1",
+                ProductXml = "",
+                SubCategoryIds = "1",
+                ResponseId = 1,
+                StationId = "1",
+                StatusId = 1
+            };
+            var expect = new ValueTuple<bool, string>(false, "ProductXml is null.");
+            var service = MockService();
+
+            // Act
+            var result = service.Public_CheckValidParams(criteria);
+
+            // Assert
+            result.Equals(expect);
+        }
+
+        [Fact]
+        public void CheckValidParams__InValidParamsSubCategoryIdsCriteria_ExpectedReturnFalseAndMessage()
+        {
+            // Arrange
+            var criteria = new CreateMutipleFeedbackCommand
+            {
+                CategoryIds = "1",
+                CategoryXml = "1",
+                ProductXml = "1",
+                SubCategoryIds = "",
+                ResponseId = 1,
+                StationId = "1",
+                StatusId = 1
+            };
+            var expect = new ValueTuple<bool, string>(false, "SubCategoryIds is null.");
+            var service = MockService();
+
+            // Act
+            var result = service.Public_CheckValidParams(criteria);
+
+            // Assert
+            result.Equals(expect);
+        }
+
+        public void CheckValidParams__InValidParamsStationIdCriteria_ExpectedReturnFalseAndMessage()
+        {
+            // Arrange
+            var criteria = new CreateMutipleFeedbackCommand
+            {
+                CategoryIds = "1",
+                CategoryXml = "1",
+                ProductXml = "1",
+                SubCategoryIds = "1",
+                ResponseId = 1,
+                StationId = "",
+                StatusId = 1
+            };
+            var expect = new ValueTuple<bool, string>(false, "StationId is null.");
             var service = MockService();
 
             // Act
@@ -617,7 +738,7 @@
         #region GetSolution
 
         [Fact]
-        public void GetSolution_ProductNameRNGCasinoNotVipCustomer_CallExactFunction()
+        public void GetSolution_ProductNameRNGCasinoNotVipCustomer_ReturnExactTemplate()
         {
             // Arrange
             var winlimit = new WinLimitFeedBackInfo
@@ -635,15 +756,12 @@
             {
                 Templates = new List<Template>
                 {
-                    new Template{RNGTemplateENSC = "{0} {1} {2} {3} {4}"}
+                    new Template{RNGTemplateENSC = "{0} {1} {2}"}
                 }
             };
-            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "en-US").Returns("productNameUS");
-            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "zh-CN").Returns("productNameSC");
-            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "vi-VN").Returns("productNameYN");
 
             commonFeedback.GetFeedbackTemplates(Arg.Any<string>()).Returns(template);
-            var expect = "test 1,000 USD productName productNameSC" + Constants.LineBreak;
+            var expect = "test 1,000 USD";
             // Act
             var result = service.Public_GetSolution(winlimit, false);
 
