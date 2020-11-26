@@ -52,13 +52,13 @@ export default class Pager extends Component {
                 this.goToPage(value, this.props.pageOption.PageSize);
             }
         }
-    }
+    };
 
     onClickHandle(isDisable, handleFunc) {
         if (!isDisable) {
             handleFunc();
         }
-    }
+    };
 
     onInputChangeHandler = event => {
         const pattern = /^\d*$/;
@@ -68,7 +68,7 @@ export default class Pager extends Component {
         if (isValidNumber) {
             this._updateState(value);
         }
-    }
+    };
 
     _updateState(inputValue) {
         this.setState({ inputValue });

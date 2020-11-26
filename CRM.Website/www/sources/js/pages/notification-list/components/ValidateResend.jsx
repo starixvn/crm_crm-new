@@ -22,12 +22,12 @@ export class ValidateResend extends Component {
         this.props.setValidateResend({
             show: false
         });
-    }
+    };
 
     resendNotifications = notificationIds => {
         this.onClose();
         functions.resendNotifications({ notificationIds }, this.callBackSuccess);
-    }
+    };
 
     callBackSuccess = () => {
         this.props.setIsRefresh(true);
@@ -36,14 +36,13 @@ export class ValidateResend extends Component {
             ...this.props.autoRefresh,
             countDown: this.props.autoRefresh.value
         });
-    }
+    };
 
     renderBody = (isSingle, isAllValidate, isAllInActive, resendIdsString, inActiveNotificationIdsString) => {
         if (isSingle) {
             if (isAllValidate) {
                 return LangHelper.formatString(LangHelper.getResource('ComfirmResendNotification'), '', resendIdsString);
-            }
-            else {
+            } else {
                 return LangHelper.formatString(
                     LangHelper.getResource('TheRecipientOfNotificationIdHasBeenInactive'),
                     '',
@@ -64,8 +63,7 @@ export class ValidateResend extends Component {
             else {
                 if (isAllValidate) {
                     return LangHelper.formatString(LangHelper.getResource('ComfirmResendNotification'), 's', resendIdsString);
-                }
-                else {
+                } else {
                     return <div>
                         <div>{LangHelper.formatString(
                             LangHelper.getResource('TheRecipientOfNotificationIdHasBeenInactive'),
@@ -79,7 +77,7 @@ export class ValidateResend extends Component {
                 }
             }
         }
-    }
+    };
 
     render() {
         const { inActiveNotificationIds, isSingle, resendIds } = this.props.validateResendResult.result;

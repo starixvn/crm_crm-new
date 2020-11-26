@@ -78,7 +78,7 @@ export class Filter extends Component {
                 ...prevState.filter,
                 [name]: value
             }
-        }))
+        }));
 
     handleFilterChangeProps = (name, value) => {
         this.setNotShouldResetScrollPosition();
@@ -86,12 +86,12 @@ export class Filter extends Component {
             ...this.props.gridParams,
             [name]: value
         });
-    }
+    };
 
     handleNotificationTypeChange = (currentItem, selectedItemsKey) => {
         this.handleFilterChange('notificationTypes', selectedItemsKey);
         this.handleFilterChangeProps('notificationTypeIds', selectedItemsKey);
-    }
+    };
 
     handleFromDateChange = value => {
         let maxToDate = new Date(value);
@@ -105,8 +105,7 @@ export class Filter extends Component {
 
         if (this.state.filter.toDate - maxToDate > 0) {
             this.handleToDateChange(maxToDate);
-        }
-        else if (this.state.filter.toDate - value < 0) {
+        } else if (this.state.filter.toDate - value < 0) {
             this.handleToDateChange(value);
         }
 
@@ -116,34 +115,34 @@ export class Filter extends Component {
     handleToDateChange = value => {
         this.handleFilterChange('toDate', value);
         this.handleFilterChangeProps('toDate', DateTimeService.startOfDay(value));
-    }
+    };
 
     handleHeadlineChange = value => {
         this.handleFilterChange('headline', value);
         this.handleFilterChangeProps('headline', value ? value.value : '');
-    }
+    };
 
     handleRecipientChange = value => {
         this.handleFilterChange('recipient', value);
         this.handleFilterChangeProps('recipientName', value ? value.value : '');
-    }
+    };
 
     handleStatusChange = (currentItem, selectedItemsKey) => {
         this.handleFilterChange('statuses', selectedItemsKey);
         this.handleFilterChangeProps('status', selectedItemsKey);
-    }
+    };
 
     handleChangeFilterControl = e => {
         if (e.target.validity.valid) {
             this.handleFilterChange(e.target.name, e.target.value);
             this.handleFilterChangeProps(e.target.name, e.target.value);
         }
-    }
+    };
 
     handleChange = e => {
         this.handleFilterChange(e.target.name, e.target.value);
         this.handleFilterChangeProps(e.target.name, e.target.value);
-    }
+    };
 
     getParams = () => {
         return {
@@ -160,13 +159,13 @@ export class Filter extends Component {
             pageIndex: this.props.gridParams.pageIndex,
             pageSize: this.props.gridParams.pageSize
         };
-    }
+    };
 
     setNotShouldResetScrollPosition = () =>
         this.props.setResendOptions({
             shouldResetScrollPosition: false,
             ...this.props.resendOptions
-        })
+        });
 
     submitHandler = e => {
         e.preventDefault();
@@ -182,11 +181,11 @@ export class Filter extends Component {
                 countDown: this.props.autoRefresh.value
             });
         }
-    }
+    };
 
     isDisabledDateParam = () =>
         this.state.filter.messageId !== '' || this.state.filter.notificationIdLower
-        !== '' || this.state.filter.notificationIdUpper !== ''
+        !== '' || this.state.filter.notificationIdUpper !== '';
 
     isValidateParams = params => {
         if (params.notificationTypeIds === '') {
@@ -217,25 +216,23 @@ export class Filter extends Component {
         }
 
         return true;
-    }
+    };
 
     debounceHandleHeadlineInputChange = Site.debounce(searchText => {
         if (searchText.length >= 2) {
             this.props.getHeadlineOptions(searchText);
-        }
-        else {
+        } else {
             this.props.setHeadlineOptions([]);
         }
-    })
+    });
 
     debounceHandleRecipientInputChange = Site.debounce(searchText => {
         if (searchText.length >= 2) {
             this.props.getRecipientOptions(searchText);
-        }
-        else {
+        } else {
             this.props.setRecipientOptions([]);
         }
-    })
+    });
 
     render() {
         return (

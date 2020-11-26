@@ -10,13 +10,13 @@ export default class HeaderCell extends Component {
         sortOrder: PropTypes.string,
         sortBy: PropTypes.string,
         onSort: PropTypes.func
-    }
+    };
 
     static defaultProps = {
         sortOrder: null,
         sortBy: null,
         onSort: null
-    }
+    };
 
     onClick = () => {
         if (!this.props.sortBy) {
@@ -27,7 +27,7 @@ export default class HeaderCell extends Component {
 
         const newSortOrder = !sortOrder || sortOrder === 'desc' ? 'asc' : 'desc';
         onSort && onSort(this.props.sortBy, newSortOrder);
-    }
+    };
 
     render() {
         const { colWidth, sortBy, sortOrder, onSort, children, ...rest } = this.props;

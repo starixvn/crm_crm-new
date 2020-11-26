@@ -23,7 +23,7 @@ export class ViewDetail extends Component {
             remark: this.props.data.resolvedRemark ? this.props.data.resolvedRemark : '',
             oldRemark: this.props.data.resolvedRemark ? this.props.data.resolvedRemark : '',
             modalWidth: document.getElementById('view-detail-modal-body').clientWidth
-        })
+        });
 
     buildHeader = () =>
         <HeaderRow>
@@ -31,7 +31,7 @@ export class ViewDetail extends Component {
             <HeaderCell colWidth={0.2 * this.state.modalWidth}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
             <HeaderCell colWidth={0.2 * this.state.modalWidth}>{LangHelper.getResource('Recipient')}</HeaderCell>
             <HeaderCell colWidth={0.4 * this.state.modalWidth}>{LangHelper.getResource('Reason')}</HeaderCell>
-        </HeaderRow>
+        </HeaderRow>;
 
     buildBody = data =>
         [<Row key={data.notificationId}>
@@ -39,7 +39,7 @@ export class ViewDetail extends Component {
             <Cell>{functions.getHeadlines(data.headlines)}</Cell>
             <Cell>{functions.getRecipients(data.recipients)}</Cell>
             <Cell className='error-color'>{data.reason}</Cell>
-        </Row>]
+        </Row>];
 
     editNotificationList = notificationId =>
         this.setState({ isResolved: true }, () =>
@@ -47,11 +47,11 @@ export class ViewDetail extends Component {
                 notificationId,
                 remark: this.state.remark
             })
-        )
+        );
 
     handleChange = e => {
         this.setState({ [e.target.name]: e.target.value });
-    }
+    };
 
     onClose = close => {
         if (this.state.isResolved) {
@@ -63,19 +63,17 @@ export class ViewDetail extends Component {
                 ...this.props.autoRefresh,
                 countDown: this.props.autoRefresh.value
             });
-        }
-        else {
+        } else {
             if (this.state.remark !== this.state.oldRemark) {
                 this.props.setConfirmPopup({
                     show: true,
                     onOk: close
                 });
-            }
-            else {
+            } else {
                 close();
             }
         }
-    }
+    };
 
     render() {
         const { data, onClose } = this.props;

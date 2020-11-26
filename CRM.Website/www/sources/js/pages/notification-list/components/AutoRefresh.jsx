@@ -20,7 +20,7 @@ export class AutoRefresh extends Component {
     componentDidMount = () => {
         this.countDownFunc();
         document.addEventListener('mousedown', this.handleClickOutside);
-    }
+    };
 
     componentDidUpdate = prevProps => {
         if (prevProps.autoRefresh.value !== this.props.autoRefresh.value) {
@@ -44,18 +44,18 @@ export class AutoRefresh extends Component {
             this.props.setGridParams(params);
             this.props.getGridData(params, data => functions.handleNewResendOptions(data, this.props.setResendOptions));
         }
-    }
+    };
 
     componentWillUnmount = () => {
         clearInterval(this.countDownFunc);
         document.removeEventListener('mousedown', this.handleClickOutside);
-    }
+    };
 
     handleClickOutside = event => {
         if (this.autoRefresh && !this.autoRefresh.current.contains(event.target) && this.state.isOpenDropdown) {
             this.setState({ isOpenDropdown: false });
         }
-    }
+    };
 
     countDownFunc = () => setInterval(() => {
         if (this.props.isRefresh) {
@@ -64,7 +64,7 @@ export class AutoRefresh extends Component {
                 countDown: this.props.autoRefresh.countDown - 1
             });
         }
-    }, 1000)
+    }, 1000);
 
     handleAutoRefreshChange = value => {
         this.setState({ isOpenDropdown: false });
@@ -73,7 +73,7 @@ export class AutoRefresh extends Component {
             ...this.props.autoRefresh,
             value: value
         });
-    }
+    };
 
     handleRefresh = () => {
         const params = {
@@ -87,10 +87,10 @@ export class AutoRefresh extends Component {
             ...this.props.autoRefresh,
             countDown: this.props.autoRefresh.value
         });
-    }
+    };
 
     toggleAutoFreshDropdown = () =>
-        this.setState({ isOpenDropdown: !this.state.isOpenDropdown })
+        this.setState({ isOpenDropdown: !this.state.isOpenDropdown });
 
     render() {
         return (

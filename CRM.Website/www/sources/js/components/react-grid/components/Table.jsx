@@ -27,7 +27,7 @@ class Table extends Component {
         adjustedHeight: PropTypes.number,
         containerPadding: PropTypes.number,
         shouldResetScrollPosition: PropTypes.bool
-    }
+    };
 
     static defaultProps = {
         onSort: null,
@@ -40,7 +40,7 @@ class Table extends Component {
         autoHeight: true,
         containerPadding: 30,
         shouldResetScrollPosition: true
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -114,8 +114,7 @@ class Table extends Component {
                 }
 
                 colspanCells.push(cell);
-            }
-            else {
+            } else {
                 toCellInternalIndex += 1;
             }
         }
@@ -145,7 +144,7 @@ class Table extends Component {
                 this._handleWidthOneCell(headerRows, columnsWidth, currentNextCellIndexByRow, cell, currentRowIndex);
             }
         }
-    }
+    };
 
     _handleWidthOneCell = (headerRows, columnsWidth, currentNextCellIndexByRow, cell, currentRowIndex) => {
         const cellProps = cell.props;
@@ -164,12 +163,11 @@ class Table extends Component {
             const nextColspanCells = this._getNextColspanCells(nextCells, fromNextCellIndex, toNextCellIndex);
             currentNextCellIndexByRow[nextRowIndex] += nextColspanCells.length;
             this._getWidthByCells(headerRows, columnsWidth, currentNextCellIndexByRow, nextColspanCells, nextRowIndex);
-        }
-        else {
+        } else {
             const cellWidth = cellProps.colWidth ? cellProps.colWidth : DEFAULT_COLUMN_WIDTH;
             columnsWidth.push(cellWidth);
         }
-    }
+    };
 
     _handleResize = event => {
         event && event.preventDefault();
@@ -185,7 +183,7 @@ class Table extends Component {
         if (this.state.maxWidth !== maxWidth) {
             this.setState({ maxWidth });
         }
-    }
+    };
 
     _calculateBodyHeight() {
         const windowHeight = window.innerHeight;

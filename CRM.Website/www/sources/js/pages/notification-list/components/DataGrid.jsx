@@ -19,12 +19,12 @@ export class DataGrid extends Component {
         params.pageIndex = pageIndex;
         params.pageSize = pageSize;
         this.getGridData(params);
-    }
+    };
 
     getGridData = params => {
         this.props.setGridParams(params);
         this.props.getGridData({ ...params }, data => functions.handleNewResendOptions(data, this.props.setResendOptions));
-    }
+    };
 
     buildNotificationListHeader = isHost =>
         <HeaderRow>
@@ -62,7 +62,7 @@ export class DataGrid extends Component {
                     }
                 </HeaderCell>
             }
-        </HeaderRow>
+        </HeaderRow>;
 
     buildNotificationListBody = isHost => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -74,7 +74,7 @@ export class DataGrid extends Component {
         }
 
         return [<Row key={`body${1}`} className='no-data' ><Cell colSpan={isHost ? 11 : 9}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
-    }
+    };
 
     openContentPopup = item => {
         this.props.setContentPopup({
@@ -83,7 +83,7 @@ export class DataGrid extends Component {
         });
 
         this.setIsRefresh(false);
-    }
+    };
 
     openViewDetailPopup = item => {
         this.props.setViewDetailPopup({
@@ -92,7 +92,7 @@ export class DataGrid extends Component {
         });
 
         this.setIsRefresh(false);
-    }
+    };
 
     setIsRefresh = isRefresh => {
         this.setNotShouldResetScrollPosition();
@@ -103,7 +103,7 @@ export class DataGrid extends Component {
         this.props.setResendOptions({
             ...this.props.resendOptions,
             shouldResetScrollPosition: false
-        })
+        });
 
     isError = status => status.toLowerCase() === LangHelper.getResource('Error').toLowerCase();
     isResolved = status => status.toLowerCase() === LangHelper.getResource('Resolved').toLowerCase();
@@ -115,7 +115,7 @@ export class DataGrid extends Component {
             notificationIds: notificationId,
             isSingle: true
         });
-    }
+    };
 
     renderRow = (item, index, isHost) =>
         <Row key={index} >
@@ -169,7 +169,7 @@ export class DataGrid extends Component {
                         onChange={() => this.handleChangeResendCheckbox(index)} />}
                 </Cell>
             }
-        </Row>
+        </Row>;
 
     handleChangeResendCheckbox = index => {
         const dataList = [...this.props.resendOptions.dataList];
@@ -184,7 +184,7 @@ export class DataGrid extends Component {
             shouldResetScrollPosition: false,
             dataList
         });
-    }
+    };
 
     handleChangeResendAllCheckbox = () => {
         const checked = !this.props.resendOptions.isCheckedAll;
@@ -198,7 +198,7 @@ export class DataGrid extends Component {
             shouldResetScrollPosition: false,
             dataList
         });
-    }
+    };
 
     resendNotificationAll = () => {
         const resendList = this.props.resendOptions.dataList.filter(item => this.isError(item.status) && item.isResent);
@@ -206,7 +206,7 @@ export class DataGrid extends Component {
             notificationIds: resendList.map(item => item.notificationId).join(','),
             isSingle: false
         });
-    }
+    };
 
     render() {
         if (!this.props.notificationListGridData || !this.props.notificationListGridData.data) {

@@ -17,17 +17,17 @@ export class AppContainer extends Component {
         this.isHost = document.getElementById('is-host').checked;
     }
 
-    closeConfirmPopup = () => this.props.setConfirmPopup({ show: false })
+    closeConfirmPopup = () => this.props.setConfirmPopup({ show: false });
 
     handleCloseContent = () => {
         this.props.setContentPopup({ show: false });
         this.props.setIsRefresh(true);
-    }
+    };
 
     handleCloseViewDetail = () => {
         this.props.setViewDetailPopup({ show: false });
         this.props.setIsRefresh(true);
-    }
+    };
 
     render() {
         return (

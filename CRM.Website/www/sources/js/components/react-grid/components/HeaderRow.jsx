@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 export default class HeaderRow extends Component {
     static propTypes = {
         onSort: PropTypes.func
-    }
+    };
 
     static defaultProps = {
         onSort: null
-    }
+    };
 
     constructor(props) {
         super(props);
