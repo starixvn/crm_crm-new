@@ -635,13 +635,71 @@
             {
                 Templates = new List<Template>
                 {
-                    new Template{RNGTemplateENSC = "{0} {1} {2} {3}"}
+                    new Template{RNGTemplateENSC = "{0} {1} {2} {3} {4}"}
+                }
+            };
+            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "en-US").Returns("productNameUS");
+            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "zh-CN").Returns("productNameSC");
+            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "vi-VN").Returns("productNameYN");
+
+            commonFeedback.GetFeedbackTemplates(Arg.Any<string>()).Returns(template);
+            var expect = "test 1,000 USD productName productNameSC" + Constants.LineBreak;
+            // Act
+            var result = service.Public_GetSolution(winlimit, false);
+
+            // Assert
+            var expected = Regex.Replace(expect, @"\s", "");
+            var resulted = Regex.Replace(result, @"\s", "");
+            Assert.Equal(expected, resulted);
+        }
+
+        [Theory]
+        [InlineData("Orange", false, "ProductNameSC")]
+        [InlineData("Yellow", false, "ProductNameSC")]
+        [InlineData("Grey", false, "ProductNameSC")]
+        [InlineData("Red", false, "ProductNameSC")]
+        [InlineData("Black", false, "ProductNameSC")]
+        [InlineData("Orange", true, "ProductNameYN")]
+        [InlineData("Yellow", true, "ProductNameYN")]
+        [InlineData("Grey", true, "ProductNameYN")]
+        [InlineData("Red", true, "ProductNameYN")]
+        [InlineData("Black", true, "ProductNameYN")]
+        public void GetSolution_DependOnLevelAndIsVIPCustomer_ReturnExactTemplate(string level, bool isVip, string productName)
+        {
+            // Arrange
+            var winlimit = new WinLimitFeedBackInfo
+            {
+                Level = level,
+                UserName = "test",
+                TotalWinAmt = 1000,
+                Currency = "USD",
+                ProductID = 1
+            };
+
+            var service = MockService();
+            var template = new FeedbackTemplate
+            {
+                Templates = new List<Template>
+                {
+                    new Template{
+                        YellowTemplateENSC = "{0} {1} {2} {3} {4} {5}",
+                        RedTemplateENSC = "{0} {1} {2} {3} {4} {5}",
+                        BlackTemplateSC = "{0} {1} {2} {3} {4} {5}",
+                        GreyTemplateENSC = "{0} {1} {2} {3} {4} {5}",
+                        YellowTemplateENYN = "{0} {1} {2} {3} {4} {5}",
+                        RedTemplateENYN = "{0} {1} {2} {3} {4} {5}",
+                        BlackTemplateYN = "{0} {1} {2} {3} {4} {5}",
+                        GreyTemplateENYN = "{0} {1} {2} {3} {4} {5}"
+                    }
                 }
             };
             commonFeedback.GetFeedbackTemplates(Arg.Any<string>()).Returns(template);
-            var expect = "test 1,000 USD" + Constants.LineBreak;
+            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "en-US").Returns("ProductNameUS");
+            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "zh-CN").Returns("ProductNameSC");
+            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "vi-VN").Returns("ProductNameYN");
+            var expect = "test 1,000 USD ProductNameUS " + productName + Constants.LineBreak;
             // Act
-            var result = service.Public_GetSolution(winlimit, false);
+            var result = service.Public_GetSolution(winlimit, isVip); 
 
             // Assert
             var expected = Regex.Replace(expect, @"\s", "");
