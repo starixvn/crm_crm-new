@@ -140,7 +140,7 @@ export class DataGrid extends Component {
             </Fragment>
         );
     }
-};
+}
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
