@@ -34,7 +34,7 @@
 
                 if (botConfig == null)
                 {
-                    throw new ArgumentNullException("Bot not found", new Exception($"The bot ID: {nameof(botConfig)} does not existed in configuration"));
+                    throw new ArgumentNullException($"The bot ID: {botId} does not existed in config file");
                 }
 
                 var restClientService = new RestClientService(
