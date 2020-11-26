@@ -153,7 +153,10 @@ export class NewNotificationTemplate extends Component {
             notificationTemplateName: '',
             title: ''
         };
-        this.props.languages.map(item => {initialValues['language_' + item.settingId] = '' });
+        this.props.languages.map(item => {
+            var initial = initialValues['language_' + item.settingId]
+            initial = ''
+        });
 
         return (
             <Modal show className="notification-template-modal" dialogAs={DraggableModalDialog}
