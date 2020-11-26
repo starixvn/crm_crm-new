@@ -37,7 +37,7 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getFeedBackSubject(this.props.gridParams);
-    };
+    }
 
     handleCloseCreatePopup = () => {
         this.props.setCreateFeedbackSubjectPopup({ show: false });

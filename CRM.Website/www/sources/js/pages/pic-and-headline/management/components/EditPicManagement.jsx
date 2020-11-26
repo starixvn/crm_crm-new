@@ -330,7 +330,7 @@ export class EditPicManagement extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     getInitValue = () => {
         const { selectedPic } = this.props;

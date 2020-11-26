@@ -89,7 +89,7 @@ export class DefaultPic extends Component {
         } else {
             this.setState({ isSubmitting: false });
         }
-    }
+    };
 
     refreshGrid = () => {
         this.props.setDefaultPicPopup({ show: false });

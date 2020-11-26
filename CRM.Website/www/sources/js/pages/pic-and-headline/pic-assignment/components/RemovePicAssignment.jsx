@@ -135,8 +135,7 @@ export class RemovePicAssignment extends Component {
                 if (mergeHeadline === 0) {
                     mergeHeadline = dataList.filter(item => item.headlineID === rowData.headlineID).length;
                     row = this.renderRow(index, rowData, mergeHeadline);
-                }
-                else {
+                } else {
                     row = this.renderRow(index, rowData);
                 }
 
@@ -210,7 +209,7 @@ export class RemovePicAssignment extends Component {
         }
 
         return <Cell key={index} className={className}>{cell.value}</Cell>;
-    }
+    };
 
     handleChange = (rowNumber, colNumber) => {
         const matrix = [...this.state.matrix];
@@ -221,7 +220,7 @@ export class RemovePicAssignment extends Component {
             matrix,
             checkedAllList
         });
-    }
+    };
 
     handleChangeCheckAll = colNumber => {
         const isChecked = !this.state.checkedAllList[colNumber];

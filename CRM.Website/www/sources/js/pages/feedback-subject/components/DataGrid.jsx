@@ -98,7 +98,7 @@ export class DataGrid extends Component {
             />
         );
     }
-};
+}
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 

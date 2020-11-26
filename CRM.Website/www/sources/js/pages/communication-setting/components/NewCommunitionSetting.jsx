@@ -324,8 +324,7 @@ export class NewCommunitionSetting extends PureComponent {
                     setTimeout(() => {
                         this.props.setCreateCommunicationResult('');
                     }, 3000);
-                }
-                else {
+                } else {
                     this.setState({
                         isSuccessful: false
                     });

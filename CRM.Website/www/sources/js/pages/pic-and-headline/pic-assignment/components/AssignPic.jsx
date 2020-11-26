@@ -124,7 +124,7 @@ export class AssignPic extends Component {
         } else {
             this.switchKeyCode(event);
         }
-    }
+    };
 
     switchKeyCode = event => {
         switch (event.keyCode) {
@@ -280,7 +280,7 @@ export class AssignPic extends Component {
         }
 
         return true;
-    }
+    };
 
     handleSubmit = () => {
         this.setState({
@@ -307,7 +307,7 @@ export class AssignPic extends Component {
                 isSubmitting: false
             });
         }
-    }
+    };
 
     handleAssignPic = () => {
         const { isSuccessful, errorAccounts, assignedDirectAccounts } = this.props.validateAssignPicResult;

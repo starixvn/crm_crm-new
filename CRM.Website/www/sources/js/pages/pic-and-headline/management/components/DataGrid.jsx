@@ -78,7 +78,7 @@ export class DataGrid extends PureComponent {
         const { communicationTools } = this.props.setting;
         const countColumn = (isHost ? 9 : 8) + communicationTools.length;
         return [<Row key={`body${1}`} className="no-data"><Cell colSpan={countColumn}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
-    }
+    };
 
     renderRow = (item, index, isHost) => (
         <Row key={item.picId}>
@@ -116,7 +116,7 @@ export class DataGrid extends PureComponent {
             header.push(<HeaderCell colWidth={20} key={item.settingId}>{item.settingValue}</HeaderCell>);
         });
         return header;
-    }
+    };
 
     renderBodyCommunicationTools = communicationTools => {
         const communicationToolsProps = this.props.setting.communicationTools;

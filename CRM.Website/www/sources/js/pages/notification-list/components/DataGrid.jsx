@@ -97,7 +97,7 @@ export class DataGrid extends Component {
     setIsRefresh = isRefresh => {
         this.setNotShouldResetScrollPosition();
         this.props.setIsRefresh(isRefresh);
-    }
+    };
 
     setNotShouldResetScrollPosition = () =>
         this.props.setResendOptions({

@@ -110,7 +110,7 @@ export class Filter extends Component {
         }
 
         this.setState({ maxToDate });
-    }
+    };
 
     handleToDateChange = value => {
         this.handleFilterChange('toDate', value);

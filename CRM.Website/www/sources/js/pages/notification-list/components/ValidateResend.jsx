@@ -50,8 +50,7 @@ export class ValidateResend extends Component {
                     inActiveNotificationIdsString
                 );
             }
-        }
-        else {
+        } else {
             if (isAllInActive) {
                 return LangHelper.formatString(
                     LangHelper.getResource('TheRecipientOfNotificationIdHasBeenInactive'),
@@ -59,8 +58,7 @@ export class ValidateResend extends Component {
                     's',
                     inActiveNotificationIdsString
                 );
-            }
-            else {
+            } else {
                 if (isAllValidate) {
                     return LangHelper.formatString(LangHelper.getResource('ComfirmResendNotification'), 's', resendIdsString);
                 } else {

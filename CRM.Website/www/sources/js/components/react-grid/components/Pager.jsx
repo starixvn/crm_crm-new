@@ -58,7 +58,7 @@ export default class Pager extends Component {
         if (!isDisable) {
             handleFunc();
         }
-    };
+    }
 
     onInputChangeHandler = event => {
         const pattern = /^\d*$/;

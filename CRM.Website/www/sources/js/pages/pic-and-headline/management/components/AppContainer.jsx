@@ -39,8 +39,7 @@ export class AppContainer extends PureComponent {
                 const message = checked ? 'ActivePICSuccess' : 'DeactivatePICSuccess';
                 toast.success(LangHelper.getResource(message));
                 this.props.getGridData(this.props.gridParams);
-            }
-            else {
+            } else {
                 toast.error(activeResult.message);
             }
         });

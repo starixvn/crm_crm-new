@@ -97,9 +97,9 @@ export default class MultipleSelect extends Component {
     onToggle = () => {
         if (!this.props.isDisable) {
           this.setState(
-            (prevState) => {
+            prevState => {
               return {
-                showOptionList: !prevState.showOptionList,
+                showOptionList: !prevState.showOptionList
               };
             },
             () => {
@@ -141,7 +141,7 @@ export default class MultipleSelect extends Component {
     onClearSearch = e => {
         e.preventDefault();
         this.onChangeSearchText('');
-    }
+    };
 
     _callBackToParent(selectedItem) {
         const selectedItemsKey = this._getSelectedItemKey();
@@ -171,7 +171,7 @@ export default class MultipleSelect extends Component {
         if (clickOutside && this.state.showOptionList) {
             this._close();
         }
-    }
+    };
 
     _renderOptionAll() {
         if (this.props.hasAllOption && this.props.dataSource.length > 0) {
