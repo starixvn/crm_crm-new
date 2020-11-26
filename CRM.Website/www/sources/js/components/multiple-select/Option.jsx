@@ -6,7 +6,7 @@ export default class Option extends Component {
         itemData: PropTypes.object.isRequired,
         id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
         onChange: PropTypes.func
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -27,13 +27,13 @@ export default class Option extends Component {
             checked: !itemData.checked
         };
         onChange && onChange(newItemData);
-    }
+    };
 
     onClickExpandIcon = () => {
         this.setState(prevState => ({
             isExpandedSubData: !prevState.isExpandedSubData
         }));
-    }
+    };
 
     renderSubData = subDataList => {
         return (

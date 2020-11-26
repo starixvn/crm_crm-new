@@ -57,9 +57,14 @@ export class EditPersonalMappingPopup extends Component {
                 const selectRecipient = nextProps.recipients.filter(r => r.id === recipientId);
                 letstalkIds = selectRecipient.length > 0 ? selectRecipient[0].letstalkIds : '';
             }
-            const recipientOptions = nextProps.recipients.map(item => { return { value: item.id, label: item.name, letstalkIds: item.letstalkIds }; });
+            const recipientOptions = nextProps.recipients.map(item => {
+                 return { value: item.id, label: item.name, letstalkIds: item.letstalkIds }; 
+                });
             const headlineOptions = nextProps.groupHeadline;
-            headlineOptions.map(headline => { headline['checked'] = headlineIds.some(v => parseInt(v, 10) === parseInt(headline.id, 10)); });
+            headlineOptions.map(headline => { 
+                headline['checked'] = headlineIds.some(v => 
+                    parseInt(v, 10) === parseInt(headline.id, 10)); 
+            });
             const state = {
                 settings: {
                     letstalkIds: letstalkIds,
@@ -91,7 +96,7 @@ export class EditPersonalMappingPopup extends Component {
 
     handleGroupHeadlineChange = (currentItem, selectedItemsKey) => {
         this.handleChange('groupHeadlines', selectedItemsKey);
-    }
+    };
 
     handleRecipientTypeChange = value => {
         this.handleChange('recipientType', value);
@@ -100,7 +105,7 @@ export class EditPersonalMappingPopup extends Component {
         this.handleChange('conversationId', '');
         this.handleChange('name', '');
         this.props.getRecipientByRecipientType(value);
-    }
+    };
 
     handleRecipientChange = option => {
         this.handleChange('recipient', option || '');
@@ -123,7 +128,7 @@ export class EditPersonalMappingPopup extends Component {
             this.handleChange('name', this.props.letstalkName);
             this.setState({ isLoading: false });
         });
-    }
+    };
 
     renderEditPersonalSelectOptions = (item, key) => {
         return (
@@ -131,7 +136,7 @@ export class EditPersonalMappingPopup extends Component {
                 {item.name}
             </option>
         );
-    }
+    };
 
     renderLetstalkIdsRadioButton = () => {
         let result = null;
@@ -149,7 +154,7 @@ export class EditPersonalMappingPopup extends Component {
             });
         }
         return result;
-    }
+    };
 
     isValidParams = () => {
         const validateData = this.state.form;
@@ -195,7 +200,7 @@ export class EditPersonalMappingPopup extends Component {
         });
 
         return isValid;
-    }
+    };
 
     isDirtyForm = () => JSON.stringify(this.initEditPersonalMappingState) !== JSON.stringify(this.state.form);
 
@@ -205,13 +210,13 @@ export class EditPersonalMappingPopup extends Component {
         } else {
             this.props.closeUpdatePersonalMappingPopup();
         }
-    }
+    };
 
     closeConfirmDirtyForm = () => {
         this.setState({
             isShowConfirmDirtyForm: false
         });
-    }
+    };
 
     getParams = () => {
         return {
@@ -224,7 +229,7 @@ export class EditPersonalMappingPopup extends Component {
             languageId: this.state.form.languageId,
             remark: this.state.form.remark
         };
-    }
+    };
 
     handleEditPersonalSubmitForm = e => {
         this.props.setUpdatePersonalMappingResult(null);
@@ -244,7 +249,7 @@ export class EditPersonalMappingPopup extends Component {
                 }
             });
         }
-    }
+    };
 
     renderForm = () => {
         return (
@@ -404,7 +409,7 @@ export class EditPersonalMappingPopup extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     render() {
         return (

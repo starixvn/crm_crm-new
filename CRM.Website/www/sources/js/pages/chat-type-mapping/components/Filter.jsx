@@ -60,7 +60,7 @@ export class Filter extends Component {
         this.setState(prevState => ({
             filter: { ...prevState.filter, ...{ [fieldName]: fieldValue } }
         }));
-    }
+    };
 
     getParams = () => {
         return {
@@ -76,7 +76,7 @@ export class Filter extends Component {
             pageIndex: 1,
             pageSize: 100
         };
-    }
+    };
 
     isValidParams = () => this.state.filter.mappingStatuses !== '';
 
@@ -89,7 +89,7 @@ export class Filter extends Component {
         } else {
             toast.error(LangHelper.getResource('PleaseChooseMappingStatus'));
         }
-    }
+    };
 
     renderOptions = (item, key) => <option key={key} value={item.id}>{item.name}</option>;
 

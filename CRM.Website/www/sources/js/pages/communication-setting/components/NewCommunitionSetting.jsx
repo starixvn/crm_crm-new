@@ -63,7 +63,7 @@ export class NewCommunitionSetting extends PureComponent {
             setFieldValue('isVerifiedCustomers', true);
         }
         setFieldValue('customerNameInput', '');
-    }
+    };
 
     pasteCustomerHandler = (event, customers, setFieldValue) => {
         const customer = customers.trim();
@@ -78,7 +78,7 @@ export class NewCommunitionSetting extends PureComponent {
             const customersInput = (customer.length > 0 ? customer + ',' : '').concat(items.join(','));
             setFieldValue('customerNameInput', customersInput);
         }, 100);
-    }
+    };
 
     mainCategoriesChangeNew = (currentItem, selectedItemsKey, setFieldValue) => {
         setFieldValue('mainCategoryTypesNew', selectedItemsKey);
@@ -98,14 +98,13 @@ export class NewCommunitionSetting extends PureComponent {
                     subCategoryOptionsNew: setSubCatagories
                 });
             });
-        }
-        else {
+        } else {
             this.setState({
                 subCategoryOptionsNew: [],
                 selectedSubCategoryIdsNew: []
             });
         }
-    }
+    };
 
     handleResetSubCatagory = () => {
         this.setState({
@@ -114,7 +113,7 @@ export class NewCommunitionSetting extends PureComponent {
             subCategoryOptionsNew: [],
             communicationToolOptionsNew: this.state.communicationToolOptionsNew.map(tool => ({ ...tool, checked: false }))
         });
-    }
+    };
 
     renderTooltipCustomers = props => (
         <Tooltip id="tooltip-customers" {...props}>
@@ -127,11 +126,11 @@ export class NewCommunitionSetting extends PureComponent {
             listOfCustomer: this.state.listOfCustomer.filter(item => item.id !== id),
             listOfCustomerValid: this.state.listOfCustomerValid.filter(item => item.id !== id)
         });
-    }
+    };
 
     handleCloseCreatePopup = () => {
         this.props.onClose(this.state.isSuccessful);
-    }
+    };
 
     validateNewCommunication = values => {
         const errors = {};
@@ -156,7 +155,7 @@ export class NewCommunitionSetting extends PureComponent {
         }
 
         return errors;
-    }
+    };
 
     renderFormNewCommunication = ({
         values,
@@ -289,7 +288,7 @@ export class NewCommunitionSetting extends PureComponent {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     handleSubmit = (values, { setSubmitting, resetForm }) => {
         setSubmitting(true);
@@ -338,7 +337,7 @@ export class NewCommunitionSetting extends PureComponent {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     render() {
         const initialValuesNewForm = {

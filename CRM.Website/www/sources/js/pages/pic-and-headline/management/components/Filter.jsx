@@ -63,13 +63,13 @@ export class Filter extends PureComponent {
 
     handleOpenCreatePopup = () => {
         this.props.setCreatePicPopup({ show: true });
-    }
+    };
 
     handleChangeFilter = (name, value) => {
         this.setState(prevState => ({
             filter: { ...prevState.filter, [name]: value }
         }));
-    }
+    };
 
     getParams = () => {
         const { filter } = this.state;
@@ -80,14 +80,14 @@ export class Filter extends PureComponent {
             pageIndex: 1,
             pageSize: 100
         };
-    }
+    };
 
     submitHandler = event => {
         event.preventDefault();
         const params = this.getParams();
         this.props.setGridParams(params);
         this.props.getGridData(params);
-    }
+    };
 
     render() {
         const { filter, settingRoles } = this.state;

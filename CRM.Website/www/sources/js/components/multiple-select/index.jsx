@@ -23,7 +23,7 @@ export default class MultipleSelect extends Component {
         texts: PropTypes.object,
         valueField: PropTypes.string,
         isDisable: PropTypes.bool
-    }
+    };
 
     static defaultProps = {
         keyField: KEY_NAME,
@@ -33,7 +33,7 @@ export default class MultipleSelect extends Component {
         hasSearchBox: false,
         isDisable: false,
         textOptions: MULTI_SELECT_TEXT_OPTIONS
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -92,18 +92,24 @@ export default class MultipleSelect extends Component {
         this._callBackToParent(selectedItem);
 
         this.setState({ dataSource: newDataSource });
-    }
+    };
 
     onToggle = () => {
         if (!this.props.isDisable) {
-            this.setState(prevState => { return { showOptionList: !prevState.showOptionList }; },
-                () => {
-                    if (this.searchInputBox && this.state.showOptionList) {
-                        this.searchInputBox.focus();
-                    }
-                });
+          this.setState(
+            (prevState) => {
+              return {
+                showOptionList: !prevState.showOptionList,
+              };
+            },
+            () => {
+              if (this.searchInputBox && this.state.showOptionList) {
+                this.searchInputBox.focus();
+              }
+            }
+          );
         }
-    }
+    };
 
     checkAllHandler = checked => {
         const dataSource = this.state.dataSource.slice(0);
@@ -113,7 +119,7 @@ export default class MultipleSelect extends Component {
         }, () => {
             this._callBackToParent(null);
         });
-    }
+    };
 
     onChangeSearchText = value => {
         this.setState(() => {
@@ -130,7 +136,7 @@ export default class MultipleSelect extends Component {
                 dataSource: dataSource
             };
         });
-    }
+    };
 
     onClearSearch = e => {
         e.preventDefault();
@@ -158,7 +164,7 @@ export default class MultipleSelect extends Component {
 
     _close = () => {
         this.setState({ showOptionList: false });
-    }
+    };
 
     _handleDocumentClick = event => {
         const clickOutside = this.wrapper && !this.wrapper.contains(event.target);

@@ -41,9 +41,9 @@ export class DefaultPic extends Component {
                 oldPics: this.props.defaultPicPopup.pics
             });
         }
-    }
+    };
 
-    handlePicChange = pics => this.setState({ pics })
+    handlePicChange = pics => this.setState({ pics });
 
     handleCancel = () => {
         if (this.isEqualPicArray(this.state.pics, this.state.oldPics)) {
@@ -51,7 +51,7 @@ export class DefaultPic extends Component {
         }
 
         this.toggleConfirmPopup();
-    }
+    };
 
     isEqualPicArray = (firstArray, secondArray) => {
         if (firstArray.length !== secondArray.length) {
@@ -65,14 +65,14 @@ export class DefaultPic extends Component {
         }
 
         return true;
-    }
+    };
 
-    toggleConfirmPopup = () => this.setState({ isShowConfirmPopup: !this.state.isShowConfirmPopup })
+    toggleConfirmPopup = () => this.setState({ isShowConfirmPopup: !this.state.isShowConfirmPopup });
 
     handleRemoveDefaultPic = headlineId => {
         this.setState({ isSubmitting: true });
         functions.removeDefaultPic({ headlineId }, data => this.callback(data, LangHelper.getResource('RemoveDefaultPICSuccessfully')));
-    }
+    };
 
     callback = (data, defaultMessage) => {
         const { isSuccessful, message } = data;
@@ -86,8 +86,7 @@ export class DefaultPic extends Component {
 
         if (data.isSuccessful) {
             setTimeout(this.refreshGrid, 2000);
-        }
-        else {
+        } else {
             this.setState({ isSubmitting: false });
         }
     }
@@ -95,7 +94,7 @@ export class DefaultPic extends Component {
     refreshGrid = () => {
         this.props.setDefaultPicPopup({ show: false });
         this.props.getGridData(this.props.gridParams, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
-    }
+    };
 
     handleSubmitSetDefaultPIC = headlineId => {
         this.setState({ isSubmitting: true });
@@ -108,8 +107,7 @@ export class DefaultPic extends Component {
                     message: LangHelper.getResource('DefaultPICRequired')
                 }
             });
-        }
-        else {
+        } else {
             const params = {
                 headlineId,
                 defaultPicIDs: this.state.pics.map(item => item.value).toString()
@@ -117,12 +115,12 @@ export class DefaultPic extends Component {
 
             functions.setDefaultPic(params, data => this.callback(data, LangHelper.getResource('SetDefaultPICSuccessfully')));
         }
-    }
+    };
 
     closeAll = () => {
         this.props.setDefaultPicPopup({ show: false });
         this.toggleConfirmPopup();
-    }
+    };
 
     render() {
         const { headline, pics } = this.props.defaultPicPopup;

@@ -28,13 +28,13 @@ export class Filter extends Component {
         this.setState({
             notificationTypeId: event.target.value
         });
-    }
+    };
 
     handleTemplateNameChange = event => {
         this.setState({
             notificationTemplateName: event.target.value
         });
-    }
+    };
 
     getParams = () => {
         return {
@@ -43,16 +43,16 @@ export class Filter extends Component {
             pageIndex: 1,
             pageSize: 100
         };
-    }
+    };
 
     handleSubmit = event => {
         event.preventDefault();
         const params = this.getParams();
         this.props.setGridParams(params);
         this.props.getGridData(params);
-    }
+    };
 
-    handleOpenCreatePopup = () => this.props.setCreateTemplatePopup({ show: true })
+    handleOpenCreatePopup = () => this.props.setCreateTemplatePopup({ show: true });
 
     render() {
         return (

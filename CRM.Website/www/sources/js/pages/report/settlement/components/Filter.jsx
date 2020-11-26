@@ -14,13 +14,13 @@ export class Filter extends PureComponent {
         event.preventDefault();
         const { gridParams } = this.props;
         this.props.getGridData({ ...gridParams, pageIndex: 1 });
-    }
+    };
 
     handleChangeYear = event => {
         const value = +event.target.value;
         const { gridParams } = this.props;
         this.props.setGridParams({ ...gridParams, year: value });
-    }
+    };
 
     renderOptionsYear = () => {
         const minYear = 2011;
@@ -30,7 +30,7 @@ export class Filter extends PureComponent {
             options.push(<option value={i} key={i}>{i}</option>);
         }
         return options;
-    }
+    };
 
     render() {
         const { gridParams } = this.props;

@@ -18,13 +18,13 @@ export class DataGrid extends Component {
         params['pageSize'] = pageSize;
         this.props.setGridParamsCommunication(params);
         this.props.getGridCommunicationSetting(params);
-    }
+    };
 
     decodeCatagory = category => {
         const parseCatagory = document.createElement('textarea');
         parseCatagory.innerHTML = category;
         return parseCatagory.value;
-    }
+    };
 
     renderCategoryColumn = (index, category) => {
         const categoryParse = this.decodeCatagory(category);
@@ -43,7 +43,7 @@ export class DataGrid extends Component {
             );
         }
         return categories;
-    }
+    };
 
     buildHeaderCommunication = isHost => {
         return (
@@ -59,7 +59,7 @@ export class DataGrid extends Component {
                 }
             </HeaderRow>
         );
-    }
+    };
 
     buildBodyCommunication = isHost => {
         const { pageIndex, pageSize } = this.props.gridParamsCommunication;
@@ -68,21 +68,21 @@ export class DataGrid extends Component {
             return this.props.gridDataCommunication.data.map((item, index) => this.renderRowCommunication(item, index, isHost));
         }
         return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan='7'>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
-    }
+    };
 
     handleEdit = id => {
         this.props.getCommunicationById(id, () => this.props.setEditCommunicationPopup({ show: true }));
-    }
+    };
 
     handleDelete = (id, index) => {
         this.props.setDeleteCommunicationPopup({ show: true, id: id, index: index });
-    }
+    };
 
     renderTooltipCategory = (index, fullCategory) => (
         <Tooltip className="tooltipCatagory" id={`tooltip${index}`}>
             {fullCategory}
         </Tooltip>
-    )
+    );
 
     renderRowCommunication = (item, index, isHost) => (
         <Row key={index} >
@@ -105,7 +105,7 @@ export class DataGrid extends Component {
             }
 
         </Row>
-    )
+    );
 
     render() {
         if (!this.props.gridDataCommunication || !this.props.gridDataCommunication.data) {
@@ -140,7 +140,7 @@ export class DataGrid extends Component {
             </Fragment>
         );
     }
-}
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 

@@ -66,25 +66,25 @@ export class AssignPic extends Component {
             this.props.setAssignPicFilter(assignPicFilter);
             this.setState({ oldAssignPicFilter: assignPicFilter });
         }
-    }
+    };
 
     handleHeadlineChange = value =>
         this.props.setAssignPicFilter({
             ...this.props.assignPicFilter,
             headline: value
-        })
+        });
 
     handlePicChange = value =>
         this.props.setAssignPicFilter({
             ...this.props.assignPicFilter,
             pics: value
-        })
+        });
 
     renderRelatedCustomerItem = (item, index) =>
         <div key={index} className={this.getRelatedCustomerItemClassName(item.isValid)}>
             <span>{item.username}</span>
             <span className='fa fa-close' onClick={() => this.handleRemoveDirectAccount(index)} />
-        </div>
+        </div>;
 
     getRelatedCustomerItemClassName = isValid => {
         let className = 'related-customer-item';
@@ -97,7 +97,7 @@ export class AssignPic extends Component {
         }
 
         return className;
-    }
+    };
 
     handleRemoveDirectAccount = index => {
         const directAccount = [ ...this.props.assignPicFilter.directAccount ];
@@ -106,7 +106,7 @@ export class AssignPic extends Component {
             ...this.props.assignPicFilter,
             directAccount
         });
-    }
+    };
 
     handleKeyDownRelatedCustomerInput = event => {
         if (event.keyCode !== 8) {
@@ -121,8 +121,7 @@ export class AssignPic extends Component {
                 ...this.props.assignPicFilter,
                 isSelectedAll: true
             });
-        }
-        else {
+        } else {
             this.switchKeyCode(event);
         }
     }
@@ -141,7 +140,7 @@ export class AssignPic extends Component {
             default:
                 break;
         }
-    }
+    };
 
     handleBackSpaceKeyCode = () => {
         if (this.inputRef.value === '') {
@@ -160,7 +159,7 @@ export class AssignPic extends Component {
                 });
             }
         }
-    }
+    };
 
     handleAddCustomerKeyCode = () => {
         const username = this.inputRef.value;
@@ -174,18 +173,17 @@ export class AssignPic extends Component {
                     directAccount
                 });
             }
-        }
-        else {
+        } else {
             this.setOverMaxUnernameWhenAssignPic();
         }
-    }
+    };
 
     handleKeyUpRelatedCustomerInput = event => {
         const addKeyCode = [13, 32, 188];
         if (addKeyCode.includes(event.keyCode)) {
             this.inputRef.value = '';
         }
-    }
+    };
 
     handlePasteRelatedCustomerInput = event => {
         const newDirectAccount = event.clipboardData.getData('text/plain')
@@ -206,25 +204,24 @@ export class AssignPic extends Component {
                 ...this.props.assignPicFilter,
                 directAccount
             });
-        }
-        else {
+        } else {
             this.setOverMaxUnernameWhenAssignPic();
         }
-    }
+    };
 
     handleIsValidItem = (username, isValid) => {
         return {
             isValid,
             username
         };
-    }
+    };
 
     setOverMaxUnernameWhenAssignPic = () =>
         this.props.setAssignPicResult({
             show: true,
             isSuccessful: false,
             message: LangHelper.formatString(LangHelper.getResource('OverMaxUnernameWhenAssignPic'), this.state.maxUsername)
-        })
+        });
 
     handleBlurRelatedCustomerInput = () => {
         const directAccount = [ ...this.props.assignPicFilter.directAccount ];
@@ -240,15 +237,13 @@ export class AssignPic extends Component {
                     isSelectedAll: false,
                     directAccount
                 });
-            }
-            else {
+            } else {
                 this.props.setAssignPicFilter({
                     ...this.props.assignPicFilter,
                     isSelectedAll: false
                 });
             }
-        }
-        else {
+        } else {
             this.setOverMaxUnernameWhenAssignPic();
             this.props.setAssignPicFilter({
                 ...this.props.assignPicFilter,
@@ -257,7 +252,7 @@ export class AssignPic extends Component {
         }
 
         this.inputRef.value = '';
-    }
+    };
 
     validateForm = () => {
         const errMsg = [];
@@ -306,8 +301,7 @@ export class AssignPic extends Component {
                 picIds: this.props.assignPicFilter.pics.map(item => item.value).toString(),
                 directAccountIds: this.props.assignPicFilter.directAccount.map(item => item.username).toString()
             }).then(this.handleAssignPic);
-        }
-        else {
+        } else {
             this.props.setAssignPicPopup({
                 ...this.props.assignPicPopup,
                 isSubmitting: false
@@ -336,7 +330,7 @@ export class AssignPic extends Component {
         if (!isSuccessful && assignedDirectAccounts && assignedDirectAccounts.length === 0) {
             this.handleNotSuccessfulAndEmptyAssignDirectAccounts(errorAccounts);
         }
-    }
+    };
 
     handleNotSuccessfulAndEmptyAssignDirectAccounts = errorAccounts => {
         const messages = [];
@@ -391,7 +385,7 @@ export class AssignPic extends Component {
             isSuccessful: false,
             messages
         });
-    }
+    };
 
     callbackAssignPic = data => {
         const { isSuccessful, message } = data;
@@ -403,14 +397,13 @@ export class AssignPic extends Component {
 
         if (data.isSuccessful) {
             setTimeout(this.refreshGrid, 2000);
-        }
-        else {
+        } else {
             this.props.setAssignPicPopup({
                 ...this.props.assignPicPopup,
                 isSubmitting: false
             });
         }
-    }
+    };
 
     refreshGrid = () => {
         this.props.setAssignPicPopup({ show: false });
@@ -422,16 +415,15 @@ export class AssignPic extends Component {
         });
 
         this.props.getGridData(this.props.gridParams, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
-    }
+    };
 
     handleCancel = () => {
         if (this.isFilterNotChange()) {
             this.onClose();
-        }
-        else {
+        } else {
             this.setState({ isShowConfirmPopup: true });
         }
-    }
+    };
 
     isFilterNotChange = () => {
         const assignPicFilter = { ...this.props.assignPicFilter };
@@ -439,7 +431,7 @@ export class AssignPic extends Component {
         return this.isEqualDirectAccountArray(assignPicFilter.directAccount, oldAssignPicFilter.directAccount)
             && assignPicFilter.headline === oldAssignPicFilter.headline
             && assignPicFilter.pics.length === 0;
-    }
+    };
 
     isEqualDirectAccountArray = (firstArray, secondArray) => {
         if (firstArray.length !== secondArray.length) {
@@ -453,7 +445,7 @@ export class AssignPic extends Component {
         }
 
         return true;
-    }
+    };
 
     onClose = () => {
         this.props.setAssignPicPopup({ show: false });
@@ -463,12 +455,12 @@ export class AssignPic extends Component {
             directAccount: [],
             isSelectedAll: false
         });
-    }
+    };
 
     closeAll = () => {
         this.closeConfirmPopup();
         this.onClose();
-    }
+    };
 
     closeConfirmPopup = () => this.setState({ isShowConfirmPopup: false });
 

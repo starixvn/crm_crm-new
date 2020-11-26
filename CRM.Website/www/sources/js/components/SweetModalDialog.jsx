@@ -12,7 +12,7 @@ class SweetModalDialog extends Component {
         onClose: PropTypes.func.isRequired,
         size: PropTypes.oneOf(['sm', 'lg', 'xl']),
         title: PropTypes.string.isRequired
-    }
+    };
 
     static defaultProps = {
         backdropClassName: 'sweet-alert-modal-backdrop',
@@ -24,7 +24,7 @@ class SweetModalDialog extends Component {
         onClose: function () {
             // nothing
         }
-    }
+    };
 
     constructor(props) {
         super(props);

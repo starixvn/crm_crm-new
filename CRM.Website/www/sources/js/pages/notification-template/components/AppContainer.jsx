@@ -50,32 +50,32 @@ export class AppContainer extends Component {
     handleCloseCreatePopup = () => {
         this.props.setCreateTemplatePopup({ show: false });
         this.props.setCreateTemplateResult(null);
-    }
+    };
 
     handleCreateSuccess = () => {
         this.handleCloseCreatePopup();
         this.props.getGridData(this.props.gridParams);
-    }
+    };
 
     handleCloseEditPopup = () => {
         this.props.setEditTemplatePopup({ show: false });
         this.props.setSelectedTemplate(null);
         this.props.setEditTemplateResult(null);
-    }
+    };
 
     handleEditSuccess = () => {
         this.handleCloseEditPopup();
         this.props.getGridData(this.props.gridParams);
-    }
+    };
 
     handleCloseViewContentPopup = () => {
         this.props.setContentDetailPopup({ show: false });
         this.props.setSelectedTemplate(null);
-    }
+    };
 
     handleCloseDeletePopup = () => {
         this.props.setDeleteTemplatePopup({ show: false });
-    }
+    };
 
     handleDelete = () => {
         const { templateId, name } = this.props.deleteTemplatePopup;
@@ -86,12 +86,11 @@ export class AppContainer extends Component {
             this.props.getGridData(this.props.gridParams);
             if (data.isSuccessful) {
                 toast.success(LangHelper.getResource('DeleteNotificationTemplateSuccessfully'));
-            }
-            else {
+            } else {
                 toast.error(data.message);
             }
         });
-    }
+    };
 
     render() {
         return (

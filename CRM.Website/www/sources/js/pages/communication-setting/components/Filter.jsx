@@ -62,7 +62,7 @@ export class Filter extends Component {
                 this.props.getGridCommunicationSetting(params);
             });
         }
-    }
+    };
 
     mainCategoriesChangeFilter = (currentItem, selectedItemsKey) => {
         this.setState(prevState => ({
@@ -88,8 +88,7 @@ export class Filter extends Component {
                         subCategoryOptionsFilter: setSubCatagories
                     });
                 });
-            }
-            else {
+            } else {
                 this.setState(prevState => ({
                     subCategoryOptionsFilter: [],
                     selectedSubCategoryIdsFilter: [],
@@ -100,7 +99,7 @@ export class Filter extends Component {
                 }));
             }
         });
-    }
+    };
 
     subCategoriesChangeFilter = (currentItem, selectedItemsKey) => {
         const countSubCatagoriesChange = selectedItemsKey.split(',').length;
@@ -111,7 +110,7 @@ export class Filter extends Component {
                 subCategoriesTypes: countSubCatagoriesChange === this.state.subCategoryOptionsFilter.length ? '0' : selectedItemsKey
             }
         }));
-    }
+    };
 
     isDisableCatelogy = () => {
         this.setState(prevState => ({
@@ -120,7 +119,7 @@ export class Filter extends Component {
                 isDisableCategorySubCategory: !this.state.filter.isDisableCategorySubCategory
             }
         }));
-    }
+    };
 
     handlecustomerNameChange = event => {
         const { filter } = this.state;
@@ -130,7 +129,7 @@ export class Filter extends Component {
                 customerNameInput: event.target.value
             }
         });
-    }
+    };
 
     getParams = () => {
         const isDisabled = this.state.filter.isDisableCategorySubCategory;
@@ -150,18 +149,18 @@ export class Filter extends Component {
             pageIndex: 1,
             pageSize: this.props.gridParamsCommunication.pageSize
         };
-    }
+    };
 
     searchHandler = e => {
         e.preventDefault();
         const params = this.getParams();
         this.props.setGridParamsCommunication(params);
         this.props.getGridCommunicationSetting({ ...params });
-    }
+    };
 
     handleOpenCreatePopup = () => {
         this.props.setCreateCommunicationPopup({ show: true });
-    }
+    };
 
     render() {
         return (

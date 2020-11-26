@@ -56,25 +56,25 @@ export class EditPicManagement extends Component {
         } else {
             this.setState({ showConfirmClose: true });
         }
-    }
+    };
 
     handleCloseConfirm = () => {
         this.setState({ showConfirmClose: false });
-    }
+    };
 
     handleClosePopup = () => {
         this.props.setEditPicPopup({ show: false });
         if (this.props.editPicResult) {
             this.props.setEditPicResult(null);
         }
-    }
+    };
 
     handleAddRowCommunication = () => {
         const { communicationTools } = this.state;
         const temp = getTemplateCommunicationTool();
         this.formik.values[`communication-${temp.unique}`] = { type: temp.type, value: temp.value };
         this.setState({ communicationTools: [...communicationTools, temp] });
-    }
+    };
 
     handleRemoveRowCommunication = unique => {
         const data = [...this.state.communicationTools];
@@ -84,7 +84,7 @@ export class EditPicManagement extends Component {
         if (this.formik.values[`communication-${unique}`]) {
             delete this.formik.values[`communication-${unique}`];
         }
-    }
+    };
 
     handleConfirmSavePopup = () => {
         const { values } = this.formik;
@@ -101,16 +101,16 @@ export class EditPicManagement extends Component {
                 this.formik.handleSubmit();
             }
         });
-    }
+    };
 
     handleSubmitEditConfirm = () => {
         this.handleCloseEditConfirm();
         this.formik.handleSubmit();
-    }
+    };
 
     handleCloseEditConfirm = () => {
         this.setState({ confirmSave: { show: false, message: '' } });
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
@@ -126,7 +126,7 @@ export class EditPicManagement extends Component {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     getTemplateEdit = values => {
         const picCommunicationTools = [];
@@ -150,7 +150,7 @@ export class EditPicManagement extends Component {
             remark: values.remark,
             picCommunicationTools
         };
-    }
+    };
 
     renderCommunicationTool = ({
         values,
@@ -214,7 +214,7 @@ export class EditPicManagement extends Component {
                 </Form.Group>
             );
         });
-    }
+    };
 
     renderForm = ({
         values,
@@ -351,7 +351,7 @@ export class EditPicManagement extends Component {
             remark: selectedPic.remark,
             ...tempCommunication
         };
-    }
+    };
 
     render() {
         const initialValues = this.getInitValue();

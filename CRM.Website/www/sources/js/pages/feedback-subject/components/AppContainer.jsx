@@ -33,36 +33,36 @@ export class AppContainer extends Component {
         getFeedBackSubject: function() {
             //nothing
         }
-    }
+    };
 
     componentDidMount() {
         this.props.getFeedBackSubject(this.props.gridParams);
-    }
+    };
 
     handleCloseCreatePopup = () => {
         this.props.setCreateFeedbackSubjectPopup({ show: false });
         this.props.setCreateFeedbackSubjectResult(null);
-    }
+    };
 
     handleCreateSuccess = () => {
         this.handleCloseCreatePopup();
         this.props.getFeedBackSubject(this.props.gridParams);
-    }
+    };
 
     handleCloseEditStatusPopup = () => {
         this.props.setEditStatusFeedbackSubjectPopup({ show: false });
-    }
+    };
 
     handleCloseEditPopup = () => {
         this.props.setEditFeedbackSubjectPopup({ show: false });
         this.props.setEditFeedbackSubjectResult(null);
         this.props.setSelectFeedbackSubjectId(null);
-    }
+    };
 
     handleEditSuccess = () => {
         this.handleCloseEditPopup();
         this.props.getFeedBackSubject(this.props.gridParams);
-    }
+    };
 
     handleEditStatus = () => {
         const data = {
@@ -78,7 +78,7 @@ export class AppContainer extends Component {
                 toast.error(response.data.message);
             }
         });
-    }
+    };
 
     render() {
         return (

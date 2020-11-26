@@ -26,7 +26,7 @@ export class NewFeedbackSubject extends Component {
         }
 
         return errors;
-    }
+    };
 
     renderForm = ({
         values,
@@ -70,7 +70,7 @@ export class NewFeedbackSubject extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     handleConfirmCancelPopup = event => {
         const { values } = this.formik;
@@ -85,11 +85,10 @@ export class NewFeedbackSubject extends Component {
         } else {
             this.setState({ showConfirmClose: true });
         }
-    }
-
+    };
     handleCloseConfirm = () => {
         this.setState({ showConfirmClose: false });
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
@@ -105,7 +104,7 @@ export class NewFeedbackSubject extends Component {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
 
     render() {

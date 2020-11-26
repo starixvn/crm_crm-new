@@ -15,12 +15,12 @@ export class NewNotificationTemplate extends Component {
     static propTypes = {
         languages: PropTypes.arrayOf(PropTypes.object),
         notificationTypes: PropTypes.arrayOf(PropTypes.object)
-    }
+    };
 
     static defaultProps = {
         languages: [],
         notificationTypes: []
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -119,7 +119,7 @@ export class NewNotificationTemplate extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
@@ -145,7 +145,7 @@ export class NewNotificationTemplate extends Component {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     render() {
         const initialValues = {
@@ -153,7 +153,9 @@ export class NewNotificationTemplate extends Component {
             notificationTemplateName: '',
             title: ''
         };
-        this.props.languages.map(item => { initialValues['language_' + item.settingId] = ''; });
+        this.props.languages.map(item => {
+             initialValues['language_' + item.settingId] = ''; 
+        });
 
         return (
             <Modal show className="notification-template-modal" dialogAs={DraggableModalDialog}

@@ -44,7 +44,7 @@ export class AppContainer extends PureComponent {
                 toast.error(activeResult.message);
             }
         });
-    }
+    };
 
     closeConfirmActive = () => {
         this.props.setConfirmPopup({
@@ -53,7 +53,7 @@ export class AppContainer extends PureComponent {
             picId: null,
             checked: false
         });
-    }
+    };
 
     render() {
         return (

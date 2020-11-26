@@ -18,7 +18,7 @@ export class Filter extends Component {
         this.setState({
             [name]: value
         });
-    }
+    };
 
     getParams = () => {
         return {
@@ -26,18 +26,18 @@ export class Filter extends Component {
             pageIndex: 1,
             pageSize: 50
         };
-    }
+    };
 
     handleSubmit = event => {
         event.preventDefault();
         const params = this.getParams();
         this.props.setGridParams(params);
         this.props.getFeedBackSubject(params);
-    }
+    };
 
     handleOpenCreatePopup = () => {
         this.props.setCreateFeedbackSubjectPopup({ show: true });
-    }
+    };
 
     render() {
         return (

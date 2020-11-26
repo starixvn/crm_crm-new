@@ -24,11 +24,11 @@ export class DataGrid extends Component {
 
         this.props.setGridParams(params);
         this.props.getGridData(params);
-    }
+    };
 
     onChangeActiveStaus = (conversationGroupId, isChecked) => {
         this.props.setUpateActivePopup({ isShowPopup: true, conversationGroupId, isChecked });
-    }
+    };
 
     updateActiveStatus = () => {
         const params = { conversationGroupId: this.props.updateActiveStatusPopup.conversationGroupId, isActive: this.props.updateActiveStatusPopup.isChecked };
@@ -41,11 +41,11 @@ export class DataGrid extends Component {
                 toast.error(this.props.updateActiveStatusResult.message);
             }
         });
-    }
+    };
 
     onCloseConfirmPopupChangeActiveStaus = () => {
         this.props.setUpateActivePopup({ isShowPopup: false });
-    }
+    };
 
     renderRecipients = (recipient, key) => {
         return (
@@ -53,7 +53,7 @@ export class DataGrid extends Component {
                 {`${recipient.recipientName} (${recipient.roleName})`}
             </div>
         );
-    }
+    };
 
     handleEdit = chatMapping => {
         if (parseInt(chatMapping.chatTypeId, 10) === ChatTypeMapping.Personal) {
@@ -61,7 +61,7 @@ export class DataGrid extends Component {
         } else {
             this.props.openUpdateGroupMappingPopup(chatMapping);
         }
-    }
+    };
 
     copyGroupIdToClipboard = conversationId => {
         const input = document.createElement('input');
@@ -71,7 +71,7 @@ export class DataGrid extends Component {
         document.execCommand('copy');
         input.remove();
         Site.displayCopiedToClipboard();
-    }
+    };
 
     buildHeader = isHost => {
         return (
@@ -93,7 +93,7 @@ export class DataGrid extends Component {
                 }
             </HeaderRow>
         );
-    }
+    };
 
     buildChatTypeMappingBody = isHost => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -104,7 +104,7 @@ export class DataGrid extends Component {
         }
 
         return [<Row key={`body${1}`} className="no-data"><Cell colSpan={isHost ? 13 : 12}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
-    }
+    };
 
     renderIsActiveCol = (isHost, item) => {
         if (isHost) {
@@ -126,7 +126,7 @@ export class DataGrid extends Component {
         }
 
         return <Cell className='text-center'>{item.isActive ? <span className="fa fa-check badge-green" /> : ''}</Cell>;
-    }
+    };
 
     renderEditIcon = (isBotRemovedStatus, chatMapping) => {
         return (
@@ -138,7 +138,7 @@ export class DataGrid extends Component {
                 </div>
             </Cell>
         );
-    }
+    };
 
     renderRow = (item, index, isHost) => {
         const isBotRemovedStatus = (item.chatTypeId === ChatTypeMapping.Group) && (item.mappingStatusId === MappingStatus.BotRemoved);
@@ -177,7 +177,7 @@ export class DataGrid extends Component {
                 }
             </Row>
         );
-    }
+    };
 
     renderConfirmMessage = () => {
         const isChecked = this.props.updateActiveStatusPopup.isChecked;
@@ -187,7 +187,7 @@ export class DataGrid extends Component {
                 Are you sure you want to {isChecked ? 'activate' : 'deactivate'} it?
              </div>
         );
-    }
+    };
 
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {

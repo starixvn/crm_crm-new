@@ -18,16 +18,16 @@ export class DataGrid extends Component {
         params['pageIndex'] = pageIndex;
         this.props.setGridParams(params);
         this.props.getFeedBackSubject(params);
-    }
+    };
 
     handleEdit = (id, subject) => {
         this.props.setSelectFeedbackSubjectId({ templateId: id, subject: subject });
         this.props.setEditFeedbackSubjectPopup({ show: true, templateId: id, subject: subject });
-    }
+    };
 
     handleEditStatus = (id, isActive) => {
         this.props.setEditStatusFeedbackSubjectPopup({ show: true, id: id, isActive: isActive });
-    }
+    };
 
     buildHeader = isHost => {
         return (
@@ -40,14 +40,14 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={5}>{LangHelper.getResource('Active')}</HeaderCell>
             </HeaderRow>
         );
-    }
+    };
 
     buildBody = isHost => {
         if (this.props.gridData.data.length > 0) {
             return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
         }
         return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 4 : 3}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
-    }
+    };
 
     renderRow = (item, index, isHost) => (
         <Row key={index} >
@@ -67,7 +67,7 @@ export class DataGrid extends Component {
                 />
             </Cell>
         </Row>
-    )
+    );
 
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {
@@ -98,7 +98,7 @@ export class DataGrid extends Component {
             />
         );
     }
-}
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 

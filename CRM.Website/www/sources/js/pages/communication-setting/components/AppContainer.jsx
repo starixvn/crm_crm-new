@@ -44,40 +44,39 @@ export class AppContainer extends Component {
         if (isSuccessful) {
             this.props.getGridCommunicationSetting(this.props.gridParamsCommunication);
         }
-    }
+    };
 
     handleCreateSuccess = () => {
         this.handleCloseCreatePopup();
         this.props.getGridCommunicationSetting(this.props.gridParamsCommunication);
-    }
+    };
 
     handleCloseEditPopup = () => {
         this.props.setEditCommunicationPopup({ show: false });
         this.props.setSelectCommunicationId(null);
         this.props.setEditCommunicationResult(null);
-    }
+    };
 
     handleEditSuccess = () => {
         this.handleCloseEditPopup();
         this.props.getGridCommunicationSetting(this.props.gridParamsCommunication);
-    }
+    };
 
     handleCloseDeletePopup = () => {
         this.props.setDeleteCommunicationPopup({ show: false });
-    }
+    };
 
     handleDelete = () => {
         this.props.deleteCommunication(this.props.deleteCommunicationPopup.id).then(data => {
             if (data.isSuccessful) {
                 toast.success(LangHelper.getResource('DeleteCommunicationSuccessfully'));
-            }
-            else {
+            } else {
                 toast.error(data.message);
             }
             this.handleCloseDeletePopup();
             this.props.getGridCommunicationSetting(this.props.gridParamsCommunication);
         });
-    }
+    };
 
     render() {
         return (

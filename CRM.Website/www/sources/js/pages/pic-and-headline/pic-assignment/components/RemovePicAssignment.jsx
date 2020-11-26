@@ -53,7 +53,7 @@ export class RemovePicAssignment extends Component {
             matrix,
             dataList
         });
-    }
+    };
 
     pushPics = (item, picNames, picIds) => {
         for (let picIndex = 0; picIndex < item.picList.length; picIndex++) {
@@ -63,7 +63,7 @@ export class RemovePicAssignment extends Component {
                 picIds.push(item.picList[picIndex].picId);
             }
         }
-    }
+    };
 
     buildHeader = () => {
         let cells = [
@@ -120,7 +120,7 @@ export class RemovePicAssignment extends Component {
                 }
             </HeaderRow>
         ];
-    }
+    };
 
     buildBody = () => {
         const picColNumer = this.state.picNames.length;
@@ -147,7 +147,7 @@ export class RemovePicAssignment extends Component {
         }
 
         return [<Row key={`body${1}`} className='no-data'><Cell colSpan={defaultColNumber + picColNumer}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
-    }
+    };
 
     renderRow = (index, row, mergeHeadline) => {
         let cells = [
@@ -179,7 +179,7 @@ export class RemovePicAssignment extends Component {
                 cells.map((cell, cellIndex) => this.renderCell(cell, cellIndex, mergeHeadline))
             }
         </Row>;
-    }
+    };
 
     renderCell = (cell, index, mergeHeadline) => {
         if (mergeHeadline && index === 1) {
@@ -238,7 +238,7 @@ export class RemovePicAssignment extends Component {
             checkedAllList,
             matrix
         });
-    }
+    };
 
     isCheckedAll = colNumber => {
         for (let index = 0; index < this.state.matrix.length; index++) {
@@ -248,9 +248,9 @@ export class RemovePicAssignment extends Component {
         }
 
         return true;
-    }
+    };
 
-    toggleConfirmRemovePopup = () => this.setState({ isShowConfirmRemovePopup: !this.state.isShowConfirmRemovePopup })
+    toggleConfirmRemovePopup = () => this.setState({ isShowConfirmRemovePopup: !this.state.isShowConfirmRemovePopup });
 
     handleSubmitRemoveAssignment = () => {
         this.toggleConfirmRemovePopup();
@@ -271,10 +271,10 @@ export class RemovePicAssignment extends Component {
         }
 
         functions.removePicAssignment(removeAssignments, isCheckedPics.toString(), this.refreshGrid);
-    }
+    };
 
     refreshGrid = () =>
-        this.props.getGridData(this.props.gridParams, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions))
+        this.props.getGridData(this.props.gridParams, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
 
     isChecked = colNumber => {
         for (let index = 0; index < this.state.matrix.length; index++) {
@@ -284,7 +284,7 @@ export class RemovePicAssignment extends Component {
         }
 
         return false;
-    }
+    };
 
     isNotHadChecked = () => {
         for (let rowNumber = 0; rowNumber < this.state.matrix.length; rowNumber++) {
@@ -296,7 +296,7 @@ export class RemovePicAssignment extends Component {
         }
 
         return true;
-    }
+    };
 
     render() {
         const maxWidth = this.state.picNames.length * 80 + 500;

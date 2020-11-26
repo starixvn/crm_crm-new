@@ -17,15 +17,15 @@ export class DataGrid extends Component {
         params['pageSize'] = pageSize;
         this.props.setNotificationTypeGridParams(params);
         this.props.getNotificationTypeGridData(params);
-    }
+    };
 
     handleEdit = item => {
         this.props.setEditNotificationTypePopup({ show: true, data: item });
-    }
+    };
 
     handleDelete = (id, name) => {
         this.props.setDeleteNotificationTypePopup({ show: true, notificationTypeId: id, name: name });
-    }
+    };
 
     buildNotificationTypeHeader = isHost => {
         return (
@@ -40,7 +40,7 @@ export class DataGrid extends Component {
                 }
             </HeaderRow>
         );
-    }
+    };
 
     buildNotificationTypeBody = isHost => {
         const { pageIndex, pageSize } = this.props.notificationTypeGridParams;
@@ -52,7 +52,7 @@ export class DataGrid extends Component {
         }
 
         return [<Row key={`body${1}`} className="no-data"><Cell colSpan={isHost ? 6 : 5}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
-    }
+    };
 
     renderRow = (item, index, isHost) => (
         <Row key={item.notificationTypeId} >
@@ -73,7 +73,7 @@ export class DataGrid extends Component {
                 </Cell>
             }
         </Row>
-    )
+    );
 
     render() {
         if (!this.props.notificationTypeGridData || !this.props.notificationTypeGridData.data) {

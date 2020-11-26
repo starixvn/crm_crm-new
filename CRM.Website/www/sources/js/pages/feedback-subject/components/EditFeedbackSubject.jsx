@@ -25,7 +25,7 @@ export class EditFeedbackSubject extends PureComponent {
             templateId: PropTypes.number,
             subject: PropTypes.string
         }).isRequired
-    }
+    };
 
     static defaultProps = {
         feedback: {
@@ -33,7 +33,7 @@ export class EditFeedbackSubject extends PureComponent {
             subject: '',
             isActive: true
         }
-    }
+    };
 
     validateFormik = values => {
         const errors = {};
@@ -42,7 +42,7 @@ export class EditFeedbackSubject extends PureComponent {
         }
 
         return errors;
-    }
+    };
 
     renderForm = ({
         errors,
@@ -94,7 +94,7 @@ export class EditFeedbackSubject extends PureComponent {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
@@ -111,7 +111,7 @@ export class EditFeedbackSubject extends PureComponent {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     handleConfirmCancelPopup = event => {
         const { values } = this.formik;
@@ -129,12 +129,12 @@ export class EditFeedbackSubject extends PureComponent {
         } else {
             this.setState({ showConfirmClose: true });
         }
-    }
+    };
 
 
     handleCloseConfirm = () => {
         this.setState({ showConfirmClose: false });
-    }
+    };
 
     render() {
         const feedback = this.props.feedback;

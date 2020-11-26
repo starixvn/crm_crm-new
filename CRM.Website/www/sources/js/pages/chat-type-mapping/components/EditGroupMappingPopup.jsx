@@ -61,7 +61,11 @@ export class EditGroupMappingPopup extends Component {
 
             const headlineIds = prevState.form.groupHeadlines.split(',');
             const headlineOptions = nextProps.groupHeadline;
-            headlineOptions.map(headline => { headline['checked'] = headlineIds.some(v => parseInt(v, 10) === headline.id); });
+            headlineOptions.map(headline => {
+                 headline['checked'] = headlineIds.some(
+                     v => parseInt(v, 10) === headline.id
+                     ); 
+                });
             const state = {
                 settings: {
                     recipientOptions: recipientOptions,
@@ -102,7 +106,7 @@ export class EditGroupMappingPopup extends Component {
         this.props.getGroupHeadlineByRecipient('');
         this.verifyLetstalk([]);
         this.props.getRecipientByRecipientType(value);
-    }
+    };
 
     handleRecipientChange = (currentItem, selectedItemsKey) => {
         this.handleChange('recipientIds', selectedItemsKey);
@@ -133,11 +137,11 @@ export class EditGroupMappingPopup extends Component {
         this.props.verifyLetstalkInGroup(params).then(() => {
             this.setState({ isLoading: false });
         });
-    }
+    };
 
     handleGroupHeadlineChange = (currentItem, selectedItemsKey) => {
         this.handleChange('groupHeadlines', selectedItemsKey);
-    }
+    };
 
     renderEditGroupMappingOptions = (item, key) => {
         return (
@@ -145,7 +149,7 @@ export class EditGroupMappingPopup extends Component {
                 {item.name}
             </option>
         );
-    }
+    };
 
     renderLetstalkIdVerification = (item, key) => {
         return (
@@ -166,7 +170,7 @@ export class EditGroupMappingPopup extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
     isValidParams = () => {
         const data = this.state.form;
@@ -202,7 +206,7 @@ export class EditGroupMappingPopup extends Component {
         });
 
         return isValid;
-    }
+    };
 
     isDirtyForm = () => JSON.stringify(this.initUpdateGroupMappingState) !== JSON.stringify(this.state.form);
 
@@ -212,13 +216,13 @@ export class EditGroupMappingPopup extends Component {
         } else {
             this.props.closeUpdateGroupMappingPopup();
         }
-    }
+    };
 
     closeConfirmDirtyForm = () => {
         this.setState({
             isShowConfirmDirtyForm: false
         });
-    }
+    };
 
     getParams = () => {
         return {
@@ -232,7 +236,7 @@ export class EditGroupMappingPopup extends Component {
             languageId: this.state.form.languageId,
             remark: this.state.form.remark
         };
-    }
+    };
 
     handleSubmitForm = e => {
         this.setState({ isSubmitting: true });
@@ -251,7 +255,7 @@ export class EditGroupMappingPopup extends Component {
                 }
             });
         }
-    }
+    };
 
     renderForm = () => {
         return (
@@ -411,7 +415,7 @@ export class EditGroupMappingPopup extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     render() {
         return (

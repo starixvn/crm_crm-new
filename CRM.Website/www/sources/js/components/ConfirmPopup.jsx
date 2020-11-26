@@ -18,14 +18,14 @@ class ConfirmPopup extends PureComponent {
         }),
         onSubmit: PropTypes.func,
         onClose: PropTypes.func
-    }
+    };
 
     static defaultProps = {
         size: 'sm',
         title: '',
         content: '',
         requestResponse: null
-    }
+    };
 
     render() {
         const { size, title, content, requestResponse } = this.props;

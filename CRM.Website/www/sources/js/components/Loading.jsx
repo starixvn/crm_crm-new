@@ -5,12 +5,12 @@ class Loading extends PureComponent {
     static propTypes = {
         width: PropTypes.number,
         height: PropTypes.number
-    }
+    };
 
     static defaultProps = {
         width: 18,
         height: 18
-    }
+    };
 
     renderChildCircle = () => {
         const numOfChildCircle = 12;
@@ -20,7 +20,7 @@ class Loading extends PureComponent {
         }
 
         return childs;
-    }
+    };
 
     render() {
         const { width, height } = this.props;

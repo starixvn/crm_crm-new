@@ -19,7 +19,7 @@ export class DataGrid extends Component {
         params.pageSize = pageSize;
         this.props.setGridParams(params);
         this.props.getGridData(params, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
-    }
+    };
 
     buildPicManagementHeader = isHost =>
         <HeaderRow>
@@ -49,7 +49,7 @@ export class DataGrid extends Component {
                     }
                 </HeaderCell>
             }
-        </HeaderRow>
+        </HeaderRow>;
 
     buildPicManagementBody = isHost => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -72,16 +72,14 @@ export class DataGrid extends Component {
                     const accounts = pics.map(pic => pic.directAccount);
                     const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
                     row = this.renderRow(index, isHost, assignment, mergeHeadline, mergePIC, picCell);
-                }
-                else if(mergePIC === 0) {
+                } else if(mergePIC === 0) {
                     const pics = this.props.picAssignmentGridData.data.filter(item =>
                         item.headlineID === assignment.headlineID && item.picForMapping === assignment.picForMapping);
                     mergePIC = pics.length;
                     const accounts = pics.map(pic => pic.directAccount);
                     const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
                     row = this.renderRow(index, isHost, assignment, 0, mergePIC, picCell);
-                }
-                else {
+                } else {
                     row = this.renderRow(index, isHost, assignment, 0, 0);
                 }
 
@@ -98,7 +96,7 @@ export class DataGrid extends Component {
                 <Cell colSpan={isHost ? 11 : 10}>{LangHelper.getResource('ThereIsNoData')}</Cell>
             </Row>
         ];
-    }
+    };
 
     renderRow = (index, isHost, item, mergeHeadline, mergePIC, picCell) => {
         const defaultPicList = item.defaultPicList ?
@@ -127,7 +125,7 @@ export class DataGrid extends Component {
                 isHost && this.renderIsHost(item, index)
             }
         </Row>;
-    }
+    };
 
     renderMergeHeadlineCells = (mergeHeadline, item, defaultPicList) => {
         if (mergeHeadline > 0) {
@@ -147,7 +145,7 @@ export class DataGrid extends Component {
         }
 
         return null;
-    }
+    };
 
     renderIsHost = (item, index) => {
         const checked = this.props.removeOptions.dataList
@@ -163,7 +161,7 @@ export class DataGrid extends Component {
                 onChange={() => this.handleChangeRemoveCheckbox(index)}
             />
         </Cell>;
-    }
+    };
 
     handleOpenAssignPicPopup = (headlineId, accountNames) =>
         this.props.setAssignPicPopup({
@@ -172,7 +170,7 @@ export class DataGrid extends Component {
                 headlineId,
                 accountNames
             }
-        })
+        });
 
     renderPic = (pics, headlineId, accountNames, isHost) => {
         if (pics === null || pics.length === 0) {
@@ -187,7 +185,7 @@ export class DataGrid extends Component {
         }
 
         return pics.map(item => <p key={item.picId} className='pic-name'>{`${item.picName} (${item.role})`}</p>);
-    }
+    };
 
     renderDefaultPic = (headline, pics) => {
         if (pics.length > 0) {
@@ -203,7 +201,7 @@ export class DataGrid extends Component {
         return <span className='plus-icon'
             onClick={() => this.handleOpenDefaultPicPopup(headline)}
         >+</span>;
-    }
+    };
 
     handleChangeRemoveCheckboxAll = () => {
         const checked = !this.props.removeOptions.isCheckedAll;
@@ -224,7 +222,7 @@ export class DataGrid extends Component {
             shouldResetScrollPosition: false,
             dataList
         });
-    }
+    };
 
     handleChangeRemoveCheckbox = index => {
         const dataList = this.props.removeOptions.dataList.map(item => {
@@ -241,16 +239,16 @@ export class DataGrid extends Component {
             shouldResetScrollPosition: false,
             dataList
         });
-    }
+    };
 
-    handleOpenRemovePopup = () => this.props.setRemovePicAssignmentPopup({ show: true })
+    handleOpenRemovePopup = () => this.props.setRemovePicAssignmentPopup({ show: true });
 
     handleOpenDefaultPicPopup = (headline, pics) =>
         this.props.setDefaultPicPopup({
             show: true,
             headline,
             pics
-        })
+        });
 
     render() {
         if (!this.props.picAssignmentGridData || !this.props.picAssignmentGridData.data) {

@@ -17,16 +17,16 @@ export class DataGrid extends PureComponent {
 
         this.props.setGridParams(params);
         this.props.getGridData(params);
-    }
+    };
 
     handleShowChart = () => {
         this.props.setChartPopup({ show: true });
-    }
+    };
 
     handleExportExcel = () => {
         const { gridParams } = this.props;
         this.props.exportExcel(gridParams);
-    }
+    };
 
     buildHeader = () => {
         return (
@@ -37,7 +37,7 @@ export class DataGrid extends PureComponent {
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Total')}</HeaderCell>
             </HeaderRow>
         );
-    }
+    };
 
     buildBody = () => {
         const { childReports, total } = this.props.gridData;
@@ -50,7 +50,7 @@ export class DataGrid extends PureComponent {
             ];
         }
         return [<Row key={'body'} className="no-data"><Cell colSpan="4">{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
-    }
+    };
 
     renderRow = report => {
         return report.childReports.map((item, index) => {
@@ -72,7 +72,7 @@ export class DataGrid extends PureComponent {
                 );
             }
         });
-    }
+    };
 
     renderLastRow = total => {
         return total.childReports.map((item, index) => {
@@ -94,7 +94,7 @@ export class DataGrid extends PureComponent {
                 );
             }
         });
-    }
+    };
 
     render() {
         const { gridData } = this.props;

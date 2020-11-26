@@ -18,19 +18,19 @@ export class DataGrid extends Component {
 
         this.props.setGridParams( params );
         this.props.getGridData( params );
-    }
+    };
 
     handleEdit = id => {
         this.props.getTemplateById( id, () => this.props.setEditTemplatePopup( { show: true } ) );
-    }
+    };
 
     handleViewContent = id => {
         this.props.getTemplateById( id, () => this.props.setContentDetailPopup( { show: true } ) );
-    }
+    };
 
     handleDelete = ( id, name ) => {
         this.props.setDeleteTemplatePopup( { show: true, templateId: id, name: name } );
-    }
+    };
 
     buildGridHeader = isHost => {
         return (
@@ -46,7 +46,7 @@ export class DataGrid extends Component {
                 }
             </HeaderRow>
         );
-    }
+    };
 
     buildGridBody = isHost => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -58,7 +58,7 @@ export class DataGrid extends Component {
         }
 
         return [<Row key={`body${1}`} className="no-data"><Cell colSpan="5">{LangHelper.getResource( 'ThereIsNoData' )}</Cell></Row>];
-    }
+    };
 
     renderRow = ( item, index, isHost ) => (
         <Row key={item.notificationTemplateId}>
@@ -78,7 +78,7 @@ export class DataGrid extends Component {
                 </Cell>
             }
         </Row>
-    )
+    );
 
     render() {
         if ( !this.props.gridData || !this.props.gridData.data ) {

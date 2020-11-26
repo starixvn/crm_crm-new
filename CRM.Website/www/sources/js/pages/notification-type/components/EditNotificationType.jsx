@@ -156,7 +156,7 @@ export class EditNotificationType extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         const notificationType = {
@@ -177,7 +177,7 @@ export class EditNotificationType extends Component {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     render() {
         const notificationType = this.props.editNotificationTypePopup.data;

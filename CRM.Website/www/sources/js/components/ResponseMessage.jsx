@@ -7,13 +7,13 @@ class ResponseMessage extends PureComponent {
         isSuccessful: PropTypes.bool,
         message: PropTypes.string,
         messages: PropTypes.array
-    }
+    };
 
     static defaultProps = {
         isSuccessful: false,
         message: '',
         messages: []
-    }
+    };
 
     render() {
         const { isSuccessful, message, messages } = this.props;

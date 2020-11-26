@@ -58,16 +58,16 @@ export class InsertPersonalMappingPopup extends Component {
             this.handleChange('displayName', this.props.letstalkName);
             this.setState({ isLoading: false });
         });
-    }
+    };
 
     handleGroupHeadlineChange = (currentItem, selectedItemsKey) => {
         this.handleChange('groupHeadlines', selectedItemsKey);
-    }
+    };
 
     handleRecipientTypeChange = value => {
         this.handleChange('recipientType', value);
         this.props.getRecipientByRecipientType(value);
-    }
+    };
 
     handleRecipientChange = option => {
         this.handleChange('recipient', option || '');
@@ -87,7 +87,7 @@ export class InsertPersonalMappingPopup extends Component {
             this.handleChange('displayName', this.props.letstalkName);
             this.setState({ isLoading: false });
         });
-    }
+    };
 
     renderOptions = (item, key) => {
         return (
@@ -95,7 +95,7 @@ export class InsertPersonalMappingPopup extends Component {
                 {item.name}
             </option>
         );
-    }
+    };
 
     renderLetstalkIds = () => {
         let result = null;
@@ -117,7 +117,7 @@ export class InsertPersonalMappingPopup extends Component {
         }
 
         return result;
-    }
+    };
 
     isValidParams = () => {
         const data = this.state.form;
@@ -162,7 +162,7 @@ export class InsertPersonalMappingPopup extends Component {
             }
         });
         return isValid;
-    }
+    };
 
     getParams = () => {
         return {
@@ -195,7 +195,7 @@ export class InsertPersonalMappingPopup extends Component {
                 }
             });
         }
-    }
+    };
 
     isDirtyForm = () => JSON.stringify(this.initState) !== JSON.stringify(this.state.form);
 
@@ -207,16 +207,19 @@ export class InsertPersonalMappingPopup extends Component {
         } else {
             this.props.closeInsertPersonalMappingPopup();
         }
-    }
+    };
 
     closeConfirmDirtyForm = () => {
         this.setState({
             dirtyFormConfirmation: { isShow: false }
         });
-    }
+    };
 
     renderForm = () => {
-        const recipientOptions = this.props.recipients.map(item => { return { value: item.id, label: item.name, letstalkIds: item.letstalkIds }; });
+        const recipientOptions = this.props.recipients.map(item => { 
+            return { 
+                value: item.id, label: item.name, letstalkIds: item.letstalkIds }; 
+            });
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Modal.Body>
@@ -374,7 +377,7 @@ export class InsertPersonalMappingPopup extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     render() {
         return (
@@ -406,7 +409,7 @@ export class InsertPersonalMappingPopup extends Component {
             </Fragment>
         );
     }
-}
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 

@@ -19,17 +19,17 @@ export class DataGrid extends PureComponent {
 
         this.props.setGridParams(params);
         this.props.getGridData(params);
-    }
+    };
 
     handleExportExcel = () => {
         const { gridParams } = this.props;
         this.props.exportExcel(gridParams);
-    }
+    };
 
     handleEdit = item => {
         this.props.setSelectedPic(item);
         this.props.setEditPicPopup({ show: true });
-    }
+    };
 
     handleActiveStatus = (username, picId, checked) => {
         if (!this.props.isHost) {
@@ -41,7 +41,7 @@ export class DataGrid extends PureComponent {
             picId,
             checked
         });
-    }
+    };
 
     buildHeader = isHost => {
         const { communicationTools } = this.props.setting;
@@ -65,7 +65,7 @@ export class DataGrid extends PureComponent {
                 {this.renderHeaderCommunicationTools(communicationTools)}
             </HeaderRow>
         ];
-    }
+    };
 
     buildBody = isHost => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -108,7 +108,7 @@ export class DataGrid extends PureComponent {
                 />
             </Cell>
         </Row>
-    )
+    );
 
     renderHeaderCommunicationTools = communicationTools => {
         const header = [];
@@ -127,7 +127,7 @@ export class DataGrid extends PureComponent {
             data.push(<Cell key={item.settingId}>{value}</Cell>);
         });
         return data;
-    }
+    };
 
     render() {
         if (!this.props.gridData || !this.props.gridData.dataList) {

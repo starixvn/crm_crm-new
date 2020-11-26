@@ -8,19 +8,19 @@ class FormikErrorMessage extends PureComponent {
         errors: PropTypes.object,
         fieldNames: PropTypes.arrayOf(PropTypes.string),
         touched: PropTypes.object
-    }
+    };
 
     static defaultProps = {
         touched: {},
         errors: {},
         fieldNames: []
-    }
+    };
 
     constructor(props) {
         super(props);
     }
 
-    validateFormikField = (touched, errors, fieldName) => !(touched[fieldName] && errors[fieldName])
+    validateFormikField = (touched, errors, fieldName) => !(touched[fieldName] && errors[fieldName]);
 
     render() {
         const { errors, touched, fieldNames } = this.props;

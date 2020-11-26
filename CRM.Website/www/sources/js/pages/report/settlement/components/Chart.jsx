@@ -25,7 +25,7 @@ export class Chart extends PureComponent {
             return obj;
         });
         return data;
-    }
+    };
 
     getLabels = reports => {
         const labels = [];
@@ -38,11 +38,11 @@ export class Chart extends PureComponent {
             });
         });
         return labels;
-    }
+    };
 
     onCloseChart = () => {
         this.props.setChartPopup({ show: false });
-    }
+    };
 
     render() {
         const { chartInfo } = this.props.gridData;

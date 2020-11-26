@@ -7,7 +7,7 @@ export default class MultipleSelectOptionList extends Component {
         dataSource: PropTypes.arrayOf(PropTypes.object).isRequired,
         id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
         onChange: PropTypes.func
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -44,7 +44,7 @@ export default class MultipleSelectOptionList extends Component {
         }
 
         return minHeight;
-    }
+    };
 
     render() {
         const dataSource = this.props.dataSource;

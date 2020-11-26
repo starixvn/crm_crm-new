@@ -114,7 +114,7 @@ export class NewNotificationType extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         const notificationType = {
@@ -134,7 +134,7 @@ export class NewNotificationType extends Component {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     render() {
         const initialValues = {

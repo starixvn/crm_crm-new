@@ -43,30 +43,30 @@ export class NewPicManagement extends Component {
         } else {
             this.setState({ showConfirmClose: true });
         }
-    }
+    };
 
     handleCloseConfirm = () => {
         this.setState({ showConfirmClose: false });
-    }
+    };
 
     handleClosePopup = () => {
         this.props.setCreatePicPopup({ show: false });
         if (this.props.createPicResult) {
             this.props.setCreatePicResult(null);
         }
-    }
+    };
 
     handleAddRowCommunication = () => {
         const data = [...this.state.communicationTools, getTemplateCommunicationTool()];
         this.setState({ communicationTools: data });
-    }
+    };
 
     handleRemoveRowCommunication = unique => {
         const data = [...this.state.communicationTools];
         const index = data.findIndex(c => c.unique === unique);
         data.splice(index, 1);
         this.setState({ communicationTools: data });
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
@@ -82,7 +82,7 @@ export class NewPicManagement extends Component {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     getTemplateCreate = values => {
         const picCommunicationTools = [];
@@ -105,7 +105,7 @@ export class NewPicManagement extends Component {
             remark: values.remark,
             picCommunicationTools
         };
-    }
+    };
 
     renderCommunicationTool = ({
         values,
@@ -161,7 +161,7 @@ export class NewPicManagement extends Component {
                 </Form.Group>
             );
         });
-    }
+    };
 
     renderForm = ({
         values,
@@ -271,7 +271,7 @@ export class NewPicManagement extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     render() {
         const initialValues = {

@@ -9,11 +9,11 @@ export default class OptionAll extends Component {
         id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
         checked: PropTypes.bool,
         textOptions: PropTypes.object
-    }
+    };
 
     static defaultProps = {
         checked: DEFAULT_CHECKED
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -26,7 +26,7 @@ export default class OptionAll extends Component {
 
     changeHandler = ({ checked }) => {
         this.props.onChange && this.props.onChange(checked);
-    }
+    };
 
     render() {
         const { id, checked } = this.props;

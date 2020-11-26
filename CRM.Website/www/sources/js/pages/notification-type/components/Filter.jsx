@@ -70,23 +70,23 @@ export class Filter extends Component {
                 }
             });
         });
-    }
+    };
 
-    recipientNotificationTypeChange = (currentItem, selectedItemsKey) => this.handleFilterChange('recipientTypes', selectedItemsKey)
-    chatNotificationTypeChange = (currentItem, selectedItemsKey) => this.handleFilterChange('chatTypes', selectedItemsKey)
-    systemChange = (currentItem, selectedItemsKey) => this.handleFilterChange('systems', selectedItemsKey)
+    recipientNotificationTypeChange = (currentItem, selectedItemsKey) => this.handleFilterChange('recipientTypes', selectedItemsKey);
+    chatNotificationTypeChange = (currentItem, selectedItemsKey) => this.handleFilterChange('chatTypes', selectedItemsKey);
+    systemChange = (currentItem, selectedItemsKey) => this.handleFilterChange('systems', selectedItemsKey);
 
     handleNotificationTypeChange = event => {
         this.setState({
             notificationTypeName: event.target.value
         });
-    }
+    };
 
     handleFilterChange = (name, value) => {
         this.setState(prevState => ({
             filter: { ...prevState.filter, ...{ [name]: value } }
         }));
-    }
+    };
 
     getParams = () => {
         return {
@@ -97,7 +97,7 @@ export class Filter extends Component {
             pageIndex: 1,
             pageSize: 100
         };
-    }
+    };
 
     submitHandler = e => {
         e.preventDefault();
@@ -118,14 +118,13 @@ export class Filter extends Component {
 
         if (error.length > 0) {
             toast.error(`${LangHelper.getResource('PleaseChoose')} ${error.join(', ').toString()}`);
-        }
-        else {
+        } else {
             this.props.setNotificationTypeGridParams(params);
             this.props.getNotificationTypeGridData(params);
         }
-    }
+    };
 
-    handleOpenCreatePopup = () => this.props.setCreateNotificationTypePopup({ show: true })
+    handleOpenCreatePopup = () => this.props.setCreateNotificationTypePopup({ show: true });
 
     render() {
         const { isHost } = this.props;

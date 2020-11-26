@@ -25,14 +25,14 @@ export class ConfirmAssignedDirectAccount extends Component {
         <HeaderRow>
             <HeaderCell colWidth={30}>{LangHelper.getResource('PIC')}</HeaderCell>
             <HeaderCell colWidth={70}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
-        </HeaderRow>
+        </HeaderRow>;
 
     buildBody = () =>
         this.props.confirmAssignedDirectAccountPopup.data.map((item, index) =>
             <Row key={index}>
                 <Cell>{`${item.picName} (${item.role})`}</Cell>
                 <Cell>{this.renderDirectAccount(item.directAccount)}</Cell>
-            </Row>)
+            </Row>);
 
     renderDirectAccount = data => {
         const directAccount = data.split(',');
@@ -45,7 +45,7 @@ export class ConfirmAssignedDirectAccount extends Component {
         }
 
         return data;
-    }
+    };
 
     openDirectAccountPopup = directAccount =>
         this.setState({
@@ -53,14 +53,14 @@ export class ConfirmAssignedDirectAccount extends Component {
                 show: true,
                 data: directAccount
             }
-        })
+        });
 
     closeDirectAccountPopup = () =>
         this.setState({
             directAccountPopup: {
                 show: false
             }
-        })
+        });
 
     onClose = () => {
         this.props.setConfirmAssignedDirectAccountPopup({ show: false });
@@ -68,7 +68,7 @@ export class ConfirmAssignedDirectAccount extends Component {
             ...this.props.assignPicPopup,
             isSubmitting: false
         });
-    }
+    };
 
     assignPic = isKeepAssign => {
         this.props.setConfirmAssignedDirectAccountPopup({ show: false });
@@ -78,7 +78,7 @@ export class ConfirmAssignedDirectAccount extends Component {
             isKeepAssign,
             directAccountIds: this.props.assignPicFilter.directAccount.map(item => item.username).toString()
         }, this.callbackAssignPic);
-    }
+    };
 
     callbackAssignPic = data => {
         const { isSuccessful, message } = data;
@@ -90,14 +90,13 @@ export class ConfirmAssignedDirectAccount extends Component {
 
         if (data.isSuccessful) {
             setTimeout(this.refreshGrid, 2000);
-        }
-        else {
+        } else {
             this.props.setAssignPicPopup({
                 ...this.props.assignPicPopup,
                 isSubmitting: false
             });
         }
-    }
+    };
 
     refreshGrid = () => {
         this.props.setAssignPicPopup({ show: false });
@@ -108,7 +107,7 @@ export class ConfirmAssignedDirectAccount extends Component {
             directAccount: [],
             isSelectedAll: false
         });
-    }
+    };
 
     render() {
         return (

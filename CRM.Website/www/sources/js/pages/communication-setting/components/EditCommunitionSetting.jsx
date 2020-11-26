@@ -41,7 +41,7 @@ export class EditCommunitionSetting extends PureComponent {
         const setSubCatagories = selectedData.subCategory === '0' ? getSubCategories(true, findSubByMain, []) : getSubCategories(false, findSubByMain, selectedData.subCategory);
 
         const selectedSubCatagories = [];
-        setSubCatagories.map(sub => {
+        setSubCatagories.forEach(sub => {
             selectedSubCatagories.push(sub.subCategoryId);
         });
 
@@ -88,15 +88,14 @@ export class EditCommunitionSetting extends PureComponent {
                     subCategoryOptionsEdit: setSubCatagories
                 });
             });
-        }
-        else {
+        } else {
             setFieldValue('subCategoryTypesEdit', '');
             this.setState({
                 subCategoryOptionsEdit: [],
                 selectedSubCategoryIdsEdit: []
             });
         }
-    }
+    };
 
     validateEditCommunication = values => {
         const errors = {};
@@ -113,7 +112,7 @@ export class EditCommunitionSetting extends PureComponent {
         }
 
         return errors;
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
@@ -143,7 +142,7 @@ export class EditCommunitionSetting extends PureComponent {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     renderFormEditCommunication = ({
         values,
@@ -246,7 +245,7 @@ export class EditCommunitionSetting extends PureComponent {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     render() {
         const Communication = this.props.selectCommunication;

@@ -22,7 +22,7 @@ export class EditNotificationTemplate extends Component {
             title: PropTypes.string,
             contents: PropTypes.arrayOf(PropTypes.object)
         }).isRequired
-    }
+    };
 
     static defaultProps = {
         languages: [],
@@ -34,7 +34,7 @@ export class EditNotificationTemplate extends Component {
             title: '',
             contents: []
         }
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -131,7 +131,7 @@ export class EditNotificationTemplate extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
@@ -157,7 +157,7 @@ export class EditNotificationTemplate extends Component {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     render() {
         const template = this.props.template;

@@ -8,11 +8,11 @@ export default class MultipleSelectLabel extends Component {
         textOptions: PropTypes.object,
         selectedItems: PropTypes.arrayOf(PropTypes.object).isRequired,
         maxDisplayItemCount: PropTypes.number
-    }
+    };
 
     static defaultProps = {
         maxDisplayItemCount: MAX_SELECTED_ITEM_FOR_DISPLAY
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -27,14 +27,11 @@ export default class MultipleSelectLabel extends Component {
 
         if (this.props.isAllTextShown && selectedItemCount === this.props.dataSourceSize) {
             displayText = textOptions['Texts'];
-        }
-        else if (selectedItemCount > maxDisplayItemCount) {
+        } else if (selectedItemCount > maxDisplayItemCount) {
             displayText = textOptions['SelectedItemCount'].replace('#', selectedItemCount);
-        }
-        else if (selectedItemCount >= 1) {
+        } else if (selectedItemCount >= 1) {
             displayText = selectedValues.join(', ');
-        }
-        else if(!this.props.dataSourceSize){
+        } else if(!this.props.dataSourceSize){
             displayText = textOptions['NoData'];
         }
 

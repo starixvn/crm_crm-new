@@ -86,7 +86,7 @@ export class Filter extends Component {
                 }
             }));
         });
-    }
+    };
 
     handleFilterChange = (name, value) =>
         this.setState(prevState => ({
@@ -94,7 +94,7 @@ export class Filter extends Component {
                 ...prevState.filter,
                 [name]: value
             }
-        }))
+        }));
 
     handleChange = e => {
         e.persist();
@@ -104,7 +104,7 @@ export class Filter extends Component {
                 [e.target.name]: e.target.value
             }
         }));
-    }
+    };
 
     handleCheckBoxChange = e => {
         e.persist();
@@ -114,17 +114,17 @@ export class Filter extends Component {
                 [e.target.name]: e.target.checked
             }
         }));
-    }
+    };
 
-    handleSiteChange = (currentItem, selectedItemsKey) => this.handleFilterChange('site', selectedItemsKey)
+    handleSiteChange = (currentItem, selectedItemsKey) => this.handleFilterChange('site', selectedItemsKey);
 
-    handleCurrencyChange = (currentItem, selectedItemsKey) => this.handleFilterChange('currency', selectedItemsKey)
+    handleCurrencyChange = (currentItem, selectedItemsKey) => this.handleFilterChange('currency', selectedItemsKey);
 
-    handleStatusChange = (currentItem, selectedItemsKey) => this.handleFilterChange('status', selectedItemsKey)
+    handleStatusChange = (currentItem, selectedItemsKey) => this.handleFilterChange('status', selectedItemsKey);
 
-    handlePositionChange = (currentItem, selectedItemsKey) => this.handleFilterChange('position', selectedItemsKey)
+    handlePositionChange = (currentItem, selectedItemsKey) => this.handleFilterChange('position', selectedItemsKey);
 
-    renderHeadlineTypeOption = item => <option key={item.id} value={item.id}>{item.name}</option>
+    renderHeadlineTypeOption = item => <option key={item.id} value={item.id}>{item.name}</option>;
 
     getParams = () => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -133,17 +133,17 @@ export class Filter extends Component {
             pageIndex,
             pageSize
         };
-    }
+    };
 
     handleSubmit = () => {
         const params = this.getParams();
         params.pageIndex = 1;
         this.props.setGridParams(params);
         this.props.getGridData(params, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
-    }
+    };
 
     handleOpenAssignPicPopup = () =>
-        this.props.setAssignPicPopup({ show: true })
+        this.props.setAssignPicPopup({ show: true });
 
     render() {
         return (
