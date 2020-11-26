@@ -431,6 +431,7 @@
             result.Equals(expect);
         }
 
+        [Fact]
         public void CheckValidParams__InValidParamsStationIdCriteria_ExpectedReturnFalseAndMessage()
         {
             // Arrange
@@ -737,8 +738,10 @@
 
         #region GetSolution
 
-        [Fact]
-        public void GetSolution_ProductNameRNGCasinoNotVipCustomer_ReturnExactTemplate()
+        [Theory]
+        [InlineData("RNG Casino - Minor Jackpot")]
+        [InlineData("RNG Casino - Mega Jackpot")]
+        public void GetSolution_ProductNameRNGCasinoNotVipCustomer_ReturnExactTemplate(string ProductGroup)
         {
             // Arrange
             var winlimit = new WinLimitFeedBackInfo
@@ -748,7 +751,7 @@
                 Currency = "USD",
                 ProductID = 1,
                 ProductName = "RNG Casino",
-                ProductGroup = "RNG Casino - Minor Jackpot"
+                ProductGroup = ProductGroup
             };
 
             var service = MockService();
