@@ -19,7 +19,7 @@
         </YellowTemplateENSC>
         <RedTemplateENYN>
             Dear Sir, Customer Support would like to inform that there is [BIG Winner] under your line. Member username is "{0}", currently has won amount of "{1} ({2})" in "{3}". Kindly take note, thank you! {5}
-            Xin chào quý khách, Bộ phận chăm sóc khách hàng xin thông báo có [Người Thắng Lớn] trong hệ thống của quý khách. Tên đăng nhập của thành viên là  "{0}", hiện tại số tiền thắng đã lên tới "{1} ({2})" trong {4}. Xin vui lòng lưu ý, cám ơn quý khách! {5}
+            Xin chào quý khách, Bộ phận chăm sóc khách hàng xin thông báo có [Người Thắng Lớn] trong hệ thống của quý khách. Tên đăng nhập của thành viên là  "{0}", hiện tại số tiền thắng đã lên tới "{1} ({2})" trong "{4}". Xin vui lòng lưu ý, cám ơn quý khách! {5}
         </RedTemplateENYN>
         <RedTemplateENSC>
             Dear Sir, Customer Support would like to inform that there is [BIG Winner] under your line. Member username is "{0}", currently has won amount of "{1} ({2})" in "{3}". Kindly take note, thank you! {5}
