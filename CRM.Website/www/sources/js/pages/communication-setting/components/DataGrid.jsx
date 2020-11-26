@@ -37,12 +37,12 @@ export class DataGrid extends Component {
                     overlay={this.renderTooltipCategory(index, categoryParse)}
                 >
                     <span>
-                        {categories.splice(0, maxItems).join(',') + '...'}
+                        {categories.splice(0, maxItems).join(', ') + '...'}
                     </span>
                 </OverlayTrigger>
             );
         }
-        return categories;
+        return <div>{categories.join(', ')}</div>;
     };
 
     buildHeaderCommunication = isHost => {
