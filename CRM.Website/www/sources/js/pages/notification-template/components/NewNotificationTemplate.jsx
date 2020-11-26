@@ -154,8 +154,7 @@ export class NewNotificationTemplate extends Component {
             title: ''
         };
         this.props.languages.map(item => {
-            var initial = initialValues['language_' + item.settingId]
-            initial = ''
+            initialValues['language_' + item.settingId] = '';
         });
 
         return (

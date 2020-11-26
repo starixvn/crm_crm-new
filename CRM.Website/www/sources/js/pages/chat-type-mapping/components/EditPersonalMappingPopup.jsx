@@ -1,4 +1,4 @@
-﻿﻿import React, { Component, Fragment } from 'react';
+﻿import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
@@ -57,13 +57,15 @@ export class EditPersonalMappingPopup extends Component {
                 const selectRecipient = nextProps.recipients.filter(r => r.id === recipientId);
                 letstalkIds = selectRecipient.length > 0 ? selectRecipient[0].letstalkIds : '';
             }
-            const recipientOptions = nextProps.recipients.map(item => { return { 
-                value: item.id, label: item.name,  
-                letstalkIds: item.letstalkIds 
-            }});
+            const recipientOptions = nextProps.recipients.map(item => {
+                return {
+                    value: item.id, label: item.name,
+                    letstalkIds: item.letstalkIds
+                };
+            });
             const headlineOptions = nextProps.groupHeadline;
-            headlineOptions.map(headline => { 
-                var checkedId = headlineIds.some(v => parseInt(v, 10) === headline.id); 
+            headlineOptions.map(headline => {
+                const checkedId = headlineIds.some(v => parseInt(v, 10) === headline.id);
                 headline['checked'] = checkedId;
             });
             const state = {
