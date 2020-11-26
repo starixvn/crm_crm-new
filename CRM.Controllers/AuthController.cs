@@ -127,7 +127,7 @@
                 }
             }
 
-            return config ?? new ExternalRedirectMapping();
+            return config;
         }
 
         private bool IsValidPassword(User user, SignIn signIn)

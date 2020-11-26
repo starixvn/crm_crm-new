@@ -164,7 +164,6 @@ export class AssignPic extends Component {
 
     handleAddCustomerKeyCode = () => {
         const username = this.inputRef.value;
-        username.replace(',', '');
         this.inputRef.value = '';
         if (this.props.assignPicFilter.directAccount.length < this.state.maxUsername) {
             if (username.trim() && !username.includes(',')) {
@@ -474,7 +473,8 @@ export class AssignPic extends Component {
     closeConfirmPopup = () => this.setState({ isShowConfirmPopup: false });
 
     render() {
-        return <Fragment>
+        return (
+            <Fragment>
             <Modal
                 show backdrop='static' keyboard={false} size='lg' centered
                 onHide={() => this.handleCancel()} dialogAs={DraggableModalDialog}
@@ -587,7 +587,7 @@ export class AssignPic extends Component {
                         onClose={() => this.closeConfirmPopup()}
                     />
             }
-        </Fragment>;
+        </Fragment>);
     }
 }
 
