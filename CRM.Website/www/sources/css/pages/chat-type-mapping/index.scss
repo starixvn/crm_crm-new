@@ -101,16 +101,18 @@
 }
 
 .react-select__control, .react-select__control--is-focused {
-    height: 30px;
+    height: 28px;
 
     .react-select__single-value, .react-select__placeholder {
-        top: 43%;
+        top: 40%;
     }
 
     .react-select__indicator {
-        padding: 5px;
+        padding: 0;
     }
+}
 
+.basic-single {
     .react-select__menu {
         top: 75%;
     }

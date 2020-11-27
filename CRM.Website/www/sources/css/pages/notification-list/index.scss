@@ -5,6 +5,13 @@
 @import '../../abstracts/variables';
 @import '../../components/modal';
 @import '../../components/tables';
+@import '../../components/react-select';
+
+.form-filter {
+    .react-select__indicators {
+        display: none;
+    }
+}
 
 .link-click {
     cursor: pointer;
@@ -102,7 +109,7 @@ td, th {
 
 .notification-id-container {
     justify-content: space-between;
-    
+
     .notification-id-input {
         width: 45% !important;
     }
