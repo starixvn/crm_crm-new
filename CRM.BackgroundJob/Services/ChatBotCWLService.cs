@@ -13,7 +13,9 @@ namespace CRM.BackgroundJob.Services
     public interface IChatBotCWLService
     {
         Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(int LastLogId, int BatchSize);
-        Task<CommandResult> ImportCWLLogInfoAsync(IEnumerable<ChatBotCWLInfo> cwlInfors);
+        Task<CommandResult> ImportCWLLogInfoAsync(
+            IEnumerable<ChatBotCWLInfo> cwlInfors,
+            string Environment = Constants.Enviroment_Local);
     }
     public class ChatBotCWLService : IChatBotCWLService
     {
@@ -36,7 +38,9 @@ namespace CRM.BackgroundJob.Services
             return await baseService.GetDataAsync<ChatBotCWLInfo>(criteria);
         }
 
-        public async Task<CommandResult> ImportCWLLogInfoAsync(IEnumerable<ChatBotCWLInfo> cwlInfors)
+        public async Task<CommandResult> ImportCWLLogInfoAsync(
+            IEnumerable<ChatBotCWLInfo> cwlInfors, 
+            string Environment = Constants.Enviroment_Local)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' CurrencyName='{2}' " +
                 "Username='{3}' Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' " +
@@ -71,6 +75,7 @@ namespace CRM.BackgroundJob.Services
             var criteria = new ImportCWLLogInfoCommand
             {
                 XmlData = stringBuilder.ToString(),
+                Environment = Environment
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }

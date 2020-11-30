@@ -41,7 +41,8 @@
 
         public async Task PullMessageAndSendNotificationAsync()
         {
-            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot);
+            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot,
+                Constants.Enviroment_Local);
             if (!setting.ServiceFlag)
             {
                 logService.LogInformation("Chat Bot Service is shutdown.");
@@ -52,7 +53,11 @@
             voidingMessages = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize);
             IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(voidingMessages);
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages);
-            CommandResult commandResult = await ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages);
+            CommandResult commandResult = await ticketVoidingService.ImportTicketVoidingAsync(
+                messages, 
+                ticketInfos, 
+                voidingMessages,
+                Constants.Enviroment_Local);
             if (commandResult.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();
@@ -65,14 +70,15 @@
 
         public async Task PullMessageCWLAndSendNotificationToHeadlineAsync()
         {
-            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL);
+            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL,
+                Constants.Enviroment_Local);
             if (!setting.ServiceFlag)
             {
                 logService.LogInformation("Chat Bot CWL Service is shutdown.");
                 return;
             }
             IEnumerable<ChatBotCWLInfo> cwlInfors = await chatBotCWLService.GetChatbotCWLLogInfoAsync(setting.LastLogId, setting.BatchSize);
-            CommandResult commandResult = await chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors);
+            CommandResult commandResult = await chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.Enviroment_Local);
             if (commandResult.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();

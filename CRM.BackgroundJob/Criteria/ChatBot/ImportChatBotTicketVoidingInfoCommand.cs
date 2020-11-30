@@ -5,6 +5,7 @@
     public class ImportChatBotTicketVoidingInfoCommand : NonQueryCommand
     {
         public string XmlData { get; set; }
+        public string Environment { get; set; }
         public string Messages { get; set; }
         public int ErrCode { get; set; }
         public string ErrMsg { get; set; }

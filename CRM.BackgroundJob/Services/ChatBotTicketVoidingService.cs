@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using System.Web;
     using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
+    using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.Core.Extensions.XML;
@@ -27,7 +28,8 @@
         Task<CommandResult> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
-            IEnumerable<ChatBotVoidingMessage> voidingMessages);
+            IEnumerable<ChatBotVoidingMessage> voidingMessages,
+            string Environment = Constants.Enviroment_Local);
     }
 
     public class ChatBotTicketVoidingService : IChatBotTicketVoidingService
@@ -96,12 +98,13 @@
         public async Task<CommandResult> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
-            IEnumerable<ChatBotVoidingMessage> voidingMessages)
+            IEnumerable<ChatBotVoidingMessage> voidingMessages,
+            string Environment = Constants.Enviroment_Local)
         {
             const string XmlTemplate = "<r MessageId='{0}' Username='{1}' CustId='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
                 "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' />";
-            var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             foreach (ChatBotVoidingTicketInfo ticketInfo in ticketInfos)
             {
                 Message message = messages.First(x => x.MessageId == ticketInfo.MessageId);
@@ -119,10 +122,11 @@
                     HttpUtility.HtmlEncode(message.Content_vn));
             }
 
-            stringBuilder.Append(Constants.Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportChatBotTicketVoidingInfoCommand
             {
                 XmlData = stringBuilder.ToString(),
+                Environment = Environment,
                 Messages = voidingMessages.ToXML("root").ToString()
             };
             return await baseService.ExecuteNonQueryAsync(criteria);

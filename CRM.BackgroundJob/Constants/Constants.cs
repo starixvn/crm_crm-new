@@ -20,5 +20,11 @@
 
         public const string ServiceName_ChatBot_CWL = "ChatBot - CWL";
         public const string ServiceName_WinLimitFB = "WinLimitFB";
+
+        public const string Enviroment_Local = "Local";
+        public const string Enviroment_SIT = "SIT";
+        public const string Enviroment_UAT = "UAT";
+        public const string Enviroment_Production = "Production";
+
     }
 }
