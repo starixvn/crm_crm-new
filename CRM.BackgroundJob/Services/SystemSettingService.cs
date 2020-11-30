@@ -66,7 +66,7 @@
         }
 
         public async Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync(
-            string serviceName,
+            string serviceName, 
             string Environment = Constants.Enviroment_Local)
         {
             var criteria = new GetChatBotSystemSettingCriteria

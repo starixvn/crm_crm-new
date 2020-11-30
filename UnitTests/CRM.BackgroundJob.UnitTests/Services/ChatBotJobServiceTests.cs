@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using Microsoft.Extensions.Configuration;
     using CRM.BackgroundJob.Models.ChatBotCWL;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Models;
@@ -22,6 +23,7 @@
         private IChatBotTicketVoidingService ticketVoidingService;
         private ISendNotificationService sendNotificationService;
         private IChatBotCWLService chatBotCWLService;
+        private IConfiguration configuration;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -149,7 +151,14 @@
             ticketVoidingService = Substitute.For<IChatBotTicketVoidingService>();
             sendNotificationService = Substitute.For<ISendNotificationService>();
             chatBotCWLService = Substitute.For<IChatBotCWLService>();
-            return new ChatBotJobService(logService, systemSettingService, ticketVoidingService, sendNotificationService, chatBotCWLService);
+            configuration = Substitute.For<IConfiguration>();
+
+            return new ChatBotJobService(logService,
+                systemSettingService,
+                ticketVoidingService, 
+                sendNotificationService, 
+                chatBotCWLService, 
+                configuration);
         }
 
         #endregion Helpers

@@ -14,7 +14,7 @@ namespace CRM.BackgroundJob.Services
     {
         Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(int LastLogId, int BatchSize);
         Task<CommandResult> ImportCWLLogInfoAsync(
-            IEnumerable<ChatBotCWLInfo> cwlInfors,
+            IEnumerable<ChatBotCWLInfo> cwlInfors, 
             string Environment = Constants.Enviroment_Local);
     }
     public class ChatBotCWLService : IChatBotCWLService

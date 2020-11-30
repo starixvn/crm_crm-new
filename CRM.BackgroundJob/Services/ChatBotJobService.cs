@@ -10,6 +10,7 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using global::CRM.Letstalk.Services.Services.Interfaces;
+    using Microsoft.Extensions.Configuration;
 
     public interface IChatBotJobService
     {
@@ -24,25 +25,29 @@
         private readonly IChatBotTicketVoidingService ticketVoidingService;
         private readonly ISendNotificationService sendNotificationService;
         private readonly IChatBotCWLService chatBotCWLService;
+        private readonly string Enviroment;
+
+        private const string DefaultEnviroment = Constants.Enviroment_Local;
 
         public ChatBotJobService(
             ICRMLogService logService,
             ISystemSettingService systemSettingService,
             IChatBotTicketVoidingService ticketVoidingService,
             ISendNotificationService sendNotificationService,
-            IChatBotCWLService chatBotCWLService)
+            IChatBotCWLService chatBotCWLService,
+            IConfiguration configuration)
         {
             this.logService = logService;
             this.systemSettingService = systemSettingService;
             this.ticketVoidingService = ticketVoidingService;
             this.sendNotificationService = sendNotificationService;
             this.chatBotCWLService = chatBotCWLService;
+            Enviroment = string.IsNullOrEmpty(configuration.GetValue<string>("Environment")) ? DefaultEnviroment : configuration.GetValue<string>("Environment");
         }
 
         public async Task PullMessageAndSendNotificationAsync()
         {
-            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot,
-                Constants.Enviroment_Local);
+            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Enviroment);
             if (!setting.ServiceFlag)
             {
                 logService.LogInformation("Chat Bot Service is shutdown.");
@@ -57,7 +62,7 @@
                 messages, 
                 ticketInfos, 
                 voidingMessages,
-                Constants.Enviroment_Local);
+                Enviroment);
             if (commandResult.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();
@@ -70,15 +75,14 @@
 
         public async Task PullMessageCWLAndSendNotificationToHeadlineAsync()
         {
-            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL,
-                Constants.Enviroment_Local);
+            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Enviroment);
             if (!setting.ServiceFlag)
             {
                 logService.LogInformation("Chat Bot CWL Service is shutdown.");
                 return;
             }
             IEnumerable<ChatBotCWLInfo> cwlInfors = await chatBotCWLService.GetChatbotCWLLogInfoAsync(setting.LastLogId, setting.BatchSize);
-            CommandResult commandResult = await chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.Enviroment_Local);
+            CommandResult commandResult = await chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Enviroment);
             if (commandResult.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();
