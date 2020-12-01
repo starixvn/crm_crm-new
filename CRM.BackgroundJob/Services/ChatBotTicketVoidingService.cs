@@ -29,7 +29,7 @@
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
             IEnumerable<ChatBotVoidingMessage> voidingMessages,
-            string Environment = Constants.Enviroment_Local);
+            string Environment = Constants.DefaultEnviroment);
     }
 
     public class ChatBotTicketVoidingService : IChatBotTicketVoidingService
@@ -99,7 +99,7 @@
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
             IEnumerable<ChatBotVoidingMessage> voidingMessages,
-            string Environment = Constants.Enviroment_Local)
+            string Environment = Constants.DefaultEnviroment)
         {
             const string XmlTemplate = "<r MessageId='{0}' Username='{1}' CustId='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +

@@ -27,7 +27,7 @@
         private readonly IChatBotCWLService chatBotCWLService;
         private readonly string Enviroment;
 
-        private const string DefaultEnviroment = Constants.Enviroment_Local;
+        private const string DefaultEnviroment = Constants.DefaultEnviroment;
 
         public ChatBotJobService(
             ICRMLogService logService,

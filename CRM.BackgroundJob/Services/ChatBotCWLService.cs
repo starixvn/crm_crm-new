@@ -15,7 +15,7 @@ namespace CRM.BackgroundJob.Services
         Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(int LastLogId, int BatchSize);
         Task<CommandResult> ImportCWLLogInfoAsync(
             IEnumerable<ChatBotCWLInfo> cwlInfors, 
-            string Environment = Constants.Enviroment_Local);
+            string Environment = Constants.DefaultEnviroment);
     }
     public class ChatBotCWLService : IChatBotCWLService
     {
@@ -40,7 +40,7 @@ namespace CRM.BackgroundJob.Services
 
         public async Task<CommandResult> ImportCWLLogInfoAsync(
             IEnumerable<ChatBotCWLInfo> cwlInfors, 
-            string Environment = Constants.Enviroment_Local)
+            string Environment = Constants.DefaultEnviroment)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' CurrencyName='{2}' " +
                 "Username='{3}' Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' " +

@@ -5,7 +5,7 @@ import LangHelper from '@jsroot/common/langHelper';
 export default class CustomReactSelect extends Component {
     render() {
         const { components, styles, placeholder, ...rest } = this.props;
-        return (                                
+        return (
             <Select className='react-select-container' classNamePrefix='react-select' placeholder={placeholder || LangHelper.getResource('PleaseSelect')}
                 {...rest}
                 components={{

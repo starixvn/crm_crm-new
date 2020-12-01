@@ -20,7 +20,6 @@
     using Fanex.Logging.Sentry;
     using Fanex.RemotingRef;
     using global::CRM.BackgroundJob.Services;
-    using Fanex.RemotingRef;
     using global::CRM.Core.Extensions;
     using global::CRM.Letstalk.Services.Extentions;
     using global::CRM.Letstalk.Services.Services;
