@@ -42,7 +42,7 @@
             this.ticketVoidingService = ticketVoidingService;
             this.sendNotificationService = sendNotificationService;
             this.chatBotCWLService = chatBotCWLService;
-            Enviroment = string.IsNullOrEmpty(configuration.GetValue<string>("ConfigEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("ConfigEnvironment");
+            Enviroment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("ConfigEnvironment");
         }
 
         public async Task PullMessageAndSendNotificationAsync()
