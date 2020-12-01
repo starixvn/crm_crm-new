@@ -81,7 +81,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportCWLLogInfoCommand>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.ImportCWLLogInfoAsync(cWLInfos, Constants.Enviroment_Local);
+            var actual = await service.ImportCWLLogInfoAsync(cWLInfos, Constants.DefaultEnviroment);
 
             // Assert
             Assert.Equal(expected, actual);

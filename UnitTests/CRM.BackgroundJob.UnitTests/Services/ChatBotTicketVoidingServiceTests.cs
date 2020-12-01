@@ -160,7 +160,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.Enviroment_Local);
+            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnviroment);
 
             // Assert
             Assert.Equal(expected, actual);
