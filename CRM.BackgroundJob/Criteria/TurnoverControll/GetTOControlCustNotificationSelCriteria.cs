@@ -2,7 +2,7 @@
 {
     using System;
     using Fanex.Data.Repository;
-    public class GetTOControl_CustNotificationSelCriteria : CriteriaBase
+    public class GetTOControlCustNotificationSelCriteria : CriteriaBase
     {
         public DateTime LastNotifiedDate { get; set; }
         public int BatchSize { get; set; }

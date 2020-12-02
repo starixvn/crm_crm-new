@@ -1,7 +1,7 @@
 ﻿namespace CRM.BackgroundJob.Criteria.TurnoverControll
 {
     using Fanex.Data.Repository;
-    public class EditTOControl_AutoFeedbackInfoUpdCommand : NonQueryCommand
+    public class EditTOControlAutoFeedbackInfoUpdCommand : NonQueryCommand
     {
         public int CustID { get; set; }
         public int MatchID { get; set; }

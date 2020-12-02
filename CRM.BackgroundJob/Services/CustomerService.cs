@@ -5,7 +5,9 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Repositories;
+    using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
+    using global::CRM.BackgroundJob.Models.TurnoverControll;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Services;
 
@@ -16,6 +18,8 @@
         Task<IEnumerable<GroupHeadline>> GetGroupHeadlineAsync(IEnumerable<int> custIds);
 
         Task<IEnumerable<CustomerWinLimit>> GetListCustReachLimitAsync(WinLossSystemSetting setting);
+
+        Task<IEnumerable<TONotification>> GetListSMANotificationAsync(WinLossSystemSetting turnOverSetting);
     }
 
     public class CustomerService : ICustomerService
@@ -50,7 +54,6 @@
             return await baseService.GetDataAsync<GroupHeadline>(criteria);
         }
 
-
         public async Task<IEnumerable<CustomerWinLimit>> GetListCustReachLimitAsync(WinLossSystemSetting setting)
         {
             var criteria = new GetListCustomerReachLimitCriteria
@@ -63,6 +66,20 @@
                 IsDeposit = setting.IsDeposit
             };
             return await baseService.GetDataAsync<CustomerWinLimit>(criteria);
+        }
+
+        public async Task<IEnumerable<TONotification>> GetListSMANotificationAsync(WinLossSystemSetting turnOverSetting)
+        {
+            var criteria = new GetTOControlCustNotificationSelCriteria
+            {
+                LastNotifiedDate = turnOverSetting.LastNotifyDate,
+                BatchSize = turnOverSetting.BatchSize,
+                ConfigUAT = turnOverSetting.ConfigUAT,
+                ConfigPRO = turnOverSetting.ConfigPRO,
+                IsCredit = turnOverSetting.IsCredit,
+                IsDeposit = turnOverSetting.IsDeposit
+            };
+            return await baseService.GetDataAsync<TONotification>(criteria);
         }
     }
 }
