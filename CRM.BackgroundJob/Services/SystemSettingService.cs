@@ -6,6 +6,7 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Extensions.XML;
@@ -17,7 +18,7 @@
         Task<AbnormalBetSystemSetting> GetAbnormalBetSettingAsync();
 
         Task<CommandResult> EditSystemSettingAsync(
-            IEnumerable<SystemSettingItem> settings,
+            IEnumerable<SystemSettingItem> settings, 
             string serviceName = Constants.ServiceName_AutoFB);
 
         Task<CommandResult> EditJobStatusAsync(string status);
@@ -27,6 +28,8 @@
             string Environment = Constants.DefaultEnviroment);
 
         Task<WinLossSystemSetting> GetWinLossSettingAsync();
+
+        Task<WinLossSystemSetting> GetTurnoverSettingAsync();
     }
 
     public class SystemSettingService : ISystemSettingService
@@ -80,6 +83,12 @@
         public async Task<WinLossSystemSetting> GetWinLossSettingAsync()
         {
             var criteria = new GetWinLossSystemSettingCriteria();
+            return await baseService.GetDataEntityAsync<WinLossSystemSetting>(criteria);
+        }
+
+        public async Task<WinLossSystemSetting> GetTurnoverSettingAsync()
+        {
+            var criteria = new GetTOControllSystemSettingCriteria();
             return await baseService.GetDataEntityAsync<WinLossSystemSetting>(criteria);
         }
     }

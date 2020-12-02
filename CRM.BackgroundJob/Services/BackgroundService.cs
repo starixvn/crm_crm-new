@@ -22,6 +22,8 @@
 
         Task CreateFeedbackForWinLossLimit();
 
+        Task CreateFeedbackForTurnoverControll();
+
     }
 
     public class BackgroundService : IBackgroundService
@@ -166,6 +168,27 @@
                 }
 
                 await winLossService.WinLossExecuteJobAsync();
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        [Queue(QueuePriority.Critical)]
+        public async Task CreateFeedbackForTurnoverControll()
+        {
+            try
+            {
+                bool isUM = await CheckUM();
+                if (isUM)
+                {
+                    logService.LogInformation(umTime);
+                    return;
+                }
+
+                await winLossService.TurnoverControllExecuteJobAsync();
             }
             catch (Exception ex)
             {

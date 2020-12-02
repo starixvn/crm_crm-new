@@ -4,5 +4,6 @@
     {
         public const string CreateFeedbackForVoidingAbnormalBet = "CreateFeedbackForVoidingAbnormalBet";
         public const string CreateFeedbackForWinLossLimit = "CreateFeedbackForWinLossLimit";
+        public const string CreateFeedbackForTurnoverControl = "CreateFeedbackForTurnoverControl";
     }
 }

@@ -20,7 +20,7 @@
 
         public const string ServiceName_ChatBot_CWL = "ChatBot - CWL";
         public const string ServiceName_WinLimitFB = "WinLimitFB";
-
+        public const string ServiceName_TOControlFB = "TOControlFB";
         public const string DefaultEnviroment = "Live";
     }
 }

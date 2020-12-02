@@ -13,6 +13,7 @@
     public interface IAutoWinLossFeedbackService
     {
         Task WinLossExecuteJobAsync();
+        Task TurnoverControllExecuteJobAsync();
     }
 
     public class AutoWinLossFeedbackService : IAutoWinLossFeedbackService
@@ -21,6 +22,7 @@
         private readonly IJobRunningChecker jobRunningChecker;
         private readonly ISystemSettingService systemSettingService;
         private readonly IWinLossFeedbackService winLossService;
+        private readonly ITOControllFeedbackService turnoverService;
         private readonly ICRMLogService logService;
 
         public AutoWinLossFeedbackService(
@@ -28,13 +30,15 @@
             IJobRunningChecker jobRunningChecker,
             ISystemSettingService systemSettingService,
             IWinLossFeedbackService winLossService,
-            ICRMLogService logService)
+            ICRMLogService logService,
+            ITOControllFeedbackService turnoverService)
         {
             this.appSettings = appSettings.Value;
             this.jobRunningChecker = jobRunningChecker;
             this.systemSettingService = systemSettingService;
             this.winLossService = winLossService;
             this.logService = logService;
+            this.turnoverService = turnoverService;
         }
 
         public async Task WinLossExecuteJobAsync()
@@ -44,7 +48,7 @@
                 WinLossSystemSetting setting = await systemSettingService.GetWinLossSettingAsync();
                 if (!setting.ServiceFlag)
                 {
-                    logService.LogInformation("Service is shutdown.");
+                    logService.LogInformation("Service Company Winloss is shutdown.");
                     return;
                 }
 
@@ -63,7 +67,7 @@
                     isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForWinLossLimit);
                     if (!isRunning && setting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
                     {
-                        logService.LogInformation("Rerun Winloss service.");
+                        logService.LogInformation("Rerun Company Winloss service.");
                         var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
@@ -76,6 +80,50 @@
             catch (Exception ex)
             {
                 await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForWinLossLimit);
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task TurnoverControllExecuteJobAsync()
+        {
+            try
+            {
+                WinLossSystemSetting turnOverSetting = await systemSettingService.GetTurnoverSettingAsync();
+                if (!turnOverSetting.ServiceFlag)
+                {
+                    logService.LogInformation("Service Turnover Controll is shutdown.");
+                    return;
+                }
+
+                var isRunning = turnOverSetting.JobStatus.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
+
+                if (!isRunning)
+                {
+                    await Task.WhenAll(
+                        jobRunningChecker.MarkRunning(JobName.CreateFeedbackForTurnoverControl),
+                        turnoverService.CreateFeedbackForTurnoverControllAsync(turnOverSetting)
+                    );
+                    await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForTurnoverControl);
+                }
+                else
+                {
+                    logService.LogInformation("Controll service is running.");
+                    isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForTurnoverControl);
+                    if (!isRunning && turnOverSetting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                    {
+                        logService.LogInformation("Rerun Turnover Controll service.");
+                        var settingJobStatus = new List<SystemSettingItem>
+                        {
+                           new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
+                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                        };
+                        await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForTurnoverControl);
                 await logService.ErrorAsync(ex);
             }
         }

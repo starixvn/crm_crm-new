@@ -1,0 +1,107 @@
+2020-12-02 15:06:17.221 +07:00 [INF] User profile is available. Using 'C:\Users\teddy.le\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-12-02 15:06:17.563 +07:00 [INF] Starting Hangfire Server using job storage: 'redis://ha.nexdev.net:16379,password=foo1@bared,defaultDatabase=6/7'
+2020-12-02 15:06:17.563 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 5
+    Listening queues: 'critical', 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2020-12-02 15:06:17.693 +07:00 [INF] Server cp007-teddy:10156:a4f6e08b successfully announced in 11.0024 ms
+2020-12-02 15:06:17.763 +07:00 [INF] Server cp007-teddy:10156:a4f6e08b is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2020-12-02 15:06:18.024 +07:00 [INF] Removing expired records from the 'succeeded' list...
+2020-12-02 15:06:18.076 +07:00 [INF] Removing 38 expired jobs from 'succeeded' list...
+2020-12-02 15:06:18.453 +07:00 [INF] Server cp007-teddy:10156:a4f6e08b all the dispatchers started
+2020-12-02 15:06:19.064 +07:00 [WRN] Recurring job 'Pull Message CWL For Chat Bot' can't be scheduled due to an error and will be retried in 00:00:15.
+System.InvalidOperationException: Recurring job can't be scheduled, see inner exception for details. ---> Hangfire.Common.JobLoadException: Could not load the job. See inner exception for the details. ---> System.InvalidOperationException: The type `Fanex.CRM.BackgroundJob.Services.IBackgroundService` does not contain a method with signature `PullMessageCWLForChatBotAsync()`
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   --- End of inner exception stack trace ---
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   at Hangfire.RecurringJobEntity..ctor(String recurringJobId, IDictionary`2 recurringJob, ITimeZoneResolver timeZoneResolver, DateTime now)
+   --- End of inner exception stack trace ---
+   at Hangfire.Server.RecurringJobScheduler.ScheduleRecurringJob(BackgroundProcessContext context, IStorageConnection connection, String recurringJobId, RecurringJobEntity recurringJob, DateTime now)
+2020-12-02 15:06:20.411 +07:00 [INF] Start run WL serivce with last log ID: 1158271!
+2020-12-02 15:06:34.115 +07:00 [WRN] Recurring job 'Pull Message CWL For Chat Bot' can't be scheduled due to an error and will be retried in 00:00:15.
+System.InvalidOperationException: Recurring job can't be scheduled, see inner exception for details. ---> Hangfire.Common.JobLoadException: Could not load the job. See inner exception for the details. ---> System.InvalidOperationException: The type `Fanex.CRM.BackgroundJob.Services.IBackgroundService` does not contain a method with signature `PullMessageCWLForChatBotAsync()`
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   --- End of inner exception stack trace ---
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   at Hangfire.RecurringJobEntity..ctor(String recurringJobId, IDictionary`2 recurringJob, ITimeZoneResolver timeZoneResolver, DateTime now)
+   --- End of inner exception stack trace ---
+   at Hangfire.Server.RecurringJobScheduler.ScheduleRecurringJob(BackgroundProcessContext context, IStorageConnection connection, String recurringJobId, RecurringJobEntity recurringJob, DateTime now)
+2020-12-02 15:06:34.404 +07:00 [INF] Server cp007-teddy:10156:a4f6e08b caught stopping signal...
+2020-12-02 15:06:34.406 +07:00 [INF] Server cp007-teddy:10156:a4f6e08b caught stopped signal...
+2020-12-02 15:06:34.441 +07:00 [INF] Server cp007-teddy:10156:a4f6e08b All dispatchers stopped
+2020-12-02 15:06:34.455 +07:00 [INF] Server cp007-teddy:10156:a4f6e08b successfully reported itself as stopped in 5.55 ms
+2020-12-02 15:06:34.455 +07:00 [INF] Server cp007-teddy:10156:a4f6e08b has been stopped in total 50.0965 ms
+2020-12-02 15:07:47.572 +07:00 [INF] User profile is available. Using 'C:\Users\teddy.le\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-12-02 15:07:47.718 +07:00 [INF] Starting Hangfire Server using job storage: 'redis://ha.nexdev.net:16379,password=foo1@bared,defaultDatabase=6/7'
+2020-12-02 15:07:47.718 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 5
+    Listening queues: 'critical', 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2020-12-02 15:07:47.783 +07:00 [INF] Server cp007-teddy:19244:5f25c7d9 successfully announced in 20.7569 ms
+2020-12-02 15:07:47.792 +07:00 [INF] Server cp007-teddy:19244:5f25c7d9 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2020-12-02 15:07:47.885 +07:00 [INF] Removing expired records from the 'succeeded' list...
+2020-12-02 15:07:47.896 +07:00 [INF] Server cp007-teddy:19244:5f25c7d9 all the dispatchers started
+2020-12-02 15:07:47.963 +07:00 [WRN] Recurring job 'Pull Message CWL For Chat Bot' can't be scheduled due to an error and will be retried in 00:00:15.
+System.InvalidOperationException: Recurring job can't be scheduled, see inner exception for details. ---> Hangfire.Common.JobLoadException: Could not load the job. See inner exception for the details. ---> System.InvalidOperationException: The type `Fanex.CRM.BackgroundJob.Services.IBackgroundService` does not contain a method with signature `PullMessageCWLForChatBotAsync()`
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   --- End of inner exception stack trace ---
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   at Hangfire.RecurringJobEntity..ctor(String recurringJobId, IDictionary`2 recurringJob, ITimeZoneResolver timeZoneResolver, DateTime now)
+   --- End of inner exception stack trace ---
+   at Hangfire.Server.RecurringJobScheduler.ScheduleRecurringJob(BackgroundProcessContext context, IStorageConnection connection, String recurringJobId, RecurringJobEntity recurringJob, DateTime now)
+2020-12-02 15:10:20.001 +07:00 [WRN] Slow log: (Hangfire.ContinuationsSupportAttribute, Hangfire.States.ElectStateContext) performed "OnStateElection for 662d273c-8807-4d3e-bce9-2865ced3d692" in 129 sec
+2020-12-02 15:10:31.763 +07:00 [INF] Start run WL serivce with last log ID: 1158271!
+2020-12-02 15:10:37.742 +07:00 [INF] Start run turnover controll serivce with last LastNotifyDate: 1/1/0001 12:00:00 AM!
+2020-12-02 15:10:49.695 +07:00 [INF] Execution DelayedJobScheduler recovered from the Faulted state after 00:00:27.1803948 and is in the Running state now
+2020-12-02 15:10:51.912 +07:00 [INF] Start run WL serivce with last log ID: 1158271!
+2020-12-02 15:10:54.818 +07:00 [WRN] Recurring job 'Pull Message CWL For Chat Bot' can't be scheduled due to an error and will be retried in 00:00:15.
+System.InvalidOperationException: Recurring job can't be scheduled, see inner exception for details. ---> Hangfire.Common.JobLoadException: Could not load the job. See inner exception for the details. ---> System.InvalidOperationException: The type `Fanex.CRM.BackgroundJob.Services.IBackgroundService` does not contain a method with signature `PullMessageCWLForChatBotAsync()`
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   --- End of inner exception stack trace ---
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   at Hangfire.RecurringJobEntity..ctor(String recurringJobId, IDictionary`2 recurringJob, ITimeZoneResolver timeZoneResolver, DateTime now)
+   --- End of inner exception stack trace ---
+   at Hangfire.Server.RecurringJobScheduler.ScheduleRecurringJob(BackgroundProcessContext context, IStorageConnection connection, String recurringJobId, RecurringJobEntity recurringJob, DateTime now)
+2020-12-02 15:10:55.537 +07:00 [INF] Start run turnover controll serivce with last LastNotifyDate: 1/1/0001 12:00:00 AM!
+2020-12-02 15:10:55.542 +07:00 [WRN] Recurring job 'Pull Message CWL For Chat Bot' can't be scheduled due to an error and will be retried in 00:00:15.
+System.InvalidOperationException: Recurring job can't be scheduled, see inner exception for details. ---> Hangfire.Common.JobLoadException: Could not load the job. See inner exception for the details. ---> System.InvalidOperationException: The type `Fanex.CRM.BackgroundJob.Services.IBackgroundService` does not contain a method with signature `PullMessageCWLForChatBotAsync()`
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   --- End of inner exception stack trace ---
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   at Hangfire.RecurringJobEntity..ctor(String recurringJobId, IDictionary`2 recurringJob, ITimeZoneResolver timeZoneResolver, DateTime now)
+   --- End of inner exception stack trace ---
+   at Hangfire.Server.RecurringJobScheduler.ScheduleRecurringJob(BackgroundProcessContext context, IStorageConnection connection, String recurringJobId, RecurringJobEntity recurringJob, DateTime now)
+2020-12-02 15:10:59.916 +07:00 [INF] Server cp007-teddy:19244:5f25c7d9 caught stopping signal...
+2020-12-02 15:10:59.918 +07:00 [INF] Server cp007-teddy:19244:5f25c7d9 caught stopped signal...
+2020-12-02 15:10:59.988 +07:00 [INF] Server cp007-teddy:19244:5f25c7d9 All dispatchers stopped
+2020-12-02 15:11:00.008 +07:00 [INF] Server cp007-teddy:19244:5f25c7d9 successfully reported itself as stopped in 9.1655 ms
+2020-12-02 15:11:00.008 +07:00 [INF] Server cp007-teddy:19244:5f25c7d9 has been stopped in total 90.2131 ms
+2020-12-02 15:24:38.472 +07:00 [INF] User profile is available. Using 'C:\Users\teddy.le\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-12-02 15:24:38.652 +07:00 [INF] Starting Hangfire Server using job storage: 'redis://ha.nexdev.net:16379,password=foo1@bared,defaultDatabase=6/7'
+2020-12-02 15:24:38.652 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 5
+    Listening queues: 'critical', 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2020-12-02 15:24:38.725 +07:00 [INF] Server cp007-teddy:9524:c0e3b226 successfully announced in 16.9899 ms
+2020-12-02 15:24:38.739 +07:00 [INF] Server cp007-teddy:9524:c0e3b226 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2020-12-02 15:24:38.832 +07:00 [INF] Removing expired records from the 'succeeded' list...
+2020-12-02 15:24:38.837 +07:00 [INF] Server cp007-teddy:9524:c0e3b226 all the dispatchers started
+2020-12-02 15:24:39.142 +07:00 [ERR] Recurring job 'Pull Message CWL For Chat Bot' can't be scheduled due to an error and will be disabled.
+System.InvalidOperationException: Recurring job can't be scheduled, see inner exception for details. ---> Hangfire.Common.JobLoadException: Could not load the job. See inner exception for the details. ---> System.InvalidOperationException: The type `Fanex.CRM.BackgroundJob.Services.IBackgroundService` does not contain a method with signature `PullMessageCWLForChatBotAsync()`
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   --- End of inner exception stack trace ---
+   at Hangfire.Storage.InvocationData.DeserializeJob()
+   at Hangfire.RecurringJobEntity..ctor(String recurringJobId, IDictionary`2 recurringJob, ITimeZoneResolver timeZoneResolver, DateTime now)
+   --- End of inner exception stack trace ---
+   at Hangfire.Server.RecurringJobScheduler.ScheduleRecurringJob(BackgroundProcessContext context, IStorageConnection connection, String recurringJobId, RecurringJobEntity recurringJob, DateTime now)
+2020-12-02 15:24:51.971 +07:00 [INF] Start run WL serivce with last log ID: 1158271!
+2020-12-02 15:24:51.971 +07:00 [INF] Start run turnover controll serivce with last LastNotifyDate: 1/1/0001 12:00:00 AM!
+2020-12-02 15:25:07.014 +07:00 [INF] Controll service is running.
+2020-12-02 15:25:10.416 +07:00 [INF] Server cp007-teddy:9524:c0e3b226 caught stopping signal...
+2020-12-02 15:25:10.417 +07:00 [INF] Server cp007-teddy:9524:c0e3b226 caught stopped signal...
+2020-12-02 15:25:10.449 +07:00 [INF] Server cp007-teddy:9524:c0e3b226 All dispatchers stopped
+2020-12-02 15:25:10.463 +07:00 [INF] Server cp007-teddy:9524:c0e3b226 successfully reported itself as stopped in 5.4216 ms
+2020-12-02 15:25:10.463 +07:00 [INF] Server cp007-teddy:9524:c0e3b226 has been stopped in total 46.3808 ms

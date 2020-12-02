@@ -93,6 +93,14 @@
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
+
+            if (IsEnabledJob(HangfireJobName.CreateFeedbackForTurnoverControl))
+            {
+                recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For Turn Over Controll",
+                   job => job.CreateFeedbackForTurnoverControll(),
+                   Cron.Minutely,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
+            }
         }
 
         protected internal virtual void RemoveCurrentHangfireServer()
