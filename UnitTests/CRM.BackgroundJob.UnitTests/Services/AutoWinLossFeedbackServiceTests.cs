@@ -21,6 +21,7 @@
         private ISystemSettingService systemSettingService;
         private IWinLossFeedbackService winLossService;
         private ICRMLogService logService;
+        private ITOControlFeedbackService tOControlFeedbackService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -51,7 +52,7 @@
             await service.WinLossExecuteJobAsync();
 
             // Assert
-            logService.Received().LogInformation("Service is shutdown.");
+            logService.Received().LogInformation("Service Company Winloss is shutdown.");
         }
 
         [Fact]
@@ -94,7 +95,7 @@
             await service.WinLossExecuteJobAsync();
 
             // Assert
-            logService.Received().LogInformation("Rerun Winloss service.");
+            logService.Received().LogInformation("Rerun Company Winloss service.");
             await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_WinLimitFB);
         }
 
@@ -133,12 +134,14 @@
             systemSettingService = Substitute.For<ISystemSettingService>();
             winLossService = Substitute.For<IWinLossFeedbackService>();
             logService = Substitute.For<ICRMLogService>();
+            tOControlFeedbackService = Substitute.For<ITOControlFeedbackService>();
             return new AutoWinLossFeedbackService(
                 appJobSettings,
                 jobRunningChecker,
                 systemSettingService,
                 winLossService,
-                logService);
+                logService,
+                tOControlFeedbackService);
         }
 
         #endregion Helpers

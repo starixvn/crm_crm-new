@@ -126,7 +126,7 @@
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var category = fixture.Create<Tuple<int, int, string>>();
             var service = MockService();
-            service.Protected("GetCategorySubCategoryWinloss", settings).Returns(category);
+            commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.CompanyWLLimit).Returns(category);
             service.Protected("GetProductXml", winLimit, Arg.Any<List<BettypeInfo>>(), settings, settingMappings).Returns("product xml");
             service.Protected("GetSolution", winLimit, true).Returns("solution");
             service.Protected("GetRelatedCustomerXml", winLimit).Returns("related customer xml");
@@ -166,7 +166,7 @@
             };
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
             var service = MockService();
-            service.Protected("CheckValidParams", criteria).Returns(new ValueTuple<bool, string>(true, ""));
+            commonFeedback.CheckFeedbackValidParams(criteria).Returns(new ValueTuple<bool, string>(true, ""));
 
             var commandResult = new CommandResult { Code = 0 };
             baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
@@ -197,7 +197,7 @@
             };
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
             var service = MockService();
-            service.Protected("CheckValidParams", criteria).Returns(new ValueTuple<bool, string>(true, ""));
+            commonFeedback.CheckFeedbackValidParams(criteria).Returns(new ValueTuple<bool, string>(true, ""));
 
             var commandResult = new CommandResult { Code = 1, Message = "" };
             baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
@@ -230,7 +230,7 @@
             };
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
             var service = MockService();
-            service.Protected("CheckValidParams", criteria).Returns(new ValueTuple<bool, string>(false, ""));
+            commonFeedback.CheckFeedbackValidParams(criteria).Returns(new ValueTuple<bool, string>(false, ""));
 
             var commandResult = new CommandResult { Code = 0 };
             baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
@@ -263,9 +263,7 @@
             var exception = fixture.Create<Exception>();
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
             var service = MockService();
-            service.Protected("CheckValidParams",
-                criteria
-                ).Returns(new ValueTuple<bool, string>(true, ""));
+            commonFeedback.CheckFeedbackValidParams(criteria).Returns(new ValueTuple<bool, string>(true, ""));
 
             baseService.When(x => x.ExecuteNonQueryAsync(criteria)).Throw(exception);
 
@@ -282,180 +280,6 @@
         }
 
         #endregion CheckValidParamsAndInsertFeedbackAsync
-
-        #region CheckValidParams
-
-        [Fact]
-        public void CheckValidParams__ValidParamsCriteria_ExpectedReturnTrue()
-        {
-            // Arrange
-            var criteria = new CreateMutipleFeedbackCommand
-            {
-                CategoryIds = "1",
-                CategoryXml = "1",
-                ProductXml = "1",
-                SubCategoryIds = "1",
-                ResponseId = 1,
-                StationId = "1",
-                StatusId = 1,
-            };
-            var expect = new ValueTuple<bool, string>(true, "");
-            var service = MockService();
-
-            // Act
-            var result = service.Public_CheckValidParams(criteria);
-
-            // Assert
-            result.Equals(expect);
-        }
-
-        [Theory]
-        [InlineData("0", "ResponseId is null.")]
-        [InlineData("0", "StatusId is null.")]
-        public void CheckValidParams__InValidParamsResponseIdStatusIdCriteria_ExpectedReturnFalseAndMessage(string param, string message)
-        {
-            // Arrange
-            var criteria = new CreateMutipleFeedbackCommand
-            {
-                CategoryIds = "1",
-                CategoryXml = "1",
-                ProductXml = "1",
-                SubCategoryIds = "1",
-                ResponseId = short.Parse(param),
-                StationId = "1",
-                StatusId = short.Parse(param)
-            };
-            var expect = new ValueTuple<bool, string>(false, message);
-            var service = MockService();
-
-            // Act
-            var result = service.Public_CheckValidParams(criteria);
-
-            // Assert
-            result.Equals(expect);
-        }
-
-        [Fact]
-        public void CheckValidParams__InValidParamsCategoryIdsCriteria_ExpectedReturnFalseAndMessage()
-        {
-            // Arrange
-            var criteria = new CreateMutipleFeedbackCommand
-            {
-                CategoryIds = "",
-                CategoryXml = "1",
-                ProductXml = "1",
-                SubCategoryIds = "1",
-                ResponseId = 1,
-                StationId = "1",
-                StatusId = 1
-            };
-            var expect = new ValueTuple<bool, string>(false, "CategoryIds is null.");
-            var service = MockService();
-
-            // Act
-            var result = service.Public_CheckValidParams(criteria);
-
-            // Assert
-            result.Equals(expect);
-        }
-
-        [Fact]
-        public void CheckValidParams__InValidParamsCategoryXmlCriteria_ExpectedReturnFalseAndMessage()
-        {
-            // Arrange
-            var criteria = new CreateMutipleFeedbackCommand
-            {
-                CategoryIds = "1",
-                CategoryXml = "",
-                ProductXml = "1",
-                SubCategoryIds = "1",
-                ResponseId = 1,
-                StationId = "1",
-                StatusId = 1
-            };
-            var expect = new ValueTuple<bool, string>(false, "CategoryXml is null.");
-            var service = MockService();
-
-            // Act
-            var result = service.Public_CheckValidParams(criteria);
-
-            // Assert
-            result.Equals(expect);
-        }
-
-        [Fact]
-        public void CheckValidParams__InValidParamsProductXmlCriteria_ExpectedReturnFalseAndMessage()
-        {
-            // Arrange
-            var criteria = new CreateMutipleFeedbackCommand
-            {
-                CategoryIds = "1",
-                CategoryXml = "1",
-                ProductXml = "",
-                SubCategoryIds = "1",
-                ResponseId = 1,
-                StationId = "1",
-                StatusId = 1
-            };
-            var expect = new ValueTuple<bool, string>(false, "ProductXml is null.");
-            var service = MockService();
-
-            // Act
-            var result = service.Public_CheckValidParams(criteria);
-
-            // Assert
-            result.Equals(expect);
-        }
-
-        [Fact]
-        public void CheckValidParams__InValidParamsSubCategoryIdsCriteria_ExpectedReturnFalseAndMessage()
-        {
-            // Arrange
-            var criteria = new CreateMutipleFeedbackCommand
-            {
-                CategoryIds = "1",
-                CategoryXml = "1",
-                ProductXml = "1",
-                SubCategoryIds = "",
-                ResponseId = 1,
-                StationId = "1",
-                StatusId = 1
-            };
-            var expect = new ValueTuple<bool, string>(false, "SubCategoryIds is null.");
-            var service = MockService();
-
-            // Act
-            var result = service.Public_CheckValidParams(criteria);
-
-            // Assert
-            result.Equals(expect);
-        }
-
-        [Fact]
-        public void CheckValidParams__InValidParamsStationIdCriteria_ExpectedReturnFalseAndMessage()
-        {
-            // Arrange
-            var criteria = new CreateMutipleFeedbackCommand
-            {
-                CategoryIds = "1",
-                CategoryXml = "1",
-                ProductXml = "1",
-                SubCategoryIds = "1",
-                ResponseId = 1,
-                StationId = "",
-                StatusId = 1
-            };
-            var expect = new ValueTuple<bool, string>(false, "StationId is null.");
-            var service = MockService();
-
-            // Act
-            var result = service.Public_CheckValidParams(criteria);
-
-            // Assert
-            result.Equals(expect);
-        }
-
-        #endregion CheckValidParams
 
         #region GetProductXml
 
@@ -623,70 +447,6 @@
 
         #endregion GetSubProduct
 
-        #region GetCategorySubCategoryWinloss
-
-        [Fact]
-        public void GetCategorySubCategoryWinloss_NotExistMainCategory_ReturnDefaultMainCategoryXML()
-        {
-            // Arrange
-            var settings = new List<SettingItem>
-                {
-                    new SettingItem { SettingName = "MainCategory", SettingValue = "Special" }
-                };
-            var service = MockService();
-
-            // Act
-            var actual = service.Public_GetCategorySubCategoryWinloss(settings);
-
-            // Assert
-            Assert.Equal(0, actual.Item1);
-            Assert.Equal(0, actual.Item2);
-            Assert.Equal("<ROOT><Category MainCategoryID='0' SubCategoryID='0' /></ROOT>", actual.Item3);
-        }
-
-        [Fact]
-        public void GetCategorySubCategoryWinloss_ExistMainCategoryAndNotExistSubCategory_ReturnExpectedTuple()
-        {
-            // Arrange
-            var settings = new List<SettingItem>
-                {
-                    new SettingItem { SettingId = 1, SettingName = "MainCategory", SettingValue = "Special Notification" },
-                    new SettingItem { SettingName = "SubCategory", SettingValue = "Company" }
-                };
-
-            var service = MockService();
-
-            // Act
-            var actual = service.Public_GetCategorySubCategoryWinloss(settings);
-
-            // Assert
-            Assert.Equal(1, actual.Item1);
-            Assert.Equal(0, actual.Item2);
-            Assert.Equal("<ROOT><Category MainCategoryID='1' SubCategoryID='0' /></ROOT>", actual.Item3);
-        }
-
-        [Fact]
-        public void GetCategorySubCategoryWinloss_ExistMainCategoryAndExistSubCategory_ReturnExpectedTuple()
-        {
-            // Arrange
-            var settings = new List<SettingItem>
-                {
-                    new SettingItem { SettingId = 1, SettingName = "MainCategory", SettingValue = "Special Notification" },
-                    new SettingItem { SettingId = 2, SettingName = "SubCategory", SettingValue = "Company W/L Limit" , ParentIds = new List<int>{ 1 }}
-                };
-            var service = MockService();
-
-            // Act
-            var actual = service.Public_GetCategorySubCategoryWinloss(settings);
-
-            // Assert
-            Assert.Equal(1, actual.Item1);
-            Assert.Equal(2, actual.Item2);
-            Assert.Equal("<ROOT><Category MainCategoryID='1' SubCategoryID='2' /></ROOT>", actual.Item3);
-        }
-
-        #endregion GetCategorySubCategoryWinloss
-
         #region GetBettype
 
         [Fact]
@@ -757,13 +517,10 @@
             var service = MockService();
             var template = new FeedbackTemplate
             {
-                Templates = new List<Template>
-                {
-                    new Template{RNGTemplateENSC = "{0} {1} {2}"}
-                }
+                Templates = new Template { RNGTemplateENSC = "{0} {1} {2}" }
             };
 
-            commonFeedback.GetFeedbackTemplates(Arg.Any<string>()).Returns(template);
+            commonFeedback.GetFeedbackTemplates<FeedbackTemplate>(Arg.Any<string>()).Returns(template);
             var expect = "test 1,000 USD";
             // Act
             var result = service.Public_GetSolution(winlimit, false);
@@ -800,21 +557,19 @@
             var service = MockService();
             var template = new FeedbackTemplate
             {
-                Templates = new List<Template>
+                Templates = new Template
                 {
-                    new Template{
-                        YellowTemplateENSC = "{0} {1} {2} {3} {4} {5}",
-                        RedTemplateENSC = "{0} {1} {2} {3} {4} {5}",
-                        BlackTemplateSC = "{0} {1} {2} {3} {4} {5}",
-                        GreyTemplateENSC = "{0} {1} {2} {3} {4} {5}",
-                        YellowTemplateENYN = "{0} {1} {2} {3} {4} {5}",
-                        RedTemplateENYN = "{0} {1} {2} {3} {4} {5}",
-                        BlackTemplateYN = "{0} {1} {2} {3} {4} {5}",
-                        GreyTemplateENYN = "{0} {1} {2} {3} {4} {5}"
-                    }
+                    YellowTemplateENSC = "{0} {1} {2} {3} {4} {5}",
+                    RedTemplateENSC = "{0} {1} {2} {3} {4} {5}",
+                    BlackTemplateSC = "{0} {1} {2} {3} {4} {5}",
+                    GreyTemplateENSC = "{0} {1} {2} {3} {4} {5}",
+                    YellowTemplateENYN = "{0} {1} {2} {3} {4} {5}",
+                    RedTemplateENYN = "{0} {1} {2} {3} {4} {5}",
+                    BlackTemplateYN = "{0} {1} {2} {3} {4} {5}",
+                    GreyTemplateENYN = "{0} {1} {2} {3} {4} {5}"
                 }
             };
-            commonFeedback.GetFeedbackTemplates(Arg.Any<string>()).Returns(template);
+            commonFeedback.GetFeedbackTemplates<FeedbackTemplate>(Arg.Any<string>()).Returns(template);
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "en-US").Returns("ProductNameUS");
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "zh-CN").Returns("ProductNameSC");
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "vi-VN").Returns("ProductNameYN");

@@ -5,6 +5,7 @@
     using AutoFixture;
     using CRM.BackgroundJob.Criteria.WinLossLimit;
     using CRM.BackgroundJob.Models.WinLossLimit;
+    using Microsoft.Extensions.Configuration;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -17,6 +18,8 @@
     {
         private ICustomerRepository repository;
         private IBaseService baseService;
+        private IConfiguration configuration;
+
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -84,7 +87,9 @@
         {
             repository = Substitute.For<ICustomerRepository>();
             baseService = Substitute.For<IBaseService>();
-            return new CustomerService(repository, baseService);
+            configuration = Substitute.For<IConfiguration>();
+
+            return new CustomerService(repository, baseService, configuration);
         }
 
         #endregion Helpers

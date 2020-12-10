@@ -51,12 +51,6 @@
             await base.CheckValidParamsAndInsertFeedbackAsync(winLimit, criteria);
         }
 
-        public ValueTuple<bool, string> Public_CheckValidParams(
-            CreateMutipleFeedbackCommand criteria)
-        {
-             return base.CheckValidParams(criteria);
-        }
-
         public string Public_GetProductXml(
            WinLimitFeedBackInfo winLimit,
            List<BettypeInfo> betTypeMappings,
@@ -79,13 +73,7 @@
         {
             return base.GetSubProduct(winLimit, settingMappings);
         }
-
-        public Tuple<int, int, string> Public_GetCategorySubCategoryWinloss(
-           IEnumerable<SettingItem> settings)
-        {
-            return base.GetCategorySubCategoryWinloss(settings);
-        }
-
+       
         public IList<SystemSettingMapping> Public_GetBettype(
            List<BettypeInfo> betTypeMappings,
            IEnumerable<SystemSettingMapping> settingMappings)
