@@ -72,7 +72,7 @@
             var custIds = custOutStandings.Select(x => x.CustID);
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
             logService.LogInformation(string.Format("Start import data with headlineid: {0} headlineName: {1} custId: {2}!",
-                headlines.Select(x => x.HeadlineId), headlines.Select(x => x.HeadlineName), headlines.Select(x => x.CustId)));
+                string.Join(", ",headlines.Select(x => x.HeadlineId)), string.Join(", ", headlines.Select(x => x.HeadlineName)), string.Join(", ", headlines.Select(x => x.CustId))));
             IEnumerable<TOControlFeedbackInfor> importTOFeedbacks = await transactionService.ImportTOControllFeedbackInfoAsync(
                 headlines,
                 custOutStandings,
@@ -94,8 +94,15 @@
                 GroupBy(item => new { item.CustID, item.HeadlineID })
                 .Select(group => new { TOInfors = group.ToList() })
                 .ToList();
+
+            logService.LogInformation(string.Format("Count feedback group : {0}", importTOFeedbackGroup.Count()));
+
             foreach (var ToInforGroup in importTOFeedbackGroup)
             {
+
+                logService.LogInformation(string.Format("Prepare group send data with CustID: {0} HeadlineName: {1}",
+                    string.Join(", ", ToInforGroup.TOInfors.Select(x => x.CustID)), string.Join(", ", ToInforGroup.TOInfors.Select(x => x.HeadlineName))
+                    ));
                 await CreateTOControlFeedbackAsync(
                         ToInforGroup.TOInfors,
                         settings,
@@ -445,8 +452,6 @@
             bool isVipCust,
             TOSolutionTemplate TOSolTemplate)
         {
-            logService.LogInformation(string.Format("Start GetTOSolutionTemplateYNSC with param isVipCust: {0}", isVipCust));
-
             var stringBuilder = new StringBuilder();
             var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
 
@@ -481,7 +486,6 @@
                 awayName,
                 Constants.Break);
             stringBuilder.Append(Constants.Break);
-            logService.LogInformation("End GetTOSolutionTemplateYNSC");
             return stringBuilder;
         }
 
