@@ -176,7 +176,7 @@
                 var related = TO.CustID;
 
                 stringBuilder.AppendFormat(XmlTemplate,
-                    TO.CustID,
+                    custId,
                     TO.MatchID,
                     TO.ProfileID,
                     headlineId,
