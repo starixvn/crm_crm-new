@@ -266,7 +266,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Start get subproduct with productId: {0} sportName: {1}!", productId, sportNames.Select(x=>x)));
+            logService.LogInformation(string.Format("Start get subproduct with productId: {0} sportName: {1}!", productId, string.Join(", ",sportNames.Select(x=>x))));
             List<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                && sportNames.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
@@ -425,7 +425,6 @@
            TOControlFeedbackInfor ToInfor,
            TOSolutionTemplate TOSolTemplate)
         {
-            logService.LogInformation("Start GetTOSolutionTemplateEN");
             var stringBuilder = new StringBuilder();
             var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
             var sportNameEN = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.en_US);
@@ -443,7 +442,6 @@
                awayNameEN,
                Constants.Break);
             stringBuilder.Append(Constants.Break);
-            logService.LogInformation("End GetTOSolutionTemplateEN");
             return stringBuilder;
         }
 
