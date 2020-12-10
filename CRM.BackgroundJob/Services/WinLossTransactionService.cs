@@ -12,18 +12,31 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using System.Xml.Linq;
     using CRM.Core.Models;
+    using CRM.BackgroundJob.Models.TurnoverControll;
+    using CRM.BackgroundJob.Criteria.TurnoverControll;
+    using System.Web;
 
     public interface IWinLossTransactionService
     {
         Task<ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>> ImportWinLimitFeedbackInfoAsync(
-           IEnumerable<CustomerWinLimit> cusWinLimit,
-           IEnumerable<GroupHeadline> headlines);
+               IEnumerable<CustomerWinLimit> cusWinLimit,
+               IEnumerable<GroupHeadline> headlines);
 
         Task<CommandResult> EditFeedbackWinLossInfoAsync(
-           int LogID,
-           string status,
-           string description);
-        
+               int LogID,
+               string status,
+               string description);
+
+        Task<IEnumerable<TOControlFeedbackInfor>>ImportTOControllFeedbackInfoAsync(
+             IEnumerable<GroupHeadline> headlines,
+             IEnumerable<CustOutStanding> custOutStandings,
+             IEnumerable<TONotification> custNotifications);
+
+        Task<CommandResult> EditTOControlFeedbackInfoAsync(
+               int LogID,
+               string status,
+               string description);
+
     }
     public class WinLossTransactionService : IWinLossTransactionService
     {
@@ -135,6 +148,64 @@
            string description)
         {
             var criteria = new EditFeedbackWinLossInfoCommand
+            {
+                LogID = LogID,
+                Status = status,
+                Description = description
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<IEnumerable<TOControlFeedbackInfor>> ImportTOControllFeedbackInfoAsync(
+             IEnumerable<GroupHeadline> headlines,
+             IEnumerable<CustOutStanding> custOutStandings,
+             IEnumerable<TONotification> custNotifications)
+        {
+            const string XmlTemplate = "<r custid='{0}' matchid='{1}' profileID='{2}' hl='{3}' hlname='{4}' related='{5}' profileName='{6}' maxTO='{7}' " +
+                                       "houseTO='{8}' totalTO='{9}' outstanding='{10}' time='{11}' bettype='{12}' level='{13}'/>";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            foreach (TONotification TO in custNotifications)
+            {
+                var hlname = "";
+                var headlineId = 0;
+                CustOutStanding custOutST = custOutStandings.FirstOrDefault(x => x.CustID == TO.CustID);
+                GroupHeadline headline = headlines.FirstOrDefault(x => x.CustId == TO.CustID);
+                headlineId = headline != null ? headline.HeadlineId : 0;
+                hlname = headline != null ? headline.HeadlineName : "";
+                var custId = TO.CustID;
+                var related = TO.CustID;
+
+                stringBuilder.AppendFormat(XmlTemplate,
+                    TO.CustID,
+                    TO.MatchID,
+                    TO.ProfileID,
+                    headlineId,
+                    hlname,
+                    related,
+                    HttpUtility.HtmlEncode(TO.ProfileName),
+                    TO.MaxTurnOver,
+                    TO.HouseTurnover,
+                    TO.TotalTurnover,
+                    custOutST.Outstanding,
+                    TO.LastNotifiedDate,
+                    TO.Bettype,
+                    TO.ReachLevel
+                    );
+            }
+            stringBuilder.Append(Constants.EndRootTag);
+            var criteria = new InsertTOControl_AutoFeedbackInfoCommand
+            {
+                xml = stringBuilder.ToString()
+            };
+            return await baseService.GetDataAsync<TOControlFeedbackInfor>(criteria);
+        }
+
+        public async Task<CommandResult> EditTOControlFeedbackInfoAsync(
+           int LogID,
+           string status,
+           string description)
+        {
+            var criteria = new EditTOControlAutoFeedbackInfoUpdCommand
             {
                 LogID = LogID,
                 Status = status,

@@ -1,6 +1,7 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
     using System.Collections.Generic;
+    using System.Text;
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -10,6 +11,7 @@
     using global::CRM.BackgroundJob.Models.TurnoverControll;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Services;
+    using Microsoft.Extensions.Configuration;
 
     public interface ICustomerService
     {
@@ -20,6 +22,8 @@
         Task<IEnumerable<CustomerWinLimit>> GetListCustReachLimitAsync(WinLossSystemSetting setting);
 
         Task<IEnumerable<TONotification>> GetListSMANotificationAsync(WinLossSystemSetting turnOverSetting);
+
+        Task<IEnumerable<CustOutStanding>> GetListCustOutStandingAsync(IEnumerable<TONotification> custNotifications);
     }
 
     public class CustomerService : ICustomerService
@@ -27,12 +31,18 @@
         private readonly ICustomerRepository repository;
         private readonly IBaseService baseService;
 
+        private readonly string Enviroment;
+
+        private const string DefaultEnviroment = Constants.Constants.DefaultEnviroment;
+
         public CustomerService(
             ICustomerRepository repository,
-            IBaseService baseService)
+            IBaseService baseService,
+            IConfiguration configuration)
         {
             this.repository = repository;
             this.baseService = baseService;
+            Enviroment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
         }
 
         public async Task<CustomerInfo> GetCustomerInfoAsync(string username, bool isGuest)
@@ -72,14 +82,31 @@
         {
             var criteria = new GetTOControlCustNotificationSelCriteria
             {
-                LastNotifiedDate = turnOverSetting.LastNotifyDate,
+                LastNotifiedDate = turnOverSetting.LastNotifiedDate,
                 BatchSize = turnOverSetting.BatchSize,
                 ConfigUAT = turnOverSetting.ConfigUAT,
                 ConfigPRO = turnOverSetting.ConfigPRO,
                 IsCredit = turnOverSetting.IsCredit,
-                IsDeposit = turnOverSetting.IsDeposit
+                IsDeposit = turnOverSetting.IsDeposit,
+                Enviroment = Enviroment
             };
             return await baseService.GetDataAsync<TONotification>(criteria);
+        }
+
+        public async Task<IEnumerable<CustOutStanding>> GetListCustOutStandingAsync(IEnumerable<TONotification> custNotifications)
+        {
+            const string XmlTemplate = "<r custid='{0}' matchid='{1}'/>";
+            var stringBuilder = new StringBuilder("<Root>");
+            foreach (TONotification custNoti in custNotifications)
+            {
+                stringBuilder.AppendFormat(XmlTemplate, custNoti.CustID, custNoti.MatchID);
+            }
+            stringBuilder.Append("</Root>");
+            var criteria = new GetTOControllCustOutstandingCriteria
+            {
+                xml = stringBuilder.ToString()
+            };
+            return await baseService.GetDataAsync<CustOutStanding>(criteria);
         }
     }
 }

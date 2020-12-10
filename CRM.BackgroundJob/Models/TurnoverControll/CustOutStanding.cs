@@ -4,6 +4,6 @@
     {
         public int CustID { get; set; }
         public int MatchID { get; set; }
-        public decimal Outstanding { get; set; }
+        public double Outstanding { get; set; }
     }
 }

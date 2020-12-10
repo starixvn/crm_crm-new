@@ -10,6 +10,7 @@
         public bool ConfigPRO { get; set; }
         public bool IsCredit { get; set; }
         public bool IsDeposit { get; set; }
+        public string Enviroment { get; set; }
         public override string GetSettingKey() => "Acc_CRM_TOControl_CustNotificationSel";
         public override bool IsValid() => BatchSize > 0;
     }

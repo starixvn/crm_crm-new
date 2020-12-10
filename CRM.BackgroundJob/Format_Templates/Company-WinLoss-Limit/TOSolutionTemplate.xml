@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+    <SolutionEN>
+        <Header>
+            Dear Sir, Customer Support would like to inform that members under {0} "{1}" has the possibility to
+            lose with the below info:{2}
+        </Header>
+        <SolutionTemplate>
+            Outstanding: {0} ({1}) {6}
+            Sport: {2} {6}
+            League: {3} {6}
+            Team: {4} -vs- {5} {6}
+        </SolutionTemplate>
+        <Footer>
+            Kindly take note, thank you! {0}
+        </Footer>
+    </SolutionEN>
+    <SolutionSC>
+        <Header>
+            您好，客服部在此通知您 {0} "{1}" 旗下会员有可能会输总计 未结束交易 如下：{2}
+        </Header>
+        <SolutionTemplate>
+            未结束交易额: {0} ({1}) {6}
+            产品：{2} {6}
+            联赛：{3} {6}
+            队名：{4} -vs- {5} {6}
+        </SolutionTemplate>
+        <Footer>
+            请您留意 谢谢！{0}
+        </Footer>
+    </SolutionSC>
+    <SolutionYN>
+        <Header>
+            Kính chào Quý Khách, Bộ phận chăm sóc Khách Hàng xin thông báo tới Quý Khách các thành viên thuộc {0} "{1}" có khả năng thua như sau: {2}
+        </Header>
+        <SolutionTemplate>
+            Số dư chưa xử lý: {0} ({1}) {6}
+            Môn thể thao: {2} {6}
+            Giải đấu: {3} {6}
+            Trận đấu: {4} -vs- {5} {6}
+        </SolutionTemplate>
+        <Footer>
+            Xin vui lòng lưu ý, cám ơn Quý Khách! {0}
+        </Footer>
+    </SolutionYN>
+</ROOT>

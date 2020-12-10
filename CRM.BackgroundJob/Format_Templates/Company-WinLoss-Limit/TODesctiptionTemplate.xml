@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+    <Description>
+        <Header>
+            Informed Headline MA Alert for {0} with below details: {1}
+        </Header>
+        <DescTemplate>
+            SMA reaching {0}% Max Turnover {13}
+            Sport: {1} {13}
+            League: {2} {13}
+            Team: {3} -vs- {4} {13}
+            Username: {5}, Level: {0}%, Currency: {6}, Member TO: {7} {13}
+            Bet type: {8}, House TO: {9}, Max TO: {10}, Usage: {11}% {13}
+            Outstanding: {12} ({6}) {13}
+        </DescTemplate>
+    </Description>
+</ROOT>

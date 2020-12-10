@@ -22,7 +22,7 @@
 
         Task CreateFeedbackForWinLossLimit();
 
-        Task CreateFeedbackForTurnoverControll();
+        Task CreateFeedbackForTurnoverControl();
 
     }
 
@@ -177,7 +177,7 @@
 
         [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
         [Queue(QueuePriority.Critical)]
-        public async Task CreateFeedbackForTurnoverControll()
+        public async Task CreateFeedbackForTurnoverControl()
         {
             try
             {
@@ -188,7 +188,7 @@
                     return;
                 }
 
-                await winLossService.TurnoverControllExecuteJobAsync();
+                await winLossService.TurnoverControlExecuteJobAsync();
             }
             catch (Exception ex)
             {

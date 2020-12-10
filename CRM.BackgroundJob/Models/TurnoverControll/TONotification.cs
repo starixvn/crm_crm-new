@@ -3,14 +3,16 @@
     using System;
     public class TONotification
     {
+        
         public int CustID { get; set; }
         public int MatchID { get; set; }
-        public decimal MaxTurnOver { get; set; }
-        public decimal TotalTurnover { get; set; }
-        public decimal HouseTurnover { get; set; }
+        public int ProfileID { get; set; }
+        public double MaxTurnOver { get; set; }
+        public double TotalTurnover { get; set; }
+        public double HouseTurnover { get; set; }
         public byte ReachLevel { get; set; }
         public string ProfileName { get; set; }
-        public int Bettype { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public string Bettype { get; set; }
+        public DateTime LastNotifiedDate { get; set; }
     }
 }

@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Constants;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using Fanex.CRM.BackgroundJob.Constants;
@@ -108,12 +109,12 @@
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
-                && x.SettingValue.Equals("Closed", StringComparison.OrdinalIgnoreCase));
+                && x.SettingValue.Equals(DefaultValue.Closed, StringComparison.OrdinalIgnoreCase));
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
-                 && x.SettingValue.Equals("Neutral", StringComparison.OrdinalIgnoreCase));
+                 && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
-            var category = GetCategorySubCategoryWinloss(settings);
+            var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.CompanyWLLimit);
             string[] betTypeLists = winLimit.BettypeIDList.Split(",");
             var betTypeMappings = new List<BettypeInfo>();
             foreach (var bet in bettype)
@@ -138,13 +139,13 @@
                 CategoryXml = category.Item3,
                 CategoryIds = category.Item1.ToString(),
                 SubCategoryIds = category.Item2.ToString(),
-                Subject = "Special Notification",
+                Subject = DefaultValue.Special_Notification,
                 AutoField = string.Empty,
                 AutoField1 = string.Empty,
-                AutoField2 = string.Format("Date Time & Tool: {0}/{1}/", feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
+                AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 LogID = winLimit.LogID,
-                CustomerXml = string.Format("<ROOT><Cust CustId='{0}' Username='{1}' /></ROOT>", winLimit.HeadlineId, winLimit.HeadlineName),
+                CustomerXml = string.Format(DefaultValue.CustomerXml, winLimit.HeadlineId, winLimit.HeadlineName),
                 ProductXml = GetProductXml(winLimit, betTypeMappings, settings, settingMappings),
                 Solution = GetSolution(winLimit, isVipHeadline),
                 RelatedCustomerXml = GetRelatedCustomerXml(winLimit),
@@ -160,7 +161,7 @@
             WinLimitFeedBackInfo winLimit,
             CreateMutipleFeedbackCommand criteria)
         {
-            var checkValidParamBeforeInsert = CheckValidParams(criteria);
+            var checkValidParamBeforeInsert = commonFeedback.CheckFeedbackValidParams(criteria);
             if(!checkValidParamBeforeInsert.Item1)
             {
                 var messageInvalid = "Invalid Params: " + checkValidParamBeforeInsert.Item2;
@@ -199,31 +200,13 @@
             }
         }
 
-        protected internal virtual ValueTuple<bool,string> CheckValidParams(CreateMutipleFeedbackCommand criteria)
-        {
-            var stringBuilder = new StringBuilder();
-            const string invalid = "{0} is null.";
-            var invalidParamsCategoryStr = string.IsNullOrEmpty(criteria.CategoryIds) ? "CategoryIds" : "";
-            var invalidParamsCategory = string.IsNullOrEmpty(criteria.CategoryXml) ? "CategoryXml" : "";
-            var invalidParamsProduct = string.IsNullOrEmpty(criteria.ProductXml) ? "Products" : "";
-            var invalidParamsSubCategory = string.IsNullOrEmpty(criteria.SubCategoryIds) ? "SubCategoryIds" : "";
-            var invalidParamsResponse = criteria.ResponseId == 0 ? "ResponseId" : "";
-            var invalidParamsStation = string.IsNullOrEmpty(criteria.StationId) ? "StationId" : "";
-            var invalidParamsStatus = criteria.StatusId == 0 ? "StatusId" : "";
-            var invalidParams = invalidParamsCategoryStr + invalidParamsCategory + invalidParamsProduct
-            + invalidParamsSubCategory + invalidParamsResponse + invalidParamsStation + invalidParamsStatus;
-            return string.IsNullOrEmpty(invalidParams) ?
-                new ValueTuple<bool, string>(true, "") :
-                new ValueTuple<bool, string>(false, stringBuilder.AppendFormat(invalid, invalidParams).ToString());
-        }
-
         protected internal virtual string GetProductXml(
             WinLimitFeedBackInfo winLimit,
             List<BettypeInfo> betTypeMappings,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            const string XmlTemplate = "<Product ProductID='{0}' SubProductID='{1}' BetTypeID='{2}' />";
+            const string XmlTemplate = DefaultValue.ProductXml;
             SystemSettingMapping subProduct = GetSubProduct(winLimit, settingMappings);
             IList<SystemSettingMapping> products = GetProduct(settingMappings, subProduct.SettingSource);
             IList<SystemSettingMapping> tempBettypes = GetBettype(betTypeMappings, settingMappings);
@@ -273,26 +256,6 @@
             return subProduct ?? new SystemSettingMapping { SettingId = Constants.SubProductNA };
         }
 
-        protected internal virtual Tuple<int, int, string> GetCategorySubCategoryWinloss(IEnumerable<SettingItem> settings)
-        {
-            var category = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.MainCategory, StringComparison.OrdinalIgnoreCase)
-                && x.SettingValue.Equals("Special Notification", StringComparison.OrdinalIgnoreCase));
-            var subCategoryIdWL = 0;
-
-            if (category != null)
-            {
-                var subCategoryWL = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.SubCategory, StringComparison.OrdinalIgnoreCase)
-                    && x.ParentIds.Any(y => y == category.SettingId)
-                    && x.SettingValue.Equals("Company W/L Limit", StringComparison.OrdinalIgnoreCase));
-                subCategoryIdWL = subCategoryWL != null ? subCategoryWL.SettingId : 0;
-            }
-
-            return new Tuple<int, int, string>(
-                category != null ? category.SettingId : 0, subCategoryIdWL,
-                string.Format("<ROOT><Category MainCategoryID='{0}' SubCategoryID='{1}' /></ROOT>",
-                    category != null ? category.SettingId : 0,
-                    subCategoryIdWL));
-        }
 
         protected internal virtual IList<SystemSettingMapping> GetBettype(
             List<BettypeInfo> betTypeMappings,
@@ -312,9 +275,9 @@
 
         protected internal virtual string GetSolution(WinLimitFeedBackInfo winLimit, bool isVipHeadline)
         {
-            var productEN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "en-US");
-            var productSC = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "zh-CN");
-            var productYN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), "vi-VN");
+            var productEN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), Language.en_US);
+            var productSC = commonFeedback.GetProductName(winLimit.ProductID.ToString(), Language.zh_CN);
+            var productYN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), Language.vi_VN);
 
             string productFormat = "";
             string templateYellow = "";
@@ -324,8 +287,8 @@
             string templateRng = "";
 
             var totalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
-            FeedbackTemplate templates = commonFeedback.GetFeedbackTemplates(templateXml);
-            var formatTemplates = templates.Templates[0];
+            var templates = commonFeedback.GetFeedbackTemplates<FeedbackTemplate>(templateXml);
+            var formatTemplates = templates.Templates;
             if (isVipHeadline)
             {
                 templateRng = formatTemplates.RNGTemplateENYN;
@@ -385,7 +348,7 @@
             var TotalWinAmt_RM = Math.Truncate(winlimit.TotalWinAmt_RM).ToString(Constants.ThousanPase);
             var TotalWinAmt = Math.Truncate(winlimit.TotalWinAmt).ToString(Constants.ThousanPase);
 
-            var stringBuilder = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
+            var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
             stringBuilder.Append("<br />Informed Headline Win/Loss Alert for below member:");
             stringBuilder.AppendFormat("<br />Product: {0}", winlimit.ProductName);
             stringBuilder.Append("<br />Game Type: ");
@@ -401,7 +364,7 @@
 
         protected internal virtual string GetRelatedCustomerXml(WinLimitFeedBackInfo winLimit)
         {
-            const string XmlTemplate = "<Row CustId='{0}' RelatedCustId='{1}' Username='{2}' />";
+            const string XmlTemplate = DefaultValue.RelatedCustomerXml;
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             stringBuilder.AppendFormat(XmlTemplate, winLimit.HeadlineId, winLimit.RelatedCustId, winLimit.UserName);
 

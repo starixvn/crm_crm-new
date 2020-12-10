@@ -13,7 +13,7 @@
     public interface IAutoWinLossFeedbackService
     {
         Task WinLossExecuteJobAsync();
-        Task TurnoverControllExecuteJobAsync();
+        Task TurnoverControlExecuteJobAsync();
     }
 
     public class AutoWinLossFeedbackService : IAutoWinLossFeedbackService
@@ -22,7 +22,7 @@
         private readonly IJobRunningChecker jobRunningChecker;
         private readonly ISystemSettingService systemSettingService;
         private readonly IWinLossFeedbackService winLossService;
-        private readonly ITOControllFeedbackService turnoverService;
+        private readonly ITOControlFeedbackService turnoverService;
         private readonly ICRMLogService logService;
 
         public AutoWinLossFeedbackService(
@@ -31,7 +31,7 @@
             ISystemSettingService systemSettingService,
             IWinLossFeedbackService winLossService,
             ICRMLogService logService,
-            ITOControllFeedbackService turnoverService)
+            ITOControlFeedbackService turnoverService)
         {
             this.appSettings = appSettings.Value;
             this.jobRunningChecker = jobRunningChecker;
@@ -84,7 +84,7 @@
             }
         }
 
-        public async Task TurnoverControllExecuteJobAsync()
+        public async Task TurnoverControlExecuteJobAsync()
         {
             try
             {
@@ -101,7 +101,7 @@
                 {
                     await Task.WhenAll(
                         jobRunningChecker.MarkRunning(JobName.CreateFeedbackForTurnoverControl),
-                        turnoverService.CreateFeedbackForTurnoverControllAsync(turnOverSetting)
+                        turnoverService.CreateFeedbackForTurnoverControlAsync(turnOverSetting)
                     );
                     await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForTurnoverControl);
                 }
