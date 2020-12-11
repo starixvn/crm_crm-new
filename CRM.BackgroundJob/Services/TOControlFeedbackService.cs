@@ -338,7 +338,8 @@
             const byte SuperID = 4;
             const byte MasterID = 3;
 
-            var smaLevel = ToInfors[0].RoleID == SuperID ? SMALevel.Super : ToInfors[0].RoleID == MasterID ? SMALevel.Master : SMALevel.Agent;
+            var isMaster = ToInfors[0].RoleID == MasterID ? SMALevel.Master : SMALevel.Agent;
+            var smaLevel = ToInfors[0].RoleID == SuperID ? SMALevel.Super : isMaster;
             stringBuilder.AppendFormat(TODescTemplate.Desc.Header, smaLevel, Constants.Break);
 
             var profileGroup = ToInfors.
