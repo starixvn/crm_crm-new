@@ -35,14 +35,14 @@ export class Filter extends Component {
     componentDidMount = () => {
         this.props.getSettings().then(() => {
             const siteIds = [];
-            const siteOptions = this.props.settings.siteList.map(x => {
-                siteIds.push(x.site);
-                return {
-                    id: x.site,
-                    name: x.site,
-                    checked: true
-                };
-            });
+            // const siteOptions = this.props.settings.siteList.map(x => {
+            //     siteIds.push(x.site);
+            //     return {
+            //         id: x.site,
+            //         name: x.site,
+            //         checked: true
+            //     };
+            // });
 
             const currencyIds = [];
             const currencyOptions = this.props.settings.currencyList.map(x => {
@@ -73,7 +73,7 @@ export class Filter extends Component {
             });
 
             this.setState(prevState => ({
-                siteOptions,
+               // siteOptions,
                 currencyOptions,
                 statusOptions,
                 positionOptions,

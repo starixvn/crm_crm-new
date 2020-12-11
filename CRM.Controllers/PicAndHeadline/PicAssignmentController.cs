@@ -60,7 +60,7 @@
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
         public async Task<IActionResult> AllSetting()
         {
-            var sites = await picAssignmentService.GetSystemSiteAsync(new GetSystemSiteCriteria());
+            //var sites = await picAssignmentService.GetSystemSiteAsync(new GetSystemSiteCriteria());
             var currencyCriteria = new GetAllCurrencyCriteria
             {
                 IsTest = true,
@@ -74,7 +74,7 @@
             var headlines = await baseService.GetDataAsync<BaseModel>(new GetHeadlinesCriteria());
             var allSetting = new
             {
-                SiteList = sites,
+               // SiteList = sites,
                 CurrencyList = currency,
                 StatusList = Enum.GetValues(typeof(CustomerStatus)).Cast<CustomerStatus>().Select(status => status.ToString()),
                 HeadlineTypeList = Enum.GetValues(typeof(HeadlineType)).Cast<HeadlineType>().Select(status => new BaseModel { Id = (int)status, Name = status.ToString() }),
