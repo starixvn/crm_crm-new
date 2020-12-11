@@ -183,7 +183,7 @@
                 Solution = GetTOSolution(ToInfors),
                 RelatedCustomerXml = GetTORelatedCustomerXml(ToInfor),
                 ListOrigCustIds = string.Join(",", ToInfor.CustID),
-                TOControlLogID = ToInfor.LogID,
+                TOControlLogID = string.Join(",", ToInfors.Select(log=>log.LogID)),
                 Description = GetTODescription(ToInfors)
             };
 

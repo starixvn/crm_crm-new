@@ -13,6 +13,8 @@
     using Fanex.CRM.BackgroundJob.Services;
     using NSubstitute;
     using Xunit;
+    using CRM.BackgroundJob.Models.TurnoverControll;
+    using CRM.BackgroundJob.Criteria.TurnoverControll;
 
     public class CustomerServiceTests
     {
@@ -60,6 +62,29 @@
             Assert.Equal(string.Join(",", custIds), criteria.CustIds);
         }
         [Fact]
+        public async Task GetListSMANotificationAsync_WhenCalled_ReturnExpectedSMAList()
+        {
+            // Arrange
+            var expected = fixture.Create<IEnumerable<TONotification>>();
+            var criteria = new GetTOControlCustNotificationSelCriteria();
+            var setting = fixture.Create<WinLossSystemSetting>();
+            var service = GetService();
+            baseService.GetDataAsync<TONotification>(Arg.Do<GetTOControlCustNotificationSelCriteria>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.GetListSMANotificationAsync(setting);
+
+            // Assert
+            Assert.Equal(expected, actual);
+            Assert.Equal(setting.BatchSize, criteria.BatchSize);
+            Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
+            Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
+            Assert.Equal(setting.LastNotifiedDate, criteria.LastNotifiedDate);
+            Assert.Equal(setting.IsCredit, criteria.IsCredit);
+            Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
+        }
+
+        [Fact]
         public async Task GetListCustReachLimitAsync_WhenCalled_ReturnExpectedLimitInfor()
         {
             // Arrange
@@ -80,6 +105,23 @@
             Assert.Equal(setting.LastLogID, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
+        }
+
+        [Fact]
+        public async Task GetListCustOutStandingAsync_WhenCalled_ReturnExpectedOutStanding()
+        {
+            // Arrange
+            var expected = fixture.Create<IEnumerable<CustOutStanding>>();
+            var criteria = new GetTOControllCustOutstandingCriteria();
+            var custNotifications = fixture.Create<IEnumerable<TONotification>>();
+            var service = GetService();
+            baseService.GetDataAsync<CustOutStanding>(Arg.Do<GetTOControllCustOutstandingCriteria>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.GetListCustOutStandingAsync(custNotifications);
+
+            // Assert
+            Assert.Equal(expected, actual);
         }
         #region Helpers
 

@@ -59,7 +59,7 @@
 
         [SpParam(SqlParamName = "WinLimitLogID")]
         public int LogID { get; set; }
-        public int TOControlLogID { get; set; }
+        public string TOControlLogID { get; set; }
         public int ErrCode { get; set; }
         public string ErrMsg { get; set; }
 
