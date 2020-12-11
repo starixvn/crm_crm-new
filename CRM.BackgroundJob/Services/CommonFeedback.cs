@@ -5,8 +5,6 @@
     using System.IO;
     using System.Linq;
     using System.Text;
-    using CRM.BackgroundJob.Models;
-    using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.Core.Extensions.XML;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
@@ -35,41 +33,46 @@
     public class CommonFeedback : ICommonFeedback
     {
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IRemotingRefService remotingRefService;
 
         private const string path = "Format_Templates\\Company-WinLoss-Limit";
 
-        public CommonFeedback(IHostingEnvironment hostingEnvironment)
+        public CommonFeedback(
+            IHostingEnvironment hostingEnvironment,
+            IRemotingRefService remotingRefService
+            )
         {
             this.hostingEnvironment = hostingEnvironment;
+            this.remotingRefService = remotingRefService;
         }
 
         public string GetProductName(string productId, string languageCode)
         {
-            var productName = new RemotingRefService().GetResourceDataByRefIdAndResourceId("Product", productId, languageCode, string.Empty);
+            var productName = remotingRefService.GetResourceDataByRefIdAndResourceId("Product", productId, languageCode, string.Empty);
             return productName;
         }
 
         public string GetSportName(string sportTypeId, string languageCode)
         {
-            var sportName = new RemotingRefService().GetSportName(sportTypeId, languageCode, string.Empty);
+            var sportName = remotingRefService.GetSportName(sportTypeId, languageCode, string.Empty);
             return sportName;
         }
 
         public string GetLeagueName(string leagueId, string languageCode)
         {
-            var leagueName = new RemotingRefService().GetLeagueName(leagueId, languageCode, string.Empty);
+            var leagueName = remotingRefService.GetLeagueName(leagueId, languageCode, string.Empty);
             return leagueName;
         }
 
         public string GetTeamName(string teamId, string languageCode)
         {
-            var teamName = new RemotingRefService().GetTeamName(teamId, languageCode, string.Empty);
+            var teamName = remotingRefService.GetTeamName(teamId, languageCode, string.Empty);
             return teamName;
         }
 
         public string GetBettypeName(string betTypeId, string languageCode)
         {
-            var betTypeName = new RemotingRefService().GetBetTypeName(betTypeId, languageCode);
+            var betTypeName = remotingRefService.GetBetTypeName(betTypeId, languageCode);
             return betTypeName;
         }
 
