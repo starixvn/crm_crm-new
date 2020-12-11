@@ -36,6 +36,7 @@
         private readonly string solTemplateXml = "TOSolutionTemplate.xml";
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public TOControlFeedbackService(
            IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
@@ -72,7 +73,7 @@
             var custIds = custOutStandings.Select(x => x.CustID);
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
             logService.LogInformation(string.Format("Start import data with headlineid: {0} headlineName: {1} custId: {2}!",
-                string.Join(", ",headlines.Select(x => x.HeadlineId)), string.Join(", ", headlines.Select(x => x.HeadlineName)), string.Join(", ", headlines.Select(x => x.CustId))));
+                string.Join(", ", headlines.Select(x => x.HeadlineId)), string.Join(", ", headlines.Select(x => x.HeadlineName)), string.Join(", ", headlines.Select(x => x.CustId))));
             IEnumerable<TOControlFeedbackInfor> importTOFeedbacks = await transactionService.ImportTOControllFeedbackInfoAsync(
                 headlines,
                 custOutStandings,
@@ -95,11 +96,9 @@
                 .Select(group => new { TOInfors = group.ToList() })
                 .ToList();
 
-            logService.LogInformation(string.Format("Count feedback group : {0}", importTOFeedbackGroup.Count));
-
             foreach (var ToInforGroup in importTOFeedbackGroup)
             {
-
+                logService.LogInformation(string.Format("Count feedback group : {0}", ToInforGroup.TOInfors.Count));
                 logService.LogInformation(string.Format("Prepare group send data with CustID: {0} HeadlineName: {1}",
                     string.Join(", ", ToInforGroup.TOInfors.Select(x => x.CustID)), string.Join(", ", ToInforGroup.TOInfors.Select(x => x.HeadlineName))
                     ));
@@ -108,9 +107,9 @@
                         settings,
                         settingMappings);
             }
-            logService.LogInformation("Finished create TO feedback");
             var MaxNotifiedDate = custNotifications.Max(x => x.LastNotifiedDate);
             await EditTOSystemSettingAsync(MaxNotifiedDate);
+            logService.LogInformation("Finished create TO feedback");
         }
 
         protected internal virtual async Task CreateTOControlFeedbackAsync(
@@ -188,7 +187,7 @@
                 var messageInvalid = "Invalid Params: " + checkValidParamBeforeInsert.Item2;
                 logService.LogInformation(string.Format("Invalid Params. @Categorystr: {0} @Category: {1} @Product: {2} @StatusID: {3} @SubCategorystr:{4} @ResponseID:{5} @StationID:{6}",
                         criteria.CategoryIds, criteria.CategoryXml, criteria.ProductXml, criteria.StatusId, criteria.SubCategoryIds, criteria.ResponseId, criteria.StationId));
-                await transactionService.EditTOControlFeedbackInfoAsync(ToInfor.LogID,CreateFeedbackJobStatus.Fail, messageInvalid);
+                await transactionService.EditTOControlFeedbackInfoAsync(ToInfor.LogID, CreateFeedbackJobStatus.Fail, messageInvalid);
                 return;
             }
             try
@@ -229,8 +228,12 @@
             IList<SettingItem> subProducts = GetTOSubProduct(productId, sportNames, settings, settingMappings);
             SettingItem product = GetTOSportsbookProduct(settings);
             IList<SystemSettingMapping> tempBettypes = GetTOBettype(betTypeMappings, settingMappings);
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            logService.LogInformation(string.Format("subProducts : {0} product: {1} tempBettypes: {2}",
+                string.Join(",", subProducts.Select(name => name.SettingName)),
+                product.SettingName,
+                 string.Join(",", tempBettypes.Select(name => name.SettingName))));
 
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (SettingItem subProduct in subProducts)
             {
                 if (tempBettypes.Any())
@@ -266,7 +269,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Start get subproduct with productId: {0} sportName: {1}!", productId, string.Join(", ",sportNames.Select(x=>x))));
+            logService.LogInformation(string.Format("Start get subproduct with productId: {0} sportName: {1}!", productId, string.Join(", ", sportNames.Select(x => x))));
             List<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                && sportNames.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
@@ -288,9 +291,12 @@
             List<string> betTypeMappings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
+            logService.LogInformation(string.Format("Start GetTOBettype: {0}!", string.Join(", ", betTypeMappings.Select(x => x))));
             IList<SystemSettingMapping> bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
+
+            logService.LogInformation("End GetTOBettype");
 
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
@@ -313,10 +319,10 @@
         {
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
             var TODescTemplate = commonFeedback.GetFeedbackTemplates<TODescriptionTemplate>(descTemplateXml);
-            
+
             const byte SuperID = 4;
             const byte MasterID = 3;
-            var smaLevel = ToInfors[0].RoleID == SuperID ?  SMALevel.Super : ToInfors[0].RoleID == MasterID ? SMALevel.Master : SMALevel.Agent;
+            var smaLevel = ToInfors[0].RoleID == SuperID ? SMALevel.Super : ToInfors[0].RoleID == MasterID ? SMALevel.Master : SMALevel.Agent;
             stringBuilder.AppendFormat(TODescTemplate.Desc.Header, smaLevel, Constants.Break);
 
             var profileGroup = ToInfors.
@@ -326,6 +332,8 @@
             foreach (var profiles in profileGroup)
             {
                 var descInfor = profiles.profileIDs.FirstOrDefault();
+                logService.LogInformation(string.Format("Begin create template for desctiption with profileName: {0} custName: {1}",
+                descInfor.ProfileName, descInfor.HeadlineName));
                 var sportName = commonFeedback.GetSportName(descInfor.SportType.ToString(), Language.en_US);
                 var leagueName = commonFeedback.GetLeagueName(descInfor.LeagueID.ToString(), Language.en_US);
                 var homeName = commonFeedback.GetTeamName(descInfor.HomeID.ToString(), Language.en_US);
@@ -347,8 +355,8 @@
                         Constants.Break
                         );
                 stringBuilder.Append(Constants.Break);
+                logService.LogInformation("End create template desctiption");
             }
-            
             stringBuilder.Append(Constants.Break);
             return stringBuilder.ToString();
         }
@@ -356,8 +364,8 @@
         protected internal virtual string GetTOSolution(List<TOControlFeedbackInfor> ToInfors)
         {
             var isVipCust = ToInfors[0].Site == "789y" && ToInfors[0].IsVip;
-            logService.LogInformation(string.Format("Begin GetTOSolution with CustName : {0} HeadlineName:{1} isVipCust: {2}",
-                ToInfors[0].UserName, ToInfors[0].HeadlineName, isVipCust));
+            logService.LogInformation(string.Format("Begin GetTOSolution with CustName : {0} HeadlineName:{1} isVipCust: {2} site: {3} isVip: {4}",
+                ToInfors[0].UserName, ToInfors[0].HeadlineName, isVipCust, ToInfors[0].Site, ToInfors[0].IsVip));
             var TOSolTemplate = commonFeedback.GetFeedbackTemplates<TOSolutionTemplate>(solTemplateXml);
             string solHeader = "";
             string solfooter = "";
@@ -400,6 +408,7 @@
             foreach (var group in matchIDGroup)
             {
                 var toInfor = group.matchIDs.FirstOrDefault();
+                logService.LogInformation(string.Format("Group matchID: {0}", toInfor.MatchID));
                 solutionTemplateEN.Append(GetTOSolutionTemplateEN(toInfor, TOSolTemplate));
                 solutionTemplateYNSC.Append(GetTOSolutionTemplateYNSC(toInfor, isVipCust, TOSolTemplate));
             }
