@@ -89,6 +89,8 @@
                 logService.LogInformation(string.Format("Import doesn't have any data with custId: {0} headlineName: {1}!",
                     string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
                 var notifiedDate = custNotifications.Any() ? custNotifications.Max(x => x.LastNotifiedDate) : turnOverSetting.LastNotifiedDate;
+
+                logService.LogInformation(string.Format("Update notifiedDate: {0} !", notifiedDate));
                 await EditTOSystemSettingAsync(notifiedDate);
                 return;
             }
