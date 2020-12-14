@@ -62,7 +62,7 @@
         }
 
         [Fact]
-        public async Task CreateFeedbackForWinLossLimitAsync_ExistedWinlossInfo_ExpectedUpdateSystemSetting()
+        public async Task CreateFeedbackForWinLossLimitAsync_ExistedWinlossInfo_ExpectedEditWinLossSystemSettingAsyncAndCallCreateWinLossFeedbackCreditAsync()
         {
             // Arrange
             var service = MockService();

@@ -163,22 +163,22 @@
 
             var criteria = new CreateMutipleFeedbackCommand
             {
-                CreatorId = appSettings.CreatorId,
-                UserId = appSettings.CreatorId,
                 FeedbackDate = feedbackDate.Subtract(timeSpan),
                 ResolutionDate = feedbackDate.AddMinutes(1).Subtract(timeSpan),
+                CreatorId = appSettings.CreatorId,
+                UserId = appSettings.CreatorId,
                 IsCheckedDefaultComm = true,
                 StationId = station != null ? station.SettingId.ToString() : string.Empty,
                 StatusId = status != null ? status.SettingId : 0,
-                ResponseId = response != null ? response.SettingId : 0,
-                UserRole = Constants.UserRole,
                 CategoryXml = category.Item3,
                 CategoryIds = category.Item1.ToString(),
                 SubCategoryIds = category.Item2.ToString(),
+                ResponseId = response != null ? response.SettingId : 0,
+                UserRole = Constants.UserRole,
                 Subject = DefaultValue.Special_Notification,
+                AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField = string.Empty,
                 AutoField1 = string.Empty,
-                AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 CustomerXml = string.Format(DefaultValue.CustomerXml, ToInfor.HeadlineID, ToInfor.HeadlineName),
                 ProductXml = GetTOProductXml(SportTypeName.Distinct().ToList(), sportsbook.SettingId, betTypeMappings, settings, settingMappings),
@@ -441,11 +441,11 @@
                 solutionTemplateEN.Append(GetTOSolutionTemplateEN(toInfor, TOSolTemplate));
                 solutionTemplateYNSC.Append(GetTOSolutionTemplateYNSC(toInfor, isVipCust, TOSolTemplate));
             }
-            stringBuilder.AppendFormat(TOSolTemplate.SolutionEN.Header, smaLevelEN, ToInfors[0].UserName, Constants.Break);
+            stringBuilder.AppendFormat(TOSolTemplate.SolutionEN.Header, smaLevelEN, ToInfors[0].UserName, Constants.LineBreak);
             stringBuilder.Append(solutionTemplateEN);
             stringBuilder.AppendFormat(TOSolTemplate.SolutionEN.Footer, Constants.LineBreak);
 
-            stringBuilder.AppendFormat(solHeader, smaLevel, ToInfors[0].UserName, Constants.Break);
+            stringBuilder.AppendFormat(solHeader, smaLevel, ToInfors[0].UserName, Constants.LineBreak);
             stringBuilder.Append(solutionTemplateYNSC);
             stringBuilder.AppendFormat(solfooter, Constants.LineBreak);
             logService.LogInformation("End get GetTOSolution");

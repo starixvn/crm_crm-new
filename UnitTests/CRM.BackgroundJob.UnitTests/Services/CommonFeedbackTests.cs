@@ -6,7 +6,6 @@
     using CRM.BackgroundJob.Constants;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Extensions.XML;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -19,9 +18,6 @@
     {
         private IHostingEnvironment hostingEnvironment;
         private IRemotingRefService remotingRefService;
-
-
-        private readonly IFixture fixture = new Fixture();
 
         #region CheckFeedbackValidParams
 
@@ -362,27 +358,26 @@
 
         #endregion Get Remoting Ref
 
-        //[Fact]
-        //public void GetFeedbackTemplates_CallFunction_ReturnExpectedTemplate()
-        //{
-        //    // Arrange
-        //    var service = GetService();
-        //    var expect = new TODescriptionTemplate
-        //    {
-        //        Desc = new Desctiption
-        //        {
-        //            Header = "test",
-        //            DescTemplate = "test"
-        //        }
-        //    };
-        //    xmlio.DeserializeXMLFileToObject<TODescriptionTemplate>("xml").Returns(expect);
-        //    hostingEnvironment.ContentRootPath.Returns("test");
-        //    // Act
-        //    var actual = service.GetFeedbackTemplates<TODescriptionTemplate>("xml");
+        [Fact]
+        public void GetFeedbackTemplates_CallFunction_ReturnExpectedTemplate()
+        {
+            // Arrange
+            var service = GetService();
+            var expect = new TODescriptionTemplate
+            {
+                Desc = new Desctiption
+                {
+                    Header = "test",
+                    DescTemplate = "test"
+                }
+            };
+            hostingEnvironment.ContentRootPath.Returns("D:\\Project\\crm-new\\UnitTests\\CRM.BackgroundJob.UnitTests");
+            // Act
+            var actual = service.GetFeedbackTemplates<TODescriptionTemplate>("TestTemplate.xml");
 
-        //    // Assert
-        //    Assert.Equal(expect, actual);
-        //}
+            // Assert
+            Assert.Equal(expect.ToString(), actual.ToString());
+        }
 
         #region Helpers
 
