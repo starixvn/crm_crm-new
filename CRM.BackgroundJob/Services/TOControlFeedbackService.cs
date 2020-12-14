@@ -340,6 +340,7 @@
 
             var isMaster = ToInfors[0].RoleID == MasterID ? SMALevel.Master : SMALevel.Agent;
             var smaLevel = ToInfors[0].RoleID == SuperID ? SMALevel.Super : isMaster;
+            stringBuilder.Append(Constants.Break);
             stringBuilder.AppendFormat(TODescTemplate.Desc.Header, smaLevel, Constants.Break);
 
             var profileGroup = ToInfors.
@@ -525,6 +526,8 @@
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
                 new SystemSettingItem { SettingName = SystemSettingName.LastNotifiedDate, Value =  LastNotifiedDate.ToString("yyyy-MM-dd hh:mm:ss.fff tt")}
             };
+            logService.LogInformation(String.Format("Update Job TurnOver Setting with LastRuntime: {0}", settingJobStatus[1].Value));
+
             return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
         }
     }

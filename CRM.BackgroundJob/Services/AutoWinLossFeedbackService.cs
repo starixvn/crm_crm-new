@@ -88,6 +88,8 @@
         {
             try
             {
+                logService.LogInformation("Start Service Turnover Controll!");
+
                 WinLossSystemSetting turnOverSetting = await systemSettingService.GetTurnoverSettingAsync();
                 if (!turnOverSetting.ServiceFlag)
                 {

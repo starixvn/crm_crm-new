@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using AutoFixture;
     using CRM.BackgroundJob.Constants;
+    using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Services;
+    using CRM.Core.Extensions.XML;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -17,6 +19,7 @@
     {
         private IHostingEnvironment hostingEnvironment;
         private IRemotingRefService remotingRefService;
+
 
         private readonly IFixture fixture = new Fixture();
 
@@ -283,12 +286,12 @@
         #region Get Remoting Ref
 
         [Fact]
-        public void GetProductName_ENLanguage_ReturnExpectedProductName()
+        public void GetProductName_CallFunction_ReturnExpectedProductName()
         {
             // Arrange
-            var expect = "Soccer";
+            var expect = "Sportsbook";
             var service = GetService();
-            remotingRefService.GetResourceDataByRefIdAndResourceId("Product", Arg.Any<string>(), Arg.Any<string>(), string.Empty).Returns("Soccer");
+            remotingRefService.GetResourceDataByRefIdAndResourceId("Product", Arg.Any<string>(), Arg.Any<string>(), string.Empty).Returns("Sportsbook");
 
             // Act
             var actual = service.GetProductName("2", Language.en_US);
@@ -297,15 +300,96 @@
             Assert.Equal(expect, actual);
         }
 
-            #endregion Get Remoting Ref
+        [Fact]
+        public void GetSportName_CallFunction_ReturnExpectedSportName()
+        {
+            // Arrange
+            var expect = "Soccer";
+            var service = GetService();
+            remotingRefService.GetSportName(Arg.Any<string>(), Arg.Any<string>(), string.Empty).Returns("Soccer");
 
-            #region Helpers
+            // Act
+            var actual = service.GetSportName("2", Language.en_US);
 
-            private CommonFeedback GetService()
+            // Assert
+            Assert.Equal(expect, actual);
+        }
+
+        [Fact]
+        public void GetLeagueName_CallFunction_ReturnExpectedLeagueName()
+        {
+            // Arrange
+            var expect = "LeagueA";
+            var service = GetService();
+            remotingRefService.GetLeagueName(Arg.Any<string>(), Arg.Any<string>(), string.Empty).Returns("LeagueA");
+
+            // Act
+            var actual = service.GetLeagueName("2", Language.en_US);
+
+            // Assert
+            Assert.Equal(expect, actual);
+        }
+
+        [Fact]
+        public void GetTeamName_CallFunction_ReturnExpectedTeamName()
+        {
+            // Arrange
+            var expect = "TeamA";
+            var service = GetService();
+            remotingRefService.GetTeamName(Arg.Any<string>(), Arg.Any<string>(), string.Empty).Returns("TeamA");
+
+            // Act
+            var actual = service.GetTeamName("2", Language.en_US);
+
+            // Assert
+            Assert.Equal(expect, actual);
+        }
+
+        [Fact]
+        public void GetBettypeName_CallFunction_ReturnExpectedBettypeName()
+        {
+            // Arrange
+            var expect = "Bettype";
+            var service = GetService();
+            remotingRefService.GetBetTypeName(Arg.Any<string>(), Arg.Any<string>()).Returns("Bettype");
+
+            // Act
+            var actual = service.GetBettypeName("2", Language.en_US);
+
+            // Assert
+            Assert.Equal(expect, actual);
+        }
+
+        #endregion Get Remoting Ref
+
+        //[Fact]
+        //public void GetFeedbackTemplates_CallFunction_ReturnExpectedTemplate()
+        //{
+        //    // Arrange
+        //    var service = GetService();
+        //    var expect = new TODescriptionTemplate
+        //    {
+        //        Desc = new Desctiption
+        //        {
+        //            Header = "test",
+        //            DescTemplate = "test"
+        //        }
+        //    };
+        //    xmlio.DeserializeXMLFileToObject<TODescriptionTemplate>("xml").Returns(expect);
+        //    hostingEnvironment.ContentRootPath.Returns("test");
+        //    // Act
+        //    var actual = service.GetFeedbackTemplates<TODescriptionTemplate>("xml");
+
+        //    // Assert
+        //    Assert.Equal(expect, actual);
+        //}
+
+        #region Helpers
+
+        private CommonFeedback GetService()
         {
             hostingEnvironment = Substitute.For<IHostingEnvironment>();
             remotingRefService = Substitute.For<IRemotingRefService>();
-
             return new CommonFeedback(
                 hostingEnvironment,
                 remotingRefService
