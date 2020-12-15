@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using AutoFixture;
     using CRM.BackgroundJob.Constants;
     using CRM.BackgroundJob.Models.TurnoverControll;
@@ -371,7 +372,8 @@
                     DescTemplate = "test"
                 }
             };
-            hostingEnvironment.ContentRootPath.Returns("D:\\Project\\crm-new\\UnitTests\\CRM.BackgroundJob.UnitTests");
+            var currentDirectory = Directory.GetCurrentDirectory();
+            hostingEnvironment.ContentRootPath.Returns(currentDirectory);
             // Act
             var actual = service.GetFeedbackTemplates<TODescriptionTemplate>("TestTemplate.xml");
 

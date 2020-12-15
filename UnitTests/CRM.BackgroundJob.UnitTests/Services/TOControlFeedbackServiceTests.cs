@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
@@ -349,7 +350,7 @@
         #region GetTOSportsbookProduct
 
         [Fact]
-        public void GetTOSportsbookProduct_NotExistSubProduct_ReturnDefaultProduct()
+        public void GetTOSportsbookProduct_NotExistSportbook_ReturnDefaultProduct()
         {
             // Arrange
             var setting = new List<SettingItem>
@@ -366,7 +367,162 @@
             Assert.Equal(Constants.ProductNA, actual.SettingId);
         }
 
+        [Fact]
+        public void GetTOSportsbookProduct_ExistSportbook_ReturnDefaultProduct()
+        {
+            // Arrange
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem
+                    {
+                        SettingName = "Product",
+                        SettingValue = "Sportsbook",
+                        SettingId = 1
+                    }
+                };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetTOSportsbookProduct(settings);
+
+            // Assert
+            Assert.Equal(1, actual.SettingId);
+        }
+
         #endregion GetTOSportsbookProduct
+
+        #region GetTOSubProduct
+
+        [Fact]
+        public void GetTOSubProduct_NotExistedsportNames_ReturnDefaultSubProduct()
+        {
+            // Arrange
+            var sportNames = fixture.Create<List<string>>();
+            var settings = fixture.Create<IEnumerable<SettingItem>>();
+            var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetTOSubProduct(1, sportNames, settings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetTOSubProduct_ExistedsportNames_ReturnExpectedSubProduct()
+        {
+            // Arrange
+            var sportNames = new List<string>
+            {
+                "1"
+            };
+            var settings = new List<SettingItem>
+            {
+                new SettingItem
+                {
+                    SettingName = "SubProduct",
+                    ParentIds = new List<int>{1} ,
+                    SettingId = 1
+                }
+            };
+            var settingMappings = new List<SystemSettingMapping>
+            {
+                new SystemSettingMapping
+                {
+                    SettingName = "SubProduct",
+                    SettingId = 1,
+                    SettingSource = "1"
+                }
+            };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetTOSubProduct(1, sportNames, settings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(1, actual.First().SettingId);
+        }
+
+        #endregion GetTOSubProduct
+
+        #region GetTOBettype
+
+        [Fact]
+        public void GetTOBettype_NotExistedbetTypeMappings_ReturnDefaultBettype()
+        {
+            // Arrange
+            var betTypeMappings = fixture.Create<List<string>>();
+            var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetTOBettype(betTypeMappings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetTOBettype_ExistedbetTypeMappings_ReturnExpectedBettype()
+        {
+            // Arrange
+            var betTypeMappings = new List<string>
+            {
+                "1"
+            };
+            var settingMappings = new List<SystemSettingMapping>
+            {
+                new SystemSettingMapping
+                {
+                    SettingName = "Bettype",
+                    SettingSource = "1",
+                    SettingId = 1
+                }
+
+            };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetTOBettype(betTypeMappings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(1, actual.First().SettingId);
+        }
+
+        #endregion GetTOBettype
+
+        #region GetTORelatedCustomerXml
+
+        [Fact]
+        public void GetTORelatedCustomerXml_CallFunction_ReturnExpectTemplate()
+        {
+            // Arrange
+            var Toinfor = new TOControlFeedbackInfor
+            {
+                HeadlineID = 1,
+                RelatedCustID = 1,
+                UserName = "test"
+            };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetTORelatedCustomerXml(Toinfor);
+
+            // Assert
+            Assert.Equal("<ROOT><Row CustId='1' RelatedCustId='1' Username='test' /></ROOT>", actual);
+        }
+
+        #endregion GetTORelatedCustomerXml
 
         #region Helpers
 
