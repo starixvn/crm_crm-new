@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Criteria.TurnoverControll;
     using CRM.BackgroundJob.Criteria.WinLossLimit;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.Core.Extensions.XML;
@@ -107,6 +108,22 @@
 
             // Act
             var actual = await service.GetWinLossSettingAsync();
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetTurnoverSettingAsync_WhenCalled_ReturnExpectedSetting()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<WinLossSystemSetting>();
+            var service = GetSystemSettingService();
+            baseService.GetDataEntityAsync<WinLossSystemSetting>(Arg.Any<GetTOControllSystemSettingCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await service.GetTurnoverSettingAsync();
 
             // Assert
             Assert.Equal(expected, actual);

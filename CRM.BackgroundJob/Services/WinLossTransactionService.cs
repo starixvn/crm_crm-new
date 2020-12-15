@@ -33,7 +33,7 @@
              IEnumerable<TONotification> custNotifications);
 
         Task<CommandResult> EditTOControlFeedbackInfoAsync(
-               int LogID,
+               string LogID,
                string status,
                string description);
 
@@ -201,7 +201,7 @@
         }
 
         public async Task<CommandResult> EditTOControlFeedbackInfoAsync(
-           int LogID,
+           string LogID,
            string status,
            string description)
         {

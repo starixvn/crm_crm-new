@@ -70,6 +70,11 @@
             await feedbackService.Received().ExecuteJobAsync();
         }
 
+        #endregion CreateFeedbackForVoidingAbnormalBet
+
+
+        #region CreateFeedbackForWinLossLimit
+
         [Fact]
         public async Task CreateFeedbackForWinLossLimit_Exception_ExpectedWriteLog()
         {
@@ -86,7 +91,87 @@
             await logService.Received().ErrorAsync(exception);
         }
 
-        #endregion CreateFeedbackForVoidingAbnormalBet
+        [Fact]
+        public async Task CreateFeedbackForWinLossLimit_IsUnderMaintenance_ExpectedWriteLog()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = true };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForWinLossLimit();
+
+            // Assert
+            logService.Received().LogInformation("UM time.");
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForWinLossLimit_WhenCalled_ExpectedCreateWinLossFeedback()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = false };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForWinLossLimit();
+
+            // Assert
+            await winlossService.Received().WinLossExecuteJobAsync();
+        }
+
+        #endregion CreateFeedbackForTurnoverControl
+
+        #region CreateFeedbackForWinLossLimit
+
+        [Fact]
+        public async Task CreateFeedbackForTurnoverControl_Exception_ExpectedWriteLog()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            maintenanceService.When(x => x.GetUnderMaintenanceTimeAsync()).Throw(exception);
+
+            // Act
+            await service.CreateFeedbackForTurnoverControl();
+
+            // Assert
+            await logService.Received().ErrorAsync(exception);
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForTurnoverControl_IsUnderMaintenance_ExpectedWriteLog()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = true };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForTurnoverControl();
+
+            // Assert
+            logService.Received().LogInformation("UM time.");
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForTurnoverControl_WhenCalled_ExpectedCreateWinLossFeedback()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = false };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForTurnoverControl();
+
+            // Assert
+            await winlossService.Received().TurnoverControlExecuteJobAsync();
+        }
+
+        #endregion CreateFeedbackForTurnoverControl
 
         #region PullMessageForChatBotAsync
 

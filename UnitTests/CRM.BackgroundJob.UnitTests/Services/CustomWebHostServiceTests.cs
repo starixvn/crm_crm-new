@@ -158,6 +158,27 @@
                 Arg.Any<RecurringJobOptions>());
         }
 
+        [Fact]
+        public void RunHangfireJobs_EnabledCreateFeedbackForTurnoverControl_ExpectedAddRecurringJob()
+        {
+            // Arrange
+            var jobSettings = new List<HangfireJobSetting>
+            {
+                new HangfireJobSetting { JobName = "CreateFeedbackForTurnoverControl", IsEnabled = true }
+            };
+            var service = MockService(jobSettings);
+            service.Protected("IsEnabledJob", "CreateFeedbackForTurnoverControl").Returns(true);
+
+            // Act
+            service.Public_RunHangfireJobs();
+
+            // Assert
+            recurringJob.Received().AddOrUpdate("Create Feedback For Turn Over Controll",
+                Arg.Is<Job>(job => job.Method.Name == "CreateFeedbackForTurnoverControl"),
+                "* * * * *",
+                Arg.Any<RecurringJobOptions>());
+        }
+
         #endregion RunHangfireJobs
 
         [Fact]

@@ -24,8 +24,9 @@
         private ITOControlFeedbackService tOControlFeedbackService;
         private readonly IFixture fixture = new Fixture();
 
+        #region WinLossExecuteJobAsync
         [Fact]
-        public async Task WinLoss_Exception_ExpectedWriteLogAndClearJob()
+        public async Task WinLossExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
         {
             // Arrange
             var exception = fixture.Create<Exception>();
@@ -119,6 +120,106 @@
             await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForWinLossLimit);
             await winLossService.Received().CreateFeedbackForWinLossLimitAsync(setting);
         }
+
+        #endregion WinLossExecuteJobAsync
+
+        #region TurnoverControlExecuteJobAsync
+        [Fact]
+        public async Task TurnoverControlExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
+        {
+            // Arrange
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            systemSettingService.When(x => x.GetTurnoverSettingAsync()).Throw(exception);
+
+            // Assert
+            await service.TurnoverControlExecuteJobAsync();
+
+            // Act
+            await logService.Received().ErrorAsync(exception);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForTurnoverControl);
+        }
+
+        [Fact]
+        public async Task TurnoverControlExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new WinLossSystemSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+
+            // Act
+            await service.TurnoverControlExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service Turnover Controll is shutdown.");
+        }
+
+        [Fact]
+        public async Task TurnoverControlExecuteJobAsync_JobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        {
+            // Arrange
+            var setting = new WinLossSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForTurnoverControl).Returns(true);
+
+            // Act
+            await service.TurnoverControlExecuteJobAsync();
+
+            // Assert
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task TurnoverControlExecuteJobAsync_JobIsRunningAndLastRuntimeIsGreaterThanNow_DoNothing()
+        {
+            // Arrange
+            var service = GetService();
+            var setting = new WinLossSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now.AddMinutes(-appSettings.RetryRuntime - 1),
+                JobStatus = JobStatus.Running
+            };
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForTurnoverControl).Returns(false);
+
+            // Act
+            await service.TurnoverControlExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Rerun Turnover Controll service.");
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_TOControlFB);
+        }
+
+        [Fact]
+        public async Task TurnoverControlExecuteJobAsync_JobIsCompleted_ExpectedCallCreateFeedback()
+        {
+            // Arrange
+            var service = GetService();
+            var setting = new WinLossSystemSetting
+            {
+                ServiceFlag = true,
+                JobStatus = JobStatus.Completed
+            };
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+
+            // Act
+            await service.TurnoverControlExecuteJobAsync();
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForTurnoverControl);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForTurnoverControl);
+            await tOControlFeedbackService.Received().CreateFeedbackForTurnoverControlAsync(setting);
+        }
+
+        #endregion TurnoverControlExecuteJobAsync
 
         #region Helpers
 

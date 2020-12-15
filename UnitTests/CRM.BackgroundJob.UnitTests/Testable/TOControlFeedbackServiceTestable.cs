@@ -44,10 +44,10 @@
         }
 
         public async Task Public_CheckValidTOParamsAndInsertFeedbackAsync(
-            TOControlFeedbackInfor ToInfor,
+            List<TOControlFeedbackInfor> ToInfors,
             CreateMutipleFeedbackCommand criteria)
         {
-            await base.CheckValidTOParamsAndInsertFeedbackAsync(ToInfor, criteria);
+            await base.CheckValidTOParamsAndInsertFeedbackAsync(ToInfors, criteria);
         }
 
         public string Public_GetTOProductXml(

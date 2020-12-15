@@ -583,6 +583,47 @@
             Assert.Equal(expected, resulted);
         }
 
+        [Fact]
+        public void GetSolution_DoesNotHaveLevelID_ReturnDefault()
+        {
+            // Arrange
+            var winlimit = new WinLimitFeedBackInfo
+            {
+                Level = "Default",
+                UserName = "test",
+                TotalWinAmt = 1000,
+                Currency = "USD",
+                ProductID = 1,
+                ProductName = "Test"
+            };
+
+            var service = MockService();
+            var template = new FeedbackTemplate
+            {
+                Templates = new Template
+                {
+                    YellowTemplateENSC = "{0} {1} {2} {3} {4} {5}",
+                    RedTemplateENSC = "{0} {1} {2} {3} {4} {5}",
+                    BlackTemplateSC = "{0} {1} {2} {3} {4} {5}",
+                    GreyTemplateENSC = "{0} {1} {2} {3} {4} {5}",
+                    YellowTemplateENYN = "{0} {1} {2} {3} {4} {5}",
+                    RedTemplateENYN = "{0} {1} {2} {3} {4} {5}",
+                    BlackTemplateYN = "{0} {1} {2} {3} {4} {5}",
+                    GreyTemplateENYN = "{0} {1} {2} {3} {4} {5}"
+                }
+            };
+            commonFeedback.GetFeedbackTemplates<FeedbackTemplate>(Arg.Any<string>()).Returns(template);
+            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "en-US").Returns("ProductNameUS");
+            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "zh-CN").Returns("ProductNameSC");
+            commonFeedback.GetProductName(winlimit.ProductID.ToString(), "vi-VN").Returns("ProductNameYN");
+
+            // Act
+            var result = service.Public_GetSolution(winlimit, false);
+
+            // Assert
+            Assert.Equal("", result);
+        }
+
         #endregion GetSolution
 
         #region GetDescription
@@ -602,7 +643,8 @@
                 {
                     new BettypeInfo{Name = "a"},
                     new BettypeInfo{Name = "b"},
-                }, "a, b"}
+                }, "a, b"},
+                new object[] { new List<BettypeInfo>(), ""}
            };
         }
 

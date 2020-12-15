@@ -146,7 +146,7 @@
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
-            service.Received().Protected("CheckValidTOParamsAndInsertFeedbackAsync", Arg.Any<TOControlFeedbackInfor>()
+            service.Received().Protected("CheckValidTOParamsAndInsertFeedbackAsync", Arg.Any<List<TOControlFeedbackInfor>>()
                 , Arg.Any<CreateMutipleFeedbackCommand>());
         }
 
@@ -158,14 +158,17 @@
         public async Task CheckValidTOParamsAndInsertFeedbackAsync_CreateSuccessfull_ExpectedWriteLog()
         {
             // Arrange
-            var ToInfor = new TOControlFeedbackInfor
+            var ToInfor = new List<TOControlFeedbackInfor>
             {
-                LogID = 1,
-                HeadlineID = 1,
-                HeadlineName = "1",
-                ProfileID = 1,
-                ProfileName = "1",
-                CustID = 1
+                new TOControlFeedbackInfor
+                {
+                    LogID = 1,
+                    HeadlineID = 1,
+                    HeadlineName = "1",
+                    ProfileID = 1,
+                    ProfileName = "1",
+                    CustID = 1
+                }
             };
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
             var service = MockService();
@@ -188,14 +191,17 @@
         public async Task CheckValidTOParamsAndInsertFeedbackAsync_CreateUnSuccessfull_ExpectedWriteLogAndUpdateStatus()
         {
             // Arrange
-            var ToInfor = new TOControlFeedbackInfor
+            var ToInfor = new List<TOControlFeedbackInfor>
             {
-                LogID = 1,
-                HeadlineID = 1,
-                HeadlineName = "1",
-                ProfileID = 1,
-                ProfileName = "1",
-                CustID = 1
+                new TOControlFeedbackInfor
+                {
+                    LogID = 1,
+                    HeadlineID = 1,
+                    HeadlineName = "1",
+                    ProfileID = 1,
+                    ProfileName = "1",
+                    CustID = 1
+                }
             };
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
             var service = MockService();
@@ -212,7 +218,7 @@
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
-            await transactionService.EditFeedbackWinLossInfoAsync(ToInfor.LogID, CreateFeedbackJobStatus.Fail, commandResult.Message);
+            await transactionService.EditTOControlFeedbackInfoAsync("1", CreateFeedbackJobStatus.Fail, commandResult.Message);
             await logService.ErrorAsync(commandResult, criteria);
         }
 
@@ -220,14 +226,17 @@
         public async Task CheckValidTOParamsAndInsertFeedbackAsync_InvalidParams_ExpectedReturnAndUpdateStatus()
         {
             // Arrange
-            var ToInfor = new TOControlFeedbackInfor
+            var ToInfor = new List<TOControlFeedbackInfor>
             {
-                LogID = 1,
-                HeadlineID = 1,
-                HeadlineName = "1",
-                ProfileID = 1,
-                ProfileName = "1",
-                CustID = 1
+                new TOControlFeedbackInfor
+                {
+                    LogID = 1,
+                    HeadlineID = 1,
+                    HeadlineName = "1",
+                    ProfileID = 1,
+                    ProfileName = "1",
+                    CustID = 1
+                }
             };
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
             var service = MockService();
@@ -244,21 +253,24 @@
 
             // Assert
             logService.Received(1).LogInformation(Arg.Any<string>());
-            await transactionService.EditFeedbackWinLossInfoAsync(ToInfor.LogID, CreateFeedbackJobStatus.Fail, Arg.Any<string>());
+            await transactionService.EditTOControlFeedbackInfoAsync("1", CreateFeedbackJobStatus.Fail, Arg.Any<string>());
         }
 
         [Fact]
         public async Task CheckValidTOParamsAndInsertFeedbackAsync_Exception_ExpectedWriteLogAndUpdateStatus()
         {
             // Arrange
-            var ToInfor = new TOControlFeedbackInfor
+            var ToInfor = new List<TOControlFeedbackInfor>
             {
-                LogID = 1,
-                HeadlineID = 1,
-                HeadlineName = "1",
-                ProfileID = 1,
-                ProfileName = "1",
-                CustID = 1
+                new TOControlFeedbackInfor
+                {
+                    LogID = 1,
+                    HeadlineID = 1,
+                    HeadlineName = "1",
+                    ProfileID = 1,
+                    ProfileName = "1",
+                    CustID = 1
+                }
             };
             var exception = fixture.Create<Exception>();
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
@@ -275,7 +287,7 @@
 
             // Assert
             logService.Received(1).LogInformation(Arg.Any<string>());
-            await transactionService.EditFeedbackWinLossInfoAsync(ToInfor.LogID, CreateFeedbackJobStatus.Fail, exception.Message);
+            await transactionService.EditTOControlFeedbackInfoAsync("1", CreateFeedbackJobStatus.Fail, exception.Message);
             await logService.ErrorAsync(exception);
         }
 

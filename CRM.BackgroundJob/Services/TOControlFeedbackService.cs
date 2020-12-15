@@ -194,20 +194,21 @@
             };
 
             logService.LogInformation("end create TO control feedback");
-            await CheckValidTOParamsAndInsertFeedbackAsync(ToInfor, criteria);
+            await CheckValidTOParamsAndInsertFeedbackAsync(ToInfors, criteria);
         }
 
         protected internal virtual async Task CheckValidTOParamsAndInsertFeedbackAsync(
-            TOControlFeedbackInfor ToInfor,
+            List<TOControlFeedbackInfor> ToInfors,
             CreateMutipleFeedbackCommand criteria)
         {
+            var ToInfor = ToInfors.FirstOrDefault();
             var checkValidParamBeforeInsert = commonFeedback.CheckFeedbackValidParams(criteria);
             if (!checkValidParamBeforeInsert.Item1)
             {
                 var messageInvalid = "Invalid Params: " + checkValidParamBeforeInsert.Item2;
                 logService.LogInformation(string.Format("Invalid Params. @Categorystr: {0} @Category: {1} @Product: {2} @StatusID: {3} @SubCategorystr:{4} @ResponseID:{5} @StationID:{6}",
                         criteria.CategoryIds, criteria.CategoryXml, criteria.ProductXml, criteria.StatusId, criteria.SubCategoryIds, criteria.ResponseId, criteria.StationId));
-                await transactionService.EditTOControlFeedbackInfoAsync(ToInfor.LogID, CreateFeedbackJobStatus.Fail, messageInvalid);
+                await transactionService.EditTOControlFeedbackInfoAsync(string.Join(",", ToInfors.Select(log => log.LogID)), CreateFeedbackJobStatus.Fail, messageInvalid);
                 return;
             }
             try
@@ -226,13 +227,13 @@
                     logService.LogInformation(string.Format("Create TO feedback Faild HeadlineId {0} HeadlineName:{1} ProfileName: {2} custName: {3}",
                     ToInfor.HeadlineID, ToInfor.HeadlineName, ToInfor.ProfileName, ToInfor.UserName));
 
-                    await transactionService.EditTOControlFeedbackInfoAsync(ToInfor.LogID, CreateFeedbackJobStatus.Fail, commandResult.Message);
+                    await transactionService.EditTOControlFeedbackInfoAsync(string.Join(",", ToInfors.Select(log => log.LogID)), CreateFeedbackJobStatus.Fail, commandResult.Message);
                     await logService.ErrorAsync(commandResult, criteria);
                 }
             }
             catch (Exception ex)
             {
-                await transactionService.EditTOControlFeedbackInfoAsync(ToInfor.LogID, CreateFeedbackJobStatus.Fail, ex.Message);
+                await transactionService.EditTOControlFeedbackInfoAsync(string.Join(",", ToInfors.Select(log => log.LogID)), CreateFeedbackJobStatus.Fail, ex.Message);
                 await logService.ErrorAsync(ex);
             }
         }
