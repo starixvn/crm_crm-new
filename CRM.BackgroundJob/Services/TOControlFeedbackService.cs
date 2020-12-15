@@ -71,7 +71,11 @@
 
             await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
             IEnumerable<TONotification> custNotifications = await customerService.GetListSMANotificationAsync(turnOverSetting);
-            IEnumerable<CustOutStanding> custOutStandings = await customerService.GetListCustOutStandingAsync(custNotifications);
+            
+            var custNotificationsDistinct = custNotifications.GroupBy(item => new { item.CustID, item.MatchID })
+                                                              .Select(g => g.First())
+                                                              .ToList();
+            IEnumerable <CustOutStanding> custOutStandings = await customerService.GetListCustOutStandingAsync(custNotificationsDistinct);
 
             var custIds = custOutStandings.Select(x => x.CustID);
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);

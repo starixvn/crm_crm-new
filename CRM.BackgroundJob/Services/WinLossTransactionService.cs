@@ -168,7 +168,7 @@
             {
                 var hlname = "";
                 var headlineId = 0;
-                CustOutStanding custOutST = custOutStandings.FirstOrDefault(x => x.CustID == TO.CustID);
+                CustOutStanding custOutST = custOutStandings.FirstOrDefault(x => x.CustID == TO.CustID && x.MatchID == TO.MatchID);
                 GroupHeadline headline = headlines.FirstOrDefault(x => x.CustId == TO.CustID);
                 headlineId = headline != null ? headline.HeadlineId : 0;
                 hlname = headline != null ? headline.HeadlineName : "";
