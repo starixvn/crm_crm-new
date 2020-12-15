@@ -302,7 +302,7 @@
             };
             var tempBettypes = new List<SystemSettingMapping>();
             var service = MockService();
-            service.Protected("GetTOSportsbookProduct",settings).Returns(product);
+            service.Protected("GetTOSportsbookProduct", settings).Returns(product);
             service.Protected("GetTOSubProduct", product.SettingId, sportNames, settings, settingMappings).Returns(subProduct);
             service.Protected("GetTOBettype", betTypeMappings, settingMappings).Returns(tempBettypes);
 
@@ -487,7 +487,6 @@
                     SettingSource = "1",
                     SettingId = 1
                 }
-
             };
             var service = MockService();
 
@@ -531,7 +530,6 @@
         [InlineData(4, SMALevel.Super)]
         [InlineData(3, SMALevel.Master)]
         [InlineData(2, SMALevel.Agent)]
-
         public void GetTODescription_BaseOnSmaLevel_ReturnExpectedTemplate(byte RoleID, string smslevel)
         {
             // Arrange
@@ -587,6 +585,208 @@
 
         #endregion GetTODescription
 
+        #region GetTOSolution
+
+        [Theory]
+        [InlineData(4, SMALevel.Super, "789y", false, SMALevel.SuperSC)]
+        [InlineData(3, SMALevel.Master, "123", true, SMALevel.MasterSC)]
+        [InlineData(2, SMALevel.Agent, "789y", false, SMALevel.AgentSC)]
+        [InlineData(4, SMALevel.Super, "789y", true, SMALevel.Super)]
+        [InlineData(3, SMALevel.Master, "789y", true, SMALevel.Master)]
+        [InlineData(2, SMALevel.Agent, "789y", true, SMALevel.Agent)]
+        public void GetTOSolution_BaseOnSmaLevelAndIsVipCustomer_ReturnExpectedTemplate(
+            byte RoleID,
+            string smslevel,
+            string Site,
+            bool IsVip,
+            string smslevelSc)
+        {
+            // Arrange
+            var ToInfors = new List<TOControlFeedbackInfor>
+            {
+                new TOControlFeedbackInfor
+                {
+                    RoleID = RoleID,
+                    ProfileID = 1,
+                    SportType = 1,
+                    LeagueID = 1,
+                    HomeID = 1,
+                    AwayID = 1,
+                    Level = 1,
+                    Currency = "usa",
+                    TotalTurnover = 1,
+                    ProfileName = "1",
+                    HouseTurnover = 1,
+                    Usage = 1,
+                    Outstanding = 1,
+                    UserName = "test",
+                    Site = Site,
+                    IsVip = IsVip,
+                    MatchID = 1
+                }
+            };
+            var service = MockService();
+            var sol = new TOSolutionTemplate
+            {
+                SolutionEN = new Solution
+                {
+                    Header = "test {0} {1}",
+                    SolutionTemplate = "test",
+                    Footer = "test"
+                },
+                SolutionSC = new Solution
+                {
+                    Header = "test {0} {1}",
+                    SolutionTemplate = "test",
+                    Footer = "test"
+                },
+                SolutionYN = new Solution
+                {
+                    Header = "test {0} {1}",
+                    SolutionTemplate = "test",
+                    Footer = "test"
+                }
+            };
+            var isVipCust = Site == "789y" && IsVip;
+            var stringBuilder = new StringBuilder();
+
+            commonFeedback.GetFeedbackTemplates<TOSolutionTemplate>(Arg.Any<string>()).Returns(sol);
+            var ToInfor = ToInfors.FirstOrDefault();
+            var templateReturn = new StringBuilder("test");
+
+            service.Protected("GetTOSolutionTemplateEN", ToInfor, sol).Returns(templateReturn);
+            service.Protected("GetTOSolutionTemplateYNSC", ToInfor, isVipCust, sol).Returns(templateReturn);
+
+            stringBuilder.AppendFormat(sol.SolutionEN.Header, smslevel, ToInfor.UserName, Constants.LineBreak);
+            stringBuilder.Append(templateReturn);
+            stringBuilder.AppendFormat(sol.SolutionEN.Footer);
+
+            stringBuilder.AppendFormat(sol.SolutionSC.Header, smslevelSc, ToInfor.UserName, Constants.LineBreak);
+            stringBuilder.Append(templateReturn);
+            stringBuilder.AppendFormat(sol.SolutionSC.Footer);
+            var expected = stringBuilder.ToString();
+
+            // Act
+            var actual = service.Public_GetTOSolution(ToInfors);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion GetTOSolution
+
+        [Fact]
+        public void GetTOSolutionTemplateEN_CallFunction_ReturnExpectedTemplate()
+        {
+            // Arrange
+            var ToInfor = new TOControlFeedbackInfor
+            {
+                ProfileID = 1,
+                SportType = 1,
+                LeagueID = 1,
+                HomeID = 1,
+                AwayID = 1,
+                Level = 1,
+                Currency = "usa",
+                TotalTurnover = 1,
+                ProfileName = "1",
+                HouseTurnover = 1,
+                Usage = 1,
+                Outstanding = 1
+            };
+            var service = MockService();
+
+            commonFeedback.GetSportName(ToInfor.SportType.ToString(), "en-US").Returns("sportName");
+            commonFeedback.GetLeagueName(ToInfor.LeagueID.ToString(), "en-US").Returns("leagueName");
+            commonFeedback.GetTeamName(ToInfor.HomeID.ToString(), "en-US").Returns("homeName");
+            commonFeedback.GetTeamName(ToInfor.AwayID.ToString(), "en-US").Returns("awayName");
+            var sol = new TOSolutionTemplate
+            {
+                SolutionEN = new Solution
+                {
+                    Header = "test",
+                    SolutionTemplate = "test",
+                    Footer = "test"
+                }
+            };
+            var stringBuilder = new StringBuilder("test");
+            stringBuilder.Append(Constants.Break);
+            var expected = stringBuilder.ToString();
+
+            // Act
+            var actual = service.Public_GetTOSolutionTemplateEN(ToInfor, sol);
+
+            // Assert
+            Assert.Equal(expected, actual.ToString());
+        }
+
+        [Theory]
+        [InlineData(true, Language.vi_VN)]
+        [InlineData(false, Language.zh_CN)]
+        public void GetTOSolutionTemplateYNSC_CallFunction_ReturnExpectedTemplate(bool isVipCust, string language)
+        {
+            // Arrange
+            var ToInfor = new TOControlFeedbackInfor
+            {
+                ProfileID = 1,
+                SportType = 1,
+                LeagueID = 1,
+                HomeID = 1,
+                AwayID = 1,
+                Level = 1,
+                Currency = "usa",
+                TotalTurnover = 1,
+                ProfileName = "1",
+                HouseTurnover = 1,
+                Usage = 1,
+                Outstanding = 1
+            };
+            var service = MockService();
+
+            commonFeedback.GetSportName(ToInfor.SportType.ToString(), language).Returns("sportName");
+            commonFeedback.GetLeagueName(ToInfor.LeagueID.ToString(), language).Returns("leagueName");
+            commonFeedback.GetTeamName(ToInfor.HomeID.ToString(), language).Returns("homeName");
+            commonFeedback.GetTeamName(ToInfor.AwayID.ToString(), language).Returns("awayName");
+            var sol = new TOSolutionTemplate
+            {
+                SolutionYN = new Solution
+                {
+                    Header = "test",
+                    SolutionTemplate = "test",
+                    Footer = "test"
+                },
+                SolutionSC = new Solution
+                {
+                    Header = "test",
+                    SolutionTemplate = "test",
+                    Footer = "test"
+                }
+            };
+            var stringBuilder = new StringBuilder("test");
+            stringBuilder.Append(Constants.Break);
+            var expected = stringBuilder.ToString();
+
+            // Act
+            var actual = service.Public_GetTOSolutionTemplateYNSC(ToInfor, isVipCust, sol);
+
+            // Assert
+            Assert.Equal(expected, actual.ToString());
+        }
+
+        [Fact]
+        public async Task EditTOSystemSettingAsync_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var commandResult = fixture.Create<CommandResult>();
+            var service = MockService();
+            systemSettingService.EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_TOControlFB).Returns(commandResult);
+
+            // Act
+            var actual = await service.Public_EditTOSystemSettingAsync(new DateTime());
+
+            // Assert
+            Assert.Equal(commandResult, actual);
+        }
 
         #region Helpers
 
@@ -620,6 +820,5 @@
         }
 
         #endregion Helpers
-
     }
 }
