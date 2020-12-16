@@ -24,7 +24,10 @@
             // Arrange
             var criteria = new ImportCWLLogInfoCommand
             {
-                XmlData = "test"
+                XmlData = "test",
+                Environment = "LIVE",
+                ErrCode = 0,
+                ErrMsg = ""
             };
 
             // Act
