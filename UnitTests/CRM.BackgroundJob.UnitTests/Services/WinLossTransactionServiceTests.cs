@@ -182,7 +182,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
         }
 
         [Fact]
-        public async Task ImportTOControllFeedbackInfoAsync_CallFunction_ReturnExpectedXML()
+        public async Task ImportTOControllFeedbackInfoAsync_CustOutStandingHasData_ReturnExpectedXML()
         {
             // Arrange
             var custNotifications = new List<TONotification>
@@ -228,6 +228,59 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Act
             await service.ImportTOControllFeedbackInfoAsync(headlines, custOutStandings, custNotifications );
+
+            // Assert
+
+            Assert.Equal(XmlTemplate, criteria.xml);
+        }
+
+        [Fact]
+        public async Task ImportTOControllFeedbackInfoAsync_CustOutStandingHasntData_ReturnExpectedXML()
+        {
+            // Arrange
+            var custNotifications = new List<TONotification>
+            {
+                new TONotification{
+                   CustID = 1,
+                   MatchID = 1,
+                   ProfileID = 1,
+                   ProfileName = "1",
+                   MaxTurnOver = 1,
+                   HouseTurnover = 1,
+                   TotalTurnover = 1,
+                   LastNotifiedDate = DateTime.Parse("2020-12-15"),
+                   Bettype = "1",
+                   ReachLevel = 1
+                }
+            };
+            var headlines = new List<GroupHeadline>
+            {
+                new GroupHeadline
+                {
+                    CustId = 1,
+                    HeadlineId = 1,
+                    HeadlineName = "1"
+                }
+            };
+            var custOutStandings = new List<CustOutStanding>
+            {
+                new CustOutStanding
+                {
+                    CustID = 0,
+                    MatchID = 1,
+                    Outstanding = 1
+                }
+            };
+
+            const string XmlTemplate = "<ROOT><r custid='1' matchid='1' profileID='1' hl='1' hlname='1' related='1' profileName='1' maxTO='1' " +
+                                        "houseTO='1' totalTO='1' outstanding='0' time='12/15/2020 12:00:00 AM' bettype='1' level='1'/></ROOT>";
+            var criteria = new InsertTOControl_AutoFeedbackInfoCommand();
+            var TOInforReturn = new List<TOControlFeedbackInfor>();
+            var service = GetWinLossTransactionService();
+            baseService.GetDataAsync<TOControlFeedbackInfor>(Arg.Do<InsertTOControl_AutoFeedbackInfoCommand>(x => criteria = x)).Returns(TOInforReturn);
+
+            // Act
+            await service.ImportTOControllFeedbackInfoAsync(headlines, custOutStandings, custNotifications);
 
             // Assert
 

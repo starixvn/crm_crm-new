@@ -66,7 +66,7 @@
         }
 
         [Fact]
-        public async Task PullMessageAndSendNotificationAsync_ImportTicketInfosSuccessful_ExpectedCallEditVoidingMessageAsync()
+        public async Task PullMessageAndSendNotificationAsync_ImportTicketInfosSuccessfulNotExistEnvironment_ExpectedCallEditVoidingMessageAsync()
         {
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
@@ -81,6 +81,31 @@
             ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
             ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages).Returns(ticketInfos);
             ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnviroment).Returns(commandResult);
+
+            // Act
+            await service.PullMessageAndSendNotificationAsync();
+
+            // Assert
+            await sendNotificationService.Received().SendNotificationToLetstalk();
+        }
+
+        [Fact]
+        public async Task PullMessageAndSendNotificationAsync_ImportTicketInfosSuccessfulExistEnvironment_ExpectedCallEditVoidingMessageAsync()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
+            var messages = fixture.Create<IEnumerable<Message>>();
+            var voidingMessages = fixture.Create<IEnumerable<ChatBotVoidingMessage>>();
+            var ticketInfos = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
+            var commandResult = new CommandResult { Code = 0 };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnviroment).Returns(setting);
+            ticketVoidingService.GetVoidingMessageAsync().Returns(voidingMessages);
+            ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
+            ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
+            ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages).Returns(ticketInfos);
+            configuration.GetValue<string>("SiteEnvironment").Returns(Constants.DefaultEnviroment);
+            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, configuration.GetValue<string>("SiteEnvironment")).Returns(commandResult);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();

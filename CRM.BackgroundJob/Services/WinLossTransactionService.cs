@@ -168,10 +168,15 @@
             {
                 var hlname = "";
                 var headlineId = 0;
+                double outstanding = 0;
+
                 CustOutStanding custOutST = custOutStandings.FirstOrDefault(x => x.CustID == TO.CustID && x.MatchID == TO.MatchID);
+                outstanding = custOutST != null ? custOutST.Outstanding : 0;
+
                 GroupHeadline headline = headlines.FirstOrDefault(x => x.CustId == TO.CustID);
                 headlineId = headline != null ? headline.HeadlineId : 0;
                 hlname = headline != null ? headline.HeadlineName : "";
+
                 var custId = TO.CustID;
                 var related = TO.CustID;
 
@@ -186,7 +191,7 @@
                     TO.MaxTurnOver,
                     TO.HouseTurnover,
                     TO.TotalTurnover,
-                    custOutST.Outstanding,
+                    outstanding,
                     TO.LastNotifiedDate,
                     TO.Bettype,
                     TO.ReachLevel

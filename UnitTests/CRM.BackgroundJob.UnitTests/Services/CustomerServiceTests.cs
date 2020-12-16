@@ -61,8 +61,9 @@
             Assert.Equal(expected, actual);
             Assert.Equal(string.Join(",", custIds), criteria.CustIds);
         }
+
         [Fact]
-        public async Task GetListSMANotificationAsync_WhenCalled_ReturnExpectedSMAList()
+        public async Task GetListSMANotificationAsync_NotExistEnviroment_ReturnDefault()
         {
             // Arrange
             var expected = fixture.Create<IEnumerable<TONotification>>();
@@ -82,7 +83,33 @@
             Assert.Equal(setting.LastNotifiedDate, criteria.LastNotifiedDate);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
+            Assert.Equal("LIVE", criteria.Environment);
         }
+
+        [Fact]
+        public async Task GetListSMANotificationAsync_ExistEnviroment_ReturnExpectedEniroment()
+        {
+            // Arrange
+            var expected = fixture.Create<IEnumerable<TONotification>>();
+            var criteria = new GetTOControlCustNotificationSelCriteria();
+            var setting = fixture.Create<WinLossSystemSetting>();
+            var service = GetService();
+            baseService.GetDataAsync<TONotification>(Arg.Do<GetTOControlCustNotificationSelCriteria>(x => criteria = x)).Returns(expected);
+            configuration.GetValue<string>("SiteEnvironment").Returns("LIVE");
+            // Act
+            var actual = await service.GetListSMANotificationAsync(setting);
+
+            // Assert
+            Assert.Equal(expected, actual);
+            Assert.Equal(setting.BatchSize, criteria.BatchSize);
+            Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
+            Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
+            Assert.Equal(setting.LastNotifiedDate, criteria.LastNotifiedDate);
+            Assert.Equal(setting.IsCredit, criteria.IsCredit);
+            Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
+            Assert.Equal(configuration.GetValue<string>("SiteEnvironment"), criteria.Environment);
+        }
+
 
         [Fact]
         public async Task GetListCustReachLimitAsync_WhenCalled_ReturnExpectedLimitInfor()

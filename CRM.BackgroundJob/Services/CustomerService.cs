@@ -31,7 +31,7 @@
         private readonly ICustomerRepository repository;
         private readonly IBaseService baseService;
 
-        private readonly string Enviroment;
+        private readonly string Environment;
 
         private const string DefaultEnviroment = Constants.Constants.DefaultEnviroment;
 
@@ -42,7 +42,7 @@
         {
             this.repository = repository;
             this.baseService = baseService;
-            Enviroment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
+            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
         }
 
         public async Task<CustomerInfo> GetCustomerInfoAsync(string username, bool isGuest)
@@ -88,7 +88,7 @@
                 ConfigPRO = turnOverSetting.ConfigPRO,
                 IsCredit = turnOverSetting.IsCredit,
                 IsDeposit = turnOverSetting.IsDeposit,
-                Enviroment = Enviroment
+                Environment = Environment
             };
             return await baseService.GetDataAsync<TONotification>(criteria);
         }
