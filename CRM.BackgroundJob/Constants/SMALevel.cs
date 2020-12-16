@@ -1,4 +1,4 @@
-﻿namespace CRM.BackgroundJob.Constants
+﻿namespace Fanex.CRM.BackgroundJob.Constants
 {
     public static class SMALevel
     {

@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using AutoFixture;
-    using CRM.BackgroundJob.Constants;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Services;
     using Fanex.CRM.BackgroundJob.Constants;

@@ -4,9 +4,9 @@ using System.Text;
 using System.Threading.Tasks;
 using CRM.BackgroundJob.Criteria.ChatBotCWL;
 using CRM.BackgroundJob.Models.ChatBotCWL;
+using Fanex.CRM.BackgroundJob.Constants;
 using CRM.Core.Models;
 using CRM.Core.Services;
-using Fanex.CRM.BackgroundJob.Constants;
 using Fanex.RemotingRef;
 namespace CRM.BackgroundJob.Services
 {

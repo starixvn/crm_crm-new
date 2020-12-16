@@ -6,7 +6,6 @@
     using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
-    using CRM.BackgroundJob.Constants;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
