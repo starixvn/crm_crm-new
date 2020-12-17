@@ -82,7 +82,7 @@
         {
             var criteria = new GetTOControlCustNotificationSelCriteria
             {
-                LastNotifiedDate = turnOverSetting.LastNotifiedDate,
+                LastLogID = turnOverSetting.LastLogID,
                 BatchSize = turnOverSetting.BatchSize,
                 ConfigUAT = turnOverSetting.ConfigUAT,
                 ConfigPRO = turnOverSetting.ConfigPRO,

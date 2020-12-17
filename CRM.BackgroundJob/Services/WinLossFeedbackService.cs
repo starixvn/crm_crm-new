@@ -79,7 +79,7 @@
             if (!winlossInfo.Item1.Any())
             {
                 var lastLogID = cusWinLimit.Any() ? cusWinLimit.Max(x => x.LogID) : setting.LastLogID;
-                await EditWinLossSystemSettingAsync(lastLogID);
+                await commonFeedback.EditFeedbackSystemSettingAsync(lastLogID, Constants.ServiceName_WinLimitFB);
                 return;
             }
 
@@ -94,7 +94,7 @@
                         settingMappings);
             }
             var maxLastLogID = winlossInfo.Item1.Max(x => x.LogID);
-            await EditWinLossSystemSettingAsync(maxLastLogID);
+            await commonFeedback.EditFeedbackSystemSettingAsync(maxLastLogID, Constants.ServiceName_WinLimitFB);
         }
 
         protected internal virtual async Task CreateWinLossFeedbackCreditAsync(
@@ -368,17 +368,6 @@
             stringBuilder.AppendFormat(XmlTemplate, winLimit.HeadlineId, winLimit.RelatedCustId, winLimit.UserName);
 
             return stringBuilder.Append(Constants.EndRootTag).ToString();
-        }
-
-        protected internal virtual async Task<CommandResult> EditWinLossSystemSettingAsync(int LastLogID)
-        {
-            var settingJobStatus = new List<SystemSettingItem>
-            {
-                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
-                new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = LastLogID.ToString() }
-            };
-            return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
         }
     }
 }

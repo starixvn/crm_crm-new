@@ -60,7 +60,7 @@
 
         public async Task CreateFeedbackForTurnoverControlAsync(WinLossSystemSetting turnOverSetting)
         {
-            logService.LogInformation(string.Format("Start run turnover controll serivce with last LastNotifyDate: {0}!", turnOverSetting.LastNotifiedDate));
+            logService.LogInformation(string.Format("Start run turnover controll serivce with last LastLogID: {0}!", turnOverSetting.LastLogID));
 
             var settingJobStatus = new List<SystemSettingItem>
             {
@@ -91,10 +91,10 @@
             {
                 logService.LogInformation(string.Format("Import doesn't have any data with custId: {0} headlineName: {1}!",
                     string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
-                var notifiedDate = custNotifications.Any() ? custNotifications.Max(x => x.LastNotifiedDate) : turnOverSetting.LastNotifiedDate;
+                var maxLogID = custNotifications.Any() ? custNotifications.Max(x => x.LogID) : turnOverSetting.LastLogID;
 
-                logService.LogInformation(string.Format("Update notifiedDate: {0} !", notifiedDate));
-                await EditTOSystemSettingAsync(notifiedDate);
+                logService.LogInformation(string.Format("Update maxLogID: {0} !", maxLogID));
+                await commonFeedback.EditFeedbackSystemSettingAsync(maxLogID, Constants.ServiceName_TOControlFB);
                 return;
             }
 
@@ -119,8 +119,8 @@
                         settings,
                         settingMappings);
             }
-            var MaxNotifiedDate = custNotifications.Max(x => x.LastNotifiedDate);
-            await EditTOSystemSettingAsync(MaxNotifiedDate);
+            var maxLogIdTO = importTOFeedbacks.Max(x => x.LogID);
+            await commonFeedback.EditFeedbackSystemSettingAsync(maxLogIdTO, Constants.ServiceName_TOControlFB);
 
             logService.LogInformation("Finished create TO feedback");
         }
@@ -522,19 +522,6 @@
                 Constants.Break);
             stringBuilder.Append(Constants.Break);
             return stringBuilder;
-        }
-
-        protected internal virtual async Task<CommandResult> EditTOSystemSettingAsync(DateTime LastNotifiedDate)
-        {
-            var settingJobStatus = new List<SystemSettingItem>
-            {
-                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
-                new SystemSettingItem { SettingName = SystemSettingName.LastNotifiedDate, Value =  LastNotifiedDate.ToString("yyyy-MM-dd hh:mm:ss.fff tt")}
-            };
-            logService.LogInformation(String.Format("Update Job TurnOver Setting with LastRuntime: {0}", settingJobStatus[1].Value));
-
-            return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
         }
     }
 }

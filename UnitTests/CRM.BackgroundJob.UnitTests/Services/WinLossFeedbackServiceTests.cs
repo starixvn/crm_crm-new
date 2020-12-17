@@ -51,7 +51,7 @@
             await service.CreateFeedbackForWinLossLimitAsync(setting);
 
             // Assert
-            service.Received().Protected("EditWinLossSystemSettingAsync", Arg.Any<int>());
+            await commonFeedback.Received().EditFeedbackSystemSettingAsync(Arg.Any<int>(), Arg.Any<string>());
             service.DidNotReceive().Protected(
                 "CreateWinLossFeedbackCreditAsync",
                 Arg.Any<bool>(),
@@ -84,7 +84,7 @@
             await service.CreateFeedbackForWinLossLimitAsync(setting);
 
             // Assert
-            service.Received().Protected("EditWinLossSystemSettingAsync", Arg.Any<int>());
+            await commonFeedback.Received().EditFeedbackSystemSettingAsync(Arg.Any<int>(), Arg.Any<string>());
             service.Received().Protected(
                 "CreateWinLossFeedbackCreditAsync",
                 Arg.Any<bool>(),
@@ -709,21 +709,6 @@
             Assert.Equal("<ROOT><Row CustId='1' RelatedCustId='1' Username='test' /></ROOT>", actual);
         }
         #endregion GetRelatedCustomerXml
-
-        [Fact]
-        public async Task EditWinLossSystemSettingAsync_WhenCalled_ReturnExpectedCommandResult()
-        {
-            // Arrange
-            var commandResult = fixture.Create<CommandResult>();
-            var service = MockService();
-            systemSettingService.EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_WinLimitFB).Returns(commandResult);
-
-            // Act
-            var actual = await service.Public_EditWinLossSystemSettingAsync(1);
-
-            // Assert
-            Assert.Equal(commandResult, actual);
-        }
 
         #region Helpers
 

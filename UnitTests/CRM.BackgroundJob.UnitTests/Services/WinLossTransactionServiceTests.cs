@@ -188,6 +188,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var custNotifications = new List<TONotification>
             {
                 new TONotification{
+                   LogID = 1,
                    CustID = 1,
                    MatchID = 1,
                    ProfileID = 1,
@@ -195,7 +196,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
                    MaxTurnOver = 1,
                    HouseTurnover = 1,
                    TotalTurnover = 1,
-                   LastNotifiedDate = DateTime.Parse("2020-12-15"),
                    Bettype = "1",
                    ReachLevel = 1
                 }
@@ -219,8 +219,8 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 }
             };
 
-            const string XmlTemplate = "<ROOT><r custid='1' matchid='1' profileID='1' hl='1' hlname='1' related='1' profileName='1' maxTO='1' " +
-                                        "houseTO='1' totalTO='1' outstanding='1' time='12/15/2020 12:00:00 AM' bettype='1' level='1'/></ROOT>";
+            const string expected = "<ROOT><r logid='1' custid='1' matchid='1' profileID='1' hl='1' hlname='1' related='1' profileName='1' maxTO='1' " +
+                                        "houseTO='1' totalTO='1' outstanding='1' bettype='1' level='1'/></ROOT>";
             var criteria = new InsertTOControl_AutoFeedbackInfoCommand();
             var TOInforReturn = new List<TOControlFeedbackInfor>();
             var service = GetWinLossTransactionService();
@@ -231,7 +231,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
 
-            Assert.Equal(XmlTemplate, criteria.xml);
+            Assert.Equal(expected.ToString(), criteria.xml.ToString());
         }
 
         [Fact]
@@ -240,7 +240,9 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Arrange
             var custNotifications = new List<TONotification>
             {
-                new TONotification{
+                new TONotification
+                {
+                   LogID = 1,
                    CustID = 1,
                    MatchID = 1,
                    ProfileID = 1,
@@ -248,7 +250,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
                    MaxTurnOver = 1,
                    HouseTurnover = 1,
                    TotalTurnover = 1,
-                   LastNotifiedDate = DateTime.Parse("2020-12-15"),
                    Bettype = "1",
                    ReachLevel = 1
                 }
@@ -272,8 +273,8 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 }
             };
 
-            const string XmlTemplate = "<ROOT><r custid='1' matchid='1' profileID='1' hl='1' hlname='1' related='1' profileName='1' maxTO='1' " +
-                                        "houseTO='1' totalTO='1' outstanding='0' time='12/15/2020 12:00:00 AM' bettype='1' level='1'/></ROOT>";
+            const string expected = "<ROOT><r logid='1' custid='1' matchid='1' profileID='1' hl='1' hlname='1' related='1' profileName='1' maxTO='1' " +
+                                        "houseTO='1' totalTO='1' outstanding='0' bettype='1' level='1'/></ROOT>";
             var criteria = new InsertTOControl_AutoFeedbackInfoCommand();
             var TOInforReturn = new List<TOControlFeedbackInfor>();
             var service = GetWinLossTransactionService();
@@ -284,7 +285,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
 
-            Assert.Equal(XmlTemplate, criteria.xml);
+            Assert.Equal(expected, criteria.xml);
         }
 
         [Fact]

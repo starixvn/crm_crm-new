@@ -95,10 +95,5 @@
         {
             return base.GetRelatedCustomerXml(winLimit);
         }
-
-        public async Task<CommandResult> Public_EditWinLossSystemSettingAsync(int LastLogID)
-        {
-            return await base.EditWinLossSystemSettingAsync(LastLogID);
-        }
     }
 }

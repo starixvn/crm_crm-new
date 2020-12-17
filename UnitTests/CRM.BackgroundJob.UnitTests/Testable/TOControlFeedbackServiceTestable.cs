@@ -110,10 +110,5 @@
         {
             return base.GetTOSolutionTemplateYNSC(ToInfor, isVipCust, TOSolTemplate);
         }
-
-        public async Task<CommandResult> Public_EditTOSystemSettingAsync(DateTime LastNotifiedDate)
-        {
-            return await base.EditTOSystemSettingAsync(LastNotifiedDate);
-        }
     }
 }

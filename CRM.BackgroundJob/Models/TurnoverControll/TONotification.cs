@@ -3,7 +3,7 @@
     using System;
     public class TONotification
     {
-        
+        public int LogID { get; set; }
         public int CustID { get; set; }
         public int MatchID { get; set; }
         public int ProfileID { get; set; }
@@ -13,6 +13,5 @@
         public byte ReachLevel { get; set; }
         public string ProfileName { get; set; }
         public string Bettype { get; set; }
-        public DateTime LastNotifiedDate { get; set; }
     }
 }

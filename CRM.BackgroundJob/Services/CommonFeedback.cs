@@ -5,10 +5,13 @@
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using CRM.Core.Extensions.XML;
+    using CRM.Core.Models;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
+    using Fanex.CRM.BackgroundJob.Services;
     using Fanex.RemotingRef;
     using Microsoft.AspNetCore.Hosting;
 
@@ -29,21 +32,27 @@
         ValueTuple<bool, string> CheckFeedbackValidParams(CreateMutipleFeedbackCommand criteria);
 
         Tuple<int, int, string> GetCategorySubCategoryCWL(IEnumerable<SettingItem> settings, string settingValueName);
+
+        Task<CommandResult> EditFeedbackSystemSettingAsync(int LastLogID, string ServiceName);
+
     }
     public class CommonFeedback : ICommonFeedback
     {
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly IRemotingRefService remotingRefService;
+        private readonly ISystemSettingService systemSetting;
 
         private const string path = "Format_Templates\\Company-WinLoss-Limit";
 
         public CommonFeedback(
             IHostingEnvironment hostingEnvironment,
-            IRemotingRefService remotingRefService
+            IRemotingRefService remotingRefService,
+            ISystemSettingService systemSetting
             )
         {
             this.hostingEnvironment = hostingEnvironment;
             this.remotingRefService = remotingRefService;
+            this.systemSetting = systemSetting;
         }
 
         public string GetProductName(string productId, string languageCode)
@@ -120,6 +129,17 @@
             return string.IsNullOrEmpty(invalidParams) ?
                 new ValueTuple<bool, string>(true, "") :
                 new ValueTuple<bool, string>(false, stringBuilder.AppendFormat(invalid, invalidParams).ToString());
+        }
+
+        public async Task<CommandResult> EditFeedbackSystemSettingAsync(int LastLogID, string ServiceName)
+        {
+            var settingJobStatus = new List<SystemSettingItem>
+            {
+                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
+                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = LastLogID.ToString() }
+            };
+            return await systemSetting.EditSystemSettingAsync(settingJobStatus, ServiceName);
         }
     }
 }

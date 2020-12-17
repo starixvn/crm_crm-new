@@ -4,7 +4,7 @@
     using Fanex.Data.Repository;
     public class GetTOControlCustNotificationSelCriteria : CriteriaBase
     {
-        public DateTime LastNotifiedDate { get; set; }
+        public int LastLogID { get; set; }
         public int BatchSize { get; set; }
         public bool ConfigUAT { get; set; }
         public bool ConfigPRO { get; set; }

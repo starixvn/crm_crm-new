@@ -3,12 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using AutoFixture;
+    using System.Threading.Tasks;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
+    using Fanex.CRM.BackgroundJob.Services;
     using Fanex.RemotingRef;
     using Microsoft.AspNetCore.Hosting;
     using NSubstitute;
@@ -18,6 +19,8 @@
     {
         private IHostingEnvironment hostingEnvironment;
         private IRemotingRefService remotingRefService;
+        private ISystemSettingService systemSetting;
+
 
         #region CheckFeedbackValidParams
 
@@ -380,15 +383,29 @@
             Assert.Equal(expect.ToString(), actual.ToString());
         }
 
-        #region Helpers
+        [Fact]
+        public async Task EditFeedbackSystemSettingAsync_CallFunction_ExpectCallExactFunction()
+        {
+            // Arrange
+            var service = GetService();
 
+            // Act
+            await service.EditFeedbackSystemSettingAsync(1, Constants.ServiceName_TOControlFB);
+
+            // Assert
+            await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
+        }
+
+        #region Helpers
         private CommonFeedback GetService()
         {
             hostingEnvironment = Substitute.For<IHostingEnvironment>();
             remotingRefService = Substitute.For<IRemotingRefService>();
+            systemSetting = Substitute.For<ISystemSettingService>();
             return new CommonFeedback(
                 hostingEnvironment,
-                remotingRefService
+                remotingRefService,
+                systemSetting
                 );
         }
 

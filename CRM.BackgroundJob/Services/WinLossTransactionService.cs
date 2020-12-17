@@ -161,8 +161,8 @@
              IEnumerable<CustOutStanding> custOutStandings,
              IEnumerable<TONotification> custNotifications)
         {
-            const string XmlTemplate = "<r custid='{0}' matchid='{1}' profileID='{2}' hl='{3}' hlname='{4}' related='{5}' profileName='{6}' maxTO='{7}' " +
-                                       "houseTO='{8}' totalTO='{9}' outstanding='{10}' time='{11}' bettype='{12}' level='{13}'/>";
+            const string XmlTemplate = "<r logid='{0}' custid='{1}' matchid='{2}' profileID='{3}' hl='{4}' hlname='{5}' related='{6}' profileName='{7}' maxTO='{8}' " +
+                                       "houseTO='{9}' totalTO='{10}' outstanding='{11}' bettype='{12}' level='{13}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (TONotification TO in custNotifications)
             {
@@ -181,6 +181,7 @@
                 var related = TO.CustID;
 
                 stringBuilder.AppendFormat(XmlTemplate,
+                    TO.LogID,
                     custId,
                     TO.MatchID,
                     TO.ProfileID,
@@ -192,7 +193,6 @@
                     TO.HouseTurnover,
                     TO.TotalTurnover,
                     outstanding,
-                    TO.LastNotifiedDate,
                     TO.Bettype,
                     TO.ReachLevel
                     );

@@ -55,7 +55,7 @@
             await service.CreateFeedbackForTurnoverControlAsync(turnOverSetting);
 
             // Assert
-            service.Received().Protected("EditTOSystemSettingAsync", Arg.Any<DateTime>());
+            await commonFeedback.Received().EditFeedbackSystemSettingAsync(Arg.Any<int>(), Arg.Any<string>());
             service.DidNotReceive().Protected(
                 "CreateTOControlFeedbackAsync",
                 Arg.Any<List<TOControlFeedbackInfor>>(),
@@ -84,7 +84,7 @@
             await service.CreateFeedbackForTurnoverControlAsync(turnOverSetting);
 
             // Assert
-            service.Received().Protected("EditTOSystemSettingAsync", Arg.Any<DateTime>());
+            await commonFeedback.Received().EditFeedbackSystemSettingAsync(Arg.Any<int>(), Arg.Any<string>());
             service.Received().Protected(
                 "CreateTOControlFeedbackAsync",
                 Arg.Any<List<TOControlFeedbackInfor>>(),
@@ -782,22 +782,7 @@
 
             // Assert
             Assert.Equal(expected, actual.ToString());
-        }
-
-        [Fact]
-        public async Task EditTOSystemSettingAsync_WhenCalled_ReturnExpectedCommandResult()
-        {
-            // Arrange
-            var commandResult = fixture.Create<CommandResult>();
-            var service = MockService();
-            systemSettingService.EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_TOControlFB).Returns(commandResult);
-
-            // Act
-            var actual = await service.Public_EditTOSystemSettingAsync(new DateTime());
-
-            // Assert
-            Assert.Equal(commandResult, actual);
-        }
+        }   
 
         #region Helpers
 
