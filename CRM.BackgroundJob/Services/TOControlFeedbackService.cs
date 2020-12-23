@@ -442,9 +442,10 @@
             foreach (var group in matchIDGroup)
             {
                 var toInfor = group.matchIDs.FirstOrDefault();
+                var maxOutStanding = group.matchIDs.Max(x => x.Outstanding);
                 logService.LogInformation(string.Format("Group matchID: {0}", toInfor.MatchID));
-                solutionTemplateEN.Append(GetTOSolutionTemplateEN(toInfor, TOSolTemplate));
-                solutionTemplateYNSC.Append(GetTOSolutionTemplateYNSC(toInfor, isVipCust, TOSolTemplate));
+                solutionTemplateEN.Append(GetTOSolutionTemplateEN(toInfor, TOSolTemplate, maxOutStanding));
+                solutionTemplateYNSC.Append(GetTOSolutionTemplateYNSC(toInfor, isVipCust, TOSolTemplate, maxOutStanding));
             }
             stringBuilder.AppendFormat(TOSolTemplate.SolutionEN.Header, smaLevelEN, ToInfors[0].UserName, Constants.LineBreak);
             stringBuilder.Append(solutionTemplateEN);
@@ -459,10 +460,11 @@
 
         protected internal virtual StringBuilder GetTOSolutionTemplateEN(
            TOControlFeedbackInfor ToInfor,
-           TOSolutionTemplate TOSolTemplate)
+           TOSolutionTemplate TOSolTemplate,
+           double maxOutStanding)
         {
             var stringBuilder = new StringBuilder();
-            var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
+            var outstanding = maxOutStanding.ToString(Constants.ThousanPaseMoney);
             var sportNameEN = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.en_US);
             var leagueNameEN = commonFeedback.GetLeagueName(ToInfor.LeagueID.ToString(), Language.en_US);
             var homeNameEN = commonFeedback.GetTeamName(ToInfor.HomeID.ToString(), Language.en_US);
@@ -484,10 +486,11 @@
         protected internal virtual StringBuilder GetTOSolutionTemplateYNSC(
             TOControlFeedbackInfor ToInfor,
             bool isVipCust,
-            TOSolutionTemplate TOSolTemplate)
+            TOSolutionTemplate TOSolTemplate,
+            double maxOutStanding)
         {
             var stringBuilder = new StringBuilder();
-            var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
+            var outstanding = maxOutStanding.ToString(Constants.ThousanPaseMoney);
 
             string solTemplate = "";
             string sportName = "";

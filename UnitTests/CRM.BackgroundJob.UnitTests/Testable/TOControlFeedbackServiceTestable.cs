@@ -98,17 +98,19 @@
 
         public StringBuilder Public_GetTOSolutionTemplateEN(
            TOControlFeedbackInfor ToInfor,
-           TOSolutionTemplate TOSolTemplate)
+           TOSolutionTemplate TOSolTemplate,
+           double Outstanding)
         {
-            return base.GetTOSolutionTemplateEN(ToInfor, TOSolTemplate);
+            return base.GetTOSolutionTemplateEN(ToInfor, TOSolTemplate, Outstanding);
         }
 
         public StringBuilder Public_GetTOSolutionTemplateYNSC(
             TOControlFeedbackInfor ToInfor,
             bool isVipCust,
-            TOSolutionTemplate TOSolTemplate)
+            TOSolutionTemplate TOSolTemplate,
+            double Outstanding)
         {
-            return base.GetTOSolutionTemplateYNSC(ToInfor, isVipCust, TOSolTemplate);
+            return base.GetTOSolutionTemplateYNSC(ToInfor, isVipCust, TOSolTemplate, Outstanding);
         }
     }
 }

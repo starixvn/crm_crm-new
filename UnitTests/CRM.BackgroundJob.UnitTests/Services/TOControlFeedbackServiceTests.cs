@@ -665,8 +665,8 @@
             var ToInfor = ToInfors.FirstOrDefault();
             var templateReturn = new StringBuilder("test");
 
-            service.Protected("GetTOSolutionTemplateEN", ToInfor, sol).Returns(templateReturn);
-            service.Protected("GetTOSolutionTemplateYNSC", ToInfor, isVipCust, sol).Returns(templateReturn);
+            service.Protected("GetTOSolutionTemplateEN", ToInfor, sol, 1).Returns(templateReturn);
+            service.Protected("GetTOSolutionTemplateYNSC", ToInfor, isVipCust, sol, 1).Returns(templateReturn);
 
             stringBuilder.AppendFormat(sol.SolutionEN.Header, smslevel, ToInfor.UserName, Constants.LineBreak);
             stringBuilder.Append(templateReturn);
@@ -725,7 +725,7 @@
             var expected = stringBuilder.ToString();
 
             // Act
-            var actual = service.Public_GetTOSolutionTemplateEN(ToInfor, sol);
+            var actual = service.Public_GetTOSolutionTemplateEN(ToInfor, sol, 1);
 
             // Assert
             Assert.Equal(expected, actual.ToString());
@@ -778,7 +778,7 @@
             var expected = stringBuilder.ToString();
 
             // Act
-            var actual = service.Public_GetTOSolutionTemplateYNSC(ToInfor, isVipCust, sol);
+            var actual = service.Public_GetTOSolutionTemplateYNSC(ToInfor, isVipCust, sol, 1);
 
             // Assert
             Assert.Equal(expected, actual.ToString());
