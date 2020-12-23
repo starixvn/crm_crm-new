@@ -60,7 +60,7 @@
 
         public async Task CreateFeedbackForTurnoverControlAsync(WinLossSystemSetting turnOverSetting)
         {
-            logService.LogInformation(string.Format("Start run turnover controll serivce with last LastLogID: {0}!", turnOverSetting.LastLogID));
+            logService.LogInformation(string.Format("Start run turnover controll serivce with last LastLogID: {0}!", turnOverSetting.LastLogId));
 
             var settingJobStatus = new List<SystemSettingItem>
             {
@@ -70,11 +70,11 @@
 
             await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
             IEnumerable<TONotification> custNotifications = await customerService.GetListSMANotificationAsync(turnOverSetting);
-            
+
             var custNotificationsDistinct = custNotifications.GroupBy(item => new { item.CustID, item.MatchID })
                                                               .Select(g => g.First())
                                                               .ToList();
-            IEnumerable <CustOutStanding> custOutStandings = await customerService.GetListCustOutStandingAsync(custNotificationsDistinct);
+            IEnumerable<CustOutStanding> custOutStandings = await customerService.GetListCustOutStandingAsync(custNotificationsDistinct);
 
             var custIds = custOutStandings.Select(x => x.CustID);
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
@@ -91,7 +91,7 @@
             {
                 logService.LogInformation(string.Format("Import doesn't have any data with custId: {0} headlineName: {1}!",
                     string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
-                var maxLogID = custNotifications.Any() ? custNotifications.Max(x => x.LogID) : turnOverSetting.LastLogID;
+                var maxLogID = custNotifications.Any() ? custNotifications.Max(x => x.LogID) : turnOverSetting.LastLogId;
 
                 logService.LogInformation(string.Format("Update maxLogID: {0} !", maxLogID));
                 await commonFeedback.EditFeedbackSystemSettingAsync(maxLogID, Constants.ServiceName_TOControlFB);
@@ -188,7 +188,7 @@
                 Solution = GetTOSolution(ToInfors),
                 RelatedCustomerXml = GetTORelatedCustomerXml(ToInfor),
                 ListOrigCustIds = string.Join(",", ToInfor.CustID),
-                TOControlLogID = string.Join(",", ToInfors.Select(log=>log.LogID)),
+                TOControlLogID = string.Join(",", ToInfors.Select(log => log.LogID)),
                 Description = GetTODescription(ToInfors)
             };
 
@@ -356,35 +356,36 @@
 
             foreach (var profiles in profileGroup)
             {
-                var descInfor = profiles.profileIDs.FirstOrDefault();
+                foreach (var descInfor in profiles.profileIDs)
+                {
+                    logService.LogInformation(string.Format("Begin create template for desctiption with profileName: {0} custName: {1}",
+                    descInfor.ProfileName, descInfor.HeadlineName));
 
-                logService.LogInformation(string.Format("Begin create template for desctiption with profileName: {0} custName: {1}",
-                descInfor.ProfileName, descInfor.HeadlineName));
+                    var sportName = commonFeedback.GetSportName(descInfor.SportType.ToString(), Language.en_US);
+                    var leagueName = commonFeedback.GetLeagueName(descInfor.LeagueID.ToString(), Language.en_US);
+                    var homeName = commonFeedback.GetTeamName(descInfor.HomeID.ToString(), Language.en_US);
+                    var awayName = commonFeedback.GetTeamName(descInfor.AwayID.ToString(), Language.en_US);
 
-                var sportName = commonFeedback.GetSportName(descInfor.SportType.ToString(), Language.en_US);
-                var leagueName = commonFeedback.GetLeagueName(descInfor.LeagueID.ToString(), Language.en_US);
-                var homeName = commonFeedback.GetTeamName(descInfor.HomeID.ToString(), Language.en_US);
-                var awayName = commonFeedback.GetTeamName(descInfor.AwayID.ToString(), Language.en_US);
+                    stringBuilder.AppendFormat(TODescTemplate.Desc.DescTemplate,
+                            descInfor.Level,
+                            sportName,
+                            leagueName,
+                            homeName,
+                            awayName,
+                            descInfor.UserName,
+                            descInfor.Currency,
+                            descInfor.TotalTurnover.ToString(Constants.ThousanPaseMoney),
+                            descInfor.ProfileName,
+                            descInfor.HouseTurnover.ToString(Constants.ThousanPaseMoney),
+                            descInfor.MaxTurnover.ToString(Constants.ThousanPaseMoney),
+                            descInfor.Usage.ToString(Constants.ThousanPaseMoney),
+                            descInfor.Outstanding.ToString(Constants.ThousanPaseMoney),
+                            Constants.Break
+                            );
+                    stringBuilder.Append(Constants.Break);
 
-                stringBuilder.AppendFormat(TODescTemplate.Desc.DescTemplate,
-                        descInfor.Level,
-                        sportName,
-                        leagueName,
-                        homeName,
-                        awayName,
-                        descInfor.UserName,
-                        descInfor.Currency,
-                        descInfor.TotalTurnover.ToString(Constants.ThousanPaseMoney),
-                        descInfor.ProfileName,
-                        descInfor.HouseTurnover.ToString(Constants.ThousanPaseMoney),
-                        descInfor.MaxTurnover.ToString(Constants.ThousanPaseMoney),
-                        descInfor.Usage.ToString(Constants.ThousanPaseMoney),
-                        descInfor.Outstanding.ToString(Constants.ThousanPaseMoney),
-                        Constants.Break
-                        );
-                stringBuilder.Append(Constants.Break);
-
-                logService.LogInformation("End create template desctiption");
+                    logService.LogInformation("End create template desctiption");
+                }
             }
             stringBuilder.Append(Constants.Break);
             return stringBuilder.ToString();

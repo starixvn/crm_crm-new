@@ -63,7 +63,7 @@
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
             };
-            logService.LogInformation(string.Format("Start run WL serivce with last log ID: {0}!", setting.LastLogID));
+            logService.LogInformation(string.Format("Start run WL serivce with last log ID: {0}!", setting.LastLogId));
             await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
             IEnumerable<CustomerWinLimit> cusWinLimit = await customerService.GetListCustReachLimitAsync(setting);
             var custIds = cusWinLimit.Select(x => x.CustId).Distinct();
@@ -78,7 +78,7 @@
                 );
             if (!winlossInfo.Item1.Any())
             {
-                var lastLogID = cusWinLimit.Any() ? cusWinLimit.Max(x => x.LogID) : setting.LastLogID;
+                var lastLogID = cusWinLimit.Any() ? cusWinLimit.Max(x => x.LogID) : setting.LastLogId;
                 await commonFeedback.EditFeedbackSystemSettingAsync(lastLogID, Constants.ServiceName_WinLimitFB);
                 return;
             }

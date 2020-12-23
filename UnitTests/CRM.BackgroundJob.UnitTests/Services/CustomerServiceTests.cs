@@ -80,7 +80,7 @@
             Assert.Equal(setting.BatchSize, criteria.BatchSize);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
-            Assert.Equal(setting.LastLogID, criteria.LastLogID);
+            Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
             Assert.Equal("LIVE", criteria.Environment);
@@ -104,7 +104,7 @@
             Assert.Equal(setting.BatchSize, criteria.BatchSize);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
-            Assert.Equal(setting.LastLogID, criteria.LastLogID);
+            Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
             Assert.Equal(configuration.GetValue<string>("SiteEnvironment"), criteria.Environment);
@@ -129,7 +129,7 @@
             Assert.Equal(setting.BatchSize, criteria.BatchSize);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
-            Assert.Equal(setting.LastLogID, criteria.LastLogID);
+            Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
         }

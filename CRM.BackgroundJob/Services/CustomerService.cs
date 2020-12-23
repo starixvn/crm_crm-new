@@ -71,7 +71,7 @@
                 BatchSize = setting.BatchSize,
                 ConfigUAT = setting.ConfigUAT,
                 ConfigPRO = setting.ConfigPRO,
-                LastLogID = setting.LastLogID,
+                LastLogID = setting.LastLogId,
                 IsCredit = setting.IsCredit,
                 IsDeposit = setting.IsDeposit
             };
@@ -82,7 +82,7 @@
         {
             var criteria = new GetTOControlCustNotificationSelCriteria
             {
-                LastLogID = turnOverSetting.LastLogID,
+                LastLogID = turnOverSetting.LastLogId,
                 BatchSize = turnOverSetting.BatchSize,
                 ConfigUAT = turnOverSetting.ConfigUAT,
                 ConfigPRO = turnOverSetting.ConfigPRO,
