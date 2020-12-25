@@ -96,7 +96,7 @@
 
             if (IsEnabledJob(HangfireJobName.CreateFeedbackForTurnoverControl))
             {
-                recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For Turn Over Controll",
+                recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For TurnOver Controll",
                    job => job.CreateFeedbackForTurnoverControl(),
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
