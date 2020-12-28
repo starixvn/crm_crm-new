@@ -195,7 +195,7 @@
             service.Public_RunHangfireJobs();
 
             // Assert
-            recurringJob.Received().AddOrUpdate("Create Feedback For Turn Over Controll",
+            recurringJob.Received().AddOrUpdate("Create Feedback For TurnOver Controll",
                 Arg.Is<Job>(job => job.Method.Name == "CreateFeedbackForTurnoverControl"),
                 "* * * * *",
                 Arg.Any<RecurringJobOptions>());
