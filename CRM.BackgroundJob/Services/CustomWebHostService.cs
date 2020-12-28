@@ -69,6 +69,15 @@
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
 
+            if (IsEnabledJob(HangfireJobName.PullMessageCTOForChatBot))
+            {
+                var cronExpression = GetCronExpression(HangfireJobName.PullMessageCTOForChatBot);
+                recurringJob.AddOrUpdate<IBackgroundService>("Pull Message CTO For Chat Bot",
+                   job => job.PullMessageCWLForChatBotAsync(),
+                   cronExpression,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
+            }
+
             if (IsEnabledJob(HangfireJobName.ScanAndSendLetstalkNotification))
             {
                 recurringJob.AddOrUpdate<IBackgroundService>("Scan and send Letstalk Notification",

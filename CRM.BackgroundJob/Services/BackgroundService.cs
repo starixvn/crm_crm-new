@@ -16,6 +16,8 @@
 
         Task PullMessageCWLForChatBotAsync();
 
+        Task PullMessageCTOForChatBotAsync();
+
         Task ScanAndSenLetstalkNotification();
 
         Task MonitorLetstalkService();
@@ -112,6 +114,27 @@
                 }
 
                 await chatBotJobService.PullMessageCWLAndSendNotificationToHeadlineAsync();
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        [Queue(QueuePriority.Critical)]
+        public async Task PullMessageCTOForChatBotAsync()
+        {
+            try
+            {
+                bool isUM = await CheckUM();
+                if (isUM)
+                {
+                    logService.LogInformation(umTime);
+                    return;
+                }
+
+                await chatBotJobService.PullMessageCTOAndSendNotificationToHeadlineAsync();
             }
             catch (Exception ex)
             {

@@ -26,7 +26,7 @@
         <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot">
-        <Setting Key="Acc_CRM_Chatbot_SystemSetting_Sel" SpName="Acc_CRM_Chatbot_SystemSetting_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_SystemSetting_Sel" SpName="Acc_CRM_Chatbot_SystemSetting_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Ins" SpName="Acc_CRM_ChatBot_crmMessageImport_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Upd" SpName="Acc_CRM_ChatBot_crmMessageImport_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_Import" SpName="Acc_CRM_Chatbot_AbnormalBets_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -39,6 +39,11 @@
     <Function Name="Chatbot CWL">
         <Setting Key="Acc_CRM_Chatbot_CWL_Log_Sel" SpName="Acc_CRM_Chatbot_CWL_Log_Sel_xtest" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_CWL_Import" SpName="Acc_CRM_Chatbot_CWL_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+    </Function>
+    <Function Name="Chatbot CTO">
+        <Setting Key="Acc_Chatbot_TOControlSetting_Sel" SpName="Acc_Chatbot_TOControlSetting_Sel_xtest" DbName="DBCUST.CustDB.bodbAdminNet" />
+        <Setting Key="Acc_Chatbot_TOControlSMAInfo_Sel" SpName="Acc_Chatbot_TOControlSMAInfo_Sel_xtest" DbName="DBCUST.CustDB.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_TOControl_Import" SpName="Acc_CRM_Chatbot_TOControl_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Send Notification">
         <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>

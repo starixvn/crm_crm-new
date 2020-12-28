@@ -16,6 +16,8 @@
     {
         Task PullMessageAndSendNotificationAsync();
         Task PullMessageCWLAndSendNotificationToHeadlineAsync();
+
+        Task PullMessageCTOAndSendNotificationToHeadlineAsync();
     }
 
     public class ChatBotJobService : IChatBotJobService
@@ -90,6 +92,16 @@
             else
             {
                 logService.LogInformation(commandResult.Message);
+            }
+        }
+
+        public async Task PullMessageCTOAndSendNotificationToHeadlineAsync()
+        {
+            AbnormalBetSystemSetting settingCTO = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Enviroment);
+            if (!settingCTO.ServiceFlag)
+            {
+                logService.LogInformation("Chat Bot CWL Service is shutdown.");
+                return;
             }
         }
     }
