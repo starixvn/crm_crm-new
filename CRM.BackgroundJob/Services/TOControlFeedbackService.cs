@@ -74,7 +74,7 @@
 
             IEnumerable<TONotification> custNotifications = await customerService.GetListSMANotificationAsync(turnOverSetting);
 
-            logService.LogInformation("custNotifications!");
+            logService.LogInformation(string.Format("custNotifications with logId: {0}!", string.Join(", ", custNotifications.Select(x => x.LogID))));
 
             var custNotificationsDistinct = custNotifications.GroupBy(item => new { item.CustID, item.MatchID })
                                                               .Select(g => g.First())
