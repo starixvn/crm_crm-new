@@ -5,5 +5,6 @@
         public const string en_US = "en-US";
         public const string zh_CN = "zh-CN";
         public const string vi_VN = "vi-VN";
+        public const string th_TH = "th_TH";
     }
 }

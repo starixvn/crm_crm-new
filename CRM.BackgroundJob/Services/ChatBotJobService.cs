@@ -5,6 +5,7 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
+    using global::CRM.BackgroundJob.Models.ChatBotCTO;
     using global::CRM.BackgroundJob.Models.ChatBotCWL;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
@@ -29,6 +30,7 @@
         private readonly IChatBotCWLService chatBotCWLService;
         private readonly string Environment;
 
+
         private const string DefaultEnviroment = Constants.DefaultEnviroment;
 
         public ChatBotJobService(
@@ -37,7 +39,8 @@
             IChatBotTicketVoidingService ticketVoidingService,
             ISendNotificationService sendNotificationService,
             IChatBotCWLService chatBotCWLService,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IChatBotCTOService chatBotCTOService)
         {
             this.logService = logService;
             this.systemSettingService = systemSettingService;
@@ -103,6 +106,9 @@
                 logService.LogInformation("Chat Bot CWL Service is shutdown.");
                 return;
             }
+            IEnumerable<TOReachInfor> TOReachInfors = await chatBotCTOService.GetChatbotCTOSettingInfoAsync(settingCTO.LastLogId, settingCTO.BatchSize);
+            IEnumerable<TOSMAInfor> TOSMAInfors = await chatBotCTOService.GetChatbotCTOSMAInfoAsync(TOReachInfors);
+
         }
     }
 }

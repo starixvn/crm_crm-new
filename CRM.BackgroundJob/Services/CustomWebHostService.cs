@@ -73,7 +73,7 @@
             {
                 var cronExpression = GetCronExpression(HangfireJobName.PullMessageCTOForChatBot);
                 recurringJob.AddOrUpdate<IBackgroundService>("Pull Message CTO For Chat Bot",
-                   job => job.PullMessageCWLForChatBotAsync(),
+                   job => job.PullMessageCTOForChatBotAsync(),
                    cronExpression,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }

@@ -207,6 +207,7 @@
             services.AddScoped<IWinLossTransactionService, WinLossTransactionService>();
             services.AddScoped<ICommonFeedback, CommonFeedback>();
             services.AddScoped<ITOControlFeedbackService, TOControlFeedbackService>();
+            services.AddScoped<IChatBotCTOService, ChatBotCTOService>();
         }
         
         private static void RegisterHangfire(IServiceCollection services, ConnectionMultiplexer redis, IConfiguration configuration)
