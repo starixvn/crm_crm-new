@@ -30,7 +30,7 @@
     {
         private readonly ICustomerRepository repository;
         private readonly IBaseService baseService;
-
+        private readonly ICRMLogService logService;
         private readonly string Environment;
 
         private const string DefaultEnviroment = Constants.Constants.DefaultEnviroment;
@@ -38,10 +38,12 @@
         public CustomerService(
             ICustomerRepository repository,
             IBaseService baseService,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ICRMLogService logService)
         {
             this.repository = repository;
             this.baseService = baseService;
+            this.logService = logService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -102,6 +104,9 @@
                 stringBuilder.AppendFormat(XmlTemplate, custNoti.CustID, custNoti.MatchID);
             }
             stringBuilder.Append("</Root>");
+
+            logService.LogInformation(string.Format("xml send to server: {0}!", stringBuilder.ToString()));
+
             var criteria = new GetTOControllCustOutstandingCriteria
             {
                 xml = stringBuilder.ToString()
