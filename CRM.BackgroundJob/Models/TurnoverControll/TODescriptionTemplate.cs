@@ -6,12 +6,6 @@
     public class TODescriptionTemplate
     {
         [XmlElement("Description")]
-        public Desctiption Desc { get; set; }
-    }
-    public class Desctiption
-    {
-        public string Header { get; set; }
-
-        public string DescTemplate { get; set; }
+        public string Desc { get; set; }
     }
 }

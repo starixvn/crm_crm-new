@@ -111,7 +111,9 @@
             {
                 xml = stringBuilder.ToString()
             };
-            return await baseService.GetDataAsync<CustOutStanding>(criteria);
+            var cusOutstandingSelect = await baseService.GetDataAsync<CustOutStanding>(criteria);
+            logService.LogInformation(string.Format("Outstanding select: {0}!", cusOutstandingSelect));
+            return cusOutstandingSelect;
         }
     }
 }

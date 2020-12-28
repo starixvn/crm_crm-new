@@ -65,10 +65,10 @@
                 logService.LogInformation(string.Format("Start run turnover controll serivce with last LastLogID: {0}!", turnOverSetting.LastLogId));
 
                 var settingJobStatus = new List<SystemSettingItem>
-            {
-                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
-            };
+                {
+                    new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
+                    new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                };
 
                 await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
 
@@ -113,20 +113,12 @@
                 IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
                 IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
 
-                var importTOFeedbackGroup = importTOFeedbacks.
-                    GroupBy(item => new { item.CustID, item.HeadlineID })
-                    .Select(group => new { TOInfors = group.ToList() })
-                    .ToList();
-
-                foreach (var ToInforGroup in importTOFeedbackGroup)
+                foreach (var ToInfor in importTOFeedbacks)
                 {
-                    logService.LogInformation(string.Format("Count feedback group : {0}", ToInforGroup.TOInfors.Count));
-                    logService.LogInformation(string.Format("Prepare group send data with CustID: {0} HeadlineName: {1}",
-                        string.Join(", ", ToInforGroup.TOInfors.Select(x => x.CustID)), string.Join(", ", ToInforGroup.TOInfors.Select(x => x.HeadlineName))
-                        ));
+                    logService.LogInformation(string.Format("Prepare group send data with CustID: {0} HeadlineName: {1}", ToInfor.CustID, ToInfor.HeadlineName));
 
                     await CreateTOControlFeedbackAsync(
-                            ToInforGroup.TOInfors,
+                            ToInfor,
                             settings,
                             settingMappings);
                 }
@@ -142,11 +134,10 @@
         }
 
         protected internal virtual async Task CreateTOControlFeedbackAsync(
-            List<TOControlFeedbackInfor> ToInfors,
+            TOControlFeedbackInfor ToInfor,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            var ToInfor = ToInfors.FirstOrDefault();
             logService.LogInformation(string.Format("Start create TO feedback with profileID: {0} headlineName: {1} profileName: {2}!",
                     ToInfor.ProfileID, ToInfor.HeadlineName, ToInfor.ProfileName));
 
@@ -160,25 +151,16 @@
                 && x.SettingId == Constants.ExtentionNA);
             var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.MANotification);
 
-            var SportTypeName = new List<string>();
-            var betTypeLists = new List<string>();
-
-            foreach (var ToInforCombine in ToInfors)
-            {
-                var sportName = commonFeedback.GetSportName(ToInforCombine.SportType.ToString(), Language.en_US);
-                SportTypeName.Add(sportName);
-                var bettypeSplit = ToInforCombine.BettypeList.Split(",");
-                betTypeLists.AddRange(bettypeSplit);
-            }
-
-            SettingItem sportsbook = GetTOSportsbookProduct(settings);
+            var sportTypeName = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.en_US);
+            var bettypeSplits = ToInfor.BettypeList.Split(",");
             var betTypeMappings = new List<string>();
-
-            foreach (var betType in betTypeLists.Distinct().ToList())
+            foreach (var betType in bettypeSplits.Distinct().ToList())
             {
                 var betTypeName = commonFeedback.GetBettypeName(betType, Language.en_US);
                 betTypeMappings.Add(betTypeName);
             }
+
+            SettingItem sportsbook = GetTOSportsbookProduct(settings);
 
             var criteria = new CreateMutipleFeedbackCommand
             {
@@ -200,30 +182,29 @@
                 AutoField1 = string.Empty,
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 CustomerXml = string.Format(DefaultValue.CustomerXml, ToInfor.HeadlineID, ToInfor.HeadlineName),
-                ProductXml = GetTOProductXml(SportTypeName.Distinct().ToList(), sportsbook.SettingId, betTypeMappings, settings, settingMappings),
-                Solution = GetTOSolution(ToInfors),
+                ProductXml = GetTOProductXml(sportTypeName, sportsbook.SettingId, betTypeMappings, settings, settingMappings),
+                Solution = GetTOSolution(ToInfor),
                 RelatedCustomerXml = GetTORelatedCustomerXml(ToInfor),
                 ListOrigCustIds = string.Join(",", ToInfor.CustID),
-                TOControlLogID = string.Join(",", ToInfors.Select(log => log.LogID)),
-                Description = GetTODescription(ToInfors)
+                TOControlLogID = ToInfor.LogID.ToString(),
+                Description = GetTODescription(ToInfor)
             };
 
             logService.LogInformation("end create TO control feedback");
-            await CheckValidTOParamsAndInsertFeedbackAsync(ToInfors, criteria);
+            await CheckValidTOParamsAndInsertFeedbackAsync(ToInfor, criteria);
         }
 
         protected internal virtual async Task CheckValidTOParamsAndInsertFeedbackAsync(
-            List<TOControlFeedbackInfor> ToInfors,
+            TOControlFeedbackInfor ToInfor,
             CreateMutipleFeedbackCommand criteria)
         {
-            var ToInfor = ToInfors.FirstOrDefault();
             var checkValidParamBeforeInsert = commonFeedback.CheckFeedbackValidParams(criteria);
             if (!checkValidParamBeforeInsert.Item1)
             {
                 var messageInvalid = "Invalid Params: " + checkValidParamBeforeInsert.Item2;
                 logService.LogInformation(string.Format("Invalid Params. @Categorystr: {0} @Category: {1} @Product: {2} @StatusID: {3} @SubCategorystr:{4} @ResponseID:{5} @StationID:{6}",
                         criteria.CategoryIds, criteria.CategoryXml, criteria.ProductXml, criteria.StatusId, criteria.SubCategoryIds, criteria.ResponseId, criteria.StationId));
-                await transactionService.EditTOControlFeedbackInfoAsync(string.Join(",", ToInfors.Select(log => log.LogID)), CreateFeedbackJobStatus.Fail, messageInvalid);
+                await transactionService.EditTOControlFeedbackInfoAsync(ToInfor.LogID.ToString(), CreateFeedbackJobStatus.Fail, messageInvalid);
                 return;
             }
             try
@@ -242,19 +223,19 @@
                     logService.LogInformation(string.Format("Create TO feedback Faild HeadlineId {0} HeadlineName:{1} ProfileName: {2} custName: {3}",
                     ToInfor.HeadlineID, ToInfor.HeadlineName, ToInfor.ProfileName, ToInfor.UserName));
 
-                    await transactionService.EditTOControlFeedbackInfoAsync(string.Join(",", ToInfors.Select(log => log.LogID)), CreateFeedbackJobStatus.Fail, commandResult.Message);
+                    await transactionService.EditTOControlFeedbackInfoAsync(ToInfor.LogID.ToString(), CreateFeedbackJobStatus.Fail, commandResult.Message);
                     await logService.ErrorAsync(commandResult, criteria);
                 }
             }
             catch (Exception ex)
             {
-                await transactionService.EditTOControlFeedbackInfoAsync(string.Join(",", ToInfors.Select(log => log.LogID)), CreateFeedbackJobStatus.Fail, ex.Message);
+                await transactionService.EditTOControlFeedbackInfoAsync(ToInfor.LogID.ToString(), CreateFeedbackJobStatus.Fail, ex.Message);
                 await logService.ErrorAsync(ex);
             }
         }
 
         protected internal virtual string GetTOProductXml(
-            List<string> sportNames,
+            string sportName,
             int productId,
             List<string> betTypeMappings,
             IEnumerable<SettingItem> settings,
@@ -262,7 +243,7 @@
         {
             logService.LogInformation("Begin mapping product, sub-product, bet type.");
 
-            IList<SettingItem> subProducts = GetTOSubProduct(productId, sportNames, settings, settingMappings);
+            IList<SettingItem> subProducts = GetTOSubProduct(productId, sportName, settings, settingMappings);
             SettingItem product = GetTOSportsbookProduct(settings);
             IList<SystemSettingMapping> tempBettypes = GetTOBettype(betTypeMappings, settingMappings);
 
@@ -303,14 +284,14 @@
 
         protected internal virtual IList<SettingItem> GetTOSubProduct(
             int productId,
-            List<string> sportNames,
+            string sportName,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Start get subproduct with productId: {0} sportName: {1}!", productId, string.Join(", ", sportNames.Select(x => x))));
+            logService.LogInformation(string.Format("Start get subproduct with productId: {0} sportName: {1}!", productId, sportName));
             List<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-               && sportNames.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
+                && mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase)).ToList();
             List<SettingItem> subProducts = settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => parent == productId)
                 && mappings != null
@@ -353,123 +334,75 @@
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
-        protected internal virtual string GetTODescription(List<TOControlFeedbackInfor> ToInfors)
+        protected internal virtual string GetTODescription(TOControlFeedbackInfor ToInfor)
         {
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
             var TODescTemplate = commonFeedback.GetFeedbackTemplates<TODescriptionTemplate>(descTemplateXml);
             const byte SuperID = 4;
             const byte MasterID = 3;
 
-            var isMaster = ToInfors[0].RoleID == MasterID ? SMALevel.Master : SMALevel.Agent;
-            var smaLevel = ToInfors[0].RoleID == SuperID ? SMALevel.Super : isMaster;
+            var isMaster = ToInfor.RoleID == MasterID ? SMALevel.Master : SMALevel.Agent;
+            var smaLevel = ToInfor.RoleID == SuperID ? SMALevel.Super : isMaster;
+
+            logService.LogInformation(string.Format("Begin create template for desctiption with profileName: {0} custName: {1}",
+            ToInfor.ProfileName, ToInfor.HeadlineName));
+
+            var sportName = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.en_US);
+            var leagueName = commonFeedback.GetLeagueName(ToInfor.LeagueID.ToString(), Language.en_US);
+            var homeName = commonFeedback.GetTeamName(ToInfor.HomeID.ToString(), Language.en_US);
+            var awayName = commonFeedback.GetTeamName(ToInfor.AwayID.ToString(), Language.en_US);
+
+            stringBuilder.AppendFormat(TODescTemplate.Desc,
+                    smaLevel,
+                    ToInfor.Level,
+                    sportName,
+                    leagueName,
+                    homeName,
+                    awayName,
+                    ToInfor.UserName,
+                    ToInfor.Currency,
+                    ToInfor.TotalTurnover.ToString(Constants.ThousanPaseMoney),
+                    ToInfor.ProfileName,
+                    ToInfor.HouseTurnover.ToString(Constants.ThousanPaseMoney),
+                    ToInfor.MaxTurnover.ToString(Constants.ThousanPaseMoney),
+                    ToInfor.Usage.ToString(Constants.ThousanPaseMoney),
+                    ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney),
+                    Constants.Break
+                    );
+
             stringBuilder.Append(Constants.Break);
-            stringBuilder.AppendFormat(TODescTemplate.Desc.Header, smaLevel, Constants.Break);
-
-            var profileGroup = ToInfors.
-                GroupBy(item => new { item.ProfileID })
-                .Select(group => new { profileIDs = group.ToList() })
-                .ToList();
-
-            foreach (var profiles in profileGroup)
-            {
-                foreach (var descInfor in profiles.profileIDs)
-                {
-                    logService.LogInformation(string.Format("Begin create template for desctiption with profileName: {0} custName: {1}",
-                    descInfor.ProfileName, descInfor.HeadlineName));
-
-                    var sportName = commonFeedback.GetSportName(descInfor.SportType.ToString(), Language.en_US);
-                    var leagueName = commonFeedback.GetLeagueName(descInfor.LeagueID.ToString(), Language.en_US);
-                    var homeName = commonFeedback.GetTeamName(descInfor.HomeID.ToString(), Language.en_US);
-                    var awayName = commonFeedback.GetTeamName(descInfor.AwayID.ToString(), Language.en_US);
-
-                    stringBuilder.AppendFormat(TODescTemplate.Desc.DescTemplate,
-                            descInfor.Level,
-                            sportName,
-                            leagueName,
-                            homeName,
-                            awayName,
-                            descInfor.UserName,
-                            descInfor.Currency,
-                            descInfor.TotalTurnover.ToString(Constants.ThousanPaseMoney),
-                            descInfor.ProfileName,
-                            descInfor.HouseTurnover.ToString(Constants.ThousanPaseMoney),
-                            descInfor.MaxTurnover.ToString(Constants.ThousanPaseMoney),
-                            descInfor.Usage.ToString(Constants.ThousanPaseMoney),
-                            descInfor.Outstanding.ToString(Constants.ThousanPaseMoney),
-                            Constants.Break
-                            );
-                    stringBuilder.Append(Constants.Break);
-
-                    logService.LogInformation("End create template desctiption");
-                }
-            }
-            stringBuilder.Append(Constants.Break);
+            logService.LogInformation("End create template desctiption");
             return stringBuilder.ToString();
         }
 
-        protected internal virtual string GetTOSolution(List<TOControlFeedbackInfor> ToInfors)
+        protected internal virtual string GetTOSolution(TOControlFeedbackInfor ToInfor)
         {
-            var isVipCust = ToInfors[0].Site == "789y" && ToInfors[0].IsVip;
+            var isVipCust = ToInfor.Site == "789y" && ToInfor.IsVip;
 
             logService.LogInformation(string.Format("Begin GetTOSolution with CustName : {0} HeadlineName:{1} isVipCust: {2} site: {3} isVip: {4}",
-                ToInfors[0].UserName, ToInfors[0].HeadlineName, isVipCust, ToInfors[0].Site, ToInfors[0].IsVip));
+                ToInfor.UserName, ToInfor.HeadlineName, isVipCust, ToInfor.Site, ToInfor.IsVip));
 
             var TOSolTemplate = commonFeedback.GetFeedbackTemplates<TOSolutionTemplate>(solTemplateXml);
-            string solHeader = "";
-            string solfooter = "";
             var smaLevelEN = "";
             var smaLevelSC = "";
-            var smaLevel = "";
             const byte SuperID = 4;
             const byte MasterID = 3;
-            if (ToInfors[0].RoleID == SuperID)
+            if (ToInfor.RoleID == SuperID)
             {
                 smaLevelEN = SMALevel.Super;
                 smaLevelSC = SMALevel.SuperSC;
             }
             else
             {
-                smaLevelEN = ToInfors[0].RoleID == MasterID ? SMALevel.Master : SMALevel.Agent;
-                smaLevelSC = ToInfors[0].RoleID == MasterID ? SMALevel.MasterSC : SMALevel.AgentSC;
-            }
-
-            if (isVipCust)
-            {
-                smaLevel = smaLevelEN;
-                solHeader = TOSolTemplate.SolutionYN.Header;
-                solfooter = TOSolTemplate.SolutionYN.Footer;
-            }
-            else
-            {
-                smaLevel = smaLevelSC;
-                solHeader = TOSolTemplate.SolutionSC.Header;
-                solfooter = TOSolTemplate.SolutionSC.Footer;
+                smaLevelEN = ToInfor.RoleID == MasterID ? SMALevel.Master : SMALevel.Agent;
+                smaLevelSC = ToInfor.RoleID == MasterID ? SMALevel.MasterSC : SMALevel.AgentSC;
             }
 
             var stringBuilder = new StringBuilder();
-            StringBuilder solutionTemplateEN = new StringBuilder();
-            StringBuilder solutionTemplateYNSC = new StringBuilder();
-
-            var matchIDGroup = ToInfors.
-                GroupBy(item => new { item.MatchID })
-                .Select(group => new { matchIDs = group.ToList() })
-                .ToList();
-
-            foreach (var group in matchIDGroup)
-            {
-                var toInfor = group.matchIDs.FirstOrDefault();
-                var maxOutStanding = group.matchIDs.Max(x => x.Outstanding);
-                logService.LogInformation(string.Format("Group matchID: {0}", toInfor.MatchID));
-                solutionTemplateEN.Append(GetTOSolutionTemplateEN(toInfor, TOSolTemplate, maxOutStanding));
-                solutionTemplateYNSC.Append(GetTOSolutionTemplateYNSC(toInfor, isVipCust, TOSolTemplate, maxOutStanding));
-            }
-            stringBuilder.AppendFormat(TOSolTemplate.SolutionEN.Header, smaLevelEN, ToInfors[0].UserName, Constants.LineBreak);
-            stringBuilder.Append(solutionTemplateEN);
-            stringBuilder.AppendFormat(TOSolTemplate.SolutionEN.Footer, Constants.LineBreak);
-
-            stringBuilder.AppendFormat(solHeader, smaLevel, ToInfors[0].UserName, Constants.LineBreak);
-            stringBuilder.Append(solutionTemplateYNSC);
-            stringBuilder.AppendFormat(solfooter, Constants.LineBreak);
+            stringBuilder.Append(GetTOSolutionTemplateEN(ToInfor, TOSolTemplate, smaLevelEN));
+            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(GetTOSolutionTemplateYNSC(ToInfor, isVipCust, smaLevelEN, smaLevelSC, TOSolTemplate));
+            stringBuilder.Append(Constants.Break);
             logService.LogInformation("End get GetTOSolution");
             return stringBuilder.ToString();
         }
@@ -477,17 +410,19 @@
         protected internal virtual StringBuilder GetTOSolutionTemplateEN(
            TOControlFeedbackInfor ToInfor,
            TOSolutionTemplate TOSolTemplate,
-           double maxOutStanding)
+           string smaLevelEN)
         {
             var stringBuilder = new StringBuilder();
-            var outstanding = maxOutStanding.ToString(Constants.ThousanPaseMoney);
+            var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
             var sportNameEN = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.en_US);
             var leagueNameEN = commonFeedback.GetLeagueName(ToInfor.LeagueID.ToString(), Language.en_US);
             var homeNameEN = commonFeedback.GetTeamName(ToInfor.HomeID.ToString(), Language.en_US);
             var awayNameEN = commonFeedback.GetTeamName(ToInfor.AwayID.ToString(), Language.en_US);
 
             stringBuilder.AppendFormat(
-               TOSolTemplate.SolutionEN.SolutionTemplate,
+               TOSolTemplate.SolutionEN,
+               smaLevelEN,
+               ToInfor.UserName,
                outstanding,
                ToInfor.Currency,
                sportNameEN,
@@ -495,20 +430,20 @@
                homeNameEN,
                awayNameEN,
                Constants.Break);
-            stringBuilder.Append(Constants.Break);
             return stringBuilder;
         }
 
         protected internal virtual StringBuilder GetTOSolutionTemplateYNSC(
             TOControlFeedbackInfor ToInfor,
             bool isVipCust,
-            TOSolutionTemplate TOSolTemplate,
-            double maxOutStanding)
+            string smaLevelEN,
+            string smaLevelSC,
+            TOSolutionTemplate TOSolTemplate)
         {
             var stringBuilder = new StringBuilder();
-            var outstanding = maxOutStanding.ToString(Constants.ThousanPaseMoney);
-
-            string solTemplate = "";
+            var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
+            string smaLevel = "";
+            string solutionTemplate = "";
             string sportName = "";
             string leagueName = "";
             string homeName = "";
@@ -516,7 +451,8 @@
 
             if (isVipCust)
             {
-                solTemplate = TOSolTemplate.SolutionYN.SolutionTemplate;
+                smaLevel = smaLevelEN;
+                solutionTemplate = TOSolTemplate.SolutionYN;
                 sportName = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.vi_VN);
                 leagueName = commonFeedback.GetLeagueName(ToInfor.LeagueID.ToString(), Language.vi_VN);
                 homeName = commonFeedback.GetTeamName(ToInfor.HomeID.ToString(), Language.vi_VN);
@@ -524,7 +460,8 @@
             }
             else
             {
-                solTemplate = TOSolTemplate.SolutionSC.SolutionTemplate;
+                smaLevel = smaLevelSC;
+                solutionTemplate = TOSolTemplate.SolutionSC;
                 sportName = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.zh_CN);
                 leagueName = commonFeedback.GetLeagueName(ToInfor.LeagueID.ToString(), Language.zh_CN);
                 homeName = commonFeedback.GetTeamName(ToInfor.HomeID.ToString(), Language.zh_CN);
@@ -532,7 +469,9 @@
             }
 
             stringBuilder.AppendFormat(
-                solTemplate,
+                solutionTemplate,
+                smaLevel,
+                ToInfor.UserName,
                 outstanding,
                 ToInfor.Currency,
                 sportName,
@@ -540,7 +479,6 @@
                 homeName,
                 awayName,
                 Constants.Break);
-            stringBuilder.Append(Constants.Break);
             return stringBuilder;
         }
     }
