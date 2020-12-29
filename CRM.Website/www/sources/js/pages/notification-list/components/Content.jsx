@@ -20,7 +20,7 @@ export default class Content extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title as='div'>
                     {`${LangHelper.getResource('NotificationID')}: ${data.notificationId} `}
-                        {data.dataSource === 'LogId' ? LogIdDisplay : messageIdDisplay}
+                        {data.dataSource === 'MessageId' ? messageIdDisplay : LogIdDisplay}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
