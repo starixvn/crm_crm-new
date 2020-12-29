@@ -20,7 +20,6 @@
     {
         private ICustomerRepository repository;
         private IBaseService baseService;
-        private ICRMLogService LogService;
         private IConfiguration configuration;
 
         private readonly IFixture fixture = new Fixture();
@@ -158,9 +157,8 @@
             repository = Substitute.For<ICustomerRepository>();
             baseService = Substitute.For<IBaseService>();
             configuration = Substitute.For<IConfiguration>();
-            LogService = Substitute.For<ICRMLogService>();
 
-            return new CustomerService(repository, baseService, configuration, LogService);
+            return new CustomerService(repository, baseService, configuration);
         }
 
         #endregion Helpers
