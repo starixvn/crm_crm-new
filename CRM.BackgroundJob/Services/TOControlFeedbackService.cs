@@ -60,77 +60,70 @@
 
         public async Task CreateFeedbackForTurnoverControlAsync(WinLossSystemSetting turnOverSetting)
         {
-            try
-            {
-                logService.LogInformation(string.Format("Start run turnover controll serivce with last LastLogID: {0}!", turnOverSetting.LastLogId));
+            logService.LogInformation(string.Format("Start run turnover controll serivce with last LastLogID: {0}!", turnOverSetting.LastLogId));
 
-                var settingJobStatus = new List<SystemSettingItem>
+            var settingJobStatus = new List<SystemSettingItem>
                 {
                     new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
                     new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
                 };
 
-                await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
+            await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
 
-                logService.LogInformation("After Edit job TO control!");
+            logService.LogInformation("After Edit job TO control!");
 
-                IEnumerable<TONotification> custNotifications = await customerService.GetListSMANotificationAsync(turnOverSetting);
+            IEnumerable<TONotification> custNotifications = await customerService.GetListSMANotificationAsync(turnOverSetting);
 
-                logService.LogInformation(string.Format("custNotifications with logId: {0}!", string.Join(", ", custNotifications.Select(x => x.LogID))));
+            logService.LogInformation(string.Format("custNotifications with logId: {0}!", string.Join(", ", custNotifications.Select(x => x.LogID))));
 
-                var custNotificationsDistinct = custNotifications.GroupBy(item => new { item.CustID, item.MatchID })
-                                                                  .Select(g => g.First())
-                                                                  .ToList();
+            var custNotificationsDistinct = custNotifications.GroupBy(item => new { item.CustID, item.MatchID })
+                                                              .Select(g => g.First())
+                                                              .ToList();
 
-                IEnumerable<CustOutStanding> custOutStandings = await customerService.GetListCustOutStandingAsync(custNotificationsDistinct);
+            IEnumerable<CustOutStanding> custOutStandings = await customerService.GetListCustOutStandingAsync(custNotificationsDistinct);
 
-                logService.LogInformation(string.Format("custOutStandings with logId: {0}!", string.Join(", ", custNotifications.Select(x => x.LogID))));
+            logService.LogInformation(string.Format("custOutStandings with logId: {0}!", string.Join(", ", custNotifications.Select(x => x.LogID))));
 
-                var custIds = custOutStandings.Select(x => x.CustID);
-                IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
+            var custIds = custOutStandings.Select(x => x.CustID);
+            IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
 
-                logService.LogInformation(string.Format("Start import data with headlineid: {0} headlineName: {1} custId: {2}!",
-                    string.Join(", ", headlines.Select(x => x.HeadlineId)), string.Join(", ", headlines.Select(x => x.HeadlineName)), string.Join(", ", headlines.Select(x => x.CustId))));
+            logService.LogInformation(string.Format("Start import data with headlineid: {0} headlineName: {1} custId: {2}!",
+                string.Join(", ", headlines.Select(x => x.HeadlineId)), string.Join(", ", headlines.Select(x => x.HeadlineName)), string.Join(", ", headlines.Select(x => x.CustId))));
 
-                IEnumerable<TOControlFeedbackInfor> importTOFeedbacks = await transactionService.ImportTOControllFeedbackInfoAsync(
-                    headlines,
-                    custOutStandings,
-                    custNotifications);
-                logService.LogInformation(string.Format("importTOFeedbacks with logId: {0}!", string.Join(", ", importTOFeedbacks.Select(x => x.LogID))));
+            IEnumerable<TOControlFeedbackInfor> importTOFeedbacks = await transactionService.ImportTOControllFeedbackInfoAsync(
+                headlines,
+                custOutStandings,
+                custNotifications);
+            logService.LogInformation(string.Format("importTOFeedbacks with logId: {0}!", string.Join(", ", importTOFeedbacks.Select(x => x.LogID))));
 
-                if (!importTOFeedbacks.Any())
-                {
-                    logService.LogInformation(string.Format("Import doesn't have any data with custId: {0} headlineName: {1}!",
-                        string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
-                    var maxLogID = custNotifications.Any() ? custNotifications.Max(x => x.LogID) : turnOverSetting.LastLogId;
-
-                    logService.LogInformation(string.Format("Update maxLogID: {0} !", maxLogID));
-                    await commonFeedback.EditFeedbackSystemSettingAsync(maxLogID, Constants.ServiceName_TOControlFB);
-                    return;
-                }
-
-                var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
-                IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
-                IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
-
-                foreach (var ToInfor in importTOFeedbacks)
-                {
-                    logService.LogInformation(string.Format("Prepare group send data with CustID: {0} HeadlineName: {1}", ToInfor.CustID, ToInfor.HeadlineName));
-
-                    await CreateTOControlFeedbackAsync(
-                            ToInfor,
-                            settings,
-                            settingMappings);
-                }
-                var maxLogIdTO = importTOFeedbacks.Max(x => x.LogID);
-                await commonFeedback.EditFeedbackSystemSettingAsync(maxLogIdTO, Constants.ServiceName_TOControlFB);
-
-                logService.LogInformation("Finished create TO feedback");
-            }
-            catch (Exception ex)
+            if (!importTOFeedbacks.Any())
             {
-                await logService.ErrorAsync(ex);
+                logService.LogInformation(string.Format("Import doesn't have any data with custId: {0} headlineName: {1}!",
+                    string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
+                var maxLogID = custNotifications.Any() ? custNotifications.Max(x => x.LogID) : turnOverSetting.LastLogId;
+
+                logService.LogInformation(string.Format("Update maxLogID: {0} !", maxLogID));
+                await commonFeedback.EditFeedbackSystemSettingAsync(maxLogID, Constants.ServiceName_TOControlFB);
+                return;
             }
+
+            var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
+            IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
+            IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
+
+            foreach (var ToInfor in importTOFeedbacks)
+            {
+                logService.LogInformation(string.Format("Prepare group send data with CustID: {0} HeadlineName: {1}", ToInfor.CustID, ToInfor.HeadlineName));
+
+                await CreateTOControlFeedbackAsync(
+                        ToInfor,
+                        settings,
+                        settingMappings);
+            }
+            var maxLogIdTO = importTOFeedbacks.Max(x => x.LogID);
+            await commonFeedback.EditFeedbackSystemSettingAsync(maxLogIdTO, Constants.ServiceName_TOControlFB);
+
+            logService.LogInformation("Finished create TO feedback");
         }
 
         protected internal virtual async Task CreateTOControlFeedbackAsync(
