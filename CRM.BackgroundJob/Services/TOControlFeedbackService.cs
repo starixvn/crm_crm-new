@@ -404,9 +404,12 @@
             }
 
             var stringBuilder = new StringBuilder();
-            stringBuilder.Append(GetTOSolutionTemplateEN(ToInfor, TOSolTemplate, smaLevelEN));
+            var solutionTemplateEN = GetTOSolutionTemplateEN(ToInfor, TOSolTemplate, smaLevelEN);
+            var solutionTemplateSC = GetTOSolutionTemplateYNSC(ToInfor, isVipCust, smaLevelEN, smaLevelSC, TOSolTemplate);
+
+            stringBuilder.Append(solutionTemplateEN);
             stringBuilder.Append(Constants.Break);
-            stringBuilder.Append(GetTOSolutionTemplateYNSC(ToInfor, isVipCust, smaLevelEN, smaLevelSC, TOSolTemplate));
+            stringBuilder.Append(solutionTemplateSC);
             stringBuilder.Append(Constants.Break);
             logService.LogInformation("End get GetTOSolution");
             return stringBuilder.ToString();
@@ -461,7 +464,7 @@
             string homeName = "";
             string awayName = "";
 
-            if (isVipCust)
+            if(isVipCust)
             {
                 smaLevel = smaLevelEN;
                 solutionTemplate = TOSolTemplate.SolutionYN;
