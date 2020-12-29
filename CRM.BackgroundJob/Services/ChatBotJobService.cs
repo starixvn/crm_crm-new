@@ -108,7 +108,15 @@
             }
             IEnumerable<TOReachInfor> TOReachInfors = await chatBotCTOService.GetChatbotCTOSettingInfoAsync(settingCTO.LastLogId, settingCTO.BatchSize);
             IEnumerable<TOSMAInfor> TOSMAInfors = await chatBotCTOService.GetChatbotCTOSMAInfoAsync(TOReachInfors);
-
+            CommandResult commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(TOSMAInfors, Enviroment);
+            if (commandResult.IsSuccessful)
+            {
+                await sendNotificationService.SendNotificationToLetstalk();
+            }
+            else
+            {
+                logService.LogInformation(commandResult.Message);
+            }
         }
     }
 }

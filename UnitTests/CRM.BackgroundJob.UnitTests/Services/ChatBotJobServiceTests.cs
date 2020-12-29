@@ -24,6 +24,7 @@
         private ISendNotificationService sendNotificationService;
         private IChatBotCWLService chatBotCWLService;
         private IConfiguration configuration;
+        private IChatBotCTOService chatBotCTOService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -177,13 +178,14 @@
             sendNotificationService = Substitute.For<ISendNotificationService>();
             chatBotCWLService = Substitute.For<IChatBotCWLService>();
             configuration = Substitute.For<IConfiguration>();
-
+            chatBotCTOService = Substitute.For<IChatBotCTOService>();
             return new ChatBotJobService(logService,
                 systemSettingService,
                 ticketVoidingService, 
                 sendNotificationService, 
                 chatBotCWLService, 
-                configuration);
+                configuration,
+                chatBotCTOService);
         }
 
         #endregion Helpers
