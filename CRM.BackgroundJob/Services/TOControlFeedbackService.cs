@@ -141,6 +141,8 @@
             logService.LogInformation(string.Format("Start create TO feedback with profileID: {0} headlineName: {1} profileName: {2}!",
                     ToInfor.ProfileID, ToInfor.HeadlineName, ToInfor.ProfileName));
 
+            logService.LogInformation("Begin Default setting!!!");
+
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
@@ -151,9 +153,14 @@
                 && x.SettingId == Constants.ExtentionNA);
             var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.MANotification);
 
+            logService.LogInformation("End Default setting!!!");
+
+            logService.LogInformation("Begin Get Sport type and bettype!!!");
+
             var sportTypeName = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.en_US);
             var bettypeSplits = ToInfor.BettypeList.Split(",");
             var betTypeMappings = new List<string>();
+
             foreach (var betType in bettypeSplits.Distinct().ToList())
             {
                 var betTypeName = commonFeedback.GetBettypeName(betType, Language.en_US);
@@ -161,6 +168,8 @@
             }
 
             SettingItem sportsbook = GetTOSportsbookProduct(settings);
+
+            logService.LogInformation("En Get Sport type and bettype!!!");
 
             var criteria = new CreateMutipleFeedbackCommand
             {
@@ -198,6 +207,8 @@
             TOControlFeedbackInfor ToInfor,
             CreateMutipleFeedbackCommand criteria)
         {
+            logService.LogInformation("Begin CheckValidTOParamsAndInsertFeedbackAsync!!!");
+
             var checkValidParamBeforeInsert = commonFeedback.CheckFeedbackValidParams(criteria);
             if (!checkValidParamBeforeInsert.Item1)
             {
@@ -232,6 +243,7 @@
                 await transactionService.EditTOControlFeedbackInfoAsync(ToInfor.LogID.ToString(), CreateFeedbackJobStatus.Fail, ex.Message);
                 await logService.ErrorAsync(ex);
             }
+            logService.LogInformation("End CheckValidTOParamsAndInsertFeedbackAsync!!!");
         }
 
         protected internal virtual string GetTOProductXml(
@@ -412,6 +424,8 @@
            TOSolutionTemplate TOSolTemplate,
            string smaLevelEN)
         {
+            logService.LogInformation("begin create template desctiption EN");
+
             var stringBuilder = new StringBuilder();
             var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
             var sportNameEN = commonFeedback.GetSportName(ToInfor.SportType.ToString(), Language.en_US);
@@ -430,6 +444,9 @@
                homeNameEN,
                awayNameEN,
                Constants.Break);
+
+            logService.LogInformation("end create template desctiption EN");
+
             return stringBuilder;
         }
 
@@ -440,6 +457,8 @@
             string smaLevelSC,
             TOSolutionTemplate TOSolTemplate)
         {
+            logService.LogInformation(string.Format("Begin create template desctiption YNSC with isVipCust: {0}!", isVipCust));
+
             var stringBuilder = new StringBuilder();
             var outstanding = ToInfor.Outstanding.ToString(Constants.ThousanPaseMoney);
             string smaLevel = "";
@@ -468,6 +487,8 @@
                 awayName = commonFeedback.GetTeamName(ToInfor.AwayID.ToString(), Language.zh_CN);
             }
 
+            logService.LogInformation(string.Format("Create solutionTemplate: {0}", solutionTemplate));
+
             stringBuilder.AppendFormat(
                 solutionTemplate,
                 smaLevel,
@@ -479,6 +500,9 @@
                 homeName,
                 awayName,
                 Constants.Break);
+
+            logService.LogInformation("End create template desctiption YNSC");
+
             return stringBuilder;
         }
     }
