@@ -1,7 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.ChatBot_CTO;
@@ -14,8 +13,8 @@
     public interface IChatBotCTOService
     {
         Task<IEnumerable<TOReachInfor>> GetChatbotCTOSettingInfoAsync(int LastLogId, int BatchSize);
-        Task<IEnumerable<TOSMAInfor>> GetChatbotCTOSMAInfoAsync(IEnumerable<TOReachInfor> TOReachInfors);
-        Task<CommandResult> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> TOSMAInfors,
+        Task<IEnumerable<TOSMAInfor>> GetChatbotCTOSMAInfoAsync(IEnumerable<TOReachInfor> tOReachInfors);
+        Task<CommandResult> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
                                                   string Environment = Constants.DefaultEnviroment);
     }
     public class ChatBotCTOService : IChatBotCTOService
@@ -40,16 +39,16 @@
             return await baseService.GetDataAsync<TOReachInfor>(criteria);
         }
 
-        public async Task<IEnumerable<TOSMAInfor>> GetChatbotCTOSMAInfoAsync(IEnumerable<TOReachInfor> TOReachInfors)
+        public async Task<IEnumerable<TOSMAInfor>> GetChatbotCTOSMAInfoAsync(IEnumerable<TOReachInfor> tOReachInfors)
         {
             var criteria = new GetTOControlSMAInfroCriteria
             {
-                XML = TOReachInfors.ToXML("root").ToString()
+                XML = tOReachInfors.ToXML("root").ToString()
             };
             return await baseService.GetDataAsync<TOSMAInfor>(criteria);
         }
 
-        public async Task<CommandResult> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> TOSMAInfors,
+        public async Task<CommandResult> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
                                          string Environment = Constants.DefaultEnviroment)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' Username='{2}' Recommend='{3}'" +
@@ -62,7 +61,7 @@
                 " Outstanding='{27}'> </r>";
 
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
-            foreach (TOSMAInfor smaInfor in TOSMAInfors)
+            foreach (TOSMAInfor smaInfor in tOSMAInfors)
             {
                 var sportNameEN = commonFeedback.GetSportName(smaInfor.Sporttype.ToString(), Language.en_US);
                 var sportNameSC = commonFeedback.GetSportName(smaInfor.Sporttype.ToString(), Language.zh_CN);

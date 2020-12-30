@@ -103,12 +103,12 @@
             AbnormalBetSystemSetting settingCTO = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Enviroment);
             if (!settingCTO.ServiceFlag)
             {
-                logService.LogInformation("Chat Bot CWL Service is shutdown.");
+                logService.LogInformation("Chat Bot CTO Service is shutdown.");
                 return;
             }
-            IEnumerable<TOReachInfor> TOReachInfors = await chatBotCTOService.GetChatbotCTOSettingInfoAsync(settingCTO.LastLogId, settingCTO.BatchSize);
-            IEnumerable<TOSMAInfor> TOSMAInfors = await chatBotCTOService.GetChatbotCTOSMAInfoAsync(TOReachInfors);
-            CommandResult commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(TOSMAInfors, Enviroment);
+            IEnumerable<TOReachInfor> tOReachInfors = await chatBotCTOService.GetChatbotCTOSettingInfoAsync(settingCTO.LastLogId, settingCTO.BatchSize);
+            IEnumerable<TOSMAInfor> tOSMAInfors = await chatBotCTOService.GetChatbotCTOSMAInfoAsync(tOReachInfors);
+            CommandResult commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Enviroment);
             if (commandResult.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();

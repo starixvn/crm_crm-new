@@ -15,6 +15,7 @@
     using Fanex.CRM.BackgroundJob.Services;
     using NSubstitute;
     using Xunit;
+    using CRM.BackgroundJob.Models.ChatBotCTO;
 
     public class ChatBotJobServiceTests
     {
@@ -116,6 +117,67 @@
         }
 
         [Fact]
+        public async Task PullMessageCTOAndSendNotificationToHeadlineAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnviroment).Returns(setting);
+
+            // Act
+            await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            logService.Received().LogInformation("Chat Bot CTO Service is shutdown.");
+        }
+
+        [Fact]
+        public async Task PullMessageCTOAndSendNotificationToHeadlineAsync_ImportTOSMAInfoAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
+            var tOReachInfors = fixture.Create<IEnumerable<TOReachInfor>>();
+            var tOSMAInfors = fixture.Create<IEnumerable<TOSMAInfor>>();
+
+            var commandResult = new CommandResult { Code = 1};
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnviroment).Returns(setting);
+            chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(tOReachInfors);
+            chatBotCTOService.GetChatbotCTOSMAInfoAsync(Arg.Any<IEnumerable<TOReachInfor>>()).Returns(tOSMAInfors);
+
+            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnviroment).Returns(commandResult);
+
+            // Act
+            await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            logService.Received().LogInformation(commandResult.Message);
+        }
+
+        [Fact]
+        public async Task PullMessageCTOAndSendNotificationToHeadlineAsync_ImportCWLLogInfoAsyncsuccessful_ExpectedToCallSendNotificationToLetstalk()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
+            var tOReachInfors = fixture.Create<IEnumerable<TOReachInfor>>();
+            var tOSMAInfors = fixture.Create<IEnumerable<TOSMAInfor>>();
+
+            var commandResult = new CommandResult { Code = 0 };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnviroment).Returns(setting);
+            chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(tOReachInfors);
+            chatBotCTOService.GetChatbotCTOSMAInfoAsync(Arg.Any<IEnumerable<TOReachInfor>>()).Returns(tOSMAInfors);
+
+            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnviroment).Returns(commandResult);
+
+            // Act
+            await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            await sendNotificationService.Received().SendNotificationToLetstalk();
+        }
+
+        [Fact]
         public async Task PullMessageCWLAndSendNotificationToHeadlineAsync_ServiceIsShutdown_ExpectedWriteLog()
         {
             // Arrange
@@ -136,7 +198,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
             var cwlInfors = fixture.Create<IEnumerable<ChatBotCWLInfo>>();
-            var commandResult = new CommandResult { Code = 1};
+            var commandResult = new CommandResult { Code = 1 };
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnviroment).Returns(setting);
             chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(cwlInfors);

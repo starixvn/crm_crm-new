@@ -53,10 +53,10 @@
                 "ProductNameVN='{11}' LevelId='{12}' GroupId='{13}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
 
-            var productEN = service.GetProductName(Arg.Any<string>(),"en-US").Returns("a");
-            var productSC = service.GetProductName(Arg.Any<string>(), "zh-CN").Returns("b");
-            var productTH = service.GetProductName(Arg.Any<string>(), "th-TH").Returns("c");
-            var productVN = service.GetProductName(Arg.Any<string>(), "vi-VN").Returns("d");
+            service.GetProductName(Arg.Any<string>(),"en-US").Returns("a");
+            service.GetProductName(Arg.Any<string>(), "zh-CN").Returns("b");
+            service.GetProductName(Arg.Any<string>(), "th-TH").Returns("c");
+            service.GetProductName(Arg.Any<string>(), "vi-VN").Returns("d");
             var cWLInfo = cWLInfos.First();
             stringBuilder.AppendFormat(XmlTemplate,
                     cWLInfo.LogId,

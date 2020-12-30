@@ -1,19 +1,15 @@
-﻿using CRM.BackgroundJob.Criteria.ChatBotCWL;
-using Xunit;
-
-namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBotCWL
+﻿namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBotCWL
 {
+    using CRM.BackgroundJob.Criteria.ChatBotCWL;
+    using Xunit;
+
     public class GetCWLInfoByLogIdCriteriaTests
     {
         [Fact]
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             // Arrange
-            var criteria = new GetCWLInfoByLogIdCriteria
-            {
-                LastLogId = 1,
-                BatchSize = 10
-            };
+            var criteria = new GetCWLInfoByLogIdCriteria();
             var expected = "Acc_CRM_Chatbot_CWL_Log_Sel";
 
             // Act
@@ -21,15 +17,17 @@ namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBotCWL
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(1, criteria.LastLogId);
-            Assert.Equal(10, criteria.BatchSize);
         }
 
         [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
+        public void IsValid_ParamIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetCWLInfoByLogIdCriteria();
+            var criteria = new GetCWLInfoByLogIdCriteria
+            {
+                LastLogId = 1,
+                BatchSize = 10
+            };
 
             // Act
             var actual = criteria.IsValid();
