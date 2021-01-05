@@ -123,7 +123,7 @@ export class DataGrid extends PureComponent {
                     }
                 </div>
                 <Table
-                    maxWidth={600}
+                    maxWidth={700}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     isPaging

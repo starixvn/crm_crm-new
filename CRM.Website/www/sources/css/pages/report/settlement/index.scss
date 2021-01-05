@@ -3,10 +3,10 @@
 @import "../../../components/forms";
 @import "../../../components/modal";
 @import "../../../components/icons";
-@import '../../../components/tables';
+@import "../../../components/tables";
 
 #app-container {
-    width: 600px;
+    width: 700px;
 }
 
 .form-filter {
@@ -19,7 +19,7 @@
             }
 
             .form-control {
-                width: calc(100% - .5rem - 50px);
+                width: calc(100% - 0.5rem - 50px);
             }
         }
     }
