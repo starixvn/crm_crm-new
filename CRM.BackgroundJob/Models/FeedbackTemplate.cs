@@ -15,6 +15,10 @@
 
         public string RNGTemplateENSC { get; set; }
 
+        public string JackpotPrizeTemplateENYN { get; set; }
+
+        public string JackpotPrizeTemplateENSC { get; set; }
+
         public string YellowTemplateENYN { get; set; }
 
         public string YellowTemplateENSC { get; set; }

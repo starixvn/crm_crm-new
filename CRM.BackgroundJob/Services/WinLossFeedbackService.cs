@@ -284,6 +284,7 @@
             string templateBlack = "";
             string templateGrey = "";
             string templateRng = "";
+            string templateJackpotPrize = "";
 
             var totalWinAmt = Math.Truncate(winLimit.TotalWinAmt).ToString(Constants.ThousanPase);
             var templates = commonFeedback.GetFeedbackTemplates<FeedbackTemplate>(templateXml);
@@ -295,6 +296,7 @@
                 templateRed = formatTemplates.RedTemplateENYN;
                 templateBlack = formatTemplates.BlackTemplateYN;
                 templateGrey = formatTemplates.GreyTemplateENYN;
+                templateJackpotPrize = formatTemplates.JackpotPrizeTemplateENYN;
                 productFormat = productYN;
             }
             else
@@ -304,12 +306,17 @@
                 templateRed = formatTemplates.RedTemplateENSC;
                 templateBlack = formatTemplates.BlackTemplateSC;
                 templateGrey = formatTemplates.GreyTemplateENSC;
+                templateJackpotPrize = formatTemplates.JackpotPrizeTemplateENSC;
                 productFormat = productSC;
             }
             var stringBuilder = new StringBuilder();
             if (winLimit.ProductName == "RNG Casino" && (winLimit.ProductGroup == "RNG Casino - Minor Jackpot" || winLimit.ProductGroup == "RNG Casino - Mega Jackpot"))
             {
                 stringBuilder.AppendFormat(templateRng, winLimit.UserName, totalWinAmt, winLimit.Currency, Constants.LineBreak);
+            }
+            else if (winLimit.ProductName == "PP" && winLimit.ProductGroup == "PP - Jackpot Prize")
+            {
+                stringBuilder.AppendFormat(templateJackpotPrize, winLimit.UserName, totalWinAmt, winLimit.Currency, Constants.LineBreak);
             }
             else
             {
