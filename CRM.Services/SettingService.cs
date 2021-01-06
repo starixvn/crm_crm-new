@@ -32,6 +32,7 @@
         {
             var criteria = new GetSettingCriteria
             {
+                UserRole = param.UserRole,
                 SettingName = param.SettingName,
                 IsActive = param.IsActive
             };

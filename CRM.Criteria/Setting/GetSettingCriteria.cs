@@ -4,6 +4,7 @@
 
     public class GetSettingCriteria : CriteriaBase
     {
+        public int? UserRole { get; set; }
         public string SettingName { get; set; }
         public bool? IsActive { get; set; }
 

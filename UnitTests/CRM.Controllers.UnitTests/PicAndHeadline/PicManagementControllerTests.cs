@@ -90,9 +90,13 @@
             };
             var controller = GetController();
 
-            settingService.GetAsync(Arg.Is<GetSettingParam>(param => param.SettingName == SettingName.PicRole)).Returns(roleList);
-            settingService.GetAsync(Arg.Is<GetSettingParam>(param => param.IsActive == true && param.SettingName == SettingName.PicCommunicationTool)).Returns(communicationTools);
-            settingService.GetAsync(Arg.Is<GetSettingParam>(param => param.IsActive == true && param.SettingName == SettingName.Language)).Returns(languages);
+            settingService.GetAsync(Arg.Is<GetSettingParam>(param => 
+            param.SettingName == SettingName.PicRole && param.UserRole == Constants.UserRole)).Returns(roleList);
+            settingService.GetAsync(Arg.Is<GetSettingParam>(param => 
+            param.IsActive == true && param.SettingName == SettingName.PicCommunicationTool && param.UserRole == Constants.UserRole)).Returns(communicationTools);
+            settingService.GetAsync(Arg.Is<GetSettingParam>(param =>
+            param.IsActive == true && param.SettingName == SettingName.Language && param.UserRole == Constants.UserRole)).Returns(languages);
+
             settingService.GetAllCountryAsync(Arg.Any<GetAllCountryCriteria>()).Returns(countries);
 
             // Act

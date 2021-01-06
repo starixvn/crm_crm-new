@@ -60,13 +60,14 @@
         [HttpPost]
         public async Task<IActionResult> GetAllSetting()
         {
-            var roles = await settingService.GetAsync(new GetSettingParam { SettingName = SettingName.PicRole });
+            var roles = await settingService.GetAsync(new GetSettingParam { SettingName = SettingName.PicRole, UserRole = Constants.UserRole });
             var allSetting = new
             {
                 RoleListWithInActive = roles,
                 RoleList = roles.Where(role => role.IsActive),
-                CommunicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool }),
-                Languages = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.Language }),
+                CommunicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole }),
+                Languages = await settingService.GetAsync(new GetSettingParam {
+                    IsActive = true, SettingName = SettingName.Language, UserRole = Constants.UserRole }),
                 Countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria())
             };
             return Json(allSetting);
