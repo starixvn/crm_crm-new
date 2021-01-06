@@ -644,7 +644,7 @@
             // Arrange
             var winlimit = new WinLimitFeedBackInfo
             {
-                UserName ="test",
+                UserName = "test",
                 TotalWinAmt = 1000,
                 Currency = "USD",
                 ProductID = 1,
@@ -713,7 +713,7 @@
             commonFeedback.GetProductName(winlimit.ProductID.ToString(), "vi-VN").Returns("ProductNameYN");
             var expect = "test 1,000 USD ProductNameUS " + productName + Constants.LineBreak;
             // Act
-            var result = service.Public_GetSolution(winlimit, isVip); 
+            var result = service.Public_GetSolution(winlimit, isVip);
 
             // Assert
             var expected = Regex.Replace(expect, @"\s", "");
@@ -827,6 +827,7 @@
         #endregion GetDescription
 
         #region GetRelatedCustomerXml
+
         [Fact]
         public void GetRelatedCustomerXml_CallFunction_ReturnExpectTemplate()
         {
@@ -846,6 +847,7 @@
             // Assert
             Assert.Equal("<ROOT><Row CustId='1' RelatedCustId='1' Username='test' /></ROOT>", actual);
         }
+
         #endregion GetRelatedCustomerXml
 
         #region Helpers
