@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Web;
     using AutoFixture;
     using CRM.BackgroundJob.Criteria.ChatBotCWL;
     using CRM.BackgroundJob.Models.ChatBotCWL;
@@ -86,6 +85,10 @@
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
+            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
+            Assert.Equal(0, criteria.ErrCode);
+            Assert.Equal(null, criteria.ErrMsg);
+
         }
 
         #region Helpers

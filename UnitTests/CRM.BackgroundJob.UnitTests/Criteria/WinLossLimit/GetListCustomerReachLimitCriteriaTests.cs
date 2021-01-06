@@ -1,6 +1,7 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Criteria.WinLossLimit
 {
     using CRM.BackgroundJob.Criteria.WinLossLimit;
+    using Fanex.CRM.BackgroundJob.Constants;
     using Xunit;
     public class GetListCustomerReachLimitCriteriaTests
     {
@@ -28,7 +29,8 @@
             var criteria = new GetListCustomerReachLimitCriteria
             {
                 LastLogID = LastLogID,
-                BatchSize = BatchSize
+                BatchSize = BatchSize,
+                Environment = Constants.DefaultEnviroment
             };
 
             // Act
@@ -45,7 +47,8 @@
             var criteria = new GetListCustomerReachLimitCriteria
             {
                 LastLogID = 1,
-                BatchSize = 1
+                BatchSize = 1,
+                Environment = Constants.DefaultEnviroment
             };
 
             // Act
@@ -54,6 +57,5 @@
             // Assert
             Assert.True(actual);
         }
-
     }
 }

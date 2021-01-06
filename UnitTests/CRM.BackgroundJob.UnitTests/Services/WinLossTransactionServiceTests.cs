@@ -34,6 +34,9 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(12345, criteria.LogID);
+            Assert.Equal("Completed", criteria.Status);
+            Assert.Equal("", criteria.Description);
         }
 
         #region ImportWinLimitFeedbackInfoAsync
@@ -303,6 +306,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal("12345", criteria.LogID);
+            Assert.Equal("Completed", criteria.Status);
+            Assert.Equal("", criteria.Description);
+
         }
 
         #region Helpers

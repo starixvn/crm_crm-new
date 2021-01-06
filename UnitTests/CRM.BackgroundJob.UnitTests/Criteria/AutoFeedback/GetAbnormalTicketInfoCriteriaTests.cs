@@ -1,6 +1,7 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Criteria.AutoFeedback
 {
     using AutoFixture;
+    using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Xunit;
 
@@ -29,7 +30,10 @@
             // Arrange
             var criteria = new GetAbnormalTicketInfoCriteria
             {
-                MessageIds = messageIds
+                MessageIds = messageIds,
+                ConfigUAT = true,
+                ConfigPRO = false,
+                Environment = Constants.DefaultEnviroment
             };
 
             // Act

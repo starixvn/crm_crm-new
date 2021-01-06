@@ -41,17 +41,27 @@
             // Arrange
             var service = MockService();
             var setting = fixture.Create<WinLossSystemSetting>();
-            var cusWinLimit = fixture.Create<IEnumerable<CustomerWinLimit>>();
+            var cusWinLimit = new List<CustomerWinLimit>
+            {
+                new CustomerWinLimit{ LogID = 1, CustId = 1},
+                new CustomerWinLimit{ LogID = 2, CustId = 1}
+            };
             var winLimit = new List<WinLimitFeedBackInfo>();
             var betInfo = fixture.Create<IEnumerable<BettypeInfo>>();
+            var headlines = new List<GroupHeadline>
+            {
+                new GroupHeadline{CustId = 1, HeadlineId = 1, HeadlineName = "test"}
+            };
             var winlossInfo = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>(winLimit, betInfo);
             customerService.GetListCustReachLimitAsync(setting).Returns(cusWinLimit);
-            transactionService.ImportWinLimitFeedbackInfoAsync(Arg.Any<IEnumerable<CustomerWinLimit>>(), Arg.Any<IEnumerable<GroupHeadline>>()).Returns(winlossInfo);
+            customerService.GetGroupHeadlineAsync(Arg.Any<IEnumerable<int>>()).Returns(headlines);
+            transactionService.ImportWinLimitFeedbackInfoAsync(Arg.Any<IEnumerable<CustomerWinLimit>>(), headlines).Returns(winlossInfo);
             // Act
             await service.CreateFeedbackForWinLossLimitAsync(setting);
 
             // Assert
-            await commonFeedback.Received().EditFeedbackSystemSettingAsync(Arg.Any<int>(), Arg.Any<string>());
+
+            await commonFeedback.Received().EditFeedbackSystemSettingAsync(2, Arg.Any<string>());
             service.DidNotReceive().Protected(
                 "CreateWinLossFeedbackCreditAsync",
                 Arg.Any<bool>(),
@@ -60,6 +70,7 @@
                 Arg.Any<IEnumerable<SettingItem>>(),
                 Arg.Any<IEnumerable<SystemSettingMapping>>());
         }
+
 
         [Fact]
         public async Task CreateFeedbackForWinLossLimitAsync_ExistedWinlossInfo_ExpectedEditWinLossSystemSettingAsyncAndCallCreateWinLossFeedbackCreditAsync()

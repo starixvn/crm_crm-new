@@ -9,7 +9,11 @@ namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBotCWL
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             // Arrange
-            var criteria = new GetCWLInfoByLogIdCriteria();
+            var criteria = new GetCWLInfoByLogIdCriteria
+            {
+                LastLogId = 1,
+                BatchSize = 10
+            };
             var expected = "Acc_CRM_Chatbot_CWL_Log_Sel";
 
             // Act

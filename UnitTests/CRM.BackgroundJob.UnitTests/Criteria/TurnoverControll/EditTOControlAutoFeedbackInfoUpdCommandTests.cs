@@ -26,7 +26,8 @@
             var criteria = new EditTOControlAutoFeedbackInfoUpdCommand
             {
                 LogID = "1",
-                Status = "1"
+                Status = "1",
+                Description = "test"
             };
 
             // Act
@@ -48,7 +49,8 @@
             var criteria = new EditTOControlAutoFeedbackInfoUpdCommand
             {
                 LogID = LogID,
-                Status = Status
+                Status = Status,
+                Description = "test"
             };
 
             // Act

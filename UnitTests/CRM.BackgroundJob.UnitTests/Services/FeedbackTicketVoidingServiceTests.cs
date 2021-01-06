@@ -8,6 +8,7 @@
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
@@ -52,6 +53,7 @@
             Assert.Equal(xml, criteria.MessageIds);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
+            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
         }
 
         [Fact]
@@ -83,6 +85,7 @@
             Assert.Equal(xml, criteria.MessageIds);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
+            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
         }
 
         [Fact]

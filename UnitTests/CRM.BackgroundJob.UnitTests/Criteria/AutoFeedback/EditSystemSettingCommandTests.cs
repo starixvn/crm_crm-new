@@ -1,6 +1,7 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Criteria.AutoFeedback
 {
     using AutoFixture;
+    using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Xunit;
 
@@ -29,7 +30,8 @@
             // Arrange
             var criteria = new EditSystemSettingCommand
             {
-                Settings = settings
+                Settings = settings,
+                ServiceName = Constants.ServiceName_AutoFB
             };
 
             // Act
