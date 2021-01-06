@@ -6,6 +6,7 @@ import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import functions from '../common.functions';
+import { toast } from 'react-toastify';
 
 export class Filter extends Component {
     constructor(props) {
@@ -137,6 +138,18 @@ export class Filter extends Component {
 
     handleSubmit = () => {
         const params = this.getParams();
+        if (!this.state.filter.site) {
+            toast.error(LangHelper.getResource('PleaseChooseSite'));
+            return;
+        }
+        if (!this.state.filter.currency) {
+            toast.error(LangHelper.getResource('PleaseChooseCurrency'));
+            return;
+        }
+        if (!this.state.filter.status) {
+            toast.error(LangHelper.getResource('PleaseChooseStatus'));
+            return;
+        }
         params.pageIndex = 1;
         this.props.setGridParams(params);
         this.props.getGridData(params, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));

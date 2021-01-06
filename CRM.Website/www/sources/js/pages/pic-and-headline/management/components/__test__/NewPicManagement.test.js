@@ -187,7 +187,7 @@ describe('NewPicManagement', () => {
             const expected = [
                 { type: '', value: '', unique: 123456 },
                 { type: '', value: '', unique: 1466424490000 }
-            ]
+            ];
             const props = {
                 setting: {
                     languages: []
@@ -208,7 +208,7 @@ describe('NewPicManagement', () => {
             const communicationTools = [
                 { type: '', value: '', unique: 123456 },
                 { type: '', value: '', unique: 111111 }
-            ]
+            ];
             const props = {
                 setting: {
                     languages: []
@@ -260,7 +260,7 @@ describe('NewPicManagement', () => {
                 country: 10,
                 remark: '',
                 picCommunicationTools: [
-                    { type: 1, value: 'a, b' },
+                    { type: 1, value: 'a,b' },
                     { type: 2, value: '2' }
                 ]
             };

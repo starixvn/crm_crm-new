@@ -5,6 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { toast } from 'react-toastify';
 import { ActionCreators } from '../actions';
 
 export class Filter extends PureComponent {
@@ -84,6 +85,10 @@ export class Filter extends PureComponent {
 
     submitHandler = event => {
         event.preventDefault();
+        if (!this.state.filter.role) {
+            toast.error(LangHelper.getResource('PleaseChooseRole'));
+            return;
+        }
         const params = this.getParams();
         this.props.setGridParams(params);
         this.props.getGridData(params);

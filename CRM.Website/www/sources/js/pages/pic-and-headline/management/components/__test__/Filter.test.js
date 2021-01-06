@@ -4,6 +4,9 @@ import { Filter } from '../Filter';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
+import { toast } from 'react-toastify';
+
+jest.mock('react-toastify');
 
 describe('Filter', () => {
     beforeAll(() => {
@@ -79,7 +82,7 @@ describe('Filter', () => {
             username: '',
             headlineName: '',
             role: '1'
-        }
+        };
 
         const settingRoles = props.setting.roleListWithInActive.map(r => {
             return ({ ...r, checked: true });
@@ -218,36 +221,62 @@ describe('Filter', () => {
         });
 
         describe('submitHandler runs correctly', () => {
-            //Arrange
-            const props = {
-                setting: {
-                    roleListWithInActive: []
-                },
-                getAllSetting: jest.fn(() => Promise.resolve({})),
-                setGridParams: jest.fn(),
-                getGridData: jest.fn()
-            };
-            const event = {
-                preventDefault: jest.fn()
-            };
-            const container = shallow(<Filter {...props} />);
-            const params = {
-                username: 'a',
-                headlineName: 'b',
-                role: '1',
-                pageIndex: 1,
-                pageSize: 100
-            };
-            container.instance().getParams = jest.fn(() => params);
+            it('should show error when role empty', () => {
+                //Arrange
+                const props = {
+                    setting: {
+                        roleListWithInActive: []
+                    },
+                    getAllSetting: jest.fn(() => Promise.resolve({})),
+                    setGridParams: jest.fn(),
+                    getGridData: jest.fn()
+                };
+                const event = {
+                    preventDefault: jest.fn()
+                };
+                const container = shallow(<Filter {...props} />);
+                container.instance().state.filter.role = '';
 
-            // Act
-            container.instance().submitHandler(event);
+                // Act
+                container.instance().submitHandler(event);
 
-            // Assert
-            expect(event.preventDefault).toHaveBeenCalled();
-            expect(container.instance().getParams).toHaveBeenCalled();
-            expect(props.setGridParams).toHaveBeenCalledWith(params);
-            expect(props.getGridData).toHaveBeenCalledWith(params);
+                // Assert
+                expect(event.preventDefault).toHaveBeenCalled();
+                expect(toast.error).toHaveBeenCalledWith('PleaseChooseRole');
+            });
+            it('should call expected method when role not empty', () => {
+                //Arrange
+                const props = {
+                    setting: {
+                        roleListWithInActive: []
+                    },
+                    getAllSetting: jest.fn(() => Promise.resolve({})),
+                    setGridParams: jest.fn(),
+                    getGridData: jest.fn()
+                };
+                const event = {
+                    preventDefault: jest.fn()
+                };
+                const container = shallow(<Filter {...props} />);
+                const params = {
+                    username: 'a',
+                    headlineName: 'b',
+                    role: '1',
+                    pageIndex: 1,
+                    pageSize: 100
+                };
+                container.instance().getParams = jest.fn(() => params);
+                container.instance().state.filter.role = '1';
+
+                // Act
+                container.instance().submitHandler(event);
+
+                // Assert
+                expect(event.preventDefault).toHaveBeenCalled();
+                expect(container.instance().getParams).toHaveBeenCalled();
+                expect(props.setGridParams).toHaveBeenCalledWith(params);
+                expect(props.getGridData).toHaveBeenCalledWith(params);
+            });
         });
     });
 });

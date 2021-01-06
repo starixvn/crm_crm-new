@@ -90,7 +90,7 @@ export class NewPicManagement extends Component {
             if (key.includes('communication') && values[key]) {
                 const index = picCommunicationTools.findIndex(item => item.type === values[key].type);
                 if (index >= 0) {
-                    const newValue = picCommunicationTools[index].value.concat(', ', values[key].value);
+                    const newValue = picCommunicationTools[index].value.concat(',', values[key].value);
                     picCommunicationTools[index].value = newValue;
                 } else {
                     picCommunicationTools.push(values[key]);

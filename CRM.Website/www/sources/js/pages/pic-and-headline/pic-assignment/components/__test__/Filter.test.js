@@ -5,6 +5,9 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import functions from '../../common.functions';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
+import { toast } from 'react-toastify';
+
+jest.mock('react-toastify');
 
 describe('Filter', () => {
     describe('component with redux', () => {
@@ -16,7 +19,7 @@ describe('Filter', () => {
         };
 
         const store = mockStore(initialState);
-        
+
         // Action
         const wrapper = shallow(<FilterWrapper store={store} />);
 
@@ -37,7 +40,7 @@ describe('Filter', () => {
 
     it('has correct default state', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {
                 picList: []
@@ -73,7 +76,7 @@ describe('Filter', () => {
 
     it('componentDidMount should change state correctly', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {
                 siteList: [
@@ -87,7 +90,7 @@ describe('Filter', () => {
                         name: 'currency'
                     }
                 ],
-                statusList: [ 'status' ],
+                statusList: ['status'],
                 positionList: [
                     {
                         settingId: 1,
@@ -162,7 +165,7 @@ describe('Filter', () => {
 
     it('handleFilterChange change state correctly', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {},
@@ -190,7 +193,7 @@ describe('Filter', () => {
 
     it('handleChange change state correctly', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {},
@@ -227,7 +230,7 @@ describe('Filter', () => {
 
     it('handleCheckBoxChange change state correctly', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {},
@@ -264,7 +267,7 @@ describe('Filter', () => {
 
     it('handleSiteChange call handleFilterChange correctly', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {},
@@ -284,7 +287,7 @@ describe('Filter', () => {
 
     it('handleCurrencyChange call handleFilterChange correctly', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {},
@@ -304,7 +307,7 @@ describe('Filter', () => {
 
     it('handleStatusChange call handleFilterChange correctly', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {},
@@ -324,7 +327,7 @@ describe('Filter', () => {
 
     it('handlePositionChange call handleFilterChange correctly', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {},
@@ -344,7 +347,7 @@ describe('Filter', () => {
 
     it('renderHeadlineTypeOption should return expected', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {},
@@ -367,7 +370,7 @@ describe('Filter', () => {
 
     it('getParams should return expected', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {
@@ -392,33 +395,107 @@ describe('Filter', () => {
         });
     });
 
-    it('handleSubmit should run correctly', () => {
-        // Arrange
-        const promise = Promise.resolve({})
-        const props = {
-            settings: {},
-            gridParams: {},
-            getSettings: jest.fn(() => promise),
-            setGridParams: jest.fn(),
-            getGridData: jest.fn((params, callback) => callback())
-        };
+    describe('handleSubmit', () => {
+        it('should call expected method when valid', () => {
+            // Arrange
+            const promise = Promise.resolve({});
+            const props = {
+                settings: {},
+                gridParams: {},
+                getSettings: jest.fn(() => promise),
+                setGridParams: jest.fn(),
+                getGridData: jest.fn((params, callback) => callback())
+            };
 
-        const params = {};
-        const filter = shallow(<Filter {...props} />);
-        filter.instance().getParams = jest.fn(() => params);
-        functions.handleNewRemoveOptions = jest.fn();
+            const params = {};
+            const filter = shallow(<Filter {...props} />);
+            filter.instance().getParams = jest.fn(() => params);
+            filter.instance().state.filter.site = '1';
+            filter.instance().state.filter.currency = '1';
+            filter.instance().state.filter.status = '1';
+            functions.handleNewRemoveOptions = jest.fn();
 
-        // Action
-        filter.instance().handleSubmit();
+            // Action
+            filter.instance().handleSubmit();
 
-        // Assert
-        expect(props.setGridParams).toHaveBeenCalledWith(params);
-        expect(props.getGridData).toHaveBeenCalledWith(params, expect.any(Function));
+            // Assert
+            expect(props.setGridParams).toHaveBeenCalledWith(params);
+            expect(props.getGridData).toHaveBeenCalledWith(params, expect.any(Function));
+        });
+        it('should show error when site empty', () => {
+            // Arrange
+            const promise = Promise.resolve({});
+            const props = {
+                settings: {},
+                gridParams: {},
+                getSettings: jest.fn(() => promise),
+                setGridParams: jest.fn(),
+                getGridData: jest.fn((params, callback) => callback())
+            };
+
+            const filter = shallow(<Filter {...props} />);
+            filter.instance().state.filter.site = '';
+            filter.instance().state.filter.currency = '1';
+            filter.instance().state.filter.status = '1';
+            functions.handleNewRemoveOptions = jest.fn();
+
+            // Action
+            filter.instance().handleSubmit();
+
+            // Assert
+            expect(toast.error).toHaveBeenCalledWith('PleaseChooseSite');
+        });
+        it('should show error when currency empty', () => {
+            // Arrange
+            const promise = Promise.resolve({});
+            const props = {
+                settings: {},
+                gridParams: {},
+                getSettings: jest.fn(() => promise),
+                setGridParams: jest.fn(),
+                getGridData: jest.fn((params, callback) => callback())
+            };
+
+            const filter = shallow(<Filter {...props} />);
+            filter.instance().state.filter.site = '1';
+            filter.instance().state.filter.currency = '';
+            filter.instance().state.filter.status = '1';
+            functions.handleNewRemoveOptions = jest.fn();
+
+            // Action
+            filter.instance().handleSubmit();
+
+            // Assert
+            expect(toast.error).toHaveBeenCalledWith('PleaseChooseCurrency');
+        });
+        it('should show error when status empty', () => {
+            // Arrange
+            const promise = Promise.resolve({});
+            const props = {
+                settings: {},
+                gridParams: {},
+                getSettings: jest.fn(() => promise),
+                setGridParams: jest.fn(),
+                getGridData: jest.fn((params, callback) => callback())
+            };
+
+            const filter = shallow(<Filter {...props} />);
+            filter.instance().state.filter.site = '1';
+            filter.instance().state.filter.currency = '1';
+            filter.instance().state.filter.status = '';
+            functions.handleNewRemoveOptions = jest.fn();
+
+            // Action
+            filter.instance().handleSubmit();
+
+            // Assert
+            expect(toast.error).toHaveBeenCalledWith('PleaseChooseStatus');
+        });
     });
 
     it('handleOpenAssignPicPopup should run correctly', () => {
         // Arrange
-        const promise = Promise.resolve({})
+        const promise = Promise.resolve({});
         const props = {
             settings: {},
             gridParams: {},
@@ -438,7 +515,7 @@ describe('Filter', () => {
     describe('render', () => {
         it('should have expected props', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -453,10 +530,10 @@ describe('Filter', () => {
             // Assert
             expect(form.props().className).toBe('form-filter');
         });
-        
+
         it('should have Form onSubmit', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -473,10 +550,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleSubmit).toHaveBeenCalled();
         });
-        
+
         it('should have first Form Row', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -491,10 +568,10 @@ describe('Filter', () => {
             // Assert
             expect(row.props().bsPrefix).toBe('form-row');
         });
-        
+
         it('should have first Form Row having first Form Group', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -521,10 +598,10 @@ describe('Filter', () => {
             expect(group.find(MultipleSelect).props().isSummited).toBeFalse;
             expect(group.find(MultipleSelect).props().isAllTextShown).toBeTrue;
         });
-        
+
         it('should have first Form Row having first Form Group containing MultipleSelect onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -543,10 +620,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleSiteChange).toHaveBeenCalledWith(currentItem, selectedItemsKey);
         });
-        
+
         it('should have first Form Row having second Form Group', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -573,10 +650,10 @@ describe('Filter', () => {
             expect(group.find(MultipleSelect).props().isSummited).toBeFalse;
             expect(group.find(MultipleSelect).props().isAllTextShown).toBeTrue;
         });
-        
+
         it('should have first Form Row having second Form Group containing MultipleSelect onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -595,10 +672,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleCurrencyChange).toHaveBeenCalledWith(currentItem, selectedItemsKey);
         });
-        
+
         it('should have first Form Row having third Form Group', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -625,10 +702,10 @@ describe('Filter', () => {
             expect(group.find(MultipleSelect).props().isSummited).toBeFalse;
             expect(group.find(MultipleSelect).props().isAllTextShown).toBeTrue;
         });
-        
+
         it('should have first Form Row having third Form Group containing MultipleSelect onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -647,10 +724,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleStatusChange).toHaveBeenCalledWith(currentItem, selectedItemsKey);
         });
-        
+
         it('should have first Form Row having forth Form Group', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -678,10 +755,10 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().value).toEqual(state.filter.headlineType);
             expect(group.find('option').at(0).html()).toEqual('<option value="2">All</option>');
         });
-        
+
         it('should have first Form Row having forth Form Group containing Form Control onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -699,10 +776,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleChange).toHaveBeenCalledWith(event);
         });
-        
+
         it('should have first Form Row having fifth Form Group', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -729,10 +806,10 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().name).toBe('groupHeadline');
             expect(group.find(Form.Control).props().value).toEqual(state.filter.groupHeadline);
         });
-        
+
         it('should have first Form Row having fifth Form Group containing Form Control onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -750,10 +827,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleChange).toHaveBeenCalledWith(event);
         });
-        
+
         it('should have first Form Row having sixth Form Group', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -780,10 +857,10 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().name).toBe('picName');
             expect(group.find(Form.Control).props().value).toEqual(state.filter.picName);
         });
-        
+
         it('should have first Form Row having sixth Form Group containing Form Control onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -801,10 +878,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleChange).toHaveBeenCalledWith(event);
         });
-        
+
         it('should have first Form Row having seventh Form Group', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -831,10 +908,10 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().name).toBe('directAccount');
             expect(group.find(Form.Control).props().value).toEqual(state.filter.directAccount);
         });
-        
+
         it('should have first Form Row having seventh Form Group containing Form Control onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -852,10 +929,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleChange).toHaveBeenCalledWith(event);
         });
-        
+
         it('should have first Form Row having eighth Form Group', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -882,10 +959,10 @@ describe('Filter', () => {
             expect(group.find(MultipleSelect).props().isSummited).toBeFalse;
             expect(group.find(MultipleSelect).props().isAllTextShown).toBeTrue;
         });
-        
+
         it('should have first Form Row having eighth Form Group containing MultipleSelect onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -904,10 +981,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handlePositionChange).toHaveBeenCalledWith(currentItem, selectedItemsKey);
         });
-        
+
         it('should have second Form Row', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -947,10 +1024,10 @@ describe('Filter', () => {
             expect(group.find('input').at(2).props().name).toBe('excludeIsTest');
             expect(group.find('input').at(2).props().checked).toEqual(state.filter.excludeIsTest);
         });
-        
+
         it('should have second Form Row containing first input onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -968,10 +1045,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleCheckBoxChange).toHaveBeenCalledWith(event);
         });
-        
+
         it('should have second Form Row containing second input onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -989,10 +1066,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleCheckBoxChange).toHaveBeenCalledWith(event);
         });
-        
+
         it('should have second Form Row containing third input onChange', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -1010,10 +1087,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleCheckBoxChange).toHaveBeenCalledWith(event);
         });
-        
+
         it('should have third Form Row', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -1036,10 +1113,10 @@ describe('Filter', () => {
             expect(row.find(Button).at(1).props().size).toBe('sm');
             expect(row.find(Button).at(1).html()).toContain('AssignPIC');
         });
-        
+
         it('should have third Form Row containing first Button onClick', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
@@ -1056,10 +1133,10 @@ describe('Filter', () => {
             // Assert
             expect(filter.instance().handleSubmit).toHaveBeenCalled();
         });
-        
+
         it('should have third Form Row containing second Button onClick', () => {
             // Arrange
-            const promise = Promise.resolve({})
+            const promise = Promise.resolve({});
             const props = {
                 settings: {},
                 gridParams: {},
