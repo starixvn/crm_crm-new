@@ -58,11 +58,11 @@ export class Chart extends PureComponent {
                 </Modal.Header>
                 <Modal.Body>
                     <BarChart
-                        width={1100}
+                        width={1000}
                         height={750}
                         data={data}
                         margin={{
-                            top: 30, right: 30, left: 10, bottom: 20
+                            top: 30, right: 30, left: 10, bottom: 50
                         }}
                         barCategoryGap={2}
                         barGap={2}
