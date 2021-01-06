@@ -72,7 +72,8 @@
                 ConfigPRO = setting.ConfigPRO,
                 LastLogID = setting.LastLogId,
                 IsCredit = setting.IsCredit,
-                IsDeposit = setting.IsDeposit
+                IsDeposit = setting.IsDeposit,
+                Environment = Environment
             };
             return await baseService.GetDataAsync<CustomerWinLimit>(criteria);
         }

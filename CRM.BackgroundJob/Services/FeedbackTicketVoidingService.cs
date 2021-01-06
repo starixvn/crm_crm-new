@@ -12,6 +12,7 @@
     using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
+    using Microsoft.Extensions.Configuration;
 
     public interface IFeedbackTicketVoidingService
     {
@@ -40,15 +41,20 @@
         private readonly IBaseService baseService;
         private readonly IMessageService messageService;
         private readonly ICRMLogService logService;
+        private readonly string Environment;
+
+        private const string DefaultEnviroment = Constants.DefaultEnviroment;
 
         public FeedbackTicketVoidingService(
             IBaseService baseService,
             IMessageService messageService,
-            ICRMLogService logService)
+            ICRMLogService logService,
+            IConfiguration configuration)
         {
             this.baseService = baseService;
             this.messageService = messageService;
             this.logService = logService;
+            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
         }
 
         public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> GetTicketVoidingInfoAsync(
@@ -59,7 +65,8 @@
             {
                 MessageIds = voidingMessages.ToXML("ROOT").ToString(),
                 ConfigUAT = setting.ConfigUAT,
-                ConfigPRO = setting.ConfigPRO
+                ConfigPRO = setting.ConfigPRO,
+                Environment = Environment
             };
             var ticketInfo = await baseService.FetchMultipleAsync<MatchInfo, TransactionInfo>(criteria);
 

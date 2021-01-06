@@ -19,7 +19,7 @@
         <Setting Key="Acc_CRM_AutoFeedbackInfoIns" SpName="Acc_CRM_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoFeedbackInfoUpd" SpName="Acc_CRM_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_MessageAbnormalTicketsSel" SpName="Acc_CRM_MessageAbnormalTicketsSel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AbnormalTicketsSel" SpName="Acc_CRM_AbnormalTicketsSel" DbName="DBACC.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AbnormalTicketsSel" SpName="Acc_CRM_AbnormalTicketsSel_xpre" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_GroupHeadlineSel" SpName="Acc_CRM_GroupHeadlineSel" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_SystemSettingMappingSel" SpName="Acc_CRM_SystemSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerFeedbackIns" SpName="Acc_CRM_CustomerFeedbackIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -46,7 +46,7 @@
         <Setting Key="Acc_CRM_ChatBot_NotificationMsgLog_Ins" SpName="Acc_CRM_ChatBot_NotificationMsgLog_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
     </Function>
     <Function Name="WinLoss Limit">
-      <Setting Key="Acc_CRM_CustWinLimitSel" SpName="Acc_CRM_CustWinLimitSel" DbName="DBCUST.CustDB.bodbAdminNet" />
+      <Setting Key="Acc_CRM_CustWinLimitSel" SpName="Acc_CRM_CustWinLimitSel_xpre" DbName="DBCUST.CustDB.bodbAdminNet" />
       <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoIns" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
       <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>

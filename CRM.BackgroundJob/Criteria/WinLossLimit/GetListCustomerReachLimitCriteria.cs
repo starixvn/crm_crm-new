@@ -9,6 +9,7 @@
         public int LastLogID { get; set; }
         public bool IsCredit { get; set; }
         public bool IsDeposit { get; set; }
+        public string Environment { get; set; }
         public override string GetSettingKey() => "Acc_CRM_CustWinLimitSel";
 
         public override bool IsValid() => LastLogID > 0 && BatchSize > 0;
