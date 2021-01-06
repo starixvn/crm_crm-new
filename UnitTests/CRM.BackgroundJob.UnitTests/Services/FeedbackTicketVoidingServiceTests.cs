@@ -11,6 +11,7 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
+    using Microsoft.Extensions.Configuration;
     using NSubstitute;
     using Xunit;
 
@@ -19,6 +20,8 @@
         private IBaseService baseService;
         private IMessageService messageService;
         private ICRMLogService logService;
+        private IConfiguration configuration;
+
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -242,7 +245,8 @@
             baseService = Substitute.For<IBaseService>();
             messageService = Substitute.For<IMessageService>();
             logService = Substitute.For<ICRMLogService>();
-            return new FeedbackTicketVoidingService(baseService, messageService, logService);
+            configuration = Substitute.For<IConfiguration>();
+            return new FeedbackTicketVoidingService(baseService, messageService, logService, configuration);
         }
 
         #endregion Helpers
