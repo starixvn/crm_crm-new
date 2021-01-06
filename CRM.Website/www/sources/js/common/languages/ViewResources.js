@@ -126,6 +126,7 @@
     PleaseChoose: 'Please Choose',
     PleaseChooseCurrency: 'Please choose Currency',
     PleaseChooseMappingStatus: 'Please Choose Mapping Status',
+    PleaseChoosePosition: 'Please choose Position',
     PleaseChooseRole: 'Please choose a Role',
     PleaseChooseSite: 'Please choose Site',
     PleaseChooseStatus: 'Please choose Status',

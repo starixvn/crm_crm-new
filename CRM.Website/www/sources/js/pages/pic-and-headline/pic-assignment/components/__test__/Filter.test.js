@@ -413,6 +413,7 @@ describe('Filter', () => {
             filter.instance().state.filter.site = '1';
             filter.instance().state.filter.currency = '1';
             filter.instance().state.filter.status = '1';
+            filter.instance().state.filter.position = '1';
             functions.handleNewRemoveOptions = jest.fn();
 
             // Action
@@ -437,6 +438,7 @@ describe('Filter', () => {
             filter.instance().state.filter.site = '';
             filter.instance().state.filter.currency = '1';
             filter.instance().state.filter.status = '1';
+            filter.instance().state.filter.position = '1';
             functions.handleNewRemoveOptions = jest.fn();
 
             // Action
@@ -460,6 +462,7 @@ describe('Filter', () => {
             filter.instance().state.filter.site = '1';
             filter.instance().state.filter.currency = '';
             filter.instance().state.filter.status = '1';
+            filter.instance().state.filter.position = '1';
             functions.handleNewRemoveOptions = jest.fn();
 
             // Action
@@ -483,6 +486,7 @@ describe('Filter', () => {
             filter.instance().state.filter.site = '1';
             filter.instance().state.filter.currency = '1';
             filter.instance().state.filter.status = '';
+            filter.instance().state.filter.position = '1';
             functions.handleNewRemoveOptions = jest.fn();
 
             // Action
@@ -490,6 +494,30 @@ describe('Filter', () => {
 
             // Assert
             expect(toast.error).toHaveBeenCalledWith('PleaseChooseStatus');
+        });
+        it('should show error when status empty', () => {
+            // Arrange
+            const promise = Promise.resolve({});
+            const props = {
+                settings: {},
+                gridParams: {},
+                getSettings: jest.fn(() => promise),
+                setGridParams: jest.fn(),
+                getGridData: jest.fn((params, callback) => callback())
+            };
+
+            const filter = shallow(<Filter {...props} />);
+            filter.instance().state.filter.site = '1';
+            filter.instance().state.filter.currency = '1';
+            filter.instance().state.filter.status = '1';
+            filter.instance().state.filter.position = '';
+            functions.handleNewRemoveOptions = jest.fn();
+
+            // Action
+            filter.instance().handleSubmit();
+
+            // Assert
+            expect(toast.error).toHaveBeenCalledWith('PleaseChoosePosition');
         });
     });
 

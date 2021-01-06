@@ -62,7 +62,7 @@ export class Chart extends PureComponent {
                         height={750}
                         data={data}
                         margin={{
-                            top: 30, right: 30, left: 10, bottom: 50
+                            top: 30, right: 30, left: 30, bottom: 50
                         }}
                         barCategoryGap={2}
                         barGap={2}
@@ -70,7 +70,7 @@ export class Chart extends PureComponent {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis label={{ value: 'Issue(s)', position: 'top', dy: -10 }} domain={[0, 'dataMax']} allowDecimals={false} />
-                        <Legend wrapperStyle={{ bottom: 5 }} />
+                        <Legend wrapperStyle={{ bottom: 5, left: 75 }} />
                         {labels.map((label, index) => (
                             <Bar dataKey={label} key={index} label={{ position: 'top' }}
                                 fill={colors[index % 20]}

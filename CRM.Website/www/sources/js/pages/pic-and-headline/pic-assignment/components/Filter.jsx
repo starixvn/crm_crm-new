@@ -150,6 +150,10 @@ export class Filter extends Component {
             toast.error(LangHelper.getResource('PleaseChooseStatus'));
             return;
         }
+        if (!this.state.filter.position) {
+            toast.error(LangHelper.getResource('PleaseChoosePosition'));
+            return;
+        }
         params.pageIndex = 1;
         this.props.setGridParams(params);
         this.props.getGridData(params, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
