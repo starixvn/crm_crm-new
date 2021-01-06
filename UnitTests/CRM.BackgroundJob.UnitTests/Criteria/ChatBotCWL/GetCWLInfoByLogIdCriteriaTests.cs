@@ -21,6 +21,8 @@ namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBotCWL
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(1, criteria.LastLogId);
+            Assert.Equal(10, criteria.BatchSize);
         }
 
         [Fact]

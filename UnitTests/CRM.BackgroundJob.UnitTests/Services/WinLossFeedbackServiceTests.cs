@@ -389,6 +389,46 @@
         }
 
         [Fact]
+        public void GetProduct_SettingSourceIsNull_ReturnDefaultProduct()
+        {
+            // Arrange
+            var subProduct = "1";
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = "Product" }
+                };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetProduct(settingMappings, subProduct);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.ProductNA, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetProduct_SettingSourceNotEqualNameSetting_ReturnDefaultProduct()
+        {
+            // Arrange
+            var subProduct = "1";
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = "Product", SettingSource = "2" }
+                };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetProduct(settingMappings, subProduct);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.ProductNA, actual.First().SettingId);
+        }
+
+        [Fact]
         public void GetProduct_ExistSubProduct_ReturnExpectedProduct()
         {
             // Arrange
@@ -423,6 +463,50 @@
             var settingMappings = new List<SystemSettingMapping>
                 {
                     new SystemSettingMapping { SettingName = "SubProduct", SettingSource = "allbet" }
+                };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetSubProduct(winLimit, settingMappings);
+
+            // Assert
+            Assert.Equal(Constants.SubProductNA, actual.SettingId);
+        }
+
+        [Fact]
+        public void GetSubProduct_SettingSourceIsNull_ReturnDefaultSubProduct()
+        {
+            // Arrange
+            var winLimit = new WinLimitFeedBackInfo
+            {
+                ProductName = "game"
+            };
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = "SubProduct" }
+                };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetSubProduct(winLimit, settingMappings);
+
+            // Assert
+            Assert.Equal(Constants.SubProductNA, actual.SettingId);
+        }
+
+        [Fact]
+        public void GetSubProduct_SettingSourceNotEqualProductName_ReturnDefaultSubProduct()
+        {
+            // Arrange
+            var winLimit = new WinLimitFeedBackInfo
+            {
+                ProductName = "game"
+            };
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = "SubProduct" , SettingSource = "game1"}
                 };
 
             var service = MockService();
@@ -472,6 +556,49 @@
                 {
                     new BettypeInfo { Name = "b" }
                 };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetBettype(betTypeMappings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetBettype_SettingSourceIsNull_ReturnDefaultBetType()
+        {
+            // Arrange
+            var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
+            var betTypeMappings = new List<BettypeInfo>
+                {
+                    new BettypeInfo { Name = "b" }
+                };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetBettype(betTypeMappings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetBettype_betTypeMappingsNameNotEqualSourceMapping_ReturnDefaultBetType()
+        {
+            // Arrange
+            var settingMappings = new List<SystemSettingMapping>
+            {
+                new SystemSettingMapping { SettingSource = "a" , SettingName = SettingName.Bettype}
+            };
+            var betTypeMappings = new List<BettypeInfo>
+            {
+                    new BettypeInfo { Name = "b" }
+            };
 
             var service = MockService();
 

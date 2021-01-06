@@ -15,6 +15,7 @@
     using Xunit;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Criteria.TurnoverControll;
+    using Fanex.CRM.BackgroundJob.Constants;
 
     public class CustomerServiceTests
     {
@@ -42,6 +43,7 @@
             Assert.Equal(expected, actual);
             Assert.Equal(username, criteria.Username);
             Assert.Equal(isGuest, criteria.IsGuest);
+            Assert.Equal(Constants.UserRole, criteria.UserRole);
         }
 
         [Fact]
@@ -83,7 +85,7 @@
             Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
-            Assert.Equal("LIVE", criteria.Environment);
+            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
         }
 
         [Fact]
@@ -132,6 +134,7 @@
             Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
+            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
         }
 
         [Fact]

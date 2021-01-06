@@ -55,6 +55,7 @@
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal(xml, criteria.Settings);
+            Assert.Equal(Constants.ServiceName_AutoFB, criteria.ServiceName);
         }
 
         [Fact]
@@ -87,14 +88,17 @@
             // Arrange
             var fixture = new Fixture();
             var expected = fixture.Create<AbnormalBetSystemSetting>();
+            var criteria = new GetChatBotSystemSettingCriteria();
             var service = GetSystemSettingService();
-            baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(Arg.Any<GetChatBotSystemSettingCriteria>()).Returns(expected);
+            baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(Arg.Do<GetChatBotSystemSettingCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await service.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnviroment);
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
+            Assert.Equal(Constants.ServiceName_ChatBot, criteria.ServiceName);
         }
 
         [Fact]

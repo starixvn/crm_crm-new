@@ -85,18 +85,37 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var expected = fixture.Create<IEnumerable<Message>>();
+            var message = new List<Message>
+            {
+                new Message
+                {
+                    Content_en = "@@1",
+                    Content_cs = "@@1",
+                    Content_th = "@@1",
+                    Content_vn = "@@1"
+                }
+            };
+            var expected = new List<Message>
+            {
+                new Message
+                {
+                    Content_en = "1",
+                    Content_cs = "1",
+                    Content_th = "1",
+                    Content_vn = "1"
+                }
+            };
             var voidingMessages = fixture.Create<IEnumerable<ChatBotVoidingMessage>>();
             var xml = voidingMessages.ToXML("root").ToString();
             var criteria = new GetChatBotMessageInfoCriteria();
             var service = GetService();
-            baseService.GetDataAsync<Message>(Arg.Do<GetChatBotMessageInfoCriteria>(x => criteria = x)).Returns(expected);
+            baseService.GetDataAsync<Message>(Arg.Do<GetChatBotMessageInfoCriteria>(x => criteria = x)).Returns(message);
 
             // Act
             var actual = await service.GetMessageInfoAsync(voidingMessages);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.ToString(), actual.ToString());
             Assert.Equal(xml, criteria.Messages);
         }
 
@@ -166,6 +185,9 @@
             Assert.Equal(expected, actual);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
             Assert.Equal(voidingMessages.ToXML("root").ToString(), criteria.Messages);
+            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
+            Assert.Equal(0, criteria.ErrCode);
+            Assert.Equal(null, criteria.ErrMsg);
         }
 
         #region Helpers

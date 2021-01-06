@@ -1,6 +1,7 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Extensions.XML;
@@ -75,17 +76,32 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var expected = fixture.Create<IEnumerable<Message>>();
+            var message = new List<Message>
+            {
+                new Message
+                {
+                    Content_en = "@@1",
+                    Content_cs = "@@1"
+                }
+            };
+            var expected = new List<Message>
+            {
+                new Message
+                {
+                    Content_en = "1",
+                    Content_cs = "1"
+                }
+            };
             var messageIds = fixture.Create<IEnumerable<int>>();
             var criteria = new GetMessageInfoCriteria();
             var service = GetMessageService();
-            baseService.GetDataAsync<Message>(Arg.Do<GetMessageInfoCriteria>(x => criteria = x)).Returns(expected);
+            baseService.GetDataAsync<Message>(Arg.Do<GetMessageInfoCriteria>(x => criteria = x)).Returns(message);
 
             // Act
             var actual = await service.GetMessageInfoAsync(messageIds);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.ToString(), actual.ToString());
             Assert.Equal(string.Join(",", messageIds), criteria.MessageIds);
         }
 

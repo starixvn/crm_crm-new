@@ -1,5 +1,6 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Criteria
 {
+    using CRM.Core.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Xunit;
 
@@ -17,6 +18,7 @@
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(Constants.UserRole, criteria.UserRole);
         }
 
         [Fact]
