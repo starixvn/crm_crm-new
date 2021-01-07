@@ -56,7 +56,6 @@
         public async Task PullMessageAndSendNotificationAsync()
         {
             AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Environment);
-            logService.LogInformation("Chat Bot Abnormal Bet Service Is Started.");
             if (!setting.ServiceFlag)
             {
                 logService.LogInformation("Chat Bot Service is shutdown.");
@@ -64,12 +63,9 @@
             }
 
             IEnumerable<ChatBotVoidingMessage> voidingMessages = await ticketVoidingService.GetVoidingMessageAsync();
-            logService.LogInformation(string.Format("voidingMessages {0}!!!", voidingMessages.FirstOrDefault().MessageId));
             voidingMessages = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize);
             IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(voidingMessages);
-            logService.LogInformation("messages!!!");
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages);
-            logService.LogInformation(string.Format("ticketInfos {0} !!!", ticketInfos.FirstOrDefault().Username));
             CommandResult commandResult = await ticketVoidingService.ImportTicketVoidingAsync(
                 messages, 
                 ticketInfos, 
