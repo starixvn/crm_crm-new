@@ -28,8 +28,9 @@
         private readonly IChatBotTicketVoidingService ticketVoidingService;
         private readonly ISendNotificationService sendNotificationService;
         private readonly IChatBotCWLService chatBotCWLService;
-        private readonly string Environment;
+        private readonly IChatBotCTOService chatBotCTOService;
 
+        private readonly string Enviroment;
 
         private const string DefaultEnviroment = Constants.DefaultEnviroment;
 
@@ -46,13 +47,15 @@
             this.systemSettingService = systemSettingService;
             this.ticketVoidingService = ticketVoidingService;
             this.sendNotificationService = sendNotificationService;
-            this.chatBotCWLService = chatBotCWLService;
-            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
+            this.chatBotCWLService = chatBotCWLService; 
+            this.chatBotCTOService = chatBotCTOService;
+            Enviroment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
         }
 
         public async Task PullMessageAndSendNotificationAsync()
         {
             AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Environment);
+            logService.LogInformation("Chat Bot Abnormal Bet Service Is Started.");
             if (!setting.ServiceFlag)
             {
                 logService.LogInformation("Chat Bot Service is shutdown.");
@@ -60,9 +63,12 @@
             }
 
             IEnumerable<ChatBotVoidingMessage> voidingMessages = await ticketVoidingService.GetVoidingMessageAsync();
+            logService.LogInformation("voidingMessages!!!");
             voidingMessages = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize);
             IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(voidingMessages);
+            logService.LogInformation("messages!!!");
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages);
+            logService.LogInformation("ticketInfos!!!");
             CommandResult commandResult = await ticketVoidingService.ImportTicketVoidingAsync(
                 messages, 
                 ticketInfos, 
@@ -70,6 +76,7 @@
                 Environment);
             if (commandResult.IsSuccessful)
             {
+                logService.LogInformation("Successful!!!");
                 await sendNotificationService.SendNotificationToLetstalk();
             }
             else
