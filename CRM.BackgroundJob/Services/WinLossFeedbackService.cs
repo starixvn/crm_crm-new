@@ -272,7 +272,9 @@
                 };
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         protected internal virtual string GetSolution(WinLimitFeedBackInfo winLimit, bool isVipHeadline)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var productEN = commonFeedback.GetProductName(winLimit.ProductID.ToString(), Language.en_US);
             var productSC = commonFeedback.GetProductName(winLimit.ProductID.ToString(), Language.zh_CN);

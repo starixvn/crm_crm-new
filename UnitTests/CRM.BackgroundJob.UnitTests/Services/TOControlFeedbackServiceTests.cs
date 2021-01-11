@@ -141,7 +141,7 @@
                 );
 
             // Assert
-            logService.Received(6).LogInformation(Arg.Any<string>());
+            logService.Received(8).LogInformation(Arg.Any<string>());
             service.Received().Protected("CheckValidTOParamsAndInsertFeedbackAsync", Arg.Any<TOControlFeedbackInfor>()
                 , Arg.Any<CreateMutipleFeedbackCommand>());
         }
