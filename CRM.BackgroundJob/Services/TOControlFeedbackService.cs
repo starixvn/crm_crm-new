@@ -131,8 +131,8 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Start create TO feedback with profileID: {0} headlineName: {1} profileName: {2}!",
-                    ToInfor.ProfileID, ToInfor.HeadlineName, ToInfor.ProfileName));
+            logService.LogInformation(string.Format("Start create TO feedback with profileID: {0} headlineName: {1} profileName: {2} UserName: {3}!",
+                    ToInfor.ProfileID, ToInfor.HeadlineName, ToInfor.ProfileName, ToInfor.UserName));
 
             logService.LogInformation("Begin Default setting!!!");
 
@@ -162,8 +162,9 @@
 
             SettingItem sportsbook = GetTOSportsbookProduct(settings);
 
-            logService.LogInformation("En Get Sport type and bettype!!!");
+            logService.LogInformation("End Get Sport type and bettype!!!");
 
+            logService.LogInformation("Begin create criteria!!!");
             var criteria = new CreateMutipleFeedbackCommand
             {
                 FeedbackDate = feedbackDate.Subtract(timeSpan),
@@ -191,6 +192,7 @@
                 TOControlLogID = ToInfor.LogID.ToString(),
                 Description = GetTODescription(ToInfor)
             };
+            logService.LogInformation("end create criteria!!!");
 
             logService.LogInformation("end create TO control feedback");
             await CheckValidTOParamsAndInsertFeedbackAsync(ToInfor, criteria);
