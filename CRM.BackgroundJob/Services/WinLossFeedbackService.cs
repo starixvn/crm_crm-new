@@ -78,6 +78,8 @@
                 );
             if (!winlossInfo.Item1.Any())
             {
+                logService.LogInformation(string.Format("Import CWL doesn't have any data with custId: {0} headlineName: {1}!",
+                   string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
                 var lastLogID = cusWinLimit.Any() ? cusWinLimit.Max(x => x.LogID) : setting.LastLogId;
                 await commonFeedback.EditFeedbackSystemSettingAsync(lastLogID, Constants.ServiceName_WinLimitFB);
                 return;
@@ -94,6 +96,8 @@
                         settingMappings);
             }
             var maxLastLogID = winlossInfo.Item1.Max(x => x.LogID);
+            logService.LogInformation(string.Format("Finished create TO feedback update last log ID : {0}", maxLastLogID));
+
             await commonFeedback.EditFeedbackSystemSettingAsync(maxLastLogID, Constants.ServiceName_WinLimitFB);
         }
 
@@ -104,7 +108,8 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Start create win loss feedback custID: {0}!", winLimit.CustId));
+            logService.LogInformation(string.Format("Start create win loss feedback custID: {0} , custName : {1} headlineName: {2} productName: {3} productGroup: {4}!"
+                , winLimit.CustId, winLimit.UserName, winLimit.HeadlineName, winLimit.ProductName , winLimit.ProductGroup));
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
