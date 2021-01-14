@@ -179,13 +179,13 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnviroment);
+            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
             Assert.Equal(voidingMessages.ToXML("root").ToString(), criteria.Messages);
-            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
+            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);
             Assert.Equal(null, criteria.ErrMsg);
         }

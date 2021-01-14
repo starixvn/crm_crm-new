@@ -85,7 +85,7 @@
             Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
-            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
+            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
         }
 
         [Fact]
@@ -134,7 +134,7 @@
             Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
-            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
+            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
         }
 
         [Fact]

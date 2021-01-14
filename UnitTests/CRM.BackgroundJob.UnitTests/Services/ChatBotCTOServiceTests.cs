@@ -140,7 +140,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<TOControlImportCommand>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnviroment);
+            var actual = await service.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(expected, actual);

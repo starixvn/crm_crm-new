@@ -53,7 +53,7 @@
             Assert.Equal(xml, criteria.MessageIds);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
-            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
+            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
         }
 
         [Fact]
@@ -85,7 +85,7 @@
             Assert.Equal(xml, criteria.MessageIds);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
-            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
+            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
         }
 
         [Fact]

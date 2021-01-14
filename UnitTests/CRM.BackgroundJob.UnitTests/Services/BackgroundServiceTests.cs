@@ -273,55 +273,6 @@
 
         #endregion PullMessageForChatBotAsync
 
-        #region PullMessageCWLForChatBotAsync
-
-        [Fact]
-        public async Task PullMessageCWLForChatBotAsync_Exception_ExpectedWriteLog()
-        {
-            // Arrange
-            var fixture = new Fixture();
-            var exception = fixture.Create<Exception>();
-            var service = GetService();
-            maintenanceService.When(x => x.GetUnderMaintenanceTimeAsync()).Throw(exception);
-
-            // Act
-            await service.PullMessageCWLForChatBotAsync();
-
-            // Assert
-            await logService.Received().ErrorAsync(exception);
-        }
-
-        [Fact]
-        public async Task PullMessageCWLForChatBotAsync_IsUnderMaintenance_ExpectedWriteLog()
-        {
-            // Arrange
-            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = true };
-            var service = GetService();
-            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
-
-            // Act
-            await service.PullMessageCWLForChatBotAsync();
-
-            // Assert
-            logService.Received().LogInformation("UM time.");
-        }
-
-        [Fact]
-        public async Task PullMessageCWLForChatBotAsync_WhenCalled_ExpectedPullMessageAndSendNotification()
-        {
-            // Arrange
-            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = false };
-            var service = GetService();
-            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
-
-            // Act
-            await service.PullMessageCWLForChatBotAsync();
-
-            // Assert
-            await chatBotJobService.Received().PullMessageCWLAndSendNotificationToHeadlineAsync();
-        }
-
-        #endregion PullMessageCWLForChatBotAsync
 
         #region PullMessageCTOForChatBotAsync
 

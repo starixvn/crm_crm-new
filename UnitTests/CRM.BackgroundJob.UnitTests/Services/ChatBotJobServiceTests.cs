@@ -34,7 +34,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
@@ -53,12 +53,12 @@
             var ticketInfos = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
             var commandResult = new CommandResult { Code = 1 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
             ticketVoidingService.GetVoidingMessageAsync().Returns(voidingMessages);
             ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
             ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
             ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages).Returns(ticketInfos);
-            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnviroment).Returns(commandResult);
+            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnvironment).Returns(commandResult);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
@@ -77,12 +77,12 @@
             var ticketInfos = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
             var commandResult = new CommandResult { Code = 0 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
             ticketVoidingService.GetVoidingMessageAsync().Returns(voidingMessages);
             ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
             ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
             ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages).Returns(ticketInfos);
-            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnviroment).Returns(commandResult);
+            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnvironment).Returns(commandResult);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
@@ -101,12 +101,12 @@
             var ticketInfos = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
             var commandResult = new CommandResult { Code = 0 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
             ticketVoidingService.GetVoidingMessageAsync().Returns(voidingMessages);
             ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
             ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
             ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages).Returns(ticketInfos);
-            configuration.GetValue<string>("SiteEnvironment").Returns(Constants.DefaultEnviroment);
+            configuration.GetValue<string>("SiteEnvironment").Returns(Constants.DefaultEnvironment);
             ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, configuration.GetValue<string>("SiteEnvironment")).Returns(commandResult);
 
             // Act
@@ -122,7 +122,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
@@ -141,11 +141,11 @@
 
             var commandResult = new CommandResult { Code = 1};
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnvironment).Returns(setting);
             chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(tOReachInfors);
             chatBotCTOService.GetChatbotCTOSMAInfoAsync(Arg.Any<IEnumerable<TOReachInfor>>()).Returns(tOSMAInfors);
 
-            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnviroment).Returns(commandResult);
+            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnvironment).Returns(commandResult);
 
             // Act
             await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
@@ -164,11 +164,11 @@
 
             var commandResult = new CommandResult { Code = 0 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnvironment).Returns(setting);
             chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(tOReachInfors);
             chatBotCTOService.GetChatbotCTOSMAInfoAsync(Arg.Any<IEnumerable<TOReachInfor>>()).Returns(tOSMAInfors);
 
-            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnviroment).Returns(commandResult);
+            chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnvironment).Returns(commandResult);
 
             // Act
             await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
@@ -183,7 +183,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnvironment).Returns(setting);
 
             // Act
             await service.PullMessageCWLAndSendNotificationToHeadlineAsync();
@@ -200,9 +200,9 @@
             var cwlInfors = fixture.Create<IEnumerable<ChatBotCWLInfo>>();
             var commandResult = new CommandResult { Code = 1 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnvironment).Returns(setting);
             chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(cwlInfors);
-            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.DefaultEnviroment).Returns(commandResult);
+            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.DefaultEnvironment).Returns(commandResult);
 
             // Act
             await service.PullMessageCWLAndSendNotificationToHeadlineAsync();
@@ -219,9 +219,9 @@
             var cwlInfors = fixture.Create<IEnumerable<ChatBotCWLInfo>>();
             var commandResult = new CommandResult { Code = 0 };
             var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnviroment).Returns(setting);
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnvironment).Returns(setting);
             chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(cwlInfors);
-            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.DefaultEnviroment).Returns(commandResult);
+            chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.DefaultEnvironment).Returns(commandResult);
 
             // Act
             await service.PullMessageCWLAndSendNotificationToHeadlineAsync();

@@ -15,7 +15,7 @@
         Task<IEnumerable<TOReachInfor>> GetChatbotCTOSettingInfoAsync(int LastLogId, int BatchSize);
         Task<IEnumerable<TOSMAInfor>> GetChatbotCTOSMAInfoAsync(IEnumerable<TOReachInfor> tOReachInfors);
         Task<CommandResult> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
-                                                  string Environment = Constants.DefaultEnviroment);
+                                                  string Environment = Constants.DefaultEnvironment);
     }
     public class ChatBotCTOService : IChatBotCTOService
     {
@@ -49,7 +49,7 @@
         }
 
         public async Task<CommandResult> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
-                                         string Environment = Constants.DefaultEnviroment)
+                                         string Environment = Constants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' Username='{2}' Recommend='{3}'" +
                 " Mrecommend='{4}' Srecommend='{5}' CurrencyName='{6}'" +

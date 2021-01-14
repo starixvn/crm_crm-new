@@ -1,7 +1,6 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
@@ -31,9 +30,9 @@
         private readonly IChatBotCWLService chatBotCWLService;
         private readonly IChatBotCTOService chatBotCTOService;
 
-        private readonly string Enviroment;
+        private readonly string Environment;
 
-        private const string DefaultEnviroment = Constants.DefaultEnviroment;
+        private const string DefaultEnvironment = Constants.DefaultEnvironment;
 
         public ChatBotJobService(
             ICRMLogService logService,
@@ -50,7 +49,7 @@
             this.sendNotificationService = sendNotificationService;
             this.chatBotCWLService = chatBotCWLService; 
             this.chatBotCTOService = chatBotCTOService;
-            Enviroment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
+            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
         public async Task PullMessageAndSendNotificationAsync()
@@ -104,7 +103,7 @@
 
         public async Task PullMessageCTOAndSendNotificationToHeadlineAsync()
         {
-            AbnormalBetSystemSetting settingCTO = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Enviroment);
+            AbnormalBetSystemSetting settingCTO = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Environment);
             if (!settingCTO.ServiceFlag)
             {
                 logService.LogInformation("Chat Bot CTO Service is shutdown.");
@@ -112,7 +111,7 @@
             }
             IEnumerable<TOReachInfor> tOReachInfors = await chatBotCTOService.GetChatbotCTOSettingInfoAsync(settingCTO.LastLogId, settingCTO.BatchSize);
             IEnumerable<TOSMAInfor> tOSMAInfors = await chatBotCTOService.GetChatbotCTOSMAInfoAsync(tOReachInfors);
-            CommandResult commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Enviroment);
+            CommandResult commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Environment);
             if (commandResult.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();

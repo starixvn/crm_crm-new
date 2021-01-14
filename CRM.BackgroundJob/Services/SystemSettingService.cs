@@ -25,7 +25,7 @@
 
         Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync(
             string serviceName, 
-            string Environment = Constants.DefaultEnviroment);
+            string Environment = Constants.DefaultEnvironment);
 
         Task<WinLossSystemSetting> GetWinLossSettingAsync();
 
@@ -70,7 +70,7 @@
 
         public async Task<AbnormalBetSystemSetting> GetChatBotSystemSettingAsync(
             string serviceName, 
-            string Environment = Constants.DefaultEnviroment)
+            string Environment = Constants.DefaultEnvironment)
         {
             var criteria = new GetChatBotSystemSettingCriteria
             {

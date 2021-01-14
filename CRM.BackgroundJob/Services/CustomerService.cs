@@ -32,7 +32,7 @@
         private readonly IBaseService baseService;
         private readonly string Environment;
 
-        private const string DefaultEnviroment = Constants.Constants.DefaultEnviroment;
+        private const string DefaultEnvironment = Constants.Constants.DefaultEnvironment;
 
         public CustomerService(
             ICustomerRepository repository,
@@ -41,7 +41,7 @@
         {
             this.repository = repository;
             this.baseService = baseService;
-            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
+            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
         public async Task<CustomerInfo> GetCustomerInfoAsync(string username, bool isGuest)

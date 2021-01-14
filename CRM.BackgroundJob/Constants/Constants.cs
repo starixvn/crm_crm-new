@@ -14,7 +14,7 @@
         public const string ThousanPase = "#,##0";
         public const string ThousanPaseMoney = "#,###.00";
 
-        public const string DefaultEnviroment = "LIVE";
+        public const string DefaultEnvironment = "LIVE";
 
         public const string BeginRootTag = "<ROOT>";
         public const string EndRootTag = "</ROOT>";

@@ -33,7 +33,7 @@
                 MessageIds = messageIds,
                 ConfigUAT = true,
                 ConfigPRO = false,
-                Environment = Constants.DefaultEnviroment
+                Environment = Constants.DefaultEnvironment
             };
 
             // Act

@@ -43,7 +43,7 @@
         private readonly ICRMLogService logService;
         private readonly string Environment;
 
-        private const string DefaultEnviroment = Constants.DefaultEnviroment;
+        private const string DefaultEnvironment = Constants.DefaultEnvironment;
 
         public FeedbackTicketVoidingService(
             IBaseService baseService,
@@ -54,7 +54,7 @@
             this.baseService = baseService;
             this.messageService = messageService;
             this.logService = logService;
-            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnviroment : configuration.GetValue<string>("SiteEnvironment");
+            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
         public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> GetTicketVoidingInfoAsync(

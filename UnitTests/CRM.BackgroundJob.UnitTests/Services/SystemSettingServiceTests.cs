@@ -93,11 +93,11 @@
             baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(Arg.Do<GetChatBotSystemSettingCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnviroment);
+            var actual = await service.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(Constants.DefaultEnviroment, criteria.Environment);
+            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(Constants.ServiceName_ChatBot, criteria.ServiceName);
         }
 

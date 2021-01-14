@@ -30,7 +30,7 @@
             {
                 LastLogID = LastLogID,
                 BatchSize = BatchSize,
-                Environment = Constants.DefaultEnviroment
+                Environment = Constants.DefaultEnvironment
             };
 
             // Act
@@ -48,7 +48,7 @@
             {
                 LastLogID = 1,
                 BatchSize = 1,
-                Environment = Constants.DefaultEnviroment
+                Environment = Constants.DefaultEnvironment
             };
 
             // Act
