@@ -98,6 +98,12 @@
         public async Task<IActionResult> CheckUserOnlineStatus()
         {
             RecheckInStatus recheckInStatus = await authService.GetRecheckInStatusAsync();
+            if(recheckInStatus == RecheckInStatus.UnderMaintenance)
+            {
+                var mapping = GetExternalRedirectMapping();
+                return new RedirectResult(mapping?.ExternalUnderMaintenanceUrl, false);
+            }
+
             if (recheckInStatus != RecheckInStatus.Success)
             {
                 await DoSignOutAsync();

@@ -9,5 +9,6 @@
         public bool IncludePort { get; set; }
         public string ExternalHomePageUrl { get; set; } = string.Empty;
         public string ExternalSignInUrl { get; set; } = string.Empty;
+        public string ExternalUnderMaintenanceUrl { get; set; } = string.Empty;
     }
 }
