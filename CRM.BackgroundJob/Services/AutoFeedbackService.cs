@@ -42,7 +42,7 @@
                 AbnormalBetSystemSetting setting = await systemSettingService.GetAbnormalBetSettingAsync();
                 if (!setting.ServiceFlag)
                 {
-                    logService.LogInformation("Service is shutdown.");
+                    logService.LogInformation("Abnormal Bet - Service is shutdown.");
                     return;
                 }
 
@@ -60,7 +60,7 @@
                     isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
                     if (!isRunning && setting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
                     {
-                        logService.LogInformation("Rerun service.");
+                        logService.LogInformation("Abnormal Bet - Rerun service.");
                         var settingJobStatus = new List<SystemSettingItem>
                         {
                             new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },

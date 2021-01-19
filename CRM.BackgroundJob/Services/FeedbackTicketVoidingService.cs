@@ -13,6 +13,7 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
+    using Newtonsoft.Json;
 
     public interface IFeedbackTicketVoidingService
     {
@@ -91,6 +92,12 @@
             IEnumerable<GroupHeadline> headlines,
             CustomerInfo licenseeInfo)
         {
+            logService.LogInformation(
+                string.Format("Abnormal Bet - Begin import ticket info: Messages: {0}\n\rMatchInfos: {1}\n\rTransactionInfos: {2}",
+                JsonConvert.SerializeObject(voidingMessages, Formatting.Indented),
+                JsonConvert.SerializeObject(matchInfos, Formatting.Indented),
+                JsonConvert.SerializeObject(transactionInfos, Formatting.Indented)));
+
             const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (var transaction in transactionInfos)
@@ -134,11 +141,12 @@
             {
                 IEnumerable<VoidingMessage> messages = voidingMessages.Where(x => messageIds.Any(y => x.MessageId == y));
                 await messageService.EditStatusVoidingMessageAsync(messages);
-                logService.LogInformation(string.Format("Don't have ticket info or created: {0}", string.Join(",", messageIds)));
+                logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", messageIds)));
             }
 
             matchInfos = matchInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId));
             transactionInfos = transactionInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId && y.CustId == x.CustId));
+            logService.LogInformation("Abnormal Bet - Begin import ticket info");
             return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
         }
 

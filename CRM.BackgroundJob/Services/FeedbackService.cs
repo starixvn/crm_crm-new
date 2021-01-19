@@ -78,7 +78,7 @@
                 return;
             }
 
-            logService.LogInformation(string.Format("Create feedback for messages: {0}", string.Join(",", ticketInfo.Item1.Select(x => x.MessageId))));
+            logService.LogInformation(string.Format("Abnormal Bet - Create feedback for messages: {0}", string.Join(",", ticketInfo.Item1.Select(x => x.MessageId))));
 
             var settingNames = new[] { SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
@@ -90,8 +90,8 @@
 
             ticketInfo = await ticketVoidingService.ImportTicketVoidingInfoAsync(
                 voidingMessages,
-                ticketInfo.Item1,
-                ticketInfo.Item2,
+                ticketInfo.Item1.ToList(),
+                ticketInfo.Item2.ToList(),
                 siteSettingMappings,
                 headlines,
                 licenseeInfo);
@@ -137,7 +137,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Begin mapping common setting for MessageId: " + message.MessageId);
+            logService.LogInformation("Abnormal Bet - Begin mapping common setting for MessageId: " + message.MessageId);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
@@ -168,7 +168,7 @@
                 AutoField2 = string.Format("Date Time & Tool: {0}/{1}/", feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField3 = $"{Environment.NewLine}System ID: "
             };
-            logService.LogInformation("End mapping common setting for MessageId: " + message.MessageId);
+            logService.LogInformation("Abnormal Bet - End mapping common setting for MessageId: " + message.MessageId);
 
             var headlineIds = headlines.Select(x => x.HeadlineId).Distinct();
             foreach (var headlineId in headlineIds)
@@ -207,7 +207,7 @@
             {
                 List<int> batch = relatedCustomerIds.Skip(i * itemEachBatch).Take(itemEachBatch).ToList();
 
-                logService.LogInformation(string.Format("Begin mapping setting for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
+                logService.LogInformation(string.Format("Abnormal Bet - Begin mapping setting for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
                     message.MessageId,
                     headline.HeadlineId,
                     string.Join(",", batch)));
@@ -219,7 +219,7 @@
                 criteria.MessageId = message.MessageId;
                 criteria.ListOrigCustIds = string.Join(",", batch);
 
-                logService.LogInformation(string.Format("End mapping setting for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
+                logService.LogInformation(string.Format("Abnormal Bet - End mapping setting for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
                     message.MessageId,
                     headline.HeadlineId,
                     string.Join(",", batch)));
@@ -228,21 +228,21 @@
                 criteria.Description = GetDescriptionForCreditSite(message.MessageId, criteria.RequestIds, matchInfo);
                 try
                 {
-                    logService.LogInformation(string.Format("Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
+                    logService.LogInformation(string.Format("Abnormal Bet - Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
                         message.MessageId,
                         headline.HeadlineId,
                         string.Join(",", batch)));
                     CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
                     if (commandResult.IsSuccessful)
                     {
-                        logService.LogInformation(string.Format("Create feedback successfully. MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
+                        logService.LogInformation(string.Format("Abnormal Bet - Create feedback successfully. MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
                             message.MessageId,
                             headline.HeadlineId,
                             string.Join(",", batch)));
                     }
                     else
                     {
-                        logService.LogInformation(string.Format("{0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}",
+                        logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}",
                             commandResult.Message,
                             message.MessageId,
                             headline.HeadlineId,
@@ -253,7 +253,7 @@
                 }
                 catch (Exception ex)
                 {
-                    logService.LogInformation(string.Format("{0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}",
+                    logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}",
                         ex.Message,
                         message.MessageId,
                         headline.HeadlineId,
@@ -272,7 +272,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Begin mapping setting for MessageId: " + message.MessageId);
+            logService.LogInformation("Abnormal Bet - Begin mapping setting for MessageId: " + message.MessageId);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var communicationTool = GetCommunicationTool(settings);
@@ -307,7 +307,7 @@
                 TitleId = licenseeInfo.TitleId,
                 SiteId = licenseeInfo.SiteId
             };
-            logService.LogInformation("End mapping setting for MessageId: " + message.MessageId);
+            logService.LogInformation("Abnormal Bet - End mapping setting for MessageId: " + message.MessageId);
 
             await CreateFeedbackForDepositByBatchAsync(
                 licenseeInfo,
@@ -345,7 +345,7 @@
                 criteria.Description = GetDescriptionForDepositeSite(message.MessageId, criteria.RequestIds);
                 try
                 {
-                    logService.LogInformation(string.Format("Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}\n\rCustIds: {3}",
+                    logService.LogInformation(string.Format("Abnormal Bet - Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}\n\rCustIds: {3}",
                             message.MessageId,
                             licenseeInfo.CustId,
                             string.Join(",", batch),
@@ -353,7 +353,7 @@
                     CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
                     if (commandResult.IsSuccessful)
                     {
-                        logService.LogInformation(string.Format("{0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
+                        logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
                             "Create feedback successfully",
                             message.MessageId,
                             licenseeInfo.CustId,
@@ -362,7 +362,7 @@
                     }
                     else
                     {
-                        logService.LogInformation(string.Format("{0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
+                        logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
                             commandResult.Message,
                             message.MessageId,
                             licenseeInfo.CustId,
@@ -417,7 +417,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Begin mapping product, sub-product, bet type.");
+            logService.LogInformation("Abnormal Bet - Begin mapping product, sub-product, bet type.");
             const string XmlTemplate = "<Product ProductID='{0}' SubProductID='{1}' BetTypeID='{2}' />";
             SettingItem sportsbook = GetSportsbookProduct(settings);
             IList<SettingItem> subProducts = GetSubProduct(sportsbook.SettingId, matchInfo, settings, settingMappings);
@@ -440,7 +440,7 @@
                 }
             }
 
-            logService.LogInformation("End mapping product, sub-product, bet type.");
+            logService.LogInformation("Abnormal Bet - End mapping product, sub-product, bet type.");
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
