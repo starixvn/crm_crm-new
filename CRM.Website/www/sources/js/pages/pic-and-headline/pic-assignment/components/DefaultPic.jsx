@@ -55,11 +55,7 @@ export class DefaultPic extends Component {
 
     isEqualPicArray = (firstArray, secondArray) => {
         if (!firstArray) {
-            if (secondArray.length === 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return secondArray.length === 0;
         }
         if (firstArray.length !== secondArray.length) {
             return false;
