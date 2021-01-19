@@ -71,8 +71,7 @@
             };
             var ticketInfo = await baseService.FetchMultipleAsync<MatchInfo, TransactionInfo>(criteria);
 
-            var messageIds = ticketInfo.Item1.Where(x => !ticketInfo.Item2.Any(y => x.MessageId == y.MessageId))
-                .Select(x => x.MessageId).ToList();
+            var messageIds = ticketInfo.Item1.Where(x => !ticketInfo.Item2.Any(y => x.MessageId == y.MessageId)).Select(x => x.MessageId).ToList();
             if (messageIds.Any())
             {
                 IEnumerable<VoidingMessage> messages = voidingMessages.Where(x => messageIds.Any(y => x.MessageId == y));
@@ -93,10 +92,12 @@
             CustomerInfo licenseeInfo)
         {
             logService.LogInformation(
-                string.Format("Abnormal Bet - Begin import ticket info: Messages: {0}\n\rMatchInfos: {1}\n\rTransactionInfos: {2}",
+                string.Format("Abnormal Bet - Begin import ticket info: Messages: {0}\n\rMatchInfos: {1}\n\rTransactionInfos: {2}\n\rSiteSettingMappings: {3}\n\rHeadlines: {4}",
                 JsonConvert.SerializeObject(voidingMessages, Formatting.Indented),
                 JsonConvert.SerializeObject(matchInfos, Formatting.Indented),
-                JsonConvert.SerializeObject(transactionInfos, Formatting.Indented)));
+                JsonConvert.SerializeObject(transactionInfos, Formatting.Indented),
+                JsonConvert.SerializeObject(siteSettingMappings, Formatting.Indented),
+                JsonConvert.SerializeObject(headlines, Formatting.Indented)));
 
             const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);

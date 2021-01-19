@@ -92,8 +92,8 @@
                 voidingMessages,
                 ticketInfo.Item1.ToList(),
                 ticketInfo.Item2.ToList(),
-                siteSettingMappings,
-                headlines,
+                siteSettingMappings.ToList(),
+                headlines.ToList(),
                 licenseeInfo);
 
             foreach (MatchInfo matchInfo in ticketInfo.Item1)
