@@ -84,7 +84,7 @@
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
             IEnumerable<SiteSettingMapping> siteSettingMappings = await settingService.GetSiteSettingMappingAsync();
-            CustomerInfo licenseeInfo = await customerService.GetCustomerInfoAsync(appSettings.LicenseeUsername, true);
+            CustomerInfo licenseeInfo = (await customerService.GetCustomerInfoAsync(appSettings.LicenseeUsername, true)) ?? new CustomerInfo();
             var custIds = ticketInfo.Item2.Where(x => !x.IsDeposit).Select(x => x.CustId).Distinct();
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
 

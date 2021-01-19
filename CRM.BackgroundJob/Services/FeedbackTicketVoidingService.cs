@@ -102,7 +102,7 @@
                 if (transaction.IsDeposit)
                 {
                     SiteSettingMapping licenseeManager = GetLicenseeManager(siteSettingMappings, transaction);
-                    headlineId = licenseeInfo != null ? licenseeInfo.CustId : 0;
+                    headlineId = licenseeInfo.CustId;
                     relatedCustId = licenseeManager != null ? licenseeManager.LicenseeManagerId : 0;
                 }
                 else
