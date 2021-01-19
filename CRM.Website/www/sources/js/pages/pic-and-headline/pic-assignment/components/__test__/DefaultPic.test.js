@@ -20,7 +20,7 @@ describe('DefaultPic', () => {
         };
 
         const store = mockStore(initialState);
-        
+
         // Action
         const wrapper = shallow(<DefaultPicWrapper store={store} />);
 
@@ -147,7 +147,7 @@ describe('DefaultPic', () => {
             gridParams: {}
         };
 
-        const pics = [ 'value' ];
+        const pics = ['value'];
         const defaultPic = shallow(<DefaultPic {...props} />);
 
         // Action
@@ -210,6 +210,51 @@ describe('DefaultPic', () => {
     });
 
     describe('isEqualPicArray', () => {
+        it('should return true when firstArray null and secondArray empty', () => {
+            // Arrange
+            const props = {
+                settings: {
+                    picList: []
+                },
+                defaultPicPopup: {
+                    headline: {}
+                },
+                gridParams: {}
+            };
+
+            const firstArray = null;
+            const secondArray = [];
+            const defaultPic = shallow(<DefaultPic {...props} />);
+
+            // Action
+            const result = defaultPic.instance().isEqualPicArray(firstArray, secondArray);
+
+            // Assert
+            expect(result).toBeTrue;
+        });
+
+        it('should return false when firstArray null and secondArray not empty', () => {
+            // Arrange
+            const props = {
+                settings: {
+                    picList: []
+                },
+                defaultPicPopup: {
+                    headline: {}
+                },
+                gridParams: {}
+            };
+
+            const firstArray = null;
+            const secondArray = ['value'];
+            const defaultPic = shallow(<DefaultPic {...props} />);
+
+            // Action
+            const result = defaultPic.instance().isEqualPicArray(firstArray, secondArray);
+
+            // Assert
+            expect(result).toBeFalse;
+        });
         it('should return false when length not equal', () => {
             // Arrange
             const props = {
@@ -223,7 +268,7 @@ describe('DefaultPic', () => {
             };
 
             const firstArray = [];
-            const secondArray = [ 'value' ];
+            const secondArray = ['value'];
             const defaultPic = shallow(<DefaultPic {...props} />);
 
             // Action
@@ -232,7 +277,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(result).toBeFalse;
         });
-        
+
         it('should return false when value not equal', () => {
             // Arrange
             const props = {
@@ -261,7 +306,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(result).toBeFalse;
         });
-        
+
         it('should return true when value equal', () => {
             // Arrange
             const props = {
@@ -355,16 +400,16 @@ describe('DefaultPic', () => {
                 },
                 gridParams: {}
             };
-    
+
             const data = {
                 message: 'message'
             };
 
             const defaultPic = shallow(<DefaultPic {...props} />);
-    
+
             // Action
             defaultPic.instance().callback(data);
-    
+
             // Assert
             expect(defaultPic.instance().state.responseMesssage).toEqual({
                 isSuccessful: data.isSuccessful,
@@ -372,7 +417,7 @@ describe('DefaultPic', () => {
                 show: true
             });
         });
-        
+
         it('should change state responseMesssage when not have data message', () => {
             // Arrange
             const props = {
@@ -384,14 +429,14 @@ describe('DefaultPic', () => {
                 },
                 gridParams: {}
             };
-    
+
             const data = {};
             const message = 'message';
             const defaultPic = shallow(<DefaultPic {...props} />);
-    
+
             // Action
             defaultPic.instance().callback(data, message);
-    
+
             // Assert
             expect(defaultPic.instance().state.responseMesssage).toEqual({
                 isSuccessful: data.isSuccessful,
@@ -399,7 +444,7 @@ describe('DefaultPic', () => {
                 show: true
             });
         });
-        
+
         it('should call setTimeout when success data', () => {
             // Arrange
             jest.useFakeTimers();
@@ -412,21 +457,21 @@ describe('DefaultPic', () => {
                 },
                 gridParams: {}
             };
-    
+
             const data = {
                 isSuccessful: true
             };
 
             const defaultPic = shallow(<DefaultPic {...props} />);
             defaultPic.instance().refreshGrid = jest.fn();
-    
+
             // Action
             defaultPic.instance().callback(data);
-    
+
             // Assert
             expect(setTimeout).toHaveBeenCalledWith(defaultPic.instance().refreshGrid, 2000);
         });
-        
+
         it('should call setTimeout when unsuccess data', () => {
             // Arrange
             const props = {
@@ -438,16 +483,16 @@ describe('DefaultPic', () => {
                 },
                 gridParams: {}
             };
-    
+
             const data = {
                 isSuccessful: false
             };
 
             const defaultPic = shallow(<DefaultPic {...props} />);
-    
+
             // Action
             defaultPic.instance().callback(data);
-    
+
             // Assert
             expect(defaultPic.instance().state.isSubmitting).toBeFalse;
         });
@@ -468,7 +513,7 @@ describe('DefaultPic', () => {
         };
 
         const defaultPic = shallow(<DefaultPic {...props} />);
-        functions.handleNewRemoveOptions= jest.fn()
+        functions.handleNewRemoveOptions = jest.fn();
 
         // Action
         defaultPic.instance().refreshGrid();
@@ -479,6 +524,38 @@ describe('DefaultPic', () => {
     });
 
     describe('handleSubmitSetDefaultPIC', () => {
+        it('should change state correctly when state pics null', () => {
+            // Arrange
+            const props = {
+                settings: {
+                    picList: []
+                },
+                defaultPicPopup: {
+                    headline: {}
+                },
+                gridParams: {}
+            };
+
+            const state = {
+                pics: null
+            };
+
+            const headlineId = 1;
+            const defaultPic = shallow(<DefaultPic {...props} />);
+            defaultPic.instance().setState(state);
+
+            // Action
+            defaultPic.instance().handleSubmitSetDefaultPIC(headlineId);
+
+            // Assert
+            expect(defaultPic.instance().state.isSubmitting).toBeFalse;
+            expect(defaultPic.instance().state.responseMesssage).toEqual({
+                show: true,
+                isSuccessful: false,
+                message: 'DefaultPICRequired'
+            });
+        });
+
         it('should change state correctly when empty state pics', () => {
             // Arrange
             const props = {
@@ -510,7 +587,7 @@ describe('DefaultPic', () => {
                 message: 'DefaultPICRequired'
             });
         });
-        
+
         it('should change state correctly when not empty state pics', () => {
             // Arrange
             const props = {
@@ -535,7 +612,7 @@ describe('DefaultPic', () => {
             const defaultPic = shallow(<DefaultPic {...props} />);
             defaultPic.instance().setState(state);
             defaultPic.instance().callback = jest.fn();
-            functions.setDefaultPic= jest.fn((params, callback) => callback());
+            functions.setDefaultPic = jest.fn((params, callback) => callback());
 
             const expected = {
                 headlineId,
@@ -621,7 +698,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(defaultPic.instance().handleCancel).toHaveBeenCalled();
         });
-        
+
         it('should have Modal Header component', () => {
             // Arrange
             const props = {
@@ -641,7 +718,7 @@ describe('DefaultPic', () => {
             expect(defaultPic.find(Modal.Header).props().closeButton).toBeTrue;
             expect(defaultPic.find(Modal.Title).props().as).toBe('div');
         });
-        
+
         it('should have Modal Header component when empty pics', () => {
             // Arrange
             const props = {
@@ -661,7 +738,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(defaultPic.find(Modal.Title).html()).toContain('SetDefaultPIC');
         });
-        
+
         it('should have Modal Header component when not empty pics', () => {
             // Arrange
             const props = {
@@ -670,7 +747,7 @@ describe('DefaultPic', () => {
                 },
                 defaultPicPopup: {
                     headline: {},
-                    pics: [ 'value' ]
+                    pics: ['value']
                 },
                 gridParams: {}
             };
@@ -681,7 +758,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(defaultPic.find(Modal.Title).html()).toContain('UpdateDefaultPIC');
         });
-        
+
         it('should have Modal Body component when having ResponseMesssage', () => {
             // Arrange
             const props = {
@@ -710,7 +787,7 @@ describe('DefaultPic', () => {
             expect(defaultPic.find(Modal.Body).find(ResponseMessage).props().isSuccessful).toEqual(state.responseMesssage.isSuccessful);
             expect(defaultPic.find(Modal.Body).find(ResponseMessage).props().message).toEqual(state.responseMesssage.message);
         });
-        
+
         it('should have Modal Body component when having first Form Group', () => {
             // Arrange
             const props = {
@@ -742,7 +819,7 @@ describe('DefaultPic', () => {
             expect(formGroup.find(Form.Label).at(1).props().md).toBe('9');
             expect(formGroup.find(Form.Label).at(1).html()).toContain(props.defaultPicPopup.headline.name);
         });
-        
+
         it('should have Modal Body component when having second Form Group', () => {
             // Arrange
             const props = {
@@ -780,7 +857,7 @@ describe('DefaultPic', () => {
             expect(formGroup.find(Select).props().value).toEqual(state.pics);
             expect(formGroup.find(Select).props().placeholder).toEqual('PleaseSelect');
         });
-        
+
         it('should have Modal Body component when having second Form Group having Select onChange', () => {
             // Arrange
             const props = {
@@ -803,7 +880,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(defaultPic.instance().handlePicChange).toHaveBeenCalled();
         });
-        
+
         it('should have Modal Footer component having remove button when not empty defaultPicPopup pics', () => {
             // Arrange
             const props = {
@@ -812,7 +889,7 @@ describe('DefaultPic', () => {
                 },
                 defaultPicPopup: {
                     headline: {},
-                    pics: [ 'value' ]
+                    pics: ['value']
                 },
                 gridParams: {}
             };
@@ -833,7 +910,7 @@ describe('DefaultPic', () => {
             expect(button.props().disabled).toEqual(state.isSubmitting);
             expect(button.html()).toContain('Remove');
         });
-        
+
         it('should have Modal Footer component having remove button when not empty defaultPicPopup pics', () => {
             // Arrange
             const props = {
@@ -844,7 +921,7 @@ describe('DefaultPic', () => {
                     headline: {
                         id: 1
                     },
-                    pics: [ 'value' ]
+                    pics: ['value']
                 },
                 gridParams: {}
             };
@@ -859,7 +936,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(defaultPic.instance().handleRemoveDefaultPic).toHaveBeenCalledWith(props.defaultPicPopup.headline.id);
         });
-        
+
         it('should have Modal Footer component having save button', () => {
             // Arrange
             const props = {
@@ -890,7 +967,7 @@ describe('DefaultPic', () => {
             expect(button.props().disabled).toEqual(state.isSubmitting);
             expect(button.html()).toContain('Save');
         });
-        
+
         it('should have Modal Footer component having save button onClick', () => {
             // Arrange
             const props = {
@@ -916,7 +993,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(defaultPic.instance().handleSubmitSetDefaultPIC).toHaveBeenCalledWith(props.defaultPicPopup.headline.id);
         });
-        
+
         it('should have Modal Footer component having cancel button', () => {
             // Arrange
             const props = {
@@ -940,7 +1017,7 @@ describe('DefaultPic', () => {
             expect(button.props().size).toBe('sm');
             expect(button.html()).toContain('Cancel');
         });
-        
+
         it('should have Modal Footer component having cancel button onClick', () => {
             // Arrange
             const props = {
@@ -964,7 +1041,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(defaultPic.instance().handleCancel).toHaveBeenCalled();
         });
-        
+
         it('should have ConfirmPopup', () => {
             // Arrange
             const props = {
@@ -993,7 +1070,7 @@ describe('DefaultPic', () => {
             expect(confirmPopup.props().title).toBe('Confirmation');
             expect(confirmPopup.props().content).toEqual(<div>ThereAreSomeChangesConfirmMessage</div>);
         });
-        
+
         it('should have ConfirmPopup onSubmit', () => {
             // Arrange
             const props = {
@@ -1022,7 +1099,7 @@ describe('DefaultPic', () => {
             // Assert
             expect(defaultPic.instance().closeAll).toHaveBeenCalled();
         });
-        
+
         it('should have ConfirmPopup onClose', () => {
             // Arrange
             const props = {

@@ -54,6 +54,13 @@ export class DefaultPic extends Component {
     };
 
     isEqualPicArray = (firstArray, secondArray) => {
+        if (!firstArray) {
+            if (secondArray.length === 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         if (firstArray.length !== secondArray.length) {
             return false;
         }
@@ -98,7 +105,7 @@ export class DefaultPic extends Component {
 
     handleSubmitSetDefaultPIC = headlineId => {
         this.setState({ isSubmitting: true });
-        if (this.state.pics.length === 0) {
+        if (!this.state.pics) {
             this.setState({
                 isSubmitting: false,
                 responseMesssage: {
@@ -108,12 +115,23 @@ export class DefaultPic extends Component {
                 }
             });
         } else {
-            const params = {
-                headlineId,
-                defaultPicIDs: this.state.pics.map(item => item.value).toString()
-            };
+            if (this.state.pics.length === 0) {
+                this.setState({
+                    isSubmitting: false,
+                    responseMesssage: {
+                        show: true,
+                        isSuccessful: false,
+                        message: LangHelper.getResource('DefaultPICRequired')
+                    }
+                });
+            } else {
+                const params = {
+                    headlineId,
+                    defaultPicIDs: this.state.pics.map(item => item.value).toString()
+                };
 
-            functions.setDefaultPic(params, data => this.callback(data, LangHelper.getResource('SetDefaultPICSuccessfully')));
+                functions.setDefaultPic(params, data => this.callback(data, LangHelper.getResource('SetDefaultPICSuccessfully')));
+            }
         }
     };
 
