@@ -13,7 +13,6 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
-    using Newtonsoft.Json;
 
     public interface IFeedbackTicketVoidingService
     {
@@ -91,14 +90,7 @@
             IEnumerable<GroupHeadline> headlines,
             CustomerInfo licenseeInfo)
         {
-            logService.LogInformation(
-                string.Format("Abnormal Bet - Begin import ticket info: Messages: {0}\n\rMatchInfos: {1}\n\rTransactionInfos: {2}\n\rSiteSettingMappings: {3}\n\rHeadlines: {4}",
-                JsonConvert.SerializeObject(voidingMessages, Formatting.Indented),
-                JsonConvert.SerializeObject(matchInfos, Formatting.Indented),
-                JsonConvert.SerializeObject(transactionInfos, Formatting.Indented),
-                JsonConvert.SerializeObject(siteSettingMappings, Formatting.Indented),
-                JsonConvert.SerializeObject(headlines, Formatting.Indented)));
-
+            logService.LogInformation("Abnormal Bet - Begin import ticket info");
             const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (var transaction in transactionInfos)
@@ -109,9 +101,8 @@
 
                 if (transaction.IsDeposit)
                 {
-                    SiteSettingMapping licenseeManager = siteSettingMappings.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.SettingSource)
-                        && x.SettingSource.Equals(transaction.Site, StringComparison.OrdinalIgnoreCase));
-                    headlineId = licenseeInfo.CustId;
+                    SiteSettingMapping licenseeManager = GetLicenseeManager(siteSettingMappings, transaction);
+                    headlineId = licenseeInfo != null ? licenseeInfo.CustId : 0;
                     relatedCustId = licenseeManager != null ? licenseeManager.LicenseeManagerId : 0;
                 }
                 else
@@ -147,7 +138,7 @@
 
             matchInfos = matchInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId));
             transactionInfos = transactionInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId && y.CustId == x.CustId));
-            logService.LogInformation("Abnormal Bet - Begin import ticket info");
+            logService.LogInformation("Abnormal Bet - End import ticket info");
             return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
         }
 
@@ -167,6 +158,12 @@
                 Description = description
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        private static SiteSettingMapping GetLicenseeManager(IEnumerable<SiteSettingMapping> siteSettingMappings, TransactionInfo transaction)
+        {
+            return siteSettingMappings.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.SettingSource)
+                       && x.SettingSource.Equals(transaction.Site, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

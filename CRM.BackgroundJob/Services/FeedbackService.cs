@@ -90,10 +90,10 @@
 
             ticketInfo = await ticketVoidingService.ImportTicketVoidingInfoAsync(
                 voidingMessages,
-                ticketInfo.Item1.ToList(),
-                ticketInfo.Item2.ToList(),
-                siteSettingMappings.ToList(),
-                headlines.ToList(),
+                ticketInfo.Item1,
+                ticketInfo.Item2,
+                siteSettingMappings,
+                headlines,
                 licenseeInfo);
 
             foreach (MatchInfo matchInfo in ticketInfo.Item1)
