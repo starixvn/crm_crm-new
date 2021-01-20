@@ -565,11 +565,6 @@
 
             // Assert
             Assert.Equal("<ROOT></ROOT>", actual);
-            Received.InOrder(() =>
-            {
-                logService.LogInformation("Begin mapping product, sub-product, bet type.");
-                logService.LogInformation("End mapping product, sub-product, bet type.");
-            });
         }
 
         [Fact]

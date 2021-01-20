@@ -38,10 +38,11 @@
             bool isVipHeadline,
             WinLimitFeedBackInfo winLimit,
             IEnumerable<BettypeInfo> bettype,
+            IEnumerable<SportInfo> sports,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            await base.CreateWinLossFeedbackCreditAsync(isVipHeadline, winLimit, bettype, settings, settingMappings);
+            await base.CreateWinLossFeedbackCreditAsync(isVipHeadline, winLimit, bettype, sports, settings, settingMappings);
         }
 
         public async Task Public_CheckValidParamsAndInsertFeedbackAsync(
@@ -54,24 +55,26 @@
         public string Public_GetProductXml(
            WinLimitFeedBackInfo winLimit,
            List<BettypeInfo> betTypeMappings,
+           List<SportInfo> sports,
            IEnumerable<SettingItem> settings,
            IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetProductXml(winLimit, betTypeMappings, settings, settingMappings);
+            return base.GetProductXml(winLimit, betTypeMappings, sports, settings, settingMappings);
         }
 
-        public IList<SystemSettingMapping> Public_GetProduct(
+        public SystemSettingMapping Public_GetProduct(
            IEnumerable<SystemSettingMapping> settingMappings,
-           string subProduct)
+           string productName)
         {
-            return base.GetProduct(settingMappings, subProduct);
+            return base.GetProduct(settingMappings, productName);
         }
 
-        public SystemSettingMapping Public_GetSubProduct(
+        public List<SystemSettingMapping> Public_GetSubProduct(
            WinLimitFeedBackInfo winLimit,
-            IEnumerable<SystemSettingMapping> settingMappings)
+           IEnumerable<SportInfo> sports,
+           IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetSubProduct(winLimit, settingMappings);
+            return base.GetSubProduct(winLimit, sports, settingMappings);
         }
        
         public IList<SystemSettingMapping> Public_GetBettype(

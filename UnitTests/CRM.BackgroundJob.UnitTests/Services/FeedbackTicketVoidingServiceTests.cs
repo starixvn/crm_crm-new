@@ -115,7 +115,6 @@
                 licenseeInfo);
 
             // Assert
-            logService.Received().LogInformation(string.Format("Don't have ticket info or created: {0}", string.Join(",", matchInfos.Select(x => x.MessageId))));
             await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessage>>());
 
             Assert.Empty(actual.Item1);
@@ -161,7 +160,7 @@
                 licenseeInfo);
 
             // Assert
-            logService.DidNotReceive().LogInformation(Arg.Any<string>());
+            logService.Received(2).LogInformation(Arg.Any<string>());
             await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessage>>());
 
             Assert.Equal(matchInfos, actual.Item1);
@@ -207,7 +206,7 @@
                 licenseeInfo);
 
             // Assert
-            logService.DidNotReceive().LogInformation(Arg.Any<string>());
+            logService.Received(2).LogInformation(Arg.Any<string>());
             await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessage>>());
 
             Assert.Equal(matchInfos, actual.Item1);

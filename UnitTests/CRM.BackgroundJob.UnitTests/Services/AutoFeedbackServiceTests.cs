@@ -49,7 +49,7 @@
             await service.ExecuteJobAsync();
 
             // Assert
-            logService.Received().LogInformation("Service is shutdown.");
+            logService.Received().LogInformation("Abnormal Bet - Service is shutdown.");
         }
 
         [Fact]
