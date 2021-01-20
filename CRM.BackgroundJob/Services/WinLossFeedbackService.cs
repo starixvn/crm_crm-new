@@ -72,7 +72,7 @@
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
 
-            ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>> winlossInfo = await transactionService.ImportWinLimitFeedbackInfoAsync(
+            ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>> winlossInfo = await transactionService.ImportWinLimitFeedbackInfoAsync(
                 cusWinLimit,
                 headlines
                 );
@@ -92,6 +92,7 @@
                         isVipHeadline,
                         winLimit,
                         winlossInfo.Item2,
+                        winlossInfo.Item3,
                         settings,
                         settingMappings);
             }
@@ -105,6 +106,7 @@
             bool isVipHeadline,
             WinLimitFeedBackInfo winLimit,
             IEnumerable<BettypeInfo> bettype,
+            IEnumerable<SportInfo> sports,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
@@ -150,7 +152,7 @@
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 LogID = winLimit.LogID,
                 CustomerXml = string.Format(DefaultValue.CustomerXml, winLimit.HeadlineId, winLimit.HeadlineName),
-                ProductXml = GetProductXml(winLimit, betTypeMappings, settings, settingMappings),
+                ProductXml = GetProductXml(winLimit, betTypeMappings, sports, settings, settingMappings),
                 Solution = GetSolution(winLimit, isVipHeadline),
                 RelatedCustomerXml = GetRelatedCustomerXml(winLimit),
                 ListOrigCustIds = string.Join(",", winLimit.CustId),
@@ -207,16 +209,17 @@
         protected internal virtual string GetProductXml(
             WinLimitFeedBackInfo winLimit,
             List<BettypeInfo> betTypeMappings,
+            IEnumerable<SportInfo> sports,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             const string XmlTemplate = DefaultValue.ProductXml;
-            SystemSettingMapping subProduct = GetSubProduct(winLimit, settingMappings);
-            IList<SystemSettingMapping> products = GetProduct(settingMappings, subProduct.SettingSource);
+            List<SystemSettingMapping> subProducts = GetSubProduct(winLimit, sports, settingMappings);
+            SystemSettingMapping product = GetProduct(settingMappings, winLimit.ProductName);
             IList<SystemSettingMapping> tempBettypes = GetBettype(betTypeMappings, settingMappings);
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
 
-            foreach (SystemSettingMapping product in products)
+            foreach (SystemSettingMapping subProduct in subProducts)
             {
                 if (tempBettypes.Any())
                 {
@@ -233,31 +236,33 @@
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
-        protected internal virtual IList<SystemSettingMapping> GetProduct(
+        protected internal virtual SystemSettingMapping GetProduct(
             IEnumerable<SystemSettingMapping> settingMappings,
-            string subProduct)
+            string productName)
         {
-            IList<SystemSettingMapping> products = settingMappings.Where(product => product.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
-                && !string.IsNullOrWhiteSpace(product.SettingSource)
-                && product.SettingSource.Equals(subProduct, StringComparison.OrdinalIgnoreCase)).ToList();
+            SystemSettingMapping product = settingMappings.FirstOrDefault(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrWhiteSpace(p.SettingSource)
+                && p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase));
 
-            return products != null && products.Any()
-                ? products.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
-                : new List<SystemSettingMapping>
-                {
-                    new SystemSettingMapping { SettingId = Constants.ProductNA }
-                };
+            return product ?? new SystemSettingMapping { SettingId = Constants.ProductNA };
         }
 
-        protected internal virtual SystemSettingMapping GetSubProduct(
+        protected internal virtual List<SystemSettingMapping> GetSubProduct(
             WinLimitFeedBackInfo winLimit,
+            IEnumerable<SportInfo> sports,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            SystemSettingMapping subProduct = settingMappings.FirstOrDefault(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+            var sportsMapping = sports.Where(x => x.LogID == winLimit.LogID);
+            var subProducts = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && mapping.SettingSource.Equals(winLimit.ProductName, StringComparison.OrdinalIgnoreCase));
+                && sportsMapping.Any(sport => mapping.SettingSource.Equals(sport.SportName, StringComparison.OrdinalIgnoreCase))).ToList();
 
-            return subProduct ?? new SystemSettingMapping { SettingId = Constants.SubProductNA };
+            return subProducts.Any()
+                ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
+                : new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingId = Constants.SubProductNA }
+                };
         }
 
 

@@ -18,7 +18,7 @@
 
     public interface IWinLossTransactionService
     {
-        Task<ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>> ImportWinLimitFeedbackInfoAsync(
+        Task<ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>> ImportWinLimitFeedbackInfoAsync(
                IEnumerable<CustomerWinLimit> cusWinLimit,
                IEnumerable<GroupHeadline> headlines);
 
@@ -46,7 +46,7 @@
         {
             this.baseService = baseService;
         }
-        public async Task<ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>> ImportWinLimitFeedbackInfoAsync(
+        public async Task<ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>> ImportWinLimitFeedbackInfoAsync(
            IEnumerable<CustomerWinLimit> cusWinLimit,
            IEnumerable<GroupHeadline> headlines)
         {
@@ -105,8 +105,8 @@
             {
                 xml = stringBuilder.ToString()
             };
-            var WinLossInfo = await baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo>(criteria);
-            return new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>>(WinLossInfo.Item1, WinLossInfo.Item2);
+            var WinLossInfo = await baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo, SportInfo>(criteria);
+            return new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>(WinLossInfo.Item1, WinLossInfo.Item2, WinLossInfo.Item3);
         }
 
         protected internal virtual double GetLimitSetting(MaxWinLimitSetting setting, int levelID)
