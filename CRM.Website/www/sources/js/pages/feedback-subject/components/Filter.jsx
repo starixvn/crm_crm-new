@@ -24,7 +24,7 @@ export class Filter extends Component {
         return {
             Subject: this.state.feedbackSubjectSearch,
             pageIndex: 1,
-            pageSize: 50
+            pageSize: 100
         };
     };
 
