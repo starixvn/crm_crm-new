@@ -62,26 +62,31 @@
             return base.GetProductXml(winLimit, betTypeMappings, sports, settings, settingMappings);
         }
 
-        public SystemSettingMapping Public_GetProduct(
+        public SettingItem Public_GetProduct(
+           IEnumerable<SettingItem> settings,
            IEnumerable<SystemSettingMapping> settingMappings,
            string productName)
         {
-            return base.GetProduct(settingMappings, productName);
+            return base.GetProduct(settings, settingMappings, productName);
         }
 
-        public List<SystemSettingMapping> Public_GetSubProduct(
+        public List<SettingItem> Public_GetSubProduct(
            WinLimitFeedBackInfo winLimit,
            IEnumerable<SportInfo> sports,
+           int productId,
+           IEnumerable<SettingItem> settings,
            IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetSubProduct(winLimit, sports, settingMappings);
+            return base.GetSubProduct(winLimit, sports, productId, settings, settingMappings);
         }
        
-        public IList<SystemSettingMapping> Public_GetBettype(
+        public IList<SettingItem> Public_GetBettype(
+           IEnumerable<int> subProducts,
            List<BettypeInfo> betTypeMappings,
-           IEnumerable<SystemSettingMapping> settingMappings)
+           IEnumerable<SystemSettingMapping> settingMappings,
+           IEnumerable<SettingItem> settings)
         {
-            return base.GetBettype(betTypeMappings, settingMappings);
+            return base.GetBettype(subProducts, betTypeMappings, settingMappings, settings);
         }
 
         public string Public_GetSolution(WinLimitFeedBackInfo winLimit, bool isVipHeadline)

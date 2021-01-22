@@ -247,6 +247,7 @@
                 && p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase));
 
             var product = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
+                && productMapping != null
                 && x.SettingId == productMapping.SettingId);
 
             return product ?? new SettingItem { SettingId = Constants.ProductNA };

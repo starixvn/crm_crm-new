@@ -317,14 +317,14 @@
             var betTypeMappings = fixture.Create<List<BettypeInfo>>();
             var settings = fixture.Create<IEnumerable<SettingItem>>();
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
-            var subProduct = new List<SystemSettingMapping>
+            var subProducts = new List<SettingItem>
             {
-                new SystemSettingMapping
+                new SettingItem
                 {
                     SettingId = 1
                 }
             };
-            var product = new SystemSettingMapping
+            var product = new SettingItem
             {
                 SettingId = 1
             };
@@ -333,11 +333,11 @@
             {
                 new SportInfo{LogID = 1, SportType = 1, SportName = "test"}
             };
-            var tempBettypes = new List<SystemSettingMapping>();
+            var bettypes = new List<SettingItem>();
             var service = MockService();
-            service.Protected("GetProduct", settingMappings, winLimit.ProductName).Returns(product);
-            service.Protected("GetSubProduct", winLimit, sport, settingMappings).Returns(subProduct);
-            service.Protected("GetBettype", betTypeMappings, settingMappings).Returns(tempBettypes);
+            service.Protected("GetProduct", settings, settingMappings, winLimit.ProductName).Returns(product);
+            service.Protected("GetSubProduct", winLimit, sport, product.SettingId, settings, settingMappings).Returns(subProducts);
+            service.Protected("GetBettype", subProducts.Select(x => x.SettingId), betTypeMappings, settingMappings, settings).Returns(bettypes);
 
             // Act
             var actual = service.Public_GetProductXml(winLimit, betTypeMappings, sport, settings, settingMappings);
@@ -352,35 +352,35 @@
             // Arrange
             var winLimit = fixture.Create<WinLimitFeedBackInfo>();
             var betTypeMappings = fixture.Create<List<BettypeInfo>>();
-            var settings = fixture.Create<IEnumerable<SettingItem>>();
-            var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
-            var subProduct = new List<SystemSettingMapping>
+            var settings = new List<SettingItem>
             {
-                new SystemSettingMapping
+                new SettingItem { SettingId = 1, SettingName = "Bettype", ParentIds = new List<int> { 1 } }
+            };
+            var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
+            var subProducts = new List<SettingItem>
+            {
+                new SettingItem
                 {
                     SettingId = 1
                 }
             };
-            
-            var product = new SystemSettingMapping
+
+            var product = new SettingItem
             {
                 SettingId = 1
             };
-            var tempBettypes = new List<SystemSettingMapping>
+            var bettypes = new List<SettingItem>
             {
-                new SystemSettingMapping
-                {
-                    SettingId = 1
-                }
+                new SettingItem { SettingId = 1, ParentIds = new List<int> { 1 } }
             };
             var sport = new List<SportInfo>
             {
                 new SportInfo{LogID = 1, SportType = 1, SportName = "test"}
             };
             var service = MockService();
-            service.Protected("GetProduct", settingMappings, winLimit.ProductName).Returns(product);
-            service.Protected("GetSubProduct", winLimit, sport, settingMappings).Returns(subProduct);
-            service.Protected("GetBettype", betTypeMappings, settingMappings).Returns(tempBettypes);
+            service.Protected("GetProduct", settings, settingMappings, winLimit.ProductName).Returns(product);
+            service.Protected("GetSubProduct", winLimit, sport, product.SettingId, settings, settingMappings).Returns(subProducts);
+            service.Protected("GetBettype", Arg.Any<IEnumerable<int>>(), betTypeMappings, settingMappings, settings).Returns(bettypes);
 
             // Act
             var actual = service.Public_GetProductXml(winLimit, betTypeMappings, sport, settings, settingMappings);
@@ -394,25 +394,6 @@
         #region GetProduct
 
         [Fact]
-        public void GetProduct_NotExistSubProduct_ReturnDefaultProduct()
-        {
-            // Arrange
-            var producName = "1";
-            var settingMappings = new List<SystemSettingMapping>
-                {
-                    new SystemSettingMapping { SettingName = "Product", SettingSource = "2" }
-                };
-
-            var service = MockService();
-
-            // Act
-            var actual = service.Public_GetProduct(settingMappings, producName);
-
-            // Assert
-            Assert.Equal(Constants.ProductNA, actual.SettingId);
-        }
-
-        [Fact]
         public void GetProduct_SettingSourceIsNull_ReturnDefaultProduct()
         {
             // Arrange
@@ -421,52 +402,85 @@
                 {
                     new SystemSettingMapping { SettingName = "Product" }
                 };
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem { SettingId = 1 , SettingName = "Product"}
+                };
 
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetProduct(settingMappings, producName);
+            var actual = service.Public_GetProduct(settings, settingMappings, producName);
 
             // Assert
             Assert.Equal(Constants.ProductNA, actual.SettingId);
         }
 
         [Fact]
-        public void GetProduct_SettingSourceNotEqualNameSetting_ReturnDefaultProduct()
+        public void GetProduct_SettingSourceNotEqualProductName_ReturnDefaultProduct()
         {
             // Arrange
             var producName = "1";
             var settingMappings = new List<SystemSettingMapping>
                 {
-                    new SystemSettingMapping { SettingName = "Product", SettingSource = "2" }
+                    new SystemSettingMapping {SettingId = 1, SettingName = "Product", SettingSource = "2" }
                 };
-
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem { SettingId = 1 , SettingName = "Product"}
+                };
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetProduct(settingMappings, producName);
+            var actual = service.Public_GetProduct(settings, settingMappings, producName);
 
             // Assert
             Assert.Equal(Constants.ProductNA, actual.SettingId);
         }
 
         [Fact]
-        public void GetProduct_ExistSubProduct_ReturnExpectedProduct()
+        public void GetProduct_SourceMappingIdNotEqualSettingItem_ReturnDefaultProduct()
         {
             // Arrange
             var producName = "1";
             var settingMappings = new List<SystemSettingMapping>
                 {
-                    new SystemSettingMapping { SettingName = "Product", SettingSource = "1" }
+                    new SystemSettingMapping {SettingId = 1, SettingName = "Product", SettingSource = "1" }
+                };
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem { SettingId = 2 , SettingName = "Product"}
+                };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetProduct(settings, settingMappings, producName);
+
+            // Assert
+            Assert.Equal(Constants.ProductNA, actual.SettingId);
+        }
+
+        [Fact]
+        public void GetProduct_ExistProductNameMappingAndSetting_ReturnExpectedProduct()
+        {
+            // Arrange
+            var producName = "RNG Casino";
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingId = 1, SettingName = "Product", SettingSource = "RNG Casino" }
+                };
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem { SettingId = 1 , SettingName = "Product"}
                 };
 
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetProduct(settingMappings, producName);
+            var actual = service.Public_GetProduct(settings, settingMappings, producName);
 
             // Assert
-            Assert.Equal(settingMappings.First(), actual);
+            Assert.Equal(settings.First(), actual);
         }
 
         #endregion GetProduct
@@ -477,90 +491,24 @@
         public void GetSubProduct_NotExistProductName_ReturnDefaultSubProduct()
         {
             // Arrange
-            var winLimit = new WinLimitFeedBackInfo
-            {
-                ProductName = "game"
-            };
-            var settingMappings = new List<SystemSettingMapping>
-            {
-                    new SystemSettingMapping { SettingName = "SubProduct", SettingSource = "allbet" }
-            };
-            var expected = new List<SystemSettingMapping>
-            {
-                    new SystemSettingMapping { SettingId = 8063}
-            };
-            var sport = new List<SportInfo>
-            {
-                new SportInfo{LogID = 1, SportType = 1, SportName = "test"}
-            };
+            var winLimit = fixture.Create<WinLimitFeedBackInfo>();
+            var settingMappings = fixture.Create <IEnumerable<SystemSettingMapping>> ();
+            var sport = fixture.Create<IEnumerable<SportInfo>>();
+            var settings = fixture.Create<IEnumerable<SettingItem>>();
 
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetSubProduct(winLimit, sport, settingMappings);
+            var actual = service.Public_GetSubProduct(winLimit, sport, 2, settings, settingMappings);
 
             // Assert
-            Assert.Equal(expected.First().SettingId, actual.First().SettingId);
+            Assert.Single(actual);
+            Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
+
+            Assert.Single(actual.First().ParentIds);
+            Assert.Equal(Constants.ProductNA, actual.First().ParentIds.First());
         }
 
-        [Fact]
-        public void GetSubProduct_SettingSourceIsNull_ReturnDefaultSubProduct()
-        {
-            // Arrange
-            var winLimit = new WinLimitFeedBackInfo
-            {
-                ProductName = "game"
-            };
-            var settingMappings = new List<SystemSettingMapping>
-            {
-                    new SystemSettingMapping { SettingName = "SubProduct" }
-            };
-            var expected = new List<SystemSettingMapping>
-            {
-                    new SystemSettingMapping { SettingId = 8063}
-            };
-            var sport = new List<SportInfo>
-            {
-                new SportInfo{LogID = 1, SportType = 1, SportName = "test"}
-            };
-
-            var service = MockService();
-
-            // Act
-            var actual = service.Public_GetSubProduct(winLimit, sport, settingMappings);
-
-            // Assert
-            Assert.Equal(expected.First().SettingId, actual.First().SettingId);
-        }
-
-        [Fact]
-        public void GetSubProduct_SettingSourceNotEqualProductName_ReturnDefaultSubProduct()
-        {
-            // Arrange
-            var winLimit = new WinLimitFeedBackInfo
-            {
-                ProductName = "game"
-            };
-            var settingMappings = new List<SystemSettingMapping>
-            {
-               new SystemSettingMapping { SettingName = "SubProduct" , SettingSource = "game1"}
-            };
-            var sport = new List<SportInfo>
-            {
-                new SportInfo{LogID = 1, SportType = 1, SportName = "test"}
-            };
-            var expected = new List<SystemSettingMapping>
-            {
-                    new SystemSettingMapping { SettingId = 8063}
-            };
-            var service = MockService();
-
-            // Act
-            var actual = service.Public_GetSubProduct(winLimit, sport, settingMappings);
-
-            // Assert
-            Assert.Equal(expected.First().SettingId, actual.First().SettingId);
-        }
 
         [Fact]
         public void GetSubProduct_ExistProductName_ReturnExpectedSubproduct()
@@ -582,10 +530,14 @@
             {
                 new SportInfo{LogID = 1, SportType = 1, SportName = "test"}
             };
+            var settings = new List<SettingItem>
+            {
+                new SettingItem { SettingId = 1, SettingName = "SubProduct", ParentIds = new List<int> { 1 } }
+            };
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetSubProduct(winLimit, sport, settingMappings);
+            var actual = service.Public_GetSubProduct(winLimit, sport, 1, settings, settingMappings);
 
             // Assert
             Assert.Equal(expected.First().SettingId, actual.First().SettingId);
@@ -599,67 +551,24 @@
         public void GetBettype_NotExistBetTypeMappings_ReturnDefaultBetType()
         {
             // Arrange
-            var settingMappings = new List<SystemSettingMapping>
-                {
-                    new SystemSettingMapping { SettingName = "Bettype", SettingSource = "a" }
-                };
-            var betTypeMappings = new List<BettypeInfo>
-                {
-                    new BettypeInfo { Name = "b" }
-                };
-
-            var service = MockService();
-
-            // Act
-            var actual = service.Public_GetBettype(betTypeMappings, settingMappings);
-
-            // Assert
-            Assert.Single(actual);
-            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
-        }
-
-        [Fact]
-        public void GetBettype_SettingSourceIsNull_ReturnDefaultBetType()
-        {
-            // Arrange
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
-            var betTypeMappings = new List<BettypeInfo>
-                {
-                    new BettypeInfo { Name = "b" }
-                };
+            var betTypeMappings = fixture.Create<List<BettypeInfo>>();
+            var settings = fixture.Create<IEnumerable<SettingItem>>();
+            var subProducts = fixture.Create<IEnumerable<int>>();
 
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetBettype(betTypeMappings, settingMappings);
+            var actual = service.Public_GetBettype(subProducts, betTypeMappings, settingMappings, settings);
 
             // Assert
             Assert.Single(actual);
             Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+
+            Assert.Single(actual.First().ParentIds);
+            Assert.Equal(Constants.SubProductNA, actual.First().ParentIds.First());
         }
 
-        [Fact]
-        public void GetBettype_betTypeMappingsNameNotEqualSourceMapping_ReturnDefaultBetType()
-        {
-            // Arrange
-            var settingMappings = new List<SystemSettingMapping>
-            {
-                new SystemSettingMapping { SettingSource = "a" , SettingName = SettingName.Bettype}
-            };
-            var betTypeMappings = new List<BettypeInfo>
-            {
-                    new BettypeInfo { Name = "b" }
-            };
-
-            var service = MockService();
-
-            // Act
-            var actual = service.Public_GetBettype(betTypeMappings, settingMappings);
-
-            // Assert
-            Assert.Single(actual);
-            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
-        }
 
         [Fact]
         public void GetBettype_ExistBetTypeMappings_ReturnExpectedBetType()
@@ -674,13 +583,24 @@
                     new BettypeInfo { Name = "a" }
                 };
 
+            var settings = new List<SettingItem>
+            {
+                new SettingItem { SettingId = 1, SettingName = "Bettype", ParentIds = new List<int> { 1 } }
+            };
+
+            var subProducts = new List<int>
+            {
+                1
+            };
+
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetBettype(betTypeMappings, settingMappings);
+            var actual = service.Public_GetBettype(subProducts, betTypeMappings, settingMappings, settings);
 
             // Assert
-            Assert.Equal(settingMappings.First(), actual.First());
+            Assert.Single(actual);
+            Assert.Equal(settings.First(), actual.First());
         }
 
         #endregion GetBettype
