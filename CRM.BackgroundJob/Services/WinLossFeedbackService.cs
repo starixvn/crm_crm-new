@@ -214,16 +214,17 @@
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             const string XmlTemplate = DefaultValue.ProductXml;
-            List<SystemSettingMapping> subProducts = GetSubProduct(winLimit, sports, settingMappings);
-            SystemSettingMapping product = GetProduct(settingMappings, winLimit.ProductName);
-            IList<SystemSettingMapping> tempBettypes = GetBettype(betTypeMappings, settingMappings);
+            SettingItem product = GetProduct(settings, settingMappings, winLimit.ProductName);
+            List<SettingItem> subProducts = GetSubProduct(winLimit, sports, product.SettingId, settings, settingMappings);
+            IList<SettingItem> bettypes = GetBettype(subProducts.Select(x => x.SettingId), betTypeMappings, settingMappings, settings);
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
 
-            foreach (SystemSettingMapping subProduct in subProducts)
+            foreach (SettingItem subProduct in subProducts)
             {
+                IList<SettingItem> tempBettypes = bettypes.Where(x => x.ParentIds.Any(y => y == subProduct.SettingId)).ToList();
                 if (tempBettypes.Any())
                 {
-                    foreach (SystemSettingMapping bettype in tempBettypes)
+                    foreach (SettingItem bettype in tempBettypes)
                     {
                         stringBuilder.AppendFormat(XmlTemplate, product.SettingId, subProduct.SettingId, bettype.SettingId);
                     }
@@ -236,49 +237,66 @@
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
-        protected internal virtual SystemSettingMapping GetProduct(
+        protected internal virtual SettingItem GetProduct(
+            IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings,
             string productName)
         {
-            SystemSettingMapping product = settingMappings.FirstOrDefault(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
+            SystemSettingMapping productMapping = settingMappings.FirstOrDefault(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(p.SettingSource)
                 && p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase));
 
-            return product ?? new SystemSettingMapping { SettingId = Constants.ProductNA };
+            var product = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
+                && x.SettingId == productMapping.SettingId);
+
+            return product ?? new SettingItem { SettingId = Constants.ProductNA };
         }
 
-        protected internal virtual List<SystemSettingMapping> GetSubProduct(
+        protected internal virtual List<SettingItem> GetSubProduct(
             WinLimitFeedBackInfo winLimit,
             IEnumerable<SportInfo> sports,
+            int productId,
+            IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             var sportsMapping = sports.Where(x => x.LogID == winLimit.LogID);
-            var subProducts = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+            var subProductsMapping = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && sportsMapping.Any(sport => mapping.SettingSource.Equals(sport.SportName, StringComparison.OrdinalIgnoreCase))).ToList();
 
+            IList<SettingItem> subProducts = settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+                && sub.ParentIds.Any(parent => parent == productId)
+                && subProductsMapping != null
+                && subProductsMapping.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
             return subProducts.Any()
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
-                : new List<SystemSettingMapping>
+                : new List<SettingItem>
                 {
-                    new SystemSettingMapping { SettingId = Constants.SubProductNA }
+                    new SettingItem { SettingId = Constants.SubProductNA, ParentIds = new List<int> { Constants.ProductNA } }
                 };
         }
 
 
-        protected internal virtual IList<SystemSettingMapping> GetBettype(
+        protected internal virtual IList<SettingItem> GetBettype(
+            IEnumerable<int> subProducts,
             List<BettypeInfo> betTypeMappings,
-            IEnumerable<SystemSettingMapping> settingMappings)
+            IEnumerable<SystemSettingMapping> settingMappings,
+            IEnumerable<SettingItem> settings)
         {
-            IList<SystemSettingMapping> bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+            IList<SystemSettingMapping> bettypeMapping = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && betTypeMappings.Any(betInfo => betInfo.Name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
 
+            IList<SettingItem> bettypes = settings.Where(bettype => bettype.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+                && subProducts.Any(sub => bettype.ParentIds.Any(parent => parent == sub))
+                && bettypeMapping != null
+                && bettypeMapping.Any(mapping => mapping.SettingId == bettype.SettingId)).ToList();
+
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
-                : new List<SystemSettingMapping>
+                : new List<SettingItem>
                 {
-                    new SystemSettingMapping { SettingId = Constants.BettypeNA }
+                    new SettingItem { SettingId = Constants.BettypeNA, ParentIds = new List<int> { Constants.SubProductNA } }
                 };
         }
 
