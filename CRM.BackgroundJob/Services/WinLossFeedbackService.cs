@@ -256,7 +256,7 @@
                 && productMapping != null
                 && x.SettingId == productMapping.SettingId);
 
-            logService.LogInformation(string.Format("GetProduct with product: {0}", product));
+            logService.LogInformation(string.Format("GetProduct with productID: {0}  ProductName: {1}", product.SettingId, product.SettingName));
 
             return product ?? new SettingItem { SettingId = Constants.ProductNA };
         }
@@ -271,6 +271,9 @@
             logService.LogInformation(string.Format("GetSubProduct with productId: {0}, sports: {1}", productId, string.Join(", ",sports.Select(x=>x.SportName))));
 
             var sportsMapping = sports.Where(x => x.LogID == winLimit.LogID);
+
+            logService.LogInformation(string.Format("sportsMapping: {0}", string.Join(", ", sportsMapping.Select(x => x.SportName))));
+
             var subProductsMapping = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && sportsMapping.Any(sport => mapping.SettingSource.Equals(sport.SportName, StringComparison.OrdinalIgnoreCase))).ToList();
