@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Web;
     using CRM.BackgroundJob.Criteria.ChatBot_CTO;
     using CRM.BackgroundJob.Models.ChatBotCTO;
     using CRM.Core.Extensions.XML;
@@ -98,22 +99,22 @@
                     GetSMALevel(smaInfor.RoleId, Language.zh_CN),
                     GetSMALevel(smaInfor.RoleId, Language.th_TH),
                     smaLevelYN,
-                    sportNameEN,
-                    sportNameSC,
-                    sportNameTH,
-                    sportNameYN,
-                    leagueNameEN,
-                    leagueNameSC,
-                    leagueNameTH,
-                    leagueNameYN,
-                    homeNameEN,
-                    homeNameSC,
-                    homeNameTH,
-                    homeNameYN,
-                    awayNameEN,
-                    awayNameSC,
-                    awayNameTH,
-                    awayNameYN,
+                    HttpUtility.HtmlEncode(sportNameEN),
+                    HttpUtility.HtmlEncode(sportNameSC),
+                    HttpUtility.HtmlEncode(sportNameTH),
+                    HttpUtility.HtmlEncode(sportNameYN),
+                    HttpUtility.HtmlEncode(leagueNameEN),
+                    HttpUtility.HtmlEncode(leagueNameSC),
+                    HttpUtility.HtmlEncode(leagueNameTH),
+                    HttpUtility.HtmlEncode(leagueNameYN),
+                    HttpUtility.HtmlEncode(homeNameEN),
+                    HttpUtility.HtmlEncode(homeNameSC),
+                    HttpUtility.HtmlEncode(homeNameTH),
+                    HttpUtility.HtmlEncode(homeNameYN),
+                    HttpUtility.HtmlEncode(awayNameEN),
+                    HttpUtility.HtmlEncode(awayNameSC),
+                    HttpUtility.HtmlEncode(awayNameTH),
+                    HttpUtility.HtmlEncode(awayNameYN),
                     smaInfor.Outstanding
                     );
             }
