@@ -17,10 +17,12 @@
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
 
     public class AuthController : Controller
     {
+        private readonly ILogger logger;
         private readonly IUserService userService;
         private readonly INapSession napSession;
         private readonly ISecurityService securityService;
@@ -29,6 +31,7 @@
         private readonly IEnumerable<ExternalRedirectMapping> redirectMappings;
 
         public AuthController(
+            ILogger<AuthController> logger,
             IUserService userService,
             INapSession napSession,
             ISecurityService securityService,
@@ -36,6 +39,7 @@
             IOptionsSnapshot<AppSettings> appSettings,
             IOptionsSnapshot<List<ExternalRedirectMapping>> redirectMappings)
         {
+            this.logger = logger;
             this.userService = userService;
             this.napSession = napSession;
             this.securityService = securityService;
@@ -98,7 +102,12 @@
         public async Task<IActionResult> CheckUserOnlineStatus()
         {
             RecheckInStatus recheckInStatus = await authService.GetRecheckInStatusAsync();
-            if(recheckInStatus == RecheckInStatus.UnderMaintenance)
+            if (recheckInStatus != RecheckInStatus.Success)
+            {
+                logger.LogInformation(string.Format("UserId: {0}\nUsername: {1}\nRecheckInStatus: {2}", napSession.UserId, napSession.UserName, recheckInStatus));
+            }
+
+            if (recheckInStatus == RecheckInStatus.UnderMaintenance)
             {
                 var mapping = GetExternalRedirectMapping();
                 return new RedirectResult(mapping?.ExternalUnderMaintenanceUrl, false);

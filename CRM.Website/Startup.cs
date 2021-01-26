@@ -40,7 +40,6 @@
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
     using Sentry;
-    using Serilog;
     using StackExchange.Redis;
 
     public class Startup
@@ -128,11 +127,6 @@
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);
-
-            services.AddLogging((builder) =>
-            {
-                builder.AddSerilog(dispose: true);
-            });
 
             services.AddMvc(options =>
             {

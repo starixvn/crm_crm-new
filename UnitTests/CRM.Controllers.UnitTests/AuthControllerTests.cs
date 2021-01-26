@@ -16,12 +16,14 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Routing;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
 
     public class AuthControllerTests
     {
+        private ILogger<AuthController> logger;
         private IUserService userService;
         private INapSession napSession;
         private ISecurityService securityService;
@@ -273,6 +275,7 @@
 
         private AuthController GetController()
         {
+            logger = Substitute.For<ILogger<AuthController>>();
             userService = Substitute.For<IUserService>();
             napSession = Substitute.For<INapSession>();
             securityService = Substitute.For<ISecurityService>();
@@ -296,6 +299,7 @@
             settings.Value.Returns(appSettings);
             mappings.Value.Returns(redirectMappings);
             return new AuthController(
+                logger,
                 userService,
                 napSession,
                 securityService,
