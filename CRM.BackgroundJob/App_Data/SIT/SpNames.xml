@@ -23,7 +23,7 @@
         <Setting Key="Acc_CRM_GroupHeadlineSel" SpName="Acc_CRM_GroupHeadlineSel" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_SystemSettingMappingSel" SpName="Acc_CRM_SystemSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerFeedbackIns" SpName="Acc_CRM_CustomerFeedbackIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot">
         <Setting Key="Acc_CRM_Chatbot_SystemSetting_Sel" SpName="Acc_CRM_Chatbot_SystemSetting_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -47,7 +47,7 @@
     </Function>
     <Function Name="WinLoss Limit">
         <Setting Key="Acc_CRM_CustWinLimitSel" SpName="Acc_CRM_CustWinLimitSel" DbName="DBCUST.CustDB.bodbAdminNet" />
-        <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoIns" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoIns_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoIns" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Turnover Controll">
