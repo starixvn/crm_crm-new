@@ -172,6 +172,7 @@
     TemplateName: 'Template Name',
     TemplateNameRequired: 'Template Name is required!',
     TextNo: 'No.',
+    TheBotRemoved: "The Bot has been removed from this group, please refresh page to see the changes!",
     ThereAreSomeChangesConfirmMessage: 'There are some changes. Are you sure you want to ignore these changes?',
     ThereAreUnassignedDirectAccounts: 'There are {0} unassigned direct accounts',
     TheRecipientOfNotificationIdHasBeenInactive: '{0}The Personal/Group of following selected Notification{1} have been deactivated: {2}',

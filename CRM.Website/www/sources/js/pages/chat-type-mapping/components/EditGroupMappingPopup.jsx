@@ -44,6 +44,7 @@ export class EditGroupMappingPopup extends Component {
                 errMsgs: []
             },
             isShowConfirmDirtyForm: false,
+            isBotRemoved: false,
             isLoading: false
         };
 
@@ -62,14 +63,15 @@ export class EditGroupMappingPopup extends Component {
             const headlineIds = prevState.form.groupHeadlines.split(',');
             const headlineOptions = nextProps.groupHeadline;
             headlineOptions.map(headline => {
-                 const checkedId = headlineIds.some(v => parseInt(v, 10) === headline.id);
-                 headline['checked'] = checkedId;
+                const checkedId = headlineIds.some(v => parseInt(v, 10) === headline.id);
+                headline['checked'] = checkedId;
             });
             const state = {
                 settings: {
                     recipientOptions: recipientOptions,
                     headlineOptions: headlineOptions
-                }
+                },
+                isBotRemoved = nextProps.letstalkVerification.isBotRemoved
             };
 
             return state;
@@ -194,6 +196,11 @@ export class EditGroupMappingPopup extends Component {
         if (!data.groupHeadlines) {
             isValid = false;
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
+        }
+
+        if (this.state.isBotRemoved) {
+            isValid = false;
+            errMsg.push(LangHelper.getResource('TheBotRemoved'));
         }
 
         this.setState({
@@ -344,8 +351,8 @@ export class EditGroupMappingPopup extends Component {
                                 <Loading />
                             }
                             {
-                                this.props.letstalkVerification.length > 0 && !this.state.isLoading &&
-                                this.props.letstalkVerification.map(this.renderLetstalkIdVerification)
+                                this.props.letstalkVerification.recipients.length > 0 && !this.state.isLoading &&
+                                this.props.letstalkVerification.recipients.map(this.renderLetstalkIdVerification)
                             }
                         </Col>
                     </Form.Group>
@@ -405,7 +412,7 @@ export class EditGroupMappingPopup extends Component {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={this.state.isSubmitting} id="edit-group-mapping-submit">
+                    <Button type="submit" variant="primary" size="sm" disabled={this.state.isSubmitting && this.state.isBotRemoved} id="edit-group-mapping-submit">
                         {LangHelper.getResource('Submit')}
                     </Button>
                     <Button type="button" variant="primary" size="sm" onClick={this.onClosePopup}>

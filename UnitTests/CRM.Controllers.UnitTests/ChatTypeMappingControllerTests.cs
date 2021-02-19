@@ -18,7 +18,6 @@
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
-    using CRM.Services.Interfaces;
     using CRM.ViewModels.ChatTypeMapping;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -281,10 +280,12 @@
             var fixture = new Fixture();
             var botFriends = fixture.Create<IList<string>>();
             var roomData = fixture.Create<RoomData>();
+            var roomList = fixture.Create<List<string>>();
+
             LetstalkVerification inputData = new LetstalkVerification
             {
                 BotId = 100020,
-                GroupConversationId = "TestingGroupID",
+                GroupConversationId = roomList.FirstOrDefault(),
                 Recipients = new List<RecipientLetstalk>
                 {
                     new RecipientLetstalk
@@ -308,12 +309,13 @@
 
             letstalkService(Arg.Any<int>()).GetBotContactList().Returns(botFriends);
             letstalkService(Arg.Any<int>()).GetChatRoomData(Arg.Any<string>()).Returns(roomData);
+            letstalkService(Arg.Any<int>()).GetChatRoomList().Returns(roomList);
 
             var actual = await controller.VerifyLetstalkInGroup(inputData);
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            var result = (List<RecipientLetstalk>)jsonResult.Value;
-            Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(result));
+            var result = jsonResult.Value;
+            Assert.Equal(JsonConvert.SerializeObject(new { isBotRemoved = false, recipients = expected }), JsonConvert.SerializeObject(result));
         }
 
         [Fact]

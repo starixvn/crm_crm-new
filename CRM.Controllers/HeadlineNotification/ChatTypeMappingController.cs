@@ -80,7 +80,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetChatTypeMapping([FromBody]ChatTypeFilterViewModel filter)
+        public async Task<IActionResult> GetChatTypeMapping([FromBody] ChatTypeFilterViewModel filter)
         {
             var criteria = new GetChatTypeMappingCriteria
             {
@@ -107,7 +107,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Host)]
-        public async Task<IActionResult> UpdateActiveStatus([FromBody]ActiveStatusModel groupInfo)
+        public async Task<IActionResult> UpdateActiveStatus([FromBody] ActiveStatusModel groupInfo)
         {
             var commandResult = await chatTypeMappingService.EditActiveStatusAsync(groupInfo.ConversationGroupId, groupInfo.IsActive, napSession.UserId);
 
@@ -116,7 +116,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Host)]
-        public async Task<IActionResult> InsertPersonalMapping([FromBody]PersonalMappingViewModel data)
+        public async Task<IActionResult> InsertPersonalMapping([FromBody] PersonalMappingViewModel data)
         {
             var result = new CommandResult();
             var contactDetail = await letstalkService(data.BotId).GetProfileAsync(data.LetstalkId.Trim());
@@ -147,7 +147,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Host)]
-        public async Task<IActionResult> UpdatePersonalMapping([FromBody]PersonalMappingViewModel data)
+        public async Task<IActionResult> UpdatePersonalMapping([FromBody] PersonalMappingViewModel data)
         {
             var result = new CommandResult();
             var contactDetail = await letstalkService(data.BotId).GetProfileAsync(data.LetstalkId.Trim());
@@ -189,7 +189,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateGroupMapping([FromBody]PersonalMappingViewModel data)
+        public async Task<IActionResult> UpdateGroupMapping([FromBody] PersonalMappingViewModel data)
         {
             var criteria = new UpdateChatTypeMappingCommand
             {
@@ -210,25 +210,37 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> VerifyLetstalkInGroup([FromBody]LetstalkVerification data)
+        public async Task<IActionResult> VerifyLetstalkInGroup([FromBody] LetstalkVerification data)
         {
             if (data.BotId > 0 && !string.IsNullOrWhiteSpace(data.GroupConversationId))
             {
-                var botFriends = await letstalkService(data.BotId).GetBotContactList();
-                var roomData = await letstalkService(data.BotId).GetChatRoomData(data.GroupConversationId);
-                foreach (var recipient in data.Recipients)
+                var roomList = await letstalkService(data.BotId).GetChatRoomList();
+                bool isBotRemoved = true;
+
+                if (roomList.Contains(data.GroupConversationId))
                 {
-                    foreach (var letstalk in recipient.Letstalks)
-                    {
-                        letstalk.IsGroupMember = roomData.Members.Contains(letstalk.LetstalkId.Trim());
-                        letstalk.IsBotFriend = botFriends.Contains(letstalk.LetstalkId.Trim());
-                    }
+                    isBotRemoved = false;
+                    await VerifyRecipients(data);
                 }
 
-                return Json(data.Recipients);
+                return Json(new { isBotRemoved = isBotRemoved, recipients = data.Recipients });
             }
 
             return Json(null);
+        }
+
+        private async Task VerifyRecipients(LetstalkVerification data)
+        {
+            var botFriends = await letstalkService(data.BotId).GetBotContactList();
+            var roomData = await letstalkService(data.BotId).GetChatRoomData(data.GroupConversationId);
+            foreach (var recipient in data.Recipients)
+            {
+                foreach (var letstalk in recipient.Letstalks)
+                {
+                    letstalk.IsGroupMember = roomData.Members.Contains(letstalk.LetstalkId.Trim());
+                    letstalk.IsBotFriend = botFriends.Contains(letstalk.LetstalkId.Trim());
+                }
+            }
         }
 
         public async Task<string> GetLetstalkDisplayName(int botId, string letstalkId)

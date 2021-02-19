@@ -17,7 +17,7 @@ const store = Store.createStore(reducer, {
     updateGroupMappingResult: null,
     recipients: [],
     groupHeadline: [],
-    letstalkVerification: []
+    letstalkVerification: { isBotRemoved: false, recipients: [] }
 });
 
 ReactDOM.render(
