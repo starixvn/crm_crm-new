@@ -71,7 +71,7 @@ export class EditGroupMappingPopup extends Component {
                     recipientOptions: recipientOptions,
                     headlineOptions: headlineOptions
                 },
-                isBotRemoved = nextProps.letstalkVerification.isBotRemoved
+                isBotRemoved: nextProps.letstalkVerification.isBotRemoved
             };
 
             return state;
