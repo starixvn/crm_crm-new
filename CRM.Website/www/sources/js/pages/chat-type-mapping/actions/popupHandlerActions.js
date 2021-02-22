@@ -96,7 +96,7 @@ const setUpdateGroupMappingData = (isShow, data) => {
 const setLetstalkVerifationData = data => {
     return {
         type: types.GROUP_MAPPING_LETSTALK_VERIFICATION_DATA,
-        data: data
+        data: data !== null ? data : { isBotRemoved: false, recipients: [] }
     };
 };
 
@@ -130,7 +130,7 @@ export const verifyLetstalkInGroup = params => async dispatch => {
             dispatch(setLetstalkVerifationData(response.data));
         }).catch(Site.handleAxiosError);
     } else {
-        dispatch(setLetstalkVerifationData([]));
+        dispatch(setLetstalkVerifationData({ isBotRemoved: false, recipients: [] }));
     }
 };
 
