@@ -117,7 +117,7 @@ export const closeUpdateGroupMappingPopup = () => {
     return dispatch => {
         dispatch(setUpdateGroupMappingData(false, null));
         dispatch(setGroupMappingResult(null));
-        dispatch(setLetstalkVerifationData([]));
+        dispatch(setLetstalkVerifationData({ isBotRemoved: false, recipients: [] }));
         dispatch(setRecipientData([]));
         dispatch(setGroupHeadlineData([]));
     };
