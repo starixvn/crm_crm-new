@@ -471,7 +471,7 @@ export class AssignPic extends Component {
         return (
             <Fragment>
                 <Modal
-                    show backdrop='static' keyboard={false} size='lg' centered
+                    show backdrop='static' keyboard={false} centered
                     onHide={() => this.handleCancel()} dialogAs={DraggableModalDialog}
                 >
                     <Modal.Header closeButton>
