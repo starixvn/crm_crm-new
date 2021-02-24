@@ -29,7 +29,7 @@ describe('AssignPic', () => {
         };
 
         const store = mockStore(initialState);
-        
+
         // Action
         const wrapper = shallow(<AssignPicWrapper store={store} />);
 
@@ -107,8 +107,8 @@ describe('AssignPic', () => {
             // Arrange
             const props = {
                 settings: {
-                    headlineList: [ { id: 1, name: 'headline1' } ],
-                    picList: [ { id: 1, name: 'pic1' } ]
+                    headlineList: [{ id: 1, name: 'headline1' }],
+                    picList: [{ id: 1, name: 'pic1' }]
                 },
                 assignPicResult: {},
                 validateAssignPicResult: {},
@@ -127,7 +127,7 @@ describe('AssignPic', () => {
                     label: item.name
                 };
             });
-    
+
             const picOptions = props.settings.picList.map(item => {
                 return {
                     value: item.picId,
@@ -136,7 +136,7 @@ describe('AssignPic', () => {
             });
 
             const assignPic = shallow(<AssignPic {...props} />);
-            
+
             // Action
             assignPic.instance().componentDidMount();
 
@@ -145,13 +145,13 @@ describe('AssignPic', () => {
             expect(assignPic.instance().state.picOptions).toEqual(picOptions);
             expect(props.setAssignPicResult).toHaveBeenCalledWith({ show: false });
         });
-        
+
         it('runs when has data headlineId', () => {
             // Arrange
             const props = {
                 settings: {
-                    headlineList: [ { id: 1, name: 'headline1' } ],
-                    picList: [ { id: 1, name: 'pic1' } ]
+                    headlineList: [{ id: 1, name: 'headline1' }],
+                    picList: [{ id: 1, name: 'pic1' }]
                 },
                 assignPicResult: {},
                 validateAssignPicResult: {},
@@ -163,7 +163,7 @@ describe('AssignPic', () => {
                 assignPicPopup: {},
                 data: {
                     headlineId: 1,
-                    accountNames: [ 'name' ]
+                    accountNames: ['name']
                 },
                 setAssignPicResult: jest.fn(),
                 setAssignPicFilter: jest.fn()
@@ -175,7 +175,7 @@ describe('AssignPic', () => {
                     label: item.name
                 };
             });
-    
+
             const picOptions = props.settings.picList.map(item => {
                 return {
                     value: item.picId,
@@ -192,13 +192,13 @@ describe('AssignPic', () => {
                     return {
                         username: item,
                         isValid: true
-                    }
+                    };
                 }),
                 isSelectedAll: false
             };
 
             const assignPic = shallow(<AssignPic {...props} />);
-            
+
             // Action
             assignPic.instance().componentDidMount();
 
@@ -230,7 +230,7 @@ describe('AssignPic', () => {
             };
 
             const assignPic = shallow(<AssignPic {...props} />);
-            
+
             // Action
             assignPic.instance().handleHeadlineChange(value);
 
@@ -264,7 +264,7 @@ describe('AssignPic', () => {
             };
 
             const assignPic = shallow(<AssignPic {...props} />);
-            
+
             // Action
             assignPic.instance().handlePicChange(value);
 
@@ -303,7 +303,7 @@ describe('AssignPic', () => {
 
             const assignPic = shallow(<AssignPic {...props} />);
             assignPic.instance().getRelatedCustomerItemClassName = jest.fn(value => value.toString());
-            
+
             // Action
             const result = shallow(assignPic.instance().renderRelatedCustomerItem(item, index));
 
@@ -340,7 +340,7 @@ describe('AssignPic', () => {
             const assignPic = shallow(<AssignPic {...props} />);
             assignPic.instance().handleRemoveDirectAccount = jest.fn();
             const result = shallow(assignPic.instance().renderRelatedCustomerItem(item, index));
-            
+
             // Action
             result.find('span').at(1).simulate('click');
 
@@ -369,14 +369,14 @@ describe('AssignPic', () => {
             };
 
             const assignPic = shallow(<AssignPic {...props} />);
-            
+
             // Action
             const className = assignPic.instance().getRelatedCustomerItemClassName(false);
 
             // Assert
             expect(className).toContain('invalid');
         });
-        
+
         it('returns className having selected', () => {
             // Arrange
             const props = {
@@ -397,14 +397,14 @@ describe('AssignPic', () => {
             };
 
             const assignPic = shallow(<AssignPic {...props} />);
-            
+
             // Action
             const className = assignPic.instance().getRelatedCustomerItemClassName();
 
             // Assert
             expect(className).toContain('selected');
         });
-        
+
         it('returns className not having invalid and selected', () => {
             // Arrange
             const props = {
@@ -425,7 +425,7 @@ describe('AssignPic', () => {
             };
 
             const assignPic = shallow(<AssignPic {...props} />);
-            
+
             // Action
             const className = assignPic.instance().getRelatedCustomerItemClassName(true);
 
@@ -447,20 +447,20 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ 'value0', 'value1' ]
+                    directAccount: ['value0', 'value1']
                 },
                 confirmAssignedDirectAccountPopup: {},
                 assignPicPopup: {},
                 setAssignPicResult: jest.fn(),
                 setAssignPicFilter: jest.fn()
             };
-    
-            const directAccount = [ 'value0' ];
+
+            const directAccount = ['value0'];
             const assignPic = shallow(<AssignPic {...props} />);
-    
+
             // Action
             assignPic.instance().handleRemoveDirectAccount(index);
-    
+
             // Assert
             expect(props.setAssignPicFilter).toHaveBeenCalledWith({
                 ...props.assignPicFilter,
@@ -677,7 +677,7 @@ describe('AssignPic', () => {
             // Assert
             expect(assignPic.instance().handleBackSpaceKeyCode).toHaveBeenCalled();
         });
-        
+
         function switchKeyCodeSeparate(keyCode) {
             it('keyCode be 32, 188 or 13', () => {
                 // Arrange
@@ -696,18 +696,18 @@ describe('AssignPic', () => {
                     assignPicPopup: {},
                     setAssignPicResult: jest.fn()
                 };
-    
+
                 const event = {
                     keyCode,
                     preventDefault: jest.fn()
                 };
-    
+
                 const assignPic = shallow(<AssignPic {...props} />);
                 assignPic.instance().handleAddCustomerKeyCode = jest.fn();
-    
+
                 // Action
                 assignPic.instance().switchKeyCode(event);
-    
+
                 // Assert
                 expect(event.preventDefault).toHaveBeenCalled();
                 expect(assignPic.instance().handleAddCustomerKeyCode).toHaveBeenCalled();
@@ -765,7 +765,7 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ 'value1' ],
+                    directAccount: ['value1'],
                     isSelectedAll: false
                 },
                 confirmAssignedDirectAccountPopup: {},
@@ -838,7 +838,7 @@ describe('AssignPic', () => {
                 setAssignPicFilter: jest.fn()
             };
 
-            const expectedDirectAcount = [ {username: 'name1', isValid: true} ];
+            const expectedDirectAcount = [{ username: 'name1', isValid: true }];
             const state = { maxUsername: 10 };
             const assignPic = shallow(<AssignPic {...props} />);
             assignPic.instance().setState(state);
@@ -913,7 +913,7 @@ describe('AssignPic', () => {
                 assignPic.instance().inputRef = { value: 'not empty' };
 
                 // Action
-                assignPic.instance().handleKeyUpRelatedCustomerInput(event)
+                assignPic.instance().handleKeyUpRelatedCustomerInput(event);
 
                 // Assert
                 expect(assignPic.instance().inputRef.value).toBeEmpty;
@@ -949,7 +949,7 @@ describe('AssignPic', () => {
             assignPic.instance().inputRef = defaultValue;
 
             // Action
-            assignPic.instance().handleKeyUpRelatedCustomerInput(event)
+            assignPic.instance().handleKeyUpRelatedCustomerInput(event);
 
             // Assert
             expect(assignPic.instance().inputRef).toEqual(defaultValue);
@@ -994,7 +994,7 @@ describe('AssignPic', () => {
             // Assert
             expect(assignPic.instance().inputRef).toBeEmpty;
         });
-        
+
         it('sum of old and new direct account not greater than max', () => {
             // Arrange
             const props = {
@@ -1032,10 +1032,10 @@ describe('AssignPic', () => {
             // Assert
             expect(props.setAssignPicFilter).toHaveBeenCalledWith({
                 ...props.assignPicFilter,
-                directAccount: [ { username: expectedValue, isValid: true } ]
+                directAccount: [{ username: expectedValue, isValid: true }]
             });
         });
-        
+
         it('sum of old and new direct account greater than max', () => {
             // Arrange
             const props = {
@@ -1202,7 +1202,7 @@ describe('AssignPic', () => {
             expect(props.setAssignPicFilter).toHaveBeenCalledWith({
                 ...props.assignPicFilter,
                 isSelectedAll: false,
-                directAccount: [ { isValid: true, username: expectedValue } ]
+                directAccount: [{ isValid: true, username: expectedValue }]
             });
         });
 
@@ -1289,9 +1289,9 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ 'value' ],
+                    directAccount: ['value'],
                     headline: null,
-                    pics: [ 'value' ]
+                    pics: ['value']
                 },
                 confirmAssignedDirectAccountPopup: {},
                 assignPicPopup: {},
@@ -1306,11 +1306,11 @@ describe('AssignPic', () => {
             // Assert
             expect(assignPic.instance().state.validate).toEqual({
                 show: true,
-                errMsg: [ 'GroupHeadlineRequired' ]
+                errMsg: ['GroupHeadlineRequired']
             });
             expect(result).toBeFalse;
         });
-        
+
         it('not have pic', () => {
             // Arrange
             const props = {
@@ -1322,7 +1322,7 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ 'value' ],
+                    directAccount: ['value'],
                     headline: {},
                     pics: []
                 },
@@ -1339,11 +1339,11 @@ describe('AssignPic', () => {
             // Assert
             expect(assignPic.instance().state.validate).toEqual({
                 show: true,
-                errMsg: [ 'PICRequired' ]
+                errMsg: ['PICRequired']
             });
             expect(result).toBeFalse;
         });
-        
+
         it('not have direct account', () => {
             // Arrange
             const props = {
@@ -1357,7 +1357,7 @@ describe('AssignPic', () => {
                 assignPicFilter: {
                     directAccount: [],
                     headline: {},
-                    pics: [ 'value' ]
+                    pics: ['value']
                 },
                 confirmAssignedDirectAccountPopup: {},
                 assignPicPopup: {},
@@ -1372,11 +1372,11 @@ describe('AssignPic', () => {
             // Assert
             expect(assignPic.instance().state.validate).toEqual({
                 show: true,
-                errMsg: [ 'DirectAccountRequired' ]
+                errMsg: ['DirectAccountRequired']
             });
             expect(result).toBeFalse;
         });
-        
+
         it('returns true', () => {
             // Arrange
             const props = {
@@ -1388,9 +1388,9 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ 'value' ],
+                    directAccount: ['value'],
                     headline: {},
-                    pics: [ 'value' ]
+                    pics: ['value']
                 },
                 confirmAssignedDirectAccountPopup: {},
                 assignPicPopup: {},
@@ -1419,8 +1419,8 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ { username: 'name' } ],
-                    pics: [ { value: 'value' } ]
+                    directAccount: [{ username: 'name' }],
+                    pics: [{ value: 'value' }]
                 },
                 confirmAssignedDirectAccountPopup: {},
                 assignPicPopup: {},
@@ -1440,7 +1440,7 @@ describe('AssignPic', () => {
             });
             expect(props.setAssignPicResult).toHaveBeenCalledWith({ show: false });
         });
-        
+
         it('validateForm returns true', () => {
             // Arrange
             const response = { data: {} };
@@ -1454,8 +1454,8 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ { username: 'name' } ],
-                    pics: [ { value: 'value' } ],
+                    directAccount: [{ username: 'name' }],
+                    pics: [{ value: 'value' }],
                     headline: {
                         value: ''
                     }
@@ -1484,7 +1484,7 @@ describe('AssignPic', () => {
                 expect(assignPic.instance().handleAssignPic).toHaveBeenCalled();
             });
         });
-        
+
         it('validateForm returns false', () => {
             // Arrange
             const props = {
@@ -1533,8 +1533,8 @@ describe('AssignPic', () => {
                 },
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ { username: 'name' } ],
-                    pics: [ { value: 'value' } ],
+                    directAccount: [{ username: 'name' }],
+                    pics: [{ value: 'value' }],
                     headline: { value: 'value' }
                 },
                 confirmAssignedDirectAccountPopup: {},
@@ -1558,7 +1558,7 @@ describe('AssignPic', () => {
                 directAccountIds: 'name'
             }, assignPic.instance().callbackAssignPic);
         });
-        
+
         it('validate assign pic successfully and assignedDirectAccounts not empty', () => {
             // Arrange
             const props = {
@@ -1569,7 +1569,7 @@ describe('AssignPic', () => {
                 assignPicResult: {},
                 validateAssignPicResult: {
                     isSuccessful: true,
-                    assignedDirectAccounts: [ 'value' ]
+                    assignedDirectAccounts: ['value']
                 },
                 gridParams: {},
                 assignPicFilter: {
@@ -1595,7 +1595,7 @@ describe('AssignPic', () => {
                 data: props.validateAssignPicResult.assignedDirectAccounts
             });
         });
-        
+
         it('validate assign pic unsuccessfully and assignedDirectAccounts empty', () => {
             // Arrange
             const props = {
@@ -1647,7 +1647,7 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ { username: value } ]
+                    directAccount: [{ username: value }]
                 },
                 confirmAssignedDirectAccountPopup: {},
                 assignPicPopup: {},
@@ -1659,7 +1659,7 @@ describe('AssignPic', () => {
             const errorAccounts = {
                 invalidUsername: value
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
 
             // Action
@@ -1668,7 +1668,7 @@ describe('AssignPic', () => {
             // Assert
             expect(props.setAssignPicFilter).toHaveBeenCalledWith({
                 ...props.assignPicFilter,
-                directAccount: [ { username: value, isValid: false } ]
+                directAccount: [{ username: value, isValid: false }]
             });
         });
 
@@ -1684,7 +1684,7 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ { username: value } ]
+                    directAccount: [{ username: value }]
                 },
                 confirmAssignedDirectAccountPopup: {},
                 assignPicPopup: {},
@@ -1696,7 +1696,7 @@ describe('AssignPic', () => {
             const errorAccounts = {
                 notDirectAccount: value
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
 
             // Action
@@ -1705,7 +1705,7 @@ describe('AssignPic', () => {
             // Assert
             expect(props.setAssignPicFilter).toHaveBeenCalledWith({
                 ...props.assignPicFilter,
-                directAccount: [ { username: value, isValid: false } ]
+                directAccount: [{ username: value, isValid: false }]
             });
         });
 
@@ -1721,7 +1721,7 @@ describe('AssignPic', () => {
                 validateAssignPicResult: {},
                 gridParams: {},
                 assignPicFilter: {
-                    directAccount: [ { username: value } ]
+                    directAccount: [{ username: value }]
                 },
                 confirmAssignedDirectAccountPopup: {},
                 assignPicPopup: {},
@@ -1733,7 +1733,7 @@ describe('AssignPic', () => {
             const errorAccounts = {
                 noBelongHeadlineAccount: value
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
 
             // Action
@@ -1742,7 +1742,7 @@ describe('AssignPic', () => {
             // Assert
             expect(props.setAssignPicFilter).toHaveBeenCalledWith({
                 ...props.assignPicFilter,
-                directAccount: [ { username: value, isValid: false } ]
+                directAccount: [{ username: value, isValid: false }]
             });
         });
 
@@ -1804,16 +1804,16 @@ describe('AssignPic', () => {
                 assignPicPopup: {},
                 setAssignPicResult: jest.fn()
             };
-    
+
             const data = {
                 isSuccessful: true
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
-    
+
             // Action
             assignPic.instance().callbackAssignPic(data);
-    
+
             // Assert
             expect(props.setAssignPicResult).toHaveBeenCalledWith({
                 isSuccessful: true,
@@ -1840,17 +1840,17 @@ describe('AssignPic', () => {
                 setAssignPicResult: jest.fn(),
                 setAssignPicPopup: jest.fn()
             };
-    
+
             const data = {
                 isSuccessful: false,
                 message: 'message'
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
-    
+
             // Action
             assignPic.instance().callbackAssignPic(data);
-    
+
             // Assert
             expect(props.setAssignPicResult).toHaveBeenCalledWith({
                 isSuccessful: false,
@@ -1876,17 +1876,17 @@ describe('AssignPic', () => {
                 assignPicPopup: {},
                 setAssignPicResult: jest.fn()
             };
-    
+
             const data = {
                 isSuccessful: true
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
             assignPic.instance().refreshGrid = jest.fn();
-    
+
             // Action
             assignPic.instance().callbackAssignPic(data);
-    
+
             // Assert
             expect(setTimeout).toHaveBeenCalledWith(assignPic.instance().refreshGrid, 2000);
         });
@@ -1909,17 +1909,17 @@ describe('AssignPic', () => {
                 setAssignPicResult: jest.fn(),
                 setAssignPicPopup: jest.fn()
             };
-    
+
             const data = {
                 isSuccessful: false,
                 message: 'message'
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
-    
+
             // Action
             assignPic.instance().callbackAssignPic(data);
-    
+
             // Assert
             expect(props.setAssignPicPopup).toHaveBeenCalledWith({
                 ...props.assignPicPopup,
@@ -1949,13 +1949,13 @@ describe('AssignPic', () => {
                 setAssignPicFilter: jest.fn(),
                 getGridData: jest.fn((params, callback) => callback())
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
             functions.handleNewRemoveOptions = jest.fn();
-    
+
             // Action
             assignPic.instance().refreshGrid();
-    
+
             // Assert
             expect(props.setAssignPicPopup).toHaveBeenCalledWith({ show: false });
             expect(props.setAssignPicFilter).toHaveBeenCalledWith({
@@ -1986,18 +1986,18 @@ describe('AssignPic', () => {
                 assignPicPopup: {},
                 setAssignPicResult: jest.fn()
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
             assignPic.instance().onClose = jest.fn();
             assignPic.instance().isFilterNotChange = jest.fn(() => true);
-    
+
             // Action
             assignPic.instance().handleCancel();
 
             // Assert
             expect(assignPic.instance().onClose).toHaveBeenCalled();
         });
-        
+
         it('should return new isShowConfirmPopup state when isFilterNotChange false', () => {
             // Arrange
             const props = {
@@ -2015,10 +2015,10 @@ describe('AssignPic', () => {
                 assignPicPopup: {},
                 setAssignPicResult: jest.fn()
             };
-    
+
             const assignPic = shallow(<AssignPic {...props} />);
             assignPic.instance().isFilterNotChange = jest.fn(() => false);
-    
+
             // Action
             assignPic.instance().handleCancel();
 
@@ -2048,7 +2048,7 @@ describe('AssignPic', () => {
 
             const state = {
                 oldAssignPicFilter: {
-                    directAccount: [ 'value' ]
+                    directAccount: ['value']
                 }
             };
 
@@ -2111,7 +2111,7 @@ describe('AssignPic', () => {
                 assignPicFilter: {
                     directAccount: [],
                     headline: {},
-                    pics: [ 'value' ]
+                    pics: ['value']
                 },
                 confirmAssignedDirectAccountPopup: {},
                 assignPicPopup: {},
@@ -2171,6 +2171,43 @@ describe('AssignPic', () => {
             // Assert
             expect(result).toBeTrue;
         });
+
+        it('returns true when pics null', () => {
+            // Arrange
+            const props = {
+                settings: {
+                    headlineList: [],
+                    picList: []
+                },
+                assignPicResult: {},
+                validateAssignPicResult: {},
+                gridParams: {},
+                assignPicFilter: {
+                    directAccount: [],
+                    headline: {},
+                    pics: null
+                },
+                confirmAssignedDirectAccountPopup: {},
+                assignPicPopup: {},
+                setAssignPicResult: jest.fn()
+            };
+
+            const state = {
+                oldAssignPicFilter: {
+                    directAccount: [],
+                    headline: {}
+                }
+            };
+
+            const assignPic = shallow(<AssignPic {...props} />);
+            assignPic.instance().setState(state);
+
+            // Action
+            const result = assignPic.instance().isFilterNotChange();
+
+            // Assert
+            expect(result).toBeTrue;
+        });
     });
 
     describe('isEqualDirectAccountArray', () => {
@@ -2193,7 +2230,7 @@ describe('AssignPic', () => {
             };
 
             const firstArray = [];
-            const secondArrray = [ 'value' ];
+            const secondArrray = ['value'];
             const assignPic = shallow(<AssignPic {...props} />);
 
             // Action
@@ -2202,7 +2239,7 @@ describe('AssignPic', () => {
             // Assert
             expect(result).toBeFalse;
         });
-        
+
         it('has same length but different value', () => {
             // Arrange
             const props = {
@@ -2221,8 +2258,8 @@ describe('AssignPic', () => {
                 setAssignPicResult: jest.fn()
             };
 
-            const firstArray = [ {username: 'value1'} ];
-            const secondArrray = [ {username: 'value2'} ];
+            const firstArray = [{ username: 'value1' }];
+            const secondArrray = [{ username: 'value2' }];
             const assignPic = shallow(<AssignPic {...props} />);
 
             // Action
@@ -2231,7 +2268,7 @@ describe('AssignPic', () => {
             // Assert
             expect(result).toBeFalse;
         });
-        
+
         it('has same length and value', () => {
             // Arrange
             const props = {
@@ -2250,8 +2287,8 @@ describe('AssignPic', () => {
                 setAssignPicResult: jest.fn()
             };
 
-            const firstArray = [ {username: 'value'} ];
-            const secondArrray = [ {username: 'value'} ];
+            const firstArray = [{ username: 'value' }];
+            const secondArrray = [{ username: 'value' }];
             const assignPic = shallow(<AssignPic {...props} />);
 
             // Action
@@ -2419,7 +2456,7 @@ describe('AssignPic', () => {
                 // Assert
                 expect(assignPic.instance().handleCancel).toHaveBeenCalled();
             });
-            
+
             it('has Modal Header', () => {
                 // Arrange
                 const props = {
@@ -2444,7 +2481,7 @@ describe('AssignPic', () => {
                 // Assert
                 expect(assignPic.find(Modal.Header).props().closeButton).toBeTrue;
             });
-            
+
             it('has Modal Title', () => {
                 // Arrange
                 const props = {
@@ -2470,7 +2507,7 @@ describe('AssignPic', () => {
                 expect(assignPic.find(Modal.Title).props().as).toBe('div');
                 expect(assignPic.find(Modal.Title).html()).toContain('AssignPIC');
             });
-            
+
             it('has Form, Modal Body', () => {
                 // Arrange
                 const props = {
@@ -2496,7 +2533,7 @@ describe('AssignPic', () => {
                 expect(assignPic.find(Form).length).toBe(1);
                 expect(assignPic.find(Modal.Body).length).toBe(1);
             });
-            
+
             it('Modal Body has validate component', () => {
                 // Arrange
                 const props = {
@@ -2518,7 +2555,7 @@ describe('AssignPic', () => {
                 const state = {
                     validate: {
                         show: true,
-                        errMsg: [ 'message1' ]
+                        errMsg: ['message1']
                     }
                 };
 
@@ -2529,11 +2566,11 @@ describe('AssignPic', () => {
                 // Assert
                 expect(assignPic.find(Modal.Body).find(Alert).props().variant).toBe('danger');
                 expect(assignPic.find(Modal.Body).find('ul').props().className).toBe('list-message-error');
-                for(let index = 0; index < state.validate.errMsg.length; index++) {
+                for (let index = 0; index < state.validate.errMsg.length; index++) {
                     expect(assignPic.find(Modal.Body).find('li').html()).toEqual(`<li>${state.validate.errMsg[index]}</li>`);
                 }
             });
-            
+
             it('Modal Body has ResponseMessage', () => {
                 // Arrange
                 const props = {
@@ -2589,11 +2626,11 @@ describe('AssignPic', () => {
                     const state = {
                         headlineOptions: []
                     };
-    
+
                     // Action
                     const assignPic = shallow(<AssignPic {...props} />);
                     assignPic.instance().setState(state);
-    
+
                     // Assert
                     expect(assignPic.find(Modal.Body).find(Form.Group).at(0).props().as).toEqual(Row);
                     expect(assignPic.find(Form.Group).at(0).find(Form.Label).props().sm).toBe('4');
@@ -2633,11 +2670,11 @@ describe('AssignPic', () => {
 
                     // Action
                     assignPic.find(Form.Group).at(0).find(Select).simulate('change', value);
-    
+
                     // Assert
                     expect(assignPic.instance().handleHeadlineChange).toHaveBeenCalledWith(value);
                 });
-                
+
                 it('Modal Body has second Form Group', () => {
                     // Arrange
                     const props = {
@@ -2660,11 +2697,11 @@ describe('AssignPic', () => {
                     const state = {
                         picOptions: []
                     };
-    
+
                     // Action
                     const assignPic = shallow(<AssignPic {...props} />);
                     assignPic.instance().setState(state);
-    
+
                     // Assert
                     expect(assignPic.find(Modal.Body).find(Form.Group).at(1).props().as).toEqual(Row);
                     expect(assignPic.find(Form.Group).at(1).find(Form.Label).props().sm).toBe('4');
@@ -2705,11 +2742,11 @@ describe('AssignPic', () => {
 
                     // Action
                     assignPic.find(Form.Group).at(1).find(Select).simulate('change', value);
-    
+
                     // Assert
                     expect(assignPic.instance().handlePicChange).toHaveBeenCalledWith(value);
                 });
-                
+
                 it('Modal Body has third Form Group', () => {
                     // Arrange
                     const props = {
@@ -2733,11 +2770,11 @@ describe('AssignPic', () => {
                         picOptions: [],
                         maxUsername: 10
                     };
-    
+
                     // Action
                     const assignPic = shallow(<AssignPic {...props} />);
                     assignPic.instance().setState(state);
-    
+
                     // Assert
                     expect(assignPic.find(Modal.Body).find(Form.Group).at(2).props().as).toEqual(Row);
                     expect(assignPic.find(Form.Group).at(2).find(Form.Label).props().sm).toBe('4');
@@ -2903,7 +2940,7 @@ describe('AssignPic', () => {
                     expect(assignPic.instance().handleBlurRelatedCustomerInput).toHaveBeenCalled();
                 });
             });
-            
+
             describe('Modal Footer', () => {
                 it('has regular components', () => {
                     // Arrange
