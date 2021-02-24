@@ -260,7 +260,7 @@ export class AssignPic extends Component {
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
         }
 
-        if (this.props.assignPicFilter.pics.length === 0) {
+        if (!this.props.assignPicFilter.pics || this.props.assignPicFilter.pics.length === 0) {
             errMsg.push(LangHelper.getResource('PICRequired'));
         }
 
