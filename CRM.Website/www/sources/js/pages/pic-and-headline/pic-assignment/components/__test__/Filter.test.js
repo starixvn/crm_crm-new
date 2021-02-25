@@ -70,7 +70,8 @@ describe('Filter', () => {
             siteOptions: [],
             currencyOptions: [],
             statusOptions: [],
-            positionOptions: []
+            positionOptions: [],
+            showFilter: true
         });
     });
 
