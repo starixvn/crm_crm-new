@@ -11,19 +11,6 @@ import configureMockStore from 'redux-mock-store';
 describe('DataGrid', () => {
     LangHelper.formatString = jest.fn(value => value);
     LangHelper.getResource = jest.fn(value => value);
-    
-    beforeEach(() => {
-        const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'app-container');
-        document.body.appendChild(appContainer);
-    });
-
-    afterEach(() => {
-        const appContainer = document.getElementById('app-container');
-        if (appContainer) {
-            document.body.removeChild(appContainer);
-        }
-    });
 
     describe('component with redux', () => {
         // Arrange
@@ -35,7 +22,7 @@ describe('DataGrid', () => {
         };
 
         const store = mockStore(initialState);
-        
+
         // Action
         const wrapper = shallow(<DataGridWrapper store={store} />);
 
@@ -96,10 +83,10 @@ describe('DataGrid', () => {
             };
 
             const dataGrid = shallow(<DataGrid {...props} />);
-    
+
             // Action
             const result = shallow(dataGrid.instance().buildPicManagementHeader(false));
-    
+
             // Assert
             expect(result.find(HeaderCell).at(0).props().colWidth).toBe(70);
             expect(result.find(HeaderCell).at(0).html()).toContain('TextNo');
@@ -132,10 +119,10 @@ describe('DataGrid', () => {
             };
 
             const dataGrid = shallow(<DataGrid {...props} />);
-    
+
             // Action
             const result = shallow(dataGrid.instance().buildPicManagementHeader(true));
-    
+
             // Assert
             expect(result.find(HeaderCell).at(10).props().colWidth).toBe(85);
             expect(result.find(HeaderCell).at(10).find('input').props().className).toBe('d-block mx-auto');
@@ -155,7 +142,7 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
             dataGrid.instance().handleOpenRemovePopup = jest.fn();
             const result = shallow(dataGrid.instance().buildPicManagementHeader(true));
-    
+
             // Action
             result.find(HeaderCell).at(10).find('input').simulate('click');
 
@@ -174,10 +161,10 @@ describe('DataGrid', () => {
             };
 
             const dataGrid = shallow(<DataGrid {...props} />);
-    
+
             // Action
             const result = shallow(dataGrid.instance().buildPicManagementHeader(true));
-    
+
             // Assert
             expect(result.find(HeaderCell).at(10).find('input').at(1).props().className).toBe('d-block cursor-pointer mx-auto margin-top-5px');
             expect(result.find(HeaderCell).at(10).find('input').at(1).props().type).toBe('checkbox');
@@ -229,7 +216,7 @@ describe('DataGrid', () => {
             // Assert
             expect(dataGrid.instance().startIndex).toEqual(expected);
         });
-        
+
         it('should return correct body when data not empty and having merge headline only', () => {
             // Arrange
             const props = {
@@ -238,9 +225,9 @@ describe('DataGrid', () => {
                         {
                             headlineID: 1,
                             picForMapping: 'pic for mapping',
-                            picList: [ 'pic' ],
+                            picList: ['pic'],
                             status: 'Error',
-                            directAccount: [ 'directAccount' ]
+                            directAccount: ['directAccount']
                         }
                     ]
                 },
@@ -261,7 +248,7 @@ describe('DataGrid', () => {
             // Assert
             expect(result).toEqual([expectedRow]);
         });
-        
+
         it('should return correct body when data not empty and having merge pic', () => {
             // Arrange
             const props = {
@@ -270,23 +257,23 @@ describe('DataGrid', () => {
                         {
                             headlineID: 1,
                             picForMapping: 'pic for mapping',
-                            picList: [ 'pic' ],
+                            picList: ['pic'],
                             status: 'Error',
-                            directAccount: [ 'directAccount' ]
+                            directAccount: ['directAccount']
                         },
                         {
                             headlineID: 1,
                             picForMapping: 'pic for mapping1',
-                            picList: [ 'pic' ],
+                            picList: ['pic'],
                             status: 'Error',
-                            directAccount: [ 'directAccount' ]
+                            directAccount: ['directAccount']
                         },
                         {
                             headlineID: 1,
                             picForMapping: 'pic for mapping1',
-                            picList: [ 'pic' ],
+                            picList: ['pic'],
                             status: 'Error',
-                            directAccount: [ 'directAccount' ]
+                            directAccount: ['directAccount']
                         }
                     ]
                 },
@@ -307,7 +294,7 @@ describe('DataGrid', () => {
             // Assert
             expect(result).toEqual([expectedRow, expectedRow, expectedRow]);
         });
-        
+
         it('should return correct body when data not empty and not have merge cell', () => {
             // Arrange
             const props = {
@@ -316,16 +303,16 @@ describe('DataGrid', () => {
                         {
                             headlineID: 1,
                             picForMapping: 'pic for mapping1',
-                            picList: [ 'pic1' ],
+                            picList: ['pic1'],
                             status: 'Error',
-                            directAccount: [ 'directAccount' ]
+                            directAccount: ['directAccount']
                         },
                         {
                             headlineID: 2,
                             picForMapping: 'pic for mapping2',
-                            picList: [ 'pic2' ],
+                            picList: ['pic2'],
                             status: 'Error',
-                            directAccount: [ 'directAccount' ]
+                            directAccount: ['directAccount']
                         }
                     ]
                 },
@@ -346,7 +333,7 @@ describe('DataGrid', () => {
             // Assert
             expect(result).toEqual([expectedRow, expectedRow]);
         });
-        
+
         it('should return correct body when data empty with isHost true', () => {
             // Arrange
             const props = {
@@ -443,7 +430,7 @@ describe('DataGrid', () => {
             expect(result.find(Cell).at(5).props().className).toBe(expectedClass);
             expect(result.find(Cell).at(5).html()).toContain(item.position);
         });
-        
+
         it('should return correct row when isHost true', () => {
             // Arrange
             const props = {
@@ -474,7 +461,7 @@ describe('DataGrid', () => {
             // Assert
             expect(result.find(Cell).at(6).html()).toContain(expected);
         });
-        
+
         it('should return correct row when renderMergeHeadlineCells return Cell', () => {
             // Arrange
             const props = {
@@ -511,7 +498,7 @@ describe('DataGrid', () => {
             // Assert
             expect(result.find(Cell).at(1).html()).toContain(expected);
         });
-        
+
         it('should return correct row when merge pic greater than 0 and not having picList', () => {
             // Arrange
             const props = {
@@ -541,7 +528,7 @@ describe('DataGrid', () => {
             // Assert
             expect(result.find(Cell).at(1).props().className).toBe('text-center');
         });
-        
+
         it('should return correct row when merge pic greater than 0 and having picList', () => {
             // Arrange
             const props = {
@@ -627,7 +614,7 @@ describe('DataGrid', () => {
                 headlineID: 1
             };
 
-            const defaultPicList = [ 'value' ];
+            const defaultPicList = ['value'];
             const expectedDefaultPic = 'expectedDefaultPic';
             const expected = <Fragment>
                 <OverlayTrigger placement='top' overlay={
@@ -683,7 +670,7 @@ describe('DataGrid', () => {
             const index = 0;
             const item = {
                 status: 'Error',
-                picList: [ 'value' ]
+                picList: ['value']
             };
 
             const dataGrid = shallow(<DataGrid {...props} />);
@@ -710,7 +697,7 @@ describe('DataGrid', () => {
             const index = 1;
             const item = {
                 status: 'Error',
-                picList: [ 'value' ]
+                picList: ['value']
             };
 
             const dataGrid = shallow(<DataGrid {...props} />);
@@ -770,7 +757,7 @@ describe('DataGrid', () => {
             // Assert
             expect(result).toEqual(expected);
         });
-        
+
         it('should return expected span when not have pic and isHost true', () => {
             // Arrange
             const props = {
@@ -789,7 +776,7 @@ describe('DataGrid', () => {
             expect(result.props().className).toBe('plus-icon');
             expect(result.html()).toContain('+');
         });
-        
+
         it('should return expected span onClick when not have pic and isHost true', () => {
             // Arrange
             const props = {
@@ -811,7 +798,7 @@ describe('DataGrid', () => {
             // Assert
             expect(dataGrid.instance().handleOpenAssignPicPopup).toHaveBeenCalledWith(headlineId, accountNames);
         });
-        
+
         it('should return expected when have pic', () => {
             // Arrange
             const props = {
@@ -826,7 +813,7 @@ describe('DataGrid', () => {
                 role: 'role'
             };
 
-            const pics = [ item ];
+            const pics = [item];
 
             const dataGrid = shallow(<DataGrid {...props} />);
             const expected = [<p key={item.picId} className='pic-name'>{`${item.picName} (${item.role})`}</p>];
@@ -849,7 +836,7 @@ describe('DataGrid', () => {
             };
 
             const pics = [
-                    {
+                {
                     value: 'value',
                     label: 'label'
                 }
@@ -866,7 +853,7 @@ describe('DataGrid', () => {
             // Assert
             expect(dataGrid.instance().handleOpenDefaultPicPopup).toHaveBeenCalledWith(headline, pics);
         });
-        
+
         it('should return expected div when not empty pics', () => {
             // Arrange
             const props = {
@@ -876,7 +863,7 @@ describe('DataGrid', () => {
             };
 
             const pics = [
-                    {
+                {
                     value: 'value',
                     label: 'label'
                 }
@@ -890,7 +877,7 @@ describe('DataGrid', () => {
             // Assert
             expect(result.props().className).toBe('cursor-pointer link-color');
         });
-        
+
         it('should return expected span onClick when empty pics', () => {
             // Arrange
             const props = {
@@ -911,7 +898,7 @@ describe('DataGrid', () => {
             // Assert
             expect(dataGrid.instance().handleOpenDefaultPicPopup).toHaveBeenCalledWith(headline);
         });
-        
+
         it('should return expected span when empty pics', () => {
             // Arrange
             const props = {
@@ -942,7 +929,7 @@ describe('DataGrid', () => {
                 isHadAll: true,
                 dataList: [
                     {
-                        picList: [ 'value' ]
+                        picList: ['value']
                     }
                 ]
             },
@@ -982,11 +969,11 @@ describe('DataGrid', () => {
                 isHadAll: true,
                 dataList: [
                     {
-                        picList: [ 'value' ],
+                        picList: ['value'],
                         isRemoved: false
                     },
                     {
-                        picList: [ 'value' ],
+                        picList: ['value'],
                         isRemoved: false
                     }
                 ]
@@ -1122,7 +1109,7 @@ describe('DataGrid', () => {
             expect(dataGrid.find('div').at(1).html()).toContain('PICAssignment');
             expect(dataGrid.find('div').at(2).html()).toContain('ThereAreUnassignedDirectAccounts');
             expect(dataGrid.find('span').props().className).toBe('fa fa-file-excel-o ml-3 icon-excel');
-            expect(dataGrid.find(Table).props().maxWidth).toEqual(document.getElementById('app-container').clientWidth);
+            expect(dataGrid.find(Table).props().maxWidth).toEqual(1350);
             expect(dataGrid.find(Table).props().autoWidth).toBeTrue;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;
             expect(dataGrid.find(Table).props().pageOption).toEqual(pageOptions);

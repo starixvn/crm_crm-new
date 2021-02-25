@@ -42,10 +42,10 @@ export class DataGrid extends Component {
                     />
                     {
                         this.props.removeOptions.isHadAll &&
-                            <input className='d-block cursor-pointer mx-auto margin-top-5px' type='checkbox'
-                                checked={this.props.removeOptions.isCheckedAll}
-                                onChange={() => this.handleChangeRemoveCheckboxAll()}
-                            />
+                        <input className='d-block cursor-pointer mx-auto margin-top-5px' type='checkbox'
+                            checked={this.props.removeOptions.isCheckedAll}
+                            onChange={() => this.handleChangeRemoveCheckboxAll()}
+                        />
                     }
                 </HeaderCell>
             }
@@ -72,7 +72,7 @@ export class DataGrid extends Component {
                     const accounts = pics.map(pic => pic.directAccount);
                     const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
                     row = this.renderRow(index, isHost, assignment, mergeHeadline, mergePIC, picCell);
-                } else if(mergePIC === 0) {
+                } else if (mergePIC === 0) {
                     const pics = this.props.picAssignmentGridData.data.filter(item =>
                         item.headlineID === assignment.headlineID && item.picForMapping === assignment.picForMapping);
                     mergePIC = pics.length;
@@ -114,7 +114,7 @@ export class DataGrid extends Component {
             }
             {
                 mergePIC > 0 &&
-                    <Cell className={item.picList ? '' : 'text-center'} rowSpan={mergePIC}>{picCell}</Cell>
+                <Cell className={item.picList ? '' : 'text-center'} rowSpan={mergePIC}>{picCell}</Cell>
             }
             <Cell className={`${item.status.toLowerCase()}-color`}>{item.directAccount}</Cell>
             <Cell className={`${item.status.toLowerCase()}-color`}>{item.status}</Cell>
@@ -138,9 +138,9 @@ export class DataGrid extends Component {
                 <Cell className='text-center' rowSpan={mergeHeadline}>{item.headlineType}</Cell>
                 <Cell className={defaultPicList.length > 0 ? '' : 'text-center'}
                     rowSpan={mergeHeadline}>{this.renderDefaultPic({
-                    id: item.headlineID,
-                    name: item.headlineName
-                }, defaultPicList)}</Cell>
+                        id: item.headlineID,
+                        name: item.headlineName
+                    }, defaultPicList)}</Cell>
             </Fragment>;
         }
 
@@ -178,7 +178,7 @@ export class DataGrid extends Component {
                 return <span
                     className='plus-icon'
                     onClick={() => this.handleOpenAssignPicPopup(headlineId, accountNames)
-                }>+</span>;
+                    }>+</span>;
             }
 
             return <span>-</span>;
@@ -279,7 +279,7 @@ export class DataGrid extends Component {
                 </div>
             </div>
             <Table
-                maxWidth={document.getElementById('app-container').clientWidth}
+                maxWidth={1350}
                 autoWidth
                 header={this.buildPicManagementHeader(isHost)}
                 body={this.buildPicManagementBody(isHost)}
