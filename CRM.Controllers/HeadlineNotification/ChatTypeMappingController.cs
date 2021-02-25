@@ -31,7 +31,8 @@
         private readonly ICommonService commonService;
         private readonly IChatTypeMappingService chatTypeMappingService;
         private readonly Func<int, ILetstalkService> letstalkService;
-
+        private readonly IExportExcelService excelService;
+#pragma warning disable S107 // Methods should not have too many parameters
         public ChatTypeMappingController(
             INapSession napSession,
             INapSettings napSettings,
@@ -39,7 +40,9 @@
             ISettingService settingService,
             ICommonService commonService,
             IChatTypeMappingService chatTypeMappingService,
-            Func<int, ILetstalkService> letstalkService)
+            Func<int, ILetstalkService> letstalkService,
+            IExportExcelService excelService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
@@ -48,12 +51,13 @@
             this.commonService = commonService;
             this.chatTypeMappingService = chatTypeMappingService;
             this.letstalkService = letstalkService;
+            this.excelService = excelService;
         }
 
         public IActionResult Index()
         {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ChatTypeMapping, Policy.Host);
-            return View(isHost);
+            //var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ChatTypeMapping, Policy.Host);
+            return View(true);
         }
 
         public async Task<IActionResult> GetSettings()
@@ -247,6 +251,30 @@
         {
             var contactDetail = await letstalkService(botId).GetProfileAsync(letstalkId.Trim());
             return contactDetail.Item2 ? contactDetail.Item1.DisplayName : string.Empty;
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Read)]
+        public async Task<IActionResult> ExportExcel([FromBody]ChatTypeFilterViewModel filter)
+        {
+            var criteria = new GetChatTypeMappingCriteria
+            {
+                ChatTypeId = filter.ChatType,
+                ConversationGroupName = filter.Name,
+                Headline = filter.GroupHeadline,
+                RecipientName = filter.RecipientIds,
+                LetstalkId = filter.LetstalkId,
+                LanguageId = filter.LanguageId,
+                IsActive = filter.IsActive,
+                BotId = filter.BotId,
+                MappingStatus = filter.MappingStatuses,
+                PageIndex = filter.PageIndex,
+                PageSize = filter.PageSize
+            };
+
+            var data = await chatTypeMappingService.GetChatTypeMappingAsync(criteria);
+            var bytes = excelService.ExportChatTypeMapping(data.Item1);
+            return File(bytes, MimeType.XLSX, $"{ViewResources.ChatTypeMapping}.xlsx");
         }
     }
 }

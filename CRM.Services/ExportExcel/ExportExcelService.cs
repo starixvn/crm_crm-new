@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.IO;
     using CRM.Models;
+    using CRM.Models.ChatTypeMapping;
+    using CRM.Services.ExportExcel;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report.SettlementReport;
     using Microsoft.AspNetCore.Hosting;
@@ -14,6 +16,8 @@
         byte[] ExportPICManagement(IEnumerable<BaseModel> communicationTools, PicReport picReport);
 
         byte[] ExportSettlementReport(SettlementReportInfo reportInfo);
+
+        byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -46,6 +50,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/PicManagement.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new PicManagementExcel(templatePath, communicationTools, picReport);
+            return excel.Export();
+        }
+
+        public byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/ChatType_Mapping.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new ChatTypeMappingExcel(templatePath, chatTypeMappings);
             return excel.Export();
         }
     }

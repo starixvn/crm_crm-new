@@ -189,6 +189,11 @@ export class DataGrid extends Component {
         );
     };
 
+    handleExportExcelMapping = () => {
+        const { gridParams } = this.props;
+        this.props.exportExcelMapping(gridParams);
+    }
+
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {
             return null;
@@ -207,7 +212,13 @@ export class DataGrid extends Component {
         const confirmMsg = this.renderConfirmMessage();
         return (
             <Fragment>
-                <div className='table-title'>{LangHelper.getResource('ChatTypeMapping')}</div>
+                <div className='table-title d-flex justify-content-between align-items-center'>
+                    <span>{LangHelper.getResource('ChatTypeMapping')}</span>
+                    {
+                        this.props.gridData.data.length > 0 &&
+                        <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcelMapping} />
+                    }
+                </div>
                 <Table
                     isPaging
                     minWidth={960}
@@ -246,14 +257,23 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData, updateActiveStatusPopup, updateActiveStatusResult, updatePersonalMappingData, updateGroupMappingData } = state;
+    const {
+        gridParams,
+        gridData,
+        updateActiveStatusPopup,
+        updateActiveStatusResult,
+        updatePersonalMappingData,
+        updateGroupMappingData,
+        exportExcelMapping
+    } = state;
     return {
         gridParams,
         gridData,
         updateActiveStatusPopup,
         updateActiveStatusResult,
         updatePersonalMappingData,
-        updateGroupMappingData
+        updateGroupMappingData,
+        exportExcelMapping
     };
 };
 

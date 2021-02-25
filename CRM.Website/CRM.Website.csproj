@@ -75,6 +75,9 @@
     <None Update="ExcelTemplates\PicAssignment.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="ExcelTemplates\ChatType_Mapping.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ExcelTemplates\PicManagement.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

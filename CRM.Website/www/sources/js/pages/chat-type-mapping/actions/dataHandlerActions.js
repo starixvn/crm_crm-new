@@ -104,6 +104,14 @@ export const getGroupHeadlineByRecipient = recipientIds => async dispatch => {
     }
 };
 
+const exportExcelMapping = params => async dispatch => {
+    const url = Site.resolveClientUrl('ChatTypeMapping/ExportExcel');
+    await DataService.getFileAsync(url, params).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split("\"")[1];
+        Site.downloadFile(response.data, fileName);
+    });
+};
+
 const actions = {
     getSettings,
     getGridData,
@@ -111,7 +119,8 @@ const actions = {
     setUpateActivePopup,
     updateActiveStatus,
     getRecipientByRecipientType,
-    getGroupHeadlineByRecipient
+    getGroupHeadlineByRecipient,
+    exportExcelMapping
 };
 
 export default actions;
