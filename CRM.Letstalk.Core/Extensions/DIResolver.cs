@@ -49,6 +49,7 @@
                     case EventType.Message:
                         return serviceProvider.GetRequiredService<ReceiveMessageEventHandler>();
 
+                    case EventType.DeleteContact:
                     case EventType.AddContact:
                         return serviceProvider.GetRequiredService<AddContactEventHandler>();
 

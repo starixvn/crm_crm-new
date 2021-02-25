@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Services.Interfaces;
+    using CRM.Letstalk.Core.Constants;
     using CRM.Letstalk.Core.Models;
     using CRM.Letstalk.Core.Services.Interfaces;
 
@@ -19,7 +20,10 @@
 
         public async Task EventHandleAsync(HookEvent hookEvent, BotConfig botConfig)
         {
-            await letstalkService(botConfig.BotAccountId).PushAsync(hookEvent.Source.UserId, string.Format(greeting, botConfig.BotUserId));
+            if (hookEvent.Type == EventType.AddContact)
+            {
+                await letstalkService(botConfig.BotAccountId).PushAsync(hookEvent.Source.UserId, string.Format(greeting, botConfig.BotUserId));
+            }
         }
     }
 }

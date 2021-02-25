@@ -8,6 +8,8 @@
 
         public const string AddContact = "add_contact";
 
+        public const string DeleteContact = "delete_contact";
+
         public const string JoinGroup = "join_group";
 
         public const string KickOutGroup = "kick_group";

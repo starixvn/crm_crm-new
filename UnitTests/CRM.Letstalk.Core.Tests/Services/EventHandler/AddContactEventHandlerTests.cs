@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Services.Interfaces;
+    using CRM.Letstalk.Core.Constants;
     using CRM.Letstalk.Core.Models;
     using CRM.Letstalk.Core.Services.EventHandler;
     using NSubstitute;
@@ -27,6 +28,7 @@
         {
             var hookEvent = new HookEvent
             {
+                Type = EventType.AddContact,
                 Source = new EventSource
                 {
                     UserId = "letstalk"
