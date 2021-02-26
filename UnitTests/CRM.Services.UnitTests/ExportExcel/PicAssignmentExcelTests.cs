@@ -73,6 +73,7 @@
             excel.Received(4).Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
             excel.Received(1).Protected("GetTemplateRowIndex", Arg.Any<string>());
             excel.Received(2).Protected("GetPicCell", Arg.Any<IEnumerable<PicModel>>());
+            excel.Received(1).Protected("DrawBorderCell", Arg.Any<ExcelRange>());
             Assert.Equal(worksheet.Cells[RowStartBody, colMergeIndex++].Value, assignment.HeadlineName);
             Assert.Equal(worksheet.Cells[RowStartBody, colMergeIndex++].Value, assignment.HeadlineType);
             Assert.Equal(worksheet.Cells[RowStartBody, colMergeIndex++].Value, picCell);
@@ -106,6 +107,7 @@
             excel.Received(5).Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
             excel.Received(2).Protected("GetTemplateRowIndex", Arg.Any<string>());
             excel.Received(3).Protected("GetPicCell", Arg.Any<IEnumerable<PicModel>>());
+            excel.Received(1).Protected("DrawBorderCell", Arg.Any<ExcelRange>());
             Assert.Equal(worksheet.Cells[RowStartBody + 1, colNormalIndex - 1].Value, picCell);
             Assert.Equal(worksheet.Cells[RowStartBody + 1, colNormalIndex++].Value, assignment2.DirectAccount);
             Assert.Equal(worksheet.Cells[RowStartBody + 1, colNormalIndex++].Value, assignment2.Status);
@@ -139,6 +141,7 @@
             excel.Received(5).Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
             excel.Received(3).Protected("GetTemplateRowIndex", Arg.Any<string>());
             excel.Received(3).Protected("GetPicCell", Arg.Any<IEnumerable<PicModel>>());
+            excel.Received(1).Protected("DrawBorderCell", Arg.Any<ExcelRange>());
             Assert.Equal(worksheet.Cells[RowStartBody + 2, colNormalIndex++].Value, assignment3.DirectAccount);
             Assert.Equal(worksheet.Cells[RowStartBody + 2, colNormalIndex++].Value, assignment3.Status);
             Assert.Equal(worksheet.Cells[RowStartBody + 2, colNormalIndex++].Value, assignment3.Site);
@@ -218,7 +221,6 @@
                 OfficeOpenXml.Style.ExcelVerticalAlignment.Center,
                 worksheet.Cells[startRow, colIndex, endRow, colIndex].Style.VerticalAlignment
             );
-            excel.Received(1).Protected("DrawBorderCell", Arg.Any<ExcelRange>());
         }
 
         [Fact]

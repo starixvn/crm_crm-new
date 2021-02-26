@@ -100,13 +100,18 @@
                 mergePic--;
                 rowIndex++;
             }
+            DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, colIndex]);
         }
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
         {
             const byte widthLarge = 20;
+            const byte widthNormal = 15;
+            const byte widthSmall = 7;
             const byte colPIC = 5;
+            worksheet.DefaultColWidth = widthNormal;
             worksheet.Cells.AutoFitColumns();
+            worksheet.Column(1).Width = widthSmall;
             worksheet.Column(colPIC).Width = widthLarge;
         }
 
@@ -134,7 +139,6 @@
         {
             worksheet.Cells[startRow, colIndex, endRow, colIndex].Merge = true;
             worksheet.Cells[startRow, colIndex, endRow, colIndex].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            DrawBorderCell(worksheet.Cells[startRow, colIndex]);
         }
 
         protected internal virtual string GetPicCell(IEnumerable<PicModel> picList)
