@@ -44,6 +44,7 @@
             var rowNum = 1;
             var mergeHeadline = 0;
             var mergePic = 0;
+            StyleDefault(worksheet);
             foreach (PICAssignmentInfo assignment in assignments)
             {
                 colIndex = 1;
