@@ -315,8 +315,8 @@ export class Filter extends Component {
                 <div className="filter-collapse text-center">
                     {
                         this.state.showFilter
-                            ? <span className="fa fa-caret-up" onClick={() => this.setState({ showFilter: false })} />
-                            : <span className="fa fa-caret-down" onClick={() => this.setState({ showFilter: true })} />
+                            ? <span className="fa fa-caret-up fa-lg" onClick={() => this.setState({ showFilter: false })} />
+                            : <span className="fa fa-caret-down fa-lg" onClick={() => this.setState({ showFilter: true })} />
                     }
                 </div>
             </Form>

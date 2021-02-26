@@ -103,8 +103,10 @@
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
         {
+            const byte widthLarge = 20;
+            const byte colPIC = 5;
             worksheet.Cells.AutoFitColumns();
-            worksheet.View.FreezePanes(RowStartBody, TotalColumns + 1);
+            worksheet.Column(colPIC).Width = widthLarge;
         }
 
         protected internal virtual byte GetTemplateRowIndex(string status)
@@ -138,7 +140,7 @@
         {
             if (picList == null || !picList.Any())
             {
-                return ExcelCharacter.NullCharacter;
+                return string.Empty;
             }
 
             var buffer = new StringBuilder();

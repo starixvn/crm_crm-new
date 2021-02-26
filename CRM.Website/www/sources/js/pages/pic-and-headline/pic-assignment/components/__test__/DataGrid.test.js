@@ -349,7 +349,7 @@ describe('DataGrid', () => {
 
             const expected = [
                 <Row key={`body${1}`} className='no-data' >
-                    <Cell colSpan={11}>{'ThereIsNoData'}</Cell>
+                    <Cell className='text-center' colSpan={11}>{'ThereIsNoData'}</Cell>
                 </Row>
             ];
             const dataGrid = shallow(<DataGrid {...props} />);
@@ -376,7 +376,7 @@ describe('DataGrid', () => {
 
             const expected = [
                 <Row key={`body${1}`} className='no-data' >
-                    <Cell colSpan={10}>{'ThereIsNoData'}</Cell>
+                    <Cell className='text-center' colSpan={10}>{'ThereIsNoData'}</Cell>
                 </Row>
             ];
             const dataGrid = shallow(<DataGrid {...props} />);

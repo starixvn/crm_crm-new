@@ -231,7 +231,7 @@
             var result = excel.Public_GetPicCell(null);
 
             // Assert
-            Assert.Equal(ExcelCharacter.NullCharacter, result);
+            Assert.Equal(string.Empty, result);
         }
 
         [Fact]
@@ -244,7 +244,7 @@
             var result = excel.Public_GetPicCell(new List<PicModel>());
 
             // Assert
-            Assert.Equal(ExcelCharacter.NullCharacter, result);
+            Assert.Equal(string.Empty, result);
         }
 
         [Fact]

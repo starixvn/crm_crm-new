@@ -93,7 +93,7 @@ export class DataGrid extends Component {
 
         return [
             <Row key={`body${1}`} className='no-data' >
-                <Cell colSpan={isHost ? 11 : 10}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+                <Cell className='text-center' colSpan={isHost ? 11 : 10}>{LangHelper.getResource('ThereIsNoData')}</Cell>
             </Row>
         ];
     };
