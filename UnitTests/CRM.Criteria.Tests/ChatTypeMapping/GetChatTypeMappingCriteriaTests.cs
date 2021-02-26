@@ -20,18 +20,13 @@
         }
 
         [Theory]
-        [InlineData("", 0, 0)]
-        [InlineData("", 1, 2)]
-        [InlineData("a", 1, 0)]
-        [InlineData("a", 0, 2)]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(string mappingStatus, int pageIndex, int pageSize)
+        [InlineData("")]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(string mappingStatus)
         {
             // Arrange
             var criteria = new GetChatTypeMappingCriteria
             {
-                MappingStatus = mappingStatus,
-                PageIndex = pageIndex,
-                PageSize = pageSize
+                MappingStatus = mappingStatus
             };
             // Act
             var actual = criteria.IsValid();

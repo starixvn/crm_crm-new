@@ -37,6 +37,7 @@
         private ICommonService commonService;
         private IChatTypeMappingService chatTypeMappingService;
         private Func<int, ILetstalkService> letstalkService;
+        private IExportExcelService excelService;
 
         [Fact]
         public void Index_WhenCalled_ReturnExpectedViewResult()
@@ -343,6 +344,25 @@
             Assert.Equal(expectedName, actual);
         }
 
+        [Fact]
+        public async Task ExportExcelReport_WhenCalled_ReturnsExpectedFile()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var controller = GetController();
+            var criteria = fixture.Create<ChatTypeFilterViewModel>();
+            var expected = fixture.Create<byte[]>();
+            excelService.ExportChatTypeMapping(Arg.Any<IEnumerable<ChatTypeMappingModel>>()).Returns(expected);
+
+            // Action
+            var result = await controller.ExportExcel(criteria) as FileContentResult;
+
+            // Assert
+            Assert.Equal(expected, result.FileContents);
+            Assert.Equal(MimeType.XLSX, result.ContentType);
+            Assert.Equal($"{ViewResources.ChatTypeMapping}.xlsx", result.FileDownloadName);
+        }
+
         #region helper
 
         private ChatTypeMappingController GetController()
@@ -354,8 +374,17 @@
             commonService = Substitute.For<ICommonService>();
             chatTypeMappingService = Substitute.For<IChatTypeMappingService>();
             letstalkService = Substitute.For<Func<int, ILetstalkService>>();
+            excelService = Substitute.For<IExportExcelService>();
 
-            return new ChatTypeMappingController(napSession, napSettings, userService, settingService, commonService, chatTypeMappingService, letstalkService);
+            return new ChatTypeMappingController(
+                napSession,
+                napSettings,
+                userService,
+                settingService,
+                commonService,
+                chatTypeMappingService,
+                letstalkService,
+                excelService);
         }
 
         #endregion helper
