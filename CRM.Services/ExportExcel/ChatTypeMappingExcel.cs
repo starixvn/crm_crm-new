@@ -142,14 +142,12 @@
             const byte colLetstalkName = 4;
             const byte colGroupHeadline = 6;
             const byte colRecipient = 7;
-            const byte colLetstalkID = 8;
             worksheet.DefaultColWidth = WidthNormal;
             worksheet.Cells.AutoFitColumns();
             worksheet.Column(1).Width = WidthExtraSmall;
             worksheet.Column(colBotName).Width = WidthSmall;
             worksheet.Column(colGroupHeadline).Width = WidthLarge;
             worksheet.Column(colLetstalkName).Width = WidthLarge;
-            worksheet.Column(colLetstalkID).Width = WidthLarge;
             worksheet.Column(colRecipient).Width = WidthLarge;
             worksheet.Column(TotalColumns - 1).Width = WidthExtraSmall;
             worksheet.Column(TotalColumns).Width = WidthLarge;
