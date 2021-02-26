@@ -2,9 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using CRM.Core.Constants;
-    using CRM.Core.Enumerables;
     using CRM.Models.ChatTypeMapping;
     using CRM.Resources;
     using OfficeOpenXml;
@@ -18,11 +15,16 @@
         private const byte WidthExtraSmall = 7;
         private const byte WidthSmall = 10;
         private const byte WidthNormal = 15;
-        private const byte WidthLarge = 22;
+        private const byte WidthLarge = 25;
+        private const byte ColIndexMergeDefault = 7;
+        private const byte mappingGroup = 1;
+
+        private int rowIndex = RowStartBody;
+
         private readonly IEnumerable<ChatTypeMappingModel> chatTypeMappings;
 
         public ChatTypeMappingExcel(string templatePath, IEnumerable<ChatTypeMappingModel> chatTypeMappings)
-            : base(templatePath, 0, ViewResources.PICAssignment)
+            : base(templatePath, 0, ViewResources.ChatTypeMapping)
         {
             this.chatTypeMappings = chatTypeMappings;
         }
@@ -41,26 +43,40 @@
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            int rowIndex = RowStartBody;
-            var chatTypeMappingsArray = chatTypeMappings.ToList();
-            for (var index = 0; index < chatTypeMappingsArray.Count; index++)
+            var rowNum = 0;
+            foreach (var chatType in chatTypeMappings)
             {
-                RenderRow(worksheet, chatTypeMappingsArray[index], index + 1, rowIndex++);
+                rowNum++;
+                RenderRow(chatType, rowNum, worksheet);
             }
         }
 
-        protected internal override void ProcessUI(ExcelWorksheet worksheet)
-        {
-            SetStyle(worksheet);
-            SetWidthColumn(worksheet);
-            DrawBorderCell(worksheet.Cells[1, 1, RowStartBody + chatTypeMappings.Count() - 1, TotalColumns]);
-        }
-
-        protected internal virtual void RenderRow(ExcelWorksheet worksheet, ChatTypeMappingModel chatType, int index, int rowIndex)
+        protected internal virtual void RenderRow(ChatTypeMappingModel chatType,int rowNum, ExcelWorksheet worksheet)
         {
             var colIndex = 1;
-            const byte mappingGroup = 1;
-            worksheet.Cells[rowIndex, colIndex++].Value = index;
+            var colIndexMerge = 1;
+            var colIndexMergeAfterHeadline = 8;
+            int recipientCounts = chatType.Recipients.Count();
+            if (recipientCounts > 1)
+            {
+                int rowMerge = rowIndex + recipientCounts - 1;
+                StyleMergeCell(worksheet, rowIndex, colIndexMerge++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMerge++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMerge++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMerge++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMerge++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMerge, rowMerge);
+
+                StyleMergeCell(worksheet, rowIndex, colIndexMergeAfterHeadline++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMergeAfterHeadline++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMergeAfterHeadline++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMergeAfterHeadline++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMergeAfterHeadline, rowMerge);
+            }
+
+            worksheet.Cells[rowIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            worksheet.Cells[rowIndex, colIndex++].Value = rowNum;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatType;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.BotName;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ConversationGroupName;
@@ -69,16 +85,46 @@
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ConversationGroupName;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatTypeId == mappingGroup ? "" : chatType.ConversationId;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.Language;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.MappingStatus;
+            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatTypeId == mappingGroup ? chatType.MappingStatus : "";
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.IsActive ? ViewResources.Yes : ViewResources.No;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.Remark;
-
-            worksheet.Cells[rowIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            if ((index & 1) == 0)
+            worksheet.Cells[rowIndex, colIndex].Value = chatType.Remark;
+            if(recipientCounts > 0)
+            {
+                for (int i = 0; i < recipientCounts; i++)
+                {
+                    worksheet.Cells[rowIndex++, ColIndexMergeDefault].Value = string.Format("{0} ({1})", chatType.Recipients.ToList()[i].RecipientName, chatType.Recipients.ToList()[i].RoleName);
+                }
+            }
+            else
+            {
+                rowIndex++;
+            }
+            if ((rowNum & 1) == 1)
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
             }
+        }
+
+        protected internal override void ProcessUI(ExcelWorksheet worksheet)
+        {
+            SetStyle(worksheet);
+            SetWidthColumn(worksheet);
+            var countMergeCells = 0;
+            foreach(var chatType in chatTypeMappings)
+            {
+                if(chatType.Recipients.Count() > 1)
+                {
+                    countMergeCells += chatType.Recipients.Count() -1;
+                }
+            }
+            var chatTypeCountDrawBoder = RowStartBody + chatTypeMappings.Count() + countMergeCells - 1;
+            DrawBorderCell(worksheet.Cells[1, 1, chatTypeCountDrawBoder, TotalColumns]);
+        }
+
+        protected internal virtual void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)
+        {
+            worksheet.Cells[startRow, colIndex, endRow, colIndex].Merge = true;
+            DrawBorderCell(worksheet.Cells[startRow, colIndex]);
         }
 
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
@@ -92,14 +138,20 @@
 
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
-            const byte colBotName = 3;
+            const byte colBotName = 2;
+            const byte colLetstalkName = 4;
             const byte colGroupHeadline = 6;
+            const byte colRecipient = 7;
+            const byte colLetstalkID = 8;
             worksheet.DefaultColWidth = WidthNormal;
             worksheet.Cells.AutoFitColumns();
             worksheet.Column(1).Width = WidthExtraSmall;
             worksheet.Column(colBotName).Width = WidthSmall;
             worksheet.Column(colGroupHeadline).Width = WidthLarge;
-            worksheet.Column(TotalColumns - 1).Width = WidthLarge;
+            worksheet.Column(colLetstalkName).Width = WidthLarge;
+            worksheet.Column(colLetstalkID).Width = WidthLarge;
+            worksheet.Column(colRecipient).Width = WidthLarge;
+            worksheet.Column(TotalColumns - 1).Width = WidthExtraSmall;
             worksheet.Column(TotalColumns).Width = WidthLarge;
         }
     }

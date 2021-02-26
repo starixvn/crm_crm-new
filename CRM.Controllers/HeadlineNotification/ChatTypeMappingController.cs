@@ -56,8 +56,8 @@
 
         public IActionResult Index()
         {
-            //var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ChatTypeMapping, Policy.Host);
-            return View(true);
+            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ChatTypeMapping, Policy.Host);
+            return View(isHost);
         }
 
         public async Task<IActionResult> GetSettings()
@@ -268,8 +268,8 @@
                 IsActive = filter.IsActive,
                 BotId = filter.BotId,
                 MappingStatus = filter.MappingStatuses,
-                PageIndex = filter.PageIndex,
-                PageSize = filter.PageSize
+                PageIndex = 0,
+                PageSize = 0
             };
 
             var data = await chatTypeMappingService.GetChatTypeMappingAsync(criteria);
