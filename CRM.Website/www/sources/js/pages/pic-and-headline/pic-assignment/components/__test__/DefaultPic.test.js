@@ -672,7 +672,6 @@ describe('DefaultPic', () => {
             expect(defaultPic.find(Modal).props().show).toBeTrue;
             expect(defaultPic.find(Modal).props().backdrop).toBe('static');
             expect(defaultPic.find(Modal).props().keyboard).toBeFalse;
-            expect(defaultPic.find(Modal).props().size).toBe('lg');
             expect(defaultPic.find(Modal).props().centered).toBeTrue;
             expect(defaultPic.find(Modal).props().dialogAs).toEqual(DraggableModalDialog);
         });
@@ -1066,7 +1065,6 @@ describe('DefaultPic', () => {
             const confirmPopup = defaultPic.find(ConfirmPopup);
 
             // Assert
-            expect(confirmPopup.props().size).toBe('lg');
             expect(confirmPopup.props().title).toBe('Confirmation');
             expect(confirmPopup.props().content).toEqual(<div>ThereAreSomeChangesConfirmMessage</div>);
         });

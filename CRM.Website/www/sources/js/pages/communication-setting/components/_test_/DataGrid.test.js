@@ -256,7 +256,7 @@ describe('DataGrid', () => {
                     overlay={<div />}
                 >
                     <span>
-                        a,b,c,e,f,d,a,d,f,d,q,d,d,a,b...
+                        a, b, c, e, f, d, a, d, f, d, q, d, d, a, b...
                      </span>
                 </OverlayTrigger>);
             });
@@ -267,9 +267,9 @@ describe('DataGrid', () => {
 
                 // Act
                 const actual = container.renderCategoryColumn(1, 'a,b,c');
-                container.decodeCatagory = jest.fn(() => 'a,b,c');
+                // container.decodeCatagory = jest.fn(() => 'a,b,c');
                 // Assert
-                expect(actual).toEqual(['a', 'b', 'c']);
+                expect(actual).toEqual(<div>a, b, c</div>);
             });
 
             it('should return null', () => {
@@ -277,10 +277,10 @@ describe('DataGrid', () => {
                 const container = shallow(<DataGrid />).instance();
 
                 // Act
-                const actual = container.renderCategoryColumn(1, '');
-                container.decodeHtml = jest.fn(() => []);
+                const actual = shallow(container.renderCategoryColumn(1, ''));
+                // container.decodeHtml = jest.fn(() => []);
                 // Assert
-                expect(actual).toEqual([]);
+                expect(actual.html()).toEqual('<div></div>');
             });
         });
 

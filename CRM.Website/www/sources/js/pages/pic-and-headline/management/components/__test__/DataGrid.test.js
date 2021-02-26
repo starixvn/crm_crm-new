@@ -401,7 +401,7 @@ describe('DataGrid', () => {
                 // Assert
                 expect(actual).toEqual([
                     <Row key={`body${1}`} className="no-data">
-                        <Cell colSpan={props.setting.communicationTools.length + 8}>ThereIsNoData</Cell>
+                        <Cell className='text-center' colSpan={props.setting.communicationTools.length + 8}>ThereIsNoData</Cell>
                     </Row>
                 ]);
             });

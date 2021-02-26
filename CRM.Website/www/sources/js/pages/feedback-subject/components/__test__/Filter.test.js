@@ -22,14 +22,14 @@ describe('filter', () => {
     describe('methods', () => {
         describe('handleChange', () => {
             it('should call setState when change feedback search keyword', () => {
-                  // Arrange
+                // Arrange
                 const expected = {
                     feedbackSubjectSearch: 'feedback'
                 };
                 const container = shallow(<Filter />);
 
                 // Act
-                container.instance().handleChange({ target: { value: 'feedback', name: 'feedbackSubjectSearch'} });
+                container.instance().handleChange({ target: { value: 'feedback', name: 'feedbackSubjectSearch' } });
 
                 // Assert
                 expect(container.state()).toEqual(expected);
@@ -42,7 +42,7 @@ describe('filter', () => {
                 const expected = {
                     Subject: '',
                     pageIndex: 1,
-                    pageSize: 50
+                    pageSize: 100
                 };
                 const container = shallow(<Filter />).instance();
 

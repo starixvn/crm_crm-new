@@ -2424,7 +2424,6 @@ describe('AssignPic', () => {
                 expect(assignPic.find(Modal).props().show).toBeTrue;
                 expect(assignPic.find(Modal).props().backdrop).toBe('static');
                 expect(assignPic.find(Modal).props().keyboard).toBeFalse;
-                expect(assignPic.find(Modal).props().size).toBe('lg');
                 expect(assignPic.find(Modal).props().centered).toBeTrue;
                 expect(assignPic.find(Modal).props().dialogAs).toEqual(DraggableModalDialog);
             });
@@ -3119,7 +3118,6 @@ describe('AssignPic', () => {
                 assignPic.instance().setState(state);
 
                 // Assert
-                expect(assignPic.find(ConfirmPopup).props().size).toBe('lg');
                 expect(assignPic.find(ConfirmPopup).props().title).toBe('Confirmation');
                 expect(assignPic.find(ConfirmPopup).props().content)
                     .toEqual(<div>{LangHelper.getResource('ThereAreSomeChangesConfirmMessage')}</div>);
