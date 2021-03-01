@@ -184,4 +184,31 @@ describe('dataHandlerActions', () => {
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
+
+    it('exportExcelMapping should call exactly functions', async () => {
+        // Arrange
+        const response = {
+            data: {
+            },
+            headers: {
+                ['content-disposition']: 'a; filename="test.txt";'
+            }
+        }
+        const filename = response.headers['content-disposition'].split('filename=')[1].split("\"")[1];
+        const expectedParams = {
+            pageIndex: 1,
+            pageSize: 100
+        };
+        Site.downloadFile = jest.fn();
+        const promise = Promise.resolve(response);
+        DataService.getFileAsync = jest.fn(() => promise);
+        const store = mockStore({ gridData: null });
+
+        // Act
+        await store.dispatch(actions.exportExcelMapping(expectedParams)).then(() => {
+            // Assert
+            expect(DataService.getFileAsync).toHaveBeenCalledWith('ChatTypeMapping/ExportExcel', expectedParams);
+            expect(Site.downloadFile).toHaveBeenCalledWith(response.data, filename);
+        });
+    });
 });
