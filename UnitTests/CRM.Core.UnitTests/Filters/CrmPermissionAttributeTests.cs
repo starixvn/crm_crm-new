@@ -25,6 +25,7 @@
             var userService = Substitute.For<IUserService>();
             var napSettings = Substitute.For<INapSettings>();
             var napSession = Substitute.For<INapSession>();
+            napSession.UserId.Returns(1);
 
             userService.GetPermissionAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns((int)Constant.Policy.Read);
 

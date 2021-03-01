@@ -33,7 +33,7 @@
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            if (context?.HttpContext == null)
+            if (context?.HttpContext == null || napSession.UserId <= 0)
             {
                 return;
             }
