@@ -102,7 +102,7 @@ export class EditNotificationTemplate extends Component {
                         </Col>
                     </Form.Group>
                     {
-                        this.props.languages.map(item => {
+                        this.props.languages !== null && this.props.languages(item => {
                             return (
                                 <Form.Group key={`language${item.settingId}`} as={Row}>
                                     <Form.Label column sm="4" md="3" className="required" htmlFor={'language_' + item.settingId}>
@@ -142,7 +142,7 @@ export class EditNotificationTemplate extends Component {
             title: values.title,
             contents: []
         };
-        this.props.languages.map(item => {
+        this.props.languages !== null && this.props.languages(item => {
             template.contents.push({
                 languageId: item.settingId,
                 content: values['language_' + item.settingId]
@@ -167,7 +167,7 @@ export class EditNotificationTemplate extends Component {
             notificationTemplateName: template.notificationTemplateName,
             title: template.title
         };
-        this.props.languages.map(item => {
+        this.props.languages !== null && this.props.languages.map(item => {
             initialValues['language_' + item.settingId] = '';
             const index = template.contents.findIndex(x => x.languageId === item.settingId);
             if (index >= 0) {

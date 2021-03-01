@@ -92,7 +92,7 @@ export class NewNotificationTemplate extends Component {
                         </Col>
                     </Form.Group>
                     {
-                        this.props.languages.map(item => {
+                        this.props.languages !== null && this.props.languages.map(item => {
                             return (
                                 <Form.Group key={`language${item.settingId}`} as={Row}>
                                     <Form.Label column sm="4" md="3"
@@ -129,7 +129,7 @@ export class NewNotificationTemplate extends Component {
             title: values.title,
             contents: []
         };
-        this.props.languages.map(item => {
+        this.props.languages !== null && this.props.languages.map(item => {
             template.contents.push({
                 languageId: item.settingId,
                 content: values['language_' + item.settingId]
@@ -153,7 +153,7 @@ export class NewNotificationTemplate extends Component {
             notificationTemplateName: '',
             title: ''
         };
-        this.props.languages.map(item => {
+        this.props.languages !== null && this.props.languages.map(item => {
             initialValues['language_' + item.settingId] = '';
         });
 
