@@ -1,7 +1,7 @@
 ﻿namespace CRM.Services.UnitTests.ExportExcel
 {
-    using AutoFixture;
     using CRM.Models.ChatTypeMapping;
+    using CRM.Resources;
     using CRM.Services.UnitTests.ExportExcel.TestableClasses;
     using NSubstitute;
     using OfficeOpenXml;
@@ -10,7 +10,6 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
-    using System.Text;
     using Xunit;
 
     public class ChatTypeMappingExcelTests
@@ -28,7 +27,6 @@
         private IEnumerable<ChatTypeMappingModel> chatTypeMappings;
 
         private int rowIndex = RowStartBody;
-        private readonly IFixture fixture = new Fixture();
         [Fact]
         public void RenderTitle_WhenCalled_ExpectedCopyRow()
         {
@@ -73,6 +71,71 @@
 
             // Assert
             service.Received(1).Protected("RenderRow", Arg.Any<ChatTypeMappingModel>(), Arg.Any<int>(), worksheet);
+        }
+
+        [Fact]
+        public void RenderRow_WhenCalledWithRecipientsCountGreaterZero_ExpectedMergeCellValue()
+        {
+            // Arrange
+            var worksheet = excelPackage.Worksheets.Add("data");
+            var service = CreateExcel();
+            var colIndex = 1;
+            var rowNum = 1;
+            var chatTypeMapping = chatTypeMappings.FirstOrDefault();
+
+            // Act
+            service.Public_RenderRow(chatTypeMapping, rowNum, worksheet);
+
+            // Assert
+            service.Received(11).Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, rowNum);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.BotName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ConversationGroupName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Recipients.Any() ? chatTypeMapping.Recipients.FirstOrDefault().RecipientTypeName : "");
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Headlines.Any() ? string.Join(", ", chatTypeMapping.Headlines.Select(x => x.HeadlineName)) : "");
+            colIndex++;
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? "" : chatTypeMapping.ConversationId);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Language);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? chatTypeMapping.MappingStatus : "");
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.IsActive ? ViewResources.Yes : ViewResources.No);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex].Value, chatTypeMapping.Remark);
+            for (int i = 0; i < chatTypeMapping.Recipients.Count(); i++)
+            {
+                Assert.Equal(worksheet.Cells[rowIndex++, ColIndexMergeDefault].Value, string.Format("{0} ({1})", chatTypeMapping.Recipients.ToList()[i].RecipientName, chatTypeMapping.Recipients.ToList()[i].RoleName));
+            }
+        }
+
+        [Fact]
+        public void RenderRow_WhenCalledWithRecipientsCountEqualZero_ExpectedNormalCellsValue()
+        {
+            // Arrange
+            var worksheet = excelPackage.Worksheets.Add("data");
+            var service = CreateExcel();
+            var colIndex = 1;
+            var rowNum = 1;
+            chatTypeMappings.FirstOrDefault().Recipients = Array.Empty<ConversationRecipient>();
+            var chatTypeMapping = chatTypeMappings.FirstOrDefault();
+
+            // Act
+            service.Public_RenderRow(chatTypeMapping, rowNum, worksheet);
+
+            // Assert
+            service.DidNotReceive().Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, rowNum);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.BotName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ConversationGroupName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Recipients.Any() ? chatTypeMapping.Recipients.FirstOrDefault().RecipientTypeName : "");
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Headlines.Any() ? string.Join(", ", chatTypeMapping.Headlines.Select(x => x.HeadlineName)) : "");
+            colIndex++;
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? "" : chatTypeMapping.ConversationId);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Language);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? chatTypeMapping.MappingStatus : "");
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.IsActive ? ViewResources.Yes : ViewResources.No);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex].Value, chatTypeMapping.Remark);
+            rowIndex++;
+
         }
 
         [Fact]
@@ -186,7 +249,7 @@
                     ChatTypeId= 2,
                     ConversationGroupId= 1,
                     ConversationGroupName= "jennyphan",
-                    ConversationId= "t01",
+                    ConversationId= "id1",
                     MappingStatusId = 1,
                     Headlines = new List<ConversationHeadlineModel>
                     {
@@ -204,8 +267,17 @@
                             ConversationGroupId = 1,
                             LetstalkId = "t01",
                             RecipientId = 1,
-                            RecipientName = "test",
+                            RecipientName = "ab",
                             RecipientTypeName = "PIC",
+                            RoleName = "partner"
+                        },
+                        new ConversationRecipient
+                        {
+                            ConversationGroupId = 2,
+                            LetstalkId = "t02",
+                            RecipientId = 2,
+                            RecipientName = "test2",
+                            RecipientTypeName = "PIC2",
                             RoleName = "partner"
                         }
                     }

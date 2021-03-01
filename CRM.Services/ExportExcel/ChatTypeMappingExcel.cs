@@ -82,7 +82,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ConversationGroupName;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.Recipients.Any() ? chatType.Recipients.FirstOrDefault().RecipientTypeName : "";
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.Headlines.Any() ? string.Join(", ", chatType.Headlines.Select(x => x.HeadlineName)) : "";
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ConversationGroupName;
+            colIndex++;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatTypeId == mappingGroup ? "" : chatType.ConversationId;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.Language;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatTypeId == mappingGroup ? chatType.MappingStatus : "";
