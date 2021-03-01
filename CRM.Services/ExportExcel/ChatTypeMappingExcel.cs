@@ -9,9 +9,9 @@
 
     public class ChatTypeMappingExcel : ExcelBase
     {
-        private const byte RowStartHeader = 4;
+        private const byte RowStartHeaderChatType = 4;
         private const byte RowStartBody = 5;
-        private const byte TotalColumns = 12;
+        private const byte TotalColumnsChatType = 12;
         private const byte WidthExtraSmall = 7;
         private const byte WidthSmall = 10;
         private const byte WidthNormal = 15;
@@ -31,14 +31,14 @@
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalColumns]
-                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalColumns]);
+            templateWorksheet.Cells[1, 1, RowStartHeaderChatType - 1, TotalColumnsChatType]
+                .Copy(worksheet.Cells[1, 1, RowStartHeaderChatType - 1, TotalColumnsChatType]);
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns]
-                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns]);
+            templateWorksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType]
+                .Copy(worksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType]);
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -80,8 +80,8 @@
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatType;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.BotName;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ConversationGroupName;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.Recipients.Count() > 0 ? chatType.Recipients.FirstOrDefault().RecipientTypeName : "";
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.Headlines.Count() > 0 ? string.Join(", ", chatType.Headlines.Select(x => x.HeadlineName)) : "";
+            worksheet.Cells[rowIndex, colIndex++].Value = chatType.Recipients.Any() ? chatType.Recipients.FirstOrDefault().RecipientTypeName : "";
+            worksheet.Cells[rowIndex, colIndex++].Value = chatType.Headlines.Any() ? string.Join(", ", chatType.Headlines.Select(x => x.HeadlineName)) : "";
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ConversationGroupName;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatTypeId == mappingGroup ? "" : chatType.ConversationId;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.Language;
@@ -118,7 +118,7 @@
                 }
             }
             var chatTypeCountDrawBoder = RowStartBody + chatTypeMappings.Count() + countMergeCells - 1;
-            DrawBorderCell(worksheet.Cells[1, 1, chatTypeCountDrawBoder, TotalColumns]);
+            DrawBorderCell(worksheet.Cells[1, 1, chatTypeCountDrawBoder, TotalColumnsChatType]);
         }
 
         protected internal virtual void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)
@@ -130,10 +130,10 @@
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
-            SetBackgroundColor(worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns], HeaderTitleColor);
-            worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.Font.Bold = true;
-            worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.Font.Color.SetColor(System.Drawing.Color.White);
-            worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            SetBackgroundColor(worksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType], HeaderTitleColor);
+            worksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType].Style.Font.Bold = true;
+            worksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType].Style.Font.Color.SetColor(System.Drawing.Color.White);
+            worksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
@@ -149,8 +149,8 @@
             worksheet.Column(colGroupHeadline).Width = WidthLarge;
             worksheet.Column(colLetstalkName).Width = WidthLarge;
             worksheet.Column(colRecipient).Width = WidthLarge;
-            worksheet.Column(TotalColumns - 1).Width = WidthExtraSmall;
-            worksheet.Column(TotalColumns).Width = WidthLarge;
+            worksheet.Column(TotalColumnsChatType - 1).Width = WidthExtraSmall;
+            worksheet.Column(TotalColumnsChatType).Width = WidthLarge;
         }
     }
 }

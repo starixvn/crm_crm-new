@@ -227,7 +227,7 @@
                     await VerifyRecipients(data);
                 }
 
-                return Json(new { isBotRemoved = isBotRemoved, recipients = data.Recipients });
+                return Json(new { isBotRemoved, recipients = data.Recipients });
             }
 
             return Json(null);

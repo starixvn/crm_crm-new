@@ -16,9 +16,9 @@
     public class ChatTypeMappingExcelTests
     {
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
-        private const byte RowStartHeader = 4;
+        private const byte RowStartHeaderChatType = 4;
         private const byte RowStartBody = 5;
-        private const byte TotalColumns = 12;
+        private const byte TotalColumnsChatType = 12;
         private const byte WidthExtraSmall = 7;
         private const byte WidthSmall = 10;
         private const byte WidthNormal = 15;
@@ -41,8 +41,8 @@
             service.Public_RenderTitle(template, worksheet);
 
             // Assert
-            Assert.Equal(template.Cells[1, 1, RowStartHeader - 1, TotalColumns],
-                worksheet.Cells[1, 1, RowStartHeader - 1, TotalColumns]);
+            Assert.Equal(template.Cells[1, 1, RowStartHeaderChatType - 1, TotalColumnsChatType],
+                worksheet.Cells[1, 1, RowStartHeaderChatType - 1, TotalColumnsChatType]);
         }
 
         [Fact]
@@ -57,7 +57,7 @@
             excel.Public_RenderHeader(templateWorksheet, worksheet);
 
             // Assert
-            Assert.Equal(templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns], worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns]);
+            Assert.Equal(templateWorksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType], worksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType]);
         }
 
         [Fact]
@@ -119,10 +119,10 @@
             var excel = CreateExcel();
 
             // Action
-            excel.Public_StyleMergeCell(worksheet, startRow, TotalColumns, endRow);
+            excel.Public_StyleMergeCell(worksheet, startRow, TotalColumnsChatType, endRow);
 
             // Assert
-            Assert.True(worksheet.Cells[startRow, TotalColumns, endRow, TotalColumns].Merge);
+            Assert.True(worksheet.Cells[startRow, TotalColumnsChatType, endRow, TotalColumnsChatType].Merge);
             excel.Received(1).Protected("DrawBorderCell", Arg.Any<ExcelRange>());
         }
 
@@ -141,11 +141,11 @@
             // Assert
             excel.Received().Protected("StyleDefault", worksheet);
             excel.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
-            Assert.True(worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.Font.Bold);
+            Assert.True(worksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType].Style.Font.Bold);
             Assert.Equal(expectedColor,
-                worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.Font.Color.Rgb);
+                worksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType].Style.Font.Color.Rgb);
             Assert.Equal(ExcelHorizontalAlignment.Center,
-                worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.HorizontalAlignment);
+                worksheet.Cells[RowStartHeaderChatType, 1, RowStartHeaderChatType, TotalColumnsChatType].Style.HorizontalAlignment);
         }
 
         [Fact]
@@ -169,8 +169,8 @@
             Assert.Equal(WidthLarge, worksheet.Column(colGroupHeadline).Width);
             Assert.Equal(WidthLarge, worksheet.Column(colLetstalkName).Width);
             Assert.Equal(WidthLarge, worksheet.Column(colRecipient).Width);
-            Assert.Equal(WidthExtraSmall, worksheet.Column(TotalColumns - 1).Width);
-            Assert.Equal(WidthLarge, worksheet.Column(TotalColumns).Width);
+            Assert.Equal(WidthExtraSmall, worksheet.Column(TotalColumnsChatType - 1).Width);
+            Assert.Equal(WidthLarge, worksheet.Column(TotalColumnsChatType).Width);
         }
 
         #region Helpers

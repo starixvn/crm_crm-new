@@ -192,7 +192,7 @@ export class DataGrid extends Component {
     handleExportExcelMapping = () => {
         const { gridParams } = this.props;
         this.props.exportExcelMapping(gridParams);
-    }
+    };
 
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {
