@@ -9,6 +9,7 @@
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
     using CRM.Letstalk.Client.Configurations;
+    using CRM.Letstalk.Client.Extensions;
     using CRM.Services.Extensions;
     using Fanex.Data;
     using Fanex.Data.SqlServer;
@@ -195,11 +196,11 @@
             services.AddSingleton<ISecurityService, SecurityService>();
             services.AddSingleton<ISiteService, SiteService>();
 
-            services.AddSingleton<Fanex.Logging.ILogger, Logger>();
+            services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<List<BotConfig>>();
             services.ResolveCoreDI();
             services.ResolveServiceDI();
-            services.ResolveLetstalkServiceDI(botConfigs);
+            services.RegisterLetstalkBotService(Configuration, botConfigs);
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)

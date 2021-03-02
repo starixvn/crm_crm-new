@@ -18,7 +18,7 @@
         private readonly LetstalkService letstalkService;
         private readonly BotConfig botConfig;
         private readonly ICryptographyService cryptographyService;
-        private readonly IRestClientService restClientService;
+        private readonly IHttpClientService restClientService;
         private readonly IJwtService jwtService;
 
         public LetstalkServiceTests()
@@ -40,7 +40,7 @@
             };
             cryptographyService = Substitute.For<ICryptographyService>();
             jwtService = Substitute.For<IJwtService>();
-            restClientService = Substitute.For<IRestClientService>();
+            restClientService = Substitute.For<IHttpClientService>();
             letstalkService = new LetstalkService(cryptographyService, restClientService, botConfig);
         }
 

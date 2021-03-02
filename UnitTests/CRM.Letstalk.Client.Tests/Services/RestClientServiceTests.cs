@@ -17,7 +17,7 @@
         private readonly IRestClient restClient;
         private readonly IJwtService jwtHelper;
         private readonly BotConfig botConfig;
-        private readonly RestClientService restClientService;
+        private readonly HttpClientService restClientService;
         private readonly Fixture fixture;
 
         public RestClientServiceTests()

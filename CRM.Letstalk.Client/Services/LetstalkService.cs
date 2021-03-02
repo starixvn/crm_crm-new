@@ -15,7 +15,7 @@
     {
         private const int payloadId = 100;
         private readonly BotConfig botConfig;
-        private readonly IRestClientService restClientService;
+        private readonly IHttpClientService restClientService;
         private readonly ICryptographyService cryptographyService;
 
         private readonly JsonSerializerSettings DefaultJsonSerializeSetting = new JsonSerializerSettings
@@ -24,7 +24,7 @@
         };
 
         public LetstalkService(ICryptographyService cryptographyService,
-            IRestClientService restClientService,
+            IHttpClientService restClientService,
             BotConfig botConfig)
         {
             this.cryptographyService = cryptographyService;

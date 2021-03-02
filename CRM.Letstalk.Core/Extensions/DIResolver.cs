@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using CRM.Letstalk.Client.Configurations;
+    using CRM.Letstalk.Client.Extensions;
     using CRM.Letstalk.Client.Services;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Letstalk.Core.Constants;
@@ -65,22 +65,7 @@
             services.Configure<List<BotConfig>>(options => botConfigSections.Bind(options));
             var botConfigs = botConfigSections.Get<List<BotConfig>>();
             services.AddSingleton(botConfigs);
-            services.AddTransient<IRestClient, RestClient>();
-
-            services.AddTransient<RestClientService>();
-            services.AddTransient<LetstalkService>();
-            services.AddTransient<Func<int, ILetstalkService>>(serviceProvider => botId =>
-            {
-                CheckArgumentHelper.CheckValidBot(botConfigs, botId);
-
-                var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
-                var restClientService = new RestClientService(
-                RestClientService.CreateDefaultClient(botConfig.ApiEndpoint, botConfig.ProxyAddress, botConfig.ByPassProxyLocal, botConfig.IsUseProxy),
-                new JwtService(),
-                botConfig);
-
-                return new LetstalkService(serviceProvider.GetRequiredService<ICryptographyService>(), restClientService, botConfig);
-            });
+            services.RegisterLetstalkBotService(configuration, botConfigs);
         }
     }
 }
