@@ -14,13 +14,13 @@
     public class HttpClientService : IHttpClientService
     {
         private const int ExpiredTokenPeriodInMiliseconds = 5000;
-        private readonly HttpClient httpClient;
+        private readonly IHttpClientFactory clientFactory;
         private readonly IJwtService jwtService;
         private readonly BotConfig botConfig;
 
-        public HttpClientService(HttpClient httpClient, IJwtService jwtService, BotConfig botConfig)
+        public HttpClientService(IHttpClientFactory clientFactory, IJwtService jwtService, BotConfig botConfig)
         {
-            this.httpClient = httpClient;
+            this.clientFactory = clientFactory;
             this.jwtService = jwtService;
             this.botConfig = botConfig;
         }
@@ -37,8 +37,9 @@
                 var content = new StringContent(encodedData, Encoding.UTF8, "application/json");
                 request.Content = content;
             }
-            var getResponse = await httpClient.GetAsync(new Uri($"{botConfig.ApiEndpoint}{endPoint}"));
-            var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+            var client = clientFactory.CreateClient();
+            client.BaseAddress = new Uri(botConfig.ApiEndpoint);
+            var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
 
             if (response.IsSuccessStatusCode)
             {
