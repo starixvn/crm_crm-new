@@ -142,7 +142,7 @@ export class EditNotificationTemplate extends Component {
             title: values.title,
             contents: []
         };
-        this.props.languages !== null && this.props.languages(item => {
+        this.props.languages !== null && this.props.languages.map(item => {
             template.contents.push({
                 languageId: item.settingId,
                 content: values['language_' + item.settingId]
