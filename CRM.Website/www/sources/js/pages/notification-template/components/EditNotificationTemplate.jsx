@@ -102,7 +102,7 @@ export class EditNotificationTemplate extends Component {
                         </Col>
                     </Form.Group>
                     {
-                        this.props.languages !== null && this.props.languages(item => {
+                        this.props.languages!==null && this.props.languages.map(item => {
                             return (
                                 <Form.Group key={`language${item.settingId}`} as={Row}>
                                     <Form.Label column sm="4" md="3" className="required" htmlFor={'language_' + item.settingId}>
