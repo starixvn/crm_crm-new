@@ -3,8 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using CRM.Letstalk.Client.Configurations;
+    using CRM.Letstalk.Client.Constants;
     using CRM.Letstalk.Client.Services;
     using CRM.Letstalk.Client.Services.Interfaces;
     using Microsoft.Extensions.Configuration;
@@ -14,7 +16,7 @@
     {
         public static void RegisterLetstalkBotService(this IServiceCollection services, IConfiguration configuration, List<BotConfig> botConfigs)
         {
-            services.AddHttpClient();
+            RegisterHttpClientFactory(services, configuration);
 
             services.AddSingleton<ICryptographyService, CryptographyService>();
             services.AddSingleton<IJwtService, JwtService>();
@@ -35,31 +37,17 @@
             });
         }
 
-        //private static HttpClient GetDefaultHttpClient(IConfiguration configuration)
-        //{
-        //    var isUseProxy = bool.Parse(configuration.GetSection("HttpClientSetting:IsUseProxy").Value);
-        //    var proxyAddress = configuration.GetSection("HttpClientSetting:ProxyAddress").Value;
-        //    var bypassOnLocal = bool.Parse(configuration.GetSection("HttpClientSetting:BypassOnLocal").Value);
+        private static void RegisterHttpClientFactory(IServiceCollection services, IConfiguration configuration)
+        {
+            var isUseProxy = bool.Parse(configuration.GetSection("HttpClientSetting:IsUseProxy").Value);
+            var proxyAddress = configuration.GetSection("HttpClientSetting:ProxyAddress").Value;
+            var bypassOnLocal = bool.Parse(configuration.GetSection("HttpClientSetting:BypassOnLocal").Value);
 
-        //    HttpClient httpClient;
-
-        //    if (isUseProxy)
-        //    {
-        //        var proxy = new WebProxy(proxyAddress, bypassOnLocal);
-        //        var socketsHttpHandler = new SocketsHttpHandler
-        //        {
-        //            UseProxy = isUseProxy,
-        //            Proxy = proxy,
-        //        };
-
-        //        httpClient = new HttpClient(handler: socketsHttpHandler);
-        //    }
-        //    else
-        //    {
-        //        httpClient = new HttpClient();
-        //    }
-
-        //    return httpClient;
-        //}
+            services.AddHttpClient(HttpClientName.DefaultHttpClientWithProxy).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+            {
+                UseProxy = isUseProxy,
+                Proxy = new WebProxy(proxyAddress, bypassOnLocal)
+            });
+        }
     }
 }

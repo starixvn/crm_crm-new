@@ -8,6 +8,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using CRM.Letstalk.Client.Configurations;
+    using CRM.Letstalk.Client.Constants;
     using CRM.Letstalk.Client.Services.Interfaces;
     using Newtonsoft.Json;
 
@@ -25,10 +26,23 @@
             this.botConfig = botConfig;
         }
 
+        public Task<T> ExecuteGetAsync<T>(string endPoint, IDictionary<string, object> data = null) where T : new()
+            => ExecuteAsync<T>(endPoint, HttpMethod.Get, data);
+
+        public Task<T> ExecutePostAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
+            => ExecuteAsync<T>(endPoint, HttpMethod.Post, data);
+
+        public Task<T> ExecutePutAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
+            => ExecuteAsync<T>(endPoint, HttpMethod.Put, data);
+
+        public Task<T> ExecuteDeleteAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
+            => ExecuteAsync<T>(endPoint, HttpMethod.Delete, data);
+
         private async Task<T> ExecuteAsync<T>(string endPoint, HttpMethod method, IDictionary<string, object> data)
             where T : new()
         {
             ValidateEndPoint(endPoint);
+
             var request = CreateRequest(endPoint, method);
 
             if (data != null)
@@ -37,8 +51,7 @@
                 var content = new StringContent(encodedData, Encoding.UTF8, "application/json");
                 request.Content = content;
             }
-            var client = clientFactory.CreateClient();
-            client.BaseAddress = new Uri(botConfig.ApiEndpoint);
+            var client = clientFactory.CreateClient(HttpClientName.DefaultHttpClientWithProxy);
             var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
 
             if (response.IsSuccessStatusCode)
@@ -57,7 +70,6 @@
             Uri url = new Uri($"{botConfig.ApiEndpoint}{endPoint}");
             var request = new HttpRequestMessage(method, url);
             request.Headers.Accept.Clear();
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", EncodeBase64(botConfig.ApiKey));
 
             return request;
@@ -70,18 +82,6 @@
                 throw new ArgumentNullException(nameof(endPoint));
             }
         }
-
-        public Task<T> ExecuteGetAsync<T>(string endPoint, IDictionary<string, object> data = null) where T : new()
-            => ExecuteAsync<T>(endPoint, HttpMethod.Get, data);
-
-        public Task<T> ExecutePostAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
-            => ExecuteAsync<T>(endPoint, HttpMethod.Post, data);
-
-        public Task<T> ExecutePutAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
-            => ExecuteAsync<T>(endPoint, HttpMethod.Put, data);
-
-        public Task<T> ExecuteDeleteAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
-            => ExecuteAsync<T>(endPoint, HttpMethod.Delete, data);
 
         private string Encode(IDictionary<string, object> data)
         {

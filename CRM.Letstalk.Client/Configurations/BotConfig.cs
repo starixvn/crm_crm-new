@@ -21,11 +21,5 @@
         public int BusinessAccountType { get; set; }
 
         public int EncryptionMode { get; set; }
-
-        public string ProxyAddress { get; set; }
-
-        public bool ByPassProxyLocal { get; set; }
-
-        public bool IsUseProxy { get; set; }
     }
 }

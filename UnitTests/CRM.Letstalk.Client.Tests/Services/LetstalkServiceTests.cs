@@ -30,12 +30,9 @@
                 BotAccountId = 1000,
                 BotUserId = "@test",
                 BusinessAccountType = 1,
-                ByPassProxyLocal = true,
                 ChatKey = "ABC",
-                ProxyAddress = "10.0.0.0",
                 ChatKeyVersion = 5,
                 EncryptionMode = 2,
-                IsUseProxy = true,
                 SecureKey = "Secure"
             };
             cryptographyService = Substitute.For<ICryptographyService>();
