@@ -43,6 +43,7 @@
     },
     "LetstalkBotConfigurations": [
         {
+<<<<<<< HEAD:CRM.Letstalk.Webhook/appsettings.PROD.json
             "ApiEndpoint": "https://message.biatalk.cc",
             "ApiKey": "ziynHcJ6n4KxdactHJsMe4Trdpw1CEOt",
             "SecureKey": "PMBqdVmg4IZC9qk0zwMhctb7sUIG2mtDL279Cqh5JHczLAaQPlKHb8gB3Y32ZAZkEjqH6qyHWX0kENnw9W7yRM7XJplMDuTY4bjhmA2lTKsCM58q7oP8Rghjv9ljtWCr",
@@ -50,15 +51,21 @@
             "BotAccountId": 100021,
             "DisplayName": "247_Notification",
             "BotUserId": "@247_notification",
+=======
+            "ApiEndpoint": "https://message.biatalk.cc/",
+            "ApiKey": "ieaTv1pLJ5iA3I4aZLc0uv7EMbrq15zK",
+            "SecureKey": "nO8isnuBjeQcflwU81VyQv5prWpnNZP4NUJI3rnxiBDJ9M96l9vjSti4gIkLsi0aelgvHzHnTarn2pVet6BkJsC9DwUCBkZqJ7d1z7BkxrjbNYw7x9yX952dvAjmsx7T",
+            "ChatKey": "3bbde0a7e46432c69dda4ce713176263525a83b85cddf8ac197be7f314b6a96b",
+            "BotAccountId": 100020,
+            "DisplayName": "Ow_Local",
+            "BotUserId": "@ow_local",
+>>>>>>> 000 - update letstalk endpoint config:CRM.Letstalk.Webhook/appsettings.Development.json
             "ChatKeyVersion": 1,
             "BusinessAccountType": 2,
             "EncryptionMode": 5,
-<<<<<<< HEAD:CRM.Letstalk.Webhook/appsettings.PROD.json
             "ProxyAddress": "10.3.252.100:8801",
             "ByPassProxyLocal": true,
             "IsUseProxy": true
-=======
->>>>>>> 000 - change restsharp to httpclient:CRM.Letstalk.Webhook/appsettings.Development.json
         }
     ],
     "WebhookConfigurations": [
