@@ -47,6 +47,13 @@
             foreach (var chatType in chatTypeMappings)
             {
                 rowNum++;
+                if(chatType.Recipients.Count() > 1 && (rowNum & 1) == 0)
+                {
+                    for (int i = 1; i < chatType.Recipients.Count(); i++)
+                    {
+                        SetBackgroundColor(worksheet.Cells[rowIndex + i, ColIndexMergeDefault, rowIndex + i, ColIndexMergeDefault], EvenRowColor);
+                    }
+                }
                 RenderRow(chatType, rowNum, worksheet);
             }
         }
@@ -88,7 +95,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatTypeId == mappingGroup ? chatType.MappingStatus : "";
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.IsActive ? ViewResources.Yes : ViewResources.No;
             worksheet.Cells[rowIndex, colIndex].Value = chatType.Remark;
-            if(recipientCounts > 0)
+            if (recipientCounts > 0)
             {
                 for (int i = 0; i < recipientCounts; i++)
                 {
