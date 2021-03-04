@@ -1,9 +1,5 @@
 ﻿namespace CRM.Website
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
@@ -22,8 +18,6 @@
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
-    using Fanex.NAP.Client.Transport;
-    using Fanex.NAP.Client.Web;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.DataProtection;
@@ -41,6 +35,10 @@
     using ONEbook.UM.Transport;
     using Sentry;
     using StackExchange.Redis;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -163,7 +161,6 @@
 
             NapClientManager
               .UseConfig(app.ApplicationServices.GetService<INapSettings>())
-              .UseRestClient(app.ApplicationServices.GetService<IRestClient>())
               .UseSession(app.ApplicationServices.GetService<INapSession>());
 
             app.UseMvc(routes =>
@@ -187,7 +184,6 @@
 
             services.AddSingleton<INapSettings>(new NapSettings(Configuration));
             services.AddSingleton<INapSession, NapSession>();
-            services.AddSingleton<IRestClient, RestClient>();
 
             services.AddSingleton<IGroupService, GroupService>();
             services.AddSingleton<IUserService, UserService>();
