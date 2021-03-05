@@ -11,6 +11,8 @@ import { Form } from 'react-bootstrap';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import EditGroupMappingPopup from './EditGroupMappingPopup';
 import EditPersonalMappingPopup from './EditPersonalMappingPopup';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -194,6 +196,25 @@ export class DataGrid extends Component {
         this.props.exportExcelMapping(gridParams);
     };
 
+    renderExportExcelText = () => {
+        return(
+            <OverlayTrigger
+            placement="auto"
+            overlay= {
+                <Tooltip className="tooltipExport">
+                <span>
+                    Export Excel
+                </span>
+                </Tooltip>
+            }
+            >
+            {
+                <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcelMapping} />
+            }
+            </OverlayTrigger>
+        )
+    };
+
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {
             return null;
@@ -215,8 +236,7 @@ export class DataGrid extends Component {
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{LangHelper.getResource('ChatTypeMapping')}</span>
                     {
-                        this.props.gridData.data.length > 0 &&
-                        <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcelMapping} />
+                        this.props.gridData.data.length > 0 && this.renderExportExcelText()
                     }
                 </div>
                 <Table
