@@ -9,6 +9,8 @@ import { PAGING_SIZES } from '@jsroot/common/constants';
 import Site from '@jsroot/common/site';
 import { contentPopup } from '../../../notification-list/reducers/dataHandlerReducer';
 import { toast } from 'react-toastify';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 describe('DataGrid', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -110,7 +112,7 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Assert
-            expect(dataGrid.find('div').first().props().className).toEqual('table-title');
+            expect(dataGrid.find('div').first().props().className).toEqual('table-title d-flex justify-content-between align-items-center');
             expect(dataGrid.find('div').first().html()).toContain('ChatTypeMapping');
         });
 
@@ -447,4 +449,31 @@ describe('DataGrid', () => {
             expect(props.openUpdateGroupMappingPopup).toHaveBeenCalledWith(props.gridData.data[1]);
         });
     });
+
+    describe('renderExportExcelText', () => {
+        it('return OverlayTrigger', () => {
+            // Arrange
+            const container = shallow(<DataGrid />).instance();
+            container.handleExportExcelMapping = jest.fn();
+
+            // Act
+            const actual = container.renderExportExcelText();
+
+            // Assert
+            expect(actual).toEqual(<OverlayTrigger
+                placement="auto"
+                overlay= {
+                    <Tooltip className="tooltipExport">
+                    <span>
+                        Export to Excel
+                    </span>
+                    </Tooltip>
+                }
+                >
+                {
+                    <span className="fa fa-file-excel-o icon-excel" onClick={container.handleExportExcelMapping} />
+                }
+                </OverlayTrigger>);
+        });
+    })
 });
