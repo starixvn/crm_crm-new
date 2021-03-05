@@ -70,7 +70,8 @@
             service.Public_RenderBody(template, worksheet);
 
             // Assert
-            service.Received(1).Protected("RenderRow", Arg.Any<ChatTypeMappingModel>(), Arg.Any<int>(), worksheet);
+            service.Received(2).Protected("RenderRow", Arg.Any<ChatTypeMappingModel>(), Arg.Any<int>(), worksheet);
+            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
         [Fact]
@@ -115,6 +116,42 @@
             var colIndex = 1;
             var rowNum = 1;
             chatTypeMappings.FirstOrDefault().Recipients = Array.Empty<ConversationRecipient>();
+            var chatTypeMapping = chatTypeMappings.FirstOrDefault();
+
+            // Act
+            service.Public_RenderRow(chatTypeMapping, rowNum, worksheet);
+
+            // Assert
+            service.DidNotReceive().Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, rowNum);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.BotName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ConversationGroupName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Recipients.Any() ? chatTypeMapping.Recipients.FirstOrDefault().RecipientTypeName : "");
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Headlines.Any() ? string.Join(", ", chatTypeMapping.Headlines.Select(x => x.HeadlineName)) : "");
+            colIndex++;
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? "" : chatTypeMapping.ConversationId);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Language);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? chatTypeMapping.MappingStatus : "");
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.IsActive ? ViewResources.Yes : ViewResources.No);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex].Value, chatTypeMapping.Remark);
+            rowIndex++;
+
+        }
+
+        [Fact]
+        public void RenderRow_WhenCalledWithNullValue_ExpectedReturnEmptyCell()
+        {
+            // Arrange
+            var worksheet = excelPackage.Worksheets.Add("data");
+            var service = CreateExcel();
+            var colIndex = 1;
+            var rowNum = 1;
+            var chatTypeFirst = chatTypeMappings.FirstOrDefault();
+            chatTypeFirst.Recipients = Array.Empty<ConversationRecipient>();
+            chatTypeFirst.Headlines = Array.Empty<ConversationHeadlineModel>();
+            chatTypeFirst.IsActive = true;
+            chatTypeFirst.ChatTypeId = 1;
             var chatTypeMapping = chatTypeMappings.FirstOrDefault();
 
             // Act
@@ -251,6 +288,49 @@
                     ConversationGroupName= "jennyphan",
                     ConversationId= "id1",
                     MappingStatusId = 1,
+                    IsActive = true,
+                    Headlines = new List<ConversationHeadlineModel>
+                    {
+                        new ConversationHeadlineModel
+                        {
+                            ConversationGroupId = 1,
+                            HeadlineId = 1,
+                            HeadlineName = "test"
+                        }
+                    },
+                    Recipients =new List<ConversationRecipient>
+                    {
+                        new ConversationRecipient
+                        {
+                            ConversationGroupId = 1,
+                            LetstalkId = "t01",
+                            RecipientId = 1,
+                            RecipientName = "ab",
+                            RecipientTypeName = "PIC",
+                            RoleName = "partner"
+                        },
+                        new ConversationRecipient
+                        {
+                            ConversationGroupId = 2,
+                            LetstalkId = "t02",
+                            RecipientId = 2,
+                            RecipientName = "test2",
+                            RecipientTypeName = "PIC2",
+                            RoleName = "partner"
+                        }
+                    }
+
+                 },
+                new ChatTypeMappingModel
+                {
+                    BotId = 1,
+                    BotName= "OW_Local",
+                    ChatTypeId= 2,
+                    ConversationGroupId= 1,
+                    ConversationGroupName= "jennyphan",
+                    ConversationId= "id1",
+                    MappingStatusId = 1,
+                    IsActive = true,
                     Headlines = new List<ConversationHeadlineModel>
                     {
                         new ConversationHeadlineModel
