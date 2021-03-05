@@ -203,7 +203,7 @@ export class DataGrid extends Component {
             overlay= {
                 <Tooltip className="tooltipExport">
                 <span>
-                    Export Excel
+                    Export to Excel
                 </span>
                 </Tooltip>
             }
