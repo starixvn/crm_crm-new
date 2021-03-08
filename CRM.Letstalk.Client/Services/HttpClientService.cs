@@ -48,7 +48,7 @@
             if (data != null)
             {
                 var encodedData = Encode(data);
-                var content = new StringContent(encodedData, Encoding.UTF8, "application/json");
+                var content = new StringContent(encodedData, Encoding.UTF8, "text/plain");
                 request.Content = content;
             }
             var client = clientFactory.CreateClient(HttpClientName.DefaultHttpClientWithProxy);
