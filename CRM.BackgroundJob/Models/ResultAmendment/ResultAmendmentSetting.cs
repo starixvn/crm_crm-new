@@ -4,5 +4,6 @@
     public class ResultAmendmentSetting : WinLossSystemSetting
     {
         public int BatchSizeTicket { get; set; }
+        public int LastTicketID { get; set; }
     }
 }

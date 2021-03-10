@@ -248,16 +248,11 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Begin mapping product, sub-product, bet type.");
 
             IList<SettingItem> subProducts = GetTOSubProduct(productId, sportName, settings, settingMappings);
             SettingItem product = GetTOSportsbookProduct(settings);
             IList<SystemSettingMapping> tempBettypes = GetTOBettype(betTypeMappings, settingMappings);
 
-            logService.LogInformation(string.Format("subProducts : {0} product: {1} tempBettypes: {2}",
-                string.Join(",", subProducts.Select(name => name.SettingName)),
-                product.SettingName,
-                 string.Join(",", tempBettypes.Select(name => name.SettingName))));
 
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (SettingItem subProduct in subProducts)
@@ -295,7 +290,6 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Start get subproduct with productId: {0} sportName: {1}!", productId, sportName));
             List<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -304,7 +298,6 @@
                 && mappings != null
                 && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
 
-            logService.LogInformation("End get subproduct");
             return subProducts.Any()
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem>
@@ -317,13 +310,11 @@
             List<string> betTypeMappings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Start GetTOBettype: {0}!", string.Join(", ", betTypeMappings.Select(x => x))));
 
             IList<SystemSettingMapping> bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
 
-            logService.LogInformation("End GetTOBettype");
 
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()

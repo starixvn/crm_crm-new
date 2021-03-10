@@ -7,9 +7,11 @@
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Repositories;
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
+    using global::CRM.BackgroundJob.Criteria.ResultAmendment;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
+    using global::CRM.BackgroundJob.Models.ResultAmendment;
     using global::CRM.BackgroundJob.Models.TurnoverControll;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Services;
@@ -25,7 +27,10 @@
 
         Task<IEnumerable<TONotification>> GetListSMANotificationAsync(WinLossSystemSetting turnOverSetting);
 
+        Task<IEnumerable<CusReachAmendmentNotification>> GetListResultAmendmentNotificationAsync(ResultAmendmentSetting resultAmendmentSetting);
+
         Task<IEnumerable<CustOutStanding>> GetListCustOutStandingAsync(IEnumerable<TONotification> custNotifications);
+        
         Task<IEnumerable<CustCategoryInfor>> GetCustCategoryInfor(ProblemsAccountSetting problemsAccountSetting, bool isUAT);
     }
 
@@ -94,6 +99,21 @@
                 Environment = Environment
             };
             return await baseService.GetDataAsync<TONotification>(criteria);
+        }
+
+        public async Task<IEnumerable<CusReachAmendmentNotification>> GetListResultAmendmentNotificationAsync(ResultAmendmentSetting resultAmendmentSetting)
+        {
+            var criteria = new GetAmendmentNotificationSelCriteria
+            {
+                LastTicketID = resultAmendmentSetting.LastTicketID,
+                BatchSizeTicket = resultAmendmentSetting.BatchSizeTicket,
+                ConfigUAT = resultAmendmentSetting.ConfigUAT,
+                ConfigPRO = resultAmendmentSetting.ConfigPRO,
+                IsCredit =  resultAmendmentSetting.IsCredit,
+                IsDeposit = resultAmendmentSetting.IsDeposit,
+                Environment = Environment
+            };
+            return await baseService.GetDataAsync<CusReachAmendmentNotification>(criteria);
         }
 
         public async Task<IEnumerable<CustOutStanding>> GetListCustOutStandingAsync(IEnumerable<TONotification> custNotifications)

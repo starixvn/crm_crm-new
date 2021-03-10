@@ -17,6 +17,9 @@
     using System.Web;
     using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Criteria.ProblemsAccount;
+    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Criteria.ResultAmendment;
+    using CRM.Core.Extensions.XML;
 
     public interface IFeedbackTransactionService
     {
@@ -39,6 +42,11 @@
              IEnumerable<CustCategoryInfor> custCatogorys,
              string Environment);
 
+        Task<IEnumerable<ProblemsAccountAutoFeedbackInfor>> ImportProblemsAccountFeedbackInfoAsync(
+             IEnumerable<GroupHeadline> headlines,
+             IEnumerable<CustCategoryInfor> custCatogorys,
+             string Environment);
+
         Task<CommandResult> EditTOControlFeedbackInfoAsync(
                string LogID,
                string status,
@@ -46,6 +54,16 @@
 
         Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(
            string LogID,
+           string status,
+           string description);
+
+
+        Task<IEnumerable<AmendmentAutoFeedbackInfor>> GetAmendmentNotiAutoFeedbackInfor(int BatchSize);
+
+        Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments);
+
+        Task<CommandResult> EditAmendmentNotiAutoFeedback(
+           int LogID,
            string status,
            string description);
 
@@ -266,13 +284,46 @@
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
-
-        public async Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(
+        
+         public async Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(
            string LogID,
            string status,
            string description)
         {
             var criteria = new EditProblemsAccountAutoFeedbackInforCommand
+            {
+                LogID = LogID,
+                Status = status,
+                Description = description
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+
+        public async Task<IEnumerable<AmendmentAutoFeedbackInfor>> GetAmendmentNotiAutoFeedbackInfor(int BatchSize)
+        {
+            var criteria = new GetAmendmentNotiAutoFeedbackInforCriteria
+            {
+                BatchSize = BatchSize
+            };
+            return await baseService.GetDataAsync<AmendmentAutoFeedbackInfor>(criteria);
+        }
+
+        public async Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments)
+        {
+            var criteria = new InsertAmendmentNotificationCommand
+            {
+                xml = CustAmendments.ToXML("ROOT").ToString()
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<CommandResult> EditAmendmentNotiAutoFeedback(
+           int LogID,
+           string status,
+           string description)
+        {
+            var criteria = new EditAmendmentAutoFeedbackInfoUpdCommand
             {
                 LogID = LogID,
                 Status = status,

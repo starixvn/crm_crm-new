@@ -8,6 +8,7 @@
 
         public const string Special_Notification = "Special Notification";
         public const string CompanyWLLimit = "Company W/L Limit";
+        public const string ResultAmended = "Result Amended/Recalculation Notification";
         public const string MANotification = "MA Notification";
         public const string AbnormalBets = "Abnormal Bets";
         public const string ProblemAccount = "Problem Account";

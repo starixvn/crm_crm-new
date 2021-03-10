@@ -37,6 +37,7 @@
 
         Task<CommandResult> EditFeedbackSystemSettingAsync(long LastLogID, string ServiceName);
 
+        Task<CommandResult> EditAmendmentFeedbackSystemSettingAsync(int LastTicketID, string ServiceName)
     }
     public class CommonFeedback : ICommonFeedback
     {
@@ -146,6 +147,17 @@
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
                 new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = LastLogID.ToString() }
+            };
+            return await systemSetting.EditSystemSettingAsync(settingJobStatus, ServiceName);
+        }
+
+        public async Task<CommandResult> EditAmendmentFeedbackSystemSettingAsync(int LastTicketID, string ServiceName)
+        {
+            var settingJobStatus = new List<SystemSettingItem>
+            {
+                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
+                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = SystemSettingName.LastTicketID, Value = LastTicketID.ToString() }
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, ServiceName);
         }

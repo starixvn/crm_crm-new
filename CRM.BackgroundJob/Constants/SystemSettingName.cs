@@ -8,6 +8,7 @@
         public const string ConfigPRO = "ConfigPRO";
         public const string LastRuntime = "LastRuntime";
         public const string LastLogID = "LastLogID";
+        public const string LastTicketID = "LastTicketID";
         public const string LastNotifiedDate = "LastNotifiedDate";
         public const string JobStatusUAT = "JobStatusUAT";
         public const string LastLogIdUAT = "LastLogIdUAT";
