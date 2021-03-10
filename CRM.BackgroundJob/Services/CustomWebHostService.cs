@@ -33,6 +33,7 @@
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForWinLossLimit);
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForTurnoverControl);
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForProblemsAccount);
+            jobRunningChecker.ClearRunning(JobName.CreateFeedbackForResultAmendment);
 
             RemoveRecurringJobs();
             RunHangfireJobs();
@@ -133,6 +134,15 @@
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
+            
+            if (IsEnabledJob(HangfireJobName.CreateFeedbackForResultAmendment))
+            {
+                recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For Result Amendment",
+                   job => job.CreateFeedbackForResultAmendment(),
+                   Cron.Minutely,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
+            }
+
         }
 
         protected internal virtual void RemoveRecurringJobs()

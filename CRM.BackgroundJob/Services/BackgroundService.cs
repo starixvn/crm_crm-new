@@ -29,6 +29,8 @@
         Task CreateFeedbackForTurnoverControl();
 
         Task CreateFeedbackForProblemsAccount();
+        
+        Task CreateFeedbackForResultAmendment();
 
     }
 
@@ -264,6 +266,28 @@
                 await logService.ErrorAsync(ex);
             }
         }
+        
+        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        [Queue(QueuePriority.Critical)]
+        public async Task CreateFeedbackForResultAmendment()
+        {
+            try
+            {
+                bool isUM = await CheckUM();
+                if (isUM)
+                {
+                    logService.LogInformation(umTime);
+                    return;
+                }
+
+                await winLossService.ResultAmendmentExecuteJobAsync();
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
 
         private async Task<bool> CheckUM()
         {

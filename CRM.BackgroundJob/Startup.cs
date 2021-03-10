@@ -208,6 +208,7 @@
             services.AddScoped<ITOControlFeedbackService, TOControlFeedbackService>();
             services.AddScoped<IChatBotCTOService, ChatBotCTOService>();
             services.AddScoped<IProblemsAccountFeedbackService, ProblemsAccountFeedbackService>();
+            services.AddScoped<IResultAmendmentService, ResultAmendmentService>();
             services.AddScoped<IChatBotProblemAccountService, ChatBotProblemAccountService>();
         }
 

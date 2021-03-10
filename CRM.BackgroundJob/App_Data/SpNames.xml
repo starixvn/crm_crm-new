@@ -70,4 +70,7 @@
         <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns_UAT1" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd_UAT1" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
+    <Function Name="Result Amendment">
+        <Setting Key="Acc_CRM_AmendmentNoti_SystemSettingSel" SpName="Acc_CRM_AmendmentNoti_SystemSettingSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+    </Function>   
 </Functions>

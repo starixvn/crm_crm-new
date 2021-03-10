@@ -27,5 +27,6 @@
         public const string ServiceName_WinLimitFB = "WinLimitFB";
         public const string ServiceName_TOControlFB = "TOControlFB";
         public const string ServiceName_ProblemsAccount = "ProblemAccountFB";
+        public const string ServiceName_ResultAmendment = "AmendmentNotiFB";
     }
 }

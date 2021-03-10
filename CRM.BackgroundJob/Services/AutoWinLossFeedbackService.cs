@@ -6,6 +6,7 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
+    using global::CRM.BackgroundJob.Models.ResultAmendment;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Services;
@@ -26,6 +27,7 @@
         private readonly ISystemSettingService systemSettingService;
         private readonly IWinLossFeedbackService winLossService;
         private readonly ITOControlFeedbackService turnoverService;
+        private readonly IResultAmendmentService resultAmendmentService;
         private readonly ICRMLogService logService;
         private readonly IProblemsAccountFeedbackService problemsAccountFeedbackService;
         private readonly string Environment;
@@ -41,6 +43,7 @@
             ICRMLogService logService,
             ITOControlFeedbackService turnoverService,
             IProblemsAccountFeedbackService problemsAccountFeedbackService,
+            IResultAmendmentService resultAmendmentService)
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -49,8 +52,10 @@
             this.systemSettingService = systemSettingService;
             this.winLossService = winLossService;
             this.logService = logService;
+            
             this.turnoverService = turnoverService;
             this.problemsAccountFeedbackService = problemsAccountFeedbackService;
+            this.resultAmendmentService = resultAmendmentService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
 
         }
@@ -140,6 +145,52 @@
             catch (Exception ex)
             {
                 await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForTurnoverControl);
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task ResultAmendmentExecuteJobAsync()
+        {
+            try
+            {
+                logService.LogInformation("Start Service Result Amendment!");
+
+                ResultAmendmentSetting resultAmendmentSetting = await systemSettingService.GetResultAmendmentSettingAsync();
+                if (!resultAmendmentSetting.ServiceFlag)
+                {
+                    logService.LogInformation("Service Result Amendment is shutdown.");
+                    return;
+                }
+
+                var isRunning = resultAmendmentSetting.JobStatus.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
+
+                if (!isRunning)
+                {
+                    await Task.WhenAll(
+                        jobRunningChecker.MarkRunning(JobName.CreateFeedbackForResultAmendment),
+                        resultAmendmentService.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting)
+                    );
+                    await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForResultAmendment);
+                }
+                else
+                {
+                    logService.LogInformation("Result Amendment is running.");
+                    isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment);
+                    if (!isRunning && resultAmendmentSetting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                    {
+                        logService.LogInformation("Rerun Result Amendment service.");
+                        var settingJobStatus = new List<SystemSettingItem>
+                        {
+                           new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
+                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                        };
+                        await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForResultAmendment);
                 await logService.ErrorAsync(ex);
             }
         }

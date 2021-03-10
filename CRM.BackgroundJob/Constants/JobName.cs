@@ -6,5 +6,6 @@
         public const string CreateFeedbackForWinLossLimit = "CreateFeedbackForWinLossLimit";
         public const string CreateFeedbackForTurnoverControl = "CreateFeedbackForTurnoverControl";
         public const string CreateFeedbackForProblemsAccount = "CreateFeedbackForProblemsAccount";
+        public const string CreateFeedbackForResultAmendment = "CreateFeedbackForResultAmendment";
     }
 }
