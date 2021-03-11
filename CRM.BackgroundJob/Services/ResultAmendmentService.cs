@@ -30,8 +30,12 @@
         private readonly ICommonFeedback commonFeedback;
         private readonly IWinLossTransactionService transactionService;
 
-        //private readonly string descTemplateXml = "TODesctiptionTemplate.xml";
-        //private readonly string solTemplateXml = "TOSolutionTemplate.xml";
+        private readonly string descTemplateXml = "AmendmentDescriptionTemplate.xml";
+        private readonly string solTemplateXml = "AmendmentSolutionTemplate.xml";
+        private readonly int SportType180 = 180;
+        //private readonly int SportType181 = 181;
+        //private readonly int SportType184 = 184;
+        private readonly int SportType186 = 186;
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -78,12 +82,14 @@
             try
             {
                 CommandResult commandResultAmendment = await transactionService.InserAmendmentNotiAutoFeedback(custAmendmentNotifications);
-                if (commandResultAmendment.IsSuccessful) {
+                if (commandResultAmendment.IsSuccessful)
+                {
                     logService.LogInformation("Insert Amendment Notification Auto FeedBack Successfull!");
-                    var maxTicketID = custAmendmentNotifications.Any() ? custAmendmentNotifications.Max(x => x.TicketId) : resultAmendmentSetting.LastLogId;
+                    var maxTicketID = custAmendmentNotifications.Any() ? custAmendmentNotifications.Max(x => x.TicketId) : resultAmendmentSetting.LastTicketID;
                     await commonFeedback.EditAmendmentFeedbackSystemSettingAsync(maxTicketID, Constants.ServiceName_ResultAmendment);
                 }
-                else {
+                else
+                {
                     logService.LogInformation("Insert Amendment Notification Auto FeedBack Fail!");
                 }
             }
@@ -97,23 +103,24 @@
             {
                 logService.LogInformation(string.Format("Import Amendment Auto Feedback Infor doesn't have any data with custId: {0} TicketId: {1}!",
                     string.Join(",", custAmendmentNotifications.Select(x => x.CustId)), string.Join(",", custAmendmentNotifications.Select(x => x.TicketId))));
+                await EditSystemSettingAsync();
                 return;
             }
 
             foreach (AmendmentAutoFeedbackInfor amendment in amendmentAutoFeedbackInfors)
             {
-                var isVipHeadline = amendment.Site == "789y" && amendment.IsVip;
                 await CreateResultAmendmentFeedbackCreditAsync(
                         amendment,
-                        isVipHeadline,
                         settings,
                         settingMappings);
             }
+            logService.LogInformation(string.Format("End service result amendment serivce: {0}!", DateTime.Now.ToString()));
+
+            await EditSystemSettingAsync();
         }
 
         protected internal virtual async Task CreateResultAmendmentFeedbackCreditAsync(
             AmendmentAutoFeedbackInfor amendment,
-            bool isVipHeadline,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
@@ -157,11 +164,11 @@
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 CustomerXml = string.Format(DefaultValue.CustomerXml, amendment.HeadlineId, amendment.HeadlineName),
                 ProductXml = GetAmendmentProductXml(amendment.Sporttype, amendment.ProductId, betTypeMappings, settings, settingMappings),
-               //Solution = GetTOSolution(ToInfor),
+                Solution = "test",
                 RelatedCustomerXml = GetAmendmentRelatedCustomerXml(amendment),
                 ListOrigCustIds = amendment.affectedId,
                 AmendmentLogID = amendment.LogId,
-               //Description = GetTODescription(ToInfor)
+                Description = GetAmendmentDescription(amendment)
             };
             logService.LogInformation("end create result amendment criteria!!!");
             await CheckValidAmendmentParamsAndInsertFeedbackAsync(amendment, criteria);
@@ -171,7 +178,7 @@
             AmendmentAutoFeedbackInfor amendment,
             CreateMutipleFeedbackCommand criteria)
         {
-            logService.LogInformation("Begin CheckValidTOParamsAndInsertFeedbackAsync!!!");
+            logService.LogInformation("Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!");
 
             var checkValidParamBeforeInsert = commonFeedback.CheckFeedbackValidParams(criteria);
             if (!checkValidParamBeforeInsert.Item1)
@@ -207,7 +214,7 @@
                 await transactionService.EditAmendmentNotiAutoFeedback(amendment.LogId, CreateFeedbackJobStatus.Fail, ex.Message);
                 await logService.ErrorAsync(ex);
             }
-            logService.LogInformation("End CheckValidTOParamsAndInsertFeedbackAsync!!!");
+            logService.LogInformation("End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!");
         }
 
         protected internal virtual string GetAmendmentProductXml(
@@ -217,27 +224,23 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-
-            IList<SettingItem> subProducts = GetAmendmentSubProduct(productId, sportTypeId, settings, settingMappings);
             SettingItem product = GetAmenmentProduct(settings, settingMappings, productId);
+            IList<SettingItem> subProducts = GetAmendmentSubProduct(product.SettingId, sportTypeId, settings, settingMappings);
             IList<SystemSettingMapping> tempBettypes = GetAmendmentBettype(betTypeMappings, settingMappings);
-
+            logService.LogInformation("Begin mapping product, sub-product, bet type.");
 
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (SettingItem subProduct in subProducts)
             {
                 if (tempBettypes.Any())
                 {
-                    logService.LogInformation("begin mapping bettype");
                     foreach (SystemSettingMapping bettype in tempBettypes)
                     {
                         stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, subProduct.SettingId, bettype.SettingId);
                     }
-                    logService.LogInformation("end mapping bettype");
                 }
                 else
                 {
-                    logService.LogInformation("mapping N/A bettype");
                     stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, subProduct.SettingId, Constants.BettypeNA);
                 }
             }
@@ -250,6 +253,8 @@
             IEnumerable<SystemSettingMapping> settingMappings,
             int productId)
         {
+            logService.LogInformation(string.Format("Begin mapping amenment product with productId:{0}.", productId));
+
             var productName = commonFeedback.GetProductName(productId.ToString(), Language.en_US);
             SystemSettingMapping productMapping = settingMappings.FirstOrDefault(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(p.SettingSource)
@@ -258,6 +263,8 @@
             var product = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && productMapping != null
                 && x.SettingId == productMapping.SettingId);
+
+            logService.LogInformation("End mapping amenment product.");
 
             return product ?? new SettingItem { SettingId = Constants.ProductNA };
         }
@@ -268,6 +275,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
+            logService.LogInformation(string.Format("Begin mapping amenment subproduct with productId:{0}, sportTypeId: {1}.", productId, sportTypeId));
             var sportName = commonFeedback.GetSportName(sportTypeId.ToString(), Language.en_US);
             List<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
@@ -276,6 +284,7 @@
                 && sub.ParentIds.Any(parent => parent == productId)
                 && mappings != null
                 && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
+            logService.LogInformation("End mapping amenment subproduct.");
 
             return subProducts.Any()
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
@@ -289,10 +298,11 @@
             List<string> betTypeMappings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
+            logService.LogInformation("Begin mapping amenment betType.");
             IList<SystemSettingMapping> bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
-
+            logService.LogInformation("End mapping amenment betType.");
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SystemSettingMapping>
@@ -327,12 +337,315 @@
             var userNames = amendment.affectedName.Split(",");
             const string XmlTemplate = DefaultValue.RelatedCustomerXml;
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            for(int i = 0; i < relateCustIds.Count(); i++)
+            for (int i = 0; i < relateCustIds.Count(); i++)
             {
                 stringBuilder.AppendFormat(XmlTemplate, amendment.HeadlineId, relateCustIds[i], userNames[i]);
             }
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
+        protected internal virtual string GetAmendmentDescription(AmendmentAutoFeedbackInfor amendment)
+        {
+            logService.LogInformation("Begin create template desctiption");
+            var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
+            stringBuilder.Append(Constants.Break);
+            var amendmentDescTemplate = commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>(descTemplateXml);
+
+            var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
+            var sportName = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US);
+            var leagueName = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US);
+            var homeName = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US);
+            var awayName = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US);
+
+            var EventdateGMT4Format = amendment.Eventdate.ToString(DefaultValue.Fortmatddmmmyyyy);
+            var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
+            var KO_time = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Formathhmma);
+            var Race_time = amendment.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmma);
+
+            var virtualSports = GetAmendmentDescriptionVirtualSports(
+                amendment,
+                amendmentDescTemplate,
+                sportName,
+                homeName,
+                awayName,
+                Race_time,
+                EventdateGMT4Format);
+
+            var NumberGame = GetAmendmentDescriptionNumberGame(
+             amendment,
+             amendmentDescTemplate,
+             leagueName,
+             EventdateGMT4Format
+            );
+
+            switch (productName)
+            {
+                case "Sportsbook":
+                case "Virtual Sports 2":
+                    stringBuilder.AppendFormat(
+                        amendmentDescTemplate.SportsbookVsVirtualSports2,
+                           EventdateGMT4Format,
+                           sportName,
+                           KO_time,
+                           leagueName,
+                           homeName,
+                           awayName,
+                           Constants.Break
+                        );
+                    break;
+                case "Virtual Sports":
+                    stringBuilder.Append(virtualSports);
+                    break;
+                case "Number Game":
+                    stringBuilder.Append(NumberGame);
+                    break;
+                default:
+                    stringBuilder.Append("");
+                    break;
+            }
+
+            stringBuilder.Append(Constants.Break);
+            logService.LogInformation("End create template desctiption");
+            return stringBuilder.ToString();
+        }
+
+        protected internal virtual StringBuilder GetAmendmentDescriptionVirtualSports(
+            AmendmentAutoFeedbackInfor amendment,
+            AmendmentDescriptionTemplate amendmentDescTemplate,
+            string sportName,
+            string homeName,
+            string awayName,
+            string Race_time,
+            string EventdateGMT4
+            )
+        {
+            var stringBuilder = new StringBuilder();
+            if (amendment.Sporttype == SportType180 || amendment.Sporttype == SportType186)
+            {
+                stringBuilder.AppendFormat(
+                amendmentDescTemplate.VirtualSports180186,
+                  amendment.Eventdate,
+                  sportName,
+                  homeName,
+                  awayName,
+                  Constants.Break
+               );
+            }
+            else
+            {
+               stringBuilder.AppendFormat(
+               amendmentDescTemplate.VirtualSports181To185,
+                 EventdateGMT4,
+                 sportName,
+                 Race_time,
+                 Constants.Break
+              );
+            }
+            return stringBuilder;
+        }
+
+        protected internal virtual StringBuilder GetAmendmentDescriptionNumberGame(
+            AmendmentAutoFeedbackInfor amendment,
+            AmendmentDescriptionTemplate amendmentDescTemplate,
+            string leagueName,
+            string EventdateGMT4
+            )
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendFormat(
+                amendmentDescTemplate.NumberGame,
+                  EventdateGMT4,
+                  leagueName,
+                  amendment.MatchCode,
+                  Constants.Break
+               );
+            return stringBuilder;
+        }
+
+        protected internal virtual string GetAmenmendSolution(AmendmentAutoFeedbackInfor amendment)
+        {
+            var isVipCust = amendment.Site == "789y" && amendment.IsVip;
+
+            var amendmentSolTemplate = commonFeedback.GetFeedbackTemplates<AmendmentSolutionTemplate>(solTemplateXml);
+
+            var stringBuilder = new StringBuilder();
+            var solutionTemplateEN = GetAmendmentSolutionTemplateEN(amendment, amendmentSolTemplate);
+            var solutionTemplateSC = GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate);
+
+            stringBuilder.Append(solutionTemplateEN);
+            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(solutionTemplateSC);
+            stringBuilder.Append(Constants.Break);
+            logService.LogInformation("End get GetTOSolution");
+            return stringBuilder.ToString();
+        }
+
+        protected internal virtual StringBuilder GetAmendmentSolutionTemplateEN(
+           AmendmentAutoFeedbackInfor amendment,
+           AmendmentSolutionTemplate amendmentSolTemplate)
+        {
+            logService.LogInformation("begin create template desctiption EN");
+
+            var stringBuilder = new StringBuilder();
+            var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
+            var sportName = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US);
+            var leagueName = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US);
+            var homeName = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US);
+            var awayName = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US);
+            var matchCode = commonFeedback.GetMatchCode(amendment.MatchCode.ToString(), Language.en_US);
+            //var matchRoundInfor = string.Join(matchCode, )
+            var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formathhmma);
+
+            switch (productName)
+            {
+                case "Sportsbook":
+                    stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookEN,
+                        sportName,
+                        homeName,
+                        awayName,
+                        leagueName,
+                        Eventdate,
+                        amendment.ActualResult,
+                        amendment.WrongResult,
+                        amendment.affectedName,
+                        Constants.Break
+                        );
+                    break;
+                case "Virtual Sports 2":
+                    stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2EN,
+                        homeName,
+                        awayName,
+                        sportName,
+                        matchCode,
+                        Eventdate,
+                        amendment.ActualResult,
+                        amendment.WrongResult,
+                        amendment.affectedName,
+                        Constants.Break
+                        );
+                    break;
+                case "Virtual Sports":
+                    stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsEN,
+                       sportName,
+                       amendment.affectedName,
+                       Constants.Break
+                       );
+                    break;
+                case "Number Game":
+                    stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameEN,
+                       sportName,
+                       matchCode,
+                       Eventdate,
+                       amendment.affectedName,
+                       Constants.Break
+                       );
+                    break;
+                default:
+                    stringBuilder.Append("");
+                    break;
+            }
+
+            logService.LogInformation("end create template desctiption EN");
+
+            return stringBuilder;
+        }
+
+        protected internal virtual StringBuilder GetAmendmentSolutionTemplateYNSC(
+            AmendmentAutoFeedbackInfor amendment,
+            AmendmentSolutionTemplate amendmentSolTemplate)
+        {
+            logService.LogInformation("begin create template desctiption SCYN");
+            var stringBuilder = new StringBuilder();
+            var isVipCust = amendment.Site == "789y" && amendment.IsVip;
+            var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
+            var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formathhmma);
+
+            var sportNameYN = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN);
+            var leagueNameYN = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN);
+            var homeNameYN = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.vi_VN);
+            var awayNameYN = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.vi_VN);
+            var matchCodeYN = commonFeedback.GetMatchCode(amendment.MatchCode.ToString(), Language.vi_VN);
+
+            var sportNameSC = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN);
+            var leagueNameSC = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN);
+            var homeNameSC = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.zh_CN);
+            var awayNameSC = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.zh_CN);
+            var matchCodeSC = commonFeedback.GetMatchCode(amendment.MatchCode.ToString(), Language.zh_CN);
+
+            switch (productName)
+            {
+                case "Sportsbook":
+                    if (isVipCust)
+                    {
+                        stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookYN, sportNameYN, homeNameYN, awayNameYN,
+                        leagueNameYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break);
+                    }
+                    else
+                    {
+                        stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookSC, sportNameSC, homeNameSC, awayNameSC,
+                        leagueNameSC, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break);
+                    }
+                    break;
+                case "Virtual Sports 2":
+                    if (isVipCust)
+                    {
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, sportNameYN,
+                        matchCodeYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break );
+                    }
+                    else
+                    {
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, sportNameSC, matchCodeSC,
+                        Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break );
+                    }
+                    break;
+                case "Virtual Sports":
+                    if (isVipCust)
+                    {
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsYN,
+                        sportNameYN,
+                        amendment.affectedName,
+                        Constants.Break
+                        );
+                    }
+                    else
+                    {
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsSC,
+                        sportNameSC,
+                        amendment.affectedName,
+                        Constants.Break
+                        );
+                    }
+                    break;
+                case "Number Game":
+                    if (isVipCust)
+                    {
+                       stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameYN, sportNameYN, matchCodeYN,
+                       Eventdate, amendment.affectedName, Constants.Break );
+                    }
+                    else
+                    {
+                       stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameSC, sportNameSC, matchCodeSC, Eventdate,
+                       amendment.affectedName, Constants.Break );
+                    }
+                    break;
+                default:
+                    stringBuilder.Append("");
+                    break;
+            }
+
+            logService.LogInformation("End create template desctiption YNSC");
+
+            return stringBuilder;
+        }
+
+        protected internal virtual async Task<CommandResult> EditSystemSettingAsync()
+        {
+            var settingJobStatus = new List<SystemSettingItem>
+            {
+                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
+                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") }
+            };
+           return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
+        }
     }
 }

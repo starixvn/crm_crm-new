@@ -28,6 +28,8 @@
         string GetBettypeName(string betTypeId, string languageCode);
 
         string GetCategogyName(string categoryId, string languageCode);
+        
+        string GetMatchCode(string matchCode, string languageCode)
 
         T GetFeedbackTemplates<T>(string fileXml);
 
@@ -37,7 +39,7 @@
 
         Task<CommandResult> EditFeedbackSystemSettingAsync(long LastLogID, string ServiceName);
 
-        Task<CommandResult> EditAmendmentFeedbackSystemSettingAsync(int LastTicketID, string ServiceName)
+        Task<CommandResult> EditAmendmentFeedbackSystemSettingAsync(int LastTicketID, string ServiceName);
     }
     public class CommonFeedback : ICommonFeedback
     {
@@ -45,7 +47,7 @@
         private readonly IRemotingRefService remotingRefService;
         private readonly ISystemSettingService systemSetting;
 
-        private const string path = "Format_Templates\\Company-WinLoss-Limit";
+        private const string path = "Format_Templates\\AutoCreateFeedback";
 
         public CommonFeedback(
             IHostingEnvironment hostingEnvironment,
@@ -85,6 +87,12 @@
         public string GetBettypeName(string betTypeId, string languageCode)
         {
             var betTypeName = remotingRefService.GetBetTypeName(betTypeId, languageCode);
+            return betTypeName;
+        }
+
+        public string GetMatchCode(string matchCode, string languageCode)
+        {
+            var betTypeName = remotingRefService.GetBetRadarMatchCodeFormat(matchCode, languageCode);
             return betTypeName;
         }
 

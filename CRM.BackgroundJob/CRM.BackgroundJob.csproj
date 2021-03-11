@@ -22,10 +22,10 @@
         <None Remove="App_Data\SpNames.AWS.xml" />
         <None Remove="App_Data\SpNames.xml" />
         <None Remove="Deployment.ignore" />
-        <None Remove="Format_Templates\Company-WinLoss-Limit\FeedbackTemplate.xml" />
-        <None Remove="Format_Templates\Company-WinLoss-Limit\ProblemsSolutionTemplate.xml" />
-        <None Remove="Format_Templates\Company-WinLoss-Limit\TODesctiptionTemplate.xml" />
-        <None Remove="Format_Templates\Company-WinLoss-Limit\TOSolutionTemplate.xml" />
+        <None Remove="Format_Templates\AutoCreateFeedback\FeedbackTemplate.xml" />
+        <None Remove="Format_Templates\AutoCreateFeedback\TODesctiptionTemplate.xml" />
+        <None Remove="Format_Templates\AutoCreateFeedback\TOSolutionTemplate.xml" />
+        <None Remove="Format_Templates\AutoCreateFeedback\ProblemsSolutionTemplate.xml" />
         <None Remove="logs\log.txt" />
     </ItemGroup>
 
@@ -52,16 +52,16 @@
         <Content Include="Deployment.ignore">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Format_Templates\Company-WinLoss-Limit\FeedbackTemplate.xml">
+        <Content Include="Format_Templates\AutoCreateFeedback\FeedbackTemplate.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Format_Templates\Company-WinLoss-Limit\ProblemsSolutionTemplate.xml">
+        <Content Include="Format_Templates\AutoCreateFeedback\ProblemsSolutionTemplate.xml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Format_Templates\Company-WinLoss-Limit\TODesctiptionTemplate.xml">
+        <Content Include="Format_Templates\AutoCreateFeedback\TODesctiptionTemplate.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Format_Templates\Company-WinLoss-Limit\TOSolutionTemplate.xml">
+        <Content Include="Format_Templates\AutoCreateFeedback\TOSolutionTemplate.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="logs\log.txt">
