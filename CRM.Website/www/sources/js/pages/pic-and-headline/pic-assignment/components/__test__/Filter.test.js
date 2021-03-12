@@ -541,6 +541,42 @@ describe('Filter', () => {
         expect(props.setAssignPicPopup).toHaveBeenCalledWith({ show: true });
     });
 
+    describe('handleToggleFilter', () => {
+        let EventBak;
+        let windowBak;
+
+        beforeAll(() => {
+            EventBak = global.Event;
+            windowBak = global.window.dispatchEvent;
+            global.Event = jest.fn();
+            global.window.dispatchEvent = jest.fn();
+        });
+
+        afterAll(() => {
+            global.Event = EventBak;
+            global.window.dispatchEvent = windowBak;
+        });
+
+        it('run exactly', () => {
+            // Arrange
+            const promise = Promise.resolve({});
+            const props = {
+                settings: {},
+                gridParams: {},
+                getSettings: jest.fn(() => promise)
+            };
+
+            const filter = shallow(<Filter {...props} />).instance();
+
+            // Action
+            filter.handleToggleFilter(true);
+
+            // Assert
+            expect(filter.state.showFilter).toBeTrue;
+            expect(global.window.dispatchEvent).toHaveBeenCalled();
+        });
+    });
+
     describe('render', () => {
         it('should have expected props', () => {
             // Arrange
@@ -1181,6 +1217,26 @@ describe('Filter', () => {
 
             // Assert
             expect(filter.instance().handleOpenAssignPicPopup).toHaveBeenCalled();
+        });
+
+        it('should call handleToggleFilter when onClick icon show/hide', () => {
+            // Arrange
+            const promise = Promise.resolve({});
+            const props = {
+                settings: {},
+                gridParams: {},
+                getSettings: jest.fn(() => promise)
+            };
+
+            const filter = shallow(<Filter {...props} />);
+            filter.instance().handleToggleFilter = jest.fn();
+            const button = filter.find('.filter-collapse').first().find('.fa').first();
+
+            // Action
+            button.simulate('click');
+
+            // Assert
+            expect(filter.instance().handleToggleFilter).toHaveBeenCalledWith(false);
         });
     });
 });

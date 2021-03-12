@@ -163,6 +163,11 @@ export class Filter extends Component {
     handleOpenAssignPicPopup = () =>
         this.props.setAssignPicPopup({ show: true });
 
+    handleToggleFilter = value => {
+        this.setState({ showFilter: value });
+        window.dispatchEvent(new Event('resize'));
+    };
+
     render() {
         return (
             <Form className='form-filter' onSubmit={() => this.handleSubmit()}>
@@ -315,8 +320,8 @@ export class Filter extends Component {
                 <div className="filter-collapse text-center">
                     {
                         this.state.showFilter
-                            ? <span className="fa fa-caret-up fa-lg" onClick={() => this.setState({ showFilter: false })} />
-                            : <span className="fa fa-caret-down fa-lg" onClick={() => this.setState({ showFilter: true })} />
+                            ? <span className="fa fa-caret-up fa-sm" onClick={() => this.handleToggleFilter(false)} />
+                            : <span className="fa fa-caret-down fa-sm" onClick={() => this.handleToggleFilter(true)} />
                     }
                 </div>
             </Form>

@@ -138,6 +138,10 @@ input[type="checkbox"]:disabled {
 .filter-collapse {
     margin-top: -10px;
     .fa {
+        height: 14px;
+        width: 27px;
+        background-color: #464d5d;
+        color: white;
         cursor: pointer;
     }
 }
