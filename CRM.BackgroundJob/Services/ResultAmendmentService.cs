@@ -13,6 +13,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     public interface IResultAmendmentService
@@ -33,8 +34,6 @@
         private readonly string descTemplateXml = "AmendmentDescriptionTemplate.xml";
         private readonly string solTemplateXml = "AmendmentSolutionTemplate.xml";
         private readonly int SportType180 = 180;
-        //private readonly int SportType181 = 181;
-        //private readonly int SportType184 = 184;
         private readonly int SportType186 = 186;
 
 #pragma warning disable S107 // Methods should not have too many parameters
@@ -62,7 +61,6 @@
         }
         public async Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting)
         {
-            logService.LogInformation(string.Format("Start run result amendment serivce with last LastLogID: {0}!", resultAmendmentSetting.LastLogId));
 
             var settingJobStatus = new List<SystemSettingItem>
                 {
@@ -107,6 +105,7 @@
                 return;
             }
 
+
             foreach (AmendmentAutoFeedbackInfor amendment in amendmentAutoFeedbackInfors)
             {
                 await CreateResultAmendmentFeedbackCreditAsync(
@@ -142,6 +141,8 @@
                 betTypeMappings.Add(betTypeName);
             }
             var category = GetCategorySubCategoryCWL(settings, DefaultValue.ResultAmended);
+
+
             logService.LogInformation("Begin create result amendment criteria!!!");
             var criteria = new CreateMutipleFeedbackCommand
             {
@@ -158,13 +159,13 @@
                 ResponseId = response != null ? response.SettingId : 0,
                 UserRole = Constants.UserRole,
                 Subject = DefaultValue.Special_Notification,
-                AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
+                AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString(DefaultValue.Fortmatddmmmyyyy), feedbackDate.ToString(DefaultValue.Formathhmmtt)),
                 AutoField = string.Empty,
                 AutoField1 = string.Empty,
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 CustomerXml = string.Format(DefaultValue.CustomerXml, amendment.HeadlineId, amendment.HeadlineName),
                 ProductXml = GetAmendmentProductXml(amendment.Sporttype, amendment.ProductId, betTypeMappings, settings, settingMappings),
-                Solution = "test",
+                Solution = GetAmenmendSolution(amendment),
                 RelatedCustomerXml = GetAmendmentRelatedCustomerXml(amendment),
                 ListOrigCustIds = amendment.affectedId,
                 AmendmentLogID = amendment.LogId,
@@ -359,8 +360,9 @@
 
             var EventdateGMT4Format = amendment.Eventdate.ToString(DefaultValue.Fortmatddmmmyyyy);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            var KO_time = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Formathhmma);
-            var Race_time = amendment.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmma);
+            var kO_time = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
+            var race_time = amendment.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
+            var matchCodeReplace = GetMatchCoddFormat(amendment.MatchCode, Language.en_US);
 
             var virtualSports = GetAmendmentDescriptionVirtualSports(
                 amendment,
@@ -368,7 +370,7 @@
                 sportName,
                 homeName,
                 awayName,
-                Race_time,
+                race_time,
                 EventdateGMT4Format);
 
             var NumberGame = GetAmendmentDescriptionNumberGame(
@@ -381,13 +383,24 @@
             switch (productName)
             {
                 case "Sportsbook":
-                case "Virtual Sports 2":
                     stringBuilder.AppendFormat(
-                        amendmentDescTemplate.SportsbookVsVirtualSports2,
+                        amendmentDescTemplate.Sportsbook,
                            EventdateGMT4Format,
                            sportName,
-                           KO_time,
+                           kO_time,
                            leagueName,
+                           homeName,
+                           awayName,
+                           Constants.Break
+                        );
+                    break;
+                case "Virtual Sports 2":
+                    stringBuilder.AppendFormat(
+                        amendmentDescTemplate.VirtualSports2,
+                           EventdateGMT4Format,
+                           sportName,
+                           kO_time,
+                           matchCodeReplace,
                            homeName,
                            awayName,
                            Constants.Break
@@ -485,7 +498,6 @@
            AmendmentSolutionTemplate amendmentSolTemplate)
         {
             logService.LogInformation("begin create template desctiption EN");
-
             var stringBuilder = new StringBuilder();
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var sportName = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US);
@@ -493,9 +505,8 @@
             var homeName = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US);
             var awayName = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US);
             var matchCode = commonFeedback.GetMatchCode(amendment.MatchCode.ToString(), Language.en_US);
-            //var matchRoundInfor = string.Join(matchCode, )
-            var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formathhmma);
-
+            var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formathhmmtt);
+            var matchCodeReplace = GetMatchCoddFormat(amendment.MatchCode, Language.en_US);
             switch (productName)
             {
                 case "Sportsbook":
@@ -512,33 +523,34 @@
                         );
                     break;
                 case "Virtual Sports 2":
-                    stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2EN,
-                        homeName,
-                        awayName,
+                    stringBuilder.AppendFormat(
+                        amendmentSolTemplate.VirtualSports2EN,
+                            homeName,
+                            awayName,
+                            sportName,
+                            matchCodeReplace,
+                            Eventdate,
+                            amendment.ActualResult,
+                            amendment.WrongResult,
+                            amendment.affectedName,
+                            Constants.Break
+                    );
+                    break;
+                case "Virtual Sports":
+                    stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsEN,
                         sportName,
-                        matchCode,
-                        Eventdate,
-                        amendment.ActualResult,
-                        amendment.WrongResult,
                         amendment.affectedName,
                         Constants.Break
                         );
                     break;
-                case "Virtual Sports":
-                    stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsEN,
-                       sportName,
-                       amendment.affectedName,
-                       Constants.Break
-                       );
-                    break;
                 case "Number Game":
                     stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameEN,
-                       sportName,
-                       matchCode,
-                       Eventdate,
-                       amendment.affectedName,
-                       Constants.Break
-                       );
+                        sportName,
+                        matchCode,
+                        Eventdate,
+                        amendment.affectedName,
+                        Constants.Break
+                        );
                     break;
                 default:
                     stringBuilder.Append("");
@@ -558,20 +570,19 @@
             var stringBuilder = new StringBuilder();
             var isVipCust = amendment.Site == "789y" && amendment.IsVip;
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
-            var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formathhmma);
+            var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formathhmmtt);
 
             var sportNameYN = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN);
             var leagueNameYN = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN);
             var homeNameYN = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.vi_VN);
             var awayNameYN = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.vi_VN);
-            var matchCodeYN = commonFeedback.GetMatchCode(amendment.MatchCode.ToString(), Language.vi_VN);
+            var matchCodeReplaceYN = GetMatchCoddFormat(amendment.MatchCode, Language.vi_VN);
 
             var sportNameSC = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN);
             var leagueNameSC = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN);
             var homeNameSC = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.zh_CN);
             var awayNameSC = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.zh_CN);
-            var matchCodeSC = commonFeedback.GetMatchCode(amendment.MatchCode.ToString(), Language.zh_CN);
-
+            var matchCodeReplaceSC = GetMatchCoddFormat(amendment.MatchCode, Language.zh_CN);
             switch (productName)
             {
                 case "Sportsbook":
@@ -590,11 +601,11 @@
                     if (isVipCust)
                     {
                         stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, sportNameYN,
-                        matchCodeYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break );
+                        matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break );
                     }
                     else
                     {
-                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, sportNameSC, matchCodeSC,
+                        stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, sportNameSC, matchCodeReplaceSC,
                         Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break );
                     }
                     break;
@@ -619,12 +630,12 @@
                 case "Number Game":
                     if (isVipCust)
                     {
-                       stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameYN, sportNameYN, matchCodeYN,
+                       stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameYN, leagueNameYN, amendment.MatchCode,
                        Eventdate, amendment.affectedName, Constants.Break );
                     }
                     else
                     {
-                       stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameSC, sportNameSC, matchCodeSC, Eventdate,
+                       stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameSC, leagueNameSC, amendment.MatchCode, Eventdate,
                        amendment.affectedName, Constants.Break );
                     }
                     break;
@@ -638,6 +649,23 @@
             return stringBuilder;
         }
 
+        protected internal virtual string GetMatchCoddFormat(string matchCode, string language)
+        {
+            var MatchCodeReplace = matchCode;
+            if (!string.IsNullOrEmpty(matchCode))
+            {
+                const string pattern = @"({[^}]*})";
+                var regex = Regex.Matches(matchCode, pattern);
+                var matchCodeRegexId = regex.Cast<Match>().Select(m => m.Groups[1].Value).ToList();
+                foreach (var matchCodeId in matchCodeRegexId)
+                {
+                    var matchCodeName = commonFeedback.GetMatchCode(matchCodeId, language);
+                    MatchCodeReplace = MatchCodeReplace.Replace(matchCodeId, matchCodeName);
+                }
+            }
+
+            return MatchCodeReplace;
+        }
         protected internal virtual async Task<CommandResult> EditSystemSettingAsync()
         {
             var settingJobStatus = new List<SystemSettingItem>

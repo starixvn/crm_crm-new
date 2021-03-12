@@ -20,9 +20,9 @@
         Tài khoản bị ảnh hưởng: {7} {8}
     </SportsbookYN>
     <VirtualSports2EN>
-        Dear Sir, Customer Support would like to inform the below announcement: 8}
+        Dear Sir, Customer Support would like to inform the below announcement: {8}
         Attn:[Virtual Sports] Due to wrong result displayed, the match between "{0} -vs- {1}" [{2} ({3}) - {4}] has been re-settled. {8}
-        The actual result is "{5" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! 8}
+        The actual result is "{5}" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! {8}
         Affected user: {7} {8}
     </VirtualSports2EN>
     <VirtualSports2SC>
@@ -53,7 +53,7 @@
         Tài khoản bị ảnh hưởng: {1} {2}
     </VirtualSportsYN>
     <NumberGameEN>
-        Dear Sir, Customer Support would like to inform the below announcement: {5}
+        Dear Sir, Customer Support would like to inform the below announcement: {4}
         Attn:[{0}] Due to technical error, all bets placed on [{0} Event #{1} - {2}] has been re-settled as REFUNDED. {4}
         Kindly double check your statement again. Sorry for the inconvenience caused! {4}
         Affected user: {3} {4}

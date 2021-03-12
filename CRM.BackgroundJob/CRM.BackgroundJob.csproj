@@ -22,6 +22,8 @@
         <None Remove="App_Data\SpNames.AWS.xml" />
         <None Remove="App_Data\SpNames.xml" />
         <None Remove="Deployment.ignore" />
+        <None Remove="Format_Templates\AutoCreateFeedback\AmendmentDescriptionTemplate.xml" />
+        <None Remove="Format_Templates\AutoCreateFeedback\AmendmentSolutionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\FeedbackTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\TODesctiptionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\TOSolutionTemplate.xml" />
@@ -51,6 +53,12 @@
         </Content>
         <Content Include="Deployment.ignore">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Format_Templates\AutoCreateFeedback\AmendmentDescriptionTemplate.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Format_Templates\AutoCreateFeedback\AmendmentSolutionTemplate.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="Format_Templates\AutoCreateFeedback\FeedbackTemplate.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

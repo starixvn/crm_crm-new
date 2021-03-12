@@ -6,7 +6,7 @@
         public const string Closed = "Closed";
         public const string Neutral = "Neutral";
         public const string Fortmatddmmmyyyy = "dd MMM yyyy";
-        public const string Formathhmma = "hh:mm a";
+        public const string Formathhmmtt = "hh:mm tt";
 
         public const string Special_Notification = "Special Notification";
         public const string CompanyWLLimit = "Company W/L Limit";
