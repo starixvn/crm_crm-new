@@ -113,7 +113,7 @@
                         settings,
                         settingMappings);
             }
-            logService.LogInformation(string.Format("End service result amendment serivce: {0}!", DateTime.Now.ToString()));
+            logService.LogInformation(string.Format("End service result amendment serivce: {0}!", DateTime.Now));
 
             await EditSystemSettingAsync();
         }
@@ -502,9 +502,11 @@
             var leagueName = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US);
             var homeName = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US);
             var awayName = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US);
-            var matchCode = commonFeedback.GetMatchCode(amendment.MatchCode.ToString(), Language.en_US);
+            var matchCode = commonFeedback.GetMatchCode(amendment.MatchCode, Language.en_US);
             var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formathhmmtt);
             var matchCodeReplace = GetMatchCoddFormat(amendment.MatchCode, Language.en_US);
+            logService.LogInformation("end matchCodeReplace");
+            logService.LogInformation(string.Format("amendmentSolTemplate : {0}", amendmentSolTemplate));
             switch (productName)
             {
                 case "Sportsbook":
@@ -519,6 +521,7 @@
                         amendment.affectedName,
                         Constants.Break
                         );
+                    logService.LogInformation("Sportsbook");
                     break;
                 case "Virtual Sports 2":
                     stringBuilder.AppendFormat(
@@ -533,6 +536,7 @@
                             amendment.affectedName,
                             Constants.Break
                     );
+                    logService.LogInformation("Virtual Sports 2");
                     break;
                 case "Virtual Sports":
                     stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsEN,
@@ -540,6 +544,7 @@
                         amendment.affectedName,
                         Constants.Break
                         );
+                    logService.LogInformation("Virtual Sports");
                     break;
                 case "Number Game":
                     stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameEN,
@@ -549,6 +554,7 @@
                         amendment.affectedName,
                         Constants.Break
                         );
+                    logService.LogInformation("Number Game");
                     break;
                 default:
                     stringBuilder.Append("");
