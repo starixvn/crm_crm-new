@@ -14,11 +14,12 @@
         public void Index_WhenCalled_ReturnExpectedContent()
         {
             var fixture = new Fixture();
-            var controller = new WhoamiController();
-
-            controller.ControllerContext = new ControllerContext
+            var controller = new WhoamiController
             {
-                HttpContext = new DefaultHttpContext()
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
             };
             controller.ControllerContext.HttpContext.Connection.LocalIpAddress = new IPAddress(fixture.Create<long>());
             controller.ControllerContext.HttpContext.Connection.RemoteIpAddress = new IPAddress(fixture.Create<long>());

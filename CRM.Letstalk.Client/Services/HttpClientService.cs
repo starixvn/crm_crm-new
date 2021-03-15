@@ -27,18 +27,18 @@
         }
 
         public Task<T> ExecuteGetAsync<T>(string endPoint, IDictionary<string, object> data = null) where T : new()
-            => ExecuteAsync<T>(endPoint, HttpMethod.Get, data);
+            => SendHttpClientAsync<T>(endPoint, HttpMethod.Get, data);
 
         public Task<T> ExecutePostAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
-            => ExecuteAsync<T>(endPoint, HttpMethod.Post, data);
+            => SendHttpClientAsync<T>(endPoint, HttpMethod.Post, data);
 
         public Task<T> ExecutePutAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
-            => ExecuteAsync<T>(endPoint, HttpMethod.Put, data);
+            => SendHttpClientAsync<T>(endPoint, HttpMethod.Put, data);
 
         public Task<T> ExecuteDeleteAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
-            => ExecuteAsync<T>(endPoint, HttpMethod.Delete, data);
+            => SendHttpClientAsync<T>(endPoint, HttpMethod.Delete, data);
 
-        private async Task<T> ExecuteAsync<T>(string endPoint, HttpMethod method, IDictionary<string, object> data)
+        private async Task<T> SendHttpClientAsync<T>(string endPoint, HttpMethod method, IDictionary<string, object> data)
             where T : new()
         {
             ValidateEndPoint(endPoint);
