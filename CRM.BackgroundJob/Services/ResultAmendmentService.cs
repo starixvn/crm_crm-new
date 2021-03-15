@@ -477,8 +477,6 @@
 
         protected internal virtual string GetAmenmendSolution(AmendmentAutoFeedbackInfor amendment)
         {
-            var isVipCust = amendment.Site == "789y" && amendment.IsVip;
-
             var amendmentSolTemplate = commonFeedback.GetFeedbackTemplates<AmendmentSolutionTemplate>(solTemplateXml);
 
             var stringBuilder = new StringBuilder();
