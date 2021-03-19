@@ -22,6 +22,7 @@
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Read)]
     public class PicAssignmentController : BaseController
     {
         private readonly ISettingService settingService;
@@ -53,7 +54,11 @@
         public IActionResult Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICAssignment, Policy.Host);
-            return View(isHost);
+            var isHostPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Host);
+
+            ViewBag.isHost = isHost;
+            ViewBag.isHostPicManagement = isHostPicManagement;
+            return View();
         }
 
         [HttpPost]
@@ -145,6 +150,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Read)]
         public async Task<IActionResult> GetAllPICAssignment([FromBody]GetAssignmentCriteria criteria)
         {
             var rawData = await baseService.GetDataAsync<PICAssignmentInfo>(criteria);
@@ -214,6 +220,8 @@
                 .ThenBy(p => p.PicList != null)
                 .ThenBy(o => o.PicForMapping)
                 .ThenBy(i => i.DirectAccount);
+
+
 
             var results = data.OrderBy(i => i.HeadlineID == 0).ToList();
             for (int i = 0; i < results.Count; i++)

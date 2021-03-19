@@ -18,5 +18,6 @@
         <script src="~/js/pro/pages/picandheadline/picassignment/index.chunk.js"></script>
     </environment>
 }
-<input type="checkbox" hidden id="is-host" @(Model ? "checked" : string.Empty) />
+<input type="checkbox" hidden id="is-host" @((bool)ViewBag.isHost ? "checked" : string.Empty) />
+<input type="checkbox" hidden id="is-host-picmanagement" @((bool)ViewBag.isHostPicManagement ? "checked" : string.Empty) />
 <div id="app-container"></div>
