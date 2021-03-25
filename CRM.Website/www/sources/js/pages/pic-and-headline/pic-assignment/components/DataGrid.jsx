@@ -21,35 +21,55 @@ export class DataGrid extends Component {
         this.props.getGridData(params, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
     };
 
-    buildPicManagementHeader = isHost =>
-        <HeaderRow>
-            <HeaderCell colWidth={70}>{LangHelper.getResource('TextNo')}</HeaderCell>
-            <HeaderCell colWidth={150}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
-            <HeaderCell colWidth={100}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
-            <HeaderCell colWidth={150}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
-            <HeaderCell colWidth={150}>{LangHelper.getResource('PIC')}</HeaderCell>
-            <HeaderCell colWidth={150}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
-            <HeaderCell colWidth={100}>{LangHelper.getResource('Status')}</HeaderCell>
-            <HeaderCell colWidth={150}>{LangHelper.getResource('Site')}</HeaderCell>
-            <HeaderCell colWidth={100}>{LangHelper.getResource('Currency')}</HeaderCell>
-            <HeaderCell colWidth={100}>{LangHelper.getResource('Position')}</HeaderCell>
-            {
-                isHost && <HeaderCell colWidth={85}>
-                    <input className='d-block mx-auto' type='button'
-                        value={LangHelper.getResource('Remove')}
-                        disabled={this.props.removeOptions.isDisabledRemove}
-                        onClick={() => this.handleOpenRemovePopup()}
-                    />
-                    {
-                        this.props.removeOptions.isHadAll &&
-                        <input className='d-block cursor-pointer mx-auto margin-top-5px' type='checkbox'
-                            checked={this.props.removeOptions.isCheckedAll}
-                            onChange={() => this.handleChangeRemoveCheckboxAll()}
+    buildPicManagementHeader = (isHost, isHostPicManagement) => {
+        const listComm = this.props.picAssignmentGridData.listComm;
+        const uniqueCommunication = listComm.filter((v, i, a) => a.findIndex(t => t === v) === i);
+        return [
+            <HeaderRow key='header1'>
+                <HeaderCell colWidth={70}  rowSpan={2}>{LangHelper.getResource('TextNo')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
+                <HeaderCell colWidth={150} rowSpan={2}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
+                <HeaderCell colWidth={150} rowSpan={2}>{LangHelper.getResource('PIC')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={150} rowSpan={2}>{LangHelper.getResource('Site')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('Position')}</HeaderCell>
+                {
+                    isHost && <HeaderCell colWidth={85} rowSpan={2}>
+                        <input className='d-block mx-auto' type='button'
+                            value={LangHelper.getResource('Remove')}
+                            disabled={this.props.removeOptions.isDisabledRemove}
+                            onClick={() => this.handleOpenRemovePopup()}
                         />
-                    }
-                </HeaderCell>
-            }
-        </HeaderRow>;
+                        {
+                            this.props.removeOptions.isHadAll &&
+                            <input className='d-block cursor-pointer mx-auto margin-top-5px' type='checkbox'
+                                checked={this.props.removeOptions.isCheckedAll}
+                                onChange={() => this.handleChangeRemoveCheckboxAll()}
+                            />
+                        }
+                    </HeaderCell>
+                }
+                {
+                    isHostPicManagement && <HeaderCell colWidth={600} colSpan={uniqueCommunication.length + 1}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
+                }
+            </HeaderRow>,
+            <HeaderRow key='header2'>
+                {isHostPicManagement && this.renderHeaderCommunicationTools(uniqueCommunication)}
+            </HeaderRow>
+        ]
+    };
+
+    renderHeaderCommunicationTools = uniqueCommunication => {
+        const header = [];
+        header.push(<HeaderCell colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
+        uniqueCommunication.forEach(item => {
+            header.push(<HeaderCell colWidth={100} key={item}>{item}</HeaderCell>);
+        });
+        return header;
+    };
 
     buildPicManagementBody = isHost => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -59,11 +79,27 @@ export class DataGrid extends Component {
             const body = [];
             let mergeHeadline = 0;
             let mergePIC = 0;
-
+            let countComm = 0;
+            let rowIndex = 0;
             for (let index = 0; index < this.props.picAssignmentGridData.data.length; index++) {
+                rowIndex++;
                 let row;
                 const assignment = this.props.picAssignmentGridData.data[index];
-
+                var headline = this.props.picAssignmentGridData.data.filter(x => x.headlineID === assignment.headlineID);
+                let comm = [];
+                let picForMappingSplit = [];
+                const communicationTools = this.props.picAssignmentGridData.communicationTools;
+                headline.map(item =>{
+                    if(item.picForMapping)
+                    {
+                        var splitPic = item.picForMapping.split(',');
+                        splitPic.map(item1 =>{
+                        picForMappingSplit.push(item1);
+                        })
+                    }
+                })
+                const uniquePicMapping = picForMappingSplit.filter((v, i, a) => a.findIndex(t => t === v) === i);
+                comm = communicationTools.filter(item => uniquePicMapping.indexOf(item.picId.toString()) > -1);
                 if (mergeHeadline === 0) {
                     mergeHeadline = this.props.picAssignmentGridData.data.filter(x => x.headlineID === assignment.headlineID).length;
                     const pics = this.props.picAssignmentGridData.data.filter(item =>
@@ -71,21 +107,54 @@ export class DataGrid extends Component {
                     mergePIC = pics.length;
                     const accounts = pics.map(pic => pic.directAccount);
                     const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
-                    row = this.renderRow(index, isHost, assignment, mergeHeadline, mergePIC, picCell);
+                    countComm = 0;
+                    if(comm.length > mergeHeadline)
+                    {
+                        const countExtraComm = comm.length - mergeHeadline;
+                        const  mergeHeadline1 =  mergeHeadline + countExtraComm;
+                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadline1, mergePIC, picCell, comm[countComm]);
+                    }
+                    else
+                    {
+                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadline, mergePIC, picCell, comm[countComm]);
+                    }
                 } else if (mergePIC === 0) {
                     const pics = this.props.picAssignmentGridData.data.filter(item =>
                         item.headlineID === assignment.headlineID && item.picForMapping === assignment.picForMapping);
                     mergePIC = pics.length;
                     const accounts = pics.map(pic => pic.directAccount);
                     const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
-                    row = this.renderRow(index, isHost, assignment, 0, mergePIC, picCell);
+                    if(countComm < comm.length)
+                    {
+                        var commRenderPicMerge = comm[countComm];
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, commRenderPicMerge );
+                    }
+                    else
+                    {
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, 0);
+                    }
                 } else {
-                    row = this.renderRow(index, isHost, assignment, 0, 0);
-                }
+                    if(countComm < comm.length)
+                    {
+                        var commRender = comm[countComm];
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, commRender);
+                    }
+                    else
+                    {
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, 0);
+                    }
 
+                }
                 body.push(row);
+                countComm++;
                 mergeHeadline--;
                 mergePIC--;
+                if(mergeHeadline == 0 && countComm < comm.length)
+                {
+                     rowIndex++;
+                     row = this.renderRowCommEmpty(rowIndex, comm[countComm++]);
+                     body.push(row);
+                }
             }
 
             return body;
@@ -98,7 +167,27 @@ export class DataGrid extends Component {
         ];
     };
 
-    renderRow = (index, isHost, item, mergeHeadline, mergePIC, picCell) => {
+    renderRowCommEmpty = (index, comm) => {
+        return <Row key={index}>
+            <Cell className='text-center'>{index}</Cell>
+            <Cell ></Cell>
+            <Cell ></Cell>
+            <Cell ></Cell>
+            <Cell ></Cell>
+            <Cell ></Cell>
+            <Cell ></Cell>
+            <Cell ></Cell>
+            {
+                comm ? 
+                this.renderCommunicationToolsValue(comm)
+                :
+                this.renderCommunicationToolsNullValue()
+            }
+        </Row>;
+    };
+
+
+    renderRow = (index, isHost, item, mergeHeadline, mergePIC, picCell, comm) => {
         const defaultPicList = item.defaultPicList ?
             item.defaultPicList.map(pic => {
                 return {
@@ -106,9 +195,10 @@ export class DataGrid extends Component {
                     label: `${pic.picName} (${pic.role})`
                 };
             }) : [];
+        
 
         return <Row key={index}>
-            <Cell className='text-center'>{index + this.startIndex}</Cell>
+            <Cell className='text-center'>{index}</Cell>
             {
                 this.renderMergeHeadlineCells(mergeHeadline, item, defaultPicList)
             }
@@ -124,7 +214,40 @@ export class DataGrid extends Component {
             {
                 isHost && this.renderIsHost(item, index)
             }
+            {
+                comm ? 
+                this.renderCommunicationToolsValue(comm)
+                :
+                this.renderCommunicationToolsNullValue()
+            }
         </Row>;
+    };
+
+    renderCommunicationToolsNullValue = () =>{
+        const bodyCommunicationNullValue = [];
+        for(let i=0; i<6; i++)
+        {
+            bodyCommunicationNullValue.push(<Cell key={`comm-${i}`}></Cell>)
+        }
+        return bodyCommunicationNullValue;
+    }
+
+    renderCommunicationToolsValue = comm => {
+        const bodyCommunication = [];
+        bodyCommunication.push( <Cell >{comm.picName}</Cell>);
+        var letTalksValue = comm.listComm.filter(item => item.settingValue.toString()==='Letstalk');
+        var phoneValue = comm.listComm.filter(item => item.settingValue.toString()==='Phone');
+        var skypeValue = comm.listComm.filter(item => item.settingValue.toString()==='Skype');
+        var weChatValue = comm.listComm.filter(item => item.settingValue.toString()==='WeChat');
+        var lineValue = comm.listComm.filter(item => item.settingValue.toString()==='Line');
+
+        bodyCommunication.push(<Cell className='text-center'>{letTalksValue.length > 0 ? letTalksValue[0].communicationValue : letTalksValue}</Cell>); 
+        bodyCommunication.push(<Cell className='text-center'>{phoneValue.length > 0 ? phoneValue[0].communicationValue : phoneValue}</Cell>); 
+        bodyCommunication.push(<Cell className='text-center'>{skypeValue.length > 0 ? skypeValue[0].communicationValue : skypeValue}</Cell>); 
+        bodyCommunication.push(<Cell className='text-center'>{weChatValue.length > 0 ? weChatValue[0].communicationValue : weChatValue}</Cell>); 
+        bodyCommunication.push(<Cell className='text-center'>{lineValue.length > 0 ? lineValue[0].communicationValue : lineValue}</Cell>); 
+
+        return bodyCommunication;
     };
 
     renderMergeHeadlineCells = (mergeHeadline, item, defaultPicList) => {
@@ -257,7 +380,7 @@ export class DataGrid extends Component {
 
         const { totalItems, totalUnassignedDirectAccount } = this.props.picAssignmentGridData;
         const { pageIndex, pageSize } = this.props.gridParams;
-        const { isHost } = this.props;
+        const { isHost, isHostPicManagement } = this.props;
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
@@ -279,9 +402,9 @@ export class DataGrid extends Component {
                 </div>
             </div>
             <Table
-                maxWidth={1350}
+                maxWidth={document.getElementById('app-container').clientWidth}
                 autoWidth
-                header={this.buildPicManagementHeader(isHost)}
+                header={this.buildPicManagementHeader(isHost, isHostPicManagement)}
                 body={this.buildPicManagementBody(isHost)}
                 isPaging
                 pageOption={pagingOption}

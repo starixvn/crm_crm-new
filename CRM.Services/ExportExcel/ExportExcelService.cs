@@ -11,7 +11,7 @@
 
     public interface IExportExcelService
     {
-        byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments);
+        byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments, IEnumerable<AssignmentCommunication> picComms);
 
         byte[] ExportPICManagement(IEnumerable<BaseModel> communicationTools, PicReport picReport);
 
@@ -29,11 +29,11 @@
             this.hostingEnvironment = hostingEnvironment;
         }
 
-        public byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments)
+        public byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments, IEnumerable<AssignmentCommunication> picComms)
         {
             const string ExcelTemplatePath = "ExcelTemplates/PicAssignment.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new PicAssignmentExcel(templatePath, assignments);
+            var excel = new PicAssignmentExcel(templatePath, assignments, picComms);
             return excel.Export();
         }
 

@@ -150,14 +150,23 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
-        [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Read)]
         public async Task<IActionResult> GetAllPICAssignment([FromBody]GetAssignmentCriteria criteria)
         {
-            var rawData = await baseService.GetDataAsync<PICAssignmentInfo>(criteria);
-            var assignments = GeneratePicList(rawData, criteria.PageIndex, criteria.PageSize);
+            var rawData = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
+            var assignments = GeneratePicList(rawData.Item1, criteria.PageIndex, criteria.PageSize);
+            var groupByComm = rawData.Item2.GroupBy(x => new { x.PicId, x.Username }).Select(y=> new
+            {
+                PicName = y.Key.Username,
+                PicId = y.Key.PicId,
+                ListComm = y.ToList()
+            }).ToList();
+
+            var listComm = rawData.Item2.Select(x => x.SettingValue);
             var response = new
             {
                 Data = assignments,
+                ListComm = listComm,
+                CommunicationTools = groupByComm,
                 TotalItems = criteria.TotalRows,
                 TotalUnassignedDirectAccount = criteria.TotalUnassigned
             };
@@ -191,13 +200,17 @@
         {
             criteria.PageIndex = null;
             criteria.PageSize = null;
-            var picInfo = await baseService.GetDataAsync<PICAssignmentInfo>(criteria);
-            IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo, criteria.PageIndex, criteria.PageSize);
-            var bytes = excelService.ExportPICAssignment(assignments);
+            var picInfo = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
+            IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);
+
+            var listComm = picInfo.Item2.Select(x => x.SettingValue);
+
+            var bytes = excelService.ExportPICAssignment(assignments, picInfo.Item2);
             return File(bytes, MimeType.XLSX, $"{ViewResources.PICAssignment}.xlsx");
         }
 
-        private static IEnumerable<PICAssignmentInfo> GeneratePicList(IEnumerable<PICAssignmentInfo> assignments, int? pageIndex, int? pageSize)
+        private static IEnumerable<PICAssignmentInfo> GeneratePicList(IEnumerable<PICAssignmentInfo> assignments
+            , int? pageIndex, int? pageSize)
         {
             foreach (var assignment in assignments)
             {
@@ -219,9 +232,8 @@
                 .ThenByDescending(p => p.PicList?.Count)
                 .ThenBy(p => p.PicList != null)
                 .ThenBy(o => o.PicForMapping)
-                .ThenBy(i => i.DirectAccount);
-
-
+                .ThenBy(i => i.DirectAccount)
+                .Take(20);
 
             var results = data.OrderBy(i => i.HeadlineID == 0).ToList();
             for (int i = 0; i < results.Count; i++)

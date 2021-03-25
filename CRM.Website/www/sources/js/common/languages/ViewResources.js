@@ -119,6 +119,7 @@
     Open: 'Open',
     OverMaxUnernameWhenAssignPic: 'You are not allowed to input over {0} usernames. Please check it!',
     PIC: 'PIC',
+    PICName: 'PIC Name',
     PICAssignment: 'PIC Assignment',
     PICManagement: 'PIC Management',
     PICRequired: 'PIC is required!',

@@ -19,5 +19,20 @@
 
         [XmlAttribute("RoleId")]
         public int RoleId { get; set; }
+
+        [XmlAttribute("Letstalk")]
+        public int Letstalk { get; set; }
+
+        [XmlAttribute("Phone")]
+        public int Phone { get; set; }
+
+        [XmlAttribute("Skype")]
+        public int Skype { get; set; }
+
+        [XmlAttribute("WeChat")]
+        public int WeChat { get; set; }
+
+        [XmlAttribute("Line")]
+        public int Line { get; set; }
     }
 }

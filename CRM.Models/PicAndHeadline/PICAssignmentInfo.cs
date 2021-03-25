@@ -30,6 +30,8 @@
 
         public IList<PicModel> DefaultPicList { get; set; }
 
+        public IList<AssignmentCommunication> AssignmentCommunications { get; set; }
+
         public string PicForMapping { get; set; }
 
         public int? RowNum { get; set; }
