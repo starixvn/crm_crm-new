@@ -189,6 +189,9 @@
   <data name="PICManagement" xml:space="preserve">
     <value>PIC Management</value>
   </data>
+  <data name="PICName" xml:space="preserve">
+    <value>PIC Name</value>
+  </data>
   <data name="Remark" xml:space="preserve">
     <value>Remark</value>
   </data>

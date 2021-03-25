@@ -277,6 +277,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PIC Name.
+        /// </summary>
+        public static string PICName {
+            get {
+                return ResourceManager.GetString("PICName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remark.
         /// </summary>
         public static string Remark {

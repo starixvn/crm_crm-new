@@ -111,8 +111,8 @@ export class DataGrid extends Component {
                     if(comm.length > mergeHeadline)
                     {
                         const countExtraComm = comm.length - mergeHeadline;
-                        const  mergeHeadline1 =  mergeHeadline + countExtraComm;
-                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadline1, mergePIC, picCell, comm[countComm]);
+                        const  mergeHeadlineExtraComm =  mergeHeadline + countExtraComm;
+                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[countComm]);
                     }
                     else
                     {
@@ -143,7 +143,6 @@ export class DataGrid extends Component {
                     {
                         row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, 0);
                     }
-
                 }
                 body.push(row);
                 countComm++;
@@ -156,7 +155,6 @@ export class DataGrid extends Component {
                      body.push(row);
                 }
             }
-
             return body;
         }
 
@@ -178,10 +176,7 @@ export class DataGrid extends Component {
             <Cell ></Cell>
             <Cell ></Cell>
             {
-                comm ? 
-                this.renderCommunicationToolsValue(comm)
-                :
-                this.renderCommunicationToolsNullValue()
+                comm ? this.renderCommunicationToolsValue(comm) : this.renderCommunicationToolsNullValue()
             }
         </Row>;
     };
@@ -215,10 +210,7 @@ export class DataGrid extends Component {
                 isHost && this.renderIsHost(item, index)
             }
             {
-                comm ? 
-                this.renderCommunicationToolsValue(comm)
-                :
-                this.renderCommunicationToolsNullValue()
+                comm ? this.renderCommunicationToolsValue(comm) : this.renderCommunicationToolsNullValue()
             }
         </Row>;
     };

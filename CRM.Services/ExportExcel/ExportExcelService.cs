@@ -29,7 +29,7 @@
             this.hostingEnvironment = hostingEnvironment;
         }
 
-        public byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments, IEnumerable<AssignmentCommunication> picComms)
+        public byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments,  IEnumerable<AssignmentCommunication> picComms)
         {
             const string ExcelTemplatePath = "ExcelTemplates/PicAssignment.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);

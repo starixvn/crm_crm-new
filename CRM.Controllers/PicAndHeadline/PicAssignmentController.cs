@@ -202,6 +202,12 @@
             criteria.PageSize = null;
             var picInfo = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);
+            //var groupByComm = picInfo.Item2.GroupBy(x => new { x.PicId, x.Username }).Select(y => new
+            //{
+            //    PicName = y.Key.Username,
+            //    PicId = y.Key.PicId,
+            //    ListComm = y.ToList()
+            //}).ToList();
 
             var listComm = picInfo.Item2.Select(x => x.SettingValue);
 
