@@ -26,18 +26,18 @@ export class DataGrid extends Component {
         const uniqueCommunication = listComm.filter((v, i, a) => a.findIndex(t => t === v) === i);
         return [
             <HeaderRow key='header1'>
-                <HeaderCell colWidth={70}  rowSpan={2}>{LangHelper.getResource('TextNo')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
-                <HeaderCell colWidth={150} rowSpan={2}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
-                <HeaderCell colWidth={150} rowSpan={2}>{LangHelper.getResource('PIC')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={150} rowSpan={2}>{LangHelper.getResource('Site')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('Currency')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={2}>{LangHelper.getResource('Position')}</HeaderCell>
+                <HeaderCell colWidth={70}  rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('TextNo')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
+                <HeaderCell colWidth={150} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
+                <HeaderCell colWidth={150} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('PIC')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={150} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('Site')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={85} rowSpan={2}>
+                    isHost && <HeaderCell colWidth={85} rowSpan={isHostPicManagement ? 2 : 0}>
                         <input className='d-block mx-auto' type='button'
                             value={LangHelper.getResource('Remove')}
                             disabled={this.props.removeOptions.isDisabledRemove}
@@ -71,7 +71,7 @@ export class DataGrid extends Component {
         return header;
     };
 
-    buildPicManagementBody = isHost => {
+    buildPicManagementBody = (isHost,isHostPicManagement) => {
         const { pageIndex, pageSize } = this.props.gridParams;
         this.startIndex = (pageIndex - 1) * pageSize + 1;
 
@@ -99,24 +99,23 @@ export class DataGrid extends Component {
                     }
                 })
                 const uniquePicMapping = picForMappingSplit.filter((v, i, a) => a.findIndex(t => t === v) === i);
-                comm = communicationTools.filter(item => uniquePicMapping.indexOf(item.picId.toString()) > -1);
                 if (mergeHeadline === 0) {
                     mergeHeadline = this.props.picAssignmentGridData.data.filter(x => x.headlineID === assignment.headlineID).length;
                     const pics = this.props.picAssignmentGridData.data.filter(item =>
                         item.headlineID === assignment.headlineID && item.picForMapping === assignment.picForMapping);
                     mergePIC = pics.length;
                     const accounts = pics.map(pic => pic.directAccount);
-                    const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
+                    const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost, isHostPicManagement);
                     countComm = 0;
-                    if(comm.length > mergeHeadline)
+                    if(comm.length > mergeHeadline && isHostPicManagement)
                     {
                         const countExtraComm = comm.length - mergeHeadline;
                         const  mergeHeadlineExtraComm =  mergeHeadline + countExtraComm;
-                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[countComm]);
+                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[countComm], isHostPicManagement);
                     }
                     else
                     {
-                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadline, mergePIC, picCell, comm[countComm]);
+                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadline, mergePIC, picCell, comm[countComm], isHostPicManagement);
                     }
                 } else if (mergePIC === 0) {
                     const pics = this.props.picAssignmentGridData.data.filter(item =>
@@ -124,31 +123,31 @@ export class DataGrid extends Component {
                     mergePIC = pics.length;
                     const accounts = pics.map(pic => pic.directAccount);
                     const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
-                    if(countComm < comm.length)
+                    if(countComm < comm.length && isHostPicManagement)
                     {
                         var commRenderPicMerge = comm[countComm];
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, commRenderPicMerge );
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, commRenderPicMerge , isHostPicManagement);
                     }
                     else
                     {
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, 0);
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, 0, isHostPicManagement);
                     }
                 } else {
-                    if(countComm < comm.length)
+                    if(countComm < comm.length && isHostPicManagement)
                     {
                         var commRender = comm[countComm];
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, commRender);
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, commRender, isHostPicManagement);
                     }
                     else
                     {
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, 0);
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, 0, isHostPicManagement);
                     }
                 }
                 body.push(row);
                 countComm++;
                 mergeHeadline--;
                 mergePIC--;
-                if(mergeHeadline == 0 && countComm < comm.length)
+                if(mergeHeadline == 0 && countComm < comm.length && isHostPicManagement)
                 {
                      rowIndex++;
                      row = this.renderRowCommEmpty(rowIndex, comm[countComm++]);
@@ -182,7 +181,7 @@ export class DataGrid extends Component {
     };
 
 
-    renderRow = (index, isHost, item, mergeHeadline, mergePIC, picCell, comm) => {
+    renderRow = (index, isHost, item, mergeHeadline, mergePIC, picCell, comm, isHostPicManagement) => {
         const defaultPicList = item.defaultPicList ?
             item.defaultPicList.map(pic => {
                 return {
@@ -210,7 +209,7 @@ export class DataGrid extends Component {
                 isHost && this.renderIsHost(item, index)
             }
             {
-                comm ? this.renderCommunicationToolsValue(comm) : this.renderCommunicationToolsNullValue()
+               comm ? isHostPicManagement&&this.renderCommunicationToolsValue(comm) : isHostPicManagement&&this.renderCommunicationToolsNullValue()
             }
         </Row>;
     };
@@ -394,10 +393,10 @@ export class DataGrid extends Component {
                 </div>
             </div>
             <Table
-                maxWidth={document.getElementById('app-container').clientWidth}
+                maxWidth= { isHostPicManagement ? document.getElementById('app-container').clientWidth : 1350}
                 autoWidth
                 header={this.buildPicManagementHeader(isHost, isHostPicManagement)}
-                body={this.buildPicManagementBody(isHost)}
+                body={this.buildPicManagementBody(isHost, isHostPicManagement)}
                 isPaging
                 pageOption={pagingOption}
                 onPaging={this.onPaging}
