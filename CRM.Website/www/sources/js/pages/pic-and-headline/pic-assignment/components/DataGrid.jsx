@@ -99,6 +99,7 @@ export class DataGrid extends Component {
                     }
                 })
                 const uniquePicMapping = picForMappingSplit.filter((v, i, a) => a.findIndex(t => t === v) === i);
+                comm = communicationTools.filter(item => uniquePicMapping.indexOf(item.picId.toString()) > -1);
                 if (mergeHeadline === 0) {
                     mergeHeadline = this.props.picAssignmentGridData.data.filter(x => x.headlineID === assignment.headlineID).length;
                     const pics = this.props.picAssignmentGridData.data.filter(item =>

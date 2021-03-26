@@ -53,7 +53,7 @@
         public IActionResult Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICAssignment, Policy.Host);
-            var isHostPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Host);
+            var isHostPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
 
             ViewBag.isHost = isHost;
             ViewBag.isHostPicManagement = isHostPicManagement;
@@ -199,7 +199,7 @@
         {
             criteria.PageIndex = null;
             criteria.PageSize = null;
-            var isHostPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Host);
+            var isHostPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
             var picInfo = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);
             var bytes = excelService.ExportPICAssignment(assignments, picInfo.Item2, isHostPicManagement);
