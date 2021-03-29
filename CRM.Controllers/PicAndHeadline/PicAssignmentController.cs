@@ -199,10 +199,11 @@
         {
             criteria.PageIndex = null;
             criteria.PageSize = null;
-            var isHostPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
             var picInfo = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
+            var isReadPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
+            var isRenderPicManagement = isReadPicManagement && picInfo.Item2.Count() > 0;
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);
-            var bytes = excelService.ExportPICAssignment(assignments, picInfo.Item2, isHostPicManagement);
+            var bytes = excelService.ExportPICAssignment(assignments, picInfo.Item2, isRenderPicManagement);
             return File(bytes, MimeType.XLSX, $"{ViewResources.PICAssignment}.xlsx");
         }
 

@@ -27,16 +27,16 @@
 
         private readonly IEnumerable<PICAssignmentInfo> assignments;
         private readonly IEnumerable<AssignmentCommunication> picComms;
-        private readonly bool isHostPicManagement;
+        private readonly bool isRenderPicManagement;
 
         public PicAssignmentExcel(string templatePath, IEnumerable<PICAssignmentInfo> assignments,
             IEnumerable<AssignmentCommunication> picComms,
-            bool isHostPicManagement)
+            bool isRenderPicManagement)
             : base(templatePath, 0, ViewResources.PICAssignment)
         {
             this.assignments = assignments;
             this.picComms = picComms;
-            this.isHostPicManagement = isHostPicManagement;
+            this.isRenderPicManagement = isRenderPicManagement;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -50,7 +50,7 @@
             templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]
                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]);
 
-            if(isHostPicManagement)
+            if(isRenderPicManagement)
             {
                 var listComm = picComms.Select(x => x.SettingValue).Distinct().ToList();
                 TotalColumns = TotalColumns + listComm.Count;
@@ -132,7 +132,7 @@
                             worksheet.Cells[rowIndex, colIndex++].Value = assignment.Currency;
                             worksheet.Cells[rowIndex, colIndex].Value = assignment.Position;
 
-                            if (countCommIncludeMergeHeadline < commIncludeMergeHeadline?.Count && isHostPicManagement)
+                            if (countCommIncludeMergeHeadline < commIncludeMergeHeadline?.Count && isRenderPicManagement)
                             {
                                 RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, commIncludeMergeHeadline[countCommIncludeMergeHeadline]);
                             }
@@ -144,7 +144,7 @@
                 }
                 RenderBodyExcludeMergePic(templateWorksheet, worksheet, excludeMergeCommonPIC,
                                             colIndex, rowIndex, rowNum, colIndexComm);
-                var totalColumnDrawInculdeMergeHeadline = isHostPicManagement ? TotalColumns + 1 : TotalColumns;
+                var totalColumnDrawInculdeMergeHeadline = isRenderPicManagement ? TotalColumns + 1 : TotalColumns;
                 DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumnDrawInculdeMergeHeadline]);
         }
 
@@ -220,7 +220,7 @@
                     mergePic = pics.Count();
                         
                     countComm = 0;
-                    if (comm?.Count > mergeHeadline && isHostPicManagement)
+                    if (comm?.Count > mergeHeadline && isRenderPicManagement)
                     {
                         var countExtraComm = comm.Count - mergeHeadline;
                         var mergeHeadlineExtraComm = mergeHeadline + countExtraComm;
@@ -280,7 +280,7 @@
                 worksheet.Cells[rowIndex, colIndex++].Value = assignment.Currency;
                 worksheet.Cells[rowIndex, colIndex].Value = assignment.Position;
 
-                if (countComm < comm?.Count && isHostPicManagement)
+                if (countComm < comm?.Count && isRenderPicManagement)
                 {
                     RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, comm[countComm]);
                 }
@@ -288,7 +288,7 @@
                 mergeHeadline--;
                 mergePic--;
                 rowIndex++;
-                if (mergeHeadline == 0 && countComm < comm?.Count && isHostPicManagement)
+                if (mergeHeadline == 0 && countComm < comm?.Count && isRenderPicManagement)
                 {
                     var remainCountComm = comm?.Count - countComm;
                     for (var indexExtraComm = 0; indexExtraComm < remainCountComm; indexExtraComm++)
@@ -299,7 +299,7 @@
                     }
                 }
             }
-            var totalColumnDraw = isHostPicManagement ? TotalColumns + 1 : TotalColumns;
+            var totalColumnDraw = isRenderPicManagement ? TotalColumns + 1 : TotalColumns;
             DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumnDraw]);
         }
 
@@ -388,7 +388,7 @@
             worksheet.Cells.AutoFitColumns();
             worksheet.Column(1).Width = widthSmall;
             worksheet.Column(colPIC).Width = widthLarge;
-            if(isHostPicManagement)
+            if(isRenderPicManagement)
             {
                 SetStyle(worksheet);
             }
