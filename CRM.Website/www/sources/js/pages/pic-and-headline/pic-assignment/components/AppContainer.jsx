@@ -14,12 +14,12 @@ export class AppContainer extends Component {
     }
 
     render() {
-        const { isHost, isHostPicManagement } = this.props;
+        const { isHost, isReadPicManagement } = this.props;
 
         return (
             <Fragment>
                 <Filter />
-                <DataGrid isHost={isHost}  isHostPicManagement={isHostPicManagement}/>
+                <DataGrid isHost={isHost}  isReadPicManagement={isReadPicManagement}/>
                 {
                     this.props.removePicAssignmentPopup.show &&
                     <RemovePicAssignment

@@ -21,23 +21,23 @@ export class DataGrid extends Component {
         this.props.getGridData(params, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
     };
 
-    buildPicManagementHeader = (isHost, isHostPicManagement) => {
+    buildPicManagementHeader = (isHost, isRenderCommunication) => {
         const listComm = this.props.picAssignmentGridData.listComm;
         const uniqueCommunication = listComm.filter((v, i, a) => a.findIndex(t => t === v) === i);
         return [
-            <HeaderRow key='header1'>
-                <HeaderCell colWidth={70}  rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('TextNo')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
-                <HeaderCell colWidth={150} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
-                <HeaderCell colWidth={150} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('PIC')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={150} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('Site')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('Currency')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isHostPicManagement ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
+            <HeaderRow>
+                <HeaderCell colWidth={70}  rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('TextNo')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
+                <HeaderCell colWidth={150} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
+                <HeaderCell colWidth={150} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('PIC')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={150} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Site')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={85} rowSpan={isHostPicManagement ? 2 : 0}>
+                    isHost && <HeaderCell colWidth={85} rowSpan={isRenderCommunication ? 2 : 0}>
                         <input className='d-block mx-auto' type='button'
                             value={LangHelper.getResource('Remove')}
                             disabled={this.props.removeOptions.isDisabledRemove}
@@ -53,11 +53,11 @@ export class DataGrid extends Component {
                     </HeaderCell>
                 }
                 {
-                    isHostPicManagement && <HeaderCell colWidth={600} colSpan={uniqueCommunication.length + 1}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
+                    isRenderCommunication && <HeaderCell colWidth={600} colSpan={uniqueCommunication.length + 1}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
                 }
             </HeaderRow>,
             <HeaderRow key='header2'>
-                {isHostPicManagement && this.renderHeaderCommunicationTools(uniqueCommunication)}
+                {isRenderCommunication && this.renderHeaderCommunicationTools(uniqueCommunication)}
             </HeaderRow>
         ]
     };
@@ -65,13 +65,13 @@ export class DataGrid extends Component {
     renderHeaderCommunicationTools = uniqueCommunication => {
         const header = [];
         header.push(<HeaderCell colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
-        uniqueCommunication.forEach(item => {
-            header.push(<HeaderCell colWidth={100} key={item}>{item}</HeaderCell>);
+        uniqueCommunication.forEach((item, index) => {
+            header.push(<HeaderCell colWidth={100} key={`comm-header-${item}-${index}`}>{item}</HeaderCell>);
         });
         return header;
     };
 
-    buildPicManagementBody = (isHost,isHostPicManagement) => {
+    buildPicManagementBody = (isHost,isRenderCommunication) => {
         const { pageIndex, pageSize } = this.props.gridParams;
         this.startIndex = (pageIndex - 1) * pageSize + 1;
 
@@ -106,17 +106,17 @@ export class DataGrid extends Component {
                         item.headlineID === assignment.headlineID && item.picForMapping === assignment.picForMapping);
                     mergePIC = pics.length;
                     const accounts = pics.map(pic => pic.directAccount);
-                    const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost, isHostPicManagement);
+                    const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost, isRenderCommunication);
                     countComm = 0;
-                    if(comm.length > mergeHeadline && isHostPicManagement)
+                    if(comm.length > mergeHeadline && isRenderCommunication)
                     {
                         const countExtraComm = comm.length - mergeHeadline;
                         const  mergeHeadlineExtraComm =  mergeHeadline + countExtraComm;
-                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[countComm], isHostPicManagement);
+                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[countComm], isRenderCommunication);
                     }
                     else
                     {
-                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadline, mergePIC, picCell, comm[countComm], isHostPicManagement);
+                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadline, mergePIC, picCell, comm[countComm], isRenderCommunication);
                     }
                 } else if (mergePIC === 0) {
                     const pics = this.props.picAssignmentGridData.data.filter(item =>
@@ -124,35 +124,38 @@ export class DataGrid extends Component {
                     mergePIC = pics.length;
                     const accounts = pics.map(pic => pic.directAccount);
                     const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
-                    if(countComm < comm.length && isHostPicManagement)
+                    if(countComm < comm.length && isRenderCommunication)
                     {
                         var commRenderPicMerge = comm[countComm];
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, commRenderPicMerge , isHostPicManagement);
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, commRenderPicMerge , isRenderCommunication);
                     }
                     else
                     {
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, 0, isHostPicManagement);
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, 0, isRenderCommunication);
                     }
                 } else {
-                    if(countComm < comm.length && isHostPicManagement)
+                    if(countComm < comm.length && isRenderCommunication)
                     {
                         var commRender = comm[countComm];
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, commRender, isHostPicManagement);
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, commRender, isRenderCommunication);
                     }
                     else
                     {
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, 0, isHostPicManagement);
+                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, 0, isRenderCommunication);
                     }
                 }
                 body.push(row);
                 countComm++;
                 mergeHeadline--;
                 mergePIC--;
-                if(mergeHeadline == 0 && countComm < comm.length && isHostPicManagement)
+                if(mergeHeadline == 0 && countComm < comm.length && isRenderCommunication)
                 {
-                     rowIndex++;
-                     row = this.renderRowCommEmpty(rowIndex, comm[countComm++]);
-                     body.push(row);
+                    const remainRowComm =  comm.length - countComm;
+                     for (let indexExtra = 0; indexExtra < remainRowComm; indexExtra++) {
+                        rowIndex++;
+                        row = this.renderRowCommEmpty(rowIndex, comm[countComm++]);
+                        body.push(row);
+                     }
                 }
             }
             return body;
@@ -182,7 +185,7 @@ export class DataGrid extends Component {
     };
 
 
-    renderRow = (index, isHost, item, mergeHeadline, mergePIC, picCell, comm, isHostPicManagement) => {
+    renderRow = (index, isHost, item, mergeHeadline, mergePIC, picCell, comm, isRenderCommunication) => {
         const defaultPicList = item.defaultPicList ?
             item.defaultPicList.map(pic => {
                 return {
@@ -210,7 +213,7 @@ export class DataGrid extends Component {
                 isHost && this.renderIsHost(item, index)
             }
             {
-               comm ? isHostPicManagement&&this.renderCommunicationToolsValue(comm) : isHostPicManagement&&this.renderCommunicationToolsNullValue()
+               comm ? isRenderCommunication&&this.renderCommunicationToolsValue(comm) : isRenderCommunication&&this.renderCommunicationToolsNullValue()
             }
         </Row>;
     };
@@ -370,9 +373,10 @@ export class DataGrid extends Component {
             return null;
         }
 
-        const { totalItems, totalUnassignedDirectAccount } = this.props.picAssignmentGridData;
+        const { totalItems, totalUnassignedDirectAccount, communicationTools } = this.props.picAssignmentGridData;
         const { pageIndex, pageSize } = this.props.gridParams;
-        const { isHost, isHostPicManagement } = this.props;
+        const { isHost, isReadPicManagement } = this.props;
+        const isRenderCommunication = isReadPicManagement&&communicationTools.length > 0;
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
@@ -381,7 +385,7 @@ export class DataGrid extends Component {
         };
 
         return <Fragment>
-            <div className='table-title d-flex justify-content-between'>
+            <div className={`table-title d-flex justify-content-between ${!isRenderCommunication ? 'header-pic-max-width' : ''}`}>
                 <div>{LangHelper.getResource('PICAssignment')}</div>
                 <div>
                     {
@@ -394,10 +398,10 @@ export class DataGrid extends Component {
                 </div>
             </div>
             <Table
-                maxWidth= { isHostPicManagement ? document.getElementById('app-container').clientWidth : 1350}
+                maxWidth= { isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
                 autoWidth
-                header={this.buildPicManagementHeader(isHost, isHostPicManagement)}
-                body={this.buildPicManagementBody(isHost, isHostPicManagement)}
+                header={this.buildPicManagementHeader(isHost, isRenderCommunication)}
+                body={this.buildPicManagementBody(isHost, isRenderCommunication)}
                 isPaging
                 pageOption={pagingOption}
                 onPaging={this.onPaging}

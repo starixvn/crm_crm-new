@@ -12,12 +12,12 @@ const store = configureStore({
 });
 
 const isHost = document.getElementById('is-host').checked;
-const isHostPicManagement = document.getElementById('is-host-picmanagement').checked;
+const isReadPicManagement = document.getElementById('is-read-picmanagement').checked;
 
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer isHost={isHost} isHostPicManagement = {isHostPicManagement}/>
+            <AppContainer isHost={isHost} isReadPicManagement = {isReadPicManagement}/>
         </Layout>
     </Provider>,
     document.getElementById('app-container'));
