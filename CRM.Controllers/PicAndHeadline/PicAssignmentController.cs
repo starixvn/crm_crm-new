@@ -13,6 +13,7 @@
     using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.PicAndHeadline;
+    using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using Fanex.NAP.Client.Configuration;
@@ -153,18 +154,18 @@
         {
             var rawData = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
             var assignments = GeneratePicList(rawData.Item1, criteria.PageIndex, criteria.PageSize);
-            var groupByComm = rawData.Item2.GroupBy(x => new { x.PicId, x.Username }).Select(y=> new
+            var communicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole });
+            var groupByComm = rawData.Item2.GroupBy(x => new { x.PicId, x.Username }).Select(y => new
             {
                 PicName = y.Key.Username,
                 PicId = y.Key.PicId,
                 ListComm = y.ToList()
             }).ToList();
 
-            var listComm = rawData.Item2.Select(x => x.SettingValue);
             var response = new
             {
                 Data = assignments,
-                ListComm = listComm,
+                ListComm = communicationTools,
                 CommunicationTools = groupByComm,
                 TotalItems = criteria.TotalRows,
                 TotalUnassignedDirectAccount = criteria.TotalUnassigned
@@ -203,7 +204,8 @@
             var isReadPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
             var isRenderPicManagement = isReadPicManagement && picInfo.Item2.Count() > 0;
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);
-            var bytes = excelService.ExportPICAssignment(assignments, picInfo.Item2, isRenderPicManagement);
+            var communicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole });
+            var bytes = excelService.ExportPICAssignment(assignments, picInfo.Item2, communicationTools, isRenderPicManagement);
             return File(bytes, MimeType.XLSX, $"{ViewResources.PICAssignment}.xlsx");
         }
 

@@ -8,10 +8,14 @@
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report.SettlementReport;
     using Microsoft.AspNetCore.Hosting;
+    using CRM.Models.Setting;
 
     public interface IExportExcelService
     {
-        byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments, IEnumerable<AssignmentCommunication> picComms, bool isRenderPicManagement);
+        byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments,
+            IEnumerable<AssignmentCommunication> picComms,
+            IEnumerable<Setting> communicationTools,
+            bool isRenderPicManagement);
 
         byte[] ExportPICManagement(IEnumerable<BaseModel> communicationTools, PicReport picReport);
 
@@ -29,11 +33,14 @@
             this.hostingEnvironment = hostingEnvironment;
         }
 
-        public byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments,  IEnumerable<AssignmentCommunication> picComms, bool isRenderPicManagement)
+        public byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments,
+            IEnumerable<AssignmentCommunication> picComms,
+            IEnumerable<Setting> communicationTools,
+            bool isRenderPicManagement)
         {
             const string ExcelTemplatePath = "ExcelTemplates/PicAssignment.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new PicAssignmentExcel(templatePath, assignments, picComms, isRenderPicManagement);
+            var excel = new PicAssignmentExcel(templatePath, assignments, picComms, communicationTools, isRenderPicManagement);
             return excel.Export();
         }
 

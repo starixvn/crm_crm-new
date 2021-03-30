@@ -21,9 +21,7 @@ export class DataGrid extends Component {
         this.props.getGridData(params, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
     };
 
-    buildPicManagementHeader = (isHost, isRenderCommunication) => {
-        const listComm = this.props.picAssignmentGridData.listComm;
-        const uniqueCommunication = listComm.filter((v, i, a) => a.findIndex(t => t === v) === i);
+    buildPicManagementHeader = (isHost, isRenderCommunication, uniqueCommunication) => {
         return [
             <HeaderRow>
                 <HeaderCell colWidth={70}  rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('TextNo')}</HeaderCell>
@@ -66,7 +64,7 @@ export class DataGrid extends Component {
         const header = [];
         header.push(<HeaderCell colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
         uniqueCommunication.forEach((item, index) => {
-            header.push(<HeaderCell colWidth={100} key={`comm-header-${item}-${index}`}>{item}</HeaderCell>);
+            header.push(<HeaderCell colWidth={100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
         });
         return header;
     };
@@ -186,6 +184,7 @@ export class DataGrid extends Component {
 
 
     renderRow = (index, isHost, item, mergeHeadline, mergePIC, picCell, comm, isRenderCommunication) => {
+        const listComm = this.props.picAssignmentGridData.listComm;
         const defaultPicList = item.defaultPicList ?
             item.defaultPicList.map(pic => {
                 return {
@@ -213,34 +212,30 @@ export class DataGrid extends Component {
                 isHost && this.renderIsHost(item, index)
             }
             {
-               comm ? isRenderCommunication&&this.renderCommunicationToolsValue(comm) : isRenderCommunication&&this.renderCommunicationToolsNullValue()
+               comm ? isRenderCommunication&&this.renderCommunicationToolsValue(comm) : isRenderCommunication&&this.renderCommunicationToolsNullValue(listComm)
             }
         </Row>;
     };
 
-    renderCommunicationToolsNullValue = () =>{
+    renderCommunicationToolsNullValue = listComm =>{
         const bodyCommunicationNullValue = [];
-        for(let i=0; i<6; i++)
+        for(let indexComm=0; indexComm< listComm.length +1; indexComm++)
         {
-            bodyCommunicationNullValue.push(<Cell key={`comm-${i}`}></Cell>)
+            bodyCommunicationNullValue.push(<Cell key={`comm-${indexComm}`}></Cell>)
         }
         return bodyCommunicationNullValue;
     }
 
     renderCommunicationToolsValue = comm => {
+        const listComm = this.props.picAssignmentGridData.listComm;
         const bodyCommunication = [];
         bodyCommunication.push( <Cell >{comm.picName}</Cell>);
-        var letTalksValue = comm.listComm.filter(item => item.settingValue.toString()==='Letstalk');
-        var phoneValue = comm.listComm.filter(item => item.settingValue.toString()==='Phone');
-        var skypeValue = comm.listComm.filter(item => item.settingValue.toString()==='Skype');
-        var weChatValue = comm.listComm.filter(item => item.settingValue.toString()==='WeChat');
-        var lineValue = comm.listComm.filter(item => item.settingValue.toString()==='Line');
 
-        bodyCommunication.push(<Cell className='text-center'>{letTalksValue.length > 0 ? letTalksValue[0].communicationValue : letTalksValue}</Cell>); 
-        bodyCommunication.push(<Cell className='text-center'>{phoneValue.length > 0 ? phoneValue[0].communicationValue : phoneValue}</Cell>); 
-        bodyCommunication.push(<Cell className='text-center'>{skypeValue.length > 0 ? skypeValue[0].communicationValue : skypeValue}</Cell>); 
-        bodyCommunication.push(<Cell className='text-center'>{weChatValue.length > 0 ? weChatValue[0].communicationValue : weChatValue}</Cell>); 
-        bodyCommunication.push(<Cell className='text-center'>{lineValue.length > 0 ? lineValue[0].communicationValue : lineValue}</Cell>); 
+        for(let indexCommRender = 0 ; indexCommRender < listComm.length; indexCommRender++)
+        {
+            var renderValueComm = comm.listComm.filter(item => item.settingValue.toString()=== listComm[indexCommRender].settingValue);
+            bodyCommunication.push(<Cell className='text-center'>{ renderValueComm.length > 0 ? renderValueComm[0].communicationValue : renderValueComm}</Cell>); 
+        }
 
         return bodyCommunication;
     };
@@ -373,7 +368,8 @@ export class DataGrid extends Component {
             return null;
         }
 
-        const { totalItems, totalUnassignedDirectAccount, communicationTools } = this.props.picAssignmentGridData;
+        const { totalItems, totalUnassignedDirectAccount, communicationTools, listComm } = this.props.picAssignmentGridData;
+        const uniqueCommunication = listComm;
         const { pageIndex, pageSize } = this.props.gridParams;
         const { isHost, isReadPicManagement } = this.props;
         const isRenderCommunication = isReadPicManagement&&communicationTools.length > 0;
@@ -400,7 +396,7 @@ export class DataGrid extends Component {
             <Table
                 maxWidth= { isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
                 autoWidth
-                header={this.buildPicManagementHeader(isHost, isRenderCommunication)}
+                header={this.buildPicManagementHeader(isHost, isRenderCommunication, uniqueCommunication)}
                 body={this.buildPicManagementBody(isHost, isRenderCommunication)}
                 isPaging
                 pageOption={pagingOption}
