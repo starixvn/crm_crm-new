@@ -141,19 +141,6 @@
             var formattedMessage = JsonConvert.SerializeObject(message, DefaultJsonSerializeSetting);
             payload.HashContentKey = cryptographyService.Hash(formattedMessage);
             payload.HashContent = cryptographyService.Encrypt(formattedMessage, botConfig.ChatKey, payload.HashContentKey);
-            long? dueDate = null;
-
-            if (expiredTime.HasValue)
-            {
-                dueDate = new DateTimeOffset(expiredTime.Value).ToUnixTimeMilliseconds();
-            }
-
-            if (message.ExpiredTime.HasValue)
-            {
-                dueDate = new DateTimeOffset(message.ExpiredTime.Value).ToUnixTimeMilliseconds();
-            }
-
-            payload.DueDate = dueDate;
 
             return await PushAsync(accountIds, payload);
         }

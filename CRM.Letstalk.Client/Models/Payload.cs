@@ -21,9 +21,6 @@
         [JsonProperty(PropertyName = "send_time")]
         public long SendTime => Time;
 
-        [JsonProperty(PropertyName = "duedate")]
-        public long? DueDate { get; set; }
-
         public int From { get; set; }
 
         [JsonProperty(PropertyName = "hash_content")]
