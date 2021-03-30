@@ -324,18 +324,6 @@
                     var renderValueComm = comm.ListComm.Where(item => item.SettingValue == listComm[indexCommRender].SettingValue).ToList();
                     worksheet.Cells[rowIndex, colIndexComm++].Value = renderValueComm.Count > 0 ? renderValueComm[0].CommunicationValue : "";
                 }
-                //var letTalksValue = comm.ListComm.Where(item => item.SettingValue == "Letstalk").ToList();
-                //var phoneValue = comm.ListComm.Where(item => item.SettingValue == "Phone").ToList();
-                //var skypeValue = comm.ListComm.Where(item => item.SettingValue == "Skype").ToList();
-                //var weChatValue = comm.ListComm.Where(item => item.SettingValue == "WeChat").ToList();
-                //var lineValue = comm.ListComm.Where(item => item.SettingValue == "Line").ToList();
-
-                //worksheet.Cells[rowIndex, colIndexComm++].Value = comm.PicName.Length > 0 ? comm.PicName : "";
-                //worksheet.Cells[rowIndex, colIndexComm++].Value = letTalksValue.Count > 0 ? letTalksValue[0].CommunicationValue : "";
-                //worksheet.Cells[rowIndex, colIndexComm++].Value = phoneValue.Count > 0 ? phoneValue[0].CommunicationValue : "";
-                //worksheet.Cells[rowIndex, colIndexComm++].Value = skypeValue.Count > 0 ? skypeValue[0].CommunicationValue : "";
-                //worksheet.Cells[rowIndex, colIndexComm++].Value = weChatValue.Count > 0 ? weChatValue[0].CommunicationValue : "";
-                //worksheet.Cells[rowIndex, colIndexComm].Value = lineValue.Count > 0 ? lineValue[0].CommunicationValue : "";
             }
         }
 
@@ -376,13 +364,13 @@
             }
             var uniquePicMapping =  picForMappingSplit.Distinct().ToList();
 
-            var communicationTools = picComms.GroupBy(x => new { x.PicId, x.Username }).Select(y => new GroupAssignmentCommunication
+            var communicationToolsGroup = picComms.GroupBy(x => new { x.PicId, x.Username }).Select(y => new GroupAssignmentCommunication
             {
                 PicName = y.Key.Username,
                 PicId = y.Key.PicId,
                 ListComm = y.ToList()
             }).ToList();
-            return uniquePicMapping.Count > 0 ? communicationTools.Where(x => 
+            return uniquePicMapping.Count > 0 ? communicationToolsGroup.Where(x => 
                 uniquePicMapping.Any(y => y == x.PicId.ToString()))
                 .OrderBy(z=>z.PicId)
                 .ToList()
