@@ -17,7 +17,7 @@ describe('EditGroupMappingPopup', () => {
         conversationGroupName: 'GroupName',
         conversationId: 'conversationId',
         headlines: [{ id: 1, name: 'headline' }],
-        recipients: [{ id: 1, name: 'recipient', recipientTypeId: 1 }],
+        recipients: [{ id: 1, name: 'recipient', recipientTypeId: 1 , letstalks: {letstalkId : 1}}],
         mappingStatusId: 1,
         mappingStatus: 'NotMapped',
         languageId: 1,

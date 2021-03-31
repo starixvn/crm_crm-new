@@ -147,7 +147,6 @@ describe('AppContainer', () => {
             // Assert
             expect(container).toMatchSnapshot();
             expect(container.find(ConfirmPopup).length).toBe(1);
-            expect(container.find(ConfirmPopup).props().size).toEqual('lg');
             expect(container.find(ConfirmPopup).props().title).toEqual('Confirmation');
             expect(container.find(ConfirmPopup).props().content)
                 .toEqual(<div>Are you sure you want to delete <strong>test123</strong>?</div>);

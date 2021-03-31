@@ -344,7 +344,7 @@ describe('ValidateResend', () => {
             expect(validateResend.find(Modal).props().show).toBeTrue;
             expect(validateResend.find(Modal).props().backdrop).toBe('static');
             expect(validateResend.find(Modal).props().keyboard).toBeFalse;
-            expect(validateResend.find(Modal).props().size).toBe('lg');
+            expect(validateResend.find(Modal).props().size).toBe('md');
             expect(validateResend.find(Modal).props().centered).toBeTrue;
             expect(validateResend.find(Modal.Header).props().closeButton).toBeTrue;
             expect(validateResend.find(Modal.Title).props().as).toBe('div');

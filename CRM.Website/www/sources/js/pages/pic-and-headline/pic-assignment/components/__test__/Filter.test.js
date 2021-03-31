@@ -1170,7 +1170,7 @@ describe('Filter', () => {
 
             // Assert
             expect(row.find('div').props().className).toBe('button-row');
-            expect(row.find(Button).at(0).props().className).toBe('mr-2');
+            expect(row.find(Button).at(0).props().className).toBe('mr-4');
             expect(row.find(Button).at(0).props().variant).toBe('primary');
             expect(row.find(Button).at(0).props().size).toBe('sm');
             expect(row.find(Button).at(0).html()).toContain('Submit');
