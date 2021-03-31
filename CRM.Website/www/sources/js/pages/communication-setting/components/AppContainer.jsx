@@ -99,7 +99,7 @@ export class AppContainer extends Component {
                 }
                 {
                     this.props.deleteCommunicationPopup.show &&
-                    <SweetModalDialog size="lg"
+                    <SweetModalDialog size='md'
                         title={LangHelper.getResource('Confirmation')}
                         contents={
                             <div>Are you sure you want to delete <strong>{'No.' + this.props.deleteCommunicationPopup.index}</strong>?</div>

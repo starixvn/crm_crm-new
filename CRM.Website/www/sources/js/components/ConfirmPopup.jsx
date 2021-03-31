@@ -6,7 +6,7 @@ import LangHelper from '@jsroot/common/langHelper';
 
 class ConfirmPopup extends PureComponent {
     static propTypes = {
-        size: PropTypes.oneOf(['sm', 'lg', 'xl']),
+        size: PropTypes.oneOf(['sm', 'lg', 'xl', 'md']),
         title: PropTypes.string,
         content: PropTypes.oneOfType([
             PropTypes.string,

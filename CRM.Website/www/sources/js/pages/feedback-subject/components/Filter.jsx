@@ -49,7 +49,7 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Button className="mr-2" variant="primary" size="sm"
+                        <Button className="mr-4" variant="primary" size="sm"
                             onClick={this.handleSubmit}
                         >
                             {LangHelper.getResource('Submit')}

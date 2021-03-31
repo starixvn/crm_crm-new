@@ -105,6 +105,10 @@
     z-index: 1050 !important;
 }
 
+.modal-dialog {
+    max-width: 600px;
+}
+
 .react-select__control, .react-select__control--is-focused {
     height: 28px;
 

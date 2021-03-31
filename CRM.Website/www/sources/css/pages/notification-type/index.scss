@@ -6,3 +6,7 @@
 @import '../../components/multiple-select/style';
 @import '../../components/messages';
 @import '../../components/tables';
+
+.modal-dialog {
+    max-width: 600px;
+}

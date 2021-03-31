@@ -113,7 +113,7 @@ export class AppContainer extends Component {
                 }
                 {
                     this.props.deleteTemplatePopup.show &&
-                    <SweetModalDialog size="lg"
+                    <SweetModalDialog
                         title={LangHelper.getResource('Confirmation')}
                         contents={
                             <div>Are you sure you want to delete <strong>{this.props.deleteTemplatePopup.name}</strong>?</div>

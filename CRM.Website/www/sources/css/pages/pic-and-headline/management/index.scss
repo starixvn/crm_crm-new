@@ -59,6 +59,9 @@ table.table {
 .modal-backdrop {
     z-index: 1050 !important;
 }
+.modal-dialog {
+    max-width: 600px;
+}
 .form-filter .form-row .form-group {
     &.field-name {
         width: 220px;

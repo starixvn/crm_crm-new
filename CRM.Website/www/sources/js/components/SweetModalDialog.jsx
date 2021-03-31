@@ -10,7 +10,7 @@ class SweetModalDialog extends Component {
         className: PropTypes.string,
         contents: PropTypes.element.isRequired,
         onClose: PropTypes.func.isRequired,
-        size: PropTypes.oneOf(['sm', 'lg', 'xl']),
+        size: PropTypes.oneOf(['sm', 'lg', 'xl', 'md']),
         title: PropTypes.string.isRequired
     };
 

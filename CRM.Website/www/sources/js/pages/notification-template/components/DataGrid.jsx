@@ -36,9 +36,9 @@ export class DataGrid extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={5}>{LangHelper.getResource( 'SymbolNo' )}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource( 'NotificationType' )}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource( 'TemplateName' )}</HeaderCell>
-                <HeaderCell colWidth={100}>
+                <HeaderCell colWidth={30}>{LangHelper.getResource( 'NotificationType' )}</HeaderCell>
+                <HeaderCell colWidth={30}>{LangHelper.getResource( 'TemplateName' )}</HeaderCell>
+                <HeaderCell colWidth={80}>
                     {`${LangHelper.getResource( 'Title' )}/${LangHelper.getResource( 'Content' )}`}
                 </HeaderCell>
                 {

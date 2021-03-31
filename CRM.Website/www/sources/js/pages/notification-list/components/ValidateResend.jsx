@@ -86,7 +86,7 @@ export class ValidateResend extends Component {
         const hasOnlyOkButton = (isSingle && inActiveNotificationIds.length > 0) || (!isSingle && isAllInActive);
 
         return (
-            <Modal show backdrop='static' keyboard={false} size='lg' centered
+            <Modal show backdrop='static' keyboard={false} size='md' centered
                 onHide={() => this.onClose()}
                 dialogAs={DraggableModalDialog}
             >
