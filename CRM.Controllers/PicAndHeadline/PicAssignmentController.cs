@@ -232,7 +232,7 @@
                 .ThenByDescending(p => p.PicList?.Count)
                 .ThenBy(p => p.PicList != null)
                 .ThenBy(o => o.PicForMapping)
-                .ThenBy(i => i.DirectAccount);
+                .ThenBy(i => i.DirectAccount, StringComparer.Ordinal);
 
             var results = data.OrderBy(i => i.HeadlineID == 0).ToList();
             for (int i = 0; i < results.Count; i++)
