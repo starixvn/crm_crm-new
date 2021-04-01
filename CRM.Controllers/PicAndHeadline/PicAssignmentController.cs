@@ -228,7 +228,7 @@
             }
 
             var data = assignments
-                .OrderBy(i => i.HeadlineName)
+                .OrderBy(i => i.HeadlineName, StringComparer.Ordinal)
                 .ThenByDescending(p => p.PicList?.Count)
                 .ThenBy(p => p.PicList != null)
                 .ThenBy(o => o.PicForMapping)
