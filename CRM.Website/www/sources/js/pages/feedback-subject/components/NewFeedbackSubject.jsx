@@ -47,10 +47,10 @@ export class NewFeedbackSubject extends Component {
                         />
                     }
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" className="required" htmlFor="subject">
+                        <Form.Label column sm="4" md="4" className="required" htmlFor="subject">
                             {LangHelper.getResource('InsertFeedbackSubjectTemplate')}
                         </Form.Label>
-                        <Col sm="8" md="9">
+                        <Col sm="8" md="8">
                             <Form.Control type="text" size="sm" value={values.subject}
                                 name="subject" id="subject"
                                 isInvalid={touched.subject && errors.subject}
