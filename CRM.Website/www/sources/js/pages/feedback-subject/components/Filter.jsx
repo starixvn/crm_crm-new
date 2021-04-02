@@ -40,6 +40,8 @@ export class Filter extends Component {
     };
 
     render() {
+        const { isHost } = this.props;
+
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
@@ -54,11 +56,14 @@ export class Filter extends Component {
                         >
                             {LangHelper.getResource('Submit')}
                         </Button>
-                        <Button variant="primary" size="sm"
-                            onClick={this.handleOpenCreatePopup}
-                        >
-                            {LangHelper.getResource('FeedbackSubjectInsert')}
-                        </Button>
+                        {
+                            isHost &&
+                            <Button variant="primary" size="sm"
+                                onClick={this.handleOpenCreatePopup}
+                            >
+                                {LangHelper.getResource('FeedbackSubjectInsert')}
+                            </Button>
+                        }
                     </Form.Group>
                 </Form.Row>
             </Form>

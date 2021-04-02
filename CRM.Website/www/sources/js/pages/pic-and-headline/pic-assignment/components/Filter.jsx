@@ -169,6 +169,8 @@ export class Filter extends Component {
     };
 
     render() {
+        const { isHost } = this.props;
+
         return (
             <Form className='form-filter' onSubmit={() => this.handleSubmit()}>
                 {
@@ -310,10 +312,10 @@ export class Filter extends Component {
                                 </Button>
                                 {
                                     this.props.isHost&&<Button className='mr-2' variant='primary' size='sm'
-                                    onClick={() => this.handleOpenAssignPicPopup()}
-                                >
-                                    {LangHelper.getResource('AssignPIC')}
-                                </Button>
+                                        onClick={() => this.handleOpenAssignPicPopup()}
+                                    >
+                                        {LangHelper.getResource('AssignPIC')}
+                                    </Button>
                                 }
                             </div>
                         </Form.Row>
