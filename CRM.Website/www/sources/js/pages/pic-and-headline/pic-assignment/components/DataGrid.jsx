@@ -27,11 +27,11 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={70}  rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('TextNo')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
-                <HeaderCell colWidth={150} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
-                <HeaderCell colWidth={150} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('PIC')}</HeaderCell>
+                <HeaderCell colWidth={130} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
+                <HeaderCell colWidth={135} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('PIC')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={150} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Site')}</HeaderCell>
+                <HeaderCell colWidth={130} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Site')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Currency')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
                 {
@@ -197,7 +197,7 @@ export class DataGrid extends Component {
         return <Row key={index}>
             <Cell className='text-center'>{index}</Cell>
             {
-                this.renderMergeHeadlineCells(mergeHeadline, item, defaultPicList)
+                this.renderMergeHeadlineCells(mergeHeadline, item, defaultPicList, isHost)
             }
             {
                 mergePIC > 0 &&
@@ -240,7 +240,7 @@ export class DataGrid extends Component {
         return bodyCommunication;
     };
 
-    renderMergeHeadlineCells = (mergeHeadline, item, defaultPicList) => {
+    renderMergeHeadlineCells = (mergeHeadline, item, defaultPicList, isHost) => {
         if (mergeHeadline > 0) {
             return <Fragment>
                 <OverlayTrigger placement='top' overlay={
@@ -253,7 +253,7 @@ export class DataGrid extends Component {
                     rowSpan={mergeHeadline}>{this.renderDefaultPic({
                         id: item.headlineID,
                         name: item.headlineName
-                    }, defaultPicList)}</Cell>
+                    }, defaultPicList, isHost)}</Cell>
             </Fragment>;
         }
 
@@ -300,10 +300,10 @@ export class DataGrid extends Component {
         return pics.map(item => <p key={item.picId} className='pic-name'>{`${item.picName} (${item.role})`}</p>);
     };
 
-    renderDefaultPic = (headline, pics) => {
+    renderDefaultPic = (headline, pics, isHost) => {
         if (pics.length > 0) {
             return <div className='cursor-pointer link-color'
-                onClick={() => this.handleOpenDefaultPicPopup(headline, pics)}
+                onClick={() => this.handleOpenDefaultPicPopup(headline, pics, isHost)}
             >
                 {
                     pics.map(item => <p key={item.value} className='pic-name default-pic-class'>{item.label}</p>)
@@ -311,9 +311,12 @@ export class DataGrid extends Component {
             </div>;
         }
 
-        return <span className='plus-icon'
-            onClick={() => this.handleOpenDefaultPicPopup(headline)}
-        >+</span>;
+        return 
+        {
+            <span className='plus-icon'
+                onClick={() => this.handleOpenDefaultPicPopup(headline)}
+            >+</span>;
+        }
     };
 
     handleChangeRemoveCheckboxAll = () => {
@@ -356,8 +359,8 @@ export class DataGrid extends Component {
 
     handleOpenRemovePopup = () => this.props.setRemovePicAssignmentPopup({ show: true });
 
-    handleOpenDefaultPicPopup = (headline, pics) =>
-        this.props.setDefaultPicPopup({
+    handleOpenDefaultPicPopup = (headline, pics, isHost) =>
+        isHost&&this.props.setDefaultPicPopup({
             show: true,
             headline,
             pics

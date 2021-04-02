@@ -18,7 +18,7 @@ export class AppContainer extends Component {
 
         return (
             <Fragment>
-                <Filter />
+                <Filter isHost={isHost}/>
                 <DataGrid isHost={isHost}  isReadPicManagement={isReadPicManagement}/>
                 {
                     this.props.removePicAssignmentPopup.show &&
