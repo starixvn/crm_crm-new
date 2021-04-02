@@ -93,7 +93,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
         public async Task<IActionResult> ValidateAssignPic([FromBody]AssignPic model)
         {
             var criteria = new ValidateAssignmentCriteria
@@ -116,7 +116,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
         public async Task<IActionResult> AssignPIC([FromBody]AssignPic model)
         {
             var command = new AssignPicCommand
@@ -134,7 +134,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
         public async Task<IActionResult> RemoveAssignment([FromBody]IEnumerable<RemoveAssignment> removeAssignments)
         {
             var command = new RemoveAssignmentCommand
@@ -175,7 +175,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
         public async Task<IActionResult> SetDefaultPIC([FromBody]SetDefaultPicCommand command)
         {
             command.UserId = napSession.UserId;
@@ -185,7 +185,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
         public async Task<IActionResult> RemoveDefaultPIC([FromBody]RemoveDefaultPicCommand command)
         {
             command.UserId = napSession.UserId;
