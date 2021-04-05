@@ -110,11 +110,11 @@ export class DataGrid extends Component {
                     {
                         const countExtraComm = comm.length - mergeHeadline;
                         const  mergeHeadlineExtraComm =  mergeHeadline + countExtraComm;
-                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[countComm], isRenderCommunication);
+                        row = this.renderRow(index, rowIndex, isHost, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[countComm], isRenderCommunication);
                     }
                     else
                     {
-                        row = this.renderRow(rowIndex, isHost, assignment, mergeHeadline, mergePIC, picCell, comm[countComm], isRenderCommunication);
+                        row = this.renderRow(index, rowIndex, isHost, assignment, mergeHeadline, mergePIC, picCell, comm[countComm], isRenderCommunication);
                     }
                 } else if (mergePIC === 0) {
                     const pics = this.props.picAssignmentGridData.data.filter(item =>
@@ -125,21 +125,21 @@ export class DataGrid extends Component {
                     if(countComm < comm.length && isRenderCommunication)
                     {
                         var commRenderPicMerge = comm[countComm];
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, commRenderPicMerge , isRenderCommunication);
+                        row = this.renderRow(index, rowIndex, isHost, assignment, 0, mergePIC, picCell, commRenderPicMerge , isRenderCommunication);
                     }
                     else
                     {
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, mergePIC, picCell, 0, isRenderCommunication);
+                        row = this.renderRow(index, rowIndex, isHost, assignment, 0, mergePIC, picCell, 0, isRenderCommunication);
                     }
                 } else {
                     if(countComm < comm.length && isRenderCommunication)
                     {
                         var commRender = comm[countComm];
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, commRender, isRenderCommunication);
+                        row = this.renderRow(index, rowIndex, isHost, assignment, 0, 0, 0, commRender, isRenderCommunication);
                     }
                     else
                     {
-                        row = this.renderRow(rowIndex, isHost, assignment, 0, 0, 0, 0, isRenderCommunication);
+                        row = this.renderRow(index, rowIndex, isHost, assignment, 0, 0, 0, 0, isRenderCommunication);
                     }
                 }
                 body.push(row);
@@ -183,7 +183,7 @@ export class DataGrid extends Component {
     };
 
 
-    renderRow = (index, isHost, item, mergeHeadline, mergePIC, picCell, comm, isRenderCommunication) => {
+    renderRow = (index, rowIndex, isHost, item, mergeHeadline, mergePIC, picCell, comm, isRenderCommunication) => {
         const listComm = this.props.picAssignmentGridData.listComm;
         const defaultPicList = item.defaultPicList ?
             item.defaultPicList.map(pic => {
@@ -194,8 +194,8 @@ export class DataGrid extends Component {
             }) : [];
         
 
-        return <Row key={index}>
-            <Cell className='text-center'>{index}</Cell>
+        return <Row key={rowIndex}>
+            <Cell className='text-center'>{rowIndex}</Cell>
             {
                 this.renderMergeHeadlineCells(mergeHeadline, item, defaultPicList, isHost)
             }
