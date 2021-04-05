@@ -75,13 +75,15 @@
             .OrderBy(z => z.PicForMapping).ToList();
             var excludeMergeCommonPIC = assignments.Except(mergeCommonPIC).ToList();
             var mergePICGroupByPicMappingAndHeadline = mergeCommonPIC
-            .GroupBy(x => new { x.HeadlineID, x.PicForMapping })
+            .GroupBy(x => new { x.HeadlineID, x.PicForMapping, x.HeadlineName })
             .Select(y => new {
                 y.Key.PicForMapping,
                 PicList = y.Select(z => z.PicList).First(),
                 mergePicAndHeadline = y.ToList()
-            }).ToList();
-            var mergePICByHeadlines = mergePICGroupByPicMappingAndHeadline.GroupBy(x => x.PicForMapping);
+            })
+            .ToList();
+            var mergePICByHeadlines = mergePICGroupByPicMappingAndHeadline.GroupBy(x => x.PicForMapping).Select(y=>y.ToList()).ToList();
+            var mergePICByHeadlinesOrderBy = mergePICByHeadlines.OrderByDescending(x => x.Count);
             int rowIndex = RowStartBody;
             int rowIndexMergePIC = RowStartBody;
             var colIndex = 1;
@@ -89,7 +91,7 @@
             var rowNum = 1;
             var mergeHeadlineForPic = 0;
             StyleDefault(worksheet);
-            foreach (var mergePICByHeadline in mergePICByHeadlines)
+            foreach (var mergePICByHeadline in mergePICByHeadlinesOrderBy)
             {
                 var countMergePic = 0;
                 foreach (var mergeHeadlineByPic in mergePICByHeadline.Select(x => x.mergePicAndHeadline).ToList())
@@ -103,8 +105,9 @@
                 rowIndexMergePIC = rowIndexMergePIC + countMergePic;
                 var countCommIncludeMergeHeadline = 0;
                 var commIncludeMergeHeadline = GetUniqueCommunicationToolsByPicModel(picMappingByMergeHealine).ToList();
+                var mergePICByHeadlineOrderByCount = mergePICByHeadline.Select(x => x.mergePicAndHeadline).ToList();
 
-                foreach (var mergeHeadlineByPic in mergePICByHeadline.Select(x => x.mergePicAndHeadline).ToList())
+                foreach (var mergeHeadlineByPic in mergePICByHeadlineOrderByCount)
                 {
                     foreach (PICAssignmentInfo assignment in mergeHeadlineByPic)
                     {

@@ -150,7 +150,6 @@ export class DataGrid extends Component {
                 {
                     const remainRowComm =  comm.length - countComm;
                      for (let indexExtra = 0; indexExtra < remainRowComm; indexExtra++) {
-                        rowIndex++;
                         row = this.renderRowCommEmpty(isHost, rowIndex, comm[countComm++]);
                         body.push(row);
                      }
@@ -167,8 +166,8 @@ export class DataGrid extends Component {
     };
 
     renderRowCommEmpty = (isHost, index, comm) => {
-        return <Row key={index}>
-            <Cell className='text-center'>{index}</Cell>
+        return <Row key={`${index}-${comm.picName}`}>
+            <Cell ></Cell>
             <Cell ></Cell>
             <Cell ></Cell>
             <Cell ></Cell>
