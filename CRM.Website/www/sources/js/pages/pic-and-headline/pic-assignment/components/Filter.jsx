@@ -311,9 +311,9 @@ export class Filter extends Component {
                                 {
                                     this.props.isHost&&<Button className='mr-2' variant='primary' size='sm'
                                     onClick={() => this.handleOpenAssignPicPopup()}
-                                    >
-                                        {LangHelper.getResource('AssignPIC')}
-                                    </Button>
+                                >
+                                    {LangHelper.getResource('AssignPIC')}
+                                </Button>
                                 }
                             </div>
                         </Form.Row>
