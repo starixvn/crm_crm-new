@@ -151,7 +151,7 @@ export class DataGrid extends Component {
                     const remainRowComm =  comm.length - countComm;
                      for (let indexExtra = 0; indexExtra < remainRowComm; indexExtra++) {
                         rowIndex++;
-                        row = this.renderRowCommEmpty(rowIndex, comm[countComm++]);
+                        row = this.renderRowCommEmpty(isHost, rowIndex, comm[countComm++]);
                         body.push(row);
                      }
                 }
@@ -166,7 +166,7 @@ export class DataGrid extends Component {
         ];
     };
 
-    renderRowCommEmpty = (index, comm) => {
+    renderRowCommEmpty = (isHost, index, comm) => {
         return <Row key={index}>
             <Cell className='text-center'>{index}</Cell>
             <Cell ></Cell>
@@ -175,7 +175,7 @@ export class DataGrid extends Component {
             <Cell ></Cell>
             <Cell ></Cell>
             <Cell ></Cell>
-            <Cell ></Cell>
+            {isHost&&<Cell ></Cell>}
             {
                 comm ? this.renderCommunicationToolsValue(comm) : this.renderCommunicationToolsNullValue()
             }
