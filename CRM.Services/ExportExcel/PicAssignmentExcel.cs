@@ -71,8 +71,7 @@
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             var MergePicGroupHeadlineIds = GetIdMergePic(assignments);
-            var mergeCommonPIC = assignments.Where(x => MergePicGroupHeadlineIds.Any(y => y == x.HeadlineID))
-            .OrderBy(z => z.PicForMapping).ToList();
+            var mergeCommonPIC = assignments.Where(x => MergePicGroupHeadlineIds.Any(y => y == x.HeadlineID)).ToList();
             var excludeMergeCommonPIC = assignments.Except(mergeCommonPIC).ToList();
             var mergePICGroupByPicMappingAndHeadline = mergeCommonPIC
             .GroupBy(x => new { x.HeadlineID, x.PicForMapping, x.HeadlineName })
@@ -82,8 +81,11 @@
                 mergePicAndHeadline = y.ToList()
             })
             .ToList();
-            var mergePICByHeadlines = mergePICGroupByPicMappingAndHeadline.GroupBy(x => x.PicForMapping).Select(y=>y.ToList()).ToList();
-            var mergePICByHeadlinesOrderBy = mergePICByHeadlines.OrderByDescending(x => x.Count);
+            var mergePICByHeadlines = mergePICGroupByPicMappingAndHeadline.GroupBy(x => x.PicForMapping).Select(y=> new{
+                PicName = GetPicCell(y.Select(z=>z.PicList).First()),
+                GroupPicMapping = y.ToList()
+            }).ToList();
+            var mergePICByHeadlinesOrderBy = mergePICByHeadlines.OrderByDescending(x => x.GroupPicMapping.Count).ThenBy(y=>y.PicName);
             int rowIndex = RowStartBody;
             int rowIndexMergePIC = RowStartBody;
             var colIndex = 1;
@@ -94,18 +96,18 @@
             foreach (var mergePICByHeadline in mergePICByHeadlinesOrderBy)
             {
                 var countMergePic = 0;
-                foreach (var mergeHeadlineByPic in mergePICByHeadline.Select(x => x.mergePicAndHeadline).ToList())
+                foreach (var mergeHeadlineByPic in mergePICByHeadline.GroupPicMapping.Select(x => x.mergePicAndHeadline).ToList())
                 {
                     countMergePic += mergeHeadlineByPic.Count;
                 }
-                var picMappingByMergeHealine = mergePICByHeadline.Select(x => x.PicList).First().ToList();
+                var picMappingByMergeHealine = mergePICByHeadline.GroupPicMapping.Select(x => x.PicList).First().ToList();
                 var merPicCell = GetPicCell(picMappingByMergeHealine);
                 StyleMergeCell(worksheet, rowIndex, colIndexMergePic, rowIndexMergePIC + countMergePic - 1);
                 worksheet.Cells[rowIndex, colIndexMergePic].Value = merPicCell;
                 rowIndexMergePIC = rowIndexMergePIC + countMergePic;
                 var countCommIncludeMergeHeadline = 0;
                 var commIncludeMergeHeadline = GetUniqueCommunicationToolsByPicModel(picMappingByMergeHealine).ToList();
-                var mergePICByHeadlineOrderByCount = mergePICByHeadline.Select(x => x.mergePicAndHeadline).ToList();
+                var mergePICByHeadlineOrderByCount = mergePICByHeadline.GroupPicMapping.Select(x => x.mergePicAndHeadline).ToList();
 
                 foreach (var mergeHeadlineByPic in mergePICByHeadlineOrderByCount)
                 {
