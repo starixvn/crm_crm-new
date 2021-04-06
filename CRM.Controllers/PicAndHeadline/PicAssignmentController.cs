@@ -155,12 +155,17 @@
             var rawData = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
             var assignments = GeneratePicList(rawData.Item1, criteria.PageIndex, criteria.PageSize);
             var communicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole });
-            var groupByComm = rawData.Item2.GroupBy(x => new { x.PicId, x.Username }).Select(y => new
+            var groupByComm = rawData.Item2.GroupBy(x => new { x.PicId, x.Username, x.Order, x.RoleId }).Select(y => new
             {
+                Order = y.Key.Order,
+                RoleId = y.Key.RoleId,
                 PicName = y.Key.Username,
                 PicId = y.Key.PicId,
                 ListComm = y.ToList()
-            }).ToList();
+            }).OrderBy(y=>y.Order)
+                .ThenBy(y=>y.RoleId)
+                .ThenBy(y=>y.PicName)
+                .ToList();
 
             var response = new
             {

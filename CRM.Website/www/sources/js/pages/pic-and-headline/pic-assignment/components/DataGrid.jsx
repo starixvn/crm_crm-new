@@ -232,7 +232,7 @@ export class DataGrid extends Component {
 
         for(let indexCommRender = 0 ; indexCommRender < listComm.length; indexCommRender++)
         {
-            var renderValueComm = comm.listComm.filter(item => item.settingValue.toString()=== listComm[indexCommRender].settingValue);
+            var renderValueComm = comm.listComm.filter(item => item.communicationTool.toString()=== listComm[indexCommRender].settingValue);
             bodyCommunication.push(<Cell className='text-center'>{ renderValueComm.length > 0 ? renderValueComm[0].communicationValue : renderValueComm}</Cell>); 
         }
 

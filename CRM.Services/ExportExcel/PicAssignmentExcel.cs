@@ -324,7 +324,7 @@
                 worksheet.Cells[rowIndex, colIndexComm++].Value = comm.PicName.Length > 0 ? comm.PicName : "";
                 for (int indexCommRender = 0; indexCommRender< listComm.Count; indexCommRender++)
                 {
-                    var renderValueComm = comm.ListComm.Where(item => item.SettingValue == listComm[indexCommRender].SettingValue).ToList();
+                    var renderValueComm = comm.ListComm.Where(item => item.CommunicationTool == listComm[indexCommRender].SettingValue).ToList();
                     worksheet.Cells[rowIndex, colIndexComm++].Value = renderValueComm.Count > 0 ? renderValueComm[0].CommunicationValue : "";
                 }
             }
@@ -333,17 +333,21 @@
         protected internal virtual IList<GroupAssignmentCommunication> GetUniqueCommunicationToolsByPicModel(
             IList<PicModel> picModels)
         {
-            var communicationToolsGroup = picComms.GroupBy(x => new { x.PicId, x.Username }).Select(y => new GroupAssignmentCommunication
+            var communicationToolsGroup = picComms.GroupBy(x => new { x.PicId, x.Username, x.Order, x.RoleId }).Select(y => new GroupAssignmentCommunication
             {
+                Order = y.Key.Order,
+                RoleId = y.Key.RoleId,
                 PicName = y.Key.Username,
                 PicId = y.Key.PicId,
                 ListComm = y.ToList()
-            }).ToList();
+            }).OrderBy(y => y.Order)
+                .ThenBy(y => y.RoleId)
+                .ThenBy(y => y.PicName)
+                .ToList();
 
             var splitPicModels = picModels.Select(x => x.PicId).ToList();
             return splitPicModels.Count > 0 ? communicationToolsGroup.Where(x =>
                 splitPicModels.Any(y => y == x.PicId))
-                .OrderBy(z => z.PicId)
                 .ToList()
             : null;
         }
@@ -367,15 +371,19 @@
             }
             var uniquePicMapping =  picForMappingSplit.Distinct().ToList();
 
-            var communicationToolsGroup = picComms.GroupBy(x => new { x.PicId, x.Username }).Select(y => new GroupAssignmentCommunication
+            var communicationToolsGroup = picComms.GroupBy(x => new { x.PicId, x.Username, x.Order, x.RoleId }).Select(y => new GroupAssignmentCommunication
             {
+                Order = y.Key.Order,
+                RoleId = y.Key.RoleId,
                 PicName = y.Key.Username,
                 PicId = y.Key.PicId,
                 ListComm = y.ToList()
-            }).ToList();
+            }).OrderBy(y => y.Order)
+                .ThenBy(y => y.RoleId)
+                .ThenBy(y => y.PicName)
+                .ToList();
             return uniquePicMapping.Count > 0 ? communicationToolsGroup.Where(x => 
                 uniquePicMapping.Any(y => y == x.PicId.ToString()))
-                .OrderBy(z=>z.PicId)
                 .ToList()
             : null;
         }
