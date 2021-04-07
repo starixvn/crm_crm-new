@@ -36,11 +36,13 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
                 {
                     isHost && <HeaderCell colWidth={85} rowSpan={isRenderCommunication ? 2 : 0}>
-                        <input className='d-block mx-auto' type='button'
-                            value={LangHelper.getResource('Remove')}
-                            disabled={this.props.removeOptions.isDisabledRemove}
-                            onClick={() => this.handleOpenRemovePopup()}
-                        />
+                        <div className='d-flex justify-content-center'>
+                            <input className='d-block mx-auto' type='button'
+                                value={LangHelper.getResource('Remove')}
+                                disabled={this.props.removeOptions.isDisabledRemove}
+                                onClick={() => this.handleOpenRemovePopup()}
+                            />
+                        </div>
                         {
                             this.props.removeOptions.isHadAll &&
                             <input className='d-block cursor-pointer mx-auto margin-top-5px' type='checkbox'
@@ -397,6 +399,7 @@ export class DataGrid extends Component {
             </div>
             <Table
                 maxWidth= { isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
+                minWidth= {isRenderCommunication ? 1600 : 960}
                 autoWidth
                 header={this.buildPicManagementHeader(isHost, isRenderCommunication, uniqueCommunication)}
                 body={this.buildPicManagementBody(isHost, isRenderCommunication)}
