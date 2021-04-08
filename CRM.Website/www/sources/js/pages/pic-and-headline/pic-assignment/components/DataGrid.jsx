@@ -64,9 +64,9 @@ export class DataGrid extends Component {
 
     renderHeaderCommunicationTools = uniqueCommunication => {
         const header = [];
-        header.push(<HeaderCell colWidth={105}>{LangHelper.getResource('PICName')}</HeaderCell>);
+        header.push(<HeaderCell colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
         uniqueCommunication.forEach((item, index) => {
-            header.push(<HeaderCell colWidth={105} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
+            header.push(<HeaderCell colWidth={item.settingValue === 'WhatsApp' ? 105 : 100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
         });
         return header;
     };
