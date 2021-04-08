@@ -399,7 +399,7 @@ export class DataGrid extends Component {
             </div>
             <Table
                 maxWidth= { isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
-                minWidth= {isRenderCommunication ? 1600 : 960}
+                minWidth= {isRenderCommunication ? 1600 : null}
                 autoWidth
                 header={this.buildPicManagementHeader(isHost, isRenderCommunication, uniqueCommunication)}
                 body={this.buildPicManagementBody(isHost, isRenderCommunication)}
@@ -408,6 +408,7 @@ export class DataGrid extends Component {
                 onPaging={this.onPaging}
                 containerPadding={0}
                 shouldResetScrollPosition={this.props.removeOptions.shouldResetScrollPosition}
+                isDefaultMaxWidth = {isRenderCommunication ? false : true}
             />
         </Fragment>;
     }
