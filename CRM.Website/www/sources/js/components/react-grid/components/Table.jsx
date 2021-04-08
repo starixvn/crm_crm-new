@@ -181,9 +181,9 @@ class Table extends Component {
             }
         }
 
-        const { maxWidth, isDefaultMaxWidth} = this.props;
+        const { maxWidth, autoWidth} = this.props;
         
-        const maxWidthCal = isDefaultMaxWidth ? maxWidth : document.body.clientWidth - this.diffWidth;
+        const maxWidthCal = !autoWidth ? maxWidth : document.body.clientWidth - this.diffWidth;
         if (this.state.maxWidth !== maxWidthCal) {
             this.setState({ maxWidth: maxWidthCal });
         }
