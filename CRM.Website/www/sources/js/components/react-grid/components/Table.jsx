@@ -27,7 +27,6 @@ class Table extends Component {
         adjustedHeight: PropTypes.number,
         containerPadding: PropTypes.number,
         shouldResetScrollPosition: PropTypes.bool,
-        isDefaultMaxWidth: PropTypes.bool
     };
 
     static defaultProps = {
@@ -40,8 +39,7 @@ class Table extends Component {
         bodyHeight: 0,
         autoHeight: true,
         containerPadding: 30,
-        shouldResetScrollPosition: true,
-        isDefaultMaxWidth: false
+        shouldResetScrollPosition: true
     };
 
     constructor(props) {

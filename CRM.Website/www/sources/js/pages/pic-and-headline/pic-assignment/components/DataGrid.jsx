@@ -53,7 +53,7 @@ export class DataGrid extends Component {
                     </HeaderCell>
                 }
                 {
-                    isRenderCommunication && <HeaderCell colWidth={600} colSpan={uniqueCommunication.length + 1}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
+                    isRenderCommunication && <HeaderCell colWidth={735} colSpan={uniqueCommunication.length + 1}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
                 }
             </HeaderRow>,
             <HeaderRow key='header2'>
@@ -64,9 +64,9 @@ export class DataGrid extends Component {
 
     renderHeaderCommunicationTools = uniqueCommunication => {
         const header = [];
-        header.push(<HeaderCell colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
+        header.push(<HeaderCell colWidth={105}>{LangHelper.getResource('PICName')}</HeaderCell>);
         uniqueCommunication.forEach((item, index) => {
-            header.push(<HeaderCell colWidth={100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
+            header.push(<HeaderCell colWidth={105} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
         });
         return header;
     };
@@ -409,7 +409,6 @@ export class DataGrid extends Component {
                 onPaging={this.onPaging}
                 containerPadding={0}
                 shouldResetScrollPosition={this.props.removeOptions.shouldResetScrollPosition}
-                isDefaultMaxWidth = {isRenderCommunication ? false : true}
             />
         </Fragment>;
     }
