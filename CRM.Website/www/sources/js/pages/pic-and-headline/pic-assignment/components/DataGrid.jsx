@@ -399,7 +399,7 @@ export class DataGrid extends Component {
             </div>
             <Table
                 maxWidth= { isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
-                minWidth= {isRenderCommunication ? 1600 : null}
+                minWidth= {isRenderCommunication ? 1658 : null}
                 width = {isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
                 autoWidth = {isRenderCommunication ? true : false}
                 header={this.buildPicManagementHeader(isHost, isRenderCommunication, uniqueCommunication)}
