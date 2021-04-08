@@ -53,7 +53,7 @@ export class DataGrid extends Component {
                     </HeaderCell>
                 }
                 {
-                    isRenderCommunication && <HeaderCell colWidth={735} colSpan={uniqueCommunication.length + 1}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
+                    isRenderCommunication && <HeaderCell colSpan={uniqueCommunication.length + 1}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
                 }
             </HeaderRow>,
             <HeaderRow key='header2'>
@@ -66,7 +66,7 @@ export class DataGrid extends Component {
         const header = [];
         header.push(<HeaderCell colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
         uniqueCommunication.forEach((item, index) => {
-            header.push(<HeaderCell colWidth={item.settingValue === 'WhatsApp' ? 105 : 100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
+            header.push(<HeaderCell colWidth={item.settingValue === 'WhatsApp' ? 115 : 100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
         });
         return header;
     };
