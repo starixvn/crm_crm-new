@@ -393,7 +393,6 @@ export class DataGrid extends Component {
             const countLengthComm = item.settingValue.split(" ");
             const maxLengthComm = Math.max.apply(Math, countLengthComm.map(function(comm) { return comm.length; }));
             const calWidthCommByPixel = maxLengthComm * 13;
-            console.log(calWidthCommByPixel);
             if(calWidthCommByPixel > 100)
             {
                 totalWidthComm += calWidthCommByPixel
