@@ -66,14 +66,26 @@ export class DataGrid extends Component {
         const header = [];
         header.push(<HeaderCell colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
         uniqueCommunication.forEach((item, index) => {
-            const countLengthComm = item.settingValue.split(" ");
-            const maxLengthComm = Math.max.apply(Math, countLengthComm.map(function(comm) { return comm.length; }));
-            const calWidthCommByPixel = maxLengthComm * 13;
+            const maxLengthComm = this.findLongestWordLength(item.settingValue);
+            const calWidthCommByPixel = this.measureText(maxLengthComm);
             
-            header.push(<HeaderCell className='header-comm' colWidth={calWidthCommByPixel > 100 ? calWidthCommByPixel : 100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
+            header.push(<HeaderCell className='header-comm' colWidth={calWidthCommByPixel > 100 ? calWidthCommByPixel + 50 : 100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
         });
         return header;
     };
+
+    findLongestWordLength = str => {
+        let arr;
+        arr = str.split(' ');
+         str = '';
+         for (let i = 0; i < arr.length; i++) {
+           if(str.length > arr[i].length) {
+           }else {
+             str = arr[i];
+           }
+         }
+         return str;
+       }
 
     buildPicManagementBody = (isHost,isRenderCommunication) => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -364,6 +376,15 @@ export class DataGrid extends Component {
 
     handleOpenRemovePopup = () => this.props.setRemovePicAssignmentPopup({ show: true });
 
+    measureText = (str, fontSize = 13) => {
+        const widths = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2796875,0.2765625,0.3546875,0.5546875,0.5546875,0.8890625,0.665625,0.190625,0.3328125,0.3328125,0.3890625,0.5828125,0.2765625,0.3328125,0.2765625,0.3015625,0.5546875,0.5546875,0.5546875,0.5546875,0.5546875,0.5546875,0.5546875,0.5546875,0.5546875,0.5546875,0.2765625,0.2765625,0.584375,0.5828125,0.584375,0.5546875,1.0140625,0.665625,0.665625,0.721875,0.721875,0.665625,0.609375,0.7765625,0.721875,0.2765625,0.5,0.665625,0.5546875,0.8328125,0.721875,0.7765625,0.665625,0.7765625,0.721875,0.665625,0.609375,0.721875,0.665625,0.94375,0.665625,0.665625,0.609375,0.2765625,0.3546875,0.2765625,0.4765625,0.5546875,0.3328125,0.5546875,0.5546875,0.5,0.5546875,0.5546875,0.2765625,0.5546875,0.5546875,0.221875,0.240625,0.5,0.221875,0.8328125,0.5546875,0.5546875,0.5546875,0.5546875,0.3328125,0.5,0.2765625,0.5546875,0.5,0.721875,0.5,0.5,0.5,0.3546875,0.259375,0.353125,0.5890625]
+        const avg = 0.5279276315789471
+        return str
+          .split('')
+          .map(c => c.charCodeAt(0) < widths.length ? widths[c.charCodeAt(0)] : avg)
+          .reduce((cur, acc) => acc + cur) * fontSize
+      }
+
     handleOpenDefaultPicPopup = (headline, pics, isHost) =>
         isHost&&this.props.setDefaultPicPopup({
             show: true,
@@ -390,16 +411,15 @@ export class DataGrid extends Component {
         let totalWidthComm = 0;
 
         uniqueCommunication.forEach((item, index) => {
-            const countLengthComm = item.settingValue.split(" ");
-            const maxLengthComm = Math.max.apply(Math, countLengthComm.map(function(comm) { return comm.length; }));
-            const calWidthCommByPixel = maxLengthComm * 13;
+            const maxLengthComm = this.findLongestWordLength(item.settingValue);
+            const calWidthCommByPixel = this.measureText(maxLengthComm);
             if(calWidthCommByPixel > 100)
             {
-                totalWidthComm += calWidthCommByPixel
+                totalWidthComm += calWidthCommByPixel + 50;
             }
             else
             {
-                totalWidthComm += 100
+                totalWidthComm += 100;
             }
         });
         const totalAssignmentWidth = 1195;
