@@ -24,7 +24,7 @@ export class DataGrid extends Component {
     buildPicManagementHeader = (isHost, isRenderCommunication, uniqueCommunication) => {
         return [
             <HeaderRow>
-                <HeaderCell colWidth={70}  rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('TextNo')}</HeaderCell>
+                <HeaderCell colWidth={50}  rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('TextNo')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
                 <HeaderCell colWidth={130} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
@@ -32,10 +32,10 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={130} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Site')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Currency')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
+                <HeaderCell colWidth={85} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={85} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={85} rowSpan={isRenderCommunication ? 2 : 0}>
+                    isHost && <HeaderCell colWidth={80} rowSpan={isRenderCommunication ? 2 : 0}>
                         <div className='d-flex justify-content-center'>
                             <input className='d-block mx-auto' type='button'
                                 value={LangHelper.getResource('Remove')}
@@ -66,7 +66,11 @@ export class DataGrid extends Component {
         const header = [];
         header.push(<HeaderCell colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
         uniqueCommunication.forEach((item, index) => {
-            header.push(<HeaderCell colWidth={100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
+            const countLengthComm = item.settingValue.split(" ");
+            const maxLengthComm = Math.max.apply(Math, countLengthComm.map(function(comm) { return comm.length; }));
+            const calWidthCommByPixel = maxLengthComm * 13;
+            
+            header.push(<HeaderCell className='header-comm' colWidth={calWidthCommByPixel > 100 ? calWidthCommByPixel : 100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
         });
         return header;
     };
@@ -383,6 +387,25 @@ export class DataGrid extends Component {
             TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
+        let totalWidthComm = 0;
+
+        uniqueCommunication.forEach((item, index) => {
+            const countLengthComm = item.settingValue.split(" ");
+            const maxLengthComm = Math.max.apply(Math, countLengthComm.map(function(comm) { return comm.length; }));
+            const calWidthCommByPixel = maxLengthComm * 13;
+            console.log(calWidthCommByPixel);
+            if(calWidthCommByPixel > 100)
+            {
+                totalWidthComm += calWidthCommByPixel
+            }
+            else
+            {
+                totalWidthComm += 100
+            }
+        });
+        const totalAssignmentWidth = 1195;
+
+        const calMaxWidth = totalAssignmentWidth + totalWidthComm;
 
         return <Fragment>
             <div className={`table-title d-flex justify-content-between ${!isRenderCommunication ? 'header-pic-max-width' : ''}`}>
@@ -398,8 +421,8 @@ export class DataGrid extends Component {
                 </div>
             </div>
             <Table
-                maxWidth= { isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
-                minWidth= {isRenderCommunication ? 1658 : null}
+                maxWidth= { isRenderCommunication ? calMaxWidth : 1350}
+                minWidth= {isRenderCommunication ? document.getElementById('app-container').clientWidth : null}
                 width = {isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
                 autoWidth = {isRenderCommunication ? true : false}
                 header={this.buildPicManagementHeader(isHost, isRenderCommunication, uniqueCommunication)}

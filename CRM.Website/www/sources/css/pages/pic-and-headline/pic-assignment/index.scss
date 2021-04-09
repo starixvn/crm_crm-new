@@ -124,6 +124,7 @@ input[type="checkbox"]:disabled {
     }
 }
 
+.table th,
 .table td {
     word-break: break-word;
 }
@@ -149,7 +150,10 @@ input[type="checkbox"]:disabled {
     max-width: 1350px;
 }
 
-
 .page-container {
     min-width: 0 !important;
+}
+
+.header-comm{
+    padding: 0;
 }
