@@ -311,9 +311,21 @@
 
         public async Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments)
         {
+            const string XmlTemplate = "<r ticketid='{0}' custid='{1}' ticketeventid='{2}' bettype={3}/>";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            foreach(var cust in CustAmendments)
+            {
+                stringBuilder.AppendFormat(XmlTemplate,
+                        cust.TicketId,
+                        cust.CustId,
+                        cust.TicketEventId,
+                        cust.Bettype);
+            }
+            stringBuilder.Append(Constants.EndRootTag);
+
             var criteria = new InsertAmendmentNotificationCommand
             {
-                xml = CustAmendments.ToXML("ROOT").ToString()
+                xml = stringBuilder.ToString()
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }

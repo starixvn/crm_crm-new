@@ -14,6 +14,7 @@
         public int MatchId { get; set; }
         public string MatchCode { get; set; }
         public byte EventType { get; set; }
+        public int MessageId { get; set; }
         public string ActualResult { get; set; }
         public string WrongResult { get; set; }
         public string Listbettype { get; set; }
