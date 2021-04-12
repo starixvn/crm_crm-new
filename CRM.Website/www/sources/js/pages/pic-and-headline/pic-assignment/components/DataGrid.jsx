@@ -32,8 +32,8 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={130} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Site')}</HeaderCell>
-                <HeaderCell colWidth={85} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Currency')}</HeaderCell>
-                <HeaderCell colWidth={85} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
                 {
                     isHost && <HeaderCell colWidth={80} rowSpan={isRenderCommunication ? 2 : 0}>
                         <div className='d-flex justify-content-center'>
@@ -77,15 +77,14 @@ export class DataGrid extends Component {
     findLongestWordLength = str => {
         let arr;
         arr = str.split(' ');
-         str = '';
-         for (let i = 0; i < arr.length; i++) {
-           if(str.length > arr[i].length) {
-           }else {
-             str = arr[i];
+        str = '';
+        for (let i = 0; i < arr.length; i++) {
+           if(str.length < arr[i].length) {
+              str = arr[i];
            }
-         }
-         return str;
-       }
+        }
+        return str;
+    }
 
     buildPicManagementBody = (isHost,isRenderCommunication) => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -241,7 +240,7 @@ export class DataGrid extends Component {
             bodyCommunicationNullValue.push(<Cell key={`comm-${indexComm}`}></Cell>)
         }
         return bodyCommunicationNullValue;
-    }
+    };
 
     renderCommunicationToolsValue = comm => {
         const listComm = this.props.picAssignmentGridData.listComm;
@@ -383,7 +382,7 @@ export class DataGrid extends Component {
           .split('')
           .map(c => c.charCodeAt(0) < widths.length ? widths[c.charCodeAt(0)] : avg)
           .reduce((cur, acc) => acc + cur) * fontSize
-      }
+      };
 
     handleOpenDefaultPicPopup = (headline, pics, isHost) =>
         isHost&&this.props.setDefaultPicPopup({
@@ -422,7 +421,7 @@ export class DataGrid extends Component {
                 totalWidthComm += 100;
             }
         });
-        const totalAssignmentWidth = 1195;
+        const totalAssignmentWidth = 1225;
 
         const calMaxWidth = totalAssignmentWidth + totalWidthComm;
 
@@ -443,7 +442,7 @@ export class DataGrid extends Component {
                 maxWidth= { isRenderCommunication ? calMaxWidth : 1350}
                 minWidth= {isRenderCommunication ? document.getElementById('app-container').clientWidth : null}
                 width = {isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
-                autoWidth = {isRenderCommunication ? true : false}
+                autoWidth = {false}
                 header={this.buildPicManagementHeader(isHost, isRenderCommunication, uniqueCommunication)}
                 body={this.buildPicManagementBody(isHost, isRenderCommunication)}
                 isPaging

@@ -30,7 +30,8 @@ const createTableSection = (extendedContainerProps, extendedTableProps) => {
 
         get containerWidth() {
             const { autoWidth, maxWidth, width } = this.props;
-            return autoWidth ? maxWidth : width;
+
+            return (!autoWidth&&maxWidth>0 || autoWidth) ? maxWidth : width;
         }
 
         get containerStyle() {
