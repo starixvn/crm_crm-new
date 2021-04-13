@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
@@ -32,6 +33,7 @@
         private readonly IUserService userService;
         private readonly IPicAssignmentService picAssignmentService;
         private readonly IExportExcelService excelService;
+        private readonly ICRMLogService logService;
 
         public PicAssignmentController(
             ISettingService settingService,
@@ -40,7 +42,8 @@
             INapSettings napSettings,
             IUserService userService,
             IPicAssignmentService picAssignmentService,
-            IExportExcelService excelService)
+            IExportExcelService excelService,
+            ICRMLogService logService)
         {
             this.settingService = settingService;
             this.baseService = baseService;
@@ -49,6 +52,7 @@
             this.userService = userService;
             this.picAssignmentService = picAssignmentService;
             this.excelService = excelService;
+            this.logService = logService;
         }
 
         public IActionResult Index()
@@ -205,7 +209,11 @@
         {
             criteria.PageIndex = null;
             criteria.PageSize = null;
+            logService.LogInformation(string.Format("sp call start time : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
+                                       CultureInfo.InvariantCulture)));
             var picInfo = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
+            logService.LogInformation(string.Format("call call end time: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
+                                       CultureInfo.InvariantCulture)));
             var isReadPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
             var isRenderPicManagement = isReadPicManagement && picInfo.Item2.Count() > 0;
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);

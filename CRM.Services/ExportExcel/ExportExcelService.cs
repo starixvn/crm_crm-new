@@ -9,6 +9,7 @@
     using CRM.Models.Report.SettlementReport;
     using Microsoft.AspNetCore.Hosting;
     using CRM.Models.Setting;
+    using CRM.Core.Services;
 
     public interface IExportExcelService
     {
@@ -27,10 +28,13 @@
     public class ExportExcelService : IExportExcelService
     {
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly ICRMLogService logService;
 
-        public ExportExcelService(IHostingEnvironment hostingEnvironment)
+        public ExportExcelService(IHostingEnvironment hostingEnvironment,
+            ICRMLogService logService)
         {
             this.hostingEnvironment = hostingEnvironment;
+            this.logService = logService;
         }
 
         public byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments,
@@ -40,7 +44,7 @@
         {
             const string ExcelTemplatePath = "ExcelTemplates/PicAssignment.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new PicAssignmentExcel(templatePath, assignments, picComms, communicationTools, isRenderPicManagement);
+            var excel = new PicAssignmentExcel(templatePath, assignments, picComms, communicationTools, isRenderPicManagement, logService);
             return excel.Export();
         }
 
