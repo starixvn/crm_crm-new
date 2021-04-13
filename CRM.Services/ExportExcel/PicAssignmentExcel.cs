@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Drawing;
     using System.Globalization;
     using System.Linq;
@@ -30,20 +29,20 @@
 
 
         private readonly IEnumerable<PICAssignmentInfo> assignments;
-        private readonly IEnumerable<AssignmentCommunication> picComms;
+        private readonly IEnumerable<GroupAssignmentCommunication> groupAssignmentCommunications;
         private readonly IEnumerable<Setting> communicationTools;
         private readonly bool isRenderPicManagement;
         private readonly ICRMLogService logService;
 
         public PicAssignmentExcel(string templatePath, IEnumerable<PICAssignmentInfo> assignments,
-            IEnumerable<AssignmentCommunication> picComms,
+            IEnumerable<GroupAssignmentCommunication> groupAssignmentCommunications,
             IEnumerable<Setting> communicationTools,
             bool isRenderPicManagement,
             ICRMLogService logService)
             : base(templatePath, 0, ViewResources.PICAssignment)
         {
             this.assignments = assignments;
-            this.picComms = picComms;
+            this.groupAssignmentCommunications = groupAssignmentCommunications;
             this.communicationTools = communicationTools;
             this.isRenderPicManagement = isRenderPicManagement;
             this.logService = logService;
@@ -78,6 +77,7 @@
         {
             logService.LogInformation(string.Format("RenderBody start groupby merge same pic: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
                                             CultureInfo.InvariantCulture)));
+
             var MergePicGroupHeadlineIds = GetIdMergePic(assignments);
             var mergeCommonPIC = assignments.Where(x => MergePicGroupHeadlineIds.Any(y => y == x.HeadlineID)).ToList();
             var excludeMergeCommonPIC = assignments.Except(mergeCommonPIC).ToList();
@@ -379,28 +379,18 @@
         }
 
         protected internal virtual IList<GroupAssignmentCommunication> GetUniqueCommunicationToolsByPicModel(
-            IList<PicModel> picModels)
+            IList<PicModel> picModels
+        )
         {
             logService.LogInformation(string.Format("GetUniqueCommunicationToolsByPicModel start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
                                        CultureInfo.InvariantCulture)));
-            var communicationToolsGroup = picComms.GroupBy(x => new { x.PicId, x.Username, x.Order, x.RoleId }).Select(y => new GroupAssignmentCommunication
-            {
-                Order = y.Key.Order,
-                RoleId = y.Key.RoleId,
-                PicName = y.Key.Username,
-                PicId = y.Key.PicId,
-                ListComm = y.ToList()
-            }).OrderBy(y => y.Order)
-                .ThenBy(y => y.RoleId)
-                .ThenBy(y => y.PicName)
-                .ToList();
 
             var splitPicModels = picModels.Select(x => x.PicId).ToList();
 
             logService.LogInformation(string.Format("GetUniqueCommunicationToolsByPicModel end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
                                        CultureInfo.InvariantCulture)));
 
-            return splitPicModels.Count > 0 ? communicationToolsGroup.Where(x =>
+            return splitPicModels.Count > 0 ? groupAssignmentCommunications.Where(x =>
                 splitPicModels.Any(y => y == x.PicId))
                 .ToList()
             : null;
@@ -410,40 +400,25 @@
             IEnumerable<PICAssignmentInfo> assignments,
             PICAssignmentInfo assignment)
         {
-            logService.LogInformation(string.Format("GetUniqueCommunicationToolsByPicModel start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
+            logService.LogInformation(string.Format("GetUniqueCommunicationTools start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
                                        CultureInfo.InvariantCulture)));
 
-            var picForMappingSplit = new List<string>();
+            var picIds = new List<string>();
             var headline = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID);
             foreach (var head in headline)
             {
                 if (head.PicForMapping?.Length > 0)
                 {
                     var splitPic = head.PicForMapping.Split(",");
-                    foreach (var pic in splitPic)
-                    {
-                        picForMappingSplit.Add(pic);
-                    }
+                    picIds.AddRange(splitPic);
                 }
             }
-            var uniquePicMapping =  picForMappingSplit.Distinct().ToList();
+            var uniquePicMapping = picIds.Distinct().ToList();
 
-            var communicationToolsGroup = picComms.GroupBy(x => new { x.PicId, x.Username, x.Order, x.RoleId }).Select(y => new GroupAssignmentCommunication
-            {
-                Order = y.Key.Order,
-                RoleId = y.Key.RoleId,
-                PicName = y.Key.Username,
-                PicId = y.Key.PicId,
-                ListComm = y.ToList()
-            }).OrderBy(y => y.Order)
-                .ThenBy(y => y.RoleId)
-                .ThenBy(y => y.PicName)
-                .ToList();
-
-            logService.LogInformation(string.Format("GetUniqueCommunicationToolsByPicModel end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
+            logService.LogInformation(string.Format("GetUniqueCommunicationTools end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
                                        CultureInfo.InvariantCulture)));
 
-            return uniquePicMapping.Count > 0 ? communicationToolsGroup.Where(x => 
+            return uniquePicMapping.Count > 0 ? groupAssignmentCommunications.Where(x => 
                 uniquePicMapping.Any(y => y == x.PicId.ToString()))
                 .ToList()
             : null;

@@ -209,16 +209,23 @@
         {
             criteria.PageIndex = null;
             criteria.PageSize = null;
-            logService.LogInformation(string.Format("sp call start time : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
             var picInfo = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
-            logService.LogInformation(string.Format("call call end time: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
+            var groupAssignmentCommunications = picInfo.Item2.GroupBy(x => new { x.PicId, x.Username, x.Order, x.RoleId }).Select(y => new GroupAssignmentCommunication
+            {
+                Order = y.Key.Order,
+                RoleId = y.Key.RoleId,
+                PicName = y.Key.Username,
+                PicId = y.Key.PicId,
+                ListComm = y.ToList()
+            }).OrderBy(y => y.Order)
+                .ThenBy(y => y.RoleId)
+                .ThenBy(y => y.PicName)
+                .ToList();
             var isReadPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
             var isRenderPicManagement = isReadPicManagement && picInfo.Item2.Count() > 0;
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);
             var communicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole });
-            var bytes = excelService.ExportPICAssignment(assignments, picInfo.Item2, communicationTools, isRenderPicManagement);
+            var bytes = excelService.ExportPICAssignment(assignments, groupAssignmentCommunications, communicationTools, isRenderPicManagement);
             return File(bytes, MimeType.XLSX, $"{ViewResources.PICAssignment}.xlsx");
         }
 
