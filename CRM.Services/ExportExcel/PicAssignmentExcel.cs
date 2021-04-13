@@ -147,9 +147,12 @@
                             const int addCol = 5;
                             colIndex += addCol;
                         }
-                        var templateRowIndex = GetTemplateRowIndex(assignment.Status);
-                        templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
-                            .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
+                        if(assignment.Status != CustomerStatus.Open.ToString())
+                        {
+                            var templateRowIndex = GetTemplateRowIndex(assignment.Status);
+                            templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
+                                .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
+                        }
                         worksheet.Cells[rowIndex, colIndex++].Value = assignment.DirectAccount;
                         worksheet.Cells[rowIndex, colIndex++].Value = assignment.Status;
                         worksheet.Cells[rowIndex, colIndex++].Value = assignment.Site;
@@ -318,9 +321,12 @@
                     colIndex += addCol;
                 }
 
-                var templateRowIndex = GetTemplateRowIndex(assignment.Status);
-                templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
-                    .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
+                if (assignment.Status != CustomerStatus.Open.ToString())
+                {
+                    var templateRowIndex = GetTemplateRowIndex(assignment.Status);
+                    templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
+                        .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
+                }
                 worksheet.Cells[rowIndex, colIndex++].Value = assignment.DirectAccount;
                 worksheet.Cells[rowIndex, colIndex++].Value = assignment.Status;
                 worksheet.Cells[rowIndex, colIndex++].Value = assignment.Site;
