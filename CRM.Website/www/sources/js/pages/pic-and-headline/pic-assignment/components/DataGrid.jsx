@@ -326,13 +326,7 @@ export class DataGrid extends Component {
                 }
             </div>;
         }
-
-        return 
-        {
-            <span className='plus-icon'
-                onClick={() => this.handleOpenDefaultPicPopup(headline)}
-            >+</span>;
-        }
+        return <span className='plus-icon' onClick={() => this.handleOpenDefaultPicPopup(headline,pics,isHost)}>+</span>;
     };
 
     handleChangeRemoveCheckboxAll = () => {
