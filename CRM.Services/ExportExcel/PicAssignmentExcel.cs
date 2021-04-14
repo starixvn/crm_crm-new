@@ -75,9 +75,6 @@
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            logService.LogInformation(string.Format("RenderBody start groupby merge same pic: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                            CultureInfo.InvariantCulture)));
-
             var MergePicGroupHeadlineIds = GetIdMergePic(assignments);
             var mergeCommonPIC = assignments.Where(x => MergePicGroupHeadlineIds.Any(y => y == x.HeadlineID)).ToList();
             var excludeMergeCommonPIC = assignments.Except(mergeCommonPIC).ToList();
@@ -94,10 +91,6 @@
                 GroupPicMapping = y.ToList()
             }).ToList();
             var mergePICByHeadlinesOrderBy = mergePICByHeadlines.OrderByDescending(x => x.GroupPicMapping.Count).ThenBy(y=>y.PicName);
-
-            logService.LogInformation(string.Format("RenderBody end groupby merge same pic: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                            CultureInfo.InvariantCulture)));
-
             int rowIndex = RowStartBody;
             int rowIndexMergePIC = RowStartBody;
             var colIndex = 1;
@@ -105,9 +98,6 @@
             var rowNum = 1;
             var mergeHeadlineForPic = 0;
             StyleDefault(worksheet);
-
-            logService.LogInformation(string.Format("RenderBody start merge same pic and render: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                           CultureInfo.InvariantCulture)));
             foreach (var mergePICByHeadline in mergePICByHeadlinesOrderBy)
             {
                 var countMergePic = 0;
@@ -170,30 +160,14 @@
                 }
             }
 
-            logService.LogInformation(string.Format("RenderBody end merge same pic and render: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                          CultureInfo.InvariantCulture)));
-
-            logService.LogInformation(string.Format("RenderBody start render exclude merge pic: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                          CultureInfo.InvariantCulture)));
             RenderBodyExcludeMergePic(templateWorksheet, worksheet, excludeMergeCommonPIC,
                                         colIndex, rowIndex, rowNum, colIndexComm);
-
-            logService.LogInformation(string.Format("RenderBody end render exclude merge pic: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                          CultureInfo.InvariantCulture)));
             var totalColumnDrawInculdeMergeHeadline = isRenderPicManagement ? TotalColumns + 1 : TotalColumns;
-
-            logService.LogInformation(string.Format("RenderBody start DrawBorderCell: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                         CultureInfo.InvariantCulture)));
             DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumnDrawInculdeMergeHeadline]);
-
-            logService.LogInformation(string.Format("RenderBody end  DrawBorderCell: {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                         CultureInfo.InvariantCulture)));
         }
 
         protected internal virtual List<int> GetIdMergePic(IEnumerable<PICAssignmentInfo> assignments)
         {
-            logService.LogInformation(string.Format("GetIdMergePic start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                        CultureInfo.InvariantCulture)));
             var assignmentGroup = assignments
            .GroupBy(x => new { x.HeadlineID, x.HeadlineName, x.HeadlineType, x.PicForMapping })
            .Select(y => new
@@ -236,9 +210,6 @@
                     headlineIdMerges.Add(headlineId[i]);
                 }
             }
-
-            logService.LogInformation(string.Format("GetIdMergePic end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                        CultureInfo.InvariantCulture)));
             return headlineIdMerges;
         }
 
@@ -252,9 +223,6 @@
             int colIndexComm
             )
         {
-            logService.LogInformation(string.Format("RenderBodyExcludeMergePic start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                        CultureInfo.InvariantCulture)));
-
             var mergeHeadline = 0;
             var mergePic = 0;
             var countComm = 0;
@@ -354,9 +322,6 @@
             }
             var totalColumnDraw = isRenderPicManagement ? TotalColumns + 1 : TotalColumns;
             DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumnDraw]);
-
-            logService.LogInformation(string.Format("RenderBodyExcludeMergePic end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                      CultureInfo.InvariantCulture)));
         }
 
         protected internal virtual void RenderCommunicationTools(
@@ -366,8 +331,6 @@
             GroupAssignmentCommunication comm
            )
         {
-            logService.LogInformation(string.Format("RenderCommunicationTools start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                        CultureInfo.InvariantCulture)));
             if (comm != null)
             {
                 var colIndexComm = StartComToolsIndex;
@@ -379,23 +342,13 @@
                     worksheet.Cells[rowIndex, colIndexComm++].Value = renderValueComm.Count > 0 ? renderValueComm[0].CommunicationValue : "";
                 }
             }
-
-            logService.LogInformation(string.Format("RenderCommunicationTools end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                     CultureInfo.InvariantCulture)));
         }
 
         protected internal virtual IList<GroupAssignmentCommunication> GetUniqueCommunicationToolsByPicModel(
             IList<PicModel> picModels
         )
         {
-            logService.LogInformation(string.Format("GetUniqueCommunicationToolsByPicModel start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
-
             var splitPicModels = picModels.Select(x => x.PicId).ToList();
-
-            logService.LogInformation(string.Format("GetUniqueCommunicationToolsByPicModel end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
-
             return splitPicModels.Count > 0 ? groupAssignmentCommunications.Where(x =>
                 splitPicModels.Any(y => y == x.PicId))
                 .ToList()
@@ -406,9 +359,6 @@
             IEnumerable<PICAssignmentInfo> assignments,
             PICAssignmentInfo assignment)
         {
-            logService.LogInformation(string.Format("GetUniqueCommunicationTools start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
-
             var picIds = new List<string>();
             var headline = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID);
             foreach (var head in headline)
@@ -421,9 +371,6 @@
             }
             var uniquePicMapping = picIds.Distinct().ToList();
 
-            logService.LogInformation(string.Format("GetUniqueCommunicationTools end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
-
             return uniquePicMapping.Count > 0 ? groupAssignmentCommunications.Where(x => 
                 uniquePicMapping.Any(y => y == x.PicId.ToString()))
                 .ToList()
@@ -432,8 +379,6 @@
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
         {
-            logService.LogInformation(string.Format("ProcessUI start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
             const byte widthLarge = 20;
             const byte widthNormal = 15;
             const byte widthSmall = 7;
@@ -446,15 +391,10 @@
             {
                 SetStyle(worksheet);
             }
-
-            logService.LogInformation(string.Format("ProcessUI end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
         }
 
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
         {
-            logService.LogInformation(string.Format("SetStyle start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
             StyleDefault(worksheet);
             const byte firstRow = 1;
             worksheet.Cells[firstRow, 1, firstRow + 1, TotalColumns + 1].Merge = true;
@@ -462,16 +402,10 @@
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, TotalColumns + 1].Style.Font.Bold = true;
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, TotalColumns + 1].Style.Font.Color.SetColor(Color.White);
             worksheet.Cells[RowStartHeader, StartComToolsIndex, RowStartHeader + 1, TotalColumns + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-
-            logService.LogInformation(string.Format("SetStyle end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
         }
 
         protected internal virtual byte GetTemplateRowIndex(string status)
         {
-            logService.LogInformation(string.Format("GetTemplateRowIndex start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
-
             if (status == CustomerStatus.Closed.ToString())
             {
                 return RowClosed;
@@ -487,9 +421,6 @@
                 return RowDisabled;
             }
 
-            logService.LogInformation(string.Format("GetTemplateRowIndex end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
-
             return RowStartBody;
         }
 
@@ -501,8 +432,6 @@
 
         protected internal virtual string GetPicCell(IEnumerable<PicModel> picList)
         {
-            logService.LogInformation(string.Format("GetPicCell start : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
             if (picList == null || !picList.Any())
             {
                 return string.Empty;
@@ -515,10 +444,6 @@
                 var endCharacter = last == pic ? string.Empty : ExcelCharacter.NewLineCharacter;
                 buffer.Append($"{pic.PicName} ({pic.Role}){endCharacter}");
             }
-
-            logService.LogInformation(string.Format("GetPicCell end : {0}", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                       CultureInfo.InvariantCulture)));
-
             return buffer.ToString();
         }
     }
