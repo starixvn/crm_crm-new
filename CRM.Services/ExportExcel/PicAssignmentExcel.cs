@@ -226,11 +226,14 @@
             var mergeHeadline = 0;
             var mergePic = 0;
             var countComm = 0;
+            var comm = new List<GroupAssignmentCommunication>();
             foreach (PICAssignmentInfo assignment in excludeMergeCommonPIC)
             {
                 colIndex = 1;
-                var comm = GetUniqueCommunicationTools(assignments, assignment);
-
+                if (!string.IsNullOrEmpty(assignment.PicForMapping))
+                {
+                    comm = GetUniqueCommunicationTools(assignments, assignment).ToList();
+                }
                 if (mergeHeadline == 0)
                 {
                     mergeHeadline = assignments.Count(assign => assign.HeadlineID == assignment.HeadlineID);
