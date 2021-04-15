@@ -10,5 +10,6 @@
         public string VirtualSports180186 { get; set; }
         public string VirtualSports181To185 { get; set; }
         public string NumberGame { get; set; }
+        public string SportsbookOutright { get; set; }
     }
 }

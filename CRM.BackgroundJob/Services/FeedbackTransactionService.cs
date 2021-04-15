@@ -20,6 +20,7 @@
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Criteria.ResultAmendment;
     using CRM.Core.Extensions.XML;
+    using Fanex.CRM.BackgroundJob.Criteria;
 
     public interface IFeedbackTransactionService
     {
@@ -66,6 +67,7 @@
            int LogID,
            string status,
            string description);
+        Task<IEnumerable<Message>> GetMessageContentInfoAsync(int messageId);
 
     }
     public class FeedbackTransactionService : IFeedbackTransactionService
@@ -311,7 +313,7 @@
 
         public async Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments)
         {
-            const string XmlTemplate = "<r ticketid='{0}' custid='{1}' ticketeventid='{2}' bettype={3}/>";
+            const string XmlTemplate = "<r ticketid='{0}' custid='{1}' ticketeventid='{2}' bettype='{3}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach(var cust in CustAmendments)
             {
@@ -342,6 +344,23 @@
                 Description = description
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<IEnumerable<Message>> GetMessageContentInfoAsync(int messageId)
+        {
+            var criteria = new GetMessageInfoCriteria
+            {
+                MessageIds = messageId.ToString()
+            };
+
+            var messages = (await baseService.GetDataAsync<Message>(criteria)).ToList();
+            foreach (Message message in messages)
+            {
+                message.Content_en = message.Content_en?.Trim().Replace("@@", string.Empty);
+                message.Content_cs = message.Content_cs?.Trim().Replace("@@", string.Empty);
+            }
+
+            return messages;
         }
     }
 }

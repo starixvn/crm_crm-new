@@ -69,4 +69,19 @@
         Kindly double check your statement again. Sorry for the inconvenience caused! {4}
         Tài khoản bị ảnh hưởng: {3} {4}
     </NumberGameYN>
+    <OutrightEN>
+        Dear Sir, Customer Support would like to inform the below announcement: {2}
+        {0} {2}
+        Affected user: {1} {2}
+    </OutrightEN>
+    <OutrightSC>
+        您好，客服部在此通知以下的通告: {2}
+        {0} {2}
+        受影响会员: {1} {2}
+    </OutrightSC>
+    <OutrightYN>
+        Xin chào quý khách, Bộ phận chăm sóc khách hàng xin thông báo thông báo dưới đây: {2}
+        {0} {2}
+        Tài khoản bị ảnh hưởng: {1} {2}
+    </OutrightYN>
 </ROOT>

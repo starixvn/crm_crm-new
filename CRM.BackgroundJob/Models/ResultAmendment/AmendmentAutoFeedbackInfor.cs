@@ -22,6 +22,7 @@
         public string Site { get; set; }
         public byte Sporttype { get; set; }
         public int LeagueId { get; set; }
+        public string Leaguenametc { get; set; }
         public int HomeId { get; set; }
         public int Awayid { get; set; }
         public bool IsVip { get; set; }

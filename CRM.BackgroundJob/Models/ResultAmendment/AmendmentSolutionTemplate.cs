@@ -20,5 +20,9 @@
         public string NumberGameEN { get; set; }
         public string NumberGameSC { get; set; }
         public string NumberGameYN { get; set; }
+
+        public string OutrightEN { get; set; }
+        public string OutrightSC { get; set; }
+        public string OutrightYN { get; set; }
     }
 }
