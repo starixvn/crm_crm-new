@@ -28,13 +28,10 @@
     public class ExportExcelService : IExportExcelService
     {
         private readonly IHostingEnvironment hostingEnvironment;
-        private readonly ICRMLogService logService;
 
-        public ExportExcelService(IHostingEnvironment hostingEnvironment,
-            ICRMLogService logService)
+        public ExportExcelService(IHostingEnvironment hostingEnvironment)
         {
             this.hostingEnvironment = hostingEnvironment;
-            this.logService = logService;
         }
 
         public byte[] ExportPICAssignment(IEnumerable<PICAssignmentInfo> assignments,
@@ -44,7 +41,7 @@
         {
             const string ExcelTemplatePath = "ExcelTemplates/PicAssignment.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new PicAssignmentExcel(templatePath, assignments, groupAssignmentCommunications, communicationTools, isRenderPicManagement, logService);
+            var excel = new PicAssignmentExcel(templatePath, assignments, groupAssignmentCommunications, communicationTools, isRenderPicManagement);
             return excel.Export();
         }
 
