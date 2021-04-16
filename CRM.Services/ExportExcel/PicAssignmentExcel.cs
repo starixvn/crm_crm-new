@@ -256,7 +256,7 @@
                         worksheet.Cells[rowIndex, colIndex++].Value = direct.Site;
                         worksheet.Cells[rowIndex, colIndex++].Value = direct.Currency;
                         worksheet.Cells[rowIndex, colIndex].Value = direct.Position;
-                        if (indexCommRender < comm?.Count)
+                        if (indexCommRender < comm?.Count && isRenderPicManagement)
                         {
                             countExtraRowComm++;
                             RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, comm[indexCommRender++]);
@@ -264,7 +264,7 @@
                         rowIndex++;
                     }
                 }
-                if ((countExtraRowComm < maxGroupHeadline) && countExtraRowComm < comm?.Count)
+                if ((countExtraRowComm < maxGroupHeadline) && countExtraRowComm < comm?.Count && isRenderPicManagement)
                 {
                     var remainRow = maxGroupHeadline - countExtraRowComm;
                     for (int com = 0; com < remainRow; com++)
