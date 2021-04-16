@@ -121,7 +121,7 @@
                         colIndex = 1;
                         if (mergeHeadlineForPic == 0)
                         {
-                            mergeHeadlineForPic = assignments.Count(assign => assign.HeadlineID == assignment.HeadlineID);
+                            mergeHeadlineForPic = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID).ToList().Count;
                             StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineForPic - 1);
                             worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
                             StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineForPic - 1);
@@ -223,103 +223,101 @@
             int colIndexComm
             )
         {
-            var mergeHeadline = 0;
-            var mergePic = 0;
-            var countComm = 0;
-            var comm = new List<GroupAssignmentCommunication>();
-            foreach (PICAssignmentInfo assignment in excludeMergeCommonPIC)
+
+            var groupByPic = excludeMergeCommonPIC.GroupBy(a => a.HeadlineID,
+                (key, g) => new GroupHeadlineOfPic
+                {
+                    GroupHeadlineId = key,
+                    GroupHeadline = g.FirstOrDefault().HeadlineName,
+                    HeadlineType = g.FirstOrDefault().HeadlineType,
+                    DefaultPIC = g.FirstOrDefault().DefaultPicList,
+                    Pics = g.GroupBy(p => p.PicForMapping, (k, pic) => new PicOfDirectAccount
+                    {
+                        Pic = pic.FirstOrDefault().PicList,
+                        DirectAccounts = pic.Select(d => new DirectAccountInfo
+                        {
+                            DirectAccount = d.DirectAccount,
+                            Status = d.Status,
+                            Site = d.Site,
+                            Currency = d.Currency,
+                            Position = d.Position,
+                        }).OrderBy(a => a.DirectAccount)
+                    }).OrderBy(v => v.Pic == null)
+                }).OrderBy(x => x.GroupHeadlineId == 0).ThenBy(x => x.GroupHeadline).ToList();
+            
+                RenderBodyAssigment(templateWorksheet, worksheet, groupByPic, colIndex, rowIndex, rowNum);
+           
+        }
+
+        protected internal virtual void RenderBodyAssigment(
+           ExcelWorksheet templateWorksheet,
+           ExcelWorksheet worksheet,
+           List<GroupHeadlineOfPic> groupByPic,
+           int colIndex,
+           int rowIndex,
+           int rowNum
+           )
+        {
+        for (int i = 0; i < groupByPic.Count; i++)
             {
+                var countExtraRowComm = 0;
+                var maxGroupHeadline = 0;
                 colIndex = 1;
-                if (!string.IsNullOrEmpty(assignment.PicForMapping))
+                var indexCommRender = 0;
+                var assignment = groupByPic[i];
+                var comm = GetUniqueCommunicationTools(assignment?.Pics)?.ToList();
+                var groupHeadlineTotalRow = assignment.Pics.Sum(p => p.DirectAccounts.ToList().Count);
+                maxGroupHeadline = groupHeadlineTotalRow;
+                if (comm?.Count > groupHeadlineTotalRow)
                 {
-                    comm = GetUniqueCommunicationTools(assignments, assignment).ToList();
+                    maxGroupHeadline = comm.Count;
                 }
-                if (mergeHeadline == 0)
+                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
+                worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
+                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
+                worksheet.Cells[rowIndex, colIndex++].Value = assignment.GroupHeadline;
+                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
+                worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineType;
+                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
+                worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(assignment.DefaultPIC).ToString();
+
+                var picsCount = assignment.Pics.ToList();
+                for (int j = 0; j < picsCount.Count; j++)
                 {
-                    mergeHeadline = assignments.Count(assign => assign.HeadlineID == assignment.HeadlineID);
-                    var pics = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
-                    mergePic = pics.Count();
-                        
-                    countComm = 0;
-                    if (comm?.Count > mergeHeadline && isRenderPicManagement)
+                    colIndex = 5;
+                    var mergePic = picsCount[j].DirectAccounts.ToList();
+                    var countMergePic = mergePic.Count;
+                    StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + countMergePic - 1);
+                    worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(picsCount[j]?.Pic).ToString();
+                    for (int d = 0; d < countMergePic; d++)
                     {
-                        var countExtraComm = comm.Count - mergeHeadline;
-                        var mergeHeadlineExtraComm = mergeHeadline + countExtraComm;
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineExtraComm - 1);
-                        worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineExtraComm - 1);
-                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineName;
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineExtraComm - 1);
-                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineType;
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineExtraComm - 1);
-                        worksheet.Cells[rowIndex, colIndex++].Value = GetPicCell(assignment.DefaultPicList);
-
-                    }
-                    else
-                    {
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
-                        worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
-                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineName;
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
-                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineType;
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadline - 1);
-                        worksheet.Cells[rowIndex, colIndex++].Value = GetPicCell(assignment.DefaultPicList);
-                    }
-
-                    if (mergePic > 0) {
-                        var picCell = GetPicCell(assignment.PicList);
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergePic - 1);
-                        worksheet.Cells[rowIndex, colIndex].Value = picCell;
-                    }
-
-                    colIndex++;
-                }
-                else if (mergePic == 0)
-                {
-                    colIndexComm = StartComToolsIndex;
-                    const int addCol = 4;
-                    colIndex += addCol;
-                    var pics = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID && assign.PicForMapping == assignment.PicForMapping);
-                    mergePic = pics.Count();
-                    var picCell = GetPicCell(assignment.PicList);
-                    StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergePic - 1);
-                    worksheet.Cells[rowIndex, colIndex++].Value = picCell;
-                }
-                else
-                {
-                    const int addCol = 5;
-                    colIndex += addCol;
-                }
-
-                if (assignment.Status != CustomerStatus.Open.ToString())
-                {
-                    var templateRowIndex = GetTemplateRowIndex(assignment.Status);
-                    templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
-                        .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
-                }
-                worksheet.Cells[rowIndex, colIndex++].Value = assignment.DirectAccount;
-                worksheet.Cells[rowIndex, colIndex++].Value = assignment.Status;
-                worksheet.Cells[rowIndex, colIndex++].Value = assignment.Site;
-                worksheet.Cells[rowIndex, colIndex++].Value = assignment.Currency;
-                worksheet.Cells[rowIndex, colIndex].Value = assignment.Position;
-
-                if (countComm < comm?.Count && isRenderPicManagement)
-                {
-                    RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, comm[countComm]);
-                }
-                countComm++;
-                mergeHeadline--;
-                mergePic--;
-                rowIndex++;
-                if (mergeHeadline == 0 && countComm < comm?.Count && isRenderPicManagement)
-                {
-                    var remainCountComm = comm?.Count - countComm;
-                    for (var indexExtraComm = 0; indexExtraComm < remainCountComm; indexExtraComm++)
-                    {
-                        var rowIndexExtraComm = rowIndex;
+                        colIndex = 6;
+                        var direct = mergePic[d];
+                        if (direct.Status != CustomerStatus.Open.ToString())
+                        {
+                            var templateRowIndex = GetTemplateRowIndex(direct.Status);
+                            templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
+                                .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
+                        }
+                        worksheet.Cells[rowIndex, colIndex++].Value = direct.DirectAccount;
+                        worksheet.Cells[rowIndex, colIndex++].Value = direct.Status;
+                        worksheet.Cells[rowIndex, colIndex++].Value = direct.Site;
+                        worksheet.Cells[rowIndex, colIndex++].Value = direct.Currency;
+                        worksheet.Cells[rowIndex, colIndex].Value = direct.Position;
+                        if (indexCommRender < comm?.Count)
+                        {
+                            countExtraRowComm++;
+                            RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, comm[indexCommRender++]);
+                        }
                         rowIndex++;
-                        RenderCommunicationTools(templateWorksheet, worksheet, rowIndexExtraComm, comm[countComm++]);
+                    }
+                }
+                if ((countExtraRowComm < maxGroupHeadline) && countExtraRowComm < comm?.Count)
+                {
+                    var remainRow = maxGroupHeadline - countExtraRowComm;
+                    for (int com = 0; com < remainRow; com++)
+                    {
+                        RenderCommunicationTools(templateWorksheet, worksheet, rowIndex++, comm[indexCommRender++]);
                     }
                 }
             }
@@ -334,12 +332,12 @@
             GroupAssignmentCommunication comm
            )
         {
-            if (comm != null)
+            if (comm!= null)
             {
                 var colIndexComm = StartComToolsIndex;
                 var listComm = communicationTools.ToList();
                 worksheet.Cells[rowIndex, colIndexComm++].Value = comm.PicName.Length > 0 ? comm.PicName : "";
-                for (int indexCommRender = 0; indexCommRender< listComm.Count; indexCommRender++)
+                for (int indexCommRender = 0; indexCommRender < listComm.Count; indexCommRender++)
                 {
                     var renderValueComm = comm.ListComm.Where(item => item.CommunicationTool == listComm[indexCommRender].SettingValue).ToList();
                     worksheet.Cells[rowIndex, colIndexComm++].Value = renderValueComm.Count > 0 ? renderValueComm[0].CommunicationValue : "";
@@ -359,23 +357,24 @@
         }
 
         protected internal virtual IList<GroupAssignmentCommunication> GetUniqueCommunicationTools(
-            IEnumerable<PICAssignmentInfo> assignments,
-            PICAssignmentInfo assignment)
+           IEnumerable<PicOfDirectAccount> headlinePic)
         {
-            var picIds = new List<string>();
-            var headline = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID);
-            foreach (var head in headline)
+            if(!headlinePic.Any() || headlinePic == null)
             {
-                if (head.PicForMapping?.Length > 0)
+                return null;
+            }
+            var picIds = new List<string>();
+            foreach (var pic in headlinePic)
+            {
+                if (pic.Pic != null)
                 {
-                    var splitPic = head.PicForMapping.Split(",");
-                    picIds.AddRange(splitPic);
+                    picIds.AddRange(pic.Pic?.Select(x=>x.PicName));
                 }
             }
-            var uniquePicMapping = picIds.Distinct().ToList();
+            var uniquePicMapping = picIds.Distinct();
 
-            return uniquePicMapping.Count > 0 ? groupAssignmentCommunications.Where(x => 
-                uniquePicMapping.Any(y => y == x.PicId.ToString()))
+            return uniquePicMapping.Any() ? groupAssignmentCommunications.Where(x =>
+                uniquePicMapping.Any(y => y == x.PicName.ToString()))
                 .ToList()
             : null;
         }

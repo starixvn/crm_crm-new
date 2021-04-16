@@ -32,7 +32,6 @@
         private readonly IUserService userService;
         private readonly IPicAssignmentService picAssignmentService;
         private readonly IExportExcelService excelService;
-        private readonly ICRMLogService logService;
 
         public PicAssignmentController(
             ISettingService settingService,
@@ -41,8 +40,7 @@
             INapSettings napSettings,
             IUserService userService,
             IPicAssignmentService picAssignmentService,
-            IExportExcelService excelService,
-            ICRMLogService logService)
+            IExportExcelService excelService)
         {
             this.settingService = settingService;
             this.baseService = baseService;
@@ -51,7 +49,6 @@
             this.userService = userService;
             this.picAssignmentService = picAssignmentService;
             this.excelService = excelService;
-            this.logService = logService;
         }
 
         public IActionResult Index()
