@@ -156,3 +156,20 @@ input[type="checkbox"]:disabled {
 .header-comm{
     padding: 0;
 }
+
+body {
+    overflow: hidden; 
+}
+
+.table-container {
+    overflow-y: auto;
+
+    .body-content {
+        overflow: unset !important; 
+    }
+}
+
+.header-content, .body-content, .footer-content {
+    border: none;
+    padding: 0;
+}

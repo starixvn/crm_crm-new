@@ -20,6 +20,7 @@
         private const byte RowSuspended = 8;
         private const byte RowDisabled = 9;
         private const byte colIndexMergePic = 5;
+        private const byte colIndexDirectAccount = 6;
         private const byte BaseColumnIndex = 10;
         private int TotalColumns = BaseColumnIndex;
         private const byte StartComToolsIndex = 11;
@@ -87,7 +88,6 @@
             int rowIndex = RowStartBody;
             int rowIndexMergePIC = RowStartBody;
             var colIndex = 1;
-            var colIndexComm = StartComToolsIndex;
             var rowNum = 1;
             StyleDefault(worksheet);
             foreach (var mergePICByHeadline in mergePICByHeadlinesOrderBy)
@@ -165,10 +165,7 @@
             var headlineIdMerges = new List<int>();
             foreach (var headlineId in MergePicGroupHeadlineIds)
             {
-                for (int i = 0; i < headlineId.Count; i++)
-                {
-                    headlineIdMerges.Add(headlineId[i]);
-                }
+                headlineIdMerges.AddRange(headlineId);
             }
             return headlineIdMerges;
         }
@@ -232,7 +229,7 @@
 
                 foreach(var pic in assignment.Pics)
                 {
-                    colIndex = 5;
+                    colIndex = colIndexMergePic;
                     var mergePic = pic.DirectAccounts;
                     var countMergePic = mergePic.ToList().Count;
                     if(!isMergeCommonPic)
@@ -243,7 +240,7 @@
                     
                     foreach (var direct in mergePic)
                     {
-                        colIndex = 6;
+                        colIndex = colIndexDirectAccount;
                         if (direct.Status != CustomerStatus.Open.ToString())
                         {
                             var templateRowIndex = GetTemplateRowIndex(direct.Status);

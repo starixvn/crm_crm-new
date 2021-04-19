@@ -218,7 +218,7 @@
                 .ThenBy(y => y.PicName)
                 .ToList();
             var isReadPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
-            var isRenderPicManagement = isReadPicManagement && picInfo.Item2.Count() > 0;
+            var isRenderPicManagement = isReadPicManagement && picInfo.Item2.ToList().Count > 0;
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);
             var communicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole });
             var bytes = excelService.ExportPICAssignment(assignments, groupAssignmentCommunications, communicationTools, isRenderPicManagement);
