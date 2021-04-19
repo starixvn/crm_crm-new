@@ -26,7 +26,7 @@ class Table extends Component {
         pageOption: PropTypes.object,
         adjustedHeight: PropTypes.number,
         containerPadding: PropTypes.number,
-        shouldResetScrollPosition: PropTypes.bool,
+        shouldResetScrollPosition: PropTypes.bool
     };
 
     static defaultProps = {
@@ -180,8 +180,7 @@ class Table extends Component {
         }
 
         const { maxWidth, autoWidth} = this.props;
-        
-        const maxWidthCal = !autoWidth ? maxWidth : document.body.clientWidth - this.diffWidth;
+        const maxWidthCal = !autoWidth && maxWidth> 0 ? maxWidth : document.body.clientWidth - this.diffWidth;
         if (this.state.maxWidth !== maxWidthCal) {
             this.setState({ maxWidth: maxWidthCal });
         }
@@ -190,7 +189,7 @@ class Table extends Component {
     _calculateBodyHeight() {
         const windowHeight = window.innerHeight;
         const footerHeight = this.footerWrapper ? this.footerWrapper.offsetHeight : 0;
-        const tableContentHeight = windowHeight - (this.bodyWrapper.offsetTop + footerHeight + 50) - this.adjustedHeight;
+        const tableContentHeight = windowHeight - (this.bodyWrapper.offsetTop + footerHeight + 70) - this.adjustedHeight;
 
         return tableContentHeight;
     }
