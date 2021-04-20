@@ -80,15 +80,17 @@
                 mergePicAndHeadline = y.ToList()
             })
             .ToList();
-            var mergePICByHeadlines = mergePICGroupByPicMappingAndHeadline.GroupBy(x => x.PicForMapping).Select(y=> new{
-                PicName = GetPicCell(y.Select(z=>z.PicList).First()),
+            var mergePICByHeadlines = mergePICGroupByPicMappingAndHeadline.GroupBy(x => x.PicForMapping).Select(y => new {
+                PicName = GetPicCell(y.Select(z => z.PicList).First()),
                 GroupPicMapping = y.ToList()
             }).ToList();
-            var mergePICByHeadlinesOrderBy = mergePICByHeadlines.OrderByDescending(x => x.GroupPicMapping.Count).ThenBy(y=>y.PicName);
+            var mergePICByHeadlinesOrderBy = mergePICByHeadlines.OrderByDescending(x => x.GroupPicMapping.Count).ThenBy(y => y.PicName);
             int rowIndex = RowStartBody;
             int rowIndexMergePIC = RowStartBody;
             var colIndex = 1;
+            var colIndexComm = StartComToolsIndex;
             var rowNum = 1;
+            var mergeHeadlineForPic = 0;
             StyleDefault(worksheet);
             foreach (var mergePICByHeadline in mergePICByHeadlinesOrderBy)
             {
@@ -102,29 +104,63 @@
                 StyleMergeCell(worksheet, rowIndex, colIndexMergePic, rowIndexMergePIC + countMergePic - 1);
                 worksheet.Cells[rowIndex, colIndexMergePic].Value = merPicCell;
                 rowIndexMergePIC = rowIndexMergePIC + countMergePic;
+                var countCommIncludeMergeHeadline = 0;
                 var commIncludeMergeHeadline = GetUniqueCommunicationToolsByPicModel(picMappingByMergeHealine).ToList();
                 var mergePICByHeadlineOrderByCount = mergePICByHeadline.GroupPicMapping.Select(x => x.mergePicAndHeadline).ToList();
+
                 foreach (var mergeHeadlineByPic in mergePICByHeadlineOrderByCount)
                 {
-
-                    var groupByCommonMergePic = GroupByMergePic(mergeHeadlineByPic);
-                    foreach(var groupBymergePic in groupByCommonMergePic)
+                    foreach (PICAssignmentInfo assignment in mergeHeadlineByPic)
                     {
-                        RenderBodyAssigment(templateWorksheet, worksheet, groupByCommonMergePic, colIndex, ref rowIndex, rowNum, true);
+                        colIndex = 1;
+                        if (mergeHeadlineForPic == 0)
+                        {
+                            mergeHeadlineForPic = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID).ToList().Count;
+                            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineForPic - 1);
+                            worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
+                            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineForPic - 1);
+                            worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineName;
+                            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineForPic - 1);
+                            worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineType;
+                            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineForPic - 1);
+                            worksheet.Cells[rowIndex, colIndex++].Value = GetPicCell(assignment.DefaultPicList);
+                            colIndex++;
+                        }
+                        else
+                        {
+                            const int addCol = 5;
+                            colIndex += addCol;
+                        }
+                        if (assignment.Status != CustomerStatus.Open.ToString())
+                        {
+                            var templateRowIndex = GetTemplateRowIndex(assignment.Status);
+                            templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
+                                .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
+                        }
+                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.DirectAccount;
+                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.Status;
+                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.Site;
+                        worksheet.Cells[rowIndex, colIndex++].Value = assignment.Currency;
+                        worksheet.Cells[rowIndex, colIndex].Value = assignment.Position;
 
+                        if (countCommIncludeMergeHeadline < commIncludeMergeHeadline?.Count && isRenderPicManagement)
+                        {
+                            RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, commIncludeMergeHeadline[countCommIncludeMergeHeadline]);
+                        }
+                        countCommIncludeMergeHeadline++;
+                        mergeHeadlineForPic--;
+                        rowIndex++;
                     }
-                    
-                    var totalColumnDraw = isRenderPicManagement ? TotalColumns + 1 : TotalColumns;
-                    DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumnDraw]);
                 }
             }
-            var groupByPic = GroupByMergePic(excludeMergeCommonPIC);
 
-            RenderBodyAssigment(templateWorksheet, worksheet, groupByPic, colIndex, ref rowIndex, rowNum, false);
+            RenderBodyAssigment(templateWorksheet, worksheet, excludeMergeCommonPIC,
+                                        colIndex, rowIndex, rowNum, colIndexComm);
             
             var totalColumnDrawInculdeMergeHeadline = isRenderPicManagement ? TotalColumns + 1 : TotalColumns;
             DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumnDrawInculdeMergeHeadline]);
         }
+
 
         protected internal virtual List<int> GetIdMergePic(IEnumerable<PICAssignmentInfo> assignments)
         {
@@ -197,15 +233,16 @@
 
         protected internal virtual void RenderBodyAssigment(
            ExcelWorksheet templateWorksheet,
-           ExcelWorksheet worksheet,
-           IEnumerable<GroupHeadlineOfPic> groupByPic,
-           int colIndex,
-           ref int rowIndex,
-           int rowNum,
-           bool isMergeCommonPic
+            ExcelWorksheet worksheet,
+            List<PICAssignmentInfo> excludeMergeCommonPIC,
+            int colIndex,
+            int rowIndex,
+            int rowNum,
+            int colIndexComm
            )
         {
-        foreach (var assignment in  groupByPic)
+            var groupByPic = GroupByMergePic(excludeMergeCommonPIC);
+            foreach (var assignment in  groupByPic)
             {
                 var countExtraRowComm = 0;
                 var maxGroupHeadline = 0;
@@ -232,11 +269,8 @@
                     colIndex = colIndexMergePic;
                     var mergePic = pic.DirectAccounts;
                     var countMergePic = mergePic.ToList().Count;
-                    if(!isMergeCommonPic)
-                    {
-                        StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + countMergePic - 1);
-                        worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(pic?.Pic);
-                    }
+                    StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + countMergePic - 1);
+                    worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(pic?.Pic);
                     
                     foreach (var direct in mergePic)
                     {
