@@ -39,7 +39,6 @@
         public async Task WebhookReceiver_WhenCalledWithAnyParam_CallsExpectedWebhookReciverService()
         {
             await controller.WebhookReceiver(1);
-            var request = Substitute.For<HttpRequest>();
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()

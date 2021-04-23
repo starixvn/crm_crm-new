@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Net;
     using CRM.Core.Filters;
-    using Fanex.Logging;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;

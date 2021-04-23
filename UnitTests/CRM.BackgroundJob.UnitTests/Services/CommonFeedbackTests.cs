@@ -370,8 +370,9 @@
             {
                 Desc = "test"
             };
-            var currentDirectory = Directory.GetCurrentDirectory();
-            hostingEnvironment.ContentRootPath.Returns(currentDirectory);
+            var enviroment = System.Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(enviroment).Parent.FullName;
+            hostingEnvironment.ContentRootPath.Returns(projectDirectory.Replace("\\bin",""));
             // Act
             var actual = service.GetFeedbackTemplates<TODescriptionTemplate>("TestTemplate.xml");
 

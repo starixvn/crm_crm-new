@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Format_Templates\Company-WinLoss-Limit\TestTemplate.xml" />
+    <None Remove="Format_Templates\AutoCreateFeedback\TestTemplate.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Format_Templates\Company-WinLoss-Limit\TestTemplate.xml">
+    <Content Include="Format_Templates\AutoCreateFeedback\TestTemplate.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

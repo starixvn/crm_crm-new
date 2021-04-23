@@ -27,6 +27,8 @@
         private ITOControlFeedbackService tOControlFeedbackService;
         private IProblemsAccountFeedbackService problemsAccountFeedbackService;
         private IConfiguration configuration;
+        private IResultAmendmentService resultAmendmentService;
+
         private readonly IFixture fixture = new Fixture();
 
         #region WinLossExecuteJobAsync
@@ -436,6 +438,7 @@
             logService = Substitute.For<ICRMLogService>();
             tOControlFeedbackService = Substitute.For<ITOControlFeedbackService>();
             problemsAccountFeedbackService = Substitute.For<IProblemsAccountFeedbackService>();
+            resultAmendmentService = Substitute.For<IResultAmendmentService>();
             configuration = Substitute.For<IConfiguration>();
             return Substitute.For<AutoWinLossFeedbackServiceTestable>(
                 appJobSettings,
@@ -445,6 +448,7 @@
                 logService,
                 tOControlFeedbackService,
                 problemsAccountFeedbackService,
+                resultAmendmentService);
                 configuration);
         }
 

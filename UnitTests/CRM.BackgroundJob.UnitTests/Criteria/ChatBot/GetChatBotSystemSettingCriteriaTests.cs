@@ -1,6 +1,5 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBot
 {
-    using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Xunit;
 

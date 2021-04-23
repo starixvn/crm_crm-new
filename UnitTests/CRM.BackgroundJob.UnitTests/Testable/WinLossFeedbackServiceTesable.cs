@@ -1,11 +1,9 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Testable
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
