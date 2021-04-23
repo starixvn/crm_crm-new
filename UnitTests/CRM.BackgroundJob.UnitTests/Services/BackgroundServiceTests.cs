@@ -222,6 +222,56 @@
 
         #endregion CreateFeedbackForTurnoverControl
 
+        #region CreateFeedbackForResultAmendment
+
+        [Fact]
+        public async Task CreateFeedbackForResultAmendment_Exception_ExpectedWriteLog()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            maintenanceService.When(x => x.GetUnderMaintenanceTimeAsync()).Throw(exception);
+
+            // Act
+            await service.CreateFeedbackForResultAmendment();
+
+            // Assert
+            await logService.Received().ErrorAsync(exception);
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForResultAmendment_IsUnderMaintenance_ExpectedWriteLog()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = true };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForResultAmendment();
+
+            // Assert
+            logService.Received().LogInformation("UM time.");
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForResultAmendment_WhenCalled_ExpectedCreateFeedbackForResultAmendment()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = false };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForResultAmendment();
+
+            // Assert
+            await winlossService.Received().ResultAmendmentExecuteJobAsync();
+        }
+
+        #endregion CreateFeedbackForResultAmendment
+
         #region PullMessageForChatBotAsync
 
         [Fact]
@@ -321,6 +371,8 @@
         }
 
         #endregion PullMessageForChatBotAsync
+
+
 
         #region PullMessageCTOForChatBotAsync
 

@@ -1,0 +1,231 @@
+﻿namespace CRM.BackgroundJob.UnitTests.Testable
+{
+    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Services;
+    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Criteria;
+    using Fanex.CRM.BackgroundJob.Models;
+    using Fanex.CRM.BackgroundJob.Services;
+    using Microsoft.Extensions.Options;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    public class ResultAmendmentServiceTestable : ResultAmendmentService
+    {
+        public ResultAmendmentServiceTestable(IOptionsSnapshot<AppJobSettings> appSettings,
+            IBaseService baseService,
+            ISettingService settingService,
+            ISystemSettingService systemSettingService,
+            ICustomerService customerService,
+            ICRMLogService logService,
+            ICommonFeedback commonFeedback,
+            IWinLossTransactionService transactionService)
+        : base(appSettings,
+                baseService,
+                settingService,
+                systemSettingService,
+                customerService,
+                logService,
+                commonFeedback,
+                transactionService
+              )
+        {
+        }
+
+        public async Task Public_CreateResultAmendmentFeedbackCreditAsync(
+           AmendmentAutoFeedbackInfor amendment,
+            IEnumerable<SettingItem> settings,
+            IEnumerable<SystemSettingMapping> settingMappings)
+        {
+            await base.CreateResultAmendmentFeedbackCreditAsync(amendment, settings, settingMappings);
+        }
+
+        public async Task Public_CheckValidAmendmentParamsAndInsertFeedbackAsync(
+           AmendmentAutoFeedbackInfor amendment,
+            CreateMutipleFeedbackCommand criteria)
+        {
+            await base.CheckValidAmendmentParamsAndInsertFeedbackAsync(amendment, criteria);
+        }
+
+        public string Public_GetAmendmentProductXml(
+            int sportTypeId,
+            int productId,
+            List<string> betTypeMappings,
+            IEnumerable<SettingItem> settings,
+            IEnumerable<SystemSettingMapping> settingMappings)
+        {
+           return base.GetAmendmentProductXml(sportTypeId, productId, betTypeMappings, settings, settingMappings);
+        }
+
+        public SettingItem Public_GetAmenmentProduct(
+            IEnumerable<SettingItem> settings,
+            IEnumerable<SystemSettingMapping> settingMappings,
+            int productId)
+        {
+            return base.GetAmenmentProduct(settings, settingMappings, productId);
+        }
+
+        public IList<SettingItem> Public_GetAmendmentSubProduct(
+            int productId,
+            int sportTypeId,
+            IEnumerable<SettingItem> settings,
+            IEnumerable<SystemSettingMapping> settingMappings)
+        {
+            return base.GetAmendmentSubProduct(productId, sportTypeId, settings, settingMappings);
+        }
+
+        public Tuple<int, int, string> Public_GetCategorySubCategoryCWL(
+            IEnumerable<SettingItem> settings,
+            string settingValueName)
+        {
+            return base.GetCategorySubCategoryCWL(settings, settingValueName);
+        }
+
+        public string Public_GetAmendmentRelatedCustomerXml(AmendmentAutoFeedbackInfor amendment)
+        {
+            return base.GetAmendmentRelatedCustomerXml(amendment);
+        }
+
+        public string Public_GetAmendmentDescription(AmendmentAutoFeedbackInfor amendment)
+        {
+            return base.GetAmendmentDescription(amendment);
+        }
+
+        public StringBuilder Public_GetAmendmentDescriptionVirtualSports(
+            AmendmentAutoFeedbackInfor amendment,
+            AmendmentDescriptionTemplate amendmentDescTemplate,
+            string sportName,
+            string homeName,
+            string awayName,
+            string Race_time,
+            string EventdateGMT4
+            )
+        {
+            return base.GetAmendmentDescriptionVirtualSports(amendment,
+                amendmentDescTemplate,
+                sportName,
+                homeName,
+                awayName,
+                Race_time,
+                EventdateGMT4);
+        }
+
+        public StringBuilder Public_GetAmendmentDescriptionNumberGame(
+            AmendmentAutoFeedbackInfor amendment,
+            AmendmentDescriptionTemplate amendmentDescTemplate,
+            string leagueName,
+            string EventdateGMT4
+            )
+        {
+            return base.GetAmendmentDescriptionNumberGame(
+             amendment,
+             amendmentDescTemplate,
+             leagueName,
+             EventdateGMT4);
+        }
+
+        public StringBuilder Public_GetAmendmentDescriptionSportOutRight(
+            AmendmentAutoFeedbackInfor amendment,
+            AmendmentDescriptionTemplate amendmentDescTemplate,
+            string kO_time,
+            string leagueName,
+            string homeName
+            )
+        {
+            return base.GetAmendmentDescriptionSportOutRight(
+             amendment,
+             amendmentDescTemplate,
+             kO_time,
+             leagueName,
+             homeName);
+        }
+
+        public string Public_GetAmenmendSolution(AmendmentAutoFeedbackInfor amendment,
+            IEnumerable<Message> messageContent)
+        {
+            return base.GetAmenmendSolution(amendment, messageContent);
+        }
+
+        public StringBuilder Public_GetAmendmentSolutionTemplateEN(
+           AmendmentAutoFeedbackInfor amendment,
+           AmendmentSolutionTemplate amendmentSolTemplate,
+           IEnumerable<Message> messageContent)
+        {
+            return base.GetAmendmentSolutionTemplateEN(
+            amendment,
+            amendmentSolTemplate,
+            messageContent);
+        }
+
+        public StringBuilder Public_GetAmendmentSolutionTemplateYNSC(
+            AmendmentAutoFeedbackInfor amendment,
+            AmendmentSolutionTemplate amendmentSolTemplate,
+            IEnumerable<Message> messageContent)
+        {
+            return base.GetAmendmentSolutionTemplateYNSC(
+             amendment,
+             amendmentSolTemplate,
+            messageContent);
+        }
+
+        public StringBuilder Public_GetAmendmentSolutionTemplateYnSportBook(
+          AmendmentAutoFeedbackInfor amendment,
+          AmendmentSolutionTemplate amendmentSolTemplate,
+          IEnumerable<Message> messageContent,
+          string sportNameYN,
+          string homeNameYN,
+          string awayNameYN,
+          string leagueNameYN,
+          string Eventdate)
+        {
+            return base.GetAmendmentSolutionTemplateYnSportBook(
+           amendment,
+           amendmentSolTemplate,
+           messageContent,
+           sportNameYN,
+           homeNameYN,
+           awayNameYN,
+           leagueNameYN,
+           Eventdate);
+        }
+
+        public StringBuilder Public_GetAmendmentSolutionTemplateYnScVirtualSport(
+          AmendmentAutoFeedbackInfor amendment,
+          AmendmentSolutionTemplate amendmentSolTemplate,
+          bool isVipCust,
+          string sportNameYN,
+          string sportNameSC)
+        {
+            return base.GetAmendmentSolutionTemplateYnScVirtualSport(
+           amendment,
+           amendmentSolTemplate,
+           isVipCust,
+           sportNameYN,
+           sportNameSC);
+        }
+
+        public StringBuilder Public_GetAmendmentSolutionTemplateYnScNumberGame(
+          AmendmentAutoFeedbackInfor amendment,
+          AmendmentSolutionTemplate amendmentSolTemplate,
+          bool isVipCust,
+          string leagueNameYN,
+          string Eventdate,
+          string leagueNameSC)
+        {
+            return base.GetAmendmentSolutionTemplateYnScNumberGame(
+           amendment,
+           amendmentSolTemplate,
+           isVipCust,
+           leagueNameYN,
+           Eventdate,
+           leagueNameSC);
+        }
+
+        public string Public_GetMatchCoddFormat(string matchCode, string language)
+        {
+            return base.GetMatchCoddFormat(matchCode, language);
+        }
+    }
+}

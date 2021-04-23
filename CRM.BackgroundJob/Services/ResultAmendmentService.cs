@@ -70,8 +70,6 @@
 
             await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
 
-            logService.LogInformation("After Edit job Result Amendment!");
-
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
@@ -120,7 +118,6 @@
                         settings,
                         settingMappings);
             }
-            logService.LogInformation(string.Format("End service result amendment serivce: {0}!", DateTime.Now));
 
             await EditSystemSettingAsync();
         }

@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
@@ -227,6 +228,104 @@
         }
 
         #endregion TurnoverControlExecuteJobAsync
+
+        #region ResultAmendmentExecuteJobAsync
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
+        {
+            // Arrange
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            systemSettingService.When(x => x.GetResultAmendmentSettingAsync()).Throw(exception);
+
+            // Assert
+            await service.ResultAmendmentExecuteJobAsync();
+
+            // Act
+            await logService.Received().ErrorAsync(exception);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+
+            // Act
+            await service.ResultAmendmentExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service Result Amendment is shutdown.");
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_JobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(true);
+
+            // Act
+            await service.ResultAmendmentExecuteJobAsync();
+
+            // Assert
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_JobIsRunningAndLastRuntimeIsGreaterThanNow_DoNothing()
+        {
+            // Arrange
+            var service = GetService();
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now.AddMinutes(-appSettings.RetryRuntime - 1),
+                JobStatus = JobStatus.Running
+            };
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+
+            // Act
+            await service.ResultAmendmentExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Rerun Result Amendment service.");
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_ResultAmendment);
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_JobIsCompleted_ExpectedCallCreateFeedback()
+        {
+            // Arrange
+            var service = GetService();
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                JobStatus = JobStatus.Completed
+            };
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+
+            // Act
+            await service.ResultAmendmentExecuteJobAsync();
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForResultAmendment);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting);
+        }
+
+        #endregion ResultAmendmentExecuteJobAsync
 
         #region ProblemsAcccountExecuteJobAsync
         [Fact]
