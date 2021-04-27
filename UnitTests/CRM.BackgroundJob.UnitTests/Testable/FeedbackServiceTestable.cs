@@ -92,7 +92,7 @@
             base.GetLicenseeManager(transactionInfos, siteSettingMappings);
         }
 
-        public string Public_GetCommunicationTool(IEnumerable<SettingItem> settings)
+        public SettingItem Public_GetCommunicationTool(IEnumerable<SettingItem> settings)
         {
             return base.GetCommunicationTool(settings);
         }

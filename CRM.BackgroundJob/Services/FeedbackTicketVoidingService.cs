@@ -93,7 +93,17 @@
             logService.LogInformation("Abnormal Bet - Begin import ticket info");
             const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            foreach (var transaction in transactionInfos)
+            var transactionInfosDistinct = transactionInfos.Select(x => new
+            {
+                x.CustId,
+                x.MessageId,
+                x.RequestId,
+                x.Username,
+                x.Bettype,
+                x.IsDeposit,
+                x.Site
+            }).Distinct() ;
+            foreach (var transaction in transactionInfosDistinct)
             {
                 var matchInfo = matchInfos.FirstOrDefault(x => x.MessageId == transaction.MessageId);
                 var headlineId = 0;
@@ -101,7 +111,7 @@
 
                 if (transaction.IsDeposit)
                 {
-                    SiteSettingMapping licenseeManager = GetLicenseeManager(siteSettingMappings, transaction);
+                    SiteSettingMapping licenseeManager = GetLicenseeManager(siteSettingMappings, transaction.Site);
                     headlineId = licenseeInfo.CustId;
                     relatedCustId = licenseeManager != null ? licenseeManager.LicenseeManagerId : 0;
                 }
@@ -160,10 +170,10 @@
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        private static SiteSettingMapping GetLicenseeManager(IEnumerable<SiteSettingMapping> siteSettingMappings, TransactionInfo transaction)
+        private static SiteSettingMapping GetLicenseeManager(IEnumerable<SiteSettingMapping> siteSettingMappings, string site)
         {
             return siteSettingMappings.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.SettingSource)
-                       && x.SettingSource.Equals(transaction.Site, StringComparison.OrdinalIgnoreCase));
+                       && x.SettingSource.Equals(site, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

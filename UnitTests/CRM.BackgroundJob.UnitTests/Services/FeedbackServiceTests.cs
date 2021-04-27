@@ -350,6 +350,7 @@
             var message = fixture.Create<Message>();
             var matchInfo = fixture.Create<MatchInfo>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
+            var communicationTool = fixture.Create<SettingItem>();
             var settings = new List<SettingItem>
             {
                 new SettingItem { SettingId = 1, SettingName = "Status", SettingValue = "Closed" },
@@ -358,6 +359,7 @@
             };
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var service = MockService();
+            service.Protected("GetCommunicationTool", settings).Returns(communicationTool);
 
             // Act
             await service.Public_CreateFeedbackForDepositSiteAsync(
@@ -370,7 +372,6 @@
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
-            service.Received().Protected("GetCommunicationTool", settings);
             service.Received().Protected("GetCategorySubCategory", settings);
             service.Received().Protected("GetProductXml", matchInfo, transactionInfos, settings, settingMappings);
             service.Received().Protected("CreateFeedbackForDepositByBatchAsync", licenseeInfo, message, transactionInfos, Arg.Any<DateTime>(), Arg.Any<string>(), Arg.Any<CreateFeedbackCommand>());
@@ -522,7 +523,7 @@
             var actual = service.Public_GetCommunicationTool(settings);
 
             // Assert
-            Assert.Equal(Constants.CommunicationNA.ToString(), actual);
+            Assert.Equal(Constants.CommunicationNA.ToString(), actual.SettingId.ToString());
         }
 
         [Fact]
@@ -539,7 +540,7 @@
             var actual = service.Public_GetCommunicationTool(settings);
 
             // Assert
-            Assert.Equal(settings.First().SettingId.ToString(), actual);
+            Assert.Equal(settings.First().SettingId.ToString(), actual.SettingId.ToString());
         }
 
         #endregion GetCommunicationTool
