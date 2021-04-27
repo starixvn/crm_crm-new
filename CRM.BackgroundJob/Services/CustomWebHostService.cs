@@ -31,6 +31,7 @@
         {
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForWinLossLimit);
+            RemoveRecurringJobs();
             RunHangfireJobs();
             base.OnStarted();
         }
@@ -109,6 +110,17 @@
                    job => job.CreateFeedbackForTurnoverControl(),
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
+            }
+        }
+
+        protected internal virtual void RemoveRecurringJobs()
+        {
+            using (var connection = JobStorage.Current.GetConnection())
+            {
+                foreach (var recurring in connection.GetRecurringJobs())
+                {
+                    RecurringJob.RemoveIfExists(recurring.Id);
+                }
             }
         }
 
