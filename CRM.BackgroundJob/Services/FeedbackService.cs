@@ -293,7 +293,7 @@
                 CustId = licenseeInfo.CustId,
                 Username = licenseeInfo.Username,
                 StationId = station != null ? station.SettingId.ToString() : string.Empty,
-                CommunicationId = communicationTool,
+                CommunicationId = communicationTool.SettingId.ToString(),
                 CategoryXml = category != null ? category.Item3 : string.Empty,
                 ProductXml = GetProductXml(matchInfo, transactionInfos, settings, settingMappings),
                 StatusId = status != null ? status.SettingId : 0,
@@ -314,7 +314,7 @@
                 message,
                 transactionInfos,
                 feedbackDate,
-                communicationTool,
+                communicationTool.SettingValue,
                 criteria);
         }
 
@@ -403,12 +403,12 @@
             }
         }
 
-        protected internal virtual string GetCommunicationTool(IEnumerable<SettingItem> settings)
+        protected internal virtual SettingItem GetCommunicationTool(IEnumerable<SettingItem> settings)
         {
             var communication = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.CommunicationTool, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals("Skype", StringComparison.OrdinalIgnoreCase));
 
-            return communication != null ? communication.SettingId.ToString() : Constants.CommunicationNA.ToString();
+            return communication ?? new SettingItem { SettingId = Constants.CommunicationNA };
         }
 
         protected internal virtual string GetProductXml(
