@@ -87,7 +87,7 @@
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);
-            Assert.Equal(null, criteria.ErrMsg);
+            Assert.Null(criteria.ErrMsg);
 
         }
 

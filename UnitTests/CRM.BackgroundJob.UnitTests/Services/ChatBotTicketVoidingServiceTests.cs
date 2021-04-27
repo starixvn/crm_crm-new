@@ -187,7 +187,7 @@
             Assert.Equal(voidingMessages.ToXML("root").ToString(), criteria.Messages);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);
-            Assert.Equal(null, criteria.ErrMsg);
+            Assert.Null(criteria.ErrMsg);
         }
 
         #region Helpers

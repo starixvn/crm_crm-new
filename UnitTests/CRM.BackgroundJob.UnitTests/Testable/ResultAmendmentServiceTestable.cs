@@ -2,6 +2,7 @@
 {
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Services;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -76,11 +77,18 @@
             return base.GetAmendmentSubProduct(productId, sportTypeId, settings, settingMappings);
         }
 
-        public Tuple<int, int, string> Public_GetCategorySubCategoryCWL(
+        public IList<SystemSettingMapping> Public_GetAmendmentBettype(
+            List<string> betTypeMappings,
+            IEnumerable<SystemSettingMapping> settingMappings)
+        {
+            return base.GetAmendmentBettype(betTypeMappings, settingMappings);
+        }
+
+        public Tuple<int, int, string> Public_GetCategorySubCategoryResultAmendment(
             IEnumerable<SettingItem> settings,
             string settingValueName)
         {
-            return base.GetCategorySubCategoryCWL(settings, settingValueName);
+            return base.GetCategorySubCategoryResultAmendment(settings, settingValueName);
         }
 
         public string Public_GetAmendmentRelatedCustomerXml(AmendmentAutoFeedbackInfor amendment)
@@ -113,21 +121,21 @@
         }
 
         public StringBuilder Public_GetAmendmentDescriptionNumberGame(
-            AmendmentAutoFeedbackInfor amendment,
+            string MatchCode,
             AmendmentDescriptionTemplate amendmentDescTemplate,
             string leagueName,
             string EventdateGMT4
             )
         {
             return base.GetAmendmentDescriptionNumberGame(
-             amendment,
+             MatchCode,
              amendmentDescTemplate,
              leagueName,
              EventdateGMT4);
         }
 
         public StringBuilder Public_GetAmendmentDescriptionSportOutRight(
-            AmendmentAutoFeedbackInfor amendment,
+            string Leaguenametc,
             AmendmentDescriptionTemplate amendmentDescTemplate,
             string kO_time,
             string leagueName,
@@ -135,7 +143,7 @@
             )
         {
             return base.GetAmendmentDescriptionSportOutRight(
-             amendment,
+             Leaguenametc,
              amendmentDescTemplate,
              kO_time,
              leagueName,
@@ -192,14 +200,14 @@
         }
 
         public StringBuilder Public_GetAmendmentSolutionTemplateYnScVirtualSport(
-          AmendmentAutoFeedbackInfor amendment,
+          string affectedName,
           AmendmentSolutionTemplate amendmentSolTemplate,
           bool isVipCust,
           string sportNameYN,
           string sportNameSC)
         {
             return base.GetAmendmentSolutionTemplateYnScVirtualSport(
-           amendment,
+           affectedName,
            amendmentSolTemplate,
            isVipCust,
            sportNameYN,
@@ -207,7 +215,8 @@
         }
 
         public StringBuilder Public_GetAmendmentSolutionTemplateYnScNumberGame(
-          AmendmentAutoFeedbackInfor amendment,
+          string MatchCode,
+          string affectedName,
           AmendmentSolutionTemplate amendmentSolTemplate,
           bool isVipCust,
           string leagueNameYN,
@@ -215,7 +224,8 @@
           string leagueNameSC)
         {
             return base.GetAmendmentSolutionTemplateYnScNumberGame(
-           amendment,
+           MatchCode,
+           affectedName,
            amendmentSolTemplate,
            isVipCust,
            leagueNameYN,
@@ -226,6 +236,11 @@
         public string Public_GetMatchCoddFormat(string matchCode, string language)
         {
             return base.GetMatchCoddFormat(matchCode, language);
+        }
+
+        public async Task<CommandResult> Public_EditSystemSettingAsync()
+        {
+            return await base.EditSystemSettingAsync();
         }
     }
 }

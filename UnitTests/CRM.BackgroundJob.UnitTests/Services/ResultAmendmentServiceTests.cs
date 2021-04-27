@@ -204,7 +204,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var category = fixture.Create<Tuple<int, int, string>>();
             var service = MockService();
-            service.Protected("GetCategorySubCategoryCWL", Arg.Any<IEnumerable<SettingItem>>(), DefaultValue.ResultAmended).Returns(category);
+            service.Protected("GetCategorySubCategoryResultAmendment", Arg.Any<IEnumerable<SettingItem>>(), DefaultValue.ResultAmended).Returns(category);
             transactionService.GetMessageContentInfoAsync(amendment.MessageId).Returns(message);
             commonFeedback.GetBettypeName(Arg.Any<string>(), Language.en_US).Returns("BettypeName");
             service.Protected("GetAmendmentProductXml", amendment.Sporttype, amendment.ProductId, Arg.Any<List<string>>(), settings, settingMappings).Returns("product");
@@ -501,7 +501,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
         #region GetAmendmentSubProduct
 
         [Fact]
-        public void GetAmendmentSubProduct_NotExistsportName_ReturnDefaultProduct()
+        public void GetAmendmentSubProduct_NotExistsportName_ReturnDefaultSubProduct()
         {
             // Arrange
             var setting = new List<SettingItem>
@@ -525,7 +525,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
         }
 
         [Fact]
-        public void GetAmendmentSubProduct_SettingNotEqualMapping_ReturnDefaultProduct()
+        public void GetAmendmentSubProduct_SettingNotEqualMapping_ReturnDefaultSubProduct()
         {
             // Arrange
             var setting = new List<SettingItem>
@@ -544,11 +544,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var actual = service.Public_GetAmendmentSubProduct(1, 1, setting, settingMappings);
 
             // Assert
-            Assert.Equal(Constants.ProductNA, actual.First().SettingId);
+            Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
         }
 
         [Fact]
-        public void GetAmendmentSubProduct_SportNameNotEqualMapping_ReturnDefaultProduct()
+        public void GetAmendmentSubProduct_SportNameNotEqualMapping_ReturnDefaultSubProduct()
         {
             // Arrange
             var setting = new List<SettingItem>
@@ -567,11 +567,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var actual = service.Public_GetAmendmentSubProduct(1, 1, setting, settingMappings);
 
             // Assert
-            Assert.Equal(Constants.ProductNA, actual.First().SettingId);
+            Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
         }
 
         [Fact]
-        public void GetAmendmentSubProduct_ExistSportName_ReturnProduct()
+        public void GetAmendmentSubProduct_ExistSportName_ReturnSubProduct()
         {
             // Arrange
             var setting = new List<SettingItem>
@@ -594,6 +594,1085 @@ namespace CRM.BackgroundJob.UnitTests.Services
         }
 
         #endregion GetAmendmentSubProduct
+
+        #region GetAmendmentBettype
+
+        [Fact]
+        public void GetAmendmentBettype_betTypeMappingsNotEqualSettingSource_ReturnDefaultBetType()
+        {
+            // Arrange
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = "Bettype", SettingValue = "1" , SettingSource = "1"}
+                };
+
+            var betTypeMappings = new List<string> { "2", "3" };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentBettype(betTypeMappings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetAmendmentBettype_SettingSourceIsNull_ReturnDefaultBetType()
+        {
+            // Arrange
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = "Bettype", SettingValue = "1"}
+                };
+
+            var betTypeMappings = new List<string> { "2", "3" };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentBettype(betTypeMappings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetAmendmentBettype_SettingNameNotEqualBettype_ReturnDefaultBetType()
+        {
+            // Arrange
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = "Bettype1", SettingValue = "1", SettingSource = "2"}
+                };
+
+            var betTypeMappings = new List<string> { "2", "3" };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentBettype(betTypeMappings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetAmendmentBettype_ExistBettypes_ReturnBetType()
+        {
+            // Arrange
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = "Bettype", SettingValue = "1", SettingSource = "2", SettingId = 1}
+                };
+
+            var betTypeMappings = new List<string> { "2", "3" };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentBettype(betTypeMappings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(1, actual.First().SettingId);
+        }
+
+        #endregion GetAmendmentBettype
+
+        #region GetCategorySubCategoryResultAmendment
+
+        [Fact]
+        public void GetCategorySubCategoryResultAmendment_NotExistSettingNameMainCategory_ReturnDefaultMainCategoryXML()
+        {
+            // Arrange
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem { SettingName = "MainCategory1", SettingValue = DefaultValue.ResultAmended }
+                };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetCategorySubCategoryResultAmendment(settings, DefaultValue.ResultAmended);
+
+            // Assert
+            Assert.Equal(0, actual.Item1);
+            Assert.Equal(0, actual.Item2);
+            Assert.Equal("<ROOT><Category MainCategoryID='0' SubCategoryID='0' /></ROOT>", actual.Item3);
+        }
+
+        [Fact]
+        public void GetCategorySubCategoryResultAmendment_NotExistsettingValueName_ReturnDefaultMainCategoryXML()
+        {
+            // Arrange
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem { SettingName = "MainCategory", SettingValue = DefaultValue.ResultAmended }
+                };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetCategorySubCategoryResultAmendment(settings, "test");
+
+            // Assert
+            Assert.Equal(0, actual.Item1);
+            Assert.Equal(0, actual.Item2);
+            Assert.Equal("<ROOT><Category MainCategoryID='0' SubCategoryID='0' /></ROOT>", actual.Item3);
+        }
+
+        [Fact]
+        public void GetCategorySubCategoryResultAmendment_NotExistsSubId_ReturnDefaultMainCategoryXML()
+        {
+            // Arrange
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem { SettingId = 1, SettingName = "MainCategory", SettingValue = DefaultValue.ResultAmended },
+                    new SettingItem { SettingName = "SubCategory", SettingId =  1}
+                };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetCategorySubCategoryResultAmendment(settings, "test");
+
+            // Assert
+            Assert.Equal(0, actual.Item1);
+            Assert.Equal(0, actual.Item2);
+            Assert.Equal("<ROOT><Category MainCategoryID='0' SubCategoryID='0' /></ROOT>", actual.Item3);
+        }
+
+        [Fact]
+        public void GetCategorySubCategoryResultAmendment_ExistMainCategoryAndExistSubCategory_ReturnExpectedTuple()
+        {
+            // Arrange
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem { SettingId = 1, SettingName = "MainCategory", SettingValue = DefaultValue.ResultAmended },
+                    new SettingItem { SettingName = "SubCategory", SettingId =  4029}
+                };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetCategorySubCategoryResultAmendment(settings, DefaultValue.ResultAmended);
+
+            // Assert
+            Assert.Equal(1, actual.Item1);
+            Assert.Equal(4029, actual.Item2);
+            Assert.Equal("<ROOT><Category MainCategoryID='1' SubCategoryID='4029' /></ROOT>", actual.Item3);
+        }
+
+        [Fact]
+        public void GetCategorySubCategoryResultAmendment_ExistMainCategoryAndNotExistSubCategory_ReturnExpectedTuple()
+        {
+            // Arrange
+            var settings = new List<SettingItem>
+                {
+                    new SettingItem { SettingId = 1, SettingName = "MainCategory", SettingValue = DefaultValue.ResultAmended },
+                    new SettingItem { SettingName = "SubCategory", SettingId =  2}
+                };
+
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetCategorySubCategoryResultAmendment(settings, DefaultValue.ResultAmended);
+
+            // Assert
+            Assert.Equal(1, actual.Item1);
+            Assert.Equal(0, actual.Item2);
+            Assert.Equal("<ROOT><Category MainCategoryID='1' SubCategoryID='0' /></ROOT>", actual.Item3);
+        }
+
+        #endregion GetCategorySubCategoryResultAmendment
+
+        #region GetAmendmentRelatedCustomerXml
+
+        [Fact]
+        public void GetAmendmentRelatedCustomerXml_IsEmptyOrNullAffectedId_ReturnExactDefaultTemplate()
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor();
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentRelatedCustomerXml(amendment);
+
+            // Assert
+            Assert.Equal("<ROOT></ROOT>", actual);
+        }
+
+        [Fact]
+        public void GetAmendmentRelatedCustomerXml_AffectedIdAreNotNull_ReturnExactTemplate()
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                affectedId = "1,2",
+                HeadlineId = 1,
+                affectedName = "1,2"
+            };
+            var service = MockService();
+            var expect = "<ROOT><Row CustId='1' RelatedCustId='1' Username='1' /><Row CustId='1' RelatedCustId='2' Username='2' /></ROOT>";
+
+            // Act
+            var actual = service.Public_GetAmendmentRelatedCustomerXml(amendment);
+
+            // Assert
+            Assert.Equal(expect, actual);
+        }
+
+        #endregion GetAmendmentRelatedCustomerXml
+
+        #region GetAmendmentDescription
+
+        [Fact]
+        public void GetAmendmentDescription_ProducIsNotExpected_ReturnDefaultTemplate()
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = 3,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = "789y",
+                IsVip = true,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var service = MockService();
+            var testDescTemp = fixture.Create<AmendmentDescriptionTemplate>();
+            commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>("test.xml").Returns(testDescTemp);
+            var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
+            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append("");
+            stringBuilder.Append(Constants.Break);
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("");
+            
+            // Act
+            var actual = service.Public_GetAmendmentDescription(amendment);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual);
+            logService.Received(3).LogInformation(Arg.Any<string>());
+        }
+
+        [Fact]
+        public void GetAmendmentDescription_ProducIsSportsbook_ReturnExactTemplate()
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = 3,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = "789y",
+                IsVip = true,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var service = MockService();
+            var testDescTemp = new AmendmentDescriptionTemplate
+            {
+                Sportsbook = "{0} {1} {2} {3} {4} {5} {6}"
+            };
+            commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>("AmendmentDescriptionTemplate.xml").Returns(testDescTemp);
+            var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
+            stringBuilder.Append(Constants.Break);
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Sportsbook");
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US).Returns("SportName");
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns("LeagueName");
+            commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
+            commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
+            stringBuilder.Append("24 Feb 2021 SportName 07:59 AM LeagueName HomeName AwayName <br />");
+            stringBuilder.Append(Constants.Break);
+
+            // Act
+            var actual = service.Public_GetAmendmentDescription(amendment);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual);
+        }
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(9)]
+        public void GetAmendmentDescription_ProducIsSportsbookAndBetypeEqual2Or9_ReturnExactOutrightTemplate(byte EventType)
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = EventType,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = "789y",
+                IsVip = true,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var service = MockService();
+            var testDescTemp = new AmendmentDescriptionTemplate
+            {
+                Sportsbook = "{0} {1} {2} {3} {4} {5} {6}"
+            };
+            commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>("AmendmentDescriptionTemplate.xml").Returns(testDescTemp);
+            var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
+            stringBuilder.Append(Constants.Break);
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Sportsbook");
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US).Returns("SportName");
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns("LeagueName");
+            commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
+            commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
+            var outright = new StringBuilder("outright");
+            service.Protected("GetAmendmentDescriptionSportOutRight", amendment.Leaguenametc, testDescTemp, "07:59 AM", "LeagueName", "HomeName").Returns(outright);
+            stringBuilder.Append("outright");
+            stringBuilder.Append(Constants.Break);
+
+            // Act
+            var actual = service.Public_GetAmendmentDescription(amendment);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual);
+        }
+
+        [Fact]
+        public void GetAmendmentDescription_ProducIsVirtualSports2_ReturnExactTemplate()
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = 3,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = "789y",
+                IsVip = true,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var service = MockService();
+            var testDescTemp = new AmendmentDescriptionTemplate
+            {
+                VirtualSports2 = "Test VirtualSports2 Template"
+            };
+            commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>("AmendmentDescriptionTemplate.xml").Returns(testDescTemp);
+            var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
+            stringBuilder.Append(Constants.Break);
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Virtual Sports 2");
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US).Returns("SportName");
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns("LeagueName");
+            commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
+            commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
+            stringBuilder.Append(testDescTemp.VirtualSports2);
+            stringBuilder.Append(Constants.Break);
+
+            // Act
+            var actual = service.Public_GetAmendmentDescription(amendment);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual);
+        }
+
+        [Fact]
+        public void GetAmendmentDescription_ProducIsVirtualSports_ReturnExactTemplate()
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = 3,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = "789y",
+                IsVip = true,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var service = MockService();
+            var testDescTemp = new AmendmentDescriptionTemplate
+            {
+                VirtualSports180186 = "Test VirtualSports Template"
+            };
+            commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>("AmendmentDescriptionTemplate.xml").Returns(testDescTemp);
+            var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
+            stringBuilder.Append(Constants.Break);
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Virtual Sports");
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US).Returns("SportName");
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns("LeagueName");
+            commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
+            commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
+            var virtualSports = new StringBuilder("test virtualSports");
+            service.Protected("GetAmendmentDescriptionVirtualSports", amendment, testDescTemp, "SportName", "HomeName", "AwayName", "07:59 AM", "24 Feb 2021").Returns(virtualSports);
+            stringBuilder.Append(virtualSports);
+            stringBuilder.Append(Constants.Break);
+
+            // Act
+            var actual = service.Public_GetAmendmentDescription(amendment);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual);
+        }
+
+        [Fact]
+        public void GetAmendmentDescription_ProducIsNumberGame_ReturnExactTemplate()
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = 3,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = "789y",
+                IsVip = true,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var service = MockService();
+            var testDescTemp = new AmendmentDescriptionTemplate
+            {
+                NumberGame = "test number game"
+            };
+            commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>("AmendmentDescriptionTemplate.xml").Returns(testDescTemp);
+            var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
+            stringBuilder.Append(Constants.Break);
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Number Game");
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US).Returns("SportName");
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns("LeagueName");
+            commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
+            commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
+
+            var numberGame = new StringBuilder("numberGame");
+
+            service.Protected("GetAmendmentDescriptionNumberGame", amendment.MatchCode, testDescTemp,"LeagueName", "24 Feb 2021").Returns(numberGame);
+
+            stringBuilder.Append(numberGame);
+            stringBuilder.Append(Constants.Break);
+
+            // Act
+            var actual = service.Public_GetAmendmentDescription(amendment);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual);
+        }
+        #endregion GetAmendmentDescription
+
+        #region GetAmendmentDescriptionVirtualSports
+
+        [Theory]
+        [InlineData(180, "test VirtualSports180186")]
+        [InlineData(186, "test VirtualSports180186")]
+        [InlineData(181, "test VirtualSports181To185")]
+        [InlineData(182, "test VirtualSports181To185")]
+        [InlineData(185, "test VirtualSports181To185")]
+        public void GetAmendmentDescriptionVirtualSports_DependsSporttype_ReturnTempateForVirtualSports(byte Sporttype, string template)
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                Sporttype = Sporttype,
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000")
+            };
+            var amendmentDescTemplate = new AmendmentDescriptionTemplate
+            {
+                VirtualSports180186 = "test VirtualSports180186",
+                VirtualSports181To185 = "test VirtualSports181To185"
+            };
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(template);
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentDescriptionVirtualSports(amendment,
+                amendmentDescTemplate,
+                "sportName", 
+                "homeName",
+                "awayName",
+                "07:59 AM",
+                "24 Feb 2021");
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+            logService.Received(2).LogInformation(Arg.Any<string>());
+        }
+        #endregion GetAmendmentDescriptionVirtualSports
+
+        #region GetAmendmentDescriptionNumberGame
+        [Fact]
+        public void GetAmendmentDescriptionNumberGame_WhenCalled_ReturnExactTemplate()
+        {
+            // Arrange
+            var amendmentDescTemplate = new AmendmentDescriptionTemplate
+            {
+                NumberGame = "test numbergame"
+            };
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(amendmentDescTemplate.NumberGame);
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentDescriptionNumberGame("MatchCode",
+                amendmentDescTemplate,
+                "leagueName",
+                "24 Feb 2021");
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+            logService.Received(2).LogInformation(Arg.Any<string>());
+        }
+        #endregion GetAmendmentDescriptionNumberGame
+
+        #region GetAmendmentDescriptionSportOutRight
+        [Fact]
+        public void GetAmendmentDescriptionSportOutRight_WhenCalled_ReturnExactTemplate()
+        {
+            // Arrange
+            var amendmentDescTemplate = new AmendmentDescriptionTemplate
+            {
+                SportsbookOutright = "test SportsbookOutright"
+            };
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(amendmentDescTemplate.SportsbookOutright);
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentDescriptionSportOutRight("Leaguenametc",
+                amendmentDescTemplate,
+                "kO_time",
+                "leagueName",
+                "homeName");
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+            logService.Received(2).LogInformation(Arg.Any<string>());
+        }
+        #endregion GetAmendmentDescriptionSportOutRight
+
+        #region GetAmenmendSolution
+        [Fact]
+        public void GetAmenmendSolution_WhenCalled_ReturnExactTemplate()
+        {
+            // Arrange
+            var service = MockService();
+            var amendmentSolTemplate = fixture.Create<AmendmentSolutionTemplate>();
+            var amendment = fixture.Create<AmendmentAutoFeedbackInfor>();
+            var solutionTemplateEN = new StringBuilder("solutionTemplateEN");
+            var solutionTemplateSC = new StringBuilder("solutionTemplateSC");
+            var messageContent = fixture.Create<IEnumerable<Message>>();
+            var stringBuilder = new StringBuilder();
+            commonFeedback.GetFeedbackTemplates<AmendmentSolutionTemplate>("AmendmentSolutionTemplate.xml").Returns(amendmentSolTemplate);
+            service.Protected("GetAmendmentSolutionTemplateEN", amendment, amendmentSolTemplate, messageContent).Returns(solutionTemplateEN);
+            service.Protected("GetAmendmentSolutionTemplateYNSC", amendment, amendmentSolTemplate, messageContent).Returns(solutionTemplateSC);
+            stringBuilder.Append(solutionTemplateEN);
+            stringBuilder.Append(Constants.Break);
+            stringBuilder.Append(solutionTemplateSC);
+            stringBuilder.Append(Constants.Break);
+
+            // Act
+            var actual = service.Public_GetAmenmendSolution(amendment, messageContent);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+            logService.Received(2).LogInformation(Arg.Any<string>());
+        }
+        #endregion GetAmenmendSolution
+
+        #region GetAmendmentSolutionTemplateEN
+        [Theory]
+        [InlineData("Sportsbook", "test Sportsbook")]
+        [InlineData("Virtual Sports 2", "test Virtual Sports 2")]
+        [InlineData("Virtual Sports", "test Virtual Sports")]
+        [InlineData("Number Game", "Number Game")]
+        [InlineData("", "")]
+
+        public void GetAmendmentSolutionTemplateEN_DependProductName_ReturnExactTemplateEn(
+            string productName, string expectedAppend)
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = 3,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = "789y",
+                IsVip = true,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var amendmentSolTemplate = new AmendmentSolutionTemplate
+            {
+                SportsbookEN = expectedAppend,
+                VirtualSports2EN = expectedAppend,
+                VirtualSportsEN = expectedAppend,
+                NumberGameEN = expectedAppend
+            };
+            var messageContent = fixture.Create<IEnumerable<Message>>();
+            var service = MockService();
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US).Returns(productName);
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns(productName);
+            commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns(productName);
+            commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns(productName);
+            commonFeedback.GetMatchCode(amendment.MatchCode, Language.en_US).Returns("MatchCode");
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(expectedAppend);
+
+            // Act
+            var actual = service.Public_GetAmendmentSolutionTemplateEN(amendment, amendmentSolTemplate, messageContent);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+            logService.Received(2).LogInformation(Arg.Any<string>());
+        }
+
+        [Theory]
+        [InlineData(2, "test OutrightEN")]
+        [InlineData(9, "test OutrightEN")]
+        [InlineData(5, "test Sportsbook")]
+
+        public void GetAmendmentSolutionTemplateEN_DependEventType_ReturnExactTemplateOutRightEn(
+            byte EventType, string expectedAppend)
+        {
+            // Arrange
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = EventType,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = "789y",
+                IsVip = true,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var amendmentSolTemplate = new AmendmentSolutionTemplate
+            {
+                SportsbookEN = expectedAppend,
+                VirtualSports2EN = expectedAppend,
+                VirtualSportsEN = expectedAppend,
+                NumberGameEN = expectedAppend,
+                OutrightEN = expectedAppend
+            };
+            var messageContent = fixture.Create<IEnumerable<Message>>();
+            var service = MockService();
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Sportsbook");
+            
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(expectedAppend);
+
+            // Act
+            var actual = service.Public_GetAmendmentSolutionTemplateEN(amendment, amendmentSolTemplate, messageContent);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+        }
+        #endregion GetAmendmentSolutionTemplateEN
+
+        #region GetAmendmentSolutionTemplateYNSC
+        [Theory]
+        [InlineData("Virtual Sports", "test Virtual Sports")]
+        [InlineData("Number Game", "test Number Game")]
+
+        public void GetAmendmentSolutionTemplateYNSC_DependProductName_ReturnExactTemplate(string productName, string expected)
+        {
+            // Arrange
+            var service = MockService();
+
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = 3,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = "789y",
+                IsVip = false,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var amendmentSolTemplate = new AmendmentSolutionTemplate
+            {
+                NumberGameSC = "test NumberGameSC",
+                NumberGameYN = "test NumberGameYN",
+                VirtualSportsSC = "test VirtualSportsSC",
+                VirtualSportsYN = "test VirtualSportsYN"
+            };
+            var expectedReturn = new StringBuilder(expected);
+
+
+            var messageContent = fixture.Create<IEnumerable<Message>>();
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN).Returns("leagueNameYN");
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN).Returns("leagueNameSC");
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN).Returns("sportNameYN");
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
+            
+            service.Protected("GetAmendmentSolutionTemplateYnScVirtualSport", amendment.affectedName,
+                amendmentSolTemplate,
+                false,
+                "sportNameYN",
+                "sportNameSC").Returns(expectedReturn);
+            service.Protected("GetAmendmentSolutionTemplateYnScNumberGame",
+                amendment.MatchCode,
+                amendment.affectedName,
+                amendmentSolTemplate,
+                false,
+                "leagueNameYN",
+                "07:59 PM",
+                "leagueNameSC").Returns(expectedReturn);
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(expectedReturn);
+
+            // Act
+            var actual = service.Public_GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+            logService.Received(2).LogInformation(Arg.Any<string>());
+        }
+
+        [Theory]
+        [InlineData("Sportsbook", "789y", true, 0,"test Sportsbook Yn")]
+        [InlineData("Sportsbook", "789y", false, 0, "test Sportsbook Sc")]
+        [InlineData("Sportsbook", "789y", false, 2, "test Outright Sc")]
+        [InlineData("Sportsbook", "789y", false, 9, "test Outright Sc")]
+        [InlineData("Sportsbook", "789y", false, 3, "test Sportsbook Sc")]
+        [InlineData("Virtual Sports 2", "789y", true, 0,"test VirtualSports2 Yn")]
+        [InlineData("Virtual Sports 2", "789y", false, 0,"test VirtualSports2 Sc")]
+
+        public void GetAmendmentSolutionTemplateYNSC_DependProductNameAndIsVip_ReturnExactTemplate(string productName, string site, bool isVip, byte EventType, string expected)
+        {
+            // Arrange
+            var service = MockService();
+
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                LogId = 1,
+                TicketEventId = 1,
+                HeadlineId = 1,
+                HeadlineName = "hl1",
+                ProductId = 0,
+                affectedId = "1,2",
+                affectedName = "1,2",
+                MatchId = 1,
+                MatchCode = "0",
+                EventType = EventType,
+                ActualResult = "win",
+                WrongResult = "lose",
+                Listbettype = "10",
+                Currency = "HKK",
+                MessageId = 338,
+                Site = site,
+                IsVip = isVip,
+                Sporttype = 0,
+                LeagueId = 93816,
+                Leaguenametc = "Basketball",
+                HomeId = 714227,
+                Awayid = 0,
+                KO_time = DateTime.Parse("2021-02-23 19:59:00.000"),
+                Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
+                Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
+            };
+
+            var amendmentSolTemplate = new AmendmentSolutionTemplate
+            {
+                SportsbookYN = "test Sportsbook Yn",
+                SportsbookSC = "test Sportsbook Sc",
+                VirtualSports2SC = "test VirtualSports2 Sc",
+                VirtualSports2YN = "test VirtualSports2 Yn",
+                OutrightSC = "test Outright Sc",
+                VirtualSportsSC = "test Sportsbook sc"
+            };
+            var expectedReturn = new StringBuilder(expected);
+
+
+            var messageContent = fixture.Create<IEnumerable<Message>>();
+            commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN).Returns("leagueNameYN");
+            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN).Returns("leagueNameSC");
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN).Returns("sportNameYN");
+            commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
+            commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.vi_VN).Returns("homeNameYN");
+            commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.vi_VN).Returns("awayNameYN");
+
+            service.Protected("GetAmendmentSolutionTemplateYnSportBook", amendment,
+                amendmentSolTemplate,
+                messageContent,
+                "sportNameYN",
+                "homeNameYN",
+                "awayNameYN",
+                "leagueNameYN",
+                "07:59 PM").Returns(expectedReturn);
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(expectedReturn);
+
+            // Act
+            var actual = service.Public_GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+        }
+
+        #endregion GetAmendmentSolutionTemplateYNSC
+
+        #region GetAmendmentSolutionTemplateYnScVirtualSport
+        [Theory]
+        [InlineData(true, "test VirtualSportsYN")]
+        [InlineData(false, "test VirtualSportsSC")]
+        public void GetAmendmentSolutionTemplateYnScVirtualSport_WhenCalled_ReturnExactTemplate(bool isVipCust, string expected)
+        {
+            // Arrange
+            var amendmentSolTemplate = new AmendmentSolutionTemplate
+            {
+                VirtualSportsYN = "test VirtualSportsYN",
+                VirtualSportsSC = "test VirtualSportsSC"
+            };
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(expected);
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentSolutionTemplateYnScVirtualSport("affectedName",
+                amendmentSolTemplate,
+                isVipCust,
+                "sportNameYN",
+                "sportNameSC");
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+        }
+        #endregion GetAmendmentSolutionTemplateYnScVirtualSport
+
+        #region GetAmendmentSolutionTemplateYnScNumberGame
+        [Theory]
+        [InlineData(true, "test NumberGameYN")]
+        [InlineData(false, "test NumberGameSC")]
+        public void GetAmendmentSolutionTemplateYnScNumberGame_WhenCalled_ReturnExactTemplate(bool isVipCust, string expected)
+        {
+            // Arrange
+            var amendmentSolTemplate = new AmendmentSolutionTemplate
+            {
+                NumberGameYN = "test NumberGameYN",
+                NumberGameSC = "test NumberGameSC"
+            };
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(expected);
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetAmendmentSolutionTemplateYnScNumberGame("MatchCode", "affectedName",
+                amendmentSolTemplate,
+                isVipCust,
+                "leagueNameYN",
+                "Eventdate",
+                "leagueNameSC");
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual.ToString());
+        }
+        #endregion GetAmendmentSolutionTemplateYnScNumberGame
+
+        #region GetMatchCoddFormat
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("{2} 23, {0} 6666", "match code 2 23, match code 0 6666")]
+        public void GetMatchCoddFormat_WhenCalled_ReturnExpectString(string matchCode, string expected)
+        {
+            // Arrange
+            var service = MockService();
+            commonFeedback.GetMatchCode("{2}", Language.en_US).Returns("match code 2");
+            commonFeedback.GetMatchCode("{0}", Language.en_US).Returns("match code 0");
+
+            // Act
+            var actual = service.Public_GetMatchCoddFormat(matchCode, Language.en_US);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+        #endregion GetMatchCoddFormat
+
+        #region EditSystemSettingAsync
+        [Fact]
+        public void EditSystemSettingAsync_WhenCalled_CallExactFunctionAndParams()
+        {
+            // Arrange
+            var service = MockService();
+            
+
+            // Act
+            var actual = service.Public_EditSystemSettingAsync();
+
+            // Assert
+            systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
+        }
+        #endregion EditSystemSettingAsync
 
         #region Helpers
 
