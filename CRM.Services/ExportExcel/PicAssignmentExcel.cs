@@ -1,5 +1,6 @@
 ﻿namespace CRM.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
@@ -88,7 +89,6 @@
             int rowIndex = RowStartBody;
             int rowIndexMergePIC = RowStartBody;
             var colIndex = 1;
-            var colIndexComm = StartComToolsIndex;
             var rowNum = 1;
             var mergeHeadlineForPic = 0;
             StyleDefault(worksheet);
@@ -131,22 +131,14 @@
                             const int addCol = 5;
                             colIndex += addCol;
                         }
-                        if (assignment.Status != CustomerStatus.Open.ToString())
-                        {
-                            var templateRowIndex = GetTemplateRowIndex(assignment.Status);
-                            templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
-                                .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
-                        }
+                        RenderStatusRow(templateWorksheet, worksheet, assignment.Status, colIndex, rowIndex);
                         worksheet.Cells[rowIndex, colIndex++].Value = assignment.DirectAccount;
                         worksheet.Cells[rowIndex, colIndex++].Value = assignment.Status;
                         worksheet.Cells[rowIndex, colIndex++].Value = assignment.Site;
                         worksheet.Cells[rowIndex, colIndex++].Value = assignment.Currency;
                         worksheet.Cells[rowIndex, colIndex].Value = assignment.Position;
-
-                        if (countCommIncludeMergeHeadline < commIncludeMergeHeadline?.Count && isRenderPicManagement)
-                        {
-                            RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, commIncludeMergeHeadline[countCommIncludeMergeHeadline]);
-                        }
+                        RenderCommunicationToolMergeCommon(templateWorksheet, worksheet,
+                                         rowIndex, countCommIncludeMergeHeadline, commIncludeMergeHeadline);
                         countCommIncludeMergeHeadline++;
                         mergeHeadlineForPic--;
                         rowIndex++;
@@ -155,10 +147,36 @@
             }
 
             RenderBodyAssigment(templateWorksheet, worksheet, excludeMergeCommonPIC,
-                                        colIndex, rowIndex, rowNum, colIndexComm);
+                                        colIndex, rowIndex, rowNum);
             
             var totalColumnDrawInculdeMergeHeadline = isRenderPicManagement ? TotalColumns + 1 : TotalColumns;
             DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumnDrawInculdeMergeHeadline]);
+        }
+
+        protected internal virtual void RenderStatusRow(ExcelWorksheet templateWorksheet,
+            ExcelWorksheet worksheet,
+            string Status,
+            int colIndex,
+            int rowIndex)
+        {
+            if (Status != CustomerStatus.Open.ToString())
+            {
+                var templateRowIndex = GetTemplateRowIndex(Status);
+                templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
+                    .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
+            }
+        }
+
+        protected internal virtual void RenderCommunicationToolMergeCommon(ExcelWorksheet templateWorksheet,
+            ExcelWorksheet worksheet,
+            int rowIndex,
+            int countCommIncludeMergeHeadline,
+            IList<GroupAssignmentCommunication> commIncludeMergeHeadline)
+        {
+            if (countCommIncludeMergeHeadline < commIncludeMergeHeadline?.Count && isRenderPicManagement)
+            {
+                RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, commIncludeMergeHeadline[countCommIncludeMergeHeadline]);
+            }
         }
 
 
@@ -231,78 +249,82 @@
             return groupByCommonMergePic;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         protected internal virtual void RenderBodyAssigment(
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
+#pragma warning restore S1541 // Methods and properties should not be too complex
            ExcelWorksheet templateWorksheet,
             ExcelWorksheet worksheet,
             List<PICAssignmentInfo> excludeMergeCommonPIC,
             int colIndex,
             int rowIndex,
-            int rowNum,
-            int colIndexComm
-           )
+            int rowNum )
         {
-            var groupByPic = GroupByMergePic(excludeMergeCommonPIC);
-            foreach (var assignment in  groupByPic)
+        var groupByPic = GroupByMergePic(excludeMergeCommonPIC);
+        foreach (var assignment in groupByPic)
+        {
+            var countExtraRowComm = 0;
+            var maxGroupHeadline = 0;
+            colIndex = 1;
+            var indexCommRender = 0;
+            var comm = GetUniqueCommunicationTools(assignment?.Pics)?.ToList();
+            var groupHeadlineTotalRow = assignment.Pics.Sum(p => p.DirectAccounts.ToList().Count);
+            maxGroupHeadline = groupHeadlineTotalRow;
+            if (comm?.Count > groupHeadlineTotalRow)
             {
-                var countExtraRowComm = 0;
-                var maxGroupHeadline = 0;
-                colIndex = 1;
-                var indexCommRender = 0;
-                var comm = GetUniqueCommunicationTools(assignment?.Pics)?.ToList();
-                var groupHeadlineTotalRow = assignment.Pics.Sum(p => p.DirectAccounts.ToList().Count);
-                maxGroupHeadline = groupHeadlineTotalRow;
-                if (comm?.Count > groupHeadlineTotalRow)
-                {
-                    maxGroupHeadline = comm.Count;
-                }
-                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
-                worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
-                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
-                worksheet.Cells[rowIndex, colIndex++].Value = assignment.GroupHeadline;
-                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
-                worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineType;
-                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
-                worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(assignment.DefaultPIC);
+                maxGroupHeadline = comm.Count;
+            }
+            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
+            worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
+            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
+            worksheet.Cells[rowIndex, colIndex++].Value = assignment.GroupHeadline;
+            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
+            worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineType;
+            StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
+            worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(assignment.DefaultPIC);
 
-                foreach(var pic in assignment.Pics)
+            foreach (var pic in assignment.Pics)
+            {
+                colIndex = colIndexMergePic;
+                var mergePic = pic.DirectAccounts;
+                var countMergePic = mergePic.ToList().Count;
+                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + countMergePic - 1);
+                worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(pic?.Pic);
+
+                foreach (var direct in mergePic)
                 {
-                    colIndex = colIndexMergePic;
-                    var mergePic = pic.DirectAccounts;
-                    var countMergePic = mergePic.ToList().Count;
-                    StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + countMergePic - 1);
-                    worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(pic?.Pic);
-                    
-                    foreach (var direct in mergePic)
+                    colIndex = colIndexDirectAccount;
+                    RenderStatusRow(templateWorksheet, worksheet, direct.Status, colIndex, rowIndex);
+                    worksheet.Cells[rowIndex, colIndex++].Value = direct.DirectAccount;
+                    worksheet.Cells[rowIndex, colIndex++].Value = direct.Status;
+                    worksheet.Cells[rowIndex, colIndex++].Value = direct.Site;
+                    worksheet.Cells[rowIndex, colIndex++].Value = direct.Currency;
+                    worksheet.Cells[rowIndex, colIndex].Value = direct.Position;
+                    if (indexCommRender < comm?.Count)
                     {
-                        colIndex = colIndexDirectAccount;
-                        if (direct.Status != CustomerStatus.Open.ToString())
-                        {
-                            var templateRowIndex = GetTemplateRowIndex(direct.Status);
-                            templateWorksheet.Cells[templateRowIndex, colIndex, templateRowIndex, TotalColumns]
-                                .Copy(worksheet.Cells[rowIndex, colIndex, rowIndex, TotalColumns]);
-                        }
-                        worksheet.Cells[rowIndex, colIndex++].Value = direct.DirectAccount;
-                        worksheet.Cells[rowIndex, colIndex++].Value = direct.Status;
-                        worksheet.Cells[rowIndex, colIndex++].Value = direct.Site;
-                        worksheet.Cells[rowIndex, colIndex++].Value = direct.Currency;
-                        worksheet.Cells[rowIndex, colIndex].Value = direct.Position;
-                        if (indexCommRender < comm?.Count)
-                        {
-                            countExtraRowComm++;
-                            RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, comm[indexCommRender++]);
-                        }
-                        rowIndex++;
+                        countExtraRowComm++;
+                        RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, comm[indexCommRender++]);
                     }
-                }
-                if ((countExtraRowComm < maxGroupHeadline) && countExtraRowComm < comm?.Count)
-                {
-                    var remainRow = maxGroupHeadline - countExtraRowComm;
-                    for (int com = 0; com < remainRow; com++)
-                    {
-                        RenderCommunicationTools(templateWorksheet, worksheet, rowIndex++, comm[indexCommRender++]);
-                    }
+                    rowIndex++;
                 }
             }
+            if ((countExtraRowComm < maxGroupHeadline) && countExtraRowComm < comm?.Count)
+            {
+                var remainRow = maxGroupHeadline - countExtraRowComm;
+                for (int com = 0; com < remainRow; com++)
+                {
+                    RenderCommunicationTools(templateWorksheet, worksheet, rowIndex++, comm[indexCommRender++]);
+                }
+            }
+        }
+        RenderDrawBorderCell(worksheet, rowIndex);
+        }
+
+        protected internal virtual void RenderDrawBorderCell(
+            ExcelWorksheet worksheet,
+            int rowIndex)
+        {
             var totalColumnDraw = isRenderPicManagement ? TotalColumns + 1 : TotalColumns;
             DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumnDraw]);
         }
