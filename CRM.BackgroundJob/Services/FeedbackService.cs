@@ -98,7 +98,7 @@
 
             foreach (MatchInfo matchInfo in ticketInfo.Item1)
             {
-                Message message = messages.First(x => x.MessageId == matchInfo.MessageId);
+                Message message = messages.Where(x => x.MessageId == matchInfo.MessageId)?.FirstOrDefault();
                 IEnumerable<TransactionInfo> credits = ticketInfo.Item2.Where(x => x.MessageId == matchInfo.MessageId && !x.IsDeposit);
                 IEnumerable<TransactionInfo> deposits = ticketInfo.Item2.Where(x => x.MessageId == matchInfo.MessageId && x.IsDeposit);
 
