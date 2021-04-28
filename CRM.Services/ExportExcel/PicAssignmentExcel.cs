@@ -43,6 +43,10 @@
             this.isRenderPicManagement = isRenderPicManagement;
         }
 
+        public PicAssignmentExcel(string templatePath, short templateSheetIndex = 0, string sheetName = "Data") : base(templatePath, templateSheetIndex, sheetName)
+        {
+        }
+
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalColumns]

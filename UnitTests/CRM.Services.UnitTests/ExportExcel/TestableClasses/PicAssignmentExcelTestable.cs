@@ -2,13 +2,16 @@
 {
     using System.Collections.Generic;
     using CRM.Models.PicAndHeadline;
+    using CRM.Resources;
     using OfficeOpenXml;
 
     public class PicAssignmentExcelTestable : PicAssignmentExcel
     {
+
         public PicAssignmentExcelTestable(string templatePath, IEnumerable<PICAssignmentInfo> assignments)
-            : base(templatePath, assignments)
+            : base(templatePath, 0, ViewResources.PICAssignment)
         {
+           
         }
 
         public void Public_RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)

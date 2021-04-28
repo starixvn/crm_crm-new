@@ -43,14 +43,14 @@
         {
             // Arrange
             var controller = GetController();
-            var expected = fixture.Create<bool>();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICAssignment, Policy.Host).Returns(expected);
-
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICAssignment, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read).Returns(true);
             // Action
             var result = controller.Index() as ViewResult;
 
             // Assert
-            Assert.Equal(expected, result.Model);
+            Assert.Equal(true, result.ViewData["isHost"]);
+            Assert.Equal(true, result.ViewData["isReadPicManagement"]);
         }
 
         [Fact]
@@ -291,6 +291,10 @@
             var controller = GetController();
             var criteria = fixture.Create<GetAssignmentCriteria>();
             criteria.PageSize = null;
+            var rawData = new ValueTuple<IEnumerable<PICAssignmentInfo>, IEnumerable<AssignmentCommunication>>();
+            var communicationTools = fixture.Create<IEnumerable<Setting>>();
+            settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole }).Returns(communicationTools);
+            baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(Arg.Do<GetAssignmentCriteria>(x => criteria = x)).Returns(rawData);
             var assignments = fixture.Create<IEnumerable<PICAssignmentInfo>>();
             baseService.GetDataAsync<PICAssignmentInfo>(criteria).Returns(assignments);
             foreach (var assignment in assignments)
@@ -381,8 +385,14 @@
             // Arrange
             var controller = GetController();
             var criteria = fixture.Create<GetAssignmentCriteria>();
+            var picInfo = fixture.Create<ValueTuple<IEnumerable<PICAssignmentInfo>, IEnumerable<AssignmentCommunication>>>();
+
+            baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(Arg.Do<GetAssignmentCriteria>(x => criteria = x)).Returns(picInfo);
             var expected = fixture.Create<byte[]>();
-            excelService.ExportPICAssignment(Arg.Any<IEnumerable<PICAssignmentInfo>>()).Returns(expected);
+            excelService.ExportPICAssignment(Arg.Any<IEnumerable<PICAssignmentInfo>>(),
+                Arg.Any<IEnumerable<GroupAssignmentCommunication>>(),
+                Arg.Any<IEnumerable<Setting>>(),
+                Arg.Any<bool>()).Returns(expected);
 
             // Action
             var result = await controller.ExportExcelReport(criteria) as FileContentResult;
