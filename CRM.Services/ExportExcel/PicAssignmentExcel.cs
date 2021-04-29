@@ -152,9 +152,8 @@
 
             RenderBodyAssigment(templateWorksheet, worksheet, excludeMergeCommonPIC,
                                         colIndex, rowIndex, rowNum);
-            
-            var totalColumnDrawInculdeMergeHeadline = isRenderPicManagement ? TotalColumns + 1 : TotalColumns;
-            DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, totalColumnDrawInculdeMergeHeadline]);
+
+            RenderDrawBorderCell(worksheet, rowIndex);
         }
 
         protected internal virtual void RenderStatusRow(ExcelWorksheet templateWorksheet,

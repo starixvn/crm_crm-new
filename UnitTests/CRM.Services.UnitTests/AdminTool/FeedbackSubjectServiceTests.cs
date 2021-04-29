@@ -9,7 +9,6 @@
     using CRM.Core.Services;
     using CRM.Criteria.FeedbackSubject;
     using CRM.Models.FeedbackSubject;
-    using CRM.Services;
     using NSubstitute;
     using Xunit;
 
@@ -23,7 +22,6 @@
             //Arrange
             var fixture = new Fixture();
             var param = new GetFeedbackSubjectParam { Subject = null, PageIndex = 1, PageSize = 50};
-            var totalRows = fixture.Create<int>();
             var expected = fixture.Create<IEnumerable<FeedbackSubjectTemplate>>();
             var criteria = new GetFeedbackSubjectTemplateCriteria();
             var service = GetFeedbackSubjectService();
@@ -43,7 +41,6 @@
             //Arrange
             var fixture = new Fixture();
             var param = fixture.Create<GetFeedbackSubjectParam>();
-            var totalRows = fixture.Create<int>();
             var data = fixture.Create<IEnumerable<FeedbackSubjectTemplate>>();
             var criteria = new GetFeedbackSubjectTemplateCriteria();
             var service = GetFeedbackSubjectService();
@@ -57,7 +54,7 @@
 
             //Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(param.TotalRows, expected.Count());
+            Assert.Equal(param.TotalRows, expected.Count);
         }
 
         [Fact]

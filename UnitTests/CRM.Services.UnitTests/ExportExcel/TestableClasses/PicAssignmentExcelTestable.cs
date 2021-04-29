@@ -2,16 +2,19 @@
 {
     using System.Collections.Generic;
     using CRM.Models.PicAndHeadline;
-    using CRM.Resources;
+    using CRM.Models.Setting;
     using OfficeOpenXml;
 
     public class PicAssignmentExcelTestable : PicAssignmentExcel
     {
 
-        public PicAssignmentExcelTestable(string templatePath, IEnumerable<PICAssignmentInfo> assignments)
-            : base(templatePath, 0, ViewResources.PICAssignment)
+        public PicAssignmentExcelTestable(string templatePath, IEnumerable<PICAssignmentInfo> assignments,
+            IEnumerable<GroupAssignmentCommunication> groupAssignmentCommunications,
+            IEnumerable<Setting> communicationTools,
+            bool isRenderPicManagement)
+            : base(templatePath, assignments, groupAssignmentCommunications, communicationTools, isRenderPicManagement)
         {
-           
+            
         }
 
         public void Public_RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -29,6 +32,77 @@
             base.RenderBody(template, worksheet);
         }
 
+        public void Public_RenderStatusRow(ExcelWorksheet templateWorksheet,
+            ExcelWorksheet worksheet,
+            string Status,
+            int colIndex,
+            int rowIndex)
+        {
+            base.RenderStatusRow(templateWorksheet, worksheet, Status, colIndex, rowIndex);
+        }
+
+        public void Public_RenderCommunicationToolMergeCommon(ExcelWorksheet templateWorksheet,
+            ExcelWorksheet worksheet,
+            int rowIndex,
+            int countCommIncludeMergeHeadline,
+            IList<GroupAssignmentCommunication> commIncludeMergeHeadline)
+        {
+            base.RenderCommunicationToolMergeCommon(templateWorksheet, worksheet, rowIndex, countCommIncludeMergeHeadline, commIncludeMergeHeadline);
+        }
+
+        public List<int> Public_GetIdMergePic(IEnumerable<PICAssignmentInfo> assignments)
+        {
+            return base.GetIdMergePic(assignments);
+        }
+
+        public IEnumerable<GroupHeadlineOfPic> Public_GroupByMergePic(IEnumerable<PICAssignmentInfo> assignments)
+        {
+            return base.GroupByMergePic(assignments);
+        }
+
+        public void  Public_RenderBodyAssigment(
+           ExcelWorksheet templateWorksheet,
+            ExcelWorksheet worksheet,
+            List<PICAssignmentInfo> excludeMergeCommonPIC,
+            int colIndex,
+            int rowIndex,
+            int rowNum)
+        {
+            base.RenderBodyAssigment(templateWorksheet, worksheet, excludeMergeCommonPIC,
+             colIndex, rowIndex, rowNum);
+        }
+
+        public void Public_RenderCommunicationTools(
+            ExcelWorksheet templateWorksheet,
+            ExcelWorksheet worksheet,
+            int rowIndex,
+            GroupAssignmentCommunication comm
+           )
+        {
+            base.RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, comm);
+        }
+
+        public IList<GroupAssignmentCommunication> Public_GetUniqueCommunicationToolsByPicModel(
+            IList<PicModel> picModels)
+        {
+            return base.GetUniqueCommunicationToolsByPicModel(picModels);
+        }
+
+        public IList<GroupAssignmentCommunication> Public_GetUniqueCommunicationTools(
+           IEnumerable<PicOfDirectAccount> headlinePic)
+        {
+            return base.GetUniqueCommunicationTools(headlinePic);
+        }
+
+        public void Public_ProcessUI(ExcelWorksheet worksheet)
+        {
+            base.ProcessUI(worksheet);
+        }
+
+        public void Public_SetStyle(ExcelWorksheet worksheet)
+        {
+            base.SetStyle(worksheet);
+        }
         public byte Public_GetTemplateRowIndex(string status)
         {
             return base.GetTemplateRowIndex(status);

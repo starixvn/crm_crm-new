@@ -8,7 +8,6 @@
     using CRM.Criteria.AdminTool.CommunicationToolSetting;
     using CRM.Criteria.CommunicationToolSetting;
     using CRM.Models.AdminTool.CommunicationToolSetting;
-    using CRM.Services;
     using Fanex.NAP.Client.Helpers.Web;
     using NSubstitute;
     using Xunit;
