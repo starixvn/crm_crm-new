@@ -48,7 +48,8 @@ describe('AppContainer', () => {
                 removePicAssignmentPopup: {},
                 assignPicPopup: {},
                 defaultPicPopup: {},
-                isHost: true
+                isHost: true,
+                isReadPicManagement: true,
             };
 
             // Action
@@ -57,6 +58,8 @@ describe('AppContainer', () => {
             // Assert
             expect(appContainer.find(Filter).length).toBe(1);
             expect(appContainer.find(DataGrid).props().isHost).toBe(props.isHost);
+            expect(appContainer.find(DataGrid).props().isReadPicManagement).toBe(props.isReadPicManagement);
+
         });
 
         it('has RemovePicAssignment closing correctly', () => {
@@ -68,6 +71,7 @@ describe('AppContainer', () => {
                 assignPicPopup: {},
                 defaultPicPopup: {},
                 isHost: true,
+                isReadPicManagement: true,
                 setRemovePicAssignmentPopup: jest.fn()
             };
 
@@ -90,6 +94,7 @@ describe('AppContainer', () => {
                 },
                 defaultPicPopup: {},
                 isHost: true,
+                isReadPicManagement: true,
                 setRemovePicAssignmentPopup: jest.fn()
             };
 
@@ -109,6 +114,7 @@ describe('AppContainer', () => {
                     show: true
                 },
                 isHost: true,
+                isReadPicManagement: true,
                 setRemovePicAssignmentPopup: jest.fn()
             };
 

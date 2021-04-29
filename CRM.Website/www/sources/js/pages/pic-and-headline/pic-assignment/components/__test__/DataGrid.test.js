@@ -7,10 +7,25 @@ import functions from '../../common.functions';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
+    
 
 describe('DataGrid', () => {
+    beforeEach(() => {
+        LangHelper.getResource = jest.fn(value => value);
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'app-container');
+        document.body.appendChild(appContainer);
+    });
+
+    afterEach(() => {
+        const appContainer = document.getElementById('app-container');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
+    });
     LangHelper.formatString = jest.fn(value => value);
     LangHelper.getResource = jest.fn(value => value);
+    
 
     describe('component with redux', () => {
         // Arrange
@@ -79,30 +94,31 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {},
                 gridParams: {},
-                removeOptions: {}
+                removeOptions: {},
+                listComm: {}
             };
 
-            const dataGrid = shallow(<DataGrid {...props} />);
+            const dataGrid = shallow(<DataGrid {...props} />).instance();
 
             // Action
-            const result = shallow(dataGrid.instance().buildPicManagementHeader(false));
+            const result = shallow(<div>{dataGrid.buildPicManagementHeader(false, false, {})}</div>);
 
             // Assert
-            expect(result.find(HeaderCell).at(0).props().colWidth).toBe(70);
+            expect(result.find(HeaderCell).at(0).props().colWidth).toBe(50);
             expect(result.find(HeaderCell).at(0).html()).toContain('TextNo');
-            expect(result.find(HeaderCell).at(1).props().colWidth).toBe(150);
+            expect(result.find(HeaderCell).at(1).props().colWidth).toBe(100);
             expect(result.find(HeaderCell).at(1).html()).toContain('GroupHeadline');
             expect(result.find(HeaderCell).at(2).props().colWidth).toBe(100);
             expect(result.find(HeaderCell).at(2).html()).toContain('HeadlineType');
-            expect(result.find(HeaderCell).at(3).props().colWidth).toBe(150);
+            expect(result.find(HeaderCell).at(3).props().colWidth).toBe(130);
             expect(result.find(HeaderCell).at(3).html()).toContain('DefaultPIC');
-            expect(result.find(HeaderCell).at(4).props().colWidth).toBe(150);
+            expect(result.find(HeaderCell).at(4).props().colWidth).toBe(135);
             expect(result.find(HeaderCell).at(4).html()).toContain('PIC');
-            expect(result.find(HeaderCell).at(5).props().colWidth).toBe(150);
+            expect(result.find(HeaderCell).at(5).props().colWidth).toBe(100);
             expect(result.find(HeaderCell).at(5).html()).toContain('DirectAccount');
             expect(result.find(HeaderCell).at(6).props().colWidth).toBe(100);
             expect(result.find(HeaderCell).at(6).html()).toContain('Status');
-            expect(result.find(HeaderCell).at(7).props().colWidth).toBe(150);
+            expect(result.find(HeaderCell).at(7).props().colWidth).toBe(130);
             expect(result.find(HeaderCell).at(7).html()).toContain('Site');
             expect(result.find(HeaderCell).at(8).props().colWidth).toBe(100);
             expect(result.find(HeaderCell).at(8).html()).toContain('Currency');
@@ -110,7 +126,7 @@ describe('DataGrid', () => {
             expect(result.find(HeaderCell).at(9).html()).toContain('Position');
         });
 
-        it('returns expected component when isHost true having first input', () => {
+        it('returns expected component when isRenderCommunication true and isHost false', () => {
             // Arrange
             const props = {
                 picAssignmentGridData: {},
@@ -118,13 +134,70 @@ describe('DataGrid', () => {
                 removeOptions: {}
             };
 
-            const dataGrid = shallow(<DataGrid {...props} />);
+            const  uniqueCommunication = [{displayOrder: 1,
+                id: 0,                        
+                settingValue: "Letstalk"
+            }]
+
+            const dataGrid = shallow(<DataGrid {...props} />).instance();
+            dataGrid.renderHeaderCommunicationTools = jest.fn();
 
             // Action
-            const result = shallow(dataGrid.instance().buildPicManagementHeader(true));
+            const result = shallow(<div>{dataGrid.buildPicManagementHeader(false, true, uniqueCommunication)}</div>);
 
             // Assert
-            expect(result.find(HeaderCell).at(10).props().colWidth).toBe(85);
+            expect(result.find(HeaderCell).at(0).props().colWidth).toBe(50);
+            expect(result.find(HeaderCell).at(0).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(0).html()).toContain('TextNo');
+            expect(result.find(HeaderCell).at(1).props().colWidth).toBe(100);
+            expect(result.find(HeaderCell).at(1).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(1).html()).toContain('GroupHeadline');
+            expect(result.find(HeaderCell).at(2).props().colWidth).toBe(100);
+            expect(result.find(HeaderCell).at(2).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(2).html()).toContain('HeadlineType');
+            expect(result.find(HeaderCell).at(3).props().colWidth).toBe(130);
+            expect(result.find(HeaderCell).at(3).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(3).html()).toContain('DefaultPIC');
+            expect(result.find(HeaderCell).at(4).props().colWidth).toBe(135);
+            expect(result.find(HeaderCell).at(4).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(4).html()).toContain('PIC');
+            expect(result.find(HeaderCell).at(5).props().colWidth).toBe(100);
+            expect(result.find(HeaderCell).at(5).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(5).html()).toContain('DirectAccount');
+            expect(result.find(HeaderCell).at(6).props().colWidth).toBe(100);
+            expect(result.find(HeaderCell).at(6).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(6).html()).toContain('Status');
+            expect(result.find(HeaderCell).at(7).props().colWidth).toBe(130);
+            expect(result.find(HeaderCell).at(7).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(7).html()).toContain('Site');
+            expect(result.find(HeaderCell).at(8).props().colWidth).toBe(100);
+            expect(result.find(HeaderCell).at(8).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(8).html()).toContain('Currency');
+            expect(result.find(HeaderCell).at(9).props().colWidth).toBe(100);
+            expect(result.find(HeaderCell).at(9).props().rowSpan).toBe(2);
+            expect(result.find(HeaderCell).at(9).html()).toContain('Position');
+
+            expect(result.find(HeaderCell).at(10).props().colSpan).toBe(2);
+            expect(result.find(HeaderCell).at(10).html()).toContain('CommunicationTool');
+            expect(dataGrid.renderHeaderCommunicationTools).toHaveBeenCalled();
+        });
+
+        it('returns expected component when isHost true having first input', () => {
+            // Arrange
+            const props = {
+                picAssignmentGridData: {},
+                gridParams: {},
+                removeOptions: {},
+
+            };
+
+            const dataGrid = shallow(<DataGrid {...props} />).instance();
+
+            // Action
+            const result = shallow(<div>{dataGrid.buildPicManagementHeader(true, false, {})}</div>);
+
+            // Assert
+            expect(result.find(HeaderCell).at(10).props().colWidth).toBe(80);
             expect(result.find(HeaderCell).at(10).find('input').props().className).toBe('d-block mx-auto');
             expect(result.find(HeaderCell).at(10).find('input').props().type).toBe('button');
             expect(result.find(HeaderCell).at(10).find('input').props().value).toBe('Remove');
@@ -139,15 +212,17 @@ describe('DataGrid', () => {
                 removeOptions: {}
             };
 
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().handleOpenRemovePopup = jest.fn();
-            const result = shallow(dataGrid.instance().buildPicManagementHeader(true));
+            const dataGrid = shallow(<DataGrid {...props} />).instance();
+            dataGrid.handleOpenRemovePopup = jest.fn();
+
+            // Action
+            const result = shallow(<div>{dataGrid.buildPicManagementHeader(true, false, {})}</div>);
 
             // Action
             result.find(HeaderCell).at(10).find('input').simulate('click');
 
             // Assert
-            expect(dataGrid.instance().handleOpenRemovePopup).toHaveBeenCalled();
+            expect(dataGrid.handleOpenRemovePopup).toHaveBeenCalled();
         });
 
         it('returns expected component when isHost true having second input', () => {
@@ -160,10 +235,10 @@ describe('DataGrid', () => {
                 }
             };
 
-            const dataGrid = shallow(<DataGrid {...props} />);
+            const dataGrid = shallow(<DataGrid {...props} />).instance();
 
             // Action
-            const result = shallow(dataGrid.instance().buildPicManagementHeader(true));
+            const result = shallow(<div>{dataGrid.buildPicManagementHeader(true, false, {})}</div>);
 
             // Assert
             expect(result.find(HeaderCell).at(10).find('input').at(1).props().className).toBe('d-block cursor-pointer mx-auto margin-top-5px');
@@ -181,388 +256,438 @@ describe('DataGrid', () => {
                 }
             };
 
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().handleChangeRemoveCheckboxAll = jest.fn();
-            const result = shallow(dataGrid.instance().buildPicManagementHeader(true));
+            const dataGrid = shallow(<DataGrid {...props} />).instance();
+            dataGrid.handleChangeRemoveCheckboxAll = jest.fn();
+            const result = shallow(<div>{dataGrid.buildPicManagementHeader(true, false, {})}</div>);
 
             // Action
             result.find(HeaderCell).at(10).find('input').at(1).simulate('change');
 
             // Assert
-            expect(dataGrid.instance().handleChangeRemoveCheckboxAll).toHaveBeenCalled();
+            expect(dataGrid.handleChangeRemoveCheckboxAll).toHaveBeenCalled();
         });
     });
 
-    describe('buildPicManagementBody', () => {
-        it('should change startIndex when run', () => {
+    describe('renderHeaderCommunicationTools', () => {
+        it('returns expected default column width length of text < 100', () => {
             // Arrange
             const props = {
                 picAssignmentGridData: {
-                    data: []
+                    listComm: [{
+                        displayOrder: 1,
+                        settingValue: "Letstalk"
+                    }]
                 },
-                gridParams: {
-                    pageIndex: 1,
-                    pageSize: 10
-                },
-                removeOptions: {}
+                gridParams: {},
+                removeOptions: {},
             };
 
-            const expected = (props.gridParams.pageIndex - 1) * props.gridParams.pageSize + 1;
-            const dataGrid = shallow(<DataGrid {...props} />);
+            const dataGrid = shallow(<DataGrid {...props} />).instance();
 
             // Action
-            dataGrid.instance().buildPicManagementBody(true);
+            const result = shallow(<div>{dataGrid.renderHeaderCommunicationTools(props.picAssignmentGridData.listComm)}</div>);
 
             // Assert
-            expect(dataGrid.instance().startIndex).toEqual(expected);
+            expect(result.find(HeaderCell).at(0).props().colWidth).toBe(100);
+            expect(result.find(HeaderCell).at(0).html()).toContain('PICName');
+            expect(result.find(HeaderCell).at(1).props().colWidth).toBe(100);
+            expect(result.find(HeaderCell).at(1).html()).toContain('Letstalk');
         });
 
-        it('should return correct body when data not empty and having merge headline only', () => {
+        it('returns expected column width length of text < 100', () => {
             // Arrange
             const props = {
                 picAssignmentGridData: {
-                    data: [
-                        {
-                            headlineID: 1,
-                            picForMapping: 'pic for mapping',
-                            picList: ['pic'],
-                            status: 'Error',
-                            directAccount: ['directAccount']
-                        }
-                    ]
+                    listComm: [{
+                        displayOrder: 1,
+                        settingValue: "LetstalkLetstalkLetstalkLetstalkLetstalkLetstalk"
+                    }]
                 },
-                gridParams: {
-                    pageIndex: 1,
-                    pageSize: 10
-                },
-                removeOptions: {}
+                gridParams: {},
+                removeOptions: {},
             };
 
-            const expectedRow = <div>row</div>;
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().renderRow = jest.fn().mockReturnValue(expectedRow);
+            const dataGrid = shallow(<DataGrid {...props} />).instance();
 
             // Action
-            const result = dataGrid.instance().buildPicManagementBody(true);
+            const result = shallow(<div>{dataGrid.renderHeaderCommunicationTools(props.picAssignmentGridData.listComm)}</div>);
 
             // Assert
-            expect(result).toEqual([expectedRow]);
-        });
-
-        it('should return correct body when data not empty and having merge pic', () => {
-            // Arrange
-            const props = {
-                picAssignmentGridData: {
-                    data: [
-                        {
-                            headlineID: 1,
-                            picForMapping: 'pic for mapping',
-                            picList: ['pic'],
-                            status: 'Error',
-                            directAccount: ['directAccount']
-                        },
-                        {
-                            headlineID: 1,
-                            picForMapping: 'pic for mapping1',
-                            picList: ['pic'],
-                            status: 'Error',
-                            directAccount: ['directAccount']
-                        },
-                        {
-                            headlineID: 1,
-                            picForMapping: 'pic for mapping1',
-                            picList: ['pic'],
-                            status: 'Error',
-                            directAccount: ['directAccount']
-                        }
-                    ]
-                },
-                gridParams: {
-                    pageIndex: 1,
-                    pageSize: 10
-                },
-                removeOptions: {}
-            };
-
-            const expectedRow = <div>row</div>;
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().renderRow = jest.fn().mockReturnValue(expectedRow);
-
-            // Action
-            const result = dataGrid.instance().buildPicManagementBody(true);
-
-            // Assert
-            expect(result).toEqual([expectedRow, expectedRow, expectedRow]);
-        });
-
-        it('should return correct body when data not empty and not have merge cell', () => {
-            // Arrange
-            const props = {
-                picAssignmentGridData: {
-                    data: [
-                        {
-                            headlineID: 1,
-                            picForMapping: 'pic for mapping1',
-                            picList: ['pic1'],
-                            status: 'Error',
-                            directAccount: ['directAccount']
-                        },
-                        {
-                            headlineID: 2,
-                            picForMapping: 'pic for mapping2',
-                            picList: ['pic2'],
-                            status: 'Error',
-                            directAccount: ['directAccount']
-                        }
-                    ]
-                },
-                gridParams: {
-                    pageIndex: 1,
-                    pageSize: 10
-                },
-                removeOptions: {}
-            };
-
-            const expectedRow = <div>row</div>;
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().renderRow = jest.fn().mockReturnValue(expectedRow);
-
-            // Action
-            const result = dataGrid.instance().buildPicManagementBody(true);
-
-            // Assert
-            expect(result).toEqual([expectedRow, expectedRow]);
-        });
-
-        it('should return correct body when data empty with isHost true', () => {
-            // Arrange
-            const props = {
-                picAssignmentGridData: {
-                    data: []
-                },
-                gridParams: {
-                    pageIndex: 1,
-                    pageSize: 10
-                },
-                removeOptions: {}
-            };
-
-            const expected = [
-                <Row key={`body${1}`} className='no-data' >
-                    <Cell className='text-center' colSpan={11}>{'ThereIsNoData'}</Cell>
-                </Row>
-            ];
-            const dataGrid = shallow(<DataGrid {...props} />);
-
-            // Action
-            const result = dataGrid.instance().buildPicManagementBody(true);
-
-            // Assert
-            expect(result).toEqual(expected);
-        });
-
-        it('should return correct body when data empty with isHost false', () => {
-            // Arrange
-            const props = {
-                picAssignmentGridData: {
-                    data: []
-                },
-                gridParams: {
-                    pageIndex: 1,
-                    pageSize: 10
-                },
-                removeOptions: {}
-            };
-
-            const expected = [
-                <Row key={`body${1}`} className='no-data' >
-                    <Cell className='text-center' colSpan={10}>{'ThereIsNoData'}</Cell>
-                </Row>
-            ];
-            const dataGrid = shallow(<DataGrid {...props} />);
-
-            // Action
-            const result = dataGrid.instance().buildPicManagementBody(false);
-
-            // Assert
-            expect(result).toEqual(expected);
+            expect(result.find(HeaderCell).at(1).props().colWidth).toBe(318.24687500000005);
+            expect(result.find(HeaderCell).at(1).html()).toContain('Letstalk');
         });
     });
 
-    describe('renderRow', () => {
-        it('should return correct row when isHost false, mergePic not greater than 0 and renderMergeHeadlineCells returning null', () => {
-            // Arrange
-            const props = {
-                picAssignmentGridData: {},
-                gridParams: {},
-                removeOptions: {}
-            };
+    // describe('buildPicManagementBody', () => {
+    //     it('should change startIndex when run', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {
+    //                 data: []
+    //             },
+    //             gridParams: {
+    //                 pageIndex: 1,
+    //                 pageSize: 10
+    //             },
+    //             removeOptions: {}
+    //         };
 
-            const startIndex = 1;
-            const index = 1;
-            const item = {
-                status: 'Error',
-                directAccount: 'directAccount',
-                site: 'site',
-                currency: 'currency',
-                position: 'position'
-            };
+    //         const expected = (props.gridParams.pageIndex - 1) * props.gridParams.pageSize + 1;
+    //         const dataGrid = shallow(<DataGrid {...props} />);
 
-            const expectedClass = `${item.status.toLowerCase()}-color`;
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().startIndex = startIndex;
-            dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
+    //         // Action
+    //         dataGrid.instance().buildPicManagementBody(true);
 
-            // Action
-            const result = shallow(dataGrid.instance().renderRow(index, false, item));
+    //         // Assert
+    //         expect(dataGrid.instance().startIndex).toEqual(expected);
+    //     });
 
-            // Assert
-            expect(result.find(Cell).at(0).props().className).toBe('text-center');
-            expect(result.find(Cell).at(0).html()).toContain(index + startIndex);
-            expect(result.find(Cell).at(1).props().className).toBe(expectedClass);
-            expect(result.find(Cell).at(1).html()).toContain(item.directAccount);
-            expect(result.find(Cell).at(2).props().className).toBe(expectedClass);
-            expect(result.find(Cell).at(2).html()).toContain(item.status);
-            expect(result.find(Cell).at(3).props().className).toBe(expectedClass);
-            expect(result.find(Cell).at(3).html()).toContain(item.site);
-            expect(result.find(Cell).at(4).props().className).toBe(expectedClass);
-            expect(result.find(Cell).at(4).html()).toContain(item.currency);
-            expect(result.find(Cell).at(5).props().className).toBe(expectedClass);
-            expect(result.find(Cell).at(5).html()).toContain(item.position);
-        });
+    //     it('should return correct body when data not empty and having merge headline only', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {
+    //                 data: [
+    //                     {
+    //                         headlineID: 1,
+    //                         picForMapping: 'pic for mapping',
+    //                         picList: ['pic'],
+    //                         status: 'Error',
+    //                         directAccount: ['directAccount']
+    //                     }
+    //                 ]
+    //             },
+    //             gridParams: {
+    //                 pageIndex: 1,
+    //                 pageSize: 10
+    //             },
+    //             removeOptions: {}
+    //         };
 
-        it('should return correct row when isHost true', () => {
-            // Arrange
-            const props = {
-                picAssignmentGridData: {},
-                gridParams: {},
-                removeOptions: {}
-            };
+    //         const expectedRow = <div>row</div>;
+    //         const dataGrid = shallow(<DataGrid {...props} />);
+    //         dataGrid.instance().renderRow = jest.fn().mockReturnValue(expectedRow);
 
-            const startIndex = 1;
-            const index = 1;
-            const item = {
-                status: 'Error',
-                directAccount: 'directAccount',
-                site: 'site',
-                currency: 'currency',
-                position: 'position'
-            };
+    //         // Action
+    //         const result = dataGrid.instance().buildPicManagementBody(true);
 
-            const expected = 'expected';
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().startIndex = startIndex;
-            dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
-            dataGrid.instance().renderIsHost = jest.fn(() => <Cell>{expected}</Cell>);
+    //         // Assert
+    //         expect(result).toEqual([expectedRow]);
+    //     });
 
-            // Action
-            const result = shallow(dataGrid.instance().renderRow(index, true, item));
+    //     it('should return correct body when data not empty and having merge pic', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {
+    //                 data: [
+    //                     {
+    //                         headlineID: 1,
+    //                         picForMapping: 'pic for mapping',
+    //                         picList: ['pic'],
+    //                         status: 'Error',
+    //                         directAccount: ['directAccount']
+    //                     },
+    //                     {
+    //                         headlineID: 1,
+    //                         picForMapping: 'pic for mapping1',
+    //                         picList: ['pic'],
+    //                         status: 'Error',
+    //                         directAccount: ['directAccount']
+    //                     },
+    //                     {
+    //                         headlineID: 1,
+    //                         picForMapping: 'pic for mapping1',
+    //                         picList: ['pic'],
+    //                         status: 'Error',
+    //                         directAccount: ['directAccount']
+    //                     }
+    //                 ]
+    //             },
+    //             gridParams: {
+    //                 pageIndex: 1,
+    //                 pageSize: 10
+    //             },
+    //             removeOptions: {}
+    //         };
 
-            // Assert
-            expect(result.find(Cell).at(6).html()).toContain(expected);
-        });
+    //         const expectedRow = <div>row</div>;
+    //         const dataGrid = shallow(<DataGrid {...props} />);
+    //         dataGrid.instance().renderRow = jest.fn().mockReturnValue(expectedRow);
 
-        it('should return correct row when renderMergeHeadlineCells return Cell', () => {
-            // Arrange
-            const props = {
-                picAssignmentGridData: {},
-                gridParams: {},
-                removeOptions: {}
-            };
+    //         // Action
+    //         const result = dataGrid.instance().buildPicManagementBody(true);
 
-            const startIndex = 1;
-            const index = 1;
-            const item = {
-                status: 'Error',
-                directAccount: 'directAccount',
-                site: 'site',
-                currency: 'currency',
-                position: 'position',
-                defaultPicList: [
-                    {
-                        picId: 1,
-                        picName: 'name',
-                        picRole: 'role'
-                    }
-                ]
-            };
+    //         // Assert
+    //         expect(result).toEqual([expectedRow, expectedRow, expectedRow]);
+    //     });
 
-            const expected = 'expected';
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().startIndex = startIndex;
-            dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => <Cell>{expected}</Cell>);
+    //     it('should return correct body when data not empty and not have merge cell', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {
+    //                 data: [
+    //                     {
+    //                         headlineID: 1,
+    //                         picForMapping: 'pic for mapping1',
+    //                         picList: ['pic1'],
+    //                         status: 'Error',
+    //                         directAccount: ['directAccount']
+    //                     },
+    //                     {
+    //                         headlineID: 2,
+    //                         picForMapping: 'pic for mapping2',
+    //                         picList: ['pic2'],
+    //                         status: 'Error',
+    //                         directAccount: ['directAccount']
+    //                     }
+    //                 ]
+    //             },
+    //             gridParams: {
+    //                 pageIndex: 1,
+    //                 pageSize: 10
+    //             },
+    //             removeOptions: {}
+    //         };
 
-            // Action
-            const result = shallow(dataGrid.instance().renderRow(index, false, item));
+    //         const expectedRow = <div>row</div>;
+    //         const dataGrid = shallow(<DataGrid {...props} />);
+    //         dataGrid.instance().renderRow = jest.fn().mockReturnValue(expectedRow);
 
-            // Assert
-            expect(result.find(Cell).at(1).html()).toContain(expected);
-        });
+    //         // Action
+    //         const result = dataGrid.instance().buildPicManagementBody(true);
 
-        it('should return correct row when merge pic greater than 0 and not having picList', () => {
-            // Arrange
-            const props = {
-                picAssignmentGridData: {},
-                gridParams: {},
-                removeOptions: {}
-            };
+    //         // Assert
+    //         expect(result).toEqual([expectedRow, expectedRow]);
+    //     });
 
-            const startIndex = 1;
-            const index = 1;
-            const item = {
-                status: 'Error',
-                directAccount: 'directAccount',
-                site: 'site',
-                currency: 'currency',
-                position: 'position'
-            };
+    //     it('should return correct body when data empty with isHost true', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {
+    //                 data: []
+    //             },
+    //             gridParams: {
+    //                 pageIndex: 1,
+    //                 pageSize: 10
+    //             },
+    //             removeOptions: {}
+    //         };
 
-            const picCell = 'picCell';
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().startIndex = startIndex;
-            dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
+    //         const expected = [
+    //             <Row key={`body${1}`} className='no-data' >
+    //                 <Cell className='text-center' colSpan={11}>{'ThereIsNoData'}</Cell>
+    //             </Row>
+    //         ];
+    //         const dataGrid = shallow(<DataGrid {...props} />);
 
-            // Action
-            const result = shallow(dataGrid.instance().renderRow(index, false, item, null, 1, picCell));
+    //         // Action
+    //         const result = dataGrid.instance().buildPicManagementBody(true);
 
-            // Assert
-            expect(result.find(Cell).at(1).props().className).toBe('text-center');
-        });
+    //         // Assert
+    //         expect(result).toEqual(expected);
+    //     });
 
-        it('should return correct row when merge pic greater than 0 and having picList', () => {
-            // Arrange
-            const props = {
-                picAssignmentGridData: {},
-                gridParams: {},
-                removeOptions: {}
-            };
+    //     it('should return correct body when data empty with isHost false', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {
+    //                 data: []
+    //             },
+    //             gridParams: {
+    //                 pageIndex: 1,
+    //                 pageSize: 10
+    //             },
+    //             removeOptions: {}
+    //         };
 
-            const startIndex = 1;
-            const index = 1;
-            const item = {
-                status: 'Error',
-                directAccount: 'directAccount',
-                site: 'site',
-                currency: 'currency',
-                position: 'position',
-                picList: 'picList'
-            };
+    //         const expected = [
+    //             <Row key={`body${1}`} className='no-data' >
+    //                 <Cell className='text-center' colSpan={10}>{'ThereIsNoData'}</Cell>
+    //             </Row>
+    //         ];
+    //         const dataGrid = shallow(<DataGrid {...props} />);
 
-            const picCell = 'picCell';
-            const mergePic = 1;
-            const dataGrid = shallow(<DataGrid {...props} />);
-            dataGrid.instance().startIndex = startIndex;
-            dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
+    //         // Action
+    //         const result = dataGrid.instance().buildPicManagementBody(false);
 
-            // Action
-            const result = shallow(dataGrid.instance().renderRow(index, false, item, null, mergePic, picCell));
+    //         // Assert
+    //         expect(result).toEqual(expected);
+    //     });
+    // });
 
-            // Assert
-            expect(result.find(Cell).at(1).props().className).toBeEmpty;
-            expect(result.find(Cell).at(1).props().rowSpan).toEqual(mergePic);
-            expect(result.find(Cell).at(1).html()).toContain(picCell);
-        });
-    });
+    // describe('renderRow', () => {
+    //     it('should return correct row when isHost false, mergePic not greater than 0 and renderMergeHeadlineCells returning null', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {},
+    //             gridParams: {},
+    //             removeOptions: {}
+    //         };
+
+    //         const startIndex = 1;
+    //         const index = 1;
+    //         const item = {
+    //             status: 'Error',
+    //             directAccount: 'directAccount',
+    //             site: 'site',
+    //             currency: 'currency',
+    //             position: 'position'
+    //         };
+
+    //         const expectedClass = `${item.status.toLowerCase()}-color`;
+    //         const dataGrid = shallow(<DataGrid {...props} />);
+    //         dataGrid.instance().startIndex = startIndex;
+    //         dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
+
+    //         // Action
+    //         const result = shallow(dataGrid.instance().renderRow(index, false, item));
+
+    //         // Assert
+    //         expect(result.find(Cell).at(0).props().className).toBe('text-center');
+    //         expect(result.find(Cell).at(0).html()).toContain(index + startIndex);
+    //         expect(result.find(Cell).at(1).props().className).toBe(expectedClass);
+    //         expect(result.find(Cell).at(1).html()).toContain(item.directAccount);
+    //         expect(result.find(Cell).at(2).props().className).toBe(expectedClass);
+    //         expect(result.find(Cell).at(2).html()).toContain(item.status);
+    //         expect(result.find(Cell).at(3).props().className).toBe(expectedClass);
+    //         expect(result.find(Cell).at(3).html()).toContain(item.site);
+    //         expect(result.find(Cell).at(4).props().className).toBe(expectedClass);
+    //         expect(result.find(Cell).at(4).html()).toContain(item.currency);
+    //         expect(result.find(Cell).at(5).props().className).toBe(expectedClass);
+    //         expect(result.find(Cell).at(5).html()).toContain(item.position);
+    //     });
+
+    //     it('should return correct row when isHost true', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {},
+    //             gridParams: {},
+    //             removeOptions: {}
+    //         };
+
+    //         const startIndex = 1;
+    //         const index = 1;
+    //         const item = {
+    //             status: 'Error',
+    //             directAccount: 'directAccount',
+    //             site: 'site',
+    //             currency: 'currency',
+    //             position: 'position'
+    //         };
+
+    //         const expected = 'expected';
+    //         const dataGrid = shallow(<DataGrid {...props} />);
+    //         dataGrid.instance().startIndex = startIndex;
+    //         dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
+    //         dataGrid.instance().renderIsHost = jest.fn(() => <Cell>{expected}</Cell>);
+
+    //         // Action
+    //         const result = shallow(dataGrid.instance().renderRow(index, true, item));
+
+    //         // Assert
+    //         expect(result.find(Cell).at(6).html()).toContain(expected);
+    //     });
+
+    //     it('should return correct row when renderMergeHeadlineCells return Cell', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {},
+    //             gridParams: {},
+    //             removeOptions: {}
+    //         };
+
+    //         const startIndex = 1;
+    //         const index = 1;
+    //         const item = {
+    //             status: 'Error',
+    //             directAccount: 'directAccount',
+    //             site: 'site',
+    //             currency: 'currency',
+    //             position: 'position',
+    //             defaultPicList: [
+    //                 {
+    //                     picId: 1,
+    //                     picName: 'name',
+    //                     picRole: 'role'
+    //                 }
+    //             ]
+    //         };
+
+    //         const expected = 'expected';
+    //         const dataGrid = shallow(<DataGrid {...props} />);
+    //         dataGrid.instance().startIndex = startIndex;
+    //         dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => <Cell>{expected}</Cell>);
+
+    //         // Action
+    //         const result = shallow(dataGrid.instance().renderRow(index, false, item));
+
+    //         // Assert
+    //         expect(result.find(Cell).at(1).html()).toContain(expected);
+    //     });
+
+    //     it('should return correct row when merge pic greater than 0 and not having picList', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {},
+    //             gridParams: {},
+    //             removeOptions: {}
+    //         };
+
+    //         const startIndex = 1;
+    //         const index = 1;
+    //         const item = {
+    //             status: 'Error',
+    //             directAccount: 'directAccount',
+    //             site: 'site',
+    //             currency: 'currency',
+    //             position: 'position'
+    //         };
+
+    //         const picCell = 'picCell';
+    //         const dataGrid = shallow(<DataGrid {...props} />);
+    //         dataGrid.instance().startIndex = startIndex;
+    //         dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
+
+    //         // Action
+    //         const result = shallow(dataGrid.instance().renderRow(index, false, item, null, 1, picCell));
+
+    //         // Assert
+    //         expect(result.find(Cell).at(1).props().className).toBe('text-center');
+    //     });
+
+    //     it('should return correct row when merge pic greater than 0 and having picList', () => {
+    //         // Arrange
+    //         const props = {
+    //             picAssignmentGridData: {},
+    //             gridParams: {},
+    //             removeOptions: {}
+    //         };
+
+    //         const startIndex = 1;
+    //         const index = 1;
+    //         const item = {
+    //             status: 'Error',
+    //             directAccount: 'directAccount',
+    //             site: 'site',
+    //             currency: 'currency',
+    //             position: 'position',
+    //             picList: 'picList'
+    //         };
+
+    //         const picCell = 'picCell';
+    //         const mergePic = 1;
+    //         const dataGrid = shallow(<DataGrid {...props} />);
+    //         dataGrid.instance().startIndex = startIndex;
+    //         dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
+
+    //         // Action
+    //         const result = shallow(dataGrid.instance().renderRow(index, false, item, null, mergePic, picCell));
+
+    //         // Assert
+    //         expect(result.find(Cell).at(1).props().className).toBeEmpty;
+    //         expect(result.find(Cell).at(1).props().rowSpan).toEqual(mergePic);
+    //         expect(result.find(Cell).at(1).html()).toContain(picCell);
+    //     });
+    // });
 
     describe('renderMergeHeadlineCells', () => {
         it('should return expected when merge headline greater than 0 and default pic list empty', () => {
@@ -845,13 +970,13 @@ describe('DataGrid', () => {
             const headline = {};
             const dataGrid = shallow(<DataGrid {...props} />);
             dataGrid.instance().handleOpenDefaultPicPopup = jest.fn();
-            const result = shallow(dataGrid.instance().renderDefaultPic(headline, pics));
+            const result = shallow(dataGrid.instance().renderDefaultPic(headline, pics,true));
 
             // Action
             result.simulate('click');
 
             // Assert
-            expect(dataGrid.instance().handleOpenDefaultPicPopup).toHaveBeenCalledWith(headline, pics);
+            expect(dataGrid.instance().handleOpenDefaultPicPopup).toHaveBeenCalledWith(headline, pics, true);
         });
 
         it('should return expected div when not empty pics', () => {
@@ -890,13 +1015,13 @@ describe('DataGrid', () => {
             const headline = {};
             const dataGrid = shallow(<DataGrid {...props} />);
             dataGrid.instance().handleOpenDefaultPicPopup = jest.fn();
-            const result = shallow(dataGrid.instance().renderDefaultPic(headline, pics));
+            const result = shallow(dataGrid.instance().renderDefaultPic(headline, pics, true));
 
             // Action
             result.simulate('click');
 
             // Assert
-            expect(dataGrid.instance().handleOpenDefaultPicPopup).toHaveBeenCalledWith(headline);
+            expect(dataGrid.instance().handleOpenDefaultPicPopup).toHaveBeenCalledWith(headline, pics, true);
         });
 
         it('should return expected span when empty pics', () => {
@@ -911,12 +1036,13 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Action
-            const result = shallow(dataGrid.instance().renderDefaultPic(null, pics));
+            const result = shallow(dataGrid.instance().renderDefaultPic(null, pics, true));
 
             // Assert
             expect(result.props().className).toBe('plus-icon');
             expect(result.html()).toContain('+');
         });
+        
     });
 
     it('handleChangeRemoveCheckboxAll runs correctly', () => {
@@ -1034,7 +1160,7 @@ describe('DataGrid', () => {
         const dataGrid = shallow(<DataGrid {...props} />);
 
         // Action
-        dataGrid.instance().handleOpenDefaultPicPopup(headline, pics);
+        dataGrid.instance().handleOpenDefaultPicPopup(headline, pics,true);
 
         // Assert
         expect(props.setDefaultPicPopup).toHaveBeenCalledWith({
@@ -1083,7 +1209,12 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {
                     data: [],
-                    totalItems: 100
+                    totalItems: 100, 
+                    communicationTools: [{picId : 1}],
+                    listComm: [{displayOrder: 1,
+                        id: 0,                        
+                        settingValue: "Letstalk"
+                    }]
                 },
                 gridParams: {
                     pageIndex: 1,
@@ -1091,7 +1222,8 @@ describe('DataGrid', () => {
                 },
                 removeOptions: {
                     shouldResetScrollPosition: true
-                }
+                },
+                isReadPicManagement: true
             };
 
             const pageOptions = {
@@ -1101,16 +1233,76 @@ describe('DataGrid', () => {
                 PageList: PAGING_SIZES
             };
 
+            let totalWidthComm = 0;
+
+            props.picAssignmentGridData.listComm.forEach((item, index) => {
+
+                totalWidthComm += 100;
+            });
+            const totalAssignmentWidth = 1225;
+
+            const calMaxWidth = totalAssignmentWidth + totalWidthComm;
+
             // Action
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Assert
-            expect(dataGrid.find('div').at(0).props().className).toBe('table-title d-flex justify-content-between');
+            expect(dataGrid.find('div').at(0).props().className).toBe('table-title d-flex justify-content-between ');
+            expect(dataGrid.find('div').at(1).html()).toContain('PICAssignment');
+            expect(dataGrid.find('div').at(2).html()).toContain('ThereAreUnassignedDirectAccounts');
+            expect(dataGrid.find('span').props().className).toBe('fa fa-file-excel-o ml-3 icon-excel');
+            expect(dataGrid.find(Table).props().maxWidth).toEqual(calMaxWidth);
+            expect(dataGrid.find(Table).props().minWidth).toEqual(document.getElementById('app-container').clientWidth);
+            expect(dataGrid.find(Table).props().width).toEqual(document.getElementById('app-container').clientWidth);
+            expect(dataGrid.find(Table).props().autoWidth).toBeFalse;
+            expect(dataGrid.find(Table).props().isPaging).toBeTrue;
+            expect(dataGrid.find(Table).props().pageOption).toEqual(pageOptions);
+            expect(dataGrid.find(Table).props().containerPadding).toEqual(0);
+            expect(dataGrid.find(Table).props().shouldResetScrollPosition).toEqual(props.removeOptions.shouldResetScrollPosition);
+        });
+
+        it('does not have permission pic management', () => {
+            // Arrange
+            const props = {
+                picAssignmentGridData: {
+                    data: [],
+                    totalItems: 100, 
+                    communicationTools: [{picId : 1}],
+                    listComm: [{displayOrder: 1,
+                        id: 0,
+                        settingValue: "Letstalk"
+                    }]
+                },
+                gridParams: {
+                    pageIndex: 1,
+                    pageSize: 10
+                },
+                removeOptions: {
+                    shouldResetScrollPosition: true
+                },
+                isReadPicManagement: false
+            };
+
+            const pageOptions = {
+                PageIndex: props.gridParams.pageIndex,
+                PageSize: props.gridParams.pageSize,
+                TotalItem: props.picAssignmentGridData.totalItems,
+                PageList: PAGING_SIZES
+            };
+
+
+            // Action
+            const dataGrid = shallow(<DataGrid {...props} />);
+
+            // Assert
+            expect(dataGrid.find('div').at(0).props().className).toBe('table-title d-flex justify-content-between header-pic-max-width');
             expect(dataGrid.find('div').at(1).html()).toContain('PICAssignment');
             expect(dataGrid.find('div').at(2).html()).toContain('ThereAreUnassignedDirectAccounts');
             expect(dataGrid.find('span').props().className).toBe('fa fa-file-excel-o ml-3 icon-excel');
             expect(dataGrid.find(Table).props().maxWidth).toEqual(1350);
-            expect(dataGrid.find(Table).props().autoWidth).toBeTrue;
+            expect(dataGrid.find(Table).props().minWidth).toEqual(null);
+            expect(dataGrid.find(Table).props().width).toEqual(1350);
+            expect(dataGrid.find(Table).props().autoWidth).toBeFalse;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;
             expect(dataGrid.find(Table).props().pageOption).toEqual(pageOptions);
             expect(dataGrid.find(Table).props().containerPadding).toEqual(0);
@@ -1121,7 +1313,12 @@ describe('DataGrid', () => {
             // Arrange
             const props = {
                 picAssignmentGridData: {
-                    data: []
+                    data: [],
+                    communicationTools: [{picId : 1}],
+                    listComm: [{displayOrder: 1,
+                        id: 0,
+                        settingValue: "Letstalk"
+                    }]
                 },
                 gridParams: {},
                 removeOptions: {}

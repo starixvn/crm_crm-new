@@ -23,7 +23,7 @@ export class DataGrid extends Component {
 
     buildPicManagementHeader = (isHost, isRenderCommunication, uniqueCommunication) => {
         return [
-            <HeaderRow>
+            <HeaderRow key='header1'>
                 <HeaderCell colWidth={50}  rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('TextNo')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
@@ -69,7 +69,7 @@ export class DataGrid extends Component {
             const maxLengthComm = this.findLongestWordLength(item.settingValue);
             const calWidthCommByPixel = this.measureText(maxLengthComm);
             
-            header.push(<HeaderCell className='header-comm' colWidth={calWidthCommByPixel > 100 ? calWidthCommByPixel + 50 : 100} key={`comm-header-${item.settingName}-${index}`}>{item.settingValue}</HeaderCell>);
+            header.push(<HeaderCell className='header-comm' colWidth={calWidthCommByPixel > 100 ? calWidthCommByPixel + 50 : 100} key={`comm-header-${item.settingValue}-${index}`}>{item.settingValue}</HeaderCell>);
         });
         return header;
     };

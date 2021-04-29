@@ -212,7 +212,7 @@ export class DataGrid extends Component {
                 <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcelMapping} />
             }
             </OverlayTrigger>
-        )
+        );
     };
 
     render() {
