@@ -318,6 +318,121 @@ describe('DataGrid', () => {
         });
     });
 
+    it('returns expected longest word', () => {
+        // Arrange
+        const str = 'test longest function';
+        const dataGrid = shallow(<DataGrid />).instance();
+
+        // Action
+        const result = dataGrid.findLongestWordLength(str);
+        // Assert
+        expect(result).toEqual('function');
+    });
+
+    describe('renderRowCommEmpty', () => {
+        it('return expected row and call exact function', () => {
+            // Arrange
+            const props = {
+                picAssignmentGridData: {
+                    listComm: [{
+                        displayOrder: 1,
+                        settingValue: "Letstalk"
+                    }]
+                },
+                gridParams: {},
+                removeOptions: {},
+            };
+
+            const dataGrid = shallow(<DataGrid {...props} />).instance();
+            dataGrid.renderCommunicationToolsValue = jest.fn();
+
+            // Action
+            const result = shallow(dataGrid.renderRowCommEmpty(true, 1, props.picAssignmentGridData.listComm));
+
+            // Assert
+            expect(result.find(Cell).at(0).html()).toContain('<td></td>');
+            expect(result.find(Cell).at(1).html()).toContain('<td></td>');
+            expect(result.find(Cell).at(2).html()).toContain('<td></td>');
+            expect(result.find(Cell).at(3).html()).toContain('<td></td>');
+            expect(result.find(Cell).at(4).html()).toContain('<td></td>');
+            expect(result.find(Cell).at(5).html()).toContain('<td></td>');
+            expect(result.find(Cell).at(6).html()).toContain('<td></td>');
+            expect(result.find(Cell).at(7).html()).toContain('<td></td>');
+
+            expect(dataGrid.renderCommunicationToolsValue).toHaveBeenCalled();
+
+        });
+
+        it('return expected row and call exact function', () => {
+            // Arrange
+
+            const dataGrid = shallow(<DataGrid />).instance();
+            dataGrid.renderCommunicationToolsValue = jest.fn();
+
+            // Action
+            const result = shallow(dataGrid.renderRowCommEmpty(false, 1, []));
+
+            // Assert
+            expect(dataGrid.renderCommunicationToolsValue).toHaveBeenCalled();
+
+        });
+    });
+
+    it('renderCommunicationToolsNullValue  return exact cell value', () => {
+        // Arrange
+        const props = {
+            picAssignmentGridData: {
+                listComm: [{
+                    displayOrder: 1,
+                    settingValue: "Letstalk"
+                }]
+            },
+        };
+        const dataGrid = shallow(<DataGrid {...props}/>).instance();
+        const expected = [<Cell />, <Cell />];
+
+        // Action
+        const result = dataGrid.renderCommunicationToolsNullValue(props.picAssignmentGridData.listComm);
+
+        // Assert
+        expect(result.toString()).toEqual(expected.toString());
+
+    });
+
+
+    it('renderCommunicationToolsValue  return exact cell value', () => {
+        // Arrange
+        const props = {
+            picAssignmentGridData: {
+                listComm: [{
+                    displayOrder: 1,
+                    settingValue: "Letstalk"
+                }]
+            },
+        };
+        const comm = {
+            picName: "Oliver_PIC",
+            listComm: [{
+            communicationTool: "Letstalk",
+            communicationValue: "t381023",
+            order: 1,
+            picId: 200,
+            roleId: 48001,
+            username: "Oliver_PIC"
+            }]
+        }
+        const dataGrid = shallow(<DataGrid {...props}/>).instance();
+        const expected = [<Cell>Oliver_PIC</Cell>,
+            <Cell className="text-center">t381023</Cell>];
+
+        // Action
+        const result = dataGrid.renderCommunicationToolsValue(comm);
+
+        // Assert
+        expect(result).toEqual(expected);
+
+    });
+
     // describe('buildPicManagementBody', () => {
     //     it('should change startIndex when run', () => {
     //         // Arrange
