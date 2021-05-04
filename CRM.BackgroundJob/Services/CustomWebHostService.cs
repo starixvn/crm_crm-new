@@ -31,6 +31,7 @@
         {
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForWinLossLimit);
+            jobRunningChecker.ClearRunning(JobName.CreateFeedbackForTurnoverControl);
             RemoveRecurringJobs();
             RunHangfireJobs();
             base.OnStarted();
@@ -75,6 +76,15 @@
                 var cronExpression = GetCronExpression(HangfireJobName.PullMessageCTOForChatBot);
                 recurringJob.AddOrUpdate<IBackgroundService>("Pull Message CTO For Chat Bot",
                    job => job.PullMessageCTOForChatBotAsync(),
+                   cronExpression,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
+            }
+
+            if (IsEnabledJob(HangfireJobName.PullMessageProblemAccountForChatBot))
+            {
+                var cronExpression = GetCronExpression(HangfireJobName.PullMessageProblemAccountForChatBot);
+                recurringJob.AddOrUpdate<IBackgroundService>("Pull Message Problems Account For Chat Bot",
+                   job => job.PullMessageProblemsAccountForChatBotAsync(),
                    cronExpression,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }

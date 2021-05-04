@@ -27,6 +27,8 @@
 
         string GetBettypeName(string betTypeId, string languageCode);
 
+        string GetCatalogName(string categoryId, string languageCode);
+
         T GetFeedbackTemplates<T>(string fileXml);
 
         ValueTuple<bool, string> CheckFeedbackValidParams(CreateMutipleFeedbackCommand criteria);
@@ -83,6 +85,12 @@
         {
             var betTypeName = remotingRefService.GetBetTypeName(betTypeId, languageCode);
             return betTypeName;
+        }
+
+        public string GetCategogyName(string categoryId, string languageCode)
+        {
+            var categoryName = remotingRefService.GetResourceDataByRefIdAndResourceId("Category", categoryId, languageCode, string.Empty);
+            return categoryName;
         }
 
         public T GetFeedbackTemplates<T>(string fileXml)

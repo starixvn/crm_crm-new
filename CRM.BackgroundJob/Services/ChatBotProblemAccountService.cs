@@ -1,0 +1,80 @@
+﻿namespace CRM.BackgroundJob.Services
+{
+    using CRM.BackgroundJob.Criteria.ProblemAccount;
+    using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Constants;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    public interface IChatBotProblemAccountService
+    {
+        Task<IEnumerable<ProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(int LastLogId, int BatchSize);
+
+        Task<CommandResult> ImportProblemsAccountInfoAsync(IEnumerable<ProblemsAccountInfor> problemsAccount,
+                                                  string Environment = Constants.DefaultEnvironment);
+    }
+
+    public class ChatBotProblemAccountService : IChatBotProblemAccountService
+    {
+        private readonly IBaseService baseService;
+        private readonly ICommonFeedback commonFeedback;
+
+        public ChatBotProblemAccountService(IBaseService baseService, ICommonFeedback commonFeedback)
+        {
+            this.baseService = baseService;
+            this.commonFeedback = commonFeedback;
+        }
+
+        public async Task<IEnumerable<ProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(int LastLogId, int BatchSize)
+        {
+            var criteria = new GetProblemsAccountByLogId
+            {
+                LastLogId = LastLogId,
+                BatchSize = BatchSize
+            };
+            return await baseService.GetDataAsync<ProblemsAccountInfor>(criteria);
+        }
+
+        public async Task<CommandResult> ImportProblemsAccountInfoAsync(IEnumerable<ProblemsAccountInfor> problemsAccount,
+                                                  string Environment = Constants.DefaultEnvironment)
+        {
+            const string XmlTemplate = "<r LogId='{0}' CustId='{1}' Username='{2}' " +
+                "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' CategoryId='{6}' " +
+                "CategoryNameEN='{7}' CategoryNameSC='{8}' CategoryNameTH='{9}' CategoryNameYN='{10}' " +
+                "IsTest='{11}' />";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            foreach (ProblemsAccountInfor problemAccount in problemsAccount)
+            {
+                var CategoryNameEN = commonFeedback.GetCatalogName(problemAccount.CategoryId.ToString(), Language.en_US);
+                var CategoryNameSC = commonFeedback.GetCatalogName(problemAccount.CategoryId.ToString(), Language.zh_CN);
+                var CategoryNameTH = commonFeedback.GetCatalogName(problemAccount.CategoryId.ToString(), Language.th_TH);
+                var CategoryNameYN = commonFeedback.GetCatalogName(problemAccount.CategoryId.ToString(), Language.vi_VN);
+
+                stringBuilder.AppendFormat(XmlTemplate,
+                    problemAccount.LogId,
+                    problemAccount.CustId,
+                    problemAccount.UserName,
+                    problemAccount.Recommend,
+                    problemAccount.Mrecommend,
+                    problemAccount.Srecommend,
+                    problemAccount.CategoryId,
+                    CategoryNameEN,
+                    CategoryNameSC,
+                    CategoryNameTH,
+                    CategoryNameYN,
+                    problemAccount.IsTest);
+            }
+
+            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            var criteria = new ProblemsAccountImportCommand
+            {
+                XmlData = stringBuilder.ToString(),
+                Environment = Environment
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+    }
+}

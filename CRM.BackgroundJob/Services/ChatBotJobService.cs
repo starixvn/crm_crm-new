@@ -7,6 +7,7 @@
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.BackgroundJob.Models.ChatBotCTO;
     using global::CRM.BackgroundJob.Models.ChatBotCWL;
+    using global::CRM.BackgroundJob.Models.ProblemsAccount;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
@@ -17,8 +18,8 @@
     {
         Task PullMessageAndSendNotificationAsync();
         Task PullMessageCWLAndSendNotificationToHeadlineAsync();
-
         Task PullMessageCTOAndSendNotificationToHeadlineAsync();
+        Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
     }
 
     public class ChatBotJobService : IChatBotJobService
@@ -29,11 +30,13 @@
         private readonly ISendNotificationService sendNotificationService;
         private readonly IChatBotCWLService chatBotCWLService;
         private readonly IChatBotCTOService chatBotCTOService;
+        private readonly IChatBotProblemAccountService chatBotProblemAccountService;
 
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         public ChatBotJobService(
             ICRMLogService logService,
             ISystemSettingService systemSettingService,
@@ -41,7 +44,9 @@
             ISendNotificationService sendNotificationService,
             IChatBotCWLService chatBotCWLService,
             IConfiguration configuration,
-            IChatBotCTOService chatBotCTOService)
+            IChatBotCTOService chatBotCTOService,
+            IChatBotProblemAccountService chatBotProblemAccountService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.logService = logService;
             this.systemSettingService = systemSettingService;
@@ -49,6 +54,7 @@
             this.sendNotificationService = sendNotificationService;
             this.chatBotCWLService = chatBotCWLService; 
             this.chatBotCTOService = chatBotCTOService;
+            this.chatBotProblemAccountService = chatBotProblemAccountService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -112,6 +118,27 @@
             IEnumerable<TOReachInfor> tOReachInfors = await chatBotCTOService.GetChatbotCTOSettingInfoAsync(settingCTO.LastLogId, settingCTO.BatchSize);
             IEnumerable<TOSMAInfor> tOSMAInfors = await chatBotCTOService.GetChatbotCTOSMAInfoAsync(tOReachInfors);
             CommandResult commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Environment);
+            if (commandResult.IsSuccessful)
+            {
+                await sendNotificationService.SendNotificationToLetstalk();
+            }
+            else
+            {
+                logService.LogInformation(commandResult.Message);
+            }
+        }
+
+        public async Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync()
+        {
+            AbnormalBetSystemSetting settingProblemsAccount = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Environment);
+            if (!settingProblemsAccount.ServiceFlag)
+            {
+                logService.LogInformation("Chat Bot Problems Account Service is shutdown.");
+                return;
+            }
+            IEnumerable<ProblemsAccountInfor> problemsAcountInfors = await chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(
+                settingProblemsAccount.LastLogId, settingProblemsAccount.BatchSize);
+            CommandResult commandResult = await chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Environment);
             if (commandResult.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();

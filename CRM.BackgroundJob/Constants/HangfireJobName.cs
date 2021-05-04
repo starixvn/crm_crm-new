@@ -6,6 +6,7 @@
         public const string PullMessageForChatBot = "PullMessageForChatBot";
         public const string PullMessageCWLForChatBot = "PullMessageCWLForChatBot";
         public const string PullMessageCTOForChatBot = "PullMessageCTOForChatBot";
+        public const string PullMessageProblemAccountForChatBot = "PullMessageProblemAccountForChatBot";
         public const string ScanAndSendLetstalkNotification = "ScanAndSendLetstalkNotification";
         public const string MonitorLetstalkService = "MonitorLetstalkService";
         public const string CreateFeedbackForWinLossLimit = "CreateFeedbackForWinLossLimit";
