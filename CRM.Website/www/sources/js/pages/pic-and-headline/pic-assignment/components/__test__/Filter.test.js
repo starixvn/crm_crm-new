@@ -1159,7 +1159,8 @@ describe('Filter', () => {
             const props = {
                 settings: {},
                 gridParams: {},
-                getSettings: jest.fn(() => promise)
+                getSettings: jest.fn(() => promise),
+                isHost: true
             };
 
             const filter = shallow(<Filter {...props} />);
@@ -1173,7 +1174,6 @@ describe('Filter', () => {
             expect(row.find(Button).at(0).props().variant).toBe('primary');
             expect(row.find(Button).at(0).props().size).toBe('sm');
             expect(row.find(Button).at(0).html()).toContain('Submit');
-            expect(row.find(Button).at(1).props().className).toBe('mr-2');
             expect(row.find(Button).at(1).props().variant).toBe('primary');
             expect(row.find(Button).at(1).props().size).toBe('sm');
             expect(row.find(Button).at(1).html()).toContain('AssignPIC');
@@ -1205,7 +1205,9 @@ describe('Filter', () => {
             const props = {
                 settings: {},
                 gridParams: {},
-                getSettings: jest.fn(() => promise)
+                getSettings: jest.fn(() => promise),
+                isHost: true,
+                setAssignPicPopup: jest.fn(() => promise)
             };
 
             const filter = shallow(<Filter {...props} />);
