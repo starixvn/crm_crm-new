@@ -16,6 +16,7 @@
     using NSubstitute;
     using Xunit;
     using CRM.BackgroundJob.Models.ChatBotCTO;
+    using CRM.BackgroundJob.Models.ProblemsAccount;
 
     public class ChatBotJobServiceTests
     {
@@ -26,6 +27,8 @@
         private IChatBotCWLService chatBotCWLService;
         private IConfiguration configuration;
         private IChatBotCTOService chatBotCTOService;
+        private IChatBotProblemAccountService chatBotProblemAccountService;
+
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -230,6 +233,63 @@
             await sendNotificationService.Received().SendNotificationToLetstalk();
         }
 
+
+        [Fact]
+        public async Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Constants.DefaultEnvironment).Returns(setting);
+
+            // Act
+            await service.PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            logService.Received().LogInformation("Chat Bot Problems Account Service is shutdown.");
+        }
+
+        [Fact]
+        public async Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync_ImportProblemsAccountInfoAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
+            var problemsAcountInfors = fixture.Create<IEnumerable<ProblemsAccountInfor>>();
+
+            var commandResult = new CommandResult { Code = 1 };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Constants.DefaultEnvironment).Returns(setting);
+            chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(problemsAcountInfors);
+
+            chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Constants.DefaultEnvironment).Returns(commandResult);
+
+            // Act
+            await service.PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            logService.Received().LogInformation(commandResult.Message);
+        }
+
+        [Fact]
+        public async Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync_ImportProblemsAccountInfoAsyncSuccessful_ExpectedToCallSendNotificationToLetstalk()
+        {
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
+            var problemsAcountInfors = fixture.Create<IEnumerable<ProblemsAccountInfor>>();
+
+            var commandResult = new CommandResult { Code = 0 };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Constants.DefaultEnvironment).Returns(setting);
+            chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(problemsAcountInfors);
+
+            chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Constants.DefaultEnvironment).Returns(commandResult);
+
+            // Act
+            await service.PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            await sendNotificationService.Received().SendNotificationToLetstalk();
+        }
+
         #region Helpers
 
         private ChatBotJobService GetService()
@@ -241,13 +301,15 @@
             chatBotCWLService = Substitute.For<IChatBotCWLService>();
             configuration = Substitute.For<IConfiguration>();
             chatBotCTOService = Substitute.For<IChatBotCTOService>();
+            chatBotProblemAccountService = Substitute.For<IChatBotProblemAccountService>();
             return new ChatBotJobService(logService,
                 systemSettingService,
                 ticketVoidingService, 
                 sendNotificationService, 
                 chatBotCWLService, 
                 configuration,
-                chatBotCTOService);
+                chatBotCTOService,
+                chatBotProblemAccountService);
         }
 
         #endregion Helpers
