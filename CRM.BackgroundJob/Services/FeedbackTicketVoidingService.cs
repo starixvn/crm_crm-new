@@ -99,7 +99,6 @@
                 x.MessageId,
                 x.RequestId,
                 x.Username,
-                x.Bettype,
                 x.IsDeposit,
                 x.Site
             }).Distinct() ;
