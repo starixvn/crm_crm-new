@@ -27,7 +27,7 @@
 
         string GetBettypeName(string betTypeId, string languageCode);
 
-        string GetCatalogName(string categoryId, string languageCode);
+        string GetCategogyName(string categoryId, string languageCode);
 
         T GetFeedbackTemplates<T>(string fileXml);
 

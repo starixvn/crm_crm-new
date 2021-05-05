@@ -48,10 +48,10 @@
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             foreach (ProblemsAccountInfor problemAccount in problemsAccount)
             {
-                var CategoryNameEN = commonFeedback.GetCatalogName(problemAccount.CategoryId.ToString(), Language.en_US);
-                var CategoryNameSC = commonFeedback.GetCatalogName(problemAccount.CategoryId.ToString(), Language.zh_CN);
-                var CategoryNameTH = commonFeedback.GetCatalogName(problemAccount.CategoryId.ToString(), Language.th_TH);
-                var CategoryNameYN = commonFeedback.GetCatalogName(problemAccount.CategoryId.ToString(), Language.vi_VN);
+                var CategoryNameEN = commonFeedback.GetCategogyName(problemAccount.CategoryId.ToString(), Language.en_US);
+                var CategoryNameSC = commonFeedback.GetCategogyName(problemAccount.CategoryId.ToString(), Language.zh_CN);
+                var CategoryNameTH = commonFeedback.GetCategogyName(problemAccount.CategoryId.ToString(), Language.th_TH);
+                var CategoryNameYN = commonFeedback.GetCategogyName(problemAccount.CategoryId.ToString(), Language.vi_VN);
 
                 stringBuilder.AppendFormat(XmlTemplate,
                     problemAccount.LogId,
