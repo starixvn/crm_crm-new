@@ -26,7 +26,8 @@ class Table extends Component {
         pageOption: PropTypes.object,
         adjustedHeight: PropTypes.number,
         containerPadding: PropTypes.number,
-        shouldResetScrollPosition: PropTypes.bool
+        shouldResetScrollPosition: PropTypes.bool,
+        shouldUseMaxWidth: PropTypes.bool
     };
 
     static defaultProps = {
@@ -39,7 +40,8 @@ class Table extends Component {
         bodyHeight: 0,
         autoHeight: true,
         containerPadding: 30,
-        shouldResetScrollPosition: true
+        shouldResetScrollPosition: true,
+        shouldUseMaxWidth: false
     };
 
     constructor(props) {
@@ -179,8 +181,8 @@ class Table extends Component {
             }
         }
 
-        const { maxWidth, autoWidth} = this.props;
-        const maxWidthCal = !autoWidth && maxWidth> 0 ? maxWidth : document.body.clientWidth - this.diffWidth;
+        const { maxWidth, shouldUseMaxWidth} = this.props;
+        const maxWidthCal = shouldUseMaxWidth ? maxWidth : document.body.clientWidth - this.diffWidth;
         if (this.state.maxWidth !== maxWidthCal) {
             this.setState({ maxWidth: maxWidthCal });
         }
@@ -206,7 +208,7 @@ class Table extends Component {
     }
 
     render() {
-        const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding } = this.props;
+        const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding, shouldUseMaxWidth } = this.props;
         const maxWidth = this.state.maxWidth - containerPadding;
         const actualWidth = width - containerPadding;
         const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ?
@@ -217,8 +219,8 @@ class Table extends Component {
             return null;
         }
 
-        const sectionProps = { width: actualWidth, autoWidth, minWidth, maxWidth };
-        const headerSectionProps = { onSort: this.props.onSort, width: actualWidth, autoWidth, minWidth, maxWidth };
+        const sectionProps = { width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
+        const headerSectionProps = { onSort: this.props.onSort, width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
         const rowLayout = <RowLayout columnLayout={newColumnLayout} />;
         const { Header, Body, Footer } = this;
 

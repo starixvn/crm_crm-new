@@ -11,13 +11,15 @@ const createTableSection = (extendedContainerProps, extendedTableProps) => {
             maxWidth: PropTypes.number.isRequired,
             minWidth: PropTypes.number,
             autoWidth: PropTypes.bool,
-            maxHeight: PropTypes.number
+            maxHeight: PropTypes.number,
+            headerContainerProps: PropTypes.bool
         };
 
         static defaultProps = {
             onSort: null,
             tableClass: "table",
-            autoWidth: true
+            autoWidth: true,
+            shouldUseMaxWidth: false,
         };
 
         constructor(props) {
@@ -29,9 +31,9 @@ const createTableSection = (extendedContainerProps, extendedTableProps) => {
         }
 
         get containerWidth() {
-            const { autoWidth, maxWidth, width } = this.props;
+            const { autoWidth, maxWidth, width, shouldUseMaxWidth } = this.props;
 
-            return (!autoWidth&&maxWidth>0 || autoWidth) ? maxWidth : width;
+            return (shouldUseMaxWidth || autoWidth) ? maxWidth : width;
         }
 
         get containerStyle() {
@@ -46,9 +48,9 @@ const createTableSection = (extendedContainerProps, extendedTableProps) => {
         }
 
         get tableStyle() {
-            const { minWidth, autoWidth,  maxWidth} = this.props;
+            const { minWidth, autoWidth,  maxWidth, shouldUseMaxWidth} = this.props;
             const maxWidthTable = minWidth ? Math.max(this.containerWidth, minWidth) : this.containerWidth;
-            const tableWidth = !autoWidth&&maxWidth>0 ? maxWidthTable : maxWidthTable - SCROLLBAR_WIDTH;
+            const tableWidth = shouldUseMaxWidth ? maxWidthTable : maxWidthTable - SCROLLBAR_WIDTH;
 
             return {
                 width: tableWidth
