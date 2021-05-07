@@ -122,7 +122,7 @@ export class DataGrid extends Component {
             <Cell className='text-center'>{index + this.startIndex}</Cell>
             <Cell className='text-center'>
                 <div>{item.notificationId}</div>
-                <div>{item.dataSource === 'MessageId' ? `(Msg: ${item.referenceId})` : `(Log: ${item.referenceId})`}</div>
+                <div>{item.dataSource === 'MessageId' ? `(Msg: ${item.referenceId})` : item.referenceId > 0 && `(Log: ${item.referenceId})`}</div>
                 {
                     this.isDuplicated(item.status) && <div>{`(Related ID: ${item.relatedNotificationIds})`}</div>
                 }
