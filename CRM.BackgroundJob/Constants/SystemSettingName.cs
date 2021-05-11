@@ -9,5 +9,8 @@
         public const string LastRuntime = "LastRuntime";
         public const string LastLogID = "LastLogID";
         public const string LastNotifiedDate = "LastNotifiedDate";
+        public const string JobStatusUAT = "JobStatusUAT";
+        public const string LastLogIdUAT = "LastLogIdUAT";
+        public const string LastRuntimeUAT = "LastRuntimeUAT";
     }
 }

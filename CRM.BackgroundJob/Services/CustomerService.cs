@@ -6,8 +6,10 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Repositories;
+    using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
+    using global::CRM.BackgroundJob.Models.ProblemsAccount;
     using global::CRM.BackgroundJob.Models.TurnoverControll;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Services;
@@ -24,6 +26,7 @@
         Task<IEnumerable<TONotification>> GetListSMANotificationAsync(WinLossSystemSetting turnOverSetting);
 
         Task<IEnumerable<CustOutStanding>> GetListCustOutStandingAsync(IEnumerable<TONotification> custNotifications);
+        Task<IEnumerable<CustCategoryInfor>> GetCustCategoryInfor(ProblemsAccountSetting problemsAccountSetting, bool isUAT);
     }
 
     public class CustomerService : ICustomerService
@@ -108,6 +111,19 @@
                 xml = stringBuilder.ToString()
             };
             return await baseService.GetDataAsync<CustOutStanding>(criteria);
+        }
+
+        public async Task<IEnumerable<CustCategoryInfor>> GetCustCategoryInfor(ProblemsAccountSetting problemsAccountSetting, bool isUAT)
+        {
+            var criteria = new GetProblemsAccountCustCategoryCriteria
+            {
+                LastLogID = isUAT ? problemsAccountSetting.LastLogIdUAT : problemsAccountSetting.LastLogId,
+                BatchSize = problemsAccountSetting.BatchSize,
+                ConfigUAT = problemsAccountSetting.ConfigUAT,
+                ConfigPRO = problemsAccountSetting.ConfigPRO,
+                Environment = Environment
+            };
+            return await baseService.GetDataAsync<CustCategoryInfor>(criteria);
         }
     }
 }

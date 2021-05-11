@@ -32,6 +32,8 @@
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForWinLossLimit);
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForTurnoverControl);
+            jobRunningChecker.ClearRunning(JobName.CreateFeedbackForProblemsAccount);
+
             RemoveRecurringJobs();
             RunHangfireJobs();
             base.OnStarted();
@@ -113,11 +115,19 @@
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
-
+            
             if (IsEnabledJob(HangfireJobName.CreateFeedbackForTurnoverControl))
             {
                 recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For TurnOver Controll",
                    job => job.CreateFeedbackForTurnoverControl(),
+                   Cron.Minutely,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
+            }
+
+            if (IsEnabledJob(HangfireJobName.CreateFeedbackForProblemsAccount))
+            {
+                recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For Problems Account",
+                   job => job.CreateFeedbackForProblemsAccount(),
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }

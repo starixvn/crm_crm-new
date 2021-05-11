@@ -28,6 +28,8 @@
 
         Task CreateFeedbackForTurnoverControl();
 
+        Task CreateFeedbackForProblemsAccount();
+
     }
 
     public class BackgroundService : IBackgroundService
@@ -235,6 +237,27 @@
                 }
 
                 await winLossService.TurnoverControlExecuteJobAsync();
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        [Queue(QueuePriority.Critical)]
+        public async Task CreateFeedbackForProblemsAccount()
+        {
+            try
+            {
+                bool isUM = await CheckUM();
+                if (isUM)
+                {
+                    logService.LogInformation(umTime);
+                    return;
+                }
+
+                await winLossService.ProblemsAcccountExecuteJobAsync();
             }
             catch (Exception ex)
             {

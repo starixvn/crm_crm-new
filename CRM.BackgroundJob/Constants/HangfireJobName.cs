@@ -11,5 +11,6 @@
         public const string MonitorLetstalkService = "MonitorLetstalkService";
         public const string CreateFeedbackForWinLossLimit = "CreateFeedbackForWinLossLimit";
         public const string CreateFeedbackForTurnoverControl = "CreateFeedbackForTurnoverControl";
+        public const string CreateFeedbackForProblemsAccount = "CreateFeedbackForProblemsAccount";
     }
 }

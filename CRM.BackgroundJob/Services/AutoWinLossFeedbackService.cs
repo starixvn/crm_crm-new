@@ -5,15 +5,18 @@
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models.ProblemsAccount;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Services;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
 
     public interface IAutoWinLossFeedbackService
     {
         Task WinLossExecuteJobAsync();
         Task TurnoverControlExecuteJobAsync();
+        Task ProblemsAcccountExecuteJobAsync();
     }
 
     public class AutoWinLossFeedbackService : IAutoWinLossFeedbackService
@@ -24,14 +27,22 @@
         private readonly IWinLossFeedbackService winLossService;
         private readonly ITOControlFeedbackService turnoverService;
         private readonly ICRMLogService logService;
+        private readonly IProblemsAccountFeedbackService problemsAccountFeedbackService;
+        private readonly string Environment;
 
+        private const string DefaultEnvironment = Constants.DefaultEnvironment;
+
+#pragma warning disable S107 // Methods should not have too many parameters
         public AutoWinLossFeedbackService(
             IOptionsSnapshot<AppJobSettings> appSettings,
             IJobRunningChecker jobRunningChecker,
             ISystemSettingService systemSettingService,
             IWinLossFeedbackService winLossService,
             ICRMLogService logService,
-            ITOControlFeedbackService turnoverService)
+            ITOControlFeedbackService turnoverService,
+            IProblemsAccountFeedbackService problemsAccountFeedbackService,
+            IConfiguration configuration)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.appSettings = appSettings.Value;
             this.jobRunningChecker = jobRunningChecker;
@@ -39,6 +50,9 @@
             this.winLossService = winLossService;
             this.logService = logService;
             this.turnoverService = turnoverService;
+            this.problemsAccountFeedbackService = problemsAccountFeedbackService;
+            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
+
         }
 
         public async Task WinLossExecuteJobAsync()
@@ -129,5 +143,73 @@
                 await logService.ErrorAsync(ex);
             }
         }
-    }
+
+        public async Task ProblemsAcccountExecuteJobAsync()
+        {
+            try
+            {
+                logService.LogInformation("Start Service Problems Account!");
+
+                ProblemsAccountSetting problemsAccountSetting = await systemSettingService.GetProblemsAccountSettingAsync();
+                if (!problemsAccountSetting.ServiceFlag)
+                {
+                    logService.LogInformation("Service Problems Account is shutdown.");
+                    return;
+                }
+
+                var isRunningLive = problemsAccountSetting.JobStatus.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
+                var isRunningUAT = problemsAccountSetting.JobStatusUAT.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
+
+                if (Environment == DefaultEnvironment)
+                {
+                    await ProblemsAcccountRunJobByEnviromentAsync(false, isRunningUAT, isRunningLive, problemsAccountSetting, Environment);
+                }
+                else
+                {
+                    await ProblemsAcccountRunJobByEnviromentAsync(true, isRunningUAT, isRunningLive, problemsAccountSetting, Environment);
+                }
+            }
+            catch (Exception ex)
+            {
+                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForProblemsAccount);
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task ProblemsAcccountRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
+            bool isRunningLive, ProblemsAccountSetting problemsAccountSetting, string Environment)
+        {
+            var LastRuntimeEnv = isUAT ? problemsAccountSetting.LastRuntimeUAT : problemsAccountSetting.LastRuntime;
+            var LastRuntimeNameEnv = isUAT ? SystemSettingName.LastRuntimeUAT : SystemSettingName.LastRuntime;
+            var JobStatusNameEnv = isUAT ? SystemSettingName.JobStatusUAT : SystemSettingName.JobStatus;
+            var isRunning = isUAT ? isRunningUAT : isRunningLive;
+
+            if (!isRunning)
+            {
+                await Task.WhenAll(
+                    jobRunningChecker.MarkRunning(JobName.CreateFeedbackForProblemsAccount),
+                    problemsAccountFeedbackService.CreateFeedbackForProblemsAccountAsync(
+                            problemsAccountSetting, isUAT, LastRuntimeEnv, LastRuntimeNameEnv,
+                            JobStatusNameEnv, Environment
+                        )
+                );
+                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForProblemsAccount);
+            }
+            else
+            {
+                logService.LogInformation("Problems account service is running.");
+                isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount);
+                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                {
+                    logService.LogInformation("Return Problems account service.");
+                    var settingJobStatus = new List<SystemSettingItem>
+                        {
+                           new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                        };
+                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ProblemsAccount);
+                }
+            }
+        }
+    } 
 }

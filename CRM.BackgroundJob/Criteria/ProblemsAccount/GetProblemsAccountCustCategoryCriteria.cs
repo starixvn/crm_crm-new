@@ -1,0 +1,20 @@
+﻿using Fanex.Data.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CRM.BackgroundJob.Criteria.ProblemsAccount
+{
+    public class GetProblemsAccountCustCategoryCriteria : CriteriaBase
+    {
+        public int LastLogID { get; set; }
+        public int BatchSize { get; set; }
+        public bool ConfigUAT { get; set; }
+        public bool ConfigPRO { get; set; }
+        public string Environment { get; set; }
+        public override string GetSettingKey() => "Acc_CRM_ProblemAccount_CustCategorySel";
+
+        public override bool IsValid() => true;
+    }
+}

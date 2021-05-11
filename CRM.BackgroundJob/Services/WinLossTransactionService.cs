@@ -15,6 +15,8 @@
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Criteria.TurnoverControll;
     using System.Web;
+    using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Criteria.ProblemsAccount;
 
     public interface IWinLossTransactionService
     {
@@ -32,10 +34,20 @@
              IEnumerable<CustOutStanding> custOutStandings,
              IEnumerable<TONotification> custNotifications);
 
+        Task<IEnumerable<ProblemsAccountAutoFeedbackInfor>> ImportProblemsAccountFeedbackInfoAsync(
+             IEnumerable<GroupHeadline> headlines,
+             IEnumerable<CustCategoryInfor> custCatogorys,
+             string Environment);
+
         Task<CommandResult> EditTOControlFeedbackInfoAsync(
                string LogID,
                string status,
                string description);
+
+        Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(
+           string LogID,
+           string status,
+           string description);
 
     }
     public class WinLossTransactionService : IWinLossTransactionService
@@ -205,12 +217,62 @@
             return await baseService.GetDataAsync<TOControlFeedbackInfor>(criteria);
         }
 
+        public async Task<IEnumerable<ProblemsAccountAutoFeedbackInfor>> ImportProblemsAccountFeedbackInfoAsync(
+             IEnumerable<GroupHeadline> headlines,
+             IEnumerable<CustCategoryInfor> custCatogorys,
+             string Environment)
+        {
+            const string XmlTemplate = "<r logid='{0}' custid='{1}' hl='{2}' hlname='{3}' related='{4}' catid='{5}'/>";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            foreach (CustCategoryInfor custCategory in custCatogorys)
+            {
+                var hlname = "";
+                var headlineId = 0;
+                GroupHeadline headline = headlines.FirstOrDefault(x => x.CustId == custCategory.CustID);
+                headlineId = headline != null ? headline.HeadlineId : 0;
+                hlname = headline != null ? headline.HeadlineName : "";
+                var custId = custCategory.CustID;
+                var related = custCategory.CustID;
+
+                stringBuilder.AppendFormat(XmlTemplate,
+                        custCategory.LogID,
+                        custId,
+                        headlineId,
+                        hlname,
+                        related,
+                        custCategory.CategoryID
+                    );
+            }
+            stringBuilder.Append(Constants.EndRootTag);
+            var criteria = new InsertProblemsAccountAutoFeedbackInforCommand
+            {
+                xml = stringBuilder.ToString(),
+                Enviroment = Environment
+
+            };
+            return await baseService.GetDataAsync<ProblemsAccountAutoFeedbackInfor>(criteria);
+        }
+
         public async Task<CommandResult> EditTOControlFeedbackInfoAsync(
            string LogID,
            string status,
            string description)
         {
             var criteria = new EditTOControlAutoFeedbackInfoUpdCommand
+            {
+                LogID = LogID,
+                Status = status,
+                Description = description
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(
+           string LogID,
+           string status,
+           string description)
+        {
+            var criteria = new EditProblemsAccountAutoFeedbackInforCommand
             {
                 LogID = LogID,
                 Status = status,

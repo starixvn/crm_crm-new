@@ -208,9 +208,10 @@
             services.AddScoped<ICommonFeedback, CommonFeedback>();
             services.AddScoped<ITOControlFeedbackService, TOControlFeedbackService>();
             services.AddScoped<IChatBotCTOService, ChatBotCTOService>();
+            services.AddScoped<IProblemsAccountFeedbackService, ProblemsAccountFeedbackService>();
             services.AddScoped<IChatBotProblemAccountService, ChatBotProblemAccountService>();
         }
-        
+
         private static void RegisterHangfire(IServiceCollection services, ConnectionMultiplexer redis, IConfiguration configuration)
         {
             services.AddHangfire(x =>
