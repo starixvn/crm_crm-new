@@ -93,6 +93,13 @@
             return categoryName;
         }
 
+
+        public string GetCategogyName(string categoryId, string languageCode)
+        {
+            var categoryName = remotingRefService.GetResourceDataByRefIdAndResourceId("Category", categoryId, languageCode, string.Empty);
+            return categoryName;
+        }
+
         public T GetFeedbackTemplates<T>(string fileXml)
         {
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, path, fileXml);

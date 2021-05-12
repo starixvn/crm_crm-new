@@ -11,6 +11,7 @@ namespace CRM.BackgroundJob.Services
     using Microsoft.Extensions.Options;
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -59,6 +60,8 @@ namespace CRM.BackgroundJob.Services
             DateTime LastRuntimeEnv,  string LastRuntimeNameEnv, 
             string JobStatusNameEnv, string Environment)
         {
+            string startTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+
             logService.LogInformation(string.Format("Start run problems account serivce with last LastLogID: {0}!", problemsAccountSetting.LastLogId));
 
             var settingJobStatus = new List<SystemSettingItem>
@@ -91,6 +94,12 @@ namespace CRM.BackgroundJob.Services
                     settingMappings
                 );
             }
+
+            await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv);
+
+            var endTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff",
+                                            CultureInfo.InvariantCulture);
+            var test = "";
         }
 
         protected internal virtual async Task CreateProblemsAccountFeedbackCreditAsync(
@@ -108,6 +117,7 @@ namespace CRM.BackgroundJob.Services
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
             var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.AbnormalBets);
+
             var criteria = new CreateMutipleFeedbackCommand
             {
                 CreatorId = appSettings.CreatorId,
@@ -127,7 +137,7 @@ namespace CRM.BackgroundJob.Services
                 AutoField1 = string.Empty,
                 AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField3 = $"{Environment.NewLine}System ID: ",
-                LogID = problemsAccount.LogID,
+                PALogID = problemsAccount.LogID.ToString(),
                 CustomerXml = string.Format(DefaultValue.CustomerXml, problemsAccount.HeadlineID, problemsAccount.HeadlineName),
                 ProductXml = GetProductXml(settings),
                 Solution = GetSolution(problemsAccount),
@@ -210,15 +220,16 @@ namespace CRM.BackgroundJob.Services
 
         protected internal virtual string GetSolution(ProblemsAccountAutoFeedbackInfor problemsAccount)
         {
-
             var stringBuilder = new StringBuilder();
-            var contentEn = "";
-            var contentSc = "";
-            var contentYn = "";
-            var content = problemsAccount.IsVip ? contentYn : contentSc;
+            var categoryNameEN = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), Language.en_US);
+            var categoryNameSC = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), Language.zh_CN);
+            var categoryNameYN = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), Language.vi_VN);
+            //var templateContent = "- {0}: {1}.";
+            //var contentEn = categoryNameEN
+            var content = problemsAccount.IsVip ? categoryNameYN : categoryNameSC;
             var template = commonFeedback.GetFeedbackTemplates<SolutionTemplate>(templateXml);
             var solutionTemplate = problemsAccount.IsVip ? template.SolutionYN : template.SolutionSC;
-            stringBuilder.AppendFormat(template.SolutionEN, contentEn, Constants.Break);
+            stringBuilder.AppendFormat(template.SolutionEN, categoryNameEN, Constants.Break);
             stringBuilder.Append(Constants.Break);
             stringBuilder.AppendFormat(solutionTemplate, content, Constants.Break);
             return stringBuilder.ToString();

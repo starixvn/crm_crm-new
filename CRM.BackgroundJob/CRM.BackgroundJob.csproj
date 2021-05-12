@@ -26,6 +26,7 @@
         <None Remove="App_Data\UAT\SpNames.xml" />
         <None Remove="Deployment.ignore" />
         <None Remove="Format_Templates\Company-WinLoss-Limit\FeedbackTemplate.xml" />
+        <None Remove="Format_Templates\Company-WinLoss-Limit\ProblemsSolutionTemplate.xml" />
         <None Remove="Format_Templates\Company-WinLoss-Limit\TODesctiptionTemplate.xml" />
         <None Remove="Format_Templates\Company-WinLoss-Limit\TOSolutionTemplate.xml" />
         <None Remove="logs\log.txt" />
@@ -53,6 +54,9 @@
         </Content>
         <Content Include="Format_Templates\Company-WinLoss-Limit\FeedbackTemplate.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Format_Templates\Company-WinLoss-Limit\ProblemsSolutionTemplate.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="Format_Templates\Company-WinLoss-Limit\TODesctiptionTemplate.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
