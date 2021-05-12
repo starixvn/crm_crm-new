@@ -64,13 +64,7 @@ namespace CRM.BackgroundJob.Services
 
             logService.LogInformation(string.Format("Start run problems account serivce with last LastLogID: {0}!", problemsAccountSetting.LastLogId));
 
-            var settingJobStatus = new List<SystemSettingItem>
-                {
-                    new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Running },
-                    new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
-                };
-
-            await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ProblemsAccount);
+            await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running);
 
             var custCategory = await customerService.GetCustCategoryInfor(problemsAccountSetting, isUAT);
             var custIds = custCategory.Select(x => x.CustID).Distinct();
@@ -80,22 +74,25 @@ namespace CRM.BackgroundJob.Services
             {
                 logService.LogInformation(string.Format("Import problems account doesn't have any data with custId: {0} headlineName: {1}!",
                    string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
-                await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv);
+                await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed);
                 return;
             }
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
-            foreach (ProblemsAccountAutoFeedbackInfor problemsAccount in problemsAccountInfor)
+            var groupProblemsAccountByHeadlineId = problemsAccountInfor.GroupBy(x => x.HeadlineID).Select(y=>y.ToList());
+            foreach (IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts in groupProblemsAccountByHeadlineId)
             {
                     await CreateProblemsAccountFeedbackCreditAsync(
-                    problemsAccount,
+                    problemsAccounts,
                     settings,
                     settingMappings
                 );
             }
+            var lastLogIdName = isUAT ? "LastLogIdUAT" : "LastLogID";
+            var maxLastLogId = custCategory.Max(x => x.LogID);
 
-            await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv);
+            await EditSystemSettingUpdateLastLogIdAsync(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxLastLogId);
 
             var endTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff",
                                             CultureInfo.InvariantCulture);
@@ -103,7 +100,7 @@ namespace CRM.BackgroundJob.Services
         }
 
         protected internal virtual async Task CreateProblemsAccountFeedbackCreditAsync(
-           ProblemsAccountAutoFeedbackInfor problemsAccount,
+           IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts,
            IEnumerable<SettingItem> settings,
            IEnumerable<SystemSettingMapping> settingMappings)
         {
@@ -137,21 +134,19 @@ namespace CRM.BackgroundJob.Services
                 AutoField1 = string.Empty,
                 AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField3 = $"{Environment.NewLine}System ID: ",
-                PALogID = problemsAccount.LogID.ToString(),
-                CustomerXml = string.Format(DefaultValue.CustomerXml, problemsAccount.HeadlineID, problemsAccount.HeadlineName),
+                PALogID = string.Join(",", problemsAccounts.Select(x=>x.LogID)),
+                CustomerXml = GetCustomerXml(problemsAccounts),
                 ProductXml = GetProductXml(settings),
-                Solution = GetSolution(problemsAccount),
-                RelatedCustomerXml = GetRelatedCustomerXml(problemsAccount),
-                ListOrigCustIds = string.Join(",", problemsAccount.CustID),
+                Solution = GetSolution(problemsAccounts),
+                RelatedCustomerXml = GetRelatedCustomerXml(problemsAccounts),
+                ListOrigCustIds = string.Join(",", problemsAccounts.Select(x=> x.CustID)),
                 Description = GetDescription()
             };
-
-            logService.LogInformation(string.Format("end create problems account feedback custID: {0}!", problemsAccount.CustID));
-            await CheckValidParamsAndInsertFeedbackAsync(problemsAccount, criteria);
+            await CheckValidParamsAndInsertFeedbackAsync(problemsAccounts, criteria);
         }
 
         protected internal virtual async Task CheckValidParamsAndInsertFeedbackAsync(
-            ProblemsAccountAutoFeedbackInfor problemsAccount,
+            IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts,
             CreateMutipleFeedbackCommand criteria)
         {
             var checkValidParamBeforeInsert = commonFeedback.CheckFeedbackValidParams(criteria);
@@ -160,7 +155,7 @@ namespace CRM.BackgroundJob.Services
                 var messageInvalid = "Invalid Params: " + checkValidParamBeforeInsert.Item2;
                 logService.LogInformation(string.Format("Invalid Params. @Categorystr: {0} @Category: {1} @Product: {2} @StatusID: {3} @SubCategorystr:{4} @ResponseID:{5} @StationID:{6}",
                         criteria.CategoryIds, criteria.CategoryXml, criteria.ProductXml, criteria.StatusId, criteria.SubCategoryIds, criteria.ResponseId, criteria.StationId));
-                await transactionService.EditProblemsAccountFeedbackInfoAsync(problemsAccount.LogID.ToString(), CreateFeedbackJobStatus.Fail, messageInvalid);
+                await transactionService.EditProblemsAccountFeedbackInfoAsync(string.Join(",", problemsAccounts.Select(x=>x.LogID)), CreateFeedbackJobStatus.Fail, messageInvalid);
                 return;
             }
             try
@@ -170,23 +165,20 @@ namespace CRM.BackgroundJob.Services
                 if (commandResult.IsSuccessful)
                 {
                     logService.LogInformation(string.Format("Insert feedback problems account successfully. HeadlineId: {0} logID:{1}",
-                        problemsAccount.HeadlineID, problemsAccount.LogID));
+                        string.Join(",", problemsAccounts.Select(x => x.HeadlineID)), string.Join(",", problemsAccounts.Select(x => x.LogID))));
                 }
                 else
                 {
-                    logService.LogInformation(string.Format("Insert feedback problems account. HeadlineId: {0} logID: {1}",
-                        problemsAccount.HeadlineID, problemsAccount.LogID));
+                    logService.LogInformation(string.Format("Insert feedback failed problems account. HeadlineId: {0} logID:{1}",
+                        string.Join(",", problemsAccounts.Select(x => x.HeadlineID)), string.Join(",", problemsAccounts.Select(x => x.LogID))));
 
-                    await transactionService.EditProblemsAccountFeedbackInfoAsync(problemsAccount.LogID.ToString(), CreateFeedbackJobStatus.Fail, commandResult.Message);
+                    await transactionService.EditProblemsAccountFeedbackInfoAsync(string.Join(",", problemsAccounts.Select(x => x.LogID)), CreateFeedbackJobStatus.Fail, commandResult.Message);
                     await logService.ErrorAsync(commandResult, criteria);
                 }
             }
             catch (Exception ex)
             {
-                logService.LogInformation(string.Format("Insert feedback problems account failed. HeadlineId: {0} logID:{1}",
-                    problemsAccount.HeadlineID,
-                    problemsAccount.LogID));
-                await transactionService.EditProblemsAccountFeedbackInfoAsync(problemsAccount.LogID.ToString(), CreateFeedbackJobStatus.Fail, ex.Message);
+                await transactionService.EditProblemsAccountFeedbackInfoAsync(string.Join(",", problemsAccounts.Select(x => x.LogID)), CreateFeedbackJobStatus.Fail, ex.Message);
                 await logService.ErrorAsync(ex);
             }
         }
@@ -201,12 +193,24 @@ namespace CRM.BackgroundJob.Services
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
-        protected internal virtual string GetRelatedCustomerXml(ProblemsAccountAutoFeedbackInfor problemsAccount)
+        protected internal virtual string GetRelatedCustomerXml(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
         {
             const string XmlTemplate = DefaultValue.RelatedCustomerXml;
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            stringBuilder.AppendFormat(XmlTemplate, problemsAccount.HeadlineID, problemsAccount.RelatedCustID, problemsAccount.UserName);
+            foreach(var problemsAccount in problemsAccounts)
+            {
+                stringBuilder.AppendFormat(XmlTemplate, problemsAccount.HeadlineID, problemsAccount.RelatedCustID, problemsAccount.UserName);
+            }
+            return stringBuilder.Append(Constants.EndRootTag).ToString();
+        }
 
+        protected internal virtual string GetCustomerXml(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
+        {
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            foreach (var problemsAccount in problemsAccounts)
+            {
+                stringBuilder.AppendFormat(DefaultValue.CustomerXml, problemsAccount.HeadlineID, problemsAccount.HeadlineName);
+            }
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
@@ -218,20 +222,21 @@ namespace CRM.BackgroundJob.Services
             return product ?? new SettingItem { SettingId = Constants.ProductNA };
         }
 
-        protected internal virtual string GetSolution(ProblemsAccountAutoFeedbackInfor problemsAccount)
+        protected internal virtual string GetSolution(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
         {
             var stringBuilder = new StringBuilder();
-            var categoryNameEN = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), Language.en_US);
-            var categoryNameSC = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), Language.zh_CN);
-            var categoryNameYN = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), Language.vi_VN);
-            //var templateContent = "- {0}: {1}.";
-            //var contentEn = categoryNameEN
-            var content = problemsAccount.IsVip ? categoryNameYN : categoryNameSC;
+            var stringBuilderContent = new StringBuilder();
+            var templateContent = "- {0}: {1}. {2}";
+            var languageContent = problemsAccounts.FirstOrDefault().IsVip ? Language.vi_VN : Language.zh_CN;
             var template = commonFeedback.GetFeedbackTemplates<SolutionTemplate>(templateXml);
-            var solutionTemplate = problemsAccount.IsVip ? template.SolutionYN : template.SolutionSC;
-            stringBuilder.AppendFormat(template.SolutionEN, categoryNameEN, Constants.Break);
-            stringBuilder.Append(Constants.Break);
-            stringBuilder.AppendFormat(solutionTemplate, content, Constants.Break);
+
+            foreach (var problemsAccount in problemsAccounts)
+            {
+                var categoryNameEN = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), languageContent);
+                var categoryNameSC = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), languageContent);
+                var categoryNameYN = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), languageContent);
+            }
+
             return stringBuilder.ToString();
         }
 
@@ -242,12 +247,25 @@ namespace CRM.BackgroundJob.Services
             return stringBuilder.ToString();
         }
 
-        protected internal virtual async Task<CommandResult> EditSystemSettingAsync(string JobStatusNameEnv, string LastRuntimeNameEnv)
+        protected internal virtual async Task<CommandResult> EditSystemSettingAsync(string JobStatusNameEnv, 
+            string LastRuntimeNameEnv, string JobStatusValue)
+        {
+            var settingJobStatus = new List<SystemSettingItem>
+            {
+                new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatusValue},
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+            };
+            return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ProblemsAccount);
+        }
+
+        protected internal virtual async Task<CommandResult> EditSystemSettingUpdateLastLogIdAsync(string JobStatusNameEnv, string LastRuntimeNameEnv,
+            string lastLogIdName, int maxLastLogId)
         {
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
                 new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = lastLogIdName, Value = maxLastLogId.ToString() },
             };
             return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ProblemsAccount);
         }

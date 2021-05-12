@@ -23,7 +23,7 @@
         <Setting Key="Acc_CRM_GroupHeadlineSel" SpName="Acc_CRM_GroupHeadlineSel" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_SystemSettingMappingSel" SpName="Acc_CRM_SystemSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerFeedbackIns" SpName="Acc_CRM_CustomerFeedbackIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple_UAT1" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot">
         <Setting Key="Acc_CRM_Chatbot_SystemSetting_Sel" SpName="Acc_CRM_Chatbot_SystemSetting_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -65,9 +65,9 @@
         <Setting Key="Acc_CRM_TOControl_CustNotificationSel" SpName="Acc_CRM_TOControl_CustNotificationSel" DbName="DBCUST.CustDB.bodbAdminNet" />
     </Function>
     <Function Name="ProblemsAccount">
-        <Setting Key="Acc_CRM_ProblemAccount_SystemSettingSel" SpName="Acc_CRM_ProblemAccount_SystemSettingSel_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ProblemAccount_CustCategorySel" SpName="Acc_CRM_ProblemAccount_CustCategorySel_xpre" DbName="DBCUST.CustDB.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ProblemAccount_SystemSettingSel" SpName="Acc_CRM_ProblemAccount_SystemSettingSel_UAT1" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ProblemAccount_CustCategorySel" SpName="Acc_CRM_ProblemAccount_CustCategorySel_UAT1" DbName="DBCUST.CustDB.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns_UAT1" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd_UAT1" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
 </Functions>
