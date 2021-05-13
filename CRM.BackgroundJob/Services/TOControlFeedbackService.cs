@@ -37,7 +37,7 @@
 #pragma warning disable S107 // Methods should not have too many parameters
 
         public TOControlFeedbackService(
-           IOptionsSnapshot<AppJobSettings> appSettings,
+            IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             ISystemSettingService systemSettingService,

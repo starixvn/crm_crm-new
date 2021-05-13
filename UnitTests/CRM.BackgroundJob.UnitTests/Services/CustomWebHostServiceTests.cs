@@ -31,7 +31,10 @@
             // Assert
             jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
             jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForWinLossLimit);
-            service.Received().Protected("RunHangfireJobs");
+            jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForTurnoverControl);
+            jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForProblemsAccount);
+            service.Received().Protected("RemoveRecurringJobs");
+            service.Received().Protected("RunHangfireJobs"); 
         }
 
 
@@ -241,6 +244,27 @@
             // Assert
             recurringJob.Received().AddOrUpdate("Create Feedback For TurnOver Controll",
                 Arg.Is<Job>(job => job.Method.Name == "CreateFeedbackForTurnoverControl"),
+                "* * * * *",
+                Arg.Any<RecurringJobOptions>());
+        }
+
+        [Fact]
+        public void RunHangfireJobs_EnabledCreateFeedbackForProblemsAccount_ExpectedAddRecurringJob()
+        {
+            // Arrange
+            var jobSettings = new List<HangfireJobSetting>
+            {
+                new HangfireJobSetting { JobName = "CreateFeedbackForProblemsAccount", IsEnabled = true }
+            };
+            var service = MockService(jobSettings);
+            service.Protected("IsEnabledJob", "CreateFeedbackForProblemsAccount").Returns(true);
+
+            // Act
+            service.Public_RunHangfireJobs();
+
+            // Assert
+            recurringJob.Received().AddOrUpdate("Create Feedback For Problems Account",
+                Arg.Is<Job>(job => job.Method.Name == "CreateFeedbackForProblemsAccount"),
                 "* * * * *",
                 Arg.Any<RecurringJobOptions>());
         }

@@ -72,7 +72,6 @@
 
         #endregion CreateFeedbackForVoidingAbnormalBet
 
-
         #region CreateFeedbackForWinLossLimit
 
         [Fact]
@@ -123,7 +122,57 @@
 
         #endregion CreateFeedbackForTurnoverControl
 
-        #region CreateFeedbackForWinLossLimit
+        #region CreateFeedbackForProblemsAccount
+
+        [Fact]
+        public async Task CreateFeedbackForProblemsAccount_Exception_ExpectedWriteLog()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            maintenanceService.When(x => x.GetUnderMaintenanceTimeAsync()).Throw(exception);
+
+            // Act
+            await service.CreateFeedbackForProblemsAccount();
+
+            // Assert
+            await logService.Received().ErrorAsync(exception);
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForProblemsAccount_IsUnderMaintenance_ExpectedWriteLog()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = true };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForProblemsAccount();
+
+            // Assert
+            logService.Received().LogInformation("UM time.");
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForProblemsAccount_WhenCalled_ExpectedProblemsAcccountExecuteJobAsync()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = false };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForProblemsAccount();
+
+            // Assert
+            await winlossService.Received().ProblemsAcccountExecuteJobAsync();
+        }
+
+        #endregion CreateFeedbackForProblemsAccount
+
+        #region CreateFeedbackForTurnoverControl
 
         [Fact]
         public async Task CreateFeedbackForTurnoverControl_Exception_ExpectedWriteLog()
@@ -157,7 +206,7 @@
         }
 
         [Fact]
-        public async Task CreateFeedbackForTurnoverControl_WhenCalled_ExpectedCreateWinLossFeedback()
+        public async Task CreateFeedbackForTurnoverControl_WhenCalled_ExpectedCreateFeedbackForTurnoverControl()
         {
             // Arrange
             var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = false };

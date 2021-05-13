@@ -1,11 +1,6 @@
-﻿using Fanex.Data.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CRM.BackgroundJob.Criteria.ProblemsAccount
+﻿namespace CRM.BackgroundJob.Criteria.ProblemsAccount
 {
+    using Fanex.Data.Repository;
     public class GetProblemsAccountCustCategoryCriteria : CriteriaBase
     {
         public int LastLogID { get; set; }

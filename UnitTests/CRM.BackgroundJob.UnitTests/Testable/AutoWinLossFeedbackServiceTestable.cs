@@ -1,0 +1,44 @@
+﻿
+namespace CRM.BackgroundJob.UnitTests.Testable
+{
+    using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Services;
+    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Models;
+    using Fanex.CRM.BackgroundJob.Services;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Options;
+    using System.Threading.Tasks;
+
+    public class AutoWinLossFeedbackServiceTestable : AutoWinLossFeedbackService
+    {
+        public AutoWinLossFeedbackServiceTestable(
+            IOptionsSnapshot<AppJobSettings> appSettings,
+            IJobRunningChecker jobRunningChecker,
+            ISystemSettingService systemSettingService,
+            IWinLossFeedbackService winLossService,
+            ICRMLogService logService,
+            ITOControlFeedbackService turnoverService,
+            IProblemsAccountFeedbackService problemsAccountFeedbackService,
+            IConfiguration configuration
+            )
+            : base(appSettings,
+                jobRunningChecker,
+                systemSettingService,
+                winLossService,
+                logService,
+                turnoverService,
+                problemsAccountFeedbackService,
+                configuration)
+        {
+
+        }
+
+        public async Task Public_ProblemsAcccountRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
+            bool isRunningLive, ProblemsAccountSetting problemsAccountSetting, string Environment)
+        {
+            await base.ProblemsAcccountRunJobByEnviromentAsync(isUAT, isRunningUAT,
+                isRunningLive, problemsAccountSetting, Environment);
+        }
+    }
+}

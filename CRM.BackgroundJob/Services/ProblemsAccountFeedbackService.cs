@@ -11,7 +11,6 @@ namespace CRM.BackgroundJob.Services
     using Microsoft.Extensions.Options;
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -33,6 +32,8 @@ namespace CRM.BackgroundJob.Services
         private readonly IWinLossTransactionService transactionService;
 
         private readonly string templateXml = "ProblemsSolutionTemplate.xml";
+        private readonly int maxUserNameInOneFb = 3;
+
 #pragma warning disable S107 // Methods should not have too many parameters
         public ProblemsAccountFeedbackService(
             IOptionsSnapshot<AppJobSettings> appSettings,
@@ -60,12 +61,9 @@ namespace CRM.BackgroundJob.Services
             DateTime LastRuntimeEnv,  string LastRuntimeNameEnv, 
             string JobStatusNameEnv, string Environment)
         {
-            string startTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-
-            logService.LogInformation(string.Format("Start run problems account serivce with last LastLogID: {0}!", problemsAccountSetting.LastLogId));
+            logService.LogInformation(string.Format("Start run problems account serivce with last LastLogID: {0} isUAT: {1}!", problemsAccountSetting.LastLogId, isUAT));
 
             await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running);
-
             var custCategory = await customerService.GetCustCategoryInfor(problemsAccountSetting, isUAT);
             var custIds = custCategory.Select(x => x.CustID).Distinct();
             var headlines = await customerService.GetGroupHeadlineAsync(custIds);
@@ -80,23 +78,77 @@ namespace CRM.BackgroundJob.Services
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
-            var groupProblemsAccountByHeadlineId = problemsAccountInfor.GroupBy(x => x.HeadlineID).Select(y=>y.ToList());
+            var groupProblemsAccountByHeadlineId = problemsAccountInfor.GroupBy(x => x.HeadlineID);
+            var cateKey = "";
             foreach (IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts in groupProblemsAccountByHeadlineId)
             {
+                var groupCategoryProblemsAccount = problemsAccounts.GroupBy(x => x.CategoryID);
+                foreach (var categoryProblemAccount in groupCategoryProblemsAccount)
+                {
+                    var distinctUserName = categoryProblemAccount.GroupBy(x => x.UserName).Select(group => group.First()).ToList();
+                    if (distinctUserName.Count > maxUserNameInOneFb)
+                    {
+                        cateKey = categoryProblemAccount.Key.ToString();
+                        await CreateProblemsAccountFeedbackByBatchAsync(categoryProblemAccount, settings, settingMappings);
+                    }
+                }
+                if(!string.IsNullOrEmpty(cateKey))
+                {
+                    var problemsAccountsRemain = problemsAccounts.Where(x => x.CategoryID.ToString() != cateKey);
+                    if(problemsAccountsRemain.Any())
+                    {
+                        await CreateProblemsAccountFeedbackCreditAsync(
+                              problemsAccountsRemain,
+                              settings,
+                              settingMappings
+                              );
+                    }    
+                }
+                else
+                {
                     await CreateProblemsAccountFeedbackCreditAsync(
-                    problemsAccounts,
-                    settings,
-                    settingMappings
-                );
+                       problemsAccounts,
+                       settings,
+                       settingMappings
+                    );
+                }    
             }
             var lastLogIdName = isUAT ? "LastLogIdUAT" : "LastLogID";
             var maxLastLogId = custCategory.Max(x => x.LogID);
 
             await EditSystemSettingUpdateLastLogIdAsync(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxLastLogId);
+            logService.LogInformation(string.Format("end service problems account serivce with max last LastLogID: {0}!", maxLastLogId));
+        }
 
-            var endTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff",
-                                            CultureInfo.InvariantCulture);
-            var test = "";
+        protected internal virtual async Task CreateProblemsAccountFeedbackByBatchAsync(
+           IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts,
+           IEnumerable<SettingItem> settings,
+           IEnumerable<SystemSettingMapping> settingMappings
+           )
+        {
+            var countProblemsAccount = problemsAccounts.ToList().Count;
+            var batchCreateFbPerUSer = (int)Math.Ceiling((double)countProblemsAccount / maxUserNameInOneFb);
+            var startRange = 0;
+            for (int i = 0; i < batchCreateFbPerUSer; i++)
+            {
+                if (i == batchCreateFbPerUSer - 1)
+                {
+                    await CreateProblemsAccountFeedbackCreditAsync(
+                        problemsAccounts.Skip(maxUserNameInOneFb * (batchCreateFbPerUSer - 1)),
+                        settings,
+                        settingMappings
+                    );
+                }
+                else
+                {
+                    await CreateProblemsAccountFeedbackCreditAsync(
+                          problemsAccounts.ToList().GetRange(startRange, maxUserNameInOneFb),
+                          settings,
+                          settingMappings
+                       );
+                    startRange += maxUserNameInOneFb;
+                }    
+            }
         }
 
         protected internal virtual async Task CreateProblemsAccountFeedbackCreditAsync(
@@ -139,7 +191,7 @@ namespace CRM.BackgroundJob.Services
                 ProductXml = GetProductXml(settings),
                 Solution = GetSolution(problemsAccounts),
                 RelatedCustomerXml = GetRelatedCustomerXml(problemsAccounts),
-                ListOrigCustIds = string.Join(",", problemsAccounts.Select(x=> x.CustID)),
+                ListOrigCustIds = string.Join(",", problemsAccounts.Select(x=>x.CustID)),
                 Description = GetDescription()
             };
             await CheckValidParamsAndInsertFeedbackAsync(problemsAccounts, criteria);
@@ -197,7 +249,8 @@ namespace CRM.BackgroundJob.Services
         {
             const string XmlTemplate = DefaultValue.RelatedCustomerXml;
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            foreach(var problemsAccount in problemsAccounts)
+            var distinctRelatedAndUserName = problemsAccounts.GroupBy(x => new { x.HeadlineID, x.RelatedCustID, x.UserName }).Select(group => group.First()).ToList();
+            foreach (var problemsAccount in distinctRelatedAndUserName)
             {
                 stringBuilder.AppendFormat(XmlTemplate, problemsAccount.HeadlineID, problemsAccount.RelatedCustID, problemsAccount.UserName);
             }
@@ -206,37 +259,43 @@ namespace CRM.BackgroundJob.Services
 
         protected internal virtual string GetCustomerXml(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
         {
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            foreach (var problemsAccount in problemsAccounts)
-            {
-                stringBuilder.AppendFormat(DefaultValue.CustomerXml, problemsAccount.HeadlineID, problemsAccount.HeadlineName);
-            }
-            return stringBuilder.Append(Constants.EndRootTag).ToString();
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendFormat(DefaultValue.CustomerXml, problemsAccounts.FirstOrDefault().HeadlineID, problemsAccounts.FirstOrDefault().HeadlineName);
+            return stringBuilder.ToString();
         }
 
         protected internal virtual SettingItem GetProblemsSportsbookProduct(IEnumerable<SettingItem> settings)
         {
             var product = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Sportsbook, StringComparison.OrdinalIgnoreCase));
-
             return product ?? new SettingItem { SettingId = Constants.ProductNA };
         }
 
         protected internal virtual string GetSolution(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
         {
             var stringBuilder = new StringBuilder();
-            var stringBuilderContent = new StringBuilder();
-            var templateContent = "- {0}: {1}. {2}";
+            var stringBuilderContentEN = new StringBuilder();
+            var stringBuilderContentYNSC = new StringBuilder();
+            const string templateContent = "- {0}: {1}.";
             var languageContent = problemsAccounts.FirstOrDefault().IsVip ? Language.vi_VN : Language.zh_CN;
             var template = commonFeedback.GetFeedbackTemplates<SolutionTemplate>(templateXml);
-
-            foreach (var problemsAccount in problemsAccounts)
+            var templateYNSC = problemsAccounts.FirstOrDefault().IsVip ? template.SolutionYN : template.SolutionSC;
+            var groupCategoryProblemsAccount = problemsAccounts.GroupBy(x => x.CategoryID);
+            foreach (var categoryProblemAccount in groupCategoryProblemsAccount)
             {
-                var categoryNameEN = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), languageContent);
-                var categoryNameSC = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), languageContent);
-                var categoryNameYN = commonFeedback.GetCategogyName(problemsAccount.CategoryID.ToString(), languageContent);
+                var categoryNameEN = commonFeedback.GetCategogyName(categoryProblemAccount.Key.ToString(), Language.en_US);
+                var categoryNameYNSC = commonFeedback.GetCategogyName(categoryProblemAccount.Key.ToString(), languageContent);
+                var distinctUserName = categoryProblemAccount.GroupBy(x => x.UserName).Select(group => group.First()).ToList();
+                var listUserNames = string.Join(", ", distinctUserName.Select(x => x.UserName));
+                stringBuilderContentEN.AppendFormat(templateContent, categoryNameEN, listUserNames);
+                stringBuilderContentEN.Append(Constants.Break);
+                stringBuilderContentYNSC.AppendFormat(templateContent, categoryNameYNSC, listUserNames);
+                stringBuilderContentYNSC.Append(Constants.Break);
             }
-
+            stringBuilder.AppendFormat(template.SolutionEN, stringBuilderContentEN, Constants.Break);
+            stringBuilder.Append(Constants.Break);
+            stringBuilder.AppendFormat(templateYNSC, stringBuilderContentYNSC, Constants.Break);
+            stringBuilder.Append(Constants.Break);
             return stringBuilder.ToString();
         }
 
@@ -244,6 +303,7 @@ namespace CRM.BackgroundJob.Services
         { 
             var stringBuilder = new StringBuilder();
             stringBuilder.Append("Announcement sent to Headline and informed our related department marked their member as problem account.");
+            stringBuilder.Append(Constants.LineBreak);
             return stringBuilder.ToString();
         }
 

@@ -176,7 +176,7 @@
             }
         }
 
-        public async Task ProblemsAcccountRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
+        protected internal virtual async Task ProblemsAcccountRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
             bool isRunningLive, ProblemsAccountSetting problemsAccountSetting, string Environment)
         {
             var LastRuntimeEnv = isUAT ? problemsAccountSetting.LastRuntimeUAT : problemsAccountSetting.LastRuntime;
@@ -201,6 +201,7 @@
                 isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount);
                 if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
                 {
+                    logService.LogInformation("Update  status and return serive problems account.");
                     logService.LogInformation("Return Problems account service.");
                     var settingJobStatus = new List<SystemSettingItem>
                         {

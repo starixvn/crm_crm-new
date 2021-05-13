@@ -4,12 +4,15 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
+    using CRM.BackgroundJob.UnitTests.Testable;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
@@ -22,6 +25,8 @@
         private IWinLossFeedbackService winLossService;
         private ICRMLogService logService;
         private ITOControlFeedbackService tOControlFeedbackService;
+        private IProblemsAccountFeedbackService problemsAccountFeedbackService;
+        private IConfiguration configuration;
         private readonly IFixture fixture = new Fixture();
 
         #region WinLossExecuteJobAsync
@@ -221,9 +226,203 @@
 
         #endregion TurnoverControlExecuteJobAsync
 
+        #region ProblemsAcccountExecuteJobAsync
+        [Fact]
+        public async Task ProblemsAcccountExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
+        {
+            // Arrange
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            systemSettingService.When(x => x.GetProblemsAccountSettingAsync()).Throw(exception);
+
+            // Assert
+            await service.ProblemsAcccountExecuteJobAsync();
+
+            // Act
+            await logService.Received().ErrorAsync(exception);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForProblemsAccount);
+        }
+
+        [Fact]
+        public async Task ProblemsAcccountExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new ProblemsAccountSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetProblemsAccountSettingAsync().Returns(setting);
+
+            // Act
+            await service.ProblemsAcccountExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service Problems Account is shutdown.");
+        }
+
+        [Fact]
+        public async Task ProblemsAcccountExecuteJobAsync_LIVEEnvironment_ExpectedCallExactFunction()
+        {
+            // Arrange
+            var setting = new ProblemsAccountSetting { 
+                ServiceFlag = true,
+                JobStatus = "running",
+                JobStatusUAT = "completed"
+            };
+            var service = GetService();
+            var env = Constants.DefaultEnvironment;
+            systemSettingService.GetProblemsAccountSettingAsync().Returns(setting);
+            configuration.GetValue<string>("SiteEnvironment").Returns(env);
+
+            // Act
+            await service.ProblemsAcccountExecuteJobAsync();
+
+            // Assert
+            service.Received().Protected("ProblemsAcccountRunJobByEnviromentAsync",
+                false, false, true, setting, Constants.DefaultEnvironment
+                );
+        }
+
+        [Fact]
+        public async Task ProblemsAcccountRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        {
+            // Arrange
+            var setting = new ProblemsAccountSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(false, true, false , setting, "LIVE");
+
+            // Assert
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task ProblemsAcccountRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        {
+            // Arrange
+            var setting = new ProblemsAccountSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(true, true, false, setting, "UAT");
+
+            // Assert
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task ProblemsAcccountRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ProblemsAccountSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now.AddMinutes(-6),
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(true, true, false, setting, "UAT");
+
+            // Assert
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_ProblemsAccount);
+        }
+
+        [Fact]
+        public async Task ProblemsAcccountRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ProblemsAccountSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now.AddMinutes(-6),
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(true, false, true, setting, "UAT");
+
+            // Assert
+            logService.Received().LogInformation("Update  status and return serive problems account.");
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_ProblemsAccount);
+        }
+
+        [Fact]
+        public async Task ProblemsAcccountRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsNotRunning_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ProblemsAccountSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(true, false, false, setting, "UAT");
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForProblemsAccount);
+            await problemsAccountFeedbackService.Received().CreateFeedbackForProblemsAccountAsync(setting, false, setting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus,"LIVE");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForProblemsAccount);
+        }
+
+        [Fact]
+        public async Task ProblemsAcccountRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsNotRunning_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ProblemsAccountSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetTurnoverSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(true, false, false, setting, "UAT");
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForProblemsAccount);
+            await problemsAccountFeedbackService.Received().CreateFeedbackForProblemsAccountAsync(setting, true, setting.LastRuntimeUAT, SystemSettingName.LastRuntimeUAT, SystemSettingName.JobStatusUAT, "UAT");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForProblemsAccount);
+        }
+
+        #endregion ProblemsAcccountExecuteJobAsync
+
         #region Helpers
 
-        private AutoWinLossFeedbackService GetService()
+        private AutoWinLossFeedbackServiceTestable GetService()
         {
             appSettings = new AppJobSettings
             {
@@ -236,13 +435,17 @@
             winLossService = Substitute.For<IWinLossFeedbackService>();
             logService = Substitute.For<ICRMLogService>();
             tOControlFeedbackService = Substitute.For<ITOControlFeedbackService>();
-            return new AutoWinLossFeedbackService(
+            problemsAccountFeedbackService = Substitute.For<IProblemsAccountFeedbackService>();
+            configuration = Substitute.For<IConfiguration>();
+            return Substitute.For<AutoWinLossFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
                 systemSettingService,
                 winLossService,
                 logService,
-                tOControlFeedbackService);
+                tOControlFeedbackService,
+                problemsAccountFeedbackService,
+                configuration);
         }
 
         #endregion Helpers
