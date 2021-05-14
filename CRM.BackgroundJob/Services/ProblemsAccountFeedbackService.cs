@@ -274,12 +274,11 @@ namespace CRM.BackgroundJob.Services
         protected internal virtual string GetSolution(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
         {
             var stringBuilder = new StringBuilder();
-            var stringBuilderContentEN = new StringBuilder();
-            var stringBuilderContentYNSC = new StringBuilder();
-            const string templateContent = "- {0}: {1}.";
+            var stringBuilderContent = new StringBuilder();
+            const string templateContent = "- {0}/{1}: {2}.";
             var languageContent = problemsAccounts.FirstOrDefault().IsVip ? Language.vi_VN : Language.zh_CN;
             var template = commonFeedback.GetFeedbackTemplates<SolutionTemplate>(templateXml);
-            var templateYNSC = problemsAccounts.FirstOrDefault().IsVip ? template.SolutionYN : template.SolutionSC;
+            var templateYNSC = problemsAccounts.FirstOrDefault().IsVip ? template.SolutionENYN : template.SolutionENSC;
             var groupCategoryProblemsAccount = problemsAccounts.GroupBy(x => x.CategoryID);
             foreach (var categoryProblemAccount in groupCategoryProblemsAccount)
             {
@@ -287,15 +286,10 @@ namespace CRM.BackgroundJob.Services
                 var categoryNameYNSC = commonFeedback.GetCategogyName(categoryProblemAccount.Key.ToString(), languageContent);
                 var distinctUserName = categoryProblemAccount.GroupBy(x => x.UserName).Select(group => group.First()).ToList();
                 var listUserNames = string.Join(", ", distinctUserName.Select(x => x.UserName));
-                stringBuilderContentEN.AppendFormat(templateContent, categoryNameEN, listUserNames);
-                stringBuilderContentEN.Append(Constants.Break);
-                stringBuilderContentYNSC.AppendFormat(templateContent, categoryNameYNSC, listUserNames);
-                stringBuilderContentYNSC.Append(Constants.Break);
+                stringBuilderContent.AppendFormat(templateContent, categoryNameEN, categoryNameYNSC, listUserNames);
+                stringBuilderContent.Append(Constants.Break);
             }
-            stringBuilder.AppendFormat(template.SolutionEN, stringBuilderContentEN, Constants.Break);
-            stringBuilder.Append(Constants.Break);
-            stringBuilder.AppendFormat(templateYNSC, stringBuilderContentYNSC, Constants.Break);
-            stringBuilder.Append(Constants.Break);
+            stringBuilder.AppendFormat(templateYNSC, stringBuilderContent, Constants.LineBreak);
             return stringBuilder.ToString();
         }
 

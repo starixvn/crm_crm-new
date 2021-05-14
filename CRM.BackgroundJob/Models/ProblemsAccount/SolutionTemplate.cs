@@ -5,8 +5,7 @@
     [XmlRoot("ROOT")]
     public class SolutionTemplate
     {
-        public string SolutionEN { get; set; }
-        public string SolutionSC { get; set; }
-        public string SolutionYN { get; set; }
+        public string SolutionENSC { get; set; }
+        public string SolutionENYN { get; set; }
     }
 }

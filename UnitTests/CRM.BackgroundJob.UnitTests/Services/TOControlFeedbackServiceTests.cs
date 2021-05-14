@@ -97,7 +97,7 @@
         #region CreateTOControlFeedbackAsync
 
         [Fact]
-        public async Task CreateTOControlFeedbackAsync__CreateNewCriteria_ExpectedToCallFunction()
+        public async Task CreateTOControlFeedbackAsync_CreateNewCriteria_ExpectedToCallFunction()
         {
             // Arrange
             var ToInfor = new TOControlFeedbackInfor

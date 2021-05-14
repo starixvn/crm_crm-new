@@ -52,6 +52,14 @@
             await base.CreateProblemsAccountFeedbackCreditAsync(problemsAccounts, settings, settingMappings);
         }
 
+        public async Task Public_CreateProblemsAccountFeedbackByBatchAsync(
+           IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts,
+           IEnumerable<SettingItem> settings,
+           IEnumerable<SystemSettingMapping> settingMappings)
+        {
+            await base.CreateProblemsAccountFeedbackByBatchAsync(problemsAccounts, settings, settingMappings);
+        }
+
         public async Task Public_CheckValidParamsAndInsertFeedbackAsync(
             IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts,
             CreateMutipleFeedbackCommand criteria)
