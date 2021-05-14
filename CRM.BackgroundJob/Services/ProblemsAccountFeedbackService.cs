@@ -32,7 +32,7 @@ namespace CRM.BackgroundJob.Services
         private readonly IWinLossTransactionService transactionService;
 
         private readonly string templateXml = "ProblemsSolutionTemplate.xml";
-        private readonly int maxUserNameInOneFb = 3;
+        private readonly int maxUserNameInOneFb = 250;
 
 #pragma warning disable S107 // Methods should not have too many parameters
         public ProblemsAccountFeedbackService(
