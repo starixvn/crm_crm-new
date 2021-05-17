@@ -114,10 +114,14 @@ namespace CRM.BackgroundJob.Services
                 }    
             }
             var lastLogIdName = isUAT ? "LastLogIdUAT" : "LastLogID";
-            var maxLastLogId = custCategory.Max(x => x.LogID);
-
-            await EditSystemSettingUpdateLastLogIdAsync(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxLastLogId);
-            logService.LogInformation(string.Format("end service problems account serivce with max last LastLogID: {0}!", maxLastLogId));
+            if(custCategory.Any())
+            {
+                var maxLastLogId = custCategory.Max(x => x.LogID);
+                await EditSystemSettingUpdateLastLogIdAsync(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxLastLogId);
+                return;
+            }
+            await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed);
+            logService.LogInformation("end service problems account serivce!");
         }
 
         protected internal virtual async Task CreateProblemsAccountFeedbackByBatchAsync(

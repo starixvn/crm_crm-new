@@ -363,7 +363,7 @@
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
 
             // Act
-            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(true, false, true, setting, "UAT");
+            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(false, true, true, setting, "LIVE");
 
             // Assert
             logService.Received().LogInformation("Update  status and return serive problems account.");
@@ -386,7 +386,7 @@
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
 
             // Act
-            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(true, false, false, setting, "UAT");
+            await service.Public_ProblemsAcccountRunJobByEnviromentAsync(false, false, false, setting, "LIVE");
 
             // Assert
             await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForProblemsAccount);
