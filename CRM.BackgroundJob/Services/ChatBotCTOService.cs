@@ -13,7 +13,7 @@
 
     public interface IChatBotCTOService
     {
-        Task<IEnumerable<TOReachInfor>> GetChatbotCTOSettingInfoAsync(int LastLogId, int BatchSize);
+        Task<IEnumerable<TOReachInfor>> GetChatbotCTOSettingInfoAsync(long LastLogId, int BatchSize);
         Task<IEnumerable<TOSMAInfor>> GetChatbotCTOSMAInfoAsync(IEnumerable<TOReachInfor> tOReachInfors);
         Task<CommandResult> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
                                                   string Environment = Constants.DefaultEnvironment);
@@ -30,7 +30,7 @@
             this.baseService = baseService;
             this.commonFeedback = commonFeedback;
         }
-        public async Task<IEnumerable<TOReachInfor>> GetChatbotCTOSettingInfoAsync(int LastLogId, int BatchSize)
+        public async Task<IEnumerable<TOReachInfor>> GetChatbotCTOSettingInfoAsync(long LastLogId, int BatchSize)
         {
             var criteria = new GetTOControlSettingByLastLogIdCriteria
             {

@@ -35,7 +35,7 @@
 
         Tuple<int, int, string> GetCategorySubCategoryCWL(IEnumerable<SettingItem> settings, string settingValueName);
 
-        Task<CommandResult> EditFeedbackSystemSettingAsync(int LastLogID, string ServiceName);
+        Task<CommandResult> EditFeedbackSystemSettingAsync(long LastLogID, string ServiceName);
 
     }
     public class CommonFeedback : ICommonFeedback
@@ -139,7 +139,7 @@
                 new ValueTuple<bool, string>(false, stringBuilder.AppendFormat(invalid, invalidParams).ToString());
         }
 
-        public async Task<CommandResult> EditFeedbackSystemSettingAsync(int LastLogID, string ServiceName)
+        public async Task<CommandResult> EditFeedbackSystemSettingAsync(long LastLogID, string ServiceName)
         {
             var settingJobStatus = new List<SystemSettingItem>
             {

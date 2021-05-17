@@ -3,7 +3,7 @@
     using Fanex.Data.Repository;
     public class GetTOControlSettingByLastLogIdCriteria : CriteriaBase
     {
-        public int LastLogId { get; set; }
+        public long LastLogId { get; set; }
         public int BatchSize { get; set; }
 
         public override string GetSettingKey() => "Acc_Chatbot_TOControlSetting_Sel";

@@ -12,7 +12,7 @@ namespace CRM.BackgroundJob.Services
 {
     public interface IChatBotCWLService
     {
-        Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(int LastLogId, int BatchSize);
+        Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(long LastLogId, int BatchSize);
         Task<CommandResult> ImportCWLLogInfoAsync(
             IEnumerable<ChatBotCWLInfo> cwlInfors, 
             string Environment = Constants.DefaultEnvironment);
@@ -28,7 +28,7 @@ namespace CRM.BackgroundJob.Services
             this.remotingRefService = remotingRefService;
         }
 
-        public async Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(int LastLogId, int BatchSize)
+        public async Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(long LastLogId, int BatchSize)
         {
             var criteria = new GetCWLInfoByLogIdCriteria
             {

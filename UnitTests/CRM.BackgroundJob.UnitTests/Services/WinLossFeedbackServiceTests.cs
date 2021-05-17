@@ -103,7 +103,7 @@
             await service.CreateFeedbackForWinLossLimitAsync(setting);
 
             // Assert
-            await commonFeedback.Received().EditFeedbackSystemSettingAsync(Arg.Any<int>(), Arg.Any<string>());
+            await commonFeedback.Received().EditFeedbackSystemSettingAsync(Arg.Any<long>(), Arg.Any<string>());
             service.Received().Protected(
                 "CreateWinLossFeedbackCreditAsync",
                 Arg.Any<bool>(),

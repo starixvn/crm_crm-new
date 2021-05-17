@@ -145,7 +145,7 @@
             var commandResult = new CommandResult { Code = 1};
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnvironment).Returns(setting);
-            chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(tOReachInfors);
+            chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(tOReachInfors);
             chatBotCTOService.GetChatbotCTOSMAInfoAsync(Arg.Any<IEnumerable<TOReachInfor>>()).Returns(tOSMAInfors);
 
             chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnvironment).Returns(commandResult);
@@ -168,7 +168,7 @@
             var commandResult = new CommandResult { Code = 0 };
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Constants.DefaultEnvironment).Returns(setting);
-            chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(tOReachInfors);
+            chatBotCTOService.GetChatbotCTOSettingInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(tOReachInfors);
             chatBotCTOService.GetChatbotCTOSMAInfoAsync(Arg.Any<IEnumerable<TOReachInfor>>()).Returns(tOSMAInfors);
 
             chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnvironment).Returns(commandResult);
@@ -204,7 +204,7 @@
             var commandResult = new CommandResult { Code = 1 };
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnvironment).Returns(setting);
-            chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(cwlInfors);
+            chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(cwlInfors);
             chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.DefaultEnvironment).Returns(commandResult);
 
             // Act
@@ -223,7 +223,7 @@
             var commandResult = new CommandResult { Code = 0 };
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Constants.DefaultEnvironment).Returns(setting);
-            chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(cwlInfors);
+            chatBotCWLService.GetChatbotCWLLogInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(cwlInfors);
             chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Constants.DefaultEnvironment).Returns(commandResult);
 
             // Act
@@ -259,7 +259,7 @@
             var commandResult = new CommandResult { Code = 1 };
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Constants.DefaultEnvironment).Returns(setting);
-            chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(problemsAcountInfors);
+            chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(problemsAcountInfors);
 
             chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Constants.DefaultEnvironment).Returns(commandResult);
 
@@ -279,7 +279,7 @@
             var commandResult = new CommandResult { Code = 0 };
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Constants.DefaultEnvironment).Returns(setting);
-            chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(problemsAcountInfors);
+            chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(problemsAcountInfors);
 
             chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Constants.DefaultEnvironment).Returns(commandResult);
 

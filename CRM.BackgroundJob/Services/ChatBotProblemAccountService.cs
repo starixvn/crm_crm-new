@@ -11,7 +11,7 @@
 
     public interface IChatBotProblemAccountService
     {
-        Task<IEnumerable<ProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(int LastLogId, int BatchSize);
+        Task<IEnumerable<ProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(long LastLogId, int BatchSize);
 
         Task<CommandResult> ImportProblemsAccountInfoAsync(IEnumerable<ProblemsAccountInfor> problemsAccount,
                                                   string Environment = Constants.DefaultEnvironment);
@@ -28,7 +28,7 @@
             this.commonFeedback = commonFeedback;
         }
 
-        public async Task<IEnumerable<ProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(int LastLogId, int BatchSize)
+        public async Task<IEnumerable<ProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(long LastLogId, int BatchSize)
         {
             var criteria = new GetProblemsAccountByLogId
             {

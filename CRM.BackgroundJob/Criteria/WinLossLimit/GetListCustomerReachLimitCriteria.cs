@@ -6,7 +6,7 @@
         public int BatchSize { get; set; }
         public bool ConfigUAT { get; set; }
         public bool ConfigPRO { get; set; }
-        public int LastLogID { get; set; }
+        public long LastLogID { get; set; }
         public bool IsCredit { get; set; }
         public bool IsDeposit { get; set; }
         public string Environment { get; set; }
