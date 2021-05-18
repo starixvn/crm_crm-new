@@ -53,11 +53,13 @@
         }
 
         public async Task Public_CreateProblemsAccountFeedbackByBatchAsync(
+           IEnumerable<ProblemsAccountAutoFeedbackInfor> categoryProblemAccount,
            IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts,
+           string cateKey,
            IEnumerable<SettingItem> settings,
            IEnumerable<SystemSettingMapping> settingMappings)
         {
-            await base.CreateProblemsAccountFeedbackByBatchAsync(problemsAccounts, settings, settingMappings);
+            await base.CreateProblemsAccountFeedbackByBatchAsync(categoryProblemAccount, problemsAccounts, cateKey, settings, settingMappings);
         }
 
         public async Task Public_CheckValidParamsAndInsertFeedbackAsync(

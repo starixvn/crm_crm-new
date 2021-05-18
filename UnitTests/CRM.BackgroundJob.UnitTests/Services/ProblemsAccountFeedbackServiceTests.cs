@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -143,12 +144,8 @@ namespace CRM.BackgroundJob.UnitTests.Services
             service.Received().Protected(
                 "CreateProblemsAccountFeedbackByBatchAsync",
                 Arg.Any<IEnumerable<ProblemsAccountAutoFeedbackInfor>>(),
-                Arg.Any<IEnumerable<SettingItem>>(),
-                Arg.Any<IEnumerable<SystemSettingMapping>>());
-
-            service.Received().Protected(
-                "CreateProblemsAccountFeedbackCreditAsync",
                 Arg.Any<IEnumerable<ProblemsAccountAutoFeedbackInfor>>(),
+                Arg.Any<string>(),
                 Arg.Any<IEnumerable<SettingItem>>(),
                 Arg.Any<IEnumerable<SystemSettingMapping>>());
         }
@@ -160,8 +157,8 @@ namespace CRM.BackgroundJob.UnitTests.Services
         {
             // Arrange
             var service = MockService();
-            var problemsAccountInfor = new List<ProblemsAccountAutoFeedbackInfor>();
-           for (int i = 0; i < 501; i++)
+            var problemsAccounts = new List<ProblemsAccountAutoFeedbackInfor>();
+            for (int i = 0; i < 560; i++)
             {
                 var userName = i;
                 var problem = new ProblemsAccountAutoFeedbackInfor
@@ -175,11 +172,13 @@ namespace CRM.BackgroundJob.UnitTests.Services
                     RelatedCustID = 1,
                     CategoryID = 1
                 };
-                problemsAccountInfor.Add(problem);
+                problemsAccounts.Add(problem);
             }
 
+
+            var categoryProblemAccount = problemsAccounts.Where(x => x.CategoryID == 1);
             // Act
-            await service.Public_CreateProblemsAccountFeedbackByBatchAsync(problemsAccountInfor, Arg.Any<IEnumerable<SettingItem>>(), Arg.Any<IEnumerable<SystemSettingMapping>>());
+            await service.Public_CreateProblemsAccountFeedbackByBatchAsync(categoryProblemAccount, problemsAccounts, "1", Arg.Any<IEnumerable<SettingItem>>(), Arg.Any<IEnumerable<SystemSettingMapping>>());
 
             // Assert
             service.Received(2).Protected(
@@ -188,6 +187,43 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 Arg.Any<IEnumerable<SettingItem>>(),
                 Arg.Any<IEnumerable<SystemSettingMapping>>());
         }
+
+        [Fact]
+        public async Task CreateProblemsAccountFeedbackByBatchAsync_DevideBatchInsertFeedbackLastItem_ExpectedCallFunctionExactParams()
+        {
+            // Arrange
+            var service = MockService();
+            var problemsAccounts = new List<ProblemsAccountAutoFeedbackInfor>();
+            for (int i = 0; i < 560; i++)
+            {
+                var userName = i;
+                var problem = new ProblemsAccountAutoFeedbackInfor
+                {
+                    LogID = 1,
+                    CustID = 1,
+                    UserName = userName.ToString(),
+                    HeadlineID = 1,
+                    HeadlineName = "1",
+                    IsVip = true,
+                    RelatedCustID = 1,
+                    CategoryID = (short)(i < 252 ? Convert.ToInt32(1) : Convert.ToInt32(2))
+                };
+                problemsAccounts.Add(problem);
+            }
+            
+
+            var categoryProblemAccount = problemsAccounts.Where(x=>x.CategoryID == 1);
+            // Act
+            await service.Public_CreateProblemsAccountFeedbackByBatchAsync(categoryProblemAccount, problemsAccounts, "1", Arg.Any<IEnumerable<SettingItem>>(), Arg.Any<IEnumerable<SystemSettingMapping>>());
+
+            // Assert
+            service.Received(1).Protected(
+                "CreateProblemsAccountFeedbackCreditAsync",
+                Arg.Any<IEnumerable<ProblemsAccountAutoFeedbackInfor>>(),
+                Arg.Any<IEnumerable<SettingItem>>(),
+                Arg.Any<IEnumerable<SystemSettingMapping>>());
+        }
+        
         #endregion CreateProblemsAccountFeedbackByBatchAsync
 
         #region CreateProblemsAccountFeedbackCreditAsync

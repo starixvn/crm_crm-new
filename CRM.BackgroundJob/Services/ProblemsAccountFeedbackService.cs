@@ -89,22 +89,10 @@ namespace CRM.BackgroundJob.Services
                     if (distinctUserName.Count > maxUserNameInOneFb)
                     {
                         cateKey = categoryProblemAccount.Key.ToString();
-                        await CreateProblemsAccountFeedbackByBatchAsync(categoryProblemAccount, settings, settingMappings);
+                        await CreateProblemsAccountFeedbackByBatchAsync(categoryProblemAccount, problemsAccounts, cateKey, settings, settingMappings);
                     }
                 }
-                if(!string.IsNullOrEmpty(cateKey))
-                {
-                    var problemsAccountsRemain = problemsAccounts.Where(x => x.CategoryID.ToString() != cateKey);
-                    if(problemsAccountsRemain.Any())
-                    {
-                        await CreateProblemsAccountFeedbackCreditAsync(
-                              problemsAccountsRemain,
-                              settings,
-                              settingMappings
-                              );
-                    }    
-                }
-                else
+                if (string.IsNullOrEmpty(cateKey))
                 {
                     await CreateProblemsAccountFeedbackCreditAsync(
                        problemsAccounts,
@@ -125,20 +113,25 @@ namespace CRM.BackgroundJob.Services
         }
 
         protected internal virtual async Task CreateProblemsAccountFeedbackByBatchAsync(
+           IEnumerable<ProblemsAccountAutoFeedbackInfor> categoryProblemAccount,
            IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts,
+           string cateKey,
            IEnumerable<SettingItem> settings,
            IEnumerable<SystemSettingMapping> settingMappings
            )
         {
-            var countProblemsAccount = problemsAccounts.ToList().Count;
+            var countProblemsAccount = categoryProblemAccount.ToList().Count;
             var batchCreateFbPerUSer = (int)Math.Ceiling((double)countProblemsAccount / maxUserNameInOneFb);
             var startRange = 0;
             for (int i = 0; i < batchCreateFbPerUSer; i++)
             {
                 if (i == batchCreateFbPerUSer - 1)
                 {
+                    var categoryProblemAccountRemain = categoryProblemAccount.Skip(maxUserNameInOneFb * (batchCreateFbPerUSer - 1));
+                    var problemsAccountsRemain = problemsAccounts.Where(x => x.CategoryID.ToString() != cateKey).ToList();
+                    var totalProblemAccountRemains = problemsAccountsRemain.Count >= maxUserNameInOneFb ? categoryProblemAccountRemain : problemsAccountsRemain.Concat(categoryProblemAccountRemain);
                     await CreateProblemsAccountFeedbackCreditAsync(
-                        problemsAccounts.Skip(maxUserNameInOneFb * (batchCreateFbPerUSer - 1)),
+                        totalProblemAccountRemains,
                         settings,
                         settingMappings
                     );
@@ -146,7 +139,7 @@ namespace CRM.BackgroundJob.Services
                 else
                 {
                     await CreateProblemsAccountFeedbackCreditAsync(
-                          problemsAccounts.ToList().GetRange(startRange, maxUserNameInOneFb),
+                          categoryProblemAccount.ToList().GetRange(startRange, maxUserNameInOneFb),
                           settings,
                           settingMappings
                        );
