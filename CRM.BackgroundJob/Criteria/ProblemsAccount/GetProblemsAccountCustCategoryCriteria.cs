@@ -3,7 +3,7 @@
     using Fanex.Data.Repository;
     public class GetProblemsAccountCustCategoryCriteria : CriteriaBase
     {
-        public int LastLogID { get; set; }
+        public long LastLogID { get; set; }
         public int BatchSize { get; set; }
         public bool ConfigUAT { get; set; }
         public bool ConfigPRO { get; set; }
