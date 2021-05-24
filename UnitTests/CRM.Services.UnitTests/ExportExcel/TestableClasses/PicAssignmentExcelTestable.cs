@@ -68,8 +68,7 @@
             int rowIndex,
             int rowNum)
         {
-            base.RenderBodyAssigment(templateWorksheet, worksheet, excludeMergeCommonPIC,
-             colIndex, rowIndex, rowNum);
+            base.RenderBodyAssigment(templateWorksheet, worksheet, excludeMergeCommonPIC, rowIndex, rowNum);
         }
 
         public void Public_RenderCommunicationTools(
@@ -88,7 +87,7 @@
             return base.GetUniqueCommunicationToolsByPicModel(picModels);
         }
 
-        public IList<GroupAssignmentCommunication> Public_GetUniqueCommunicationTools(
+        public IEnumerable<GroupAssignmentCommunication> Public_GetUniqueCommunicationTools(
            IEnumerable<PicOfDirectAccount> headlinePic)
         {
             return base.GetUniqueCommunicationTools(headlinePic);

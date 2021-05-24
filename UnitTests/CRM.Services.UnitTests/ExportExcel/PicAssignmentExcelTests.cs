@@ -123,7 +123,7 @@
             var rowNum = 1;
             int rowIndex = RowStartBody;
             var picCell = fixture.Create<string>();
-            var commIncludeMergeHeadline = fixture.Create<List<GroupAssignmentCommunication>>();
+            var commIncludeMergeHeadline = fixture.Create<IList<GroupAssignmentCommunication>>();
             var templateWorksheet = excelPackage.Worksheets.Add("template");
             var worksheet = excelPackage.Worksheets.Add("data");
             var MergePicGroupHeadlineIds = new List<int> { 1, 2 };
@@ -138,7 +138,7 @@
             // Assert
             excel.Received().Protected("StyleDefault", worksheet);
             excel.Received(2).Protected("RenderCommunicationToolMergeCommon", templateWorksheet, worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<List<GroupAssignmentCommunication>>());
-            excel.Received().Protected("RenderBodyAssigment", templateWorksheet, worksheet, Arg.Any<List<PICAssignmentInfo>>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
+            excel.Received().Protected("RenderBodyAssigment", templateWorksheet, worksheet, Arg.Any<List<PICAssignmentInfo>>(), Arg.Any<int>(), Arg.Any<int>());
             excel.Received().Protected("RenderDrawBorderCell", worksheet, Arg.Any<int>());
             excel.Received(9).Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
             excel.Received(2).Protected("RenderStatusRow", templateWorksheet, worksheet, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>());
@@ -506,12 +506,12 @@
             var headlinePic = new List<PicOfDirectAccount>();
 
             var excel = CreateExcel(null, null, null, true);
-
+            var expected = Enumerable.Empty<GroupAssignmentCommunication>();
             // Action
             var actual = excel.Public_GetUniqueCommunicationTools(headlinePic);
 
             // Assert
-            Assert.Null(actual);
+            Assert.Equal(actual, expected);
         }
 
         [Fact]

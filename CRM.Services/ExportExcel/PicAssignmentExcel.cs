@@ -117,7 +117,9 @@
                     foreach (PICAssignmentInfo assignment in mergeHeadlineByPic)
                     {
                         colIndex = 1;
+#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
                         if (mergeHeadlineForPic == 0)
+#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
                         {
                             mergeHeadlineForPic = assignments.Where(assign => assign.HeadlineID == assignment.HeadlineID).ToList().Count;
                             StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + mergeHeadlineForPic - 1);
@@ -150,8 +152,7 @@
                 }
             }
 
-            RenderBodyAssigment(templateWorksheet, worksheet, excludeMergeCommonPIC,
-                                        colIndex, rowIndex, rowNum);
+            RenderBodyAssigment(templateWorksheet, worksheet, excludeMergeCommonPIC, rowIndex, rowNum);
 
             RenderDrawBorderCell(worksheet, rowIndex);
         }
@@ -211,7 +212,7 @@
             var groupbyPicForMappings = groupHeadlines.GroupBy(x => x.PicForMappingJoin)
                 .Select(y => new
                 {
-                    IsMergePIC = y.Key.Length > 0 && y.Count() > 1 ? true : false,
+                    IsMergePIC = y.Key.Length > 0 && y.Count() > 1,
                     PicForMappingJoin = y.Key,
                     HeadlineID = y.Select(x => x.HeadlineID),
                     PICAssignmentInfoGroup = y.ToList()
@@ -260,7 +261,6 @@
            ExcelWorksheet templateWorksheet,
             ExcelWorksheet worksheet,
             List<PICAssignmentInfo> excludeMergeCommonPIC,
-            int colIndex,
             int rowIndex,
             int rowNum )
         {
@@ -269,10 +269,10 @@
         {
             var countExtraRowComm = 0;
             var maxGroupHeadline = 0;
-            colIndex = 1;
+            var colIndex = 1;
             var indexCommRender = 0;
             var comm = GetUniqueCommunicationTools(assignment?.Pics)?.ToList();
-            var groupHeadlineTotalRow = assignment.Pics.Sum(p => p.DirectAccounts.ToList().Count);
+            var groupHeadlineTotalRow = assignment != null ? assignment.Pics.Sum(p => p.DirectAccounts.ToList().Count) : 0;
             maxGroupHeadline = groupHeadlineTotalRow;
             if (comm?.Count > groupHeadlineTotalRow)
             {
@@ -304,8 +304,10 @@
                     worksheet.Cells[rowIndex, colIndex++].Value = direct.Site;
                     worksheet.Cells[rowIndex, colIndex++].Value = direct.Currency;
                     worksheet.Cells[rowIndex, colIndex].Value = direct.Position;
-                    if (indexCommRender < comm?.Count)
-                    {
+#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
+                        if (indexCommRender < comm?.Count)
+#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
+                        {
                         countExtraRowComm++;
                         RenderCommunicationTools(templateWorksheet, worksheet, rowIndex, comm[indexCommRender++]);
                     }
@@ -362,12 +364,12 @@
             : null;
         }
 
-        protected internal virtual IList<GroupAssignmentCommunication> GetUniqueCommunicationTools(
+        protected internal virtual IEnumerable<GroupAssignmentCommunication> GetUniqueCommunicationTools(
            IEnumerable<PicOfDirectAccount> headlinePic)
         {
             if(!headlinePic.Any() || headlinePic == null)
             {
-                return null;
+                return Enumerable.Empty<GroupAssignmentCommunication>();
             }
             var picIds = new List<string>();
             foreach (var pic in headlinePic)
@@ -380,7 +382,7 @@
             var uniquePicMapping = picIds.Distinct();
 
             return uniquePicMapping.Any() ? groupAssignmentCommunications.Where(x =>
-                uniquePicMapping.Any(y => y == x.PicName.ToString()))
+                uniquePicMapping.Any(y => y == x.PicName))
                 .ToList()
             : null;
         }
