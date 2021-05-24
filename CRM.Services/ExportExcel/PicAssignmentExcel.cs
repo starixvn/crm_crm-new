@@ -281,13 +281,13 @@
             StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
             worksheet.Cells[rowIndex, colIndex++].Value = rowNum++;
             StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
-            worksheet.Cells[rowIndex, colIndex++].Value = assignment.GroupHeadline;
+            worksheet.Cells[rowIndex, colIndex++].Value = assignment?.GroupHeadline;
             StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
-            worksheet.Cells[rowIndex, colIndex++].Value = assignment.HeadlineType;
+            worksheet.Cells[rowIndex, colIndex++].Value = assignment?.HeadlineType;
             StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
-            worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(assignment.DefaultPIC);
+            worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(assignment?.DefaultPIC);
 
-            foreach (var pic in assignment.Pics)
+            foreach (var pic in assignment?.Pics)
             {
                 colIndex = colIndexMergePic;
                 var mergePic = pic.DirectAccounts;
