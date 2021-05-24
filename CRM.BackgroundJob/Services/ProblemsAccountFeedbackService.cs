@@ -162,7 +162,7 @@ namespace CRM.BackgroundJob.Services
                  && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
-            var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.AbnormalBets);
+            var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.ProblemAccount);
 
             var criteria = new CreateMutipleFeedbackCommand
             {

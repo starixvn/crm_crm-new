@@ -10,6 +10,7 @@
         public const string CompanyWLLimit = "Company W/L Limit";
         public const string MANotification = "MA Notification";
         public const string AbnormalBets = "Abnormal Bets";
+        public const string ProblemAccount = "Problem Account";
         public const string Sportsbook = "Sportsbook";
         public const string CustomerXml = "<ROOT><Cust CustId='{0}' Username='{1}' /></ROOT>";
         public const string ProductXml = "<Product ProductID='{0}' SubProductID='{1}' BetTypeID='{2}' />";
