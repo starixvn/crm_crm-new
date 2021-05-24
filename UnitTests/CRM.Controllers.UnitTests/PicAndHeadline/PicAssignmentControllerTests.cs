@@ -200,12 +200,12 @@
                 }
             };
             var assignmentCommunication = fixture.Create<IEnumerable<AssignmentCommunication>>();
-            var tupe = (assignment, assignmentCommunication);
+            var tupe = new ValueTuple<IEnumerable<PICAssignmentInfo>, IEnumerable<AssignmentCommunication>>(assignment, assignmentCommunication);
             var communicationTools = fixture.Create<IEnumerable<Setting>>();
             settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole }).Returns(communicationTools);
             baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(Arg.Do<GetAssignmentCriteria>(x => criteria = x)).Returns(tupe);
 
-            var data = tupe.assignment
+            var data = tupe.Item1
                 .OrderBy(i => i.HeadlineName, StringComparer.Ordinal)
                 .ThenByDescending(p => p.PicList?.Count)
                 .ThenBy(p => p.PicList != null)
@@ -241,12 +241,12 @@
                 }
             };
             var assignmentCommunication = fixture.Create<IEnumerable<AssignmentCommunication>>();
-            var tupe = (assignment, assignmentCommunication);
+            var tupe = new ValueTuple<IEnumerable<PICAssignmentInfo>, IEnumerable<AssignmentCommunication>>(assignment, assignmentCommunication);
             var communicationTools = fixture.Create<IEnumerable<Setting>>();
             settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole }).Returns(communicationTools);
             baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(Arg.Do<GetAssignmentCriteria>(x => criteria = x)).Returns(tupe);
 
-            var data = tupe.assignment
+            var data = tupe.Item1
                 .OrderBy(i => i.HeadlineName, StringComparer.Ordinal)
                 .ThenByDescending(p => p.PicList?.Count)
                 .ThenBy(p => p.PicList != null)
@@ -282,12 +282,12 @@
                 }
             };
             var assignmentCommunication = fixture.Create<IEnumerable<AssignmentCommunication>>();
-            var tupe = (assignment, assignmentCommunication);
+            var tupe = new ValueTuple<IEnumerable<PICAssignmentInfo>, IEnumerable<AssignmentCommunication>>(assignment, assignmentCommunication);
             var communicationTools = fixture.Create<IEnumerable<Setting>>();
             settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole }).Returns(communicationTools);
             baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(Arg.Do<GetAssignmentCriteria>(x => criteria = x)).Returns(tupe);
 
-            var data = tupe.assignment
+            var data = tupe.Item1
                 .OrderBy(i => i.HeadlineName, StringComparer.Ordinal);
 
             var expected = data.OrderBy(i => i.HeadlineID == 0).ToList();
@@ -323,12 +323,12 @@
                 }
             };
             var assignmentCommunication = fixture.Create<IEnumerable<AssignmentCommunication>>();
-            var tupe = (assignment, assignmentCommunication);
+            var tupe = new ValueTuple<IEnumerable<PICAssignmentInfo>, IEnumerable<AssignmentCommunication>>(assignment, assignmentCommunication);
             var communicationTools = fixture.Create<IEnumerable<Setting>>();
             settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole }).Returns(communicationTools);
             baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(Arg.Do<GetAssignmentCriteria>(x => criteria = x)).Returns(tupe);
 
-            var data = tupe.assignment
+            var data = tupe.Item1
                 .OrderBy(i => i.HeadlineName)
                 .ThenBy(i => i.DirectAccount);
 
@@ -418,7 +418,7 @@
                 }
             };
             var assignmentCommunication = fixture.Create<IEnumerable<AssignmentCommunication>>();
-            var tupe = (assignment, assignmentCommunication);
+            var tupe = new ValueTuple<IEnumerable<PICAssignmentInfo>, IEnumerable<AssignmentCommunication>>(assignment, assignmentCommunication);
             baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(Arg.Do<GetAssignmentCriteria>(x => criteria = x)).Returns(tupe);
             var expected = fixture.Create<byte[]>();
             excelService.ExportPICAssignment(Arg.Any<IEnumerable<PICAssignmentInfo>>(),

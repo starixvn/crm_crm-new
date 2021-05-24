@@ -255,7 +255,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var category = fixture.Create<Tuple<int, int, string>>();
-            commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.AbnormalBets).Returns(category);
+            commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.ProblemAccount).Returns(category);
             service.Protected("GetCustomerXml", problemsAccounts).Returns("GetCustomerXml");
             service.Protected("GetProductXml", settings).Returns("GetProductXml");
             service.Protected("GetSolution", problemsAccounts).Returns("GetSolution");
