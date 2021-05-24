@@ -12,7 +12,8 @@ const createTableSection = (extendedContainerProps, extendedTableProps) => {
             minWidth: PropTypes.number,
             autoWidth: PropTypes.bool,
             maxHeight: PropTypes.number,
-            headerContainerProps: PropTypes.bool
+            headerContainerProps: PropTypes.bool,
+            shouldUseMaxWidth: PropTypes.bool
         };
 
         static defaultProps = {
