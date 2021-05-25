@@ -137,12 +137,7 @@ export class DataGrid extends Component {
                     mergePIC = pics.length;
                     row = this.renderRowMerPic(index, rowIndex, pics, assignment,comm, countComm, mergePIC);
                 } else {
-                    if (countComm < comm.length && isRenderCommunication) {
-                        const commRender = comm[countComm];
-                        row = this.renderRow(index, rowIndex, assignment, 0, 0, 0, commRender);
-                    } else {
-                        row = this.renderRow(index, rowIndex, assignment, 0, 0, 0, 0);
-                    }
+                    row = this.renderRowCommunication(index, rowIndex, assignment, countComm, comm);
                 }
                 body.push(row);
                 countComm++;
@@ -183,11 +178,10 @@ export class DataGrid extends Component {
             const countExtraComm = comm.length - mergeHeadline;
             const mergeHeadlineExtraComm = mergeHeadline + countExtraComm;
            return this.renderRow(index, rowIndex, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[0]);
-        }
-        else {
+        } else {
             return this.renderRow(index, rowIndex, assignment, mergeHeadline, mergePIC, picCell, comm[0]);
         }
-    }
+    };
 
     renderRowMerPic = (index, rowIndex, pics, assignment,comm, countComm, mergePIC) => {
         const isHost = this.props.isHost;
@@ -200,13 +194,23 @@ export class DataGrid extends Component {
         } else {
             return this.renderRow(index, rowIndex, assignment, 0, mergePIC, picCell, 0);
         }
-    }
+    };
+
+    renderRowCommunication = (index, rowIndex, assignment, countComm, comm) =>{
+        const isRenderCommunication = this.isHostCommunication();
+        if (countComm < comm.length && isRenderCommunication) {
+            const commRender = comm[countComm];
+            return this.renderRow(index, rowIndex, assignment, 0, 0, 0, commRender);
+        } else {
+            return this.renderRow(index, rowIndex, assignment, 0, 0, 0, 0);
+        }
+    };
 
     isHostCommunication = () =>{
         const isReadPicManagement  = this.props.isReadPicManagement;
         const communicationTools = this.props.picAssignmentGridData.communicationTools;
         return isReadPicManagement && communicationTools.length > 0;
-    }
+    };
 
     renderRowCommEmpty = (isHost, index, comm) => {
         return <Row key={`${index}-${comm.picName}`}>
