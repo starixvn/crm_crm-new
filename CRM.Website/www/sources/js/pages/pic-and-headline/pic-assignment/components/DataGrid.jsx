@@ -228,7 +228,7 @@ export class DataGrid extends Component {
     renderCommunicationToolsNullValue = listComm => {
         const bodyCommunicationNullValue = [];
         for (let indexComm = 0; indexComm < listComm.length + 1; indexComm++) {
-            bodyCommunicationNullValue.push(<Cell key={`comm-${indexComm}`}></Cell>)
+            bodyCommunicationNullValue.push(<Cell key={`comm-${indexComm}`}></Cell>);
         }
         return bodyCommunicationNullValue;
     };
@@ -404,8 +404,7 @@ export class DataGrid extends Component {
             const calWidthCommByPixel = this.measureText(maxLengthComm);
             if (calWidthCommByPixel > 100) {
                 totalWidthComm += calWidthCommByPixel + 50;
-            }
-            else {
+            } else {
                 totalWidthComm += 100;
             }
         });
