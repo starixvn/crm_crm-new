@@ -30,10 +30,8 @@
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Ins" SpName="Acc_CRM_ChatBot_crmMessageImport_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Upd" SpName="Acc_CRM_ChatBot_crmMessageImport_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_Import" SpName="Acc_CRM_Chatbot_AbnormalBets_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_GetMessage" SpName="Acc_CRM_Chatbot_AbnormalBets_GetMessage" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_VoidingInfo_Sel" SpName="Acc_CRM_Chatbot_AbnormalBets_VoidingInfo_Sel" DbName="DBACC.bodb02.bodbAdminNet" />
-
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_Message_Sel" SpName="Acc_CRM_Chatbot_AbnormalBets_Message_Sel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot CWL">
@@ -44,6 +42,10 @@
         <Setting Key="Acc_Chatbot_TOControlSetting_Sel" SpName="Acc_Chatbot_TOControlSetting_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_Chatbot_TOControlSMAInfo_Sel" SpName="Acc_Chatbot_TOControlSMAInfo_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_TOControl_Import" SpName="Acc_CRM_Chatbot_TOControl_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+    </Function>
+    <Function Name="Chatbot ProblemAccount">
+        <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Sel" SpName="Acc_CRM_Chatbot_ProblemAccounts_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Import" SpName="Acc_CRM_Chatbot_ProblemAccounts_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Send Notification">
         <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
@@ -61,5 +63,11 @@
         <Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoIns" SpName="Acc_CRM_TOControl_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoUpd" SpName="Acc_CRM_TOControl_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_TOControl_CustNotificationSel" SpName="Acc_CRM_TOControl_CustNotificationSel" DbName="DBCUST.CustDB.bodbAdminNet" />
+    </Function>
+    <Function Name="ProblemsAccount">
+        <Setting Key="Acc_CRM_ProblemAccount_SystemSettingSel" SpName="Acc_CRM_ProblemAccount_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ProblemAccount_CustCategorySel" SpName="Acc_CRM_ProblemAccount_CustCategorySel" DbName="DBCUST.CustDB.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
 </Functions>
