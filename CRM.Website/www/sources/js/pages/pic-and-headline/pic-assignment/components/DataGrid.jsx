@@ -35,7 +35,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={100} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('Currency')}</HeaderCell>
                 <HeaderCell colWidth={100} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('Position')}</HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={80} rowSpan={this.rowSpanHeader(isRenderCommunication)}>
+                    isHost && <HeaderCell colWidth={80} rowSpan={isRenderCommunication ? 2 : 0}>
                         <div className='d-flex justify-content-center'>
                             <input className='d-block mx-auto' type='button'
                                 value={LangHelper.getResource('Remove')}
@@ -97,7 +97,20 @@ export class DataGrid extends Component {
         this.startIndex = (pageIndex - 1) * pageSize + 1;
 
         if (this.props.picAssignmentGridData.data.length > 0) {
-            const body = [];
+            {
+                return this.buildPicManagementBodyHasData(isHost, isRenderCommunication)
+            }
+        }
+
+        return [
+            <Row key={`body${1}`} className='no-data' >
+                <Cell className='text-center' colSpan={isHost ? 11 : 10}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+            </Row>
+        ];
+    };
+
+    buildPicManagementBodyHasData = (isHost, isRenderCommunication) => {
+        const body = [];
             let mergeHeadline = 0;
             let mergePIC = 0;
             let countComm = 0;
@@ -132,8 +145,7 @@ export class DataGrid extends Component {
                         const countExtraComm = comm.length - mergeHeadline;
                         const mergeHeadlineExtraComm = mergeHeadline + countExtraComm;
                         row = this.renderRow(index, rowIndex, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[countComm]);
-                    }
-                    else {
+                    } else {
                         row = this.renderRow(index, rowIndex, assignment, mergeHeadline, mergePIC, picCell, comm[countComm]);
                     }
                 } else if (mergePIC === 0) {
@@ -170,14 +182,7 @@ export class DataGrid extends Component {
                 }
             }
             return body;
-        }
-
-        return [
-            <Row key={`body${1}`} className='no-data' >
-                <Cell className='text-center' colSpan={isHost ? 11 : 10}>{LangHelper.getResource('ThereIsNoData')}</Cell>
-            </Row>
-        ];
-    };
+    }
 
     renderRowCommEmpty = (isHost, index, comm) => {
         return <Row key={`${index}-${comm.picName}`}>
