@@ -120,13 +120,7 @@ export class DataGrid extends Component {
     renderRow = (item, index, isHost) =>
         <Row key={index} >
             <Cell className='text-center'>{index + this.startIndex}</Cell>
-            <Cell className='text-center'>
-                <div>{item.notificationId}</div>
-                <div>{item.dataSource === 'MessageId' ? `(Msg: ${item.referenceId})` : item.referenceId > 0 && `(Log: ${item.referenceId})`}</div>
-                {
-                    this.isDuplicated(item.status) && <div>{`(Related ID: ${item.relatedNotificationIds})`}</div>
-                }
-            </Cell>
+            {this.renderReferenceId(item)}
             <Cell>
                 <div>{item.sender}</div>
                 <div>{item.notificationTypeName}</div>
@@ -170,6 +164,16 @@ export class DataGrid extends Component {
                 </Cell>
             }
         </Row>;
+
+    renderReferenceId = item =>{
+        return  <Cell className='text-center'>
+                    <div>{item.notificationId}</div>
+                    <div>{item.dataSource === 'MessageId' ? `(Msg: ${item.referenceId})` : item.referenceId > 0 && `(Log: ${item.referenceId})`}</div>
+                    {
+                        this.isDuplicated(item.status) && <div>{`(Related ID: ${item.relatedNotificationIds})`}</div>
+                    }
+                </Cell>
+    };
 
     handleChangeResendCheckbox = index => {
         const dataList = [...this.props.resendOptions.dataList];

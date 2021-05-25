@@ -24,18 +24,18 @@ export class DataGrid extends Component {
     buildPicManagementHeader = (isHost, isRenderCommunication, uniqueCommunication) => {
         return [
             <HeaderRow key='header1'>
-                <HeaderCell colWidth={50} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('TextNo')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
-                <HeaderCell colWidth={130} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
-                <HeaderCell colWidth={135} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('PIC')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={130} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Site')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Currency')}</HeaderCell>
-                <HeaderCell colWidth={100} rowSpan={isRenderCommunication ? 2 : 0}>{LangHelper.getResource('Position')}</HeaderCell>
+                <HeaderCell colWidth={50} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('TextNo')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('HeadlineType')}</HeaderCell>
+                <HeaderCell colWidth={130} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('DefaultPIC')}</HeaderCell>
+                <HeaderCell colWidth={135} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('PIC')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={130} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('Site')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={100} rowSpan={this.rowSpanHeader(isRenderCommunication)}>{LangHelper.getResource('Position')}</HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={80} rowSpan={isRenderCommunication ? 2 : 0}>
+                    isHost && <HeaderCell colWidth={80} rowSpan={this.rowSpanHeader(isRenderCommunication)}>
                         <div className='d-flex justify-content-center'>
                             <input className='d-block mx-auto' type='button'
                                 value={LangHelper.getResource('Remove')}
@@ -61,6 +61,9 @@ export class DataGrid extends Component {
             </HeaderRow>
         ];
     };
+
+    rowSpanHeader = isRenderCommunication => isRenderCommunication ? 2 : 0;
+
 
     renderHeaderCommunicationTools = uniqueCommunication => {
         const header = [];
@@ -142,16 +145,14 @@ export class DataGrid extends Component {
                     if (countComm < comm.length && isRenderCommunication) {
                         const commRenderPicMerge = comm[countComm];
                         row = this.renderRow(index, rowIndex, assignment, 0, mergePIC, picCell, commRenderPicMerge);
-                    }
-                    else {
+                    } else {
                         row = this.renderRow(index, rowIndex, assignment, 0, mergePIC, picCell, 0);
                     }
                 } else {
                     if (countComm < comm.length && isRenderCommunication) {
                         const commRender = comm[countComm];
                         row = this.renderRow(index, rowIndex, assignment, 0, 0, 0, commRender);
-                    }
-                    else {
+                    } else {
                         row = this.renderRow(index, rowIndex, assignment, 0, 0, 0, 0);
                     }
                 }
@@ -162,9 +163,9 @@ export class DataGrid extends Component {
                 if (mergeHeadline === 0 && countComm < comm.length && isRenderCommunication) {
                     const remainRowComm = comm.length - countComm;
                     for (let indexExtra = 0; indexExtra < remainRowComm; indexExtra++) {
-                        countComm = countComm++;
                         row = this.renderRowCommEmpty(isHost, rowIndex, comm[countComm]);
                         body.push(row);
+                        countComm++;
                     }
                 }
             }
