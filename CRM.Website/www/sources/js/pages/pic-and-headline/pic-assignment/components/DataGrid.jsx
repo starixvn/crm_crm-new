@@ -213,7 +213,7 @@ export class DataGrid extends Component {
     };
 
     renderRowCommEmpty = (isHost, index, comm) => {
-        return <Row key={`${index}-${comm.picName}`}>
+        return <Row key={index}>
             <Cell ></Cell>
             <Cell ></Cell>
             <Cell ></Cell>

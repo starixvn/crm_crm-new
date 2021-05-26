@@ -393,7 +393,7 @@ describe('DataGrid', () => {
 
         });
 
-        it('return expected row and call exact function', () => {
+        it('return expected row and call renderCommunicationToolsValue function', () => {
             // Arrange
 
             const dataGrid = shallow(<DataGrid />).instance();
@@ -404,6 +404,20 @@ describe('DataGrid', () => {
 
             // Assert
             expect(dataGrid.renderCommunicationToolsValue).toHaveBeenCalled();
+
+        });
+
+        it('return expected row and call renderCommunicationToolsNullValue function', () => {
+            // Arrange
+            
+            const dataGrid = shallow(<DataGrid />).instance();
+            dataGrid.renderCommunicationToolsNullValue = jest.fn().mockReturnValue([]);
+
+            // Action
+            const result = shallow(dataGrid.renderRowCommEmpty(false, 1, null));
+
+            // Assert
+            expect(dataGrid.renderCommunicationToolsNullValue).toHaveBeenCalled();
 
         });
     });
@@ -464,7 +478,7 @@ describe('DataGrid', () => {
     });
 
 
-    describe('buildPicManagementBody', () => {
+    describe('buildPicManagementBodyHasData', () => {
         it('should change startIndex when run', () => {
             // Arrange
             const props = {
@@ -486,7 +500,7 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props}/>).instance();
 
             // Action
-            dataGrid.buildPicManagementBody(true, false);
+            dataGrid.buildPicManagementBodyHasData(true, false);
 
             // Assert
             expect(dataGrid.startIndex).toEqual(expected);
@@ -523,7 +537,7 @@ describe('DataGrid', () => {
             dataGrid.instance().renderRow = jest.fn().mockReturnValue(expectedRow);
 
             // Action
-            const result = dataGrid.instance().buildPicManagementBody(true);
+            const result = dataGrid.instance().buildPicManagementBodyHasData(true);
 
             // Assert
             expect(result).toEqual([expectedRow]);
@@ -560,7 +574,7 @@ describe('DataGrid', () => {
             dataGrid.renderCommunicationToolsValue = jest.fn();
 
             // Action
-            dataGrid.buildPicManagementBody(true, true);
+            dataGrid.buildPicManagementBodyHasData(true, true);
 
             // Assert
             expect(dataGrid.renderRow).toHaveBeenCalled();
@@ -611,7 +625,7 @@ describe('DataGrid', () => {
             dataGrid.instance().renderRow = jest.fn().mockReturnValue(expectedRow);
 
             // Action
-            const result = dataGrid.instance().buildPicManagementBody(true);
+            const result = dataGrid.instance().buildPicManagementBodyHasData(true);
 
             // Assert
             expect(result).toEqual([expectedRow, expectedRow, expectedRow]);
@@ -663,7 +677,7 @@ describe('DataGrid', () => {
             dataGrid.renderCommunicationToolsValue = jest.fn();
 
             // Action
-            dataGrid.buildPicManagementBody(true, true);
+            dataGrid.buildPicManagementBodyHasData(true, true);
 
             // Assert
             expect(dataGrid.renderRow).toHaveBeenCalled();
@@ -707,22 +721,25 @@ describe('DataGrid', () => {
             dataGrid.instance().renderRow = jest.fn().mockReturnValue(expectedRow);
 
             // Action
-            const result = dataGrid.instance().buildPicManagementBody(true);
+            const result = dataGrid.instance().buildPicManagementBodyHasData(true);
 
             // Assert
             expect(result).toEqual([expectedRow, expectedRow]);
         });
 
+        
+     });
+     describe('buildPicManagementBody', () => {
         it('should return correct body when data empty with isHost true', () => {
             // Arrange
             const props = {
                 picAssignmentGridData: {
-                    data: [],
-                    listComm: [{
-                        displayOrder: 1,
+                    data: [], 
+                    communicationTools: [{picId : 1}],
+                    listComm: [{displayOrder: 1,
+                        id: 0,                        
                         settingValue: "Letstalk"
-                    }],
-                    communicationTools: [{picId : 1}]
+                    }]
                 },
                 gridParams: {
                     pageIndex: 1,
@@ -739,7 +756,7 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Action
-            const result = dataGrid.instance().buildPicManagementBody(true);
+            const result = dataGrid.instance().buildPicManagementBody(true, false);
 
             // Assert
             expect(result).toEqual(expected);
@@ -750,11 +767,11 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {
                     data: [],
-                    listComm: [{
-                        displayOrder: 1,
+                    communicationTools: [{picId : 1}],
+                    listComm: [{displayOrder: 1,
+                        id: 0,                        
                         settingValue: "Letstalk"
-                    }],
-                    communicationTools: [{picId : 1}]
+                    }]
                 },
                 gridParams: {
                     pageIndex: 1,
@@ -771,11 +788,12 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Action
-            const result = dataGrid.instance().buildPicManagementBody(false);
+            const result = dataGrid.instance().buildPicManagementBody(false, false);
 
             // Assert
             expect(result).toEqual(expected);
         });
+        
      });
 
     describe('renderRow', () => {
@@ -784,7 +802,8 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {},
                 gridParams: {},
-                removeOptions: {}
+                removeOptions: {},
+                isHost: false
             };
 
             const startIndex = 1;
@@ -804,7 +823,7 @@ describe('DataGrid', () => {
             dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
 
             // Action
-            const result = shallow(dataGrid.instance().renderRow(index, 1, false, item));
+            const result = shallow(dataGrid.instance().renderRow(index, 1, item));
 
             // Assert
             expect(result.find(Cell).at(0).props().className).toBe('text-center');
@@ -826,7 +845,8 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {},
                 gridParams: {},
-                removeOptions: {}
+                removeOptions: {},
+                isHost: true
             };
 
             const startIndex = 1;
@@ -846,7 +866,7 @@ describe('DataGrid', () => {
             dataGrid.instance().renderIsHost = jest.fn(() => <Cell>{expected}</Cell>);
 
             // Action
-            const result = shallow(dataGrid.instance().renderRow(index, 1, true, item));
+            const result = shallow(dataGrid.instance().renderRow(index, 1, item));
 
             // Assert
             expect(result.find(Cell).at(6).html()).toContain(expected);
@@ -857,7 +877,8 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {},
                 gridParams: {},
-                removeOptions: {}
+                removeOptions: {},
+                isHost: false
             };
 
             const startIndex = 1;
@@ -883,7 +904,7 @@ describe('DataGrid', () => {
             dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => <Cell>{expected}</Cell>);
 
             // Action
-            const result = shallow(dataGrid.instance().renderRow(index, 1, false, item));
+            const result = shallow(dataGrid.instance().renderRow(index, 1, item, 1));
 
             // Assert
             expect(result.find(Cell).at(1).html()).toContain(expected);
@@ -894,7 +915,8 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {},
                 gridParams: {},
-                removeOptions: {}
+                removeOptions: {},
+                isHost: false
             };
 
             const startIndex = 1;
@@ -913,7 +935,7 @@ describe('DataGrid', () => {
             dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
 
             // Action
-            const result = shallow(dataGrid.instance().renderRow(index, 1, false, item, null, 1, picCell));
+            const result = shallow(dataGrid.instance().renderRow(index, 1, item, null, 1, picCell));
 
             // Assert
             expect(result.find(Cell).at(1).props().className).toBe('text-center');
@@ -924,7 +946,8 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {},
                 gridParams: {},
-                removeOptions: {}
+                removeOptions: {},
+                isHost: false
             };
 
             const startIndex = 1;
@@ -945,7 +968,7 @@ describe('DataGrid', () => {
             dataGrid.instance().renderMergeHeadlineCells = jest.fn(() => null);
 
             // Action
-            const result = shallow(dataGrid.instance().renderRow(index, 1, false, item, null, mergePic, picCell));
+            const result = shallow(dataGrid.instance().renderRow(index, 1, item, null, mergePic, picCell));
 
             // Assert
             expect(result.find(Cell).at(1).props().className).toBeEmpty;
@@ -958,7 +981,9 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {},
                 gridParams: {},
-                removeOptions: {}
+                removeOptions: {},
+                isRenderCommunication: false,
+                isHost: false
             };
 
             const startIndex = 1;
@@ -979,9 +1004,9 @@ describe('DataGrid', () => {
             dataGrid.startIndex = startIndex;
             dataGrid.renderMergeHeadlineCells = jest.fn(() => null);
             dataGrid.renderCommunicationToolsValue = jest.fn();
-
+            dataGrid.isHostCommunication = jest.fn(() => false);
             // Action
-            const result = shallow(dataGrid.renderRow(index, 1, false, item, null, mergePic, picCell, comm, false));
+            const result = shallow(dataGrid.renderRow(index, 1, item, null, mergePic, picCell, comm));
 
             // Assert
             expect(dataGrid.renderCommunicationToolsValue).not.toHaveBeenCalled();
@@ -992,7 +1017,9 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {},
                 gridParams: {},
-                removeOptions: {}
+                removeOptions: {},
+                isRenderCommunication: true,
+                isHost: false
             };
 
             const startIndex = 1;
@@ -1013,9 +1040,10 @@ describe('DataGrid', () => {
             dataGrid.startIndex = startIndex;
             dataGrid.renderMergeHeadlineCells = jest.fn(() => null);
             dataGrid.renderCommunicationToolsValue = jest.fn();
+            dataGrid.isHostCommunication = jest.fn(() => true);
 
             // Action
-            const result = shallow(dataGrid.renderRow(index, 1, false, item, null, mergePic, picCell, comm, true));
+            const result = shallow(dataGrid.renderRow(index, 1, item, null, mergePic, picCell, comm));
 
             // Assert
             expect(dataGrid.renderCommunicationToolsValue).toHaveBeenCalledWith(comm);
@@ -1028,7 +1056,9 @@ describe('DataGrid', () => {
                     listComm: [1]
                 },
                 gridParams: {},
-                removeOptions: {}
+                removeOptions: {},
+                isRenderCommunication: true,
+                isHost: false
             };
 
             const startIndex = 1;
@@ -1048,9 +1078,10 @@ describe('DataGrid', () => {
             dataGrid.startIndex = startIndex;
             dataGrid.renderMergeHeadlineCells = jest.fn(() => null);
             dataGrid.renderCommunicationToolsNullValue = jest.fn();
+            dataGrid.isHostCommunication = jest.fn(() => true);
 
             // Action
-            const result = shallow(dataGrid.renderRow(index, 1, false, item, null, mergePic, picCell, null, true));
+            const result = shallow(dataGrid.renderRow(index, 1, item, null, mergePic, picCell, null));
 
             // Assert
             expect(dataGrid.renderCommunicationToolsNullValue).toHaveBeenCalledWith(props.picAssignmentGridData.listComm);
@@ -1621,10 +1652,10 @@ describe('DataGrid', () => {
             expect(dataGrid.find('div').at(2).html()).toContain('ThereAreUnassignedDirectAccounts');
             expect(dataGrid.find('span').props().className).toBe('fa fa-file-excel-o ml-3 icon-excel');
             expect(dataGrid.find(Table).props().maxWidth).toEqual(calMaxWidth);
-            expect(dataGrid.find(Table).props().minWidth).toEqual(document.getElementById('app-container').clientWidth);
             expect(dataGrid.find(Table).props().width).toEqual(document.getElementById('app-container').clientWidth);
             expect(dataGrid.find(Table).props().autoWidth).toBeFalse;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;
+            expect(dataGrid.find(Table).props().shouldUseMaxWidth).toBeTrue;
             expect(dataGrid.find(Table).props().pageOption).toEqual(pageOptions);
             expect(dataGrid.find(Table).props().containerPadding).toEqual(0);
             expect(dataGrid.find(Table).props().shouldResetScrollPosition).toEqual(props.removeOptions.shouldResetScrollPosition);
@@ -1659,7 +1690,6 @@ describe('DataGrid', () => {
                 PageList: PAGING_SIZES
             };
 
-
             // Action
             const dataGrid = shallow(<DataGrid {...props} />);
 
@@ -1669,7 +1699,6 @@ describe('DataGrid', () => {
             expect(dataGrid.find('div').at(2).html()).toContain('ThereAreUnassignedDirectAccounts');
             expect(dataGrid.find('span').props().className).toBe('fa fa-file-excel-o ml-3 icon-excel');
             expect(dataGrid.find(Table).props().maxWidth).toEqual(1350);
-            expect(dataGrid.find(Table).props().minWidth).toEqual(null);
             expect(dataGrid.find(Table).props().width).toEqual(1350);
             expect(dataGrid.find(Table).props().autoWidth).toBeFalse;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;
