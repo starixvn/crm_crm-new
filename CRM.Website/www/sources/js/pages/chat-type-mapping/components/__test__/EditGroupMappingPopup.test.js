@@ -86,7 +86,11 @@ describe('EditGroupMappingPopup', () => {
             gridParams: {},
             updateGroupMappingData: { data: initData },
             updateGroupMappingResult: { isSuccessful: true },
-            letstalkVerification: [],
+            letstalkVerification: {
+                recipients: {
+                    letstalks: "1"
+                }
+            },
             verifyLetstalkInGroup: jest.fn(() => promise),
             getRecipientByRecipientType: jest.fn(() => promise),
             getGroupHeadlineByRecipient: jest.fn(),

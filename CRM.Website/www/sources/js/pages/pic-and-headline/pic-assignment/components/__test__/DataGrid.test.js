@@ -99,7 +99,7 @@ describe('DataGrid', () => {
             };
 
             const dataGrid = shallow(<DataGrid {...props} />).instance();
-
+            dataGrid.rowSpanHeader = jest.fn(() => false);
             // Action
             const result = shallow(<div>{dataGrid.buildPicManagementHeader(false, false, {})}</div>);
 
@@ -144,7 +144,7 @@ describe('DataGrid', () => {
 
             // Action
             const result = shallow(<div>{dataGrid.buildPicManagementHeader(true, true, uniqueCommunication)}</div>);
-
+            dataGrid.rowSpanHeader = jest.fn(() => true);
             // Assert
             expect(result.find(HeaderCell).at(0).props().colWidth).toBe(50);
             expect(result.find(HeaderCell).at(0).props().rowSpan).toBe(2);
