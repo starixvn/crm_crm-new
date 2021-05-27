@@ -26,24 +26,34 @@
             var fixture = new Fixture();
             var param = fixture.Create<GetNotificationTemplateParam>();
             var totalRows = fixture.Create<int>();
-            var expected = fixture.Create<IEnumerable<NotificationTemplate>>();
+            var templates = fixture.Create<IEnumerable<NotificationTemplate>>();
+            var contents = new List<NotificationTemplateContent>
+            {
+                new NotificationTemplateContent
+                {
+                    NotificationTemplateId = 1,
+                    LanguageId = 1,
+                    Language = "Content (EN)",
+                    Content = "content"
+                }
+            };
+            var tuple = new ValueTuple<IEnumerable<NotificationTemplate>, IEnumerable<NotificationTemplateContent>>(templates, contents);
             var criteria = new GetNotificationTemplateCriteria();
             var service = GetService();
-            baseService.GetDataAsync<NotificationTemplate>(Arg.Do<GetNotificationTemplateCriteria>(x => criteria = x)).Returns(expected);
-            baseService.When(x => x.GetDataAsync<NotificationTemplate>(Arg.Do<GetNotificationTemplateCriteria>(y => criteria = y)))
+            baseService.FetchMultipleAsync<NotificationTemplate, NotificationTemplateContent>(Arg.Any<GetNotificationTemplateCriteria>()).Returns(tuple);
+            baseService.When(x => x.FetchMultipleAsync<NotificationTemplate, NotificationTemplateContent>(Arg.Do<GetNotificationTemplateCriteria>(y => criteria = y)))
                  .Do(x => criteria.TotalRows = totalRows);
 
             // Act
             var actual = await service.GetAsync(param);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(tuple.Item1, actual);
 
             Assert.Equal(param.NotificationTypeId, criteria.NotificationTypeId);
             Assert.Equal(param.NotificationTemplateName, criteria.NotificationTemplateName);
             Assert.Equal(param.PageIndex, criteria.PageIndex);
             Assert.Equal(param.PageSize, criteria.PageSize);
-            Assert.Equal(totalRows, param.TotalRows);
         }
 
         [Fact]
