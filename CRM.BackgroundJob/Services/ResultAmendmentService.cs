@@ -59,6 +59,7 @@
             this.transactionService = transactionService;
         }
 
+
         public async Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting, bool isUAT,
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
             string JobStatusNameEnv, string Environment)
@@ -747,6 +748,7 @@
             return stringBuilder;
         }
 
+
         protected internal virtual StringBuilder GetAmendmentSolutionTemplateYnSportBook(
           AmendmentAutoFeedbackInfor amendment,
           AmendmentSolutionTemplate amendmentSolTemplate,
@@ -859,5 +861,6 @@
             }
             return MatchCodeReplace;
         }
+
     }
 }
