@@ -7,7 +7,7 @@
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.BackgroundJob.Models.ChatBotCTO;
     using global::CRM.BackgroundJob.Models.ChatBotCWL;
-    using global::CRM.BackgroundJob.Models.ProblemsAccount;
+    using global::CRM.BackgroundJob.Models.ChatBotProblemsAccount;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
@@ -136,7 +136,7 @@
                 logService.LogInformation("Chat Bot Problems Account Service is shutdown.");
                 return;
             }
-            IEnumerable<ProblemsAccountInfor> problemsAcountInfors = await chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(
+            IEnumerable<ChatBotProblemsAccountInfor> problemsAcountInfors = await chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(
                 settingProblemsAccount.LastLogId, settingProblemsAccount.BatchSize);
             CommandResult commandResult = await chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Environment);
             if (commandResult.IsSuccessful)

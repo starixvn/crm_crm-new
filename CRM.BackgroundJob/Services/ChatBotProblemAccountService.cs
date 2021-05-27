@@ -1,7 +1,7 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
     using CRM.BackgroundJob.Criteria.ProblemAccount;
-    using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
@@ -11,9 +11,9 @@
 
     public interface IChatBotProblemAccountService
     {
-        Task<IEnumerable<ProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(long LastLogId, int BatchSize);
+        Task<IEnumerable<ChatBotProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(long LastLogId, int BatchSize);
 
-        Task<CommandResult> ImportProblemsAccountInfoAsync(IEnumerable<ProblemsAccountInfor> problemsAccount,
+        Task<CommandResult> ImportProblemsAccountInfoAsync(IEnumerable<ChatBotProblemsAccountInfor> problemsAccounts,
                                                   string Environment = Constants.DefaultEnvironment);
     }
 
@@ -28,17 +28,17 @@
             this.commonFeedback = commonFeedback;
         }
 
-        public async Task<IEnumerable<ProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(long LastLogId, int BatchSize)
+        public async Task<IEnumerable<ChatBotProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(long LastLogId, int BatchSize)
         {
             var criteria = new GetProblemsAccountByLogId
             {
                 LastLogId = LastLogId,
                 BatchSize = BatchSize
             };
-            return await baseService.GetDataAsync<ProblemsAccountInfor>(criteria);
+            return await baseService.GetDataAsync<ChatBotProblemsAccountInfor>(criteria);
         }
 
-        public async Task<CommandResult> ImportProblemsAccountInfoAsync(IEnumerable<ProblemsAccountInfor> problemsAccount,
+        public async Task<CommandResult> ImportProblemsAccountInfoAsync(IEnumerable<ChatBotProblemsAccountInfor> problemsAccounts,
                                                   string Environment = Constants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' Username='{2}' " +
@@ -46,7 +46,7 @@
                 "CategoryNameEN='{7}' CategoryNameSC='{8}' CategoryNameTH='{9}' CategoryNameYN='{10}' " +
                 "IsTest='{11}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
-            foreach (ProblemsAccountInfor problemAccount in problemsAccount)
+            foreach (ChatBotProblemsAccountInfor problemAccount in problemsAccounts)
             {
                 var CategoryNameEN = commonFeedback.GetCategogyName(problemAccount.CategoryId.ToString(), Language.en_US);
                 var CategoryNameSC = commonFeedback.GetCategogyName(problemAccount.CategoryId.ToString(), Language.zh_CN);

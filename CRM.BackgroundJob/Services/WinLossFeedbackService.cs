@@ -28,7 +28,7 @@
         private readonly ISystemSettingService systemSettingService;
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
-        private readonly IWinLossTransactionService transactionService;
+        private readonly IFeedbackTransactionService transactionService;
         private readonly ICommonFeedback commonFeedback;
 
         private readonly string templateXml = "FeedbackTemplate.xml";
@@ -41,7 +41,7 @@
             ISystemSettingService systemSettingService,
             ICustomerService customerService,
             ICRMLogService logService,
-            IWinLossTransactionService transactionService,
+            IFeedbackTransactionService transactionService,
             ICommonFeedback commonFeedback
             )
 #pragma warning restore S107 // Methods should not have too many parameters

@@ -29,7 +29,7 @@ namespace CRM.BackgroundJob.Services
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
         private readonly ICommonFeedback commonFeedback;
-        private readonly IWinLossTransactionService transactionService;
+        private readonly IFeedbackTransactionService transactionService;
 
         private readonly string templateXml = "ProblemsSolutionTemplate.xml";
         private readonly int maxUserNameInOneFb = 250;
@@ -43,7 +43,7 @@ namespace CRM.BackgroundJob.Services
             ICustomerService customerService,
             ICRMLogService logService,
             ICommonFeedback commonFeedback,
-            IWinLossTransactionService transactionService
+            IFeedbackTransactionService transactionService
             )
 #pragma warning restore S107 // Methods should not have too many parameters
         {

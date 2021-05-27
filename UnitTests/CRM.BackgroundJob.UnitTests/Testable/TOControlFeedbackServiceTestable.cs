@@ -19,7 +19,7 @@
             ISystemSettingService systemSettingService,
             ICustomerService customerService,
             ICRMLogService logService,
-            IWinLossTransactionService transactionService,
+            IFeedbackTransactionService transactionService,
             ICommonFeedback commonFeedback)
         : base(appSettings,
                 baseService,

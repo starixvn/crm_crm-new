@@ -203,7 +203,7 @@
             services.AddScoped<IBackgroundService, BackgroundService>();
             services.AddScoped<ISendNotificationService, SendNotificationService>();
             services.AddScoped<IMonitorService, MonitorService>();
-            services.AddScoped<IWinLossTransactionService, WinLossTransactionService>();
+            services.AddScoped<IFeedbackTransactionService, FeedbackTransactionService>();
             services.AddScoped<ICommonFeedback, CommonFeedback>();
             services.AddScoped<ITOControlFeedbackService, TOControlFeedbackService>();
             services.AddScoped<IChatBotCTOService, ChatBotCTOService>();

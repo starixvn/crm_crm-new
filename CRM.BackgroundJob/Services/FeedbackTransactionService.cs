@@ -18,7 +18,7 @@
     using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Criteria.ProblemsAccount;
 
-    public interface IWinLossTransactionService
+    public interface IFeedbackTransactionService
     {
         Task<ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>> ImportWinLimitFeedbackInfoAsync(
                IEnumerable<CustomerWinLimit> cusWinLimit,
@@ -50,10 +50,10 @@
            string description);
 
     }
-    public class WinLossTransactionService : IWinLossTransactionService
+    public class FeedbackTransactionService : IFeedbackTransactionService
     {
         private readonly IBaseService baseService;
-        public WinLossTransactionService(
+        public FeedbackTransactionService(
             IBaseService baseService)
         {
             this.baseService = baseService;

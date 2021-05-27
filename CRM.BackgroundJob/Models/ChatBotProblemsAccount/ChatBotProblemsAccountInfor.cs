@@ -1,7 +1,7 @@
 ﻿
 namespace CRM.BackgroundJob.Models.ChatBotProblemsAccount
 {
-    public class ProblemsAccountInfor
+    public class ChatBotProblemsAccountInfor
     {
         public int LogId { get; set; }
         public string UserName { get; set; }

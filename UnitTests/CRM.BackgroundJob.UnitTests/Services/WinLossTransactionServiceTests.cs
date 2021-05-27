@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoFixture;
+using CRM.BackgroundJob.Criteria.ProblemsAccount;
 using CRM.BackgroundJob.Criteria.TurnoverControll;
 using CRM.BackgroundJob.Criteria.WinLossLimit;
+using CRM.BackgroundJob.Models.ProblemsAccount;
 using CRM.BackgroundJob.Models.TurnoverControll;
 using CRM.BackgroundJob.Models.WinLossLimit;
 using CRM.BackgroundJob.Services;
@@ -15,7 +17,7 @@ using Xunit;
 
 namespace CRM.BackgroundJob.UnitTests.Services
 {
-    public class WinLossTransactionServiceTests
+    public class FeedbackTransactionServiceTests
     {
         private IBaseService baseService;
 
@@ -26,7 +28,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var fixture = new Fixture();
             var expected = fixture.Create<CommandResult>();
             var criteria = new EditFeedbackWinLossInfoCommand();
-            var service = GetWinLossTransactionService();
+            var service = GetFeedbackTransactionService();
             baseService.ExecuteNonQueryAsync(Arg.Do<EditFeedbackWinLossInfoCommand>(x => criteria = x)).Returns(expected);
 
             // Act
@@ -52,7 +54,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var sport = new List<SportInfo>();
             var winLimitReturn = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>(winLimit, betTypes, sport);
             var criteria = new ImportWinLossFeedbackInfoCriteria();
-            var service = GetWinLossTransactionService();
+            var service = GetFeedbackTransactionService();
             baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo, SportInfo>(Arg.Do<ImportWinLossFeedbackInfoCriteria>(x => criteria = x)).Returns(winLimitReturn);
 
             // Act
@@ -100,7 +102,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var XmlTemplate = "<ROOT><r logid='1' custid='1' hl='1' hlname='1' related='1' product='1' group='1' level='1' " +
                                        "limitsetting='0' winamount='1000' winamountRM='1000' time='11/13/2020 12:00:00 AM' bettype='1'/></ROOT>";
             var criteria = new ImportWinLossFeedbackInfoCriteria();
-            var service = GetWinLossTransactionService();
+            var service = GetFeedbackTransactionService();
             baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo, SportInfo>(Arg.Do<ImportWinLossFeedbackInfoCriteria>(x => criteria = x)).Returns(winLimitReturn);
 
             // Act
@@ -147,7 +149,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var XmlTemplate = "<ROOT><r logid='1' custid='1' hl='1' hlname='1' related='1' product='1' group='1' level='1' " +
                                        "limitsetting='0' winamount='1000' winamountRM='1000' time='11/13/2020 12:00:00 AM' bettype='1'/></ROOT>";
             var criteria = new ImportWinLossFeedbackInfoCriteria();
-            var service = GetWinLossTransactionService();
+            var service = GetFeedbackTransactionService();
             baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo, SportInfo>(Arg.Do<ImportWinLossFeedbackInfoCriteria>(x => criteria = x)).Returns(winLimitReturn);
 
             // Act
@@ -178,7 +180,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 Level101 = 400,
                 Level102 = 500
             };
-            var service = GetWinLossTransactionService();
+            var service = GetFeedbackTransactionService();
 
             // Act
             var actual = service.Public_GetLimitSetting(setting, levelID);
@@ -229,7 +231,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                                         "houseTO='1' totalTO='1' outstanding='1' bettype='1' level='1'/></ROOT>";
             var criteria = new InsertTOControl_AutoFeedbackInfoCommand();
             var TOInforReturn = new List<TOControlFeedbackInfor>();
-            var service = GetWinLossTransactionService();
+            var service = GetFeedbackTransactionService();
             baseService.GetDataAsync<TOControlFeedbackInfor>(Arg.Do<InsertTOControl_AutoFeedbackInfoCommand>(x => criteria = x)).Returns(TOInforReturn);
 
             // Act
@@ -283,7 +285,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                                         "houseTO='1' totalTO='1' outstanding='0' bettype='1' level='1'/></ROOT>";
             var criteria = new InsertTOControl_AutoFeedbackInfoCommand();
             var TOInforReturn = new List<TOControlFeedbackInfor>();
-            var service = GetWinLossTransactionService();
+            var service = GetFeedbackTransactionService();
             baseService.GetDataAsync<TOControlFeedbackInfor>(Arg.Do<InsertTOControl_AutoFeedbackInfoCommand>(x => criteria = x)).Returns(TOInforReturn);
 
             // Act
@@ -295,13 +297,87 @@ namespace CRM.BackgroundJob.UnitTests.Services
         }
 
         [Fact]
+        public async Task ImportProblemsAccountFeedbackInfoAsync_CustCategoryHasData_ReturnExpectedXML()
+        {
+            // Arrange
+            var custCategoryInfors = new List<CustCategoryInfor>
+            {
+                new CustCategoryInfor
+                {
+                    LogID = 1,
+                    CustID = 1,
+                    CategoryID = 1
+                }
+            };
+            var headlines = new List<GroupHeadline>
+            {
+                new GroupHeadline
+                {
+                    CustId = 1,
+                    HeadlineId = 1,
+                    HeadlineName = "1"
+                }
+            };
+
+            const string expected = "<ROOT><r logid='1' custid='1' hl='1' hlname='1' related='1' catid='1'/></ROOT>";
+            var criteria = new InsertProblemsAccountAutoFeedbackInforCommand();
+            var problemsReturn = new List<ProblemsAccountAutoFeedbackInfor>();
+            var service = GetFeedbackTransactionService();
+            baseService.GetDataAsync<ProblemsAccountAutoFeedbackInfor>(Arg.Do<InsertProblemsAccountAutoFeedbackInforCommand>(x => criteria = x)).Returns(problemsReturn);
+
+            // Act
+            await service.ImportProblemsAccountFeedbackInfoAsync(headlines, custCategoryInfors, "LIVE");
+
+            // Assert
+
+            Assert.Equal(expected.ToString(), criteria.xml.ToString());
+        }
+
+        [Fact]
+        public async Task ImportProblemsAccountFeedbackInfoAsync_CustCategoryNotEqualHeadline_ReturnExpectedXML()
+        {
+            // Arrange
+            var custCategoryInfors = new List<CustCategoryInfor>
+            {
+                new CustCategoryInfor
+                {
+                    LogID = 1,
+                    CustID = 2,
+                    CategoryID = 1
+                }
+            };
+            var headlines = new List<GroupHeadline>
+            {
+                new GroupHeadline
+                {
+                    CustId = 1,
+                    HeadlineId = 1,
+                    HeadlineName = "1"
+                }
+            };
+
+            const string expected = "<ROOT><r logid='1' custid='2' hl='0' hlname='' related='2' catid='1'/></ROOT>";
+            var criteria = new InsertProblemsAccountAutoFeedbackInforCommand();
+            var problemsReturn = new List<ProblemsAccountAutoFeedbackInfor>();
+            var service = GetFeedbackTransactionService();
+            baseService.GetDataAsync<ProblemsAccountAutoFeedbackInfor>(Arg.Do<InsertProblemsAccountAutoFeedbackInforCommand>(x => criteria = x)).Returns(problemsReturn);
+
+            // Act
+            await service.ImportProblemsAccountFeedbackInfoAsync(headlines, custCategoryInfors, "LIVE");
+
+            // Assert
+
+            Assert.Equal(expected.ToString(), criteria.xml.ToString());
+        }
+
+        [Fact]
         public async Task EditTOControlFeedbackInfoAsync_WhenCalled_ReturnExpectedCommandResult()
         {
             // Arrange
             var fixture = new Fixture();
             var expected = fixture.Create<CommandResult>();
             var criteria = new EditTOControlAutoFeedbackInfoUpdCommand();
-            var service = GetWinLossTransactionService();
+            var service = GetFeedbackTransactionService();
             baseService.ExecuteNonQueryAsync(Arg.Do<EditTOControlAutoFeedbackInfoUpdCommand>(x => criteria = x)).Returns(expected);
 
             // Act
@@ -315,11 +391,32 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
         }
 
+        [Fact]
+        public async Task EditProblemsAccountFeedbackInfoAsync_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<CommandResult>();
+            var criteria = new EditProblemsAccountAutoFeedbackInforCommand();
+            var service = GetFeedbackTransactionService();
+            baseService.ExecuteNonQueryAsync(Arg.Do<EditProblemsAccountAutoFeedbackInforCommand>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.EditProblemsAccountFeedbackInfoAsync("12345", "Completed", "");
+
+            // Assert
+            Assert.Equal(expected, actual);
+            Assert.Equal("12345", criteria.LogID);
+            Assert.Equal("Completed", criteria.Status);
+            Assert.Equal("", criteria.Description);
+
+        }
+
         #region Helpers
 
-        public class WinLossTransactionServiceTestable : WinLossTransactionService
+        public class FeedbackTransactionServiceTestable : FeedbackTransactionService
         {
-            public WinLossTransactionServiceTestable(
+            public FeedbackTransactionServiceTestable(
             IBaseService baseService)
             : base(baseService)
             {
@@ -331,10 +428,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
             }
         }
 
-        private WinLossTransactionServiceTestable GetWinLossTransactionService()
+        private FeedbackTransactionServiceTestable GetFeedbackTransactionService()
         {
             baseService = Substitute.For<IBaseService>();
-            return Substitute.For<WinLossTransactionServiceTestable>(baseService);
+            return Substitute.For<FeedbackTransactionServiceTestable>(baseService);
         }
 
         #endregion Helpers

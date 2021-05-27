@@ -29,7 +29,7 @@
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
         private readonly ICommonFeedback commonFeedback;
-        private readonly IWinLossTransactionService transactionService;
+        private readonly IFeedbackTransactionService transactionService;
 
         private readonly string descTemplateXml = "TODesctiptionTemplate.xml";
         private readonly string solTemplateXml = "TOSolutionTemplate.xml";
@@ -44,7 +44,7 @@
             ICustomerService customerService,
             ICRMLogService logService,
             ICommonFeedback commonFeedback,
-            IWinLossTransactionService transactionService
+            IFeedbackTransactionService transactionService
             )
 #pragma warning restore S107 // Methods should not have too many parameters
         {

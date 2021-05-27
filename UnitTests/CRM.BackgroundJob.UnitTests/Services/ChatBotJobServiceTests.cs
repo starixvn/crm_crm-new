@@ -16,7 +16,7 @@
     using NSubstitute;
     using Xunit;
     using CRM.BackgroundJob.Models.ChatBotCTO;
-    using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
 
     public class ChatBotJobServiceTests
     {
@@ -254,7 +254,7 @@
         {
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
-            var problemsAcountInfors = fixture.Create<IEnumerable<ProblemsAccountInfor>>();
+            var problemsAcountInfors = fixture.Create<IEnumerable<ChatBotProblemsAccountInfor>>();
 
             var commandResult = new CommandResult { Code = 1 };
             var service = GetService();
@@ -274,7 +274,7 @@
         public async Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync_ImportProblemsAccountInfoAsyncSuccessful_ExpectedToCallSendNotificationToLetstalk()
         {
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
-            var problemsAcountInfors = fixture.Create<IEnumerable<ProblemsAccountInfor>>();
+            var problemsAcountInfors = fixture.Create<IEnumerable<ChatBotProblemsAccountInfor>>();
 
             var commandResult = new CommandResult { Code = 0 };
             var service = GetService();
