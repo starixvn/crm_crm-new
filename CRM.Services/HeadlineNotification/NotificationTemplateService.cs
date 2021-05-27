@@ -46,10 +46,10 @@
                 PageIndex = param.PageIndex,
                 PageSize = param.PageSize
             };
-            var templates = await baseService.GetDataAsync<NotificationTemplate>(criteria);
+            var templates = await baseService.FetchMultipleAsync<NotificationTemplate, NotificationTemplateContent>(criteria);
             param.TotalRows = criteria.TotalRows;
 
-            return templates;
+            return templates.Item1;
         }
 
         public async Task<NotificationTemplate> GetByIdAsync(int id)
