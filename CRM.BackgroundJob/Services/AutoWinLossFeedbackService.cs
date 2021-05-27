@@ -34,6 +34,7 @@
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
+        private const string dateTimeParse = "yyyy-MM-dd hh:mm:ss.fff tt";
 
 #pragma warning disable S107 // Methods should not have too many parameters
         public AutoWinLossFeedbackService(
@@ -90,7 +91,7 @@
                         var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString(dateTimeParse) },
                         };
                         await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
                     }
@@ -136,7 +137,7 @@
                         var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString(dateTimeParse)},
                         };
                         await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
                     }
@@ -182,7 +183,7 @@
                         var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString(dateTimeParse) },
                         };
                         await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
                     }
@@ -256,7 +257,7 @@
                     var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(dateTimeParse) },
                         };
                     await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ProblemsAccount);
                 }
