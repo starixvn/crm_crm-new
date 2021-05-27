@@ -29,7 +29,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
         private  ICustomerService customerService;
         private  ICRMLogService logService;
         private  ICommonFeedback commonFeedback;
-        private  IWinLossTransactionService transactionService;
+        private  IFeedbackTransactionService transactionService;
         private readonly IFixture fixture = new Fixture();
 
 
@@ -1690,7 +1690,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             systemSettingService = Substitute.For<ISystemSettingService>();
             customerService = Substitute.For<ICustomerService>();
             logService = Substitute.For<ICRMLogService>();
-            transactionService = Substitute.For<IWinLossTransactionService>();
+            transactionService = Substitute.For<IFeedbackTransactionService>();
             commonFeedback = Substitute.For<ICommonFeedback>();
 
             return Substitute.For<ResultAmendmentServiceTestable>(

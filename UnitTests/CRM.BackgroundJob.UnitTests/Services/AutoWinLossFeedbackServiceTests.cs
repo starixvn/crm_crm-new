@@ -546,8 +546,8 @@
                 winLossService,
                 logService,
                 tOControlFeedbackService,
+                resultAmendmentService,
                 problemsAccountFeedbackService,
-                resultAmendmentService);
                 configuration);
         }
 

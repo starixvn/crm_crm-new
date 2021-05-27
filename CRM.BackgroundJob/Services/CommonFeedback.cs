@@ -31,7 +31,6 @@
         
         string GetCategogyName(string categoryId, string languageCode);
         
-
         T GetFeedbackTemplates<T>(string fileXml);
 
         ValueTuple<bool, string> CheckFeedbackValidParams(CreateMutipleFeedbackCommand criteria);

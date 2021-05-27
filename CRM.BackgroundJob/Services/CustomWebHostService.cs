@@ -46,17 +46,14 @@
             base.OnStopping();
         }
 
-#pragma warning disable S1541 // Methods and properties should not be too complex
         protected internal virtual void RunHangfireJobs()
-#pragma warning restore S1541 // Methods and properties should not be too complex
         {
-            if (IsEnabledJob(HangfireJobName.CreateFeedbackForVoidingAbnormalBet))
-            {
-                recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For Voiding Abnormal Bet",
-                   job => job.CreateFeedbackForVoidingAbnormalBet(),
-                   Cron.Minutely,
-                   TimeZoneInfo.Local, QueuePriority.Critical);
-            }
+            CheckEnabledJobChatBot();
+            CheckEnabledJobAutoFeedback();
+        }
+
+        protected internal virtual void CheckEnabledJobChatBot()
+        {
 
             if (IsEnabledJob(HangfireJobName.PullMessageForChatBot))
             {
@@ -110,6 +107,17 @@
                   cronExpression,
                   TimeZoneInfo.Local);
             }
+        }
+
+        protected internal virtual void CheckEnabledJobAutoFeedback()
+        {
+            if (IsEnabledJob(HangfireJobName.CreateFeedbackForVoidingAbnormalBet))
+            {
+                recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For Voiding Abnormal Bet",
+                   job => job.CreateFeedbackForVoidingAbnormalBet(),
+                   Cron.Minutely,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
+            }
 
             if (IsEnabledJob(HangfireJobName.CreateFeedbackForWinLossLimit))
             {
@@ -118,7 +126,7 @@
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
-            
+
             if (IsEnabledJob(HangfireJobName.CreateFeedbackForTurnoverControl))
             {
                 recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For TurnOver Controll",
@@ -134,7 +142,7 @@
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
-            
+
             if (IsEnabledJob(HangfireJobName.CreateFeedbackForResultAmendment))
             {
                 recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For Result Amendment",
@@ -142,7 +150,6 @@
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
-
         }
 
         protected internal virtual void RemoveRecurringJobs()

@@ -18,6 +18,7 @@
         Task WinLossExecuteJobAsync();
         Task TurnoverControlExecuteJobAsync();
         Task ProblemsAcccountExecuteJobAsync();
+        Task ResultAmendmentExecuteJobAsync();
     }
 
     public class AutoWinLossFeedbackService : IAutoWinLossFeedbackService
@@ -42,8 +43,8 @@
             IWinLossFeedbackService winLossService,
             ICRMLogService logService,
             ITOControlFeedbackService turnoverService,
+            IResultAmendmentService resultAmendmentService,
             IProblemsAccountFeedbackService problemsAccountFeedbackService,
-            IResultAmendmentService resultAmendmentService)
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -52,10 +53,9 @@
             this.systemSettingService = systemSettingService;
             this.winLossService = winLossService;
             this.logService = logService;
-            
             this.turnoverService = turnoverService;
-            this.problemsAccountFeedbackService = problemsAccountFeedbackService;
             this.resultAmendmentService = resultAmendmentService;
+            this.problemsAccountFeedbackService = problemsAccountFeedbackService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
 
         }

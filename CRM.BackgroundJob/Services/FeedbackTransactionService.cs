@@ -1,26 +1,25 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
+    using CRM.BackgroundJob.Criteria.ProblemsAccount;
+    using CRM.BackgroundJob.Criteria.ResultAmendment;
+    using CRM.BackgroundJob.Criteria.TurnoverControll;
+    using CRM.BackgroundJob.Criteria.WinLossLimit;
+    using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.TurnoverControll;
+    using CRM.BackgroundJob.Models.WinLossLimit;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.CRM.BackgroundJob.Criteria;
+    using Fanex.CRM.BackgroundJob.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
-    using CRM.BackgroundJob.Criteria.WinLossLimit;
-    using CRM.BackgroundJob.Models.WinLossLimit;
-    using CRM.Core.Services;
-    using Fanex.CRM.BackgroundJob.Models;
     using System.Text;
-    using Fanex.CRM.BackgroundJob.Constants;
-    using System.Xml.Linq;
-    using CRM.Core.Models;
-    using CRM.BackgroundJob.Models.TurnoverControll;
-    using CRM.BackgroundJob.Criteria.TurnoverControll;
+    using System.Threading.Tasks;
     using System.Web;
-    using CRM.BackgroundJob.Models.ProblemsAccount;
-    using CRM.BackgroundJob.Criteria.ProblemsAccount;
-    using CRM.BackgroundJob.Models.ResultAmendment;
-    using CRM.BackgroundJob.Criteria.ResultAmendment;
-    using CRM.Core.Extensions.XML;
-    using Fanex.CRM.BackgroundJob.Criteria;
+    using System.Xml.Linq;
 
     public interface IFeedbackTransactionService
     {
@@ -33,15 +32,10 @@
                string status,
                string description);
 
-        Task<IEnumerable<TOControlFeedbackInfor>>ImportTOControllFeedbackInfoAsync(
+        Task<IEnumerable<TOControlFeedbackInfor>> ImportTOControllFeedbackInfoAsync(
              IEnumerable<GroupHeadline> headlines,
              IEnumerable<CustOutStanding> custOutStandings,
              IEnumerable<TONotification> custNotifications);
-
-        Task<IEnumerable<ProblemsAccountAutoFeedbackInfor>> ImportProblemsAccountFeedbackInfoAsync(
-             IEnumerable<GroupHeadline> headlines,
-             IEnumerable<CustCategoryInfor> custCatogorys,
-             string Environment);
 
         Task<IEnumerable<ProblemsAccountAutoFeedbackInfor>> ImportProblemsAccountFeedbackInfoAsync(
              IEnumerable<GroupHeadline> headlines,
@@ -58,7 +52,6 @@
            string status,
            string description);
 
-
         Task<IEnumerable<AmendmentAutoFeedbackInfor>> GetAmendmentNotiAutoFeedbackInfor(int BatchSize);
 
         Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments);
@@ -67,17 +60,20 @@
            int LogID,
            string status,
            string description);
-        Task<IEnumerable<Message>> GetMessageContentInfoAsync(int messageId);
 
+        Task<IEnumerable<Message>> GetMessageContentInfoAsync(int messageId);
     }
+
     public class FeedbackTransactionService : IFeedbackTransactionService
     {
         private readonly IBaseService baseService;
+
         public FeedbackTransactionService(
             IBaseService baseService)
         {
             this.baseService = baseService;
         }
+
         public async Task<ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>> ImportWinLimitFeedbackInfoAsync(
            IEnumerable<CustomerWinLimit> cusWinLimit,
            IEnumerable<GroupHeadline> headlines)
@@ -155,18 +151,23 @@
                 case Level1:
                     amount = setting.Level1;
                     break;
+
                 case Level2:
                     amount = setting.Level2;
                     break;
+
                 case Level3:
                     amount = setting.Level3;
                     break;
+
                 case Level101:
                     amount = setting.Level101;
                     break;
+
                 case Level102:
                     amount = setting.Level102;
                     break;
+
                 default:
                     amount = 0;
                     break;
@@ -268,7 +269,6 @@
             {
                 xml = stringBuilder.ToString(),
                 Enviroment = Environment
-
             };
             return await baseService.GetDataAsync<ProblemsAccountAutoFeedbackInfor>(criteria);
         }
@@ -286,11 +286,11 @@
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
-        
-         public async Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(
-           string LogID,
-           string status,
-           string description)
+
+        public async Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(
+          string LogID,
+          string status,
+          string description)
         {
             var criteria = new EditProblemsAccountAutoFeedbackInforCommand
             {
@@ -300,7 +300,6 @@
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
-
 
         public async Task<IEnumerable<AmendmentAutoFeedbackInfor>> GetAmendmentNotiAutoFeedbackInfor(int BatchSize)
         {
@@ -315,7 +314,7 @@
         {
             const string XmlTemplate = "<r ticketid='{0}' custid='{1}' ticketeventid='{2}' bettype='{3}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            foreach(var cust in CustAmendments)
+            foreach (var cust in CustAmendments)
             {
                 stringBuilder.AppendFormat(XmlTemplate,
                         cust.TicketId,

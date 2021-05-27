@@ -19,6 +19,7 @@
     {
         Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting);
     }
+
     public class ResultAmendmentService : IResultAmendmentService
     {
         private readonly AppJobSettings appSettings;
@@ -28,7 +29,7 @@
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
         private readonly ICommonFeedback commonFeedback;
-        private readonly IWinLossTransactionService transactionService;
+        private readonly IFeedbackTransactionService transactionService;
 
         private readonly string descTemplateXml = "AmendmentDescriptionTemplate.xml";
         private readonly string solTemplateXml = "AmendmentSolutionTemplate.xml";
@@ -47,7 +48,7 @@
             ICustomerService customerService,
             ICRMLogService logService,
             ICommonFeedback commonFeedback,
-            IWinLossTransactionService transactionService
+            IFeedbackTransactionService transactionService
             )
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -60,6 +61,7 @@
             this.commonFeedback = commonFeedback;
             this.transactionService = transactionService;
         }
+
         public async Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting)
         {
             var settingJobStatus = new List<SystemSettingItem>
@@ -109,7 +111,6 @@
                 await EditSystemSettingAsync();
                 return;
             }
-
 
             foreach (AmendmentAutoFeedbackInfor amendment in amendmentAutoFeedbackInfors)
             {
@@ -383,11 +384,11 @@
             switch (productName)
             {
                 case "Sportsbook":
-                    if(amendment.EventType == EventType2 || amendment.EventType == EventType9)
+                    if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
                     {
                         stringBuilder.Append(outright);
                         break;
-                    }   
+                    }
                     else
                     {
                         stringBuilder.AppendFormat(
@@ -401,7 +402,7 @@
                            Constants.Break
                         );
                         break;
-                    }    
+                    }
                 case "Virtual Sports 2":
                     stringBuilder.AppendFormat(
                         amendmentDescTemplate.VirtualSports2,
@@ -414,12 +415,15 @@
                            Constants.Break
                         );
                     break;
+
                 case "Virtual Sports":
                     stringBuilder.Append(virtualSports);
                     break;
+
                 case "Number Game":
                     stringBuilder.Append(numberGame);
                     break;
+
                 default:
                     stringBuilder.Append("");
                     break;
@@ -456,13 +460,13 @@
             }
             else
             {
-               stringBuilder.AppendFormat(
-               amendmentDescTemplate.VirtualSports181To185,
-                 EventdateGMT4,
-                 sportName,
-                 Race_time,
-                 Constants.Break
-              );
+                stringBuilder.AppendFormat(
+                amendmentDescTemplate.VirtualSports181To185,
+                  EventdateGMT4,
+                  sportName,
+                  Race_time,
+                  Constants.Break
+               );
             }
 
             logService.LogInformation("End create template desctiption virtual sport.");
@@ -572,6 +576,7 @@
                         amendment.affectedName,
                         Constants.Break);
                     break;
+
                 case "Virtual Sports 2":
                     stringBuilder.AppendFormat(
                         amendmentSolTemplate.VirtualSports2EN,
@@ -585,12 +590,14 @@
                             amendment.affectedName,
                             Constants.Break);
                     break;
+
                 case "Virtual Sports":
                     stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsEN,
                         sportName,
                         amendment.affectedName,
                         Constants.Break);
                     break;
+
                 case "Number Game":
                     stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameEN,
                         sportName,
@@ -599,6 +606,7 @@
                         amendment.affectedName,
                         Constants.Break);
                     break;
+
                 default:
                     stringBuilder.Append("");
                     break;
@@ -633,7 +641,7 @@
             var sportBook = GetAmendmentSolutionTemplateYnSportBook(
                             amendment, amendmentSolTemplate, messageContent,
                             sportNameYN, homeNameYN, awayNameYN, leagueNameYN, Eventdate);
-            var virtualSports = GetAmendmentSolutionTemplateYnScVirtualSport(amendment.affectedName, amendmentSolTemplate, 
+            var virtualSports = GetAmendmentSolutionTemplateYnScVirtualSport(amendment.affectedName, amendmentSolTemplate,
                                 isVipCust, sportNameYN, sportNameSC);
             var numberGame = GetAmendmentSolutionTemplateYnScNumberGame(
                             amendment.MatchCode, amendment.affectedName, amendmentSolTemplate, isVipCust,
@@ -659,27 +667,31 @@
                         {
                             stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookSC, sportNameSC, homeNameSC, awayNameSC,
                             leagueNameSC, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break);
-                        }    
+                        }
                     }
                     break;
+
                 case "Virtual Sports 2":
                     if (isVipCust)
                     {
                         stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2YN, homeNameYN, awayNameYN, sportNameYN,
-                        matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break );
+                        matchCodeReplaceYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break);
                     }
                     else
                     {
                         stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSports2SC, homeNameSC, awayNameSC, sportNameSC, matchCodeReplaceSC,
-                        Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break );
+                        Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break);
                     }
                     break;
+
                 case "Virtual Sports":
                     stringBuilder.Append(virtualSports);
                     break;
+
                 case "Number Game":
                     stringBuilder.Append(numberGame);
                     break;
+
                 default:
                     stringBuilder.Append("");
                     break;
@@ -689,6 +701,7 @@
         }
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         protected internal virtual StringBuilder GetAmendmentSolutionTemplateYnSportBook(
           AmendmentAutoFeedbackInfor amendment,
           AmendmentSolutionTemplate amendmentSolTemplate,
@@ -778,9 +791,9 @@
                     MatchCodeReplace = MatchCodeReplace.Replace(matchCodeId, matchCodeName);
                 }
             }
-
             return MatchCodeReplace;
         }
+
         protected internal virtual async Task<CommandResult> EditSystemSettingAsync()
         {
             var settingJobStatus = new List<SystemSettingItem>
@@ -788,7 +801,7 @@
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
                 new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") }
             };
-           return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
+            return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
         }
     }
 }

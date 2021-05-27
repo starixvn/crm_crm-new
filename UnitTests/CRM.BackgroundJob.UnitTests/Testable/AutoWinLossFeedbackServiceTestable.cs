@@ -19,6 +19,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             IWinLossFeedbackService winLossService,
             ICRMLogService logService,
             ITOControlFeedbackService turnoverService,
+            IResultAmendmentService resultAmendmentService,
             IProblemsAccountFeedbackService problemsAccountFeedbackService,
             IConfiguration configuration
             )
@@ -28,6 +29,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
                 winLossService,
                 logService,
                 turnoverService,
+                resultAmendmentService,
                 problemsAccountFeedbackService,
                 configuration)
         {

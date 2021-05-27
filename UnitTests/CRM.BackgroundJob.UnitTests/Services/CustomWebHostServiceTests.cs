@@ -56,7 +56,7 @@
         #region RunHangfireJobs
 
         [Fact]
-        public void RunHangfireJobs_EnabledCreateFeedbackForVoidingAbnormalBet_ExpectedAddRecurringJob()
+        public void CheckEnabledJobAutoFeedback_EnabledCreateFeedbackForVoidingAbnormalBet_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -67,7 +67,7 @@
             service.Protected("IsEnabledJob", "CreateFeedbackForVoidingAbnormalBet").Returns(true);
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobAutoFeedback();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Create Feedback For Voiding Abnormal Bet",
@@ -77,7 +77,7 @@
         }
 
         [Fact]
-        public void RunHangfireJobs_EnabledPullMessageForChatBot_ExpectedAddRecurringJob()
+        public void CheckEnabledJobChatBot_EnabledPullMessageForChatBot_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -89,7 +89,7 @@
             service.Protected("GetCronExpression", "PullMessageForChatBot").Returns("CronExpression");
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobChatBot();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Pull Message For Chat Bot",
@@ -99,7 +99,7 @@
         }
 
         [Fact]
-        public void RunHangfireJobs_EnabledPullMessageCWLForChatBot_ExpectedAddRecurringJob()
+        public void CheckEnabledJobChatBot_EnabledPullMessageCWLForChatBot_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -111,7 +111,7 @@
             service.Protected("GetCronExpression", "PullMessageCWLForChatBot").Returns("CronExpression");
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobChatBot();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Pull Message CWL For Chat Bot",
@@ -121,7 +121,7 @@
         }
 
         [Fact]
-        public void RunHangfireJobs_EnabledPullMessageCTOForChatBot_ExpectedAddRecurringJob()
+        public void CheckEnabledJobChatBot_EnabledPullMessageCTOForChatBot_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -133,7 +133,7 @@
             service.Protected("GetCronExpression", "PullMessageCTOForChatBot").Returns("CronExpression");
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobChatBot();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Pull Message CTO For Chat Bot",
@@ -143,7 +143,7 @@
         }
 
         [Fact]
-        public void RunHangfireJobs_EnabledPullMessageProblemAccountForChatBot_ExpectedAddRecurringJob()
+        public void CheckEnabledJobChatBot_EnabledPullMessageProblemAccountForChatBot_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -155,7 +155,7 @@
             service.Protected("GetCronExpression", "PullMessageProblemAccountForChatBot").Returns("CronExpression");
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobChatBot();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Pull Message Problems Account For Chat Bot",
@@ -165,7 +165,7 @@
         }
 
         [Fact]
-        public void RunHangfireJobs_EnabledScanAndSendLetstalkNotification_ExpectedAddRecurringJob()
+        public void CheckEnabledJobChatBot_EnabledScanAndSendLetstalkNotification_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -176,7 +176,7 @@
             service.Protected("IsEnabledJob", "ScanAndSendLetstalkNotification").Returns(true);
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobChatBot();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Scan and send Letstalk Notification",
@@ -186,7 +186,7 @@
         }
 
         [Fact]
-        public void RunHangfireJobs_EnabledMonitorLetstalkService_ExpectedAddRecurringJob()
+        public void CheckEnabledJobChatBot_EnabledMonitorLetstalkService_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -198,7 +198,7 @@
             service.Protected("GetCronExpression", "MonitorLetstalkService").Returns("CronExpression");
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobChatBot();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Monitor Letstalk Service",
@@ -208,7 +208,7 @@
         }
 
         [Fact]
-        public void RunHangfireJobs_EnabledCreateFeedbackForWinLossLimit_ExpectedAddRecurringJob()
+        public void CheckEnabledJobAutoFeedback_EnabledCreateFeedbackForWinLossLimit_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -219,7 +219,7 @@
             service.Protected("IsEnabledJob", "CreateFeedbackForWinLossLimit").Returns(true);
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobAutoFeedback();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Create Feedback For Win Loss Limit",
@@ -229,7 +229,7 @@
         }
 
         [Fact]
-        public void RunHangfireJobs_EnabledCreateFeedbackForTurnoverControl_ExpectedAddRecurringJob()
+        public void CheckEnabledJobAutoFeedback_EnabledCreateFeedbackForTurnoverControl_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -240,7 +240,7 @@
             service.Protected("IsEnabledJob", "CreateFeedbackForTurnoverControl").Returns(true);
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobAutoFeedback();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Create Feedback For TurnOver Controll",
@@ -250,7 +250,7 @@
         }
 
         [Fact]
-        public void RunHangfireJobs_EnabledCreateFeedbackForProblemsAccount_ExpectedAddRecurringJob()
+        public void CheckEnabledJobAutoFeedback_EnabledCreateFeedbackForProblemsAccount_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -261,7 +261,7 @@
             service.Protected("IsEnabledJob", "CreateFeedbackForProblemsAccount").Returns(true);
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobAutoFeedback();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Create Feedback For Problems Account",
@@ -271,7 +271,7 @@
         }
         
          [Fact]
-        public void RunHangfireJobs_EnabledCreateFeedbackForResultAmendment_ExpectedAddRecurringJob()
+        public void CheckEnabledJobAutoFeedback_EnabledCreateFeedbackForResultAmendment_ExpectedAddRecurringJob()
         {
             // Arrange
             var jobSettings = new List<HangfireJobSetting>
@@ -282,7 +282,7 @@
             service.Protected("IsEnabledJob", "CreateFeedbackForResultAmendment").Returns(true);
 
             // Act
-            service.Public_RunHangfireJobs();
+            service.Public_CheckEnabledJobAutoFeedback();
 
             // Assert
             recurringJob.Received().AddOrUpdate("Create Feedback For Result Amendment",

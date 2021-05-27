@@ -24,6 +24,16 @@
             base.RunHangfireJobs();
         }
 
+        public void Public_CheckEnabledJobChatBot()
+        {
+            base.CheckEnabledJobChatBot();
+        }
+
+        public void Public_CheckEnabledJobAutoFeedback()
+        {
+            base.CheckEnabledJobAutoFeedback();
+        }
+
         public bool Public_IsEnabledJob(string jobName)
         {
             return base.IsEnabledJob(jobName);

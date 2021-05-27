@@ -22,7 +22,7 @@
             ICustomerService customerService,
             ICRMLogService logService,
             ICommonFeedback commonFeedback,
-            IWinLossTransactionService transactionService)
+            IFeedbackTransactionService transactionService)
         : base(appSettings,
                 baseService,
                 settingService,
