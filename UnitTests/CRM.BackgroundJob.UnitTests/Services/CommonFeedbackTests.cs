@@ -393,6 +393,33 @@
             await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
         }
 
+        [Fact]
+        public async Task EditSystemSettingAsyncByEnv_WhenCalled_CallExactFunctionAndParams()
+        {
+            // Arrange
+            var service = GetService();
+
+            // Act
+            await service.EditSystemSettingAsyncByEnv("JobStatusNameEnv", "LastRuntimeNameEnv", "JobStatusValue", Constants.ServiceName_TOControlFB);
+
+            // Assert
+            await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
+        }
+
+        [Fact]
+        public async Task EditSystemSettingUpdateLastLogIdAsyncByEnv_WhenCalled_CallExactFunctionAndParams()
+        {
+            // Arrange
+            var service = GetService();
+
+            // Act
+            await service.EditSystemSettingUpdateLastLogIdAsyncByEnv("JobStatusNameEnv", "LastRuntimeNameEnv", "lastLogIdName", 1, Constants.ServiceName_TOControlFB);
+
+            // Assert
+            await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
+        }
+        
+
         #region Helpers
         private CommonFeedback GetService()
         {

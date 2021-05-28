@@ -18,7 +18,6 @@
         public ResultAmendmentServiceTestable(IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
-            ISystemSettingService systemSettingService,
             ICustomerService customerService,
             ICRMLogService logService,
             ICommonFeedback commonFeedback,
@@ -26,7 +25,6 @@
         : base(appSettings,
                 baseService,
                 settingService,
-                systemSettingService,
                 customerService,
                 logService,
                 commonFeedback,
@@ -236,11 +234,6 @@
         public string Public_GetMatchCoddFormat(string matchCode, string language)
         {
             return base.GetMatchCoddFormat(matchCode, language);
-        }
-
-        public async Task<CommandResult> Public_EditSystemSettingAsync()
-        {
-            return await base.EditSystemSettingAsync();
         }
     }
 }

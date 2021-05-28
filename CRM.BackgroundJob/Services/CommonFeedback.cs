@@ -39,7 +39,11 @@
 
         Task<CommandResult> EditFeedbackSystemSettingAsync(long LastLogID, string ServiceName);
 
-        Task<CommandResult> EditAmendmentFeedbackSystemSettingAsync(int LastTicketID, string ServiceName);
+        Task<CommandResult> EditSystemSettingAsyncByEnv(string JobStatusNameEnv,
+            string LastRuntimeNameEnv, string JobStatusValue, string serviceName);
+
+        Task<CommandResult> EditSystemSettingUpdateLastLogIdAsyncByEnv(string JobStatusNameEnv, string LastRuntimeNameEnv,
+            string lastLogIdName, int maxLastLogId, string serviceName);
     }
     public class CommonFeedback : ICommonFeedback
     {
@@ -159,15 +163,27 @@
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, ServiceName);
         }
 
-        public async Task<CommandResult> EditAmendmentFeedbackSystemSettingAsync(int LastTicketID, string ServiceName)
+        public async Task<CommandResult> EditSystemSettingAsyncByEnv(string JobStatusNameEnv,
+            string LastRuntimeNameEnv, string JobStatusValue, string serviceName)
         {
             var settingJobStatus = new List<SystemSettingItem>
             {
-                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
-                new SystemSettingItem { SettingName = SystemSettingName.LastTicketID, Value = LastTicketID.ToString() }
+                new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatusValue},
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
             };
-            return await systemSetting.EditSystemSettingAsync(settingJobStatus, ServiceName);
+            return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
+        }
+
+        public async Task<CommandResult> EditSystemSettingUpdateLastLogIdAsyncByEnv(string JobStatusNameEnv, string LastRuntimeNameEnv,
+            string lastLogIdName, int maxLastLogId, string serviceName)
+        {
+            var settingJobStatus = new List<SystemSettingItem>
+            {
+                new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = lastLogIdName, Value = maxLastLogId.ToString() },
+            };
+            return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
         }
     }
 }

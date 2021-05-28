@@ -25,7 +25,6 @@ namespace CRM.BackgroundJob.Services
         private readonly AppJobSettings appSettings;
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
-        private readonly ISystemSettingService systemSettingService;
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
         private readonly ICommonFeedback commonFeedback;
@@ -34,23 +33,19 @@ namespace CRM.BackgroundJob.Services
         private readonly string templateXml = "ProblemsSolutionTemplate.xml";
         private readonly int maxUserNameInOneFb = 250;
 
-#pragma warning disable S107 // Methods should not have too many parameters
         public ProblemsAccountFeedbackService(
             IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
-            ISystemSettingService systemSettingService,
             ICustomerService customerService,
             ICRMLogService logService,
             ICommonFeedback commonFeedback,
             IFeedbackTransactionService transactionService
             )
-#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.appSettings = appSettings.Value;
             this.baseService = baseService;
             this.settingService = settingService;
-            this.systemSettingService = systemSettingService;
             this.customerService = customerService;
             this.logService = logService;
             this.commonFeedback = commonFeedback;
@@ -63,7 +58,7 @@ namespace CRM.BackgroundJob.Services
         {
             logService.LogInformation(string.Format("Start run problems account serivce with last LastLogID: {0} isUAT: {1}!", problemsAccountSetting.LastLogId, isUAT));
 
-            await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ProblemsAccount);
             var custCategory = await customerService.GetCustCategoryInfor(problemsAccountSetting, isUAT);
             var custIds = custCategory.Select(x => x.CustID).Distinct();
             var headlines = await customerService.GetGroupHeadlineAsync(custIds);
@@ -72,7 +67,7 @@ namespace CRM.BackgroundJob.Services
             {
                 logService.LogInformation(string.Format("Import problems account doesn't have any data with custId: {0} headlineName: {1}!",
                    string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
-                await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed);
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ProblemsAccount);
                 return;
             }
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
@@ -105,10 +100,10 @@ namespace CRM.BackgroundJob.Services
             if(custCategory.Any())
             {
                 var maxLastLogId = custCategory.Max(x => x.LogID);
-                await EditSystemSettingUpdateLastLogIdAsync(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxLastLogId);
+                await commonFeedback.EditSystemSettingUpdateLastLogIdAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxLastLogId, Constants.ServiceName_ProblemsAccount);
                 return;
             }
-            await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ProblemsAccount);
             logService.LogInformation("end service problems account serivce!");
         }
 
@@ -297,29 +292,6 @@ namespace CRM.BackgroundJob.Services
             stringBuilder.Append("Announcement sent to Headline and informed our related department marked their member as problem account.");
             stringBuilder.Append(Constants.LineBreak);
             return stringBuilder.ToString();
-        }
-
-        protected internal virtual async Task<CommandResult> EditSystemSettingAsync(string JobStatusNameEnv, 
-            string LastRuntimeNameEnv, string JobStatusValue)
-        {
-            var settingJobStatus = new List<SystemSettingItem>
-            {
-                new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatusValue},
-                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
-            };
-            return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ProblemsAccount);
-        }
-
-        protected internal virtual async Task<CommandResult> EditSystemSettingUpdateLastLogIdAsync(string JobStatusNameEnv, string LastRuntimeNameEnv,
-            string lastLogIdName, int maxLastLogId)
-        {
-            var settingJobStatus = new List<SystemSettingItem>
-            {
-                new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
-                new SystemSettingItem { SettingName = lastLogIdName, Value = maxLastLogId.ToString() },
-            };
-            return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ProblemsAccount);
         }
     }
 }

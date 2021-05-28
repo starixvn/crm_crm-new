@@ -17,7 +17,9 @@
 
     public interface IResultAmendmentService
     {
-        Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting);
+        Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting, bool isUAT,
+            DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
+            string JobStatusNameEnv, string Environment);
     }
 
     public class ResultAmendmentService : IResultAmendmentService
@@ -25,7 +27,6 @@
         private readonly AppJobSettings appSettings;
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
-        private readonly ISystemSettingService systemSettingService;
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
         private readonly ICommonFeedback commonFeedback;
@@ -38,39 +39,30 @@
         private readonly int EventType2 = 2;
         private readonly int EventType9 = 9;
 
-#pragma warning disable S107 // Methods should not have too many parameters
-
         public ResultAmendmentService(
            IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
-            ISystemSettingService systemSettingService,
             ICustomerService customerService,
             ICRMLogService logService,
             ICommonFeedback commonFeedback,
             IFeedbackTransactionService transactionService
             )
-#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.appSettings = appSettings.Value;
             this.baseService = baseService;
             this.settingService = settingService;
-            this.systemSettingService = systemSettingService;
             this.customerService = customerService;
             this.logService = logService;
             this.commonFeedback = commonFeedback;
             this.transactionService = transactionService;
         }
 
-        public async Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting)
+        public async Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting, bool isUAT,
+            DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
+            string JobStatusNameEnv, string Environment)
         {
-            var settingJobStatus = new List<SystemSettingItem>
-                {
-                    new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
-                    new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
-                };
-
-            await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ResultAmendment);
 
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
@@ -81,17 +73,19 @@
             if (isAnyNotCompeleteStatus)
             {
                 logService.LogInformation("Data has some status not completed");
-                await EditSystemSettingAsync();
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
                 return;
             }
             try
             {
-                CommandResult commandResultAmendment = await transactionService.InserAmendmentNotiAutoFeedback(custAmendmentNotifications);
+                CommandResult commandResultAmendment = await transactionService.InserAmendmentNotiAutoFeedback(custAmendmentNotifications, Environment);
                 if (commandResultAmendment.IsSuccessful)
                 {
+                    var lastLogIdName = isUAT ? "LastTicketIDUAT" : "LastTicketID";
+                    var LastTicketIdSetting = isUAT ? resultAmendmentSetting .LastLogIdUAT: resultAmendmentSetting.LastTicketID;
                     logService.LogInformation("Insert Amendment Notification Auto FeedBack Successfull!");
-                    var maxTicketID = custAmendmentNotifications.Any() ? custAmendmentNotifications.Max(x => x.TicketId) : resultAmendmentSetting.LastTicketID;
-                    await commonFeedback.EditAmendmentFeedbackSystemSettingAsync(maxTicketID, Constants.ServiceName_ResultAmendment);
+                    var maxTicketID = custAmendmentNotifications.Any() ? custAmendmentNotifications.Max(x => x.TicketId) : LastTicketIdSetting;
+                    await commonFeedback.EditSystemSettingUpdateLastLogIdAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxTicketID, Constants.ServiceName_ResultAmendment);
                 }
                 else
                 {
@@ -108,7 +102,7 @@
             {
                 logService.LogInformation(string.Format("Import Amendment Auto Feedback Infor doesn't have any data with custId: {0} TicketId: {1}!",
                     string.Join(",", custAmendmentNotifications.Select(x => x.CustId)), string.Join(",", custAmendmentNotifications.Select(x => x.TicketId))));
-                await EditSystemSettingAsync();
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
                 return;
             }
 
@@ -120,7 +114,8 @@
                         settingMappings);
             }
 
-            await EditSystemSettingAsync();
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
+            logService.LogInformation("end service result amendment serivce!");
         }
 
         protected internal virtual async Task CreateResultAmendmentFeedbackCreditAsync(
@@ -525,10 +520,10 @@
             logService.LogInformation("Begin create template solution.");
 
             var amendmentSolTemplate = commonFeedback.GetFeedbackTemplates<AmendmentSolutionTemplate>(solTemplateXml);
-
+            var isVipCust = amendment.Site == "789y" && amendment.IsVip;
             var stringBuilder = new StringBuilder();
             var solutionTemplateEN = GetAmendmentSolutionTemplateEN(amendment, amendmentSolTemplate, messageContent);
-            var solutionTemplateSC = GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent);
+            var solutionTemplateSC = GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent, isVipCust);
 
             stringBuilder.Append(solutionTemplateEN);
             stringBuilder.Append(Constants.Break);
@@ -553,7 +548,7 @@
             var matchCode = commonFeedback.GetMatchCode(amendment.MatchCode, Language.en_US);
             var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formathhmmtt);
             var matchCodeReplace = GetMatchCoddFormat(amendment.MatchCode, Language.en_US);
-            var outRightMessageEn = messageContent.FirstOrDefault().Content_en;
+            var outRightMessageEn = messageContent?.FirstOrDefault()?.Content_en;
             switch (productName)
             {
                 case "Sportsbook":
@@ -620,11 +615,11 @@
         protected internal virtual StringBuilder GetAmendmentSolutionTemplateYNSC(
             AmendmentAutoFeedbackInfor amendment,
             AmendmentSolutionTemplate amendmentSolTemplate,
-            IEnumerable<Message> messageContent)
+            IEnumerable<Message> messageContent,
+            bool isVipCust)
         {
             logService.LogInformation("begin create template desctiption SCYN");
             var stringBuilder = new StringBuilder();
-            var isVipCust = amendment.Site == "789y" && amendment.IsVip;
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formathhmmtt);
             var sportNameYN = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN);
@@ -657,7 +652,7 @@
                     {
                         if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
                         {
-                            var outRightMessageSc = messageContent.FirstOrDefault().Content_cs;
+                            var outRightMessageSc = messageContent?.FirstOrDefault()?.Content_cs;
                             stringBuilder.AppendFormat(amendmentSolTemplate.OutrightSC,
                             outRightMessageSc,
                             amendment.affectedName,
@@ -716,7 +711,7 @@
             var stringBuilder = new StringBuilder();
             if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
             {
-                var outRightMessageYn = messageContent.FirstOrDefault().Content_vn;
+                var outRightMessageYn = messageContent?.FirstOrDefault()?.Content_vn;
                 stringBuilder.AppendFormat(amendmentSolTemplate.OutrightYN,
                 outRightMessageYn,
                 amendment.affectedName,
@@ -792,16 +787,6 @@
                 }
             }
             return MatchCodeReplace;
-        }
-
-        protected internal virtual async Task<CommandResult> EditSystemSettingAsync()
-        {
-            var settingJobStatus = new List<SystemSettingItem>
-            {
-                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") }
-            };
-            return await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
         }
     }
 }

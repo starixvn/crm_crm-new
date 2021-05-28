@@ -24,7 +24,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
         private AppJobSettings appSettings;
         private IBaseService baseService;
         private ISettingService settingService;
-        private ISystemSettingService systemSettingService;
         private ICustomerService customerService;
         private ICRMLogService logService;
         private IFeedbackTransactionService transactionService;
@@ -48,7 +47,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             await service.Public_CreateFeedbackForProblemsAccountAsync(problemsAccountSetting, false, LastRuntimeEnv, "LastRuntimeNameEnv", "JobStatusNameEnv", "LIVE");
 
             // Assert
-            service.Received(2).Protected("EditSystemSettingAsync", Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            await commonFeedback.EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
             logService.Received(2).LogInformation(Arg.Any<string>());
             service.DidNotReceive().Protected(
                 "CreateProblemsAccountFeedbackCreditAsync",
@@ -86,7 +85,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             await service.Public_CreateFeedbackForProblemsAccountAsync(problemsAccountSetting, false, LastRuntimeEnv, "LastRuntimeNameEnv", "JobStatusNameEnv", "LIVE");
 
             // Assert
-            service.Received().Protected("EditSystemSettingUpdateLastLogIdAsync", Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>());
+            await commonFeedback.EditSystemSettingUpdateLastLogIdAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<string>());
             logService.Received().LogInformation(Arg.Any<string>());
             service.Received().Protected(
                 "CreateProblemsAccountFeedbackCreditAsync",
@@ -574,7 +573,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
             appJobSettings.Value.Returns(appSettings);
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
-            systemSettingService = Substitute.For<ISystemSettingService>();
             customerService = Substitute.For<ICustomerService>();
             logService = Substitute.For<ICRMLogService>();
             transactionService = Substitute.For<IFeedbackTransactionService>();
@@ -584,7 +582,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 appJobSettings,
                 baseService,
                 settingService,
-                systemSettingService,
                 customerService,
                 logService,
                 transactionService,

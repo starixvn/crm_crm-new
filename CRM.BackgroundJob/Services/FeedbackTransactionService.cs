@@ -54,7 +54,7 @@
 
         Task<IEnumerable<AmendmentAutoFeedbackInfor>> GetAmendmentNotiAutoFeedbackInfor(int BatchSize);
 
-        Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments);
+        Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments, string Environment);
 
         Task<CommandResult> EditAmendmentNotiAutoFeedback(
            int LogID,
@@ -310,7 +310,7 @@
             return await baseService.GetDataAsync<AmendmentAutoFeedbackInfor>(criteria);
         }
 
-        public async Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments)
+        public async Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments, string Environment)
         {
             const string XmlTemplate = "<r ticketid='{0}' custid='{1}' ticketeventid='{2}' bettype='{3}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
@@ -326,7 +326,8 @@
 
             var criteria = new InsertAmendmentNotificationCommand
             {
-                xml = stringBuilder.ToString()
+                Xml = stringBuilder.ToString(),
+                Environment = Environment
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }

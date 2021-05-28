@@ -25,7 +25,8 @@
             // Arrange
             var criteria = new InsertAmendmentNotificationCommand
             {
-                xml = "1"
+                Xml = "1",
+                Environment = "LIVE"
             };
 
             // Act
@@ -40,12 +41,13 @@
         [InlineData("")]
         [InlineData(" ")]
 
-        public void IsValid_ParamIsInvalid_ReturnFalse(string xml)
+        public void IsValid_ParamIsInvalid_ReturnFalse(string Xml)
         {
             // Arrange
             var criteria = new InsertAmendmentNotificationCommand
             {
-                xml = xml
+                Xml = Xml,
+                Environment = "LIVE"
             };
 
             // Act

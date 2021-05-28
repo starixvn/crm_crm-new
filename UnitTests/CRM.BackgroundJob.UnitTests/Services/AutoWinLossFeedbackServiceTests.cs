@@ -262,67 +262,163 @@
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_JobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        public async Task ResultAmendmentExecuteJobAsync_LIVEEnvironment_ExpectedCallExactFunction()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                JobStatus = "running",
+                JobStatusUAT = "completed"
+            };
+            var service = GetService();
+            var env = Constants.DefaultEnvironment;
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            configuration.GetValue<string>("SiteEnvironment").Returns(env);
+
+            // Act
+            await service.ResultAmendmentExecuteJobAsync();
+
+            // Assert
+            service.Received().Protected("ResultAmendmentRunJobByEnviromentAsync",
+                false, false, true, setting, Constants.DefaultEnvironment
+                );
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
         {
             // Arrange
             var setting = new ResultAmendmentSetting
             {
                 ServiceFlag = true,
                 LastRuntime = DateTime.Now,
-                JobStatus = JobStatus.Running
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
             systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(true);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
 
             // Act
-            await service.ResultAmendmentExecuteJobAsync();
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, true, false, setting, "LIVE");
 
             // Assert
             await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_JobIsRunningAndLastRuntimeIsGreaterThanNow_DoNothing()
+        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
         {
             // Arrange
-            var service = GetService();
             var setting = new ResultAmendmentSetting
             {
                 ServiceFlag = true,
-                LastRuntime = DateTime.Now.AddMinutes(-appSettings.RetryRuntime - 1),
-                JobStatus = JobStatus.Running
+                LastRuntimeUAT = DateTime.Now.AddMinutes(-6),
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
             };
-            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            var service = GetService();
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
 
             // Act
-            await service.ResultAmendmentExecuteJobAsync();
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, true, false, setting, "UAT");
 
             // Assert
-            logService.Received().LogInformation("Rerun Result Amendment service.");
             await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_ResultAmendment);
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_JobIsCompleted_ExpectedCallCreateFeedback()
+        public async Task ResultAmendmentRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
         {
             // Arrange
-            var service = GetService();
             var setting = new ResultAmendmentSetting
             {
                 ServiceFlag = true,
-                JobStatus = JobStatus.Completed
+                LastRuntimeUAT = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
             };
+            var service = GetService();
             systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
 
             // Act
-            await service.ResultAmendmentExecuteJobAsync();
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, true, false, setting, "UAT");
+
+            // Assert
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task ResultAmendmentRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now.AddMinutes(-6),
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+
+            // Act
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, true, true, setting, "LIVE");
+
+            // Assert
+            logService.Received().LogInformation("Update  status and return serive result amendment.");
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_ResultAmendment);
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsLIVEAndJobIsNotRunning_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, false, false, setting, "LIVE");
 
             // Assert
             await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForResultAmendment);
+            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting, false, setting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
             await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
-            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting);
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsUATAndJobIsNotRunning_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+
+            // Act
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, false, false, setting, "UAT");
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForResultAmendment);
+            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting, true, setting.LastRuntimeUAT, SystemSettingName.LastRuntimeUAT, SystemSettingName.JobStatusUAT, "UAT");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
         }
 
         #endregion ResultAmendmentExecuteJobAsync

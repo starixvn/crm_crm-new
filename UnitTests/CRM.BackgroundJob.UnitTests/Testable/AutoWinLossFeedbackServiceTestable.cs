@@ -2,6 +2,7 @@
 namespace CRM.BackgroundJob.UnitTests.Testable
 {
     using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Models;
@@ -41,6 +42,13 @@ namespace CRM.BackgroundJob.UnitTests.Testable
         {
             await base.ProblemsAcccountRunJobByEnviromentAsync(isUAT, isRunningUAT,
                 isRunningLive, problemsAccountSetting, Environment);
+        }
+
+        public async Task Public_ResultAmendmentRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
+            bool isRunningLive, ResultAmendmentSetting resultAmendmentSetting, string Environment)
+        {
+            await base.ResultAmendmentRunJobByEnviromentAsync(isUAT, isRunningUAT,
+                isRunningLive, resultAmendmentSetting, Environment);
         }
     }
 }

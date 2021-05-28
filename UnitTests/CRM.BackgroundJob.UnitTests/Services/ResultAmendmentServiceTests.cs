@@ -25,7 +25,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
         private  AppJobSettings appSettings;
         private  IBaseService baseService;
         private  ISettingService settingService;
-        private  ISystemSettingService systemSettingService;
         private  ICustomerService customerService;
         private  ICRMLogService logService;
         private  ICommonFeedback commonFeedback;
@@ -57,10 +56,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting).Returns(custNotifications);
             // Act
-            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting);
+            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
             // Assert
-            service.Received().Protected("EditSystemSettingAsync");
+            await commonFeedback.EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), JobStatus.Completed, Constants.ServiceName_ResultAmendment);
             logService.Received(1).LogInformation(Arg.Any<string>());
             service.DidNotReceive().Protected(
                 "CreateResultAmendmentFeedbackCreditAsync",
@@ -90,10 +89,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
             customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting).Returns(custNotifications);
 
             var commandResult = new CommandResult { Code = 1, Message = "" };
-            transactionService.InserAmendmentNotiAutoFeedback(custNotifications).Returns(commandResult);
+            transactionService.InserAmendmentNotiAutoFeedback(custNotifications, "LIVE").Returns(commandResult);
 
             // Act
-            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting);
+            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
@@ -104,43 +103,43 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 Arg.Any<IEnumerable<SystemSettingMapping>>());
         }
 
-        [Fact]
-        public async Task CreateFeedbackForResultAmendmentAsync_InserAmendmentNotiAutoFeedbackCreateSuccessfull_ExpectedWriteLogAndUpdate()
-        {
-            // Arrange
-            var service = MockService();
-            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
-            var custNotifications = new List<CusReachAmendmentNotification>
-            {
-                new CusReachAmendmentNotification
-                {
-                    TicketId = 1,
-                    CustId = 1,
-                    TicketEventId = 1,
-                    Bettype = 1,
-                    Status = "Completed"
-                }
-            };
-            var amendmentAutoFeedbackInfors = fixture.Create<IEnumerable<AmendmentAutoFeedbackInfor>>();
-            customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting).Returns(custNotifications);
-            transactionService.GetAmendmentNotiAutoFeedbackInfor(resultAmendmentSetting.BatchSize).Returns(amendmentAutoFeedbackInfors);
+        //[Fact]
+        //public async Task CreateFeedbackForResultAmendmentAsync_InserAmendmentNotiAutoFeedbackCreateSuccessfull_ExpectedWriteLogAndUpdate()
+        //{
+        //    // Arrange
+        //    var service = MockService();
+        //    var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+        //    var custNotifications = new List<CusReachAmendmentNotification>
+        //    {
+        //        new CusReachAmendmentNotification
+        //        {
+        //            TicketId = 1,
+        //            CustId = 1,
+        //            TicketEventId = 1,
+        //            Bettype = 1,
+        //            Status = "Completed"
+        //        }
+        //    };
+        //    var amendmentAutoFeedbackInfors = fixture.Create<IEnumerable<AmendmentAutoFeedbackInfor>>();
+        //    customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting).Returns(custNotifications);
+        //    transactionService.GetAmendmentNotiAutoFeedbackInfor(resultAmendmentSetting.BatchSize).Returns(amendmentAutoFeedbackInfors);
 
-            var commandResult = new CommandResult { Code = 0, Message = "" };
-            transactionService.InserAmendmentNotiAutoFeedback(custNotifications).Returns(commandResult);
+        //    var commandResult = new CommandResult { Code = 0, Message = "" };
+        //    transactionService.InserAmendmentNotiAutoFeedback(custNotifications).Returns(commandResult);
 
-            // Act
-            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting);
+        //    // Act
+        //    await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting);
 
-            // Assert
-            logService.Received(1).LogInformation(Arg.Any<string>());
+        //    // Assert
+        //    logService.Received(1).LogInformation(Arg.Any<string>());
 
-            await commonFeedback.Received().EditAmendmentFeedbackSystemSettingAsync(Arg.Any<int>(), Arg.Any<string>());
-            service.Received().Protected(
-                "CreateResultAmendmentFeedbackCreditAsync",
-                Arg.Any<AmendmentAutoFeedbackInfor>(),
-                Arg.Any<IEnumerable<SettingItem>>(),
-                Arg.Any<IEnumerable<SystemSettingMapping>>());
-        }
+        //    await commonFeedback.Received().EditAmendmentFeedbackSystemSettingAsync(Arg.Any<int>(), Arg.Any<string>());
+        //    service.Received().Protected(
+        //        "CreateResultAmendmentFeedbackCreditAsync",
+        //        Arg.Any<AmendmentAutoFeedbackInfor>(),
+        //        Arg.Any<IEnumerable<SettingItem>>(),
+        //        Arg.Any<IEnumerable<SystemSettingMapping>>());
+        //}
 
         [Fact]
         public async Task CreateFeedbackForResultAmendmentAsync_InserAmendmentNotiAutoFeedbackThrowException_ExpectedWriteLogAndUpdateStatus()
@@ -164,10 +163,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
             transactionService.GetAmendmentNotiAutoFeedbackInfor(resultAmendmentSetting.BatchSize).Returns(amendmentAutoFeedbackInfors);
 
             var exception = fixture.Create<Exception>();
-            transactionService.When(x => x.InserAmendmentNotiAutoFeedback(custNotifications)).Throw(exception);
+            transactionService.When(x => x.InserAmendmentNotiAutoFeedback(custNotifications, "LIVE")).Throw(exception);
 
             // Act
-            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting);
+            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
             // Assert
             await logService.ErrorAsync(exception);
@@ -1658,22 +1657,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
         }
         #endregion GetMatchCoddFormat
 
-        #region EditSystemSettingAsync
-        [Fact]
-        public void EditSystemSettingAsync_WhenCalled_CallExactFunctionAndParams()
-        {
-            // Arrange
-            var service = MockService();
-            
-
-            // Act
-            var actual = service.Public_EditSystemSettingAsync();
-
-            // Assert
-            systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
-        }
-        #endregion EditSystemSettingAsync
-
         #region Helpers
 
         private ResultAmendmentServiceTestable MockService()
@@ -1687,7 +1670,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
             appJobSettings.Value.Returns(appSettings);
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
-            systemSettingService = Substitute.For<ISystemSettingService>();
             customerService = Substitute.For<ICustomerService>();
             logService = Substitute.For<ICRMLogService>();
             transactionService = Substitute.For<IFeedbackTransactionService>();
@@ -1697,7 +1679,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 appJobSettings,
                 baseService,
                 settingService,
-                systemSettingService,
                 customerService,
                 logService,
                 commonFeedback,

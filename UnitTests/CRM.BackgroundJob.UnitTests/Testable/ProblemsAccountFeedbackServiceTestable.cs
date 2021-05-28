@@ -17,7 +17,6 @@
         public ProblemsAccountFeedbackServiceTestable(IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
-            ISystemSettingService systemSettingService,
             ICustomerService customerService,
             ICRMLogService logService,
             IFeedbackTransactionService transactionService,
@@ -25,7 +24,6 @@
         : base(appSettings,
                 baseService,
                 settingService,
-                systemSettingService,
                 customerService,
                 logService,
                 commonFeedback,
@@ -97,19 +95,6 @@
         public string Public_GetDescription()
         {
             return base.GetDescription();
-        }
-
-        public async Task<CommandResult> Public_EditSystemSettingAsync(string JobStatusNameEnv,
-            string LastRuntimeNameEnv, string JobStatusValue)
-        {
-            return await EditSystemSettingAsync(JobStatusNameEnv, LastRuntimeNameEnv, JobStatusValue);
-        }
-
-        public async Task<CommandResult> Public_EditSystemSettingUpdateLastLogIdAsync(string JobStatusNameEnv, string LastRuntimeNameEnv,
-            string lastLogIdName, int maxLastLogId)
-        {
-            return await EditSystemSettingUpdateLastLogIdAsync(JobStatusNameEnv, LastRuntimeNameEnv,
-            lastLogIdName, maxLastLogId);
         }
     }
 }
