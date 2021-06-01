@@ -38,7 +38,6 @@
             return WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseConfiguration(configuration)
-                .UseEnvironment(configuration["Environment"] ?? string.Empty)
                 .UseStartup<Startup>()
                 .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration))
                 .UseUrls(configuration["WebHostUrls"]);
