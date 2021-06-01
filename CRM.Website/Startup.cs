@@ -62,7 +62,7 @@
                .StartNewSession()
                .Use(connections)
                .WithSqlServer()
-               .UseDefaultDbSettingProvider(Configuration.GetSection("SpPath").Value)
+               .UseDefaultDbSettingProvider("~/App_Data/SpNames.xml")
                .Run();
 
             LogManager

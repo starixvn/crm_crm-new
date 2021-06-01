@@ -15,7 +15,7 @@
     <Content Include="App_Data\SpNames.LOCAL.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\SpNames.Production.xml">
+    <Content Include="App_Data\SpNames.PROD.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\SpNames.SIT.xml">
