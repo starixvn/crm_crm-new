@@ -5,6 +5,7 @@
     <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="App_Data\AWS\SpNames.xml" />
     <None Remove="App_Data\Development\SpNames.xml" />
     <None Remove="App_Data\Local\SpNames.xml" />
     <None Remove="App_Data\Production\SpNames.xml" />
@@ -14,6 +15,9 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    <Content Include="App_Data\AWS\SpNames.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_Data\Development\SpNames.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
