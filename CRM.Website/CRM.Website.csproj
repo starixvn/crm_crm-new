@@ -5,35 +5,26 @@
     <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="App_Data\AWS\SpNames.xml" />
-    <None Remove="App_Data\Development\SpNames.xml" />
-    <None Remove="App_Data\Local\SpNames.xml" />
-    <None Remove="App_Data\Production\SpNames.xml" />
-    <None Remove="App_Data\SIT\SpNames.xml" />
-    <None Remove="App_Data\UAT\SpNames.xml" />
     <None Remove="logs\log.txt" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    <Content Include="App_Data\AWS\SpNames.xml">
+    <Content Include="App_Data\SpNames.AWS.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\Development\SpNames.xml">
+    <Content Include="App_Data\SpNames.LOCAL.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\Local\SpNames.xml">
+    <Content Include="App_Data\SpNames.Production.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\Production\SpNames.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\SIT\SpNames.xml">
+    <Content Include="App_Data\SpNames.SIT.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\SpNames.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\UAT\SpNames.xml">
+    <Content Include="App_Data\SpNames.UAT.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="logs\log.txt">
