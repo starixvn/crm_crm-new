@@ -7,7 +7,7 @@
         public const string Neutral = "Neutral";
         public const string Fortmatddmmmyyyy = "dd-MMM-yyyy";
         public const string Formathhmmtt = "hh:mm tt";
-        public const string Formatddmm = "d/m";
+        public const string Formatddmm = "dd/MM";
 
         public const string Special_Notification = "Special Notification";
         public const string CompanyWLLimit = "Company W/L Limit";
