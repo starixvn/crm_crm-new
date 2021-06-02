@@ -1272,11 +1272,9 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var stringBuilder = new StringBuilder();
             commonFeedback.GetFeedbackTemplates<AmendmentSolutionTemplate>("AmendmentSolutionTemplate.xml").Returns(amendmentSolTemplate);
             service.Protected("GetAmendmentSolutionTemplateEN", amendment, amendmentSolTemplate, messageContent).Returns(solutionTemplateEN);
-            service.Protected("GetAmendmentSolutionTemplateYNSC", amendment, amendmentSolTemplate, messageContent).Returns(solutionTemplateSC);
+            service.Protected("GetAmendmentSolutionTemplateYNSC", amendment, amendmentSolTemplate, messageContent, false).Returns(solutionTemplateSC);
             stringBuilder.Append(solutionTemplateEN);
-            stringBuilder.Append(Constants.Break);
             stringBuilder.Append(solutionTemplateSC);
-            stringBuilder.Append(Constants.Break);
 
             // Act
             var actual = service.Public_GetAmenmendSolution(amendment, messageContent);
@@ -1453,7 +1451,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
                 Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
             };
-
             var amendmentSolTemplate = new AmendmentSolutionTemplate
             {
                 NumberGameSC = "test NumberGameSC",
@@ -1462,7 +1459,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 VirtualSportsYN = "test VirtualSportsYN"
             };
             var expectedReturn = new StringBuilder(expected);
-
+            var isVipCust = amendment.Site == "789y" && amendment.IsVip;
 
             var messageContent = fixture.Create<IEnumerable<Message>>();
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
@@ -1488,7 +1485,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             stringBuilder.Append(expectedReturn);
 
             // Act
-            var actual = service.Public_GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent);
+            var actual = service.Public_GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent, isVipCust);
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
@@ -1537,6 +1534,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 Eventdate = DateTime.Parse("2021-02-24 19:59:00.000"),
                 Race_time = DateTime.Parse("2021-02-25 19:59:00.000")
             };
+            var isVipCust = amendment.Site == "789y" && amendment.IsVip;
 
             var amendmentSolTemplate = new AmendmentSolutionTemplate
             {
@@ -1571,7 +1569,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             stringBuilder.Append(expectedReturn);
 
             // Act
-            var actual = service.Public_GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent);
+            var actual = service.Public_GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent, isVipCust);
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());

@@ -168,12 +168,14 @@
         public StringBuilder Public_GetAmendmentSolutionTemplateYNSC(
             AmendmentAutoFeedbackInfor amendment,
             AmendmentSolutionTemplate amendmentSolTemplate,
-            IEnumerable<Message> messageContent)
+            IEnumerable<Message> messageContent,
+            bool isVipCust)
         {
             return base.GetAmendmentSolutionTemplateYNSC(
              amendment,
              amendmentSolTemplate,
-            messageContent);
+             messageContent,
+             isVipCust);
         }
 
         public StringBuilder Public_GetAmendmentSolutionTemplateYnSportBook(

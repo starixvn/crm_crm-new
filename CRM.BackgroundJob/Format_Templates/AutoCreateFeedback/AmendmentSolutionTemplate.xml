@@ -1,41 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ROOT>
     <SportsbookEN>
-        Dear Sir, Customer Support would like to inform the below announcement: {8}
+        Dear Sir, Customer Support would like to inform the below announcement: {9}
         Attn:[{0}] Due to wrong result displayed, the match between "{1} -vs- {2}" [{3} - {4}] has been re-settled. {8}
-        The actual result is "{5}" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! {8}
-        Affected user: {7} {8}
+        The actual result is "{5}" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! {9}
+        Affected user: {7} {9}
     </SportsbookEN>
     <SportsbookSC>
-        "您好，客服部予通知以下的通告：{8}
-        请注意:[{0}] 由于赛果显示错误, "{1} -vs- {2}" {8}
-        [{3} - {4}] 已重新结算. 正确之赛果为 "{5}" 而不是 {8}
-        "{6}". 请重新检查您的帐目. 不便之处 敬请见谅! {8}
-        受影响会员: {7}" {8}
+        "您好，客服部在此通知以下的通告：{9}
+        请注意:[{0}] 由于赛果显示错误, "{1} -vs- {2}" [{3} - {4}] 已重新结算. {8}
+        正确之赛果为 "{5}" 而不是 ""{6}"". 请重新检查您的帐目. 不便之处 敬请见谅! {9}
+        受影响会员: {7}" {9}
     </SportsbookSC>
     <SportsbookYN>
-        Xin chào quý khách, Bộ phận chăm sóc khách hàng xin thông báo đến quý khách thông báo dưới đây: {8}
+        Xin chào quý khách, Bộ phận chăm sóc khách hàng xin thông báo đến quý khách thông báo dưới đây: {9}
         Attn:[{0}] Due to wrong result displayed, the match between "{1} -vs- {2}" [{3} - {4}] has been re-settled. {8}
-        The actual result is "{5}" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! {8}
-        Tài khoản bị ảnh hưởng: {7} {8}
+        The actual result is "{5}" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! {9}
+        Tài khoản bị ảnh hưởng: {7} {9}
     </SportsbookYN>
     <VirtualSports2EN>
-        Dear Sir, Customer Support would like to inform the below announcement: {8}
+        Dear Sir, Customer Support would like to inform the below announcement: {9}
         Attn:[Virtual Sports] Due to wrong result displayed, the match between "{0} -vs- {1}" [{2} ({3}) - {4}] has been re-settled. {8}
-        The actual result is "{5}" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! {8}
-        Affected user: {7} {8}
+        The actual result is "{5}" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! {9}
+        Affected user: {7} {9}
     </VirtualSports2EN>
     <VirtualSports2SC>
-        您好，客服部予通知以下的通告：{8}
+        您好，客服部予通知以下的通告：{9}
         请注意:[Virtual Sports] 由于赛果显示错误, "{0} -vs- {1}" [{2} ({3}) - {4}] 已重新结算. {8}
-        正确之赛果为 "{5}" 而不是 "{6}". 请重新检查您的帐目. 不便之处 敬请见谅! {8}
-        受影响会员: {7}" {8}
+        正确之赛果为 "{5}" 而不是 "{6}". 请重新检查您的帐目. 不便之处 敬请见谅! {9}
+        受影响会员: {7} {9}
     </VirtualSports2SC>
     <VirtualSports2YN>
-        Xin chào quý khách, Bộ phận chăm sóc khách hàng xin thông báo đến quý khách thông báo dưới đây: {8}
+        Xin chào quý khách, Bộ phận chăm sóc khách hàng xin thông báo đến quý khách thông báo dưới đây: {9}
         Attn:[Virtual Sports] Due to wrong result displayed, the match between "{0} -vs- {1}" [{2} ({3}) - {4}] has been re-settled. {8}
-        The actual result is "{5}" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! {8}
-        Tài khoản bị ảnh hưởng: {7} {8}
+        The actual result is "{5}" instead of "{6}". Kindly double check your statement again. Sorry for the inconvenience caused! {9}
+        Tài khoản bị ảnh hưởng: {7} {9}
     </VirtualSports2YN>
     <VirtualSportsEN>
         Dear Sir, Customer Support would like to inform the below announcement: {2}
