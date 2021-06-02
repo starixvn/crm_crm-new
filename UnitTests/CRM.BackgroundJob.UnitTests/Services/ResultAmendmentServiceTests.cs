@@ -918,7 +918,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns("LeagueName");
             commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
             commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
-            stringBuilder.Append("24 Feb 2021 SportName 07:59 AM LeagueName HomeName AwayName <br />");
+            stringBuilder.Append("24-Feb-2021 SportName 07:59 AM LeagueName HomeName AwayName <br />");
             stringBuilder.Append(Constants.Break);
 
             // Act
@@ -1091,7 +1091,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
             commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
             var virtualSports = new StringBuilder("test virtualSports");
-            service.Protected("GetAmendmentDescriptionVirtualSports", amendment, testDescTemp, "SportName", "HomeName", "AwayName", "07:59 AM", "24 Feb 2021").Returns(virtualSports);
+            service.Protected("GetAmendmentDescriptionVirtualSports", amendment, testDescTemp, "SportName", "HomeName", "AwayName", "07:59 AM", "24-Feb-2021").Returns(virtualSports);
             stringBuilder.Append(virtualSports);
             stringBuilder.Append(Constants.Break);
 
@@ -1151,7 +1151,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             var numberGame = new StringBuilder("numberGame");
 
-            service.Protected("GetAmendmentDescriptionNumberGame", amendment.MatchCode, testDescTemp,"LeagueName", "24 Feb 2021").Returns(numberGame);
+            service.Protected("GetAmendmentDescriptionNumberGame", amendment.MatchCode, testDescTemp,"LeagueName", "24-Feb-2021").Returns(numberGame);
 
             stringBuilder.Append(numberGame);
             stringBuilder.Append(Constants.Break);
@@ -1479,7 +1479,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 amendmentSolTemplate,
                 false,
                 "leagueNameYN",
-                "07:59 PM",
+                amendment.Eventdate.ToString(DefaultValue.Formatddmm),
                 "leagueNameSC").Returns(expectedReturn);
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(expectedReturn);
@@ -1564,7 +1564,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 "homeNameYN",
                 "awayNameYN",
                 "leagueNameYN",
-                "07:59 PM").Returns(expectedReturn);
+                amendment.Eventdate.ToString(DefaultValue.Formatddmm)).Returns(expectedReturn);
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(expectedReturn);
 
