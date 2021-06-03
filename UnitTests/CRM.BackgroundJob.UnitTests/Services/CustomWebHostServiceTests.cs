@@ -35,7 +35,7 @@
             jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForProblemsAccount);
             jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
             service.Received().Protected("RemoveRecurringJobs");
-            service.Received().Protected("RunHangfireJobs"); 
+            service.Received().Protected("RunHangfireJobs");
         }
 
 
