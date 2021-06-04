@@ -5,7 +5,8 @@
         public const string DateTimeTool = "Date Time & Tool: {0}/{1}/";
         public const string Closed = "Closed";
         public const string Neutral = "Neutral";
-        public const string Fortmatddmmmyyyy = "dd-MMM-yyyy";
+        public const string Fortmatddmmmyyyy = "dd MMMM yyyy";
+        public const string FortmatddmmmyyyyDash = "dd-MMM-yyyy";
         public const string Formathhmmtt = "hh:mm tt";
         public const string Formatddmm = "dd/MM";
 

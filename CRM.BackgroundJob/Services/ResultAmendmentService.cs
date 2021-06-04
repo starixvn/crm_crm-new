@@ -363,7 +363,7 @@
             var homeName = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US);
             var awayName = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US);
 
-            var EventdateGMT4Format = amendment.Eventdate.ToString(DefaultValue.Fortmatddmmmyyyy);
+            var EventdateGMT4Format = amendment.Eventdate.ToString(DefaultValue.FortmatddmmmyyyyDash);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var kO_time = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
             var race_time = amendment.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
