@@ -446,7 +446,7 @@
             {
                 stringBuilder.AppendFormat(
                 amendmentDescTemplate.VirtualSports180186,
-                  amendment.Eventdate,
+                  EventdateGMT4,
                   sportName,
                   homeName,
                   awayName,
