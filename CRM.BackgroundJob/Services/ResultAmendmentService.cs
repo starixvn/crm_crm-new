@@ -36,6 +36,7 @@
         private readonly string solTemplateXml = "AmendmentSolutionTemplate.xml";
         private readonly int SportType180 = 180;
         private readonly int SportType186 = 186;
+        private readonly int SportType161 = 161;
         private readonly int EventType2 = 2;
         private readonly int EventType9 = 9;
 
@@ -373,7 +374,7 @@
                 amendment, amendmentDescTemplate, sportName,
                 homeName, awayName, race_time, EventdateGMT4Format);
             var numberGame = GetAmendmentDescriptionNumberGame(
-             amendment.MatchCode, amendmentDescTemplate, leagueName, EventdateGMT4Format);
+             amendment, amendmentDescTemplate, leagueName, sportName, EventdateGMT4Format);
             var outright = GetAmendmentDescriptionSportOutRight(
                 amendment.Leaguenametc, amendmentDescTemplate, kO_time, leagueName, homeName);
             switch (productName)
@@ -470,20 +471,21 @@
         }
 
         protected internal virtual StringBuilder GetAmendmentDescriptionNumberGame(
-            string MatchCode,
+            AmendmentAutoFeedbackInfor amendment,
             AmendmentDescriptionTemplate amendmentDescTemplate,
             string leagueName,
+            string sportName,
             string EventdateGMT4
             )
         {
             logService.LogInformation("Begin create template desctiption number game.");
-
+            var game = amendment.Sporttype == SportType161 ? leagueName : sportName;
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendFormat(
                 amendmentDescTemplate.NumberGame,
                   EventdateGMT4,
-                  leagueName,
-                  MatchCode,
+                  game,
+                  amendment.MatchCode,
                   Constants.Break
                );
             logService.LogInformation("End create template desctiption number game.");
@@ -547,6 +549,7 @@
             var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formatddmm);
             var matchCodeReplace = GetMatchCoddFormat(amendment.MatchCode, Language.en_US);
             var outRightMessageEn = messageContent?.FirstOrDefault()?.Content_en;
+            var numberGameEnGame = amendment.Sporttype == SportType161 ? leagueName : sportName;
             switch (productName)
             {
                 case "Sportsbook":
@@ -591,7 +594,7 @@
 
                 case "Number Game":
                     stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameEN,
-                        sportName,
+                        numberGameEnGame,
                         matchCode,
                         Eventdate,
                         Constants.LineBreak);
@@ -629,7 +632,8 @@
             var homeNameSC = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.zh_CN);
             var awayNameSC = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.zh_CN);
             var matchCodeReplaceSC = GetMatchCoddFormat(amendment.MatchCode, Language.zh_CN);
-
+            var numberGameNameYn = amendment.Sporttype == SportType161 ? leagueNameYN : sportNameYN;
+            var numberGameNameSc = amendment.Sporttype == SportType161 ? leagueNameSC : sportNameSC;
             var sportBook = GetAmendmentSolutionTemplateYnSportBook(
                             amendment, amendmentSolTemplate, messageContent,
                             sportNameYN, homeNameYN, awayNameYN, leagueNameYN);
@@ -637,7 +641,7 @@
                                 isVipCust, sportNameYN, sportNameSC);
             var numberGame = GetAmendmentSolutionTemplateYnScNumberGame(
                             amendment.MatchCode, amendment.affectedName, amendmentSolTemplate, isVipCust,
-                            leagueNameYN, Eventdate, leagueNameSC);
+                            numberGameNameYn, Eventdate, numberGameNameSc);
             switch (productName)
             {
                 case "Sportsbook":
@@ -749,19 +753,19 @@
           string affectedName,
           AmendmentSolutionTemplate amendmentSolTemplate,
           bool isVipCust,
-          string leagueNameYN,
+          string numberGameNameYn,
           string Eventdate,
-          string leagueNameSC)
+          string numberGameNameSc)
         {
             var stringBuilder = new StringBuilder();
             if (isVipCust)
             {
-                stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameYN, leagueNameYN, MatchCode,
+                stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameYN, numberGameNameYn, MatchCode,
                 Eventdate, affectedName, Constants.LineBreak);
             }
             else
             {
-                stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameSC, leagueNameSC, MatchCode, Eventdate,
+                stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameSC, numberGameNameSc, MatchCode, Eventdate,
                 affectedName, Constants.LineBreak);
             }
             return stringBuilder;

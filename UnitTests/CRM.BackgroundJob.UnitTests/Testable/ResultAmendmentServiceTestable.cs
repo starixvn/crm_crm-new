@@ -119,16 +119,18 @@
         }
 
         public StringBuilder Public_GetAmendmentDescriptionNumberGame(
-            string MatchCode,
+            AmendmentAutoFeedbackInfor amendment,
             AmendmentDescriptionTemplate amendmentDescTemplate,
             string leagueName,
+            string sportName,
             string EventdateGMT4
             )
         {
             return base.GetAmendmentDescriptionNumberGame(
-             MatchCode,
+             amendment,
              amendmentDescTemplate,
              leagueName,
+             sportName,
              EventdateGMT4);
         }
 

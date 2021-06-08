@@ -1151,7 +1151,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             var numberGame = new StringBuilder("numberGame");
 
-            service.Protected("GetAmendmentDescriptionNumberGame", amendment.MatchCode, testDescTemp,"LeagueName", "24-Feb-2021").Returns(numberGame);
+            service.Protected("GetAmendmentDescriptionNumberGame", amendment, testDescTemp,"LeagueName","SportName", "24-Feb-2021").Returns(numberGame);
 
             stringBuilder.Append(numberGame);
             stringBuilder.Append(Constants.Break);
@@ -1214,14 +1214,18 @@ namespace CRM.BackgroundJob.UnitTests.Services
             {
                 NumberGame = "test numbergame"
             };
-
+            var amendment = new AmendmentAutoFeedbackInfor
+            {
+                MatchCode = "MatchCode"
+            };
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(amendmentDescTemplate.NumberGame);
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetAmendmentDescriptionNumberGame("MatchCode",
+            var actual = service.Public_GetAmendmentDescriptionNumberGame(amendment,
                 amendmentDescTemplate,
+                "SportName",
                 "leagueName",
                 "24 Feb 2021");
 
@@ -1442,7 +1446,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 MessageId = 338,
                 Site = "789y",
                 IsVip = false,
-                Sporttype = 0,
+                Sporttype = 161,
                 LeagueId = 93816,
                 Leaguenametc = "Basketball",
                 HomeId = 714227,
