@@ -159,7 +159,7 @@
                 ResponseId = response != null ? response.SettingId : 0,
                 UserRole = Constants.UserRole,
                 Subject = DefaultValue.Special_Notification,
-                AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString(DefaultValue.Fortmatddmmmyyyy), feedbackDate.ToString(DefaultValue.Formathhmmtt)),
+                AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField = string.Empty,
                 AutoField1 = string.Empty,
                 AutoField3 = $"{Environment.NewLine}System ID: ",
