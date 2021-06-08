@@ -554,7 +554,6 @@
                     {
                         stringBuilder.AppendFormat(amendmentSolTemplate.OutrightEN,
                             outRightMessageEn,
-                            amendment.affectedName,
                             Constants.LineBreak);
                         break;
                     }
@@ -566,7 +565,6 @@
                         Eventdate,
                         amendment.ActualResult,
                         amendment.WrongResult,
-                        amendment.affectedName,
                         Constants.Break,
                         Constants.LineBreak);
                     break;
@@ -581,7 +579,6 @@
                             Eventdate,
                             amendment.ActualResult,
                             amendment.WrongResult,
-                            amendment.affectedName,
                             Constants.Break,
                             Constants.LineBreak);
                     break;
@@ -589,7 +586,6 @@
                 case "Virtual Sports":
                     stringBuilder.AppendFormat(amendmentSolTemplate.VirtualSportsEN,
                         sportName,
-                        amendment.affectedName,
                         Constants.LineBreak);
                     break;
 
@@ -598,7 +594,6 @@
                         sportName,
                         matchCode,
                         Eventdate,
-                        amendment.affectedName,
                         Constants.LineBreak);
                     break;
 
@@ -637,7 +632,7 @@
 
             var sportBook = GetAmendmentSolutionTemplateYnSportBook(
                             amendment, amendmentSolTemplate, messageContent,
-                            sportNameYN, homeNameYN, awayNameYN, leagueNameYN, Eventdate);
+                            sportNameYN, homeNameYN, awayNameYN, leagueNameYN);
             var virtualSports = GetAmendmentSolutionTemplateYnScVirtualSport(amendment.affectedName, amendmentSolTemplate,
                                 isVipCust, sportNameYN, sportNameSC);
             var numberGame = GetAmendmentSolutionTemplateYnScNumberGame(
@@ -698,8 +693,6 @@
             return stringBuilder;
         }
 
-#pragma warning disable S107 // Methods should not have too many parameters
-
         protected internal virtual StringBuilder GetAmendmentSolutionTemplateYnSportBook(
           AmendmentAutoFeedbackInfor amendment,
           AmendmentSolutionTemplate amendmentSolTemplate,
@@ -707,10 +700,9 @@
           string sportNameYN,
           string homeNameYN,
           string awayNameYN,
-          string leagueNameYN,
-          string Eventdate)
-#pragma warning restore S107 // Methods should not have too many parameters
+          string leagueNameYN)
         {
+            var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formatddmm);
             var stringBuilder = new StringBuilder();
             if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
             {

@@ -1563,8 +1563,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 "sportNameYN",
                 "homeNameYN",
                 "awayNameYN",
-                "leagueNameYN",
-                amendment.Eventdate.ToString(DefaultValue.Formatddmm)).Returns(expectedReturn);
+                "leagueNameYN").Returns(expectedReturn);
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(expectedReturn);
 

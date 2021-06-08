@@ -185,18 +185,16 @@
           string sportNameYN,
           string homeNameYN,
           string awayNameYN,
-          string leagueNameYN,
-          string Eventdate)
+          string leagueNameYN)
         {
             return base.GetAmendmentSolutionTemplateYnSportBook(
-           amendment,
-           amendmentSolTemplate,
-           messageContent,
-           sportNameYN,
-           homeNameYN,
-           awayNameYN,
-           leagueNameYN,
-           Eventdate);
+               amendment,
+               amendmentSolTemplate,
+               messageContent,
+               sportNameYN,
+               homeNameYN,
+               awayNameYN,
+               leagueNameYN);
         }
 
         public StringBuilder Public_GetAmendmentSolutionTemplateYnScVirtualSport(
