@@ -4,11 +4,13 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Models.LicenseeInfo;
     using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
@@ -27,6 +29,7 @@
         private ICRMLogService logService;
         private ITOControlFeedbackService tOControlFeedbackService;
         private IProblemsAccountFeedbackService problemsAccountFeedbackService;
+        private ISynchronizeLicenseeService licenseeService;
         private IConfiguration configuration;
         private IResultAmendmentService resultAmendmentService;
         private IFeedbackService feedbackService;
@@ -811,6 +814,74 @@
 
         #endregion ProblemsAcccountExecuteJobAsync
 
+        #region SynchronizeNewLicenseeOICExecuteJobAsync
+        [Fact]
+        public async Task SynchronizeNewLicenseeOICExecuteJobAsync_Exception_ExpectedWriteLog()
+        {
+            // Arrange
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            licenseeService.When(x => x.GetOICLicenseeInfo()).Throw(exception);
+
+            // Assert
+            await service.SynchronizeNewLicenseeOICExecuteJobAsync();
+
+            // Act
+            await logService.Received().ErrorAsync(exception);
+        }
+
+        [Fact]
+        public async Task SynchronizeNewLicenseeOICExecuteJobAsync_ExceptionImportData_ExpectedWriteLog()
+        {
+            // Arrange
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            var licensee = fixture.Create<IEnumerable<LicenseeStatus>>();
+            licenseeService.GetOICLicenseeInfo().Returns(licensee);
+            licenseeService.When(x => x.ImportLicenseeStatus(licensee, "LIVE")).Throw(exception);
+
+            // Assert
+            await service.SynchronizeNewLicenseeOICExecuteJobAsync();
+
+            // Act
+            await logService.Received().ErrorAsync(exception);
+        }
+
+        [Fact]
+        public async Task SynchronizeNewLicenseeOICExecuteJobAsync_ImportDataIsNotSuccessfull_ExpectedWriteLog()
+        {
+            // Arrange
+            var service = GetService();
+            var commandResult = new CommandResult { Code = 1 };
+            var licensee = fixture.Create<IEnumerable<LicenseeStatus>>();
+            licenseeService.GetOICLicenseeInfo().Returns(licensee);
+            licenseeService.ImportLicenseeStatus(licensee, "LIVE").Returns(commandResult);
+
+            // Assert
+            await service.SynchronizeNewLicenseeOICExecuteJobAsync();
+
+            // Act
+            logService.Received().LogInformation(commandResult.Message);
+        }
+
+        [Fact]
+        public async Task SynchronizeNewLicenseeOICExecuteJobAsync_ImportDataIsSuccessfull_ExpectedWriteLog()
+        {
+            // Arrange
+            var service = GetService();
+            var commandResult = new CommandResult { Code = 0 };
+            var licensee = fixture.Create<IEnumerable<LicenseeStatus>>();
+            licenseeService.GetOICLicenseeInfo().Returns(licensee);
+            licenseeService.ImportLicenseeStatus(licensee, "LIVE").Returns(commandResult);
+
+            // Assert
+            await service.SynchronizeNewLicenseeOICExecuteJobAsync();
+
+            // Act
+            logService.Received().LogInformation("Synchronize New Licensee OIC Successful!!!");
+        }
+        #endregion SynchronizeNewLicenseeOICExecuteJobAsync
+
         #region Helpers
 
         private AutoFeedbackServiceTestable GetService()
@@ -829,6 +900,7 @@
             problemsAccountFeedbackService = Substitute.For<IProblemsAccountFeedbackService>();
             resultAmendmentService = Substitute.For<IResultAmendmentService>();
             feedbackService = Substitute.For<IFeedbackService>();
+            licenseeService = Substitute.For<ISynchronizeLicenseeService>(); 
             configuration = Substitute.For<IConfiguration>();
             return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
@@ -840,6 +912,7 @@
                 resultAmendmentService,
                 problemsAccountFeedbackService,
                 feedbackService,
+                licenseeService,
                 configuration);
         }
 

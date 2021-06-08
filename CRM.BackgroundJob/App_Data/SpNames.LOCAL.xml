@@ -85,4 +85,8 @@
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
+    <Function Name="SynchronizeNewLicenseeOIC">
+        <Setting Key="Acc_CRM_OICLicenseeIns" SpName="Acc_CRM_OICLicenseeIns_UAT1" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_OICLicenseeSel" SpName="Acc_CRM_OICLicenseeSel_UAT1" DbName="DBOIC.bodb_OIC.bodbAdminNet" />
+    </Functions>
 </Functions>

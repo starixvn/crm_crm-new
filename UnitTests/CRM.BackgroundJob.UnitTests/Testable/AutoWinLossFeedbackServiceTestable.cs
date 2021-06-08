@@ -23,6 +23,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             IResultAmendmentService resultAmendmentService,
             IProblemsAccountFeedbackService problemsAccountFeedbackService,
             IFeedbackService feedbackService,
+            ISynchronizeLicenseeService licenseeService,
             IConfiguration configuration
             )
             : base(appSettings,
@@ -34,6 +35,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
                 resultAmendmentService,
                 problemsAccountFeedbackService,
                 feedbackService,
+                licenseeService,
                 configuration)
         {
 

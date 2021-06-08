@@ -315,6 +315,27 @@
 
 
 
+        [Fact]
+        public void CheckEnabledJobAutoFeedback_SynchronizeNewLicenseeOICToSiteSetting_ExpectedAddRecurringJob()
+        {
+            // Arrange
+            var jobSettings = new List<HangfireJobSetting>
+            {
+                new HangfireJobSetting { JobName = "SynchronizeNewLicenseeOICToSiteSetting", IsEnabled = true }
+            };
+            var service = MockService(jobSettings);
+            service.Protected("IsEnabledJob", "SynchronizeNewLicenseeOICToSiteSetting").Returns(true);
+
+            // Act
+            service.Public_CheckEnabledJobAutoFeedback();
+
+            // Assert
+            recurringJob.Received().AddOrUpdate("Synchronize New Licensee OIC To Site Setting",
+                Arg.Is<Job>(job => job.Method.Name == "SynchronizeNewLicenseeOICToSiteSetting"),
+                "* * * * *",
+                Arg.Any<RecurringJobOptions>());
+        }
+
         #endregion RunHangfireJobs
 
         [Fact]
