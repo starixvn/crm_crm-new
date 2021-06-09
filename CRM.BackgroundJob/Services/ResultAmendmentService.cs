@@ -367,6 +367,7 @@
             var EventdateGMT4Format = amendment.Eventdate.ToString(DefaultValue.FortmatddmmmyyyyDash);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var kO_time = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
+            var startTimeOutright = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Fortmatddmmmyyyyhhmmtt);
             var race_time = amendment.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
             var matchCodeReplace = GetMatchCoddFormat(amendment.MatchCode, Language.en_US);
 
@@ -376,7 +377,7 @@
             var numberGame = GetAmendmentDescriptionNumberGame(
              amendment, amendmentDescTemplate, leagueName, sportName, EventdateGMT4Format);
             var outright = GetAmendmentDescriptionSportOutRight(
-                amendment.Leaguenametc, amendmentDescTemplate, kO_time, leagueName, homeName);
+                amendment.Leaguenametc, amendmentDescTemplate, startTimeOutright, leagueName, homeName);
             switch (productName)
             {
                 case "Sportsbook":
@@ -496,7 +497,7 @@
         protected internal virtual StringBuilder GetAmendmentDescriptionSportOutRight(
             string Leaguenametc,
             AmendmentDescriptionTemplate amendmentDescTemplate,
-            string kO_time,
+            string startTimeOutright,
             string leagueName,
             string homeName
             )
@@ -507,7 +508,7 @@
             stringBuilder.AppendFormat(
                 amendmentDescTemplate.SportsbookOutright,
                 Leaguenametc,
-                kO_time,
+                startTimeOutright,
                 leagueName,
                 homeName,
                 Constants.Break

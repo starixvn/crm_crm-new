@@ -977,7 +977,8 @@ namespace CRM.BackgroundJob.UnitTests.Services
             commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
             commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
             var outright = new StringBuilder("outright");
-            service.Protected("GetAmendmentDescriptionSportOutRight", amendment.Leaguenametc, testDescTemp, "07:59 AM", "LeagueName", "HomeName").Returns(outright);
+
+            service.Protected("GetAmendmentDescriptionSportOutRight", amendment.Leaguenametc, testDescTemp, "24 Feb 2021 07:59 AM", "LeagueName", "HomeName").Returns(outright);
             stringBuilder.Append("outright");
             stringBuilder.Append(Constants.Break);
 

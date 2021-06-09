@@ -6,6 +6,7 @@
         public const string Closed = "Closed";
         public const string Neutral = "Neutral";
         public const string Fortmatddmmmyyyy = "dd MMMM yyyy";
+        public const string Fortmatddmmmyyyyhhmmtt = "dd MMM yyyy hh:mm tt";
         public const string FortmatddmmmyyyyDash = "dd-MMM-yyyy";
         public const string Formathhmmtt = "hh:mm tt";
         public const string Formatddmm = "dd/MM";
