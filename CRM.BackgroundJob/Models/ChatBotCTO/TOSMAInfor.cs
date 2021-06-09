@@ -2,7 +2,7 @@
 {
     public class TOSMAInfor
     {
-        public int LogId { get; set; }
+        public long LogId { get; set; }
         public int CustId { get; set; }
         public string UserName { get; set; }
         public int Recommend { get; set; }

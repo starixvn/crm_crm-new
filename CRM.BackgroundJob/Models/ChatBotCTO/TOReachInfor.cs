@@ -8,7 +8,7 @@
     public class TOReachInfor
     {
         [XMLName("LogId")]
-        public int LogId { get; set; }
+        public long LogId { get; set; }
 
         [XMLName("CustId")]
         public int CustId { get; set; }

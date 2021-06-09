@@ -3,7 +3,7 @@ namespace CRM.BackgroundJob.Models.ProblemsAccount
 {
     public class ProblemsAccountInfor
     {
-        public int LogId { get; set; }
+        public long LogId { get; set; }
         public string UserName { get; set; }
         public int CustId { get; set; }
         public int Recommend { get; set; }

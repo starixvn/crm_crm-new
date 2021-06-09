@@ -2,7 +2,7 @@
 {
     public class ChatBotCWLInfo
     {
-        public int LogId { get; set; }
+        public long LogId { get; set; }
 
         public int CustId { get; set; }
 
