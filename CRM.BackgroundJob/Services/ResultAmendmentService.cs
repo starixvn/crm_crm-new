@@ -655,7 +655,7 @@
                     {
                         if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
                         {
-                            var outRightMessageSc = messageContent?.FirstOrDefault()?.Content_cs;
+                            var outRightMessageSc = messageContent?.FirstOrDefault()?.Content_cs ?? messageContent?.FirstOrDefault()?.Content_en;
                             stringBuilder.AppendFormat(amendmentSolTemplate.OutrightSC,
                             outRightMessageSc,
                             amendment.affectedName,
@@ -712,7 +712,7 @@
             var stringBuilder = new StringBuilder();
             if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
             {
-                var outRightMessageYn = messageContent?.FirstOrDefault()?.Content_vn;
+                var outRightMessageYn = messageContent?.FirstOrDefault()?.Content_vn ?? messageContent?.FirstOrDefault()?.Content_en;
                 stringBuilder.AppendFormat(amendmentSolTemplate.OutrightYN,
                 outRightMessageYn,
                 amendment.affectedName,
