@@ -103,9 +103,10 @@
 
         public async Task<IEnumerable<CusReachAmendmentNotification>> GetListResultAmendmentNotificationAsync(ResultAmendmentSetting resultAmendmentSetting)
         {
+            var LastTicketID = Environment == DefaultEnvironment ? resultAmendmentSetting.LastTicketID : resultAmendmentSetting.LastTicketIDUAT;
             var criteria = new GetAmendmentNotificationSelCriteria
             {
-                LastTicketID = resultAmendmentSetting.LastTicketID,
+                LastTicketID = LastTicketID,
                 BatchSizeTicket = resultAmendmentSetting.BatchSizeTicket,
                 ConfigUAT = resultAmendmentSetting.ConfigUAT,
                 ConfigPRO = resultAmendmentSetting.ConfigPRO,
