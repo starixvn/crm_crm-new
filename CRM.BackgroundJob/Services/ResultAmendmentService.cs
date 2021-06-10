@@ -644,6 +644,8 @@
             var numberGame = GetAmendmentSolutionTemplateYnScNumberGame(
                             amendment.MatchCode, amendment.affectedName, amendmentSolTemplate, isVipCust,
                             numberGameNameYn, Eventdate, numberGameNameSc);
+            var content_cs = messageContent?.FirstOrDefault()?.Content_cs;
+            var content_en = messageContent?.FirstOrDefault()?.Content_en;
             switch (productName)
             {
                 case "Sportsbook":
@@ -655,7 +657,7 @@
                     {
                         if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
                         {
-                            var outRightMessageSc = messageContent?.FirstOrDefault()?.Content_cs ?? messageContent?.FirstOrDefault()?.Content_en;
+                            var outRightMessageSc = string.IsNullOrEmpty(content_cs) ? content_en : content_cs;
                             stringBuilder.AppendFormat(amendmentSolTemplate.OutrightSC,
                             outRightMessageSc,
                             amendment.affectedName,
@@ -710,9 +712,12 @@
         {
             var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formatddmm);
             var stringBuilder = new StringBuilder();
+
             if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
             {
-                var outRightMessageYn = messageContent?.FirstOrDefault()?.Content_vn ?? messageContent?.FirstOrDefault()?.Content_en;
+                var content_vn = messageContent?.FirstOrDefault()?.Content_vn;
+                var content_en = messageContent?.FirstOrDefault()?.Content_en;
+                var outRightMessageYn = string.IsNullOrEmpty(content_vn) ? content_en : content_vn;
                 stringBuilder.AppendFormat(amendmentSolTemplate.OutrightYN,
                 outRightMessageYn,
                 amendment.affectedName,
