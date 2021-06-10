@@ -83,7 +83,7 @@
                 if (commandResultAmendment.IsSuccessful)
                 {
                     var lastLogIdName = isUAT ? "LastTicketIDUAT" : "LastTicketID";
-                    var LastTicketIdSetting = isUAT ? resultAmendmentSetting .LastLogIdUAT: resultAmendmentSetting.LastTicketID;
+                    var LastTicketIdSetting = isUAT ? resultAmendmentSetting.LastLogIdUAT: resultAmendmentSetting.LastTicketID;
                     logService.LogInformation("Insert Amendment Notification Auto FeedBack Successfull!");
                     var maxTicketID = custAmendmentNotifications.Any() ? custAmendmentNotifications.Max(x => x.TicketId) : LastTicketIdSetting;
                     await commonFeedback.EditSystemSettingUpdateLastLogIdAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxTicketID, Constants.ServiceName_ResultAmendment);
@@ -598,7 +598,8 @@
                         numberGameEnGame,
                         matchCode,
                         Eventdate,
-                        Constants.LineBreak);
+                        Constants.LineBreak,
+                        Constants.Break);
                     break;
 
                 default:
@@ -762,12 +763,12 @@
             if (isVipCust)
             {
                 stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameYN, numberGameNameYn, MatchCode,
-                Eventdate, affectedName, Constants.LineBreak);
+                Eventdate, affectedName, Constants.LineBreak, Constants.Break);
             }
             else
             {
                 stringBuilder.AppendFormat(amendmentSolTemplate.NumberGameSC, numberGameNameSc, MatchCode, Eventdate,
-                affectedName, Constants.LineBreak);
+                affectedName, Constants.LineBreak, Constants.Break);
             }
             return stringBuilder;
         }
