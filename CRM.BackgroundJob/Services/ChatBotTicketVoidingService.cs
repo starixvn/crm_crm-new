@@ -107,19 +107,19 @@
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             foreach (ChatBotVoidingTicketInfo ticketInfo in ticketInfos)
             {
-                Message message = messages.First(x => x.MessageId == ticketInfo.MessageId);
+                Message message = messages.FirstOrDefault(x => x.MessageId == ticketInfo.MessageId);
                 stringBuilder.AppendFormat(XmlTemplate,
-                    message.MessageId,
+                    message?.MessageId,
                     ticketInfo.Username,
                     ticketInfo.CustId,
                     ticketInfo.Recommend,
                     ticketInfo.Mrecommend,
                     ticketInfo.Srecommend,
                     ticketInfo.IsTest,
-                    HttpUtility.HtmlEncode(message.Content_en),
-                    HttpUtility.HtmlEncode(message.Content_cs),
-                    HttpUtility.HtmlEncode(message.Content_th),
-                    HttpUtility.HtmlEncode(message.Content_vn));
+                    HttpUtility.HtmlEncode(message?.Content_en),
+                    HttpUtility.HtmlEncode(message?.Content_cs),
+                    HttpUtility.HtmlEncode(message?.Content_th),
+                    HttpUtility.HtmlEncode(message?.Content_vn));
             }
 
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
