@@ -69,7 +69,7 @@
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
 
-            IEnumerable<CusReachAmendmentNotification> custAmendmentNotifications = await customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting);
+           IEnumerable<CusReachAmendmentNotification> custAmendmentNotifications = await customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting);
             var isAnyNotCompeleteStatus = custAmendmentNotifications.Any(x => x.Status != "Completed");
             if (isAnyNotCompeleteStatus)
             {
@@ -127,7 +127,7 @@
             )
         { 
             var lastSeqEnvName = isUAT ? "LastSeqUAT" : "LastSeq";
-            var lastSubmitTimeEnvName = isUAT ? "LastSubmitTimeUAT" : "LastSubmitTime";
+            var lastSubmitTimeEnvName = isUAT ? "LastSubmitDateUAT" : "LastSubmitDate";
             var maxLastSubmitTime = custAmendmentNotifications.Max(x => x.SubmitDate);
             var getSeqByMaxSubmitDates = custAmendmentNotifications.Where(x => x.SubmitDate == maxLastSubmitTime);
             var maxSeq = getSeqByMaxSubmitDates.Max(x => x.Seq);
@@ -136,7 +136,7 @@
                 lastSeqEnvName,
                 maxSeq,
                 lastSubmitTimeEnvName,
-                maxLastSubmitTime,
+                maxLastSubmitTime.ToString("yyyy-MM-dd hh:mm:ss.fffffff"),
                 Constants.ServiceName_ResultAmendment
            );
         }

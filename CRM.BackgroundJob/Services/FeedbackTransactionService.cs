@@ -312,7 +312,7 @@
 
         public async Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments, string Environment)
         {
-            const string XmlTemplate = "<r ticketid='{0}' custid='{1}' ticketeventid='{2}' bettype='{3}' Seq={4} SubmitDate={5}/>";
+            const string XmlTemplate = "<r ticketid='{0}' custid='{1}' ticketeventid='{2}' bettype='{3}' Seq='{4}' SubmitDate='{5}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (var cust in CustAmendments)
             {
@@ -322,7 +322,7 @@
                         cust.TicketEventId,
                         cust.Bettype,
                         cust.Seq,
-                        cust.SubmitDate);
+                        cust.SubmitDate.ToString("yyyy-MM-dd hh:mm:ss.fffffff"));
             }
             stringBuilder.Append(Constants.EndRootTag);
 

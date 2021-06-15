@@ -49,7 +49,7 @@
            string lastSeqEnvName,
            int maxSeq,
            string lastSubmitTimeEnvName,
-           DateTime maxLastSubmitTime,
+           string maxLastSubmitTime,
            string serviceName);
     }
     public class CommonFeedback : ICommonFeedback
@@ -198,14 +198,14 @@
            string lastSeqEnvName,
            int maxSeq,
            string lastSubmitTimeEnvName,
-           DateTime maxLastSubmitTime,
+           string maxLastSubmitTime,
            string serviceName)
         {
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
                 new SystemSettingItem { SettingName = lastSeqEnvName, Value =  maxSeq.ToString()},
-                new SystemSettingItem { SettingName = lastSubmitTimeEnvName, Value = maxLastSubmitTime.ToString() },
+                new SystemSettingItem { SettingName = lastSubmitTimeEnvName, Value = maxLastSubmitTime},
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
         }

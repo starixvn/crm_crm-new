@@ -190,7 +190,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             await service.Public_ResultAmendmentUpdateSystemSetting(true, resultAmendmentSetting, custAmendmentNotifications, "JobStatusNameEnv");
 
             // Assert
-            await commonFeedback.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeqUAT", Arg.Any<int>(), "LastSubmitTimeUAT", Arg.Any<DateTime>(), "JobStatusNameEnv");
+            await commonFeedback.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeqUAT", Arg.Any<int>(), "LastSubmitTimeUAT", Arg.Any<string>(), "JobStatusNameEnv");
         }
 
         [Fact]
@@ -201,12 +201,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
             var custAmendmentNotifications = fixture.Create<IEnumerable<CusReachAmendmentNotification>>();
 
-
             // Act
             await service.Public_ResultAmendmentUpdateSystemSetting(false, resultAmendmentSetting, custAmendmentNotifications, "JobStatusNameEnv");
 
             // Assert
-            await commonFeedback.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeq", Arg.Any<int>(), "LastSubmitTime", Arg.Any<DateTime>(), "JobStatusNameEnv");
+            await commonFeedback.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeq", Arg.Any<int>(), "LastSubmitTime", Arg.Any<string>(), "JobStatusNameEnv");
         }
         #endregion ResultAmendmentUpdateSystemSetting
 
