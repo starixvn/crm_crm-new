@@ -28,7 +28,6 @@ function generateConfig(environment) {
             [`${jsPath}/pages/feedbacksubject/index`]: pathConfig.scriptPaths.feedback_subject,
             [`${jsPath}/pages/customer/customerinfo/index`]: pathConfig.scriptPaths.customer_info,
             [`${jsPath}/pages/feedback/addguessfeedback/index`]: pathConfig.scriptPaths.add_guess_feedback,
-            [`${jsPath}/pages/latestfeedback/index`]: pathConfig.scriptPaths.latest_feedback,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
