@@ -33,6 +33,17 @@
         {
         }
 
+        public async Task Public_ResultAmendmentUpdateSystemSetting(
+            bool isUAT,
+            ResultAmendmentSetting resultAmendmentSetting,
+            IEnumerable<CusReachAmendmentNotification> custAmendmentNotifications,
+            string JobStatusNameEnv
+            )
+        {
+            await base.ResultAmendmentUpdateSystemSetting(isUAT, resultAmendmentSetting, custAmendmentNotifications, JobStatusNameEnv);
+        }
+
+
         public async Task Public_CreateResultAmendmentFeedbackCreditAsync(
            AmendmentAutoFeedbackInfor amendment,
             IEnumerable<SettingItem> settings,

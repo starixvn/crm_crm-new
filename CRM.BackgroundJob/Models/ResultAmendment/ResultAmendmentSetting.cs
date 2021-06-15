@@ -6,10 +6,11 @@
     public class ResultAmendmentSetting : WinLossSystemSetting
     {
         public int BatchSizeTicket { get; set; }
-        public int LastTicketID { get; set; }
-        public int LastTicketIDUAT { get; set; }
+        public int LastSeq { get; set; }
+        public int LastSeqUAT { get; set; }
+        public DateTime LastSubmitDate { get; set; }
+        public DateTime LastSubmitDateUAT { get; set; }
         public string JobStatusUAT { get; set; }
-        public int LastLogIdUAT { get; set; }
         public DateTime LastRuntimeUAT { get; set; }
     }
 }

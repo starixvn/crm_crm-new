@@ -103,43 +103,45 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 Arg.Any<IEnumerable<SystemSettingMapping>>());
         }
 
-        //[Fact]
-        //public async Task CreateFeedbackForResultAmendmentAsync_InserAmendmentNotiAutoFeedbackCreateSuccessfull_ExpectedWriteLogAndUpdate()
-        //{
-        //    // Arrange
-        //    var service = MockService();
-        //    var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
-        //    var custNotifications = new List<CusReachAmendmentNotification>
-        //    {
-        //        new CusReachAmendmentNotification
-        //        {
-        //            TicketId = 1,
-        //            CustId = 1,
-        //            TicketEventId = 1,
-        //            Bettype = 1,
-        //            Status = "Completed"
-        //        }
-        //    };
-        //    var amendmentAutoFeedbackInfors = fixture.Create<IEnumerable<AmendmentAutoFeedbackInfor>>();
-        //    customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting).Returns(custNotifications);
-        //    transactionService.GetAmendmentNotiAutoFeedbackInfor(resultAmendmentSetting.BatchSize).Returns(amendmentAutoFeedbackInfors);
+        [Fact]
+        public async Task CreateFeedbackForResultAmendmentAsync_InserAmendmentNotiAutoFeedbackCreateSuccessfull_ExpectedWriteLogAndUpdate()
+        {
+            // Arrange
+            var service = MockService();
+            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+            var custNotifications = new List<CusReachAmendmentNotification>
+            {
+                new CusReachAmendmentNotification
+                {
+                    Seq = 1,
+                    SubmitDate = DateTime.Now,
+                    TicketId = 1,
+                    CustId = 1,
+                    TicketEventId = 1,
+                    Bettype = 1,
+                    Status = "Completed"
+                }
+            };
+            var amendmentAutoFeedbackInfors = fixture.Create<IEnumerable<AmendmentAutoFeedbackInfor>>();
+            customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting).Returns(custNotifications);
+            transactionService.GetAmendmentNotiAutoFeedbackInfor(resultAmendmentSetting.BatchSize).Returns(amendmentAutoFeedbackInfors);
 
-        //    var commandResult = new CommandResult { Code = 0, Message = "" };
-        //    transactionService.InserAmendmentNotiAutoFeedback(custNotifications).Returns(commandResult);
+            var commandResult = new CommandResult { Code = 0, Message = "" };
+            transactionService.InserAmendmentNotiAutoFeedback(custNotifications, "LIVE").Returns(commandResult);
 
-        //    // Act
-        //    await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting);
+            // Act
+            await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
-        //    // Assert
-        //    logService.Received(1).LogInformation(Arg.Any<string>());
+            // Assert
+            logService.Received(2).LogInformation(Arg.Any<string>());
 
-        //    await commonFeedback.Received().EditAmendmentFeedbackSystemSettingAsync(Arg.Any<int>(), Arg.Any<string>());
-        //    service.Received().Protected(
-        //        "CreateResultAmendmentFeedbackCreditAsync",
-        //        Arg.Any<AmendmentAutoFeedbackInfor>(),
-        //        Arg.Any<IEnumerable<SettingItem>>(),
-        //        Arg.Any<IEnumerable<SystemSettingMapping>>());
-        //}
+           service.Received().Protected("ResultAmendmentUpdateSystemSetting", false, resultAmendmentSetting, custNotifications, SystemSettingName.JobStatus);
+           service.Received().Protected(
+                "CreateResultAmendmentFeedbackCreditAsync",
+                Arg.Any<AmendmentAutoFeedbackInfor>(),
+                Arg.Any<IEnumerable<SettingItem>>(),
+                Arg.Any<IEnumerable<SystemSettingMapping>>());
+        }
 
         [Fact]
         public async Task CreateFeedbackForResultAmendmentAsync_InserAmendmentNotiAutoFeedbackThrowException_ExpectedWriteLogAndUpdateStatus()
@@ -173,6 +175,40 @@ namespace CRM.BackgroundJob.UnitTests.Services
         }
 
         #endregion CreateFeedbackForResultAmendmentAsync
+
+        #region ResultAmendmentUpdateSystemSetting
+        [Fact]
+        public async Task ResultAmendmentUpdateSystemSetting_IsUatEnv_ExpectedUpdateUatValue()
+        {
+            // Arrange
+            var service = MockService();
+            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+            var custAmendmentNotifications = fixture.Create<IEnumerable<CusReachAmendmentNotification>>();
+            
+
+            // Act
+            await service.Public_ResultAmendmentUpdateSystemSetting(true, resultAmendmentSetting, custAmendmentNotifications, "JobStatusNameEnv");
+
+            // Assert
+            await commonFeedback.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeqUAT", Arg.Any<int>(), "LastSubmitTimeUAT", Arg.Any<DateTime>(), "JobStatusNameEnv");
+        }
+
+        [Fact]
+        public async Task ResultAmendmentUpdateSystemSetting_IsNotUatEnv_ExpectedUpdateLiveValue()
+        {
+            // Arrange
+            var service = MockService();
+            var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
+            var custAmendmentNotifications = fixture.Create<IEnumerable<CusReachAmendmentNotification>>();
+
+
+            // Act
+            await service.Public_ResultAmendmentUpdateSystemSetting(false, resultAmendmentSetting, custAmendmentNotifications, "JobStatusNameEnv");
+
+            // Assert
+            await commonFeedback.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeq", Arg.Any<int>(), "LastSubmitTime", Arg.Any<DateTime>(), "JobStatusNameEnv");
+        }
+        #endregion ResultAmendmentUpdateSystemSetting
 
         #region CreateResultAmendmentFeedbackCreditAsync
 

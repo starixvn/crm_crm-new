@@ -1,9 +1,12 @@
 ﻿namespace CRM.BackgroundJob.Criteria.ResultAmendment
 {
     using Fanex.Data.Repository;
+    using System;
+
     public class GetAmendmentNotificationSelCriteria : CriteriaBase
     {
-        public int LastTicketID { get; set; }
+        public int LastSeq { get; set; }
+        public DateTime LastSubmitDate { get; set; }
         public int BatchSizeTicket { get; set; }
         public bool ConfigUAT { get; set; }
         public bool ConfigPRO { get; set; }

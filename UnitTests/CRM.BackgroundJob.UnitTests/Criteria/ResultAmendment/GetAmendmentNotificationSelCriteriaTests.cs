@@ -2,6 +2,7 @@
 namespace CRM.BackgroundJob.UnitTests.Criteria.ResultAmendment
 {
     using CRM.BackgroundJob.Criteria.ResultAmendment;
+    using System;
     using Xunit;
     public class GetAmendmentNotificationSelCriteriaTests
     {
@@ -10,8 +11,9 @@ namespace CRM.BackgroundJob.UnitTests.Criteria.ResultAmendment
         {
             // Arrange
             var criteria = new GetAmendmentNotificationSelCriteria{
-                LastTicketID = 1,
                 BatchSizeTicket = 1,
+                LastSeq = 1,
+                LastSubmitDate = DateTime.Now,
                 ConfigUAT = true,
                 ConfigPRO = true,
                 IsCredit = true,

@@ -77,25 +77,25 @@
                 await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
                 return;
             }
-            try
+            if (custAmendmentNotifications.Any())
             {
-                CommandResult commandResultAmendment = await transactionService.InserAmendmentNotiAutoFeedback(custAmendmentNotifications, Environment);
-                if (commandResultAmendment.IsSuccessful)
+                try
                 {
-                    var lastLogIdName = isUAT ? "LastTicketIDUAT" : "LastTicketID";
-                    var LastTicketIdSetting = isUAT ? resultAmendmentSetting.LastLogIdUAT: resultAmendmentSetting.LastTicketID;
-                    logService.LogInformation("Insert Amendment Notification Auto FeedBack Successfull!");
-                    var maxTicketID = custAmendmentNotifications.Any() ? custAmendmentNotifications.Max(x => x.TicketId) : LastTicketIdSetting;
-                    await commonFeedback.EditSystemSettingUpdateLastLogIdAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxTicketID, Constants.ServiceName_ResultAmendment);
+                    CommandResult commandResultAmendment = await transactionService.InserAmendmentNotiAutoFeedback(custAmendmentNotifications, Environment);
+                    if (commandResultAmendment.IsSuccessful)
+                    {
+                        logService.LogInformation("Import Amendment Notification Auto FeedBack Successfull!");
+                        await ResultAmendmentUpdateSystemSetting(isUAT, resultAmendmentSetting, custAmendmentNotifications, JobStatusNameEnv);
+                    }
+                    else
+                    {
+                        logService.LogInformation("Import Amendment Notification Auto FeedBack Fail!");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    logService.LogInformation("Insert Amendment Notification Auto FeedBack Fail!");
+                    await logService.ErrorAsync(ex);
                 }
-            }
-            catch (Exception ex)
-            {
-                await logService.ErrorAsync(ex);
             }
 
             IEnumerable<AmendmentAutoFeedbackInfor> amendmentAutoFeedbackInfors = await transactionService.GetAmendmentNotiAutoFeedbackInfor(resultAmendmentSetting.BatchSize);
@@ -117,6 +117,28 @@
 
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
             logService.LogInformation("end service result amendment serivce!");
+        }
+
+        protected internal virtual async Task ResultAmendmentUpdateSystemSetting(
+            bool isUAT,
+            ResultAmendmentSetting resultAmendmentSetting,
+            IEnumerable<CusReachAmendmentNotification> custAmendmentNotifications,
+            string JobStatusNameEnv
+            )
+        { 
+            var lastSeqEnvName = isUAT ? "LastSeqUAT" : "LastSeq";
+            var lastSubmitTimeEnvName = isUAT ? "LastSubmitTimeUAT" : "LastSubmitTime";
+            var maxLastSubmitTime = custAmendmentNotifications.Max(x => x.SubmitDate);
+            var getSeqByMaxSubmitDates = custAmendmentNotifications.Where(x => x.SubmitDate == maxLastSubmitTime);
+            var maxSeq = getSeqByMaxSubmitDates.Max(x => x.Seq);
+            await commonFeedback.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync(
+                JobStatusNameEnv,
+                lastSeqEnvName,
+                maxSeq,
+                lastSubmitTimeEnvName,
+                maxLastSubmitTime,
+                Constants.ServiceName_ResultAmendment
+           );
         }
 
         protected internal virtual async Task CreateResultAmendmentFeedbackCreditAsync(

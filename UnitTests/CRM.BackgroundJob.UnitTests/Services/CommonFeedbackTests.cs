@@ -418,7 +418,19 @@
             // Assert
             await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
         }
-        
+
+        [Fact]
+        public async Task EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync_WhenCalled_CallExactFunctionAndParams()
+        {
+            // Arrange
+            var service = GetService();
+
+            // Act
+            await service.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "lastSeqEnvName", 1, "lastSubmitTimeEnvName", DateTime.Now, Constants.ServiceName_ResultAmendment);
+
+            // Assert
+            await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
+        }
 
         #region Helpers
         private CommonFeedback GetService()

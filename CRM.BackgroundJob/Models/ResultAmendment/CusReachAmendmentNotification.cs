@@ -1,4 +1,6 @@
-﻿namespace CRM.BackgroundJob.Models.ResultAmendment
+﻿using System;
+
+namespace CRM.BackgroundJob.Models.ResultAmendment
 {
     public class CusReachAmendmentNotification
     {
@@ -7,5 +9,7 @@
         public int TicketEventId { get; set; }
         public short Bettype { get; set; }
         public string Status { get; set; }
+        public DateTime SubmitDate { get; set; }
+        public int Seq { get; set; }
     }
 }
