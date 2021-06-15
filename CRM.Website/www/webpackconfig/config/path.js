@@ -14,12 +14,9 @@ const cssPaths = {
     communication_setting: ['./www/sources/css/pages/communication-setting/index.scss'],
     pic_assignment: ['./www/sources/css/pages/pic-and-headline/pic-assignment/index.scss'],
     pic_management: ['./www/sources/css/pages/pic-and-headline/management/index.scss'],
-
-    /*--report--*/
     report_settlement: ['./www/sources/css/pages/report/settlement/index.scss'],
-
-    /*--FeedbackSubjectManagement--*/
     feedback_subject: ['./www/sources/css/pages/feedback-subject/index.scss'],
+    feedback: ['./www/sources/css/pages/latest-feedback/index.scss'],
 };
 
 const scriptPaths = {
@@ -35,12 +32,9 @@ const scriptPaths = {
     communication_setting: ['./www/sources/js/pages/communication-setting/index.js'],
     pic_assignment: ['./www/sources/js/pages/pic-and-headline/pic-assignment/index.js'],
     pic_management: ['./www/sources/js/pages/pic-and-headline/management/index.js'],
-
-    /*--report--*/
     report_settlement: ['./www/sources/js/pages/report/settlement/index.js'],
-
-    /*--FeedbackSubjectManagement--*/
     feedback_subject: ['./www/sources/js/pages/feedback-subject/index.js'],
+    feeddback: ['./www/sources/js/pages/latest-feedback/index.js'],
 };
 
 module.exports = {

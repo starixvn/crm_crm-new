@@ -156,6 +156,9 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="LatestFeedback" xml:space="preserve">
+    <value>Latest Feedback</value>
+  </data>
   <data name="LetstalkInvalidMessage" xml:space="preserve">
     <value>{0} does not exist in Letstalk application.</value>
   </data>

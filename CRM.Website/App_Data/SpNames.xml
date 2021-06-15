@@ -132,4 +132,16 @@
         <Setting Key="Acc_CRM_SubjectTemplateIns" SpName="Acc_CRM_SubjectTemplateIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SubjectTemplateDel" SpName="Acc_CRM_SubjectTemplateDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
+    <Function Name="Feedback">
+        <Setting Key="FeedbackSelTopFeedbackByCustId" SpName="Acc_CRM_FeedbackSelTopByCustId" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+            <Mapping DataField="SettingID" ObjectProperty="SettingIdLv1" />
+            <Mapping DataField="SubSettingID" ObjectProperty="SettingIdLv2" />
+            <Mapping DataField="SubSettingIDLevel3" ObjectProperty="SettingIdLv3" />
+        </Setting>
+        <Setting Key="FeedbackSelTopFeedback" SpName="Acc_CRM_FeedbackSelTop" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+            <Mapping DataField="SettingID" ObjectProperty="SettingIdLv1" />
+            <Mapping DataField="SubSettingID" ObjectProperty="SettingIdLv2" />
+            <Mapping DataField="SubSettingIDLevel3" ObjectProperty="SettingIdLv3" />
+        </Setting>
+    </Function>
 </Functions>
