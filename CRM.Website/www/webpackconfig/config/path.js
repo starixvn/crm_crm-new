@@ -16,7 +16,7 @@ const cssPaths = {
     pic_management: ['./www/sources/css/pages/pic-and-headline/management/index.scss'],
     report_settlement: ['./www/sources/css/pages/report/settlement/index.scss'],
     feedback_subject: ['./www/sources/css/pages/feedback-subject/index.scss'],
-    feedback: ['./www/sources/css/pages/latest-feedback/index.scss'],
+    latest_feedback: ['./www/sources/css/pages/latest-feedback/index.scss'],
 };
 
 const scriptPaths = {
@@ -34,7 +34,7 @@ const scriptPaths = {
     pic_management: ['./www/sources/js/pages/pic-and-headline/management/index.js'],
     report_settlement: ['./www/sources/js/pages/report/settlement/index.js'],
     feedback_subject: ['./www/sources/js/pages/feedback-subject/index.js'],
-    feeddback: ['./www/sources/js/pages/latest-feedback/index.js'],
+    latest_feedback: ['./www/sources/js/pages/latest-feedback/index.js'],
 };
 
 module.exports = {

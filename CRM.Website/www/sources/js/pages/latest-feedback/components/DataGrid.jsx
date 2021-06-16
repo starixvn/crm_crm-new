@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { PAGING_SIZES } from '@jsroot/common/constants';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';

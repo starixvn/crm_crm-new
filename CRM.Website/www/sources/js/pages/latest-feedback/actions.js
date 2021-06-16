@@ -3,37 +3,35 @@ import Site from '@jsroot/common/site';
 
 import {
     setGridParams,
-    setFeedBack,
-    setSelectFeedbackId,
-    setEditStatusFeedbackPopup,
-    setEditFeedbackPopup,
-    setEditFeedbackResult
+    setLatestFeedback,
+    setSelectLatestFeedbackId,
+    setEditLatestFeedbackPopup,
+    setEditLatestFeedbackResult
 } from './latestFeedbackSlide';
 
 
-const getFeedBack = params => async dispatch => {
+const getLatestFeedback = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('LatestFeedback/GetFeedback');
+    const url = Site.resolveClientUrl('LatestFeedback/GetLatestFeedback');
     await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setFeedBack(response.data));
+        dispatch(setLatestFeedback(response.data));
     }).then(() => Site.unblockUI());
 };
 
-const editFeedback = data => async dispatch => {
+const editLatestFeedback = data => async dispatch => {
     const url = Site.resolveClientUrl('LatestFeedback/EditFeedback');
     await DataService.postDataAsync(url, data).then(response => {
-        dispatch(setEditFeedbackResult(response.data));
+        dispatch(setEditLatestFeedbackResult(response.data));
     });
 };
 
 
 export const ActionCreators = {
-    setFeedBack,
+    setLatestFeedBack,
     setGridParams,
-    setSelectFeedbackId,
-    setEditStatusFeedbackPopup,
-    setEditFeedbackPopup,
-    setEditFeedbackResult,
-    getFeedBack,
-    editFeedback
+    setSelectLatestFeedbackId,
+    setEditLatestFeedbackPopup,
+    setEditLatestFeedbackResult,
+    getLatestFeedback,
+    editLatestFeedback
 };

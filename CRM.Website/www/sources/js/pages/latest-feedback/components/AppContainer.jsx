@@ -5,10 +5,6 @@ import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import PropTypes from 'prop-types';
 import DataGrid from './DataGrid';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import LangHelper from '@jsroot/common/langHelper';
-import { Button } from 'react-bootstrap';
-import { toast } from 'react-toastify';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -47,6 +43,7 @@ export class AppContainer extends Component {
     render() {
         return (
             <Fragment>
+                <Filter isHost={this.props.isHost} />
                 <DataGrid isHost={this.props.isHost}/>
                 {
                     this.props.editLatestFeedbackPopup.show &&

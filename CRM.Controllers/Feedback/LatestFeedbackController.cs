@@ -29,14 +29,14 @@
         }
         public IActionResult Index()
         {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Feedback, Policy.Host);
-            return View(isHost);
+            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.LatestFeedback, Policy.Host);
+            return View(true);
         }
 
         //[HttpPost]
-        //public async Task<IActionResult> GetLatestFeedback([FromBody] GetFeedbackParam param)
+        //public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackParam param)
         //{
-        //    IEnumerable<FeedbackSubjectTemplate> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
+        //    IEnumerable<FeedbackSubjectTemplate> feedbacks = await LatestFeedbackService.GetLatestFeedbackAsync(param);
         //    return Json(new { data = feedbacks });
         //}
     }
