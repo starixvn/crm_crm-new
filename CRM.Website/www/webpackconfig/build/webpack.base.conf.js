@@ -28,6 +28,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/feedbacksubject/index`]: pathConfig.scriptPaths.feedback_subject,
             [`${jsPath}/pages/latestfeedback/index`]: pathConfig.scriptPaths.latest_feedback,
             [`${jsPath}/pages/feedback/addguessfeedback/index`]: pathConfig.scriptPaths.add_guess_feedback,
+            [`${jsPath}/pages/latestfeedback/index`]: pathConfig.scriptPaths.latest_feedback,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -43,6 +44,7 @@ function generateConfig(environment) {
             [`${cssPath}/pages/feedbacksubject/index`]: pathConfig.cssPaths.feedback_subject,
             [`${cssPath}/pages/latestfeedback/index`]: pathConfig.cssPaths.latest_feedback,
             [`${cssPath}/pages/feedback/addguessfeedback/index`]: pathConfig.cssPaths.add_guess_feedback
+            [`${cssPath}/pages/latestfeedback/index`]: pathConfig.cssPaths.latest_feedback,
         },
         output: {
             path: pathConfig.projectRoot,
