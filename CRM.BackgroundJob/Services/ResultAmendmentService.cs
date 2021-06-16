@@ -136,7 +136,7 @@
                 lastSeqEnvName,
                 maxSeq,
                 lastSubmitTimeEnvName,
-                maxLastSubmitTime.ToString("yyyy-MM-dd hh:mm:ss.fffffff"),
+                maxLastSubmitTime.ToString("yyyy-MM-dd H:mm:ss.fffffff"),
                 Constants.ServiceName_ResultAmendment
            );
         }

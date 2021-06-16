@@ -322,7 +322,7 @@
                         cust.TicketEventId,
                         cust.Bettype,
                         cust.Seq,
-                        cust.SubmitDate.ToString("yyyy-MM-dd hh:mm:ss.fffffff"));
+                        cust.SubmitDate.ToString("yyyy-MM-dd H:mm:ss.fffffff"));
             }
             stringBuilder.Append(Constants.EndRootTag);
 
