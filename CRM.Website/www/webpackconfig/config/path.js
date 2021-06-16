@@ -17,6 +17,7 @@ const cssPaths = {
     report_settlement: ['./www/sources/css/pages/report/settlement/index.scss'],
     feedback_subject: ['./www/sources/css/pages/feedback-subject/index.scss'],
     latest_feedback: ['./www/sources/css/pages/latest-feedback/index.scss'],
+    add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss'],
 };
 
 const scriptPaths = {
@@ -35,6 +36,7 @@ const scriptPaths = {
     report_settlement: ['./www/sources/js/pages/report/settlement/index.js'],
     feedback_subject: ['./www/sources/js/pages/feedback-subject/index.js'],
     latest_feedback: ['./www/sources/js/pages/latest-feedback/index.js'],
+    add_guess_feedback: ['./www/sources/js/pages/feedback/add-guess-feedback/index.js'],
 };
 
 module.exports = {

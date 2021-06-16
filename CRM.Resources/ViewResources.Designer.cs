@@ -70,6 +70,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Guess Feedback.
+        /// </summary>
+        public static string AddGuessFeedback {
+            get {
+                return ResourceManager.GetString("AddGuessFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agent.
         /// </summary>
         public static string Agent {

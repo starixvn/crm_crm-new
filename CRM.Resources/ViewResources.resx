@@ -120,6 +120,9 @@
   <data name="Active" xml:space="preserve">
     <value>Active</value>
   </data>
+  <data name="AddGuessFeedback" xml:space="preserve">
+    <value>Add Guess Feedback</value>
+  </data>
   <data name="Agent" xml:space="preserve">
     <value>Agent</value>
   </data>
