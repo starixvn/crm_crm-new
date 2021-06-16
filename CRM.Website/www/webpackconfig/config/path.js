@@ -17,7 +17,7 @@ const cssPaths = {
     report_settlement: ['./www/sources/css/pages/report/settlement/index.scss'],
     feedback_subject: ['./www/sources/css/pages/feedback-subject/index.scss'],
     latest_feedback: ['./www/sources/css/pages/latest-feedback/index.scss'],
-    add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss'],
+    add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss']
     customer_info: ['./www/sources/css/pages/customer/customer-info/index.scss']
 };
 
