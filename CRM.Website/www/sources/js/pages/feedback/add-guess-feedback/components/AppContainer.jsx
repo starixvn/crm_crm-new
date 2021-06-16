@@ -2,19 +2,8 @@
 
 
 import React, { Component } from 'react';
-import CkEditor from '@jsroot/components/CkEditor';
-
-class AppContainer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: ''
-        };
-    }
-    handleChangeEditor = data =>{
-       this.setState({data});
-    }
-
+import RichTextEditor from '@jsroot/components/RichTextEditor';
+export class AppContainer extends Component {
     render() {
         return (
             <div className="editor-feedback">
