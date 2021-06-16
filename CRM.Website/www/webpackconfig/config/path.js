@@ -19,7 +19,7 @@ const cssPaths = {
     latest_feedback: ['./www/sources/css/pages/latest-feedback/index.scss'],
     add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss']
     customer_info: ['./www/sources/css/pages/customer/customer-info/index.scss']
-    add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss'],
+    add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss']
 };
 
 const scriptPaths = {
