@@ -4,16 +4,16 @@ const latestFeedbackSlice = createSlice({
     name: 'latestFeedback',
     initialState: {
         gridData: null,
-        gridParams: null,
+        gridParams: { Top: 10 },
         selectLatestFeedback: null,
-        editLatestFeedbackPopup: { show:false },
+        editLatestFeedbackPopup: { show: false },
         editLatestFeedbackResult: ''
     },
     reducers: {
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
-        setLatestFeedBack: (state, action) => {
+        setLatestFeedback: (state, action) => {
             state.gridData = action.payload;
         },
         setSelectLatestFeedbackId: (state, action) => {
@@ -32,7 +32,7 @@ const { actions, reducer } = latestFeedbackSlice;
 
 export const {
     setGridParams,
-    setLatestFeedBack,
+    setLatestFeedback,
     setSelectLatestFeedbackId,
     setEditLatestFeedbackPopup,
     setEditLatestFeedbackResult

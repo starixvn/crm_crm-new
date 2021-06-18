@@ -25,5 +25,14 @@
 }
 
 #app-container {
-    width: 920px;
+    width: 1000px;
+}
+
+.link-click {
+    cursor: pointer;
+    color: $link-color !important;
+}
+
+.link-click:hover {
+    color: $draft-color !important;
 }

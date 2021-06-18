@@ -6,6 +6,7 @@
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Services;
     using CRM.Letstalk.Client.Services.Interfaces;
+    using CRM.Repositories;
     using CRM.Services;
     using CRM.Services.Feedback;
     using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,8 @@
             services.AddTransient<IFeedbackSubjectService, FeedbackSubjectService>();
             services.AddTransient<IPicManagementService, PicManagementService>();
             services.AddScoped<IExportExcelService, ExportExcelService>();
-            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddTransient<IFeedbackService, FeedbackService>();
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)

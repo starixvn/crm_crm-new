@@ -9,6 +9,12 @@ export class Filter extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            filter: {
+                top: ''
+            },
+            settings: {
+                top: []
+            }
         };
     }
 
@@ -17,25 +23,30 @@ export class Filter extends Component {
         event.preventDefault();
     };
 
+    onChange = (fieldName, fieldValue) => {
+        this.setState(prevState => ({
+            filter: { ...prevState.filter, ...{ [fieldName]: fieldValue } }
+        }));
+    };
+
+    renderOptions = (item, key) => <option key={key} value={item.id}>{item.name}</option>;
+
     render() {
         const { isHost } = this.props;
 
         return (
-            <Form className="form-filter" onSubmit={this.handleSubmit}>
-                <Form.Group>
-                    <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Top')}</Form.Label>
-                    <div className='form-control-wrapper'>
-                        <MultipleSelect
-                            initialValue={}
-                            dataSource={}
-                            keyField='id'
-                            valueField='name'
-                            statusField='checked'
-                            isSummited={false}
-                            isAllTextShown
-                        />
-                    </div>
-                </Form.Group>
+            <Form className="form-filter" onSubmit={this.submitHandler}>
+                <Form.Row bsPrefix='form-row'>
+                    <Form.Group>
+                        <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Top')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none"
+                            value={this.state.filter.top}
+                            onChange={e => this.onChange('top', e.target.value)}
+                        >
+                            {this.state.settings.top.map(this.renderOptions)}
+                        </Form.Control>
+                    </Form.Group>
+                </Form.Row>
             </Form>
         );
     }

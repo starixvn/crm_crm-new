@@ -27,7 +27,7 @@ const editLatestFeedback = data => async dispatch => {
 
 
 export const ActionCreators = {
-    setLatestFeedBack,
+    setLatestFeedback,
     setGridParams,
     setSelectLatestFeedbackId,
     setEditLatestFeedbackPopup,

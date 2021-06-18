@@ -12,15 +12,13 @@ export class AppContainer extends Component {
     }
 
     static propTypes = {
-        editLatestFeedbackPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         isHost: PropTypes.bool.isRequired,
         getLatestFeedback: PropTypes.func
     };
 
     static defaultProps = {
         isHost: false,
-        editLatestFeedbackPopup: { show: false },
-        getLatestFeedback: function() {
+        getLatestFeedback: function () {
             //nothing
         }
     };
@@ -29,29 +27,11 @@ export class AppContainer extends Component {
         this.props.getLatestFeedback(this.props.gridParams);
     }
 
-    handleCloseEditPopup = () => {
-        this.props.setEditLatestFeedbackPopup({ show: false });
-        this.props.setEditLatestFeedbackResult(null);
-        this.props.setSelectLatestFeedbackId(null);
-    };
-
-    handleEditSuccess = () => {
-        this.handleCloseEditPopup();
-        this.props.getLatestFeedback(this.props.gridParams);
-    };
-
     render() {
         return (
             <Fragment>
                 <Filter isHost={this.props.isHost} />
-                <DataGrid isHost={this.props.isHost}/>
-                {
-                    this.props.editLatestFeedbackPopup.show &&
-                    <EditLatestFeedback
-                        onClose={this.handleCloseEditPopup}
-                        onSuccess={this.handleEditSuccess}
-                    />
-                }
+                <DataGrid isHost={this.props.isHost} />
             </Fragment>
         );
     }
@@ -61,12 +41,10 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        gridParams,
-        editLatestFeedbackPopup
+        gridParams
     } = state;
     return {
-        gridParams,
-        editLatestFeedbackPopup
+        gridParams
     };
 };
 
