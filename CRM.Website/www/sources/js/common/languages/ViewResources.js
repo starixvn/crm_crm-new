@@ -40,6 +40,8 @@
     Communication: 'Communication',
     CustomerFirstName: 'First Name',
     CustomerLastName: 'Last Name',
+    CustomerSite: 'Site',
+    CustomerCountry: 'Country',
     CustomerNickName: 'Nick Name',
     CustomerLanguage: 'Language',
     CustomerPhone1: 'Phone 1',
