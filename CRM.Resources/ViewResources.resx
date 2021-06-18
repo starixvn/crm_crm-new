@@ -141,6 +141,9 @@
   <data name="Customer" xml:space="preserve">
     <value>Customer</value>
   </data>
+  <data name="CustomerInfo" xml:space="preserve">
+    <value>Customer Infomation</value>
+  </data>
   <data name="DefaultCommunicationSetting" xml:space="preserve">
     <value>Default Communication Setting</value>
   </data>

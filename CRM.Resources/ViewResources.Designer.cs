@@ -133,6 +133,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer Infomation.
+        /// </summary>
+        public static string CustomerInfo {
+            get {
+                return ResourceManager.GetString("CustomerInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default Communication Setting.
         /// </summary>
         public static string DefaultCommunicationSetting {

@@ -18,6 +18,7 @@ const cssPaths = {
     feedback_subject: ['./www/sources/css/pages/feedback-subject/index.scss'],
     latest_feedback: ['./www/sources/css/pages/latest-feedback/index.scss'],
     add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss']
+    customer_info: ['./www/sources/css/pages/customer/customer-info/index.scss']
 };
 
 const scriptPaths = {
@@ -37,6 +38,7 @@ const scriptPaths = {
     feedback_subject: ['./www/sources/js/pages/feedback-subject/index.js'],
     latest_feedback: ['./www/sources/js/pages/latest-feedback/index.js'],
     add_guess_feedback: ['./www/sources/js/pages/feedback/add-guess-feedback/index.js'],
+    customer_info: ['./www/sources/js/pages/customer/customer-info/index.js']
 };
 
 module.exports = {

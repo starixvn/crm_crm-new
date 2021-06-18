@@ -15,6 +15,7 @@
 
         public const string LatestFeedback = "LatestFeedback";
         public const string DeleteFeedback = "DeleteFeedback";
+        public const string CustomerInfo = "CreateUpdateFeedback_CustomerInfo";
 
     }
 }

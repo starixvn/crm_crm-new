@@ -1,0 +1,57 @@
+@import '../../../components/react-grid/react-grid';
+@import '../../../components/form-filter';
+@import '../../../components/forms';
+@import '../../../components/icons';
+@import '../../../components/messages';
+@import '../../../components/modal';
+@import '../../../components/tables';
+
+.form-filter {
+    .form-row {
+        .form-group {
+            .form-control {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.modal-backdrop {
+    z-index: 1050 !important
+}
+
+.modal-dialog {
+    max-width: 650px;
+}
+
+.form-filter .form-row .form-group {
+    margin-right: 0 !important;
+}
+
+.textbox {
+    display: inline;
+}
+.textbox.code-country {
+    margin-right: 1%;
+    padding: 0 2px;
+    width: 19%;
+}
+
+.textbox.code-area {
+    margin-right: 1%;
+    padding: 0 1px;
+    width: 20%;
+}
+
+.textbox.phone {
+    padding: 0 1px;
+    width: 59%;
+}
+
+.textbox.pic-name {
+    margin-right: 1%;
+    padding: 0 2px;
+    width: 40%;
+}
+
+
