@@ -17,6 +17,11 @@ class AppContainer extends Component {
 		} );
 	}
 
+    onBeforeLoad = (CKEditor) =>{
+        console.log( 'First editor loaded!' );
+        console.log(CKEditor);
+	}
+
     render() {
         const  toolbar = [
             { name: 'document', items: [ 'Source'] },
@@ -28,6 +33,7 @@ class AppContainer extends Component {
             { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
             { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
         ];
+        
         return (
             <div className="App">
                 <h2>Using CKEditor 4 in React</h2>
@@ -35,9 +41,13 @@ class AppContainer extends Component {
                     data={this.state.data}
                     onChange={this.onEditorChange}
                     config={{
-                        extraPlugins: "justify,font,colorbutton,image2,subscript",
+                        extraPlugins: "justify,font,colorbutton,image2",
                         toolbar: toolbar
                     }}
+                    onBeforeLoad={ CKEditor => {
+                        this.onBeforeLoad(CKEditor);
+                    }
+                }
                 />
             </div>
         );
