@@ -745,8 +745,11 @@
                 amendment.affectedName,
                 Constants.LineBreak);
             }
-            stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookYN, sportNameYN, homeNameYN, awayNameYN,
-            leagueNameYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
+            else
+            {
+                stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookYN, sportNameYN, homeNameYN, awayNameYN,
+                leagueNameYN, Eventdate, amendment.ActualResult, amendment.WrongResult, amendment.affectedName, Constants.Break, Constants.LineBreak);
+            }
             return stringBuilder;
         }
 
