@@ -146,7 +146,7 @@
         }
 
         public StringBuilder Public_GetAmendmentDescriptionSportOutRight(
-            string Leaguenametc,
+            AmendmentAutoFeedbackInfor amendment,
             AmendmentDescriptionTemplate amendmentDescTemplate,
             string kO_time,
             string leagueName,
@@ -154,7 +154,7 @@
             )
         {
             return base.GetAmendmentDescriptionSportOutRight(
-             Leaguenametc,
+             amendment,
              amendmentDescTemplate,
              kO_time,
              leagueName,

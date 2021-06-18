@@ -1013,7 +1013,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
             var outright = new StringBuilder("outright");
 
-            service.Protected("GetAmendmentDescriptionSportOutRight", amendment.Leaguenametc, testDescTemp, "24 Feb 2021 07:59 AM", "LeagueName", "HomeName").Returns(outright);
+            service.Protected("GetAmendmentDescriptionSportOutRight", amendment, testDescTemp, "24 Feb 2021 07:59 AM", "LeagueName", "HomeName").Returns(outright);
             stringBuilder.Append("outright");
             stringBuilder.Append(Constants.Break);
 
@@ -1278,15 +1278,17 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Arrange
             var amendmentDescTemplate = new AmendmentDescriptionTemplate
             {
-                SportsbookOutright = "test SportsbookOutright"
+                SportsbookOutrightEventType9 = "test SportsbookOutright"
             };
+            var amendment = fixture.Create<AmendmentAutoFeedbackInfor>();
 
             var stringBuilder = new StringBuilder();
-            stringBuilder.Append(amendmentDescTemplate.SportsbookOutright);
+            stringBuilder.Append(amendmentDescTemplate.SportsbookOutrightEventType9);
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetAmendmentDescriptionSportOutRight("Leaguenametc",
+            var actual = service.Public_GetAmendmentDescriptionSportOutRight(
+                amendment,
                 amendmentDescTemplate,
                 "kO_time",
                 "leagueName",

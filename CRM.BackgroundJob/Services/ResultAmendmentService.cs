@@ -399,7 +399,7 @@
             var numberGame = GetAmendmentDescriptionNumberGame(
              amendment, amendmentDescTemplate, leagueName, sportName, EventdateGMT4Format);
             var outright = GetAmendmentDescriptionSportOutRight(
-                amendment.Leaguenametc, amendmentDescTemplate, startTimeOutright, leagueName, homeName);
+                amendment, amendmentDescTemplate, startTimeOutright, leagueName, homeName);
             switch (productName)
             {
                 case "Sportsbook":
@@ -517,7 +517,7 @@
         }
 
         protected internal virtual StringBuilder GetAmendmentDescriptionSportOutRight(
-            string Leaguenametc,
+            AmendmentAutoFeedbackInfor amendment,
             AmendmentDescriptionTemplate amendmentDescTemplate,
             string startTimeOutright,
             string leagueName,
@@ -527,17 +527,30 @@
             logService.LogInformation("Begin create template desctiption number game.");
 
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendFormat(
-                amendmentDescTemplate.SportsbookOutright,
-                Leaguenametc,
-                startTimeOutright,
-                leagueName,
-                homeName,
-                Constants.Break
-               );
-            logService.LogInformation("End create template desctiption number game.");
+            if(amendment.EventType == EventType2)
+            {
+                stringBuilder.AppendFormat(
+               amendmentDescTemplate.SportsbookOutrightEventType2,
+               amendment.Leaguenametc,
+               startTimeOutright,
+               leagueName,
+               homeName,
+               Constants.Break
+              );
+            } 
+            else
+            {
+                stringBuilder.AppendFormat(
+               amendmentDescTemplate.SportsbookOutrightEventType9,
+               amendment.Leaguenametc,
+               startTimeOutright,
+               leagueName,
+               Constants.Break
+              );
+            }
+           logService.LogInformation("End create template desctiption number game.");
 
-            return stringBuilder;
+           return stringBuilder;
         }
 
         protected internal virtual string GetAmenmendSolution(AmendmentAutoFeedbackInfor amendment, IEnumerable<Message> messageContent)
