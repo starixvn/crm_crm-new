@@ -18,7 +18,8 @@ class AppContainer extends Component {
 	}
 
     onBeforeLoad = (CKEditor) =>{
-        console.log( 'First editor loaded!' );
+        CKEditor.config.removeButtons = 'Underline,Subscript,Superscript';
+
         console.log(CKEditor);
 	}
 
@@ -26,7 +27,7 @@ class AppContainer extends Component {
         const  toolbar = [
             { name: 'document', items: [ 'Source'] },
             { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-            { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
+            { name: 'basic styles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
             { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
             { name: 'links', items: [ 'Link', 'Unlink' ] },
             { name: 'insert', items: [ 'Image', 'HorizontalRule'] },
