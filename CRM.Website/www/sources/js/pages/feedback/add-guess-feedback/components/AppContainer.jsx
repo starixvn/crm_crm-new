@@ -29,8 +29,6 @@ class AppContainer extends Component {
         super(props);
         this.state = {
             feedbackSubjectTemplateList: []
-        };
-    }
     
    
     componentDidMount(){
@@ -42,7 +40,6 @@ class AppContainer extends Component {
             }
         });
     }
-
     handleGetFeedbackSubjectTemplateByPagingIndex = () => {
         const maxFeedbackSubjectTemplateNumberOnLoad = 100000;
         const totalPage = Math.round(this.props.numberOfFeedbackSubjectTemplate / maxFeedbackSubjectTemplateNumberOnLoad + 0.5);
