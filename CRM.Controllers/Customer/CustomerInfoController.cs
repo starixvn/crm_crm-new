@@ -2,7 +2,8 @@
 {
     using CRM.Core.Constants;
     using CRM.Core.Filters;
-    using CRM.Services.Feedback;
+    using CRM.Criteria.Customer;
+    using CRM.Services.Customer;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -17,20 +18,29 @@
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
+        private readonly ICustomerService customerService;
 
         public CustomerInfoController(
             INapSession napSession,
             INapSettings napSettings,
-            IUserService userService)
+            IUserService userService,
+            ICustomerService customerService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
             this.userService = userService;
+            this.customerService = customerService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CustomerInfo, Policy.Host);
             return View(isHost);
+        }
+
+        public async Task<IActionResult> GetCustomerInfoSubject([FromBody] GetCustomerInfoByUsernameCriteria criteria)
+        {
+            var customerInfo = await customerService.GetCustomerInfoAsync(criteria);
+            return Json(new { data = customerInfo });
         }
 
         //[HttpPost]

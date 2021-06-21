@@ -162,6 +162,9 @@
   <data name="Guest" xml:space="preserve">
     <value>Guest</value>
   </data>
+  <data name="Headline" xml:space="preserve">
+    <value>Headline</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>

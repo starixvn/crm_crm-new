@@ -13,6 +13,9 @@ const customerInfoSlide = createSlice({
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
+        setCustomerInfo: (state, action) => {
+            state.gridData = action.payload;
+        }
     }
 
 });
@@ -20,7 +23,8 @@ const customerInfoSlide = createSlice({
 const { actions, reducer } = customerInfoSlide;
 
 export const {
-    setGridParams
+    setGridParams,
+    setCustomerInfo
 } = actions;
 
 export default reducer;

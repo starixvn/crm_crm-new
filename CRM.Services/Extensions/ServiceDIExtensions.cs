@@ -9,6 +9,7 @@
     using CRM.Repositories;
     using CRM.Services;
     using CRM.Services.Feedback;
+    using CRM.Services.Customer;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class ServiceDIExtensions
@@ -29,6 +30,7 @@
             services.AddTransient<IPicManagementService, PicManagementService>();
             services.AddScoped<IExportExcelService, ExportExcelService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
+            services.AddScoped<ICustomerService, CustomerService>();
             services.AddTransient<IFeedbackRepository, FeedbackRepository>();
         }
 

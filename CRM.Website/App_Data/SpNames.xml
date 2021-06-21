@@ -146,4 +146,22 @@
         <Setting Key="Acc_CRM_CustomerFeedbackQuickUpd" SpName="Acc_CRM_CustomerFeedbackQuickUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackQuickSel" SpName="Acc_CRM_FeedbackQuickSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
+    <Funtcion name="Customer">
+        <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+            <Mapping DataField="CustId" ObjectProperty="Id" />
+            <Mapping DataField="Fax" ObjectProperty="FaxNumber" />
+            <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
+            <Mapping DataField="Wire_SwiftCode" ObjectProperty="BankSwiftCode" />
+            <Mapping DataField="Wire_AccountName" ObjectProperty="BankAccountName" />
+            <Mapping DataField="Wire_AccountNo" ObjectProperty="BankAccountNumber" />
+            <Mapping DataField="CustStatus" ObjectProperty="Status" />
+            <Mapping DataField="danger" ObjectProperty="OriginalDangerLevel" />
+            <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
+            <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
+        </Setting>
+        <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="CustId" ObjectProperty="Id" />
+            <Mapping DataField="CustStatus" ObjectProperty="Status" />
+        </Setting>
+    </Funtcion>
 </Functions>
