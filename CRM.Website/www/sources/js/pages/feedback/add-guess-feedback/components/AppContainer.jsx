@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -51,6 +52,7 @@ class AppContainer extends Component {
     render() {
         return (
                <DataGrid />
+                   
         );
     }
 }
