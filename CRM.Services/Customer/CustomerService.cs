@@ -1,10 +1,13 @@
 ﻿namespace CRM.Services.Customer
 {
     using CRM.Core.Constants;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models;
     using CRM.Models.Customer;
+    using Fanex.NAP.Client.Helpers.Web;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -13,6 +16,7 @@
     public interface ICustomerService
     {
         Task<CustomerInfo> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria);
+        Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command);
     }
     public class CustomerService : ICustomerService
     {
@@ -40,7 +44,6 @@
                     });
                 }
             }
-            
             return customerInfo;
         }
 
@@ -69,6 +72,11 @@
                                   .FirstOrDefault() ?? NewUnAssignedCustomerInfo();
             uplineInfoResult.Insert(0, headline);
             return uplineInfoResult;
+        }
+
+        public async Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command)
+        {
+            return await baseService.ExecuteNonQueryAsync(command);
         }
 
         private CustomerInfo NewUnAssignedCustomerInfo()

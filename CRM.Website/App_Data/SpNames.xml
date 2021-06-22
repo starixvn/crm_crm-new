@@ -91,6 +91,10 @@
             <Mapping DataField="Currency" ObjectProperty="Name" />
         </Setting>
         <Setting Key="Acc_CRM_SourceSettingMappingSel" SpName="Acc_CRM_SourceSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SiteSel" SpName="Acc_CRM_SiteSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="SiteID" ObjectProperty="Id" />
+            <Mapping DataField="SiteName" ObjectProperty="Name" />
+        </Setting>
     </Function>
     <Function Name="Report">
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSettlement" SpName="Acc_CRM_Rpt_FeedbackStatisticsSettlement" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -163,5 +167,6 @@
             <Mapping DataField="CustId" ObjectProperty="Id" />
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>
+        <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdateBasicInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Funtcion>
 </Functions>

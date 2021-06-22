@@ -7,7 +7,7 @@ namespace CRM.Services
     {
         public static string GetRoleName(int roleId)
         {
-            var roleName = string.Empty;
+            string roleName;
             switch (roleId)
             {
                 case RoleIdConstants.Member:

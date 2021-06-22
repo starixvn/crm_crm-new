@@ -4,7 +4,10 @@ import Site from '@jsroot/common/site';
 
 import {
     setGridParams,
-    setCustomerInfo
+    setCustomerInfo,
+    setSettings,
+    setEditCustomerInfo,
+    setEditCustomerInfoPopup
 } from './customerInfoSlide';
 
 const getCustomerInfo = params => async dispatch => {
@@ -15,9 +18,28 @@ const getCustomerInfo = params => async dispatch => {
     }).then(() => Site.unblockUI());
 }
 
+const getSettings = () => async dispatch => {
+    const url = Site.resolveClientUrl('CustomerInfo/GetSettings');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setSettings(response.data));
+    });
+};
+
+const editCustomerInfo = data => async dispatch => {
+    const url = Site.resolveClientUrl('CustomerInfo/EditCustomerInfo');
+    await DataService.postDataAsync(url, data).then(response => {
+        dispatch(setEditCustomerInfo(response.data));
+    });
+};
+
 
 export const ActionCreators = {
     setCustomerInfo,
     setGridParams,
-    getCustomerInfo
+    setSettings,
+    setEditCustomerInfo,
+    setEditCustomerInfoPopup,
+    getCustomerInfo,
+    getSettings,
+    editCustomerInfo
 };

@@ -3,6 +3,8 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Criteria.Customer;
+    using CRM.Criteria.Setting;
+    using CRM.Services;
     using CRM.Services.Customer;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -19,17 +21,20 @@
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
         private readonly ICustomerService customerService;
+        private readonly ISettingService settingService;
 
         public CustomerInfoController(
             INapSession napSession,
             INapSettings napSettings,
             IUserService userService,
-            ICustomerService customerService)
+            ICustomerService customerService,
+            ISettingService settingService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
             this.userService = userService;
             this.customerService = customerService;
+            this.settingService = settingService;
         }
         public async Task<IActionResult> Index()
         {
@@ -43,6 +48,26 @@
             return Json(new { data = customerInfo });
         }
 
+        public async Task<IActionResult> GetSettings()
+        {
+            var settings = new 
+            {
+                sites = await settingService.GetAllSites(new GetAllSiteCriteria()),
+                countries =  await settingService.GetAllCountryAsync(new GetAllCountryCriteria()),
+                languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria())
+            };
+            return Json(settings);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
+        {
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            var result = await customerService.UpdateCustomerInfoAsync(command);
+            return Json(result);
+        }
         //[HttpPost]
         //public async Task<IActionResult> GetLatestFeedback([FromBody] GetFeedbackParam param)
         //{

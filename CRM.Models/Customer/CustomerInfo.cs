@@ -140,7 +140,7 @@
 
         public string MobilePhone { get; set; }
 
-        public bool isGroupHeadLine { get; set; }
+        public bool IsGroupHeadLine { get; set; }
 
         public string Status { get; set; }
 
@@ -212,11 +212,13 @@
         {
             get
             {
-                var piccontacts = new List<PersonalInfoContact>();
-                piccontacts.Add(new PersonalInfoContact { Name = Pic1Name, Phone = Pic1 });
-                piccontacts.Add(new PersonalInfoContact { Name = Pic2Name, Phone = Pic2 });
-                piccontacts.Add(new PersonalInfoContact { Name = Pic3Name, Phone = Pic3 });
-                piccontacts.Add(new PersonalInfoContact { Name = Pic4Name, Phone = Pic4 });
+                var piccontacts = new List<PersonalInfoContact>
+                {
+                    new PersonalInfoContact { Name = Pic1Name, Phone = Pic1 },
+                    new PersonalInfoContact { Name = Pic2Name, Phone = Pic2 },
+                    new PersonalInfoContact { Name = Pic3Name, Phone = Pic3 },
+                    new PersonalInfoContact { Name = Pic4Name, Phone = Pic4 }
+                };
                 return piccontacts;
             }
         }
@@ -225,9 +227,11 @@
         {
             get
             {
-                var bettingcodes = new List<string>();
-                bettingcodes.Add(RefCode1);
-                bettingcodes.Add(RefCode2);
+                var bettingcodes = new List<string>
+                {
+                    RefCode1,
+                    RefCode2
+                };
                 return bettingcodes;
             }
         }
@@ -236,10 +240,12 @@
         {
             get
             {
-                var phoneInfo = new List<Phone>();
-                phoneInfo.Add(new Phone { CountryCode = PhoneCountryCode, AreaCode = PhoneAreaCode, PhoneNumber = Phone });
-                phoneInfo.Add(new Phone { CountryCode = Phone2CountryCode, AreaCode = Phone2AreaCode, PhoneNumber = Phone2 });
-                phoneInfo.Add(new Phone { CountryCode = Phone3CountryCode, AreaCode = Phone3AreaCode, PhoneNumber = Phone3 });
+                var phoneInfo = new List<Phone>
+                {
+                    new Phone { CountryCode = PhoneCountryCode, AreaCode = PhoneAreaCode, PhoneNumber = Phone },
+                    new Phone { CountryCode = Phone2CountryCode, AreaCode = Phone2AreaCode, PhoneNumber = Phone2 },
+                    new Phone { CountryCode = Phone3CountryCode, AreaCode = Phone3AreaCode, PhoneNumber = Phone3 }
+                };
                 return phoneInfo;
             }
         }

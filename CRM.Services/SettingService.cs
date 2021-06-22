@@ -112,6 +112,11 @@
             return await baseService.GetDataAsync<SettingMapping>(criteria);
         }
 
+        public async Task<IEnumerable<BaseModel>> GetAllSites(GetAllSiteCriteria criteria = null)
+        {
+            return await baseService.GetDataAsync<BaseModel>(criteria);
+        }
+
         public IEnumerable<Setting> GetPositions(bool isExcludeGuest)
         {
             if (isExcludeGuest)
@@ -155,5 +160,7 @@
                 }
             };
         }
+
+
     }
 }

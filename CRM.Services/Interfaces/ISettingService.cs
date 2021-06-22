@@ -43,5 +43,7 @@
         IEnumerable<Setting> GetPositions(bool isExcludeGuest);
 
         IEnumerable<Setting> GetAllCustomerTypes();
+
+        Task<IEnumerable<BaseModel>> GetAllSites(GetAllSiteCriteria criteria = null);
     }
 }

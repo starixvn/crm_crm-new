@@ -35,13 +35,13 @@ export class Filter extends Component {
     handleSubmit = event => {
         event.preventDefault();
         const params = this.getParams();
-        console.log(params);
-        if(params.Username.trim() != '')
-        {
-            this.props.setGridParams(params);
-            this.props.getCustomerInfo(params)
+       
+        this.props.setGridParams(params);
+        this.props.getCustomerInfo(params);
+        this.props.getSettings();
+        if(this.props.gridData == null) {
+            console.log(123);
         }
-        
     };
 
     
@@ -49,7 +49,7 @@ export class Filter extends Component {
         const { isHost } = this.props;
         return (
             <div>
-                <Form className="form-filter" >
+                <Form className="form-filter"  onSubmit={this.handleSubmit}>
                     <Form.Row bsPrefix='form-row'>
                         <Form.Group className="col-md-9">
                             <Form.Control type="text" size="sm" className="shadow-none"
