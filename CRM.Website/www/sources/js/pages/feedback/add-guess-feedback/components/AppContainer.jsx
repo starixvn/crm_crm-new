@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 
 
 import React, { Component } from 'react';
@@ -7,17 +8,23 @@ class AppContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: ""
+            data: ''
         };
     }
     handleChangeEditor = data =>{
-        console.log(data);
+       this.setState({data});
     }
 
     render() {
         return (
-            <div>
-                <CkEditor data={this.state.data} handleChangeEditor={this.handleChangeEditor}/>
+            <div className="editor-feedback">
+                <CkEditor data={this.state.data} 
+                    userName='tim'
+                    data={this.state.data}
+                    currentDate={new Date()}
+                    handleChangeEditor={this.handleChangeEditor}
+                />
+                <div dangerouslySetInnerHTML={{ __html: this.state.data }} />
             </div>
         );
     }

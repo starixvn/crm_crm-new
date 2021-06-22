@@ -1,88 +1,101 @@
 import React, { PureComponent } from 'react';
 import { CKEditor } from 'ckeditor4-react';
 import { TOOLBAR, EXTRA_TOOLBAR } from '@jsroot/common/constants';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 
 export default class CkEditor extends PureComponent {
+    static propTypes = {
+        data: PropTypes.string.isRequired,
+        userName: PropTypes.string.isRequired
+    };
+
+    static defaultProps = {
+        data: '',
+        userName: ''
+    };
     constructor(props) {
         super(props);
         this.state = {
-            data: "",
-            initData: ""
+            data: '',
+            userName: ''
         };
     }
 
-    // onEditorChange = evt => {
-    //     const data = evt.editor.getData();
-	// 	this.setState({data});
-    //     this.props.handleChangeEditor(data);
-	// }
+    onEditorChange = evt => {
+        const data = evt.editor.getData();
+        this.setState({ data });
+        this.props.handleChangeEditor(data);
+    }
 
-    onBeforeLoad = CKEDITOR =>{
+    onBeforeLoad = () => {
         const data = this.props.data;
-        this.setState({data});
+        this.setState({ data });
+    }
+
+    onLoadPlugin = CKEDITOR => {
+        let editText = '';
+        const { userName, currentDate } = this.props;
+        if (this.state.data === "") {
+            editText = "&nbsp;";
+        }
+        const textTemplate =
+            '<div>\
+            <div style="background-color: #FFFFD0; padding-left: 10px; border-left: 1px solid #CCCCCC;">\
+                <div style="font-size: 9px; color:red">by <span style="color: #105289; font-weight: bold; font-size: 11px;">{0}</span> on {1}</div>\
+                <div style="border-top: 1px solid #CCCCCC; padding: 5px 0pt 0pt;">{2}</div>\
+            </div>\
+        </div>\
+        <br>';
+
+        const html = this.stringFormat(textTemplate, [userName, moment(currentDate).format("MM/DD/YYYY, hh:mm:ss A"), editText]);
         CKEDITOR.plugins.add("editblock", {
             init: function (editor) {
-              editor.addCommand("insertEditBlock", {
-                exec: function (editor) {
-                 let editText = '';
-                 if(editor.getData() === "") {
-                        editText = "&nbsp;";
-                 }
-                 editor.insertHtml(
-                        '<div class="insert-block">' +
-                        '<div class="by-text">by <span class="creator-text">crmTim </span>' +
-                            'on 06/21/2021' +
-                        '</div>' +
-                        '<div class="block">&nbsp;</div>'+
-                        '</div><br>' +
-                        editText
-                  );
-                }
-              });
-              editor.ui.addButton("EditBlock", {
-                label: "Insert Edit Block",
-                command: "insertEditBlock",
-                toolbar: "insert"
-              });
-              editor.addContentsCss(
-                '.insert-block {' +
-                    'background-color: #FFFFD0;' +
-                    'padding-left: 10px;' +
-                    'border-left: 1px solid #CCCCCC' +
-                '}' +
-                '.by-text {' +
-                    'font-size: 9px;' +
-                    'color: red;' +
-                '}' +
-                '.creator-text {' +
-                    'color: #105289 !important;' +
-                    'font-weight: bold;' +
-                    'font-size: 11px;' +
-                '}' +
-                '.block {' +
-                    'border-top: 1px solid #CCCCCC;' +
-                    'padding: 5px 0pt 0pt;' +
-                '}'
-              );    
+                editor.addCommand("insertEditBlock", {
+                    exec: function (editor) {
+                        editor.insertHtml(html);
+                    }
+                });
+                editor.ui.addButton("EditBlock", {
+                    label: "Insert Edit Block",
+                    command: "insertEditBlock",
+                    toolbar: "insert"
+                });
             }
         });
-	}
+    }
+
+    stringFormat = function (strValue, paramArr) {
+        if (!strValue) {
+            return "";
+        }
+        var len = paramArr.length;
+        for (var i = 0; i < len; i++) {
+            var paramInfo = paramArr[i];
+            var formatIndex = '{' + i + '}';
+            while (strValue.indexOf(formatIndex) !== -1) {
+                strValue = strValue.replace(formatIndex, paramInfo);
+            }
+        }
+        return strValue;
+    };
 
     render() {
-        const {data} = this.props;
+        const removePlugins = 'magicline, elementspath';
         return (
-                <CKEditor
-                    initData={this.state.data}
-                    // onChange={this.onEditorChange}
-                    config={{
-                        removeButtons: '',
-                        extraPlugins: EXTRA_TOOLBAR,
-                        toolbar: TOOLBAR,
-                        allowedContent: true,
-                        removePlugins: 'magicline, elementspath'
-                    }}
-                    onBeforeLoad={this.onBeforeLoad}
-                />
+            <CKEditor
+                initData={this.state.data}
+                onChange={this.onEditorChange}
+                config={{
+                    removeButtons: '',
+                    extraPlugins: EXTRA_TOOLBAR,
+                    toolbar: TOOLBAR,
+                    allowedContent: true,
+                    removePlugins: removePlugins
+                }}
+                onBeforeLoad={this.onBeforeLoad}
+                onNamespaceLoaded={this.onLoadPlugin}
+            />
         );
     }
 }
