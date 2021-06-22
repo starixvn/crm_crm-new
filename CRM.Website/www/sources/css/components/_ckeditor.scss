@@ -1,0 +1,16 @@
+#cke_49{
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+
+    &::before{
+        content: '\F044';
+        left: -7px;
+        top: 2px;
+        font-size: 16px;
+        position: relative;
+    }
+}

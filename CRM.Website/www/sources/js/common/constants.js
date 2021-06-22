@@ -29,3 +29,17 @@ export const MULTI_SELECT_TEXT_OPTIONS = {
 };
 
 export const AUTO_REFRESH_TIMES = [90, 120, 150, 180];
+
+export const TOOLBAR = [
+    { name: 'document', items: [ 'Source'] },
+    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+    { name: 'basic styles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+    { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+    { name: 'links', items: [ 'Link', 'Unlink' ] },
+    { name: 'styles', items: ['Format', 'Font', 'FontSize' ] },
+    { name: 'insert', items: [ 'Image2', 'HorizontalRule'] },
+    { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo' ] },
+    { name: 'editblock', items: ['EditBlock'] }
+];
+
+export const EXTRA_TOOLBAR = "justify,font,colorbutton,image2,editblock";
