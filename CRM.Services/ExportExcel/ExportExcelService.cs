@@ -10,6 +10,8 @@
     using Microsoft.AspNetCore.Hosting;
     using CRM.Models.Setting;
     using CRM.Core.Services;
+    using Microsoft.AspNetCore.Mvc;
+    using CRM.Core.Models.Feedback;
 
     public interface IExportExcelService
     {
@@ -23,6 +25,8 @@
         byte[] ExportSettlementReport(SettlementReportInfo reportInfo);
 
         byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
+
+        byte[] ExportLatestFeedbackReport(IEnumerable<FeedbackDetail> feedbacks);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -66,6 +70,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/ChatType_Mapping.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new ChatTypeMappingExcel(templatePath, chatTypeMappings);
+            return excel.Export();
+        }
+
+        public byte[] ExportLatestFeedbackReport(IEnumerable<FeedbackDetail> feedbacks)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/LatestFeedback.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new FeedbackReportExcel(templatePath, feedbacks);
             return excel.Export();
         }
     }

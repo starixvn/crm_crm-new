@@ -12,6 +12,11 @@ export class DataGrid extends Component {
         super(props);
     }
 
+    handleExportExcel = () => {
+        const { gridParams } = this.props;
+        this.props.exportExcel(gridParams);
+    };
+
     buildHeader = isHost => {
         return (
             <HeaderRow>
@@ -32,6 +37,10 @@ export class DataGrid extends Component {
         return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 6 : 5}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
+    handleEdit = item => {
+        this.props.setEditQuickUpdateFeedbackPopup({ show: true, data: item });
+    };
+
     renderRow = (item, index, isHost) => (
         <Row key={index} >
             <Cell className='text-center'>{item.feedbackId}</Cell>
@@ -45,14 +54,12 @@ export class DataGrid extends Component {
             }
             {
                 isHost &&
-                <Cell onClick={() => this.openContentPopup(item)}>
-                    <Tooltip className="tooltipCatagory" id={`tooltip${index}`}>
-                        {item.Description}
-                    </Tooltip>
-                    <span className="rounded-circle fa fa-pencil-square-o"
-                        onClick={() => this.handleEdit(item.feedbackId, item.subject)}
-                    />
-                    <strong className='link-click'> {item.subject} </strong>
+                <Cell onClick={() => this.openUpdateFeedbackPopup(item)}>
+                    {
+                        this.tooltipFeedback(item)
+                    }
+                    <strong className='link-click'> {item.subject}
+                    </strong>
                     <div>Feedback date <strong> {item.feedbackDateString} </strong></div>
                     <div>By <strong>  {item.creatorName} </strong> on {item.createDateString} </div>
                     <div>Solving Duration: {item.durationTime} </div>
@@ -71,14 +78,45 @@ export class DataGrid extends Component {
                 placement="auto"
                 overlay={
                     <Tooltip className="tooltipExport">
-                        <span>
-                            Export to Excel
-                </span>
+                        <span> Export to Excel </span>
                     </Tooltip>
                 }
             >
                 {
-                    <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcelMapping} />
+                    <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcel} />
+                }
+            </OverlayTrigger>
+        );
+    };
+
+    tooltipFeedback = (item) => {
+        var desctiptionText = !item.description ? '' : "Description: <br>" + item.description + "<br>";
+        var solutionText = !item.solution ? '' : "Solution: <br>" + item.solution + "<br>";
+
+        var lastCharacterSlit = desctiptionText.substring(578, 580);
+        var isEscapseWord = "<br />".includes(lastCharacterSlit);
+        var subLength = isEscapseWord ? 592 : 580;
+
+        var lastCharacterSlitSolution = solutionText.substring(578, 580);
+        var isEscapseWordSolution = "<br />".includes(lastCharacterSlitSolution);
+        var subLengthSolution = isEscapseWordSolution ? 592 : 580;
+
+        var tooltipDescription = desctiptionText.length > subLength ? desctiptionText.substring(0, subLength) + " ... <br><br>" : desctiptionText;
+        var tooltipSolution = solutionText.length > subLengthSolution ? solutionText.substring(0, subLengthSolution) + " ... <br><br>" : solutionText;
+
+        return (
+            <OverlayTrigger
+                placement="auto"
+                overlay={
+                    <Tooltip className="tooltipFeedback">
+                        <div> {tooltipDescription + tooltipSolution}</div>
+                    </Tooltip>
+                }
+            >
+                {
+                    <span className="rounded-circle fa fa-pencil-square-o"
+                        onClick={() => this.handleEdit(item.feedbackId, item.subject)}
+                    />
                 }
             </OverlayTrigger>
         );
@@ -93,7 +131,7 @@ export class DataGrid extends Component {
         return (
             <Fragment>
                 <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>Top {this.props.gridParams.Top} Feedback</span>
+                    <span>Top {this.props.gridParams.top} Feedback</span>
                     {
                         this.props.gridData.data.length > 0 && this.renderExportExcelText()
                     }
@@ -115,10 +153,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const { gridParams, gridData } = state;
-    return {
-        gridParams,
-        gridData
-    };
+    return { gridParams, gridData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

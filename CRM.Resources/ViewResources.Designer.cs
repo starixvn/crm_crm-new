@@ -133,6 +133,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Top {0} Feedback.
+        /// </summary>
+        public static string FeedbackReport_Title {
+            get {
+                return ResourceManager.GetString("FeedbackReport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback Subject.
         /// </summary>
         public static string FeedbackSubject {

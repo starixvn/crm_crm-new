@@ -36,3 +36,13 @@
 .link-click:hover {
     color: $draft-color !important;
 }
+
+.tooltipFeedback [class$="inner"] {
+    min-width: 100px;
+    max-width: 650px;
+    min-height: 100px;
+    max-height: 920px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: left
+}

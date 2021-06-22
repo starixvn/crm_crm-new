@@ -1,12 +1,14 @@
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
-
 import {
     setGridParams,
     setLatestFeedback,
     setSelectLatestFeedbackId,
     setEditLatestFeedbackPopup,
-    setEditLatestFeedbackResult
+    setEditLatestFeedbackResult,
+    setTops,
+    setEditQuickUpdateFeedbackPopup,
+    setEditQuickUpdateFeedbackResult
 } from './latestFeedbackSlide';
 
 
@@ -25,6 +27,27 @@ const editLatestFeedback = data => async dispatch => {
     });
 };
 
+const getTops = () => async dispatch => {
+    const url = Site.resolveClientUrl('LatestFeedback/GetTops');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setTops(response.data));
+    });
+};
+
+const exportExcel = params => async () => {
+    const url = Site.resolveClientUrl('LatestFeedback/ExportLatestFeedbackReport');
+    await DataService.getFileAsync(url, params).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
+        Site.downloadFile(response.data, fileName);
+    });
+};
+
+const editQuickUpdateFeedback = data => async dispatch => {
+    const url = Site.resolveClientUrl('LatestFeedback/EditQuickUpdateFeedback');
+    await DataService.postDataAsync(url, data).then(response => {
+        dispatch(setEditQuickUpdateFeedbackResult(response.data));
+    });
+};
 
 export const ActionCreators = {
     setLatestFeedback,
@@ -33,5 +56,11 @@ export const ActionCreators = {
     setEditLatestFeedbackPopup,
     setEditLatestFeedbackResult,
     getLatestFeedback,
-    editLatestFeedback
+    editLatestFeedback,
+    setTops,
+    getTops,
+    exportExcel,
+    setEditQuickUpdateFeedbackPopup,
+    setEditQuickUpdateFeedbackResult,
+    editQuickUpdateFeedback
 };

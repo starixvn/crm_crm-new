@@ -141,6 +141,9 @@
   <data name="DefaultCommunicationSetting" xml:space="preserve">
     <value>Default Communication Setting</value>
   </data>
+  <data name="FeedbackReport_Title" xml:space="preserve">
+    <value>Top {0} Feedback</value>
+  </data>
   <data name="FeedbackSubject" xml:space="preserve">
     <value>Feedback Subject</value>
   </data>
