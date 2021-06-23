@@ -13,7 +13,6 @@
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
-    using CRM.Services.Feedback;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -21,12 +20,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
     public class LatestFeedbackController : BaseController
     {
-        private readonly IFeedbackService feedbackService;
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
@@ -35,14 +32,12 @@
 
 
         public LatestFeedbackController(
-            IFeedbackService feedbackService,
             INapSession napSession,
             INapSettings napSettings,
             IUserService userService,
             IExportExcelService excelService,
         ISettingService settingService)
         {
-            this.feedbackService = feedbackService;
             this.napSession = napSession;
             this.napSettings = napSettings;
             this.settingService = settingService;
@@ -53,7 +48,6 @@
             //var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.LatestFeedback, Policy.Host);
             return View(true);
         }
-
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackParam param)
         {

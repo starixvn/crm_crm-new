@@ -7,7 +7,7 @@
     {
         public GetAllSiteCriteria()
         {
-            LicenseeType = 0;
+            LicenseeType =  LicenseeTypeConstants.All;
         }
 
         public short UserRole { get; } = Constants.UserRole;

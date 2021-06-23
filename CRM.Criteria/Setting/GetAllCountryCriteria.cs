@@ -7,7 +7,7 @@
         public byte Active { get; set; }
         public override string GetSettingKey()
         {
-            return "Setting_SettingInfo_GetAllCountry";
+            return "Acc_CRM_CountryList";
         }
         public override bool IsValid() => true;
     }

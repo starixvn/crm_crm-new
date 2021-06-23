@@ -6,6 +6,9 @@
 
     public class GetAllStatusCriteria : CriteriaBase
     {
+        [SpParam(SqlParamName = "type")]
+        public int ViewType { get; set; }
+
         public byte UserRole { get; } = Constants.UserRole;
 
         public override string GetSettingKey()

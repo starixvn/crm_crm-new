@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.Core.Models;
     using Fanex.Data;

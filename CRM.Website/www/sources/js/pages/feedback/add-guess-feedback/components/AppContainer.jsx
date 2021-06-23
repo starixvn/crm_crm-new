@@ -1,22 +1,27 @@
-/* eslint-disable react/no-danger */
-
-
 import React, { Component } from 'react';
-import RichTextEditor from '@jsroot/components/RichTextEditor';
-export class AppContainer extends Component {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
+            settings: ''
+   
+    componentDidMount(){
+        this.props.getAllSettings();
     render() {
         return (
-            <div className="editor-feedback">
-                <CkEditor data={this.state.data} 
-                    userName='tim'
-                    data={this.state.data}
-                    currentDate={new Date()}
-                    handleChangeEditor={this.handleChangeEditor}
-                />
-                <div dangerouslySetInnerHTML={{ __html: this.state.data }} />
-            </div>
+           <div>
+               hello
+           </div>
         );
     }
 }
 
-export default AppContainer;
+const mapDispatchToProps = dispatch => bindActionCreators( ActionCreators, dispatch );
+
+const mapStateToProps = state => {
+    const { settings } = state;
+    return {
+        settings
+    };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( AppContainer );

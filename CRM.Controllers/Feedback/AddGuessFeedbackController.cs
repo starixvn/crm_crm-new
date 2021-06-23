@@ -8,31 +8,28 @@
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
-    using CRM.Services.Feedback;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
     public class AddGuessFeedbackController : BaseController
     {
-        private readonly IFeedbackService feedbackService;
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
         private readonly ISettingService settingService;
 
         public AddGuessFeedbackController(
-            IFeedbackService feedbackService,
             INapSession napSession,
             INapSettings napSettings,
             IUserService userService,
             ISettingService settingService)
         {
-            this.feedbackService = feedbackService;
             this.napSession = napSession;
             this.napSettings = napSettings;
             this.userService = userService;
@@ -44,77 +41,101 @@
             return View(isHost);
         }
 
-        [HttpPost]
-        public ActionResult AllSetting()
+        public async Task<ActionResult> AllSetting()
         {
-            var settings = AllSettingToAddFeedback(UserRole.NormalStaff);
+            var settings = await AllSettingToAddFeedback();
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             if (isHost)
             {
-                settings.StatusList = settings.StatusList.Where(s => !s.Name.Equals("Deleted", System.StringComparison.OrdinalIgnoreCase));
+                settings.StatusList = settings.StatusList.Where(s => !s.SettingName.Equals("Deleted", System.StringComparison.OrdinalIgnoreCase));
             }
 
             return Json(settings);
         }
 
-        public async Task<AllSettingToAddFeedback> AllSettingToAddFeedback(UserRole userRole)
+        public async Task<AllSettingToAddFeedback> AllSettingToAddFeedback()
         {
-            var languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria
+            try
             {
-                Active = SettingConstants.ActiveAndInactive
-            });
-            var languagesActive = languages.Where(x => x.IsActive).ToList();
 
-            languagesActive.Insert(
-                0,
-                new Setting
+                var languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria
                 {
-                    Id = 0,
-                    Name = ViewResources.Symbol_NA,
-                    IsActive = true
+                    Active = SettingConstants.ActiveAndInactive
                 });
+                var languagesActive = languages.Where(x => x.IsActive).ToList();
 
-            var countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria
-            {
-                Active = SettingConstants.ActiveAndInactive
-            });
-            var countrieActive = countries.Where(x => x.IsActive).ToList();
+                languagesActive.Insert(
+                    0,
+                    new Setting
+                    {
+                        Id = 0,
+                        Name = ViewResources.Symbol_NA,
+                        IsActive = true
+                    });
 
-            countrieActive.Insert(
-                0,
-                new Country
+                var countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria
                 {
-                    Id = 0,
-                    Name = ViewResources.Symbol_NA,
-                    IsActive = true
+                    Active = SettingConstants.ActiveAndInactive
                 });
+                var countriesList = countries.ToList();
 
-            var statusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool)
-                                        .Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
-            var settings = new AllSettingToAddFeedback
+                countriesList.Insert(
+                    0,
+                    new Country
+                    {
+                        Id = 0,
+                        Name = ViewResources.Symbol_NA,
+                        IsActive = true
+                    });
+
+                var statusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool);
+                var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
+                var extentionList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Extension);
+                var extentionNA = extentionList.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
+                var ProvinceList = await settingService.GetAllProvinceAsync(new GetAllProvinceCriteria());
+                var communicationToolList = await settingService.GetAllCommunicationToolAsync();
+                var siteList = await settingService.GetAllSiteAsync();
+                var responsesLists = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Response);
+                var titleList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Title);
+                var licenseeTypeList = await settingService.GetAllLicenseeTypeAsync();
+                var productList = await settingService.GetProductAsync();
+                var productNA = productList.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
+                var subproduct = await settingService.GetSubProductAsync(new SubProductCriteria { Active = SettingConstants.Active });
+                var subproductNA = subproduct.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
+                var bettype = await settingService.GetAllBetTypeAsync(new GetAllBetTypeCriteria { Active = SettingConstants.Active });
+                var bettypeNA = bettype.FirstOrDefault(s => s.Id == NAConstants.BettypeNA);
+                var mainCategoryList = await settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria { Active = SettingConstants.ActiveAndInactive });
+                var subCategoryList = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria { Active = SettingConstants.ActiveAndInactive });
+
+                var settings = new AllSettingToAddFeedback
+                {
+                    ExtensionList = extentionList,
+                    CountryList = countriesList.Where(x => x.IsActive),
+                    ProvinceList = ProvinceList,
+                    CommunicationToolList = communicationToolList.Where(x => x.IsActive),
+                    LanguageList = languages.Where(x => x.IsActive),
+                    SiteList = siteList,
+                    ResponseList = responsesLists.Where(x => x.IsActive),
+                    StatusList = statusListRemoveDelete,
+                    TitleList = titleList.Where(x => x.IsActive),
+                    LicenseeType = licenseeTypeList,
+                    ProductNA = productNA,
+                    SubProductNA = subproductNA,
+                    BettypeNA = bettypeNA,
+                    ExtensionNA = extentionNA,
+                    ProductList = productList.Where(x => x.IsActive),
+                    SubProductList = subproduct.Where(x => x.IsActive),
+                    BettypeList = bettype.Where(x => x.IsActive),
+                    MainCategoryList = mainCategoryList.Where(x => x.IsActive),
+                    SubCategoryList = subCategoryList.Where(x => x.IsActive)
+                };
+
+                return settings;
+            }
+            catch(Exception e)
             {
-                ExtensionList = ServiceSetting.GetAllExtensions(),
-                CountryList = countries.Where(x => x.IsActive),
-                ProvinceList = ServiceSetting.GetAllProvinces(),
-                CommunicationToolList = ServiceSetting.GetAllCommunicationTools().Where(x => x.IsActive),
-                LanguageList = languages.Where(x => x.IsActive),
-                SiteList = (userRole == UserRole.CN88Staff) ? ServiceSetting.GetAllSiteWithGroupCN88() : ServiceSetting.GetAllSiteWithGroup(),
-                ResponseList = ServiceSetting.GetAllResponses().Where(x => x.IsActive),
-                StatusList = statusList,
-                TitleList = ServiceSetting.GetAllTitles().Where(x => x.IsActive),
-                LicenseeType = ServiceSetting.GetAllLicenseeTypes(),
-                ProductNA = ServiceSetting.GetProductNA(),
-                SubProductNA = ServiceSetting.GetSubProductNA(),
-                BettypeNA = ServiceSetting.GetBettypeNA(),
-                ExtensionNA = ServiceSetting.GetExtensionNA(),
-                ProductList = ServiceSetting.GetProducts().Where(x => x.IsActive),
-                SubProductList = ServiceSetting.GetSubProducts().Where(x => x.IsActive),
-                BettypeList = ServiceSetting.GetBettypes().Where(x => x.IsActive),
-                MainCategoryList = ServiceSetting.GetMainCategories().Where(x => x.IsActive),
-                SubCategoryList = ServiceSetting.GetSubCategories().Where(x => x.IsActive),
-            };
-
-            return settings;
+                throw new Exception(e.Message);
+            }
         }
     }
 }

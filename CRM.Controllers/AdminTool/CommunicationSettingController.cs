@@ -5,6 +5,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Criteria.Setting;
     using CRM.Models.AdminTool.CommunicationToolSetting;
     using CRM.Services;
     using Fanex.NAP.Client.Configuration;
@@ -47,8 +48,8 @@
             var settings = new
             {
                 CommunicationTools = await settingService.GetAllCommunicationToolAsync(),
-                MainCategories = await settingService.GetMainCategoryAsync(),
-                SubCategories = await settingService.GetSubCategoryAsync()
+                MainCategories = await settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria { Active = SettingConstants.Active}),
+                SubCategories = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria { Active = SettingConstants.Active})
             };
 
             return Json(settings);

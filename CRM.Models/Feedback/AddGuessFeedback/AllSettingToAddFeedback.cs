@@ -32,7 +32,7 @@ namespace CRM.Models.Feedback.AddGuessFeedback
 
         public IEnumerable<SettingRelation> ResponseList { get; set; }
 
-        public IEnumerable<BaseModel> StatusList { get; set; }
+        public IEnumerable<Setting> StatusList { get; set; }
 
         public IEnumerable<SettingRelation> TitleList { get; set; }
 

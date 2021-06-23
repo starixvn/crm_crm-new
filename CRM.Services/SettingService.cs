@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using CRM.Core.Services;
     using CRM.Criteria.Setting;
     using CRM.Models;
@@ -39,22 +40,50 @@
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<Setting>> GetMainCategoryAsync()
+        public async Task<IEnumerable<SiteSetting>>GetAllSiteAsync()
         {
-            var criteria = new GetAllMainCategoryCriteria();
+            var sites = new List<SiteSetting>();
+            var criteria = new GetAllSiteCriteria();
+            var rawdata = await baseService.GetDataAsync<SiteInfo>(criteria);
+            foreach (var item in rawdata)
+            {
+                var group = item.IsLicensee ? Constants.Licensee : Constants.Credit;
+                sites.Add(new SiteSetting
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    AliasName = group,
+                    IsActive = item.IsActive
+                });
+            }
+
+            sites = sites.OrderBy(s => s.AliasName).ThenBy(s => s.Name).ToList();
+            return sites;
+        }
+
+        public async Task<IEnumerable<Setting>> GetMainCategoryAsync(GetAllMainCategoryCriteria criteria)
+        {
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<Setting>> GetSubCategoryAsync()
+        public async Task<IEnumerable<Setting>> GetSubCategoryAsync(GetAllSubCategoryCriteria criteria)
         {
-            var criteria = new GetAllSubCategoryCriteria();
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<SettingRelation>> GetSettingRelations(GetSettingRelationByNameCriteria criteria)
+        public async Task<IEnumerable<SettingRelation>> GetAllSettingRelationsByName(string settingName)
         {
-            return await baseService.GetDataAsync<SettingRelation>(criteria);
+            var criteria = new GetSettingRelationByNameCriteria
+            {
+                SettingName = settingName,
+                ParentID = 0,
+                Active = SettingConstants.ActiveAndInactive
+            };
+            var relation = await baseService.GetDataAsync<SettingRelation>(criteria);
+            var relationList = relation.OrderBy(setting => setting.DisplayOrder).ToList();
+            return relationList;
         }
+
 
         public async Task<IEnumerable<Country>> GetAllCountryAsync(GetAllCountryCriteria criteria)
         {
@@ -77,7 +106,6 @@
         }
 
 
-
         public async Task<IEnumerable<Setting>> GetAllStatusAsync(int statusType)
         {
             var criteria = new GetAllStatusCriteria
@@ -85,17 +113,44 @@
                 ViewType = statusType
             };
 
-            return await baseService.GetDataAsync<Setting>(criteria);
+            var data = await baseService.GetDataAsync<Setting>(criteria);
+            var closedStatus = data.FirstOrDefault(d => d.SettingId == (int)CRMStatus.Closed);
+            if (closedStatus != null)
+            {
+                data.ToList().Remove(closedStatus);
+                data.ToList().Insert(0, closedStatus);
+            }
+
+            return data;
         }
 
-        public async Task<IEnumerable<Setting>> GetAllBetTypeAsync(GetAllBetTypeCriteria criteria)
+        public async Task<IEnumerable<SettingRelation>> GetAllExtentionsAsync(GetAllBetTypeCriteria criteria)
         {
-            return await baseService.GetDataAsync<Setting>(criteria);
+            return await baseService.GetDataAsync<SettingRelation>(criteria);
         }
 
-        public async Task<IEnumerable<Setting>> GetSubProductAsync(SubProductCriteria criteria)
+        public async Task<IEnumerable<Product>> GetAllBetTypeAsync(GetAllBetTypeCriteria criteria)
         {
-            return await baseService.GetDataAsync<Setting>(criteria);
+            return await baseService.GetDataAsync<Product>(criteria);
+        }
+
+
+        public async Task<IEnumerable<Product>> GetProductAsync()
+        {
+            var criteria = new GetSettingRelationByNameCriteria
+            {
+                SettingName = SettingTypeConstants.Product,
+                ParentID = 0,
+                Active = SettingConstants.ActiveAndInactive
+            };
+            var product = await baseService.GetDataAsync<Product>(criteria);
+            var productList = product.OrderBy(setting => setting.DisplayOrder).ToList();
+            return productList;
+        }
+
+        public async Task<IEnumerable<Product>> GetSubProductAsync(SubProductCriteria criteria)
+        {
+            return await baseService.GetDataAsync<Product>(criteria);
         }
 
         public async Task<IEnumerable<BaseModel>> GetAllCurrencyRedemptionAsync(GetAllCurrencyRedemptionCriteria criteria)
@@ -103,9 +158,18 @@
             return await baseService.GetDataAsync<BaseModel>(criteria);
         }
 
-        public async Task<IEnumerable<BaseModel>> GetAllLicenseeTypeAsync(GetAllLicenseeTypeCriteria criteria)
+        public async Task<IEnumerable<BaseModel>> GetAllLicenseeTypeAsync()
         {
-            return await baseService.GetDataAsync<BaseModel>(criteria);
+            var criteria = new GetAllLicenseeTypeCriteria();
+            var liscenseeType = await baseService.GetDataAsync<BaseModel>(criteria);
+            liscenseeType.ToList().Insert(
+                0,
+                new BaseModel
+                {
+                    Id = SettingConstants.NotApply,
+                    Name = ViewResources.Symbol_NA
+                });
+            return liscenseeType;
         }
 
         public async Task<IEnumerable<BaseModel>> GetAllCurrencyAsync(GetAllCurrencyCriteria criteria)
