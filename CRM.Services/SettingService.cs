@@ -76,9 +76,15 @@
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<Setting>> GetAllStatusAsync(GetAllStatusCriteria criteria)
 
+
+        public async Task<IEnumerable<Setting>> GetAllStatusAsync(int statusType)
         {
+            var criteria = new GetAllStatusCriteria
+            {
+                ViewType = statusType
+            };
+
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 

@@ -4,11 +4,11 @@
 
     public class GetAllCountryCriteria : CriteriaBase
     {
+        public byte Active { get; set; }
         public override string GetSettingKey()
         {
-            return "Acc_CRM_CountryList";
+            return "Setting_SettingInfo_GetAllCountry";
         }
-
         public override bool IsValid() => true;
     }
 }

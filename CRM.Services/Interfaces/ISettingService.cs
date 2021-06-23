@@ -26,7 +26,7 @@
 
         Task<IEnumerable<Setting>> GetAllLanguageAsync(GetAllLanguageCriteria criteria);
 
-        Task<IEnumerable<Setting>> GetAllStatusAsync(GetAllStatusCriteria criteria);
+        Task<IEnumerable<Setting>> GetAllStatusAsync(int statusType);
 
         Task<IEnumerable<Setting>> GetAllBetTypeAsync(GetAllBetTypeCriteria criteria);
 

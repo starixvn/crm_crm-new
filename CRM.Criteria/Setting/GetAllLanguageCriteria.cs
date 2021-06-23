@@ -5,9 +5,10 @@
 
     public class GetAllLanguageCriteria : CriteriaBase
     {
+        public byte Active { get; set; }
         public override string GetSettingKey()
         {
-            return "Acc_CRM_LanguageList";
+            return "Setting_SettingInfo_GetAllLanguage";
         }
 
         public short UserRole { get; } = Constants.UserRole;
