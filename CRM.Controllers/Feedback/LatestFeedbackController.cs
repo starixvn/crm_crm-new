@@ -106,5 +106,11 @@
             CommandResult commandResult = await feedbackService.UpdateQuickUpdateFeedback(model);
             return Json(commandResult);
         }
+
+        public async Task<IActionResult> GetNoInquiries(int id)
+        {
+            EditQuickUpdateFeedback feedback = await feedbackService.GetNoInquiriesAsync(id);
+            return Json(feedback);
+        }
     }
 }

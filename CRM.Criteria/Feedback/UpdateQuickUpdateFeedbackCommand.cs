@@ -6,7 +6,7 @@
     {
         public int FeedbackID { get; set; }
 
-        public int NoInquiries { get; set; }
+        public int? NoInquiries { get; set; }
 
         public int UserId { get; set; }
 

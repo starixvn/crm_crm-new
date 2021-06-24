@@ -15,22 +15,19 @@ export class QuickUpdateFeedback extends PureComponent {
     constructor(props) {
         super(props);
         this.formik = React.createRef();
-        this.state = {
-            showConfirmClose: false
-        };
     }
 
     static propTypes = {
         feedback: PropTypes.shape({
             feedbackId: PropTypes.number,
-            NoInquiries: PropTypes.number
+            noInquiries: PropTypes.number
         }).isRequired
     };
 
     static defaultProps = {
         feedback: {
             feedbackId: 0,
-            NoInquiries: ''
+            noInquiries: 0
         }
     };
 
@@ -53,13 +50,12 @@ export class QuickUpdateFeedback extends PureComponent {
                         />
                     }
                     <Form.Group as={Row}>
-                        <Form.Label className="required" column sm="4" md="3" htmlFor="feedbackSubjectContent">
+                        <Form.Label column sm="6" md="4">
                             {LangHelper.getResource('NoOfInquiries')}
                         </Form.Label>
-                        <Col md="9" sm="8">
-                            <Form.Control size="sm" type="text" value={values.subject} id="subject" name="subject"
+                        <Col md="8" sm="6">
+                            <Form.Control size="md" type="number" min="1" value={values.noInquiries} id="noInquiries" name="noInquiries"
                                 onChange={handleChange}
-                                isInvalid={touched.subject && errors.subject}
                                 className="shadow-none" autoComplete="off"
                             />
                         </Col>
@@ -69,7 +65,7 @@ export class QuickUpdateFeedback extends PureComponent {
                     <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button size="sm" type="button" variant="primary" size="sm" onClick={this.handleConfirmCancelPopup}>
+                    <Button size="sm" type="button" variant="primary" size="sm" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
@@ -80,8 +76,8 @@ export class QuickUpdateFeedback extends PureComponent {
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const data = {
-            feedbackId: values.feedbackId,
-            NoInquiries: values.NoInquiries
+            feedbackId: this.props.selectedFeedback.feedbackID,
+            noInquiries: values.noInquiries
         };
         this.props.editQuickUpdateFeedback(data).then(() => {
             if (this.props.editQuickUpdateFeedbackResult.isSuccessful) {
@@ -94,42 +90,19 @@ export class QuickUpdateFeedback extends PureComponent {
         });
     };
 
-    handleConfirmCancelPopup = event => {
-        const { values } = this.formik;
-        const { feedback } = this.props;
-        if (event) {
-            event.preventDefault();
-        }
-
-        const initialValues = {
-            feedbackId: feedback.feedbackId,
-            noInquiries: values.NoInquiries
-        };
-        if (Object.entries(values).toString() === Object.entries(initialValues).toString()) {
-            this.props.onClose();
-        } else {
-            this.setState({ showConfirmClose: true });
-        }
-    };
-
-
-    handleCloseConfirm = () => {
-        this.setState({ showConfirmClose: false });
-    };
-
     render() {
-        const feedback = this.props.feedback;
+        const feedback = this.props.selectedFeedback;
         const initialValues = {
             feedbackId: feedback.feedbackId,
-            noInquiries: values.NoInquiries
+            noInquiries: feedback.noInquiries === 0 ? null : feedback.noInquiries
         };
         return (
-            <Modal show className="feedback-subject-modal" dialogAs={DraggableModalDialog}
-                backdrop="static" keyboard={false} size="lg" centered
-                onHide={this.handleConfirmCancelPopup}
+            <Modal show className="quick-feedback-modal" dialogAs={DraggableModalDialog}
+                backdrop="static" keyboard={false} size="sm" centered
+                onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title as="div">{LangHelper.getResource('EditFeedbackSubjectTemplate')}</Modal.Title>
+                    <Modal.Title as="div">{LangHelper.getResource('QuickUpdate')}</Modal.Title>
                 </Modal.Header>
                 <Formik
                     innerRef={p => (this.formik = p)}
@@ -139,24 +112,6 @@ export class QuickUpdateFeedback extends PureComponent {
                 >
                     {this.renderForm}
                 </Formik>
-                {
-                    this.state.showConfirmClose &&
-                    <SweetModalDialog size="lg"
-                        title={LangHelper.getResource('Confirmation')}
-                        contents={
-                            <div>{LangHelper.getResource('ConfirmDirtyMessage')}</div>
-                        }
-                        buttons={[
-                            <Button size="sm" variant="primary" onClick={this.props.onClose}>
-                                {LangHelper.getResource('OK')}
-                            </Button>,
-                            <Button size="sm" variant="primary" onClick={this.handleCloseConfirm}>
-                                {LangHelper.getResource('Cancel')}
-                            </Button>
-                        ]}
-                        onClose={this.handleCloseConfirm}
-                    />
-                }
             </Modal>
         );
     }
@@ -165,8 +120,8 @@ export class QuickUpdateFeedback extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { editQuickUpdateFeedbackResult } = state;
-    return { editQuickUpdateFeedbackResult };
+    const { selectedFeedback, editQuickUpdateFeedbackResult } = state;
+    return { selectedFeedback, editQuickUpdateFeedbackResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuickUpdateFeedback);

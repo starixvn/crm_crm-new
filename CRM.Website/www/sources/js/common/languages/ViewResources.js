@@ -137,6 +137,7 @@
     PleaseChooseStatus: 'Please choose Status',
     PleaseSelect: 'Please select ...',
     Position: 'Position',
+    QuickUpdate: 'Quick Update',
     Reason: 'Reason',
     Recipient: 'Recipient',
     RecipientRequired: 'Recipient is required!',

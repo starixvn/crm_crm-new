@@ -3,7 +3,6 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
-    using CRM.Models;
     using CRM.Models.Feedback;
     using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.LatestFeedback;
@@ -16,6 +15,7 @@
     {
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
         Task<CommandResult> UpdateQuickUpdateFeedback(EditQuickUpdateFeedback model);
+        Task<EditQuickUpdateFeedback> GetNoInquiriesAsync(int id);
     }
 
     public class FeedbackService : IFeedbackService
@@ -62,6 +62,16 @@
             }
         }
 
+        public async Task<EditQuickUpdateFeedback> GetNoInquiriesAsync(int id)
+        {
+            var criteria = new GetQuickUpdateFeedbackCriteria
+            {
+                FeedbackID = id
+            };
+
+            return await baseService.GetDataEntityAsync<EditQuickUpdateFeedback>(criteria);
+        }
+
         public async Task<CommandResult> UpdateQuickUpdateFeedback(EditQuickUpdateFeedback model)
         {
             var command = new UpdateQuickUpdateFeedbackCommand
@@ -71,6 +81,7 @@
                 FeedbackID = model.FeedbackID,
                 NoInquiries = model.NoInquiries
             };
+
             return await baseService.ExecuteNonQueryAsync(command);
         }
     }

@@ -3,12 +3,12 @@ import Site from '@jsroot/common/site';
 import {
     setGridParams,
     setLatestFeedback,
-    setSelectLatestFeedbackId,
     setEditLatestFeedbackPopup,
     setEditLatestFeedbackResult,
     setTops,
     setEditQuickUpdateFeedbackPopup,
-    setEditQuickUpdateFeedbackResult
+    setEditQuickUpdateFeedbackResult,
+    setSelectedFeedback
 } from './latestFeedbackSlide';
 
 
@@ -49,10 +49,19 @@ const editQuickUpdateFeedback = data => async dispatch => {
     });
 };
 
+const getNoInquiriesByFeedbackId = (feedbackId, callback) => async dispatch => {
+    const url = Site.resolveClientUrl(`LatestFeedback/GetNoInquiries/${feedbackId}`);
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setSelectedFeedback(response.data));
+        if (typeof callback === 'function') {
+            callback();
+        }
+    });
+};
+
 export const ActionCreators = {
     setLatestFeedback,
     setGridParams,
-    setSelectLatestFeedbackId,
     setEditLatestFeedbackPopup,
     setEditLatestFeedbackResult,
     getLatestFeedback,
@@ -62,5 +71,7 @@ export const ActionCreators = {
     exportExcel,
     setEditQuickUpdateFeedbackPopup,
     setEditQuickUpdateFeedbackResult,
-    editQuickUpdateFeedback
+    editQuickUpdateFeedback,
+    setSelectedFeedback,
+    getNoInquiriesByFeedbackId
 };

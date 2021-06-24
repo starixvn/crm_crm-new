@@ -37,8 +37,8 @@ export class DataGrid extends Component {
         return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 6 : 5}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
-    handleEdit = item => {
-        this.props.setEditQuickUpdateFeedbackPopup({ show: true, data: item });
+    handleEdit = id => {
+        this.props.getNoInquiriesByFeedbackId(id, () => this.props.setEditQuickUpdateFeedbackPopup({ show: true }));
     };
 
     renderRow = (item, index, isHost) => (
@@ -48,7 +48,7 @@ export class DataGrid extends Component {
                 isHost &&
                 <Cell className="text-center">
                     <span className="rounded-circle fa fa-pencil icon-edit"
-                        onClick={() => this.handleEdit(item.feedbackId, item.subject)}
+                        onClick={() => this.handleEdit(item.feedbackId)}
                     />
                 </Cell>
             }
@@ -115,7 +115,7 @@ export class DataGrid extends Component {
             >
                 {
                     <span className="rounded-circle fa fa-pencil-square-o"
-                        onClick={() => this.handleEdit(item.feedbackId, item.subject)}
+                        onClick={() => this.handleEdit(item)}
                     />
                 }
             </OverlayTrigger>
