@@ -30,9 +30,11 @@
 
         public async Task<CustomerInfo> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
         {
-            var customerInfo = await baseService.GetDataEntityAsync<CustomerInfo>(criteria);
-            if (customerInfo != null)
+            var data = await baseService.FetchMultipleAsync<CustomerInfo, int>(criteria);
+            CustomerInfo customerInfo = null;
+            if (data.Item1.Any())
             {
+                customerInfo = data.Item1.FirstOrDefault();
                 customerInfo.Role.Id = customerInfo.RoleID;
                 customerInfo.Role.Name = RoleSettingService.GetRoleName(customerInfo.RoleID);
 
@@ -43,6 +45,9 @@
                         CustId = customerInfo.Id
                     });
                 }
+                customerInfo.Languages = data.Item2.ToList();
+                customerInfo.LanguageID = string.Join(",", data.Item2);
+
             }
             return customerInfo;
         }

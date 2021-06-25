@@ -258,6 +258,8 @@
             }
         }
 
+        public List<int> Languages { get; set; }
+
         public IEnumerable<CustomerInfo> UplineInfo { get; set; }
     }
 

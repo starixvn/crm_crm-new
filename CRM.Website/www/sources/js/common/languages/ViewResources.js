@@ -61,6 +61,7 @@
     Disabled: 'Disabled',
     Duplicated: 'Duplicated',
     Edit: 'Edit',
+    EditCustomerInfoSuccessfully: 'Edit CRM info successfully',
     EditFeedbackSubjectTemplate: 'Edit Feedback Subject Template',
     EditFeedbackSubjectTemplateSuccessfully: 'Edit feedback subject template successfully',
     EditGroupMapping: 'Edit Group Chat Mapping',

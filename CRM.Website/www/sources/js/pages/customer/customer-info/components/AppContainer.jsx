@@ -66,7 +66,7 @@ export class AppContainer extends Component {
                     <SweetModalDialog size="lg"
                         title={LangHelper.getResource('Confirmation')}
                         contents={
-                            <div>Edit successful</div>
+                            <div>{LangHelper.getResource('EditCustomerInfoSuccessfully')}</div>
                         }
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleCloseEditCustomerInfoPopup}>

@@ -1,20 +1,54 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
-import { renderSystemOption } from '../common.functions';
+import { renderSystemOption, validateFormik } from '../common.functions';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '../../../../components/multiple-select/index';
 import { RoleIds } from '@jsroot/common/constants';
 
-export class DataGrid extends PureComponent {
-
+export class DataGrid extends Component {
+    static defaultProps = {
+        gridData: [],
+        settings: {
+            sites: [],
+            countries: [],
+            languages: []
+        },
+        editCustomerInfoResult: {},
+        getSettings: {}
+    };
     constructor(props) {
         super(props);
         this.formik = React.createRef();
+        this.state = {
+            languages: []
+        };
+    }
+
+    componentDidMount() {
+        this.props.getSettings();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.gridData != prevProps.gridData)
+        {
+            console.log(this.props.gridData);
+            const data = this.props.gridData.data;
+            const languages = this.props.settings.languages.map(x => {
+                return {
+                    id: x.settingId,
+                    name: x.settingName,
+                    checked: data != null ? (data.languages.some(y => y === x.settingId) ? true : false) : false  
+                };
+            });
+            this.setState({
+                languages
+            });
+        }
     }
 
     renderForm = ({
@@ -24,7 +58,7 @@ export class DataGrid extends PureComponent {
         touched,
         handleSubmit,
         isSubmitting,
-        setFieldValue
+        setFieldValue,
     }) => {
         return (
             <Form className="form-customer"  noValidate onSubmit={handleSubmit}>
@@ -161,9 +195,9 @@ export class DataGrid extends PureComponent {
                     <Col md="9" className="form-control-wrapper">
                     <MultipleSelect
                         isInvalid={touched.languageId && errors.languageId}
-                        dataSource={this.props.settings.languages}
-                        keyField='settingId'
-                        valueField='settingName'
+                        dataSource={this.state.languages}
+                        keyField='id'
+                        valueField='name'
                         statusField='checked'
                         isAllTextShown
                         onChange={(currentItem, selectedItemsKey) => {
@@ -337,7 +371,7 @@ export class DataGrid extends PureComponent {
                     <Col md="9">
                         <Button className="mr-4" variant="primary" size="sm" type="submit" disabled={isSubmitting}
                             >
-                                {LangHelper.getResource('Submit')}
+                                {LangHelper.getResource('Update')}
                         </Button>
                     </Col>
                 </Form.Group>
@@ -381,7 +415,7 @@ export class DataGrid extends PureComponent {
             custId: this.props.gridData.data.id,
 
         };
-
+        
         setSubmitting(true);
         this.props.editCustomerInfo(data).then(() => {
             if (this.props.editCustomerInfoResult.isSuccessful) {
@@ -411,7 +445,6 @@ export class DataGrid extends PureComponent {
             return null;
         }
         var customerInfo =  this.props.gridData.data;
-        
         const initialValues = {
             userName: customerInfo.userName || '',
             siteId: customerInfo.siteID || 0,
@@ -419,7 +452,7 @@ export class DataGrid extends PureComponent {
             firstName: customerInfo.firstName || '',
             lastName: customerInfo.lastName || '',
             nickName: customerInfo.nickName || '', 
-            languageId: customerInfo.languageID || 0,
+            languageId: customerInfo.languages.map(x => x).toString(),
             phoneInfo: customerInfo.phoneInfo || '',
             phoneCountryCode: customerInfo.phoneCountryCode || '',
             phoneAreaCode: customerInfo.phoneAreaCode || '',
@@ -457,7 +490,8 @@ export class DataGrid extends PureComponent {
             otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
             
         };
-
+        console.log(initialValues);
+        console.log(this.props.settings);
         const { isHost } = this.props;
         return (
             <Fragment>
@@ -465,6 +499,7 @@ export class DataGrid extends PureComponent {
                     enableReinitialize // enable re render when change initValue
                     innerRef={p => (this.formik = p)}
                     initialValues={initialValues}
+                    validate={values => validateFormik(values)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}
@@ -485,6 +520,7 @@ const mapStateToProps = state => {
         gridParams, 
         gridData, 
         settings, 
+        getSettings,
         editCustomerInfo,
         editCustomerInfoResult,
         editCustomerInfoPopup
@@ -493,6 +529,7 @@ const mapStateToProps = state => {
         gridParams,
         gridData,
         settings,
+        getSettings,
         editCustomerInfo,
         editCustomerInfoResult,
         editCustomerInfoPopup

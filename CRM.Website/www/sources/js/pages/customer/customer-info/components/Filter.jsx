@@ -46,7 +46,6 @@ export class Filter extends Component {
         const params = this.getParams();
         this.props.setGridParams(params);
         this.props.getCustomerInfo(params);
-        this.props.getSettings();
     };
 
     
@@ -81,11 +80,10 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData, UserName } = state;
+    const { gridParams, gridData } = state;
     return {
         gridParams,
         gridData,
-        UserName
     };
 };
 
