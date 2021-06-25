@@ -38,11 +38,25 @@ export class AppContainer extends Component {
         this.props.setEditCustomerInfoPopup({ show: false });
     };
 
-    render() {
-        console.log(this.props.editCustomerInfoPopup);
+    handleCloseEmptyCustomerInfoPopup = () => {
+        this.props.setEmptyCustomerInfoPopup( { show: false });
+    };
+
+    handleCheckGridData = () => {
+        console.log(this.props.gridData);
+        if(this.props.gridData === null) {
+            this.props.setEmptyCustomerInfoPopup( {show: true} );
+        }
+    }
+
+
+    render() {  
         return (
             <div className="col-md-3">
-                <Filter isHost={this.props.isHost}/>
+                <Filter 
+                    isHost={this.props.isHost}
+                    isEmpty={this.handleCheckGridData}
+                />
                 <DataGrid 
                     isHost={this.props.isHost}
                     onSuccess={this.handleEditSuccess}
@@ -62,6 +76,22 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditCustomerInfoPopup}
                     />
                 }
+
+                {
+                    this.props.emptyCustomerInfoPopup.show &&
+                    <SweetModalDialog size="lg"
+                        title={LangHelper.getResource('Confirmation')}
+                        contents={
+                            <div>empty data</div>
+                        }
+                        buttons={[
+                            <Button variant="primary" size="sm" onClick={this.handleCloseEmptyCustomerInfoPopup}>
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                        ]}
+                        onClose={this.handleCloseEmptyCustomerInfoPopup}
+                    />
+                }
             </div>
         )
     }
@@ -71,12 +101,14 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const {
         gridParams, gridData,
-        editCustomerInfoPopup
+        editCustomerInfoPopup,
+        emptyCustomerInfoPopup
     } = state;
     return {
         gridParams,
         gridData,
-        editCustomerInfoPopup
+        editCustomerInfoPopup,
+        emptyCustomerInfoPopup
     };
 };
 

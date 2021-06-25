@@ -17,6 +17,87 @@
     }
 }
 
+.search-frm {
+    background-color: #464d5d;
+    margin: 0;
+    padding: 0;
+    height: 35px;
+}
+
+.inputSearch {
+    background: none;
+    border: none;
+    color: white;
+    height: 35px;
+    line-height: 25px;
+    padding: 5px 0 5px 35px;
+    width: 100%;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+.inputSearch:focus {
+    background-color: transparent;
+    color: white;
+}
+
+.search-frm .buttonSearch {
+    background-color: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+    width: 16px;
+    border: none;
+    margin: -8px 0 0 -10px;
+    position: absolute;
+    left: 6px;  
+    top: 10px;
+    font-size: 12px;
+}
+
+
+.search-frm .buttonSearch:hover {
+    background-color: transparent;
+}
+
+.search-frm .buttonSearch span:hover {
+    background-color: transparent;
+}
+
+.buttonSearch:active {
+    background-color: transparent;
+}
+
+.search-frm .text-search {
+    background-color: #373e4e;
+}
+
+.search-frm .check-guest {
+    background-color: #464d5d;
+    margin: 0;
+    height: 35px;
+    color: #ebebeb;
+    display: inline;
+  
+}
+
+.search-frm .check-guest input {
+    margin-left: 10px;
+}
+
+.search-frm .check-guest input {
+    display: inline;
+}
+
+.item {
+    margin: 0;
+    padding: 4px 6px;
+    background-color: #e8e8e8;
+    border-top: 1px solid white;
+    border-bottom: 1px solid #c3c3c3;
+}
+
 .modal-backdrop {
     z-index: 1050 !important
 }
@@ -28,6 +109,53 @@
 .form-filter .form-row .form-group {
     margin-right: 0 !important;
 }
+
+.form-customer {
+    background-color: #e8e8e8;
+}
+
+.item.current {
+    background-color: #c0cbe1;
+}
+
+.item .status {
+    font-style: italic;
+}
+
+.item.no-border-bg {
+    background: none;
+    border: none;
+    padding: 0 6px;
+    margin-top: 6px;
+}
+
+.item.title {
+    background: linear-gradient(#e7e7e7, #e2e2e2);
+    color: #2f70b4;
+    border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+    margin-top: 7px;
+    padding: 3px 6px 8px;
+    font-size: 13px;
+    height: 28px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.tex-left {
+    text-align: left;
+}
+
+.lv0 {
+    background-color: white;
+    padding: 2px 4px;
+}
+
+.mrb0 {
+    margin-bottom: 0;
+} 
 
 .textbox {
     display: inline;

@@ -6,6 +6,7 @@
     using CRM.Criteria.Setting;
     using CRM.Services;
     using CRM.Services.Customer;
+    using Fanex.Data;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;

@@ -7,7 +7,8 @@ import {
     setCustomerInfo,
     setSettings,
     setEditCustomerInfo,
-    setEditCustomerInfoPopup
+    setEditCustomerInfoPopup,
+    setEmptyCustomerInfoPopup
 } from './customerInfoSlide';
 
 const getCustomerInfo = params => async dispatch => {
@@ -26,6 +27,7 @@ const getSettings = () => async dispatch => {
 };
 
 const editCustomerInfo = data => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('CustomerInfo/EditCustomerInfo');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setEditCustomerInfo(response.data));
@@ -39,6 +41,7 @@ export const ActionCreators = {
     setSettings,
     setEditCustomerInfo,
     setEditCustomerInfoPopup,
+    setEmptyCustomerInfoPopup,
     getCustomerInfo,
     getSettings,
     editCustomerInfo

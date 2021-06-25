@@ -6,7 +6,7 @@ const customerInfoSlide = createSlice({
     initialState: {
         gridData: null,
         gridParams: {
-            Username: null,
+            UserName: null,
             IsGuest: false,
         },
         settings: {
@@ -16,6 +16,7 @@ const customerInfoSlide = createSlice({
         },
         editCustomerInfoResult: '',
         editCustomerInfoPopup: { show : false },
+        emptyCustomerInfoPopup: { show: false }
     },
     reducers: {
         setGridParams: (state, action) => {
@@ -32,6 +33,9 @@ const customerInfoSlide = createSlice({
         },
         setEditCustomerInfoPopup : (state, action) => {
             state.editCustomerInfoPopup = action.payload;
+        },
+        setEmptyCustomerInfoPopup : (state, action) => {
+            state.emptyCustomerInfoPopup = action.payload;
         }
     }
 
@@ -44,7 +48,9 @@ export const {
     setCustomerInfo,
     setSettings,
     setEditCustomerInfo,
-    setEditCustomerInfoPopup
+    setEditCustomerInfoPopup,
+    setEmptyCustomerInfoPopup,
+    setSearchUserName
 } = actions;
 
 export default reducer;

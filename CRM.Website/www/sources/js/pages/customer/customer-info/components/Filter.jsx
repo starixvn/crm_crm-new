@@ -11,10 +11,19 @@ export class Filter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Username: '',
+            UserName: '',
             IsGuest: false
         };
     };
+
+    componentDidUpdate(prevProps) {
+        if (this.props.gridParams != prevProps.gridParams) {
+          this.setState({
+              UserName: this.props.gridParams.UserName
+          });
+        }
+      }
+
 
     handleChange = event => {
         const target = event.target;
@@ -27,7 +36,7 @@ export class Filter extends Component {
 
     getParams = () => {
         return {
-            Username: this.state.Username,
+            UserName: this.state.UserName,
             IsGuest: this.state.IsGuest
         };
     };
@@ -35,13 +44,9 @@ export class Filter extends Component {
     handleSubmit = event => {
         event.preventDefault();
         const params = this.getParams();
-       
         this.props.setGridParams(params);
         this.props.getCustomerInfo(params);
         this.props.getSettings();
-        if(this.props.gridData == null) {
-            console.log(123);
-        }
     };
 
     
@@ -49,24 +54,19 @@ export class Filter extends Component {
         const { isHost } = this.props;
         return (
             <div>
-                <Form className="form-filter"  onSubmit={this.handleSubmit}>
+                <Form className="form-filter search-frm"  onSubmit={this.handleSubmit}>
                     <Form.Row bsPrefix='form-row'>
-                        <Form.Group className="col-md-9">
-                            <Form.Control type="text" size="sm" className="shadow-none"
-                                onChange={this.handleChange} name="Username" autoComplete="off"
+                        <Form.Group className="col-md-9 text-search">
+                            <Form.Control type="text" size="sm" className="shadow-none inputSearch"
+                                onChange={this.handleChange} name="UserName" value={this.state.UserName}
                             />
+                            <Button onClick={this.handleSubmit} className="buttonSearch" variant="primary" size="sm"><span className="fa fa-search icon-edit"></span></Button>  
+                            
                         </Form.Group>
-                        <Form.Group className="col-md-3">
-                            <Form.Control type="checkbox" size="sm" checked={this.state.IsGuest} className="checkbox-cell-style margin-top-10"
-                                    onChange={this.handleChange} name="IsGuest" autoComplete="off"
-                                />
-                        </Form.Group>
-                            <Form.Group>
-                                <Button className="mr-4" variant="primary" size="sm"
-                                    onClick={this.handleSubmit}
-                                >
-                                    {LangHelper.getResource('Submit')}
-                                </Button>
+                        <Form.Group className="col-md-3 check-guest">
+                            <input type="checkbox"  checked={this.state.IsGuest} className="margin-top-10"
+                                onChange={this.handleChange} name="IsGuest" autoComplete="off"
+                            /> {LangHelper.getResource('Guest')}
                         </Form.Group>
                     </Form.Row>
                 </Form>
@@ -81,10 +81,11 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData } = state;
+    const { gridParams, gridData, UserName } = state;
     return {
         gridParams,
-        gridData
+        gridData,
+        UserName
     };
 };
 
