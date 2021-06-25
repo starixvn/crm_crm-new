@@ -1,6 +1,7 @@
 ﻿namespace CRM.Models.Setting
 {
     using System;
+    using System.Collections.Generic;
     using System.Xml.Serialization;
 
     [Serializable]
@@ -28,5 +29,8 @@
         public int ParentID { get; set; }
 
         public string SettingSource { get; set; }
+
+        public List<Setting> ChildSettings { get; set; }
+
     }
 }

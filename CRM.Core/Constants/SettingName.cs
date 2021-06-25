@@ -10,5 +10,6 @@
         public const string NotificationTemplateLanguage = "NotificationTemplateLanguage";
         public const string PicRole = "PICRole";
         public const string PicCommunicationTool = "PICCommunicationTool";
+        public const string MainCategory = "MainCategory";
     }
 }

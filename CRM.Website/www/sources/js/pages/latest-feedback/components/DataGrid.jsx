@@ -22,8 +22,8 @@ export class DataGrid extends Component {
             <HeaderRow>
                 <HeaderCell colWidth={7}>{LangHelper.getResource('Running No.')}</HeaderCell>
                 <HeaderCell colWidth={5}>{LangHelper.getResource('Update')}</HeaderCell>
-                <HeaderCell colWidth={30}>{LangHelper.getResource('Feedback')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Feedback')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Category')}</HeaderCell>
                 <HeaderCell colWidth={5}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Related Customer')}</HeaderCell>
             </HeaderRow>
@@ -41,6 +41,82 @@ export class DataGrid extends Component {
         this.props.getNoInquiriesByFeedbackId(id, () => this.props.setEditQuickUpdateFeedbackPopup({ show: true }));
     };
 
+    handleUpdateFeedback = (item, mainCategories) => {
+        this.props.setUpdateFeedbackPopup({ show: true, data: { item, mainCategories }});
+    };
+
+    renderCategoryColumn = (item) => {
+        const { mainCategories } = this.props.gridData;
+        var settings = item.settings;
+
+        var mainCategoryIds = [];
+        for (var i = 0; i < settings.length; i++) {
+            if ((settings[i].settingType == "Category")
+                && mainCategoryIds.indexOf(settings[i].settingIdLv1) < 0) {
+                mainCategoryIds.push(settings[i].settingIdLv1);
+            }
+        }
+
+        var categories = [];
+        for (var i = 0; i < mainCategoryIds.length; i++) {
+            var subCategoryIds = [];
+            for (var j = 0; j < settings.length; j++) {
+                if ((settings[j].settingType == "Category")
+                    && settings[j].settingIdLv1 == mainCategoryIds[i]) {
+                    subCategoryIds.push(settings[j].settingIdLv2);
+                }
+            }
+
+            categories.push({
+                mainCategoryId: mainCategoryIds[i],
+                subCategoryIds: subCategoryIds
+            })
+        }
+
+        var result = '';
+        for (var i = 0; i < categories.length; i++) {
+            var category = this.getMainCategoryName(categories[i].mainCategoryId, mainCategories);
+            var subCategoryIds = categories[i].subCategoryIds;
+            for (var j = 0; j < subCategoryIds.length; j++) {
+                category += this.getSubCategoryName(categories[i].mainCategoryId, subCategoryIds[j], mainCategories);
+            }
+
+            result += category;
+        }
+
+        return result;
+    };
+
+    getMainCategoryName = function (mainCategoryId, mainCategories) {
+        for (var i = 0; i < mainCategories.length; i++) {
+            if (mainCategories[i].settingId == mainCategoryId) {
+                return mainCategories[i].settingValue;
+            }
+        }
+
+        return "N/A";
+    }
+
+    getSubCategoryName = function (mainCategoryId, subCategoryId, mainCategories) {
+        var mainCategory = null;
+        for (var i = 0; i < mainCategories.length; i++) {
+            if (mainCategories[i].settingId == mainCategoryId) {
+                mainCategory = mainCategories[i];
+                break;
+            }
+        }
+
+        if (mainCategory) {
+            for (var j = 0; j < mainCategory.childSettings.length; j++) {
+                if (mainCategory.childSettings[j].subCategoryId == subCategoryId) {
+                    return mainCategory.childSettings[j].settingName;
+                }
+            }
+        }
+
+        return '';
+    }
+
     renderRow = (item, index, isHost) => (
         <Row key={index} >
             <Cell className='text-center'>{item.feedbackId}</Cell>
@@ -54,7 +130,7 @@ export class DataGrid extends Component {
             }
             {
                 isHost &&
-                <Cell onClick={() => this.openUpdateFeedbackPopup(item)}>
+                <Cell onClick={() => this.handleUpdateFeedback(item)}>
                     {
                         this.tooltipFeedback(item)
                     }
@@ -65,7 +141,9 @@ export class DataGrid extends Component {
                     <div>Solving Duration: {item.durationTime} </div>
                 </Cell>
             }
-            <Cell>{item.subject}</Cell>
+            <Cell>
+                <div>{this.renderCategoryColumn(item)}</div>
+            </Cell>
             <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
             <Cell>{item.relatedCustomer}</Cell>
 
@@ -115,7 +193,7 @@ export class DataGrid extends Component {
             >
                 {
                     <span className="rounded-circle fa fa-pencil-square-o"
-                        onClick={() => this.handleEdit(item)}
+                        onClick={() => this.handleUpdateFeedback(item)}
                     />
                 }
             </OverlayTrigger>
@@ -137,7 +215,7 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={1000}
+                    width={1200}
                     autoWidth={false}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}

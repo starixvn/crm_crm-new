@@ -10,6 +10,7 @@
     using CRM.Models.Feedback;
     using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.LatestFeedback;
+    using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
@@ -57,8 +58,9 @@
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await GetFeedbacks(param);
+            IEnumerable<Setting> mainCategories = await GetAllMainCategoriesFromAllSettings();
 
-            return Json(new { data = feedbacks });
+            return Json(new { data = feedbacks, mainCategories });
         }
 
         private async Task<IEnumerable<DeletedFeedback>> GetFeedbacks(GetLatestFeedbackParam param)
@@ -75,6 +77,24 @@
             }
 
             return feedbacks;
+        }
+
+        private async Task<IEnumerable<Setting>> GetAllMainCategoriesFromAllSettings()
+        {
+            var mainCategories = await settingService.GetAsync(new GetSettingParam
+            {
+                SettingName = SettingName.MainCategory,
+                IsActive = true
+            });
+
+            var subCategories = await settingService.GetSubCategoryAsync();
+
+            foreach (var category in mainCategories)
+            {
+                category.ChildSettings = subCategories.Where(x => x.MainCategoryID == category.SettingId).OrderBy(s => s.DisplayOrder).ToList();
+            }
+
+            return mainCategories;
         }
 
         [HttpPost]

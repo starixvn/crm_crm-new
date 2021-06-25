@@ -8,6 +8,8 @@ import {
     setTops,
     setEditQuickUpdateFeedbackPopup,
     setEditQuickUpdateFeedbackResult,
+    setUpdateFeedbackPopup,
+    setUpdateFeedbackResult,
     setSelectedFeedback
 } from './latestFeedbackSlide';
 
@@ -73,5 +75,7 @@ export const ActionCreators = {
     setEditQuickUpdateFeedbackResult,
     editQuickUpdateFeedback,
     setSelectedFeedback,
-    getNoInquiriesByFeedbackId
+    getNoInquiriesByFeedbackId,
+    setUpdateFeedbackPopup,
+    setUpdateFeedbackResult
 };

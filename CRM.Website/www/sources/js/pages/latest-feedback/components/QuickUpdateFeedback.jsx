@@ -50,10 +50,10 @@ export class QuickUpdateFeedback extends PureComponent {
                         />
                     }
                     <Form.Group as={Row}>
-                        <Form.Label column sm="6" md="4">
+                        <Form.Label column sm="4" md="6">
                             {LangHelper.getResource('NoOfInquiries')}
                         </Form.Label>
-                        <Col md="8" sm="6">
+                        <Col md="6" sm="8">
                             <Form.Control size="md" type="number" min="1" value={values.noInquiries} id="noInquiries" name="noInquiries"
                                 onChange={handleChange}
                                 className="shadow-none" autoComplete="off"

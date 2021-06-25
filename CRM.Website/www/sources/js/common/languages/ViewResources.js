@@ -201,6 +201,8 @@
     UpdateChatTypeMappingSuccessfully: 'Update chat type mapping successfully!',
     UpdateCommunicationSettingSuccessfully: 'Update Communication Setting successfully!',
     UpdateDefaultPIC: 'Update Default PIC',
+    UpdateFeedback: 'Update Feedback',
+    UpdateFeedbackSuccess: 'Update Feedback successfully!',
     UpdateGroupMappingSuccess: 'Update group chat mapping successfully!',
     UpdatePersonalMappingSuccess: 'Update personal chat mapping successfully!',
     UpdateSetting: 'Update Setting',

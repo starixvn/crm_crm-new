@@ -10,6 +10,8 @@ const latestFeedbackSlice = createSlice({
         editLatestFeedbackResult: '',
         editQuickUpdateFeedbackPopup: { show: false },
         editQuickUpdateFeedbackesult: '',
+        updateFeedbackPopup: { show: false },
+        updateFeedbackResult: '',
         selectedFeedback: null
     },
     reducers: {
@@ -34,6 +36,12 @@ const latestFeedbackSlice = createSlice({
         setEditQuickUpdateFeedbackResult: (state, action) => {
             state.editQuickUpdateFeedbackResult = action.payload;
         },
+        setUpdateFeedbackPopup: (state, action) => {
+            state.updateFeedbackPopup = action.payload;
+        },
+        setUpdateFeedbackResult: (state, action) => {
+            state.updateFeedbackResult = action.payload;
+        },
         setSelectedFeedback: (state, action) => {
             state.selectedFeedback = action.payload;
         }
@@ -50,6 +58,8 @@ export const {
     setTops,
     setEditQuickUpdateFeedbackPopup,
     setEditQuickUpdateFeedbackResult,
+    setUpdateFeedbackPopup,
+    setUpdateFeedbackResult,
     setSelectedFeedback
 } = actions;
 
