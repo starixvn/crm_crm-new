@@ -231,6 +231,32 @@
             };
         }
 
+        public async Task<int> NumberOfFeedbackSubjectTemplate()
+        {
+            var feedbacks = await GetFeedbackSubjectTemplates();
+            return feedbacks.ToList().Count;
+        }
 
+        private async Task<IList<FeedbackTemplate>> GetFeedbackSubjectTemplates()
+        {
+            var criteria = new GetFeedbackSubjectTemplateByIdCriteria
+            {
+                TemplateId = 0
+            };
+            var feedbackTemplates = await baseService.GetDataAsync<FeedbackTemplate>(criteria);
+            var feedbackTemplatesActive = feedbackTemplates.Where(s => s.IsActive).ToList();
+            return feedbackTemplatesActive;
+        }
+
+        public async Task<IEnumerable<FeedbackTemplate>> GetFeedbackSubjectTemplateByPagingIndex(GetFeedbackSubjectTemplateByPagingIndexCriteria criteria)
+        {
+            int multipleNum = SettingConstants.MaxFeedbackSubjectTemplateNumberOnLoad;
+
+            var feedbackTemplates = await GetFeedbackSubjectTemplates();
+
+            return (feedbackTemplates != null && feedbackTemplates.Any()) ?
+                    feedbackTemplates.Skip((criteria.PagingIndex - 1) * multipleNum).Take(criteria.PagingIndex * multipleNum).ToList() :
+                    new List<FeedbackTemplate>();
+        }
     }
 }

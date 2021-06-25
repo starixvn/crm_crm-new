@@ -1,17 +1,50 @@
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
-    setAllSettings
+    setAllSettings,
+    setNumberOfFeedbackSubjectTemplate,
+    setFeedbackSubjectTemplateByPagingIndex,
+    setAddFeedback
 } from './addGuessFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('AddGuessFeedback/AllSetting');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const getNumberOfFeedbackSubjectTemplate = () => async dispatch => {
+    const url = Site.resolveClientUrl('Setting/NumberOfFeedbackSubjectTemplate');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setNumberOfFeedbackSubjectTemplate(response.data));
     });
+};
+
+const getFeedbackSubjectTemplateByPagingIndex = id => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl(`Setting/GetFeedbackSubjectTemplateByPagingIndex/${id}`);
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setFeedbackSubjectTemplateByPagingIndex(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const addFeedback = () => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('AddGuestFeedback/AddGuestFeedback');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setAddFeedback(response.data));
+    }).then(() => Site.unblockUI());
 };
 
 export const ActionCreators = {
     setAllSettings,
-    getAllSettings
+    getAllSettings,
+    getNumberOfFeedbackSubjectTemplate,
+    setNumberOfFeedbackSubjectTemplate,
+    getFeedbackSubjectTemplateByPagingIndex,
+    setFeedbackSubjectTemplateByPagingIndex,
+    addFeedback,
+    setAddFeedback
 };

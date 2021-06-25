@@ -48,6 +48,9 @@
 
         IEnumerable<Setting> GetAllCustomerTypes();
 
-        Task<IEnumerable<BaseModel>> GetAllSites(GetAllSiteCriteria criteria = null);
+        Task<int> NumberOfFeedbackSubjectTemplate();
+        
+
+        Task<IEnumerable<FeedbackTemplate>> GetFeedbackSubjectTemplateByPagingIndex(GetFeedbackSubjectTemplateByPagingIndexCriteria criteria);
     }
 }

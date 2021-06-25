@@ -24,11 +24,23 @@ const addGuessFeedbackSlice = createSlice({
            subProductNA: '',
            bettypeNA: '',
            extensionNA: ''
-        }
+        },
+        numberOfFeedbackSubjectTemplate: null,
+        feedbackSubjectTemplateByPagingIndex: [],
+        addFeedbackResult: null
     },
     reducers: {
         setAllSettings: (state, action) => {
             state.settings = action.payload;
+        },
+        setNumberOfFeedbackSubjectTemplate: (state, action) => {
+            state.numberOfFeedbackSubjectTemplate = action.payload;
+        },
+        setFeedbackSubjectTemplateByPagingIndex: (state, action) => {
+            state = {...state.feedbackSubjectTemplateByPagingIndex,  ...action.payload};
+        },
+        setAddFeedback: (state, action) => {
+            state.addFeedbackResult = action.payload;
         }
     }
 });
@@ -36,7 +48,10 @@ const addGuessFeedbackSlice = createSlice({
 const { actions, reducer } = addGuessFeedbackSlice;
 
 export const {
-    setAllSettings
+    setAllSettings,
+    setNumberOfFeedbackSubjectTemplate,
+    setFeedbackSubjectTemplateByPagingIndex,
+    setAddFeedback
 } = actions;
 
 export default reducer;
