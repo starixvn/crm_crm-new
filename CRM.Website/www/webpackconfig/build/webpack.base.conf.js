@@ -42,9 +42,9 @@ function generateConfig(environment) {
             [`${cssPath}/pages/picandheadline/management/index`]: pathConfig.cssPaths.pic_management,
             [`${cssPath}/pages/report/settlement/index`]: pathConfig.cssPaths.report_settlement,
             [`${cssPath}/pages/feedbacksubject/index`]: pathConfig.cssPaths.feedback_subject,
-            [`${cssPath}/pages/customer/customerinfo/index`]: pathConfig.cssPaths.customer_info
-            [`${cssPath}/pages/feedback/addguessfeedback/index`]: pathConfig.cssPaths.add_guess_feedback
-            [`${cssPath}/pages/latestfeedback/index`]: pathConfig.cssPaths.latest_feedback,
+            [`${cssPath}/pages/customer/customerinfo/index`]: pathConfig.cssPaths.customer_info,
+            [`${cssPath}/pages/feedback/addguessfeedback/index`]: pathConfig.cssPaths.add_guess_feedback,
+            [`${cssPath}/pages/latestfeedback/index`]: pathConfig.cssPaths.latest_feedback
         },
         output: {
             path: pathConfig.projectRoot,

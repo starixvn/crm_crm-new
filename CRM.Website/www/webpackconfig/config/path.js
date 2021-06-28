@@ -17,9 +17,8 @@ const cssPaths = {
     report_settlement: ['./www/sources/css/pages/report/settlement/index.scss'],
     feedback_subject: ['./www/sources/css/pages/feedback-subject/index.scss'],
     latest_feedback: ['./www/sources/css/pages/latest-feedback/index.scss'],
-    add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss']
+    add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss'],
     customer_info: ['./www/sources/css/pages/customer/customer-info/index.scss']
-    add_guess_feedback: ['./www/sources/css/pages/feedback/add-guess-feedback/index.scss']
 };
 
 const scriptPaths = {
@@ -40,7 +39,6 @@ const scriptPaths = {
     latest_feedback: ['./www/sources/js/pages/latest-feedback/index.js'],
     add_guess_feedback: ['./www/sources/js/pages/feedback/add-guess-feedback/index.js'],
     customer_info: ['./www/sources/js/pages/customer/customer-info/index.js']
-    add_guess_feedback: ['./www/sources/js/pages/feedback/add-guess-feedback/index.js'],
 };
 
 module.exports = {
