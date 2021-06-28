@@ -525,6 +525,7 @@ export class DataGrid extends Component {
         setFieldValue,
         isSubmitting
     }) => {
+        const titleOptions = [{title: 'Mr'},{title: 'Mrs'}];
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
@@ -542,7 +543,92 @@ export class DataGrid extends Component {
                         <Form.Label column sm="2" md="2" className="required" htmlFor="identityInformation">
                             {LangHelper.getResource('Details')}
                         </Form.Label>
+                 </Col>
+                </Form.Group>
+                        <Form.Label column sm="4" md="4" htmlFor="title"
+                                value={values.title}
+                                onChange={handleChange}
+                            >
+                                <option value="" hidden disabled>Mr</option>
+                                {titleOptions.map(renderTitleOptions)}
+                            </Form.Control>
+                        </Col>
                     </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="firstName"
+                        >
+                            {LangHelper.getResource('FirstName')}
+                        </Form.Label>
+                        <Col sm="8" md="8">
+                            <Form.Control type="text" size="sm" value={values.firstName}
+                                name="firstName" id="firstName"
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="lastName"
+                        >
+                            {LangHelper.getResource('LastName')}
+                        </Form.Label>
+                        <Col sm="8" md="8">
+                            <Form.Control type="text" size="sm" value={values.lastName}
+                                name="lastName" id="lastName"
+                                className="shadow-none" autoComplete="off"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Form.Group>
+                <Form.Group as={Row}>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="birthDay"
+                        >
+                            {LangHelper.getResource('BirthDay')}
+                        </Form.Label>
+                        <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
+                                <DatePicker
+                                    selected={this.state.birthDay}
+                                    maxDate={this.state.maxDate}
+                                    onChange={value => this.handleToDateChange(value)}
+                                />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="passportNo"
+                        >
+                            {LangHelper.getResource('PassportNo')}
+                        </Form.Label>
+                        <Col sm="8" md="8">
+                            <Form.Control type="text" size="sm" value={values.passportNo}
+                                name="passportNo" id="passportNo"
+                                className="shadow-none" autoComplete="off"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="licenseeType"
+                        >
+                            {LangHelper.getResource('LicenseeType')}
+                        </Form.Label>
+                        <Col sm="8" md="8">
+                            <Form.Control type="text" size="sm" value={values.licenseeType}
+                                name="licenseeType" id="licenseeType"
+                                className="shadow-none" autoComplete="off"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Form.Group>
                 </Form>
             </Form>
         );

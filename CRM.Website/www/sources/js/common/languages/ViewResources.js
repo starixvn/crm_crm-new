@@ -38,6 +38,8 @@
     Customer: 'Customer', 
     ConfirmRemoveDirectAccounts: 'Are you sure you want to remove all selected direct accounts?',
     Communication: 'Communication',
+    CustomerSite: 'Site',
+    CustomerCountry: 'Country',
     CustomerFirstName: 'First Name',
     CustomerLastName: 'Last Name',
     CustomerSite: 'Site',
