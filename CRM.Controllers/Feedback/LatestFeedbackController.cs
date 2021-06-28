@@ -132,5 +132,60 @@
             EditQuickUpdateFeedback feedback = await feedbackService.GetNoInquiriesAsync(id);
             return Json(feedback);
         }
+
+        public async Task<IActionResult> GetAllSettings()
+        {
+            var settings = new
+            {
+                Titles = await settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                {
+                    SettingName = SettingName.Title,
+                    ParentID = 0,
+                    Active = SettingConstants.ActiveAndInactive
+                }),
+                ExtensionList = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                {
+                    SettingName = SettingName.Extension,
+                    ParentID = 0,
+                    Active = SettingConstants.Active
+                }),
+                CommunicationToolList = await settingService.GetAllCommunicationToolAsync(),
+                Countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria()),
+                Provinces = settingService.GetAllProvinceAsync(new GetAllProvinceCriteria()),
+                Languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria()),
+                StatusList = await settingService.GetAllStatusAsync(new GetAllStatusCriteria()),
+                Roles = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                {
+                    SettingName = SettingName.Role,
+                    ParentID = 0,
+                    Active = SettingConstants.ActiveAndInactive
+                }),
+                Responses = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                {
+                    SettingName = SettingName.Response,
+                    ParentID = 0,
+                    Active = SettingConstants.ActiveAndInactive
+                }),
+                LicenseeTypes = settingService.GetAllLicenseeTypeAsync(new GetAllLicenseeTypeCriteria()),
+                ProductNA = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                {
+                    SettingName = SettingName.Product,
+                    ParentID = 0,
+                    Active = SettingConstants.Active
+                }),
+                ProductList = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                {
+                    SettingName = SettingName.Product,
+                    ParentID = 0,
+                    Active = SettingConstants.ActiveAndInactive
+                }),
+                SubProductList = settingService.GetSubProductAsync(new SubProductCriteria()),
+                BettypeList = settingService.GetAllBetTypeAsync(new GetAllBetTypeCriteria()),
+                MainCategoryList = await settingService.GetMainCategoryAsync(),
+                SubCategoryList = await settingService.GetSubCategoryAsync()
+            };
+
+            return Json(settings);
+        }
     }
 }

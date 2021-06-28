@@ -14,5 +14,7 @@
         public const string PICManagement = "PICManagement";
 
         public const string LatestFeedback = "LatestFeedback";
+        public const string DeleteFeedback = "DeleteFeedback";
+
     }
 }

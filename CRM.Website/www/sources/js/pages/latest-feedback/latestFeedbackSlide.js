@@ -12,7 +12,10 @@ const latestFeedbackSlice = createSlice({
         editQuickUpdateFeedbackesult: '',
         updateFeedbackPopup: { show: false },
         updateFeedbackResult: '',
-        selectedFeedback: null
+        selectedFeedback: null,
+        settings: {
+            CommunicationToolList: []
+        },
     },
     reducers: {
         setTops: (state, action) => {
@@ -44,6 +47,9 @@ const latestFeedbackSlice = createSlice({
         },
         setSelectedFeedback: (state, action) => {
             state.selectedFeedback = action.payload;
+        },
+        setAllSettings: (state, action) => {
+            state.settings = action.payload;
         }
     }
 });
@@ -60,7 +66,8 @@ export const {
     setEditQuickUpdateFeedbackResult,
     setUpdateFeedbackPopup,
     setUpdateFeedbackResult,
-    setSelectedFeedback
+    setSelectedFeedback,
+    setAllSettings
 } = actions;
 
 export default reducer;

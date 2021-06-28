@@ -8,5 +8,7 @@
         public static readonly int AllSetting = -1;
         public static readonly int MaxFeedbackSubjectTemplateNumberOnLoad = 100000;
         public static readonly int CommunicationNA = 1005;
+        public const int Active = 1;
+        public const int ActiveAndInactive = 2;
     }
 }

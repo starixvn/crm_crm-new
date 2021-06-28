@@ -30,12 +30,16 @@ export class AppContainer extends Component {
         },
         getTops: function () {
             //nothing
+        },
+        getAllSettings: function () {
+            //nothing
         }
     };
 
     componentDidMount() {
         this.props.getTops();
         this.props.getLatestFeedback(this.props.gridParams);
+        this.props.getAllSettings();
     };
 
     handleCloseEditPopup = () => {

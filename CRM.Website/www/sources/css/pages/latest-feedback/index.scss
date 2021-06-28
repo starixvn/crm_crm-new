@@ -5,6 +5,7 @@
 @import '../../components/messages';
 @import '../../components/modal';
 @import '../../components/tables';
+@import '../../components/date-picker/style';
 
 .form-filter {
     .form-row {
@@ -41,4 +42,43 @@
     border-radius: 3px;
     font-size: 12px;
     text-align: left
+}
+
+.panel-group {
+    /*border: 1px solid #b7b7b7;
+    border-bottom-width: 0;
+    padding: 4px 5px;*/
+    border: 1px solid #b1b1b1;
+    border-width: 1px 1px 0 1px;
+
+    .title {
+        height: 28px;
+        line-height: 18px;
+        border-bottom: 1px solid #b1b1b1;
+        padding: 3px 6px;
+        color: #2f70b4;
+        font-size: 13px;
+        background-color: #e8e8e8;
+    }
+
+    .content {
+        padding: 4px 0;
+    }
+
+    .customername {
+        font-weight: bold;
+        color: red;
+    }
+}
+
+.react-datepicker-wrapper-container {
+    height: 28px;
+
+    .react-datepicker__input-container {
+        height: 100%;
+
+        input {
+            height: 100%;
+        }
+    }
 }

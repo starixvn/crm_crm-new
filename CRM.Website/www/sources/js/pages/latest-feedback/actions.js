@@ -10,9 +10,16 @@ import {
     setEditQuickUpdateFeedbackResult,
     setUpdateFeedbackPopup,
     setUpdateFeedbackResult,
-    setSelectedFeedback
+    setSelectedFeedback,
+    setAllSettings
 } from './latestFeedbackSlide';
 
+const getAllSettings = () => async dispatch => {
+    const url = Site.resolveClientUrl('LatestFeedback/GetAllSettings');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setAllSettings(response.data));
+    });
+};
 
 const getLatestFeedback = params => async dispatch => {
     Site.blockUI();
@@ -77,5 +84,7 @@ export const ActionCreators = {
     setSelectedFeedback,
     getNoInquiriesByFeedbackId,
     setUpdateFeedbackPopup,
-    setUpdateFeedbackResult
+    setUpdateFeedbackResult,
+    getAllSettings,
+    setAllSettings
 };
