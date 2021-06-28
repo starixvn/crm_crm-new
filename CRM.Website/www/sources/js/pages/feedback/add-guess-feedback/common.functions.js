@@ -1,10 +1,10 @@
 import React from 'react';
 import LangHelper from '@jsroot/common/langHelper';
 
-export const renderNotificationTypeOption = item => {
+export const renderTitleOptions = item => {
     return (
-        <option key={item.notificationTypeId} value={item.notificationTypeId}>
-            {item.notificationTypeName}
+        <option key={item.title} value={item.title}>
+            {item.title}
         </option>
     );
 };

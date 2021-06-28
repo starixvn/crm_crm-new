@@ -1,1 +1,20 @@
 @import '../../../components/ckeditor';
+@import '../../../components/form-filter';
+@import '../../../components/forms';
+@import '../../../components/icons';
+@import '../../../components/messages';
+@import '../../../components/date-picker/style';
+@import '../../../components/react-select';
+
+
+.react-datepicker-wrapper-container {
+    height: 28px;
+
+    .react-datepicker__input-container {
+        height: 100%;
+
+        input {
+            height: 100%;
+        }
+    }
+}
