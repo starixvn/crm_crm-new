@@ -25,6 +25,7 @@
     Closed: 'Closed',
     ComfirmResendListAndIgnoreNotification: 'Are you sure you want to resend notification list #2 and ignore notification list #1?',
     ComfirmResendNotification: 'Are you sure you want to resend selected Notification{0}: {1}?',
+    Communication: 'Communication ',
     CommunicationMustHaveValue: 'Communication must have value!',
     CommunicationRequired: 'Communication tool is required!',
     CommunicationTool: 'Communication Tool',
