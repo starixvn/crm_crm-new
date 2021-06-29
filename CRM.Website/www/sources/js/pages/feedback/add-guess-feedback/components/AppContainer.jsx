@@ -30,6 +30,8 @@ class AppContainer extends Component {
         super(props);
         this.state = {
             feedbackSubjectTemplateList: []
+        };
+    }
     
    
     componentDidMount(){

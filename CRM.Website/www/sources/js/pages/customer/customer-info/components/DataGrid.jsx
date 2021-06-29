@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { PAGING_SIZES } from '@jsroot/common/constants';
-import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
@@ -25,7 +24,7 @@ export class DataGrid extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.gridData != prevProps.gridData)
+        if(this.props.gridData !== prevProps.gridData)
         {
             console.log(this.props.gridData);
             const data = this.props.gridData.data;
@@ -33,7 +32,7 @@ export class DataGrid extends Component {
                 return {
                     id: x.settingId,
                     name: x.settingName,
-                    checked: data != null ? (data.languages.some(y => y === x.settingId) ? true : false) : false  
+                    checked: data !== null ? (data.languages.some(y => y === x.settingId) ? true : false) : false  
                 };
             });
             this.setState({
@@ -301,7 +300,7 @@ export class DataGrid extends Component {
                 </Form.Group>
 
                 <Form.Group className="row item">
-                    <Col md="3"></Col>
+                    <Col md="3" />
                     <Col md="9">
                         <Button className="mr-4" variant="primary" size="sm"
                                 onClick={this.handleSubmit}
@@ -313,7 +312,6 @@ export class DataGrid extends Component {
 
             </Form>
         );
-    
     }
 
     handleSubmit = (values, { setSubmitting }) => {
@@ -398,9 +396,6 @@ export class DataGrid extends Component {
             phone3CountryCode: customerInfo.phone3CountryCode || '',
             phone3AreaCode: customerInfo.phone3AreaCode || '',
             phone3: customerInfo.phone3 || '',
-            phoneCountryCode: customerInfo.phoneCountryCode || '',
-            phoneAreaCode: customerInfo.phoneAreaCode || '',
-            phone: customerInfo.phone || '',
             mobilePhoneCountryCode: customerInfo.mobilePhoneCountryCode || '',
             mobilePhoneAreaCode: customerInfo.mobilePhoneAreaCode || '',
             mobilePhone: customerInfo.mobilePhone || '',
@@ -425,8 +420,7 @@ export class DataGrid extends Component {
             otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
             
         };
-        console.log(initialValues);
-        console.log(this.props.settings);
+       
         const { isHost } = this.props;
         return (
             <Fragment>
