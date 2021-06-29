@@ -260,6 +260,9 @@ export class Filter extends Component {
                                 maxDate={this.state.maxDate}
                                 selected={this.state.filter.fromDate}
                                 onChange={value => this.handleFromDateChange(value)}
+                                timeInputLabel="Time:"
+                                dateFormat="MMM dd, yyyy hh:mm aa"
+                                showTimeInput
                             />
                         </div>
                     </Form.Group>

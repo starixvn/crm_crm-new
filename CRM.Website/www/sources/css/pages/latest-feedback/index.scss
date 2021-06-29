@@ -6,6 +6,7 @@
 @import '../../components/modal';
 @import '../../components/tables';
 @import '../../components/date-picker/style';
+@import '../../components/multiple-select/style';
 
 .form-filter {
     .form-row {
@@ -71,7 +72,7 @@
     }
 }
 
-.react-datepicker-wrapper-container {
+/*.react-datepicker-wrapper-container {
     height: 28px;
 
     .react-datepicker__input-container {
@@ -81,4 +82,4 @@
             height: 100%;
         }
     }
-}
+}*/

@@ -12,6 +12,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 import MultipleSelect from '../../../components/multiple-select/index';
+import DateTimeService from '@jsroot/common/dateTimeService';
 
 export class UpdateFeedback extends PureComponent {
     constructor(props) {
@@ -30,7 +31,7 @@ export class UpdateFeedback extends PureComponent {
         const communicationToolOptionsEdit = this.props.settings.communicationToolList.map(tool => {
             return {
                 id: tool.id,
-                name: tool.settingName,
+                name: tool.name,
                 checked: false
             };
         });
@@ -39,6 +40,14 @@ export class UpdateFeedback extends PureComponent {
             communicationToolOptionsEdit: communicationToolOptionsEdit
         });
     }
+
+    handleDataChange = (name, value) =>
+        this.setState(prevState => ({
+            filter: {
+                ...prevState.filter,
+                [name]: value
+            }
+        }));
 
     renderForm = ({
         errors,
@@ -69,14 +78,17 @@ export class UpdateFeedback extends PureComponent {
                             <div class="row">
                                 <div class="col-xs-4 col-sm-4 col-md-4">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="5" md="4" htmlFor="name" className="required">
+                                        <Form.Label column sm="5" md="4" htmlFor="feedbackDate">
                                             {LangHelper.getResource('FeedbackDate')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                                 <DatePicker
-                                                    //selected={values.feedbackDateString}
-                                                    onChange={value => this.handleFeedbackDateChange(value)}
+                                                    selected={values.feedbackDate}
+                                                    onChange={value => this.handleDataChange('feedbackDate', value)}
+                                                    timeInputLabel="Time:"
+                                                    dateFormat="MMM dd, yyyy hh:mm aa"
+                                                    showTimeInput
                                                 />
                                             </div>
                                         </Col>
@@ -296,9 +308,10 @@ export class UpdateFeedback extends PureComponent {
 
     render() {
         const feedback = this.props.updateFeedbackPopup.data.item;
+        console.log(DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(feedback.feedbackDateString)));
         const initialValues = {
             username: feedback.username,
-            feedbackDateString: feedback.feedbackDate
+            feedbackDate: new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(feedback.feedbackDateString)))
         };
         return (
             <Modal show className="update-feedback-modal" dialogAs={DraggableModalDialog}

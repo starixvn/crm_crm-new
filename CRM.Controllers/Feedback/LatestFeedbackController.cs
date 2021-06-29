@@ -134,24 +134,56 @@
 
         public async Task<IActionResult> GetAllSettings()
         {
+            var a = await settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+            {
+                SettingName = SettingName.Product,
+                ParentID = 0,
+                Active = SettingConstants.ActiveAndInactive
+            });
+
             var settings = new
             {
-                Titles = await settingService.GetAllSettingRelationsByName(SettingName.Title),
-                ExtensionList = settingService.GetAllSettingRelationsByName(SettingName.Extension),
+                //Titles = await settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                //{
+                //    SettingName = SettingName.Title,
+                //    ParentID = 0,
+                //    Active = SettingConstants.ActiveAndInactive
+                //}),
+                //ExtensionList = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                //{
+                //    SettingName = SettingName.Extension,
+                //    ParentID = 0,
+                //    Active = SettingConstants.Active
+                //}),
                 CommunicationToolList = await settingService.GetAllCommunicationToolAsync(),
-                Countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria()),
-                Provinces = settingService.GetAllProvinceAsync(new GetAllProvinceCriteria()),
-                Languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria()),
-                StatusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool),
-                Roles = settingService.GetAllSettingRelationsByName(SettingName.Role),
-                Responses = settingService.GetAllSettingRelationsByName(SettingName.Response),
-                LicenseeTypes = settingService.GetAllLicenseeTypeAsync(),
-                ProductNA = settingService.GetAllSettingRelationsByName(SettingName.Product),
-                ProductList = settingService.GetAllSettingRelationsByName(SettingName.Product),
-                SubProductList = settingService.GetSubProductAsync(new SubProductCriteria()),
-                BettypeList = settingService.GetAllBetTypeAsync(new GetAllBetTypeCriteria()),
-                MainCategoryList = await settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria()),
-                SubCategoryList = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria())
+                //Countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria()),
+                //Provinces = settingService.GetAllProvinceAsync(new GetAllProvinceCriteria()),
+                //Languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria()),
+                //StatusList = await settingService.GetAllStatusAsync(new GetAllStatusCriteria()),
+                //Roles = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                //{
+                //    SettingName = SettingName.Role,
+                //    ParentID = 0,
+                //    Active = SettingConstants.ActiveAndInactive
+                //}),
+                //Responses = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                //{
+                //    SettingName = SettingName.Response,
+                //    ParentID = 0,
+                //    Active = SettingConstants.ActiveAndInactive
+                //}),
+                //LicenseeTypes = settingService.GetAllLicenseeTypeAsync(new GetAllLicenseeTypeCriteria()),
+                //ProductNA = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                //{
+                //    SettingName = SettingName.Product,
+                //    ParentID = 0,
+                //    Active = SettingConstants.Active
+                //}),
+                ProductList = await settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+                //SubProductList = settingService.GetSubProductAsync(new SubProductCriteria()),
+                //BettypeList = settingService.GetAllBetTypeAsync(new GetAllBetTypeCriteria()),
+                //MainCategoryList = await settingService.GetMainCategoryAsync(),
+                //SubCategoryList = await settingService.GetSubCategoryAsync()
             };
 
             return Json(settings);
