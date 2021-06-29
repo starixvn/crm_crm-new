@@ -43,7 +43,7 @@
             return View(isHost);
         }
 
-        public async Task<IActionResult> GetCustomerInfoSubject([FromBody] GetCustomerInfoByUsernameCriteria criteria)
+        public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
         {
             var customerInfo = await customerService.GetCustomerInfoAsync(criteria);
             return Json(new { data = customerInfo });

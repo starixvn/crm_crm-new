@@ -13,7 +13,7 @@ import {
 
 const getCustomerInfo = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfoSubject');
+    const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setCustomerInfo(response.data));
     }).then(() => Site.unblockUI());

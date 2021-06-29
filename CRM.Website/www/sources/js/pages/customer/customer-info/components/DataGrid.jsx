@@ -1,16 +1,26 @@
-import React, { Component } from 'react';
-import { PAGING_SIZES } from '@jsroot/common/constants';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
-import { renderSystemOption } from '../common.functions';
-
+import { renderSystemOption, validateFormik } from '../common.functions';
+import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
+import MultipleSelect from '../../../../components/multiple-select/index';
+import { RoleIds } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
-
+    static defaultProps = {
+        gridData: [],
+        settings: {
+            sites: [],
+            countries: [],
+            languages: []
+        },
+        editCustomerInfoResult: {},
+        getSettings: {}
+    };
     constructor(props) {
         super(props);
         this.formik = React.createRef();
@@ -24,7 +34,7 @@ export class DataGrid extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.gridData !== prevProps.gridData)
+        if(this.props.gridData != prevProps.gridData)
         {
             console.log(this.props.gridData);
             const data = this.props.gridData.data;
@@ -32,7 +42,7 @@ export class DataGrid extends Component {
                 return {
                     id: x.settingId,
                     name: x.settingName,
-                    checked: data !== null ? (data.languages.some(y => y === x.settingId) ? true : false) : false  
+                    checked: data != null ? (data.languages.some(y => y === x.settingId) ? true : false) : false  
                 };
             });
             this.setState({
@@ -41,14 +51,51 @@ export class DataGrid extends Component {
         }
     }
 
-    // eslint-disable-next-line react/sort-comp
-    render() {
-        const { isHost } = this.props;
-        const arrLanguage = [{id:1, name: "English"}, {id: 2, name: "Japan"}, {id:3, name: "China"}];
+    renderForm = ({
+        errors,
+        values,
+        handleChange,
+        touched,
+        handleSubmit,
+        isSubmitting,
+        setFieldValue,
+    }) => {
         return (
-            <Form className="form-filter" >
-                <Form.Group className="row item">
-                    <Form.Label column md="3" htmlFor="name" >
+            <Form className="form-customer"  noValidate onSubmit={handleSubmit}>
+                <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                <Form.Group className="mrb0">
+                    {values.uplineInfo.map((value, index) => {
+                        return (
+                            <Row className="item" key={index}>
+                                <Col md="3" className="text-left">
+                                    {value.role.name}
+                                </Col>
+                                <Col md="5" className="text-left">
+                                    { (value.userName === "Unassigned") ? 
+                                    ( value.userName ) 
+                                    : (<a href="#" onClick={() => this.handleSearchUplineInfo( value.userName )}>{value.userName}</a>)}
+                                </Col>
+                                <Col md="4" className="status text-right">
+                                    {value.status != '' ? value.status : ' '}
+                                </Col>
+                            </Row>
+                        )
+                    })}
+                </Form.Group>
+                <Form.Group className="row item current">
+                    <Col md="3" className="text-left">
+                        {values.role.name}
+                    </Col>
+                    <Col md="5" className="text-left">
+                        {values.userName}
+                    </Col>
+                    <Col md="4" className="status text-right">
+                        {values.status}
+                    </Col>
+                </Form.Group>
+                { (values.role.id == RoleIds.Member || values.role.id == RoleIds.CRMMember) ? (
+                    <Form.Group className="row item">
+                        <Form.Label column md="3" htmlFor="name" >
                                 {LangHelper.getResource('Danger')}
                         </Form.Label>
                         <Col md="9">
@@ -81,235 +128,257 @@ export class DataGrid extends Component {
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
-                            {LangHelper.getResource('CustomerSite')}
+                        {LangHelper.getResource('CustomerSite')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className=""
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
-                        />
+                    <Form.Control as="select" size="sm" className="shadow-none" id="siteId"
+                            name="siteId"
+                            value={values.siteId}
+                            onChange={handleChange}
+                        >
+                            <option value="0" >N/A</option>
+                            {this.props.settings.sites.map(renderSystemOption)}
+                        </Form.Control>
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item">
+
+                <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('CustomerCountry')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className=""
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
-                        />
+                    <Form.Control as="select" size="sm" className="shadow-none" id="countryId"
+                            name="countryId"
+                            value={values.countryId}
+                            onChange={handleChange}
+                        >
+                            <option value="0" >N/A</option>
+                            {this.props.settings.countries.map(renderSystemOption)}
+                        </Form.Control>
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item">
+
+                <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('CustomerFirstName')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className=""
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="firstName" value={values.firstName} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item no-border-bg">
+                    <Form.Label column md="3" htmlFor="lastName" >
                         {LangHelper.getResource('CustomerLastName')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className=""
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="lastName" value={values.lastName} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item">
+                <Form.Group className="row item no-border-bg">
+                    <Form.Label column md="3" htmlFor="nickName" >
+                        {LangHelper.getResource('CustomerNickName')}
+                    </Form.Label>
+                    <Col md="9">
+                        <Form.Label size="sm" className="">
+                            {values.nickName} 
+                        </Form.Label>
+                    </Col>
+                </Form.Group>
+                <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('CustomerLanguage')}
                     </Form.Label>
-                    <Col md="9">
-                        <Form.Control as="select" size="sm" className="shadow-none" id="systemId"
-                            name="systemId"
-                        >
-                            {arrLanguage.map(renderSystemOption)}
-                        </Form.Control>
-                        </Col>
+                    <Col md="9" className="form-control-wrapper">
+                    <MultipleSelect
+                        isInvalid={touched.languageId && errors.languageId}
+                        dataSource={this.state.languages}
+                        keyField='id'
+                        valueField='name'
+                        statusField='checked'
+                        isAllTextShown
+                        onChange={(currentItem, selectedItemsKey) => {
+                            setFieldValue('languageId', selectedItemsKey);
+                        }}
+                    />
+                    </Col>
                 </Form.Group>
 
-                <div>{LangHelper.getResource('CommunicationTool')}</div>
+                <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
 
-                <Form.Group className="row item">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item no-border-bg">
+                    <Form.Label column md="3" htmlFor="phoneCountryCode" >
                         {LangHelper.getResource('CustomerPhone1')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="textbox code-country"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="phoneCountryCode" value={values.phoneCountryCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox code-area"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="phoneAreaCode" value={values.phoneAreaCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name= "phone" value={values.phone} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item no-border-bg">
+                    <Form.Label column md="3" htmlFor="phoneCountryCode" >
                         {LangHelper.getResource('CustomerPhone2')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="textbox code-country"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="phone2CountryCode" value={values.phone2CountryCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox code-area"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="phone2AreaCode" value={values.phone2AreaCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name= "phone2" value={values.phone2} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item no-border-bg">
+                    <Form.Label column md="3" htmlFor="phoneCountryCode" >
                         {LangHelper.getResource('CustomerPhone3')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="textbox code-country"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="phone3CountryCode" value={values.phone3CountryCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox code-area"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="phone3AreaCode" value={values.phone3AreaCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name= "phone3" value={values.phone3} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item no-border-bg">
+                    <Form.Label column md="3" htmlFor="mobile" >
                         {LangHelper.getResource('CustomerMobile')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="textbox code-country"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="mobilePhoneCountryCode" value={values.mobilePhoneCountryCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox code-area"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="mobilePhoneAreaCode" value={values.mobilePhoneAreaCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="mobilePhone" value={values.mobilePhone} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item no-border-bg">
+                    <Form.Label column md="3" htmlFor="email" >
                         {LangHelper.getResource('CustomerEmail')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control as="select" size="sm" className="shadow-none" id="systemId"
-                            name="systemId"
-                        >
-                            {arrLanguage.map(renderSystemOption)}
-                        </Form.Control>
-                        </Col>
+                        <Form.Control type="text" size="sm" className=""
+                            onChange={handleChange} name="email" value={values.email} autoComplete="off"
+                        />
+                    </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item no-border-bg">
+                    <Form.Label column md="3" htmlFor="msn" >
                         {LangHelper.getResource('Telegram')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control as="select" size="sm" className="shadow-none" id="systemId"
-                            name="systemId"
-                        >
-                            {arrLanguage.map(renderSystemOption)}
-                        </Form.Control>
-                        </Col>
+                        <Form.Control type="text" size="sm" className=""
+                            onChange={handleChange} name="msn" value={values.msn} autoComplete="off"
+                        />
+                    </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
-                    <Form.Label column md="3" htmlFor="name" >
-                        {LangHelper.getResource('CustomerSkype')}
+                <Form.Group className="row item no-border-bg">
+                    <Form.Label column md="3" htmlFor="skype" >
+                        {LangHelper.getResource('Skype')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control as="select" size="sm" className="shadow-none" id="systemId"
-                            name="systemId"
-                        >
-                            {arrLanguage.map(renderSystemOption)}
-                        </Form.Control>
-                        </Col>
+                        <Form.Control type="text" size="sm" className=""
+                            onChange={handleChange} name="skype" value={values.skype} autoComplete="off"
+                        />
+                    </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
+                <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('PIC1')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="textbox pic-name"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="pic1Name" value={values.pic1Name} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="pic1" value={values.pic1} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
+                <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('PIC2')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="textbox pic-name"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="pic2Name" value={values.pic2Name} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="pic2" value={values.pic2} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
+                <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('PIC3')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="textbox pic-name"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="pic3Name" value={values.pic3Name} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="pic3" value={values.pic3} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
+                <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('PIC4')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="textbox pic-name"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="pic4Name" value={values.pic4Name} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                            onChange={handleChange} name="pic4" value={values.pic4} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item">
-                    <Col md="3" />
+                <Form.Group className="row item no-border-bg">
+                    <Col md="3"></Col>
                     <Col md="9">
-                        <Button className="mr-4" variant="primary" size="sm"
-                                onClick={this.handleSubmit}
+                        <Button className="mr-4" variant="primary" size="sm" type="submit" disabled={isSubmitting}
                             >
-                                {LangHelper.getResource('Submit')}
+                                {LangHelper.getResource('Update')}
                         </Button>
                     </Col>
                 </Form.Group>
 
             </Form>
         );
+    
     }
 
     handleSubmit = (values, { setSubmitting }) => {
@@ -394,6 +463,9 @@ export class DataGrid extends Component {
             phone3CountryCode: customerInfo.phone3CountryCode || '',
             phone3AreaCode: customerInfo.phone3AreaCode || '',
             phone3: customerInfo.phone3 || '',
+            phoneCountryCode: customerInfo.phoneCountryCode || '',
+            phoneAreaCode: customerInfo.phoneAreaCode || '',
+            phone: customerInfo.phone || '',
             mobilePhoneCountryCode: customerInfo.mobilePhoneCountryCode || '',
             mobilePhoneAreaCode: customerInfo.mobilePhoneAreaCode || '',
             mobilePhone: customerInfo.mobilePhone || '',
@@ -418,7 +490,8 @@ export class DataGrid extends Component {
             otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
             
         };
-       
+        console.log(initialValues);
+        console.log(this.props.settings);
         const { isHost } = this.props;
         return (
             <Fragment>
@@ -439,4 +512,28 @@ export class DataGrid extends Component {
 }
 
 
-export default DataGrid;
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { 
+        gridParams, 
+        gridData, 
+        settings, 
+        getSettings,
+        editCustomerInfo,
+        editCustomerInfoResult,
+        editCustomerInfoPopup
+    } = state;
+    return {
+        gridParams,
+        gridData,
+        settings,
+        getSettings,
+        editCustomerInfo,
+        editCustomerInfoResult,
+        editCustomerInfoPopup
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);
