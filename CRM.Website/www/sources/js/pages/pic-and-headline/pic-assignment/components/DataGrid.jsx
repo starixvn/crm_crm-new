@@ -67,7 +67,7 @@ export class DataGrid extends Component {
 
     renderHeaderCommunicationTools = uniqueCommunication => {
         const header = [];
-        header.push(<HeaderCell colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
+        header.push(<HeaderCell key='PICName' colWidth={100}>{LangHelper.getResource('PICName')}</HeaderCell>);
         uniqueCommunication.forEach((item, index) => {
             const maxLengthComm = this.findLongestWordLength(item.settingValue);
             const calWidthCommByPixel = this.measureText(maxLengthComm);
@@ -213,7 +213,7 @@ export class DataGrid extends Component {
     };
 
     renderRowCommEmpty = (isHost, index, comm) => {
-        return <Row key={index}>
+        return <Row>
             <Cell ></Cell>
             <Cell ></Cell>
             <Cell ></Cell>
@@ -273,10 +273,10 @@ export class DataGrid extends Component {
     renderCommunicationToolsValue = comm => {
         const listComm = this.props.picAssignmentGridData.listComm;
         const bodyCommunication = [];
-        bodyCommunication.push(<Cell >{comm.picName}</Cell>);
+        bodyCommunication.push(<Cell key='picName'>{comm.picName}</Cell>);
         for (let indexCommRender = 0; indexCommRender < listComm.length; indexCommRender++) {
             const renderValueComm = comm.listComm.filter(item => item.communicationTool.toString() === listComm[indexCommRender].settingValue);
-            bodyCommunication.push(<Cell className='text-center'>{renderValueComm.length > 0 ? renderValueComm[0].communicationValue : renderValueComm}</Cell>);
+            bodyCommunication.push(<Cell key={indexCommRender} className='text-center'>{renderValueComm.length > 0 ? renderValueComm[0].communicationValue : renderValueComm}</Cell>);
         }
         return bodyCommunication;
     };
