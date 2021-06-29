@@ -10,6 +10,9 @@
 .react-datepicker-wrapper-container {
     height: 28px;
 
+    .react-datepicker-wrapper {
+        display: block;
+    }
     .react-datepicker__input-container {
         height: 100%;
 
@@ -18,3 +21,64 @@
         }
     }
 }
+
+.panel-group {
+    padding: 0px 15px;
+    border-style: solid;
+    border-color: rgb(177, 177, 177);
+    border-image: initial;
+    border-width: 1px;
+
+    .consecutive-container-before{
+        display: none
+    }
+
+    .form-group {
+        margin-bottom: 2px !important;
+    }
+
+    .title{
+        line-height: 18px;
+        border-bottom: 1px solid rgb(177, 177, 177);
+        padding-top: 4px;
+        color: rgb(47, 112, 180);
+        font-size: 13px;
+        background: linear-gradient(rgb(231, 231, 231), rgb(226, 226, 226));
+
+        Label{
+            cursor: pointer;
+        }
+    }
+
+    .separate {
+        hr {
+            border-top-color: #b1b1b1;
+            height: 1px;
+            margin: 6px -15px;
+        }
+    }
+
+    .code-country {
+        margin-right: 1%;
+        padding: 0 2px;
+        width: 19%;
+    }
+
+    .code-area {
+        margin-right: 1%;
+        padding: 0 1px;
+        width: 20%;
+    }
+    
+    .phone {
+        padding: 0 1px;
+        width: 59%;
+    }
+
+    .picName {
+        margin-right: 1%;
+        padding: 0 2px;
+        width: 40%;
+    }
+}
+

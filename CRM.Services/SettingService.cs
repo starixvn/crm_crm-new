@@ -162,14 +162,15 @@
         {
             var criteria = new GetAllLicenseeTypeCriteria();
             var liscenseeType = await baseService.GetDataAsync<BaseModel>(criteria);
-            liscenseeType.ToList().Insert(
+            var liscenseeTypeList = liscenseeType.ToList();
+            liscenseeTypeList.Insert(
                 0,
                 new BaseModel
                 {
                     Id = SettingConstants.NotApply,
                     Name = ViewResources.Symbol_NA
                 });
-            return liscenseeType;
+            return liscenseeTypeList;
         }
 
         public async Task<IEnumerable<BaseModel>> GetAllCurrencyAsync(GetAllCurrencyCriteria criteria)

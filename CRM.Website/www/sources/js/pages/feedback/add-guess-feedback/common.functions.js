@@ -9,6 +9,15 @@ export const renderTitleOptions = item => {
     );
 };
 
+export const renderLicenseeTypeOptions = item => {
+    return (
+        <option key={item.id} value={item.name}>
+            {item.name}
+        </option>
+    );
+};
+
+
 export const validateFormik = (values, languages = []) => {
     const errors = {};
     if (!values.notificationTypeId) {
