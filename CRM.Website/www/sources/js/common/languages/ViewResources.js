@@ -30,6 +30,7 @@
     Country: 'Country',
     Currency: 'Currency',
     Customer: 'Customer',
+    ConfirmRemoveDirectAccounts: 'Are you sure you want to remove all selected direct accounts?',
     DeactivatePICSuccess: 'Deactivate PIC successfully!',
     DefaultCommunicationSetting: 'Default Communication Setting',
     DefaultPIC: 'Default PIC',
