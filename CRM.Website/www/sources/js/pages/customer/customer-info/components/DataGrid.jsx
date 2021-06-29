@@ -34,7 +34,7 @@ export class DataGrid extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.gridData != prevProps.gridData)
+        if(this.props.gridData !== prevProps.gridData)
         {
             console.log(this.props.gridData);
             const data = this.props.gridData.data;
@@ -42,7 +42,7 @@ export class DataGrid extends Component {
                 return {
                     id: x.settingId,
                     name: x.settingName,
-                    checked: data != null ? (data.languages.some(y => y === x.settingId) ? true : false) : false  
+                    checked: data !== null ? (data.languages.some(y => y === x.settingId) ? true : false) : false  
                 };
             });
             this.setState({
@@ -76,7 +76,7 @@ export class DataGrid extends Component {
                                     : (<a href="#" onClick={() => this.handleSearchUplineInfo( value.userName )}>{value.userName}</a>)}
                                 </Col>
                                 <Col md="4" className="status text-right">
-                                    {value.status != '' ? value.status : ' '}
+                                    {value.status !== '' ? value.status : ' '}
                                 </Col>
                             </Row>
                         )
@@ -93,7 +93,7 @@ export class DataGrid extends Component {
                         {values.status}
                     </Col>
                 </Form.Group>
-                { (values.role.id == RoleIds.Member || values.role.id == RoleIds.CRMMember) ? (
+                { (values.role.id === RoleIds.Member || values.role.id === RoleIds.CRMMember) ? (
                     <Form.Group className="row item">
                         <Form.Label column md="3" htmlFor="name" >
                                 {LangHelper.getResource('Danger')}
@@ -113,13 +113,13 @@ export class DataGrid extends Component {
 
                             <Row>
                                 <Col md="3" >
-                                    <span className={'lv' + values.originalDangerLevel}>{values.originalDangerLevel != 0 ? LangHelper.getResource('Lv1') + ' ' + values.originalDangerLevel : LangHelper.getResource('None')}</span>
+                                    <span className={'lv' + values.originalDangerLevel}>{values.originalDangerLevel !== 0 ? LangHelper.getResource('Lv1') + ' ' + values.originalDangerLevel : LangHelper.getResource('None')}</span>
                                 </Col>
                                 <Col md="4">
-                                    <span className={'lv' + values.abtDangerLevel}>{values.abtDangerLevel != 0 ? LangHelper.getResource('Lv1')  + ' ' + values.abtDangerLevel : LangHelper.getResource('None')}</span>
+                                    <span className={'lv' + values.abtDangerLevel}>{values.abtDangerLevel !== 0 ? LangHelper.getResource('Lv1')  + ' ' + values.abtDangerLevel : LangHelper.getResource('None')}</span>
                                 </Col>
                                 <Col md="5">
-                                    <span className={'lv' + values.otherSportsDangerLevel}>{values.otherSportsDangerLevel != 0 ? LangHelper.getResource('Lv1')  + ' ' + values.otherSportsDangerLevel : LangHelper.getResource('None')}</span>
+                                    <span className={'lv' + values.otherSportsDangerLevel}>{values.otherSportsDangerLevel !== 0 ? LangHelper.getResource('Lv1')  + ' ' + values.otherSportsDangerLevel : LangHelper.getResource('None')}</span>
                                 </Col>
                             </Row>
                         </Col>

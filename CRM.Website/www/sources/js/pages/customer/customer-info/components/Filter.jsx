@@ -17,7 +17,7 @@ export class Filter extends Component {
     };
 
     componentDidUpdate(prevProps) {
-        if (this.props.gridParams != prevProps.gridParams) {
+        if (this.props.gridParams !== prevProps.gridParams) {
           this.setState({
               UserName: this.props.gridParams.UserName
           });
