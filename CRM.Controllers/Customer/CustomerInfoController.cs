@@ -53,7 +53,7 @@
         {
             var settings = new 
             {
-                sites = await settingService.GetAllSites(new GetAllSiteCriteria()),
+                sites = await settingService.GetAllSiteAsync(),
                 countries =  await settingService.GetAllCountryAsync(new GetAllCountryCriteria()),
                 languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria())
             };

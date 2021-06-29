@@ -5,6 +5,7 @@
     using AutoFixture;
     using CRM.Core.Constants;
     using CRM.Core.Models;
+    using CRM.Criteria.Setting;
     using CRM.Models.AdminTool.CommunicationToolSetting;
     using CRM.Models.Setting;
     using CRM.Services;
@@ -52,8 +53,8 @@
             var subCategories = fixture.Create<IEnumerable<Setting>>();
             var controller = GetController();
             settingService.GetAllCommunicationToolAsync().Returns(communicationTools);
-            settingService.GetMainCategoryAsync().Returns(mainCategories);
-            settingService.GetSubCategoryAsync().Returns(subCategories);
+            settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria()).Returns(mainCategories);
+            settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria()).Returns(subCategories);
             var expected = new
             {
                 communicationTools,

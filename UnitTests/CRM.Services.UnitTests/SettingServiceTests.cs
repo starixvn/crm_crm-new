@@ -60,7 +60,7 @@
             baseService.GetDataAsync<Setting>(Arg.Any<GetAllMainCategoryCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetMainCategoryAsync();
+            var actual = await service.GetMainCategoryAsync(new GetAllMainCategoryCriteria());
 
             // Assert
             Assert.Equal(expected, actual);
@@ -76,28 +76,12 @@
             baseService.GetDataAsync<Setting>(Arg.Any<GetAllSubCategoryCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetSubCategoryAsync();
+            var actual = await service.GetSubCategoryAsync(new GetAllSubCategoryCriteria());
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public async Task GetSettingRelations_WhenCalled_ReturnExpectedSettings()
-        {
-            // Arrange
-            var fixture = new Fixture();
-            var expected = fixture.Create<IEnumerable<SettingRelation>>();
-            var criteria = fixture.Create<GetSettingRelationByNameCriteria>();
-            var service = GetService();
-            baseService.GetDataAsync<SettingRelation>(criteria).Returns(expected);
-
-            // Act
-            var actual = await service.GetSettingRelations(criteria);
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
 
         [Fact]
         public async Task GetAllCountryAsync_WhenCalled_ReturnExpectedSettings()
@@ -178,7 +162,7 @@
             baseService.GetDataAsync<Setting>(criteria).Returns(expected);
 
             // Act
-            var actual = await service.GetAllStatusAsync(criteria);
+            var actual = await service.GetAllStatusAsync(1);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -189,10 +173,10 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = fixture.Create<IEnumerable<Product>>();
             var criteria = fixture.Create<GetAllBetTypeCriteria>();
             var service = GetService();
-            baseService.GetDataAsync<Setting>(criteria).Returns(expected);
+            baseService.GetDataAsync<Product>(criteria).Returns(expected);
 
             // Act
             var actual = await service.GetAllBetTypeAsync(criteria);
@@ -206,10 +190,10 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = fixture.Create<IEnumerable<Product>>();
             var criteria = fixture.Create<SubProductCriteria>();
             var service = GetService();
-            baseService.GetDataAsync<Setting>(criteria).Returns(expected);
+            baseService.GetDataAsync<Product>(criteria).Returns(expected);
 
             // Act
             var actual = await service.GetSubProductAsync(criteria);
@@ -246,7 +230,7 @@
             baseService.GetDataAsync<BaseModel>(criteria).Returns(expected);
 
             // Act
-            var actual = await service.GetAllLicenseeTypeAsync(criteria);
+            var actual = await service.GetAllLicenseeTypeAsync();
 
             // Assert
             Assert.Equal(expected, actual);

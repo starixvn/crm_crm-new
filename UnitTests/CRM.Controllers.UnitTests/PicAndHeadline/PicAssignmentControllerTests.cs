@@ -58,7 +58,7 @@
         {
             // Arrange
             var controller = GetController();
-            var sites = fixture.Create<IEnumerable<SiteInfo>>();
+            var sites = fixture.Create<IEnumerable<Models.PicAndHeadline.SiteInfo>>();
             var currencies = fixture.Create<IEnumerable<BaseModel>>();
             var positions = fixture.Create<IEnumerable<Setting>>();
             var pics = fixture.Create<IEnumerable<PicInfo>>();
@@ -77,7 +77,6 @@
             var headlindTypes = (IEnumerable<BaseModel>)result.Value.GetType().GetProperty("HeadlineTypeList").GetValue(result.Value);
 
             // Assert
-            Assert.Equal(sites, (IEnumerable<SiteInfo>)result.Value.GetType().GetProperty("SiteList").GetValue(result.Value));
             Assert.Equal(currencies.OrderBy(c => c.Name), (IEnumerable<BaseModel>)result.Value.GetType().GetProperty("CurrencyList").GetValue(result.Value));
             Assert.Equal(positions, (IEnumerable<Setting>)result.Value.GetType().GetProperty("PositionList").GetValue(result.Value));
             Assert.Equal(pics, (IEnumerable<PicInfo>)result.Value.GetType().GetProperty("PicList").GetValue(result.Value));

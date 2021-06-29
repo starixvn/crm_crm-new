@@ -12,8 +12,6 @@
             return "Acc_CRM_LanguageList";
         }
 
-        public short UserRole { get; } = Constants.UserRole;
-
         public override bool IsValid() => true;
     }
 }

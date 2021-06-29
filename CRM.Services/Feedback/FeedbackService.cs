@@ -11,11 +11,15 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public class FeedbackService
+    public interface IFeedbackService
     {
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
         Task<CommandResult> UpdateQuickUpdateFeedback(EditQuickUpdateFeedback model);
         Task<EditQuickUpdateFeedback> GetNoInquiriesAsync(int id);
+    }
+
+    public class FeedbackService: IFeedbackService
+{
         private readonly IBaseService baseService;
         private readonly ISettingService serviceSetting;
         private readonly IFeedbackRepository feedbackRepository;

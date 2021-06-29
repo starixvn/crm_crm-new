@@ -13,6 +13,7 @@
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
+    using CRM.Services.Feedback;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -20,6 +21,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
     public class LatestFeedbackController : BaseController
@@ -29,6 +31,7 @@
         private readonly IUserService userService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
+        private readonly IFeedbackService feedbackService;
 
 
         public LatestFeedbackController(
@@ -36,12 +39,14 @@
             INapSettings napSettings,
             IUserService userService,
             IExportExcelService excelService,
-        ISettingService settingService)
+            ISettingService settingService,
+            IFeedbackService feedbackService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
             this.settingService = settingService;
             this.excelService = excelService;
+            this.feedbackService = feedbackService;
         }
         public IActionResult Index()
         {
@@ -61,7 +66,7 @@
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
 
-            var statusList = await settingService.GetAllStatusAsync(new GetAllStatusCriteria { });
+            var statusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool);
             var statusHash = statusList.ToDictionary(k => k.SettingId, v => v.SettingName);
             statusHash.Add(1, ViewResources.Symbol_NotApply);
 
@@ -81,7 +86,7 @@
                 IsActive = true
             });
 
-            var subCategories = await settingService.GetSubCategoryAsync();
+            var subCategories = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria { Active = SettingConstants.ActiveAndInactive });
 
             foreach (var category in mainCategories)
             {
@@ -131,52 +136,22 @@
         {
             var settings = new
             {
-                Titles = await settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                {
-                    SettingName = SettingName.Title,
-                    ParentID = 0,
-                    Active = SettingConstants.ActiveAndInactive
-                }),
-                ExtensionList = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                {
-                    SettingName = SettingName.Extension,
-                    ParentID = 0,
-                    Active = SettingConstants.Active
-                }),
+                Titles = await settingService.GetAllSettingRelationsByName(SettingName.Title),
+                ExtensionList = settingService.GetAllSettingRelationsByName(SettingName.Extension),
                 CommunicationToolList = await settingService.GetAllCommunicationToolAsync(),
                 Countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria()),
                 Provinces = settingService.GetAllProvinceAsync(new GetAllProvinceCriteria()),
                 Languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria()),
-                StatusList = await settingService.GetAllStatusAsync(new GetAllStatusCriteria()),
-                Roles = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                {
-                    SettingName = SettingName.Role,
-                    ParentID = 0,
-                    Active = SettingConstants.ActiveAndInactive
-                }),
-                Responses = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                {
-                    SettingName = SettingName.Response,
-                    ParentID = 0,
-                    Active = SettingConstants.ActiveAndInactive
-                }),
-                LicenseeTypes = settingService.GetAllLicenseeTypeAsync(new GetAllLicenseeTypeCriteria()),
-                ProductNA = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                {
-                    SettingName = SettingName.Product,
-                    ParentID = 0,
-                    Active = SettingConstants.Active
-                }),
-                ProductList = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                {
-                    SettingName = SettingName.Product,
-                    ParentID = 0,
-                    Active = SettingConstants.ActiveAndInactive
-                }),
+                StatusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool),
+                Roles = settingService.GetAllSettingRelationsByName(SettingName.Role),
+                Responses = settingService.GetAllSettingRelationsByName(SettingName.Response),
+                LicenseeTypes = settingService.GetAllLicenseeTypeAsync(),
+                ProductNA = settingService.GetAllSettingRelationsByName(SettingName.Product),
+                ProductList = settingService.GetAllSettingRelationsByName(SettingName.Product),
                 SubProductList = settingService.GetSubProductAsync(new SubProductCriteria()),
                 BettypeList = settingService.GetAllBetTypeAsync(new GetAllBetTypeCriteria()),
-                MainCategoryList = await settingService.GetMainCategoryAsync(),
-                SubCategoryList = await settingService.GetSubCategoryAsync()
+                MainCategoryList = await settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria()),
+                SubCategoryList = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria())
             };
 
             return Json(settings);
