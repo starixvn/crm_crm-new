@@ -41,10 +41,8 @@ export class DataGrid extends Component {
         }
     }
 
+    // eslint-disable-next-line react/sort-comp
     render() {
-        const initialValues = {
-            subject: ''
-        };
         const { isHost } = this.props;
         const arrLanguage = [{id:1, name: "English"}, {id: 2, name: "Japan"}, {id:3, name: "China"}];
         return (
