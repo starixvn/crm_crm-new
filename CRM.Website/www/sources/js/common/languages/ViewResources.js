@@ -86,6 +86,7 @@
     ExcludeIgnoredAccounts: 'Exclude ignored accounts',
     ExcludeTestAccounts: 'Exclude test accounts',
     Email: 'Email',
+    EmptyData: 'Empty Data',
     FeedbackSubjectContentRequired: 'Feedback Subject Content is required!',
     FeedbackSubjectInsert: 'Insert New Feedback Subject',
     FeedbackSubjectManagement: 'Feedback Subject Management',

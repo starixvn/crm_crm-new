@@ -54,8 +54,8 @@
             var settings = new 
             {
                 sites = await settingService.GetAllSiteAsync(),
-                countries =  await settingService.GetAllCountryAsync(new GetAllCountryCriteria()),
-                languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria())
+                countries =  await settingService.GetAllCountryAsync(new GetAllCountryCriteria { Active = SettingConstants.Active }),
+                languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria { Active = SettingConstants.Active })
             };
             return Json(settings);
 

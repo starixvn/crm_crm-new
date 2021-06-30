@@ -16,17 +16,17 @@ export class AppContainer extends Component {
 
     static propTypes = {
         isHost: PropTypes.bool.isRequired,
+        editCustomerInfoPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        emptyCustomerInfoPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         getCustomerInfo: PropTypes.func,
-        getSettings: PropTypes.func,
     };
 
     static defaultProps = {
         isHost: false,
+        editCustomerInfoPopup: { show: false },
+        emptyCustomerInfoPopup: { show: false },
         getCustomerInfo: function() {
             //nothing
-        },
-        getSettings: function () {
-            // nothing
         },
     };
 
@@ -43,7 +43,6 @@ export class AppContainer extends Component {
     };
 
     handleCheckGridData = () => {
-        console.log(this.props.gridData);
         if(this.props.gridData === null) {
             this.props.setEmptyCustomerInfoPopup( {show: true} );
         }
@@ -82,7 +81,7 @@ export class AppContainer extends Component {
                     <SweetModalDialog size="lg"
                         title={LangHelper.getResource('Confirmation')}
                         contents={
-                            <div>empty data</div>
+                            LangHelper.getResource('EmptyData')
                         }
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleCloseEmptyCustomerInfoPopup}>

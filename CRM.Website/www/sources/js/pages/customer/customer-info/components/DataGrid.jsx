@@ -444,7 +444,7 @@ export class DataGrid extends Component {
         if (!this.props.gridData || !this.props.gridData.data) {
             return null;
         }
-        var customerInfo =  this.props.gridData.data;
+        let customerInfo =  this.props.gridData.data;
         const initialValues = {
             userName: customerInfo.userName || '',
             siteId: customerInfo.siteID || 0,
@@ -520,8 +520,6 @@ const mapStateToProps = state => {
         gridParams, 
         gridData, 
         settings, 
-        getSettings,
-        editCustomerInfo,
         editCustomerInfoResult,
         editCustomerInfoPopup
     } = state;
@@ -529,8 +527,6 @@ const mapStateToProps = state => {
         gridParams,
         gridData,
         settings,
-        getSettings,
-        editCustomerInfo,
         editCustomerInfoResult,
         editCustomerInfoPopup
     };
