@@ -182,7 +182,6 @@ export class UpdateFeedback extends PureComponent {
                                                     selected={values.feedbackDate}
                                                     onChange={value => this.handleDataChange('feedbackDate', value)}
                                                     timeInputLabel="Time:"
-                                                    dateFormat="MMM dd, yyyy hh:mm aa"
                                                     showTimeInput
                                                 />
                                             </div>
@@ -265,7 +264,6 @@ export class UpdateFeedback extends PureComponent {
                                                     selected={values.feedbackDate}
                                                     onChange={value => this.handleDataChange('feedbackDate', value)}
                                                     timeInputLabel="Time:"
-                                                    dateFormat="MMM dd, yyyy hh:mm aa"
                                                     showTimeInput
                                                 />
                                             </div>
