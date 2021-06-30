@@ -34,6 +34,9 @@ export default class MultipleSelectLabel extends Component {
         } else if(!this.props.dataSourceSize){
             displayText = textOptions['NoData'];
         }
+        else{
+            displayText = textOptions['NA'];
+        }
 
         return displayText;
     }

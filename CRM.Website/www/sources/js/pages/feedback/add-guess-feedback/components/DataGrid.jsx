@@ -12,6 +12,7 @@ import { renderTitleOptions, renderLicenseeTypeOptions, validateFormik } from '.
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 
 
 export class DataGrid extends Component {
@@ -28,8 +29,8 @@ export class DataGrid extends Component {
         const now = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
             birthDay: '',
-            feedbackDate: now,
-            resolutionTime: now,
+            feedbackDate: new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(new Date()))),
+            resolutionTime: new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(new Date()))),
             maxDate: now,
             isShowCustomerDetailOption: true,
             isShowDetailsOption: true
@@ -590,6 +591,9 @@ export class DataGrid extends Component {
                             <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
                                     <DatePicker
                                         selected={this.state.feedbackDate}
+                                        timeInputLabel="Time:"
+                                        dateFormat="MMM dd, yyyy hh:mm aa"
+                                        showTimeInput
                                         onChange={value => this.handleToDateChange(value, 'feedbackDate')}
                                     />
                             </Col>
@@ -603,6 +607,9 @@ export class DataGrid extends Component {
                             <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
                                     <DatePicker
                                         selected={this.state.resolutionTime}
+                                        timeInputLabel="Time:"
+                                        dateFormat="MMM dd, yyyy hh:mm aa"
+                                        showTimeInput
                                         onChange={value => this.handleToDateChange(value, 'resolutionTime')}
                                     />
                             </Col>
@@ -696,7 +703,7 @@ export class DataGrid extends Component {
             line: '',
             letstalk: '',
             qq: '',
-            zalo: ''
+            zalo: '',
         };
 
         return (

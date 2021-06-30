@@ -30,7 +30,8 @@ export const MULTI_SELECT_TEXT_OPTIONS = {
     Texts: LanguageHelper.getResource('All'),
     SelectedItemCount: '# selected',
     SelectOptions: LanguageHelper.getResource('PleaseSelect'),
-    NoData: LanguageHelper.getResource('NoData')
+    NoData: LanguageHelper.getResource('NoData'),
+    NA: LanguageHelper.getResource('N/A')
 };
 
 export const AUTO_REFRESH_TIMES = [90, 120, 150, 180];

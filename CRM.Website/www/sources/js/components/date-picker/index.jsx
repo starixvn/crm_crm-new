@@ -34,7 +34,7 @@ export default class DatePickerField extends React.Component {
             >
                 {
                     this.props.showTimeInput &&
-                        <button class="btnNow" type='button' onClick={this.handleTimeNow}>Now</button>
+                        <div className="react-datepicker__input-time-container btnNow" type='button' onClick={this.handleTimeNow}>Now</div>
                 }
             </DatePicker >
         );
