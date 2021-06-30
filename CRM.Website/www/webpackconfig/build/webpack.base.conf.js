@@ -28,6 +28,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/feedbacksubject/index`]: pathConfig.scriptPaths.feedback_subject,
             [`${jsPath}/pages/customer/customerinfo/index`]: pathConfig.scriptPaths.customer_info,
             [`${jsPath}/pages/feedback/addguessfeedback/index`]: pathConfig.scriptPaths.add_guess_feedback,
+            [`${jsPath}/pages/latestfeedback/index`]: pathConfig.scriptPaths.latest_feedback,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -41,7 +42,6 @@ function generateConfig(environment) {
             [`${cssPath}/pages/picandheadline/management/index`]: pathConfig.cssPaths.pic_management,
             [`${cssPath}/pages/report/settlement/index`]: pathConfig.cssPaths.report_settlement,
             [`${cssPath}/pages/feedbacksubject/index`]: pathConfig.cssPaths.feedback_subject,
-            [`${cssPath}/pages/latestfeedback/index`]: pathConfig.cssPaths.latest_feedback,
             [`${cssPath}/pages/customer/customerinfo/index`]: pathConfig.cssPaths.customer_info,
             [`${cssPath}/pages/feedback/addguessfeedback/index`]: pathConfig.cssPaths.add_guess_feedback,
             [`${cssPath}/pages/latestfeedback/index`]: pathConfig.cssPaths.latest_feedback

@@ -159,3 +159,14 @@
         cursor: context-menu;
     }
 }
+.btnNow {
+    margin: 5px 0 10px 15px;
+    color: #007bff;
+    background-color: #fff;
+    border: none;
+
+    &:hover {
+        background-color: blue;
+        color: white;
+    }
+}
