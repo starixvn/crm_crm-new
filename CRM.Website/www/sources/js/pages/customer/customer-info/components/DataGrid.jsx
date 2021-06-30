@@ -36,7 +36,6 @@ export class DataGrid extends Component {
     componentDidUpdate(prevProps) {
         if(this.props.gridData !== prevProps.gridData)
         {
-            console.log(this.props.gridData);
             const data = this.props.gridData.data;
             const languages = this.props.settings.languages.map(x => {
                 return {
@@ -490,8 +489,6 @@ export class DataGrid extends Component {
             otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
             
         };
-        console.log(initialValues);
-        console.log(this.props.settings);
         const { isHost } = this.props;
         return (
             <Fragment>
@@ -521,14 +518,16 @@ const mapStateToProps = state => {
         gridData, 
         settings, 
         editCustomerInfoResult,
-        editCustomerInfoPopup
+        editCustomerInfoPopup,
+        getSettings
     } = state;
     return {
         gridParams,
         gridData,
         settings,
         editCustomerInfoResult,
-        editCustomerInfoPopup
+        editCustomerInfoPopup,
+        getSettings
     };
 };
 

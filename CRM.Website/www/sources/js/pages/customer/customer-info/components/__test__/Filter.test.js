@@ -1,6 +1,6 @@
 import React from 'react';
 import { Filter } from '../Filter';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 
 describe('filter', () => {
@@ -20,6 +20,46 @@ describe('filter', () => {
     });
 
     describe('methods', () => {
+        describe('componentDidUpdate', () => {
+            it('componentDidUpdate run correctly', () =>{
+                //Arrange
+                const state = {
+                    UserName: '',
+                    IsGuest: false
+                };
+                const promise = Promise.resolve({});
+                const props = {
+                    gridParams: {
+                        UserName: 'test',
+                        IsGuest: false
+                    }
+                }
+
+                const params = {
+                    UserName: state.UserName,
+                    IsGuest: state.IsGuest
+                }
+
+                const newProps = {
+                    gridParams: {
+                        UserName: '',
+                        IsGuest: false
+                    }
+                }
+
+                //Act
+                const container = shallow(<Filter {...props} />);
+                container.setProps(newProps);
+                container.instance().getParams = jest.fn().mockReturnValue(params);
+
+                //Assert
+                promise.then(() => {
+                    expect(container.instance().state.UserName).toEqual('test');
+                })
+
+            });
+        });
+
         describe('handleChange', () => {
             it('should call setState when change user name field', () => {
                 //Arrange
