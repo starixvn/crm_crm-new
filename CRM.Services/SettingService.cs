@@ -71,13 +71,13 @@
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<SettingRelation>> GetAllSettingRelationsByName(string settingName)
+        public async Task<IEnumerable<SettingRelation>> GetAllSettingRelationsByName(string settingName, byte active = SettingConstants.ActiveAndInactive)
         {
             var criteria = new GetSettingRelationByNameCriteria
             {
                 SettingName = settingName,
                 ParentID = 0,
-                Active = SettingConstants.ActiveAndInactive
+                Active = active
             };
             var relation = await baseService.GetDataAsync<SettingRelation>(criteria);
             var relationList = relation.OrderBy(setting => setting.DisplayOrder).ToList();

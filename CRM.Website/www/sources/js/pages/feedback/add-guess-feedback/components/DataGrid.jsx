@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
@@ -11,6 +11,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import { renderTitleOptions, renderLicenseeTypeOptions, validateFormik } from '../common.functions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
+
 
 export class DataGrid extends Component {
     static propTypes = {
@@ -26,27 +28,37 @@ export class DataGrid extends Component {
         const now = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
             birthDay: '',
+            feedbackDate: now,
+            resolutionTime: now,
             maxDate: now,
-            isShowCustomerDetailOption: true
+            isShowCustomerDetailOption: true,
+            isShowDetailsOption: true
         };
     }
 
-    handleToDateChange = value => {
-        this.setState({birthDay: value});
+    handleToDateChange = (value, name) => {
+        this.setState({[name]: value});
     }
 
-    HandleShowCustomerDetail = () =>{
+    handleShowCustomerDetail = () =>{
         this.setState(prevState => ({
             isShowCustomerDetailOption: !prevState.isShowCustomerDetailOption
           }));
     }
 
+    handleShowDetails = () =>{
+        this.setState(prevState => ({
+            isShowDetailsOption: !prevState.isShowDetailsOption
+          }));
+    }
+
+
     renderIdentityInformation = (values, errors, touched, handleChange) => {
         const titleOptions = [{title: 'Mr'},{title: 'Mrs'}];
         return (
-        <Form className="panel-group">
+        <div className="panel-group">
             <Form.Group as={Row} className='title'>
-                    <Form.Label column sm="2" md="2" className="required" onClick={this.HandleShowCustomerDetail}>
+                    <Form.Label column sm="2" md="2" className="required" onClick={this.handleShowCustomerDetail}>
                         {LangHelper.getResource('IdentityInformation')}
                     </Form.Label>
                     <Col sm="2" md="2">
@@ -59,7 +71,7 @@ export class DataGrid extends Component {
                     </Col>
                     <Col sm="8" md="8" />
             </Form.Group>
-            <div className={`${this.state.isShowCustomerDetailOption ? '' : 'consecutive-container-before'}`}>
+            <div className={`${this.state.isShowCustomerDetailOption ? '' : 'hideCustomerDetail'}`}>
             <Form.Group as={Row} className="pt-2">
                 <Col sm="4" md="4">
                     <Form.Group as={Row}>
@@ -117,7 +129,7 @@ export class DataGrid extends Component {
                                 <DatePicker
                                     selected={this.state.birthDay}
                                     maxDate={this.state.maxDate}
-                                    onChange={value => this.handleToDateChange(value)}
+                                    onChange={value => this.handleToDateChange(value,'birthDay')}
                                 />
                         </Col>
                     </Form.Group>
@@ -511,10 +523,116 @@ export class DataGrid extends Component {
                     </Form.Group>
                 </Col>
             </Form.Group>
+            <Form.Group as={Row}>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="letstalk">
+                            {LangHelper.getResource('Letstalk')}
+                        </Form.Label>
+                        <Col sm="8" md="8">
+                            <Form.Control type="text" size="sm" value={values.letstalk}
+                                name="letstalk" id="letstalk"
+                                className="shadow-none" autoComplete="off"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="qq">
+                            {LangHelper.getResource('QQ')}
+                        </Form.Label>
+                        <Col sm="8" md="8">
+                            <Form.Control type="text" size="sm" value={values.qq}
+                                name="qq" id="qq"
+                                className="shadow-none" autoComplete="off"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="zalo">
+                            {LangHelper.getResource('Zalo')}
+                        </Form.Label>
+                        <Col sm="8" md="8">
+                            <Form.Control type="text" size="sm" value={values.zalo}
+                                name="zalo" id="zalo"
+                                className="shadow-none" autoComplete="off"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Form.Group>
             </div>
-        </Form>
+        </div>
         );
     };
+
+    renderDetails = (values, errors, touched, handleChange, setFieldValue) =>{
+        return (
+            <div className='panel-group'>
+                <Form.Group as={Row} className="title" onClick={this.handleShowDetails}>
+                    <Form.Label column sm="2" md="2" className="required" htmlFor="identityInformation">
+                        {LangHelper.getResource('Details')}
+                    </Form.Label>
+                </Form.Group>
+                <div className={`${this.state.isShowDetailsOption ? '' : 'hideDetails'}`}>
+                    <Form.Group as={Row} className="pt-2">
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="feedbackDate">
+                                {LangHelper.getResource('FeedbackDate')}
+                            </Form.Label>
+                            <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
+                                    <DatePicker
+                                        selected={this.state.feedbackDate}
+                                        onChange={value => this.handleToDateChange(value, 'feedbackDate')}
+                                    />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="resolutionTime">
+                                {LangHelper.getResource('ResolutionTime')}
+                            </Form.Label>
+                            <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
+                                    <DatePicker
+                                        selected={this.state.resolutionTime}
+                                        onChange={value => this.handleToDateChange(value, 'resolutionTime')}
+                                    />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="station">
+                                {LangHelper.getResource('Station')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                            <MultipleSelect
+                                isInvalid={touched.station && errors.station}
+                                dataSource={this.props.settings?.extensionList}
+                                keyField='id'
+                                valueField='value'
+                                isAllTextShown
+                                hasSearchBox
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    setFieldValue('station', selectedItemsKey);
+                                }}
+                            />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    </Form.Group>
+                </div>
+            </div>
+        )
+    }
 
     renderForm = ({
         values,
@@ -537,13 +655,9 @@ export class DataGrid extends Component {
                 {
                     this.renderIdentityInformation(values, errors, touched, handleChange)
                 }
-                <Form className='panel-group'>
-                    <Form.Group as={Row} className="title">
-                        <Form.Label column sm="2" md="2" className="required" htmlFor="identityInformation">
-                            {LangHelper.getResource('Details')}
-                        </Form.Label>
-                    </Form.Group>
-                </Form>
+                {
+                    this.renderDetails(values, errors, touched, handleChange, setFieldValue)
+                }
             </Form>
         );
     };
@@ -579,7 +693,10 @@ export class DataGrid extends Component {
             telegram: '',
             weChat: '',
             whatApp: '',
-            line: ''
+            line: '',
+            letstalk: '',
+            qq: '',
+            zalo: ''
         };
 
         return (

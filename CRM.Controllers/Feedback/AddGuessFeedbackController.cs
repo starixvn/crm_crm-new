@@ -90,7 +90,8 @@
 
                 var statusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool);
                 var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
-                var extentionList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Extension);
+                var extentionList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Extension, SettingConstants.Active);
+                var extentionListRemmoveNA = extentionList.Where(x => x.Id != NAConstants.ExtentionNA);
                 var extentionNA = extentionList.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
                 var ProvinceList = await settingService.GetAllProvinceAsync(new GetAllProvinceCriteria());
                 var communicationToolList = await settingService.GetAllCommunicationToolAsync();
@@ -109,7 +110,7 @@
 
                 var settings = new AllSettingToAddFeedback
                 {
-                    ExtensionList = extentionList,
+                    ExtensionList = extentionListRemmoveNA,
                     CountryList = countriesList.Where(x => x.IsActive),
                     ProvinceList = ProvinceList,
                     CommunicationToolList = communicationToolList.Where(x => x.IsActive),

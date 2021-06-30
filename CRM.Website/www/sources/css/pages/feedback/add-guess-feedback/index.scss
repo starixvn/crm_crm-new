@@ -5,6 +5,7 @@
 @import '../../../components/messages';
 @import '../../../components/date-picker/style';
 @import '../../../components/react-select';
+@import '../../../components/multiple-select/style';
 
 
 .react-datepicker-wrapper-container {
@@ -29,7 +30,7 @@
     border-image: initial;
     border-width: 1px;
 
-    .consecutive-container-before{
+    .hideCustomerDetail, .hideDetails{
         display: none
     }
 
