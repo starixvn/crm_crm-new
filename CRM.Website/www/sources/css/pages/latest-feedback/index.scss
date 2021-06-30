@@ -52,6 +52,10 @@
     border: 1px solid #b1b1b1;
     border-width: 1px 1px 0 1px;
 
+    .row {
+        padding: 3px 9px;
+    }
+
     .title {
         height: 28px;
         line-height: 18px;
@@ -72,14 +76,6 @@
     }
 }
 
-/*.react-datepicker-wrapper-container {
-    height: 28px;
-
-    .react-datepicker__input-container {
-        height: 100%;
-
-        input {
-            height: 100%;
-        }
-    }
-}*/
+.consecutive-container-before {
+    display: none
+}

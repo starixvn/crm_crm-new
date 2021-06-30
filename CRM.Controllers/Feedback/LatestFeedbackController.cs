@@ -134,56 +134,66 @@
 
         public async Task<IActionResult> GetAllSettings()
         {
-            var a = await settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
+            var languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria
             {
-                SettingName = SettingName.Product,
-                ParentID = 0,
                 Active = SettingConstants.ActiveAndInactive
             });
+            var languagesActive = languages.Where(x => x.IsActive).ToList();
+
+            languagesActive.Insert(
+                0,
+                new Setting
+                {
+                    Id = 0,
+                    Name = ViewResources.Symbol_NA,
+                    IsActive = true
+                });
+
+            var countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria
+            {
+                Active = SettingConstants.ActiveAndInactive
+            });
+            var countriesList = countries.ToList();
+
+            countriesList.Insert(
+                0,
+                new Country
+                {
+                    Id = 0,
+                    Name = ViewResources.Symbol_NA,
+                    IsActive = true
+                });
+
+            var statusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool);
+            var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
+            var communicationToolList = await settingService.GetAllCommunicationToolAsync();
+            var productList = await settingService.GetProductAsync();
+            var roles = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Role);
+            var responses = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Response);
+            var mainCategoryList = await settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria { Active = SettingConstants.ActiveAndInactive });
+            var subCategoryList = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria { Active = SettingConstants.ActiveAndInactive });
+            var subproduct = await settingService.GetSubProductAsync(new SubProductCriteria { Active = SettingConstants.Active });
+            var extentionList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Extension);
+            var bettype = await settingService.GetAllBetTypeAsync(new GetAllBetTypeCriteria { Active = SettingConstants.Active });
 
             var settings = new
             {
-                //Titles = await settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                //{
-                //    SettingName = SettingName.Title,
-                //    ParentID = 0,
-                //    Active = SettingConstants.ActiveAndInactive
-                //}),
-                //ExtensionList = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                //{
-                //    SettingName = SettingName.Extension,
-                //    ParentID = 0,
-                //    Active = SettingConstants.Active
-                //}),
-                CommunicationToolList = await settingService.GetAllCommunicationToolAsync(),
-                //Countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria()),
-                //Provinces = settingService.GetAllProvinceAsync(new GetAllProvinceCriteria()),
-                //Languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria()),
-                //StatusList = await settingService.GetAllStatusAsync(new GetAllStatusCriteria()),
-                //Roles = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                //{
-                //    SettingName = SettingName.Role,
-                //    ParentID = 0,
-                //    Active = SettingConstants.ActiveAndInactive
-                //}),
-                //Responses = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                //{
-                //    SettingName = SettingName.Response,
-                //    ParentID = 0,
-                //    Active = SettingConstants.ActiveAndInactive
-                //}),
-                //LicenseeTypes = settingService.GetAllLicenseeTypeAsync(new GetAllLicenseeTypeCriteria()),
-                //ProductNA = settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                //{
-                //    SettingName = SettingName.Product,
-                //    ParentID = 0,
-                //    Active = SettingConstants.Active
-                //}),
-                ProductList = await settingService.GetSettingRelations(new GetSettingRelationByNameCriteria
-                //SubProductList = settingService.GetSubProductAsync(new SubProductCriteria()),
-                //BettypeList = settingService.GetAllBetTypeAsync(new GetAllBetTypeCriteria()),
-                //MainCategoryList = await settingService.GetMainCategoryAsync(),
-                //SubCategoryList = await settingService.GetSubCategoryAsync()
+                CommunicationToolList = communicationToolList.Where(x => x.IsActive),
+                ProductList = productList.Where(x => x.IsActive),
+                Roles = roles.Where(x => x.IsActive) ,
+                Responses = responses.Where(x => x.IsActive),
+                MainCategoryList = mainCategoryList.Where(x => x.IsActive),
+                SubCategoryList = subCategoryList.Where(x => x.IsActive),
+                SubProductList = subproduct.Where(x => x.IsActive).Select(p =>
+                {
+                    p.Name = p.Value;
+                    return p;
+                }).ToList(),
+                CountryList = countriesList.Where(x => x.IsActive),
+                LanguageList = languagesActive.Where(x => x.IsActive),
+                ExtensionList = extentionList.Where(x => x.IsActive),
+                StatusList = statusListRemoveDelete,
+                BettypeList = bettype.Where(x => x.IsActive)
             };
 
             return Json(settings);
