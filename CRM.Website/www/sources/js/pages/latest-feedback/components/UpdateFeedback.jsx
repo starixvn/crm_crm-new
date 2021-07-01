@@ -13,6 +13,10 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 import MultipleSelect from '../../../components/multiple-select/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import ValidateCustomerResult from './../../communication-setting/components/ValidateCustomerResult';
+import CkEditor from './../../../components/CkEditor';
 
 export class UpdateFeedback extends PureComponent {
     constructor(props) {
@@ -20,6 +24,9 @@ export class UpdateFeedback extends PureComponent {
         this.formik = React.createRef();
         this.state = {
             isShowDetail: true,
+            isShowDescription: true,
+            isShowSolution: true,
+            isCheckReview: false,
             communicationToolOptionsEdit: [],
             productOptionsEdit: [],
             roleOptionsEdit: [],
@@ -32,7 +39,7 @@ export class UpdateFeedback extends PureComponent {
             extensionOptionsEdit: [],
             statusOptionsEdit: [],
             bettypeOptionsEdit: []
-        }; 
+        };
     }
 
     componentDidMount() {
@@ -128,6 +135,12 @@ export class UpdateFeedback extends PureComponent {
         });
     }
 
+    renderTooltipCustomers = props => (
+        <Tooltip id="tooltip-customers" {...props}>
+            {LangHelper.getResource('MultiplecustomersToolTip')}
+        </Tooltip>
+    );
+
     handleDataChange = (name, value) =>
         this.setState(prevState => ({
             filter: {
@@ -142,7 +155,25 @@ export class UpdateFeedback extends PureComponent {
         this.setState(prevState => ({
             isShowDetail: !prevState.isShowDetail
         }));
-    }
+    };
+
+    IsShowDescription = () => {
+        this.setState(prevState => ({
+            isShowDescription: !prevState.isShowDescription
+        }));
+    };
+
+    IsShowDescription = () => {
+        this.setState(prevState => ({
+            isShowDescription: !prevState.isShowDescription
+        }));
+    };
+
+    handleCheckbox = () => {
+        this.setState(prevState => ({
+            isCheckReview: !prevState.isCheckReview
+        }));
+    };
 
     renderForm = ({
         errors,
@@ -162,13 +193,12 @@ export class UpdateFeedback extends PureComponent {
                             message={this.props.updateFeedbackResult.message || LangHelper.getResource('UpdateFeedbackSuccess')}
                         />
                     }
-
                     <div class='panel-group'>
                         <div class='title customername'>{values.username}</div>
                         <div hidden> hello</div>
                     </div>
                     <div class='panel-group'>
-                        <div class='title' onClick={this.IsShowDetail}>Details</div>
+                        <div class='title' onClick={this.IsShowDetail}> {LangHelper.getResource('Details')}</div>
                         <div class='content' className={`${this.state.isShowDetail ? '' : 'consecutive-container-before'}`}>
                             <div class="row">
                                 <div class="col-xs-4 col-sm-4 col-md-4">
@@ -413,6 +443,90 @@ export class UpdateFeedback extends PureComponent {
                                     </Form.Group>
                                 </div>
                             </div>
+                            <div class="row">
+                                <Col sm="4" md="4">
+                                    <Form.Label htmlFor="customerNameInput">
+                                        <input class="checkbox" type='checkbox' />
+                                        {LangHelper.getResource('IsRelatedToCustomer')}
+                                        <OverlayTrigger
+                                            placement="bottom-start"
+                                            overlay={this.renderTooltipCustomers()}
+                                        >
+                                            <span className="fa fa-question-circle-o" />
+                                        </OverlayTrigger>
+                                    </Form.Label>
+                                </Col>
+                                <Col sm="8" md="8">
+                                    <Row>
+                                        <Col>
+                                            <Form.Control type="text" size="sm" value={values.customerNameInput}
+                                                name="customerNameInput" id="customerNameInput"
+                                                onPaste={event => this.pasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
+                                                isInvalid={touched.customerNameInput && errors.customerNameInput}
+                                                className="shadow-none" autoComplete="off"
+                                                onChange={handleChange}
+                                            />
+                                        </Col>
+                                        <Col sm="2" md="2">
+                                            <Button disabled={true} name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
+                                                size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
+                                            >
+                                                {LangHelper.getResource('Verify')}
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <ValidateCustomerResult listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomer} />
+                            </div>
+                            <div class="row">
+                                <Col sm="4" md="4">
+                                    <Form.Label column sm="5" md="4" htmlFor="subject" className="required">
+                                        {LangHelper.getResource('Subject')}
+                                    </Form.Label>
+                                </Col>
+                                <Col sm="8" md="8">
+                                    <Row>
+                                        <Col>
+                                            <Form.Control type="text" size="sm" value={values.subject}
+                                                name="subject" id="subject"
+                                                isInvalid={touched.subject && errors.subject}
+                                                className="shadow-none" autoComplete="off"
+                                                onChange={handleChange}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='panel-group'>
+                        <div class='title' onClick={this.IsShowDescription}> {LangHelper.getResource('Description')}</div>
+                        <div class='content' className={`${this.state.isShowDescription ? '' : 'consecutive-container-before'}`}>
+                            <div class='preview '>
+                                {values.autoField}
+                            </div>
+                            <div class='preview '
+                                dangerouslySetInnerHTML={{ __html: values.description }}
+                            />
+                        </div>
+                    </div>
+                    <div class='panel-group'>
+                        <div class='title' onClick={this.IsShowSolution}> {LangHelper.getResource('Solution')}</div>
+                        <div class='content' className={`${this.state.isShowSolution ? '' : 'consecutive-container-before'}`}>
+                            <div class='preview '
+                                dangerouslySetInnerHTML={{ __html: values.solution }}
+                            />
+                        </div>
+                    </div>
+                    <div class='panel-group'>
+                        <div class='title'> {LangHelper.getResource('Review')}
+                            <input type='checkbox'
+                                onChange={this.handleCheckbox}
+                                checked={this.state.isCheckReview}
+                            />
+                        </div>
+                        <div class='content' className={`${this.state.isCheckReview ? '' : 'consecutive-container-before'}`}>
+                            <CkEditor/>
                         </div>
                     </div>
                 </Modal.Body>
@@ -447,7 +561,12 @@ export class UpdateFeedback extends PureComponent {
         const feedback = this.props.updateFeedbackPopup.data.item;
         const initialValues = {
             username: feedback.username,
-            feedbackDate: new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(feedback.feedbackDateString)))
+            feedbackDate: new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(feedback.feedbackDateString))),
+            subject: feedback.subject,
+            description: feedback.description,
+            autoField: feedback.autoField,
+            solution: feedback.solution
+
         };
         return (
             <Modal show className="update-feedback-modal" dialogAs={DraggableModalDialog}

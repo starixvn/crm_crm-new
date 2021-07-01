@@ -187,7 +187,9 @@ export class DataGrid extends Component {
                 placement="auto"
                 overlay={
                     <Tooltip className="tooltipFeedback">
-                        <div> {tooltipDescription + tooltipSolution}</div>
+                        <div
+                            dangerouslySetInnerHTML={{ __html: tooltipDescription + tooltipSolution }}
+                        />
                     </Tooltip>
                 }
             >
