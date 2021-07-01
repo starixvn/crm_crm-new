@@ -1,6 +1,10 @@
-﻿
-namespace CRM.BackgroundJob.UnitTests.Services
+﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Services;
@@ -13,11 +17,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
     using NSubstitute;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Xunit;
 
     public class ResultAmendmentServiceTests
@@ -31,12 +30,9 @@ namespace CRM.BackgroundJob.UnitTests.Services
         private IFeedbackTransactionService transactionService;
         private readonly IFixture fixture = new Fixture();
 
-
-
         #region CreateFeedbackForResultAmendmentAsync
 
         [Fact]
-
         public async Task CreateFeedbackForResultAmendmentAsync_isAnyNotCompeleteStatusIsTrue_EditSystemSettingAsyncCalled()
         {
             // Arrange
@@ -174,12 +170,13 @@ namespace CRM.BackgroundJob.UnitTests.Services
             await service.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, false, resultAmendmentSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
 
             // Assert
-            await logService.ErrorAsync(exception);
+            await logService.Received().ErrorAsync(exception);
         }
 
         #endregion CreateFeedbackForResultAmendmentAsync
 
         #region ResultAmendmentUpdateSystemSetting
+
         [Fact]
         public async Task ResultAmendmentUpdateSystemSetting_IsUatEnv_ExpectedUpdateUatValue()
         {
@@ -188,12 +185,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
             var custAmendmentNotifications = fixture.Create<IEnumerable<CusReachAmendmentNotification>>();
 
-
             // Act
             await service.Public_ResultAmendmentUpdateSystemSetting(true, resultAmendmentSetting, custAmendmentNotifications, "JobStatusNameEnv");
 
             // Assert
-            await commonFeedback.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeqUAT", Arg.Any<int>(), "LastSubmitTimeUAT", Arg.Any<string>(), "JobStatusNameEnv");
+            await commonFeedback.Received().EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeqUAT", Arg.Any<int>(), "LastSubmitTimeUAT", Arg.Any<string>(), "JobStatusNameEnv");
         }
 
         [Fact]
@@ -208,8 +204,9 @@ namespace CRM.BackgroundJob.UnitTests.Services
             await service.Public_ResultAmendmentUpdateSystemSetting(false, resultAmendmentSetting, custAmendmentNotifications, "JobStatusNameEnv");
 
             // Assert
-            await commonFeedback.EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeq", Arg.Any<int>(), "LastSubmitTime", Arg.Any<string>(), "JobStatusNameEnv");
+            await commonFeedback.Received().EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeq", Arg.Any<int>(), "LastSubmitTime", Arg.Any<string>(), "JobStatusNameEnv");
         }
+
         #endregion ResultAmendmentUpdateSystemSetting
 
         #region CreateResultAmendmentFeedbackCreditAsync
@@ -1254,6 +1251,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
         }
+
         #endregion GetAmendmentDescription
 
         #region GetAmendmentDescriptionVirtualSports
@@ -1294,9 +1292,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
         }
+
         #endregion GetAmendmentDescriptionVirtualSports
 
         #region GetAmendmentDescriptionNumberGame
+
         [Fact]
         public void GetAmendmentDescriptionNumberGame_WhenCalled_ReturnExactTemplate()
         {
@@ -1323,9 +1323,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
         }
+
         #endregion GetAmendmentDescriptionNumberGame
 
         #region GetAmendmentDescriptionSportOutRight
+
         [Fact]
         public void GetAmendmentDescriptionSportOutRight_WhenCalled_ReturnExactTemplate()
         {
@@ -1351,9 +1353,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
         }
+
         #endregion GetAmendmentDescriptionSportOutRight
 
         #region GetAmenmendSolution
+
         [Fact]
         public void GetAmenmendSolution_WhenCalled_ReturnExactTemplate()
         {
@@ -1402,16 +1406,17 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
         }
+
         #endregion GetAmenmendSolution
 
         #region GetAmendmentSolutionTemplateEN
+
         [Theory]
         [InlineData("Sportsbook", "test Sportsbook")]
         [InlineData("Virtual Sports 2", "test Virtual Sports 2")]
         [InlineData("Virtual Sports", "test Virtual Sports")]
         [InlineData("Number Game", "Number Game")]
         [InlineData("", "")]
-
         public void GetAmendmentSolutionTemplateEN_DependProductName_ReturnExactTemplateEn(
             string productName, string expectedAppend)
         {
@@ -1474,7 +1479,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
         [InlineData(2, "test OutrightEN")]
         [InlineData(9, "test OutrightEN")]
         [InlineData(5, "test Sportsbook")]
-
         public void GetAmendmentSolutionTemplateEN_DependEventType_ReturnExactTemplateOutRightEn(
             byte EventType, string expectedAppend)
         {
@@ -1529,13 +1533,14 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
         }
+
         #endregion GetAmendmentSolutionTemplateEN
 
         #region GetAmendmentSolutionTemplateYNSC
+
         [Theory]
         [InlineData("Virtual Sports", "test Virtual Sports")]
         [InlineData("Number Game", "test Number Game")]
-
         public void GetAmendmentSolutionTemplateYNSC_DependProductName_ReturnExactTemplate(string productName, string expected)
         {
             // Arrange
@@ -1617,7 +1622,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
         [InlineData("Sportsbook", "789y", false, 3, "test Sportsbook Sc")]
         [InlineData("Virtual Sports 2", "789y", true, 0, "test VirtualSports2 Yn")]
         [InlineData("Virtual Sports 2", "789y", false, 0, "test VirtualSports2 Sc")]
-
         public void GetAmendmentSolutionTemplateYNSC_DependProductNameAndIsVip_ReturnExactTemplate(string productName, string site, bool isVip, byte EventType, string expected)
         {
             // Arrange
@@ -1666,7 +1670,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var sportBook = new StringBuilder(expected);
             var sportBookOrOutright = new StringBuilder(expected);
 
-
             var messageContent = fixture.Create<IEnumerable<Message>>();
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
             commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN).Returns("leagueNameYN");
@@ -1698,6 +1701,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
         #endregion GetAmendmentSolutionTemplateYNSC
 
         #region GetAmendmentSolutionTemplateYnScVirtualSport
+
         [Theory]
         [InlineData(true, "test VirtualSportsYN")]
         [InlineData(false, "test VirtualSportsSC")]
@@ -1724,9 +1728,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
         }
+
         #endregion GetAmendmentSolutionTemplateYnScVirtualSport
 
         #region GetAmendmentSolutionTemplateYnScNumberGame
+
         [Theory]
         [InlineData(true, "test NumberGameYN")]
         [InlineData(false, "test NumberGameSC")]
@@ -1754,7 +1760,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
         }
+
         #endregion GetAmendmentSolutionTemplateYnScNumberGame
+
+
 
         #region Helpers
 

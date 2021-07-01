@@ -127,7 +127,7 @@
             var templateWorksheet = excelPackage.Worksheets.Add("template");
             var worksheet = excelPackage.Worksheets.Add("data");
             var MergePicGroupHeadlineIds = new List<int> { 1, 2 };
-            var excel = CreateExcel(assignments, null, null, true );
+            var excel = CreateExcel(assignments, null, null, true);
             excel.Protected("GetIdMergePic", Arg.Any<IEnumerable<PICAssignmentInfo>>()).Returns(MergePicGroupHeadlineIds);
             excel.Protected("GetPicCell", Arg.Any<IEnumerable<PicModel>>()).Returns(picCell);
             excel.Protected("GetUniqueCommunicationToolsByPicModel", Arg.Any<List<PicModel>>()).Returns(commIncludeMergeHeadline);
@@ -159,7 +159,7 @@
                 Assert.Equal(worksheet.Cells[rowIndex, colNormalIndex++].Value, assignment.Currency);
                 Assert.Equal(worksheet.Cells[rowIndex, colNormalIndex].Value, assignment.Position);
                 rowIndex++;
-            }    
+            }
         }
 
         [Fact]
@@ -246,7 +246,7 @@
             excel.Protected("GetUniqueCommunicationTools", Arg.Any<IEnumerable<PicOfDirectAccount>>()).Returns(comm);
 
             // Action
-            excel.Public_RenderBodyAssigment(templateWorksheet, worksheet, assignments,1,6,1);
+            excel.Public_RenderBodyAssigment(templateWorksheet, worksheet, assignments, 1, 6, 1);
 
             // Assert
             excel.Received().Protected("RenderDrawBorderCell", worksheet, Arg.Any<int>());
@@ -302,11 +302,10 @@
                 }
             };
 
-
             var excel = CreateExcel(null, null, null, isRenderPicManagement);
 
             // Action
-            excel.Public_RenderCommunicationToolMergeCommon(templateWorksheet, worksheet,1,countComm, commIncludeMergeHeadline);
+            excel.Public_RenderCommunicationToolMergeCommon(templateWorksheet, worksheet, 1, countComm, commIncludeMergeHeadline);
 
             // Assert
             excel.DidNotReceive().Protected("RenderCommunicationTools", templateWorksheet, worksheet, 1, Arg.Any<GroupAssignmentCommunication>());
@@ -325,7 +324,6 @@
                     PicName = "test"
                 }
             };
-
 
             var excel = CreateExcel(null, null, null, true);
 
@@ -367,7 +365,6 @@
             Assert.Equal(expected, actual);
         }
 
-
         [Fact]
         public void RenderCommunicationTools_isRenderPicManagementAnDataNotNull_ExpectedRenderCommunicationToolsRow()
         {
@@ -394,7 +391,6 @@
                 }
             };
 
-
             var excel = CreateExcel(null, null, communicationTools, true);
 
             // Action
@@ -402,8 +398,7 @@
 
             // Assert
             Assert.Equal("PicName", worksheet.Cells[1, StartComToolsIndex].Value);
-            Assert.Equal("CommunicationValue", worksheet.Cells[1, StartComToolsIndex+1].Value);
-
+            Assert.Equal("CommunicationValue", worksheet.Cells[1, StartComToolsIndex + 1].Value);
         }
 
         [Fact]
@@ -431,15 +426,13 @@
                 }
             };
 
-
             var excel = CreateExcel(null, null, communicationTools, true);
 
             // Action
             excel.Public_RenderCommunicationTools(templateWorksheet, worksheet, 1, comm);
 
             // Assert
-            Assert.Equal("", worksheet.Cells[1, StartComToolsIndex+1].Value);
-
+            Assert.Equal("", worksheet.Cells[1, StartComToolsIndex + 1].Value);
         }
 
         [Fact]
@@ -504,14 +497,14 @@
         {
             // Arrange
             var headlinePic = new List<PicOfDirectAccount>();
-
             var excel = CreateExcel(null, null, null, true);
             var expected = Enumerable.Empty<GroupAssignmentCommunication>();
-            // Action
+
+            // Act
             var actual = excel.Public_GetUniqueCommunicationTools(headlinePic);
 
             // Assert
-            Assert.Equal(actual, expected);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]

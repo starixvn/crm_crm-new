@@ -1,4 +1,9 @@
-﻿using AutoFixture;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AutoFixture;
 using CRM.BackgroundJob.Models.ProblemsAccount;
 using CRM.BackgroundJob.Services;
 using CRM.BackgroundJob.UnitTests.Testable;
@@ -10,11 +15,6 @@ using Fanex.CRM.BackgroundJob.Models;
 using Fanex.CRM.BackgroundJob.Services;
 using Microsoft.Extensions.Options;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace CRM.BackgroundJob.UnitTests.Services
@@ -31,6 +31,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
         private readonly IFixture fixture = new Fixture();
 
         #region CreateFeedbackForProblemsAccountAsync
+
         [Fact]
         public async Task CreateFeedbackForProblemsAccountAsync_NotExistedproblemsAccountInfor_ExpectedUpdateSystemSettingAndReturn()
         {
@@ -41,7 +42,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var problemsAccountInfor = new List<ProblemsAccountAutoFeedbackInfor>();
             var LastRuntimeEnv = DateTime.Now;
             customerService.GetCustCategoryInfor(problemsAccountSetting, false).Returns(custCategory);
-            transactionService.ImportProblemsAccountFeedbackInfoAsync(Arg.Any<IEnumerable<GroupHeadline>>(), custCategory,  "LIVE").Returns(problemsAccountInfor);
+            transactionService.ImportProblemsAccountFeedbackInfoAsync(Arg.Any<IEnumerable<GroupHeadline>>(), custCategory, "LIVE").Returns(problemsAccountInfor);
 
             // Act
             await service.Public_CreateFeedbackForProblemsAccountAsync(problemsAccountSetting, false, LastRuntimeEnv, "LastRuntimeNameEnv", "JobStatusNameEnv", "LIVE");
@@ -51,7 +52,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             logService.Received(1).LogInformation(Arg.Any<string>());
             service.DidNotReceive().Protected(
                 "CreateProblemsAccountFeedbackCreditAsync",
-                Arg.Any<IEnumerable<ProblemsAccountAutoFeedbackInfor>> (),
+                Arg.Any<IEnumerable<ProblemsAccountAutoFeedbackInfor>>(),
                 Arg.Any<IEnumerable<SettingItem>>(),
                 Arg.Any<IEnumerable<SystemSettingMapping>>());
         }
@@ -102,7 +103,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var custCategory = fixture.Create<IEnumerable<CustCategoryInfor>>();
             var problemsAccountInfor = new List<ProblemsAccountAutoFeedbackInfor>();
 
-            for(int i = 0; i < 255; i++)
+            for (int i = 0; i < 255; i++)
             {
                 var userName = i;
                 var problem = new ProblemsAccountAutoFeedbackInfor
@@ -147,9 +148,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 Arg.Any<IEnumerable<SettingItem>>(),
                 Arg.Any<IEnumerable<SystemSettingMapping>>());
         }
+
         #endregion CreateFeedbackForProblemsAccountAsync
 
         #region CreateProblemsAccountFeedbackByBatchAsync
+
         [Fact]
         public async Task CreateProblemsAccountFeedbackByBatchAsync_DevideBatchInsertFeedback_ExpectedCallFunctionExactParams()
         {
@@ -172,7 +175,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 };
                 problemsAccounts.Add(problem);
             }
-
 
             var categoryProblemAccount = problemsAccounts.Where(x => x.CategoryID == 1);
             // Act
@@ -208,9 +210,8 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 };
                 problemsAccounts.Add(problem);
             }
-            
 
-            var categoryProblemAccount = problemsAccounts.Where(x=>x.CategoryID == 1);
+            var categoryProblemAccount = problemsAccounts.Where(x => x.CategoryID == 1);
             // Act
             await service.Public_CreateProblemsAccountFeedbackByBatchAsync(categoryProblemAccount, problemsAccounts, "1", Arg.Any<IEnumerable<SettingItem>>(), Arg.Any<IEnumerable<SystemSettingMapping>>());
 
@@ -221,10 +222,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 Arg.Any<IEnumerable<SettingItem>>(),
                 Arg.Any<IEnumerable<SystemSettingMapping>>());
         }
-        
+
         #endregion CreateProblemsAccountFeedbackByBatchAsync
 
         #region CreateProblemsAccountFeedbackCreditAsync
+
         [Fact]
         public async Task CreateProblemsAccountFeedbackCreditAsync_CreateNewCriteria_ExpectedToCallFunction()
         {
@@ -266,9 +268,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             service.Received().Protected("CheckValidParamsAndInsertFeedbackAsync", problemsAccounts
                 , Arg.Any<CreateMutipleFeedbackCommand>());
         }
+
         #endregion CreateProblemsAccountFeedbackCreditAsync
 
         #region CheckValidParamsAndInsertFeedbackAsync
+
         [Fact]
         public async Task CheckValidParamsAndInsertFeedbackAsync_CreateSuccessfull_ExpectedWriteLog()
         {
@@ -359,9 +363,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             await transactionService.EditProblemsAccountFeedbackInfoAsync(Arg.Any<string>(), CreateFeedbackJobStatus.Fail, exception.Message);
             await logService.ErrorAsync(exception);
         }
+
         #endregion CheckValidParamsAndInsertFeedbackAsync
 
         #region GetProductXml
+
         [Fact]
         public void GetProductXml_WhenCalled_ExpectedReturnExactString()
         {
@@ -383,9 +389,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
         }
+
         #endregion GetProductXml
 
         #region GetRelatedCustomerXml
+
         [Fact]
         public void GetRelatedCustomerXml_WhenCalled_ExpectedReturnExactString()
         {
@@ -417,9 +425,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
         }
+
         #endregion GetRelatedCustomerXml
 
         #region GetCustomerXml
+
         [Fact]
         public void GetCustomerXml_WhenCalled_ExpectedReturnExactString()
         {
@@ -450,6 +460,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
         }
+
         #endregion GetCustomerXml
 
         #region GetProblemsSportsbookProduct
@@ -498,6 +509,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
         #endregion GetProblemsSportsbookProduct
 
         #region GetDescription
+
         [Fact]
         public void GetDescription_WhenCalled_ExpectedReturnExactString()
         {
@@ -515,9 +527,11 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
         }
+
         #endregion GetDescription
 
         #region GetSolution
+
         [Theory]
         [InlineData(true, "SolutionYN")]
         [InlineData(false, "SolutionSC")]
@@ -551,10 +565,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Act
             var actual = service.Public_GetSolution(problemsAccounts);
 
-
             // Assert
             Assert.Equal(expected, actual);
         }
+
         #endregion GetSolution
 
         #region Helpers

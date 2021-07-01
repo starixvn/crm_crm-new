@@ -1,12 +1,11 @@
-﻿using CRM.Core.Constants;
-using CRM.Criteria.Setting;
-using CRM.Services;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-
-namespace CRM.Controllers
+﻿namespace CRM.Controllers
 {
-    public class SettingController:BaseController
+    using System.Threading.Tasks;
+    using CRM.Criteria.Setting;
+    using CRM.Services;
+    using Microsoft.AspNetCore.Mvc;
+
+    public class SettingController : BaseController
     {
         private readonly ISettingService settingService;
 
@@ -14,6 +13,7 @@ namespace CRM.Controllers
         {
             this.settingService = settingService;
         }
+
         public async Task<ActionResult> NumberOfFeedbackSubjectTemplate()
         {
             var numberOfFeedbackSubjectTemplate = await settingService.NumberOfFeedbackSubjectTemplate();
@@ -30,6 +30,5 @@ namespace CRM.Controllers
             var feedbackSubjectTemplateByPagingIndex = await settingService.GetFeedbackSubjectTemplateByPagingIndex(criteria);
             return Json(feedbackSubjectTemplateByPagingIndex);
         }
-
     }
 }

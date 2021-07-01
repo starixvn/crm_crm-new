@@ -1,5 +1,9 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Testable
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading.Tasks;
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Services;
@@ -7,10 +11,6 @@
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class ResultAmendmentServiceTestable : ResultAmendmentService
     {
@@ -42,7 +42,6 @@
             await base.ResultAmendmentUpdateSystemSetting(isUAT, resultAmendmentSetting, custAmendmentNotifications, JobStatusNameEnv);
         }
 
-
         public async Task Public_CreateResultAmendmentFeedbackCreditAsync(
            AmendmentAutoFeedbackInfor amendment,
             IEnumerable<SettingItem> settings,
@@ -66,7 +65,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-           return base.GetAmendmentProductXml(sportTypeId, productId, betTypeMappings, settings, settingMappings);
+            return base.GetAmendmentProductXml(sportTypeId, productId, betTypeMappings, settings, settingMappings);
         }
 
         public SettingItem Public_GetAmenmentProduct(
