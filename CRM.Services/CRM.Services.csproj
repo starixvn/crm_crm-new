@@ -23,8 +23,4 @@
     <ProjectReference Include="..\CRM.Repositories\CRM.Repositories.csproj" />
     <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
 </Project>
