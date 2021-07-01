@@ -146,12 +146,12 @@
         <Setting Key="Acc_CRM_SubjectTemplateDel" SpName="Acc_CRM_SubjectTemplateDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Feedback">
-        <Setting Key="FeedbackSelTopFeedbackByCustId" SpName="Acc_CRM_FeedbackSelTopByCustId" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_FeedbackSelTopByCustId" SpName="Acc_CRM_FeedbackSelTopByCustId" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="SettingID" ObjectProperty="SettingIdLv1" />
             <Mapping DataField="SubSettingID" ObjectProperty="SettingIdLv2" />
             <Mapping DataField="SubSettingIDLevel3" ObjectProperty="SettingIdLv3" />
         </Setting>
-        <Setting Key="FeedbackSelTopFeedback" SpName="Acc_CRM_FeedbackSelTop" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_FeedbackSelTop" SpName="Acc_CRM_FeedbackSelTop" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="SettingID" ObjectProperty="SettingIdLv1" />
             <Mapping DataField="SubSettingID" ObjectProperty="SettingIdLv2" />
             <Mapping DataField="SubSettingIDLevel3" ObjectProperty="SettingIdLv3" />
@@ -161,7 +161,6 @@
     </Function>
     <Funtcion name="Customer">
         <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet">
-            <Mapping DataField="CustId" ObjectProperty="Id" />
             <Mapping DataField="Fax" ObjectProperty="FaxNumber" />
             <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
             <Mapping DataField="Wire_SwiftCode" ObjectProperty="BankSwiftCode" />
@@ -173,7 +172,6 @@
             <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
         </Setting>
         <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
-            <Mapping DataField="CustId" ObjectProperty="Id" />
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>
         <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdateBasicInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet" />

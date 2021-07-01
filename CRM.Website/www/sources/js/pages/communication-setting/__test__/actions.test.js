@@ -189,7 +189,7 @@ describe('actionCreators', () => {
         });
     });
 
-    describe('verifyUserName', () => {
+    describe('verifyUsername', () => {
         it('should handle response when request has been done', async () => {
             // Arrange
             const expectedParams = {
@@ -208,7 +208,7 @@ describe('actionCreators', () => {
             DataService.postDataAsync = jest.fn(() => promise);
 
             // Act
-            const actual = await store.dispatch(ActionCreators.verifyUserName(expectedParams));
+            const actual = await store.dispatch(ActionCreators.verifyUsername(expectedParams));
 
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerSetting/VerifyUsername', expectedParams);

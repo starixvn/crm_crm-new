@@ -2,12 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const customerInfoSlide = createSlice({
     name: 'customerInfo',
-    
     initialState: {
         gridData: null,
         gridParams: {
-            UserName: null,
-            IsGuest: false,
+            username: null,
+            isGuest: false,
         },
         settings: {
             sites: [],
@@ -15,7 +14,7 @@ const customerInfoSlide = createSlice({
             languages: []
         },
         editCustomerInfoResult: '',
-        editCustomerInfoPopup: { show : false },
+        editCustomerInfoPopup: { show: false },
         emptyCustomerInfoPopup: { show: false }
     },
     reducers: {
@@ -31,14 +30,13 @@ const customerInfoSlide = createSlice({
         setEditCustomerInfo: (state, action) => {
             state.editCustomerInfoResult = action.payload;
         },
-        setEditCustomerInfoPopup : (state, action) => {
+        setEditCustomerInfoPopup: (state, action) => {
             state.editCustomerInfoPopup = action.payload;
         },
-        setEmptyCustomerInfoPopup : (state, action) => {
+        setEmptyCustomerInfoPopup: (state, action) => {
             state.emptyCustomerInfoPopup = action.payload;
         }
     }
-
 });
 
 const { actions, reducer } = customerInfoSlide;
@@ -49,8 +47,7 @@ export const {
     setSettings,
     setEditCustomerInfo,
     setEditCustomerInfoPopup,
-    setEmptyCustomerInfoPopup,
-    setSearchUserName
+    setEmptyCustomerInfoPopup
 } = actions;
 
 export default reducer;

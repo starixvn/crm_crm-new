@@ -2,28 +2,25 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import LangHelper from '@jsroot/common/langHelper';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 
-
 export class Filter extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            UserName: '',
-            IsGuest: false
+            username: '',
+            isGuest: false
         };
     };
 
     componentDidUpdate(prevProps) {
         if (this.props.gridParams !== prevProps.gridParams) {
-          this.setState({
-              UserName: this.props.gridParams.UserName
-          });
+            this.setState({
+                username: this.props.gridParams.username
+            });
         }
-      }
-
+    }
 
     handleChange = event => {
         const target = event.target;
@@ -36,8 +33,8 @@ export class Filter extends Component {
 
     getParams = () => {
         return {
-            UserName: this.state.UserName,
-            IsGuest: this.state.IsGuest
+            username: this.state.username,
+            isGuest: this.state.isGuest
         };
     };
 
@@ -48,34 +45,31 @@ export class Filter extends Component {
         this.props.getCustomerInfo(params);
     };
 
-    
     render() {
         const { isHost } = this.props;
         return (
             <div>
-                <Form className="form-filter search-frm"  onSubmit={this.handleSubmit}>
+                <Form className="form-filter search-frm" onSubmit={this.handleSubmit}>
                     <Form.Row bsPrefix='form-row'>
                         <Form.Group className="col-md-9 text-search">
-                            <Form.Control type="text" size="sm" className="shadow-none inputSearch"
-                                onChange={this.handleChange} name="UserName" value={this.state.UserName}
+                            <Form.Control type="text" size="sm" className="shadow-none inputSearch" autoComplete="off"
+                                onChange={this.handleChange} name="username" value={this.state.username}
                             />
-                            <Button onClick={this.handleSubmit} className="buttonSearch" variant="primary" size="sm"><span className="fa fa-search icon-edit"></span></Button>  
-                            
+                            <Button onClick={this.handleSubmit} className="buttonSearch" variant="primary" size="sm"><span className="fa fa-search icon-edit"></span></Button>
+
                         </Form.Group>
                         <Form.Group className="col-md-3 check-guest">
-                            <input type="checkbox"  checked={this.state.IsGuest} className="margin-top-10"
-                                onChange={this.handleChange} name="IsGuest" autoComplete="off"
+                            <input type="checkbox" checked={this.state.IsGuest} className="margin-top-10"
+                                onChange={this.handleChange} name="isGuest"
                             /> {LangHelper.getResource('Guest')}
                         </Form.Group>
                     </Form.Row>
                 </Form>
             </div>
-            
+
         );
     }
-    
 }
-
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 

@@ -25,7 +25,7 @@ export class AppContainer extends Component {
         isHost: false,
         editCustomerInfoPopup: { show: false },
         emptyCustomerInfoPopup: { show: false },
-        getCustomerInfo: function() {
+        getCustomerInfo: function () {
             //nothing
         },
     };
@@ -39,26 +39,25 @@ export class AppContainer extends Component {
     };
 
     handleCloseEmptyCustomerInfoPopup = () => {
-        this.props.setEmptyCustomerInfoPopup( { show: false });
+        this.props.setEmptyCustomerInfoPopup({ show: false });
     };
 
     handleCheckGridData = () => {
-        if(this.props.gridData === null) {
-            this.props.setEmptyCustomerInfoPopup( {show: true} );
+        if (this.props.gridData === null) {
+            this.props.setEmptyCustomerInfoPopup({ show: true });
         } else {
             this.props.setEmptyCustomerInfoPopup( {show: false} );
         }
     }
 
-
-    render() {  
+    render() {
         return (
             <div className="col-md-3">
-                <Filter 
+                <Filter
                     isHost={this.props.isHost}
                     isEmpty={this.handleCheckGridData}
                 />
-                <DataGrid 
+                <DataGrid
                     isHost={this.props.isHost}
                     onSuccess={this.handleEditSuccess}
                 />

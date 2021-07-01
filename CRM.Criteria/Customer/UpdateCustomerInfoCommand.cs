@@ -5,7 +5,6 @@
 
     public class UpdateCustomerInfoCommand : BaseNonQueryCommand
     {
-
         public short UserRole { get; } = Constants.UserRole;
 
         public int Site { get; set; }
@@ -18,7 +17,7 @@
 
         public string LastName { get; set; }
 
-        public string NickName { get; set; }
+        public string Nickname { get; set; }
 
         public string Language { get; set; }
 
@@ -74,12 +73,8 @@
 
         public string IP { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_CustomerUpdUserSearch";
-        }
+        public override string GetSettingKey() => "Acc_CRM_CustomerUpdUserSearch";
 
         public override bool IsValid() => true;
-
     }
 }

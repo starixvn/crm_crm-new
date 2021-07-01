@@ -4,18 +4,16 @@ import customerInfo, {
     setSettings,
     setEditCustomerInfo,
     setEditCustomerInfoPopup,
-    setEmptyCustomerInfoPopup,
-    setSearchUserName
+    setEmptyCustomerInfoPopup
 } from '../customerInfoSlide';
-
 
 describe('customerInfo reducer', () => {
     it('show handle initial state', () => {
         expect(customerInfo(undefined, {})).toEqual({
             gridData: null,
             gridParams: {
-                UserName: null,
-                IsGuest: false,
+                username: null,
+                isGuest: false,
             },
             settings: {
                 sites: [],
@@ -23,7 +21,7 @@ describe('customerInfo reducer', () => {
                 languages: []
             },
             editCustomerInfoResult: '',
-            editCustomerInfoPopup: { show : false },
+            editCustomerInfoPopup: { show: false },
             emptyCustomerInfoPopup: { show: false }
         });
     });
@@ -33,27 +31,27 @@ describe('customerInfo reducer', () => {
             customerInfo({}, {
                 type: setGridParams.type,
                 payload: {
-                    UserName: null,
-                    IsGuest: false
+                    username: null,
+                    isGuest: false
                 }
             })
         ).toEqual({
             gridParams: {
-                UserName: null,
-                IsGuest: false,
+                username: null,
+                isGuest: false
             }
         });
     });
 
     it('should handle setCustomerInfo', () => {
-       expect(
-            customerInfo({} , {
+        expect(
+            customerInfo({}, {
                 type: setCustomerInfo.type,
-                payload: {data: {}}
+                payload: { data: {} }
             })
-       ).toEqual({
-            gridData: {data: {}}
-       });
+        ).toEqual({
+            gridData: { data: {} }
+        });
     });
 
     it('should handle setSettings', () => {
@@ -61,16 +59,16 @@ describe('customerInfo reducer', () => {
             customerInfo({}, {
                 type: setSettings.type,
                 payload: {
-                    sites: [{id: 1, name: 'site'}],
-                    countries: [{id: 1, name: 'country'}],
-                    languages: [{id: 1, name: 'language'}]
+                    sites: [{ id: 1, name: 'site' }],
+                    countries: [{ id: 1, name: 'country' }],
+                    languages: [{ id: 1, name: 'language' }]
                 }
             })
         ).toEqual({
             settings: {
-                sites: [{id: 1, name: 'site'}],
-                    countries: [{id: 1, name: 'country'}],
-                    languages: [{id: 1, name: 'language'}]
+                sites: [{ id: 1, name: 'site' }],
+                countries: [{ id: 1, name: 'country' }],
+                languages: [{ id: 1, name: 'language' }]
             }
         });
     });

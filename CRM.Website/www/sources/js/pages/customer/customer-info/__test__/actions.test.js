@@ -19,15 +19,15 @@ describe('actionCreators', () => {
     describe('getCustomerInfo', () => {
         it('should handle setCustomerInfo when fetching customer information have been done', async () =>{
             // Arrange
-            const expectParams = { UserName: null, IsGuest: false };
+            const expectParams = { username: null, isGuest: false };
             const response = { data: {
                 id: 1,
-                userName: 'test',
+                username: 'test',
                 siteId: 0,
                 countryId: 0,
                 firstName: 'customertodays1',
                 lastName: 'lastname',
-                nickName: '', 
+                nickname: ''
             } }
             const expectedActions = [{ type: ActionCreators.setCustomerInfo.type, payload: response.data}];
             const store = mockStore({ gridData: null });
@@ -74,7 +74,7 @@ describe('actionCreators', () => {
             // Arrange
             const expectParams = { 
                 id: 1,
-                userName: 'test',
+                username: 'test',
                 siteId: 0
             };
             const response = { data: { isSuccessful: true, messmessageage: '' } };

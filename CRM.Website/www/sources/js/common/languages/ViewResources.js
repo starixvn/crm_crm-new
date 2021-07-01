@@ -41,7 +41,7 @@
     CustomerCountry: 'Country',
     CustomerFirstName: 'First Name',
     CustomerLastName: 'Last Name',
-    CustomerNickName: 'Nick Name',
+    CustomerNickname: 'Nickname',
     CustomerLanguage: 'Language',
     CustomerPhone1: 'Phone 1',
     CustomerPhone2: 'Phone 2',

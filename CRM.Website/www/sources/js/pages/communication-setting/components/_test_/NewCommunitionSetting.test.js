@@ -275,7 +275,7 @@ describe('NewCommunitionSetting', () => {
                 const props = {
                     createCommunicationResult: {},
                     settings: {},
-                    verifyUserName: jest.fn(() => promise)
+                    verifyUsername: jest.fn(() => promise)
                 };
                 const setFieldValue = jest.fn();
                 const event = {
@@ -291,7 +291,7 @@ describe('NewCommunitionSetting', () => {
                 // Assert
                 expect(event.preventDefault).toHaveBeenCalled();
                 expect(container.isValidCustomer).toHaveBeenCalledWith('asd');
-                expect(props.verifyUserName).toHaveBeenCalledWith({ Username: 'asd' });
+                expect(props.verifyUsername).toHaveBeenCalledWith({ Username: 'asd' });
                 expect(container.state.listOfCustomer).toEqual(expected);
                 expect(container.state.listOfCustomerValid).toEqual(expected);
                 expect(setFieldValue).toHaveBeenCalled();
@@ -307,7 +307,7 @@ describe('NewCommunitionSetting', () => {
                 const props = {
                     createCommunicationResult: {},
                     settings: {},
-                    verifyUserName: jest.fn(() => promise)
+                    verifyUsername: jest.fn(() => promise)
                 };
                 const setFieldValue = jest.fn();
                 const event = {
@@ -335,7 +335,7 @@ describe('NewCommunitionSetting', () => {
                 const props = {
                     createCommunicationResult: {},
                     settings: {},
-                    verifyUserName: jest.fn(() => promise)
+                    verifyUsername: jest.fn(() => promise)
                 };
                 const event = {
                     preventDefault: jest.fn()

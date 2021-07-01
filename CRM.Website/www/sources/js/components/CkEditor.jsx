@@ -7,18 +7,18 @@ import PropTypes from 'prop-types';
 export default class CkEditor extends PureComponent {
     static propTypes = {
         data: PropTypes.string.isRequired,
-        userName: PropTypes.string.isRequired
+        username: PropTypes.string.isRequired
     };
 
     static defaultProps = {
         data: '',
-        userName: ''
+        username: ''
     };
     constructor(props) {
         super(props);
         this.state = {
             data: '',
-            userName: ''
+            username: ''
         };
     }
 
@@ -35,7 +35,7 @@ export default class CkEditor extends PureComponent {
 
     onLoadPlugin = CKEDITOR => {
         let editText = '';
-        const { userName, currentDate } = this.props;
+        const { username, currentDate } = this.props;
         if (this.state.data === "") {
             editText = "&nbsp;";
         }
@@ -48,7 +48,7 @@ export default class CkEditor extends PureComponent {
         </div>\
         <br>';
 
-        const html = this.stringFormat(textTemplate, [userName, moment(currentDate).format("MM/DD/YYYY, hh:mm:ss A"), editText]);
+        const html = this.stringFormat(textTemplate, [username, moment(currentDate).format("MM/DD/YYYY, hh:mm:ss A"), editText]);
         CKEDITOR.plugins.add("editblock", {
             init: function (editor) {
                 editor.addCommand("insertEditBlock", {

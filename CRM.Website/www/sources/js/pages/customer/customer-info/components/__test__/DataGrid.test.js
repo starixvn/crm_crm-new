@@ -323,12 +323,12 @@ describe('DataGridCustomerInfo', () => {
                 const promise = Promise.resolve({});
                 const values = {
                     id: 1,
-                    userName: '',
+                    username: '',
                     siteId: 0,
                     countryId: 0,
                     firstName: '',
                     lastName: '',
-                    nickName: '', 
+                    nickname: '', 
                     mobilePhone: '',
                     mobilePhoneAreaCode: '',
                     mobilePhoneCountryCode: '',
@@ -475,19 +475,19 @@ describe('DataGridCustomerInfo', () => {
                     getCustomerInfo: jest.fn(),
                     getSettings: jest.fn(),
                     gridParams: {
-                        UserName: 'test',
-                        IsGuest: false
+                        username: 'test',
+                        isGuest: false
                     }
                 };
-                const userName = "test1";
+                const username = "test1";
                 const expected = {
-                    UserName: 'test1',
-                    IsGuest: false
+                    username: 'test1',
+                    isGuest: false
                 };
                 const container = shallow(<DataGrid {...props} />).instance();
 
                 // Act
-                container.handleSearchUplineInfo(userName);
+                container.handleSearchUplineInfo(username);
                  
                 //Assert
                 expect(props.setGridParams).toHaveBeenCalledWith(expected);

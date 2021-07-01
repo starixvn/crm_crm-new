@@ -21,29 +21,29 @@ describe('filter', () => {
 
     describe('methods', () => {
         describe('componentDidUpdate', () => {
-            it('componentDidUpdate run correctly', () =>{
+            it('componentDidUpdate run correctly', () => {
                 //Arrange
                 const state = {
-                    UserName: '',
-                    IsGuest: false
+                    username: '',
+                    isGuest: false
                 };
                 const promise = Promise.resolve({});
                 const props = {
                     gridParams: {
-                        UserName: 'test',
-                        IsGuest: false
+                        username: 'test',
+                        isGuest: false
                     }
                 }
 
                 const params = {
-                    UserName: state.UserName,
-                    IsGuest: state.IsGuest
+                    username: state.username,
+                    isGuest: state.isGuest
                 }
 
                 const newProps = {
                     gridParams: {
-                        UserName: '',
-                        IsGuest: false
+                        username: '',
+                        isGuest: false
                     }
                 }
 
@@ -54,23 +54,22 @@ describe('filter', () => {
 
                 //Assert
                 promise.then(() => {
-                    expect(container.instance().state.UserName).toEqual('test');
+                    expect(container.instance().state.username).toEqual('test');
                 })
-
             });
         });
 
         describe('handleChange', () => {
-            it('should call setState when change user name field', () => {
+            it('should call setState when change username field', () => {
                 //Arrange
                 const expected = {
-                    UserName: 'test',
-                    IsGuest: false
+                    username: 'test',
+                    isGuest: false
                 }
                 const container = shallow(<Filter />);
 
                 //Act
-                container.instance().handleChange({ target: { value: 'test', name: 'UserName' } });
+                container.instance().handleChange({ target: { value: 'test', name: 'username' } });
 
                 //Assert
                 expect(container.state()).toEqual(expected);
@@ -79,13 +78,13 @@ describe('filter', () => {
             it('should call setState when change IsGuest field', () => {
                 //Arrange
                 const expected = {
-                    UserName: '',
-                    IsGuest: true
+                    username: '',
+                    isGuest: true
                 }
                 const container = shallow(<Filter />);
 
                 //Act
-                container.instance().handleChange({ target: { type: 'checkbox', checked: true, name: 'IsGuest' } });
+                container.instance().handleChange({ target: { type: 'checkbox', checked: true, name: 'isGuest' } });
 
                 //Assert
                 expect(container.state()).toEqual(expected);
@@ -96,8 +95,8 @@ describe('filter', () => {
             it('should return expected params', () => {
                 // Arrange
                 const expected = {
-                    UserName: '',
-                    IsGuest: false
+                    username: '',
+                    isGuest: false
                 };
                 const container = shallow(<Filter />).instance();
 
@@ -113,8 +112,8 @@ describe('filter', () => {
             it('should call exactly function', () => {
                 //Arrange
                 const expectedParam = {
-                    UserName: 'test',
-                    IsGuest: false
+                    username: 'test',
+                    isGuest: false
                 };
                 const props = {
                     setGridParams: jest.fn(),

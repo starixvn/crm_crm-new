@@ -1,21 +1,13 @@
 ﻿namespace CRM.Models.Customer
 {
-    using CRM.Core.Constants;
-    using CRM.Models.Common;
     using System;
     using System.Collections.Generic;
+    using CRM.Core.Constants;
+    using CRM.Models.Common;
 
-    public class CustomerInfo : BaseModel
+    public class CustomerInfo
     {
-        public CustomerInfo()
-        {
-            SiteSetting = new Site();
-            Country = new BaseModel();
-            Province = new BaseModel();
-            Role = new BaseModel();
-            UplineInfo = new List<CustomerInfo>();
-        }
-
+        public int CustId { get; set; }
         public int TitleID { get; set; }
 
         public string FirstName { get; set; }
@@ -34,7 +26,7 @@
 
         public string MSN { get; set; }
 
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         public int RoleID { get; set; }
 
@@ -86,15 +78,9 @@
 
         public bool Ignored { get; set; }
 
-        public string UserName2 { get; set; }
+        public string Username2 { get; set; }
 
-        public string NickName
-        {
-            get
-            {
-                return Id > 0 ? UserName2 : string.Empty;
-            }
-        }
+        public string Nickname => CustId > 0 ? Username2 : string.Empty;
 
         public string Pic1Name { get; set; }
 
@@ -164,103 +150,57 @@
 
         public bool IsIgnored { get; set; }
 
-        public bool IsSuper => Role != null
-            && (Role.Id == RoleIdConstants.Super || Role.Id == RoleIdConstants.CRMSuper || Role.Id == RoleIdConstants.CN88Super);
+        public bool IsSuper => Role != null && (Role.Id == RoleIdConstants.Super || Role.Id == RoleIdConstants.CRMSuper);
 
         public bool IsDirectAccount { get; set; }
 
-        public bool IsGuest => Role != null
-            && (Role.Id == RoleIdConstants.Guest || Role.Id == RoleIdConstants.CRMGuest || Role.Id == RoleIdConstants.CN88Guest);
+        public bool IsGuest => Role != null && (Role.Id == RoleIdConstants.Guest || Role.Id == RoleIdConstants.CRMGuest);
 
-        public Setting Title
+        public Setting Title => new Setting { Id = TitleID, Name = string.Empty };
+
+        public Fax FaxInfo => new Fax { CountryCode = FaxCountryCode, AreaCode = FaxAreaCode, FaxNumber = FaxNumber };
+
+        public BaseModel Role { get; set; } = new BaseModel();
+
+        public Site SiteSetting { get; set; } = new Site();
+
+        public Bank BankInfo => new Bank
         {
-            get
-            {
-                return new Setting { Id = TitleID, Name = string.Empty };
-            }
-        }
-
-        public Fax FaxInfo
-        {
-            get
-            {
-                return new Fax { CountryCode = FaxCountryCode, AreaCode = FaxAreaCode, FaxNumber = FaxNumber };
-            }
-        }
-
-        public BaseModel Role { get; set; }
-
-        public Site SiteSetting { get; set; }
-
-        public Bank BankInfo
-        {
-            get
-            {
-                return new Bank { Name = BankName, SwiftCode = BankSwiftCode, AccountName = BankAccountName, AccountNumber = BankAccountNumber };
-            }
-        }
+            Name = BankName,
+            SwiftCode = BankSwiftCode,
+            AccountName = BankAccountName,
+            AccountNumber = BankAccountNumber
+        };
 
         public UserInfo Creator { get; set; }
 
-        public BaseModel Country { get; set; }
+        public BaseModel Country { get; set; } = new BaseModel();
 
-        public BaseModel Province { get; set; }
+        public BaseModel Province { get; set; } = new BaseModel();
 
-        public BaseModel LicenseeTypeObj { get; set; }
-
-        public List<PersonalInfoContact> PersonalInfoContacts
-        {
-            get
+        public List<PersonalInfoContact> PersonalInfoContacts =>
+            new List<PersonalInfoContact>
             {
-                var piccontacts = new List<PersonalInfoContact>
-                {
-                    new PersonalInfoContact { Name = Pic1Name, Phone = Pic1 },
-                    new PersonalInfoContact { Name = Pic2Name, Phone = Pic2 },
-                    new PersonalInfoContact { Name = Pic3Name, Phone = Pic3 },
-                    new PersonalInfoContact { Name = Pic4Name, Phone = Pic4 }
-                };
-                return piccontacts;
-            }
-        }
+                new PersonalInfoContact { Name = Pic1Name, Phone = Pic1 },
+                new PersonalInfoContact { Name = Pic2Name, Phone = Pic2 },
+                new PersonalInfoContact { Name = Pic3Name, Phone = Pic3 },
+                new PersonalInfoContact { Name = Pic4Name, Phone = Pic4 }
+            };
 
-        public List<string> BettingCode
-        {
-            get
-            {
-                var bettingcodes = new List<string>
-                {
-                    RefCode1,
-                    RefCode2
-                };
-                return bettingcodes;
-            }
-        }
+        public List<string> BettingCode => new List<string> { RefCode1, RefCode2 };
 
-        public List<Phone> PhoneInfo
-        {
-            get
+        public List<Phone> PhoneInfo =>
+            new List<Phone>
             {
-                var phoneInfo = new List<Phone>
-                {
-                    new Phone { CountryCode = PhoneCountryCode, AreaCode = PhoneAreaCode, PhoneNumber = Phone },
-                    new Phone { CountryCode = Phone2CountryCode, AreaCode = Phone2AreaCode, PhoneNumber = Phone2 },
-                    new Phone { CountryCode = Phone3CountryCode, AreaCode = Phone3AreaCode, PhoneNumber = Phone3 }
-                };
-                return phoneInfo;
-            }
-        }
+                new Phone { CountryCode = PhoneCountryCode, AreaCode = PhoneAreaCode, PhoneNumber = Phone },
+                new Phone { CountryCode = Phone2CountryCode, AreaCode = Phone2AreaCode, PhoneNumber = Phone2 },
+                new Phone { CountryCode = Phone3CountryCode, AreaCode = Phone3AreaCode, PhoneNumber = Phone3 }
+            };
 
-        public Phone Mobile
-        {
-            get
-            {
-                return new Phone { CountryCode = MobilePhoneCountryCode, AreaCode = MobilePhoneAreaCode, PhoneNumber = MobilePhone };
-            }
-        }
+        public Phone Mobile => new Phone { CountryCode = MobilePhoneCountryCode, AreaCode = MobilePhoneAreaCode, PhoneNumber = MobilePhone };
 
         public List<int> Languages { get; set; }
 
-        public IEnumerable<CustomerInfo> UplineInfo { get; set; }
+        public IEnumerable<CustomerInfo> UplineInfo { get; set; } = new List<CustomerInfo>();
     }
-
 }

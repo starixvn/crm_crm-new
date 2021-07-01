@@ -169,7 +169,7 @@ export class EditCommunitionSetting extends PureComponent {
                             {LangHelper.getResource('Customer')}
                         </Form.Label>
                         <Col sm="3 mt-2" md="3 mt-2">
-                            {values.userName}
+                            {values.username}
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
@@ -250,7 +250,7 @@ export class EditCommunitionSetting extends PureComponent {
     render() {
         const Communication = this.props.selectCommunication;
         const initialValuesEditForm = {
-            userName: Communication.username,
+            username: Communication.username,
             mainCategoryTypesEdit: Communication.category,
             subCategoryTypesEdit: Communication.subCategory,
             comunicationToolTypesEdit: Communication.commTool,

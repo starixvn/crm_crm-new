@@ -1,82 +1,79 @@
 ﻿namespace CRM.Services.Customer
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models;
     using CRM.Models.Customer;
-    using Fanex.NAP.Client.Helpers.Web;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
 
     public interface ICustomerService
     {
         Task<CustomerInfo> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria);
+
         Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command);
     }
+
     public class CustomerService : ICustomerService
     {
         private readonly IBaseService baseService;
 
-        public CustomerService(
-            IBaseService baseService)
+        public CustomerService(IBaseService baseService)
         {
             this.baseService = baseService;
         }
 
         public async Task<CustomerInfo> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
         {
-            var data = await baseService.FetchMultipleAsync<CustomerInfo, int>(criteria);
+            var (customers, languageIds) = await baseService.FetchMultipleAsync<CustomerInfo, int>(criteria);
             CustomerInfo customerInfo = null;
-            if (data.Item1.Any())
+            if (customers.Any())
             {
-                customerInfo = data.Item1.FirstOrDefault();
+                customerInfo = customers.FirstOrDefault();
                 customerInfo.Role.Id = customerInfo.RoleID;
                 customerInfo.Role.Name = RoleSettingService.GetRoleName(customerInfo.RoleID);
+                customerInfo.Languages = languageIds.ToList();
+                customerInfo.LanguageID = string.Join(",", languageIds);
 
                 if (!criteria.IsGuest)
                 {
-                    customerInfo.UplineInfo = await GetUplineInfoOfUser(new GetUplineInfoOfUserCriteria
-                    {
-                        CustId = customerInfo.Id
-                    });
+                    customerInfo.UplineInfo = await GetUplineInfoAsync(customerInfo.CustId);
                 }
-                customerInfo.Languages = data.Item2.ToList();
-                customerInfo.LanguageID = string.Join(",", data.Item2);
-
             }
+
             return customerInfo;
         }
 
-        public async Task<IEnumerable<CustomerInfo>> GetUplineInfoOfUser(GetUplineInfoOfUserCriteria criteria)
+        protected internal virtual async Task<IEnumerable<CustomerInfo>> GetUplineInfoAsync(int custId)
         {
-
-            var uplineInfoResult = new List<CustomerInfo>();
-            var rawData = await baseService.GetDataAsync<CustomerInfo>(criteria);
-            foreach (var item in rawData)
+            var criteria = new GetUplineInfoOfUserCriteria { CustId = custId };
+            var uplineInfos = new List<CustomerInfo>();
+            var customers = await baseService.GetDataAsync<CustomerInfo>(criteria);
+            foreach (var item in customers)
             {
-                if (criteria.CustId == item.Id || item.RoleID == RoleIdConstants.Headline)
+                if (criteria.CustId == item.CustId || item.RoleID == RoleIdConstants.Headline)
                 {
                     continue;
                 }
+
                 item.Role.Id = item.RoleID;
                 item.Role.Name = RoleSettingService.GetRoleName(item.RoleID);
-                uplineInfoResult.Add(item);
+                uplineInfos.Add(item);
             }
 
-            var headline = rawData.Where(i => i.Role.Id == RoleIdConstants.Headline)
-                                  .Select(i =>
-                                  {
-                                      i.Role.Name = RoleSettingService.GetRoleName(i.Role.Id);
-                                      return i;
-                                  })
-                                  .FirstOrDefault() ?? NewUnAssignedCustomerInfo();
-            uplineInfoResult.Insert(0, headline);
-            return uplineInfoResult;
+            var headline = customers.Where(i => i.Role.Id == RoleIdConstants.Headline)
+                .Select(i =>
+                {
+                    i.Role.Name = RoleSettingService.GetRoleName(i.Role.Id);
+                    return i;
+                }).FirstOrDefault() ?? GetUnAssignedCustomerInfo();
+
+            uplineInfos.Insert(0, headline);
+
+            return uplineInfos;
         }
 
         public async Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command)
@@ -84,11 +81,11 @@
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
-        private CustomerInfo NewUnAssignedCustomerInfo()
+        private CustomerInfo GetUnAssignedCustomerInfo()
         {
             return new CustomerInfo
             {
-                UserName = "Unassigned",
+                Username = "Unassigned",
                 IsActive = false,
                 IsClosed = false,
                 IsSuspended = false,

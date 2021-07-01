@@ -38,14 +38,14 @@
             // Arrange
             var criteria = new GetPICCriteria
             {
-                UserName = "name",
+                Username = "name",
                 IsActive = true
             };
 
             // Act
 
             // Assert
-            Assert.Equal("name", criteria.UserName);
+            Assert.Equal("name", criteria.Username);
             Assert.True(criteria.IsActive);
         }
     }

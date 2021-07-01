@@ -57,7 +57,7 @@ const deleteCommunication = id => async () => {
     return await DataService.postDataAsync(url).then(response => response.data);
 };
 
-const verifyUserName = data => async () => {
+const verifyUsername = data => async () => {
     const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
     return await DataService.postDataAsync(url, data).then(response => response.data);
 };
@@ -79,5 +79,5 @@ export const ActionCreators = {
     createCommunication,
     editCommunication,
     deleteCommunication,
-    verifyUserName
+    verifyUsername
 };

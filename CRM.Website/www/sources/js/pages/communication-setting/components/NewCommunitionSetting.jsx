@@ -52,7 +52,7 @@ export class NewCommunitionSetting extends PureComponent {
             .replace(regex2, '') // NOSONAR
             .replace(regex3, ','); // NOSONAR
         if (this.isValidCustomer(customersInput)) {
-            this.props.verifyUserName({ Username: customersInput }).then(data => {
+            this.props.verifyUsername({ Username: customersInput }).then(data => {
                 let customers = [...this.state.listOfCustomer, ...data];
                 customers = customers.filter((v, i, a) => a.findIndex(t => t.id === v.id && t.name === v.name) === i);
                 this.setState({

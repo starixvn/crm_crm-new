@@ -13,14 +13,8 @@
 
         public byte UserRole { get; } = Constants.UserRole;
 
-        public override string GetSettingKey()
-        {
-                return "FeedbackSelTopFeedbackByCustId";
-        }
+        public override string GetSettingKey() => "Acc_CRM_FeedbackSelTopByCustId";
 
-        public override bool IsValid()
-        {
-            return Top > 0;
-        }
+        public override bool IsValid() => Top > 0;
     }
 }

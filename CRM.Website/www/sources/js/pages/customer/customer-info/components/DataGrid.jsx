@@ -34,14 +34,13 @@ export class DataGrid extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.gridData !== prevProps.gridData)
-        {
+        if (this.props.gridData !== prevProps.gridData) {
             const data = this.props.gridData.data;
             const languages = this.props.settings.languages.map(x => {
                 return {
                     id: x.settingId,
                     name: x.settingName,
-                    checked: data !== null ? (data.languages.some(y => y === x.settingId) ? true : false) : false  
+                    checked: data !== null ? (data.languages.some(y => y === x.settingId) ? true : false) : false
                 };
             });
             this.setState({
@@ -60,7 +59,7 @@ export class DataGrid extends Component {
         setFieldValue,
     }) => {
         return (
-            <Form className="form-customer"  noValidate onSubmit={handleSubmit}>
+            <Form className="form-customer" noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                 <Form.Group className="mrb0">
                     {values.uplineInfo.map((value, index) => {
@@ -70,9 +69,11 @@ export class DataGrid extends Component {
                                     {value.role.name}
                                 </Col>
                                 <Col md="5" className="text-left">
-                                    { (value.userName === "Unassigned") ? 
-                                    ( value.userName ) 
-                                    : (<a href="#" onClick={() => this.handleSearchUplineInfo( value.userName )}>{value.userName}</a>)}
+                                    {
+                                        value.username === 'Unassigned' ?
+                                            value.username
+                                            : <a href="#" onClick={() => this.handleSearchUplineInfo(value.username)}>{value.username}</a>
+                                    }
                                 </Col>
                                 <Col md="4" className="status text-right">
                                     {value.status !== '' ? value.status : ' '}
@@ -86,7 +87,7 @@ export class DataGrid extends Component {
                         {values.role.name}
                     </Col>
                     <Col md="5" className="text-left">
-                        {values.userName}
+                        {values.username}
                     </Col>
                     <Col md="4" className="status text-right">
                         {values.status}
@@ -95,7 +96,7 @@ export class DataGrid extends Component {
                 { (values.role.id === RoleIds.Member || values.role.id === RoleIds.CRMMember) ? (
                     <Form.Group className="row item">
                         <Form.Label column md="3" htmlFor="name" >
-                                {LangHelper.getResource('Danger')}
+                            {LangHelper.getResource('Danger')}
                         </Form.Label>
                         <Col md="9">
                             <Row>
@@ -115,22 +116,22 @@ export class DataGrid extends Component {
                                     <span className={'lv' + values.originalDangerLevel}>{values.originalDangerLevel !== 0 ? LangHelper.getResource('Lv1') + ' ' + values.originalDangerLevel : LangHelper.getResource('None')}</span>
                                 </Col>
                                 <Col md="4">
-                                    <span className={'lv' + values.abtDangerLevel}>{values.abtDangerLevel !== 0 ? LangHelper.getResource('Lv1')  + ' ' + values.abtDangerLevel : LangHelper.getResource('None')}</span>
+                                    <span className={'lv' + values.abtDangerLevel}>{values.abtDangerLevel !== 0 ? LangHelper.getResource('Lv1') + ' ' + values.abtDangerLevel : LangHelper.getResource('None')}</span>
                                 </Col>
                                 <Col md="5">
-                                    <span className={'lv' + values.otherSportsDangerLevel}>{values.otherSportsDangerLevel !== 0 ? LangHelper.getResource('Lv1')  + ' ' + values.otherSportsDangerLevel : LangHelper.getResource('None')}</span>
+                                    <span className={'lv' + values.otherSportsDangerLevel}>{values.otherSportsDangerLevel !== 0 ? LangHelper.getResource('Lv1') + ' ' + values.otherSportsDangerLevel : LangHelper.getResource('None')}</span>
                                 </Col>
                             </Row>
                         </Col>
-                    </Form.Group>) 
-                : (null)}
+                    </Form.Group>)
+                    : (null)}
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('CustomerSite')}
                     </Form.Label>
                     <Col md="9">
-                    <Form.Control as="select" size="sm" className="shadow-none" id="siteId"
+                        <Form.Control as="select" size="sm" className="shadow-none" id="siteId"
                             name="siteId"
                             value={values.siteId}
                             onChange={handleChange}
@@ -146,7 +147,7 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerCountry')}
                     </Form.Label>
                     <Col md="9">
-                    <Form.Control as="select" size="sm" className="shadow-none" id="countryId"
+                        <Form.Control as="select" size="sm" className="shadow-none" id="countryId"
                             name="countryId"
                             value={values.countryId}
                             onChange={handleChange}
@@ -178,12 +179,12 @@ export class DataGrid extends Component {
                     </Col>
                 </Form.Group>
                 <Form.Group className="row item no-border-bg">
-                    <Form.Label column md="3" htmlFor="nickName" >
-                        {LangHelper.getResource('CustomerNickName')}
+                    <Form.Label column md="3" htmlFor="nickname" >
+                        {LangHelper.getResource('CustomerNickname')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Label size="sm" className="">
-                            {values.nickName} 
+                            {values.nickname}
                         </Form.Label>
                     </Col>
                 </Form.Group>
@@ -192,17 +193,17 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerLanguage')}
                     </Form.Label>
                     <Col md="9" className="form-control-wrapper">
-                    <MultipleSelect
-                        isInvalid={touched.languageId && errors.languageId}
-                        dataSource={this.state.languages}
-                        keyField='id'
-                        valueField='name'
-                        statusField='checked'
-                        isAllTextShown
-                        onChange={(currentItem, selectedItemsKey) => {
-                            setFieldValue('languageId', selectedItemsKey);
-                        }}
-                    />
+                        <MultipleSelect
+                            isInvalid={touched.languageId && errors.languageId}
+                            dataSource={this.state.languages}
+                            keyField='id'
+                            valueField='name'
+                            statusField='checked'
+                            isAllTextShown
+                            onChange={(currentItem, selectedItemsKey) => {
+                                setFieldValue('languageId', selectedItemsKey);
+                            }}
+                        />
                     </Col>
                 </Form.Group>
 
@@ -220,7 +221,7 @@ export class DataGrid extends Component {
                             onChange={handleChange} name="phoneAreaCode" value={values.phoneAreaCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={handleChange} name= "phone" value={values.phone} autoComplete="off"
+                            onChange={handleChange} name="phone" value={values.phone} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
@@ -237,7 +238,7 @@ export class DataGrid extends Component {
                             onChange={handleChange} name="phone2AreaCode" value={values.phone2AreaCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={handleChange} name= "phone2" value={values.phone2} autoComplete="off"
+                            onChange={handleChange} name="phone2" value={values.phone2} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
@@ -254,7 +255,7 @@ export class DataGrid extends Component {
                             onChange={handleChange} name="phone3AreaCode" value={values.phone3AreaCode} autoComplete="off"
                         />
                         <Form.Control type="text" size="sm" className="textbox phone"
-                            onChange={handleChange} name= "phone3" value={values.phone3} autoComplete="off"
+                            onChange={handleChange} name="phone3" value={values.phone3} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
@@ -369,8 +370,8 @@ export class DataGrid extends Component {
                     <Col md="3"></Col>
                     <Col md="9">
                         <Button className="mr-4" variant="primary" size="sm" type="submit" disabled={isSubmitting}
-                            >
-                                {LangHelper.getResource('Update')}
+                        >
+                            {LangHelper.getResource('Update')}
                         </Button>
                     </Col>
                 </Form.Group>
@@ -381,6 +382,7 @@ export class DataGrid extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         const data = {
+            custId: values.custId,
             site: values.siteId,
             countryId: values.countryId,
             provinceID: this.props.gridData.data.provinceID ,
@@ -409,31 +411,28 @@ export class DataGrid extends Component {
             pic3Name: values.pic3Name,
             pic3: values.pic3,
             pic4Name: values.pic4Name,
-            pic4: values.pic4,
-            custId: this.props.gridData.data.id,
-
+            pic4: values.pic4
         };
-        
+
         setSubmitting(true);
         this.props.editCustomerInfo(data).then(() => {
             if (this.props.editCustomerInfoResult.isSuccessful) {
                 setTimeout(() => {
                     this.props.onSuccess();
-                    this.props.setEditCustomerInfoPopup({ show : true });
+                    this.props.setEditCustomerInfoPopup({ show: true });
                     setSubmitting(false);
                 }, 3000);
             } else {
                 setSubmitting(false);
             }
         });
-
     }
 
-    handleSearchUplineInfo = userName => {
+    handleSearchUplineInfo = username => {
         const params = {
             ...this.props.gridParams,
-            UserName: userName
-        }
+            username
+        };
         this.props.setGridParams(params);
         this.props.getCustomerInfo(params);
     };
@@ -442,14 +441,16 @@ export class DataGrid extends Component {
         if (!this.props.gridData || !this.props.gridData.data) {
             return null;
         }
-        let customerInfo =  this.props.gridData.data;
+
+        let customerInfo = this.props.gridData.data;
         const initialValues = {
-            userName: customerInfo.userName || '',
+            custId: customerInfo.custId,
+            username: customerInfo.username || '',
             siteId: customerInfo.siteID || 0,
             countryId: customerInfo.countryID || 0,
             firstName: customerInfo.firstName || '',
             lastName: customerInfo.lastName || '',
-            nickName: customerInfo.nickName || '', 
+            nickname: customerInfo.nickname || '',
             languageId: customerInfo.languages.map(x => x).toString(),
             phoneInfo: customerInfo.phoneInfo || '',
             phoneCountryCode: customerInfo.phoneCountryCode || '',
@@ -483,7 +484,6 @@ export class DataGrid extends Component {
             originalDangerLevel: customerInfo.originalDangerLevel,
             abtDangerLevel: customerInfo.abtDangerLevel,
             otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
-            
         };
         const { isHost } = this.props;
         return (
@@ -499,20 +499,18 @@ export class DataGrid extends Component {
                 </Formik>
 
             </Fragment>
-            
+
         );
     }
 }
 
-
-
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { 
-        gridParams, 
-        gridData, 
-        settings, 
+    const {
+        gridParams,
+        gridData,
+        settings,
         editCustomerInfoResult,
         editCustomerInfoPopup,
         getSettings
