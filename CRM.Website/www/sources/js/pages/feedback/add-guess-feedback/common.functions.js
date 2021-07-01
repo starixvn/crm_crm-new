@@ -17,6 +17,39 @@ export const renderLicenseeTypeOptions = item => {
     );
 };
 
+export const renderStatus = item => {
+    return (
+        <option key={item.settingId} value={item.settingName}>
+            {item.settingName}
+        </option>
+    );
+};
+
+export const renderLanguage = item => {
+    return (
+        <option key={item.settingId} value={item.settingName}>
+            {item.settingName}
+        </option>
+    );
+};
+
+
+export const renderResponse = item => {
+    return (
+        <option key={item.id} value={item.value}>
+            {item.value}
+        </option>
+    );
+};
+
+export const renderCountry = item => {
+    return (
+        <option key={item.id} value={item.name}>
+            {item.name}
+        </option>
+    );
+};
+
 
 export const validateFormik = (values, languages = []) => {
     const errors = {};

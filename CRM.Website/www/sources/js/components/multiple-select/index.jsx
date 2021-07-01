@@ -22,7 +22,8 @@ export default class MultipleSelect extends Component {
         statusField: PropTypes.string,
         texts: PropTypes.object,
         valueField: PropTypes.string,
-        isDisable: PropTypes.bool
+        isDisable: PropTypes.bool,
+        isNAOption: PropTypes.bool
     };
 
     static defaultProps = {
@@ -32,7 +33,8 @@ export default class MultipleSelect extends Component {
         hasAllOption: true,
         hasSearchBox: false,
         isDisable: false,
-        textOptions: MULTI_SELECT_TEXT_OPTIONS
+        textOptions: MULTI_SELECT_TEXT_OPTIONS,
+        isNAOption: false
     };
 
     constructor(props) {
@@ -226,6 +228,7 @@ export default class MultipleSelect extends Component {
                     isAllTextShown={this.props.isAllTextShown}
                     maxDisplayItemCount={maxDisplayItemCount}
                     isDisable = {this.props.isDisable}
+                    isNAOption = {this.props.isNAOption}
                 />
                 <div className='multiple-select-default multiple-select-options-container'
                     style={{ display: this.state.showOptionList ? 'block' : 'none' }}

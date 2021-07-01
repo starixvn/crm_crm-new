@@ -31,7 +31,7 @@ export class Filter extends Component {
                 mainCategoriesTypesId.push(main.mainCategoryID);
                 return {
                     mainCategoryID: main.mainCategoryID,
-                    name: main.name,
+                    settingName: main.settingName,
                     checked: true
                 };
             });
@@ -182,7 +182,7 @@ export class Filter extends Component {
                                 dataSource={this.state.mainCategoryOptionsFilter}
                                 keyField='mainCategoryID'
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
-                                valueField='name'
+                                valueField='settingName'
                                 hasAllOption={this.state.mainCategoryOptionsFilter.length > 0}
                                 isAllTextShown={this.state.mainCategoryOptionsFilter.length > 0}
                                 hasSearchBox
@@ -197,7 +197,7 @@ export class Filter extends Component {
                             <MultipleSelect
                                 dataSource={this.state.subCategoryOptionsFilter}
                                 keyField='subCategoryId'
-                                valueField='name'
+                                valueField='settingName'
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 hasAllOption={this.state.subCategoryOptionsFilter.length > 0}
                                 isAllTextShown={this.state.subCategoryOptionsFilter.length > 0}

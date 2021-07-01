@@ -13,7 +13,7 @@
 
         Task<IEnumerable<SiteSetting>> GetAllSiteAsync();
 
-        Task<IEnumerable<Setting>> GetAllCommunicationToolAsync(bool isIncludeNA = false);
+        Task<IEnumerable<Setting>> GetAllCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 
         Task<IEnumerable<Setting>> GetMainCategoryAsync(GetAllMainCategoryCriteria criteria);
 
@@ -33,7 +33,7 @@
 
         Task<IEnumerable<Product>> GetAllBetTypeAsync(GetAllBetTypeCriteria criteria);
 
-        Task<IEnumerable<Product>> GetProductAsync();
+        Task<IEnumerable<Product>> GetProductAsync(byte active = SettingConstants.ActiveAndInactive);
 
         Task<IEnumerable<Product>> GetSubProductAsync(SubProductCriteria criteria);
 

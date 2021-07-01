@@ -38,6 +38,11 @@ const addFeedback = () => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const verifyUserName = data => async () => {
+    const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
+    return await DataService.postDataAsync(url, data).then(response => response.data);
+};
+
 export const ActionCreators = {
     setAllSettings,
     getAllSettings,
@@ -46,5 +51,6 @@ export const ActionCreators = {
     getFeedbackSubjectTemplateByPagingIndex,
     setFeedbackSubjectTemplateByPagingIndex,
     addFeedback,
-    setAddFeedback
+    setAddFeedback,
+    verifyUserName
 };

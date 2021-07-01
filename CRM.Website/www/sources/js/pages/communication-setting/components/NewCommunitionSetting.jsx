@@ -54,10 +54,10 @@ export class NewCommunitionSetting extends PureComponent {
         if (this.isValidCustomer(customersInput)) {
             this.props.verifyUsername({ Username: customersInput }).then(data => {
                 let customers = [...this.state.listOfCustomer, ...data];
-                customers = customers.filter((v, i, a) => a.findIndex(t => t.id === v.id && t.name === v.name) === i);
+                customers = customers.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
                 this.setState({
                     listOfCustomer: customers,
-                    listOfCustomerValid: customers.filter(item => item.id !== 0)
+                    listOfCustomerValid: customers.filter(item => item.custId !== 0)
                 });
             });
             setFieldValue('isVerifiedCustomers', true);
@@ -220,7 +220,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 isInvalid={touched.mainCategoryTypesNew && errors.mainCategoryTypesNew}
                                 dataSource={this.state.mainCategoryOptionsNew}
                                 keyField='mainCategoryID'
-                                valueField='name'
+                                valueField='settingName'
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 isAllTextShown={this.state.mainCategoryOptionsNew.length > 0}
                                 hasSearchBox
@@ -239,7 +239,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 isInvalid={touched.subCategoryTypesNew && errors.subCategoryTypesNew}
                                 dataSource={this.state.subCategoryOptionsNew}
                                 keyField='subCategoryId'
-                                valueField='name'
+                                valueField='settingName'
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 isAllTextShown={this.state.subCategoryOptionsNew.length > 0}
                                 hasAllOption={this.state.subCategoryOptionsNew.length > 0}
@@ -263,7 +263,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 isInvalid={touched.comunicationToolTypesNew && errors.comunicationToolTypesNew}
                                 dataSource={this.state.communicationToolOptionsNew}
                                 keyField='id'
-                                valueField='name'
+                                valueField='settingName'
                                 hasSearchBox
                                 onChange={(currentItem, selectedItemsKey) => {
                                     handleChange('comunicationToolTypesNew')(selectedItemsKey);

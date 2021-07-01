@@ -47,7 +47,7 @@
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             if (isHost)
             {
-                settings.StatusList = settings.StatusList.Where(s => !s.SettingName.Equals("Deleted", System.StringComparison.OrdinalIgnoreCase));
+                settings.StatusList = settings.StatusList.Where(s => !s.SettingName.Equals("Deleted", StringComparison.OrdinalIgnoreCase));
             }
 
             return Json(settings);
@@ -60,22 +60,22 @@
 
                 var languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria
                 {
-                    Active = SettingConstants.ActiveAndInactive
+                    Active = SettingConstants.Active
                 });
-                var languagesActive = languages.Where(x => x.IsActive).ToList();
+                var languagesList = languages.ToList();
 
-                languagesActive.Insert(
+                languagesList.Insert(
                     0,
                     new Setting
                     {
-                        Id = 0,
-                        Name = ViewResources.Symbol_NA,
+                        SettingId = 0,
+                        SettingName = ViewResources.Symbol_NA,
                         IsActive = true
                     });
 
                 var countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria
                 {
-                    Active = SettingConstants.ActiveAndInactive
+                    Active = SettingConstants.Active
                 });
                 var countriesList = countries.ToList();
 
@@ -88,47 +88,61 @@
                         IsActive = true
                     });
 
-                var statusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool);
-                var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
                 var extentionList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Extension, SettingConstants.Active);
                 var extentionListRemmoveNA = extentionList.Where(x => x.Id != NAConstants.ExtentionNA);
                 var extentionNA = extentionList.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
+
+                var statusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool);
+                var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
+              
                 var ProvinceList = await settingService.GetAllProvinceAsync(new GetAllProvinceCriteria());
-                var communicationToolList = await settingService.GetAllCommunicationToolAsync();
+
+                var communicationToolList = await settingService.GetAllCommunicationToolAsync(SettingConstants.Active);
+
                 var siteList = await settingService.GetAllSiteAsync();
-                var responsesLists = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Response);
-                var titleList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Title);
+
+                var responsesLists = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Response, SettingConstants.Active);
+
+                var titleList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Title, SettingConstants.Active);
+
                 var licenseeTypeList = await settingService.GetAllLicenseeTypeAsync();
-                var productList = await settingService.GetProductAsync();
+
+                var productList = await settingService.GetProductAsync(SettingConstants.Active);
+                var productListRemoveNAAndActive = productList.Where(p => p.Id != NAConstants.ProductNA);
                 var productNA = productList.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
+
                 var subproduct = await settingService.GetSubProductAsync(new SubProductCriteria { Active = SettingConstants.Active });
+                var subproductRemoveNA = subproduct.Where(p => p.Id != NAConstants.SubProductNA);
                 var subproductNA = subproduct.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
+
                 var bettype = await settingService.GetAllBetTypeAsync(new GetAllBetTypeCriteria { Active = SettingConstants.Active });
-                var bettypeNA = bettype.FirstOrDefault(s => s.Id == NAConstants.BettypeNA);
-                var mainCategoryList = await settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria { Active = SettingConstants.ActiveAndInactive });
-                var subCategoryList = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria { Active = SettingConstants.ActiveAndInactive });
+                var bettypeRemoveNAAndActive = bettype.Where(b => b.Id != NAConstants.BettypeNA);
+                var bettypeNA = bettype.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
+
+                var mainCategoryList = await settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria { Active = SettingConstants.Active });
+                var subCategoryList = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria { Active = SettingConstants.Active });
 
                 var settings = new AllSettingToAddFeedback
                 {
                     ExtensionList = extentionListRemmoveNA,
-                    CountryList = countriesList.Where(x => x.IsActive),
+                    CountryList = countriesList,
                     ProvinceList = ProvinceList,
-                    CommunicationToolList = communicationToolList.Where(x => x.IsActive),
-                    LanguageList = languages.Where(x => x.IsActive),
+                    CommunicationToolList = communicationToolList,
+                    LanguageList = languagesList,
                     SiteList = siteList,
-                    ResponseList = responsesLists.Where(x => x.IsActive),
+                    ResponseList = responsesLists,
                     StatusList = statusListRemoveDelete,
-                    TitleList = titleList.Where(x => x.IsActive),
+                    TitleList = titleList,
                     LicenseeType = licenseeTypeList,
                     ProductNA = productNA,
                     SubProductNA = subproductNA,
                     BettypeNA = bettypeNA,
                     ExtensionNA = extentionNA,
-                    ProductList = productList.Where(x => x.IsActive),
-                    SubProductList = subproduct.Where(x => x.IsActive),
-                    BettypeList = bettype.Where(x => x.IsActive),
-                    MainCategoryList = mainCategoryList.Where(x => x.IsActive),
-                    SubCategoryList = subCategoryList.Where(x => x.IsActive)
+                    ProductList = productListRemoveNAAndActive,
+                    SubProductList = subproductRemoveNA,
+                    BettypeList = bettypeRemoveNAAndActive,
+                    MainCategoryList = mainCategoryList,
+                    SubCategoryList = subCategoryList
                 };
 
                 return settings;

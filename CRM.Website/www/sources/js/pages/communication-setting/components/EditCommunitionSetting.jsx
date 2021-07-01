@@ -31,7 +31,7 @@ export class EditCommunitionSetting extends PureComponent {
             selectedCatagoryId.push(main.mainCategoryID);
             return {
                 mainCategoryID: main.mainCategoryID,
-                name: main.name,
+                settingName: main.settingName,
                 checked: this.isCheckCatagories(selectedData.category, main.mainCategoryID)
             };
         });
@@ -48,7 +48,7 @@ export class EditCommunitionSetting extends PureComponent {
         const communicationToolOptionsEdit = this.props.settings.communicationTools.map(tool => {
             return {
                 id: tool.id,
-                name: tool.name,
+                settingName: tool.settingName,
                 checked: selectedData.commTool.includes(tool.id) ? true : false
             };
         });
@@ -181,7 +181,7 @@ export class EditCommunitionSetting extends PureComponent {
                                 isInvalid={touched.mainCategoryTypesEdit && errors.mainCategoryTypesEdit}
                                 dataSource={this.state.mainCategoryOptionsEdit}
                                 keyField='mainCategoryID'
-                                valueField='name'
+                                valueField='settingName'
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 isAllTextShown={this.state.mainCategoryOptionsEdit.length > 0}
                                 hasSearchBox
@@ -200,7 +200,7 @@ export class EditCommunitionSetting extends PureComponent {
                                 isInvalid={touched.subCategoryTypesEdit && errors.subCategoryTypesEdit}
                                 dataSource={this.state.subCategoryOptionsEdit}
                                 keyField='subCategoryId'
-                                valueField='name'
+                                valueField='settingName'
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 isAllTextShown={this.state.subCategoryOptionsEdit.length > 0}
                                 hasAllOption={this.state.subCategoryOptionsEdit.length > 0}
@@ -224,7 +224,7 @@ export class EditCommunitionSetting extends PureComponent {
                                 isInvalid={touched.comunicationToolTypesEdit && errors.comunicationToolTypesEdit}
                                 dataSource={this.state.communicationToolOptionsEdit}
                                 keyField='id'
-                                valueField='name'
+                                valueField='settingName'
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 isSummited={false}
                                 hasSearchBox

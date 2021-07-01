@@ -8,11 +8,14 @@ import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import { renderTitleOptions, renderLicenseeTypeOptions, validateFormik } from '../common.functions';
+import { renderTitleOptions, renderLicenseeTypeOptions, renderStatus, renderLanguage, renderResponse, renderCountry, validateFormik } from '../common.functions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
+import { getSubCategories, getSubProducts, getBetTypes } from '@jsroot/common/shareScripts';
+import VerifyCustomer from '@jsroot/components/verifyCustomer';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 
 export class DataGrid extends Component {
@@ -33,7 +36,16 @@ export class DataGrid extends Component {
             resolutionTime: new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(new Date()))),
             maxDate: now,
             isShowCustomerDetailOption: true,
-            isShowDetailsOption: true
+            isShowDetailsOption: true,
+            isVerifyCustomer: false,
+            subCategoriesOptions: [],
+            subCategoriesSelected: '',
+            subProductOptions: [],
+            subProductSelected: '',
+            betTypeOptions: [],
+            betTypeSelected: [],
+            listOfCustomerValid: [],
+            listOfCustomer: []
         };
     }
 
@@ -53,6 +65,150 @@ export class DataGrid extends Component {
           }));
     }
 
+    mainCategoriesHandleChange = (currentItem, selectedItemsKey, setFieldValue) => {
+        if (selectedItemsKey) {
+            setFieldValue('category', selectedItemsKey);
+            const {subCategoriesSelected} = this.state;
+            const subCategoryList = this.props.settings.subCategoryList;
+            const selectedMainCategories = selectedItemsKey.split(',');
+            const subCategoriesSelectedArr = subCategoriesSelected.length > 0 ? subCategoriesSelected.split(',') : [];
+            const findSubByMain = getSubCategories(selectedMainCategories, subCategoryList, subCategoriesSelectedArr, false);
+            this.setState({subCategoriesOptions: findSubByMain});
+        }
+        else{
+            this.setState({
+                subCategoriesOptions: [],
+                subCategoriesSelected: []
+            });
+        }
+    }
+
+    subCategoriesHandleChange= (currentItem, selectedItemsKey, setFieldValue) => {
+        setFieldValue('subCategory', selectedItemsKey);
+        this.setState({subCategoriesSelected: selectedItemsKey});
+    }
+
+    productHandleChange = (currentItem, selectedItemsKey, setFieldValue) => {
+        if (selectedItemsKey) {
+            setFieldValue('product', selectedItemsKey);
+            const {subProductSelected} = this.state;
+            const subProductList = this.props.settings.subProductList;
+            const selectedProduct = selectedItemsKey.split(',');
+            const subProductSelectedArr = subProductSelected.length > 0 ? subProductSelected.split(',') : [];
+            const findSubProductByProduct = getSubProducts(selectedProduct, subProductList, subProductSelectedArr, false);
+            this.setState({subProductOptions: findSubProductByProduct});
+        }
+        else{
+            this.setState({
+                subProductOptions: [],
+                subProductSelected: []
+            });
+        }
+    }
+    
+    subProductHandleChange= (currentItem, selectedItemsKey, setFieldValue) => {
+        setFieldValue('subCategory', selectedItemsKey);
+        this.setState(
+            {
+                subProductSelected: selectedItemsKey
+            },() =>{
+                if (selectedItemsKey) {
+                    const {betTypeSelected} = this.state;
+                    const betTypeList = this.props.settings.bettypeList;
+                    const selectedSubProducts = selectedItemsKey.split(',');
+                    const betTypeSelectedArr = betTypeSelected.length > 0 ? betTypeSelected.split(',') : [];
+                    const findBetTypeBySubProduct = getBetTypes(selectedSubProducts, betTypeList, betTypeSelectedArr, false);
+                    this.setState({betTypeOptions: findBetTypeBySubProduct});
+                }
+                else{
+                    this.setState({
+                        betTypeOptions: [],
+                        betTypeSelected: []
+                    });
+                }
+            }
+        );
+    }
+
+    betTypeHandleChange= (currentItem, selectedItemsKey, setFieldValue) => {
+        setFieldValue('betType', selectedItemsKey);
+        this.setState({betTypeSelected: selectedItemsKey});
+    }
+
+    validateInquiriesInput = (event) => {
+        if ([8, 46, 37, 39, 35, 36].includes(event.which)) {
+            return;
+        }
+
+        if (!event.ctrlKey && !event.key.match(/^\d+$/)) {
+            event.preventDefault();
+        }
+    }
+
+    renderTooltipCustomers = props => (
+        <Tooltip id="tooltip-customers" {...props}>
+            {LangHelper.getResource('MultiplecustomersToolTip')}
+        </Tooltip>
+    );
+
+    handleChangeCheckVerifyCustomer = () =>{
+        this.setState(prevState => ({
+            isVerifyCustomer: !prevState.isVerifyCustomer
+          }));
+    }
+
+    isValidCustomer = customers => {
+        return customers.split(',').filter(function (value) {
+            return value.length > 50;
+        }).length === 0;
+    };
+
+    handleVerify = (event, setFieldValue, value) => {
+        event.preventDefault();
+        const regex1 = new RegExp(/,\s+/g);
+        const regex2 = new RegExp(/^,+|,+$/g);
+        const regex3 = new RegExp(/,{2,}/g);
+
+        const customersInput = value.trim().replace(regex1, ',') // NOSONAR
+            .replace(regex2, '') // NOSONAR
+            .replace(regex3, ','); // NOSONAR
+        if (this.isValidCustomer(customersInput)) {
+            this.props.verifyUserName({ Username: customersInput }).then(data => {
+                let customers = [...this.state.listOfCustomer, ...data];
+                customers = customers.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
+                this.setState({
+                    listOfCustomer: customers,
+                    listOfCustomerValid: customers.filter(item => item.custId !== 0)
+                });
+            });
+            setFieldValue('isVerifiedCustomers', true);
+        }
+        setFieldValue('customerNameInput', '');
+    };
+
+    pasteCustomerHandler = (event, customers, setFieldValue) => {
+        const customer = customers.trim();
+        const items = (event.clipboardData || window.clipboardData).getData('text')
+            .replace(/ /g, ',')
+            .replace(/\r\n/g, ',')
+            .replace(/\n/g, ',')
+            .replace(/\t/g, ',')
+            .split(',').filter(item => item !== '');
+
+        setTimeout(() => {
+            const customersInput = (customer.length > 0 ? customer + ',' : '').concat(items.join(','));
+            setFieldValue('customerNameInput', customersInput);
+        }, 100);
+    };
+
+    deleteCustomer = id => {
+        const listOfCustomer = this.state.listOfCustomer.filter(item => item.id !== id);
+        const listOfCustomerValid = this.state.listOfCustomerValid.filter(item => item.id !== id);
+        this.setState({
+            listOfCustomer,
+            listOfCustomerValid
+        });
+    };
 
     renderIdentityInformation = (values, errors, touched, handleChange) => {
         const titleOptions = [{title: 'Mr'},{title: 'Mrs'}];
@@ -160,7 +316,7 @@ export class DataGrid extends Component {
                                 value={values.licenseeType}
                                 onChange={handleChange}
                             >
-                                <option value='' hidden disabled >{this.props.settings?.licenseeType[0]?.name}</option>
+                                <option value='' hidden disabled />
                                 {this.props.settings.licenseeType.map(renderLicenseeTypeOptions)}
                             </Form.Control>
                         </Col>
@@ -574,6 +730,8 @@ export class DataGrid extends Component {
     };
 
     renderDetails = (values, errors, touched, handleChange, setFieldValue) =>{
+        const {subCategoriesOptions, subProductOptions, betTypeOptions} = this.state;
+        const {mainCategoryList, productList, statusList, languageList, responseList, countryList} = this.props.settings;
         return (
             <div className='panel-group'>
                 <Form.Group as={Row} className="title" onClick={this.handleShowDetails}>
@@ -628,6 +786,7 @@ export class DataGrid extends Component {
                                 valueField='value'
                                 isAllTextShown
                                 hasSearchBox
+                                isNAOption
                                 onChange={(currentItem, selectedItemsKey) => {
                                     setFieldValue('station', selectedItemsKey);
                                 }}
@@ -636,9 +795,274 @@ export class DataGrid extends Component {
                         </Form.Group>
                     </Col>
                     </Form.Group>
+                    <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="communication">
+                                {LangHelper.getResource('Communication')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                            <MultipleSelect
+                                isInvalid={touched.communication && errors.communication}
+                                dataSource={this.props.settings?.communicationToolList}
+                                keyField='id'
+                                valueField='settingName'
+                                hasAllOption={this.props.settings?.communicationToolList.length > 0}
+                                isAllTextShown={this.props.settings?.communicationToolList.length > 0}
+                                hasSearchBox
+                                isNAOption
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    setFieldValue('communication', selectedItemsKey);
+                                }}
+                            />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="category">
+                                {LangHelper.getResource('Category')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                            <MultipleSelect
+                                isInvalid={touched.category && errors.category}
+                                dataSource={mainCategoryList}
+                                keyField='mainCategoryID'
+                                valueField='settingName'
+                                hasAllOption={mainCategoryList.length > 0}
+                                isAllTextShown={mainCategoryList.length > 0}
+                                hasSearchBox
+                                isNAOption
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.mainCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                }}
+                            />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="subCategory">
+                                {LangHelper.getResource('SubCategory')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                            <MultipleSelect
+                                isInvalid={touched.subCategory && errors.subCategory}
+                                dataSource={subCategoriesOptions}
+                                keyField='subCategoryId'
+                                valueField='settingName'
+                                hasAllOption={subCategoriesOptions.length > 0}
+                                isAllTextShown={subCategoriesOptions.length > 0}
+                                hasSearchBox
+                                isNAOption
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.subCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                }}
+                            />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="product">
+                                {LangHelper.getResource('Product')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                            <MultipleSelect
+                                isInvalid={touched.product && errors.product}
+                                dataSource={productList}
+                                keyField='id'
+                                valueField='value'
+                                hasAllOption={productList.length > 0}
+                                isAllTextShown={productList.length > 0}
+                                hasSearchBox
+                                isNAOption
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.productHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                }}
+                            />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="subProduct">
+                                {LangHelper.getResource('SubProduct')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                            <MultipleSelect
+                                isInvalid={touched.subProduct && errors.subProduct}
+                                dataSource={subProductOptions}
+                                keyField='id'
+                                valueField='value'
+                                hasAllOption={subProductOptions.length > 0}
+                                isAllTextShown={subProductOptions.length > 0}
+                                hasSearchBox
+                                isNAOption
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.subProductHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                }}
+                            />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="betType">
+                                {LangHelper.getResource('BetType')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                            <MultipleSelect
+                                isInvalid={touched.betType && errors.betType}
+                                dataSource={betTypeOptions}
+                                keyField='id'
+                                valueField='value'
+                                hasAllOption={betTypeOptions.length > 0}
+                                isAllTextShown={betTypeOptions.length > 0}
+                                hasSearchBox
+                                isNAOption
+                                onChange={(currentItem, selectedItemsKey) => {
+                                this.betTypeHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                            }}
+                            />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="status">
+                                {LangHelper.getResource('Status')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="status" id="status"
+                                    value={values.status}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" hidden disabled />
+                                    {statusList.map(renderStatus)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="language">
+                                {LangHelper.getResource('Language')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="language" id="language"
+                                    value={values.language}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" hidden disabled />
+                                    {languageList.map(renderLanguage)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="response">
+                                {LangHelper.getResource('Response')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="response" id="response"
+                                    value={values.response}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" hidden disabled />
+                                    {responseList.map(renderResponse)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="country">
+                                {LangHelper.getResource('Country')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="country" id="country"
+                                    value={values.country}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" hidden disabled />
+                                    {countryList.map(renderCountry)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="noEfInquiries">
+                                {LangHelper.getResource('NoEfInquiries')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="number" size="sm" value={values.noEfInquiries}
+                                    name="noEfInquiries" id="noEfInquiries"
+                                    min="1" max="32000"
+                                    onKeyDown={this.validateInquiriesInput}
+                                    className="shadow-none"
+                                    autoComplete="off"
+                                    onChange={handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} className="pt-3 pb-3" controlId="formBasicCheckbox">
+                    <Col sm="2" md="2">
+                        <Form.Check type="checkbox" className="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
+                            checked={this.state.isVerifyCustomer}
+                            onChange={this.handleChangeCheckVerifyCustomer}
+                        />
+                    </Col>
+                    <Col sm="1" md="1">
+                        <Form.Label>
+                                <OverlayTrigger
+                                    placement="bottom-start"
+                                    overlay={this.renderTooltipCustomers()}
+                                >
+                                    <span className="fa fa-question-circle-o" />
+                                </OverlayTrigger>
+                        </Form.Label>
+                    </Col>
+                    <Col sm="9" md="9">
+                        <Row>
+                            <Col sm="10" md="11">
+                                <Form.Control type="text" size="sm" value={values.customerNameInput}
+                                    name="customerNameInput"
+                                    onPaste={event => this.pasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
+                                    isInvalid={touched.customerNameInput && errors.customerNameInput}
+                                    className="shadow-none" autoComplete="off"
+                                    onChange={handleChange}
+                                />
+                            </Col>
+                            <Col>
+                                <Button  name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
+                                    disabled={!this.state.isVerifyCustomer}
+                                    size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
+                                >
+                                    {LangHelper.getResource('Verify')}
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Col>
+                    </Form.Group>
+                    <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomer} />
                 </div>
             </div>
-        )
+        );
     }
 
     renderForm = ({
@@ -680,7 +1104,6 @@ export class DataGrid extends Component {
             firstName: '',
             lastName : '',
             passportNo: '',
-            licenseeType: '',
             countryCode: '',
             phoneNumber: '',
             areaCode: '',
@@ -704,6 +1127,8 @@ export class DataGrid extends Component {
             letstalk: '',
             qq: '',
             zalo: '',
+            noEfInquiries: '',
+            customerNameInput: ''
         };
 
         return (

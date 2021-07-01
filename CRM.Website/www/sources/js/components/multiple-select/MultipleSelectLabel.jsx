@@ -7,11 +7,13 @@ export default class MultipleSelectLabel extends Component {
     static propTypes = {
         textOptions: PropTypes.object,
         selectedItems: PropTypes.arrayOf(PropTypes.object).isRequired,
-        maxDisplayItemCount: PropTypes.number
+        maxDisplayItemCount: PropTypes.number,
+        isNAOption: PropTypes.bool
     };
 
     static defaultProps = {
-        maxDisplayItemCount: MAX_SELECTED_ITEM_FOR_DISPLAY
+        maxDisplayItemCount: MAX_SELECTED_ITEM_FOR_DISPLAY,
+        isNAOption: false
     };
 
     constructor(props) {
@@ -19,23 +21,23 @@ export default class MultipleSelectLabel extends Component {
     }
 
     get selectedItemsString() {
-        const { selectedItems, maxDisplayItemCount, textOptions } = this.props;
+        const { isAllTextShown, selectedItems, maxDisplayItemCount, textOptions, dataSourceSize, isNAOption } = this.props;
         const selectedValues = selectedItems.map(item => item.value);
 
         let displayText = textOptions['SelectOptions'];
         const selectedItemCount = selectedValues.length;
 
-        if (this.props.isAllTextShown && selectedItemCount === this.props.dataSourceSize) {
+        if (isAllTextShown && selectedItemCount === dataSourceSize) {
             displayText = textOptions['Texts'];
         } else if (selectedItemCount > maxDisplayItemCount) {
             displayText = textOptions['SelectedItemCount'].replace('#', selectedItemCount);
         } else if (selectedItemCount >= 1) {
             displayText = selectedValues.join(', ');
-        } else if(!this.props.dataSourceSize){
+        } else if(!dataSourceSize && !isNAOption){
             displayText = textOptions['NoData'];
         }
-        else{
-            displayText = textOptions['NA'];
+        else if(isNAOption && selectedItemCount === 0){
+             displayText = textOptions['NA'];
         }
 
         return displayText;

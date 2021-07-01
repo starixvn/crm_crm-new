@@ -20,9 +20,12 @@
             this.baseService = baseService;
         }
 
-        public async Task<IEnumerable<Setting>> GetAllCommunicationToolAsync(bool isIncludeNA = false)
+        public async Task<IEnumerable<Setting>> GetAllCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false)
         {
-            var criteria = new GetAllCommunicationToolCriteria();
+            var criteria = new GetAllCommunicationToolCriteria { 
+                Active = active
+            };
+
             var tools = await baseService.GetDataAsync<Setting>(criteria);
             return isIncludeNA
                 ? tools.OrderBy(s => s.DisplayOrder).ToList()
@@ -113,15 +116,16 @@
                 ViewType = statusType
             };
 
-            var data = await baseService.GetDataAsync<Setting>(criteria);
-            var closedStatus = data.FirstOrDefault(d => d.SettingId == (int)CRMStatus.Closed);
+            var status = await baseService.GetDataAsync<Setting>(criteria);
+            var statusList = status.ToList();
+            var closedStatus = statusList.FirstOrDefault(d => d.SettingId == (int)CRMStatus.Closed);
             if (closedStatus != null)
             {
-                data.ToList().Remove(closedStatus);
-                data.ToList().Insert(0, closedStatus);
+                statusList.Remove(closedStatus);
+                statusList.Insert(0, closedStatus);
             }
 
-            return data;
+            return statusList;
         }
 
         public async Task<IEnumerable<SettingRelation>> GetAllExtentionsAsync(GetAllBetTypeCriteria criteria)
@@ -131,17 +135,18 @@
 
         public async Task<IEnumerable<Product>> GetAllBetTypeAsync(GetAllBetTypeCriteria criteria)
         {
-            return await baseService.GetDataAsync<Product>(criteria);
+            var bettypes = await baseService.GetDataAsync<Product>(criteria);
+            return bettypes.OrderBy(b => b.DisplayOrder);
         }
 
 
-        public async Task<IEnumerable<Product>> GetProductAsync()
+        public async Task<IEnumerable<Product>> GetProductAsync(byte active = SettingConstants.ActiveAndInactive)
         {
             var criteria = new GetSettingRelationByNameCriteria
             {
                 SettingName = SettingTypeConstants.Product,
                 ParentID = 0,
-                Active = SettingConstants.ActiveAndInactive
+                Active = active
             };
             var product = await baseService.GetDataAsync<Product>(criteria);
             var productList = product.OrderBy(setting => setting.DisplayOrder).ToList();

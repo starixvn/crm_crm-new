@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
-    using CRM.Models;
+    using CRM.Models.Customer;
     using Microsoft.AspNetCore.Mvc;
 
     public class CustomerSettingController : Controller
@@ -19,7 +19,7 @@
         [HttpPost]
         public async Task<IActionResult> VerifyUsername([FromBody] VerifyRelatedCustomerCriteria criteria)
         {
-            IEnumerable<BaseModel> customers = await baseService.GetDataAsync<BaseModel>(criteria);
+            IEnumerable<RelatedCustomer> customers = await baseService.GetDataAsync<RelatedCustomer>(criteria);
             return Json(customers);
         }
     }

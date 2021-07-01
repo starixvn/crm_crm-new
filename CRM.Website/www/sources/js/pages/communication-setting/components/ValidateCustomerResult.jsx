@@ -35,9 +35,9 @@ export default class ValidateCustomerResult extends PureComponent {
                             {
                                 listOfCustomers.map((item, index) => {
                                     return (
-                                        <div className={`m-2 px-2 txt-${this.renderClassNameCustomer(item.id)}`} key={index}>
-                                            <div className="fa fa-times  pr-2" onClick={() => this.props.onClick(item.id)} />
-                                            <div className="customer-name">{item.name}</div>
+                                        <div className={`m-2 px-2 txt-${this.renderClassNameCustomer(item.custId)}`} key={index}>
+                                            <div className="fa fa-times  pr-2" onClick={() => this.props.onClick(item.custId)} />
+                                            <div className="customer-name">{item.val}</div>
                                         </div>);
                                 })
                             }
