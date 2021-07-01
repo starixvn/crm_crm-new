@@ -5,8 +5,10 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Form, Modal } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Formik } from 'formik';
+import MultipleSelect from '../../../../../components/multiple-select';
+const commonFunction = require('../../common.functions');
 
-describe('EditFeedbackSubject', () => {
+describe('DataGridCustomerInfo', () => {
     beforeAll(() => {
         jest.useFakeTimers();
         LangHelper.getResource = jest.fn((key) => key);
@@ -28,7 +30,7 @@ describe('EditFeedbackSubject', () => {
         // Assert 
         expect(container).toMatchSnapshot();
     });
-
+    
     it('render Formik component', () => {
         //Arrange 
         const props = {
@@ -104,7 +106,7 @@ describe('EditFeedbackSubject', () => {
             it('should show response message', () => {
                 // Arrange
                 const props = {
-                    createFeedbackSubjectResult: {
+                    editCustomerInfoResult: {
                         isSuccessful: false,
                         message: 'unsuccessful'
                     },
@@ -128,7 +130,192 @@ describe('EditFeedbackSubject', () => {
                 // Assert 
                 expect(form).toMatchSnapshot();
             });
-        })
+        });
+
+        describe('handle onChange MultipleSelect', () => {
+            //Arrange
+            const param = {
+                values: {
+                    languages: [1, 2],
+                    uplineInfo: [],
+                    role: { name: 'test' }
+                },
+                errors: {},
+                touched: {},
+                handleChange: jest.fn(),
+                handleSubmit: jest.fn(),
+                isSubmitting: jest.fn(),
+                setFieldValue: jest.fn(),
+            };
+
+            const props = {
+                getSettings: jest.fn(),
+            };
+
+            const container = shallow(<DataGrid {...props} />);
+            const form = shallow(container.instance().renderForm(param));
+
+            it('should call correct function  when change languageId', () => {
+                //Act
+                form.find(MultipleSelect).at(0).props().onChange();
+
+                //Assert
+                expect(param.setFieldValue).toHaveBeenCalled();
+            });
+            
+        });
+
+        describe('validate', () => {
+            it('should call correct functions when validate', () => {
+                // Arrange
+                const props = {
+                    getSettings: jest.fn(),
+                };
+                const values = {};
+                const container = shallow(<DataGrid {...props} />);
+                commonFunction.validateFormik = jest.fn();
+    
+                // Act
+                container.find(Formik);
+    
+                // Assert
+                expect(commonFunction.validateFormik).toHaveBeenCalledTimes(0);
+            });
+        });
+
+        describe('initialValues', () => {
+            it('initialValues correctly', () => {
+                //Arrange
+                const props = {
+                    gridData: {
+                        data: {
+                            userName: '',
+                            siteID: 0,
+                            countryId: 0,
+                            lastName: '',
+                            firstName: '',
+                            languages: [1, 2],
+                            phoneInfo: null,
+                            phoneCountryCode: '',
+                            phoneAreaCode: '',
+                            phone: '',
+                            phone2CountryCode: '',
+                            phone2AreaCode: '',
+                            phone2: '',
+                            phone3CountryCode: '',
+                            phone3AreaCode: '',
+                            phone3: '',
+                            mobilePhoneCountryCode: '',
+                            mobilePhoneAreaCode: '',
+                            mobilePhone: '',
+                            email: '',
+                            telegram: '',
+                            msn: '',
+                            skype: '',
+                            pic1Name: '',
+                            pic1: '',
+                            pic2Name: '',
+                            pic2: '',
+                            pic3Name: '',
+                            pic3: '',
+                            pic4Name: '',
+                            pic4: '',
+                            personalInfoContacts: [],
+                            uplineInfo: [],
+                            role: { name: 'test' },
+                            status: '',
+                            originalDangerLevel: 0,
+                            abtDangerLevel: 0,
+                            otherSportsDangerLevel: 0
+                        }
+                    },
+                    getSettings: jest.fn()
+                }
+                const customerInfo = props.gridData.data;
+                const values = {
+                    userName: customerInfo.userName || '',
+                    siteId: customerInfo.siteID || 0,
+                    countryId: customerInfo.countryID || 0,
+                    firstName: customerInfo.firstName || '',
+                    lastName: customerInfo.lastName || '',
+                    nickName: customerInfo.nickName || '', 
+                    languageId: customerInfo.languages.map(x => x).toString(),
+                    phoneInfo: customerInfo.phoneInfo || '',
+                    phoneCountryCode: customerInfo.phoneCountryCode || '',
+                    phoneAreaCode: customerInfo.phoneAreaCode || '',
+                    phone: customerInfo.phone || '',
+                    phone2CountryCode: customerInfo.phone2CountryCode || '',
+                    phone2AreaCode: customerInfo.phone2AreaCode || '',
+                    phone2: customerInfo.phone2 || '',
+                    phone3CountryCode: customerInfo.phone3CountryCode || '',
+                    phone3AreaCode: customerInfo.phone3AreaCode || '',
+                    phone3: customerInfo.phone3 || '',
+                    mobilePhoneCountryCode: customerInfo.mobilePhoneCountryCode || '',
+                    mobilePhoneAreaCode: customerInfo.mobilePhoneAreaCode || '',
+                    mobilePhone: customerInfo.mobilePhone || '',
+                    email: customerInfo.email || '',
+                    telegram: customerInfo.telegram || '',
+                    msn: customerInfo.msn || '',
+                    skype: customerInfo.skype || '',
+                    pic1Name: customerInfo.pic1Name || '',
+                    pic1: customerInfo.pic1 || '',
+                    pic2Name: customerInfo.pic2Name || '',
+                    pic2: customerInfo.pic2 || '',
+                    pic3Name: customerInfo.pic3Name || '',
+                    pic3: customerInfo.pic3 || '',
+                    pic4Name: customerInfo.pic4Name || '',
+                    pic4: customerInfo.pic4 || '',
+                    pics: customerInfo.personalInfoContacts || '',
+                    role: customerInfo.role,
+                    uplineInfo: customerInfo.uplineInfo,
+                    status: customerInfo.status,
+                    originalDangerLevel: customerInfo.originalDangerLevel,
+                    abtDangerLevel: customerInfo.abtDangerLevel,
+                    otherSportsDangerLevel: customerInfo.otherSportsDangerLevel
+                }
+                const container = shallow(<DataGrid {...props} />);
+
+                //Act
+                const form = mount(container.instance().render());
+
+                //Assert
+                expect(form.find(Formik).props().initialValues).toEqual(values);
+            });
+        });
+
+        describe('IsInvalid', () => {
+            it('isInvalid Customer Info languageId', () => {
+                const param = {
+                    values: {
+                        languages: [1, 2],
+                        uplineInfo: [],
+                        role: { name: 'test' }},
+                    errors: {
+                        languageId: 'test'
+                    },
+                    touched: {
+                        notificationTypeName: true
+                    },
+                    handleChange: jest.fn(),
+                    handleSubmit: jest.fn(),
+                    isSubmitting: jest.fn(),
+                    setFieldValue: jest.fn(),
+                    isInvalid: jest.fn()
+                };
+
+                const props =  {
+                    getSettings: jest.fn()
+                }
+
+                const container = shallow(<DataGrid {...props} />);
+
+                // Act
+                const form = shallow(container.instance().renderForm(param));
+
+                // Assert
+                expect(form.find(Form.Control).at(0).props().isInvalid).toEqual(param.errors.notificationTypeName);
+            });
+        });
 
         describe('handleSubmit', () => {
             it('should call exactly functions when edit successful', async () => {
@@ -239,6 +426,45 @@ describe('EditFeedbackSubject', () => {
                 expect(props.editCustomerInfo).toHaveBeenCalledWith(params);
                 expect(props.setEditCustomerInfoPopup).toHaveBeenCalled();
                 expect(props.onSuccess).toHaveBeenCalled();
+            });
+
+            it('handleSubmit run correctly when submit unsuccess', async () => {
+                // Arrange
+                const promise = Promise.resolve({});
+                const secondParam = {
+                    setSubmitting: jest.fn()
+                };
+                const props = {
+                    editCustomerInfoResult: { isSuccessful: false, message: '' },
+                    gridData:{
+                        data: {
+                            provinceID: 0,
+                            id: 0,
+                            languages: [],
+                        }
+                    },
+                    onSuccess: jest.fn(),
+                    setEditCustomerInfoPopup: jest.fn(),
+                    editCustomerInfo: jest.fn(() => promise),
+                    getSettings: jest.fn()
+                };
+                const values = {
+                    siteId: '',
+                    countries: '',
+                    languageId: ''
+                };
+                const container = shallow(<DataGrid {...props} />).instance();
+    
+                // Act
+                container.handleSubmit(values, secondParam);
+                await promise;
+                jest.runAllTimers();
+    
+                // Assert
+                expect(secondParam.setSubmitting).toHaveBeenCalledTimes(2);
+                expect(props.editCustomerInfo).toHaveBeenCalledTimes(1);
+                expect(secondParam.setSubmitting.mock.calls[0][0]).toBe(true);
+                expect(secondParam.setSubmitting.mock.calls[1][0]).toBe(false);
             });
         });
         describe('handleSearchUplineInfo', () => {

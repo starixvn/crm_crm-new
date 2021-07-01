@@ -26,6 +26,7 @@
             var criteria = new GetFeedbackSubjectTemplateCriteria();
             var service = GetFeedbackSubjectService();
             baseService.GetDataAsync<FeedbackSubjectTemplate>(Arg.Do<GetFeedbackSubjectTemplateCriteria>(x => criteria = x)).Returns(expected);
+            
             //Act
             var actual = await service.GetFeedbackSubjectTemplateAsync(param);
 

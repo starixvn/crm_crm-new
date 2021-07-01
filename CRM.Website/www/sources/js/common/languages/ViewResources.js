@@ -75,6 +75,7 @@
     EditNotificationTemplateSuccessfully: 'Edit notification template successfully!',
     EditNotificationType: 'Edit Notification Type',
     EditNotificationTypeSuccessfully: 'Edit notification type successfully!',
+    EditCustomerInfoSuccessfully: 'Edit Customer Information successfully!',
     EditPersonalMapping: 'Edit Personal Chat Mapping',
     EditPIC: 'Edit PIC',
     EditPICSuccess: 'Edit PIC successfully!',

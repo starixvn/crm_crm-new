@@ -11,13 +11,14 @@ export const validateFormik = (values) => {
     const errors = {};
 
     if (!values.languageId) {
-        errors.languageId = LangHelper.getResource('SystemRequired');
+        errors.languageId = LangHelper.getResource('LanguagesRequired');
     }
 
     return errors;
 };
 const functions = {
-    renderSystemOption
+    renderSystemOption,
+    validateFormik
 };
 
 export default functions;

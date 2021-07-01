@@ -9,6 +9,7 @@ import { renderSystemOption, validateFormik } from '../common.functions';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '../../../../components/multiple-select/index';
 import { RoleIds } from '@jsroot/common/constants';
+import ResponseMessage from '@jsroot/components/ResponseMessage';
 
 export class DataGrid extends Component {
     static defaultProps = {
@@ -23,7 +24,6 @@ export class DataGrid extends Component {
     };
     constructor(props) {
         super(props);
-        this.formik = React.createRef();
         this.state = {
             languages: []
         };
@@ -377,14 +377,13 @@ export class DataGrid extends Component {
 
             </Form>
         );
-    
     }
 
     handleSubmit = (values, { setSubmitting }) => {
         const data = {
             site: values.siteId,
             countryId: values.countryId,
-            provinceID: this.props.gridData.data.provinceID,
+            provinceID: this.props.gridData.data.provinceID ,
             firstName: values.firstName,
             lastName: values.lastName,
             language: values.languageId,
@@ -462,9 +461,6 @@ export class DataGrid extends Component {
             phone3CountryCode: customerInfo.phone3CountryCode || '',
             phone3AreaCode: customerInfo.phone3AreaCode || '',
             phone3: customerInfo.phone3 || '',
-            phoneCountryCode: customerInfo.phoneCountryCode || '',
-            phoneAreaCode: customerInfo.phoneAreaCode || '',
-            phone: customerInfo.phone || '',
             mobilePhoneCountryCode: customerInfo.mobilePhoneCountryCode || '',
             mobilePhoneAreaCode: customerInfo.mobilePhoneAreaCode || '',
             mobilePhone: customerInfo.mobilePhone || '',

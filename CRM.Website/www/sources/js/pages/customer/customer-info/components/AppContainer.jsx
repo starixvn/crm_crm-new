@@ -45,6 +45,8 @@ export class AppContainer extends Component {
     handleCheckGridData = () => {
         if(this.props.gridData === null) {
             this.props.setEmptyCustomerInfoPopup( {show: true} );
+        } else {
+            this.props.setEmptyCustomerInfoPopup( {show: false} );
         }
     }
 

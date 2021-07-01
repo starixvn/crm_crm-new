@@ -117,5 +117,27 @@ describe('AppContainer', () => {
             expect(props.setEmptyCustomerInfoPopup).toHaveBeenCalledWith( { show: true });
         
         });
+
+        it('should not show popup when data not empty', () => {
+             //Arrange
+             const props = {
+                emptyCustomerInfoPopup: { show: true },
+                gridData: {
+                    data: {
+                        id:1
+                    }
+                },
+                setEmptyCustomerInfoPopup: jest.fn()
+            }
+            const container = shallow(<AppContainer {...props} />).instance();
+
+
+            //Act
+            container.handleCheckGridData();
+
+            //Assert
+            expect(props.setEmptyCustomerInfoPopup).toHaveBeenCalledWith({ show: false });
+        
+        });
     });
 });

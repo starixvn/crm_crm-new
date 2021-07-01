@@ -37,7 +37,7 @@
             this.customerService = customerService;
             this.settingService = settingService;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CustomerInfo, Policy.Host);
             return View(isHost);

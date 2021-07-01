@@ -75,24 +75,19 @@ describe('actionCreators', () => {
             const expectParams = { 
                 id: 1,
                 userName: 'test',
-                siteId: 0,
-                countryId: 0,
-                firstName: 'customertodays1',
-                lastName: 'lastname',
-                nickName: '', 
+                siteId: 0
             };
-            const response = { data: { isSuccessful: true, message: '' } };
-            const promise = Promise.resolve(response);
-            DataService.getDataAsync = jest.fn(() => promise);
+            const response = { data: { isSuccessful: true, messmessageage: '' } };
             const expectedActions = [{ type: ActionCreators.setEditCustomerInfo.type, payload: response.data }];
+            const promise = Promise.resolve(response);
             const store = mockStore({ editCustomerInfoResult: null });
+            DataService.getDataAsync = jest.fn(() => promise);
 
             // Act
             await store.dispatch(ActionCreators.editCustomerInfo(expectParams));
 
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfo/EditCustomerInfo', expectParams);
-            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 });

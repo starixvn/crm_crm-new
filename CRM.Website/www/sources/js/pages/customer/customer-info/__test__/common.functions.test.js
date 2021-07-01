@@ -41,5 +41,19 @@ describe('common functions', () => {
             // Assert
             expect(result).toBeTrue;
         });
+
+        it('return expected errors when values are invalid', () => {
+            // Arrange
+            const values = {};
+            const expected = {
+                languageId: 'LanguagesRequired'
+            };
+
+            // Act
+            const errors = commonFuns.validateFormik(values);
+
+            // Assert
+            expect(errors).toEqual(expected);
+        });
     });
 });

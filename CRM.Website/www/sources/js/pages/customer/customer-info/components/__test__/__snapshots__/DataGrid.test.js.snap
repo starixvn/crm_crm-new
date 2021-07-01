@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DataGridCustomerInfo methods renderForm should show response message 1`] = `ShallowWrapper {}`;
+
+exports[`DataGridCustomerInfo renderForm should show response message 1`] = `ShallowWrapper {}`;
+
+exports[`DataGridCustomerInfo should render correctly 1`] = `ShallowWrapper {}`;
+
 exports[`EditFeedbackSubject methods renderForm should show response message 1`] = `ShallowWrapper {}`;
 
 exports[`EditFeedbackSubject should render correctly 1`] = `ShallowWrapper {}`;
