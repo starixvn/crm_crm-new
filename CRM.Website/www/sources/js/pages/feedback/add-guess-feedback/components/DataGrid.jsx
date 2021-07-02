@@ -1020,7 +1020,7 @@ export class DataGrid extends Component {
                         </Form.Group>
                     </Col>
                     </Form.Group>
-                    <Form.Group as={Row} className="pt-3 pb-3" controlId="formBasicCheckbox">
+                    <Form.Group as={Row} className="pt-1 pb-1" controlId="formBasicCheckbox">
                     <Col sm="2" md="2">
                         <Form.Check type="checkbox" className="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
                             checked={this.state.isVerifyCustomer}

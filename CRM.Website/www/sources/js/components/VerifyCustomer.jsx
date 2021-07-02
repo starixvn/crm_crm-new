@@ -14,7 +14,7 @@ export default class VerifyCustomer extends PureComponent {
         const { listOfCustomers } = this.props;
         return listOfCustomers && listOfCustomers.length > 0 ?
             <Fragment>
-                <Form.Group as={Row} className="pt-3 pb-3">
+                <Form.Group as={Row} className="pt-1 pb-1">
                     <Form.Label column sm="3" md="3" />
                     <Col sm="9" md="9" className="d-flex">
                         <div className="pl-2 mr-5 customerShow">
@@ -28,7 +28,7 @@ export default class VerifyCustomer extends PureComponent {
                         </div>
                     </Col>
                 </Form.Group>
-                <Form.Group as={Row} className="pt-3 pb-3">
+                <Form.Group as={Row} className="pt-1 pb-1">
                     <Form.Label column sm="3" md="3" />
                     <Col sm="9" md="9">
                         <div className="d-flex flex-wrap customersList">

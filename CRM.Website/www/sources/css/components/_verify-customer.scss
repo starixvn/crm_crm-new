@@ -1,0 +1,38 @@
+.customerShow {
+    border-left: 18px solid green;
+}
+
+.guestShow {
+    border-left: 18px solid #06c;
+}
+
+.invalidShow {
+    border-left: 18px solid red;
+}
+
+.customersList {
+    border: 1px solid #ced4da;
+}
+
+.txt-customer, .txt-guest, .txt-invalid {
+    display: flex;
+    align-items: center;
+    border: 1px solid #8e8e8e;
+    border-radius: 5px;
+
+    .fa-times {
+        cursor: pointer;
+    }
+}
+
+.txt-customer {
+    color: green;
+}
+
+.txt-guest {
+    color: #06c
+}
+
+.txt-invalid {
+    color: red;
+}
