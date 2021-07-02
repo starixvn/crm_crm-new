@@ -44,7 +44,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetNotificationTemplate([FromBody]GetNotificationTemplateParam param)
+        public async Task<IActionResult> GetNotificationTemplate([FromBody] GetNotificationTemplateParam param)
         {
             IEnumerable<NotificationTemplate> templates = await templateService.GetAsync(param);
             return Json(new { totalItems = param.TotalRows, data = templates });
@@ -52,7 +52,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Host)]
-        public async Task<IActionResult> Create([FromBody]CreateNotificationTemplate model)
+        public async Task<IActionResult> Create([FromBody] CreateNotificationTemplate model)
         {
             model.LoginIP = ClientIP;
             CommandResult commandResult = await templateService.CreateAsync(model);
@@ -67,7 +67,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Host)]
-        public async Task<IActionResult> Edit([FromBody]EditNotificationTemplate model)
+        public async Task<IActionResult> Edit([FromBody] EditNotificationTemplate model)
         {
             model.LoginIP = ClientIP;
             CommandResult commandResult = await templateService.EditAsync(model);
@@ -76,7 +76,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.NotificationTemplate, Policy = Policy.Host)]
-        public async Task<IActionResult> Delete([FromBody]DeleteNotificationTemplate model)
+        public async Task<IActionResult> Delete([FromBody] DeleteNotificationTemplate model)
         {
             model.LoginIP = ClientIP;
             CommandResult commandResult = await templateService.DeleteAsync(model);
@@ -85,12 +85,7 @@
 
         public async Task<IActionResult> GetLanguages()
         {
-            var param = new GetSettingParam
-            {
-                SettingName = SettingName.NotificationTemplateLanguage,
-                IsActive = true
-            };
-            IEnumerable<Setting> settings = await settingService.GetAsync(param);
+            IEnumerable<Setting> settings = await settingService.GetSettingAsync(SettingName.NotificationTemplateLanguage, true);
             return Json(settings);
         }
     }

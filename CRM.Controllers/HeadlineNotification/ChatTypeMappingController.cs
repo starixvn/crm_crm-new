@@ -63,20 +63,16 @@
         public async Task<IActionResult> GetSettings()
         {
             var bots = commonService.GetConversationBotAsync();
-            var lang = settingService.GetAsync(new GetSettingParam
-            {
-                SettingName = SettingName.NotificationTemplateLanguage,
-                IsActive = true
-            });
+            var languages = settingService.GetSettingAsync(SettingName.NotificationTemplateLanguage, true);
             var recipientTypes = commonService.GetRecipientTypeAsync();
 
-            await Task.WhenAll(bots, lang, recipientTypes);
+            await Task.WhenAll(bots, languages, recipientTypes);
 
             var result = new
             {
                 ChatTypes = commonService.GetChatTypes(),
                 MappingStatuses = commonService.GetMappingStatus(),
-                Languages = (await lang).Select(l => new BaseModel { Id = l.SettingId, Name = l.SettingValue }),
+                Languages = (await languages).Select(l => new BaseModel { Id = l.SettingId, Name = l.SettingValue }),
                 Bots = await bots,
                 RecipientTypes = await recipientTypes,
             };

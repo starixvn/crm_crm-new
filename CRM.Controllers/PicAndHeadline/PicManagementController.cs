@@ -1,6 +1,5 @@
 ﻿namespace CRM.Controllers
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
@@ -9,7 +8,6 @@
     using CRM.Criteria.PicAndHeadline;
     using CRM.Criteria.Setting;
     using CRM.Models;
-    using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using Fanex.NAP.Client.Configuration;
@@ -60,14 +58,13 @@
         [HttpPost]
         public async Task<IActionResult> GetAllSetting()
         {
-            var roles = await settingService.GetAsync(new GetSettingParam { SettingName = SettingName.PicRole, UserRole = Constants.UserRole });
+            var roles = await settingService.GetSettingAsync(SettingName.PicRole);
             var allSetting = new
             {
                 RoleListWithInActive = roles,
                 RoleList = roles.Where(role => role.IsActive),
-                CommunicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole }),
-                Languages = await settingService.GetAsync(new GetSettingParam {
-                    IsActive = true, SettingName = SettingName.Language, UserRole = Constants.UserRole }),
+                CommunicationTools = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true),
+                Languages = await settingService.GetSettingAsync(SettingName.Language, true),
                 Countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria())
             };
             return Json(allSetting);
@@ -78,7 +75,7 @@
         {
             criteria.PageIndex = 0;
             criteria.PageSize = 0;
-            var communicationSetting = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool });
+            var communicationSetting = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);
             var communicationTools = communicationSetting.Select(x => new BaseModel { Id = x.SettingId, Name = x.SettingValue });
             var report = await picManagementService.GetReportAsync(criteria);
             var bytes = excelService.ExportPICManagement(communicationTools, report);

@@ -13,7 +13,6 @@
     using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.PicAndHeadline;
-    using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using Fanex.NAP.Client.Configuration;
@@ -94,7 +93,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
-        public async Task<IActionResult> ValidateAssignPic([FromBody]AssignPic model)
+        public async Task<IActionResult> ValidateAssignPic([FromBody] AssignPic model)
         {
             var criteria = new ValidateAssignmentCriteria
             {
@@ -117,7 +116,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
-        public async Task<IActionResult> AssignPIC([FromBody]AssignPic model)
+        public async Task<IActionResult> AssignPIC([FromBody] AssignPic model)
         {
             var command = new AssignPicCommand
             {
@@ -135,7 +134,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
-        public async Task<IActionResult> RemoveAssignment([FromBody]IEnumerable<RemoveAssignment> removeAssignments)
+        public async Task<IActionResult> RemoveAssignment([FromBody] IEnumerable<RemoveAssignment> removeAssignments)
         {
             var command = new RemoveAssignmentCommand
             {
@@ -150,11 +149,11 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
-        public async Task<IActionResult> GetAllPICAssignment([FromBody]GetAssignmentCriteria criteria)
+        public async Task<IActionResult> GetAllPICAssignment([FromBody] GetAssignmentCriteria criteria)
         {
             var rawData = await baseService.FetchMultipleAsync<PICAssignmentInfo, AssignmentCommunication>(criteria);
             var assignments = GeneratePicList(rawData.Item1, criteria.PageIndex, criteria.PageSize);
-            var communicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole });
+            var communicationTools = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);
             var groupByComm = rawData.Item2.GroupBy(x => new { x.PicId, x.Username, x.Order, x.RoleId }).Select(y => new
             {
                 Order = y.Key.Order,
@@ -162,9 +161,9 @@
                 PicName = y.Key.Username,
                 PicId = y.Key.PicId,
                 ListComm = y.ToList()
-            }).OrderBy(y=>y.Order)
-                .ThenBy(y=>y.RoleId)
-                .ThenBy(y=>y.PicName)
+            }).OrderBy(y => y.Order)
+                .ThenBy(y => y.RoleId)
+                .ThenBy(y => y.PicName)
                 .ToList();
 
             var response = new
@@ -181,7 +180,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
-        public async Task<IActionResult> SetDefaultPIC([FromBody]SetDefaultPicCommand command)
+        public async Task<IActionResult> SetDefaultPIC([FromBody] SetDefaultPicCommand command)
         {
             command.UserId = napSession.UserId;
             command.LoginIP = ClientIP;
@@ -191,7 +190,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Host)]
-        public async Task<IActionResult> RemoveDefaultPIC([FromBody]RemoveDefaultPicCommand command)
+        public async Task<IActionResult> RemoveDefaultPIC([FromBody] RemoveDefaultPicCommand command)
         {
             command.UserId = napSession.UserId;
             command.LoginIP = ClientIP;
@@ -201,7 +200,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
-        public async Task<IActionResult> ExportExcelReport([FromBody]GetAssignmentCriteria criteria)
+        public async Task<IActionResult> ExportExcelReport([FromBody] GetAssignmentCriteria criteria)
         {
             criteria.PageIndex = null;
             criteria.PageSize = null;
@@ -220,7 +219,7 @@
             var isReadPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
             var isRenderPicManagement = isReadPicManagement && picInfo.Item2.ToList().Count > 0;
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);
-            var communicationTools = await settingService.GetAsync(new GetSettingParam { IsActive = true, SettingName = SettingName.PicCommunicationTool, UserRole = Constants.UserRole });
+            var communicationTools = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);
             var bytes = excelService.ExportPICAssignment(assignments, groupAssignmentCommunications, communicationTools, isRenderPicManagement);
             return File(bytes, MimeType.XLSX, $"{ViewResources.PICAssignment}.xlsx");
         }

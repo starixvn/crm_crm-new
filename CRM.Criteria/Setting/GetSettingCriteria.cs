@@ -1,10 +1,11 @@
 ﻿namespace CRM.Criteria.Setting
 {
+    using CRM.Core.Constants;
     using Fanex.Data.Repository;
 
     public class GetSettingCriteria : CriteriaBase
     {
-        public int? UserRole { get; set; }
+        public byte UserRole { get; } = Constants.UserRole;
         public string SettingName { get; set; }
         public bool? IsActive { get; set; }
 

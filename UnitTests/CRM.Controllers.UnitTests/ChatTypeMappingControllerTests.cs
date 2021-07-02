@@ -78,7 +78,7 @@
             // Arrange
             var controller = GetController();
             commonService.GetConversationBotAsync().Returns(bots);
-            settingService.GetAsync(Arg.Any<GetSettingParam>()).Returns(langs);
+            settingService.GetSettingAsync(Arg.Any<string>()).Returns(langs);
             commonService.GetRecipientTypeAsync().Returns(recipientTypes);
             commonService.GetChatTypes().Returns(chatTypes);
             commonService.GetMappingStatus().Returns(mappingStatues);

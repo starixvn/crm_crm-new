@@ -145,9 +145,8 @@
             // Arrange
             var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Setting>>();
-            var param = fixture.Create<GetSettingParam>();
             var controller = GetController();
-            settingService.GetAsync(Arg.Do<GetSettingParam>(x => param = x)).Returns(expected);
+            settingService.GetSettingAsync(SettingName.NotificationTemplateLanguage, true).Returns(expected);
 
             // Act
             var result = await controller.GetLanguages();
@@ -156,9 +155,6 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var settings = Assert.IsAssignableFrom<IEnumerable<Setting>>(jsonResult.Value);
             Assert.Equal(expected, settings);
-
-            Assert.Equal(SettingName.NotificationTemplateLanguage, param.SettingName);
-            Assert.Equal(true, param.IsActive);
         }
 
         #region Helpers

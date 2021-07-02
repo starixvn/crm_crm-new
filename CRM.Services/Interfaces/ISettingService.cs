@@ -9,7 +9,7 @@
 
     public interface ISettingService
     {
-        Task<IEnumerable<Setting>> GetAsync(GetSettingParam param);
+        Task<IEnumerable<Setting>> GetSettingAsync(string settingName, bool? isActive = null);
 
         Task<IEnumerable<SiteSetting>> GetAllSiteAsync();
 
@@ -50,7 +50,6 @@
         IEnumerable<Setting> GetAllCustomerTypes();
 
         Task<int> NumberOfFeedbackSubjectTemplate();
-        
 
         Task<IEnumerable<FeedbackTemplate>> GetFeedbackSubjectTemplateByPagingIndex(GetFeedbackSubjectTemplateByPagingIndexCriteria criteria);
     }

@@ -80,12 +80,7 @@
 
         private async Task<IEnumerable<Setting>> GetAllMainCategoriesFromAllSettings()
         {
-            var mainCategories = await settingService.GetAsync(new GetSettingParam
-            {
-                SettingName = SettingName.MainCategory,
-                IsActive = true
-            });
-
+            var mainCategories = await settingService.GetSettingAsync(SettingName.MainCategory, true);
             var subCategories = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria { Active = SettingConstants.ActiveAndInactive });
 
             foreach (var category in mainCategories)

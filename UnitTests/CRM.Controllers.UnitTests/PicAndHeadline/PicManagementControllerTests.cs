@@ -90,12 +90,9 @@
             };
             var controller = GetController();
 
-            settingService.GetAsync(Arg.Is<GetSettingParam>(param => 
-            param.SettingName == SettingName.PicRole && param.UserRole == Constants.UserRole)).Returns(roleList);
-            settingService.GetAsync(Arg.Is<GetSettingParam>(param => 
-            param.IsActive == true && param.SettingName == SettingName.PicCommunicationTool && param.UserRole == Constants.UserRole)).Returns(communicationTools);
-            settingService.GetAsync(Arg.Is<GetSettingParam>(param =>
-            param.IsActive == true && param.SettingName == SettingName.Language && param.UserRole == Constants.UserRole)).Returns(languages);
+            settingService.GetSettingAsync(SettingName.PicRole).Returns(roleList);
+            settingService.GetSettingAsync(SettingName.PicCommunicationTool, true).Returns(communicationTools);
+            settingService.GetSettingAsync(SettingName.Language, true).Returns(languages);
 
             settingService.GetAllCountryAsync(Arg.Any<GetAllCountryCriteria>()).Returns(countries);
 
@@ -197,8 +194,8 @@
             var expected = fixture.Create<byte[]>();
             var controller = GetController();
             picManagementService.GetReportAsync(param).Returns(templates);
-            settingService.GetAsync(Arg.Is<GetSettingParam>(s => s.IsActive == true && s.SettingName == SettingName.PicCommunicationTool)).Returns(communicationTools);
-            excelService.ExportPICManagement(communicationTools, templates).Returns(expected);
+            settingService.GetSettingAsync(SettingName.PicCommunicationTool, true).Returns(communicationTools);
+            excelService.ExportPICManagement(Arg.Any<IEnumerable<BaseModel>>(), templates).Returns(expected);
 
             // Act
             var result = await controller.ExportExcel(param);

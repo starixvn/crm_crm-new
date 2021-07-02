@@ -28,15 +28,14 @@
             baseService.GetDataAsync<Setting>(Arg.Any<GetAllCommunicationToolCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetAllCommunicationToolAsync(true);
-
+            var actual = await service.GetAllCommunicationToolAsync();
 
             // Assert
             Assert.Equal(expectedOrder, actual);
         }
 
         [Fact]
-        public async Task GetAsync_WhenCalled_ReturnExpectedListSettings()
+        public async Task GetSettingAsync_WhenCalled_ReturnExpectedListSettings()
         {
             var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Setting>>();
@@ -45,7 +44,7 @@
 
             baseService.GetDataAsync<Setting>(Arg.Any<GetSettingCriteria>()).Returns(expected);
 
-            var actual = await service.GetAsync(fixture.Create<GetSettingParam>());
+            var actual = await service.GetSettingAsync(fixture.Create<string>());
 
             Assert.Equal(expected, actual);
         }
@@ -81,7 +80,6 @@
             // Assert
             Assert.Equal(expected, actual);
         }
-
 
         [Fact]
         public async Task GetAllCountryAsync_WhenCalled_ReturnExpectedSettings()
@@ -355,11 +353,13 @@
         }
 
         #region Helpers
+
         private SettingService GetService()
         {
             baseService = Substitute.For<IBaseService>();
             return new SettingService(baseService);
         }
-        #endregion
+
+        #endregion Helpers
     }
 }

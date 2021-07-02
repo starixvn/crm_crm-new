@@ -1,18 +1,16 @@
 ﻿namespace CRM.Services.UnitTests.Customer
 {
-    using AutoFixture;
-    using CRM.Core.Constants;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
-    using CRM.Criteria.Customer;
-    using CRM.Models;
-    using CRM.Models.Customer;
-    using CRM.Services.Customer;
-    using NSubstitute;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoFixture;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using CRM.Criteria.Customer;
+    using CRM.Models.Customer;
+    using CRM.Services.Customer;
+    using NSubstitute;
     using Xunit;
 
     public class CustomerServiceTest
@@ -40,7 +38,6 @@
             Assert.Equal(expected, actual);
         }
 
-
         [Fact]
         public async Task GetCustomerInfoAsync_WhenCalledWithIsGuest_ReturnExpectedCustomerInfo()
         {
@@ -55,7 +52,7 @@
             var service = GetCustomerService();
             baseService.FetchMultipleAsync<CustomerInfo, int>(Arg.Do<GetCustomerInfoByUsernameCriteria>(x => param = x)).Returns(tuple);
             var expected = customerInfo.First();
-            
+
             //Act
             var actual = await service.GetCustomerInfoAsync(param);
 
@@ -63,26 +60,6 @@
             Assert.Equal(expected, actual);
             Assert.Equal(new List<CustomerInfo>(), actual.UplineInfo);
         }
-
-        [Fact]
-        public async Task GetUplineInfoOfUser_WhenCall_ReturnExpectedUplineInfo()
-        {
-            //Arrange
-            var fixture = new Fixture();
-            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-            var expected = fixture.Create<IEnumerable<CustomerInfo>>();
-            var service = GetCustomerService();
-            var criteria = new GetUplineInfoOfUserCriteria();
-            var param = fixture.Create<GetUplineInfoOfUserCriteria>();
-            baseService.GetDataAsync<CustomerInfo>(Arg.Do<GetUplineInfoOfUserCriteria>(x => param = x)).Returns(expected);
-
-            //Act
-            var actual = await service.GetUplineInfoOfUser(param);
-
-            //Assert
-            Assert.Equal(expected, actual);
-        }
-
 
         [Fact]
         public async Task UpdateCustomerInfoAsync_WhenCall_ReturnExpectedCommand()
@@ -100,8 +77,6 @@
             //Assert
             Assert.Equal(expected, actual);
         }
-
-        
 
         #region Helpers
 
