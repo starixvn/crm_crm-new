@@ -39,7 +39,7 @@
 
         Task<IEnumerable<BaseModel>> GetCurrencyRedemptionAsync();
 
-        Task<IEnumerable<BaseModel>> GetAllLicenseeTypeAsync();
+        Task<IEnumerable<BaseModel>> GetLicenseeTypeAsync();
 
         Task<IEnumerable<BaseModel>> GetCurrencyAsync();
 

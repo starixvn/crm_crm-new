@@ -74,7 +74,7 @@
 
                 var titleList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
 
-                var licenseeTypeList = await settingService.GetAllLicenseeTypeAsync();
+                var licenseeTypeList = await settingService.GetLicenseeTypeAsync();
 
                 var productList = await settingService.GetProductAsync(SettingConstants.Active);
                 var productListRemoveNAAndActive = productList.Where(p => p.Id != NAConstants.ProductNA);

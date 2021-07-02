@@ -99,7 +99,7 @@
                     0,
                     new Country
                     {
-                        Id = 0,
+                        Id = SettingConstants.NotApply,
                         Name = ViewResources.Symbol_NA,
                         IsActive = true
                     });
@@ -131,7 +131,7 @@
                     0,
                     new Setting
                     {
-                        SettingId = 0,
+                        SettingId = SettingConstants.NotApply,
                         SettingName = ViewResources.Symbol_NA,
                         IsActive = true
                     });
@@ -196,7 +196,7 @@
             return await baseService.GetDataAsync<BaseModel>(new GetAllCurrencyRedemptionCriteria());
         }
 
-        public async Task<IEnumerable<BaseModel>> GetAllLicenseeTypeAsync()
+        public async Task<IEnumerable<BaseModel>> GetLicenseeTypeAsync()
         {
             var liscenseeTypes = (await baseService.GetDataAsync<BaseModel>(new GetAllLicenseeTypeCriteria())).ToList();
             liscenseeTypes.Insert(

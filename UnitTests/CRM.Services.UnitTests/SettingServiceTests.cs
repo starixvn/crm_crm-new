@@ -216,7 +216,7 @@
         }
 
         [Fact]
-        public async Task GetAllLicenseeTypeAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetLicenseeTypeAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
             var expected = fixture.Create<IEnumerable<BaseModel>>();
@@ -225,7 +225,7 @@
             baseService.GetDataAsync<BaseModel>(criteria).Returns(expected);
 
             // Act
-            var actual = await service.GetAllLicenseeTypeAsync();
+            var actual = await service.GetLicenseeTypeAsync();
 
             // Assert
             Assert.Equal(expected, actual);
