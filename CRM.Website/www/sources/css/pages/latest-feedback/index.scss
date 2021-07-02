@@ -8,6 +8,7 @@
 @import '../../components/ckeditor';
 @import '../../components/date-picker/style';
 @import '../../components/multiple-select/style';
+@import '../../components/verify-customer';
 
 .form-filter {
     .form-row {
@@ -75,74 +76,111 @@
         font-weight: bold;
         color: red;
     }
-}
 
-.consecutive-container-before {
-    display: none
-}
-
-
-#tooltip-customers [class$="inner"] {
-    min-width: 300px;
-    text-align: left;
-}
-
-
-.customerShow {
-    border-left: 18px solid green;
-}
-
-.guestShow {
-    border-left: 18px solid #06c;
-}
-
-.invalidShow {
-    border-left: 18px solid red;
-}
-
-.customersList {
-    border: 1px solid #ced4da;
-}
-
-.txt-customer, .txt-guest, .txt-invalid {
-    display: flex;
-    align-items: center;
-    border: 1px solid #8e8e8e;
-    border-radius: 5px;
-
-    .fa-times {
-        cursor: pointer;
+    .separate {
+        hr {
+            border-top-color: #b1b1b1;
+            height: 1px;
+            margin: 6px -15px;
+        }
     }
-}
 
-.txt-customer {
-    color: green;
-}
+    .code-country {
+        margin-right: 1%;
+        padding: 0 2px;
+        width: 19%;
+    }
 
-.txt-guest {
-    color: #06c
-}
+    .code-area {
+        margin-right: 1%;
+        padding: 0 1px;
+        width: 20%;
+    }
 
-.txt-invalid {
-    color: red;
-}
+    .phone {
+        padding: 0 1px;
+        width: 59%;
+    }
 
-.fa-question-circle-o {
-    font-size: 14px;
-    color: #0789d1;
-    position: absolute;
-    margin: 10px;
-}
+    .picName {
+        margin-right: 1%;
+        padding: 0 2px;
+        width: 40%;
+    }
 
-.checkbox{
-    margin: 10px
-}
+    .consecutive-container-before {
+        display: none
+    }
 
-.preview {
-    padding: 3px 9px;
-}
+    #tooltip-customers [class$="inner"] {
+        min-width: 300px;
+        text-align: left;
+    }
 
-.pull-right {
-    float: right !important;
-    cursor: pointer
+    .customerShow {
+        border-left: 18px solid green;
+    }
+
+    .guestShow {
+        border-left: 18px solid #06c;
+    }
+
+    .invalidShow {
+        border-left: 18px solid red;
+    }
+
+    .customersList {
+        border: 1px solid #ced4da;
+    }
+
+    .txt-customer, .txt-guest, .txt-invalid {
+        display: flex;
+        align-items: center;
+        border: 1px solid #8e8e8e;
+        border-radius: 5px;
+
+        .fa-times {
+            cursor: pointer;
+        }
+    }
+
+    .txt-customer {
+        color: green;
+    }
+
+    .txt-guest {
+        color: #06c
+    }
+
+    .txt-invalid {
+        color: red;
+    }
+
+    .fa-question-circle-o {
+        font-size: 14px;
+        color: #0789d1;
+        position: absolute;
+        margin: 10px;
+    }
+
+    .checkbox {
+        margin: 10px
+    }
+
+    .preview {
+        padding: 3px 9px;
+    }
+
+    .pull-right {
+        float: right !important;
+        cursor: pointer
+    }
+
+    .react-datepicker-wrapper {
+        display: block;
+    }
+
+    .checkboxOverWrite {
+        padding-left: 0px;
+    }
 }

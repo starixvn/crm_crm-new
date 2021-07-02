@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import DatePicker from 'react-datepicker';
 import CustomInput from './CustomInput';
+import LangHelper from '@jsroot/common/langHelper';
 
 export default class DatePickerField extends React.Component {
     constructor(props) {
@@ -34,7 +35,7 @@ export default class DatePickerField extends React.Component {
             >
                 {
                     this.props.showTimeInput &&
-                        <div className="react-datepicker__input-time-container btnNow" type='button' onClick={this.handleTimeNow}>Now</div>
+                    <div className="react-datepicker__input-time-container btnNow" type='button' onClick={this.handleTimeNow}>{LangHelper.getResource('Now')}</div>
                 }
             </DatePicker >
         );
