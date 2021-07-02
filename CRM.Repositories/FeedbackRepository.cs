@@ -4,7 +4,6 @@
     using CRM.Criteria.Feedback;
     using CRM.Models.Customer;
     using CRM.Models.Feedback;
-    using CRM.Models.Feedback.LatestFeedback;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using System;

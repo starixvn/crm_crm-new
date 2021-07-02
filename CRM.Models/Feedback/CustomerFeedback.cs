@@ -2,7 +2,6 @@
 {
     using CRM.Core.Models;
     using CRM.Models.Customer;
-    using CRM.Models.Feedback.LatestFeedback;
     using System.Collections.Generic;
 
     public class CustomerFeedback

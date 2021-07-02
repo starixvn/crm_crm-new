@@ -3,7 +3,6 @@
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Models;
-    using CRM.Core.Models.Feedback;
     using CRM.Criteria.Feedback;
     using CRM.Criteria.Setting;
     using CRM.Models;
