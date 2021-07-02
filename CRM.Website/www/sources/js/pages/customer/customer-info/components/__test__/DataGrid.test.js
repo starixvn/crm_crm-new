@@ -189,7 +189,8 @@ describe('DataGridCustomerInfo', () => {
                 const props = {
                     gridData: {
                         data: {
-                            userName: '',
+                            custId: 0,
+                            username: '',
                             siteID: 0,
                             countryId: 0,
                             lastName: '',
@@ -233,12 +234,13 @@ describe('DataGridCustomerInfo', () => {
                 }
                 const customerInfo = props.gridData.data;
                 const values = {
-                    userName: customerInfo.userName || '',
+                    custId: customerInfo.custId,
+                    username: customerInfo.username || '',
                     siteId: customerInfo.siteID || 0,
                     countryId: customerInfo.countryID || 0,
                     firstName: customerInfo.firstName || '',
                     lastName: customerInfo.lastName || '',
-                    nickName: customerInfo.nickName || '', 
+                    nickname: customerInfo.nickname || '', 
                     languageId: customerInfo.languages.map(x => x).toString(),
                     phoneInfo: customerInfo.phoneInfo || '',
                     phoneCountryCode: customerInfo.phoneCountryCode || '',

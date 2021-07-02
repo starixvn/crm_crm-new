@@ -61,7 +61,6 @@
             Assert.Equal(new List<CustomerInfo>(), actual.UplineInfo);
         }
 
-        [Fact]
         public async Task UpdateCustomerInfoAsync_WhenCall_ReturnExpectedCommand()
         {
             //Arrange

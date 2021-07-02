@@ -7,6 +7,7 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
+    using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.Customer;
 
@@ -20,10 +21,12 @@
     public class CustomerService : ICustomerService
     {
         private readonly IBaseService baseService;
+        private readonly ISettingService settingService;
 
-        public CustomerService(IBaseService baseService)
+        public CustomerService(IBaseService baseService, ISettingService settingService)
         {
             this.baseService = baseService;
+            this.settingService = settingService;
         }
 
         public async Task<CustomerInfo> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
@@ -37,6 +40,12 @@
                 customerInfo.Role.Name = RoleSettingService.GetRoleName(customerInfo.RoleID);
                 customerInfo.Languages = languageIds.ToList();
                 customerInfo.LanguageID = string.Join(",", languageIds);
+                var siteSetting = await settingService.GetSettingById(new GetSettingByIdCriteria
+                {
+                    SettingId = customerInfo.SiteID
+                });
+                customerInfo.SiteSetting.Name = siteSetting.Name;
+                customerInfo.SiteSetting.Id = customerInfo.SiteID;
 
                 if (!criteria.IsGuest)
                 {

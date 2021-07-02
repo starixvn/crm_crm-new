@@ -9,7 +9,7 @@ import { renderSystemOption, validateFormik } from '../common.functions';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '../../../../components/multiple-select/index';
 import { RoleIds } from '@jsroot/common/constants';
-import ResponseMessage from '@jsroot/components/ResponseMessage';
+import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 
 export class DataGrid extends Component {
     static defaultProps = {
@@ -131,16 +131,18 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerSite')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control as="select" size="sm" className="shadow-none" id="siteId"
-                            name="siteId"
-                            value={values.siteId}
+                        <SelectWithSearch
+                            className='basic-single'
                             onChange={handleChange}
-                        >
-                            <option value="0" >N/A</option>
-                            {this.props.settings.sites.map(renderSystemOption)}
-                        </Form.Control>
+                            options={this.props.settings.sites}
+                            value={values.siteId}
+                            name={values.site.name}
+                            isHideNA={false}
+                            OnChangeValue = {this.handleChangeSite}
+                        />
                     </Col>
                 </Form.Group>
+
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
@@ -380,6 +382,10 @@ export class DataGrid extends Component {
         );
     }
 
+    handleChangeSite = (item) => {
+        console.log(item);
+    }
+
     handleSubmit = (values, { setSubmitting }) => {
         const data = {
             custId: values.custId,
@@ -447,6 +453,7 @@ export class DataGrid extends Component {
             custId: customerInfo.custId,
             username: customerInfo.username || '',
             siteId: customerInfo.siteID || 0,
+            site: customerInfo.siteSetting || '',
             countryId: customerInfo.countryID || 0,
             firstName: customerInfo.firstName || '',
             lastName: customerInfo.lastName || '',

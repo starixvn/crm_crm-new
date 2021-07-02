@@ -12,6 +12,9 @@
         Task<IEnumerable<Setting>> GetSettingAsync(string settingName, bool? isActive = null);
 
         Task<IEnumerable<SiteSetting>> GetSiteAsync();
+        Task<SiteSetting> GetSettingById(GetSettingByIdCriteria criteria);
+
+        Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(GetAllSiteCriteria criteria = null);
 
         Task<IEnumerable<Setting>> GetCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 

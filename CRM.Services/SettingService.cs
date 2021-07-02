@@ -43,7 +43,16 @@
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<SiteSetting>> GetSiteAsync()
+        public async Task<SiteSetting> GetSettingById(GetSettingByIdCriteria criteria)
+        {
+            var Sites = await GetAllSiteAsync();
+            var site = Sites.FirstOrDefault(s => s.Id == criteria.SettingId);
+            return site ?? new SiteSetting
+            {
+                Name = Constants.Symbol_NotApply
+            };
+        }
+
         {
             var siteInfos = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
             return siteInfos.Select(x => new SiteSetting
@@ -216,11 +225,29 @@
 
         public async Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(string settings)
         {
-            var criteria = new GetSourceSettingMappingCriteria
-            {
-                Settings = settings
-            };
             return await baseService.GetDataAsync<SettingMapping>(criteria);
+        }
+
+        public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(GetAllSiteCriteria criteria = null)
+            {
+            var sites =  await baseService.GetDataAsync<SiteInfo>(criteria ?? new GetAllSiteCriteria());
+            var allSites = (from n in sites
+                            where n.IsActive
+                            group n by n.IsLicensee into g
+                            orderby g.Key
+                            select new SiteInfo
+                            {
+                                Id = g.Key ? SiteConstants.LicenseeGroup : SiteConstants.IBCGroup,
+                                Name = g.Key ? Constants.Licensee : Constants.Credit,
+                                ChildSites = (from c in g
+                                              orderby c.Name
+                                              select new SiteInfo
+                                              {
+                                                  Id = c.Id,
+                                                  Name = c.Name
+                                              }).ToList()
+                            }).ToList();
+            return allSites;
         }
 
         public IEnumerable<Setting> GetPositions(bool isExcludeGuest)
