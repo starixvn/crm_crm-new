@@ -45,7 +45,7 @@
 
         public async Task<SiteSetting> GetSettingById(GetSettingByIdCriteria criteria)
         {
-            var Sites = await GetAllSiteAsync();
+            var Sites = await GetSiteAsync();
             var site = Sites.FirstOrDefault(s => s.Id == criteria.SettingId);
             return site ?? new SiteSetting
             {
@@ -53,6 +53,7 @@
             };
         }
 
+        public async Task<IEnumerable<SiteSetting>> GetSiteAsync()
         {
             var siteInfos = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
             return siteInfos.Select(x => new SiteSetting
@@ -225,6 +226,10 @@
 
         public async Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(string settings)
         {
+            var criteria = new GetSourceSettingMappingCriteria
+            {
+                Settings = settings
+            };
             return await baseService.GetDataAsync<SettingMapping>(criteria);
         }
 
