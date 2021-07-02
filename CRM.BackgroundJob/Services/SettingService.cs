@@ -34,7 +34,7 @@
             if (settings.Any())
             {
                 settings = settings.Where(x => x.IsActive);
-                IEnumerable<SettingItem> relations = await GetAllSettingRelationAsync();
+                IEnumerable<SettingItem> relations = await GetSettingRelationAsync();
                 foreach (SettingItem setting in settings)
                 {
                     setting.ParentIds = relations.Where(x => x.SettingId == setting.SettingId).Select(x => x.ParentId);
@@ -63,7 +63,7 @@
             return await baseService.GetDataAsync<SiteSettingMapping>(criteria);
         }
 
-        private async Task<IEnumerable<SettingItem>> GetAllSettingRelationAsync()
+        private async Task<IEnumerable<SettingItem>> GetSettingRelationAsync()
         {
             var criteria = new GetAllSettingRelationCriteria();
             return await baseService.GetDataAsync<SettingItem>(criteria);

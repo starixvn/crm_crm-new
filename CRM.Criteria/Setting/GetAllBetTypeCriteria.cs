@@ -5,15 +5,11 @@
 
     public class GetAllBetTypeCriteria : CriteriaBase
     {
-        public int ProductID { get; set; }
+        public int? ProductId { get; set; }
         public byte Active { get; set; }
-
         public byte UserRole { get; } = Constants.UserRole;
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_BetTypeList";
-        }
+        public override string GetSettingKey() => "Acc_CRM_BetTypeList";
 
         public override bool IsValid() => true;
     }

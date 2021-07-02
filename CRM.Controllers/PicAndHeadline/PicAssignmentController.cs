@@ -65,14 +65,7 @@
         public async Task<IActionResult> AllSetting()
         {
             var sites = await picAssignmentService.GetSystemSiteAsync(new GetSystemSiteCriteria());
-            var currencyCriteria = new GetAllCurrencyCriteria
-            {
-                IsTest = true,
-                Active = 1,
-                OfferSite = 1
-            };
-
-            var currency = (await settingService.GetAllCurrencyAsync(currencyCriteria)).OrderBy(c => c.Name);
+            var currency = (await settingService.GetCurrencyAsync()).OrderBy(c => c.Name);
             var positions = settingService.GetPositions(true);
             var pics = await baseService.GetDataAsync<PicInfo>(new GetPICCriteria { IsActive = true });
             var headlines = await baseService.GetDataAsync<BaseModel>(new GetHeadlinesCriteria());

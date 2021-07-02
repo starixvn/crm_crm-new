@@ -15,20 +15,20 @@
 
     public class SettingServiceTests
     {
+        private readonly IFixture fixture = new Fixture();
         private IBaseService baseService;
 
         [Fact]
-        public async Task GetAllCommunicationToolAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetCommunicationToolAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Setting>>();
             var expectedOrder = expected.OrderBy(s => s.DisplayOrder).ToList();
             var service = GetService();
             baseService.GetDataAsync<Setting>(Arg.Any<GetAllCommunicationToolCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetAllCommunicationToolAsync();
+            var actual = await service.GetCommunicationToolAsync();
 
             // Assert
             Assert.Equal(expectedOrder, actual);
@@ -37,15 +37,15 @@
         [Fact]
         public async Task GetSettingAsync_WhenCalled_ReturnExpectedListSettings()
         {
-            var fixture = new Fixture();
+            // Arrange
             var expected = fixture.Create<IEnumerable<Setting>>();
-
             var service = GetService();
-
             baseService.GetDataAsync<Setting>(Arg.Any<GetSettingCriteria>()).Returns(expected);
 
+            // Act
             var actual = await service.GetSettingAsync(fixture.Create<string>());
 
+            // Assert
             Assert.Equal(expected, actual);
         }
 
@@ -53,165 +53,163 @@
         public async Task GetMainCategoryAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Setting>>();
+            var criteria = new GetAllMainCategoryCriteria();
             var service = GetService();
-            baseService.GetDataAsync<Setting>(Arg.Any<GetAllMainCategoryCriteria>()).Returns(expected);
+            baseService.GetDataAsync<Setting>(Arg.Do<GetAllMainCategoryCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetMainCategoryAsync(new GetAllMainCategoryCriteria());
+            var actual = await service.GetMainCategoryAsync(0);
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(0, criteria.Active);
         }
 
         [Fact]
         public async Task GetSubCategoryAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Setting>>();
+            var criteria = new GetAllSubCategoryCriteria();
             var service = GetService();
-            baseService.GetDataAsync<Setting>(Arg.Any<GetAllSubCategoryCriteria>()).Returns(expected);
+            baseService.GetDataAsync<Setting>(Arg.Do<GetAllSubCategoryCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetSubCategoryAsync(new GetAllSubCategoryCriteria());
+            var actual = await service.GetSubCategoryAsync(1, 0);
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(1, criteria.MainCategoryId);
+            Assert.Equal(0, criteria.Active);
         }
 
         [Fact]
-        public async Task GetAllCountryAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetCountryAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Country>>();
-            var criteria = fixture.Create<GetAllCountryCriteria>();
+            var criteria = new GetAllCountryCriteria();
             var service = GetService();
-            baseService.GetDataAsync<Country>(criteria).Returns(expected);
+            baseService.GetDataAsync<Country>(Arg.Do<GetAllCountryCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetAllCountryAsync(criteria);
+            var actual = await service.GetCountryAsync(0);
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(0, criteria.Active);
         }
 
         [Fact]
-        public async Task GetAllProvinceAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetProvinceAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Province>>();
-            var criteria = fixture.Create<GetAllProvinceCriteria>();
             var service = GetService();
-            baseService.GetDataAsync<Province>(criteria).Returns(expected);
+            baseService.GetDataAsync<Province>(Arg.Any<GetAllProvinceCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetAllProvinceAsync(criteria);
+            var actual = await service.GetProvinceAsync();
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public async Task GetAllSettingRelationAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetSettingRelationAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Setting>>();
-            var criteria = fixture.Create<GetAllSettingRelationCriteria>();
             var service = GetService();
-            baseService.GetDataAsync<Setting>(criteria).Returns(expected);
+            baseService.GetDataAsync<Setting>(Arg.Any<GetAllSettingRelationCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetAllSettingRelationAsync(criteria);
+            var actual = await service.GetSettingRelationAsync();
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public async Task GetAllLanguageAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetLanguageAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Setting>>();
-            var criteria = fixture.Create<GetAllLanguageCriteria>();
+            var criteria = new GetAllLanguageCriteria();
             var service = GetService();
-            baseService.GetDataAsync<Setting>(criteria).Returns(expected);
+            baseService.GetDataAsync<Setting>(Arg.Do<GetAllLanguageCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetAllLanguageAsync(criteria);
+            var actual = await service.GetLanguageAsync(0);
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(0, criteria.Active);
         }
 
         [Fact]
-        public async Task GetAllStatusAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetStatusAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Setting>>();
             var criteria = fixture.Create<GetAllStatusCriteria>();
             var service = GetService();
             baseService.GetDataAsync<Setting>(criteria).Returns(expected);
 
             // Act
-            var actual = await service.GetAllStatusAsync(1);
+            var actual = await service.GetStatusAsync(1);
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public async Task GetAllBetTypeAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetBetTypeAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Product>>();
-            var criteria = fixture.Create<GetAllBetTypeCriteria>();
+            var criteria = new GetAllBetTypeCriteria();
             var service = GetService();
-            baseService.GetDataAsync<Product>(criteria).Returns(expected);
+            baseService.GetDataAsync<Product>(Arg.Do<GetAllBetTypeCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetAllBetTypeAsync(criteria);
+            var actual = await service.GetBetTypeAsync(1, 0);
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(1, criteria.ProductId);
+            Assert.Equal(0, criteria.Active);
         }
 
         [Fact]
         public async Task GetSubProductAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<Product>>();
-            var criteria = fixture.Create<SubProductCriteria>();
+            var criteria = new SubProductCriteria();
             var service = GetService();
-            baseService.GetDataAsync<Product>(criteria).Returns(expected);
+            baseService.GetDataAsync<Product>(Arg.Do<SubProductCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetSubProductAsync(criteria);
+            var actual = await service.GetSubProductAsync(1, 0);
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal(1, criteria.ProductId);
+            Assert.Equal(0, criteria.Active);
         }
 
         [Fact]
-        public async Task GetAllCurrencyRedemptionAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetCurrencyRedemptionAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<BaseModel>>();
-            var criteria = fixture.Create<GetAllCurrencyRedemptionCriteria>();
             var service = GetService();
-            baseService.GetDataAsync<BaseModel>(criteria).Returns(expected);
+            baseService.GetDataAsync<BaseModel>(Arg.Any<GetAllCurrencyRedemptionCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetAllCurrencyRedemptionAsync(criteria);
+            var actual = await service.GetCurrencyRedemptionAsync();
 
             // Assert
             Assert.Equal(expected, actual);
@@ -221,7 +219,6 @@
         public async Task GetAllLicenseeTypeAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<BaseModel>>();
             var criteria = fixture.Create<GetAllLicenseeTypeCriteria>();
             var service = GetService();
@@ -235,17 +232,15 @@
         }
 
         [Fact]
-        public async Task GetAllCurrencyAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetCurrencyAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<BaseModel>>();
-            var criteria = fixture.Create<GetAllCurrencyCriteria>();
             var service = GetService();
-            baseService.GetDataAsync<BaseModel>(criteria).Returns(expected);
+            baseService.GetDataAsync<BaseModel>(Arg.Any<GetAllCurrencyCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetAllCurrencyAsync(criteria);
+            var actual = await service.GetCurrencyAsync();
 
             // Assert
             Assert.Equal(expected, actual);
@@ -255,17 +250,17 @@
         public async Task GetSettingMappingAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<SettingMapping>>();
-            var criteria = fixture.Create<GetSourceSettingMappingCriteria>();
+            var criteria = new GetSourceSettingMappingCriteria();
             var service = GetService();
-            baseService.GetDataAsync<SettingMapping>(criteria).Returns(expected);
+            baseService.GetDataAsync<SettingMapping>(Arg.Do<GetSourceSettingMappingCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetSettingMappingAsync(criteria);
+            var actual = await service.GetSettingMappingAsync("1,2");
 
             // Assert
             Assert.Equal(expected, actual);
+            Assert.Equal("1,2", criteria.Settings);
         }
 
         [Fact]
@@ -274,10 +269,10 @@
             // Arrange
             var expected = new List<Setting>
             {
-            new Setting { SettingId = RoleIdConstants.Super, SettingValue = ViewResources.Super },
-            new Setting { SettingId = RoleIdConstants.Master, SettingValue = ViewResources.Master },
-            new Setting { SettingId = RoleIdConstants.Agent, SettingValue = ViewResources.Agent },
-            new Setting { SettingId = RoleIdConstants.Member, SettingValue = ViewResources.Member }
+                new Setting { SettingId = RoleIdConstants.Super, SettingValue = ViewResources.Super },
+                new Setting { SettingId = RoleIdConstants.Master, SettingValue = ViewResources.Master },
+                new Setting { SettingId = RoleIdConstants.Agent, SettingValue = ViewResources.Agent },
+                new Setting { SettingId = RoleIdConstants.Member, SettingValue = ViewResources.Member }
             };
             var service = GetService();
 

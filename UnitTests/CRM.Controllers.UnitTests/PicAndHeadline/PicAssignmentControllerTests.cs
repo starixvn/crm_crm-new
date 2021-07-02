@@ -12,7 +12,6 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.PicAndHeadline;
-    using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Setting;
@@ -67,7 +66,7 @@
             var headlineTypeIds = Enum.GetValues(typeof(HeadlineType)).Cast<HeadlineType>().Select(status => (int)status);
             var headlineTypeNames = Enum.GetValues(typeof(HeadlineType)).Cast<HeadlineType>().Select(status => status.ToString());
             picAssignmentService.GetSystemSiteAsync(Arg.Any<GetSystemSiteCriteria>()).Returns(sites);
-            settingService.GetAllCurrencyAsync(Arg.Any<GetAllCurrencyCriteria>()).Returns(currencies);
+            settingService.GetCurrencyAsync().Returns(currencies);
             settingService.GetPositions(true).Returns(positions);
             baseService.GetDataAsync<PicInfo>(Arg.Any<GetPICCriteria>()).Returns(pics);
             baseService.GetDataAsync<BaseModel>(Arg.Any<GetHeadlinesCriteria>()).Returns(headlines);

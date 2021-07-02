@@ -4,10 +4,7 @@
 
     public class GetAllCurrencyRedemptionCriteria : CriteriaBase
     {
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_CurrencyList_Redemption";
-        }
+        public override string GetSettingKey() => "Acc_CRM_CurrencyList_Redemption";
 
         public override bool IsValid() => true;
     }

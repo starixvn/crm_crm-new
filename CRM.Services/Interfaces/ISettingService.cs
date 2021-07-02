@@ -11,46 +11,46 @@
     {
         Task<IEnumerable<Setting>> GetSettingAsync(string settingName, bool? isActive = null);
 
-        Task<IEnumerable<SiteSetting>> GetAllSiteAsync();
+        Task<IEnumerable<SiteSetting>> GetSiteAsync();
 
-        Task<IEnumerable<Setting>> GetAllCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
+        Task<IEnumerable<Setting>> GetCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 
-        Task<IEnumerable<Setting>> GetMainCategoryAsync(GetAllMainCategoryCriteria criteria);
+        Task<IEnumerable<Setting>> GetMainCategoryAsync(byte active = SettingConstants.ActiveAndInactive);
 
-        Task<IEnumerable<Setting>> GetSubCategoryAsync(GetAllSubCategoryCriteria criteria);
+        Task<IEnumerable<Setting>> GetSubCategoryAsync(int? mainCategoryId = null, byte active = SettingConstants.ActiveAndInactive);
 
-        Task<IEnumerable<SettingRelation>> GetAllSettingRelationsByName(string settingName, byte active = SettingConstants.ActiveAndInactive);
+        Task<IEnumerable<SettingRelation>> GetSettingRelationByNameAsync(string settingName, byte active = SettingConstants.ActiveAndInactive);
 
-        Task<IEnumerable<Country>> GetAllCountryAsync(GetAllCountryCriteria criteria);
+        Task<IEnumerable<Country>> GetCountryAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 
-        Task<IEnumerable<Province>> GetAllProvinceAsync(GetAllProvinceCriteria criteria);
+        Task<IEnumerable<Province>> GetProvinceAsync();
 
-        Task<IEnumerable<Setting>> GetAllSettingRelationAsync(GetAllSettingRelationCriteria criteria);
+        Task<IEnumerable<Setting>> GetSettingRelationAsync();
 
-        Task<IEnumerable<Setting>> GetAllLanguageAsync(GetAllLanguageCriteria criteria);
+        Task<IEnumerable<Setting>> GetLanguageAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 
-        Task<IEnumerable<Setting>> GetAllStatusAsync(int statusType);
+        Task<IEnumerable<Setting>> GetStatusAsync(byte statusType);
 
-        Task<IEnumerable<Product>> GetAllBetTypeAsync(GetAllBetTypeCriteria criteria);
+        Task<IEnumerable<Product>> GetBetTypeAsync(int? productId = null, byte active = SettingConstants.ActiveAndInactive);
 
         Task<IEnumerable<Product>> GetProductAsync(byte active = SettingConstants.ActiveAndInactive);
 
-        Task<IEnumerable<Product>> GetSubProductAsync(SubProductCriteria criteria);
+        Task<IEnumerable<Product>> GetSubProductAsync(int productId = 0, byte active = SettingConstants.ActiveAndInactive);
 
-        Task<IEnumerable<BaseModel>> GetAllCurrencyRedemptionAsync(GetAllCurrencyRedemptionCriteria criteria);
+        Task<IEnumerable<BaseModel>> GetCurrencyRedemptionAsync();
 
         Task<IEnumerable<BaseModel>> GetAllLicenseeTypeAsync();
 
-        Task<IEnumerable<BaseModel>> GetAllCurrencyAsync(GetAllCurrencyCriteria criteria);
+        Task<IEnumerable<BaseModel>> GetCurrencyAsync();
 
-        Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(GetSourceSettingMappingCriteria criteria);
+        Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(string settings);
 
         IEnumerable<Setting> GetPositions(bool isExcludeGuest);
 
         IEnumerable<Setting> GetAllCustomerTypes();
 
-        Task<int> NumberOfFeedbackSubjectTemplate();
+        Task<int> GetNumberOfFeedbackSubjectTemplateAsync();
 
-        Task<IEnumerable<FeedbackTemplate>> GetFeedbackSubjectTemplateByPagingIndex(GetFeedbackSubjectTemplateByPagingIndexCriteria criteria);
+        Task<IEnumerable<FeedbackTemplate>> GetFeedbackSubjectTemplateByPagingIndexAsync(int pageIndex);
     }
 }

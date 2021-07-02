@@ -8,7 +8,6 @@
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Criteria.PicAndHeadline;
-    using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Setting;
@@ -94,7 +93,7 @@
             settingService.GetSettingAsync(SettingName.PicCommunicationTool, true).Returns(communicationTools);
             settingService.GetSettingAsync(SettingName.Language, true).Returns(languages);
 
-            settingService.GetAllCountryAsync(Arg.Any<GetAllCountryCriteria>()).Returns(countries);
+            settingService.GetCountryAsync(SettingConstants.Active).Returns(countries);
 
             // Act
             var actual = await controller.GetAllSetting();

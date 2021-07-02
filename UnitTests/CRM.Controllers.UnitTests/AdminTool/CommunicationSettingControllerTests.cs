@@ -5,7 +5,6 @@
     using AutoFixture;
     using CRM.Core.Constants;
     using CRM.Core.Models;
-    using CRM.Criteria.Setting;
     using CRM.Models.AdminTool.CommunicationToolSetting;
     using CRM.Models.Setting;
     using CRM.Services;
@@ -46,15 +45,14 @@
         public async Task GetAllSettings_WhenCalled_ReturnExpectedDataAsync()
         {
             //Arrange
-
             var fixture = new Fixture();
             var communicationTools = fixture.Create<IEnumerable<Setting>>();
             var mainCategories = fixture.Create<IEnumerable<Setting>>();
             var subCategories = fixture.Create<IEnumerable<Setting>>();
             var controller = GetController();
-            settingService.GetAllCommunicationToolAsync().Returns(communicationTools);
-            settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria()).Returns(mainCategories);
-            settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria()).Returns(subCategories);
+            settingService.GetCommunicationToolAsync().Returns(communicationTools);
+            settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategories);
+            settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategories);
             var expected = new
             {
                 communicationTools,

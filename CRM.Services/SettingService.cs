@@ -20,17 +20,17 @@
             this.baseService = baseService;
         }
 
-        public async Task<IEnumerable<Setting>> GetAllCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false)
+        public async Task<IEnumerable<Setting>> GetCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false)
         {
             var criteria = new GetAllCommunicationToolCriteria
             {
                 Active = active
             };
 
-            var tools = await baseService.GetDataAsync<Setting>(criteria);
+            var tools = (await baseService.GetDataAsync<Setting>(criteria)).OrderBy(s => s.DisplayOrder);
             return isIncludeNA
-                ? tools.OrderBy(s => s.DisplayOrder).ToList()
-                : tools.Where(t => t.Id != SettingConstants.CommunicationNA).OrderBy(s => s.DisplayOrder).ToList();
+                ? tools.ToList()
+                : tools.Where(t => t.Id != SettingConstants.CommunicationNA).ToList();
         }
 
         public async Task<IEnumerable<Setting>> GetSettingAsync(string settingName, bool? isActive = null)
@@ -43,38 +43,38 @@
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<SiteSetting>> GetAllSiteAsync()
+        public async Task<IEnumerable<SiteSetting>> GetSiteAsync()
         {
-            var sites = new List<SiteSetting>();
-            var criteria = new GetAllSiteCriteria();
-            var rawdata = await baseService.GetDataAsync<SiteInfo>(criteria);
-            foreach (var item in rawdata)
+            var siteInfos = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
+            return siteInfos.Select(x => new SiteSetting
             {
-                var group = item.IsLicensee ? Constants.Licensee : Constants.Credit;
-                sites.Add(new SiteSetting
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    AliasName = group,
-                    IsActive = item.IsActive
-                });
-            }
-
-            sites = sites.OrderBy(s => s.AliasName).ThenBy(s => s.Name).ToList();
-            return sites;
+                Id = x.Id,
+                Name = x.Name,
+                AliasName = x.IsLicensee ? Constants.Licensee : Constants.Credit,
+                IsActive = x.IsActive
+            }).OrderBy(s => s.AliasName).ThenBy(s => s.Name).ToList();
         }
 
-        public async Task<IEnumerable<Setting>> GetMainCategoryAsync(GetAllMainCategoryCriteria criteria)
+        public async Task<IEnumerable<Setting>> GetMainCategoryAsync(byte active = SettingConstants.ActiveAndInactive)
         {
+            var criteria = new GetAllMainCategoryCriteria
+            {
+                Active = active
+            };
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<Setting>> GetSubCategoryAsync(GetAllSubCategoryCriteria criteria)
+        public async Task<IEnumerable<Setting>> GetSubCategoryAsync(int? mainCategoryId = null, byte active = SettingConstants.ActiveAndInactive)
         {
+            var criteria = new GetAllSubCategoryCriteria
+            {
+                MainCategoryId = mainCategoryId,
+                Active = active
+            };
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<SettingRelation>> GetAllSettingRelationsByName(string settingName, byte active = SettingConstants.ActiveAndInactive)
+        public async Task<IEnumerable<SettingRelation>> GetSettingRelationByNameAsync(string settingName, byte active = SettingConstants.ActiveAndInactive)
         {
             var criteria = new GetSettingRelationByNameCriteria
             {
@@ -82,52 +82,89 @@
                 ParentID = 0,
                 Active = active
             };
-            var relation = await baseService.GetDataAsync<SettingRelation>(criteria);
-            var relationList = relation.OrderBy(setting => setting.DisplayOrder).ToList();
-            return relationList;
+            var relations = await baseService.GetDataAsync<SettingRelation>(criteria);
+            return relations.OrderBy(setting => setting.DisplayOrder).ToList();
         }
 
-        public async Task<IEnumerable<Country>> GetAllCountryAsync(GetAllCountryCriteria criteria)
+        public async Task<IEnumerable<Country>> GetCountryAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false)
         {
-            return await baseService.GetDataAsync<Country>(criteria);
+            var criteria = new GetAllCountryCriteria
+            {
+                Active = active
+            };
+            var countries = (await baseService.GetDataAsync<Country>(criteria)).ToList();
+            if (isIncludeNA)
+            {
+                countries.Insert(
+                    0,
+                    new Country
+                    {
+                        Id = 0,
+                        Name = ViewResources.Symbol_NA,
+                        IsActive = true
+                    });
+            }
+
+            return countries;
         }
 
-        public async Task<IEnumerable<Province>> GetAllProvinceAsync(GetAllProvinceCriteria criteria)
+        public async Task<IEnumerable<Province>> GetProvinceAsync()
         {
-            return await baseService.GetDataAsync<Province>(criteria);
+            return await baseService.GetDataAsync<Province>(new GetAllProvinceCriteria());
         }
 
-        public async Task<IEnumerable<Setting>> GetAllSettingRelationAsync(GetAllSettingRelationCriteria criteria)
+        public async Task<IEnumerable<Setting>> GetSettingRelationAsync()
         {
+            return await baseService.GetDataAsync<Setting>(new GetAllSettingRelationCriteria());
+        }
+
+        public async Task<IEnumerable<Setting>> GetLanguageAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false)
+        {
+            var criteria = new GetAllLanguageCriteria
+            {
+                Active = active
+            };
+            var languages = (await baseService.GetDataAsync<Setting>(criteria)).ToList();
+            if (isIncludeNA)
+            {
+                languages.Insert(
+                    0,
+                    new Setting
+                    {
+                        SettingId = 0,
+                        SettingName = ViewResources.Symbol_NA,
+                        IsActive = true
+                    });
+            }
+
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<IEnumerable<Setting>> GetAllLanguageAsync(GetAllLanguageCriteria criteria)
-        {
-            return await baseService.GetDataAsync<Setting>(criteria);
-        }
-
-        public async Task<IEnumerable<Setting>> GetAllStatusAsync(int statusType)
+        public async Task<IEnumerable<Setting>> GetStatusAsync(byte statusType)
         {
             var criteria = new GetAllStatusCriteria
             {
                 ViewType = statusType
             };
 
-            var status = await baseService.GetDataAsync<Setting>(criteria);
-            var statusList = status.ToList();
-            var closedStatus = statusList.FirstOrDefault(d => d.SettingId == (int)CRMStatus.Closed);
+            var statuses = (await baseService.GetDataAsync<Setting>(criteria)).ToList();
+            var closedStatus = statuses.FirstOrDefault(d => d.SettingId == (int)CRMStatus.Closed);
             if (closedStatus != null)
             {
-                statusList.Remove(closedStatus);
-                statusList.Insert(0, closedStatus);
+                statuses.Remove(closedStatus);
+                statuses.Insert(0, closedStatus);
             }
 
-            return statusList;
+            return statuses;
         }
 
-        public async Task<IEnumerable<Product>> GetAllBetTypeAsync(GetAllBetTypeCriteria criteria)
+        public async Task<IEnumerable<Product>> GetBetTypeAsync(int? productId = null, byte active = SettingConstants.ActiveAndInactive)
         {
+            var criteria = new GetAllBetTypeCriteria
+            {
+                ProductId = productId,
+                Active = active
+            };
             var bettypes = await baseService.GetDataAsync<Product>(criteria);
             return bettypes.OrderBy(b => b.DisplayOrder);
         }
@@ -140,71 +177,67 @@
                 ParentID = 0,
                 Active = active
             };
-            var product = await baseService.GetDataAsync<Product>(criteria);
-            var productList = product.OrderBy(setting => setting.DisplayOrder).ToList();
-            return productList;
+            var products = await baseService.GetDataAsync<Product>(criteria);
+            return products.OrderBy(setting => setting.DisplayOrder).ToList();
         }
 
-        public async Task<IEnumerable<Product>> GetSubProductAsync(SubProductCriteria criteria)
+        public async Task<IEnumerable<Product>> GetSubProductAsync(int productId = 0, byte active = SettingConstants.ActiveAndInactive)
         {
+            var criteria = new SubProductCriteria
+            {
+                ProductId = productId,
+                Active = active
+            };
             return await baseService.GetDataAsync<Product>(criteria);
         }
 
-        public async Task<IEnumerable<BaseModel>> GetAllCurrencyRedemptionAsync(GetAllCurrencyRedemptionCriteria criteria)
+        public async Task<IEnumerable<BaseModel>> GetCurrencyRedemptionAsync()
         {
-            return await baseService.GetDataAsync<BaseModel>(criteria);
+            return await baseService.GetDataAsync<BaseModel>(new GetAllCurrencyRedemptionCriteria());
         }
 
         public async Task<IEnumerable<BaseModel>> GetAllLicenseeTypeAsync()
         {
-            var criteria = new GetAllLicenseeTypeCriteria();
-            var liscenseeType = await baseService.GetDataAsync<BaseModel>(criteria);
-            var liscenseeTypeList = liscenseeType.ToList();
-            liscenseeTypeList.Insert(
+            var liscenseeTypes = (await baseService.GetDataAsync<BaseModel>(new GetAllLicenseeTypeCriteria())).ToList();
+            liscenseeTypes.Insert(
                 0,
                 new BaseModel
                 {
                     Id = SettingConstants.NotApply,
                     Name = ViewResources.Symbol_NA
                 });
-            return liscenseeTypeList;
+            return liscenseeTypes;
         }
 
-        public async Task<IEnumerable<BaseModel>> GetAllCurrencyAsync(GetAllCurrencyCriteria criteria)
+        public async Task<IEnumerable<BaseModel>> GetCurrencyAsync()
         {
-            return await baseService.GetDataAsync<BaseModel>(criteria);
+            return await baseService.GetDataAsync<BaseModel>(new GetAllCurrencyCriteria());
         }
 
-        public async Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(GetSourceSettingMappingCriteria criteria)
+        public async Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(string settings)
         {
+            var criteria = new GetSourceSettingMappingCriteria
+            {
+                Settings = settings
+            };
             return await baseService.GetDataAsync<SettingMapping>(criteria);
-        }
-
-        public async Task<IEnumerable<BaseModel>> GetAllSites(GetAllSiteCriteria criteria = null)
-        {
-            return await baseService.GetDataAsync<BaseModel>(criteria);
         }
 
         public IEnumerable<Setting> GetPositions(bool isExcludeGuest)
         {
-            if (isExcludeGuest)
-            {
-                return new List<Setting>
-                     {
-                        new Setting { SettingId = RoleIdConstants.Super, SettingValue = ViewResources.Super },
-                        new Setting { SettingId = RoleIdConstants.Master, SettingValue = ViewResources.Master },
-                        new Setting { SettingId = RoleIdConstants.Agent, SettingValue = ViewResources.Agent },
-                        new Setting { SettingId = RoleIdConstants.Member, SettingValue = ViewResources.Member }
-                     };
-            }
-            return new List<Setting>
+            var positions = new List<Setting>
             {
                 new Setting { SettingId = RoleIdConstants.Super, SettingValue = ViewResources.Super },
                 new Setting { SettingId = RoleIdConstants.Master, SettingValue = ViewResources.Master },
                 new Setting { SettingId = RoleIdConstants.Agent, SettingValue = ViewResources.Agent },
-                new Setting { SettingId = RoleIdConstants.Member, SettingValue = ViewResources.Member },
-                new Setting { SettingId = RoleIdConstants.Guest, SettingValue = ViewResources.Guest}
+                new Setting { SettingId = RoleIdConstants.Member, SettingValue = ViewResources.Member }
             };
+            if (!isExcludeGuest)
+            {
+                positions.Add(new Setting { SettingId = RoleIdConstants.Guest, SettingValue = ViewResources.Guest });
+            }
+
+            return positions;
         }
 
         public IEnumerable<Setting> GetAllCustomerTypes()
@@ -229,32 +262,30 @@
             };
         }
 
-        public async Task<int> NumberOfFeedbackSubjectTemplate()
+        public async Task<int> GetNumberOfFeedbackSubjectTemplateAsync()
         {
-            var feedbacks = await GetFeedbackSubjectTemplates();
-            return feedbacks.ToList().Count;
+            var feedbacks = await GetFeedbackSubjectTemplateAsync();
+            return feedbacks.Count;
         }
 
-        private async Task<IList<FeedbackTemplate>> GetFeedbackSubjectTemplates()
+        public async Task<IEnumerable<FeedbackTemplate>> GetFeedbackSubjectTemplateByPagingIndexAsync(int pageIndex)
+        {
+            const int size = SettingConstants.MaxFeedbackSubjectTemplateNumberOnLoad;
+            var feedbackTemplates = await GetFeedbackSubjectTemplateAsync();
+
+            return (feedbackTemplates != null && feedbackTemplates.Any())
+                ? feedbackTemplates.Skip((pageIndex - 1) * size).Take(pageIndex * size).ToList()
+                : new List<FeedbackTemplate>();
+        }
+
+        private async Task<IList<FeedbackTemplate>> GetFeedbackSubjectTemplateAsync()
         {
             var criteria = new GetFeedbackSubjectTemplateByIdCriteria
             {
                 TemplateId = 0
             };
             var feedbackTemplates = await baseService.GetDataAsync<FeedbackTemplate>(criteria);
-            var feedbackTemplatesActive = feedbackTemplates.Where(s => s.IsActive).ToList();
-            return feedbackTemplatesActive;
-        }
-
-        public async Task<IEnumerable<FeedbackTemplate>> GetFeedbackSubjectTemplateByPagingIndex(GetFeedbackSubjectTemplateByPagingIndexCriteria criteria)
-        {
-            int multipleNum = SettingConstants.MaxFeedbackSubjectTemplateNumberOnLoad;
-
-            var feedbackTemplates = await GetFeedbackSubjectTemplates();
-
-            return (feedbackTemplates != null && feedbackTemplates.Any()) ?
-                    feedbackTemplates.Skip((criteria.PagingIndex - 1) * multipleNum).Take(criteria.PagingIndex * multipleNum).ToList() :
-                    new List<FeedbackTemplate>();
+            return feedbackTemplates.Where(s => s.IsActive).ToList();
         }
     }
 }

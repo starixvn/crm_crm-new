@@ -8,7 +8,7 @@
         public const int AllSetting = -1;
         public const int MaxFeedbackSubjectTemplateNumberOnLoad = 100000;
         public const int CommunicationNA = 1005;
-        public const int Active = 1;
-        public const int ActiveAndInactive = 2;
+        public const byte Active = 1;
+        public const byte ActiveAndInactive = 2;
     }
 }

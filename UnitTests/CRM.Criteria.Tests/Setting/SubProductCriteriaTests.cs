@@ -1,7 +1,7 @@
 ﻿namespace CRM.Criteria.Tests.Setting
 {
-    using Xunit;
     using CRM.Criteria.Setting;
+    using Xunit;
 
     public class SubProductCriteriaTests
     {
@@ -38,13 +38,13 @@
             // Arrange
             var criteria = new SubProductCriteria
             {
-                ProductID = 1
+                ProductId = 1
             };
 
             // Act
 
             // Assert
-            Assert.Equal(1, criteria.ProductID);
+            Assert.Equal(1, criteria.ProductId);
         }
     }
 }

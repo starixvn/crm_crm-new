@@ -16,7 +16,7 @@ const getAllSettings = () => async dispatch => {
 };
 
 const getNumberOfFeedbackSubjectTemplate = () => async dispatch => {
-    const url = Site.resolveClientUrl('Setting/NumberOfFeedbackSubjectTemplate');
+    const url = Site.resolveClientUrl('Setting/GetNumberOfFeedbackSubjectTemplate');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setNumberOfFeedbackSubjectTemplate(response.data));
     });

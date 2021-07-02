@@ -1,20 +1,16 @@
 ﻿namespace CRM.Controllers.Feedback
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
-    using CRM.Criteria.Setting;
-    using CRM.Models;
     using CRM.Models.Feedback.AddGuessFeedback;
-    using CRM.Models.Setting;
-    using CRM.Resources;
     using CRM.Services;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
     public class AddGuessFeedbackController : BaseController
@@ -35,6 +31,7 @@
             this.userService = userService;
             this.settingService = settingService;
         }
+
         public IActionResult Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
@@ -57,53 +54,25 @@
         {
             try
             {
+                var languages = await settingService.GetLanguageAsync(SettingConstants.Active, true);
+                var countries = await settingService.GetCountryAsync(SettingConstants.Active, true);
 
-                var languages = await settingService.GetAllLanguageAsync(new GetAllLanguageCriteria
-                {
-                    Active = SettingConstants.Active
-                });
-                var languagesList = languages.ToList();
-
-                languagesList.Insert(
-                    0,
-                    new Setting
-                    {
-                        SettingId = 0,
-                        SettingName = ViewResources.Symbol_NA,
-                        IsActive = true
-                    });
-
-                var countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria
-                {
-                    Active = SettingConstants.Active
-                });
-                var countriesList = countries.ToList();
-
-                countriesList.Insert(
-                    0,
-                    new Country
-                    {
-                        Id = 0,
-                        Name = ViewResources.Symbol_NA,
-                        IsActive = true
-                    });
-
-                var extentionList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Extension, SettingConstants.Active);
+                var extentionList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
                 var extentionListRemmoveNA = extentionList.Where(x => x.Id != NAConstants.ExtentionNA);
                 var extentionNA = extentionList.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
 
-                var statusList = await settingService.GetAllStatusAsync(ViewTypeConstants.CommunicationTool);
+                var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
                 var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
-              
-                var ProvinceList = await settingService.GetAllProvinceAsync(new GetAllProvinceCriteria());
 
-                var communicationToolList = await settingService.GetAllCommunicationToolAsync(SettingConstants.Active);
+                var provinces = await settingService.GetProvinceAsync();
 
-                var siteList = await settingService.GetAllSiteAsync();
+                var communicationToolList = await settingService.GetCommunicationToolAsync(SettingConstants.Active);
 
-                var responsesLists = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Response, SettingConstants.Active);
+                var siteList = await settingService.GetSiteAsync();
 
-                var titleList = await settingService.GetAllSettingRelationsByName(SettingTypeConstants.Title, SettingConstants.Active);
+                var responsesLists = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
+
+                var titleList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
 
                 var licenseeTypeList = await settingService.GetAllLicenseeTypeAsync();
 
@@ -111,24 +80,24 @@
                 var productListRemoveNAAndActive = productList.Where(p => p.Id != NAConstants.ProductNA);
                 var productNA = productList.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
 
-                var subproduct = await settingService.GetSubProductAsync(new SubProductCriteria { Active = SettingConstants.Active });
+                var subproduct = await settingService.GetSubProductAsync(active: SettingConstants.Active);
                 var subproductRemoveNA = subproduct.Where(p => p.Id != NAConstants.SubProductNA);
                 var subproductNA = subproduct.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
 
-                var bettype = await settingService.GetAllBetTypeAsync(new GetAllBetTypeCriteria { Active = SettingConstants.Active });
-                var bettypeRemoveNAAndActive = bettype.Where(b => b.Id != NAConstants.BettypeNA);
-                var bettypeNA = bettype.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
+                var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
+                var bettypeRemoveNAAndActive = bettypes.Where(b => b.Id != NAConstants.BettypeNA);
+                var bettypeNA = bettypes.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
 
-                var mainCategoryList = await settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria { Active = SettingConstants.Active });
-                var subCategoryList = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria { Active = SettingConstants.Active });
+                var mainCategoryList = await settingService.GetMainCategoryAsync(SettingConstants.Active);
+                var subCategoryList = await settingService.GetSubCategoryAsync(active: SettingConstants.Active);
 
                 var settings = new AllSettingToAddFeedback
                 {
                     ExtensionList = extentionListRemmoveNA,
-                    CountryList = countriesList,
-                    ProvinceList = ProvinceList,
+                    CountryList = countries,
+                    ProvinceList = provinces,
                     CommunicationToolList = communicationToolList,
-                    LanguageList = languagesList,
+                    LanguageList = languages,
                     SiteList = siteList,
                     ResponseList = responsesLists,
                     StatusList = statusListRemoveDelete,
@@ -147,7 +116,7 @@
 
                 return settings;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }

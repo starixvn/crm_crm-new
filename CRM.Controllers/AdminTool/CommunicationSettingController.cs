@@ -47,9 +47,9 @@
         {
             var settings = new
             {
-                CommunicationTools = await settingService.GetAllCommunicationToolAsync(),
-                MainCategories = await settingService.GetMainCategoryAsync(new GetAllMainCategoryCriteria { Active = SettingConstants.Active}),
-                SubCategories = await settingService.GetSubCategoryAsync(new GetAllSubCategoryCriteria { Active = SettingConstants.Active})
+                CommunicationTools = await settingService.GetCommunicationToolAsync(),
+                MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
+                SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active)
             };
 
             return Json(settings);

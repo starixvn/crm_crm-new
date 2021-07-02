@@ -65,7 +65,7 @@
                 RoleList = roles.Where(role => role.IsActive),
                 CommunicationTools = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true),
                 Languages = await settingService.GetSettingAsync(SettingName.Language, true),
-                Countries = await settingService.GetAllCountryAsync(new GetAllCountryCriteria())
+                Countries = await settingService.GetCountryAsync(SettingConstants.Active)
             };
             return Json(allSetting);
         }

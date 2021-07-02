@@ -1,8 +1,8 @@
 ﻿namespace CRM.Criteria.Tests.Setting
 {
-    using Xunit;
-    using CRM.Criteria.Setting;
     using CRM.Core.Constants;
+    using CRM.Criteria.Setting;
+    using Xunit;
 
     public class GetAllSubCategoryCriteriaTests
     {
@@ -39,13 +39,13 @@
             // Arrange
             var criteria = new GetAllSubCategoryCriteria
             {
-                ParentId = 1,
+                MainCategoryId = 1
             };
 
             // Act
 
             // Assert
-            Assert.Equal(1, criteria.ParentId);
+            Assert.Equal(1, criteria.MainCategoryId);
             Assert.Equal(Constants.UserRole, criteria.UserRole);
         }
     }

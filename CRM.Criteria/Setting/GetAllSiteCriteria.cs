@@ -3,21 +3,13 @@
     using CRM.Core.Constants;
     using Fanex.Data.Repository;
 
-    public class GetAllSiteCriteria: CriteriaBase
+    public class GetAllSiteCriteria : CriteriaBase
     {
-        public GetAllSiteCriteria()
-        {
-            LicenseeType =  LicenseeTypeConstants.All;
-        }
+        public byte UserRole { get; } = Constants.UserRole;
 
-        public short UserRole { get; } = Constants.UserRole;
+        public byte LicenseeType { get; } = LicenseeTypeConstants.All;
 
-        public int LicenseeType { get; set; }
-
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_SiteSel";
-        }
+        public override string GetSettingKey() => "Acc_CRM_SiteSel";
 
         public override bool IsValid() => true;
     }

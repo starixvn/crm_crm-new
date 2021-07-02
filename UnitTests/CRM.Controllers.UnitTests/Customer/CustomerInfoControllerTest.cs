@@ -1,10 +1,12 @@
 ﻿namespace CRM.Controllers.UnitTests.Customer
 {
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Criteria.Customer;
-    using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.Customer;
     using CRM.Models.Setting;
@@ -16,9 +18,6 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Threading.Tasks;
     using Xunit;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -64,7 +63,6 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var customerInfo = (CustomerInfo)jsonResult.Value.GetType().GetProperty("data").GetValue(jsonResult.Value);
             Assert.Equal(customer, customerInfo);
-
         }
 
         [Fact]
@@ -77,9 +75,9 @@
             var countries = fixture.Create<IEnumerable<Country>>();
             var languages = fixture.Create<IEnumerable<Setting>>();
             var controller = GetController();
-            settingService.GetAllSiteAsync().Returns(sites);
-            settingService.GetAllCountryAsync(new GetAllCountryCriteria()).Returns(countries);
-            settingService.GetAllLanguageAsync(new GetAllLanguageCriteria()).Returns(languages);
+            settingService.GetSiteAsync().Returns(sites);
+            settingService.GetCountryAsync(SettingConstants.Active).Returns(countries);
+            settingService.GetLanguageAsync(SettingConstants.Active).Returns(languages);
 
             var expected = new
             {
@@ -114,9 +112,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(expected, commandResult);
-
         }
-
 
         #region Helpers
 

@@ -6,10 +6,8 @@
     public class GetAllLicenseeTypeCriteria : CriteriaBase
     {
         public byte UserRole { get; } = Constants.UserRole;
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_LicenseeTypeSel";
-        }
+
+        public override string GetSettingKey() => "Acc_CRM_LicenseeTypeSel";
 
         public override bool IsValid() => true;
     }
