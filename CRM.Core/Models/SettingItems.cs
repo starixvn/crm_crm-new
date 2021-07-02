@@ -6,10 +6,10 @@
 
         public string SettingType { get; set; }
 
-        public int SettingIdLv1 { get; set; }
+        public int SettingID { get; set; }
 
-        public int SettingIdLv2 { get; set; }
+        public int SubSettingID { get; set; }
 
-        public int SettingIdLv3 { get; set; }
+        public int SubSettingIDLevel3 { get; set; }
     }
 }

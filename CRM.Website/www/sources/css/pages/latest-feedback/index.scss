@@ -5,6 +5,7 @@
 @import '../../components/messages';
 @import '../../components/modal';
 @import '../../components/tables';
+@import '../../components/ckeditor';
 @import '../../components/date-picker/style';
 @import '../../components/multiple-select/style';
 
@@ -139,4 +140,9 @@
 
 .preview {
     padding: 3px 9px;
+}
+
+.pull-right {
+    float: right !important;
+    cursor: pointer
 }

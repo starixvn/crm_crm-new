@@ -193,5 +193,11 @@
 
             return Json(settings);
         }
+
+        public async Task<IActionResult> GetFeedbackById(GetFeedbackByIdCriteria criteria)
+        {
+            CustomerFeedback feedback = await feedbackService.GetFeedbackById(criteria);
+            return Json(feedback);
+        }
     }
 }

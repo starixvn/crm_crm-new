@@ -1,7 +1,10 @@
 ﻿namespace CRM.Repositories
 {
     using CRM.Core.Models;
+    using CRM.Criteria.Feedback;
+    using CRM.Models.Customer;
     using CRM.Models.Feedback;
+    using CRM.Models.Feedback.LatestFeedback;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using System;
@@ -12,6 +15,7 @@
     public interface IFeedbackRepository
     {
         Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbacksAsync(ICriteria criteria);
+        Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria);
     }
 
     public class FeedbackRepository : IFeedbackRepository
@@ -46,6 +50,30 @@
                          select regenerateDeletedFeedback(g.FirstOrDefault().f, g.Select(i => i.s).ToList());
 
             return result.ToList();
+        }
+
+        async Task<CustomerFeedback> IFeedbackRepository.GetFeedbackById(GetFeedbackByIdCriteria criteria)
+        {
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            {
+                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria))
+                {
+
+                    var feedback = multi.Read<CustomerFeedback, CustomerInfo, CustomerFeedback>(
+                       (fb, customerInfo) =>
+                       {
+                           fb.CustomerInfo = customerInfo;
+                           return fb;
+                       },
+                       "TitleID").FirstOrDefault();
+
+                    feedback.RelatedCustomers = multi.Read<RelatedCustomer>();
+                    feedback.Settings = multi.Read<SettingItems>().ToList();
+                    feedback.HasRelated = feedback.RelatedCustomers.Count() > 0;
+
+                    return feedback;
+                }
+            }
         }
     }
 }

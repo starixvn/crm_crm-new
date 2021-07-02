@@ -145,10 +145,6 @@
     </Function>
     <Function Name="Feedback">
         <Setting Key="Acc_CRM_FeedbackSelTopByCustId" SpName="Acc_CRM_FeedbackSelTopByCustId" DbName="DBCRM.bodb_CRM.bodbAdminNet">
-            <Mapping DataField="SettingID" ObjectProperty="SettingIdLv1" />
-            <Mapping DataField="SubSettingID" ObjectProperty="SettingIdLv2" />
-            <Mapping DataField="SubSettingIDLevel3" ObjectProperty="SettingIdLv3" />
-        </Setting>
         <Setting Key="Acc_CRM_FeedbackSelTop" SpName="Acc_CRM_FeedbackSelTop" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="SettingID" ObjectProperty="SettingIdLv1" />
             <Mapping DataField="SubSettingID" ObjectProperty="SettingIdLv2" />
@@ -156,6 +152,7 @@
         </Setting>
         <Setting Key="Acc_CRM_CustomerFeedbackQuickUpd" SpName="Acc_CRM_CustomerFeedbackQuickUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackQuickSel" SpName="Acc_CRM_FeedbackQuickSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_FeedbackSelByID" SpName="Acc_CRM_FeedbackSelByID" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Funtcion name="Customer">
         <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet">

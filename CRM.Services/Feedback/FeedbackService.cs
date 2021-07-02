@@ -16,6 +16,7 @@
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
         Task<CommandResult> UpdateQuickUpdateFeedback(EditQuickUpdateFeedback model);
         Task<EditQuickUpdateFeedback> GetNoInquiriesAsync(int id);
+        Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria);
     }
 
     public class FeedbackService: IFeedbackService
@@ -36,6 +37,14 @@
             this.feedbackRepository = feedbackRepository;
             this.napSession = napSession;
         }
+
+        public Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria)
+        {
+            var feedback = feedbackRepository.GetFeedbackById(criteria);
+
+            return feedback;
+        }
+
         public Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param)
         {
             if (param.CustId == 0)

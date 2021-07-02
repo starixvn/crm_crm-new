@@ -52,8 +52,8 @@ export class DataGrid extends Component {
         var mainCategoryIds = [];
         for (var i = 0; i < settings.length; i++) {
             if ((settings[i].settingType == "Category")
-                && mainCategoryIds.indexOf(settings[i].settingIdLv1) < 0) {
-                mainCategoryIds.push(settings[i].settingIdLv1);
+                && mainCategoryIds.indexOf(settings[i].settingID) < 0) {
+                mainCategoryIds.push(settings[i].settingID);
             }
         }
 
@@ -62,8 +62,8 @@ export class DataGrid extends Component {
             var subCategoryIds = [];
             for (var j = 0; j < settings.length; j++) {
                 if ((settings[j].settingType == "Category")
-                    && settings[j].settingIdLv1 == mainCategoryIds[i]) {
-                    subCategoryIds.push(settings[j].settingIdLv2);
+                    && settings[j].settingID == mainCategoryIds[i]) {
+                    subCategoryIds.push(settings[j].subSettingID);
                 }
             }
 
@@ -143,6 +143,8 @@ export class DataGrid extends Component {
             }
             <Cell>
                 <div>{this.renderCategoryColumn(item)}</div>
+                
+
             </Cell>
             <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
             <Cell>{item.relatedCustomer}</Cell>
