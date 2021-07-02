@@ -3,6 +3,7 @@
     public enum CustomerStatus
     {
         Open,
+        Locked,
         Suspended,
         Closed,
         Disabled
