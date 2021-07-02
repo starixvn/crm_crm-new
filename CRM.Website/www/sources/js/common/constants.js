@@ -48,4 +48,4 @@ export const TOOLBAR = [
     { name: 'editblock', items: ['EditBlock'] }
 ];
 
-export const EXTRA_TOOLBAR = "justify,font,colorbutton,image2,editblock";
+export const EXTRA_TOOLBAR = "justify, font, colorbutton, colordialog, image2, editblock";

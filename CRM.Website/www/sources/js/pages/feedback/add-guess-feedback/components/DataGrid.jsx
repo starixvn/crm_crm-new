@@ -16,6 +16,7 @@ import { getSubCategories, getSubProducts, getBetTypes } from '@jsroot/common/sh
 import VerifyCustomer from '@jsroot/components/verifyCustomer';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import CkEditor from '@jsroot/components/CkEditor';
 
 
 export class DataGrid extends Component {
@@ -1060,6 +1061,7 @@ export class DataGrid extends Component {
                     </Col>
                     </Form.Group>
                     <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomer} />
+                    <CkEditor data='<i>Hello, world</i>'/>
                 </div>
             </div>
         );

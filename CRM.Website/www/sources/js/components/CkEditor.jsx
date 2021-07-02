@@ -7,12 +7,16 @@ import PropTypes from 'prop-types';
 export default class CkEditor extends PureComponent {
     static propTypes = {
         data: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired
+        username: PropTypes.string.isRequired,
+        handleChangeEditor: PropTypes.func
     };
 
     static defaultProps = {
         data: '',
-        username: ''
+        username: '',
+        handleChangeEditor: function () {
+            // nothing
+        }
     };
     constructor(props) {
         super(props);
@@ -31,6 +35,12 @@ export default class CkEditor extends PureComponent {
     onBeforeLoad = () => {
         const data = this.props.data;
         this.setState({ data });
+    }
+
+    htmlToElements = () => {
+        return (
+            <div dangerouslySetInnerHTML={{ __html: this.state.data }} />
+        );
     }
 
     onLoadPlugin = CKEDITOR => {
@@ -82,12 +92,14 @@ export default class CkEditor extends PureComponent {
 
     render() {
         const removePlugins = 'magicline, elementspath';
+        const initData = this.htmlToElements();
         return (
             <CKEditor
-                initData={this.state.data}
+                initData={initData}
                 onChange={this.onEditorChange}
                 config={{
                     removeButtons: '',
+                    colorButton_enableMore: true,
                     extraPlugins: EXTRA_TOOLBAR,
                     toolbar: TOOLBAR,
                     allowedContent: true,
