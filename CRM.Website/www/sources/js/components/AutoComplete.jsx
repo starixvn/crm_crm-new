@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import LangHelper from '@jsroot/common/langHelper';
 
 export default class AutoComplete extends Component {
     constructor(props) {
@@ -7,10 +6,10 @@ export default class AutoComplete extends Component {
         this.wrapperRef = React.createRef();
         this.state = {
             options: this.props.options,
-            display: 'none'
+            display: this.props.showPopup
         }
     }
-    componentDidMount() {
+    componentDidMount() {   
         document.addEventListener('click', this.clickHandler);
     }
 
@@ -18,9 +17,9 @@ export default class AutoComplete extends Component {
         if(this.props.options != prevProps.options) {
             this.setState({
                 options: this.props.options,
-                display: 'block'
+                display: true
             });
-        }
+        } 
     }
 
     componentWillUnmount() {
@@ -29,7 +28,7 @@ export default class AutoComplete extends Component {
 
     selectOption = item => {
         this.setState({
-            display: 'none'
+            display: false
         });
         this.props.onSelect(item)
     }
@@ -38,31 +37,32 @@ export default class AutoComplete extends Component {
         const { target } = event
         if (!this.wrapperRef.current.contains(target)) {
             this.setState({
-                display: 'none'
+                display: false
             });
         }
     }
 
     render() {
         const {options, display} = this.state;
-        const {top, left} = this.props;
+        const {top, left, value} = this.props;
         const autoCompleteStyle = {
             top: top,
             left: left,
-            display: display
+            display: display ?  'block' : 'none'
         }
-        console.log(this.state);
         return( 
             <div className="autocomplete-w1" style={autoCompleteStyle} ref={this.wrapperRef}>
                 <div className="autocomplete">
                     { options.map((item, index)=> {
+                        var reg = new RegExp('('+value+')', 'gi');
+                        const displayValue = item.replaceAll(reg, "<strong>$1</strong>")
+
                         return (
-                            <div onClick={() => this.selectOption(item)} title={item} key={index}>{item}</div>
+                            <div onClick={() => this.selectOption(item)} title={item} key={index}><div dangerouslySetInnerHTML={{ __html: displayValue }}  /></div>
                         )
                     }) }
                 </div>
             </div>
         );
     }
-    
 }

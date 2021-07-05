@@ -23,11 +23,11 @@ export default class SelectWithSearch extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props != prevProps) {
+        if(this.props.name != prevProps.name) {
             this.setState({
                 selectedItem: {
                     id: this.props.value,
-                    name: this.props.name || "N/A"
+                    name: this.props.name 
                 },
             })
         }
@@ -113,6 +113,7 @@ export default class SelectWithSearch extends Component {
 
     render() {
         const {options} = this.state
+        
         return (
             <div className={'dropdown selectwithsearchtree ' + this.state.selectFormStatus } ref={this.wrapperRef}>
                 <button type="button" className="btn" onClick={this.toggleSelect}>

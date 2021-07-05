@@ -27,10 +27,11 @@ export class Filter extends Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        const params = this.getParams();
-        this.props.getCustomerSuggestion(params);
         this.setState({
             [name]: value
+        }, () => {
+            const params = this.getParams();
+            this.props.getCustomerSuggestion(params);
         });
     };
 
@@ -75,6 +76,7 @@ export class Filter extends Component {
                         </Form.Group>
                         <AutoComplete 
                             options={this.props.CustomerSuggestion}
+                            value={this.state.username}
                             top="35px"
                             left="15px"
                             onSelect={this.selectSuggestionSearchValue}
