@@ -2,7 +2,7 @@
 {
     using Fanex.Data.Repository;
 
-    public class GetQuickUpdateFeedbackCriteria : CriteriaBase
+    public class GetNoInquiriesCriteria : CriteriaBase
     {
         public int FeedbackID { get; set; }
 

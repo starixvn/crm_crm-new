@@ -2,7 +2,7 @@
 {
     using CRM.Core.Models;
 
-    public class UpdateQuickUpdateFeedbackCommand : BaseNonQueryCommand
+    public class EditNoInquiriesCommand : BaseNonQueryCommand
     {
         public int FeedbackID { get; set; }
 

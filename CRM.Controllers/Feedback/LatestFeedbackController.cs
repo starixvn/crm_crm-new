@@ -114,15 +114,15 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditQuickUpdateFeedback([FromBody] EditQuickUpdateFeedback model)
+        public async Task<IActionResult> EditNoInquiries([FromBody] EditNoInquiries model)
         {
-            CommandResult commandResult = await feedbackService.UpdateQuickUpdateFeedback(model);
+            CommandResult commandResult = await feedbackService.EditNoInquiries(model);
             return Json(commandResult);
         }
 
         public async Task<IActionResult> GetNoInquiries(int id)
         {
-            EditQuickUpdateFeedback feedback = await feedbackService.GetNoInquiriesAsync(id);
+            EditNoInquiries feedback = await feedbackService.GetNoInquiriesAsync(id);
             return Json(feedback);
         }
 
@@ -130,7 +130,7 @@
         {
             var languages = await settingService.GetLanguageAsync(SettingConstants.Active, true);
             var countries = await settingService.GetCountryAsync(SettingConstants.Active, true);
-
+            var titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
             var communicationToolList = await settingService.GetCommunicationToolAsync(SettingConstants.Active);
@@ -139,9 +139,10 @@
             var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
             var mainCategoryList = await settingService.GetMainCategoryAsync(SettingConstants.Active);
             var subCategoryList = await settingService.GetSubCategoryAsync(active: SettingConstants.Active);
-            var subproduct = await settingService.GetSubProductAsync(active: SettingConstants.Active);
+            var subproduct = await settingService.GetSubProductAsync();
             var extentionList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
+            var licenseeTypeList = await settingService.GetAllLicenseeTypeAsync();
 
             var settings = new
             {
@@ -151,16 +152,14 @@
                 Responses = responses,
                 MainCategoryList = mainCategoryList,
                 SubCategoryList = subCategoryList,
-                SubProductList = subproduct.Select(p =>
-                {
-                    p.Name = p.Value;
-                    return p;
-                }).ToList(),
+                SubProductList = subproduct,
                 CountryList = countries,
                 LanguageList = languages,
                 ExtensionList = extentionList,
                 StatusList = statusListRemoveDelete,
-                BettypeList = bettypes
+                BettypeList = bettypes,
+                Titles = titles,
+                LicenseeType = licenseeTypeList
             };
 
             return Json(settings);

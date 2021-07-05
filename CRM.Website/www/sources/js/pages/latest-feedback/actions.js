@@ -6,8 +6,8 @@ import {
     setEditLatestFeedbackPopup,
     setEditLatestFeedbackResult,
     setTops,
-    setEditQuickUpdateFeedbackPopup,
-    setEditQuickUpdateFeedbackResult,
+    setEditNoInquiriesPopup,
+    setEditNoInquiriesResult,
     setUpdateFeedbackPopup,
     setUpdateFeedbackResult,
     setSelectedFeedback,
@@ -51,10 +51,10 @@ const exportExcel = params => async () => {
     });
 };
 
-const editQuickUpdateFeedback = data => async dispatch => {
-    const url = Site.resolveClientUrl('LatestFeedback/EditQuickUpdateFeedback');
+const editNoInquiries = data => async dispatch => {
+    const url = Site.resolveClientUrl('LatestFeedback/EditNoInquiries');
     await DataService.postDataAsync(url, data).then(response => {
-        dispatch(setEditQuickUpdateFeedbackResult(response.data));
+        dispatch(setEditNoInquiriesResult(response.data));
     });
 };
 
@@ -68,6 +68,11 @@ const getNoInquiriesByFeedbackId = (feedbackId, callback) => async dispatch => {
     });
 };
 
+const verifyUserName = data => async () => {
+    const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
+    return await DataService.postDataAsync(url, data).then(response => response.data);
+};
+
 export const ActionCreators = {
     setLatestFeedback,
     setGridParams,
@@ -78,13 +83,14 @@ export const ActionCreators = {
     setTops,
     getTops,
     exportExcel,
-    setEditQuickUpdateFeedbackPopup,
-    setEditQuickUpdateFeedbackResult,
-    editQuickUpdateFeedback,
+    setEditNoInquiriesPopup,
+    setEditNoInquiriesResult,
+    editNoInquiries,
     setSelectedFeedback,
     getNoInquiriesByFeedbackId,
     setUpdateFeedbackPopup,
     setUpdateFeedbackResult,
     getAllSettings,
-    setAllSettings
+    setAllSettings,
+    verifyUserName
 };

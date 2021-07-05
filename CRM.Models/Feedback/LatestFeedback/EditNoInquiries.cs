@@ -1,6 +1,6 @@
 ﻿namespace CRM.Models.Feedback.LatestFeedback
 {
-    public class EditQuickUpdateFeedback
+    public class EditNoInquiries
     {
         public int FeedbackID { get; set; }
 

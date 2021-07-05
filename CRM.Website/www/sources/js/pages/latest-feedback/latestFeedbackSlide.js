@@ -8,8 +8,8 @@ const latestFeedbackSlice = createSlice({
         gridParams: { top: 10 },
         editLatestFeedbackPopup: { show: false },
         editLatestFeedbackResult: '',
-        editQuickUpdateFeedbackPopup: { show: false },
-        editQuickUpdateFeedbackesult: '',
+        editNoInquiriesPopup: { show: false },
+        editNoInquiriesResult: '',
         updateFeedbackPopup: { show: false },
         updateFeedbackResult: '',
         selectedFeedback: null,
@@ -33,11 +33,11 @@ const latestFeedbackSlice = createSlice({
         setEditLatestFeedbackResult: (state, action) => {
             state.editLatestFeedbackResult = action.payload;
         },
-        setEditQuickUpdateFeedbackPopup: (state, action) => {
-            state.editQuickUpdateFeedbackPopup = action.payload;
+        setEditNoInquiriesPopup: (state, action) => {
+            state.editNoInquiriesPopup = action.payload;
         },
-        setEditQuickUpdateFeedbackResult: (state, action) => {
-            state.editQuickUpdateFeedbackResult = action.payload;
+        setEditNoInquiriesResult: (state, action) => {
+            state.editNoInquiriesResult = action.payload;
         },
         setUpdateFeedbackPopup: (state, action) => {
             state.updateFeedbackPopup = action.payload;
@@ -62,8 +62,8 @@ export const {
     setEditLatestFeedbackPopup,
     setEditLatestFeedbackResult,
     setTops,
-    setEditQuickUpdateFeedbackPopup,
-    setEditQuickUpdateFeedbackResult,
+    setEditNoInquiriesPopup,
+    setEditNoInquiriesResult,
     setUpdateFeedbackPopup,
     setUpdateFeedbackResult,
     setSelectedFeedback,

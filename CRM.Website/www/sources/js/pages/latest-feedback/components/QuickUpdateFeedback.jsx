@@ -31,6 +31,16 @@ export class QuickUpdateFeedback extends PureComponent {
         }
     };
 
+    validateInquiriesInput = (event) => {
+        if ([8, 46, 37, 39, 35, 36].includes(event.which)) {
+            return;
+        }
+
+        if (!event.ctrlKey && !event.key.match(/^\d+$/)) {
+            event.preventDefault();
+        }
+    };
+
     renderForm = ({
         errors,
         values,
@@ -44,9 +54,9 @@ export class QuickUpdateFeedback extends PureComponent {
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
-                        this.props.editQuickUpdateFeedbackResult &&
-                        <ResponseMessage isSuccessful={this.props.editQuickUpdateFeedbackResult.isSuccessful}
-                            message={this.props.editQuickUpdateFeedbackResult.message || LangHelper.getResource('EditQuickUpdateFeedbackSuccessfully')}
+                        this.props.editNoInquiriesResult &&
+                        <ResponseMessage isSuccessful={this.props.editNoInquiriesResult.isSuccessful}
+                            message={this.props.editNoInquiriesResult.message || LangHelper.getResource('EditQuickUpdateFeedbackSuccessfully')}
                         />
                     }
                     <Form.Group as={Row}>
@@ -57,6 +67,7 @@ export class QuickUpdateFeedback extends PureComponent {
                             <Form.Control size="md" type="number" min="1" value={values.noInquiries} id="noInquiries" name="noInquiries"
                                 onChange={handleChange}
                                 className="shadow-none" autoComplete="off"
+                                onKeyDown={this.validateInquiriesInput}
                             />
                         </Col>
                     </Form.Group>
@@ -79,8 +90,8 @@ export class QuickUpdateFeedback extends PureComponent {
             feedbackId: this.props.selectedFeedback.feedbackID,
             noInquiries: values.noInquiries
         };
-        this.props.editQuickUpdateFeedback(data).then(() => {
-            if (this.props.editQuickUpdateFeedbackResult.isSuccessful) {
+        this.props.editNoInquiries(data).then(() => {
+            if (this.props.editNoInquiriesResult.isSuccessful) {
                 setTimeout(() => {
                     this.props.onSuccess();
                 }, 3000);
@@ -98,7 +109,7 @@ export class QuickUpdateFeedback extends PureComponent {
         };
         return (
             <Modal show className="quick-feedback-modal" dialogAs={DraggableModalDialog}
-                backdrop="static" keyboard={false} size="sm" centered
+                backdrop="static" keyboard={false} size="md" centered
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
@@ -120,8 +131,8 @@ export class QuickUpdateFeedback extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { selectedFeedback, editQuickUpdateFeedbackResult } = state;
-    return { selectedFeedback, editQuickUpdateFeedbackResult };
+    const { selectedFeedback, editNoInquiriesResult } = state;
+    return { selectedFeedback, editNoInquiriesResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuickUpdateFeedback);

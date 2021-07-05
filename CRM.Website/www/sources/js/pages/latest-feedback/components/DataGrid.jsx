@@ -38,7 +38,7 @@ export class DataGrid extends Component {
     };
 
     handleEdit = id => {
-        this.props.getNoInquiriesByFeedbackId(id, () => this.props.setEditQuickUpdateFeedbackPopup({ show: true }));
+        this.props.getNoInquiriesByFeedbackId(id, () => this.props.setEditNoInquiriesPopup({ show: true }));
     };
 
     handleUpdateFeedback = (item, mainCategories) => {
@@ -75,12 +75,12 @@ export class DataGrid extends Component {
 
         var result = '';
         for (var i = 0; i < categories.length; i++) {
-            var category = this.getMainCategoryName(categories[i].mainCategoryId, mainCategories);
+            var category = '<div class="main-category">' + this.getMainCategoryName(categories[i].mainCategoryId, mainCategories);
             var subCategoryIds = categories[i].subCategoryIds;
             for (var j = 0; j < subCategoryIds.length; j++) {
-                category += this.getSubCategoryName(categories[i].mainCategoryId, subCategoryIds[j], mainCategories);
+                category += '<div><span class="sub-category">' + this.getSubCategoryName(categories[i].mainCategoryId, subCategoryIds[j], mainCategories) + '</span></div>';
             }
-
+            category += '</div>';
             result += category;
         }
 
@@ -142,9 +142,7 @@ export class DataGrid extends Component {
                 </Cell>
             }
             <Cell>
-                <div>{this.renderCategoryColumn(item)}</div>
-                
-
+                <div dangerouslySetInnerHTML={{ __html: this.renderCategoryColumn(item) }} />
             </Cell>
             <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
             <Cell>{item.relatedCustomer}</Cell>

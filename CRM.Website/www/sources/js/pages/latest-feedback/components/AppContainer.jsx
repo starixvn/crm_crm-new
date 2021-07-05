@@ -17,13 +17,13 @@ export class AppContainer extends Component {
         isHost: PropTypes.bool.isRequired,
         getLatestFeedback: PropTypes.func,
         getTops: PropTypes.func,
-        editQuickUpdateFeedbackPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editNoInquiriesPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         updateFeedbackPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
     };
 
     static defaultProps = {
         isHost: false,
-        editQuickUpdateFeedbackPopup: { show: false },
+        editNoInquiriesPopup: { show: false },
         updateFeedbackPopup: { show: false },
         getLatestFeedback: function () {
             //nothing
@@ -43,8 +43,8 @@ export class AppContainer extends Component {
     };
 
     handleCloseEditPopup = () => {
-        this.props.setEditQuickUpdateFeedbackPopup({ show: false });
-        this.props.setEditQuickUpdateFeedbackResult(null);
+        this.props.setEditNoInquiriesPopup({ show: false });
+        this.props.setEditNoInquiriesResult(null);
     };
 
     handleEditSuccess = () => {
@@ -68,7 +68,7 @@ export class AppContainer extends Component {
                 <Filter isHost={this.props.isHost} />
                 <DataGrid isHost={this.props.isHost} />
                 {
-                    this.props.editQuickUpdateFeedbackPopup.show &&
+                    this.props.editNoInquiriesPopup.show &&
                     <QuickUpdateFeedback
                         onClose={this.handleCloseEditPopup}
                         onSuccess={this.handleEditSuccess}
@@ -89,8 +89,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, editQuickUpdateFeedbackPopup, updateFeedbackPopup } = state;
-    return { gridParams, editQuickUpdateFeedbackPopup, updateFeedbackPopup };
+    const { gridParams, editNoInquiriesPopup, updateFeedbackPopup } = state;
+    return { gridParams, editNoInquiriesPopup, updateFeedbackPopup };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

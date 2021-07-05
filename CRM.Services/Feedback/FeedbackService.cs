@@ -14,8 +14,8 @@
     public interface IFeedbackService
     {
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
-        Task<CommandResult> UpdateQuickUpdateFeedback(EditQuickUpdateFeedback model);
-        Task<EditQuickUpdateFeedback> GetNoInquiriesAsync(int id);
+        Task<CommandResult> EditNoInquiries(EditNoInquiries model);
+        Task<EditNoInquiries> GetNoInquiriesAsync(int id);
         Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria);
     }
 
@@ -70,19 +70,19 @@
             }
         }
 
-        public async Task<EditQuickUpdateFeedback> GetNoInquiriesAsync(int id)
+        public async Task<EditNoInquiries> GetNoInquiriesAsync(int id)
         {
-            var criteria = new GetQuickUpdateFeedbackCriteria
+            var criteria = new GetNoInquiriesCriteria
             {
                 FeedbackID = id
             };
 
-            return await baseService.GetDataEntityAsync<EditQuickUpdateFeedback>(criteria);
+            return await baseService.GetDataEntityAsync<EditNoInquiries>(criteria);
         }
 
-        public async Task<CommandResult> UpdateQuickUpdateFeedback(EditQuickUpdateFeedback model)
+        public async Task<CommandResult> EditNoInquiries(EditNoInquiries model)
         {
-            var command = new UpdateQuickUpdateFeedbackCommand
+            var command = new EditNoInquiriesCommand
             {
                 UserId = napSession.UserId,
                 IP = string.Empty,
