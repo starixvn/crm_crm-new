@@ -142,7 +142,7 @@
             var subproduct = await settingService.GetSubProductAsync();
             var extentionList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
-            var licenseeTypeList = await settingService.GetAllLicenseeTypeAsync();
+            var licenseeTypeList = await settingService.GetLicenseeTypeAsync();
 
             var settings = new
             {
