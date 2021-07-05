@@ -25,7 +25,8 @@ export class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            languages: []
+            languages: [],
+            siteId: null
         };
     }
 
@@ -383,13 +384,15 @@ export class DataGrid extends Component {
     }
 
     handleChangeSite = (item) => {
-        console.log(item);
+        this.setState({ 
+            siteId: item.id
+        });
     }
 
     handleSubmit = (values, { setSubmitting }) => {
         const data = {
             custId: values.custId,
-            site: values.siteId,
+            site: this.state.siteId || values.siteId,
             countryId: values.countryId,
             provinceID: this.props.gridData.data.provinceID ,
             firstName: values.firstName,

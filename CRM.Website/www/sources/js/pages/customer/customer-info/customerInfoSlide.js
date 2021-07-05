@@ -4,6 +4,7 @@ const customerInfoSlide = createSlice({
     name: 'customerInfo',
     initialState: {
         gridData: null,
+        CustomerSuggestion: [],
         gridParams: {
             username: null,
             isGuest: false,
@@ -35,6 +36,9 @@ const customerInfoSlide = createSlice({
         },
         setEmptyCustomerInfoPopup: (state, action) => {
             state.emptyCustomerInfoPopup = action.payload;
+        },
+        setCustomerSuggestion: (state, action) => {
+            state.CustomerSuggestion = action.payload;
         }
     }
 });
@@ -47,7 +51,8 @@ export const {
     setSettings,
     setEditCustomerInfo,
     setEditCustomerInfoPopup,
-    setEmptyCustomerInfoPopup
+    setEmptyCustomerInfoPopup,
+    setCustomerSuggestion
 } = actions;
 
 export default reducer;

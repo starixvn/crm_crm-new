@@ -167,6 +167,7 @@
         </Setting>
         <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdateBasicInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_RelatedCustomerVerify" SpName="Acc_CRM_RelatedCustomerVerify" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerSelUserSearch" SpName="Acc_CRM_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Funtcion>
     <Function Name="Multiple Logs">
         <Setting Key="CRM_MultipleLogs_VerifyCustomer" SpName="CRM_MultipleLogs_VerifyCustomer" DbName="DBCRM.bodb_CRM.bodbAdminNet" />

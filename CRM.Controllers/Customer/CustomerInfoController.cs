@@ -69,6 +69,15 @@
             var result = await customerService.UpdateCustomerInfoAsync(command);
             return Json(result);
         }
+
+        public async Task<IActionResult> GetCustomerAutoSuggestion([FromBody] CustomerSuggestionCriteria criteria)
+        {
+            criteria.UserId = napSession.UserId;
+            var customerInfo = await customerService.GetCustomerAutoSuggestionAsync(criteria);
+            return Json(customerInfo);
+        }
+
+
         //[HttpPost]
         //public async Task<IActionResult> GetLatestFeedback([FromBody] GetFeedbackParam param)
         //{

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import LangHelper from '@jsroot/common/langHelper';
 import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
+import AutoComplete from '@jsroot/components/AutoComplete';
 
 export class Filter extends Component {
     constructor(props) {
@@ -26,6 +27,8 @@ export class Filter extends Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
+        const params = this.getParams();
+        this.props.getCustomerSuggestion(params);
         this.setState({
             [name]: value
         });
@@ -43,7 +46,14 @@ export class Filter extends Component {
         const params = this.getParams();
         this.props.setGridParams(params);
         this.props.getCustomerInfo(params);
+        
     };
+
+    selectSuggestionSearchValue = item => {
+        this.setState({
+            username: item
+        });
+    }
 
     render() {
         const { isHost } = this.props;
@@ -63,6 +73,12 @@ export class Filter extends Component {
                                 onChange={this.handleChange} name="isGuest"
                             /> {LangHelper.getResource('Guest')}
                         </Form.Group>
+                        <AutoComplete 
+                            options={this.props.CustomerSuggestion}
+                            top="35px"
+                            left="15px"
+                            onSelect={this.selectSuggestionSearchValue}
+                        />
                     </Form.Row>
                 </Form>
             </div>
@@ -74,10 +90,11 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData } = state;
+    const { gridParams, gridData, CustomerSuggestion } = state;
     return {
         gridParams,
         gridData,
+        CustomerSuggestion
     };
 };
 
