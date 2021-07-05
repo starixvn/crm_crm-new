@@ -12,23 +12,35 @@
     using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
+    using System;
+    using global::CRM.BackgroundJob.Models.ChatBot;
+    using global::CRM.BackgroundJob.Criteria.ChatBot;
 
     public interface IChatBotTicketVoidingService
     {
-        Task<IEnumerable<ChatBotVoidingMessage>> GetVoidingMessageAsync();
+        Task<ValueTuple<IEnumerable<ChatBotVoidingMessage>, IEnumerable<ChatBotVoidingHistory>>> GetVoidingMessageAsync();
+        Task<IEnumerable<ChatBotVoidingHistory>> ImportVoidingMessageHistoryCheckAsync(IEnumerable<ChatBotVoidingHistory> voidingMessagesHis);
 
-        Task<IEnumerable<ChatBotVoidingMessage>> ImportVoidingMessageAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages, int batchSize);
+        Task<IEnumerable<ChatBotUserNameList>> GetChatBotAbnormalAccountGetUsernameList(IEnumerable<ChatBotVoidingHistory> voidingHis);
+
+        Task<CommandResult> ImportVoidingMessageAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages, IEnumerable<ChatBotUserNameList> userNames);
+
+        Task<IEnumerable<ChatBotUserNameList>> GetImportMessageByBatchSize(int batchSize);
 
         Task<CommandResult> EditVoidingMessageAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages);
 
         Task<IEnumerable<Message>> GetMessageInfoAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages);
 
-        Task<IEnumerable<ChatBotVoidingTicketInfo>> GetTicketVoidingInfoAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages);
+        Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<ChatBotUserNameList>>> GetTicketVoidingInfoAsync(
+            IEnumerable<ChatBotUserNameList> userNames,
+            string environment,
+            bool IncludeUUSCurrency
+            );
 
         Task<CommandResult> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
-            IEnumerable<ChatBotVoidingMessage> voidingMessages,
+            IEnumerable<ChatBotUserNameList> userNames,
             string Environment = Constants.DefaultEnvironment);
     }
 
@@ -41,22 +53,64 @@
             this.baseService = baseService;
         }
 
-        public async Task<IEnumerable<ChatBotVoidingMessage>> GetVoidingMessageAsync()
+        public async Task<ValueTuple<IEnumerable<ChatBotVoidingMessage>, IEnumerable<ChatBotVoidingHistory>>> GetVoidingMessageAsync()
         {
             var criteria = new GetChatBotVoidingMessageCriteria();
-            return await baseService.GetDataAsync<ChatBotVoidingMessage>(criteria);
+            return await baseService.FetchMultipleAsync<ChatBotVoidingMessage, ChatBotVoidingHistory>(criteria);
         }
 
-        public async Task<IEnumerable<ChatBotVoidingMessage>> ImportVoidingMessageAsync(
-            IEnumerable<ChatBotVoidingMessage> voidingMessages,
-            int batchSize)
+        public async Task<IEnumerable<ChatBotVoidingHistory>>ImportVoidingMessageHistoryCheckAsync(
+           IEnumerable<ChatBotVoidingHistory> voidingMessagesHis
+            )
         {
+            var criteria = new GetVoidingMessageHistoryCheckCriteria
+            {
+                Messages = voidingMessagesHis.ToXML("root").ToString(),
+            };
+            return await baseService.GetDataAsync<ChatBotVoidingHistory>(criteria);
+        }
+
+        public async Task<IEnumerable<ChatBotUserNameList>> GetChatBotAbnormalAccountGetUsernameList(
+           IEnumerable<ChatBotVoidingHistory> voidingHis
+            )
+        {
+            var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria
+            {
+                Messages = voidingHis.ToXML("root").ToString(),
+            };
+            return await baseService.GetDataAsync<ChatBotUserNameList>(criteria);
+        }
+
+
+        public async Task<CommandResult> ImportVoidingMessageAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages, IEnumerable<ChatBotUserNameList> userNames)
+        {
+            const string XmlTemplate = "<r MessageID='{0}' RequestID='{1}' UsernameList='{2}' CustIdList='{3}'/>";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+
+            foreach (var message in voidingMessages)
+            {
+                ChatBotUserNameList userName = userNames.FirstOrDefault(x => x.MessageId == message.MessageId && x.RequestId == message.RequestId);
+                stringBuilder.AppendFormat(XmlTemplate,
+                    message.MessageId,
+                    message.RequestId,
+                    userName.UsernameList,
+                    userName.CustIdList);
+            }
+            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportChatBotVoidingMessageCriteria
             {
-                Messages = voidingMessages.ToXML("root").ToString(),
+                Messages = stringBuilder.ToString(),
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<IEnumerable<ChatBotUserNameList>> GetImportMessageByBatchSize(int batchSize)
+        {
+            var criteria = new GetImportMessageCriteria
+            {
                 BatchSize = batchSize
             };
-            return await baseService.GetDataAsync<ChatBotVoidingMessage>(criteria);
+            return await baseService.GetDataAsync<ChatBotUserNameList>(criteria);
         }
 
         public async Task<CommandResult> EditVoidingMessageAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages)
@@ -86,25 +140,33 @@
             return messages;
         }
 
-        public async Task<IEnumerable<ChatBotVoidingTicketInfo>> GetTicketVoidingInfoAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages)
+        public async Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<ChatBotUserNameList>>> GetTicketVoidingInfoAsync(
+            IEnumerable<ChatBotUserNameList> userNames,
+            string environment,
+            bool IncludeUUSCurrency
+            )
         {
             var criteria = new GetChatBotTicketVoidingInfoCriteria
             {
-                Messages = voidingMessages.ToXML("root").ToString()
+                Messages = userNames.ToXML("root").ToString(),
+                Environment = environment,
+                IncludeUUSCurrency = IncludeUUSCurrency
             };
-            return await baseService.GetDataAsync<ChatBotVoidingTicketInfo>(criteria);
+            return await baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, ChatBotUserNameList>(criteria);
         }
 
         public async Task<CommandResult> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
-            IEnumerable<ChatBotVoidingMessage> voidingMessages,
+            IEnumerable<ChatBotUserNameList> userNames,
             string Environment = Constants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r MessageId='{0}' Username='{1}' CustId='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
-                "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' />";
+                "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            const string messageTemplate = "<r MessageID='{0}' RequestID='{1}' UsernameList='{2}'";
+            var messageStringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             foreach (ChatBotVoidingTicketInfo ticketInfo in ticketInfos)
             {
                 Message message = messages.FirstOrDefault(x => x.MessageId == ticketInfo.MessageId);
@@ -119,15 +181,23 @@
                     HttpUtility.HtmlEncode(message?.Content_en),
                     HttpUtility.HtmlEncode(message?.Content_cs),
                     HttpUtility.HtmlEncode(message?.Content_th),
-                    HttpUtility.HtmlEncode(message?.Content_vn));
+                    HttpUtility.HtmlEncode(message.Content_vn),
+                    ticketInfo.Type
+             );
+            }
+
+            foreach(ChatBotUserNameList userName in userNames)
+            {
+                messageStringBuilder.AppendFormat(messageTemplate, userName.MessageId, userName.RequestId, userName.UsernameList);
             }
 
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            messageStringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportChatBotTicketVoidingInfoCommand
             {
                 XmlData = stringBuilder.ToString(),
                 Environment = Environment,
-                Messages = voidingMessages.ToXML("root").ToString()
+                Messages = messageStringBuilder.ToString()
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }

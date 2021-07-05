@@ -1,10 +1,12 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
+    using global::CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.BackgroundJob.Models.ChatBotCTO;
     using global::CRM.BackgroundJob.Models.ChatBotCWL;
     using global::CRM.BackgroundJob.Models.ChatBotProblemsAccount;
@@ -67,19 +69,34 @@
                 return;
             }
 
-            IEnumerable<ChatBotVoidingMessage> voidingMessages = await ticketVoidingService.GetVoidingMessageAsync();
-            voidingMessages = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize);
-            IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(voidingMessages);
-            IEnumerable<ChatBotVoidingTicketInfo> ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages);
-            CommandResult commandResult = await ticketVoidingService.ImportTicketVoidingAsync(
-                messages, 
-                ticketInfos, 
-                voidingMessages,
-                Environment);
+            var voidingInfo = await ticketVoidingService.GetVoidingMessageAsync();
+            IEnumerable<ChatBotVoidingMessage> voidingMessages = voidingInfo.Item1;
+            var voidingHis = await ticketVoidingService.ImportVoidingMessageHistoryCheckAsync(voidingInfo.Item2);
+            var userNameList = Enumerable.Empty<ChatBotUserNameList>();
+            if (voidingHis.Any())
+            {
+                userNameList = await ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis);
+            }
+            CommandResult commandResult = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList);
             if (commandResult.IsSuccessful)
             {
-                logService.LogInformation("Successful!!!");
-                await sendNotificationService.SendNotificationToLetstalk();
+                var messageImport = await ticketVoidingService.GetImportMessageByBatchSize(setting.BatchSize);
+                IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(messageImport);
+                var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(messageImport, Environment, setting.IncludeUUSCurrency);
+                CommandResult commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
+                    messages,
+                    ticketInfos.Item1,
+                    ticketInfos.Item2,
+                    Environment);
+                if (commandResultImportTicket.IsSuccessful)
+                {
+                    logService.LogInformation("Successful!!!");
+                    await sendNotificationService.SendNotificationToLetstalk();
+                }
+                else
+                {
+                    logService.LogInformation(commandResultImportTicket.Message);
+                }
             }
             else
             {

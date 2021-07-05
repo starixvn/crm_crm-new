@@ -10,7 +10,7 @@
         public bool ConfigPRO { get; set; }
         public bool ServiceFlag { get; set; }
         public long LastLogId { get; set; }
-
+        public bool IncludeUUSCurrency { get; set; }
         public DateTime LastRuntime { get; set; }
     }
 }

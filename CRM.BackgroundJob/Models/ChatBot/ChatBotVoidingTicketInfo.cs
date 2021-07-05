@@ -9,5 +9,6 @@
         public string Mrecommend { get; set; }
         public string Recommend { get; set; }
         public bool IsTest { get; set; }
+        public byte Type { get; set; }
     }
 }
