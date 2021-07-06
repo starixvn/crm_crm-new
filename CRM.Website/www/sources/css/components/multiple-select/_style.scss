@@ -9,6 +9,10 @@ $sub-menu-border: 1px solid #b7b7b7;
         border: 1px solid #ced4da;
         position: relative;
         background-color: #FFF;
+
+        &.invalid {
+            border: 1px solid #dc3545;
+        }
     }
 
     &-default {
@@ -51,6 +55,11 @@ $sub-menu-border: 1px solid #b7b7b7;
             position: absolute;
             right: 10px;
             top: calc(50% - 3px);
+        }
+
+        &[disabled] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
         }
     }
 
@@ -144,19 +153,11 @@ $sub-menu-border: 1px solid #b7b7b7;
 
     &-field {
         display: inline-block;
+
+        &.invalid {
+            .invalid-feedback {
+                display: block;
+            }
+        }
     }
-}
-
-.invalid.multiple-select-container {
-    border: 1px solid #dc3545;
-}
-
-.multiple-select-field.invalid {
-    .invalid-feedback {
-        display: block;
-    }
-}
-
-button[disabled] {
-    opacity: 0.5;
 }

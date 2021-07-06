@@ -3,8 +3,6 @@
 const ShortDateFormat = 'MMM DD, YYYY';
 const ShortDateTimeFormat = 'MMM DD, YYYY hh:mm a';
 const LongDateTimeFormat = 'MMM DD, YYYY hh:mm:ss a';
-const ClientTimezone = parseInt(document.getElementById('ClientTimezone') ? document.getElementById('ClientTimezone').value : '8', 10);
-const ServerTimezone = parseInt(document.getElementById('ServerTimezone') ? document.getElementById('ServerTimezone').value : '-4', 10);
 
 export default class DateTimeService {
     static startOfDay(date) {
@@ -33,12 +31,12 @@ export default class DateTimeService {
 
     static toClientDateTime(date) {
         date = moment(date, LongDateTimeFormat);
-        return moment.utc(date).utcOffset(ClientTimezone);
+        return moment.utc(date).utcOffset(window.clientTimezone);
     }
 
     static toServerDateTime(date) {
         date = moment(date, LongDateTimeFormat);
-        return moment(date).utc().utcOffset(ServerTimezone);
+        return moment(date).utc().utcOffset(window.serverTimezone);
     }
 
     static toShortDateFormat(date) {

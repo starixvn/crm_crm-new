@@ -1,20 +1,22 @@
 ﻿namespace CRM.Services
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.FeedbackSubject;
     using CRM.Models.FeedbackSubject;
-    using System.Threading.Tasks;
-    using System.Linq;
-    using System.Collections.Generic;
-    using CRM.Core.Models;
 
     public interface IFeedbackSubjectService
     {
         Task<IEnumerable<FeedbackSubjectTemplate>> GetFeedbackSubjectTemplateAsync(GetFeedbackSubjectParam param);
+
         Task<CommandResult> CreateFeedbackSubjectTemplateAsync(CreateFeedbackSubjectTemplate model);
+
         Task<CommandResult> EditFeedbackSubjectTemplateAsync(EditFeedbackSubjectTemplate model);
+
         Task<CommandResult> EditStatusFeedbackSubjectTemplateAsync(EditStatusFeedbackSubjectTemplate model);
-        
     }
 
     public class FeedbackSubjectService : IFeedbackSubjectService
@@ -29,9 +31,9 @@
         public async Task<IEnumerable<FeedbackSubjectTemplate>> GetFeedbackSubjectTemplateAsync(GetFeedbackSubjectParam param)
         {
             var criteria = new GetFeedbackSubjectTemplateCriteria();
-           
+
             var data = await baseService.GetDataAsync<FeedbackSubjectTemplate>(criteria);
-            var templates = data.Where(item => IsCorrectTemplate(item.Subject, param.Subject)).ToList();
+            var templates = data.Where(item => IsCorrectTemplate(item, param.Subject, param.IsActive)).ToList();
             var startIndex = (param.PageIndex - 1) * param.PageSize;
             var feedbacks = templates.Skip(startIndex).Take(param.PageSize).ToList();
             param.TotalRows = templates.Count;
@@ -67,10 +69,10 @@
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
-        private static bool IsCorrectTemplate(string templateContent, string subject)
+        private static bool IsCorrectTemplate(FeedbackSubjectTemplate feedbackSubjectTemplate, string subject, bool? isActive = null)
         {
-            return string.IsNullOrEmpty(subject) ||
-                 templateContent.ToLowerInvariant().Contains(subject.Trim().ToLowerInvariant());
+            return (string.IsNullOrEmpty(subject) || feedbackSubjectTemplate.Subject.ToLowerInvariant().Contains(subject.Trim().ToLowerInvariant()))
+                 && (!isActive.HasValue || feedbackSubjectTemplate.IsActive == isActive.Value);
         }
     }
 }

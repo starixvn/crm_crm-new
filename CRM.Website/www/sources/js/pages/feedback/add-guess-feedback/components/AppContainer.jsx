@@ -44,11 +44,11 @@ class AppContainer extends Component {
         });
     }
     handleGetFeedbackSubjectTemplateByPagingIndex = () => {
-        const maxFeedbackSubjectTemplateNumberOnLoad = 100000;
-        const totalPage = Math.round(this.props.numberOfFeedbackSubjectTemplate / maxFeedbackSubjectTemplateNumberOnLoad + 0.5);
-            for (var i = 1; i <= totalPage; i++) {
-            this.props.getFeedbackSubjectTemplateByPagingIndex(i);
-        }
+        //const maxFeedbackSubjectTemplateNumberOnLoad = 100000;
+        //const totalPage = Math.round(this.props.numberOfFeedbackSubjectTemplate / maxFeedbackSubjectTemplateNumberOnLoad + 0.5);
+        //    for (var i = 1; i <= totalPage; i++) {
+        //    this.props.getFeedbackSubjectTemplateByPagingIndex(i);
+        //}
     };
 
     render() {

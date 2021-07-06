@@ -3,29 +3,19 @@
 const createMultipleLogSlice = createSlice({
     name: 'createMultipleLogs',
     initialState: {
-        settings: {
-            extensions: [],
-            communicationTools: [],
-            provinces: [],
-            statuses: [],
-            roles: [],
-            responses: [],
-            languages: [],
-            countries: [],
-            products: [],
-            subProducts: [],
-            bettypes: [],
-            mainCategories: [],
-            subCategories: [],
-            productNA: null,
-            subProductNA: null,
-            bettypeNA: null,
-            extensionNA: null
-        }
+        settings: null,
+        numberOfFeedbackSubjectTemplate: 0,
+        feedbackSubjectTemplates: [],
     },
     reducers: {
         setSettings: (state, action) => {
             state.settings = action.payload;
+        },
+        setNumberOfFeedbackSubjectTemplate: (state, action) => {
+            state.numberOfFeedbackSubjectTemplate = action.payload;
+        },
+        setFeedbackSubjectTemplates: (state, action) => {
+            state.feedbackSubjectTemplates = action.payload;
         }
     }
 });
@@ -33,7 +23,9 @@ const createMultipleLogSlice = createSlice({
 const { actions, reducer } = createMultipleLogSlice;
 
 export const {
-    setSettings
+    setSettings,
+    setNumberOfFeedbackSubjectTemplate,
+    setFeedbackSubjectTemplates
 } = actions;
 
 export default reducer;

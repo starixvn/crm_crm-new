@@ -8,9 +8,13 @@
     }
 }
 
-.form-control, .form-control {
+.form-control {
     &:invalid, &.is-invalid {
         background-image: unset;
         padding-right: unset;
+    }
+
+    &:disabled, &[readonly] {
+        cursor: not-allowed;
     }
 }

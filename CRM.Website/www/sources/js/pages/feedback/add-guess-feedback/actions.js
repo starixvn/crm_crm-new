@@ -16,18 +16,18 @@ const getAllSettings = () => async dispatch => {
 };
 
 const getNumberOfFeedbackSubjectTemplate = () => async dispatch => {
-    const url = Site.resolveClientUrl('Setting/GetNumberOfFeedbackSubjectTemplate');
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setNumberOfFeedbackSubjectTemplate(response.data));
-    });
+    //const url = Site.resolveClientUrl('Setting/GetNumberOfFeedbackSubjectTemplate');
+    //await DataService.getDataAsync(url).then(response => {
+    //    dispatch(setNumberOfFeedbackSubjectTemplate(response.data));
+    //});
 };
 
-const getFeedbackSubjectTemplateByPagingIndex = id => async dispatch => {
-    Site.blockUI();
-    const url = Site.resolveClientUrl(`Setting/GetFeedbackSubjectTemplateByPagingIndex/${id}`);
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setFeedbackSubjectTemplateByPagingIndex(response.data));
-    }).then(() => Site.unblockUI());
+const getFeedbackSubjectTemplateByPagingIndex = pageIndex => async dispatch => {
+    //Site.blockUI();
+    //const url = Site.resolveClientUrl(`Setting/GetFeedbackSubjectTemplate?pageIndex=${pageIndex}`);
+    //await DataService.getDataAsync(url).then(response => {
+    //    dispatch(setFeedbackSubjectTemplateByPagingIndex(response.data));
+    //}).then(() => Site.unblockUI());
 };
 
 const addFeedback = () => async dispatch => {

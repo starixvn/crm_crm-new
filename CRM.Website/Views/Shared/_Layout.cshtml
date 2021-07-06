@@ -1,6 +1,14 @@
 ﻿@using CRM.Core.Models
+@using CRM.Services
+@using Fanex.NAP.Client.Helpers.Web
 @using Microsoft.Extensions.Options
 @inject IOptionsSnapshot<AppSettings> appSettings
+@inject ICommonService commonService
+@inject INapSession napSession
+@{
+    var currentClientTime = commonService.ConvertToClientDateTime(DateTime.Now);
+    var currentUsername = napSession.UserName;
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,9 +48,13 @@
     </div>
 
     <input type="hidden" id="RootUrl" value="@Url.Content("~/")" />
-    <input type="hidden" id="ClientTimezone" value="@appSettings.Value.ClientTimezone" />
-    <input type="hidden" id="ServerTimezone" value="@appSettings.Value.ServerTimezone" />
     @Html.AntiForgeryToken()
+    <script type="text/javascript">
+        window.currentUsername = '@currentUsername';
+        window.clientTimezone = @appSettings.Value.ClientTimezone;
+        window.serverTimezone = @appSettings.Value.ServerTimezone;
+        window.currentClientTime = '@currentClientTime';
+    </script>
     <environment include="Development">
         <script src="~/js/dev/main.chunk.js"></script>
         <script src="~/js/dev/lib/lang-en-US.chunk.js"></script>

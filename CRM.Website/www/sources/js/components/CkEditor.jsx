@@ -8,13 +8,13 @@ export default class CkEditor extends PureComponent {
     static propTypes = {
         data: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
-        handleChangeEditor: PropTypes.func
+        onChange: PropTypes.func
     };
 
     static defaultProps = {
         data: '',
         username: '',
-        handleChangeEditor: function () {
+        onChange: function () {
             // nothing
         }
     };
@@ -26,10 +26,10 @@ export default class CkEditor extends PureComponent {
         };
     }
 
-    onEditorChange = evt => {
+    handleChange = evt => {
         const data = evt.editor.getData();
         this.setState({ data });
-        this.props.handleChangeEditor(data);
+        this.props.onChange(data);
     }
 
     onBeforeLoad = () => {
@@ -96,7 +96,7 @@ export default class CkEditor extends PureComponent {
         return (
             <CKEditor
                 initData={initData}
-                onChange={this.onEditorChange}
+                onChange={this.handleChange}
                 config={{
                     removeButtons: '',
                     colorButton_enableMore: true,

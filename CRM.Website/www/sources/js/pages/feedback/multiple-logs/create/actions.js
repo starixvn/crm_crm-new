@@ -5,10 +5,11 @@ import {
 } from './createMultipleLogSlice';
 
 const getSettings = () => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('MultipleLogs/GetSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setSettings(response.data));
-    });
+    }).then(() => Site.unblockUI());
 };
 
 export const ActionCreators = {

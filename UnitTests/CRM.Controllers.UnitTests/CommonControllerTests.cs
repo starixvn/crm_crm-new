@@ -70,8 +70,9 @@
         {
             notificationTypeService = Substitute.For<INotificationTypeService>();
             commonService = Substitute.For<ICommonService>();
+            var feedbackSubjectService = Substitute.For<IFeedbackSubjectService>();
 
-            return new CommonController(notificationTypeService, commonService);
+            return new CommonController(notificationTypeService, commonService, feedbackSubjectService);
         }
     }
 }

@@ -12,6 +12,7 @@
         Task<IEnumerable<Setting>> GetSettingAsync(string settingName, bool? isActive = null);
 
         Task<IEnumerable<SiteSetting>> GetSiteAsync();
+
         Task<SiteSetting> GetSettingById(GetSettingByIdCriteria criteria);
 
         Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(GetAllSiteCriteria criteria = null);
@@ -51,9 +52,5 @@
         IEnumerable<Setting> GetPositions(bool isExcludeGuest);
 
         IEnumerable<Setting> GetAllCustomerTypes();
-
-        Task<int> GetNumberOfFeedbackSubjectTemplateAsync();
-
-        Task<IEnumerable<FeedbackTemplate>> GetFeedbackSubjectTemplateByPagingIndexAsync(int pageIndex);
     }
 }

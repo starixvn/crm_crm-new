@@ -234,8 +234,8 @@
         }
 
         public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(GetAllSiteCriteria criteria = null)
-            {
-            var sites =  await baseService.GetDataAsync<SiteInfo>(criteria ?? new GetAllSiteCriteria());
+        {
+            var sites = await baseService.GetDataAsync<SiteInfo>(criteria ?? new GetAllSiteCriteria());
             var allSites = (from n in sites
                             where n.IsActive
                             group n by n.IsLicensee into g
@@ -292,32 +292,6 @@
                     SettingValue = ViewResources.Guest
                 }
             };
-        }
-
-        public async Task<int> GetNumberOfFeedbackSubjectTemplateAsync()
-        {
-            var feedbacks = await GetFeedbackSubjectTemplateAsync();
-            return feedbacks.Count;
-        }
-
-        public async Task<IEnumerable<FeedbackTemplate>> GetFeedbackSubjectTemplateByPagingIndexAsync(int pageIndex)
-        {
-            const int size = SettingConstants.MaxFeedbackSubjectTemplateNumberOnLoad;
-            var feedbackTemplates = await GetFeedbackSubjectTemplateAsync();
-
-            return (feedbackTemplates != null && feedbackTemplates.Any())
-                ? feedbackTemplates.Skip((pageIndex - 1) * size).Take(pageIndex * size).ToList()
-                : new List<FeedbackTemplate>();
-        }
-
-        private async Task<IList<FeedbackTemplate>> GetFeedbackSubjectTemplateAsync()
-        {
-            var criteria = new GetFeedbackSubjectTemplateByIdCriteria
-            {
-                TemplateId = 0
-            };
-            var feedbackTemplates = await baseService.GetDataAsync<FeedbackTemplate>(criteria);
-            return feedbackTemplates.Where(s => s.IsActive).ToList();
         }
     }
 }
