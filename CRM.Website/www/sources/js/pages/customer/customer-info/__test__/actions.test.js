@@ -102,7 +102,6 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfo/GetCustomerAutoSuggestion', expectParams);
-            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 });

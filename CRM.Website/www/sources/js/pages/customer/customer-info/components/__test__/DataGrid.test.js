@@ -2,7 +2,7 @@ import React from 'react';
 import { DataGrid } from '../DataGrid';
 import { shallow, mount } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
-import { Form, Modal } from 'react-bootstrap';
+import {  Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Formik } from 'formik';
 import MultipleSelect from '../../../../../components/multiple-select';
@@ -76,35 +76,35 @@ describe('DataGridCustomerInfo', () => {
                 //Arrange 
                 const props = {
                     settings: {
-                        languages: [],
+                        languages: [{settingId: 1, settingName: 'name'}],
                         sites: [],
                         countries: []
                     },
                     gridData: {
                         data: {
-                            languages: [1, 2],
+                            languages: [1,2],
                             uplineInfo: [],
                             role: { name: 'test' }
                         }
                     },
                     getSettings: jest.fn(() => Promise.resolve({}))
                 };
-                const state = {
-                    languages: [],
-                    siteId: 0
+                const newProps = {
+                    gridData: null
                 }
+               
                 const expected = {
-                    langagues: [],
+                    langagues: [{id: 1, name: 'name', checked: true}],
                     siteId: 0
                 }
                 
+                const container = shallow(<DataGrid {...props} />);
 
-                // Action
-                const container = mount(<DataGrid {...props} />).instance();
-                container.setState(state);
+                // Act
+                container.instance().componentDidUpdate(newProps);
                 
                 // Assert
-                expect(container.state.languages).toEqual(expected.langagues);
+                expect(container.state().languages).toEqual(expected.langagues);
             });
         });
 
@@ -115,6 +115,13 @@ describe('DataGridCustomerInfo', () => {
                     editCustomerInfoResult: {
                         isSuccessful: false,
                         message: 'unsuccessful'
+                    },
+                    gridData: {
+                        data: {
+                            languages: [1,2],
+                            uplineInfo: [],
+                            role: { name: 'test' }
+                        }
                     },
                     getSettings: jest.fn(),
                     
@@ -144,10 +151,17 @@ describe('DataGridCustomerInfo', () => {
                         isSuccessful: false,
                         message: 'unsuccessful'
                     },
+                    gridData: {
+                        data: {
+                            languages: [1,2],
+                            uplineInfo: [],
+                            role: { name: 'test' }
+                        }
+                    },
+                    
                     getSettings: jest.fn(),
                     
                 };
-                const username = "tesla";
                 const formikProps = {
                     values: {
                         languages: [1, 2],
@@ -156,18 +170,21 @@ describe('DataGridCustomerInfo', () => {
                         site: {}
                     },
                     errors: {},
-                    touched: {}
+                    touched: {},
+                    handleChange: jest.fn(),
+                    handleSubmit: jest.fn(),
+                    isSubmitting: jest.fn(),
+                    setFieldValue: jest.fn(),
                 };
                 const container = shallow(<DataGrid {...props} />);
                 container.instance().handleSearchUplineInfo = jest.fn();
         
                 // Act
                 const form = shallow(container.instance().renderForm(formikProps));
-                form.find("a").simulate('onclick');;
+                form.find('form').find(Row).find(Col).at(1).find('a').simulate('click', 'tesla')
         
                 // Assert 
-                //expect(container.instance().handleSearchUplineInfo).toHaveBeenCalled();
-                expect(form.find("a").length).toEqual(1);
+                expect(container.instance().handleSearchUplineInfo).toHaveBeenCalledWith('tesla');
             })
 
         });
@@ -210,6 +227,13 @@ describe('DataGridCustomerInfo', () => {
             it('should call correct functions when validate', () => {
                 // Arrange
                 const props = {
+                    gridData: {
+                        data: {
+                            languages: [1,2],
+                            uplineInfo: [],
+                            role: { name: 'test' }
+                        }
+                    },
                     getSettings: jest.fn(),
                 };
                 const values = {
@@ -219,11 +243,11 @@ describe('DataGridCustomerInfo', () => {
                 commonFunction.validateFormik = jest.fn();
     
                 // Act
-                //container.find(Formik).props().validate(values);
-                container.find(Formik);
+                container.find(Formik).props().validate(values);
     
                 // Assert
-                expect(commonFunction.validateFormik).toHaveBeenCalledTimes(0);
+                expect(container.find(Formik).length).toBe(1);
+                expect(commonFunction.validateFormik).toHaveBeenCalledTimes(1);
             });
         });
 
