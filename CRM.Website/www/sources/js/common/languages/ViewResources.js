@@ -93,7 +93,6 @@
     LetstalkID: 'Letstalk ID',
     LetstalkIdRequired: 'Letstalk ID is required!',
     LetstalkName: 'Letstalk Name',
-    LetstalkName: 'Letstalk Name',
     ListOfAssignedDirectAccounts: 'List of assigned direct accounts',
     Listofcustomers: 'List of customers',
     ListofcustomersRequired: 'List of customers are required!',

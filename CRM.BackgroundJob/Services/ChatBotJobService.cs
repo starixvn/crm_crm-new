@@ -73,7 +73,7 @@
             IEnumerable<ChatBotVoidingMessage> voidingMessages = voidingInfo.Item1;
             var voidingHis = await ticketVoidingService.ImportVoidingMessageHistoryCheckAsync(voidingInfo.Item2);
             var userNameList = Enumerable.Empty<ChatBotUserNameList>();
-            if (voidingHis.Any())
+            if (voidingHis.Any() && voidingInfo.Item2.Any())
             {
                 userNameList = await ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis);
             }
