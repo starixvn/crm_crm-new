@@ -7,7 +7,7 @@ namespace CRM.BackgroundJob.Criteria.ChatBot
     {
         public string Messages { get; set; }
 
-        public override string GetSettingKey() => "Acc_CRM_ChatBot_crmMessageImport_Check";
+        public override string GetSettingKey() => "Acc_CRM_crmMessageImport_Check";
 
         public override bool IsValid() => !string.IsNullOrWhiteSpace(Messages);
     }

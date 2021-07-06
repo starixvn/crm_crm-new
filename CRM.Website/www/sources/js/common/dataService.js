@@ -7,16 +7,22 @@ export default class DataService {
             .then(response => response).catch(Site.handleAxiosError);
     }
 
+
     static async postDataAsync(url, params) {
-        return await axios.post(
-            url,
-            params,
-            {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'RequestVerificationToken': Site.getXsrfToken()
-                }
-            }).then(response => response).catch(Site.handleAxiosError);
+        const customAxios = axios.create({
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'RequestVerificationToken': Site.getXsrfToken()
+            }
+        });
+
+        customAxios.interceptors.response.use(response =>{
+            return response;
+        }, error => {
+            return Site.handleAxiosError(error);
+        });
+
+        return await customAxios.post(url, params).then(response => response);
     }
 
     static async getFileAsync(url, params) {

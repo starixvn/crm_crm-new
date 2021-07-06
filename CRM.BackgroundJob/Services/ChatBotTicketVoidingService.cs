@@ -90,11 +90,12 @@
             foreach (var message in voidingMessages)
             {
                 ChatBotUserNameList userName = userNames.FirstOrDefault(x => x.MessageId == message.MessageId && x.RequestId == message.RequestId);
+
                 stringBuilder.AppendFormat(XmlTemplate,
                     message.MessageId,
                     message.RequestId,
-                    userName.UsernameList,
-                    userName.CustIdList);
+                    userName?.UsernameList,
+                    userName?.CustIdList);
             }
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportChatBotVoidingMessageCriteria
@@ -161,11 +162,11 @@
             IEnumerable<ChatBotUserNameList> userNames,
             string Environment = Constants.DefaultEnvironment)
         {
-            const string XmlTemplate = "<r MessageId='{0}' Username='{1}' CustId='{2}' " +
+            const string XmlTemplate = "<r MessageID='{0}' Username='{1}' CustId='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
                 "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
-            const string messageTemplate = "<r MessageID='{0}' RequestID='{1}' UsernameList='{2}'";
+            const string messageTemplate = "<r MessageID='{0}' RequestID='{1}' UsernameList='{2}'/>";
             var messageStringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             foreach (ChatBotVoidingTicketInfo ticketInfo in ticketInfos)
             {
@@ -181,7 +182,7 @@
                     HttpUtility.HtmlEncode(message?.Content_en),
                     HttpUtility.HtmlEncode(message?.Content_cs),
                     HttpUtility.HtmlEncode(message?.Content_th),
-                    HttpUtility.HtmlEncode(message.Content_vn),
+                    HttpUtility.HtmlEncode(message?.Content_vn),
                     ticketInfo.Type
              );
             }

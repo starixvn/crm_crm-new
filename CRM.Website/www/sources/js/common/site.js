@@ -48,6 +48,7 @@ export default class Site {
             }
 
            window.location = _rootUrl + url;
+           return Promise.reject(error);
         }
     }
 
