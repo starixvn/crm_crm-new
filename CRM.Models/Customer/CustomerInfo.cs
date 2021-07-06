@@ -20,7 +20,7 @@
 
         public string FaxAreaCode { get; set; }
 
-        public string FaxNumber { get; set; }
+        public string Fax { get; set; }
 
         public string Skype { get; set; }
 
@@ -61,6 +61,8 @@
         public DateTime CreateDate { get; set; }
 
         public DateTime BirthDay { get; set; }
+
+        public int PassPort { get; set; }
 
         public string WeChat { get; set; }
 
@@ -158,7 +160,7 @@
 
         public Setting Title => new Setting { Id = TitleID, Name = string.Empty };
 
-        public Fax FaxInfo => new Fax { CountryCode = FaxCountryCode, AreaCode = FaxAreaCode, FaxNumber = FaxNumber };
+        public Fax FaxInfo => new Fax { CountryCode = FaxCountryCode, AreaCode = FaxAreaCode, FaxNumber = Fax };
 
         public BaseModel Role { get; set; } = new BaseModel();
 

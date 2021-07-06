@@ -143,6 +143,7 @@
             var extentionList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
             var licenseeTypeList = await settingService.GetLicenseeTypeAsync();
+            var sites = await settingService.GetAllSitesWithGroupAsync();
 
             var settings = new
             {
@@ -159,15 +160,21 @@
                 StatusList = statusListRemoveDelete,
                 BettypeList = bettypes,
                 Titles = titles,
-                LicenseeType = licenseeTypeList
+                LicenseeType = licenseeTypeList,
+                Sites = sites
             };
 
             return Json(settings);
         }
 
-        public async Task<IActionResult> GetFeedbackById(GetFeedbackByIdCriteria criteria)
+        public async Task<IActionResult> GetFeedbackById(int id)
         {
-            CustomerFeedback feedback = await feedbackService.GetFeedbackById(criteria);
+            var criteria = new GetFeedbackByIdCriteria
+            {
+                FeedbackID = id
+            };
+            var feedback = await feedbackService.GetFeedbackById(criteria);
+
             return Json(feedback);
         }
     }

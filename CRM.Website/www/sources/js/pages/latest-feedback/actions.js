@@ -11,7 +11,8 @@ import {
     setUpdateFeedbackPopup,
     setUpdateFeedbackResult,
     setSelectedFeedback,
-    setAllSettings
+    setAllSettings,
+    setFeedback
 } from './latestFeedbackSlide';
 
 const getAllSettings = () => async dispatch => {
@@ -73,6 +74,16 @@ const verifyUserName = data => async () => {
     return await DataService.postDataAsync(url, data).then(response => response.data);
 };
 
+const getFeedbackById = (id, callback) => async dispatch => {
+    const url = Site.resolveClientUrl(`LatestFeedback/GetFeedbackById/${id}`);
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setFeedback(response.data));
+        if (typeof callback === 'function') {
+            callback();
+        }
+    });
+};
+
 export const ActionCreators = {
     setLatestFeedback,
     setGridParams,
@@ -92,5 +103,7 @@ export const ActionCreators = {
     setUpdateFeedbackResult,
     getAllSettings,
     setAllSettings,
-    verifyUserName
+    verifyUserName,
+    getFeedbackById,
+    setFeedback
 };

@@ -17,6 +17,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import VerifyCustomer from '@jsroot/components/verifyCustomer';
 import CkEditor from './../../../components/CkEditor';
+import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 
 export class UpdateFeedback extends PureComponent {
     constructor(props) {
@@ -49,18 +50,20 @@ export class UpdateFeedback extends PureComponent {
     }
 
     componentDidMount() {
+        const setting = this.props.feedback.settings;
+
         const communicationToolOptionsEdit = this.props.settings.communicationToolList.map(tool => {
             return {
                 id: tool.id,
                 name: tool.settingName,
-                checked: false
+                checked: setting.some(y => y.settingID === tool.id && y.settingType === "Communication") ? true : false
             };
         });
         const productOptionsEdit = this.props.settings.productList.map(product => {
             return {
                 id: product.id,
                 name: product.value,
-                checked: false
+                checked: setting.some(y => y.settingID === product.id && y.settingType === "Product") ? true : false
             };
         });
         const roleOptionsEdit = this.props.settings.roles.map(role => {
@@ -78,7 +81,8 @@ export class UpdateFeedback extends PureComponent {
         const mainCategoryOptionsEdit = this.props.settings.mainCategoryList.map(category => {
             return {
                 id: category.mainCategoryID,
-                name: category.settingName
+                name: category.settingName,
+                checked: setting.some(y => y.settingID === category.mainCategoryID && y.settingType === "Category") ? true : false
             };
         });
         const subCategoryOptionsEdit = this.props.settings.subCategoryList.map(sub => {
@@ -108,7 +112,8 @@ export class UpdateFeedback extends PureComponent {
         const extensionOptionsEdit = this.props.settings.extensionList.map(extension => {
             return {
                 id: extension.id,
-                name: extension.value
+                name: extension.value,
+                checked: setting.some(y => y.settingID === extension.id && y.settingType === "Station") ? true : false
             };
         });
         const statusOptionsEdit = this.props.settings.statusList.map(status => {
@@ -279,13 +284,13 @@ export class UpdateFeedback extends PureComponent {
                             <div class="row">
                                 <div class="col-xs-4 col-sm-4 col-md-4">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="5" md="4" htmlFor="name">
+                                        <Form.Label column sm="5" md="4" htmlFor="title">
                                             {LangHelper.getResource('Title')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                value={this.state.titleOptionsEdit}
-                                                onChange={e => this.onChange('title', e.target.value)}
+                                                onChange={handleChange}
+                                                value={values.titleId}
                                             >
                                                 {this.state.titleOptionsEdit.map(this.renderOptions)}
                                             </Form.Control>
@@ -299,6 +304,7 @@ export class UpdateFeedback extends PureComponent {
                                             <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                                 <DatePicker
                                                     selected={values.birthDay}
+                                                    maxDate={values.maxDate}
                                                     onChange={value => this.handleDataChange('birthDay', value)}
                                                 />
                                             </div>
@@ -309,7 +315,8 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('RefCodes')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm"
+                                                value={values.refCode2}
                                                 name="refCodes" id="refCodes"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -329,7 +336,8 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('CustomerFirstName')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm"
+                                                value={values.firstName}
                                                 name="refCodes" id="firstName"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -337,12 +345,13 @@ export class UpdateFeedback extends PureComponent {
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="5" md="4" htmlFor="passport">
+                                        <Form.Label column sm="5" md="4" htmlFor="passPort">
                                             {LangHelper.getResource('PassportNo')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
-                                                name="refCodes" id="passport"
+                                            <Form.Control type="text" size="sm"
+                                                value={values.passPort}
+                                                name="refCodes" id="passPort"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
                                             />
@@ -353,7 +362,8 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('SecretCode')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm"
+                                                value={values.refCode1}
                                                 name="refCodes" id="secretCode"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -367,7 +377,8 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('CustomerLastName')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm"
+                                                value={values.lastName}
                                                 name="refCodes" id="lastName"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -379,7 +390,14 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('Site')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-
+                                            <SelectWithSearch
+                                                className='basic-single'
+                                                onChange={handleChange}
+                                                options={this.props.settings.sites}
+                                                name={values.site.name}
+                                                value={values.siteId}
+                                                isHideNA={false}
+                                            />
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
@@ -388,7 +406,7 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                value={this.state.licenseeTypeOptionsEdit}
+                                                value={values.licenseeType}
                                                 onChange={e => this.onChange('licenseeType', e.target.value)}
                                             >
                                                 {this.state.licenseeTypeOptionsEdit.map(this.renderOptions)}
@@ -409,21 +427,24 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className="d-flex">
                                                 <div className="code-country">
-                                                    <Form.Control type="text" size="sm" value={values.countryCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.phone1.countryCode}
                                                         name="countryCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="code-area">
-                                                    <Form.Control type="text" size="sm" value={values.areaCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.phone1.areaCode}
                                                         name="areaCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="phone">
-                                                    <Form.Control type="text" size="sm" value={values.phoneNumber}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.phone1.phoneNumber}
                                                         name="phoneNumber"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
@@ -439,21 +460,24 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className="d-flex">
                                                 <div className="code-country">
-                                                    <Form.Control type="text" size="sm" value={values.countryCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.fax.countryCode}
                                                         name="countryCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="code-area">
-                                                    <Form.Control type="text" size="sm" value={values.areaCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.fax.areaCode}
                                                         name="areaCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="phone">
-                                                    <Form.Control type="text" size="sm" value={values.phoneNumber}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.fax.faxNumber}
                                                         name="phoneNumber"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
@@ -469,14 +493,16 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className="d-flex">
                                                 <div className="picName">
-                                                    <Form.Control type="text" size="sm" value={values.pic2Name}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.pic2.name}
                                                         name="pic2Name"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="phone">
-                                                    <Form.Control type="text" size="sm" value={values.pic2PhoneNumber}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.pic2.phone}
                                                         name="pic2PhoneNumber"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
@@ -490,7 +516,8 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('Skype')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm"
+                                                value={values.skype}
                                                 name="skype" id="Skype"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -502,7 +529,7 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('WeChat')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm" value={values.weChat}
                                                 name="weChat" id="weChat"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -514,7 +541,7 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('Letstalk')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm" value={values.letstalk}
                                                 name="letstalk" id="letstalk"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -530,21 +557,24 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className="d-flex">
                                                 <div className="code-country">
-                                                    <Form.Control type="text" size="sm" value={values.countryCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.phone2.countryCode}
                                                         name="countryCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="code-area">
-                                                    <Form.Control type="text" size="sm" value={values.areaCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.phone2.areaCode}
                                                         name="areaCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="phone">
-                                                    <Form.Control type="text" size="sm" value={values.phoneNumber}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.phone2.phoneNumber}
                                                         name="phoneNumber"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
@@ -560,21 +590,24 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className="d-flex">
                                                 <div className="code-country">
-                                                    <Form.Control type="text" size="sm" value={values.countryCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.mobile.countryCode}
                                                         name="countryCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="code-area">
-                                                    <Form.Control type="text" size="sm" value={values.areaCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.mobile.areaCode}
                                                         name="areaCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="phone">
-                                                    <Form.Control type="text" size="sm" value={values.phoneNumber}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.mobile.phoneNumber}
                                                         name="phoneNumber"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
@@ -590,14 +623,14 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className="d-flex">
                                                 <div className="picName">
-                                                    <Form.Control type="text" size="sm" value={values.pic2Name}
+                                                    <Form.Control type="text" size="sm" value={values.pic3.name}
                                                         name="pic2Name"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="phone">
-                                                    <Form.Control type="text" size="sm" value={values.pic2PhoneNumber}
+                                                    <Form.Control type="text" size="sm" value={values.pic3.phone}
                                                         name="pic2PhoneNumber"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
@@ -611,7 +644,7 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('Email')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm" value={values.email}
                                                 name="skype" id="email"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -619,12 +652,12 @@ export class UpdateFeedback extends PureComponent {
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="5" md="4" htmlFor="whatApp">
+                                        <Form.Label column sm="5" md="4" htmlFor="whatsApp">
                                             {LangHelper.getResource('WhatApp')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
-                                                name="whatApp" id="whatApp"
+                                            <Form.Control type="text" size="sm" value={values.whatsApp}
+                                                name="whatsApp" id="whatsApp"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
                                             />
@@ -635,7 +668,7 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('QQ')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm" value={values.qq}
                                                 name="qq" id="qq"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -651,21 +684,24 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className="d-flex">
                                                 <div className="code-country">
-                                                    <Form.Control type="text" size="sm" value={values.countryCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.phone3.countryCode}
                                                         name="countryCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="code-area">
-                                                    <Form.Control type="text" size="sm" value={values.areaCode}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.phone3.areaCode}
                                                         name="areaCode"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="phone">
-                                                    <Form.Control type="text" size="sm" value={values.phoneNumber}
+                                                    <Form.Control type="text" size="sm"
+                                                        value={values.phone3.phoneNumber}
                                                         name="phoneNumber"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
@@ -680,23 +716,16 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <div className="d-flex">
-                                                <div className="code-country">
-                                                    <Form.Control type="text" size="sm" value={values.countryCode}
-                                                        name="countryCode"
-                                                        className="shadow-none" autoComplete="off"
-                                                        onChange={handleChange}
-                                                    />
-                                                </div>
-                                                <div className="code-area">
-                                                    <Form.Control type="text" size="sm" value={values.areaCode}
-                                                        name="areaCode"
+                                                <div className="picName">
+                                                    <Form.Control type="text" size="sm" value={values.pic1.name}
+                                                        name="pic1Name"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="phone">
-                                                    <Form.Control type="text" size="sm" value={values.phoneNumber}
-                                                        name="phoneNumber"
+                                                    <Form.Control type="text" size="sm" value={values.pic1.phone}
+                                                        name="pic1PhoneNumber"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
@@ -711,14 +740,14 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className="d-flex">
                                                 <div className="picName">
-                                                    <Form.Control type="text" size="sm" value={values.pic2Name}
+                                                    <Form.Control type="text" size="sm" value={values.pic4.name}
                                                         name="pic4Name"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="phone">
-                                                    <Form.Control type="text" size="sm" value={values.pic2PhoneNumber}
+                                                    <Form.Control type="text" size="sm" value={values.pic4.phone}
                                                         name="pic2PhoneNumber"
                                                         className="shadow-none" autoComplete="off"
                                                         onChange={handleChange}
@@ -732,7 +761,7 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('Telegram')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm" value={values.telegram}
                                                 name="telegram" id="telegram"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -744,7 +773,7 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('Line')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm" value={values.line}
                                                 name="line" id="line"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -756,7 +785,7 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('Zalo')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control type="text" size="sm" value={values.subject}
+                                            <Form.Control type="text" size="sm" value={values.zalo}
                                                 name="zalo" id="zalo"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -807,12 +836,11 @@ export class UpdateFeedback extends PureComponent {
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="5" md="4" htmlFor="name">
+                                        <Form.Label column sm="5" md="4" htmlFor="product">
                                             {LangHelper.getResource('Product')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <MultipleSelect
-                                                isInvalid={touched.comunicationToolTypesEdit && errors.comunicationToolTypesEdit}
                                                 dataSource={this.state.productOptionsEdit}
                                                 keyField='id'
                                                 valueField='name'
@@ -820,7 +848,7 @@ export class UpdateFeedback extends PureComponent {
                                                 isSummited={false}
                                                 hasSearchBox
                                                 onChange={(currentItem, selectedItemsKey) => {
-                                                    handleChange('comunicationToolTypesEdit')(selectedItemsKey);
+                                                    handleChange('product')(selectedItemsKey);
                                                 }}
                                             />
                                         </Col>
@@ -831,7 +859,7 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                value={this.state.responseOptionsEdit}
+                                                value={values.responseID}
                                                 onChange={e => this.onChange('response', e.target.value)}
                                             >
                                                 {this.state.responseOptionsEdit.map(this.renderOptions)}
@@ -844,7 +872,7 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                value={this.state.roleOptionsEdit}
+                                                value={values.roleID}
                                                 onChange={e => this.onChange('role', e.target.value)}
                                             >
                                                 {this.state.roleOptionsEdit.map(this.renderOptions)}
@@ -861,8 +889,8 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                                 <DatePicker
-                                                    selected={values.feedbackDate}
-                                                    onChange={value => this.handleDataChange('feedbackDate', value)}
+                                                    selected={values.resolutionDate}
+                                                    onChange={value => this.handleDataChange('resolutionDate', value)}
                                                     timeInputLabel="Time:"
                                                     showTimeInput
                                                 />
@@ -913,7 +941,7 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                value={this.state.languageOptionsEdit}
+                                                value={values.languageID}
                                                 onChange={e => this.onChange('language', e.target.value)}
                                             >
                                                 {this.state.languageOptionsEdit.map(this.renderOptions)}
@@ -926,7 +954,7 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                value={this.state.countryOptionsEdit}
+                                                value={values.countryID}
                                                 onChange={e => this.onChange('country', e.target.value)}
                                             >
                                                 {this.state.countryOptionsEdit.map(this.renderOptions)}
@@ -942,7 +970,6 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <MultipleSelect
-                                                isInvalid={touched.comunicationToolTypesEdit && errors.comunicationToolTypesEdit}
                                                 dataSource={this.state.extensionOptionsEdit}
                                                 keyField='id'
                                                 valueField='name'
@@ -993,7 +1020,7 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                value={this.state.statusOptionsEdit}
+                                                value={values.statusID}
                                                 onChange={e => this.onChange('status', e.target.value)}
                                             >
                                                 {this.state.statusOptionsEdit.map(this.renderOptions)}
@@ -1168,14 +1195,51 @@ export class UpdateFeedback extends PureComponent {
     };
 
     render() {
-        const feedback = this.props.updateFeedbackPopup.data.item;
+        const now = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
+        const feedback = this.props.feedback;
         const initialValues = {
-            username: feedback.username,
-            feedbackDate: new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(feedback.feedbackDateString))),
+            maxDate: now,
+            username: feedback.userName,
+            feedbackDate: new Date(feedback.feedbackDate),
+            resolutionDate: new Date(feedback.resolutionDate),
             subject: feedback.subject,
             description: feedback.description,
             autoField: feedback.autoField,
-            solution: feedback.solution
+            solution: feedback.solution,
+            titleId: feedback.titleID,
+            birthDay: new Date(feedback.birthDay),
+            refCode1: feedback.refCode1,
+            refCode2: feedback.refCode2,
+            firstName: feedback.firstName,
+            lastName: feedback.lastName,
+            passPort: feedback.passPort,
+            siteId: feedback.siteID,
+            site: feedback.siteSetting,
+            licenseeType: feedback.licenseeType,
+            phone1: feedback.phoneInfo[0],
+            phone2: feedback.phoneInfo[1],
+            phone3: feedback.phoneInfo[2],
+            fax: feedback.faxInfo,
+            mobile: feedback.mobile,
+            pic1: feedback.personalInfoContacts[0],
+            pic2: feedback.personalInfoContacts[1],
+            pic3: feedback.personalInfoContacts[2],
+            pic4: feedback.personalInfoContacts[3],
+            skype: feedback.skype,
+            weChat: feedback.weChat,
+            letstalk: feedback.yahoo,
+            email: feedback.email,
+            whatsApp: feedback.whatsApp,
+            qq: feedback.qq,
+            telegram: feedback.msn,
+            line: feedback.line,
+            zalo: feedback.bbm,
+            responseID: feedback.responseID,
+            roleID: feedback.roleID,
+            countryID: feedback.countryID,
+            languageID: feedback.languageID,
+            noInquiries: feedback.noInquiries,
+            statusID: feedback.statusID
         };
         return (
             <Modal show className="update-feedback-modal" dialogAs={DraggableModalDialog}
@@ -1201,8 +1265,8 @@ export class UpdateFeedback extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { updateFeedbackPopup, updateFeedbackResult, settings } = state;
-    return { updateFeedbackPopup, updateFeedbackResult, settings };
+    const { updateFeedbackResult, settings, feedback } = state;
+    return { updateFeedbackResult, settings, feedback };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateFeedback);

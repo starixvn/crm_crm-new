@@ -41,26 +41,26 @@ export class DataGrid extends Component {
         this.props.getNoInquiriesByFeedbackId(id, () => this.props.setEditNoInquiriesPopup({ show: true }));
     };
 
-    handleUpdateFeedback = (item, mainCategories) => {
-        this.props.setUpdateFeedbackPopup({ show: true, data: { item, mainCategories }});
+    handleUpdateFeedback = id => {
+        this.props.getFeedbackById(id, () => this.props.setUpdateFeedbackPopup({ show: true }));
     };
 
     renderCategoryColumn = (item) => {
         const { mainCategories } = this.props.gridData;
-        var settings = item.settings;
+        let settings = item.settings;
 
-        var mainCategoryIds = [];
-        for (var i = 0; i < settings.length; i++) {
+        let mainCategoryIds = [];
+        for (let i = 0; i < settings.length; i++) {
             if ((settings[i].settingType == "Category")
                 && mainCategoryIds.indexOf(settings[i].settingID) < 0) {
                 mainCategoryIds.push(settings[i].settingID);
             }
         }
 
-        var categories = [];
-        for (var i = 0; i < mainCategoryIds.length; i++) {
-            var subCategoryIds = [];
-            for (var j = 0; j < settings.length; j++) {
+        let categories = [];
+        for (let i = 0; i < mainCategoryIds.length; i++) {
+            let subCategoryIds = [];
+            for (let j = 0; j < settings.length; j++) {
                 if ((settings[j].settingType == "Category")
                     && settings[j].settingID == mainCategoryIds[i]) {
                     subCategoryIds.push(settings[j].subSettingID);
@@ -73,11 +73,11 @@ export class DataGrid extends Component {
             })
         }
 
-        var result = '';
-        for (var i = 0; i < categories.length; i++) {
-            var category = '<div class="main-category">' + this.getMainCategoryName(categories[i].mainCategoryId, mainCategories);
-            var subCategoryIds = categories[i].subCategoryIds;
-            for (var j = 0; j < subCategoryIds.length; j++) {
+        let result = '';
+        for (let i = 0; i < categories.length; i++) {
+            let category = '<div class="main-category">' + this.getMainCategoryName(categories[i].mainCategoryId, mainCategories);
+            let subCategoryIds = categories[i].subCategoryIds;
+            for (let j = 0; j < subCategoryIds.length; j++) {
                 category += '<div><span class="sub-category">' + this.getSubCategoryName(categories[i].mainCategoryId, subCategoryIds[j], mainCategories) + '</span></div>';
             }
             category += '</div>';
@@ -88,7 +88,7 @@ export class DataGrid extends Component {
     };
 
     getMainCategoryName = function (mainCategoryId, mainCategories) {
-        for (var i = 0; i < mainCategories.length; i++) {
+        for (let i = 0; i < mainCategories.length; i++) {
             if (mainCategories[i].settingId == mainCategoryId) {
                 return mainCategories[i].settingValue;
             }
@@ -98,8 +98,8 @@ export class DataGrid extends Component {
     }
 
     getSubCategoryName = function (mainCategoryId, subCategoryId, mainCategories) {
-        var mainCategory = null;
-        for (var i = 0; i < mainCategories.length; i++) {
+        let mainCategory = null;
+        for (let i = 0; i < mainCategories.length; i++) {
             if (mainCategories[i].settingId == mainCategoryId) {
                 mainCategory = mainCategories[i];
                 break;
@@ -107,7 +107,7 @@ export class DataGrid extends Component {
         }
 
         if (mainCategory) {
-            for (var j = 0; j < mainCategory.childSettings.length; j++) {
+            for (let j = 0; j < mainCategory.childSettings.length; j++) {
                 if (mainCategory.childSettings[j].subCategoryId == subCategoryId) {
                     return mainCategory.childSettings[j].settingName;
                 }
@@ -130,7 +130,7 @@ export class DataGrid extends Component {
             }
             {
                 isHost &&
-                <Cell onClick={() => this.handleUpdateFeedback(item)}>
+                <Cell onClick={() => this.handleUpdateFeedback(item.feedbackId)}>
                     {
                         this.tooltipFeedback(item)
                     }
@@ -195,7 +195,7 @@ export class DataGrid extends Component {
             >
                 {
                     <span className="rounded-circle fa fa-pencil-square-o"
-                        onClick={() => this.handleUpdateFeedback(item)}
+                        onClick={() => this.handleUpdateFeedback(item.feedbackId)}
                     />
                 }
             </OverlayTrigger>

@@ -16,6 +16,7 @@ const latestFeedbackSlice = createSlice({
         settings: {
             CommunicationToolList: []
         },
+        feedback: null
     },
     reducers: {
         setTops: (state, action) => {
@@ -50,6 +51,9 @@ const latestFeedbackSlice = createSlice({
         },
         setAllSettings: (state, action) => {
             state.settings = action.payload;
+        },
+        setFeedback: (state, action) => {
+            state.feedback = action.payload;
         }
     }
 });
@@ -67,7 +71,8 @@ export const {
     setUpdateFeedbackPopup,
     setUpdateFeedbackResult,
     setSelectedFeedback,
-    setAllSettings
+    setAllSettings,
+    setFeedback
 } = actions;
 
 export default reducer;

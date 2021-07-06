@@ -9,6 +9,7 @@
 @import '../../components/date-picker/style';
 @import '../../components/multiple-select/style';
 @import '../../components/verify-customer';
+@import '../../components/select-with-search-site';
 
 .form-filter {
     .form-row {
@@ -98,24 +99,24 @@
     .code-country {
         margin-right: 1%;
         padding: 0 2px;
-        width: 19%;
+        width: 22%;
     }
 
     .code-area {
         margin-right: 1%;
         padding: 0 1px;
-        width: 20%;
+        width: 23%;
     }
 
     .phone {
         padding: 0 1px;
-        width: 59%;
+        width: 55%;
     }
 
     .picName {
         margin-right: 1%;
         padding: 0 2px;
-        width: 40%;
+        width: 44%;
     }
 
     .consecutive-container-before {

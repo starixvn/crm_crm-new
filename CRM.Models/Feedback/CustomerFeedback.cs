@@ -4,14 +4,12 @@
     using CRM.Models.Customer;
     using System.Collections.Generic;
 
-    public class CustomerFeedback
+    public class CustomerFeedback : CustomerInfo
     {
         public CustomerFeedback()
         {
             Settings = new List<SettingItems>();
         }
-
-        public CustomerInfo CustomerInfo { get; set; }
 
         public int FeedbackID { get; set; }
 
@@ -39,15 +37,7 @@
 
         public BaseModel BetType { get; set; }
 
-        public int CountryID { get; set; }
-
-        public int ProvinceID { get; set; }
-
-        public int LanguageID { get; set; }
-
         public int StatusId { get; set; }
-
-        public int RoleID { get; set; }
 
         public int ResponseID { get; set; }
 

@@ -3,12 +3,15 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
+    using CRM.Criteria.Setting;
+    using CRM.Models.Customer;
     using CRM.Models.Feedback;
     using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.LatestFeedback;
     using CRM.Repositories;
     using Fanex.NAP.Client.Helpers.Web;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public interface IFeedbackService
@@ -38,9 +41,24 @@
             this.napSession = napSession;
         }
 
-        public Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria)
+        public async Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria)
         {
-            var feedback = feedbackRepository.GetFeedbackById(criteria);
+            var (feedbackInfo, relatedCustomer, settingItems) = await baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomer, SettingItems>(criteria);
+            CustomerFeedback feedback = null;
+
+            if (feedbackInfo.Any())
+            {
+                feedback = feedbackInfo.FirstOrDefault();
+                feedback.RelatedCustomers = relatedCustomer;
+                feedback.Settings = settingItems.ToList();
+
+                var siteSetting = await serviceSetting.GetSettingById(new GetSettingByIdCriteria
+                {
+                    SettingId = feedback.SiteID
+                });
+                feedback.SiteSetting.Name = siteSetting.Name;
+                feedback.SiteSetting.Id = feedback.SiteID;
+            }
 
             return feedback;
         }
