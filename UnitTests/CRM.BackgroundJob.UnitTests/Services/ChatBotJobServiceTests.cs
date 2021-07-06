@@ -17,6 +17,8 @@
     using Xunit;
     using CRM.BackgroundJob.Models.ChatBotCTO;
     using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
+    using System;
+    using CRM.BackgroundJob.Models.ChatBot;
 
     public class ChatBotJobServiceTests
     {
@@ -51,17 +53,18 @@
         {
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
-            var messages = fixture.Create<IEnumerable<Message>>();
             var voidingMessages = fixture.Create<IEnumerable<ChatBotVoidingMessage>>();
-            var ticketInfos = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
+            var voidingHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
+            var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
+            var voidingMessagesHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
+            var voidingInfo = new ValueTuple<IEnumerable<ChatBotVoidingMessage>, IEnumerable<ChatBotVoidingHistory>>(voidingMessages, voidingMessagesHis);
             var commandResult = new CommandResult { Code = 1 };
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
-            ticketVoidingService.GetVoidingMessageAsync().Returns(voidingMessages);
-            ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
-            ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
-            ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages).Returns(ticketInfos);
-            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnvironment).Returns(commandResult);
+            ticketVoidingService.GetVoidingMessageAsync().Returns(voidingInfo);
+            ticketVoidingService.ImportVoidingMessageHistoryCheckAsync(voidingInfo.Item2).Returns(voidingHis);
+            ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis).Returns(userNameList);
+            ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList).Returns(commandResult);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
@@ -74,50 +77,37 @@
         public async Task PullMessageAndSendNotificationAsync_ImportTicketInfosSuccessfulNotExistEnvironment_ExpectedCallEditVoidingMessageAsync()
         {
             // Arrange
-            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true, BatchSize = 10, IncludeUUSCurrency = true };
             var messages = fixture.Create<IEnumerable<Message>>();
             var voidingMessages = fixture.Create<IEnumerable<ChatBotVoidingMessage>>();
-            var ticketInfos = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
+            var voidingHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
+            var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
+            var messageImport = fixture.Create<IEnumerable<ChatBotUserNameList>>();
+            var voidingMessagesHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
+            var voidingInfo = new ValueTuple<IEnumerable<ChatBotVoidingMessage>, IEnumerable<ChatBotVoidingHistory>>(voidingMessages, voidingMessagesHis);
+            var ticketInfo = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
+            var ticketInfoValueTupe = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<ChatBotUserNameList>>(ticketInfo, messageImport);
             var commandResult = new CommandResult { Code = 0 };
+            var commandResultImportTicket = new CommandResult { Code = 0};
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
-            ticketVoidingService.GetVoidingMessageAsync().Returns(voidingMessages);
-            ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
-            ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
-            ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages).Returns(ticketInfos);
-            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, Constants.DefaultEnvironment).Returns(commandResult);
+            ticketVoidingService.GetVoidingMessageAsync().Returns(voidingInfo);
+            ticketVoidingService.ImportVoidingMessageHistoryCheckAsync(voidingInfo.Item2).Returns(voidingHis);
+            ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis).Returns(userNameList);
+            ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList).Returns(commandResult);
+            ticketVoidingService.GetImportMessageByBatchSize(setting.BatchSize).Returns(messageImport);
+            ticketVoidingService.GetMessageInfoAsync(messageImport).Returns(messages);
+            ticketVoidingService.GetTicketVoidingInfoAsync(messageImport, Constants.DefaultEnvironment, setting.IncludeUUSCurrency).Returns(ticketInfoValueTupe);
+            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfoValueTupe.Item1, ticketInfoValueTupe.Item2, Constants.DefaultEnvironment).Returns(commandResultImportTicket);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
 
             // Assert
+            logService.Received().LogInformation("Successful!!!");
             await sendNotificationService.Received().SendNotificationToLetstalk();
         }
 
-        [Fact]
-        public async Task PullMessageAndSendNotificationAsync_ImportTicketInfosSuccessfulExistEnvironment_ExpectedCallEditVoidingMessageAsync()
-        {
-            // Arrange
-            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
-            var messages = fixture.Create<IEnumerable<Message>>();
-            var voidingMessages = fixture.Create<IEnumerable<ChatBotVoidingMessage>>();
-            var ticketInfos = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
-            var commandResult = new CommandResult { Code = 0 };
-            var service = GetService();
-            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
-            ticketVoidingService.GetVoidingMessageAsync().Returns(voidingMessages);
-            ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
-            ticketVoidingService.GetMessageInfoAsync(voidingMessages).Returns(messages);
-            ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages).Returns(ticketInfos);
-            configuration.GetValue<string>("SiteEnvironment").Returns(Constants.DefaultEnvironment);
-            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos, voidingMessages, configuration.GetValue<string>("SiteEnvironment")).Returns(commandResult);
-
-            // Act
-            await service.PullMessageAndSendNotificationAsync();
-
-            // Assert
-            await sendNotificationService.Received().SendNotificationToLetstalk();
-        }
 
         [Fact]
         public async Task PullMessageCTOAndSendNotificationToHeadlineAsync_ServiceIsShutdown_ExpectedWriteLog()

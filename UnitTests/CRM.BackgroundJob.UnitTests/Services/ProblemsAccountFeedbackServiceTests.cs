@@ -393,7 +393,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
         {
             // Arrange
             var service = MockService();
-            var settings = fixture.Create<IEnumerable<SettingItem>>();
             var problemsAccounts = new List<ProblemsAccountAutoFeedbackInfor>
             {
                 new ProblemsAccountAutoFeedbackInfor

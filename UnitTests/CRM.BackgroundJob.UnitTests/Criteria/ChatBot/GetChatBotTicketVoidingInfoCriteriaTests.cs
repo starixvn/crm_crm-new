@@ -44,7 +44,9 @@
             // Arrange
             var criteria = new GetChatBotTicketVoidingInfoCriteria
             {
-                Messages = "message"
+                Messages = "message",
+                Environment = "Live",
+                IncludeUUSCurrency = true
             };
 
             // Act

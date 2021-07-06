@@ -23,7 +23,11 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetChatBotSystemSettingCriteria();
+            var criteria = new GetChatBotSystemSettingCriteria
+            {
+                ServiceName = "chatbot",
+                Environment = "Live"
+            };
 
             // Act
             var actual = criteria.IsValid();

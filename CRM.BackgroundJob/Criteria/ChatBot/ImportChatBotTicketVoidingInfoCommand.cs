@@ -12,6 +12,6 @@
 
         public override string GetSettingKey() => "Acc_CRM_Chatbot_AbnormalBets_Import";
 
-        public override bool IsValid() => true;
+        public override bool IsValid() => !string.IsNullOrWhiteSpace(Messages) && !string.IsNullOrWhiteSpace(XmlData);
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBot
 {
-    using AutoFixture;
     using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Xunit;
 
@@ -20,12 +19,36 @@
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void IsValid_WhenCalled_ReturnTrue()
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("", "")]
+        [InlineData(" ", " ")]
+        public void IsValid_ParamIsInvalid_ReturnFalse(string messages, string XmlData)
         {
             // Arrange
-            var fixture = new Fixture();
-            var criteria = fixture.Create<ImportChatBotTicketVoidingInfoCommand>();
+            var criteria = new ImportChatBotTicketVoidingInfoCommand
+            {
+                Messages = messages,
+                XmlData = XmlData
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.False(actual);
+        }
+        
+        [Fact]
+        public void IsValid_ParamIsValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new ImportChatBotTicketVoidingInfoCommand
+            {
+                Messages = "Messages",
+                XmlData = "XmlData",
+                Environment = "Environment"
+            };
 
             // Act
             var actual = criteria.IsValid();

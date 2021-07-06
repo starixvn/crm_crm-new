@@ -172,7 +172,7 @@
             {
                 Message message = messages.FirstOrDefault(x => x.MessageId == ticketInfo.MessageId);
                 stringBuilder.AppendFormat(XmlTemplate,
-                    message?.MessageId,
+                    ticketInfo.MessageId,
                     ticketInfo.Username,
                     ticketInfo.CustId,
                     ticketInfo.Recommend,

@@ -473,7 +473,7 @@ describe('DataGrid', () => {
         const result = dataGrid.renderCommunicationToolsValue(comm);
 
         // Assert
-        expect(result).toEqual(expected);
+        expect(result.toString()).toEqual(expected.toString());
 
     });
 

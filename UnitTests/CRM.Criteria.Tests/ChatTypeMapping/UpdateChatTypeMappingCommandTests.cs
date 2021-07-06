@@ -20,10 +20,10 @@
         }
 
         [Theory]
-        [InlineData(0, 0, 0, 0, "", "", "", 0, 0)]
-        [InlineData(0, 1, 0, 0, "1", "", "", 0, 0)]
-        [InlineData(0, 1, 2, 3, "1", "", "", 4, 5)]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(int botId, int chatTypeId, int recipientTypeId, int recipientId,
+        [InlineData(0, 0, 0, "", "", "", 0, 0)]
+        [InlineData(0, 0, 0, "1", "", "", 0, 0)]
+        [InlineData(0, 2, 3, "1", "", "", 4, 5)]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int botId, int recipientTypeId, int recipientId,
             string conversationName, string headlineIds, string letstalkId, int langId, int userId)
         {
             // Arrange
