@@ -103,7 +103,8 @@ export default class CkEditor extends PureComponent {
                     extraPlugins: EXTRA_TOOLBAR,
                     toolbar: TOOLBAR,
                     allowedContent: true,
-                    removePlugins: removePlugins
+                    removePlugins: removePlugins,
+                    language: 'en'
                 }}
                 onBeforeLoad={this.onBeforeLoad}
                 onNamespaceLoaded={this.onLoadPlugin}

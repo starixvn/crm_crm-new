@@ -23,7 +23,7 @@
             this.settingService = settingService;
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> GetSettings()
         {
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var statues = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
@@ -51,7 +51,12 @@
                 ExtensionNA = extentions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA)
             };
 
-            return View(settings);
+            return Json(settings);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
         }
     }
 }

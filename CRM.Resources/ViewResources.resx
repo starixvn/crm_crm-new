@@ -138,6 +138,9 @@
   <data name="Country" xml:space="preserve">
     <value>Country</value>
   </data>
+  <data name="CreateMultipleLogs" xml:space="preserve">
+    <value>Create Multiple Logs</value>
+  </data>
   <data name="Customer" xml:space="preserve">
     <value>Customer</value>
   </data>

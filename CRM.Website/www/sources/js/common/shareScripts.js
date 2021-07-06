@@ -1,63 +1,56 @@
-export const getSubCategories = (selectedCategories, subCategoryList, selectedSubCategoryIds, isCheckDefault) =>{
-    const subCategories = subCategoryList.filter(item => selectedCategories.includes(item.mainCategoryID.toString()));
+export const getSubCategories = (selectedCategories, subCategories, selectedSubCategoryIds, isCheckDefault) => {
+    const tempSubCategories = subCategories.filter(item => selectedCategories.includes(item.mainCategoryID.toString()));
     const selectedIdsDistinct = [];
     const distinctSub = [];
-    subCategories.forEach(sub => {
+    tempSubCategories.forEach(sub => {
         if (selectedIdsDistinct.indexOf(sub.subCategoryId) < 0) {
             selectedIdsDistinct.push(sub.subCategoryId);
             distinctSub.push(sub);
         }
     });
 
-    const distinctSubCheck = distinctSub.map(sub => {
+    return distinctSub.map(sub => {
         return {
             settingName: sub.settingName,
             subCategoryId: sub.subCategoryId,
-            checked: isCheckDefault ? true : selectedSubCategoryIds.indexOf(sub.subCategoryId.toString()) >= 0 ? true : false
+            checked: isCheckDefault ? true : selectedSubCategoryIds.indexOf(sub.subCategoryId.toString()) >= 0
         };
     });
-
-    return distinctSubCheck;
 };
 
-export const getSubProducts = (selectedProductsId, subProductList, selectedSubProductIds, isCheckDefault) =>{
-    const subProducts = [];
-    subProductList.forEach(subProduct => {
-            if (selectedProductsId.indexOf(subProduct.parentId.toString()) >= 0) {
-                subProducts.push(subProduct);
-            }
-        });
+export const getSubProducts = (selectedProductIds, subProducts, selectedSubProductIds, isCheckDefault) => {
+    const tempSubProducts = [];
+    subProducts.forEach(subProduct => {
+        if (selectedProductIds.indexOf(subProduct.parentId.toString()) >= 0) {
+            tempSubProducts.push(subProduct);
+        }
+    });
 
-    const subProductsCheck =  subProducts.map(subProduct => {
+    return tempSubProducts.map(subProduct => {
         return {
             value: subProduct.value,
             id: subProduct.id,
-            checked: isCheckDefault ? true : selectedSubProductIds.indexOf(subProduct.id.toString()) >= 0 ? true : false
+            checked: isCheckDefault ? true : selectedSubProductIds.indexOf(subProduct.id.toString()) >= 0
         };
     });
-    
-        return subProductsCheck;
 };
 
-
-export const getBetTypes = (selectedSubProducts, betTypeList, selectedBetTypeIds, isCheckDefault) =>{
-    const betTypes = betTypeList.filter(item => selectedSubProducts.includes(item.parentId.toString()));
+export const getBetTypes = (selectedSubProducts, betTypes, selectedBetTypeIds, isCheckDefault) => {
+    const tempBetTypes = betTypes.filter(item => selectedSubProducts.includes(item.parentId.toString()));
     const selectedIdsDistinct = [];
     const distinctBetTypes = [];
-    betTypes.forEach(bet => {
+    tempBetTypes.forEach(bet => {
         if (selectedIdsDistinct.indexOf(bet.id) < 0) {
             selectedIdsDistinct.push(bet.id);
             distinctBetTypes.push(bet);
         }
     });
 
-    const distinctBetTypesCheck = distinctBetTypes.map(bet => {
+    return distinctBetTypes.map(bet => {
         return {
             value: bet.value,
             id: bet.id,
-            checked: isCheckDefault ? true : selectedBetTypeIds.indexOf(bet.id.toString()) >= 0 ? true : false
+            checked: isCheckDefault ? true : selectedBetTypeIds.indexOf(bet.id.toString()) >= 0
         };
     });
-
-    return distinctBetTypesCheck;
 };

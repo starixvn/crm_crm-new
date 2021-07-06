@@ -147,7 +147,7 @@
                     });
             }
 
-            return await baseService.GetDataAsync<Setting>(criteria);
+            return languages;
         }
 
         public async Task<IEnumerable<Setting>> GetStatusAsync(byte statusType)

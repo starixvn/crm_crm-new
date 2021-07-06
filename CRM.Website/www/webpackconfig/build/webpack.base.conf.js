@@ -7,7 +7,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 function generateConfig(environment) {
     const jsPath = `${pathConfig.scriptPaths.build}/${environment}`;
     const cssPath = `${pathConfig.cssPaths.build}/${environment}`;
-    const commonConfigs = {
+    return {
         resolve: {
             alias: alias,
             extensions: ['.js', '.jsx']
@@ -29,6 +29,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/customer/customerinfo/index`]: pathConfig.scriptPaths.customer_info,
             [`${jsPath}/pages/feedback/addguessfeedback/index`]: pathConfig.scriptPaths.add_guess_feedback,
             [`${jsPath}/pages/latestfeedback/index`]: pathConfig.scriptPaths.latest_feedback,
+            [`${jsPath}/pages/feedback/multiple-logs/create`]: pathConfig.scriptPaths.create_multiple_logs,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -44,7 +45,8 @@ function generateConfig(environment) {
             [`${cssPath}/pages/feedbacksubject/index`]: pathConfig.cssPaths.feedback_subject,
             [`${cssPath}/pages/customer/customerinfo/index`]: pathConfig.cssPaths.customer_info,
             [`${cssPath}/pages/feedback/addguessfeedback/index`]: pathConfig.cssPaths.add_guess_feedback,
-            [`${cssPath}/pages/latestfeedback/index`]: pathConfig.cssPaths.latest_feedback
+            [`${cssPath}/pages/latestfeedback/index`]: pathConfig.cssPaths.latest_feedback,
+            [`${cssPath}/pages/feedback/multiple-logs/create`]: pathConfig.cssPaths.create_multiple_logs
         },
         output: {
             path: pathConfig.projectRoot,
@@ -111,8 +113,6 @@ function generateConfig(environment) {
             }
         }
     };
-
-    return commonConfigs;
 }
 
 module.exports = generateConfig;

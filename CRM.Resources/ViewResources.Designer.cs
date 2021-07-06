@@ -124,6 +124,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Multiple Logs.
+        /// </summary>
+        public static string CreateMultipleLogs {
+            get {
+                return ResourceManager.GetString("CreateMultipleLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer.
         /// </summary>
         public static string Customer {

@@ -16,6 +16,8 @@
     {
         public static void ResolveServiceDI(this IServiceCollection services)
         {
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
+
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<ISettingService, SettingService>();
             services.AddTransient<INotificationListService, NotificationListService>();
@@ -31,7 +33,7 @@
             services.AddScoped<IExportExcelService, ExportExcelService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
+            services.AddTransient<IMultipleLogsService, MultipleLogsService>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)
