@@ -68,6 +68,10 @@
             <Mapping DataField="LanguageID" ObjectProperty="SettingId" />
             <Mapping DataField="Name" ObjectProperty="SettingName" />
         </Setting>
+        <Setting Key="Acc_CRM_SiteSel" SpName="Acc_CRM_SiteSel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+            <Mapping DataField="SiteID" ObjectProperty="Id" />
+            <Mapping DataField="SiteName" ObjectProperty="Name" />
+        </Setting>
         <Setting Key="Acc_CRM_StatusList" SpName="Acc_CRM_StatusList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="StatusID" ObjectProperty="SettingId" />
             <Mapping DataField="Name" ObjectProperty="SettingName" />
@@ -132,6 +136,24 @@
         <Setting Key="Acc_CRM_SubjectTemplateIns" SpName="Acc_CRM_SubjectTemplateIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SubjectTemplateDel" SpName="Acc_CRM_SubjectTemplateDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
+    <Funtcion name="Customer">
+        <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+            <Mapping DataField="Fax" ObjectProperty="FaxNumber" />
+            <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
+            <Mapping DataField="Wire_SwiftCode" ObjectProperty="BankSwiftCode" />
+            <Mapping DataField="Wire_AccountName" ObjectProperty="BankAccountName" />
+            <Mapping DataField="Wire_AccountNo" ObjectProperty="BankAccountNumber" />
+            <Mapping DataField="CustStatus" ObjectProperty="Status" />
+            <Mapping DataField="danger" ObjectProperty="OriginalDangerLevel" />
+            <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
+            <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
+        </Setting>
+        <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="CustStatus" ObjectProperty="Status" />
+        </Setting>
+        <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdateBasicInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerSelUserSearch" SpName="Acc_CRM_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+    </Funtcion>
     <Function Name="Multiple Logs">
         <Setting Key="CRM_MultipleLogs_VerifyCustomer" SpName="CRM_MultipleLogs_VerifyCustomer" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="CRM_MultipleLogs_VerifyRelatedCustomer" SpName="CRM_MultipleLogs_VerifyRelatedCustomer" DbName="DBCRM.bodb_CRM.bodbAdminNet" />

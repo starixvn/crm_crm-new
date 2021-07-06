@@ -76,13 +76,5 @@
             var customerInfo = await customerService.GetCustomerAutoSuggestionAsync(criteria);
             return Json(customerInfo);
         }
-
-
-        //[HttpPost]
-        //public async Task<IActionResult> GetLatestFeedback([FromBody] GetFeedbackParam param)
-        //{
-        //    IEnumerable<FeedbackSubjectTemplate> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
-        //    return Json(new { data = feedbacks });
-        //}
     }
 }

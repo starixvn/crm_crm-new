@@ -39,7 +39,7 @@ const customerInfoSlide = createSlice({
         },
         setCustomerSuggestion: (state, action) => {
             state.CustomerSuggestion = action.payload;
-        }
+        },
     }
 });
 

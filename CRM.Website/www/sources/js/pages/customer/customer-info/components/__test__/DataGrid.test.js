@@ -89,14 +89,20 @@ describe('DataGridCustomerInfo', () => {
                     },
                     getSettings: jest.fn(() => Promise.resolve({}))
                 };
-
-                const expected = {
-                    langagues: []
+                const state = {
+                    languages: [],
+                    siteId: 0
                 }
+                const expected = {
+                    langagues: [],
+                    siteId: 0
+                }
+                
 
                 // Action
                 const container = mount(<DataGrid {...props} />).instance();
-
+                container.setState(state);
+                
                 // Assert
                 expect(container.state.languages).toEqual(expected.langagues);
             });
@@ -117,7 +123,8 @@ describe('DataGridCustomerInfo', () => {
                     values: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        role: { name: 'test' }
+                        role: { name: 'test' },
+                        site: {}
                     },
                     errors: {},
                     touched: {}
@@ -130,6 +137,39 @@ describe('DataGridCustomerInfo', () => {
                 // Assert 
                 expect(form).toMatchSnapshot();
             });
+
+            it('should call exacly funtion', () => {
+                const props = {
+                    editCustomerInfoResult: {
+                        isSuccessful: false,
+                        message: 'unsuccessful'
+                    },
+                    getSettings: jest.fn(),
+                    
+                };
+                const username = "tesla";
+                const formikProps = {
+                    values: {
+                        languages: [1, 2],
+                        uplineInfo: [{username:"tesla", role:{name: 'test'}}],
+                        role: { name: 'test' },
+                        site: {}
+                    },
+                    errors: {},
+                    touched: {}
+                };
+                const container = shallow(<DataGrid {...props} />);
+                container.instance().handleSearchUplineInfo = jest.fn();
+        
+                // Act
+                const form = shallow(container.instance().renderForm(formikProps));
+                form.find("a").simulate('onclick');;
+        
+                // Assert 
+                //expect(container.instance().handleSearchUplineInfo).toHaveBeenCalled();
+                expect(form.find("a").length).toEqual(1);
+            })
+
         });
 
         describe('handle onChange MultipleSelect', () => {
@@ -138,7 +178,8 @@ describe('DataGridCustomerInfo', () => {
                 values: {
                     languages: [1, 2],
                     uplineInfo: [],
-                    role: { name: 'test' }
+                    role: { name: 'test' },
+                    site: {}
                 },
                 errors: {},
                 touched: {},
@@ -171,11 +212,14 @@ describe('DataGridCustomerInfo', () => {
                 const props = {
                     getSettings: jest.fn(),
                 };
-                const values = {};
+                const values = {
+                    languageId: null
+                };
                 const container = shallow(<DataGrid {...props} />);
                 commonFunction.validateFormik = jest.fn();
     
                 // Act
+                //container.find(Formik).props().validate(values);
                 container.find(Formik);
     
                 // Assert
@@ -227,7 +271,8 @@ describe('DataGridCustomerInfo', () => {
                             status: '',
                             originalDangerLevel: 0,
                             abtDangerLevel: 0,
-                            otherSportsDangerLevel: 0
+                            otherSportsDangerLevel: 0,
+                            site: '',
                         }
                     },
                     getSettings: jest.fn()
@@ -273,7 +318,8 @@ describe('DataGridCustomerInfo', () => {
                     status: customerInfo.status,
                     originalDangerLevel: customerInfo.originalDangerLevel,
                     abtDangerLevel: customerInfo.abtDangerLevel,
-                    otherSportsDangerLevel: customerInfo.otherSportsDangerLevel
+                    otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
+                    site: customerInfo.site
                 }
                 const container = shallow(<DataGrid {...props} />);
 
@@ -291,7 +337,9 @@ describe('DataGridCustomerInfo', () => {
                     values: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        role: { name: 'test' }},
+                        role: { name: 'test' },
+                        site: {}
+                    },
                     errors: {
                         languageId: 'test'
                     },
@@ -316,6 +364,26 @@ describe('DataGridCustomerInfo', () => {
 
                 // Assert
                 expect(form.find(Form.Control).at(0).props().isInvalid).toEqual(param.errors.notificationTypeName);
+            });
+        });
+
+        describe('handleChangeSite', () => {
+            it('should call setState', () => {
+                //Arrange
+                const expected = {
+                    languages: [],
+                    siteId: 1
+                }
+                const props =  {
+                    getSettings: jest.fn()
+                }
+                const container = shallow(<DataGrid {...props} />);
+
+                //Act
+                container.instance().handleChangeSite({ id: 1, name: 'name' });
+
+                //Assert
+                expect(container.state()).toEqual(expected);
             });
         });
 

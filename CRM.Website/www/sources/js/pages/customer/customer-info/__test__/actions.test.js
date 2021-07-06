@@ -20,17 +20,9 @@ describe('actionCreators', () => {
         it('should handle setCustomerInfo when fetching customer information have been done', async () =>{
             // Arrange
             const expectParams = { username: null, isGuest: false };
-            const response = { data: {
-                id: 1,
-                username: 'test',
-                siteId: 0,
-                countryId: 0,
-                firstName: 'customertodays1',
-                lastName: 'lastname',
-                nickname: ''
-            } }
+            const response = { data: {id: 1,username: 'test',siteId: 0 }}
             const expectedActions = [{ type: ActionCreators.setCustomerInfo.type, payload: response.data}];
-            const store = mockStore({ gridData: null });
+            const store = mockStore({gridData: []});
             Site.blockUI = jest.fn();
             Site.unblockUI = jest.fn();
             const promise = Promise.resolve(response);
@@ -78,16 +70,39 @@ describe('actionCreators', () => {
                 siteId: 0
             };
             const response = { data: { isSuccessful: true, messmessageage: '' } };
-            const expectedActions = [{ type: ActionCreators.setEditCustomerInfo.type, payload: response.data }];
             const promise = Promise.resolve(response);
-            const store = mockStore({ editCustomerInfoResult: null });
             DataService.getDataAsync = jest.fn(() => promise);
+            const expectedActions = [{ type: ActionCreators.setEditCustomerInfo.type, payload: response.data }];
+            const store = mockStore({ editCustomerInfoResult: null });
+            
 
             // Act
             await store.dispatch(ActionCreators.editCustomerInfo(expectParams));
 
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfo/EditCustomerInfo', expectParams);
+        });
+    });
+
+    describe('getCustomerSuggestion', () => {
+        it('should handle setCustomerSuggestion when request have been done', async () => {
+            // Arrange
+            const expectParams = { 
+                username: 'test',
+                isguest:  false
+            };
+            const response = { data: { isSuccessful: true, messmessageage: '' } };
+            const promise = Promise.resolve(response);
+            DataService.getDataAsync = jest.fn(() => promise);
+            const expectedActions = [{ type: ActionCreators.setCustomerSuggestion.type, payload: response.data }];
+            const store = mockStore({ CustomerSuggestion: [] });
+            
+            // Act
+            await store.dispatch(ActionCreators.getCustomerSuggestion(expectParams));
+
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfo/GetCustomerAutoSuggestion', expectParams);
+            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 });

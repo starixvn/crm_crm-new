@@ -114,6 +114,25 @@
             Assert.Equal(expected, commandResult);
         }
 
+        [Fact]
+        public async Task GetCustomerAutoSuggestion_WhenCalled_ReturnExpectedData()
+        {
+            //Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<IEnumerable<string>>();
+            var model = fixture.Create<CustomerSuggestionCriteria>();
+            var controller = GetController();
+            customerService.GetCustomerAutoSuggestionAsync(model).Returns(expected);
+
+            //Act
+            var result = await controller.GetCustomerAutoSuggestion(model);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var customerInfo = jsonResult.Value;
+            Assert.Equal(expected, customerInfo);
+        }
+
         #region Helpers
 
         private CustomerInfoController GetController()

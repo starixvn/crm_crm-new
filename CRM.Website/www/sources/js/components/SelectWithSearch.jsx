@@ -102,9 +102,9 @@ export default class SelectWithSearch extends Component {
         })
     }
 
-    clickHandler = (event) => {
+    clickHandler = event => {
         const { target } = event
-        if (!this.wrapperRef.current.contains(target)) {
+        if (this.wrapperRef && !this.wrapperRef.current.contains(target)) {
             this.setState({
                 selectFormStatus: ''
             });
@@ -127,7 +127,7 @@ export default class SelectWithSearch extends Component {
                             placeholder={LangHelper.getResource('Search')}
                             onChange={this.handleChangeSearchInput}
                             value={this.state.filter}/>
-                            <span className="searchclear fa fa-times"  onClick={this.clearSearchBox}></span>
+                            <span className="searchclear fa fa-times"  onClick={() => this.clearSearchBox()}></span>
                         </div>
                     </li>
                     <li className="toolbar">
@@ -135,7 +135,7 @@ export default class SelectWithSearch extends Component {
                             <a>
                                 &nbsp;
                             </a><span className="input-group-btn" >
-                                <span onClick={this.toggleCollapseExpanse}
+                                <span onClick={() => this.toggleCollapseExpanse()}
                                     className={this.state.collapsedAll ? "fa fa-upload" : "fa fa-download"}></span>
                             </span>
                         </div>
@@ -155,7 +155,7 @@ export default class SelectWithSearch extends Component {
                                 { options.map((item, index) => {
                                     if(item.childSites.length > 0)
                                     return(
-                                        <li key={index}>
+                                        <li className="parent" key={index}>
                                             <a>
                                                 <span className="group-text">{ item.name }</span>
                                             </a>

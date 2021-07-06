@@ -4,13 +4,15 @@ import customerInfo, {
     setSettings,
     setEditCustomerInfo,
     setEditCustomerInfoPopup,
-    setEmptyCustomerInfoPopup
+    setEmptyCustomerInfoPopup,
+    setCustomerSuggestion
 } from '../customerInfoSlide';
 
 describe('customerInfo reducer', () => {
     it('show handle initial state', () => {
         expect(customerInfo(undefined, {})).toEqual({
             gridData: null,
+            CustomerSuggestion: [],
             gridParams: {
                 username: null,
                 isGuest: false,
@@ -103,6 +105,18 @@ describe('customerInfo reducer', () => {
             })
         ).toEqual({
             emptyCustomerInfoPopup: { show: false }
+        });
+    });
+
+    
+    it('should handle setCustomerSuggestion', () => {
+        expect(
+            customerInfo({}, {
+                type: setCustomerSuggestion.type,
+                payload: { }
+            })
+        ).toEqual({
+            CustomerSuggestion: { }
         });
     });
 });

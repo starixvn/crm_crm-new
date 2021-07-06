@@ -33,9 +33,9 @@ export default class AutoComplete extends Component {
         this.props.onSelect(item)
     }
 
-    clickHandler = (event) => {
+    clickHandler = event => {
         const { target } = event
-        if (!this.wrapperRef.current.contains(target)) {
+        if (this.wrapperRef && !this.wrapperRef.current.contains(target)) {
             this.setState({
                 display: false
             });
@@ -55,10 +55,10 @@ export default class AutoComplete extends Component {
                 <div className="autocomplete">
                     { options.map((item, index)=> {
                         var reg = new RegExp('('+value+')', 'gi');
-                        const displayValue = item.replaceAll(reg, "<strong>$1</strong>")
+                        const displayValue = item.replace(reg, "<strong>$1</strong>")
 
                         return (
-                            <div onClick={() => this.selectOption(item)} title={item} key={index}><div dangerouslySetInnerHTML={{ __html: displayValue }}  /></div>
+                            <div className="child" onClick={() => this.selectOption(item)} title={item} key={index}><div dangerouslySetInnerHTML={{ __html: displayValue }}  /></div>
                         )
                     }) }
                 </div>

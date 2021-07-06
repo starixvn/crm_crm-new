@@ -57,7 +57,6 @@ export class Filter extends Component {
     }
 
     render() {
-        const { isHost } = this.props;
         return (
             <div>
                 <Form className="form-filter search-frm" onSubmit={this.handleSubmit}>
