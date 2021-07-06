@@ -1587,8 +1587,8 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 OutrightSC = "test Outright Sc",
                 VirtualSportsSC = "test Sportsbook sc"
             };
-            var expectedReturn = new StringBuilder(expected);
-
+            var sportBook = new StringBuilder(expected);
+            var sportBookOrOutright = new StringBuilder(expected);
 
             var messageContent = fixture.Create<IEnumerable<Message>>();
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
@@ -1598,6 +1598,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
             commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.vi_VN).Returns("homeNameYN");
             commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.vi_VN).Returns("awayNameYN");
+            var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formatddmm);
 
             service.Protected("GetAmendmentSolutionTemplateYnSportBook", amendment,
                 amendmentSolTemplate,
@@ -1605,9 +1606,10 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 "sportNameYN",
                 "homeNameYN",
                 "awayNameYN",
-                "leagueNameYN").Returns(expectedReturn);
+                "leagueNameYN").Returns(sportBook);
+            service.Protected("GetAmendmentSolutionTemplateSportBookOrOutright", amendment, isVipCust, sportBook, messageContent, amendmentSolTemplate, Eventdate).Returns(sportBookOrOutright);
             var stringBuilder = new StringBuilder();
-            stringBuilder.Append(expectedReturn);
+            stringBuilder.Append(sportBookOrOutright);
 
             // Act
             var actual = service.Public_GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent, isVipCust);

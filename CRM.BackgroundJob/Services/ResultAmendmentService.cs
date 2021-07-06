@@ -59,7 +59,6 @@
             this.transactionService = transactionService;
         }
 
-
         public async Task CreateFeedbackForResultAmendmentAsync(ResultAmendmentSetting resultAmendmentSetting, bool isUAT,
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
             string JobStatusNameEnv, string Environment)
@@ -70,7 +69,7 @@
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
 
-           IEnumerable<CusReachAmendmentNotification> custAmendmentNotifications = await customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting);
+            IEnumerable<CusReachAmendmentNotification> custAmendmentNotifications = await customerService.GetListResultAmendmentNotificationAsync(resultAmendmentSetting);
             var isAnyNotCompeleteStatus = custAmendmentNotifications.Any(x => x.Status != "Completed");
             if (isAnyNotCompeleteStatus)
             {
@@ -127,7 +126,7 @@
             IEnumerable<CusReachAmendmentNotification> custAmendmentNotifications,
             string JobStatusNameEnv
             )
-        { 
+        {
             var lastSeqEnvName = isUAT ? "LastSeqUAT" : "LastSeq";
             var lastSubmitTimeEnvName = isUAT ? "LastSubmitDateUAT" : "LastSubmitDate";
             var maxLastSubmitTime = custAmendmentNotifications.Max(x => x.SubmitDate);
@@ -539,7 +538,7 @@
             logService.LogInformation("Begin create template desctiption number game.");
 
             var stringBuilder = new StringBuilder();
-            if(amendment.EventType == EventType2)
+            if (amendment.EventType == EventType2)
             {
                 stringBuilder.AppendFormat(
                amendmentDescTemplate.SportsbookOutrightEventType2,
@@ -549,7 +548,7 @@
                homeName,
                Constants.Break
               );
-            } 
+            }
             else
             {
                 stringBuilder.AppendFormat(
@@ -560,9 +559,9 @@
                Constants.Break
               );
             }
-           logService.LogInformation("End create template desctiption number game.");
+            logService.LogInformation("End create template desctiption number game.");
 
-           return stringBuilder;
+            return stringBuilder;
         }
 
         protected internal virtual string GetAmenmendSolution(AmendmentAutoFeedbackInfor amendment, IEnumerable<Message> messageContent)
@@ -659,9 +658,7 @@
             return stringBuilder;
         }
 
-#pragma warning disable S1541 // Methods and properties should not be too complex
         protected internal virtual StringBuilder GetAmendmentSolutionTemplateYNSC(
-#pragma warning restore S1541 // Methods and properties should not be too complex
             AmendmentAutoFeedbackInfor amendment,
             AmendmentSolutionTemplate amendmentSolTemplate,
             IEnumerable<Message> messageContent,
@@ -691,32 +688,11 @@
             var numberGame = GetAmendmentSolutionTemplateYnScNumberGame(
                             amendment.MatchCode, amendment.affectedName, amendmentSolTemplate, isVipCust,
                             numberGameNameYn, Eventdate, numberGameNameSc);
-            var content_cs = messageContent?.FirstOrDefault()?.Content_cs;
-            var content_en = messageContent?.FirstOrDefault()?.Content_en;
+            var sportBookOrOutright = GetAmendmentSolutionTemplateSportBookOrOutright(amendment, isVipCust, sportBook, messageContent, amendmentSolTemplate, Eventdate);
             switch (productName)
             {
                 case "Sportsbook":
-                    if (isVipCust)
-                    {
-                        stringBuilder.Append(sportBook);
-                    }
-                    else
-                    {
-                        if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
-                        {
-                            var outRightMessageSc = string.IsNullOrEmpty(content_cs) ? content_en : content_cs;
-                            stringBuilder.AppendFormat(amendmentSolTemplate.OutrightSC,
-                            outRightMessageSc,
-                            amendment.affectedName,
-                            Constants.LineBreak);
-                        }
-                        else
-                        {
-                            stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookSC, sportNameSC, homeNameSC, awayNameSC,
-                            leagueNameSC, Eventdate, amendment.ActualResult, amendment.WrongResult,
-                            amendment.affectedName, Constants.Break, Constants.LineBreak);
-                        }
-                    }
+                    stringBuilder.Append(sportBookOrOutright);
                     break;
 
                 case "Virtual Sports 2":
@@ -748,6 +724,45 @@
             return stringBuilder;
         }
 
+        protected internal virtual StringBuilder GetAmendmentSolutionTemplateSportBookOrOutright(
+            AmendmentAutoFeedbackInfor amendment,
+            bool isVipCust,
+            StringBuilder sportBook,
+            IEnumerable<Message> messageContent,
+            AmendmentSolutionTemplate amendmentSolTemplate,
+            string Eventdate
+            )
+        {
+            var stringBuilder = new StringBuilder();
+            var content_cs = messageContent?.FirstOrDefault()?.Content_cs;
+            var content_en = messageContent?.FirstOrDefault()?.Content_en;
+            var sportNameSC = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN);
+            var homeNameSC = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.zh_CN);
+            var awayNameSC = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.zh_CN);
+            var leagueNameSC = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN);
+            if (isVipCust)
+            {
+                stringBuilder.Append(sportBook);
+            }
+            else
+            {
+                if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
+                {
+                    var outRightMessageSc = string.IsNullOrEmpty(content_cs) ? content_en : content_cs;
+                    stringBuilder.AppendFormat(amendmentSolTemplate.OutrightSC,
+                    outRightMessageSc,
+                    amendment.affectedName,
+                    Constants.LineBreak);
+                }
+                else
+                {
+                    stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookSC, sportNameSC, homeNameSC, awayNameSC,
+                    leagueNameSC, Eventdate, amendment.ActualResult, amendment.WrongResult,
+                    amendment.affectedName, Constants.Break, Constants.LineBreak);
+                }
+            }
+            return stringBuilder;
+        }
 
         protected internal virtual StringBuilder GetAmendmentSolutionTemplateYnSportBook(
           AmendmentAutoFeedbackInfor amendment,
@@ -861,6 +876,5 @@
             }
             return MatchCodeReplace;
         }
-
     }
 }

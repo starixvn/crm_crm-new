@@ -276,7 +276,9 @@ export class DataGrid extends Component {
         bodyCommunication.push(<Cell key='picName'>{comm.picName}</Cell>);
         for (let indexCommRender = 0; indexCommRender < listComm.length; indexCommRender++) {
             const renderValueComm = comm.listComm.filter(item => item.communicationTool.toString() === listComm[indexCommRender].settingValue);
-            bodyCommunication.push(<Cell key={indexCommRender} className='text-center'>{renderValueComm.length > 0 ? renderValueComm[0].communicationValue : renderValueComm}</Cell>);
+            bodyCommunication.push(
+                <Cell key={indexCommRender} className='text-center'>{renderValueComm.length > 0 ? renderValueComm[0].communicationValue : renderValueComm}</Cell>
+            );
         }
         return bodyCommunication;
     };
