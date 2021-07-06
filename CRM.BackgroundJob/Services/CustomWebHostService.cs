@@ -167,15 +167,6 @@
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
-
-
-            if (IsEnabledJob(HangfireJobName.SynchronizeNewLicenseeOICToSiteSetting))
-            {
-                recurringJob.AddOrUpdate<IBackgroundService>("Synchronize New Licensee OIC To Site Setting",
-                   job => job.SynchronizeNewLicenseeOICToSiteSetting(),
-                   Cron.Minutely,
-                   TimeZoneInfo.Local, QueuePriority.Critical);
-            }
         }
 
         protected internal virtual void RemoveRecurringJobs()
