@@ -15,4 +15,8 @@
     &:focus, &:active {
         box-shadow: none;
     }
+
+    &:disabled, &[readonly] {
+        cursor: not-allowed;
+    }
 }

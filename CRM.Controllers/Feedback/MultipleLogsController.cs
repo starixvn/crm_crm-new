@@ -1,9 +1,12 @@
 ﻿namespace CRM.Controllers.Feedback
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Criteria.Feedback.MultipleLogs;
+    using CRM.Models.Feedback.MultipleLogs;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
@@ -21,6 +24,11 @@
         {
             this.multipleLogsService = multipleLogsService;
             this.settingService = settingService;
+        }
+
+        public IActionResult Create()
+        {
+            return View();
         }
 
         public async Task<IActionResult> GetSettings()
@@ -54,9 +62,18 @@
             return Json(settings);
         }
 
-        public IActionResult Create()
+        [HttpPost]
+        public async Task<IActionResult> VerifyCustomer([FromBody] VerifyCustomerCriteria criteria)
         {
-            return View();
+            IEnumerable<VerifyCustomerResult> customers = await multipleLogsService.VerifyCustomerAsync(criteria);
+            return Json(customers);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyRelatedCustomer([FromBody] VerifyRelatedCustomerCriteria criteria)
+        {
+            IEnumerable<VerifyRelatedCustomerResult> customers = await multipleLogsService.VerifyRelatedCustomerAsync(criteria);
+            return Json(customers);
         }
     }
 }

@@ -6,8 +6,10 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import CkEditor from '@jsroot/components/CkEditor';
 import { Formik } from 'formik';
 import { ActionCreators } from '../actions';
+import VerifyCustomerResult from './VerifyCustomerResult';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 
@@ -31,6 +33,7 @@ export class CreateForm extends Component {
         endTime.setMinutes(endTime.getMinutes() + 1);
 
         return {
+            customerNameInput: '',
             startTime,
             endTime,
             extensionId: settings.extensions[0].id,
@@ -63,6 +66,36 @@ export class CreateForm extends Component {
         }));
     };
 
+    handlePasteCustomer = (event, customerNameInput, setFieldValue) => {
+        const customer = customerNameInput.trim();
+        const items = (event.clipboardData || window.clipboardData).getData('text')
+            .replace(/ /g, ',')
+            .replace(/\r\n/g, ',')
+            .replace(/\n/g, ',')
+            .replace(/\t/g, ',')
+            .split(',').filter(item => item !== '');
+
+        setTimeout(() => {
+            const customerInput = (customer.length > 0 ? customer + ',' : '').concat(items.join(','));
+            setFieldValue('customerNameInput', customerInput);
+        }, 100);
+    };
+
+    verifyCustomers = (customerNameInput, setFieldValue) => {
+        const username = customerNameInput.trim().replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
+        if (username === '') {
+            return;
+        }
+
+        Site.blockUI();
+        this.props.verifyCustomers({ username }).then(response => {
+            this.props.setVerifyCustomerResults(response.data);
+            setFieldValue('customerNameInput', '');
+
+            Site.unblockUI();
+        });
+    };
+
     validateFormik = values => {
         const errors = {};
         return errors;
@@ -80,7 +113,7 @@ export class CreateForm extends Component {
         setFieldValue,
         isSubmitting
     }) => {
-        const { settings } = this.props;
+        const { settings, verifyCustomerResults } = this.props;
 
         return (
             <Form noValidate onSubmit={handleSubmit}>
@@ -88,16 +121,22 @@ export class CreateForm extends Component {
                 <div className="panel-group">
                     <div className="panel-content">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" htmlFor="listOfCustomers" className="required">
+                            <Form.Label column sm="2" md="2" htmlFor="customerNameInput" className="required">
                                 {LangHelper.getResource('Listofcustomers')}
                             </Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" name="listOfCustomers"
-                                    className="shadow-none" autoComplete="off"
+                                <Form.Control type="text" size="sm" name="customerNameInput"
+                                    className="shadow-none" autoComplete="off" value={values.customerNameInput}
+                                    isInvalid={touched.customerNameInput && errors.customerNameInput}
+                                    onPaste={event => this.handlePasteCustomer(event, values.customerNameInput, setFieldValue)}
+                                    onChange={handleChange}
                                 />
                             </Col>
                             <Col sm="1" md="1">
-                                <Button type="button" variant="primary" size="sm" className="pull-right">
+                                <Button type="button" variant="primary" size="sm" className="pull-right"
+                                    disabled={values.customerNameInput.trim() === ''}
+                                    onClick={() => this.verifyCustomers(values.customerNameInput, setFieldValue)}
+                                >
                                     {LangHelper.getResource('Verify')}
                                 </Button>
                             </Col>
@@ -110,6 +149,15 @@ export class CreateForm extends Component {
                                 </OverlayTrigger>
                             </Col>
                         </Form.Group>
+                        {
+                            verifyCustomerResults.length > 0 &&
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="2" md="2" />
+                                <Col sm="9" md="9">
+                                    <VerifyCustomerResult />
+                                </Col>
+                            </Form.Group>
+                        }
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2">{LangHelper.getResource('StartTime')}</Form.Label>
                             <Col sm="3" md="3" className="react-datepicker-wrapper-container form-control-wrapper">
@@ -400,7 +448,7 @@ export class CreateForm extends Component {
                 </div>
                 <Form.Group as={Row} className="mt-3">
                     <Col>
-                        <Button type="submit" variant="primary" size="sm">
+                        <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
                             {LangHelper.getResource('Save')}
                         </Button>
                     </Col>
@@ -428,10 +476,10 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        settings
+        settings, verifyCustomerResults
     } = state;
     return {
-        settings
+        settings, verifyCustomerResults
     };
 };
 
