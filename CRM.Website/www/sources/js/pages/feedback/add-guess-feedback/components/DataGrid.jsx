@@ -1018,9 +1018,10 @@ export class DataGrid extends Component {
                             </Form.Group>
                         </Col>
                     </Form.Group>
-                    <Form.Group as={Row} className="pt-1 pb-1" controlId="formBasicCheckbox">
+                    <Form.Group as={Row} className="pt-1 pb-1">
                         <Col sm="2" md="2">
-                            <Form.Check type="checkbox" className="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
+                            <Form.Check type="checkbox" id="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
+                                htmlFor="check-box-verify"
                                 checked={this.state.isVerifyCustomer}
                                 onChange={this.handleChangeCheckVerifyCustomer}
                             />
@@ -1058,7 +1059,7 @@ export class DataGrid extends Component {
                         </Col>
                     </Form.Group>
                     <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomer} />
-                    <CkEditor data='<i>Hello, world</i>' />
+                    <CkEditor data='<i>Hello, world</i>' className='test123' userName='crmtim' colorText='red'/>
                 </div>
             </div>
         );

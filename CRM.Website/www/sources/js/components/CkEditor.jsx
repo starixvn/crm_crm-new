@@ -1,30 +1,40 @@
 import React, { PureComponent } from 'react';
 import { CKEditor } from 'ckeditor4-react';
-import { TOOLBAR, EXTRA_TOOLBAR } from '@jsroot/common/constants';
+import { TOOLBAR, EXTRA_TOOLBAR, REMOVE_PLUGINS, TEXT_TEMPLATE } from '@jsroot/common/constants';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
 export default class CkEditor extends PureComponent {
     static propTypes = {
+        colorText: PropTypes.string.isRequired,
         data: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-        onChange: PropTypes.func
+        onChange: PropTypes.func.isRequired,
+        readOnly: PropTypes.bool.isRequired,
+        userName: PropTypes.string.isRequired
     };
 
     static defaultProps = {
+        colorText: '',
         data: '',
-        username: '',
         onChange: function () {
             // nothing
-        }
+        },
+        readOnly: false,
+        userName: ''
     };
     constructor(props) {
         super(props);
         this.state = {
-            data: '',
-            username: ''
+            data: this.props.data
         };
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.data !== this.props.data) {
+            this.setState({ data: this.props.data });
+        }
+    }
+
 
     handleChange = evt => {
         const data = evt.editor.getData();
@@ -32,12 +42,8 @@ export default class CkEditor extends PureComponent {
         this.props.onChange(data);
     }
 
-    onBeforeLoad = () => {
-        const data = this.props.data;
-        this.setState({ data });
-    }
 
-    htmlToElements = () => {
+    elementsToHtml = () => {
         return (
             <div dangerouslySetInnerHTML={{ __html: this.state.data }} />
         );
@@ -45,20 +51,16 @@ export default class CkEditor extends PureComponent {
 
     onLoadPlugin = CKEDITOR => {
         let editText = '';
-        const { username, currentDate } = this.props;
-        if (this.state.data === "") {
+        let textTemplateEditBlock = TEXT_TEMPLATE;
+        const { userName, currentDate, colorText} = this.props;
+        if (this.state.data === '') {
             editText = "&nbsp;";
         }
-        const textTemplate =
-            '<div>\
-            <div style="background-color: #FFFFD0; padding-left: 10px; border-left: 1px solid #CCCCCC;">\
-                <div style="font-size: 9px; color:red">by <span style="color: #105289; font-weight: bold; font-size: 11px;">{0}</span> on {1}</div>\
-                <div style="border-top: 1px solid #CCCCCC; padding: 5px 0pt 0pt;">{2}</div>\
-            </div>\
-        </div>\
-        <br>';
-
-        const html = this.stringFormat(textTemplate, [username, moment(currentDate).format("MM/DD/YYYY, hh:mm:ss A"), editText]);
+        
+        if(colorText !== null) {
+            textTemplateEditBlock = TEXT_TEMPLATE.replace("#105289", colorText);
+        }
+        const html = this.formatTemplateEditBlock(textTemplateEditBlock, [userName, moment(currentDate).format("MM/DD/YYYY, hh:mm:ss A"), editText]);
         CKEDITOR.plugins.add("editblock", {
             init: function (editor) {
                 editor.addCommand("insertEditBlock", {
@@ -75,9 +77,9 @@ export default class CkEditor extends PureComponent {
         });
     }
 
-    stringFormat = function (strValue, paramArr) {
+    formatTemplateEditBlock = function (strValue, paramArr) {
         if (!strValue) {
-            return "";
+            return '';
         }
         var len = paramArr.length;
         for (var i = 0; i < len; i++) {
@@ -91,9 +93,10 @@ export default class CkEditor extends PureComponent {
     };
 
     render() {
-        const removePlugins = 'magicline, elementspath';
-        const initData = this.htmlToElements();
+        const initData = this.elementsToHtml();
+        const className = this.props.className;
         return (
+            <div className={className}>
             <CKEditor
                 initData={initData}
                 onChange={this.handleChange}
@@ -103,12 +106,13 @@ export default class CkEditor extends PureComponent {
                     extraPlugins: EXTRA_TOOLBAR,
                     toolbar: TOOLBAR,
                     allowedContent: true,
-                    removePlugins: removePlugins,
+                    removePlugins: REMOVE_PLUGINS,
                     language: 'en'
                 }}
-                onBeforeLoad={this.onBeforeLoad}
                 onNamespaceLoaded={this.onLoadPlugin}
+                readOnly={this.props.readOnly}
             />
+            </div>
         );
     }
 }
