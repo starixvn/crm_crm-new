@@ -6,20 +6,12 @@ import PropTypes from 'prop-types';
 
 export default class CkEditor extends PureComponent {
     static propTypes = {
-        colorText: PropTypes.string.isRequired,
-        data: PropTypes.string.isRequired,
-        onChange: PropTypes.func.isRequired,
-        readOnly: PropTypes.bool.isRequired,
+        colorEditBlock: PropTypes.string.isRequired,
         userName: PropTypes.string.isRequired
     };
 
     static defaultProps = {
-        colorText: '',
-        data: '',
-        onChange: function () {
-            // nothing
-        },
-        readOnly: false,
+        colorEditBlock: '',
         userName: ''
     };
     constructor(props) {
@@ -36,7 +28,7 @@ export default class CkEditor extends PureComponent {
     }
 
 
-    handleChange = evt => {
+    onEditorChange = (evt) => {
         const data = evt.editor.getData();
         this.setState({ data });
         this.props.onChange(data);
@@ -52,13 +44,13 @@ export default class CkEditor extends PureComponent {
     onLoadPlugin = CKEDITOR => {
         let editText = '';
         let textTemplateEditBlock = TEXT_TEMPLATE;
-        const { userName, currentDate, colorText} = this.props;
+        const { userName, currentDate, colorEditBlock} = this.props;
         if (this.state.data === '') {
             editText = "&nbsp;";
         }
         
-        if(colorText !== null) {
-            textTemplateEditBlock = TEXT_TEMPLATE.replace("#105289", colorText);
+        if(colorEditBlock !== null) {
+            textTemplateEditBlock = TEXT_TEMPLATE.replace("#105289", colorEditBlock);
         }
         const html = this.formatTemplateEditBlock(textTemplateEditBlock, [userName, moment(currentDate).format("MM/DD/YYYY, hh:mm:ss A"), editText]);
         CKEDITOR.plugins.add("editblock", {
@@ -94,12 +86,13 @@ export default class CkEditor extends PureComponent {
 
     render() {
         const initData = this.elementsToHtml();
-        const className = this.props.className;
+        const {className, ...rest} = this.props;
         return (
             <div className={className}>
             <CKEditor
+                {...rest}
                 initData={initData}
-                onChange={this.handleChange}
+                onChange={this.onEditorChange}
                 config={{
                     removeButtons: '',
                     colorButton_enableMore: true,
@@ -110,7 +103,6 @@ export default class CkEditor extends PureComponent {
                     language: 'en'
                 }}
                 onNamespaceLoaded={this.onLoadPlugin}
-                readOnly={this.props.readOnly}
             />
             </div>
         );

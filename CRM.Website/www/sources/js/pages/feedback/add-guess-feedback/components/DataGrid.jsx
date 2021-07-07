@@ -1059,12 +1059,16 @@ export class DataGrid extends Component {
                         </Col>
                     </Form.Group>
                     <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomer} />
-                    <CkEditor data='<i>Hello, world</i>' className='test123' userName='crmtim' colorText='red'/>
+                    <CkEditor data='<i>Hello, world</i>' className='test123' userName='crmtim' colorText='red' onChange={this.onChangeEditor}/>
                 </div>
             </div>
         );
     }
 
+
+    onChangeEditor = data =>{
+        console.log(data);
+    }
     renderForm = ({
         values,
         errors,
