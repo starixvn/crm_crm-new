@@ -59,9 +59,6 @@
 }
 
 .panel-group {
-    /*border: 1px solid #b7b7b7;
-    border-bottom-width: 0;
-    padding: 4px 5px;*/
     border: 1px solid #b1b1b1;
     border-width: 1px 1px 0 1px;
 
@@ -194,4 +191,28 @@
     .checkboxOverWrite {
         padding-left: 0px;
     }
+}
+
+.reviewby {
+    font-style: italic;
+}
+
+.checkbox-review {
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 3px;
+}
+
+.verify-customer {
+    margin-left: 15px;
+    margin-right: 10px;
+}
+
+.form-check {
+    padding-top: 5px;
+    padding-left: 24px;
+}
+
+.check-related {
+    display: inherit;
 }

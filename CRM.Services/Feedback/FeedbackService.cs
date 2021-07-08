@@ -10,6 +10,7 @@
     using CRM.Models.LatestFeedback;
     using CRM.Repositories;
     using Fanex.NAP.Client.Helpers.Web;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -22,8 +23,8 @@
         Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria);
     }
 
-    public class FeedbackService: IFeedbackService
-{
+    public class FeedbackService : IFeedbackService
+    {
         private readonly IBaseService baseService;
         private readonly ISettingService serviceSetting;
         private readonly IFeedbackRepository feedbackRepository;
@@ -58,6 +59,7 @@
                 });
                 feedback.SiteSetting.Name = siteSetting.Name;
                 feedback.SiteSetting.Id = feedback.SiteID;
+                feedback.HasRelated = feedback.RelatedCustomers.Count() > 0;
             }
 
             return feedback;
@@ -75,7 +77,7 @@
 
                 return feedbackRepository.GetDeletedFeedbacksAsync(criteria);
             }
-            else 
+            else
             {
                 var criteria = new LatestFeedbackByCustIdCriteria
                 {

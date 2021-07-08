@@ -60,7 +60,7 @@
 
         public DateTime CreateDate { get; set; }
 
-        public DateTime BirthDay { get; set; }
+        public string BirthDay { get; set; }
 
         public int PassPort { get; set; }
 
