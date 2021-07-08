@@ -123,8 +123,8 @@ export class NewCommunitionSetting extends PureComponent {
 
     deleteCustomer = id => {
         this.setState({
-            listOfCustomer: this.state.listOfCustomer.filter(item => item.id !== id),
-            listOfCustomerValid: this.state.listOfCustomerValid.filter(item => item.id !== id)
+            listOfCustomer: this.state.listOfCustomer.filter(item => item.custId !== id),
+            listOfCustomerValid: this.state.listOfCustomerValid.filter(item => item.custId !== id)
         });
     };
 

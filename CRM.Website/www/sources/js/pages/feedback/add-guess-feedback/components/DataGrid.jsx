@@ -200,8 +200,8 @@ export class DataGrid extends Component {
     };
 
     deleteCustomer = id => {
-        const listOfCustomer = this.state.listOfCustomer.filter(item => item.id !== id);
-        const listOfCustomerValid = this.state.listOfCustomerValid.filter(item => item.id !== id);
+        const listOfCustomer = this.state.listOfCustomer.filter(item => item.custId !== id);
+        const listOfCustomerValid = this.state.listOfCustomerValid.filter(item => item.custId !== id);
         this.setState({
             listOfCustomer,
             listOfCustomerValid
