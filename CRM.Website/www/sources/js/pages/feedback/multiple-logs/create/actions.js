@@ -5,6 +5,7 @@ import {
     setVerifyCustomerResults,
     removeCustomer,
     setRelatedCustomerResults,
+    setFeedbackSubjectTemplates,
     setAddRelatedCustomerDialog,
     setViewRelatedCustomerDialog
 } from './createMultipleLogSlice';
@@ -29,13 +30,22 @@ const verifyRelatedCustomers = params => async () => {
     return await DataService.postDataAsync(url, params).then(response => response);
 };
 
+const getFeedbackSubjectTemplates = subject => async dispatch => {
+    const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
+    await DataService.getDataAsync(url, { subject }).then(response => {
+        dispatch(setFeedbackSubjectTemplates(response.data));
+    });
+};
+
 export const ActionCreators = {
     setVerifyCustomerResults,
     setAddRelatedCustomerDialog,
     setRelatedCustomerResults,
+    setFeedbackSubjectTemplates,
     setViewRelatedCustomerDialog,
     getSettings,
     verifyCustomers,
     verifyRelatedCustomers,
-    removeCustomer
+    removeCustomer,
+    getFeedbackSubjectTemplates
 };

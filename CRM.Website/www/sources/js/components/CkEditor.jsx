@@ -7,13 +7,14 @@ import PropTypes from 'prop-types';
 export default class CkEditor extends PureComponent {
     static propTypes = {
         colorEditBlock: PropTypes.string.isRequired,
-        userName: PropTypes.string.isRequired
+        username: PropTypes.string.isRequired
     };
 
     static defaultProps = {
         colorEditBlock: '',
-        userName: ''
+        username: ''
     };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -27,13 +28,11 @@ export default class CkEditor extends PureComponent {
         }
     }
 
-
     onEditorChange = (evt) => {
         const data = evt.editor.getData();
         this.setState({ data });
         this.props.onChange(data);
     }
-
 
     elementsToHtml = () => {
         return (
@@ -44,15 +43,16 @@ export default class CkEditor extends PureComponent {
     onLoadPlugin = CKEDITOR => {
         let editText = '';
         let textTemplateEditBlock = TEXT_TEMPLATE;
-        const { userName, currentDate, colorEditBlock} = this.props;
+        const { username, currentDate, colorEditBlock } = this.props;
         if (this.state.data === '') {
             editText = "&nbsp;";
         }
-        
+
         if(colorEditBlock !== null) {
             textTemplateEditBlock = TEXT_TEMPLATE.replace("#105289", colorEditBlock);
         }
-        const html = this.formatTemplateEditBlock(textTemplateEditBlock, [userName, moment(currentDate).format("MM/DD/YYYY, hh:mm:ss A"), editText]);
+
+        const html = this.formatTemplateEditBlock(textTemplateEditBlock, [username, moment(currentDate).format("MM/DD/YYYY, hh:mm:ss A"), editText]);
         CKEDITOR.plugins.add("editblock", {
             init: function (editor) {
                 editor.addCommand("insertEditBlock", {

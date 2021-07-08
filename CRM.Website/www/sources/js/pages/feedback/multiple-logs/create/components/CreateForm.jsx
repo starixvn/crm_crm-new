@@ -13,6 +13,7 @@ import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import { getSubCategories, getSubProducts, getBetTypes } from '@jsroot/common/shareScripts';
+import AutoComplete from '@jsroot/components/AutoComplete';
 
 export class CreateForm extends Component {
     constructor(props) {
@@ -139,6 +140,14 @@ export class CreateForm extends Component {
             || event.target.value > 32000 && (event.target.value = 32000);
     }
 
+    handleGetFeedbackSubjectTemplates = Site.debounce(searchText => {
+        if (searchText.length >= 2) {
+            this.props.getFeedbackSubjectTemplates(searchText);
+        } else {
+            this.props.setFeedbackSubjectTemplates([]);
+        }
+    });
+
     validateFormik = values => {
         const errors = {};
         return errors;
@@ -157,7 +166,7 @@ export class CreateForm extends Component {
         isSubmitting
     }) => {
         const { collapse, subCategoryOptions, subProductOptions, betTypeOptions } = this.state;
-        const { settings, verifyCustomerResults } = this.props;
+        const { settings, verifyCustomerResults, feedbackSubjectTemplates } = this.props;
         const { extensions, countries, communicationTools, languages, mainCategories, products, statuses, responses } = settings;
 
         return (
@@ -468,8 +477,12 @@ export class CreateForm extends Component {
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Subject')}</Form.Label>
                             <Col sm="9" md="9">
-                                <Form.Control type="text" size="sm"
-                                    className="shadow-none" autoComplete="off"
+                                <AutoComplete
+                                    options={feedbackSubjectTemplates} diplayField="subject"
+                                    onChange={value => setFieldValue('subject', value)}
+                                    onInputChange={searchText => {
+                                        this.handleGetFeedbackSubjectTemplates(searchText);
+                                    }}
                                 />
                             </Col>
                         </Form.Group>
@@ -499,7 +512,9 @@ export class CreateForm extends Component {
                     </Form.Group>
                     <Collapse in={!collapse.remark}>
                         <div id="collapse-expand-remark" className="panel-content">
-                            <CkEditor data={values.remark} onChange={value => setFieldValue('remark', value)} />
+                            <CkEditor data={values.remark} username={window.currentUsername}
+                                onChange={value => setFieldValue('remark', value)}
+                            />
                         </div>
                     </Collapse>
                 </div>
@@ -512,7 +527,9 @@ export class CreateForm extends Component {
                     </Form.Group>
                     <Collapse in={!collapse.solution}>
                         <div id="collapse-expand-solution" className="panel-content">
-                            <CkEditor data={values.solution} onChange={value => setFieldValue('solution', value)} />
+                            <CkEditor data={values.solution} username={window.currentUsername}
+                                onChange={value => setFieldValue('solution', value)}
+                            />
                         </div>
                     </Collapse>
                 </div>
@@ -546,10 +563,10 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        settings, verifyCustomerResults
+        settings, verifyCustomerResults, feedbackSubjectTemplates
     } = state;
     return {
-        settings, verifyCustomerResults
+        settings, verifyCustomerResults, feedbackSubjectTemplates
     };
 };
 

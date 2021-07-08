@@ -1045,7 +1045,7 @@ export class CreateForm extends Component {
                         </Col>
                     </Form.Group>
                     <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomer} />
-                    {/* <CkEditor data='<i>Hello, world</i>' className='test123' userName='crmtim' colorText='red' onChange={this.onChangeEditor}/> */}
+                    {/* <CkEditor data='<i>Hello, world</i>' className='test123' username='crmtim' colorText='red' onChange={this.onChangeEditor}/> */}
                 </div>
             </div>
         );
