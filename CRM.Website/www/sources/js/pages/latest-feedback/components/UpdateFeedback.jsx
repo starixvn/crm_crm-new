@@ -11,14 +11,14 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
-import MultipleSelect from '../../../components/multiple-select/index';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import VerifyCustomer from '@jsroot/components/verifyCustomer';
-import CkEditor from './../../../components/CkEditor';
+import CkEditor from '@jsroot/components/ckeditor/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-import { validateFormik } from '../common.functions';
+//import { validateFormik } from '../common.functions';
 
 export class UpdateFeedback extends PureComponent {
     constructor(props) {
@@ -1320,7 +1320,7 @@ export class UpdateFeedback extends PureComponent {
                 <Formik
                     innerRef={p => (this.formik = p)}
                     initialValues={initialValues}
-                    validate={values => validateFormik(values)}
+                    //validate={values => validateFormik(values)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}

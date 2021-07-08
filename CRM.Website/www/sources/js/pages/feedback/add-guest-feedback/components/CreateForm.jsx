@@ -14,7 +14,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { getSubCategories, getSubProducts, getBetTypes } from '@jsroot/common/shareScripts';
 import VerifyCustomer from '@jsroot/components/verifyCustomer';
-import CkEditor from '@jsroot/components/CkEditor';
+import CkEditor from '@jsroot/components/ckeditor/index';
 
 export class CreateForm extends Component {
     static propTypes = {
