@@ -3,6 +3,7 @@ import { Filter } from '../Filter';
 import { shallow, mount } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import configureMockStore from 'redux-mock-store';
+import AutoComplete from '@jsroot/components/AutoComplete';
 
 describe('filter', () => {
     beforeAll(() => {
@@ -33,7 +34,8 @@ describe('filter', () => {
         const props = {
             gridParams: {},
             gridData: {},
-            CustomerSuggestion: {}
+            CustomerSuggestion: {},
+            setCustomerSuggestion: jest.fn()
         };
 
         // Action
@@ -100,7 +102,6 @@ describe('filter', () => {
 
                 //Assert
                 expect(container.state()).toEqual(expected);
-                expect(props.getCustomerSuggestion).toHaveBeenCalled();
             });
 
             it('should call setState when change IsGuest field', () => {
@@ -116,7 +117,6 @@ describe('filter', () => {
 
                 //Assert
                 expect(container.state()).toEqual(expected);
-                expect(props.getCustomerSuggestion).toHaveBeenCalled();
             });
         });
 
@@ -191,7 +191,7 @@ describe('filter', () => {
 
         });
 
-        describe('selectSuggestionSearchValue', () => {
+        describe('handleChangeSuggestion', () => {
             it('should call exactly function', () => {
                 //Arrange
                 const item = "name";
@@ -202,11 +202,70 @@ describe('filter', () => {
                 const container = shallow(<Filter />);
 
                 //Act
-                container.instance().selectSuggestionSearchValue(item);
+                container.instance().handleChangeSuggestion(item);
                 
                 //Assert
                 expect(container.state()).toEqual(expected);
             });
-        })
+        });
+
+        describe('debounceUserNameInputChange', () => {
+            jest.useFakeTimers();
+            it('searchText is valid', () => {
+                //Arrange
+                const searchText = 'length > 2';
+                const props = {
+                    getCustomerSuggestion: jest.fn(),
+                    setCustomerSuggestion: jest.fn()
+                }
+                const params = {
+                    username: 'test',
+                    isGuest: false
+                };
+                const container = shallow(<Filter {...props} />);
+                container.instance().getParams = jest.fn().mockReturnValue(params);
+
+                //Act
+                container.instance().debounceUserNameInputChange(searchText);
+                jest.runAllTimers();
+
+                //Assert
+                expect(props.getCustomerSuggestion).toHaveBeenCalledWith(params);
+            });
+
+            it('searchText is invalid', () => {
+                //Arrange
+                const searchText = '1';
+                const props = {
+                    getCustomerSuggestion: jest.fn(),
+                    setCustomerSuggestion: jest.fn()
+                }
+                const container = shallow(<Filter {...props} />);
+
+                //Act
+                container.instance().debounceUserNameInputChange(searchText);
+                jest.runAllTimers();
+
+                //Assert
+                expect(props.setCustomerSuggestion).toHaveBeenCalledWith([]);
+            });
+        });
+
+        describe('render', () => {
+            it('should call exacly functions ', () => {
+                //Arrange
+                const container = shallow(<Filter />)
+                container.instance().handleChangeSuggestion = jest.fn();
+                container.instance().debounceUserNameInputChange = jest.fn();
+
+                //Act
+                container.find(AutoComplete).first().props().onChange();
+                container.find(AutoComplete).first().props().onInputChange();
+
+                //Assert
+                expect(container.instance().handleChangeSuggestion).toHaveBeenCalled();
+                expect(container.instance().debounceUserNameInputChange).toHaveBeenCalled()
+            });
+        });
     });
 });

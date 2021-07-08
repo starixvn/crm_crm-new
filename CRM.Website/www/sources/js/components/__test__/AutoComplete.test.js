@@ -15,13 +15,16 @@ describe('AutoComplete', () => {
     //Arrange
     const initialState = {
         options: [],
-        display: false
+        display: false,
+        searchValue: ''
     }
 
     const props = {
         options: [],
         showPopup: false,
-        onSelect: jest.fn()
+        searchValue: '',
+        onChange: jest.fn(),
+        onInputChange: jest.fn()
     }
 
     it('should have correct snapshots', () => {
@@ -101,10 +104,11 @@ describe('AutoComplete', () => {
 
         describe('selectOption', () => {
             it('selectOption should run correctly', () => {
-                const item = "test";
+                const item = "value";
                 const expected = {
                     options: [],
-                    display: false
+                    display: false,
+                    searchValue: "value"
                 }
                 const container = shallow(<AutoComplete {...props} />);
 
@@ -122,7 +126,8 @@ describe('AutoComplete', () => {
                 };
                 const expected = {
                     options: [],
-                    display: false
+                    display: false,
+                    searchValue: ""
                 }
                 const container = shallow(<AutoComplete {...props} />);
                 container.instance().wrapperRef = null;
@@ -141,7 +146,8 @@ describe('AutoComplete', () => {
                 };
                 const expected = {
                     options: [],
-                    display: true
+                    display: true,
+                    searchValue: ""
                 }
                 const container = shallow(<AutoComplete {...props} />);
                 container.instance().wrapperRef.current = mockRef;
@@ -151,6 +157,29 @@ describe('AutoComplete', () => {
 
                 // Assert
                 expect(container.instance().state.display).toBeFalse;
+            });
+        });
+
+        describe('handleChange', () => {
+            it('should call exacly methods', () => {
+                //Arange
+                const event = {target:{name:"searchValue", value:"test"}}
+                const expected = {
+                    options: [],
+                    display: false,
+                    searchValue: "test"
+                }
+
+                const container = shallow(<AutoComplete {...props} />);
+
+                //Act
+                container.instance().handleChange(event);
+                
+                //Assert
+                expect(container.instance().state).toEqual(expected);
+                expect(props.onChange).toHaveBeenCalled();
+                expect(props.onInputChange).toHaveBeenCalled();
+
             });
         });
 

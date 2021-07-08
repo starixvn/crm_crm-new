@@ -5,6 +5,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import AutoComplete from '@jsroot/components/AutoComplete';
+import Site from '@jsroot/common/site';
 
 export class Filter extends Component {
     constructor(props) {
@@ -29,9 +30,6 @@ export class Filter extends Component {
         const name = target.name;
         this.setState({
             [name]: value
-        }, () => {
-            const params = this.getParams();
-            this.props.getCustomerSuggestion(params);
         });
     };
 
@@ -50,11 +48,20 @@ export class Filter extends Component {
         
     };
 
-    selectSuggestionSearchValue = item => {
+    handleChangeSuggestion = value => {
         this.setState({
-            username: item
+            username: value
         });
     }
+
+    debounceUserNameInputChange = Site.debounce(searchText => {
+        if (searchText.length >= 2) {
+            const params = this.getParams();
+            this.props.getCustomerSuggestion(params);
+        } else {
+            this.props.setCustomerSuggestion([]);
+        }
+    });
 
     render() {
         return (
@@ -62,8 +69,13 @@ export class Filter extends Component {
                 <Form className="form-filter search-frm" onSubmit={this.handleSubmit}>
                     <Form.Row bsPrefix='form-row'>
                         <Form.Group className="col-md-9 text-search">
-                            <Form.Control type="text" size="sm" className="shadow-none inputSearch" autoComplete="off"
-                                onChange={this.handleChange} name="username" value={this.state.username}
+                            <AutoComplete 
+                                options={this.props.CustomerSuggestion}
+                                value={this.state.username}
+                                top="35px"
+                                left="15px"
+                                onChange = {value => this.handleChangeSuggestion(value)}
+                                onInputChange={searchText => this.debounceUserNameInputChange(searchText)}
                             />
                             <Button onClick={this.handleSubmit} className="buttonSearch" variant="primary" size="sm"><span className="fa fa-search icon-edit"></span></Button>
 
@@ -73,13 +85,7 @@ export class Filter extends Component {
                                 onChange={this.handleChange} name="isGuest"
                             /> {LangHelper.getResource('Guest')}
                         </Form.Group>
-                        <AutoComplete 
-                            options={this.props.CustomerSuggestion}
-                            value={this.state.username}
-                            top="35px"
-                            left="15px"
-                            onSelect={this.selectSuggestionSearchValue}
-                        />
+                       
                     </Form.Row>
                 </Form>
             </div>

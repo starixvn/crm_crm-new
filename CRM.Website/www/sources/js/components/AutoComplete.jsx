@@ -6,7 +6,8 @@ export default class AutoComplete extends Component {
         this.wrapperRef = React.createRef();
         this.state = {
             options: this.props.options,
-            display: this.props.showPopup
+            display: false,
+            searchValue: this.props.value || ''
         }
     }
     componentDidMount() {   
@@ -28,9 +29,10 @@ export default class AutoComplete extends Component {
 
     selectOption = item => {
         this.setState({
-            display: false
+            display: false,
+            searchValue: item
         });
-        this.props.onSelect(item)
+        this.props.onChange(item)
     }
 
     clickHandler = event => {
@@ -42,6 +44,17 @@ export default class AutoComplete extends Component {
         }
     }
 
+    handleChange = event => {
+        const value = event.target.value;
+        this.setState({
+            searchValue: value
+        });
+        this.props.onChange(value);
+        this.props.onInputChange(value);
+    }
+
+    
+
     render() {
         const {options, display} = this.state;
         const {top, left, value} = this.props;
@@ -50,19 +63,24 @@ export default class AutoComplete extends Component {
             left: left,
             display: display ?  'block' : 'none'
         }
-        return( 
-            <div className="autocomplete-w1" style={autoCompleteStyle} ref={this.wrapperRef}>
-                <div className="autocomplete">
-                    { options.map((item, index)=> {
-                        var reg = new RegExp('('+value+')', 'gi');
-                        const displayValue = item.replace(reg, "<strong>$1</strong>")
+        return(
+            <Fragment>
+                <input name="searchValue" autoComplete="off" type="text" className="shadow-none inputSearch form-control form-control-sm" 
+                value={this.state.searchValue}
+                onChange={this.handleChange} />
+                <div className="autocomplete-w1" style={autoCompleteStyle} ref={this.wrapperRef}>
+                    <div className="autocomplete">
+                        { options.map((item, index)=> {
+                            var reg = new RegExp('('+value+')', 'gi');
+                            const displayValue = item.replace(reg, "<strong>$1</strong>")
 
-                        return (
-                            <div className="child" onClick={() => this.selectOption(item)} title={item} key={index}><div dangerouslySetInnerHTML={{ __html: displayValue }}  /></div>
-                        )
-                    }) }
+                            return (
+                                <div className="child" onClick={() => this.selectOption(item)} title={item} key={index}><div dangerouslySetInnerHTML={{ __html: displayValue }}  /></div>
+                            )
+                        }) }
+                    </div>
                 </div>
-            </div>
+            </Fragment>
         );
     }
 }
