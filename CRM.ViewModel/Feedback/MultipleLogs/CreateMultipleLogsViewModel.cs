@@ -10,7 +10,6 @@
         public IEnumerable<Setting> CommunicationTools { get; set; } = new List<Setting>();
         public IEnumerable<Province> Provinces { get; set; } = new List<Province>();
         public IEnumerable<Setting> Statuses { get; set; } = new List<Setting>();
-        public IEnumerable<SettingRelation> Roles { get; set; } = new List<SettingRelation>();
         public IEnumerable<SettingRelation> Responses { get; set; } = new List<SettingRelation>();
         public IEnumerable<Setting> Languages { get; set; } = new List<Setting>();
         public IEnumerable<Country> Countries { get; set; } = new List<Country>();

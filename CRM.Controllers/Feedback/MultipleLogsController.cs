@@ -44,7 +44,6 @@
                 CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
                 Provinces = await settingService.GetProvinceAsync(),
                 Statuses = statues.Where(x => !string.Equals(x.Name, ViewResources.Deleted, StringComparison.OrdinalIgnoreCase)),
-                Roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active),
                 Responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
                 Languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
                 Countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
@@ -73,6 +72,13 @@
         public async Task<IActionResult> VerifyRelatedCustomer([FromBody] VerifyRelatedCustomerCriteria criteria)
         {
             IEnumerable<VerifyRelatedCustomerResult> customers = await multipleLogsService.VerifyRelatedCustomerAsync(criteria);
+            return Json(customers);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CheckNotExistCommunicationToolSetting([FromBody] CheckNotExistCommunicationToolSettingCriteria criteria)
+        {
+            IEnumerable<VerifyCommunicationToolSetting> customers = await multipleLogsService.CheckNotExistCommunicationToolSettingAsync(criteria);
             return Json(customers);
         }
     }

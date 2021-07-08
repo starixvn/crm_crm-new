@@ -1,8 +1,6 @@
 ﻿namespace CRM.Services.Feedback
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback.MultipleLogs;
@@ -13,6 +11,8 @@
         Task<IEnumerable<VerifyCustomerResult>> VerifyCustomerAsync(VerifyCustomerCriteria criteria);
 
         Task<IEnumerable<VerifyRelatedCustomerResult>> VerifyRelatedCustomerAsync(VerifyRelatedCustomerCriteria criteria);
+
+        Task<IEnumerable<VerifyCommunicationToolSetting>> CheckNotExistCommunicationToolSettingAsync(CheckNotExistCommunicationToolSettingCriteria criteria);
     }
 
     public class MultipleLogsService : IMultipleLogsService
@@ -32,6 +32,11 @@
         public async Task<IEnumerable<VerifyRelatedCustomerResult>> VerifyRelatedCustomerAsync(VerifyRelatedCustomerCriteria criteria)
         {
             return await baseService.GetDataAsync<VerifyRelatedCustomerResult>(criteria);
+        }
+
+        public async Task<IEnumerable<VerifyCommunicationToolSetting>> CheckNotExistCommunicationToolSettingAsync(CheckNotExistCommunicationToolSettingCriteria criteria)
+        {
+            return await baseService.GetDataAsync<VerifyCommunicationToolSetting>(criteria);
         }
     }
 }
