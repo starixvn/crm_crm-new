@@ -13,14 +13,14 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    public class AddGuessFeedbackController : BaseController
+    public class AddGuestFeedbackController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
         private readonly ISettingService settingService;
 
-        public AddGuessFeedbackController(
+        public AddGuestFeedbackController(
             INapSession napSession,
             INapSettings napSettings,
             IUserService userService,

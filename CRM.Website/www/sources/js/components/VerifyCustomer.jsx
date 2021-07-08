@@ -14,29 +14,29 @@ export default class VerifyCustomer extends PureComponent {
         const { listOfCustomers } = this.props;
         return listOfCustomers && listOfCustomers.length > 0 ?
             <Fragment>
-                <Form.Group as={Row} className="pt-1 pb-1">
+                <Form.Group as={Row} className="pt-2 pb-2">
                     <Form.Label column sm="3" md="3" />
                     <Col sm="9" md="9" className="d-flex">
-                        <div className="pl-2 mr-5 customerShow">
+                        <Col sm="2" md="2" className="customerShow">
                             {LangHelper.getResource('Customer')}
-                        </div>
-                        <div className="pl-2 mr-5 guestShow">
+                        </Col>
+                        <Col sm="2" md="2" className="guestShow">
                             {LangHelper.getResource('Guest')}
-                        </div>
-                        <div className="pl-2 mr-5 invalidShow">
+                        </Col>
+                        <Col sm="2" md="2" className="invalidShow">
                             {LangHelper.getResource('Invalid')}
-                        </div>
+                        </Col>
                     </Col>
                 </Form.Group>
-                <Form.Group as={Row} className="pt-1 pb-1">
+                <Form.Group as={Row} className="pt-2 pb-2">
                     <Form.Label column sm="3" md="3" />
                     <Col sm="9" md="9">
                         <div className="d-flex flex-wrap customersList">
                             {
                                 listOfCustomers.map((item, index) => {
                                     return (
-                                        <div className={`m-2 px-2 txt-${this.renderClassNameCustomer(item.custId)}`} key={index}>
-                                            <div className="fa fa-times  pr-2" onClick={() => this.props.onClick(item.custId)} />
+                                        <div className={`txt-${this.renderClassNameCustomer(item.custId)}`} key={index}>
+                                            <div className="fa fa-times pr-2" onClick={() => this.props.onClick(item.custId)} />
                                             <div className="customer-name">{item.val}</div>
                                         </div>);
                                 })

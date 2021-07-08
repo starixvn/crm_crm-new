@@ -4,11 +4,11 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import Layout from '@jsroot/components/Layout';
-import addGuessFeedbackReducer from './addGuessFeedbackSlice';
+import addGuestFeedbackReducer from './addGuestFeedbackSlice';
 import AppContainer from './components/AppContainer';
 
 const store = configureStore({
-    reducer: addGuessFeedbackReducer
+    reducer: addGuestFeedbackReducer
 });
 
 const isHost = document.getElementById('IsHost').checked;

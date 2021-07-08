@@ -1,13 +1,13 @@
 .customerShow {
-    border-left: 18px solid green;
+    border-left: 18px solid #008000;
 }
 
 .guestShow {
-    border-left: 18px solid #06c;
+    border-left: 18px solid #0066CC;
 }
 
 .invalidShow {
-    border-left: 18px solid red;
+    border-left: 18px solid #FF0000;
 }
 
 .customersList {
@@ -17,22 +17,32 @@
 .txt-customer, .txt-guest, .txt-invalid {
     display: flex;
     align-items: center;
-    border: 1px solid #8e8e8e;
-    border-radius: 5px;
 
     .fa-times {
         cursor: pointer;
+        color: #999999;
+
+        &:hover{
+            color: #3b3737;
+        }
     }
 }
 
+.txt-customer, .txt-guest, .txt-invalid {
+    font-size: 12px;
+    width: 33.33333333333333%;
+    word-break: break-all;
+    padding: 15px 10px;
+}
+
 .txt-customer {
-    color: green;
+    color: #008000;
 }
 
 .txt-guest {
-    color: #06c
+    color: #0066CC;
 }
 
 .txt-invalid {
-    color: red;
+    color: #FF0000;
 }

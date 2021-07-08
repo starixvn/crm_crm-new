@@ -83,11 +83,13 @@
         width: 40%;
     }
 
-    #check-box-verify {
-        Label{
-            padding-left: 10px;
-            cursor: pointer;
-        }
+    #check-box-verify{
+        cursor: pointer;
+    }
+
+    .form-check-label {
+        padding-left: 10px;
+        cursor: pointer;
     }
 }
 
