@@ -166,7 +166,7 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerFirstName')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className=""
+                        <Form.Control type="text" size="sm" className="shadow-none"
                             onChange={handleChange} name="firstName" value={values.firstName} autoComplete="off"
                         />
                     </Col>
@@ -176,7 +176,7 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerLastName')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className=""
+                        <Form.Control type="text" size="sm" className="shadow-none"
                             onChange={handleChange} name="lastName" value={values.lastName} autoComplete="off"
                         />
                     </Col>
@@ -217,13 +217,13 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerPhone1')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className="textbox code-country"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
                             onChange={handleChange} name="phoneCountryCode" value={values.phoneCountryCode} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox code-area"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
                             onChange={handleChange} name="phoneAreaCode" value={values.phoneAreaCode} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
                             onChange={handleChange} name="phone" value={values.phone} autoComplete="off"
                         />
                     </Col>
@@ -234,13 +234,13 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerPhone2')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className="textbox code-country"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
                             onChange={handleChange} name="phone2CountryCode" value={values.phone2CountryCode} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox code-area"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
                             onChange={handleChange} name="phone2AreaCode" value={values.phone2AreaCode} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
                             onChange={handleChange} name="phone2" value={values.phone2} autoComplete="off"
                         />
                     </Col>
@@ -251,13 +251,13 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerPhone3')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className="textbox code-country"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
                             onChange={handleChange} name="phone3CountryCode" value={values.phone3CountryCode} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox code-area"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
                             onChange={handleChange} name="phone3AreaCode" value={values.phone3AreaCode} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
                             onChange={handleChange} name="phone3" value={values.phone3} autoComplete="off"
                         />
                     </Col>
@@ -268,13 +268,13 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerMobile')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className="textbox code-country"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
                             onChange={handleChange} name="mobilePhoneCountryCode" value={values.mobilePhoneCountryCode} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox code-area"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
                             onChange={handleChange} name="mobilePhoneAreaCode" value={values.mobilePhoneAreaCode} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
                             onChange={handleChange} name="mobilePhone" value={values.mobilePhone} autoComplete="off"
                         />
                     </Col>
@@ -285,7 +285,7 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('CustomerEmail')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className=""
+                        <Form.Control type="text" size="sm" className="shadow-none"
                             onChange={handleChange} name="email" value={values.email} autoComplete="off"
                         />
                     </Col>
@@ -296,7 +296,7 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('Telegram')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className=""
+                        <Form.Control type="text" size="sm" className="shadow-none"
                             onChange={handleChange} name="msn" value={values.msn} autoComplete="off"
                         />
                     </Col>
@@ -307,7 +307,7 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('Skype')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className=""
+                        <Form.Control type="text" size="sm" className="shadow-none"
                             onChange={handleChange} name="skype" value={values.skype} autoComplete="off"
                         />
                     </Col>
@@ -318,10 +318,10 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('PIC1')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className="textbox pic-name"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
                             onChange={handleChange} name="pic1Name" value={values.pic1Name} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
                             onChange={handleChange} name="pic1" value={values.pic1} autoComplete="off"
                         />
                     </Col>
@@ -332,10 +332,10 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('PIC2')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className="textbox pic-name"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
                             onChange={handleChange} name="pic2Name" value={values.pic2Name} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
                             onChange={handleChange} name="pic2" value={values.pic2} autoComplete="off"
                         />
                     </Col>
@@ -346,10 +346,10 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('PIC3')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className="textbox pic-name"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
                             onChange={handleChange} name="pic3Name" value={values.pic3Name} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
                             onChange={handleChange} name="pic3" value={values.pic3} autoComplete="off"
                         />
                     </Col>
@@ -360,10 +360,10 @@ export class DataGrid extends Component {
                         {LangHelper.getResource('PIC4')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control type="text" size="sm" className="textbox pic-name"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
                             onChange={handleChange} name="pic4Name" value={values.pic4Name} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
                             onChange={handleChange} name="pic4" value={values.pic4} autoComplete="off"
                         />
                     </Col>

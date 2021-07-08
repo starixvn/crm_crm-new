@@ -44,7 +44,11 @@ export class Filter extends Component {
         event.preventDefault();
         const params = this.getParams();
         this.props.setGridParams(params);
-        this.props.getCustomerInfo(params);
+        this.props.getCustomerInfo(params).then(() => {
+            if(this.props.gridData.data === null) {
+                this.props.setEmptyCustomerInfoPopup({ show: true });
+            }
+        });
         
     };
 
@@ -73,7 +77,7 @@ export class Filter extends Component {
                                 options={this.props.CustomerSuggestion}
                                 value={this.state.username}
                                 top="35px"
-                                left="15px"
+                                left="0px"
                                 onChange = {value => this.handleChangeSuggestion(value)}
                                 onInputChange={searchText => this.debounceUserNameInputChange(searchText)}
                             />

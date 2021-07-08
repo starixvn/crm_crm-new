@@ -90,7 +90,7 @@
     ExcludeIgnoredAccounts: 'Exclude ignored accounts',
     ExcludeTestAccounts: 'Exclude test accounts',
     Email: 'Email',
-    EmptyData: 'Empty Data',
+    EmptyData: 'There is no information',
     EndTime: 'End Time',
     FeedbackSubjectContentRequired: 'Feedback Subject Content is required!',
     FeedbackSubjectInsert: 'Insert New Feedback Subject',
