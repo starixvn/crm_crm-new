@@ -52,74 +52,67 @@
 
         public async Task<AllSettingToAddFeedback> AllSettingToAddFeedback()
         {
-            try
+            var languages = await settingService.GetLanguageAsync(SettingConstants.Active, true);
+            var countries = await settingService.GetCountryAsync(SettingConstants.Active, true);
+
+            var extentionList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var extentionListRemmoveNA = extentionList.Where(x => x.Id != NAConstants.ExtentionNA);
+            var extentionNA = extentionList.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
+
+            var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
+
+            var provinces = await settingService.GetProvinceAsync();
+
+            var communicationToolList = await settingService.GetCommunicationToolAsync(SettingConstants.Active);
+
+            var siteList = await settingService.GetSiteAsync();
+
+            var responsesLists = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
+
+            var titleList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
+
+            var licenseeTypeList = await settingService.GetLicenseeTypeAsync();
+
+            var productList = await settingService.GetProductAsync(SettingConstants.Active);
+            var productListRemoveNAAndActive = productList.Where(p => p.Id != NAConstants.ProductNA);
+            var productNA = productList.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
+
+            var subproduct = await settingService.GetSubProductAsync(active: SettingConstants.Active);
+            var subproductRemoveNA = subproduct.Where(p => p.Id != NAConstants.SubProductNA);
+            var subproductNA = subproduct.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
+
+            var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
+            var bettypeRemoveNAAndActive = bettypes.Where(b => b.Id != NAConstants.BettypeNA);
+            var bettypeNA = bettypes.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
+
+            var mainCategoryList = await settingService.GetMainCategoryAsync(SettingConstants.Active);
+            var subCategoryList = await settingService.GetSubCategoryAsync(active: SettingConstants.Active);
+
+            var settings = new AllSettingToAddFeedback
             {
-                var languages = await settingService.GetLanguageAsync(SettingConstants.Active, true);
-                var countries = await settingService.GetCountryAsync(SettingConstants.Active, true);
+                ExtensionList = extentionListRemmoveNA,
+                CountryList = countries,
+                ProvinceList = provinces,
+                CommunicationToolList = communicationToolList,
+                LanguageList = languages,
+                SiteList = siteList,
+                ResponseList = responsesLists,
+                StatusList = statusListRemoveDelete,
+                TitleList = titleList,
+                LicenseeType = licenseeTypeList,
+                ProductNA = productNA,
+                SubProductNA = subproductNA,
+                BettypeNA = bettypeNA,
+                ExtensionNA = extentionNA,
+                ProductList = productListRemoveNAAndActive,
+                SubProductList = subproductRemoveNA,
+                BettypeList = bettypeRemoveNAAndActive,
+                MainCategoryList = mainCategoryList,
+                SubCategoryList = subCategoryList
+            };
 
-                var extentionList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-                var extentionListRemmoveNA = extentionList.Where(x => x.Id != NAConstants.ExtentionNA);
-                var extentionNA = extentionList.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
-
-                var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-                var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
-
-                var provinces = await settingService.GetProvinceAsync();
-
-                var communicationToolList = await settingService.GetCommunicationToolAsync(SettingConstants.Active);
-
-                var siteList = await settingService.GetSiteAsync();
-
-                var responsesLists = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
-
-                var titleList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
-
-                var licenseeTypeList = await settingService.GetLicenseeTypeAsync();
-
-                var productList = await settingService.GetProductAsync(SettingConstants.Active);
-                var productListRemoveNAAndActive = productList.Where(p => p.Id != NAConstants.ProductNA);
-                var productNA = productList.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
-
-                var subproduct = await settingService.GetSubProductAsync(active: SettingConstants.Active);
-                var subproductRemoveNA = subproduct.Where(p => p.Id != NAConstants.SubProductNA);
-                var subproductNA = subproduct.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
-
-                var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
-                var bettypeRemoveNAAndActive = bettypes.Where(b => b.Id != NAConstants.BettypeNA);
-                var bettypeNA = bettypes.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
-
-                var mainCategoryList = await settingService.GetMainCategoryAsync(SettingConstants.Active);
-                var subCategoryList = await settingService.GetSubCategoryAsync(active: SettingConstants.Active);
-
-                var settings = new AllSettingToAddFeedback
-                {
-                    ExtensionList = extentionListRemmoveNA,
-                    CountryList = countries,
-                    ProvinceList = provinces,
-                    CommunicationToolList = communicationToolList,
-                    LanguageList = languages,
-                    SiteList = siteList,
-                    ResponseList = responsesLists,
-                    StatusList = statusListRemoveDelete,
-                    TitleList = titleList,
-                    LicenseeType = licenseeTypeList,
-                    ProductNA = productNA,
-                    SubProductNA = subproductNA,
-                    BettypeNA = bettypeNA,
-                    ExtensionNA = extentionNA,
-                    ProductList = productListRemoveNAAndActive,
-                    SubProductList = subproductRemoveNA,
-                    BettypeList = bettypeRemoveNAAndActive,
-                    MainCategoryList = mainCategoryList,
-                    SubCategoryList = subCategoryList
-                };
-
-                return settings;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            return settings;
         }
     }
 }

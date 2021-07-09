@@ -142,7 +142,7 @@
     MappingStatus: 'Mapping Status',
     MessageID: 'Message ID',
     Month: 'Month',
-    MultiplecustomersToolTip: 'Multiple customers can be entered, separated by commas. Ex: abc, xyz, etc.',
+    MultipleCustomersToolTip: 'Multiple customers can be entered, separated by commas. Ex: abc, xyz, etc.',
     Mobile: 'Mobile',
     Name: 'Name',
     NameRequired: 'Name is required!',
