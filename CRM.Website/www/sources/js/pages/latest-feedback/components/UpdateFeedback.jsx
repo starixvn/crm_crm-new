@@ -48,7 +48,9 @@ export class UpdateFeedback extends PureComponent {
             titleOptionsEdit: [],
             licenseeTypeOptionsEdit: [],
             listOfCustomerValid: [],
-            listOfCustomer: []
+            listOfCustomer: [],
+            birthDay: null,
+            site: [],
         };
     }
 
@@ -68,6 +70,8 @@ export class UpdateFeedback extends PureComponent {
                 selectedSubProductIds.push(x.subSettingID);
             }
         });
+        const site = this.props.feedback.siteSetting;
+        const birthDay = this.props.feedback.birthDay ? new Date(this.props.feedback.birthDay) : null;
         const listOfCustomer = this.props.feedback.relatedCustomers.map(customer => {
             return {
                 custId: customer.custId,
@@ -100,7 +104,6 @@ export class UpdateFeedback extends PureComponent {
                 name: rep.value
             };
         });
-
         const mainCategoryOptionsEdit = this.props.settings.mainCategoryList.map(category => {
             return {
                 id: category.mainCategoryID,
@@ -169,7 +172,6 @@ export class UpdateFeedback extends PureComponent {
                 checked: setting.some(y => y.subSettingIDLevel3 === bettype.id && y.settingType === "Product") ? true : false
             };
         });
-
         this.setState({
             communicationToolOptionsEdit: communicationToolOptionsEdit,
             productOptionsEdit: productOptionsEdit,
@@ -188,7 +190,9 @@ export class UpdateFeedback extends PureComponent {
             listOfCustomerValid: [],
             listOfCustomer: listOfCustomer,
             hasRelated: hasRelated,
-            isReviewed: isReviewed
+            isReviewed: isReviewed,
+            birthDay: birthDay,
+            site: site
         });
     }
 
@@ -301,6 +305,11 @@ export class UpdateFeedback extends PureComponent {
         }
     };
 
+    handleChangeSite = (item) => {
+        this.setState({
+            siteId: item.id
+        });
+    }
 
     renderForm = ({
         errors,
@@ -327,11 +336,13 @@ export class UpdateFeedback extends PureComponent {
                             <div class="row">
                                 <div class="col-xs-4 col-sm-4 col-md-4">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="5" md="4" htmlFor="title">
+                                        <Form.Label column sm="5" md="4" htmlFor="titleId">
                                             {LangHelper.getResource('Title')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
+                                                id="titleId"
+                                                name="titleId"
                                                 onChange={handleChange}
                                                 value={values.titleId}
                                             >
@@ -346,9 +357,13 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                                 <DatePicker
-                                                    selected={values.birthDay}
+                                                    selected={this.state.birthDay}
                                                     maxDate={values.maxDate}
                                                     onChange={value => this.handleDataChange('birthDay', value)}
+                                                    peekNextMonth
+                                                    showMonthDropdown
+                                                    showYearDropdown
+                                                    dropdownMode="select"
                                                 />
                                             </div>
                                         </Col>
@@ -368,9 +383,14 @@ export class UpdateFeedback extends PureComponent {
                                     </Form.Group>
                                     <Col sm="7" md="8" className='checkboxOverWrite'>
                                         <Form.Label>
-                                            <input class="checkbox" type='checkbox' />
+                                            <input class="checkbox"
+                                                type='checkbox'
+                                                checked={values.isOverWrite}
+                                                name="isOverWrite" id="isOverWrite"
+                                                onChange={handleChange} />
                                             {LangHelper.getResource('OverWriteCurrentCRMInfo')}
                                         </Form.Label>
+
                                     </Col>
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4">
@@ -393,7 +413,7 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="8">
                                             <Form.Control type="text" size="sm"
-                                                value={values.passPort > 0 ? values.passPort : null}
+                                                value={values.passPort}
                                                 name="passPort" id="passPort"
                                                 className="shadow-none" autoComplete="off"
                                                 onChange={handleChange}
@@ -435,10 +455,10 @@ export class UpdateFeedback extends PureComponent {
                                         <Col sm="7" md="8">
                                             <SelectWithSearch
                                                 className='basic-single'
-                                                onChange={handleChange}
+                                                OnChange={value => this.handleChangeSite(value)}
                                                 options={this.props.settings.sites}
-                                                name={values.site.name}
-                                                value={values.siteId}
+                                                name={this.state.site.name}
+                                                value={this.state.site.siteId}
                                                 isHideNA={false}
                                             />
                                         </Col>
@@ -448,9 +468,10 @@ export class UpdateFeedback extends PureComponent {
                                             {LangHelper.getResource('LicenseeType')}
                                         </Form.Label>
                                         <Col sm="7" md="8">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
+                                            <Form.Control as="select" size="sm" className="shadow-none" id="licenseeType"
+                                                name="licenseeType"
+                                                onChange={handleChange}
                                                 value={values.licenseeType}
-                                                onChange={e => this.onChange('licenseeType', e.target.value)}
                                             >
                                                 {this.state.licenseeTypeOptionsEdit.map(this.renderOptions)}
                                             </Form.Control>
@@ -945,7 +966,7 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="7">
                                             <MultipleSelect
-                                                isInvalid={touched.comunicationToolTypesEdit && errors.comunicationToolTypesEdit}
+                                                isInvalid={touched.mainCategoryOptionsEdit && errors.mainCategoryOptionsEdit}
                                                 dataSource={this.state.mainCategoryOptionsEdit}
                                                 keyField='id'
                                                 valueField='name'
@@ -953,7 +974,7 @@ export class UpdateFeedback extends PureComponent {
                                                 isSummited={false}
                                                 hasSearchBox
                                                 onChange={(currentItem, selectedItemsKey) => {
-                                                    handleChange('comunicationToolTypesEdit')(selectedItemsKey);
+                                                    handleChange('mainCategoryOptionsEdit')(selectedItemsKey);
                                                 }}
                                             />
                                         </Col>
@@ -964,7 +985,6 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="7">
                                             <MultipleSelect
-                                                isInvalid={touched.comunicationToolTypesEdit && errors.comunicationToolTypesEdit}
                                                 dataSource={this.state.subProductOptionsEdit}
                                                 keyField='id'
                                                 valueField='name'
@@ -972,17 +992,19 @@ export class UpdateFeedback extends PureComponent {
                                                 isSummited={false}
                                                 hasSearchBox
                                                 onChange={(currentItem, selectedItemsKey) => {
-                                                    handleChange('comunicationToolTypesEdit')(selectedItemsKey);
+                                                    handleChange('subProductOptionsEdit')(selectedItemsKey);
                                                 }}
                                             />
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="5" md="5" htmlFor="name" className="required">
+                                        <Form.Label column sm="5" md="5" htmlFor="language" className="required">
                                             {LangHelper.getResource('Language')}
                                         </Form.Label>
                                         <Col sm="7" md="7">
                                             <Form.Control as="select" size="sm" className="shadow-none"
+                                                isInvalid={touched.language && errors.language}
+                                                name="language"
                                                 value={values.languageID}
                                                 onChange={e => this.onChange('language', e.target.value)}
                                             >
@@ -1018,7 +1040,7 @@ export class UpdateFeedback extends PureComponent {
                                                 isSummited={false}
                                                 hasSearchBox
                                                 onChange={(currentItem, selectedItemsKey) => {
-                                                    handleChange('comunicationToolTypesEdit')(selectedItemsKey);
+                                                    handleChange('extensionOptionsEdit')(selectedItemsKey);
                                                 }}
                                             />
                                         </Col>
@@ -1029,7 +1051,7 @@ export class UpdateFeedback extends PureComponent {
                                         </Form.Label>
                                         <Col sm="7" md="7">
                                             <MultipleSelect
-                                                isInvalid={touched.comunicationToolTypesEdit && errors.comunicationToolTypesEdit}
+                                                isInvalid={touched.subCategoryOptionsEdit && errors.subCategoryOptionsEdit}
                                                 dataSource={this.state.subCategoryOptionsEdit}
                                                 keyField='id'
                                                 valueField='name'
@@ -1037,7 +1059,7 @@ export class UpdateFeedback extends PureComponent {
                                                 isSummited={false}
                                                 hasSearchBox
                                                 onChange={(currentItem, selectedItemsKey) => {
-                                                    handleChange('comunicationToolTypesEdit')(selectedItemsKey);
+                                                    handleChange('subCategoryOptionsEdit')(selectedItemsKey);
                                                 }}
                                             />
                                         </Col>
@@ -1089,7 +1111,7 @@ export class UpdateFeedback extends PureComponent {
                                 </div>
                             </div>
 
-                            <Form.Group as={Row} className="pt-1 pb-1" controlId="formBasicCheckbox">
+                            <Form.Group as={Row} className="pt-1 pb-1">
                                 <Col sm="3" md="3" className="check-related">
                                     <Form.Check type="checkbox" className="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
                                         checked={this.state.hasRelated}
@@ -1232,6 +1254,54 @@ export class UpdateFeedback extends PureComponent {
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const data = {
+            feedbackID: values.feedbackID,
+            userID: 0,
+            custID: values.custID,
+            titleID: values.titleId,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            birthDay: this.state.birthDay,
+            passPort: values.passPort,
+            siteId: this.state.site.id,
+            refCode2: values.refCode2,
+            refCode1: values.refCode1,
+            licenseeType: values.licenseeType,
+            isOverWrite: values.isOverWrite,
+            phone: values.countryCode1,
+            phoneCountryCode: values.areaCode1,
+            phoneAreaCode: values.phoneNumber1,
+            phone2: values.countryCode2,
+            phone2CountryCode: values.areaCode2,
+            phone2AreaCode: values.phoneNumber2,
+            phone3: values.countryCode3,
+            phone3CountryCode: values.areaCode3,
+            phone3AreaCode: values.phoneNumber3,
+            fax: values.faxNumber,
+            faxCountryCode: values.faxCountryCode,
+            faxAreaCode: values.faxAreaCode,
+            mobilePhone: values.mobilePhoneNumber,
+            mobilePhoneCountryCode: values.mobileCountryCode,
+            mobilePhoneAreaCode: values.mobileAreaCode,
+            pic1: values.phone1,
+            pic1Name: values.name1,
+            pic2: values.phone2,
+            pic2Name: values.name2,
+            pic3: values.phone3,
+            pic3Name: values.name3,
+            pic4: values.phone4,
+            pic4Name: values.name4,
+            email: values.email,
+            skype: values.skype,
+            MSN: values.telegram,
+            whatsApp: values.whatsApp,
+            line: values.line,
+            weChat: values.weChat,
+            yahoo: values.letstalk,
+            QQ: values.qq,
+            BBM: values.zalo,
+            noInquiries: values.noInquiries,
+            description: values.description,
+            autoField: values.autoField
         };
         this.props.updateFeedback(data).then(() => {
             if (this.props.updateFeedbackResult.isSuccessful) {
@@ -1245,11 +1315,12 @@ export class UpdateFeedback extends PureComponent {
     };
 
     render() {
-
         const now = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         const feedback = this.props.feedback;
         const initialValues = {
             maxDate: now,
+            feedbackID: feedback.feedbackID,
+            custID: feedback.custId,
             username: feedback.userName,
             feedbackDate: new Date(feedback.feedbackDate),
             resolutionDate: new Date(feedback.resolutionDate),
@@ -1258,14 +1329,11 @@ export class UpdateFeedback extends PureComponent {
             autoField: feedback.autoField,
             solution: feedback.solution,
             titleId: feedback.titleID,
-            birthDay: feedback.birthDay ? new Date(feedback.birthDay) : null,
             refCode1: feedback.refCode1,
             refCode2: feedback.refCode2,
             firstName: feedback.firstName,
             lastName: feedback.lastName,
             passPort: feedback.passPort,
-            siteId: feedback.siteID,
-            site: feedback.siteSetting,
             licenseeType: feedback.licenseeType,
             countryCode1: feedback.phoneInfo[0].countryCode,
             areaCode1: feedback.phoneInfo[0].areaCode,
@@ -1303,11 +1371,12 @@ export class UpdateFeedback extends PureComponent {
             roleID: feedback.roleID,
             countryID: feedback.countryID,
             languageID: feedback.languageID,
-            noInquiries: feedback.noInquiries,
+            noInquiries: feedback.noInquiries > 0 ? feedback.noInquiries : null,
             statusId: feedback.statusId,
             review: feedback.review,
             reviewerName: feedback.reviewerName,
-            solveDate: feedback.solveDate
+            solveDate: feedback.solveDate,
+            isOverWrite: false
         };
         return (
             <Modal show className="update-feedback-modal" dialogAs={DraggableModalDialog}

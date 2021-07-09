@@ -84,6 +84,14 @@ const getFeedbackById = (id, callback) => async dispatch => {
     });
 };
 
+export const updateFeedback = data => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('LatestFeedback/EditFeedback');
+    await DataService.postDataAsync(url, data).then(response => {
+        dispatch(setEditNotificationTypeResult(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     setLatestFeedback,
     setGridParams,
@@ -101,6 +109,7 @@ export const ActionCreators = {
     getNoInquiriesByFeedbackId,
     setUpdateFeedbackPopup,
     setUpdateFeedbackResult,
+    updateFeedback,
     getAllSettings,
     setAllSettings,
     verifyUserName,

@@ -243,6 +243,7 @@
     SystemRequired: 'System is required!',
     Skype: 'Skype',
     Subject: 'Subject',
+    SubjectRequired: 'Subject is required!',
     Solution: 'Solution',
     TemplateContent: 'Template Content',
     TemplateId: 'Template Id',

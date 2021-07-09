@@ -2,7 +2,7 @@
 {
     using CRM.Core.Models;
     using CRM.Core.Services;
-    using CRM.Criteria.Feedback;
+    using CRM.Criteria.Feedback.LatestFeedback;
     using CRM.Criteria.Setting;
     using CRM.Models.Customer;
     using CRM.Models.Feedback;
@@ -10,7 +10,6 @@
     using CRM.Models.LatestFeedback;
     using CRM.Repositories;
     using Fanex.NAP.Client.Helpers.Web;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -21,6 +20,7 @@
         Task<CommandResult> EditNoInquiries(EditNoInquiries model);
         Task<EditNoInquiries> GetNoInquiriesAsync(int id);
         Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria);
+        Task<CommandResult> EditFeedbackAsync(EditFeedbackCommand command);
     }
 
     public class FeedbackService : IFeedbackService
@@ -59,7 +59,7 @@
                 });
                 feedback.SiteSetting.Name = siteSetting.Name;
                 feedback.SiteSetting.Id = feedback.SiteID;
-                feedback.HasRelated = feedback.RelatedCustomers.Count() > 0;
+                feedback.HasRelated = feedback.RelatedCustomers.Any();
             }
 
             return feedback;
@@ -110,6 +110,11 @@
                 NoInquiries = model.NoInquiries
             };
 
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<CommandResult> EditFeedbackAsync(EditFeedbackCommand command)
+        {
             return await baseService.ExecuteNonQueryAsync(command);
         }
     }

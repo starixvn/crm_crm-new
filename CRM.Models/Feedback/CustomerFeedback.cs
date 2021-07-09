@@ -13,8 +13,6 @@
 
         public int FeedbackID { get; set; }
 
-        public int CustID { get; set; }
-
         public string UserName { get; set; }
 
         public string FeedbackDate { get; set; }

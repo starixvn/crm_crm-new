@@ -1,4 +1,4 @@
-﻿namespace CRM.Criteria.Feedback
+﻿namespace CRM.Criteria.Feedback.LatestFeedback
 {
     using CRM.Core.Models;
 
@@ -12,14 +12,8 @@
 
         public string IP { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_CustomerFeedbackQuickUpd";
-        }
+        public override string GetSettingKey() => "Acc_CRM_CustomerFeedbackQuickUpd";
 
-        public override bool IsValid()
-        {
-            return FeedbackID > 0;
-        }
+        public override bool IsValid() => FeedbackID > 0;
     }
 }

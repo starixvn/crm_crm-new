@@ -1,4 +1,4 @@
-﻿namespace CRM.Criteria.Feedback
+﻿namespace CRM.Criteria.Feedback.LatestFeedback
 {
     using CRM.Core.Constants;
     using Fanex.Data.Repository;

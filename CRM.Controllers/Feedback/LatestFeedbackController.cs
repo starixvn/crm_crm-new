@@ -3,8 +3,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Models;
-    using CRM.Criteria.Feedback;
-    using CRM.Criteria.Setting;
+    using CRM.Criteria.Feedback.LatestFeedback;
     using CRM.Models;
     using CRM.Models.Feedback;
     using CRM.Models.Feedback.LatestFeedback;
@@ -176,6 +175,16 @@
             var feedback = await feedbackService.GetFeedbackById(criteria);
 
             return Json(feedback);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditFeedback([FromBody] EditFeedbackCommand command)
+        {
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            var commandResult = await feedbackService.EditFeedbackAsync(command);
+
+            return Json(commandResult);
         }
     }
 }

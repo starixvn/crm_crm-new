@@ -62,7 +62,7 @@
 
         public string BirthDay { get; set; }
 
-        public int PassPort { get; set; }
+        public string PassPort { get; set; }
 
         public string WeChat { get; set; }
 
