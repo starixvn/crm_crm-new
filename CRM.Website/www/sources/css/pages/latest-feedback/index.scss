@@ -58,6 +58,14 @@
     margin-left: 10px;
 }
 
+.feedbackInfo {
+    padding-left: 17px;
+
+    .consecutive-container-before {
+        display: none
+    }
+}
+
 .panel-group {
     border: 1px solid #b1b1b1;
     border-width: 1px 1px 0 1px;

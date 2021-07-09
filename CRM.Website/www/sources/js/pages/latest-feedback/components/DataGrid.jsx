@@ -134,11 +134,12 @@ export class DataGrid extends Component {
                     {
                         this.tooltipFeedback(item)
                     }
-                    <strong className='link-click'> {item.subject}
-                    </strong>
-                    <div>Feedback date <strong> {item.feedbackDateString} </strong></div>
-                    <div>By <strong>  {item.creatorName} </strong> on {item.createDateString} </div>
-                    <div>Solving Duration: {item.durationTime} </div>
+                    <div className="feedbackInfo">
+                        <div>Feedback date <strong> {item.feedbackDateString} </strong></div>
+                        <div>By <strong> {item.creatorName} </strong> on {item.createDateString} </div>
+                        <div>Solving Duration: {item.durationTime} </div>
+                        <div className={item.reviewerName ? '' : 'consecutive-container-before'}>Reviewed by <strong> {item.reviewerName} </strong> on {item.solveDate}</div>
+                    </div>
                 </Cell>
             }
             <Cell>
@@ -194,9 +195,12 @@ export class DataGrid extends Component {
                 }
             >
                 {
-                    <span className="rounded-circle fa fa-pencil-square-o"
-                        onClick={() => this.handleUpdateFeedback(item.feedbackId)}
-                    />
+                    <div>
+                        <span className="rounded-circle fa fa-pencil-square-o"
+                            onClick={() => this.handleUpdateFeedback(item.feedbackId)}
+                        />
+                        <strong className='link-click'> {item.subject}</strong>
+                    </div>
                 }
             </OverlayTrigger>
         );
