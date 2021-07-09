@@ -3,6 +3,7 @@
 const ShortDateFormat = 'MMM DD, YYYY';
 const ShortDateTimeFormat = 'MMM DD, YYYY hh:mm a';
 const LongDateTimeFormat = 'MMM DD, YYYY hh:mm:ss a';
+const StartTimeRemarkPrefix = 'YYYYMMDD/hh:mmA';
 
 export default class DateTimeService {
     static startOfDay(date) {
@@ -49,5 +50,9 @@ export default class DateTimeService {
 
     static toLongDateTimeFormat(date) {
         return moment(date).format(LongDateTimeFormat);
+    }
+
+    static toStartTimePrefix(date) {
+        return moment(date).format(StartTimeRemarkPrefix);
     }
 }

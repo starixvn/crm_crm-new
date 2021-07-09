@@ -54,18 +54,3 @@ export const getBetTypes = (selectedSubProducts, betTypes, selectedBetTypeIds, i
         };
     });
 };
-
-export const stringFormat = (strValue, paramArr) => {
-    if (!strValue) {
-        return "";
-    }
-    var len = paramArr.length;
-    for (var i = 0; i < len; i++) {
-        var paramInfo = paramArr[i];
-        var formatIndex = '{' + i + '}';
-        while (strValue.indexOf(formatIndex) !== -1) {
-            strValue = strValue.replace(formatIndex, paramInfo);
-        }
-    }
-    return strValue;
-};

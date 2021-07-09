@@ -4,6 +4,7 @@ import { CKEditor } from 'ckeditor4-react';
 import moment from 'moment';
 import { TOOLBAR, EXTRA_TOOLBAR, REMOVE_PLUGINS, EDIT_BLOCK_TEMPLATE } from './constants';
 import LangHelper from '@jsroot/common/langHelper';
+import DateTimeService from '@jsroot/common/dateTimeService';
 
 export default class CkEditor extends PureComponent {
     static propTypes = {
@@ -49,14 +50,15 @@ export default class CkEditor extends PureComponent {
             textTemplateEditBlock = EDIT_BLOCK_TEMPLATE.replace('#105289', colorEditBlock);
         }
 
-        const html = LangHelper.formatString(textTemplateEditBlock,
-            username,
-            moment(currentDate).format('MM/DD/YYYY, hh:mm:ss A'),
-            editText);
         CKEDITOR.plugins.add('editblock', {
             init: function (editor) {
                 editor.addCommand('insertEditBlock', {
                     exec: function (editor) {
+                        const currentDate = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+                        const html = LangHelper.formatString(textTemplateEditBlock,
+                            username,
+                            moment(currentDate).format('MM/DD/YYYY, hh:mm:ss A'),
+                            editText);
                         editor.insertHtml(html);
                     }
                 });
