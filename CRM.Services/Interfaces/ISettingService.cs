@@ -15,7 +15,7 @@
 
         Task<SiteSetting> GetSiteByIdAsync(int siteId);
 
-        Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(GetAllSiteCriteria criteria = null);
+        Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync();
 
         Task<IEnumerable<Setting>> GetCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 

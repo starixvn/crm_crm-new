@@ -1,19 +1,16 @@
 ﻿namespace CRM.Controllers
 {
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Criteria.Customer;
-    using CRM.Criteria.Setting;
     using CRM.Services;
     using CRM.Services.Customer;
-    using Fanex.Data;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
-    using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
-
 
     [CrmPermission(FunctionKey = FunctionKey.CustomerInfo, Policy = Policy.Read)]
     public class CustomerInfoController : BaseController
@@ -37,6 +34,7 @@
             this.customerService = customerService;
             this.settingService = settingService;
         }
+
         public IActionResult Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CustomerInfo, Policy.Host);
@@ -51,14 +49,13 @@
 
         public async Task<IActionResult> GetSettings()
         {
-            var settings = new 
+            var settings = new
             {
                 sites = await settingService.GetAllSitesWithGroupAsync(),
-                countries =  await settingService.GetCountryAsync(SettingConstants.Active),
+                countries = await settingService.GetCountryAsync(SettingConstants.Active),
                 languages = await settingService.GetLanguageAsync(SettingConstants.Active)
             };
             return Json(settings);
-
         }
 
         [HttpPost]

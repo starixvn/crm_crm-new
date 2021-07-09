@@ -233,9 +233,9 @@
             return await baseService.GetDataAsync<SettingMapping>(criteria);
         }
 
-        public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(GetAllSiteCriteria criteria = null)
+        public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync()
         {
-            var sites = await baseService.GetDataAsync<SiteInfo>(criteria ?? new GetAllSiteCriteria());
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
             var allSites = (from n in sites
                             where n.IsActive
                             group n by n.IsLicensee into g
