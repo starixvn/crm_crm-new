@@ -7,9 +7,10 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
-    using CRM.Criteria.Setting;
     using CRM.Models;
+    using CRM.Models.Common;
     using CRM.Models.Customer;
+    using CRM.Resources;
 
     public interface ICustomerService
     {
@@ -42,12 +43,13 @@
                 customerInfo.Role.Name = RoleSettingService.GetRoleName(customerInfo.RoleID);
                 customerInfo.Languages = languageIds.ToList();
                 customerInfo.LanguageID = string.Join(",", languageIds);
-                var siteSetting = await settingService.GetSettingById(new GetSettingByIdCriteria
+
+                var site = await settingService.GetSiteByIdAsync(customerInfo.SiteID);
+                customerInfo.SiteSetting = new Site
                 {
-                    SettingId = customerInfo.SiteID
-                });
-                customerInfo.SiteSetting.Name = siteSetting.Name;
-                customerInfo.SiteSetting.Id = customerInfo.SiteID;
+                    Id = site.Id,
+                    Name = site.Name
+                };
 
                 if (!criteria.IsGuest)
                 {

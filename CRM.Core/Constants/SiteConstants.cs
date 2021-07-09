@@ -1,17 +1,15 @@
 ﻿namespace CRM.Core.Constants
 {
-    public class SiteConstants
+    public static class SiteConstants
     {
-        public const int BeginLicenseeSiteId = 6200;
+        public const short BeginLicenseeSiteId = 6200;
 
-        public const int All = 0;
+        public const byte All = 0;
 
-        public const int NA = 3;
+        public const byte NA = 3;
 
-        public const int IBCGroup = 1;
+        public const byte IBCGroup = 1;
 
-        public const int LicenseeGroup = 2;
-
-        public const int CN88 = 33002;
+        public const byte LicenseeGroup = 2;
     }
 }

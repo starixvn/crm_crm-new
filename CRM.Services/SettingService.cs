@@ -43,13 +43,13 @@
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
-        public async Task<SiteSetting> GetSettingById(GetSettingByIdCriteria criteria)
+        public async Task<SiteSetting> GetSiteByIdAsync(int siteId)
         {
-            var Sites = await GetSiteAsync();
-            var site = Sites.FirstOrDefault(s => s.Id == criteria.SettingId);
+            var sites = await GetSiteAsync();
+            var site = sites.FirstOrDefault(s => s.Id == siteId);
             return site ?? new SiteSetting
             {
-                Name = Constants.Symbol_NotApply
+                Name = ViewResources.Symbol_NotApply
             };
         }
 
@@ -110,7 +110,7 @@
                     new Country
                     {
                         Id = SettingConstants.NotApply,
-                        Name = ViewResources.Symbol_NA,
+                        Name = ViewResources.Symbol_NotApply,
                         IsActive = true
                     });
             }
@@ -142,7 +142,7 @@
                     new Setting
                     {
                         SettingId = SettingConstants.NotApply,
-                        SettingName = ViewResources.Symbol_NA,
+                        SettingName = ViewResources.Symbol_NotApply,
                         IsActive = true
                     });
             }
@@ -214,7 +214,7 @@
                 new BaseModel
                 {
                     Id = SettingConstants.NotApply,
-                    Name = ViewResources.Symbol_NA
+                    Name = ViewResources.Symbol_NotApply
                 });
             return liscenseeTypes;
         }

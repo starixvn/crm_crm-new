@@ -237,9 +237,6 @@
   <data name="Super" xml:space="preserve">
     <value>Super</value>
   </data>
-  <data name="Symbol_NA" xml:space="preserve">
-    <value>N/A</value>
-  </data>
   <data name="Symbol_NotApply" xml:space="preserve">
     <value>N/A</value>
   </data>

@@ -1,25 +1,28 @@
 ﻿namespace CRM.Services.Feedback
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback.LatestFeedback;
-    using CRM.Criteria.Setting;
     using CRM.Models.Customer;
     using CRM.Models.Feedback;
     using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.LatestFeedback;
     using CRM.Repositories;
     using Fanex.NAP.Client.Helpers.Web;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public interface IFeedbackService
     {
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
+
         Task<CommandResult> EditNoInquiries(EditNoInquiries model);
+
         Task<EditNoInquiries> GetNoInquiriesAsync(int id);
+
         Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria);
+
         Task<CommandResult> EditFeedbackAsync(EditFeedbackCommand command);
     }
 
@@ -53,12 +56,12 @@
                 feedback.RelatedCustomers = relatedCustomer;
                 feedback.Settings = settingItems.ToList();
 
-                var siteSetting = await serviceSetting.GetSettingById(new GetSettingByIdCriteria
+                var siteSetting = await serviceSetting.GetSiteByIdAsync(feedback.SiteID);
+                feedback.SiteSetting = new Models.Common.Site
                 {
-                    SettingId = feedback.SiteID
-                });
-                feedback.SiteSetting.Name = siteSetting.Name;
-                feedback.SiteSetting.Id = feedback.SiteID;
+                    Id = siteSetting.Id,
+                    Name = siteSetting.Name
+                };
                 feedback.HasRelated = feedback.RelatedCustomers.Any();
             }
 

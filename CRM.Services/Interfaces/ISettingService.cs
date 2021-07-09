@@ -13,7 +13,7 @@
 
         Task<IEnumerable<SiteSetting>> GetSiteAsync();
 
-        Task<SiteSetting> GetSettingById(GetSettingByIdCriteria criteria);
+        Task<SiteSetting> GetSiteByIdAsync(int siteId);
 
         Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(GetAllSiteCriteria criteria = null);
 

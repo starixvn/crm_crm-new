@@ -5,6 +5,5 @@
         public const byte UserRole = 2;
         public const string Licensee = "Licensee";
         public const string Credit = "Credit";
-        public const string Symbol_NotApply = "Symbol_NotApply";
     }
 }

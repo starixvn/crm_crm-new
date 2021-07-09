@@ -1,6 +1,5 @@
 ﻿namespace CRM.Services.UnitTests.Customer
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -8,7 +7,6 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
-    using CRM.Criteria.Setting;
     using CRM.Models.Customer;
     using CRM.Models.Setting;
     using CRM.Services.Customer;
@@ -27,16 +25,15 @@
             var fixture = new Fixture();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var param = new GetCustomerInfoByUsernameCriteria { Username = "test", IsGuest = false };
-            var customerInfo = fixture.Create<IEnumerable<CustomerInfo>>();
+            var customerInfos = fixture.Create<IEnumerable<CustomerInfo>>();
             var languages = fixture.Create<List<int>>();
-            var setting = fixture.Create<SiteSetting>();
-            var paramSetting = fixture.Create<GetSettingByIdCriteria>();
-            var tuple = new ValueTuple<IEnumerable<CustomerInfo>, List<int>>
-                (customerInfo, languages);
+            var site = fixture.Create<SiteSetting>();
+            var tuple = (customerInfos, languages);
             var service = GetCustomerService();
             baseService.FetchMultipleAsync<CustomerInfo, int>(Arg.Do<GetCustomerInfoByUsernameCriteria>(x => param = x)).Returns(tuple);
-            settingService.GetSettingById(Arg.Do<GetSettingByIdCriteria>(x => paramSetting = x)).Returns(setting);
-            var expected = customerInfo.First();
+            settingService.GetSiteByIdAsync(Arg.Any<int>()).Returns(site);
+            var expected = customerInfos.First();
+
             //Act
             var actual = await service.GetCustomerInfoAsync(param);
 
@@ -51,26 +48,23 @@
             var fixture = new Fixture();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var param = new GetCustomerInfoByUsernameCriteria { Username = "test", IsGuest = true };
-            var customerInfo = fixture.Create<IEnumerable<CustomerInfo>>();
+            var customerInfos = fixture.Create<IEnumerable<CustomerInfo>>();
             var languages = fixture.Create<List<int>>();
-            var setting = fixture.Create<SiteSetting>();
-            var paramSetting = fixture.Create<GetSettingByIdCriteria>();
-            var tuple = new ValueTuple<IEnumerable<CustomerInfo>, List<int>>
-                (customerInfo, languages);
+            var site = fixture.Create<SiteSetting>();
+            var tuple = (customerInfos, languages);
             var service = GetCustomerService();
             baseService.FetchMultipleAsync<CustomerInfo, int>(Arg.Do<GetCustomerInfoByUsernameCriteria>(x => param = x)).Returns(tuple);
-            settingService.GetSettingById(Arg.Do<GetSettingByIdCriteria>(x => paramSetting = x)).Returns(setting);
-            var expected = customerInfo.First();
+            settingService.GetSiteByIdAsync(Arg.Any<int>()).Returns(site);
+            var expected = customerInfos.First();
 
             //Act
             var actual = await service.GetCustomerInfoAsync(param);
 
             //Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(setting.Name, actual.SiteSetting.Name);
+            Assert.Equal(site.Name, actual.SiteSetting.Name);
             Assert.Equal(new List<CustomerInfo>(), actual.UplineInfo);
         }
-
 
         [Fact]
         public async Task UpdateCustomerInfoAsync_WhenCall_ReturnExpectedCommand()
