@@ -57,7 +57,6 @@
 }
 .selectwithsearchtree .btn, .selectwithsearchtree .btn:hover, .selectwithsearchtree .btn:focus
 {
-    height: calc(1.5em + 0.5rem + 2px);
     background: #FFF;
     border: 1px solid #b1b1b1;
     width: 100%;
@@ -176,11 +175,4 @@
     width: 1%;
     white-space: nowrap;
     vertical-align: middle;
-}
-
-.dropdown-menu .divider {
-    height: 1px;
-    margin: 9px 0;
-    overflow: hidden;
-    background-color: #e5e5e5;
 }

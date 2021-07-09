@@ -5,6 +5,10 @@
     .autocomplete-items-container {
         position: relative;
 
+        .selected {
+            background: #dfdfdf;
+        }
+
         .autocomplete-items {
             border: 1px solid #d3d4d4;
             background: #fff;
@@ -19,10 +23,6 @@
             .autocomplete-item {
                 padding: 5px;
                 white-space: nowrap;
-
-                &:hover {
-                    background: #dfdfdf;
-                }
 
                 .text-matched {
                     color: #3399FF;
