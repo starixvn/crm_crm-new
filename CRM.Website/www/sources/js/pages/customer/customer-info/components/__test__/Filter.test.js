@@ -166,6 +166,7 @@ describe('filter', () => {
         describe('handleSubmit', () => {
             it('should call exactly function', () => {
                // Arrange
+               const promise = Promise.resolve({});
                const params = { name: 'name' };
                const event = {
                    preventDefault: jest.fn()
@@ -173,7 +174,8 @@ describe('filter', () => {
 
                const props = {
                    setGridParams: jest.fn(),
-                   getCustomerInfo: jest.fn()
+                   getCustomerInfo: jest.fn(() => promise),
+                   setEmptyCustomerInfoPopup: jest.fn()
                }
 
                const filter = shallow(<Filter {...props} />);
@@ -182,12 +184,43 @@ describe('filter', () => {
 
                // Action
                filter.instance().handleSubmit(event);
-
+               
                // Assert
                expect(event.preventDefault).toHaveBeenCalledTimes(1);
                expect(props.setGridParams).toHaveBeenCalledWith(params);
                expect(props.getCustomerInfo).toHaveBeenCalledTimes(1);
+                
             });
+
+            it('should show popup when gridData is empty', () => {
+                // Arrange
+                const promise = Promise.resolve({});
+                const params = { name: 'name' };
+                const event = {
+                    preventDefault: jest.fn()
+                };
+ 
+                const props = {
+                    gridData: {
+                        data: null
+                    },
+                    setGridParams: jest.fn(),
+                    getCustomerInfo: jest.fn(() => promise),
+                    setEmptyCustomerInfoPopup: jest.fn()
+                }
+ 
+                const filter = shallow(<Filter {...props} />);
+                filter.instance().getParams = jest.fn();
+                filter.instance().getParams.mockReturnValueOnce(params);
+ 
+                // Action
+                filter.instance().handleSubmit(event);
+                
+                // Assert
+                promise.then(() => {
+                    expect(props.setEmptyCustomerInfoPopup).toHaveBeenCalled();
+                })
+             });
 
         });
 

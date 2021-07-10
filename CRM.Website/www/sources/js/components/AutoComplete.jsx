@@ -21,6 +21,7 @@ export default class AutoComplete extends Component {
         this.state = {
             showOptionList: false,
             searchValue: '',
+            currentValue: '',
             selectedItem: -1
         }
     }
@@ -63,9 +64,11 @@ export default class AutoComplete extends Component {
         const value = event.target.value;
         this.setState({
             searchValue: value,
+            currentValue: value,
             selectedItem: -1
         }, () => {
-            this.props.onInputChange(value);
+            this.props.onInputChange(value.trim());
+            this.props.onChange(value.trim());
         });
     }
 
@@ -76,12 +79,14 @@ export default class AutoComplete extends Component {
     }
 
 
-    handleKeyUp = event => {
+    handleKeyDown = event => {
         if(!this.state.showOptionList) return;
         switch(event.keyCode) {
             case 27: //Event.KEY_ESC
                 this.setState({
-                    showOptionList: false
+                    showOptionList: false,
+                    selectedItem: -1,
+                    searchValue: this.state.currentValue
                 });
                 break;
             case 9: //EVENT.KEY_TAB
@@ -98,7 +103,6 @@ export default class AutoComplete extends Component {
                 break;
             default: 
                 return;
-
         }
     }
 
@@ -130,23 +134,23 @@ export default class AutoComplete extends Component {
     }
 
     render() {
-        const { showOptionList, searchValue } = this.state;
+        const { showOptionList, searchValue, currentValue } = this.state;
         const { options, diplayField } = this.props;
         return (
-            <div className="autocomplete-container">
+            <div className="autocomplete-container" ref={this.wrapperRef}>
                 <input autoComplete="off" type="text"
                     className="shadow-none form-control form-control-sm"
                     value={this.state.searchValue}
                     onChange={this.handleChange}
-                    onKeyUp={this.handleKeyUp}
+                    onKeyDown={(e) => this.handleKeyDown(e)}
                 />
                 {
                     showOptionList &&
-                    <div className="autocomplete-items-container" ref={this.wrapperRef}>
+                    <div className="autocomplete-items-container">
                         <div className="autocomplete-items">
                             {
                                 options.map((item, index) => {
-                                    const reg = new RegExp('(' + searchValue + ')', 'gi');
+                                    const reg = new RegExp('(' + currentValue + ')', 'gi');
                                     const selected = this.state.selectedItem === index ? "selected" : ""
                                     const displayValue = (diplayField.length > 0 ? item[diplayField] : item)
                                         .replace(reg, "<span class='text-matched'>$1</span>");
