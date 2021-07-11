@@ -1,7 +1,10 @@
 ﻿namespace CRM.Criteria.Feedback.LatestFeedback
 {
+    using CRM.Core.Helpers;
     using CRM.Core.Models;
+    using CRM.Models.Feedback;
     using System;
+    using System.Collections.Generic;
 
     public class EditFeedbackCommand : BaseNonQueryCommand
     {
@@ -21,7 +24,7 @@
 
         public string LastName { get; set; }
 
-        public int Site { get; set; }
+        public int SiteID { get; set; }
 
         public string Phone { get; set; }
 
@@ -85,13 +88,27 @@
 
         public string StationID { get; set; }
 
-        public string Category { get; set; }
-
-        public int SiteID { get; set; }
-
         public int RoleID { get; set; }
 
-        public string Product { get; set; }
+        public IEnumerable<ProductFilter> Products { get; set; }
+
+        public string Product
+        {
+            get
+            {
+                return SerializerHelper.SerializeList(Products);
+            }
+        }
+
+        public IEnumerable<CategoryFilter> Categories { get; set; }
+
+        public string Category
+        {
+            get
+            {
+                return SerializerHelper.SerializeList(Categories);
+            }
+        }
 
         public int ResponseID { get; set; }
 
