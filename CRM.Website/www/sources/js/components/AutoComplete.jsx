@@ -119,6 +119,7 @@ export default class AutoComplete extends Component {
                 selectedItem: index,
                 searchValue: value
             });
+            this.props.onChange(value);
         }
     }
 
@@ -130,6 +131,7 @@ export default class AutoComplete extends Component {
             selectedItem: index,
             searchValue: value
         });
+        this.props.onChange(value);
         
     }
 

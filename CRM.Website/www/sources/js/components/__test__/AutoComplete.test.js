@@ -326,6 +326,7 @@ describe('AutoComplete', () => {
 
                 //Assert
                 expect(container.state)
+                
 
             });
 
@@ -350,6 +351,7 @@ describe('AutoComplete', () => {
                 //Assert
                 expect(container.instance().state.selectedItem).toEqual(0);
                 expect(container.instance().state.searchValue).toEqual('test');
+                expect(props.onChange).toHaveBeenCalled();
 
             });
         });
@@ -376,6 +378,7 @@ describe('AutoComplete', () => {
                 //Assert
                 expect(container.instance().state.selectedItem).toEqual(0);
                 expect(container.instance().state.searchValue).toEqual('test');
+                expect(props.onChange).toHaveBeenCalled();
 
             });
         });

@@ -17,14 +17,12 @@ export class AppContainer extends Component {
     static propTypes = {
         isHost: PropTypes.bool.isRequired,
         editCustomerInfoPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        emptyCustomerInfoPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         getCustomerInfo: PropTypes.func,
     };
 
     static defaultProps = {
         isHost: false,
         editCustomerInfoPopup: { show: false },
-        emptyCustomerInfoPopup: { show: false },
         getCustomerInfo: function () {
             //nothing
         },
@@ -38,24 +36,11 @@ export class AppContainer extends Component {
         this.props.setEditCustomerInfoPopup({ show: false });
     };
 
-    handleCloseEmptyCustomerInfoPopup = () => {
-        this.props.setEmptyCustomerInfoPopup({ show: false });
-    };
-
-    handleCheckGridData = () => {
-        if (this.props.gridData === null) {
-            this.props.setEmptyCustomerInfoPopup({ show: true });
-        } else {
-            this.props.setEmptyCustomerInfoPopup( {show: false} );
-        }
-    }
-
     render() {
         return (
             <div className="col-md-3">
                 <Filter
                     isHost={this.props.isHost}
-                    isEmpty={this.handleCheckGridData}
                 />
                 <DataGrid
                     isHost={this.props.isHost}
@@ -76,22 +61,7 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditCustomerInfoPopup}
                     />
                 }
-
-                {
-                    this.props.emptyCustomerInfoPopup.show &&
-                    <SweetModalDialog size="lg"
-                        title={LangHelper.getResource('Confirmation')}
-                        contents={
-                            LangHelper.getResource('EmptyData')
-                        }
-                        buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleCloseEmptyCustomerInfoPopup}>
-                                {LangHelper.getResource('OK')}
-                            </Button>,
-                        ]}
-                        onClose={this.handleCloseEmptyCustomerInfoPopup}
-                    />
-                }
+                
             </div>
         )
     }
@@ -102,13 +72,11 @@ const mapStateToProps = state => {
     const {
         gridParams, gridData,
         editCustomerInfoPopup,
-        emptyCustomerInfoPopup
     } = state;
     return {
         gridParams,
         gridData,
         editCustomerInfoPopup,
-        emptyCustomerInfoPopup
     };
 };
 

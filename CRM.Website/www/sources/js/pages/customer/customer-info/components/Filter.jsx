@@ -6,13 +6,16 @@ import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import Site from '@jsroot/common/site';
+import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 
 export class Filter extends Component {
     constructor(props) {
         super(props);
         this.state = {
             username: '',
-            isGuest: false
+            isGuest: false,
+            showEmptyConfirmPopup: false,
+            showEmptyCustomerInfoPopup: false
         };
     };
 
@@ -40,16 +43,43 @@ export class Filter extends Component {
         };
     };
 
-    handleSubmit = event => {
-        event.preventDefault();
+    getCustomerInfo = () => {
         const params = this.getParams();
         this.props.setGridParams(params);
         this.props.getCustomerInfo(params).then(() => {
-            if (this.props.gridData.data === null) {
-                this.props.setEmptyCustomerInfoPopup({ show: true });
+            if (this.props.gridData.data === null && !this.state.isGuest) {
+                this.setState({
+                    showEmptyConfirmPopup: true
+                });
+            } else if (this.props.gridData.data === null ) {
+                this.setState({
+                    showEmptyCustomerInfoPopup: true
+                });
             }
         });
+    }
+
+    handleSubmit = event => {
+        event.preventDefault();
+        this.getCustomerInfo();
+        
     };
+
+    handleGetCustomerIsGuest = () => {
+        this.setState({
+            isGuest: true
+        });
+        this.handleCloseEmptyConfirm();
+        this.getCustomerInfo();
+    }
+
+    handleCloseEmptyConfirm = () => {
+        this.setState({ showEmptyConfirmPopup: false});
+    }
+
+    handleCloseEmptyCustomerInfoPopup = () => {
+        this.setState({ showEmptyCustomerInfoPopup: false});
+    }
 
     handleChangeSuggestion = value => {
         this.setState({
@@ -85,13 +115,45 @@ export class Filter extends Component {
 
                         </Form.Group>
                         <Form.Group className="col-md-3 check-guest">
-                            <input type="checkbox" checked={this.state.IsGuest} className="margin-top-10"
+                            <input type="checkbox" checked={this.state.isGuest} className="margin-top-10"
                                 onChange={this.handleChange} name="isGuest"
                             /> {LangHelper.getResource('Guest')}
                         </Form.Group>
-
                     </Form.Row>
                 </Form>
+                {
+                    this.state.showEmptyCustomerInfoPopup &&
+                    <SweetModalDialog size="lg"
+                        title={LangHelper.getResource('Confirmation')}
+                        contents={
+                            LangHelper.getResource('EmptyData')
+                        }
+                        buttons={[
+                            <Button variant="primary" size="sm" onClick={this.handleCloseEmptyCustomerInfoPopup}>
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                        ]}
+                        onClose={this.handleCloseEmptyCustomerInfoPopup}
+                    />
+                }
+                {
+                    this.state.showEmptyConfirmPopup &&
+                    <SweetModalDialog size="lg"
+                        title={LangHelper.getResource('Confirmation')}
+                        contents={
+                            <div>{LangHelper.getResource('ConfirmCustomerSearchGuest')}</div>
+                        }
+                        buttons={[
+                            <Button size="sm" variant="primary" onClick={this.handleGetCustomerIsGuest}>
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                            <Button size="sm" variant="primary" onClick={this.handleCloseEmptyConfirm}>
+                                {LangHelper.getResource('Cancel')}
+                            </Button>
+                        ]}
+                        onClose={this.handleCloseEmptyConfirm}
+                    />
+                }
             </div>
 
         );

@@ -28,13 +28,11 @@ describe('connect', () => {
             gridParams: {},
             gridData: {},
             editCustomerInfoPopup: { show: false },
-            emptyCustomerInfoPopup: { show: false },
         };
         const state = {
             gridParams: {},
             gridData: {},
             editCustomerInfoPopup: { show: false },
-            emptyCustomerInfoPopup: { show: false },
         };
 
         // Act

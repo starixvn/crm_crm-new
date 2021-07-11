@@ -36,6 +36,7 @@
     CommunicationToolRequired: 'CommunicationTool is required!',
     Confirmation: 'Confirmation',
     ConfirmDirtyMessage: 'There are some changes. Are you sure you want to ignore these changes?',
+    ConfirmCustomerSearchGuest: 'Do you want to search guest customer information?',
     Content: 'Content',
     Country: 'Country',
     Currency: 'Currency',
