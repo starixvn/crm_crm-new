@@ -130,7 +130,7 @@ export class DataGrid extends Component {
             }
             {
                 isHost &&
-                <Cell onClick={() => this.handleUpdateFeedback(item.feedbackId)}>
+                <Cell>
                     {
                         this.tooltipFeedback(item)
                     }
@@ -138,7 +138,7 @@ export class DataGrid extends Component {
                         <div>Feedback date <strong> {item.feedbackDateString} </strong></div>
                         <div>By <strong> {item.creatorName} </strong> on {item.createDateString} </div>
                         <div>Solving Duration: {item.durationTime} </div>
-                        <div className={item.reviewerName ? '' : 'consecutive-container-before'}>Reviewed by <strong> {item.reviewerName} </strong> on {item.solveDate}</div>
+                        <div className={item.reviewerName ? '' : 'consecutive-container-before'}>Reviewed by <strong> {item.reviewerName} </strong> on {item.solveDateString}</div>
                     </div>
                 </Cell>
             }
@@ -146,8 +146,7 @@ export class DataGrid extends Component {
                 <div dangerouslySetInnerHTML={{ __html: this.renderCategoryColumn(item) }} />
             </Cell>
             <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
-            <Cell>{item.relatedCustomer}</Cell>
-
+            <Cell>{item.relatedCustomer.split(',').join(', ')}</Cell>
         </Row>
     );
 
@@ -199,7 +198,7 @@ export class DataGrid extends Component {
                         <span className="rounded-circle fa fa-pencil-square-o"
                             onClick={() => this.handleUpdateFeedback(item.feedbackId)}
                         />
-                        <strong className='link-click'> {item.subject}</strong>
+                        <strong className='link-click' onClick={() => this.handleUpdateFeedback(item.feedbackId)}> {item.subject}</strong>
                     </div>
                 }
             </OverlayTrigger>

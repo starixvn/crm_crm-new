@@ -5,5 +5,6 @@ namespace CRM.Models.Customer
     {
         public int CustId { get; set; }
         public string Val { get; set; }
+        public string UserName { get; set; }
     }
 }

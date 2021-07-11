@@ -4,7 +4,6 @@ const latestFeedbackSlice = createSlice({
     name: 'latestFeedback',
     initialState: {
         gridData: null,
-        tops: [],
         gridParams: { top: 10 },
         editLatestFeedbackPopup: { show: false },
         editLatestFeedbackResult: '',
@@ -19,9 +18,6 @@ const latestFeedbackSlice = createSlice({
         feedback: null
     },
     reducers: {
-        setTops: (state, action) => {
-            state.tops = action.payload;
-        },
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -65,7 +61,6 @@ export const {
     setLatestFeedback,
     setEditLatestFeedbackPopup,
     setEditLatestFeedbackResult,
-    setTops,
     setEditNoInquiriesPopup,
     setEditNoInquiriesResult,
     setUpdateFeedbackPopup,

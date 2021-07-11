@@ -7,13 +7,6 @@ import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class Filter extends Component {
-    static propTypes = {
-        tops: PropTypes.arrayOf(PropTypes.object)
-    };
-
-    static defaultProps = {
-        tops: []
-    };
 
     constructor(props) {
         super(props);
@@ -37,9 +30,10 @@ export class Filter extends Component {
         this.props.getLatestFeedback(params);
     };
 
-    renderOptions = (item, key) => <option key={key} value={item.id}>{item.name}</option>;
+    renderOptions = (item, key) => <option key={key} value={item}>{item}</option>;
 
     render() {
+        const tops = [10, 20, 30, 40, 50];
 
         return (
             <Form className="form-filter" >
@@ -50,7 +44,7 @@ export class Filter extends Component {
                             value={this.state.top}
                             onChange={this.handleTopChange}
                         >
-                            {this.props.tops.map(this.renderOptions)}
+                            {tops.map(this.renderOptions)}
                         </Form.Control>
                     </Form.Group>
                 </Form.Row>
@@ -62,8 +56,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData, tops } = state;
-    return { gridParams, gridData, tops };
+    const { gridParams, gridData } = state;
+    return { gridParams, gridData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

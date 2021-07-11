@@ -5,7 +5,6 @@ import {
     setLatestFeedback,
     setEditLatestFeedbackPopup,
     setEditLatestFeedbackResult,
-    setTops,
     setEditNoInquiriesPopup,
     setEditNoInquiriesResult,
     setUpdateFeedbackPopup,
@@ -34,13 +33,6 @@ const editLatestFeedback = data => async dispatch => {
     const url = Site.resolveClientUrl('LatestFeedback/EditFeedback');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setEditLatestFeedbackResult(response.data));
-    });
-};
-
-const getTops = () => async dispatch => {
-    const url = Site.resolveClientUrl('LatestFeedback/GetTops');
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setTops(response.data));
     });
 };
 
@@ -99,8 +91,6 @@ export const ActionCreators = {
     setEditLatestFeedbackResult,
     getLatestFeedback,
     editLatestFeedback,
-    setTops,
-    getTops,
     exportExcel,
     setEditNoInquiriesPopup,
     setEditNoInquiriesResult,

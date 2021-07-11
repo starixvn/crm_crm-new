@@ -16,7 +16,6 @@ export class AppContainer extends Component {
     static propTypes = {
         isHost: PropTypes.bool.isRequired,
         getLatestFeedback: PropTypes.func,
-        getTops: PropTypes.func,
         editNoInquiriesPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         updateFeedbackPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
     };
@@ -28,16 +27,12 @@ export class AppContainer extends Component {
         getLatestFeedback: function () {
             //nothing
         },
-        getTops: function () {
-            //nothing
-        },
         getAllSettings: function () {
             //nothing
         }
     };
 
     componentDidMount() {
-        this.props.getTops();
         this.props.getLatestFeedback(this.props.gridParams);
         this.props.getAllSettings();
     };
@@ -49,7 +44,6 @@ export class AppContainer extends Component {
 
     handleEditSuccess = () => {
         this.handleCloseEditPopup();
-        this.props.getLatestFeedback(this.props.gridParams);
     };
 
     handleCloseUpdateFeedbackPopup = () => {
@@ -65,7 +59,7 @@ export class AppContainer extends Component {
     render() {
         return (
             <Fragment>
-                <Filter isHost={this.props.isHost} />
+                <Filter />
                 <DataGrid isHost={this.props.isHost} />
                 {
                     this.props.editNoInquiriesPopup.show &&

@@ -17,7 +17,7 @@
     {
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
 
-        Task<CommandResult> EditNoInquiries(EditNoInquiries model);
+        Task<CommandResult> EditNoInquiries(EditNoInquiries model, string clientIP);
 
         Task<EditNoInquiries> GetNoInquiriesAsync(int id);
 
@@ -70,27 +70,12 @@
 
         public Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param)
         {
-            if (param.CustId == 0)
+            var criteria = new LatestFeedbackCriteria
             {
-                var criteria = new LatestFeedbackCriteria
-                {
-                    Username = param.Username,
-                    Top = param.Top
-                };
+                Top = param.Top
+            };
 
-                return feedbackRepository.GetDeletedFeedbacksAsync(criteria);
-            }
-            else
-            {
-                var criteria = new LatestFeedbackByCustIdCriteria
-                {
-                    CustId = param.CustId,
-                    Username = param.Username,
-                    Top = param.Top
-                };
-
-                return feedbackRepository.GetDeletedFeedbacksAsync(criteria);
-            }
+            return feedbackRepository.GetDeletedFeedbacksAsync(criteria);
         }
 
         public async Task<EditNoInquiries> GetNoInquiriesAsync(int id)
@@ -103,12 +88,12 @@
             return await baseService.GetDataEntityAsync<EditNoInquiries>(criteria);
         }
 
-        public async Task<CommandResult> EditNoInquiries(EditNoInquiries model)
+        public async Task<CommandResult> EditNoInquiries(EditNoInquiries model, string clientIP)
         {
             var command = new EditNoInquiriesCommand
             {
                 UserId = napSession.UserId,
-                IP = string.Empty,
+                IP = clientIP,
                 FeedbackID = model.FeedbackID,
                 NoInquiries = model.NoInquiries
             };

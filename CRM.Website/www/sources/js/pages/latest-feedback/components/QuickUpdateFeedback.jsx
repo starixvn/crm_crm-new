@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -10,6 +9,7 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
+import { validateNoOfInquiries, validateInquiriesInput } from '../common.functions';
 
 export class QuickUpdateFeedback extends PureComponent {
     constructor(props) {
@@ -31,16 +31,6 @@ export class QuickUpdateFeedback extends PureComponent {
         }
     };
 
-    validateInquiriesInput = (event) => {
-        if ([8, 46, 37, 39, 35, 36].includes(event.which)) {
-            return;
-        }
-
-        if (!event.ctrlKey && !event.key.match(/^\d+$/)) {
-            event.preventDefault();
-        }
-    };
-
     renderForm = ({
         errors,
         values,
@@ -52,7 +42,6 @@ export class QuickUpdateFeedback extends PureComponent {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.editNoInquiriesResult &&
                         <ResponseMessage isSuccessful={this.props.editNoInquiriesResult.isSuccessful}
@@ -64,10 +53,12 @@ export class QuickUpdateFeedback extends PureComponent {
                             {LangHelper.getResource('NoOfInquiries')}
                         </Form.Label>
                         <Col md="6" sm="8">
-                            <Form.Control size="md" type="number" min="1" value={values.noInquiries} id="noInquiries" name="noInquiries"
+                            <Form.Control size="md" type="number" min="1" max="32000" value={values.noInquiries} id="noInquiries" name="noInquiries"
                                 onChange={handleChange}
                                 className="shadow-none" autoComplete="off"
-                                onKeyDown={this.validateInquiriesInput}
+                                onKeyDown={validateInquiriesInput}
+                                onInput={validateNoOfInquiries}
+
                             />
                         </Col>
                     </Form.Group>
@@ -116,9 +107,7 @@ export class QuickUpdateFeedback extends PureComponent {
                     <Modal.Title as="div">{LangHelper.getResource('QuickUpdate')}</Modal.Title>
                 </Modal.Header>
                 <Formik
-                    innerRef={p => (this.formik = p)}
                     initialValues={initialValues}
-                    validate={this.validateFormik}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}

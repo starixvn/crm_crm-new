@@ -98,24 +98,10 @@
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
 
-        public IActionResult GetTops()
-        {
-            var tops = new List<BaseModel>
-                {
-                    new BaseModel { Id = 10, Name = "10" },
-                    new BaseModel { Id = 20, Name = "20" },
-                    new BaseModel { Id = 30, Name = "30" },
-                    new BaseModel { Id = 40, Name = "40" },
-                    new BaseModel { Id = 50, Name = "50" }
-                };
-
-            return Json(tops);
-        }
-
         [HttpPost]
         public async Task<IActionResult> EditNoInquiries([FromBody] EditNoInquiries model)
         {
-            CommandResult commandResult = await feedbackService.EditNoInquiries(model);
+            CommandResult commandResult = await feedbackService.EditNoInquiries(model, ClientIP);
             return Json(commandResult);
         }
 
@@ -180,7 +166,7 @@
         [HttpPost]
         public async Task<IActionResult> EditFeedback([FromBody] EditFeedbackCommand command)
         {
-            command.UserId = napSession.UserId;
+            command.UserID = napSession.UserId;
             command.IP = ClientIP;
             var commandResult = await feedbackService.EditFeedbackAsync(command);
 
