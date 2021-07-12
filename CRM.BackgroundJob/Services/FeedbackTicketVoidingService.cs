@@ -9,6 +9,7 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models;
     using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
@@ -17,11 +18,11 @@
     public interface IFeedbackTicketVoidingService
     {
         Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> GetTicketVoidingInfoAsync(
-               IEnumerable<VoidingMessage> voidingMessages,
+               IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
                AbnormalBetSystemSetting setting);
 
         Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> ImportTicketVoidingInfoAsync(
-            IEnumerable<VoidingMessage> voidingMessages,
+            IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
             IEnumerable<MatchInfo> matchInfos,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SiteSettingMapping> siteSettingMappings,
@@ -58,12 +59,27 @@
         }
 
         public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> GetTicketVoidingInfoAsync(
-               IEnumerable<VoidingMessage> voidingMessages,
+               IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
                AbnormalBetSystemSetting setting)
         {
+            const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' UsernameList='{2}' CustIdList='{3}'/>";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+
+            foreach (var voidingMessageUserName in voidingMessageUserNames)
+            {
+                stringBuilder.AppendFormat(XmlTemplate,
+                    voidingMessageUserName.MessageId,
+                    voidingMessageUserName.RequestId,
+                    voidingMessageUserName.UsernameList,
+                    voidingMessageUserName.CustIdList
+                    );
+            }
+
+            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+
             var criteria = new GetAbnormalTicketInfoCriteria
             {
-                MessageIds = voidingMessages.ToXML("ROOT").ToString(),
+                MessageIds = stringBuilder.ToString(),
                 ConfigUAT = setting.ConfigUAT,
                 ConfigPRO = setting.ConfigPRO,
                 Environment = Environment
@@ -73,8 +89,9 @@
             var messageIds = ticketInfo.Item1.Where(x => !ticketInfo.Item2.Any(y => x.MessageId == y.MessageId)).Select(x => x.MessageId).ToList();
             if (messageIds.Any())
             {
-                IEnumerable<VoidingMessage> messages = voidingMessages.Where(x => messageIds.Any(y => x.MessageId == y));
-                await messageService.EditStatusVoidingMessageAsync(messages);
+                var voidingMessages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
+                var message = (IEnumerable<VoidingMessage>)voidingMessages;
+                await messageService.EditStatusVoidingMessageAsync(message);
                 logService.LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", messageIds)));
             }
 
@@ -83,7 +100,7 @@
         }
 
         public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> ImportTicketVoidingInfoAsync(
-            IEnumerable<VoidingMessage> voidingMessages,
+            IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
             IEnumerable<MatchInfo> matchInfos,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SiteSettingMapping> siteSettingMappings,
@@ -91,7 +108,7 @@
             CustomerInfo licenseeInfo)
         {
             logService.LogInformation("Abnormal Bet - Begin import ticket info");
-            const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' />";
+            const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' IssueTypeId='{6}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             var transactionInfosDistinct = transactionInfos.Select(x => new
             {
@@ -127,7 +144,8 @@
                     transaction.CustId,
                     headlineId,
                     relatedCustId,
-                    string.Format("{0} -vs- {1}", HttpUtility.HtmlEncode(matchInfo?.HomeName), HttpUtility.HtmlEncode(matchInfo?.AwayName)));
+                    string.Format("{0} -vs- {1}", HttpUtility.HtmlEncode(matchInfo?.HomeName), HttpUtility.HtmlEncode(matchInfo?.AwayName)),
+                    matchInfo?.IssueTypeId);
             }
 
             stringBuilder.Append(Constants.EndRootTag);
@@ -140,7 +158,8 @@
             var messageIds = matchInfos.Where(x => !feedbackInfos.Any(y => y.MessageId == x.MessageId)).Select(x => x.MessageId).ToList();
             if (messageIds.Any())
             {
-                IEnumerable<VoidingMessage> messages = voidingMessages.Where(x => messageIds.Any(y => x.MessageId == y));
+                var voidingMessages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
+                var messages = (IEnumerable<VoidingMessage>)voidingMessages;
                 await messageService.EditStatusVoidingMessageAsync(messages);
                 logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", messageIds)));
             }

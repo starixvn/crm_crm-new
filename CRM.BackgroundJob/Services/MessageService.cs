@@ -1,21 +1,34 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Criteria.AutoFeedback;
+    using global::CRM.BackgroundJob.Models;
     using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
 
     public interface IMessageService
     {
-        Task<IEnumerable<VoidingMessage>> GetVoidingMessageAsync();
+        Task<ValueTuple<IEnumerable<VoidingMessage>, IEnumerable<VoidingHisMessage>>> GetVoidingMessageAsync();
 
-        Task<IEnumerable<VoidingMessage>> ImportVoidingMessageAsync(IEnumerable<VoidingMessage> voidingMessages, int batchSize);
+        Task<IEnumerable<VoidingHisMessage>> ImportVoidingMessageHistoryCheckAsync(IEnumerable<VoidingHisMessage> voidingHisMessage);
 
-        Task<IEnumerable<VoidingMessage>> GetFailMessageAsync();
+        Task<IEnumerable<VoidingMessageUserName>> voidingHisMessageUserNameList(IEnumerable<VoidingHisMessage> messageImportCheck);
+
+        Task<IEnumerable<VoidingMessageUserName>> ImportVoidingMessageAsync(
+            IEnumerable<VoidingMessageUserName> voidingMessageUserName,
+            IEnumerable<VoidingMessage> voidingMessages,
+            int batchSize,
+            string Environment,
+            DateTime LastDateUAT);
+
+        Task<IEnumerable<VoidingMessageUserName>> GetFailMessageAsync();
 
         Task<IEnumerable<Message>> GetMessageInfoAsync(IEnumerable<int> messageIds);
 
@@ -31,28 +44,68 @@
             this.baseService = baseService;
         }
 
-        public async Task<IEnumerable<VoidingMessage>> GetVoidingMessageAsync()
+        public async Task<ValueTuple<IEnumerable<VoidingMessage>, IEnumerable<VoidingHisMessage>>> GetVoidingMessageAsync()
         {
             var criteria = new GetVoidingMessageCriteria();
-            return await baseService.GetDataAsync<VoidingMessage>(criteria);
+            return await baseService.FetchMultipleAsync<VoidingMessage, VoidingHisMessage>(criteria);
         }
 
-        public async Task<IEnumerable<VoidingMessage>> ImportVoidingMessageAsync(
-            IEnumerable<VoidingMessage> voidingMessages,
-            int batchSize)
+        public async Task<IEnumerable<VoidingHisMessage>> ImportVoidingMessageHistoryCheckAsync(
+           IEnumerable<VoidingHisMessage> voidingHisMessage
+            )
         {
+            var criteria = new GetVoidingMessageHistoryCheckFbCriteria
+            {
+                Messages = voidingHisMessage.ToXML("root").ToString(),
+            };
+            return await baseService.GetDataAsync<VoidingHisMessage>(criteria);
+        }
+
+        public async Task<IEnumerable<VoidingMessageUserName>> voidingHisMessageUserNameList(
+           IEnumerable<VoidingHisMessage>  messageImportCheck
+            )
+        {
+            var criteria = new GetVoidingHisMessageUserNameCriteria
+            {
+                Messages = messageImportCheck.ToXML("root").ToString()
+            };
+            return await baseService.GetDataAsync<VoidingMessageUserName>(criteria);
+        }
+
+        public async Task<IEnumerable<VoidingMessageUserName>> ImportVoidingMessageAsync(
+            IEnumerable<VoidingMessageUserName> voidingMessageUserName,
+            IEnumerable<VoidingMessage> voidingMessages,
+            int batchSize,
+            string Environment,
+            DateTime LastDateUAT)
+        {
+            const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' UsernameList='{2}' CustIdList='{3}'/>";
+            var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag.ToLowerInvariant());
+            foreach (var message in voidingMessages)
+            {
+                VoidingMessageUserName userName = voidingMessageUserName.FirstOrDefault(x => x.MessageId == message.MessageId && x.RequestId == message.RequestId);
+
+                stringBuilder.AppendFormat(XmlTemplate,
+                    message.MessageId,
+                    message.RequestId,
+                    userName?.UsernameList,
+                    userName?.CustIdList);
+            }
+            stringBuilder.Append(Constants.Constants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportVoidingMessageCriteria
             {
-                MessageIds = voidingMessages.ToXML("ROOT").ToString(),
-                BatchSize = batchSize
+                MessageIds = XmlTemplate.ToString(),
+                BatchSize = batchSize,
+                Environment = Environment,
+                LastDateUAT = LastDateUAT
             };
-            return await baseService.GetDataAsync<VoidingMessage>(criteria);
+            return await baseService.GetDataAsync<VoidingMessageUserName>(criteria);
         }
 
-        public async Task<IEnumerable<VoidingMessage>> GetFailMessageAsync()
+        public async Task<IEnumerable<VoidingMessageUserName>> GetFailMessageAsync()
         {
             var criteria = new GetFailMessageCriteria();
-            return await baseService.GetDataAsync<VoidingMessage>(criteria);
+            return await baseService.GetDataAsync<VoidingMessageUserName>(criteria);
         }
 
         public async Task<IEnumerable<Message>> GetMessageInfoAsync(IEnumerable<int> messageIds)

@@ -8,6 +8,7 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
@@ -31,6 +32,8 @@
         private readonly ICRMLogService logService;
         private readonly IFeedbackTicketVoidingService ticketVoidingService;
         private readonly ICommonFeedback commonFeedback;
+
+        private const int abnormalAccount = 13;
 
 #pragma warning disable S107 // Methods should not have too many parameters
         public FeedbackService(
@@ -64,27 +67,56 @@
         {
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoFB);
 
-            IEnumerable<VoidingMessage> voidingMessages = await messageService.GetVoidingMessageAsync();
-            voidingMessages = await messageService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize);
-            IEnumerable<VoidingMessage> failMessages = await messageService.GetFailMessageAsync();
-            voidingMessages = voidingMessages.Concat(failMessages).Distinct().ToList();
-            if (!voidingMessages.Any())
+            var voidingMessages = await messageService.GetVoidingMessageAsync();
+            var messageImportCheck = await messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2);
+            var voidingMessageUserName = Enumerable.Empty<VoidingMessageUserName>();
+            if (messageImportCheck.Any() && voidingMessages.Item2.Any())
             {
-                await EditSystemSettingAsync();
+                voidingMessageUserName = await messageService.voidingHisMessageUserNameList(messageImportCheck);
+            } 
+            
+            var messagesImport = await messageService.ImportVoidingMessageAsync(voidingMessageUserName,
+                voidingMessages.Item1, 
+                setting.BatchSize,
+                Environment,
+                setting.LastDateUAT);
+
+            IEnumerable<VoidingMessageUserName> failMessages = await messageService.GetFailMessageAsync();
+            var messagesImportCombineDistinct = messagesImport.Concat(failMessages).Distinct().ToList();
+            if (!messagesImportCombineDistinct.Any())
+            {
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
                 return;
             }
-
-            IEnumerable<int> messageIds = voidingMessages.Select(x => x.MessageId).Distinct().ToList();
+            IEnumerable<int> messageIds = messagesImportCombineDistinct.Select(x => x.MessageId).Distinct().ToList();
             IEnumerable<Message> messages = await messageService.GetMessageInfoAsync(messageIds);
-            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(voidingMessages, setting);
+            
+            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(messagesImportCombineDistinct, setting);
             if (!ticketInfo.Item1.Any())
             {
-                await EditSystemSettingAsync();
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
                 return;
             }
 
             logService.LogInformation(string.Format("Abnormal Bet - Create feedback for messages: {0}", string.Join(",", ticketInfo.Item1.Select(x => x.MessageId))));
 
+            await CreateFeedbackForCreditDepositSiteAsync(
+                messages,
+                ticketInfo,
+                messagesImportCombineDistinct,
+                JobStatusNameEnv,
+                LastRuntimeNameEnv
+            );
+        }
+
+        protected internal virtual async Task CreateFeedbackForCreditDepositSiteAsync(
+            IEnumerable<Message> messages,
+            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo,
+            IEnumerable<VoidingMessageUserName> messagesImportCombineDistinct,
+            string JobStatusNameEnv,
+            string LastRuntimeNameEnv
+        )
+        {
             var settingNames = new[] { SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
@@ -94,7 +126,7 @@
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
 
             ticketInfo = await ticketVoidingService.ImportTicketVoidingInfoAsync(
-                voidingMessages,
+                messagesImportCombineDistinct,
                 ticketInfo.Item1,
                 ticketInfo.Item2,
                 siteSettingMappings,
@@ -131,8 +163,9 @@
                 }
             }
 
-            await EditSystemSettingAsync();
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
         }
+
 
         protected internal virtual async Task CreateFeedbackForCreditSiteAsync(
             Message message,
@@ -555,21 +588,35 @@
         {
             var stringBuilder = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
             stringBuilder.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
-            stringBuilder.Append("<br />Announcement sent to affected Licensees and informed our related department found abnormal tickets of members for the match.");
+            stringBuilder.Append("<br />Announcement sent to affected Licensees and informed our related department found tickets of abnormal accounts.");
             stringBuilder.Append("<br /><br />Please refer to the system email subject \"Voided Bets Report\" for those affected customers &amp; tickets for reference.");
             return stringBuilder.ToString();
         }
 
         protected internal virtual string GetDescriptionForCreditSite(int messageId, string requestIds, MatchInfo matchInfo)
         {
-            var stringBuilder = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
-            stringBuilder.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
-            stringBuilder.AppendFormat("<br />Date: {0}", matchInfo.EventDate.ToString("dd-MMM-yyyy"));
-            stringBuilder.AppendFormat("<br />Sport: {0}", matchInfo.SportName);
-            stringBuilder.AppendFormat("<br />Event Start Time: {0}", matchInfo.KickOffTime);
-            stringBuilder.AppendFormat("<br />League: {0}", matchInfo.LeagueName);
-            stringBuilder.AppendFormat("<br />Match: {0} - vs - {1}", matchInfo.HomeName, matchInfo.AwayName);
-            return stringBuilder.ToString();
+            if(matchInfo.IssueTypeId != abnormalAccount)
+            {
+                var stringBuilder = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
+                stringBuilder.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
+                stringBuilder.AppendFormat("<br />Date: {0}", matchInfo.EventDate.ToString("dd-MMM-yyyy"));
+                stringBuilder.AppendFormat("<br />Sport: {0}", matchInfo.SportName);
+                stringBuilder.AppendFormat("<br />Event Start Time: {0}", matchInfo.KickOffTime);
+                stringBuilder.AppendFormat("<br />League: {0}", matchInfo.LeagueName);
+                stringBuilder.AppendFormat("<br />Match: {0} - vs - {1}", matchInfo.HomeName, matchInfo.AwayName);
+                return stringBuilder.ToString();
+            }    
+            else
+            {
+                var stringBuilderAbnormalAccount = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
+                stringBuilderAbnormalAccount.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
+                stringBuilderAbnormalAccount.AppendFormat("<br />Event Date: {0} - {1}", matchInfo.MinWinlostdate.ToString("dd-MMM-yyyy"), matchInfo.MaxWinlostdate.ToString("dd-MMM-yyyy"));
+                stringBuilderAbnormalAccount.AppendFormat("<br />Affected accounts: {0}", matchInfo.AffectedAccounts);
+                stringBuilderAbnormalAccount.AppendFormat("<br />Decided By: {0}", matchInfo.DecidedBy);
+                stringBuilderAbnormalAccount.AppendFormat("<br />Requested by: {0}", matchInfo.Requestby);
+                stringBuilderAbnormalAccount.AppendFormat("<br />Voided by: {0}", matchInfo.VoidBy);
+                return stringBuilderAbnormalAccount.ToString();
+            }    
         }
 
         protected internal virtual string GetSolution(Message message)
@@ -584,10 +631,10 @@
             var stringBuilder = new StringBuilder(message.Content_en);
             stringBuilder.Append("<br /><br />").Append(message.Content_cs);
             stringBuilder.Append("<br /><br />Kindly refer to Agency site \"Cancelled Bets\" for Voided user.");
-            stringBuilder.Append("<br /><br />Affected users and tickets:");
+            stringBuilder.Append("<br /><br />Affected users / 受影响会员:");
             foreach (var transaction in transactionInfos)
             {
-                stringBuilder.AppendFormat("<br />{0} {1}", transaction.Username, transaction.TransId);
+                stringBuilder.AppendFormat("<br />{0}", transaction.Username);
             }
 
             return stringBuilder.ToString();
