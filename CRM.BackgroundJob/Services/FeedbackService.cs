@@ -8,13 +8,16 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
 
     public interface IFeedbackService
     {
-        Task CreateFeedbackForVoidingAbnormalBetAsync(AbnormalBetSystemSetting setting);
+        Task CreateFeedbackForVoidingAbnormalBetAsync(AbnormalBetSystemSetting setting, bool isUAT,
+            DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
+            string JobStatusNameEnv, string Environment);
     }
 
     public class FeedbackService : IFeedbackService
@@ -27,6 +30,7 @@
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
         private readonly IFeedbackTicketVoidingService ticketVoidingService;
+        private readonly ICommonFeedback commonFeedback;
 
 #pragma warning disable S107 // Methods should not have too many parameters
         public FeedbackService(
@@ -37,7 +41,10 @@
             IMessageService messageService,
             ICustomerService customerService,
             ICRMLogService logService,
-            IFeedbackTicketVoidingService ticketVoidingService)
+            IFeedbackTicketVoidingService ticketVoidingService,
+            ICommonFeedback commonFeedback
+            )
+
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             this.appSettings = appSettings.Value;
@@ -48,16 +55,14 @@
             this.customerService = customerService;
             this.logService = logService;
             this.ticketVoidingService = ticketVoidingService;
+            this.commonFeedback = commonFeedback;
         }
 
-        public async Task CreateFeedbackForVoidingAbnormalBetAsync(AbnormalBetSystemSetting setting)
+    public async Task CreateFeedbackForVoidingAbnormalBetAsync(AbnormalBetSystemSetting setting, bool isUAT,
+            DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
+            string JobStatusNameEnv, string Environment)
         {
-            var settingJobStatus = new List<SystemSettingItem>
-            {
-                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") }
-            };
-            await systemSettingService.EditSystemSettingAsync(settingJobStatus);
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoFB);
 
             IEnumerable<VoidingMessage> voidingMessages = await messageService.GetVoidingMessageAsync();
             voidingMessages = await messageService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize);

@@ -10,7 +10,5 @@
         public int LastSeqUAT { get; set; }
         public DateTime LastSubmitDate { get; set; }
         public DateTime LastSubmitDateUAT { get; set; }
-        public string JobStatusUAT { get; set; }
-        public DateTime LastRuntimeUAT { get; set; }
     }
 }
