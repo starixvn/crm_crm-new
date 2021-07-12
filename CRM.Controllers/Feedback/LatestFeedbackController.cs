@@ -4,7 +4,6 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Models;
     using CRM.Criteria.Feedback.LatestFeedback;
-    using CRM.Models;
     using CRM.Models.Feedback;
     using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.LatestFeedback;
@@ -20,13 +19,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class LatestFeedbackController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         private readonly IFeedbackService feedbackService;
@@ -34,21 +30,18 @@
 
         public LatestFeedbackController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             IExportExcelService excelService,
             ISettingService settingService,
             IFeedbackService feedbackService)
         {
+
             this.napSession = napSession;
-            this.napSettings = napSettings;
             this.settingService = settingService;
             this.excelService = excelService;
             this.feedbackService = feedbackService;
         }
         public IActionResult Index()
         {
-            //var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.LatestFeedback, Policy.Host);
             return View(true);
         }
         [HttpPost]
@@ -93,7 +86,9 @@
         public async Task<IActionResult> ExportLatestFeedbackReport([FromBody] GetLatestFeedbackParam param)
         {
             var reports = await GetFeedbacks(param);
-            var bytes = excelService.ExportLatestFeedbackReport(reports);
+            IEnumerable<Setting> mainCategories = await GetAllMainCategoriesFromAllSettings();
+
+            var bytes = excelService.ExportLatestFeedbackReport(reports, mainCategories, param.Top);
             string reportName = string.Format(ViewResources.FeedbackReport_Title, param.Top);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }

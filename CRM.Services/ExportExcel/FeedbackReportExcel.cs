@@ -1,28 +1,37 @@
 ﻿namespace CRM.Services
 {
+    using CRM.Core.Models;
     using CRM.Core.Models.Feedback;
+    using CRM.Models.Setting;
     using CRM.Resources;
     using OfficeOpenXml;
+    using OfficeOpenXml.Style;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     internal class FeedbackReportExcel : ExcelBase
     {
         private readonly IEnumerable<FeedbackDetail> feedbacks;
+        private readonly IEnumerable<Setting> mainCategories;
+        private readonly int top;
 
         private const byte RowStartBody = 6;
         private const byte RowStartHeader = 4;
         private const byte StartComToolsIndex = 7;
 
-        public FeedbackReportExcel(string templatePath, IEnumerable<FeedbackDetail> feedbacks) : base(templatePath, 0, ViewResources.LatestFeedback)
+        public FeedbackReportExcel(string templatePath, IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, int top) : base(templatePath, 0, ViewResources.LatestFeedback)
         {
             this.feedbacks = feedbacks;
+            this.mainCategories = mainCategories;
+            this.top = top;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]
                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
+            worksheet.Cells[1, 1].Value = string.Format(ViewResources.FeedbackReport_Title, top);
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -43,16 +52,193 @@
         private void RenderRow(ExcelWorksheet worksheet, FeedbackDetail feedbackDetail, int index, int rowIndex)
         {
             var colIndex = 1;
+            var feedbackCellValue = GetFeedbackCellValue(feedbackDetail);
+            var categoryContents = BuildCategoryContent(feedbackDetail, mainCategories);
+            var categoryCellValue = String.Join("\n\n", categoryContents);
             worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.FeedbackId;
-            worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Subject;
-            worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.FeedbackDateString;
+            worksheet.Cells[rowIndex, colIndex++].Value = feedbackCellValue;
+            worksheet.Cells[rowIndex, colIndex++].Value = categoryCellValue;
             worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Status;
-            worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.RelatedCustomer;
-            
+            worksheet.Cells[rowIndex, colIndex].Value = feedbackDetail.RelatedCustomer.Replace(",", ", ");
+
             if ((index & 1) == 0)
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
             }
+        }
+
+        protected internal override void ProcessUI(ExcelWorksheet worksheet)
+        {
+            SetStyle(worksheet);
+            SetWidthColumn(worksheet);
+        }
+
+        protected internal virtual void SetStyle(ExcelWorksheet worksheet)
+        {
+            StyleDefault(worksheet);
+            worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+        }
+
+        protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
+        {
+            const int WidthNormal = 15;
+            const int RowHeight = 60;
+            const int WidthLarge = 35;
+            const int ColumnRunningNo = 1;
+            const int ColumnFeedback = 2;
+            const int ColumnCategory = 3;
+            const int ColumnStatus = 4;
+            const int ColumnRelCustomer = 5;
+            const int TotalColumn = ColumnRelCustomer;
+            worksheet.DefaultColWidth = WidthLarge;
+            worksheet.Cells.AutoFitColumns();
+            worksheet.Column(ColumnRunningNo).Width = WidthNormal;
+            worksheet.Column(ColumnFeedback).Width = WidthLarge;
+            worksheet.Column(ColumnCategory).Width = WidthLarge;
+            worksheet.Column(ColumnStatus).Width = WidthNormal;
+            worksheet.Column(ColumnRelCustomer).Width = WidthLarge;
+            for (var index = 0; index < feedbacks.Count() - 1; index++)
+            {
+                worksheet.Row(RowStartBody + index).Height = RowHeight;
+                DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumn]);
+
+            }
+        }
+
+        protected static string[] BuildCategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
+        {
+            return GetCategoryContent(feedback.Settings, mainCategories);
+        }
+
+        private static string[] GetCategoryContent(List<SettingItems> settings, IEnumerable<Setting> mainCategories)
+        {
+            return GetCategoryContentWithoutSettingType(settings.Where(i => i.SettingType == "Category"), mainCategories);
+        }
+
+        public static string[] GetCategoryContentWithoutSettingType(
+            IEnumerable<SettingItems> settings,
+            IEnumerable<Setting> mainCategories)
+        {
+            return settings
+                    .GroupBy(s => s.SettingID)
+                    .Select(s =>
+                    {
+                        var con = GetMainCategoryName(s.Key, mainCategories);
+                        var subIds = s.Select(e => e.SubSettingID).ToList();
+                        foreach (var id in subIds)
+                        {
+                            con = string.Join(string.Empty, con, "\n  ", GetSubCategoryName(s.Key, id, mainCategories));
+                        }
+
+                        return con;
+                    })
+                    .ToArray();
+        }
+
+        public static string[] GetProductContent(
+                IEnumerable<SettingItems> settings,
+                IEnumerable<Product> productList,
+                IEnumerable<Product> subProductList)
+        {
+            return settings
+                  .Where(i => i.SettingType == "Product")
+                  .GroupBy(s => s.SettingID)
+                  .Select(s =>
+                  {
+                      var con = GetProductName(s.Key, productList);
+                      var subIds = s.Select(e => e.SubSettingID).Distinct().ToList();
+                      foreach (var id in subIds)
+                      {
+                          con = string.Join(string.Empty, con, "\n  ", GetSubProductName(id, subProductList));
+                      }
+
+                      return con;
+                  })
+                  .ToArray();
+        }
+
+        public static string[] GetCommunicationContent(
+            IEnumerable<SettingItems> settings,
+            IEnumerable<Setting> communicationToolList)
+        {
+            return settings
+                   .Where(i => i.SettingType == "Communication")
+                   .Select(s =>
+                   {
+                       return GetCommunicationName(s.SettingID, communicationToolList);
+                   })
+                   .ToArray();
+        }
+
+        public static string[] GetExtensionContent(
+            IEnumerable<SettingItems> settings,
+            IEnumerable<SettingRelation> extensionList)
+        {
+            return settings
+                  .Where(i => i.SettingType == "Station")
+                  .Select(s =>
+                  {
+                      return GetExtensionName(s.SettingID, extensionList);
+                  })
+                  .ToArray();
+        }
+
+        public static string GetSubCategoryName(
+            int mainCategoryId,
+            int subCategoryId,
+            IEnumerable<Setting> mainCategories)
+        {
+            var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
+            var child = mainCategory == null ? null : mainCategory.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
+            return child == null ? string.Empty : child.SettingName;
+        }
+
+        public static string GetProductName(int id, IEnumerable<Product> productList)
+        {
+            var product = productList.FirstOrDefault(c => c.Id == id);
+            return product == null ? "N/A" : product.Name;
+        }
+
+        public static string GetSubProductName(int id, IEnumerable<Product> subProductList)
+        {
+            var subProduct = subProductList.FirstOrDefault(c => c.Id == id);
+            return subProduct == null ? "N/A" : subProduct.Name;
+        }
+
+        public static string GetCommunicationName(int id, IEnumerable<Setting> communicationToolList)
+        {
+            var item = communicationToolList.FirstOrDefault(c => c.Id == id);
+            return item == null ? string.Empty : item.Name;
+        }
+
+        public static string GetExtensionName(int id, IEnumerable<SettingRelation> extensionList)
+        {
+            var item = extensionList.FirstOrDefault(c => c.Id == id);
+            return item == null ? "N/A" : item.Value;
+        }
+
+        private static string GetMainCategoryName(int mainCategoryId, IEnumerable<Setting> mainCategories)
+        {
+            var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
+            return mainCategory == null ? string.Empty : mainCategory.SettingValue;
+        }
+
+        protected static string GetFeedbackCellValue(FeedbackDetail feedback)
+        {
+            var cellValue = string.Format(
+                "{0}\n{1}\n{2}\n{3}",
+                feedback.Subject,
+                "Feedback date " + feedback.FeedbackDateString,
+                "By " + feedback.CreatorName + " on " + feedback.CreateDateString,
+                "Solving Duration: " + feedback.DurationTime);
+
+            if (!string.IsNullOrEmpty(feedback.ReviewerName))
+            {
+                var reviewText = string.Format("\nReviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDateString);
+                return cellValue + reviewText;
+            }
+
+            return cellValue;
         }
     }
 }

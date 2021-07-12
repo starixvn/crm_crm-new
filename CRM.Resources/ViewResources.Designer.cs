@@ -169,7 +169,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Top {0} Feedback.
+        ///   Looks up a localized string similar to Top_{0}_Feedback.
         /// </summary>
         public static string FeedbackReport_Title {
             get {
