@@ -147,7 +147,7 @@ export class NewCommunitionSetting extends PureComponent {
         }
 
         if (!values.subCategoryTypesNew) {
-            errors.subCategoryTypesNew = LangHelper.getResource('SubCategoryRequied');
+            errors.subCategoryTypesNew = LangHelper.getResource('SubCategoryRequired');
         }
 
         if (!values.comunicationToolTypesNew) {

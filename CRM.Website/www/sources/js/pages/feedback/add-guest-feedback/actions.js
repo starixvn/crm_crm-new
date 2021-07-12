@@ -2,7 +2,7 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
     setAllSettings,
-    setFeedbackSubjectTemplate,
+    setFeedbackSubjectTemplates,
     setAddFeedback
 } from './addGuestFeedbackSlice';
 
@@ -14,10 +14,10 @@ const getAllSettings = () => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getFeedbackSubjectTemplate = subject => async dispatch => {
-    const url = Site.resolveClientUrl(`Common/GetFeedbackSubjectTemplate?subject=${subject}`);
-    await DataService.getDataAsync(url).then(response => {
-       dispatch(setFeedbackSubjectTemplate(response.data));
+const getFeedbackSubjectTemplates = subject => async dispatch => {
+    const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
+    await DataService.getDataAsync(url, { subject }).then(response => {
+        dispatch(setFeedbackSubjectTemplates(response.data));
     });
 };
 
@@ -37,8 +37,8 @@ const verifyUserName = data => async () => {
 export const ActionCreators = {
     setAllSettings,
     getAllSettings,
-    getFeedbackSubjectTemplate,
-    setFeedbackSubjectTemplate,
+    getFeedbackSubjectTemplates,
+    setFeedbackSubjectTemplates,
     addFeedback,
     setAddFeedback,
     verifyUserName

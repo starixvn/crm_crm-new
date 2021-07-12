@@ -104,7 +104,7 @@ export class EditCommunitionSetting extends PureComponent {
         }
 
         if (!values.subCategoryTypesEdit) {
-            errors.subCategoryTypesEdit = LangHelper.getResource('SubCategoryRequied');
+            errors.subCategoryTypesEdit = LangHelper.getResource('SubCategoryRequired');
         }
 
         if (!values.comunicationToolTypesEdit) {

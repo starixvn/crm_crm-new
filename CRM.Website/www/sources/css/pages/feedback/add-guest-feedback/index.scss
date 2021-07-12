@@ -1,13 +1,14 @@
 
-@import '../../../components/form-filter';
+@import '../../../abstracts/variables';
 @import '../../../components/forms';
-@import '../../../components/icons';
 @import '../../../components/messages';
+@import '../../../components/modal';
 @import '../../../components/date-picker/style';
 @import '../../../components/react-select';
 @import '../../../components/multiple-select/style';
 @import '../../../components/verify-customer';
 @import '../../../components/ckeditor';
+@import '../../../components/autocomplete';
 
 .react-datepicker-wrapper-container {
     height: 28px;
@@ -90,6 +91,16 @@
     .form-check-label {
         padding-left: 10px;
         cursor: pointer;
+    }
+
+    .edit_block{
+        margin-right: -15px;
+        margin-left: -15px;
+
+        span, div{
+            color: #252525;
+            cursor: pointer;
+        }
     }
 }
 

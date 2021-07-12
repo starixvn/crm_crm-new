@@ -51,32 +51,30 @@ export const renderCountry = item => {
 };
 
 
-export const validateFormik = (values, languages = []) => {
+export const validateFormik = values => {
     const errors = {};
-    if (!values.notificationTypeId) {
-        errors.notificationTypeId = LangHelper.getResource('NotificationTypeRequired');
+    if (!values.identityInformation) {
+        errors.identityInformation = LangHelper.getResource('IdentityIsRequired');
     }
 
-    if (!values.notificationTemplateName || values.notificationTemplateName.trim().length === 0) {
-        errors.notificationTemplateName = LangHelper.getResource('TemplateNameRequired');
-    } else {
-        if (values.notificationTemplateName.trim().length > 1000) {
-            errors.notificationTemplateName = LangHelper.formatString(
-                LangHelper.getResource('FieldMaxLength'),
-                LangHelper.getResource('TemplateName'),
-                1000);
-        }
-    }
+    // if (!values.communication) {
+    //     errors.communication = LangHelper.getResource('CommunicationRequired');
+    // }
 
-    if (!values.title || values.title.trim().length === 0) {
-        errors.title = LangHelper.getResource('TitleRequired');
-    } else {
-        if (values.title.trim().length > 2000) {
-            errors.title = LangHelper.formatString(
-                LangHelper.getResource('FieldMaxLength'),
-                LangHelper.getResource('Title'),
-                2000);
-        }
+    // if (!values.category) {
+    //     errors.category = LangHelper.getResource('CategoryRequired');
+    // }
+    
+    // if (!values.subcategory) {
+    //     errors.subcategory = LangHelper.getResource('SubCategoryRequired');
+    // }
+
+    // if (!values.language) {
+    //     errors.language = LangHelper.getResource('LanguageRequired');
+    // }
+
+    if (!values.subject) {
+        errors.subject = LangHelper.getResource('SubjectRequired');
     }
 
     return errors;
