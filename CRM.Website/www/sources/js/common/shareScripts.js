@@ -54,3 +54,103 @@ export const getBetTypes = (selectedSubProducts, betTypes, selectedBetTypeIds, i
         };
     });
 };
+
+export const getCategoryParams = (selectedCategoryIds, selectedSubCategoryIds, subCategories) => {
+    const categories = [];
+    selectedCategoryIds.forEach(categoryId => {
+        selectedSubCategoryIds.forEach(subCategoryId => {
+            if (subCategories.filter(item => item.subCategoryId === parseInt(subCategoryId, 10) && item.mainCategoryID === parseInt(categoryId, 10)).length > 0) {
+                categories.push({
+                    mainCategoryId: parseInt(categoryId, 10),
+                    subCategoryId: parseInt(subCategoryId, 10)
+                });
+            }
+        });
+    });
+
+    return categories;
+};
+
+export const getInvalidCategoryParams = (selectedCategoryIds, selectedSubCategoryIds, categories, subCategories) => {
+    const invalidCategories = [];
+    selectedCategoryIds.forEach(categoryId => {
+        let isInvalid = false;
+        selectedSubCategoryIds.forEach(subCategoryId => {
+            if (subCategories.filter(item => item.subCategoryId === parseInt(subCategoryId, 10) && item.mainCategoryID === parseInt(categoryId, 10)).length === 0) {
+                isInvalid = true;
+            }
+        });
+
+        if (isInvalid) {
+            const index = categories.findIndex(item => item.mainCategoryID === parseInt(categoryId, 10));
+            invalidCategories.push(categories[index].settingName);
+        }
+    });
+
+    return invalidCategories;
+};
+
+export const getProductParams = function (selectedProductIds, selectedSubProductIds, selectedBettypeIds, settings) {
+    let products = [];
+    if (selectedProductIds.length === 0) {
+        products = [
+            {
+                productId: settings.productNA.id,
+                subProductId: settings.subProductNA.id,
+                bettypeId: settings.bettypeNA.id
+            }
+        ];
+    } else {
+        const processedProductIds = [];
+        selectedSubProductIds.forEach(subProductId => {
+            const index = settings.subProducts.findIndex(item => item.id === parseInt(subProductId, 10));
+            const subProductBettypes = [];
+            selectedBettypeIds.forEach(bettypeId => {
+                if (settings.bettypes.filter(item => id.id == parseInt(bettypeId, 10) && item.parentId === parseInt(subProductId, 10)).length > 0) {
+                    subProductBettypes.push({
+                        productId: settings.subProducts[index].parentId,
+                        subProductId: settings.subProducts[index].id,
+                        bettypeId: bettypeId
+                    });
+                }
+            });
+
+            if (subProductBettypes.length === 0) {
+                subProductBettypes.push({
+                    productId: settings.subProducts[index].parentId,
+                    subProductId: settings.subProducts[index].id,
+                    bettypeId: settings.bettypeNA.id
+                });
+            }
+
+            products = products.concat(subProductBettypes);
+            processedProductIds.push(settings.subProducts[index].parentId);
+        });
+
+        selectedProductIds.forEach(productId => {
+            if (processedProductIds.indexOf(parseInt(productId, 10)) < 0) {
+                products.push({
+                    productId: parseInt(productId, 10),
+                    subProductId: settings.subProductNA.Id,
+                    bettypeId: settings.bettypeNA.Id
+                });
+            }
+        });
+    }
+
+    return products;
+};
+
+export const getSubjectOnChangeCategories = function (selectedCategoryIds, subject, categories) {
+    let tempSubject = subject;
+    if (selectedCategoryIds.length === 0 && subject !== '') {
+        tempSubject = '';
+    } else {
+        if (selectedCategoryIds.length === 1) {
+            const index = categories.findIndex(item => item.mainCategoryID === parseInt(selectedCategoryIds[0], 10));
+            tempSubject = categories[index].settingName;
+        }
+    }
+
+    return tempSubject;
+};

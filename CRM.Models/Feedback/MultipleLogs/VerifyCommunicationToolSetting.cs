@@ -4,6 +4,6 @@
     {
         public int CustId { get; set; }
         public string Username { get; set; }
-        public byte Role { get; set; }
+        public string Role { get; set; }
     }
 }

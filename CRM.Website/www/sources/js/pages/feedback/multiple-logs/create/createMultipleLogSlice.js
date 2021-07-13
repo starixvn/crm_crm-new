@@ -8,7 +8,8 @@ const createMultipleLogSlice = createSlice({
         relatedCustomerResults: [],
         feedbackSubjectTemplates: [],
         addRelatedCustomerDialog: { show: false },
-        viewRelatedCustomerDialog: { show: false }
+        viewRelatedCustomerDialog: { show: false },
+        confirmCreateMultipleLogsDialog: { show: false }
     },
     reducers: {
         setSettings: (state, action) => {
@@ -44,6 +45,9 @@ const createMultipleLogSlice = createSlice({
         },
         setFeedbackSubjectTemplates: (state, action) => {
             state.feedbackSubjectTemplates = action.payload;
+        },
+        setConfirmCreateMultipleLogsDialog: (state, action) => {
+            state.confirmCreateMultipleLogsDialog = action.payload;
         }
     }
 });
@@ -57,7 +61,8 @@ export const {
     setRelatedCustomerResults,
     setAddRelatedCustomerDialog,
     setViewRelatedCustomerDialog,
-    setFeedbackSubjectTemplates
+    setFeedbackSubjectTemplates,
+    setConfirmCreateMultipleLogsDialog
 } = actions;
 
 export default reducer;

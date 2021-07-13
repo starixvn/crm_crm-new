@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback.MultipleLogs;
     using CRM.Models.Feedback.MultipleLogs;
@@ -13,6 +14,8 @@
         Task<IEnumerable<VerifyRelatedCustomerResult>> VerifyRelatedCustomerAsync(VerifyRelatedCustomerCriteria criteria);
 
         Task<IEnumerable<VerifyCommunicationToolSetting>> CheckNotExistCommunicationToolSettingAsync(CheckNotExistCommunicationToolSettingCriteria criteria);
+
+        Task<CommandResult> CreateAsync(CreateMultipleLogsCommand command);
     }
 
     public class MultipleLogsService : IMultipleLogsService
@@ -37,6 +40,11 @@
         public async Task<IEnumerable<VerifyCommunicationToolSetting>> CheckNotExistCommunicationToolSettingAsync(CheckNotExistCommunicationToolSettingCriteria criteria)
         {
             return await baseService.GetDataAsync<VerifyCommunicationToolSetting>(criteria);
+        }
+
+        public async Task<CommandResult> CreateAsync(CreateMultipleLogsCommand command)
+        {
+            return await baseService.ExecuteNonQueryAsync(command);
         }
     }
 }

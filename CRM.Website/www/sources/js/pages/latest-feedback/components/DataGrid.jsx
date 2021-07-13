@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import DateTimeService from '@jsroot/common/dateTimeService';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -20,12 +21,12 @@ export class DataGrid extends Component {
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={7}>{LangHelper.getResource('Running No.')}</HeaderCell>
+                <HeaderCell colWidth={7}>{LangHelper.getResource('RunningNo.')}</HeaderCell>
                 <HeaderCell colWidth={5}>{LangHelper.getResource('Update')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Feedback')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Category')}</HeaderCell>
                 <HeaderCell colWidth={5}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Related Customer')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('RelatedCustomer')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -135,10 +136,10 @@ export class DataGrid extends Component {
                         this.tooltipFeedback(item)
                     }
                     <div className="feedbackInfo">
-                        <div>Feedback date <strong> {item.feedbackDateString} </strong></div>
-                        <div>By <strong> {item.creatorName} </strong> on {item.createDateString} </div>
+                        <div>Feedback date <strong> {DateTimeService.toShortDateTimeFormat(item.feedbackDate)} </strong></div>
+                        <div>By <strong> {item.creatorName} </strong> on {DateTimeService.toShortDateTimeFormat(item.createDate)} </div>
                         <div>Solving Duration: {item.durationTime} </div>
-                        <div className={item.reviewerName ? '' : 'consecutive-container-before'}>Reviewed by <strong> {item.reviewerName} </strong> on {item.solveDateString}</div>
+                        <div className={item.reviewerName ? '' : 'consecutive-container-before'}>Reviewed by <strong> {item.reviewerName} </strong> on {DateTimeService.toShortDateTimeFormat(item.solveDate)}</div>
                     </div>
                 </Cell>
             }

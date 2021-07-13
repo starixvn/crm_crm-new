@@ -7,7 +7,8 @@ import {
     setRelatedCustomerResults,
     setFeedbackSubjectTemplates,
     setAddRelatedCustomerDialog,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    setConfirmCreateMultipleLogsDialog
 } from './createMultipleLogSlice';
 
 const getSettings = () => async dispatch => {
@@ -37,6 +38,16 @@ const getFeedbackSubjectTemplates = subject => async dispatch => {
     });
 };
 
+const checkNotExistCommunicationToolSetting = params => async () => {
+    const url = Site.resolveClientUrl('MultipleLogs/CheckNotExistCommunicationToolSetting');
+    return await DataService.postDataAsync(url, params).then(response => response);
+};
+
+const createMultipleLogs = params => async () => {
+    const url = Site.resolveClientUrl('MultipleLogs/Create');
+    return await DataService.postDataAsync(url, params).then(response => response);
+};
+
 export const ActionCreators = {
     setVerifyCustomerResults,
     setAddRelatedCustomerDialog,
@@ -47,5 +58,8 @@ export const ActionCreators = {
     verifyCustomers,
     verifyRelatedCustomers,
     removeCustomer,
-    getFeedbackSubjectTemplates
+    getFeedbackSubjectTemplates,
+    checkNotExistCommunicationToolSetting,
+    setConfirmCreateMultipleLogsDialog,
+    createMultipleLogs
 };

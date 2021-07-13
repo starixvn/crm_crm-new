@@ -1,16 +1,10 @@
 ﻿namespace CRM.Core.Models.Feedback
 {
-    using CRM.Core.Helpers;
     using System;
     using System.Collections.Generic;
 
     public class FeedbackDetail
     {
-        public FeedbackDetail()
-        {
-            this.Settings = new List<SettingItems>();
-        }
-
         public int FeedbackId { get; set; }
 
         public string Username { get; set; }
@@ -19,35 +13,11 @@
 
         public DateTime FeedbackDate { get; set; }
 
-        public string FeedbackDateString
-        {
-            get
-            {
-                return DateTimeUtilize.ChangeTimeZoneToClient(FeedbackDate);
-            }
-        }
-
         public DateTime ResolutionDate { get; set; }
 
         public DateTime CreateDate { get; set; }
 
-        public string CreateDateString
-        {
-            get
-            {
-                return DateTimeUtilize.ChangeTimeZoneToClient(CreateDate);
-            }
-        }
-
         public DateTime SolveDate { get; set; }
-
-        public string SolveDateString
-        {
-            get
-            {
-                return DateTimeUtilize.ChangeTimeZoneToClient(SolveDate);
-            }
-        }
 
         public int MainCategoryId { get; set; }
 
@@ -73,15 +43,9 @@
 
         public bool IsChecked { get; set; }
 
-        public List<SettingItems> Settings { get; set; }
+        public IList<SettingItems> Settings { get; set; } = new List<SettingItems>();
 
-        public string DurationTime
-        {
-            get
-            {
-                return ResolutionDate != DateTime.MinValue ? GetResolvingTime() : string.Empty;
-            }
-        }
+        public string DurationTime => ResolutionDate != DateTime.MinValue ? GetResolvingTime() : string.Empty;
 
         private string GetResolvingTime()
         {

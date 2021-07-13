@@ -1,14 +1,15 @@
 ﻿namespace CRM.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using CRM.Core;
     using CRM.Core.Models;
     using CRM.Core.Models.Feedback;
     using CRM.Models.Setting;
     using CRM.Resources;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     internal class FeedbackReportExcel : ExcelBase
     {
@@ -20,7 +21,11 @@
         private const byte RowStartHeader = 4;
         private const byte StartComToolsIndex = 7;
 
-        public FeedbackReportExcel(string templatePath, IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, int top) : base(templatePath, 0, ViewResources.LatestFeedback)
+        public FeedbackReportExcel(
+            string templatePath,
+            IEnumerable<FeedbackDetail> feedbacks,
+            IEnumerable<Setting> mainCategories,
+            int top) : base(templatePath, 0, ViewResources.LatestFeedback)
         {
             this.feedbacks = feedbacks;
             this.mainCategories = mainCategories;
@@ -101,7 +106,6 @@
             {
                 worksheet.Row(RowStartBody + index).Height = RowHeight;
                 DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumn]);
-
             }
         }
 
@@ -110,7 +114,7 @@
             return GetCategoryContent(feedback.Settings, mainCategories);
         }
 
-        private static string[] GetCategoryContent(List<SettingItems> settings, IEnumerable<Setting> mainCategories)
+        private static string[] GetCategoryContent(IList<SettingItems> settings, IEnumerable<Setting> mainCategories)
         {
             return GetCategoryContentWithoutSettingType(settings.Where(i => i.SettingType == "Category"), mainCategories);
         }
@@ -189,7 +193,7 @@
             IEnumerable<Setting> mainCategories)
         {
             var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
-            var child = mainCategory == null ? null : mainCategory.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
+            var child = mainCategory?.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
             return child == null ? string.Empty : child.SettingName;
         }
 
@@ -228,13 +232,13 @@
             var cellValue = string.Format(
                 "{0}\n{1}\n{2}\n{3}",
                 feedback.Subject,
-                "Feedback date " + feedback.FeedbackDateString,
-                "By " + feedback.CreatorName + " on " + feedback.CreateDateString,
+                "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
+                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
                 "Solving Duration: " + feedback.DurationTime);
 
             if (!string.IsNullOrEmpty(feedback.ReviewerName))
             {
-                var reviewText = string.Format("\nReviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDateString);
+                var reviewText = string.Format("\nReviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat());
                 return cellValue + reviewText;
             }
 

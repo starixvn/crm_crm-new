@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback.LatestFeedback;
@@ -11,6 +12,7 @@
     using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.LatestFeedback;
     using CRM.Repositories;
+    using CRM.Resources;
     using Fanex.NAP.Client.Helpers.Web;
 
     public interface IFeedbackService
@@ -29,18 +31,21 @@
     public class FeedbackService : IFeedbackService
     {
         private readonly IBaseService baseService;
-        private readonly ISettingService serviceSetting;
+        private readonly ISettingService settingService;
+        private readonly ICommonService commonService;
         private readonly IFeedbackRepository feedbackRepository;
         private readonly INapSession napSession;
 
         public FeedbackService(
             IBaseService baseService,
-            ISettingService serviceSetting,
+            ISettingService settingService,
+            ICommonService commonService,
             INapSession napSession,
             IFeedbackRepository feedbackRepository)
         {
             this.baseService = baseService;
-            this.serviceSetting = serviceSetting;
+            this.settingService = settingService;
+            this.commonService = commonService;
             this.feedbackRepository = feedbackRepository;
             this.napSession = napSession;
         }
@@ -56,7 +61,7 @@
                 feedback.RelatedCustomers = relatedCustomer;
                 feedback.Settings = settingItems.ToList();
 
-                var siteSetting = await serviceSetting.GetSiteByIdAsync(feedback.SiteID);
+                var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteID);
                 feedback.SiteSetting = new Models.Common.Site
                 {
                     Id = siteSetting.Id,
@@ -68,14 +73,28 @@
             return feedback;
         }
 
-        public Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param)
+        public async Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param)
         {
             var criteria = new LatestFeedbackCriteria
             {
                 Top = param.Top
             };
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbacksAsync(criteria);
+            var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var statusHash = statusList.ToDictionary(k => k.SettingId, v => v.SettingName);
+            statusHash.Add(1, ViewResources.Symbol_NotApply);
 
-            return feedbackRepository.GetDeletedFeedbacksAsync(criteria);
+            foreach (var feedback in feedbacks)
+            {
+                feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
+                feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
+                feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
+                feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
+
+                feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
+            }
+
+            return feedbacks;
         }
 
         public async Task<EditNoInquiries> GetNoInquiriesAsync(int id)

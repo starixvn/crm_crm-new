@@ -1,10 +1,11 @@
 ﻿namespace CRM.Criteria.Feedback.LatestFeedback
 {
-    using CRM.Core.Helpers;
-    using CRM.Core.Models;
-    using CRM.Models.Feedback;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using CRM.Core.Extensions.XML;
+    using CRM.Core.Models;
+    using CRM.Models.Feedback;
 
     public class EditFeedbackCommand : BaseNonQueryCommand
     {
@@ -90,25 +91,13 @@
 
         public int RoleID { get; set; }
 
-        public IEnumerable<ProductFilter> Products { get; set; }
+        public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; }
 
-        public string Product
-        {
-            get
-            {
-                return SerializerHelper.SerializeList(Products);
-            }
-        }
+        public string Product => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
 
-        public IEnumerable<CategoryFilter> Categories { get; set; }
+        public IEnumerable<CategorySubCategorySetting> Categories { get; set; }
 
-        public string Category
-        {
-            get
-            {
-                return SerializerHelper.SerializeList(Categories);
-            }
-        }
+        public string Category => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
 
         public int ResponseID { get; set; }
 
@@ -166,7 +155,7 @@
 
         public override bool IsValid()
         {
-            return FeedbackID > 0 && !string.IsNullOrWhiteSpace(CommunicationID) 
+            return FeedbackID > 0 && !string.IsNullOrWhiteSpace(CommunicationID)
                     && !string.IsNullOrWhiteSpace(LanguageID)
                     && !string.IsNullOrWhiteSpace(Category);
         }

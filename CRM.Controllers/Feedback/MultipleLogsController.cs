@@ -5,23 +5,31 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
+    using CRM.Core.Models;
     using CRM.Criteria.Feedback.MultipleLogs;
     using CRM.Models.Feedback.MultipleLogs;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback.MultipleLogs;
+    using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Core.Business.Constant;
 
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
     public class MultipleLogsController : BaseController
     {
+        private readonly INapSession napSession;
         private readonly IMultipleLogsService multipleLogsService;
         private readonly ISettingService settingService;
 
         public MultipleLogsController(
+            INapSession napSession,
             IMultipleLogsService multipleLogsService,
             ISettingService settingService)
         {
+            this.napSession = napSession;
             this.multipleLogsService = multipleLogsService;
             this.settingService = settingService;
         }
@@ -80,6 +88,14 @@
         {
             IEnumerable<VerifyCommunicationToolSetting> customers = await multipleLogsService.CheckNotExistCommunicationToolSettingAsync(criteria);
             return Json(customers);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateMultipleLogsCommand command)
+        {
+            command.CreatorId = napSession.UserId;
+            CommandResult commandResult = await multipleLogsService.CreateAsync(command);
+            return Json(commandResult);
         }
     }
 }

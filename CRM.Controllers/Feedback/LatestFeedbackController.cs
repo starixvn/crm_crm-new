@@ -1,5 +1,8 @@
 ﻿namespace CRM.Controllers.Feedback
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Models;
@@ -11,14 +14,8 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class LatestFeedbackController : BaseController
     {
@@ -27,46 +24,30 @@
         private readonly IExportExcelService excelService;
         private readonly IFeedbackService feedbackService;
 
-
         public LatestFeedbackController(
             INapSession napSession,
             IExportExcelService excelService,
             ISettingService settingService,
             IFeedbackService feedbackService)
         {
-
             this.napSession = napSession;
             this.settingService = settingService;
             this.excelService = excelService;
             this.feedbackService = feedbackService;
         }
+
         public IActionResult Index()
         {
             return View(true);
         }
+
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackParam param)
         {
-            IEnumerable<DeletedFeedback> feedbacks = await GetFeedbacks(param);
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
             IEnumerable<Setting> mainCategories = await GetAllMainCategoriesFromAllSettings();
 
             return Json(new { data = feedbacks, mainCategories });
-        }
-
-        private async Task<IEnumerable<DeletedFeedback>> GetFeedbacks(GetLatestFeedbackParam param)
-        {
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
-
-            var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var statusHash = statusList.ToDictionary(k => k.SettingId, v => v.SettingName);
-            statusHash.Add(1, ViewResources.Symbol_NotApply);
-
-            foreach (var feedback in feedbacks)
-            {
-                feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
-            }
-
-            return feedbacks;
         }
 
         private async Task<IEnumerable<Setting>> GetAllMainCategoriesFromAllSettings()
@@ -85,10 +66,10 @@
         [HttpPost]
         public async Task<IActionResult> ExportLatestFeedbackReport([FromBody] GetLatestFeedbackParam param)
         {
-            var reports = await GetFeedbacks(param);
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
             IEnumerable<Setting> mainCategories = await GetAllMainCategoriesFromAllSettings();
 
-            var bytes = excelService.ExportLatestFeedbackReport(reports, mainCategories, param.Top);
+            var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, param.Top);
             string reportName = string.Format(ViewResources.FeedbackReport_Title, param.Top);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
