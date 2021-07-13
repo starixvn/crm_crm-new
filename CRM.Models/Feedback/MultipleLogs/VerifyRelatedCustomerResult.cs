@@ -1,14 +1,17 @@
 ﻿namespace CRM.Models.Feedback.MultipleLogs
 {
+    using System;
     using System.Xml.Serialization;
+    using CRM.Core.Extensions.XML;
 
-    [XmlType("Row")]
+    [Serializable]
+    [XMLName("Row")]
     public class VerifyRelatedCustomerResult
     {
-        [XmlAttribute("CustId")]
+        [XMLName("CustId")]
         public int HeadlineId { get; set; }
 
-        [XmlAttribute("RelatedCustId")]
+        [XMLName("RelatedCustId")]
         public int CustId { get; set; }
 
         public string Username { get; set; }

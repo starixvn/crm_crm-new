@@ -1,3 +1,10 @@
+import DateTimeService from '@jsroot/common/dateTimeService';
+import LangHelper from '@jsroot/common/langHelper';
+
+export const generateTimeAndToolPrefix = (startTime, communicationTool) => {
+    return LangHelper.formatString('Date Time & Tool: {0}/{1}', DateTimeService.toStartTimePrefix(startTime), communicationTool);
+};
+
 export const getSubCategories = (selectedCategories, subCategories, selectedSubCategoryIds, isCheckDefault) => {
     const tempSubCategories = subCategories.filter(item => selectedCategories.includes(item.mainCategoryID.toString()));
     const selectedIdsDistinct = [];

@@ -94,6 +94,8 @@
         public async Task<IActionResult> Create([FromBody] CreateMultipleLogsCommand command)
         {
             command.CreatorId = napSession.UserId;
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
             CommandResult commandResult = await multipleLogsService.CreateAsync(command);
             return Json(commandResult);
         }

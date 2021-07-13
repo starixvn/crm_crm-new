@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using CRM.Core.Constants;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
     using CRM.Models;
@@ -13,8 +14,11 @@
 
     public class CreateMultipleLogsCommand : BaseNonQueryCommand
     {
+        public short UserRole { get; } = Constants.UserRole;
         public string Subject { get; set; }
         public int CreatorId { get; set; }
+        public int UserId { get; set; }
+        public string IP { get; set; } = string.Empty;
 
         [SpParam(SqlParamName = "feedbackdate")]
         public DateTime StartTime { get; set; }
