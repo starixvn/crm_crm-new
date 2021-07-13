@@ -2,9 +2,10 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Col, Form, Row, OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
-import DatePicker from '@jsroot/components/date-picker/index';
 import { Formik } from 'formik';
+import moment from 'moment';
 import { ActionCreators } from '../actions';
+import DatePicker from '@jsroot/components/date-picker/index';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import VerifyCustomerResult from './VerifyCustomerResult';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
@@ -54,7 +55,7 @@ export class CreateForm extends Component {
             languageId: settings.languages[0].settingId,
             countryId: settings.countries[0].id,
             communicationToolIds: '',
-            mainCategoryIds: '',
+            categoryIds: '',
             subCategoryIds: '',
             productIds: '',
             subProductIds: '',
@@ -164,6 +165,54 @@ export class CreateForm extends Component {
 
     validateFormik = values => {
         const errors = {};
+        if (this.props.verifyCustomerResults.filter(item => item.custId !== 0).length === 0) {
+            errors.customerNameInput = LangHelper.getResource('ListofcustomersRequired');
+        }
+
+        if (moment(values.startTime).isAfter(moment(values.endTime))) {
+            errors.startTime = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('StartTime'), LangHelper.getResource('EndTime'));
+        }
+
+        if (!values.isUseDefaultCommunicationTool && values.communicationToolIds.length === 0) {
+            errors.communicationToolIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('CommunicationTool'));
+        }
+
+        if (!values.isUseDefaultLanguage && values.LanguageId === 0) {
+            errors.languageId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language'));
+        }
+
+        if (values.categoryIds === '') {
+            errors.categoryIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Category'));
+        }
+
+        if (values.subCategoryIds === '') {
+            errors.subCategoryIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SubCategory'));
+        }
+
+        if (values.categoryIds !== '' && values.subCategoryIds !== '') {
+            const invalidCategories = getInvalidCategoryParams(
+                values.categoryIds.split(','),
+                values.subCategoryIds.split(','),
+                this.props.settings.mainCategories,
+                this.props.settings.subCategories
+            );
+            if (invalidCategories.length > 0) {
+                errors.categoryIds = LangHelper.formatString(LangHelper.getResource('InvalidCategoryField'), invalidCategories.join(', '));
+            }
+        }
+
+        if (values.subject === '') {
+            errors.subject = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject'));
+        }
+
+        if (values.remark === '') {
+            errors.remark = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Remark'));
+        }
+
+        if (values.solution === '') {
+            errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Solution'));
+        }
+
         return errors;
     };
 
@@ -375,7 +424,7 @@ export class CreateForm extends Component {
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2">{LangHelper.getResource('StartTime')}</Form.Label>
                             <Col sm="3" md="3" className="react-datepicker-wrapper-container form-control-wrapper">
-                                <DatePicker
+                                <DatePicker isInvalid={touched.startTime && errors.startTime}
                                     selected={values.startTime}
                                     timeInputLabel="Time:"
                                     dateFormat="MMM dd, yyyy hh:mm aa"
@@ -440,12 +489,14 @@ export class CreateForm extends Component {
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('CommunicationTool')}</Form.Label>
+                            <Form.Label column sm="2" md="2" className={values.isUseDefaultCommunicationTool ? '' : 'required'}>
+                                {LangHelper.getResource('CommunicationTool')}
+                            </Form.Label>
                             <Col sm="3" md="3">
                                 <MultipleSelect
+                                    isInvalid={touched.communicationToolIds && errors.communicationToolIds}
                                     dataSource={communicationTools}
-                                    keyField='id'
-                                    valueField='settingName'
+                                    keyField='id' valueField='settingName'
                                     hasAllOption={communicationTools.length > 0}
                                     isAllTextShown={communicationTools.length > 0}
                                     hasSearchBox isDisable={values.isUseDefaultCommunicationTool}
@@ -672,7 +723,8 @@ export class CreateForm extends Component {
                     </Form.Group>
                     <Collapse in={!collapse.remark}>
                         <div id="collapse-expand-remark" className="panel-content">
-                            <CkEditor data={values.remark} username={window.currentUsername}
+                            <CkEditor isInvalid={touched.remark && errors.remark}
+                                data={values.remark} username={window.currentUsername}
                                 onChange={value => setFieldValue('remark', value)}
                             />
                         </div>
@@ -687,7 +739,8 @@ export class CreateForm extends Component {
                     </Form.Group>
                     <Collapse in={!collapse.solution}>
                         <div id="collapse-expand-solution" className="panel-content">
-                            <CkEditor data={values.solution} username={window.currentUsername}
+                            <CkEditor isInvalid={touched.solution && errors.solution}
+                                data={values.solution} username={window.currentUsername}
                                 onChange={value => setFieldValue('solution', value)}
                             />
                         </div>

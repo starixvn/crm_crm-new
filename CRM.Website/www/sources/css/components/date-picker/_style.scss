@@ -6,6 +6,14 @@
     border-radius: unset;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     font-size: 1rem;
+
+    .btn-now {
+        width: auto;
+        background-color: #466ab6;
+        color: #fff;
+        line-height: 2.5rem;
+        padding: 0 0.5rem;
+    }
 }
 
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle {
@@ -157,17 +165,5 @@
     .form-control:disabled {
         background-color: $bg-table-title-grey;
         cursor: context-menu;
-    }
-}
-.btnNow {
-    margin: 5px 0 10px 15px;
-    color: #007bff;
-    background-color: #fff;
-    border: none;
-    width: auto;
-
-    &:hover {
-        background-color: #2a87d0;
-        color: #fff;
     }
 }

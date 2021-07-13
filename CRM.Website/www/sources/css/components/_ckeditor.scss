@@ -1,21 +1,29 @@
-.cke_inner {
-    .cke_toolbox {
-        .cke_toolbar {
-            .cke_button__editblock {
-                display: inline-block;
-                font: normal normal normal 14px/1 FontAwesome;
-                font-size: inherit;
-                text-rendering: auto;
-                cursor: pointer;
+.ckeditor-container {
+    .cke_inner {
+        .cke_toolbox {
+            .cke_toolbar {
+                .cke_button__editblock {
+                    display: inline-block;
+                    font: normal normal normal 14px/1 FontAwesome;
+                    font-size: inherit;
+                    text-rendering: auto;
+                    cursor: pointer;
 
-                &::before {
-                    content: '\F044';
-                    left: -7px;
-                    top: 2px;
-                    font-size: 16px;
-                    position: relative;
+                    &::before {
+                        content: '\F044';
+                        left: -7px;
+                        top: 2px;
+                        font-size: 16px;
+                        position: relative;
+                    }
                 }
             }
+        }
+    }
+
+    &.is-invalid {
+        .cke {
+            border-color: #dc3545;
         }
     }
 }

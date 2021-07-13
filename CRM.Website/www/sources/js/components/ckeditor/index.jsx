@@ -14,7 +14,9 @@ export default class CkEditor extends PureComponent {
 
     static defaultProps = {
         colorEditBlock: '',
-        username: ''
+        username: '',
+        className: '',
+        isInvalid: false
     };
 
     constructor(props) {
@@ -41,7 +43,7 @@ export default class CkEditor extends PureComponent {
     onLoadPlugin = CKEDITOR => {
         let editText = '';
         let textTemplateEditBlock = EDIT_BLOCK_TEMPLATE;
-        const { username, currentDate, colorEditBlock } = this.props;
+        const { username, colorEditBlock } = this.props;
         if (this.state.data === '') {
             editText = '&nbsp;';
         }
@@ -73,9 +75,9 @@ export default class CkEditor extends PureComponent {
 
     render() {
         const initData = this.elementsToHtml();
-        const { className, ...rest } = this.props;
+        const { className, isInvalid, ...rest } = this.props;
         return (
-            <div className={className}>
+            <div className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor
                     {...rest}
                     initData={initData}
