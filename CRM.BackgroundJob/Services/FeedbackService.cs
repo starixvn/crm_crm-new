@@ -1,10 +1,5 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -13,6 +8,11 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
     public interface IFeedbackService
     {
@@ -26,7 +26,6 @@
         private readonly AppJobSettings appSettings;
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
-        private readonly ISystemSettingService systemSettingService;
         private readonly IMessageService messageService;
         private readonly ICustomerService customerService;
         private readonly ICRMLogService logService;
@@ -36,11 +35,11 @@
         private const int abnormalAccount = 13;
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public FeedbackService(
             IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
-            ISystemSettingService systemSettingService,
             IMessageService messageService,
             ICustomerService customerService,
             ICRMLogService logService,
@@ -53,7 +52,6 @@
             this.appSettings = appSettings.Value;
             this.baseService = baseService;
             this.settingService = settingService;
-            this.systemSettingService = systemSettingService;
             this.messageService = messageService;
             this.customerService = customerService;
             this.logService = logService;
@@ -61,22 +59,22 @@
             this.commonFeedback = commonFeedback;
         }
 
-    public async Task CreateFeedbackForVoidingAbnormalBetAsync(AbnormalBetSystemSetting setting, bool isUAT,
-            DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
-            string JobStatusNameEnv, string Environment)
+        public async Task CreateFeedbackForVoidingAbnormalBetAsync(AbnormalBetSystemSetting setting, bool isUAT,
+                DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
+                string JobStatusNameEnv, string Environment)
         {
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoFB);
 
             var voidingMessages = await messageService.GetVoidingMessageAsync();
             var messageImportCheck = await messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2);
             var voidingMessageUserName = Enumerable.Empty<VoidingMessageUserName>();
-            if (messageImportCheck.Any() && voidingMessages.Item2.Any())
+            if (messageImportCheck.Any())
             {
-                voidingMessageUserName = await messageService.voidingHisMessageUserNameList(messageImportCheck);
-            } 
-            
+                voidingMessageUserName = await messageService.VoidingHisMessageUserNameList(messageImportCheck);
+            }
+
             var messagesImport = await messageService.ImportVoidingMessageAsync(voidingMessageUserName,
-                voidingMessages.Item1, 
+                voidingMessages.Item1,
                 setting.BatchSize,
                 Environment,
                 setting.LastDateUAT);
@@ -88,9 +86,9 @@
                 await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
                 return;
             }
-            IEnumerable<int> messageIds = messagesImportCombineDistinct.Select(x => x.MessageId).Distinct().ToList();
+            IEnumerable<int> messageIds = messagesImportCombineDistinct.Where(x => x.MessageId != 0).Select(y => y.MessageId).Distinct().ToList();
             IEnumerable<Message> messages = await messageService.GetMessageInfoAsync(messageIds);
-            
+
             ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(messagesImportCombineDistinct, setting);
             if (!ticketInfo.Item1.Any())
             {
@@ -135,7 +133,7 @@
 
             foreach (MatchInfo matchInfo in ticketInfo.Item1)
             {
-                Message message = messages.Where(x => x.MessageId == matchInfo.MessageId)?.FirstOrDefault();
+                Message message = messages.FirstOrDefault(x => x.MessageId == matchInfo.MessageId);
                 IEnumerable<TransactionInfo> credits = ticketInfo.Item2.Where(x => x.MessageId == matchInfo.MessageId && !x.IsDeposit);
                 IEnumerable<TransactionInfo> deposits = ticketInfo.Item2.Where(x => x.MessageId == matchInfo.MessageId && x.IsDeposit);
 
@@ -165,7 +163,6 @@
 
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
         }
-
 
         protected internal virtual async Task CreateFeedbackForCreditSiteAsync(
             Message message,
@@ -228,6 +225,7 @@
         }
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         protected internal virtual async Task CreateFeedbackForCreditSiteByBatchAsync(
             GroupHeadline headline,
             IEnumerable<int> relatedCustomerIds,
@@ -595,7 +593,7 @@
 
         protected internal virtual string GetDescriptionForCreditSite(int messageId, string requestIds, MatchInfo matchInfo)
         {
-            if(matchInfo.IssueTypeId != abnormalAccount)
+            if (matchInfo.IssueTypeId != abnormalAccount)
             {
                 var stringBuilder = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
                 stringBuilder.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
@@ -605,7 +603,7 @@
                 stringBuilder.AppendFormat("<br />League: {0}", matchInfo.LeagueName);
                 stringBuilder.AppendFormat("<br />Match: {0} - vs - {1}", matchInfo.HomeName, matchInfo.AwayName);
                 return stringBuilder.ToString();
-            }    
+            }
             else
             {
                 var stringBuilderAbnormalAccount = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
@@ -616,7 +614,7 @@
                 stringBuilderAbnormalAccount.AppendFormat("<br />Requested by: {0}", matchInfo.Requestby);
                 stringBuilderAbnormalAccount.AppendFormat("<br />Voided by: {0}", matchInfo.VoidBy);
                 return stringBuilderAbnormalAccount.ToString();
-            }    
+            }
         }
 
         protected internal virtual string GetSolution(Message message)
@@ -638,16 +636,6 @@
             }
 
             return stringBuilder.ToString();
-        }
-
-        protected internal virtual async Task<CommandResult> EditSystemSettingAsync()
-        {
-            var settingJobStatus = new List<SystemSettingItem>
-            {
-                new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") }
-            };
-            return await systemSettingService.EditSystemSettingAsync(settingJobStatus);
         }
     }
 }

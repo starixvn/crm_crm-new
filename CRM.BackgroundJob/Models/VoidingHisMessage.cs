@@ -8,15 +8,12 @@ namespace CRM.BackgroundJob.Models
     [XMLName("r")]
     public class VoidingHisMessage
     {
-        [XMLName("MessageId")]
+        [XMLName("MessageID")]
         public int MessageId { get; set; }
-
-        [XMLName("RequestId")]
+        [XMLName("RequestID")]
         public int RequestId { get; set; }
-
-        [XMLName("VoidingHistoryId")]
+        [XMLName("VoidingHistoryID")]
         public int VoidingHistoryId { get; set; }
-
         [XMLName("UsernameList")]
         public string UsernameList { get; set; }
     }

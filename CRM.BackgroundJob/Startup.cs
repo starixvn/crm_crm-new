@@ -196,7 +196,6 @@
             services.AddScoped<IWinLossFeedbackService, WinLossFeedbackService>();
             services.AddScoped<IFeedbackTicketVoidingService, FeedbackTicketVoidingService>();
             services.AddScoped<IAutoFeedbackService, AutoFeedbackService>();
-            services.AddScoped<IAutoWinLossFeedbackService, AutoWinLossFeedbackService>();
             services.AddScoped<IChatBotTicketVoidingService, ChatBotTicketVoidingService>();
             services.AddScoped<IChatBotCWLService, ChatBotCWLService>();
             services.AddScoped<IChatBotJobService, ChatBotJobService>();

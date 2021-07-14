@@ -3,8 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Models;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -32,8 +34,20 @@
             fixture.Customize<VoidingMessage>(x => x.With(b => b.MessageId, 1));
             fixture.Customize<MatchInfo>(x => x.With(b => b.MessageId, 1));
             var setting = fixture.Create<AbnormalBetSystemSetting>();
-            var voidingMessages = fixture.Create<IEnumerable<VoidingMessage>>();
-            var xml = voidingMessages.ToXML("ROOT").ToString();
+            var voidingMessageUserNames = new List<VoidingMessageUserName>
+            {
+                new VoidingMessageUserName
+                {
+                    MessageId = 1,
+                    RequestId = 1,
+                    CustIdList = "CustIdList",
+                    UsernameList = "UsernameList"
+                }
+            };
+            const string XmlTemplate = "<r MsgID='1' ReqID='1' UsernameList='UsernameList' CustIdList='CustIdList' />";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            stringBuilder.Append(XmlTemplate);
+            stringBuilder.Append(Constants.EndRootTag);
             var matchInfos = fixture.Create<IEnumerable<MatchInfo>>();
             var transactionInfos = new List<TransactionInfo>();
             var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
@@ -42,15 +56,15 @@
             baseService.FetchMultipleAsync<MatchInfo, TransactionInfo>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
 
             // Act
-            var actual = await service.GetTicketVoidingInfoAsync(voidingMessages, setting);
+            var actual = await service.GetTicketVoidingInfoAsync(voidingMessageUserNames, setting);
 
             // Assert
             logService.Received().LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", matchInfos.Select(x => x.MessageId))));
-            await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessage>>());
+            await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
 
             Assert.Empty(actual.Item1);
             Assert.Equal(transactionInfos, actual.Item2);
-            Assert.Equal(xml, criteria.MessageIds);
+            Assert.Equal(stringBuilder.ToString(), criteria.MessageIds);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
@@ -63,8 +77,20 @@
             fixture.Customize<MatchInfo>(x => x.With(b => b.MessageId, 1));
             fixture.Customize<TransactionInfo>(x => x.With(b => b.MessageId, 1));
             var setting = fixture.Create<AbnormalBetSystemSetting>();
-            var voidingMessages = fixture.Create<IEnumerable<VoidingMessage>>();
-            var xml = voidingMessages.ToXML("ROOT").ToString();
+            var voidingMessageUserNames = new List<VoidingMessageUserName>
+            {
+                new VoidingMessageUserName
+                {
+                    MessageId = 1,
+                    RequestId = 1,
+                    CustIdList = "CustIdList",
+                    UsernameList = "UsernameList"
+                }
+            };
+            const string XmlTemplate = "<r MsgID='1' ReqID='1' UsernameList='UsernameList' CustIdList='CustIdList' />";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+            stringBuilder.Append(XmlTemplate);
+            stringBuilder.Append(Constants.EndRootTag);
             var matchInfos = fixture.Create<IEnumerable<MatchInfo>>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
             var expectedMatchInfos = matchInfos.Where(x => transactionInfos.Any(y => x.MessageId == y.MessageId)).ToList();
@@ -74,15 +100,15 @@
             baseService.FetchMultipleAsync<MatchInfo, TransactionInfo>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
 
             // Act
-            var actual = await service.GetTicketVoidingInfoAsync(voidingMessages, setting);
+            var actual = await service.GetTicketVoidingInfoAsync(voidingMessageUserNames, setting);
 
             // Assert
             logService.DidNotReceive().LogInformation(Arg.Any<string>());
-            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessage>>());
+            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
 
             Assert.Equal(expectedMatchInfos, actual.Item1);
             Assert.Equal(transactionInfos, actual.Item2);
-            Assert.Equal(xml, criteria.MessageIds);
+            Assert.Equal(stringBuilder.ToString(), criteria.MessageIds);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
             Assert.Equal(setting.ConfigPRO, criteria.ConfigPRO);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
@@ -94,7 +120,7 @@
             // Arrange
             fixture.Customize<VoidingMessage>(x => x.With(b => b.MessageId, 1));
             fixture.Customize<MatchInfo>(x => x.With(b => b.MessageId, 1));
-            var voidingMessages = fixture.Create<IEnumerable<VoidingMessage>>();
+            var voidingMessageUserNames = fixture.Create<IEnumerable<VoidingMessageUserName>>();
             var matchInfos = fixture.Create<IEnumerable<MatchInfo>>();
             var transactionInfos = new List<TransactionInfo>();
             var siteSettingMappings = fixture.Create<IEnumerable<SiteSettingMapping>>();
@@ -107,7 +133,7 @@
 
             // Act
             var actual = await service.ImportTicketVoidingInfoAsync(
-                voidingMessages,
+                voidingMessageUserNames,
                 matchInfos,
                 transactionInfos,
                 siteSettingMappings,
@@ -115,7 +141,7 @@
                 licenseeInfo);
 
             // Assert
-            await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessage>>());
+            await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
 
             Assert.Empty(actual.Item1);
             Assert.Empty(actual.Item2);
@@ -126,10 +152,10 @@
         public async Task ImportTicketVoidingInfoAsync_TicketVoidingForCredit_ReturnExpectedInfo()
         {
             // Arrange
-            var voidingMessages = fixture.Create<IEnumerable<VoidingMessage>>();
+            var voidingMessageUserNames = fixture.Create<IEnumerable<VoidingMessageUserName>>();
             var matchInfos = new List<MatchInfo>
             {
-                new MatchInfo { MessageId = 1, HomeName = "home", AwayName = "away" }
+                new MatchInfo { MessageId = 1, HomeName = "home", AwayName = "away", IssueTypeId = 7 }
             };
             var transactionInfos = new List<TransactionInfo>
             {
@@ -145,14 +171,14 @@
             {
                 new AutoFeedbackInfo { MessageId = 1, CustId = 1 }
             };
-            var xml = "<ROOT><r msgid='1' reqid='1' custid='1' hl='1' related='1' event='home -vs- away' /></ROOT>";
+            var xml = "<ROOT><r msgid='1' reqid='1' custid='1' hl='1' related='1' event='home -vs- away' IssueTypeId='7' /></ROOT>";
             var criteria = new ImportFeedbackInfoCriteria();
             var service = GetService();
             baseService.GetDataAsync<AutoFeedbackInfo>(Arg.Do<ImportFeedbackInfoCriteria>(x => criteria = x)).Returns(feedbackInfos);
 
             // Act
             var actual = await service.ImportTicketVoidingInfoAsync(
-                voidingMessages,
+                voidingMessageUserNames,
                 matchInfos,
                 transactionInfos,
                 siteSettingMappings,
@@ -161,7 +187,7 @@
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
-            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessage>>());
+            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
 
             Assert.Equal(matchInfos, actual.Item1);
             Assert.Equal(transactionInfos, actual.Item2);
@@ -172,10 +198,10 @@
         public async Task ImportTicketVoidingInfoAsync_TicketVoidingForDeposit_ReturnExpectedInfo()
         {
             // Arrange
-            var voidingMessages = fixture.Create<IEnumerable<VoidingMessage>>();
+            var voidingMessageUserNames = fixture.Create<IEnumerable<VoidingMessageUserName>>();
             var matchInfos = new List<MatchInfo>
             {
-                new MatchInfo { MessageId = 1, HomeName = "home", AwayName = "away" }
+                new MatchInfo { MessageId = 1, HomeName = "home", AwayName = "away", IssueTypeId = 7 }
             };
             var transactionInfos = new List<TransactionInfo>
             {
@@ -191,14 +217,14 @@
             {
                 new AutoFeedbackInfo { MessageId = 1, CustId = 1 }
             };
-            var xml = "<ROOT><r msgid='1' reqid='1' custid='1' hl='1' related='1' event='home -vs- away' /></ROOT>";
+            var xml = "<ROOT><r msgid='1' reqid='1' custid='1' hl='1' related='1' event='home -vs- away' IssueTypeId='7' /></ROOT>";
             var criteria = new ImportFeedbackInfoCriteria();
             var service = GetService();
             baseService.GetDataAsync<AutoFeedbackInfo>(Arg.Do<ImportFeedbackInfoCriteria>(x => criteria = x)).Returns(feedbackInfos);
 
             // Act
             var actual = await service.ImportTicketVoidingInfoAsync(
-                voidingMessages,
+                voidingMessageUserNames,
                 matchInfos,
                 transactionInfos,
                 siteSettingMappings,
@@ -207,7 +233,7 @@
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
-            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessage>>());
+            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
 
             Assert.Equal(matchInfos, actual.Item1);
             Assert.Equal(transactionInfos, actual.Item2);

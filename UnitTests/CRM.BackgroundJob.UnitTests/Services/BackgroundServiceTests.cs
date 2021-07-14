@@ -14,12 +14,11 @@
     public class BackgroundServiceTests
     {
         private IMaintenanceService maintenanceService;
-        private IAutoFeedbackService feedbackService;
         private IChatBotJobService chatBotJobService;
         private ICRMLogService logService;
         private ISendNotificationService sendNotificationService;
         private IMonitorService monitorService;
-        private IAutoWinLossFeedbackService winlossService;
+        private IAutoFeedbackService autoFeedbackService;
 
 
         #region CreateFeedbackForVoidingAbnormalBet
@@ -67,7 +66,7 @@
             await service.CreateFeedbackForVoidingAbnormalBet();
 
             // Assert
-            await feedbackService.Received().ExecuteJobAsync();
+            await autoFeedbackService.Received().ExecuteJobAsync();
         }
 
         #endregion CreateFeedbackForVoidingAbnormalBet
@@ -117,7 +116,7 @@
             await service.CreateFeedbackForWinLossLimit();
 
             // Assert
-            await winlossService.Received().WinLossExecuteJobAsync();
+            await autoFeedbackService.Received().WinLossExecuteJobAsync();
         }
 
         #endregion CreateFeedbackForTurnoverControl
@@ -167,7 +166,7 @@
             await service.CreateFeedbackForProblemsAccount();
 
             // Assert
-            await winlossService.Received().ProblemsAcccountExecuteJobAsync();
+            await autoFeedbackService.Received().ProblemsAcccountExecuteJobAsync();
         }
 
         #endregion CreateFeedbackForProblemsAccount
@@ -217,7 +216,7 @@
             await service.CreateFeedbackForTurnoverControl();
 
             // Assert
-            await winlossService.Received().TurnoverControlExecuteJobAsync();
+            await autoFeedbackService.Received().TurnoverControlExecuteJobAsync();
         }
 
         #endregion CreateFeedbackForTurnoverControl
@@ -267,7 +266,7 @@
             await service.CreateFeedbackForResultAmendment();
 
             // Assert
-            await winlossService.Received().ResultAmendmentExecuteJobAsync();
+            await autoFeedbackService.Received().ResultAmendmentExecuteJobAsync();
         }
 
         #endregion CreateFeedbackForResultAmendment
@@ -558,20 +557,18 @@
         private BackgroundService GetService()
         {
             maintenanceService = Substitute.For<IMaintenanceService>();
-            feedbackService = Substitute.For<IAutoFeedbackService>();
             chatBotJobService = Substitute.For<IChatBotJobService>();
             logService = Substitute.For<ICRMLogService>();
             sendNotificationService = Substitute.For<ISendNotificationService>();
             monitorService = Substitute.For<IMonitorService>();
-            winlossService = Substitute.For<IAutoWinLossFeedbackService>();
+            autoFeedbackService = Substitute.For<IAutoFeedbackService>();
 
             return new BackgroundService(
                 maintenanceService,
-                feedbackService,
                 chatBotJobService,
                 logService,
                 sendNotificationService,
-                winlossService,
+                autoFeedbackService,
                 monitorService);
         }
 

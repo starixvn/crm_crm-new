@@ -18,7 +18,7 @@
     using NSubstitute;
     using Xunit;
 
-    public class AutoWinLossFeedbackServiceTests
+    public class AutoFeedbackServiceTests
     {
         private AppJobSettings appSettings;
         private IJobRunningChecker jobRunningChecker;
@@ -29,8 +29,202 @@
         private IProblemsAccountFeedbackService problemsAccountFeedbackService;
         private IConfiguration configuration;
         private IResultAmendmentService resultAmendmentService;
+        private IFeedbackService feedbackService;
 
         private readonly IFixture fixture = new Fixture();
+
+        #region ExecuteJobAsync
+        [Fact]
+        public async Task ExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
+        {
+            // Arrange
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            systemSettingService.When(x => x.GetAbnormalBetSettingAsync()).Throw(exception);
+
+            // Assert
+            await service.ExecuteJobAsync();
+
+            // Act
+            await logService.Received().ErrorAsync(exception);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
+        }
+
+        [Fact]
+        public async Task ExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+
+            // Act
+            await service.ExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Abnormal Bet - Service is shutdown.");
+        }
+
+        [Fact]
+        public async Task ExecuteJobAsync_LIVEEnvironment_ExpectedCallExactFunction()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting
+            {
+                ServiceFlag = true,
+                JobStatus = "running",
+                JobStatusUAT = "completed"
+            };
+            var service = GetService();
+            var env = Constants.DefaultEnvironment;
+            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            configuration.GetValue<string>("SiteEnvironment").Returns(env);
+
+            // Act
+            await service.ExecuteJobAsync();
+
+            // Assert
+            service.Received().Protected("AbnormalbetRunJobByEnviromentAsync",
+                false, false, true, setting, Constants.DefaultEnvironment
+                );
+        }
+
+        [Fact]
+        public async Task ExecuteJobAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
+
+            // Act
+            await service.Public_AbnormalbetRunJobByEnviromentAsync(false, true, false, setting, "LIVE");
+
+            // Assert
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task ExecuteJobAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now.AddMinutes(-6),
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
+
+            // Act
+            await service.Public_AbnormalbetRunJobByEnviromentAsync(true, true, false, setting, "UAT");
+
+            // Assert
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_AutoFB);
+        }
+
+        [Fact]
+        public async Task AbnormalbetRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
+
+            // Act
+            await service.Public_AbnormalbetRunJobByEnviromentAsync(true, true, false, setting, "UAT");
+
+            // Assert
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task AbnormalbetRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now.AddMinutes(-6),
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
+
+            // Act
+            await service.Public_AbnormalbetRunJobByEnviromentAsync(false, true, true, setting, "LIVE");
+
+            // Assert
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_AutoFB);
+        }
+
+        [Fact]
+        public async Task AbnormalbetRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsNotRunning_CallExactFunction()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
+
+            // Act
+            await service.Public_AbnormalbetRunJobByEnviromentAsync(false, false, false, setting, "LIVE");
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
+            await feedbackService.Received().CreateFeedbackForVoidingAbnormalBetAsync(setting, false, setting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
+        }
+
+        [Fact]
+        public async Task AbnormalbetRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsNotRunning_CallExactFunction()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
+
+            // Act
+            await service.Public_AbnormalbetRunJobByEnviromentAsync(true, false, false, setting, "UAT");
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
+            await feedbackService.Received().CreateFeedbackForVoidingAbnormalBetAsync(setting, true, setting.LastRuntimeUAT, SystemSettingName.LastRuntimeUAT, SystemSettingName.JobStatusUAT, "UAT");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
+        }
+
+        #endregion ExecuteJobAsync
 
         #region WinLossExecuteJobAsync
         [Fact]
@@ -619,7 +813,7 @@
 
         #region Helpers
 
-        private AutoWinLossFeedbackServiceTestable GetService()
+        private AutoFeedbackServiceTestable GetService()
         {
             appSettings = new AppJobSettings
             {
@@ -634,8 +828,9 @@
             tOControlFeedbackService = Substitute.For<ITOControlFeedbackService>();
             problemsAccountFeedbackService = Substitute.For<IProblemsAccountFeedbackService>();
             resultAmendmentService = Substitute.For<IResultAmendmentService>();
+            feedbackService = Substitute.For<IFeedbackService>();
             configuration = Substitute.For<IConfiguration>();
-            return Substitute.For<AutoWinLossFeedbackServiceTestable>(
+            return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
                 systemSettingService,
@@ -644,6 +839,7 @@
                 tOControlFeedbackService,
                 resultAmendmentService,
                 problemsAccountFeedbackService,
+                feedbackService,
                 configuration);
         }
 

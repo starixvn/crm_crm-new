@@ -11,9 +11,9 @@ namespace CRM.BackgroundJob.UnitTests.Testable
     using Microsoft.Extensions.Options;
     using System.Threading.Tasks;
 
-    public class AutoWinLossFeedbackServiceTestable : AutoWinLossFeedbackService
+    public class AutoFeedbackServiceTestable : AutoFeedbackService
     {
-        public AutoWinLossFeedbackServiceTestable(
+        public AutoFeedbackServiceTestable(
             IOptionsSnapshot<AppJobSettings> appSettings,
             IJobRunningChecker jobRunningChecker,
             ISystemSettingService systemSettingService,
@@ -22,6 +22,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             ITOControlFeedbackService turnoverService,
             IResultAmendmentService resultAmendmentService,
             IProblemsAccountFeedbackService problemsAccountFeedbackService,
+            IFeedbackService feedbackService,
             IConfiguration configuration
             )
             : base(appSettings,
@@ -32,6 +33,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
                 turnoverService,
                 resultAmendmentService,
                 problemsAccountFeedbackService,
+                feedbackService,
                 configuration)
         {
 
@@ -49,6 +51,13 @@ namespace CRM.BackgroundJob.UnitTests.Testable
         {
             await base.ResultAmendmentRunJobByEnviromentAsync(isUAT, isRunningUAT,
                 isRunningLive, resultAmendmentSetting, Environment);
+        }
+
+        public async Task Public_AbnormalbetRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
+            bool isRunningLive, AbnormalBetSystemSetting setting, string Environment)
+        {
+            await base.AbnormalbetRunJobByEnviromentAsync(isUAT, isRunningUAT,
+            isRunningLive, setting, Environment);
         }
     }
 }

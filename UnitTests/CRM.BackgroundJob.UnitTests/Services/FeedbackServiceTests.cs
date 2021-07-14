@@ -6,6 +6,8 @@
     using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -22,11 +24,11 @@
         private AppJobSettings appSettings;
         private IBaseService baseService;
         private ISettingService settingService;
-        private ISystemSettingService systemSettingService;
         private IMessageService messageService;
         private ICustomerService customerService;
         private ICRMLogService logService;
         private IFeedbackTicketVoidingService ticketVoidingService;
+        private ICommonFeedback commonFeedback;
         private readonly IFixture fixture = new Fixture();
 
         #region CreateFeedbackForVoidingAbnormalBetAsync
@@ -36,33 +38,29 @@
         {
             // Arrange
             var setting = fixture.Create<AbnormalBetSystemSetting>();
-            var voidingMessages = new List<VoidingMessage>();
+            var voidingMessages = new ValueTuple<IEnumerable<VoidingMessage>, IEnumerable<VoidingHisMessage>>();
+            var messageImportCheck = fixture.Create<IEnumerable<VoidingHisMessage>>();
+            var failMessages = new List<VoidingMessageUserName>();
+            var voidingMessageUserName = fixture.Create<IEnumerable<VoidingMessageUserName>>();
             var service = MockService();
             messageService.GetVoidingMessageAsync().Returns(voidingMessages);
-            messageService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
-            messageService.GetFailMessageAsync().Returns(voidingMessages);
+            messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2).Returns(messageImportCheck);
+            messageService.ImportVoidingMessageAsync(voidingMessageUserName, voidingMessages.Item1, setting.BatchSize,"Live", setting.LastDateUAT).Returns(voidingMessageUserName);
+            messageService.GetFailMessageAsync().Returns(failMessages);
 
             // Act
-            await service.CreateFeedbackForVoidingAbnormalBetAsync(setting);
+            await service.CreateFeedbackForVoidingAbnormalBetAsync(setting, false, setting.LastDateUAT, "LastRuntime", setting.JobStatus, "Live");
 
             // Assert
-            service.Received().Protected("EditSystemSettingAsync");
+            await commonFeedback.Received().EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
             service.DidNotReceive().Protected(
-                "CreateFeedbackForCreditSiteAsync",
-                Arg.Any<Message>(),
-                Arg.Any<MatchInfo>(),
-                Arg.Any<IEnumerable<TransactionInfo>>(),
-                Arg.Any<IEnumerable<GroupHeadline>>(),
-                Arg.Any<IEnumerable<SettingItem>>(),
-                Arg.Any<IEnumerable<SystemSettingMapping>>());
-            service.DidNotReceive().Protected(
-                "CreateFeedbackForDepositSiteAsync",
-                Arg.Any<CustomerInfo>(),
-                Arg.Any<Message>(),
-                Arg.Any<MatchInfo>(),
-                Arg.Any<IEnumerable<TransactionInfo>>(),
-                Arg.Any<IEnumerable<SettingItem>>(),
-                Arg.Any<IEnumerable<SystemSettingMapping>>());
+               "CreateFeedbackForCreditDepositSiteAsync",
+               Arg.Any<IEnumerable<Message>>(),
+               Arg.Any<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>>(),
+               Arg.Any<List<VoidingMessageUserName>>(),
+               Arg.Any<string>(),
+               Arg.Any<string>()
+               );
         }
 
         [Fact]
@@ -70,49 +68,40 @@
         {
             // Arrange
             var setting = fixture.Create<AbnormalBetSystemSetting>();
-            var voidingMessages = fixture.Create<IEnumerable<VoidingMessage>>();
+            var voidingMessages = new ValueTuple<IEnumerable<VoidingMessage>, IEnumerable<VoidingHisMessage>>();
+            var messageImportCheck = fixture.Create<IEnumerable<VoidingHisMessage>>();
+            var failMessages = fixture.Create<IEnumerable<VoidingMessageUserName>>();
+            var voidingMessageUserName = new List<VoidingMessageUserName>();
             var matchInfos = new List<MatchInfo>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
             var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
             var service = MockService();
             messageService.GetVoidingMessageAsync().Returns(voidingMessages);
-            messageService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
-            messageService.GetFailMessageAsync().Returns(voidingMessages);
-            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<VoidingMessage>>(), setting).Returns(ticketInfo);
+            messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2).Returns(messageImportCheck);
+            messageService.ImportVoidingMessageAsync(voidingMessageUserName, voidingMessages.Item1, setting.BatchSize, "Live", setting.LastDateUAT).Returns(voidingMessageUserName);
+            messageService.GetFailMessageAsync().Returns(failMessages);
+            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), setting).Returns(ticketInfo);
 
             // Act
-            await service.CreateFeedbackForVoidingAbnormalBetAsync(setting);
+            await service.CreateFeedbackForVoidingAbnormalBetAsync(setting, false, setting.LastDateUAT, "LastRuntime", setting.JobStatus, "Live");
 
             // Assert
-            service.Received().Protected("EditSystemSettingAsync");
+            await commonFeedback.Received().EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
             service.DidNotReceive().Protected(
-                "CreateFeedbackForCreditSiteAsync",
-                Arg.Any<Message>(),
-                Arg.Any<MatchInfo>(),
-                Arg.Any<IEnumerable<TransactionInfo>>(),
-                Arg.Any<IEnumerable<GroupHeadline>>(),
-                Arg.Any<IEnumerable<SettingItem>>(),
-                Arg.Any<IEnumerable<SystemSettingMapping>>());
-            service.DidNotReceive().Protected(
-                "CreateFeedbackForDepositSiteAsync",
-                Arg.Any<CustomerInfo>(),
-                Arg.Any<Message>(),
-                Arg.Any<MatchInfo>(),
-                Arg.Any<IEnumerable<TransactionInfo>>(),
-                Arg.Any<IEnumerable<SettingItem>>(),
-                Arg.Any<IEnumerable<SystemSettingMapping>>());
+               "CreateFeedbackForCreditDepositSiteAsync",
+                Arg.Any<IEnumerable<Message>>(),
+               Arg.Any<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>>(),
+               Arg.Any<List<VoidingMessageUserName>>(),
+               Arg.Any<string>(),
+               Arg.Any<string>()
+               );
         }
 
         [Fact]
-        public async Task CreateFeedbackForVoidingAbnormalBetAsync_ExistedTicketVoiding_ExpectedCreateFeedbackForCreditAndDeposit()
+        public async Task CreateFeedbackForVoidingAbnormalBetAsync_ExistedTicketVoiding_ExpectedCreateFeedbackForCreditDepositSiteAsync()
         {
             // Arrange
             var setting = fixture.Create<AbnormalBetSystemSetting>();
-            var voidingMessages = fixture.Create<IEnumerable<VoidingMessage>>();
-            var messages = new List<Message>
-            {
-                new Message { MessageId = 1 }
-            };
             var matchInfos = new List<MatchInfo>
             {
                 new MatchInfo { MessageId = 1 }
@@ -122,8 +111,60 @@
                 new TransactionInfo { MessageId = 1, CustId = 1 },
                 new TransactionInfo { MessageId = 1, IsDeposit = true }
             };
+            var voidingMessages = new ValueTuple<IEnumerable<VoidingMessage>, IEnumerable<VoidingHisMessage>>();
+            var messageImportCheck = fixture.Create<IEnumerable<VoidingHisMessage>>();
+            var failMessages = fixture.Create<IEnumerable<VoidingMessageUserName>>();
+            var voidingMessageUserName = new List<VoidingMessageUserName>();
             var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
+            var service = MockService();
+            messageService.GetVoidingMessageAsync().Returns(voidingMessages);
+            messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2).Returns(messageImportCheck);
+            messageService.ImportVoidingMessageAsync(voidingMessageUserName, voidingMessages.Item1, setting.BatchSize, "Live", setting.LastDateUAT).Returns(voidingMessageUserName);
+            messageService.GetFailMessageAsync().Returns(failMessages);
+            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), setting).Returns(ticketInfo);
+
+            // Act
+            await service.CreateFeedbackForVoidingAbnormalBetAsync(setting, false, setting.LastDateUAT, "LastRuntime", setting.JobStatus, "Live");
+
+            // Assert
+            await commonFeedback.Received().EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+
+            service.Received().Protected(
+               "CreateFeedbackForCreditDepositSiteAsync",
+               Arg.Any<IEnumerable<Message>>(),
+               Arg.Any<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>>(),
+               Arg.Any<List<VoidingMessageUserName>>(),
+               Arg.Any<string>(),
+               Arg.Any<string>()
+               );
+        }
+
+        #endregion CreateFeedbackForVoidingAbnormalBetAsync
+
+        #region CreateFeedbackForCreditDepositSiteAsync
+
+        [Fact]
+        public async Task CreateFeedbackForCreditDepositSiteAsync_WhenCalled_ExpectedCallExpectedCreateFeedbackForCreditAndDeposit()
+        {
+            // Arrange
+            var matchInfos = new List<MatchInfo>
+            {
+                new MatchInfo { MessageId = 1 }
+            };
+            var transactionInfos = new List<TransactionInfo>
+            {
+                new TransactionInfo { MessageId = 1, CustId = 1 },
+                new TransactionInfo { MessageId = 1, IsDeposit = true }
+            };
             var settings = fixture.Create<IEnumerable<SettingItem>>();
+            var messages = new List<Message> { 
+                new Message
+                {
+                    MessageId = 1
+                }
+            };
+            var voidingMessageUserName = new List<VoidingMessageUserName>();
+            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var siteSettingMappings = fixture.Create<IEnumerable<SiteSettingMapping>>();
             var licenseeInfo = fixture.Create<CustomerInfo>();
@@ -132,33 +173,30 @@
                 new GroupHeadline { CustId = 1 }
             };
             var service = MockService();
-            messageService.GetVoidingMessageAsync().Returns(voidingMessages);
-            messageService.ImportVoidingMessageAsync(voidingMessages, setting.BatchSize).Returns(voidingMessages);
-            messageService.GetFailMessageAsync().Returns(voidingMessages);
-            messageService.GetMessageInfoAsync(Arg.Any<IEnumerable<int>>()).Returns(messages);
             settingService.GetAllSettingAsync().Returns(settings);
             settingService.GetSystemSettingMappingAsync(Arg.Any<string[]>()).Returns(settingMappings);
             settingService.GetSiteSettingMappingAsync().Returns(siteSettingMappings);
             customerService.GetCustomerInfoAsync(appSettings.LicenseeUsername, true).Returns(licenseeInfo);
             customerService.GetGroupHeadlineAsync(Arg.Any<IEnumerable<int>>()).Returns(headlines);
-
-            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<VoidingMessage>>(), setting).Returns(ticketInfo);
             ticketVoidingService.ImportTicketVoidingInfoAsync(
-                Arg.Any<IEnumerable<VoidingMessage>>(),
-                ticketInfo.Item1,
-                ticketInfo.Item2,
-                siteSettingMappings,
-                headlines,
-                licenseeInfo).Returns(ticketInfo);
+                    voidingMessageUserName,
+                    ticketInfo.Item1,
+                    ticketInfo.Item2,
+                    siteSettingMappings,
+                    headlines,
+                    licenseeInfo)
+                .Returns(ticketInfo);
 
             // Act
-            await service.CreateFeedbackForVoidingAbnormalBetAsync(setting);
+            await service.Public_CreateFeedbackForCreditDepositSiteAsync(messages,
+                        ticketInfo,
+                        voidingMessageUserName,
+                        "JobStatusNameEnv",
+                        "LastRuntimeNameEnv");
 
             // Assert
-            logService.Received().LogInformation(Arg.Any<string>());
-            service.Received().Protected("EditSystemSettingAsync");
             service.Received().Protected(
-                "CreateFeedbackForCreditSiteAsync",
+                    "CreateFeedbackForCreditSiteAsync",
                 Arg.Any<Message>(),
                 Arg.Any<MatchInfo>(),
                 Arg.Any<IEnumerable<TransactionInfo>>(),
@@ -166,7 +204,7 @@
                 settings,
                 settingMappings);
             service.Received().Protected(
-                "CreateFeedbackForDepositSiteAsync",
+                    "CreateFeedbackForDepositSiteAsync",
                 licenseeInfo,
                 Arg.Any<Message>(),
                 Arg.Any<MatchInfo>(),
@@ -174,8 +212,7 @@
                 settings,
                 settingMappings);
         }
-
-        #endregion CreateFeedbackForVoidingAbnormalBetAsync
+        #endregion CreateFeedbackForCreditDepositSiteAsync
 
         [Fact]
         public async Task CreateFeedbackForCreditSiteAsync_WhenCalled_ExpectedCallCreateFeedbackForCreditSiteByBatchAsync()
@@ -869,7 +906,7 @@
             var requestIds = fixture.Create<string>();
             var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
             description.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
-            description.Append("<br />Announcement sent to affected Licensees and informed our related department found abnormal tickets of members for the match.");
+            description.Append("<br />Announcement sent to affected Licensees and informed our related department found tickets of abnormal accounts.");
             description.Append("<br /><br />Please refer to the system email subject \"Voided Bets Report\" for those affected customers &amp; tickets for reference.");
             var service = MockService();
 
@@ -894,6 +931,38 @@
             description.AppendFormat("<br />Event Start Time: {0}", matchInfo.KickOffTime);
             description.AppendFormat("<br />League: {0}", matchInfo.LeagueName);
             description.AppendFormat("<br />Match: {0} - vs - {1}", matchInfo.HomeName, matchInfo.AwayName);
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetDescriptionForCreditSite(messageId, requestIds, matchInfo);
+
+            // Assert
+            Assert.Equal(description.ToString(), actual);
+        }
+
+        [Fact]
+        public void GetDescriptionForCreditSite_IssuesTypeAbnormalAccount_ReturnExpectedDescription()
+        {
+            // Arrange
+            var messageId = fixture.Create<int>();
+            var requestIds = fixture.Create<string>();
+            var matchInfo = new MatchInfo
+            {
+                IssueTypeId = 13,
+                MaxWinlostdate = new DateTime(2020 - 01 - 01),
+                MinWinlostdate = new DateTime(2020 - 01 - 01),
+                AffectedAccounts = "AffectedAccounts",
+                DecidedBy = "DecidedBy",
+                Requestby = "Requestby",
+                VoidBy = "VoidBy"
+            };
+            var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
+            description.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
+            description.AppendFormat("<br />Event Date: {0} - {1}", matchInfo.MinWinlostdate.ToString("dd-MMM-yyyy"), matchInfo.MaxWinlostdate.ToString("dd-MMM-yyyy"));
+            description.AppendFormat("<br />Affected accounts: {0}", matchInfo.AffectedAccounts);
+            description.AppendFormat("<br />Decided By: {0}", matchInfo.DecidedBy);
+            description.AppendFormat("<br />Requested by: {0}", matchInfo.Requestby);
+            description.AppendFormat("<br />Voided by: {0}", matchInfo.VoidBy);
             var service = MockService();
 
             // Act
@@ -932,36 +1001,21 @@
             {
                 new TransactionInfo {TransId = 1, Username = "starixIT"}
             };
-            var solution = new StringBuilder(message.Content_en);
-            solution.Append("<br /><br />").Append(message.Content_cs);
-            solution.Append("<br /><br />Kindly refer to Agency site \"Cancelled Bets\" for Voided user.");
-            solution.Append("<br /><br />Affected users and tickets:");
-            solution.Append("<br />starixIT 1");
+            var stringBuilder = new StringBuilder(message.Content_en);
+            stringBuilder.Append("<br /><br />").Append(message.Content_cs);
+            stringBuilder.Append("<br /><br />Kindly refer to Agency site \"Cancelled Bets\" for Voided user.");
+            stringBuilder.Append("<br /><br />Affected users / 受影响会员:");
+            stringBuilder.Append("<br />starixIT");
             var service = MockService();
 
             // Act
             var actual = service.Public_GetSolutionForCreditSite(message, transactions);
 
             // Assert
-            Assert.Equal(solution.ToString(), actual);
+            Assert.Equal(stringBuilder.ToString(), actual);
         }
 
         #endregion GetSolution
-
-        [Fact]
-        public async Task EditSystemSettingAsync_WhenCalled_ReturnExpectedCommandResult()
-        {
-            // Arrange
-            var commandResult = fixture.Create<CommandResult>();
-            var service = MockService();
-            systemSettingService.EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>()).Returns(commandResult);
-
-            // Act
-            var actual = await service.Public_EditSystemSettingAsync();
-
-            // Assert
-            Assert.Equal(commandResult, actual);
-        }
 
         #region Helpers
 
@@ -978,21 +1032,21 @@
             appJobSettings.Value.Returns(appSettings);
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
-            systemSettingService = Substitute.For<ISystemSettingService>();
             messageService = Substitute.For<IMessageService>();
             customerService = Substitute.For<ICustomerService>();
             logService = Substitute.For<ICRMLogService>();
             ticketVoidingService = Substitute.For<IFeedbackTicketVoidingService>();
+            commonFeedback = Substitute.For<ICommonFeedback>();
 
             return Substitute.For<FeedbackServiceTestable>(
                 appJobSettings,
                 baseService,
                 settingService,
-                systemSettingService,
                 messageService,
                 customerService,
                 logService,
-                ticketVoidingService);
+                ticketVoidingService,
+                commonFeedback);
         }
 
         #endregion Helpers

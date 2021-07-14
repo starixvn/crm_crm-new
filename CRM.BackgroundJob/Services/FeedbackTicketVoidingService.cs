@@ -10,7 +10,6 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models;
-    using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
@@ -62,8 +61,8 @@
                IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
                AbnormalBetSystemSetting setting)
         {
-            const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' UsernameList='{2}' CustIdList='{3}'/>";
-            var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' UsernameList='{2}' CustIdList='{3}' />";
+            var stringBuilder = new StringBuilder(Constants.BeginRootTag);
 
             foreach (var voidingMessageUserName in voidingMessageUserNames)
             {
@@ -75,7 +74,7 @@
                     );
             }
 
-            stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(Constants.EndRootTag);
 
             var criteria = new GetAbnormalTicketInfoCriteria
             {
@@ -89,9 +88,8 @@
             var messageIds = ticketInfo.Item1.Where(x => !ticketInfo.Item2.Any(y => x.MessageId == y.MessageId)).Select(x => x.MessageId).ToList();
             if (messageIds.Any())
             {
-                var voidingMessages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
-                var message = (IEnumerable<VoidingMessage>)voidingMessages;
-                await messageService.EditStatusVoidingMessageAsync(message);
+                var messages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
+                await messageService.EditStatusVoidingMessageAsync(messages);
                 logService.LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", messageIds)));
             }
 
@@ -158,14 +156,13 @@
             var messageIds = matchInfos.Where(x => !feedbackInfos.Any(y => y.MessageId == x.MessageId)).Select(x => x.MessageId).ToList();
             if (messageIds.Any())
             {
-                var voidingMessages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
-                var messages = (IEnumerable<VoidingMessage>)voidingMessages;
+                var messages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
                 await messageService.EditStatusVoidingMessageAsync(messages);
                 logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", messageIds)));
             }
 
-            matchInfos = matchInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId));
-            transactionInfos = transactionInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId && y.CustId == x.CustId));
+            matchInfos = matchInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId) && x.MessageId != 0);
+            transactionInfos = transactionInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId && y.CustId == x.CustId) && x.MessageId != 0);
             logService.LogInformation("Abnormal Bet - End import ticket info");
             return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
         }

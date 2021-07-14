@@ -3,7 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using CRM.Core.Models;
+    using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Services;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -15,20 +16,30 @@
         public FeedbackServiceTestable(IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
-            ISystemSettingService systemSettingService,
             IMessageService messageService,
             ICustomerService customerService,
             ICRMLogService logService,
-            IFeedbackTicketVoidingService ticketVoidingService)
+            IFeedbackTicketVoidingService ticketVoidingService,
+            ICommonFeedback commonFeedback)
             : base(appSettings,
                 baseService,
                 settingService,
-                systemSettingService,
                 messageService,
                 customerService,
                 logService,
-                ticketVoidingService)
+                ticketVoidingService,
+                commonFeedback)
         {
+        }
+
+        public async Task Public_CreateFeedbackForCreditDepositSiteAsync(
+            IEnumerable<Message> messages,
+            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo,
+            IEnumerable<VoidingMessageUserName> messagesImportCombineDistinct,
+            string JobStatusNameEnv,
+            string LastRuntimeNameEnv)
+        {
+            await base.CreateFeedbackForCreditDepositSiteAsync(messages, ticketInfo, messagesImportCombineDistinct, JobStatusNameEnv, LastRuntimeNameEnv);
         }
 
         public async Task Public_CreateFeedbackForCreditSiteAsync(
@@ -165,11 +176,6 @@
         public string Public_GetSolutionForCreditSite(Message message, IEnumerable<TransactionInfo> transactionInfos)
         {
             return base.GetSolutionForCreditSite(message, transactionInfos);
-        }
-
-        public async Task<CommandResult> Public_EditSystemSettingAsync()
-        {
-            return await base.EditSystemSettingAsync();
         }
     }
 }

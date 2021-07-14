@@ -37,26 +37,23 @@
     public class BackgroundService : IBackgroundService
     {
         private readonly IMaintenanceService maintenanceService;
-        private readonly IAutoFeedbackService feedbackService;
         private readonly IChatBotJobService chatBotJobService;
         private readonly ICRMLogService logService;
         private readonly ISendNotificationService sendNotificationService;
-        private readonly IAutoWinLossFeedbackService winLossService;
+        private readonly IAutoFeedbackService winLossService;
         private readonly IMonitorService monitorService;
 
         private const string umTime = "UM time.";
 
         public BackgroundService(
             IMaintenanceService maintenanceService,
-            IAutoFeedbackService feedbackService,
             IChatBotJobService chatBotJobService,
             ICRMLogService logService,
             ISendNotificationService sendNotificationService,
-            IAutoWinLossFeedbackService winLossService,
+            IAutoFeedbackService winLossService,
             IMonitorService monitorService)
         {
             this.maintenanceService = maintenanceService;
-            this.feedbackService = feedbackService;
             this.chatBotJobService = chatBotJobService;
             this.logService = logService;
             this.sendNotificationService = sendNotificationService;
@@ -77,7 +74,7 @@
                     return;
                 }
 
-                await feedbackService.ExecuteJobAsync();
+                await winLossService.ExecuteJobAsync();
             }
             catch (Exception ex)
             {

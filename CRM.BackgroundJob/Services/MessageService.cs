@@ -19,7 +19,7 @@
 
         Task<IEnumerable<VoidingHisMessage>> ImportVoidingMessageHistoryCheckAsync(IEnumerable<VoidingHisMessage> voidingHisMessage);
 
-        Task<IEnumerable<VoidingMessageUserName>> voidingHisMessageUserNameList(IEnumerable<VoidingHisMessage> messageImportCheck);
+        Task<IEnumerable<VoidingMessageUserName>> VoidingHisMessageUserNameList(IEnumerable<VoidingHisMessage> messageImportCheck);
 
         Task<IEnumerable<VoidingMessageUserName>> ImportVoidingMessageAsync(
             IEnumerable<VoidingMessageUserName> voidingMessageUserName,
@@ -32,7 +32,7 @@
 
         Task<IEnumerable<Message>> GetMessageInfoAsync(IEnumerable<int> messageIds);
 
-        Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessage> voidingMessages);
+        Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessageUserName> voidingMessageUserNames);
     }
 
     public class MessageService : IMessageService
@@ -61,7 +61,7 @@
             return await baseService.GetDataAsync<VoidingHisMessage>(criteria);
         }
 
-        public async Task<IEnumerable<VoidingMessageUserName>> voidingHisMessageUserNameList(
+        public async Task<IEnumerable<VoidingMessageUserName>> VoidingHisMessageUserNameList(
            IEnumerable<VoidingHisMessage>  messageImportCheck
             )
         {
@@ -80,7 +80,7 @@
             DateTime LastDateUAT)
         {
             const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' UsernameList='{2}' CustIdList='{3}'/>";
-            var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag.ToLowerInvariant());
+            var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
             foreach (var message in voidingMessages)
             {
                 VoidingMessageUserName userName = voidingMessageUserName.FirstOrDefault(x => x.MessageId == message.MessageId && x.RequestId == message.RequestId);
@@ -91,10 +91,10 @@
                     userName?.UsernameList,
                     userName?.CustIdList);
             }
-            stringBuilder.Append(Constants.Constants.EndRootTag.ToLowerInvariant());
+            stringBuilder.Append(Constants.Constants.EndRootTag);
             var criteria = new ImportVoidingMessageCriteria
             {
-                MessageIds = XmlTemplate.ToString(),
+                MessageIds = stringBuilder.ToString(),
                 BatchSize = batchSize,
                 Environment = Environment,
                 LastDateUAT = LastDateUAT
@@ -125,11 +125,18 @@
             return messages;
         }
 
-        public async Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessage> voidingMessages)
+        public async Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessageUserName> voidingMessageUserNames)
         {
+            const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' />";
+            var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
+            foreach(var voidingMessageUserName in voidingMessageUserNames)
+            {
+                stringBuilder.AppendFormat(XmlTemplate, voidingMessageUserName.MessageId, voidingMessageUserName.RequestId);
+            }
+            stringBuilder.Append(Constants.Constants.EndRootTag);
             var criteria = new EditStatusVoidingMessageCommand
             {
-                MessageIds = voidingMessages.ToXML("ROOT").ToString()
+                MessageIds = stringBuilder.ToString()
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
