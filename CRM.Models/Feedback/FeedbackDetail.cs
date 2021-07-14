@@ -1,4 +1,4 @@
-﻿namespace CRM.Core.Models.Feedback
+﻿namespace CRM.Models.Feedback
 {
     using System;
     using System.Collections.Generic;
@@ -43,7 +43,7 @@
 
         public bool IsChecked { get; set; }
 
-        public IList<SettingItems> Settings { get; set; } = new List<SettingItems>();
+        public IList<FeedbackSettingRelation> Settings { get; set; } = new List<FeedbackSettingRelation>();
 
         public string DurationTime => ResolutionDate != DateTime.MinValue ? GetResolvingTime() : string.Empty;
 

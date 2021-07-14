@@ -3,6 +3,7 @@ import Site from '@jsroot/common/site';
 import {
     setGridParams,
     setLatestFeedback,
+    setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
     setEditFeedbackResult,
     setEditNoInquiriesDialog,
@@ -78,6 +79,7 @@ export const editFeedback = data => async dispatch => {
 export const ActionCreators = {
     setLatestFeedback,
     setGridParams,
+    setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
     setEditFeedbackResult,
     getLatestFeedback,

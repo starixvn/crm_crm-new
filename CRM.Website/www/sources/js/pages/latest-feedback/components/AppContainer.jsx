@@ -1,12 +1,15 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Button } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
-import PropTypes from 'prop-types';
 import DataGrid from './DataGrid';
-import EditNoInquiries from './QuickUpdateFeedback';
-import EditFeedback from './UpdateFeedback';
+import EditNoInquiries from './EditNoInquiries';
+import EditFeedback from './EditFeedback';
+import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -18,6 +21,7 @@ export class AppContainer extends Component {
 
     static defaultProps = {
         isHost: false,
+        viewRelatedCustomerDialog: { show: false },
         editNoInquiriesDialog: { show: false },
         editFeedbackDialog: { show: false },
         getLatestFeedback: function () {
@@ -52,20 +56,40 @@ export class AppContainer extends Component {
         this.props.getLatestFeedback(this.props.gridParams);
     };
 
+    handleCloseViewRelatedCustomerDialog = () => {
+        this.props.setViewRelatedCustomerDialog({ show: false });
+    };
+
     render() {
+        const { isHost, viewRelatedCustomerDialog, editNoInquiriesDialog, editFeedbackDialog } = this.props;
         return (
             <Fragment>
                 <Filter />
-                <DataGrid isHost={this.props.isHost} />
+                <DataGrid isHost={isHost} />
                 {
-                    this.props.editNoInquiriesDialog.show &&
+                    viewRelatedCustomerDialog.show &&
+                    <SweetModalDialog size="lg"
+                        title={LangHelper.getResource('RelatedCustomer')}
+                        contents={
+                            <div>{viewRelatedCustomerDialog.relatedCustomers}</div>
+                        }
+                        buttons={[
+                            <Button variant="primary" size="sm" onClick={this.handleCloseViewRelatedCustomerDialog}>
+                                {LangHelper.getResource('Close')}
+                            </Button>
+                        ]}
+                        onClose={this.handleCloseViewRelatedCustomerDialog}
+                    />
+                }
+                {
+                    editNoInquiriesDialog.show &&
                     <EditNoInquiries
                         onClose={this.handleCloseEditNoInquiriesDialog}
                         onSuccess={this.handleEditNoInquiriesSuccess}
                     />
                 }
                 {
-                    this.props.editFeedbackDialog.show &&
+                    editFeedbackDialog.show &&
                     <EditFeedback
                         onClose={this.handleCloseEditFeedbackDialog}
                         onSuccess={this.handleEditFeedbackSuccess}
@@ -79,8 +103,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, editNoInquiriesDialog, editFeedbackDialog } = state;
-    return { gridParams, editNoInquiriesDialog, editFeedbackDialog };
+    const { gridParams, viewRelatedCustomerDialog, editNoInquiriesDialog, editFeedbackDialog } = state;
+    return { gridParams, viewRelatedCustomerDialog, editNoInquiriesDialog, editFeedbackDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

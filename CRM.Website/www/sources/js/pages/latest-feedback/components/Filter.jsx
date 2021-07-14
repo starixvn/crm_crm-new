@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Form } from 'react-bootstrap';
@@ -7,7 +6,6 @@ import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class Filter extends Component {
-
     constructor(props) {
         super(props);
         this.state = {

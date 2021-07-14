@@ -1,10 +1,9 @@
-﻿
-namespace CRM.Models.Customer
+﻿namespace CRM.Models.Customer
 {
     public class RelatedCustomer
     {
         public int CustId { get; set; }
         public string Val { get; set; }
-        public string UserName { get; set; }
+        public string Username { get; set; }
     }
 }

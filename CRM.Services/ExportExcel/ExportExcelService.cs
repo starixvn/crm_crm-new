@@ -4,14 +4,12 @@
     using System.IO;
     using CRM.Models;
     using CRM.Models.ChatTypeMapping;
-    using CRM.Services.ExportExcel;
+    using CRM.Models.Feedback;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report.SettlementReport;
-    using Microsoft.AspNetCore.Hosting;
     using CRM.Models.Setting;
-    using CRM.Core.Services;
-    using Microsoft.AspNetCore.Mvc;
-    using CRM.Core.Models.Feedback;
+    using CRM.Services.ExportExcel;
+    using Microsoft.AspNetCore.Hosting;
 
     public interface IExportExcelService
     {

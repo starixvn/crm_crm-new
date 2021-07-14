@@ -23,6 +23,9 @@ const latestFeedbackSlice = createSlice({
         setLatestFeedback: (state, action) => {
             state.gridData = action.payload;
         },
+        setViewRelatedCustomerDialog: (state, action) => {
+            state.viewRelatedCustomerDialog = action.payload;
+        },
         setEditFeedbackDialog: (state, action) => {
             state.editFeedbackDialog = action.payload;
         },
@@ -52,6 +55,7 @@ const { actions, reducer } = latestFeedbackSlice;
 export const {
     setGridParams,
     setLatestFeedback,
+    setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
     setEditFeedbackResult,
     setEditNoInquiriesDialog,

@@ -4,8 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using CRM.Core;
-    using CRM.Core.Models;
-    using CRM.Core.Models.Feedback;
+    using CRM.Models.Feedback;
     using CRM.Models.Setting;
     using CRM.Resources;
     using OfficeOpenXml;
@@ -114,21 +113,21 @@
             return GetCategoryContent(feedback.Settings, mainCategories);
         }
 
-        private static string[] GetCategoryContent(IList<SettingItems> settings, IEnumerable<Setting> mainCategories)
+        private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
         {
             return GetCategoryContentWithoutSettingType(settings.Where(i => i.SettingType == "Category"), mainCategories);
         }
 
         public static string[] GetCategoryContentWithoutSettingType(
-            IEnumerable<SettingItems> settings,
+            IEnumerable<FeedbackSettingRelation> settings,
             IEnumerable<Setting> mainCategories)
         {
             return settings
-                    .GroupBy(s => s.SettingID)
+                    .GroupBy(s => s.SettingId)
                     .Select(s =>
                     {
                         var con = GetMainCategoryName(s.Key, mainCategories);
-                        var subIds = s.Select(e => e.SubSettingID).ToList();
+                        var subIds = s.Select(e => e.SubSettingId).ToList();
                         foreach (var id in subIds)
                         {
                             con = string.Join(string.Empty, con, "\n  ", GetSubCategoryName(s.Key, id, mainCategories));
@@ -140,17 +139,17 @@
         }
 
         public static string[] GetProductContent(
-                IEnumerable<SettingItems> settings,
+                IEnumerable<FeedbackSettingRelation> settings,
                 IEnumerable<Product> productList,
                 IEnumerable<Product> subProductList)
         {
             return settings
                   .Where(i => i.SettingType == "Product")
-                  .GroupBy(s => s.SettingID)
+                  .GroupBy(s => s.SettingId)
                   .Select(s =>
                   {
                       var con = GetProductName(s.Key, productList);
-                      var subIds = s.Select(e => e.SubSettingID).Distinct().ToList();
+                      var subIds = s.Select(e => e.SubSettingId).Distinct().ToList();
                       foreach (var id in subIds)
                       {
                           con = string.Join(string.Empty, con, "\n  ", GetSubProductName(id, subProductList));
@@ -162,27 +161,27 @@
         }
 
         public static string[] GetCommunicationContent(
-            IEnumerable<SettingItems> settings,
+            IEnumerable<FeedbackSettingRelation> settings,
             IEnumerable<Setting> communicationToolList)
         {
             return settings
                    .Where(i => i.SettingType == "Communication")
                    .Select(s =>
                    {
-                       return GetCommunicationName(s.SettingID, communicationToolList);
+                       return GetCommunicationName(s.SettingId, communicationToolList);
                    })
                    .ToArray();
         }
 
         public static string[] GetExtensionContent(
-            IEnumerable<SettingItems> settings,
+            IEnumerable<FeedbackSettingRelation> settings,
             IEnumerable<SettingRelation> extensionList)
         {
             return settings
                   .Where(i => i.SettingType == "Station")
                   .Select(s =>
                   {
-                      return GetExtensionName(s.SettingID, extensionList);
+                      return GetExtensionName(s.SettingId, extensionList);
                   })
                   .ToArray();
         }
@@ -200,13 +199,13 @@
         public static string GetProductName(int id, IEnumerable<Product> productList)
         {
             var product = productList.FirstOrDefault(c => c.Id == id);
-            return product == null ? "N/A" : product.Name;
+            return product == null ? ViewResources.Symbol_NotApply : product.Name;
         }
 
         public static string GetSubProductName(int id, IEnumerable<Product> subProductList)
         {
             var subProduct = subProductList.FirstOrDefault(c => c.Id == id);
-            return subProduct == null ? "N/A" : subProduct.Name;
+            return subProduct == null ? ViewResources.Symbol_NotApply : subProduct.Name;
         }
 
         public static string GetCommunicationName(int id, IEnumerable<Setting> communicationToolList)
@@ -218,7 +217,7 @@
         public static string GetExtensionName(int id, IEnumerable<SettingRelation> extensionList)
         {
             var item = extensionList.FirstOrDefault(c => c.Id == id);
-            return item == null ? "N/A" : item.Value;
+            return item == null ? ViewResources.Symbol_NotApply : item.Value;
         }
 
         private static string GetMainCategoryName(int mainCategoryId, IEnumerable<Setting> mainCategories)

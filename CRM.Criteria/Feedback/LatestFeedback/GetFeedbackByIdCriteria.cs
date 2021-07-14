@@ -5,12 +5,12 @@
 
     public class GetFeedbackByIdCriteria : CriteriaBase
     {
-        public int FeedbackID { get; set; }
+        public int FeedbackId { get; set; }
 
         public byte UserRole { get; } = Constants.UserRole;
 
         public override string GetSettingKey() => "Acc_CRM_FeedbackSelByID";
 
-        public override bool IsValid() => FeedbackID > 0;
+        public override bool IsValid() => FeedbackId > 0;
     }
 }

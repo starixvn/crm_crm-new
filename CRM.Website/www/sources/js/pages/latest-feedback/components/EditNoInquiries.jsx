@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import { validateNoOfInquiries, validateInquiriesInput } from '../common.functions';
 
-export class QuickUpdateFeedback extends PureComponent {
+export class EditNoInquiries extends Component {
     constructor(props) {
         super(props);
         this.formik = React.createRef();
@@ -31,10 +31,8 @@ export class QuickUpdateFeedback extends PureComponent {
     };
 
     renderForm = ({
-        errors,
         values,
         handleChange,
-        touched,
         handleSubmit,
         isSubmitting
     }) => {
@@ -52,7 +50,8 @@ export class QuickUpdateFeedback extends PureComponent {
                             {LangHelper.getResource('NoOfInquiries')}
                         </Form.Label>
                         <Col md="6" sm="8">
-                            <Form.Control size="md" type="number" min="1" max="32000" value={values.noInquiries} id="noInquiries" name="noInquiries"
+                            <Form.Control size="md" type="number" min="1" max="32000" value={values.noInquiries}
+                                id="noInquiries" name="noInquiries"
                                 onChange={handleChange}
                                 className="shadow-none" autoComplete="off"
                                 onKeyDown={validateInquiriesInput}
@@ -95,7 +94,7 @@ export class QuickUpdateFeedback extends PureComponent {
         const feedback = this.props.selectedFeedback;
         const initialValues = {
             feedbackId: feedback.feedbackId,
-            noInquiries: feedback.noInquiries === 0 ? null : feedback.noInquiries
+            noInquiries: feedback.noInquiries === 0 ? '' : feedback.noInquiries
         };
         return (
             <Modal show className="quick-feedback-modal" dialogAs={DraggableModalDialog}
@@ -123,4 +122,4 @@ const mapStateToProps = state => {
     return { selectedFeedback, editNoInquiriesResult };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuickUpdateFeedback);
+export default connect(mapStateToProps, mapDispatchToProps)(EditNoInquiries);

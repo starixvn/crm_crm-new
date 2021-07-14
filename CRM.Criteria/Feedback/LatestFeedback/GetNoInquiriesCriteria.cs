@@ -4,10 +4,10 @@
 
     public class GetNoInquiriesCriteria : CriteriaBase
     {
-        public int FeedbackID { get; set; }
+        public int FeedbackId { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_FeedbackQuickSel";
 
-        public override bool IsValid() => FeedbackID > 0;
+        public override bool IsValid() => FeedbackId > 0;
     }
 }

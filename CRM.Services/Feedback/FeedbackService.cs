@@ -21,9 +21,9 @@
 
         Task<CommandResult> EditNoInquiries(EditNoInquiries model, string clientIP);
 
-        Task<EditNoInquiries> GetNoInquiriesAsync(int id);
+        Task<EditNoInquiries> GetNoInquiriesAsync(int feedbackId);
 
-        Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria);
+        Task<CustomerFeedback> GetFeedbackByIdAsync(int feedbackId);
 
         Task<CommandResult> EditFeedbackAsync(EditFeedbackCommand command);
     }
@@ -50,15 +50,19 @@
             this.napSession = napSession;
         }
 
-        public async Task<CustomerFeedback> GetFeedbackById(GetFeedbackByIdCriteria criteria)
+        public async Task<CustomerFeedback> GetFeedbackByIdAsync(int feedbackId)
         {
-            var (feedbackInfo, relatedCustomer, settingItems) = await baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomer, SettingItems>(criteria);
+            var criteria = new GetFeedbackByIdCriteria
+            {
+                FeedbackId = feedbackId
+            };
+            var (feedbackInfos, relatedCustomers, settingItems) = await baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomer, FeedbackSettingRelation>(criteria);
             CustomerFeedback feedback = null;
 
-            if (feedbackInfo.Any())
+            if (feedbackInfos.Any())
             {
-                feedback = feedbackInfo.FirstOrDefault();
-                feedback.RelatedCustomers = relatedCustomer;
+                feedback = feedbackInfos.First();
+                feedback.RelatedCustomers = relatedCustomers;
                 feedback.Settings = settingItems.ToList();
 
                 var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteID);
@@ -97,11 +101,11 @@
             return feedbacks;
         }
 
-        public async Task<EditNoInquiries> GetNoInquiriesAsync(int id)
+        public async Task<EditNoInquiries> GetNoInquiriesAsync(int feedbackId)
         {
             var criteria = new GetNoInquiriesCriteria
             {
-                FeedbackID = id
+                FeedbackId = feedbackId
             };
 
             return await baseService.GetDataEntityAsync<EditNoInquiries>(criteria);

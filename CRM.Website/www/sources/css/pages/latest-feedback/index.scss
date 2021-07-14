@@ -11,20 +11,6 @@
 @import '../../components/verify-customer';
 @import '../../components/select-with-search-site';
 
-.form-filter {
-    .form-row {
-        .form-group {
-            .form-control {
-                width: 100%;
-            }
-        }
-    }
-}
-
-.modal-backdrop {
-    z-index: 1050 !important
-}
-
 #app-container {
     width: 1200px;
 }
@@ -32,10 +18,10 @@
 .link-click {
     cursor: pointer;
     color: $link-color !important;
-}
 
-.link-click:hover {
-    color: $draft-color !important;
+    &:hover {
+        color: $draft-color !important;
+    }
 }
 
 .tooltipFeedback [class$="inner"] {
@@ -48,7 +34,7 @@
     text-align: left
 }
 
-.feedbackInfo {
+.feedback-info {
     padding-left: 17px;
 }
 

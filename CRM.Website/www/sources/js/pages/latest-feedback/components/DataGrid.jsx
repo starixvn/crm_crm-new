@@ -15,12 +15,12 @@ export class DataGrid extends Component {
         this.props.exportExcel(gridParams);
     };
 
-    buildHeader = isHost => {
+    buildHeader = () => {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={7}>{LangHelper.getResource('RunningNo.')}</HeaderCell>
                 {
-                    isHost &&
+                    this.props.isHost &&
                     <HeaderCell colWidth={5}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Feedback')}</HeaderCell>
@@ -31,9 +31,10 @@ export class DataGrid extends Component {
         );
     };
 
-    buildBody = isHost => {
-        if (this.props.gridData.data.length > 0) {
-            return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
+    buildBody = () => {
+        const { isHost, gridData } = this.props;
+        if (gridData.data.length > 0) {
+            return gridData.data.map((item, index) => this.renderRow(item, index, isHost));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -56,9 +57,9 @@ export class DataGrid extends Component {
 
         let mainCategoryIds = [];
         for (let i = 0; i < settings.length; i++) {
-            if ((settings[i].settingType == "Category")
-                && mainCategoryIds.indexOf(settings[i].settingID) < 0) {
-                mainCategoryIds.push(settings[i].settingID);
+            if ((settings[i].settingType == 'Category')
+                && mainCategoryIds.indexOf(settings[i].settingId) < 0) {
+                mainCategoryIds.push(settings[i].settingId);
             }
         }
 
@@ -66,9 +67,9 @@ export class DataGrid extends Component {
         for (let i = 0; i < mainCategoryIds.length; i++) {
             let subCategoryIds = [];
             for (let j = 0; j < settings.length; j++) {
-                if ((settings[j].settingType == "Category")
-                    && settings[j].settingID == mainCategoryIds[i]) {
-                    subCategoryIds.push(settings[j].subSettingID);
+                if ((settings[j].settingType == 'Category')
+                    && settings[j].settingId == mainCategoryIds[i]) {
+                    subCategoryIds.push(settings[j].subSettingId);
                 }
             }
 
@@ -80,12 +81,13 @@ export class DataGrid extends Component {
 
         let result = '';
         for (let i = 0; i < categories.length; i++) {
-            let category = '<div class="font-weight-bold">' + this.getMainCategoryName(categories[i].mainCategoryId, mainCategories) + '</div>';
+            result += `<div class="font-weight-bold">${this.getMainCategoryName(categories[i].mainCategoryId, mainCategories)}</div>`;
             let subCategoryIds = categories[i].subCategoryIds;
             for (let j = 0; j < subCategoryIds.length; j++) {
-                category += '<div class="font-italic ml-3">' + this.getSubCategoryName(categories[i].mainCategoryId, subCategoryIds[j], mainCategories) + '</div>';
+                result += `<div class="font-italic ml-3">
+                        ${this.getSubCategoryName(categories[i].mainCategoryId, subCategoryIds[j], mainCategories)}
+                    </div>`;
             }
-            result += category;
         }
 
         return result;
@@ -98,7 +100,7 @@ export class DataGrid extends Component {
             }
         }
 
-        return "N/A";
+        return 'N/A';
     }
 
     getSubCategoryName = function (mainCategoryId, subCategoryId, mainCategories) {
@@ -153,7 +155,7 @@ export class DataGrid extends Component {
             {
                 <Cell>
                     {this.tooltipFeedback(item)}
-                    <div className="feedbackInfo">
+                    <div className="feedback-info">
                         <div>Feedback date <strong> {DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</strong></div>
                         <div>By<strong> {item.creatorName} </strong>on {DateTimeService.toShortDateTimeFormat(item.createDate)}</div>
                         <div>Solving Duration: {item.durationTime}</div>
@@ -179,32 +181,31 @@ export class DataGrid extends Component {
             <OverlayTrigger
                 placement="auto"
                 overlay={
-                    <Tooltip className="tooltipExport">
-                        <span> Export to Excel </span>
+                    <Tooltip>
+                        <span>Export to Excel</span>
                     </Tooltip>
                 }
             >
-                {
-                    <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcel} />
-                }
+                <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcel} />
             </OverlayTrigger>
         );
     };
 
     tooltipFeedback = (item) => {
-        var desctiptionText = !item.description ? '' : "Description: <br>" + item.description + "<br>";
-        var solutionText = !item.solution ? '' : "Solution: <br>" + item.solution + "<br>";
+        const desctiptionText = !item.description ? '' : 'Description: <br>' + item.description + '<br>',
+            solutionText = !item.solution ? '' : 'Solution: <br>' + item.solution + '<br>',
+            lastCharacterSlit = desctiptionText.substring(578, 580),
+            isEscapseWord = '<br />'.includes(lastCharacterSlit),
+            subLength = isEscapseWord ? 592 : 580;
 
-        var lastCharacterSlit = desctiptionText.substring(578, 580);
-        var isEscapseWord = "<br />".includes(lastCharacterSlit);
-        var subLength = isEscapseWord ? 592 : 580;
+        const lastCharacterSlitSolution = solutionText.substring(578, 580),
+            isEscapseWordSolution = '<br />'.includes(lastCharacterSlitSolution),
+            subLengthSolution = isEscapseWordSolution ? 592 : 580;
 
-        var lastCharacterSlitSolution = solutionText.substring(578, 580);
-        var isEscapseWordSolution = "<br />".includes(lastCharacterSlitSolution);
-        var subLengthSolution = isEscapseWordSolution ? 592 : 580;
-
-        var tooltipDescription = desctiptionText.length > subLength ? desctiptionText.substring(0, subLength) + " ... <br><br>" : desctiptionText;
-        var tooltipSolution = solutionText.length > subLengthSolution ? solutionText.substring(0, subLengthSolution) + " ... <br><br>" : solutionText;
+        const tooltipDescription = desctiptionText.length > subLength
+            ? desctiptionText.substring(0, subLength) + ' ... <br><br>' : desctiptionText;
+        const tooltipSolution = solutionText.length > subLengthSolution
+            ? solutionText.substring(0, subLengthSolution) + ' ... <br><br>' : solutionText;
 
         return (
             <OverlayTrigger
@@ -218,11 +219,9 @@ export class DataGrid extends Component {
                 }
             >
                 {
-                    <div>
-                        <span className="rounded-circle fa fa-pencil-square-o"
-                            onClick={() => this.handleEditFeedback(item.feedbackId)}
-                        />
-                        <strong className='link-click' onClick={() => this.handleEditFeedback(item.feedbackId)}> {item.subject}</strong>
+                    <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
+                        <span className="rounded-circle fa fa-pencil-square-o" />
+                        <strong className='link-click'> {item.subject}</strong>
                     </div>
                 }
             </OverlayTrigger>
@@ -230,24 +229,24 @@ export class DataGrid extends Component {
     };
 
     render() {
-        if (!this.props.gridData || !this.props.gridData.data) {
+        const { isHost, gridParams, gridData } = this.props;
+        if (!gridData || !gridData.data) {
             return null;
         }
-        const { isHost } = this.props;
 
         return (
             <Fragment>
                 <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>Top {this.props.gridParams.top} Feedback</span>
+                    <span>Top {gridParams.top} Feedback</span>
                     {
-                        this.props.gridData.data.length > 0 && this.renderExportExcelText()
+                        gridData.data.length > 0 && this.renderExportExcelText()
                     }
                 </div>
                 <Table
                     width={1200}
                     autoWidth={false}
-                    header={this.buildHeader(isHost)}
-                    body={this.buildBody(isHost)}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
                     containerPadding={0}
                     adjustedHeight={10}
                 />

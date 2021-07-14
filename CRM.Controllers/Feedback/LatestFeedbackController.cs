@@ -130,12 +130,7 @@
 
         public async Task<IActionResult> GetFeedbackById(int id)
         {
-            var criteria = new GetFeedbackByIdCriteria
-            {
-                FeedbackID = id
-            };
-            var feedback = await feedbackService.GetFeedbackById(criteria);
-
+            CustomerFeedback feedback = await feedbackService.GetFeedbackByIdAsync(id);
             return Json(feedback);
         }
 

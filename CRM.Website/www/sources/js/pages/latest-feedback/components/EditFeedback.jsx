@@ -1,4 +1,4 @@
-﻿import React, { PureComponent } from 'react';
+﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -20,7 +20,7 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { validateFormik, validateNoOfInquiries, validateInquiriesInput } from '../common.functions';
 
-export class UpdateFeedback extends PureComponent {
+export class EditFeedback extends Component {
     constructor(props) {
         super(props);
         this.formik = React.createRef();
@@ -1451,4 +1451,4 @@ const mapStateToProps = state => {
     return { editFeedbackResult, settings, feedback };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateFeedback);
+export default connect(mapStateToProps, mapDispatchToProps)(EditFeedback);
