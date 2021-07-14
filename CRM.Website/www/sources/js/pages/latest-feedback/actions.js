@@ -3,12 +3,10 @@ import Site from '@jsroot/common/site';
 import {
     setGridParams,
     setLatestFeedback,
-    setEditLatestFeedbackPopup,
-    setEditLatestFeedbackResult,
-    setEditNoInquiriesPopup,
+    setEditFeedbackDialog,
+    setEditFeedbackResult,
+    setEditNoInquiriesDialog,
     setEditNoInquiriesResult,
-    setUpdateFeedbackPopup,
-    setUpdateFeedbackResult,
     setSelectedFeedback,
     setAllSettings,
     setFeedback
@@ -27,13 +25,6 @@ const getLatestFeedback = params => async dispatch => {
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setLatestFeedback(response.data));
     }).then(() => Site.unblockUI());
-};
-
-const editLatestFeedback = data => async dispatch => {
-    const url = Site.resolveClientUrl('LatestFeedback/EditFeedback');
-    await DataService.postDataAsync(url, data).then(response => {
-        dispatch(setEditLatestFeedbackResult(response.data));
-    });
 };
 
 const exportExcel = params => async () => {
@@ -76,30 +67,27 @@ const getFeedbackById = (id, callback) => async dispatch => {
     });
 };
 
-export const updateFeedback = data => async dispatch => {
+export const editFeedback = data => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('LatestFeedback/EditFeedback');
     await DataService.postDataAsync(url, data).then(response => {
-        dispatch(setEditNotificationTypeResult(response.data));
+        dispatch(setEditFeedbackResult(response.data));
     }).then(() => Site.unblockUI());
 };
 
 export const ActionCreators = {
     setLatestFeedback,
     setGridParams,
-    setEditLatestFeedbackPopup,
-    setEditLatestFeedbackResult,
+    setEditFeedbackDialog,
+    setEditFeedbackResult,
     getLatestFeedback,
-    editLatestFeedback,
     exportExcel,
-    setEditNoInquiriesPopup,
+    setEditNoInquiriesDialog,
     setEditNoInquiriesResult,
     editNoInquiries,
     setSelectedFeedback,
     getNoInquiriesByFeedbackId,
-    setUpdateFeedbackPopup,
-    setUpdateFeedbackResult,
-    updateFeedback,
+    editFeedback,
     getAllSettings,
     setAllSettings,
     verifyUserName,

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
+import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
 
 export class RelatedCustomerGrid extends Component {
     constructor(props) {
@@ -59,7 +60,7 @@ export class RelatedCustomerGrid extends Component {
     renderRelatedCustomerColumn = customer => {
         let html = '';
         const totalItems = customer.relatedCustomers.length;
-        if (totalItems > 20) {
+        if (totalItems > MaximumDisplayRelatedCustomer) {
             html = <a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(customer.relatedCustomers)}>
                 {totalItems} customers
             </a>;

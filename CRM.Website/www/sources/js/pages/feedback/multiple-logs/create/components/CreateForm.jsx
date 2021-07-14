@@ -62,7 +62,7 @@ export class CreateForm extends Component {
             productIds: '',
             subProductIds: '',
             betTypeIds: '',
-            statusId: settings.statuses[0].settingId,
+            statusId: settings.statuses[0].statusId,
             roleId: '',
             siteId: '',
             licenseeTypeId: '',
@@ -723,8 +723,8 @@ export class CreateForm extends Component {
                                     <option value="" hidden disabled />
                                     {
                                         statuses.map(item =>
-                                            <option key={item.settingId} value={item.settingId}>
-                                                {item.settingName}
+                                            <option key={item.statusId} value={item.statusId}>
+                                                {item.name}
                                             </option>
                                         )
                                     }
@@ -880,7 +880,7 @@ export class CreateForm extends Component {
             Site.unblockUI();
             this.setState({ createMultipleLogsResult: response.data });
             if (response.data.isSuccessful) {
-                // redirect to manage feedback
+                window.location = Site.resolveClientUrl('ManageFeedback/Index');
             } else {
                 this.formik.setSubmitting(false);
             }

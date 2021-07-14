@@ -132,8 +132,8 @@ export class UpdateFeedback extends PureComponent {
         });
         const statusOptionsEdit = this.props.settings.statusList.map(status => {
             return {
-                id: status.settingId,
-                name: status.settingName
+                id: status.statusId,
+                name: status.name
             };
         });
         const titleOptionsEdit = this.props.settings.titles.map(title => {
@@ -310,15 +310,14 @@ export class UpdateFeedback extends PureComponent {
         handleSubmit,
         isSubmitting
     }) => {
-
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
-                        this.props.updateFeedbackResult &&
-                        <ResponseMessage isSuccessful={this.props.updateFeedbackResult.isSuccessful}
-                            message={this.props.updateFeedbackResult.message || LangHelper.getResource('UpdateFeedbackSuccess')}
+                        this.props.editFeedbackResult &&
+                        <ResponseMessage isSuccessful={this.props.editFeedbackResult.isSuccessful}
+                            message={this.props.editFeedbackResult.message || LangHelper.getResource('UpdateFeedbackSuccessfully')}
                         />
                     }
                     <div className="panel-group">
@@ -901,7 +900,7 @@ export class UpdateFeedback extends PureComponent {
                                                 dataSource={this.state.productOptionsEdit}
                                                 keyField='id'
                                                 valueField='name'
-                                                textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS}}
+                                                textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS }}
                                                 isSummited={false}
                                                 hasSearchBox
                                                 onChange={(currentItem, selectedItemsKey) => {
@@ -1330,8 +1329,8 @@ export class UpdateFeedback extends PureComponent {
             review: values.review
         };
 
-        this.props.updateFeedback(data).then(() => {
-            if (this.props.updateFeedbackResult.isSuccessful) {
+        this.props.editFeedback(data).then(() => {
+            if (this.props.editFeedbackResult.isSuccessful) {
                 setTimeout(() => {
                     this.props.onSuccess();
                 }, 3000);
@@ -1448,8 +1447,8 @@ export class UpdateFeedback extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { updateFeedbackResult, settings, feedback } = state;
-    return { updateFeedbackResult, settings, feedback };
+    const { editFeedbackResult, settings, feedback } = state;
+    return { editFeedbackResult, settings, feedback };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateFeedback);

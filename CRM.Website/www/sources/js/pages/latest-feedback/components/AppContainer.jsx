@@ -5,30 +5,26 @@ import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import PropTypes from 'prop-types';
 import DataGrid from './DataGrid';
-import QuickUpdateFeedback from './QuickUpdateFeedback';
-import UpdateFeedback from './UpdateFeedback';
+import EditNoInquiries from './QuickUpdateFeedback';
+import EditFeedback from './UpdateFeedback';
 
 export class AppContainer extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     static propTypes = {
         isHost: PropTypes.bool.isRequired,
         getLatestFeedback: PropTypes.func,
-        editNoInquiriesPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        updateFeedbackPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editNoInquiriesDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editFeedbackDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
     };
 
     static defaultProps = {
         isHost: false,
-        editNoInquiriesPopup: { show: false },
-        updateFeedbackPopup: { show: false },
+        editNoInquiriesDialog: { show: false },
+        editFeedbackDialog: { show: false },
         getLatestFeedback: function () {
-            //nothing
+            // nothing
         },
         getAllSettings: function () {
-            //nothing
+            // nothing
         }
     };
 
@@ -37,22 +33,22 @@ export class AppContainer extends Component {
         this.props.getAllSettings();
     };
 
-    handleCloseEditPopup = () => {
-        this.props.setEditNoInquiriesPopup({ show: false });
+    handleCloseEditNoInquiriesDialog = () => {
+        this.props.setEditNoInquiriesDialog({ show: false });
         this.props.setEditNoInquiriesResult(null);
     };
 
-    handleEditSuccess = () => {
-        this.handleCloseEditPopup();
+    handleEditNoInquiriesSuccess = () => {
+        this.handleCloseEditNoInquiriesDialog();
     };
 
-    handleCloseUpdateFeedbackPopup = () => {
-        this.props.setUpdateFeedbackPopup({ show: false });
-        this.props.setUpdateFeedbackResult(null);
+    handleCloseEditFeedbackDialog = () => {
+        this.props.setEditFeedbackDialog({ show: false });
+        this.props.setEditFeedbackResult(null);
     };
 
-    handleUpdateFeedbackSuccess = () => {
-        this.handleCloseUpdateFeedbackPopup();
+    handleEditFeedbackSuccess = () => {
+        this.handleCloseEditFeedbackDialog();
         this.props.getLatestFeedback(this.props.gridParams);
     };
 
@@ -62,17 +58,17 @@ export class AppContainer extends Component {
                 <Filter />
                 <DataGrid isHost={this.props.isHost} />
                 {
-                    this.props.editNoInquiriesPopup.show &&
-                    <QuickUpdateFeedback
-                        onClose={this.handleCloseEditPopup}
-                        onSuccess={this.handleEditSuccess}
+                    this.props.editNoInquiriesDialog.show &&
+                    <EditNoInquiries
+                        onClose={this.handleCloseEditNoInquiriesDialog}
+                        onSuccess={this.handleEditNoInquiriesSuccess}
                     />
                 }
                 {
-                    this.props.updateFeedbackPopup.show &&
-                    <UpdateFeedback
-                        onClose={this.handleCloseUpdateFeedbackPopup}
-                        onSuccess={this.handleUpdateFeedbackSuccess}
+                    this.props.editFeedbackDialog.show &&
+                    <EditFeedback
+                        onClose={this.handleCloseEditFeedbackDialog}
+                        onSuccess={this.handleEditFeedbackSuccess}
                     />
                 }
             </Fragment>
@@ -83,8 +79,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, editNoInquiriesPopup, updateFeedbackPopup } = state;
-    return { gridParams, editNoInquiriesPopup, updateFeedbackPopup };
+    const { gridParams, editNoInquiriesDialog, editFeedbackDialog } = state;
+    return { gridParams, editNoInquiriesDialog, editFeedbackDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

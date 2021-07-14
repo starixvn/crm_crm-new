@@ -152,10 +152,10 @@
         public async Task GetStatusAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = fixture.Create<IEnumerable<FeedbackStatus>>();
             var criteria = fixture.Create<GetAllStatusCriteria>();
             var service = GetService();
-            baseService.GetDataAsync<Setting>(criteria).Returns(expected);
+            baseService.GetDataAsync<FeedbackStatus>(criteria).Returns(expected);
 
             // Act
             var actual = await service.GetStatusAsync(1);

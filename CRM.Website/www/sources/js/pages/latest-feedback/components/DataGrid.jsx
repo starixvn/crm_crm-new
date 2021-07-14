@@ -7,12 +7,9 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     handleExportExcel = () => {
         const { gridParams } = this.props;
         this.props.exportExcel(gridParams);
@@ -22,7 +19,10 @@ export class DataGrid extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={7}>{LangHelper.getResource('RunningNo.')}</HeaderCell>
-                <HeaderCell colWidth={5}>{LangHelper.getResource('Update')}</HeaderCell>
+                {
+                    isHost &&
+                    <HeaderCell colWidth={5}>{LangHelper.getResource('Update')}</HeaderCell>
+                }
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Feedback')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Category')}</HeaderCell>
                 <HeaderCell colWidth={5}>{LangHelper.getResource('Status')}</HeaderCell>
@@ -35,18 +35,22 @@ export class DataGrid extends Component {
         if (this.props.gridData.data.length > 0) {
             return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
         }
-        return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 6 : 5}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+        return [
+            <Row key={`body${1}`} className="no-data" >
+                <Cell className='text-center' colSpan={isHost ? 6 : 5}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+            </Row>
+        ];
     };
 
     handleEdit = id => {
-        this.props.getNoInquiriesByFeedbackId(id, () => this.props.setEditNoInquiriesPopup({ show: true }));
+        this.props.getNoInquiriesByFeedbackId(id, () => this.props.setEditNoInquiriesDialog({ show: true }));
     };
 
-    handleUpdateFeedback = id => {
-        this.props.getFeedbackById(id, () => this.props.setUpdateFeedbackPopup({ show: true }));
+    handleEditFeedback = id => {
+        this.props.getFeedbackById(id, () => this.props.setEditFeedbackDialog({ show: true }));
     };
 
-    renderCategoryColumn = (item) => {
+    renderCategoryColumn = item => {
         const { mainCategories } = this.props.gridData;
         let settings = item.settings;
 
@@ -76,12 +80,11 @@ export class DataGrid extends Component {
 
         let result = '';
         for (let i = 0; i < categories.length; i++) {
-            let category = '<div class="main-category">' + this.getMainCategoryName(categories[i].mainCategoryId, mainCategories);
+            let category = '<div class="font-weight-bold">' + this.getMainCategoryName(categories[i].mainCategoryId, mainCategories) + '</div>';
             let subCategoryIds = categories[i].subCategoryIds;
             for (let j = 0; j < subCategoryIds.length; j++) {
-                category += '<div><span class="sub-category">' + this.getSubCategoryName(categories[i].mainCategoryId, subCategoryIds[j], mainCategories) + '</span></div>';
+                category += '<div class="font-italic ml-3">' + this.getSubCategoryName(categories[i].mainCategoryId, subCategoryIds[j], mainCategories) + '</div>';
             }
-            category += '</div>';
             result += category;
         }
 
@@ -118,6 +121,24 @@ export class DataGrid extends Component {
         return '';
     }
 
+    handleOpenViewRelatedCustomerDialog = relatedCustomers => {
+        this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
+    }
+
+    renderRelatedCustomerColumn = relatedCustomers => {
+        let html = '';
+        const totalItems = relatedCustomers.length;
+        if (totalItems > MaximumDisplayRelatedCustomer) {
+            html = <a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(relatedCustomers.join(', '))}>
+                {totalItems} customers
+            </a>;
+        } else {
+            html = <span>{relatedCustomers.join(', ')}</span>;
+        }
+
+        return html;
+    };
+
     renderRow = (item, index, isHost) => (
         <Row key={index} >
             <Cell className='text-center'>{item.feedbackId}</Cell>
@@ -130,16 +151,18 @@ export class DataGrid extends Component {
                 </Cell>
             }
             {
-                isHost &&
                 <Cell>
-                    {
-                        this.tooltipFeedback(item)
-                    }
+                    {this.tooltipFeedback(item)}
                     <div className="feedbackInfo">
-                        <div>Feedback date <strong> {DateTimeService.toShortDateTimeFormat(item.feedbackDate)} </strong></div>
-                        <div>By <strong> {item.creatorName} </strong> on {DateTimeService.toShortDateTimeFormat(item.createDate)} </div>
-                        <div>Solving Duration: {item.durationTime} </div>
-                        <div className={item.reviewerName ? '' : 'consecutive-container-before'}>Reviewed by <strong> {item.reviewerName} </strong> on {DateTimeService.toShortDateTimeFormat(item.solveDate)}</div>
+                        <div>Feedback date <strong> {DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</strong></div>
+                        <div>By<strong> {item.creatorName} </strong>on {DateTimeService.toShortDateTimeFormat(item.createDate)}</div>
+                        <div>Solving Duration: {item.durationTime}</div>
+                        {
+                            item.reviewerName &&
+                            <div>
+                                Reviewed by <strong> {item.reviewerName} </strong> on {DateTimeService.toShortDateTimeFormat(item.solveDate)}
+                            </div>
+                        }
                     </div>
                 </Cell>
             }
@@ -147,7 +170,7 @@ export class DataGrid extends Component {
                 <div dangerouslySetInnerHTML={{ __html: this.renderCategoryColumn(item) }} />
             </Cell>
             <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
-            <Cell>{item.relatedCustomer.split(',').join(', ')}</Cell>
+            <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
         </Row>
     );
 
@@ -197,9 +220,9 @@ export class DataGrid extends Component {
                 {
                     <div>
                         <span className="rounded-circle fa fa-pencil-square-o"
-                            onClick={() => this.handleUpdateFeedback(item.feedbackId)}
+                            onClick={() => this.handleEditFeedback(item.feedbackId)}
                         />
-                        <strong className='link-click' onClick={() => this.handleUpdateFeedback(item.feedbackId)}> {item.subject}</strong>
+                        <strong className='link-click' onClick={() => this.handleEditFeedback(item.feedbackId)}> {item.subject}</strong>
                     </div>
                 }
             </OverlayTrigger>

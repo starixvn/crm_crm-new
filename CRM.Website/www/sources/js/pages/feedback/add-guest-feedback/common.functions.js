@@ -19,8 +19,8 @@ export const renderLicenseeTypeOptions = item => {
 
 export const renderStatus = item => {
     return (
-        <option key={item.settingId} value={item.settingName}>
-            {item.settingName}
+        <option key={item.statusId} value={item.statusId}>
+            {item.name}
         </option>
     );
 };

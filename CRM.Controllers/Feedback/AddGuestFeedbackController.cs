@@ -44,7 +44,7 @@
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             if (isHost)
             {
-                settings.StatusList = settings.StatusList.Where(s => !s.SettingName.Equals("Deleted", StringComparison.OrdinalIgnoreCase));
+                settings.StatusList = settings.StatusList.Where(s => !s.Name.Equals("Deleted", StringComparison.OrdinalIgnoreCase));
             }
 
             return Json(settings);
@@ -60,7 +60,7 @@
             var extentionNA = extentionList.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
 
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
+            var statusListRemoveDelete = statusList.Where(s => s.StatusId != (int)CRMStatus.Deleted).ToList();
 
             var provinces = await settingService.GetProvinceAsync();
 

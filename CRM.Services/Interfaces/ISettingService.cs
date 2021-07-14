@@ -33,7 +33,7 @@
 
         Task<IEnumerable<Setting>> GetLanguageAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 
-        Task<IEnumerable<Setting>> GetStatusAsync(byte statusType);
+        Task<IEnumerable<FeedbackStatus>> GetStatusAsync(byte statusType);
 
         Task<IEnumerable<Product>> GetBetTypeAsync(int? productId = null, byte active = SettingConstants.ActiveAndInactive);
 

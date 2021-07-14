@@ -93,7 +93,7 @@
             var countries = await settingService.GetCountryAsync(SettingConstants.Active, true);
             var titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var statusListRemoveDelete = statusList.Where(s => s.Id != (int)CRMStatus.Deleted).ToList();
+            var statusListRemoveDelete = statusList.Where(s => s.StatusId != (int)CRMStatus.Deleted).ToList();
             var communicationToolList = await settingService.GetCommunicationToolAsync(SettingConstants.Active);
             var productList = await settingService.GetProductAsync(SettingConstants.Active);
             var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active);

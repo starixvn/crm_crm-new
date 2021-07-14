@@ -81,7 +81,7 @@
             };
             IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbacksAsync(criteria);
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var statusHash = statusList.ToDictionary(k => k.SettingId, v => v.SettingName);
+            var statusHash = statusList.ToDictionary(k => k.StatusId, v => v.Name);
             statusHash.Add(1, ViewResources.Symbol_NotApply);
 
             foreach (var feedback in feedbacks)

@@ -6,7 +6,6 @@ import { ActionCreators } from '../actions';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
-import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import { validateNoOfInquiries, validateInquiriesInput } from '../common.functions';
@@ -45,7 +44,7 @@ export class QuickUpdateFeedback extends PureComponent {
                     {
                         this.props.editNoInquiriesResult &&
                         <ResponseMessage isSuccessful={this.props.editNoInquiriesResult.isSuccessful}
-                            message={this.props.editNoInquiriesResult.message || LangHelper.getResource('EditQuickUpdateFeedbackSuccessfully')}
+                            message={this.props.editNoInquiriesResult.message || LangHelper.getResource('UpdateFeedbackSuccessfully')}
                         />
                     }
                     <Form.Group as={Row}>

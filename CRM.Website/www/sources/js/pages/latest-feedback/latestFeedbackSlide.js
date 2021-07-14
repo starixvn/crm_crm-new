@@ -5,12 +5,11 @@ const latestFeedbackSlice = createSlice({
     initialState: {
         gridData: null,
         gridParams: { top: 10 },
-        editLatestFeedbackPopup: { show: false },
-        editLatestFeedbackResult: '',
-        editNoInquiriesPopup: { show: false },
-        editNoInquiriesResult: '',
-        updateFeedbackPopup: { show: false },
-        updateFeedbackResult: '',
+        viewRelatedCustomerDialog: { show: false },
+        editFeedbackDialog: { show: false },
+        editFeedbackResult: null,
+        editNoInquiriesDialog: { show: false },
+        editNoInquiriesResult: null,
         selectedFeedback: null,
         settings: {
             CommunicationToolList: []
@@ -24,23 +23,17 @@ const latestFeedbackSlice = createSlice({
         setLatestFeedback: (state, action) => {
             state.gridData = action.payload;
         },
-        setEditLatestFeedbackPopup: (state, action) => {
-            state.editLatestFeedbackPopup = action.payload;
+        setEditFeedbackDialog: (state, action) => {
+            state.editFeedbackDialog = action.payload;
         },
-        setEditLatestFeedbackResult: (state, action) => {
-            state.editLatestFeedbackResult = action.payload;
+        setEditFeedbackResult: (state, action) => {
+            state.editFeedbackResult = action.payload;
         },
-        setEditNoInquiriesPopup: (state, action) => {
-            state.editNoInquiriesPopup = action.payload;
+        setEditNoInquiriesDialog: (state, action) => {
+            state.editNoInquiriesDialog = action.payload;
         },
         setEditNoInquiriesResult: (state, action) => {
             state.editNoInquiriesResult = action.payload;
-        },
-        setUpdateFeedbackPopup: (state, action) => {
-            state.updateFeedbackPopup = action.payload;
-        },
-        setUpdateFeedbackResult: (state, action) => {
-            state.updateFeedbackResult = action.payload;
         },
         setSelectedFeedback: (state, action) => {
             state.selectedFeedback = action.payload;
@@ -59,12 +52,10 @@ const { actions, reducer } = latestFeedbackSlice;
 export const {
     setGridParams,
     setLatestFeedback,
-    setEditLatestFeedbackPopup,
-    setEditLatestFeedbackResult,
-    setEditNoInquiriesPopup,
+    setEditFeedbackDialog,
+    setEditFeedbackResult,
+    setEditNoInquiriesDialog,
     setEditNoInquiriesResult,
-    setUpdateFeedbackPopup,
-    setUpdateFeedbackResult,
     setSelectedFeedback,
     setAllSettings,
     setFeedback
