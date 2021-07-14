@@ -106,6 +106,35 @@
             CustomerInfo licenseeInfo)
         {
             logService.LogInformation("Abnormal Bet - Begin import ticket info");
+            var xml = GetXmlImportTicketFeedback(matchInfos, transactionInfos, siteSettingMappings, headlines, licenseeInfo);
+
+            var criteria = new ImportFeedbackInfoCriteria
+            {
+                Xml = xml
+            };
+            var feedbackInfos = await baseService.GetDataAsync<AutoFeedbackInfo>(criteria);
+
+            var messageIds = matchInfos.Where(x => !feedbackInfos.Any(y => y.MessageId == x.MessageId)).Select(x => x.MessageId).ToList();
+            if (messageIds.Any())
+            {
+                var messages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
+                await messageService.EditStatusVoidingMessageAsync(messages);
+                logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", messageIds)));
+            }
+
+            matchInfos = matchInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId) && x.MessageId != 0);
+            transactionInfos = transactionInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId && y.CustId == x.CustId) && x.MessageId != 0);
+            logService.LogInformation("Abnormal Bet - End import ticket info");
+            return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
+        }
+
+        protected internal virtual string GetXmlImportTicketFeedback(
+            IEnumerable<MatchInfo> matchInfos,
+            IEnumerable<TransactionInfo> transactionInfos,
+            IEnumerable<SiteSettingMapping> siteSettingMappings,
+            IEnumerable<GroupHeadline> headlines,
+            CustomerInfo licenseeInfo)
+        {
             const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' IssueTypeId='{6}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             var transactionInfosDistinct = transactionInfos.Select(x => new
@@ -116,7 +145,7 @@
                 x.Username,
                 x.IsDeposit,
                 x.Site
-            }).Distinct() ;
+            }).Distinct();
             foreach (var transaction in transactionInfosDistinct)
             {
                 var matchInfo = matchInfos.FirstOrDefault(x => x.MessageId == transaction.MessageId);
@@ -147,24 +176,7 @@
             }
 
             stringBuilder.Append(Constants.EndRootTag);
-            var criteria = new ImportFeedbackInfoCriteria
-            {
-                Xml = stringBuilder.ToString()
-            };
-            var feedbackInfos = await baseService.GetDataAsync<AutoFeedbackInfo>(criteria);
-
-            var messageIds = matchInfos.Where(x => !feedbackInfos.Any(y => y.MessageId == x.MessageId)).Select(x => x.MessageId).ToList();
-            if (messageIds.Any())
-            {
-                var messages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
-                await messageService.EditStatusVoidingMessageAsync(messages);
-                logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", messageIds)));
-            }
-
-            matchInfos = matchInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId) && x.MessageId != 0);
-            transactionInfos = transactionInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId && y.CustId == x.CustId) && x.MessageId != 0);
-            logService.LogInformation("Abnormal Bet - End import ticket info");
-            return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
+            return stringBuilder.ToString();
         }
 
         public async Task<CommandResult> EditFeedbackInfoAsync(
