@@ -5,7 +5,8 @@ const addGuestFeedbackSlice = createSlice({
     initialState: {
         settings: null,
         addFeedbackResult: null,
-        feedbackSubjectTemplates: []
+        feedbackSubjectTemplates: [],
+        confirmCreateGuestDialog: { show: false }
     },
     reducers: {
         setAllSettings: (state, action) => {
@@ -16,6 +17,9 @@ const addGuestFeedbackSlice = createSlice({
         },
         setAddFeedback: (state, action) => {
             state.addFeedbackResult = action.payload;
+        },
+        setConfirmCreateGuestDialog: (state, action) => {
+            state.confirmCreateGuestDialog = action.payload;
         }
     }
 });
@@ -25,7 +29,8 @@ const { actions, reducer } = addGuestFeedbackSlice;
 export const {
     setAllSettings,
     setFeedbackSubjectTemplates,
-    setAddFeedback
+    setAddFeedback,
+    setConfirmCreateGuestDialog
 } = actions;
 
 export default reducer;

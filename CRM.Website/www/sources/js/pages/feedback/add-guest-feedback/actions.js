@@ -3,7 +3,8 @@ import DataService from '@jsroot/common/dataService';
 import {
     setAllSettings,
     setFeedbackSubjectTemplates,
-    setAddFeedback
+    setAddFeedback,
+    setConfirmCreateGuestDialog
 } from './addGuestFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -41,5 +42,6 @@ export const ActionCreators = {
     setFeedbackSubjectTemplates,
     addFeedback,
     setAddFeedback,
-    verifyUserName
+    verifyUserName,
+    setConfirmCreateGuestDialog
 };
