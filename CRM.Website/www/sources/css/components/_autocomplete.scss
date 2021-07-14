@@ -19,6 +19,7 @@
             z-index: 9999;
             max-height: 350px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            overflow-y: scroll;
 
             .autocomplete-item {
                 padding: 5px;

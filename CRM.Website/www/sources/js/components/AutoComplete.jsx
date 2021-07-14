@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Form } from 'react-bootstrap';
 
 export default class AutoComplete extends Component {
     static propTypes = {
@@ -13,7 +14,8 @@ export default class AutoComplete extends Component {
     static defaultProps = {
         value: '',
         options: [],
-        diplayField: ''
+        diplayField: '',
+        isInvalid: false
     };
 
     constructor(props) {
@@ -107,14 +109,15 @@ export default class AutoComplete extends Component {
     }
 
     moveUp = () => {
-        if (this.state.selectedItem === -1) return;
-        if (this.state.selectedItem === 0) {
-            this.setState({
-                selectedItem: -1
-            });
+        const { selectedItem } = this.state;
+
+        if (selectedItem === -1) return;
+        if (selectedItem === 0) {
+            this.setState({ selectedItem: -1 });
         } else {
-            const index = this.state.selectedItem - 1
-            const value = this.props.options[index];
+            const { diplayField, options } = this.props;
+            const index = selectedItem - 1
+            const value = diplayField.length > 0 ? options[index][diplayField] : options[index];
             this.setState({
                 selectedItem: index,
                 searchValue: value
@@ -124,9 +127,13 @@ export default class AutoComplete extends Component {
     }
 
     moveDown = () => {
-        if (this.state.selectedItem === this.props.options.length - 1) return;
-        const index = this.state.selectedItem + 1
-        const value = this.props.options[index];
+        const { selectedItem } = this.state;
+        const { diplayField, options } = this.props;
+
+        if (selectedItem === options.length - 1) return;
+
+        const index = selectedItem + 1
+        const value = diplayField.length > 0 ? options[index][diplayField] : options[index];
         this.setState({
             selectedItem: index,
             searchValue: value
@@ -136,11 +143,11 @@ export default class AutoComplete extends Component {
 
     render() {
         const { showOptionList, searchValue } = this.state;
-        const { options, diplayField } = this.props;
+        const { options, diplayField, isInvalid } = this.props;
         return (
             <div className="autocomplete-container" ref={this.wrapperRef}>
-                <input autoComplete="off" type="text"
-                    className="shadow-none form-control form-control-sm"
+                <Form.Control type="text" size="sm" autoComplete="off"
+                    className="shadow-none" isInvalid={isInvalid}
                     value={searchValue}
                     onChange={this.handleChange}
                     onKeyDown={this.handleKeyDown}
