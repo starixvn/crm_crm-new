@@ -8,9 +8,7 @@ const latestFeedbackSlice = createSlice({
         viewRelatedCustomerDialog: { show: false },
         editFeedbackDialog: { show: false },
         editFeedbackResult: null,
-        editNoInquiriesDialog: { show: false },
-        editNoInquiriesResult: null,
-        selectedFeedback: null,
+        editNoOfInquiryDialog: { show: false },
         settings: {
             CommunicationToolList: []
         },
@@ -32,14 +30,8 @@ const latestFeedbackSlice = createSlice({
         setEditFeedbackResult: (state, action) => {
             state.editFeedbackResult = action.payload;
         },
-        setEditNoInquiriesDialog: (state, action) => {
-            state.editNoInquiriesDialog = action.payload;
-        },
-        setEditNoInquiriesResult: (state, action) => {
-            state.editNoInquiriesResult = action.payload;
-        },
-        setSelectedFeedback: (state, action) => {
-            state.selectedFeedback = action.payload;
+        setEditNoOfInquiryDialog: (state, action) => {
+            state.editNoOfInquiryDialog = action.payload;
         },
         setAllSettings: (state, action) => {
             state.settings = action.payload;
@@ -58,9 +50,7 @@ export const {
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
     setEditFeedbackResult,
-    setEditNoInquiriesDialog,
-    setEditNoInquiriesResult,
-    setSelectedFeedback,
+    setEditNoOfInquiryDialog,
     setAllSettings,
     setFeedback
 } = actions;

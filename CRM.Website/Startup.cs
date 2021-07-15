@@ -1,5 +1,6 @@
 ﻿namespace CRM.Website
 {
+    using CRM.Core;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
@@ -129,7 +130,10 @@
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }).AddJsonOptions(options =>
+            {
+                options.SerializerSettings.DateFormatString = DateTimeExtensions.LongDateTimeFormat;
+            });
 
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
         }

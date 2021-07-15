@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
-import EditNoInquiries from './EditNoInquiries';
+import EditNoOfInquiry from '../../edit-no-of-inquiry/AppContainer';
 import EditFeedback from './EditFeedback';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
@@ -15,14 +15,14 @@ export class AppContainer extends Component {
     static propTypes = {
         isHost: PropTypes.bool.isRequired,
         getLatestFeedback: PropTypes.func,
-        editNoInquiriesDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editNoOfInquiryDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editFeedbackDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
     };
 
     static defaultProps = {
         isHost: false,
         viewRelatedCustomerDialog: { show: false },
-        editNoInquiriesDialog: { show: false },
+        editNoOfInquiryDialog: { show: false },
         editFeedbackDialog: { show: false },
         getLatestFeedback: function () {
             // nothing
@@ -37,13 +37,8 @@ export class AppContainer extends Component {
         this.props.getAllSettings();
     };
 
-    handleCloseEditNoInquiriesDialog = () => {
-        this.props.setEditNoInquiriesDialog({ show: false });
-        this.props.setEditNoInquiriesResult(null);
-    };
-
-    handleEditNoInquiriesSuccess = () => {
-        this.handleCloseEditNoInquiriesDialog();
+    handleCloseEditNoInquiryDialog = () => {
+        this.props.setEditNoOfInquiryDialog({ show: false });
     };
 
     handleCloseEditFeedbackDialog = () => {
@@ -61,7 +56,7 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { isHost, viewRelatedCustomerDialog, editNoInquiriesDialog, editFeedbackDialog } = this.props;
+        const { isHost, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog } = this.props;
         return (
             <Fragment>
                 <Filter />
@@ -82,10 +77,9 @@ export class AppContainer extends Component {
                     />
                 }
                 {
-                    editNoInquiriesDialog.show &&
-                    <EditNoInquiries
-                        onClose={this.handleCloseEditNoInquiriesDialog}
-                        onSuccess={this.handleEditNoInquiriesSuccess}
+                    editNoOfInquiryDialog.show &&
+                    <EditNoOfInquiry feedbackId={editNoOfInquiryDialog.feedbackId}
+                        onClose={this.handleCloseEditNoInquiryDialog}
                     />
                 }
                 {
@@ -103,8 +97,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, viewRelatedCustomerDialog, editNoInquiriesDialog, editFeedbackDialog } = state;
-    return { gridParams, viewRelatedCustomerDialog, editNoInquiriesDialog, editFeedbackDialog };
+    const { gridParams, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog } = state;
+    return { gridParams, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

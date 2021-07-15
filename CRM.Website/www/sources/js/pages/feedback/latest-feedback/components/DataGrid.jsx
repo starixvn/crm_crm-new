@@ -44,7 +44,7 @@ export class DataGrid extends Component {
     };
 
     handleEdit = id => {
-        this.props.getNoInquiriesByFeedbackId(id, () => this.props.setEditNoInquiriesDialog({ show: true }));
+        this.props.setEditNoOfInquiryDialog({ show: true, feedbackId: id });
     };
 
     handleEditFeedback = id => {

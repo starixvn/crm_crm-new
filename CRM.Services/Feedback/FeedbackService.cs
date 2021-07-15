@@ -6,22 +6,21 @@
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using CRM.Criteria.Feedback;
     using CRM.Criteria.Feedback.LatestFeedback;
     using CRM.Models.Customer;
     using CRM.Models.Feedback;
-    using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.LatestFeedback;
     using CRM.Repositories;
     using CRM.Resources;
-    using Fanex.NAP.Client.Helpers.Web;
 
     public interface IFeedbackService
     {
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
 
-        Task<CommandResult> EditNoInquiries(EditNoInquiries model, string clientIP);
+        Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command);
 
-        Task<EditNoInquiries> GetNoInquiriesAsync(int feedbackId);
+        Task<EditNoOfInquiry> GetNoOfInquiryByFeedbackIdAsync(int feedbackId);
 
         Task<CustomerFeedback> GetFeedbackByIdAsync(int feedbackId);
 
@@ -34,20 +33,17 @@
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
         private readonly IFeedbackRepository feedbackRepository;
-        private readonly INapSession napSession;
 
         public FeedbackService(
             IBaseService baseService,
             ISettingService settingService,
             ICommonService commonService,
-            INapSession napSession,
             IFeedbackRepository feedbackRepository)
         {
             this.baseService = baseService;
             this.settingService = settingService;
             this.commonService = commonService;
             this.feedbackRepository = feedbackRepository;
-            this.napSession = napSession;
         }
 
         public async Task<CustomerFeedback> GetFeedbackByIdAsync(int feedbackId)
@@ -101,26 +97,17 @@
             return feedbacks;
         }
 
-        public async Task<EditNoInquiries> GetNoInquiriesAsync(int feedbackId)
+        public async Task<EditNoOfInquiry> GetNoOfInquiryByFeedbackIdAsync(int feedbackId)
         {
-            var criteria = new GetNoInquiriesCriteria
+            var criteria = new GetNoOfInquiryByFeedbackIdCriteria
             {
                 FeedbackId = feedbackId
             };
-
-            return await baseService.GetDataEntityAsync<EditNoInquiries>(criteria);
+            return await baseService.GetDataEntityAsync<EditNoOfInquiry>(criteria);
         }
 
-        public async Task<CommandResult> EditNoInquiries(EditNoInquiries model, string clientIP)
+        public async Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command)
         {
-            var command = new EditNoInquiriesCommand
-            {
-                UserId = napSession.UserId,
-                IP = clientIP,
-                FeedbackID = model.FeedbackID,
-                NoInquiries = model.NoInquiries
-            };
-
             return await baseService.ExecuteNonQueryAsync(command);
         }
 

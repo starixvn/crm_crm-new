@@ -6,9 +6,7 @@ import {
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
     setEditFeedbackResult,
-    setEditNoInquiriesDialog,
-    setEditNoInquiriesResult,
-    setSelectedFeedback,
+    setEditNoOfInquiryDialog,
     setAllSettings,
     setFeedback
 } from './latestFeedbackSlide';
@@ -33,23 +31,6 @@ const exportExcel = params => async () => {
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
-    });
-};
-
-const editNoInquiries = data => async dispatch => {
-    const url = Site.resolveClientUrl('LatestFeedback/EditNoInquiries');
-    await DataService.postDataAsync(url, data).then(response => {
-        dispatch(setEditNoInquiriesResult(response.data));
-    });
-};
-
-const getNoInquiriesByFeedbackId = (feedbackId, callback) => async dispatch => {
-    const url = Site.resolveClientUrl(`LatestFeedback/GetNoInquiries/${feedbackId}`);
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setSelectedFeedback(response.data));
-        if (typeof callback === 'function') {
-            callback();
-        }
     });
 };
 
@@ -84,11 +65,7 @@ export const ActionCreators = {
     setEditFeedbackResult,
     getLatestFeedback,
     exportExcel,
-    setEditNoInquiriesDialog,
-    setEditNoInquiriesResult,
-    editNoInquiries,
-    setSelectedFeedback,
-    getNoInquiriesByFeedbackId,
+    setEditNoOfInquiryDialog,
     editFeedback,
     getAllSettings,
     setAllSettings,

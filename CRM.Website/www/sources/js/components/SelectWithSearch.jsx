@@ -1,4 +1,5 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import { Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 
 export default class SelectWithSearch extends Component {
@@ -23,11 +24,11 @@ export default class SelectWithSearch extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.name != prevProps.name) {
+        if (this.props.name != prevProps.name) {
             this.setState({
                 selectedItem: {
                     id: this.props.value,
-                    name: this.props.name 
+                    name: this.props.name
                 },
             })
         }
@@ -39,7 +40,7 @@ export default class SelectWithSearch extends Component {
     }
 
     toggleSelect = () => {
-        if(this.state.selectFormStatus === "open") {
+        if (this.state.selectFormStatus === "open") {
             this.setState({
                 selectFormStatus: ""
             });
@@ -64,12 +65,12 @@ export default class SelectWithSearch extends Component {
     handleChangeSearchInput = event => {
         const value = event.target.value;
         const options = this.props.options;
-       
-        var result = options.map(function(item) {
-            var sites =  item.childSites.filter(function(site) {
+
+        var result = options.map(function (item) {
+            var sites = item.childSites.filter(function (site) {
                 return site.name.toLowerCase().includes(value.toLowerCase())
             });
-            return {name: item.name, id: item.id, childSites: sites}
+            return { name: item.name, id: item.id, childSites: sites }
         });
         this.setState({
             options: result,
@@ -112,22 +113,21 @@ export default class SelectWithSearch extends Component {
     }
 
     render() {
-        const {options} = this.state
-        
+        const { options } = this.state
+
         return (
-            <div className={'dropdown selectwithsearchtree ' + this.state.selectFormStatus } ref={this.wrapperRef}>
+            <div className={'dropdown selectwithsearchtree ' + this.state.selectFormStatus} ref={this.wrapperRef}>
                 <button type="button" className="btn" onClick={this.toggleSelect}>
-                    <span className="pull-left">{this.state.selectedItem.name}</span><span className="fa fa-caret-down pull-right">
-                    </span>
+                    <span className="pull-left">{this.state.selectedItem.name}</span><span className="fa fa-caret-down pull-right" />
                 </button>
                 <ul className="dropdown-menu" >
                     <li>
                         <div>
-                            <input type="text" className="filter" name="filter"
-                            placeholder={LangHelper.getResource('Search')}
-                            onChange={this.handleChangeSearchInput}
-                            value={this.state.filter}/>
-                            <span className="searchclear fa fa-times"  onClick={() => this.clearSearchBox()}></span>
+                            <Form.Control type="text" size="sm" className="filter shadow-none" name="filter"
+                                placeholder={LangHelper.getResource('Search')}
+                                onChange={this.handleChangeSearchInput}
+                                value={this.state.filter} />
+                            <span className="searchclear fa fa-times" onClick={() => this.clearSearchBox()}></span>
                         </div>
                     </li>
                     <li className="toolbar">
@@ -144,36 +144,36 @@ export default class SelectWithSearch extends Component {
                     <li>
                         <div className="tree">
                             <ul>
-                                { !this.state.isHideNA ?
+                                {!this.state.isHideNA ?
                                     <li>
-                                    <a onClick={this.refreshViewValue}>
-                                        <span className="group-text">N/A</span>
-                                    </a>
+                                        <a onClick={this.refreshViewValue}>
+                                            <span className="group-text">N/A</span>
+                                        </a>
                                     </li>
-                                : null }
-                                
-                                { options.map((item, index) => {
-                                    if(item.childSites.length > 0)
-                                    return(
-                                        <li className="parent" key={index}>
-                                            <a>
-                                                <span className="group-text">{ item.name }</span>
-                                            </a>
-                                            <ul className="list-unstyled">
-                                                { this.state.collapsedAll && 
-                                                    item.childSites.map((item1, index1) => {
-                                                        return (
-                                                            <li key={index1}>
-                                                                <a onClick={() => this.selectItem(item1)}>
-                                                                    <span>{item1.name}</span>
-                                                                </a>   
-                                                            </li>
-                                                        )
-                                                    })
-                                                }
-                                            </ul>
-                                        </li>
-                                    )
+                                    : null}
+
+                                {options.map((item, index) => {
+                                    if (item.childSites.length > 0)
+                                        return (
+                                            <li className="parent" key={index}>
+                                                <a>
+                                                    <span className="group-text">{item.name}</span>
+                                                </a>
+                                                <ul className="list-unstyled">
+                                                    {this.state.collapsedAll &&
+                                                        item.childSites.map((item1, index1) => {
+                                                            return (
+                                                                <li key={index1}>
+                                                                    <a onClick={() => this.selectItem(item1)}>
+                                                                        <span>{item1.name}</span>
+                                                                    </a>
+                                                                </li>
+                                                            )
+                                                        })
+                                                    }
+                                                </ul>
+                                            </li>
+                                        )
                                 })}
                             </ul>
                         </div>

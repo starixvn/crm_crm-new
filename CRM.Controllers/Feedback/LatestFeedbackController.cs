@@ -5,32 +5,41 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
-    using CRM.Core.Models;
+    using CRM.Core.Filters;
     using CRM.Criteria.Feedback.LatestFeedback;
     using CRM.Models.Feedback;
-    using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.LatestFeedback;
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Core.Business.Constant;
 
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
     public class LatestFeedbackController : BaseController
     {
         private readonly INapSession napSession;
+        private readonly INapSettings napSettings;
+        private readonly IUserService userService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         private readonly IFeedbackService feedbackService;
 
         public LatestFeedbackController(
             INapSession napSession,
+            INapSettings napSettings,
+            IUserService userService,
             IExportExcelService excelService,
             ISettingService settingService,
             IFeedbackService feedbackService)
         {
             this.napSession = napSession;
+            this.napSettings = napSettings;
+            this.userService = userService;
             this.settingService = settingService;
             this.excelService = excelService;
             this.feedbackService = feedbackService;
@@ -38,7 +47,8 @@
 
         public IActionResult Index()
         {
-            return View(true);
+            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            return View(isHost);
         }
 
         [HttpPost]
@@ -72,19 +82,6 @@
             var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, param.Top);
             string reportName = string.Format(ViewResources.FeedbackReport_Title, param.Top);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> EditNoInquiries([FromBody] EditNoInquiries model)
-        {
-            CommandResult commandResult = await feedbackService.EditNoInquiries(model, ClientIP);
-            return Json(commandResult);
-        }
-
-        public async Task<IActionResult> GetNoInquiries(int id)
-        {
-            EditNoInquiries feedback = await feedbackService.GetNoInquiriesAsync(id);
-            return Json(feedback);
         }
 
         public async Task<IActionResult> GetAllSettings()
