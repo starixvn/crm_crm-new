@@ -50,7 +50,7 @@ export class EditNoInquiries extends Component {
                             {LangHelper.getResource('NoOfInquiries')}
                         </Form.Label>
                         <Col md="6" sm="8">
-                            <Form.Control size="md" type="number" min="1" max="32000" value={values.noInquiries}
+                            <Form.Control size="sm" type="number" min="1" max="32000" value={values.noInquiries}
                                 id="noInquiries" name="noInquiries"
                                 onChange={handleChange}
                                 className="shadow-none" autoComplete="off"

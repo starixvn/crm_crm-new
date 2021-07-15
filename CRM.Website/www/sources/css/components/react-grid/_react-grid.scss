@@ -65,9 +65,23 @@ $paddingRightContainer: 17px;
         padding-right: 0;
     }
 
-    tr:last-child {
-        td {
-            border-bottom: none;
+    tr {
+        &.pending {
+            td {
+                background: #f0edc4 !important;
+            }
+        }
+
+        &.closed {
+            td {
+                background: #ddd !important;
+            }
+        }
+
+        &:last-child {
+            td {
+                border-bottom: none;
+            }
         }
     }
 }

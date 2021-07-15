@@ -1263,7 +1263,6 @@ export class EditFeedback extends Component {
         setSubmitting(true);
         const data = {
             feedbackID: values.feedbackID,
-            userID: 0,
             custID: values.custID,
             titleID: values.titleId,
             firstName: values.firstName,
@@ -1319,13 +1318,9 @@ export class EditFeedback extends Component {
             responseID: values.responseID,
             languageID: values.languageID,
             statusID: values.statusId,
-            roleID: values.roleID,
             countryID: values.countryID,
-            noInquiries: values.noInquiries,
             subject: values.subject,
-            //autoField: values.autoField,
             solution: values.solution,
-            description: values.description,
             review: values.review
         };
 
@@ -1421,24 +1416,6 @@ export class EditFeedback extends Component {
                 >
                     {this.renderForm}
                 </Formik>
-                {
-                    this.state.showConfirmSave &&
-                    <SweetModalDialog size="lg"
-                        title={LangHelper.getResource('Confirmation')}
-                        contents={
-                            <div>{LangHelper.getResource('ConfirmDirtyMessage')}</div>
-                        }
-                        buttons={[
-                            <Button variant="primary" size="sm" onClick={this.props.onClose}>
-                                {LangHelper.getResource('OK')}
-                            </Button>,
-                            <Button variant="primary" size="sm" onClick={this.props.onClose}>
-                                {LangHelper.getResource('Cancel')}
-                            </Button>
-                        ]}
-                        onClose={this.handleCloseConfirm}
-                    />
-                }
             </Modal>
         );
     }

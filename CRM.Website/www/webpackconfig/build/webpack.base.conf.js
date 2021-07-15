@@ -28,7 +28,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/feedbacksubject/index`]: pathConfig.scriptPaths.feedback_subject,
             [`${jsPath}/pages/customer/customerinfo/index`]: pathConfig.scriptPaths.customer_info,
             [`${jsPath}/pages/feedback/addguestfeedback/index`]: pathConfig.scriptPaths.add_guest_feedback,
-            [`${jsPath}/pages/latestfeedback/index`]: pathConfig.scriptPaths.latest_feedback,
+            [`${jsPath}/pages/feedback/latest-feedback`]: pathConfig.scriptPaths.latest_feedback,
             [`${jsPath}/pages/feedback/multiple-logs/create`]: pathConfig.scriptPaths.create_multiple_logs,
 
             /*css*/
@@ -45,7 +45,7 @@ function generateConfig(environment) {
             [`${cssPath}/pages/feedbacksubject/index`]: pathConfig.cssPaths.feedback_subject,
             [`${cssPath}/pages/customer/customerinfo/index`]: pathConfig.cssPaths.customer_info,
             [`${cssPath}/pages/feedback/addguestfeedback/index`]: pathConfig.cssPaths.add_guest_feedback,
-            [`${cssPath}/pages/latestfeedback/index`]: pathConfig.cssPaths.latest_feedback,
+            [`${cssPath}/pages/feedback/latest-feedback`]: pathConfig.cssPaths.latest_feedback,
             [`${cssPath}/pages/feedback/multiple-logs/create`]: pathConfig.cssPaths.create_multiple_logs
         },
         output: {

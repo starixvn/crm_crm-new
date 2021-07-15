@@ -57,8 +57,7 @@ export class DataGrid extends Component {
 
         let mainCategoryIds = [];
         for (let i = 0; i < settings.length; i++) {
-            if ((settings[i].settingType == 'Category')
-                && mainCategoryIds.indexOf(settings[i].settingId) < 0) {
+            if ((settings[i].settingType == 'Category') && mainCategoryIds.indexOf(settings[i].settingId) < 0) {
                 mainCategoryIds.push(settings[i].settingId);
             }
         }
@@ -67,8 +66,7 @@ export class DataGrid extends Component {
         for (let i = 0; i < mainCategoryIds.length; i++) {
             let subCategoryIds = [];
             for (let j = 0; j < settings.length; j++) {
-                if ((settings[j].settingType == 'Category')
-                    && settings[j].settingId == mainCategoryIds[i]) {
+                if ((settings[j].settingType == 'Category') && settings[j].settingId == mainCategoryIds[i]) {
                     subCategoryIds.push(settings[j].subSettingId);
                 }
             }
@@ -141,18 +139,20 @@ export class DataGrid extends Component {
         return html;
     };
 
-    renderRow = (item, index, isHost) => (
-        <Row key={index} >
-            <Cell className='text-center'>{item.feedbackId}</Cell>
-            {
-                isHost &&
-                <Cell className="text-center">
-                    <span className="rounded-circle fa fa-pencil icon-edit"
-                        onClick={() => this.handleEdit(item.feedbackId)}
-                    />
-                </Cell>
-            }
-            {
+    renderRow = (item, index, isHost) => {
+        const status = item.status ? item.status.toLowerCase() : '',
+            cssClass = (status !== 'pending' && status !== 'closed') ? '' : status;
+        return (
+            <Row key={index} className={cssClass}>
+                <Cell className='text-center'>{item.feedbackId}</Cell>
+                {
+                    isHost &&
+                    <Cell className="text-center">
+                        <span className="rounded-circle fa fa-pencil icon-edit"
+                            onClick={() => this.handleEdit(item.feedbackId)}
+                        />
+                    </Cell>
+                }
                 <Cell>
                     {this.tooltipFeedback(item)}
                     <div className="feedback-info">
@@ -167,14 +167,14 @@ export class DataGrid extends Component {
                         }
                     </div>
                 </Cell>
-            }
-            <Cell>
-                <div dangerouslySetInnerHTML={{ __html: this.renderCategoryColumn(item) }} />
-            </Cell>
-            <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
-            <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
-        </Row>
-    );
+                <Cell>
+                    <div dangerouslySetInnerHTML={{ __html: this.renderCategoryColumn(item) }} />
+                </Cell>
+                <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
+                <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
+            </Row>
+        );
+    };
 
     renderExportExcelText = () => {
         return (
@@ -191,7 +191,7 @@ export class DataGrid extends Component {
         );
     };
 
-    tooltipFeedback = (item) => {
+    tooltipFeedback = item => {
         const desctiptionText = !item.description ? '' : 'Description: <br>' + item.description + '<br>',
             solutionText = !item.solution ? '' : 'Solution: <br>' + item.solution + '<br>',
             lastCharacterSlit = desctiptionText.substring(578, 580),
@@ -212,24 +212,20 @@ export class DataGrid extends Component {
                 placement="auto"
                 overlay={
                     <Tooltip className="tooltipFeedback">
-                        <div
-                            dangerouslySetInnerHTML={{ __html: tooltipDescription + tooltipSolution }}
-                        />
+                        <div dangerouslySetInnerHTML={{ __html: tooltipDescription + tooltipSolution }} />
                     </Tooltip>
                 }
             >
-                {
-                    <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
-                        <span className="rounded-circle fa fa-pencil-square-o" />
-                        <strong className='link-click'> {item.subject}</strong>
-                    </div>
-                }
+                <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
+                    <span className="rounded-circle fa fa-pencil-square-o" />
+                    <strong className='link-click'> {item.subject}</strong>
+                </div>
             </OverlayTrigger>
         );
     };
 
     render() {
-        const { isHost, gridParams, gridData } = this.props;
+        const { gridParams, gridData } = this.props;
         if (!gridData || !gridData.data) {
             return null;
         }
