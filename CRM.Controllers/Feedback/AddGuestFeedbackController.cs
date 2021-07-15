@@ -2,12 +2,16 @@
 {
     using System;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
+    using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Feedback.AddGuestFeedback;
     using CRM.Models.Feedback.AddGuessFeedback;
+    using CRM.Resources;
     using CRM.Services;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -21,17 +25,20 @@
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
         private readonly ISettingService settingService;
+        private readonly IBaseService baseService;
 
         public AddGuestFeedbackController(
             INapSession napSession,
             INapSettings napSettings,
             IUserService userService,
-            ISettingService settingService)
+            ISettingService settingService,
+            IBaseService baseService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
             this.userService = userService;
             this.settingService = settingService;
+            this.baseService = baseService;
         }
 
         public IActionResult Index()
@@ -118,12 +125,24 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] AddGuestFeedbackCommand command)
         {
+            var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
+            if (command.StatusID == (int)CRMStatus.Deleted && !isHostDeletedFeedback)
+            {
+                var commandResult = new CommandResult { 
+                    Code = (int)HttpStatusCode.Forbidden,
+                    Message = ViewResources.AddCustomerFeedbackPermission
+                };
+                return Json(commandResult);
+            }
+
             command.CreatorId = napSession.UserId;
             command.UserId = napSession.UserId;
             command.IP = ClientIP;
-            return Json("");
+            var result  = await baseService.ExecuteNonQueryAsync(command);
+            return Json(result);
         }
     }
 }

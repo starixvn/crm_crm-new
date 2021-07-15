@@ -304,14 +304,6 @@ export class CreateForm extends Component {
         return generateTime + " \n" + generateCustomer;
     }
 
-    getRelatedCustomers = () => {
-        const customers = [];
-        this.state.listOfCustomerValid.map(customer => {
-            customers.push({ id: customer.custId, name: customer.username });
-        });
-        return customers;
-    };
-
     renderIdentityInformation = (values, errors, touched, handleChange, setFieldValue) => {
         return (
             <div className="panel-group">
@@ -1043,13 +1035,13 @@ export class CreateForm extends Component {
                     <Form.Group as={Row}>
                         <Col sm="4" md="4">
                             <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="status">
+                                <Form.Label column sm="4" md="4" htmlFor="statusId">
                                     {LangHelper.getResource('Status')}
                                 </Form.Label>
                                 <Col sm="8" md="8">
                                     <Form.Control as="select" size="sm" className="shadow-none"
-                                        name="status" id="status"
-                                        value={values.status}
+                                        name="statusId" id="statusId"
+                                        value={values.statusId}
                                         onChange={handleChange}
                                     >
                                         <option value="" hidden disabled />
@@ -1060,13 +1052,13 @@ export class CreateForm extends Component {
                         </Col>
                         <Col sm="4" md="4">
                             <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="language" className="required">
+                                <Form.Label column sm="4" md="4" htmlFor="languageId" className="required">
                                     {LangHelper.getResource('Language')}
                                 </Form.Label>
                                 <Col sm="8" md="8">
                                     <Form.Control as="select" size="sm" className="shadow-none"
-                                        name="language" id="language"
-                                        value={values.language}
+                                        name="languageId" id="languageId"
+                                        value={values.languageId}
                                         onChange={handleChange}
                                         isInvalid={touched.language && errors.language}
                                     >
@@ -1078,13 +1070,13 @@ export class CreateForm extends Component {
                         </Col>
                         <Col sm="4" md="4">
                             <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="response">
+                                <Form.Label column sm="4" md="4" htmlFor="responseId">
                                     {LangHelper.getResource('Response')}
                                 </Form.Label>
                                 <Col sm="8" md="8">
                                     <Form.Control as="select" size="sm" className="shadow-none"
-                                        name="response" id="response"
-                                        value={values.response}
+                                        name="responseId" id="responseId"
+                                        value={values.responseId}
                                         onChange={handleChange}
                                     >
                                         <option value="" hidden disabled />
@@ -1363,77 +1355,87 @@ export class CreateForm extends Component {
 
     handleSubmit = values => {
         const params = {
-            customerInfo: {
-                name: values.identityInformation,
-                title: {
-                    id: values.title
-                },
-                passport: {
-                    name: values.passportNo
-                },
-                personalInfoContacts: [
-                    { name: values.pic1Name, Phone: values.pic1PhoneNumber },
-                    { name: values.pic2Name, Phone: values.pic2PhoneNumber },
-                    { name: values.pic3Name, Phone: values.pic3PhoneNumber },
-                    { name: values.pic4Name, Phone: values.pic4PhoneNumber }
-                ],
-                bettingCode: ['', ''],
-                phoneInfo: [{
-                    countryCode: values.countryCode,
-                    areaCode: values.areaCode,
-                    phoneNumber: values.phoneNumber
-                }, {
-                    countryCode: values.countryCode2,
-                    areaCode: values.areaCode2,
-                    phoneNumber: values.phoneNumber2
-                }, {
-                    countryCode: values.countryCode3,
-                    areaCode: values.areaCode3,
-                    phoneNumber: values.phoneNumber3
-                }],
-                mobilePhone: {
-                    countryCode: mobileCountryCode,
-                    areaCode: mobileAreaCode,
-                    phoneNumber: mobileAreaCode
-                },
-                faxInfo: {
-                    countryCode: faxCountryCode,
-                    areaCode: faxAreaCode,
-                    faxNumber: faxNumber
-                },
-                bBM: values.zalo,
-                birthDay: values.birthDay,
-                email: values.email,
-                firstName: values.firstName,
-                lastName: values.lastName,
-                licenseeType: values.licenseeType,
-                line: values.line,
-                mSN: values.telegram,
-                weChat: values.weChat,
-                whatsApp: values.whatApp,
-                yahoo: values.letstalk
-            },
-            relatedCustomerId: this.getRelatedCustomers(),
-            startTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.feedbackDate)),
-            endTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.resolutionTime)),
-            communicationToolIds: values.communication,
-            statusId: values.statusId,
-            licenseeTypeId: values.licenseeTypeId,
-            responseId: values.response,
-            subject: values.subject,
-            remark: values.remark,
-            solution: values.solution,
-            autoField: values.autoGenerated,
-            extensionIds: this.getExtensionParams(values.extension, this.props.settings.extensionList),
-            products: getProductParams(values.product.length > 0 ? values.product.split(',') : [],
-                values.subProduct.length > 0 ? values.subProduct.split(',') : [],
-                values.betType.length > 0 ? values.betType.split(',') : [],
-                this.props.settings),
-            categories: getCategoryParams(values.category.split(','), values.subCategory.split(','), this.props.settings.subCategoryList),
-            noInquiries: values.noOfInquiries,
-            categoryIds: values.category.split(',').map(item => parseInt(item, 10)).sort().join(','),
-            subCategoryIds: values.subCategory.split(',').map(item => parseInt(item, 10)).sort().join(','),
+        Name: values.identityInformation,
+        FirstName: values.firstName,
+        lastName: values.lastName,
+        TitleID: values.title,
+        BirthDay: values.birthDay,
+        LanguageID: values.languageId,
+        Phone: values.phoneNumber,
+        PhoneCountryCode: values.countryCode,
+        PhoneAreaCode: values.areaCode,
+        Phone2: values.phoneNumber2,
+        Phone2CountryCode: values.countryCode2,
+        Phone2AreaCode: values.areaCode2,
+        Phone3: values.phoneNumber3,
+        Phone3CountryCode: values.countryCode3,
+        Phone3AreaCode: values.areaCode3,
+        Passport: values.passportNo,
+        MobilePhone: values.mobilePhoneNumber,
+        MobilePhoneCountryCode: values.mobileCountryCode,
+        MobilePhoneAreaCode: values.mobileAreaCode,
+        Fax: values.faxNumber,
+        FaxCountryCode: values.faxCountryCode,
+        FaxAreaCode: values.faxAreaCode,
+        Email: values.email,
+        Skype: values.skype,
+        MSN: values.telegram,
+        Pic1: values.pic1PhoneNumber,
+        Pic2: values.pic2PhoneNumber,
+        Pic3: values.pic3PhoneNumber,
+        Pic4: values.pic4PhoneNumber,
+        Pic1Name: values.pic1Name,
+        Pic2Name: values.pic2Name,
+        Pic3Name: values.pic3Name,
+        Pic4Name: values.pic4Name,
+        WeChat: values.weChat,
+        WhatsApp: values.whatApp,
+        Line: values.line,
+        Yahoo: values.letstalk,
+        QQ: values.qq,
+        BBM: values.zalo,
+        FeedbackDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.feedbackDate)),
+        ResolutionDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.resolutionTime)),
+        CommunicationID: values.communication,
+        Products: getProductParams(values.product.length > 0 ? values.product.split(',') : [],
+            values.subProduct.length > 0 ? values.subProduct.split(',') : [],
+            values.betType.length > 0 ? values.betType.split(',') : [],
+            this.props.settings),
+        ResponseID: values.responseId,
+        Categories: getCategoryParams(values.category.split(','), values.subCategory.split(','), this.props.settings.subCategoryList),
+        StatusID: values.statusId,
+        StationId: this.getExtensionParams(values.extension, this.props.settings.extensionList),
+        CountryID: values.country === '' ? 0 : values.country,
+        LicenseeType: values.licenseeType,
+        Subject: values.subject,
+        AutoField: values.autoGenerated,
+        Description: values.description,
+        solution: values.solution,
+        noInquiries: values.noOfInquiries,
+        RelatedCustID: this.state.listOfCustomerValid.join(',')
         };
+
+        const specialChars = ['<', '>', '#', '&'];
+        const isValidName = specialChars.filter(x=> params.Name.indexOf(x) < 0);
+        if(!isValidName)
+        {
+            params.Name =  params.Name.replace('<, >, #, &', '');
+            this.confirmCreateMultipleLogs(params, 'Content will be saved without special characters such as <, >, &, #');
+        }
+        else
+        {
+            this.confirmCreateMultipleLogs(params, 'are you sure')
+        }
+
+        console.log(params);
+    };
+
+    confirmCreateMultipleLogs = (params, confirmMessage) => {
+        this.props.setConfirmCreateGuestDialog({
+            show: true,
+            params,
+            confirmMessage
+        });
     };
 
     render() {
@@ -1442,7 +1444,7 @@ export class CreateForm extends Component {
             return null;
         }
 
-        const {titleList, statusList, languageList} =  this.props.settings;
+        const {titleList, statusList, languageList, responseList} =  this.props.settings;
         const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
@@ -1491,11 +1493,13 @@ export class CreateForm extends Component {
             communication: '',
             category: '',
             subCategory: '',
-            status:statusList[0].settingId,
+            statusId:statusList[0].settingId,
+            responseId: responseList[0].id,
             product: '',
             subProduct: '',
             betType: '',
-            language: languageList[0].settingId,
+            country: '',
+            languageId: languageList[0].settingId,
             noOfInquiries: '',
             customerNameInput: '',
             subject: '',

@@ -70,6 +70,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to create feedback..
+        /// </summary>
+        public static string AddCustomerFeedbackPermission {
+            get {
+                return ResourceManager.GetString("AddCustomerFeedbackPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Guess Feedback.
         /// </summary>
         public static string AddGuessFeedback {

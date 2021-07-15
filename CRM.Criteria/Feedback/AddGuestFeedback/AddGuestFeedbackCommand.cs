@@ -8,8 +8,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using CRM.Models.Setting;
-    using CRM.Models;
 
     public class AddGuestFeedbackCommand : BaseNonQueryCommand
     {
@@ -114,8 +112,6 @@
 
         [SpParam(SqlParamName = "product")]
         public string ProductsContent => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
-
-        public Setting Language { get; set; }
 
         public int ResponseID { get; set; }
 
