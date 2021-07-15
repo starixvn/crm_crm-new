@@ -5,6 +5,8 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
+    using CRM.Core.Models;
+    using CRM.Criteria.Feedback.AddGuestFeedback;
     using CRM.Models.Feedback.AddGuessFeedback;
     using CRM.Services;
     using Fanex.NAP.Client.Configuration;
@@ -113,6 +115,15 @@
             };
 
             return settings;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] AddGuestFeedbackCommand command)
+        {
+            command.CreatorId = napSession.UserId;
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            return Json("");
         }
     }
 }
