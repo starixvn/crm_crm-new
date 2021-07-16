@@ -22,9 +22,12 @@ const getFeedbackSubjectTemplates = subject => async dispatch => {
     });
 };
 
-const addFeedback =  params => async () => {
+const addFeedback =  params => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('AddGuestFeedback/Create');
-    return await DataService.postDataAsync(url, params).then(response => response);
+    return await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setAddFeedback(response.data));
+    }).then(() => Site.unblockUI());
 };
 
 const verifyUserName = data => async () => {

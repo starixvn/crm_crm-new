@@ -125,24 +125,32 @@
         }
 
         [HttpPost]
-        //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] AddGuestFeedbackCommand command)
         {
-            var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
-            if (command.StatusID == (int)CRMStatus.Deleted && !isHostDeletedFeedback)
+            try
             {
-                var commandResult = new CommandResult { 
-                    Code = (int)HttpStatusCode.Forbidden,
-                    Message = ViewResources.AddCustomerFeedbackPermission
-                };
-                return Json(commandResult);
-            }
+                var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
+                if (command.StatusID == (int)CRMStatus.Deleted && !isHostDeletedFeedback)
+                {
+                    var commandResult = new CommandResult
+                    {
+                        Code = (int)HttpStatusCode.Forbidden,
+                        Message = ViewResources.AddCustomerFeedbackPermission
+                    };
+                    return Json(commandResult);
+                }
 
-            command.CreatorId = napSession.UserId;
-            command.UserId = napSession.UserId;
-            command.IP = ClientIP;
-            var result  = await baseService.ExecuteNonQueryAsync(command);
-            return Json(result);
+                command.CreatorId = napSession.UserId;
+                command.UserId = napSession.UserId;
+                command.IP = ClientIP;
+                var result = await baseService.ExecuteNonQueryAsync(command);
+                return Json(result);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

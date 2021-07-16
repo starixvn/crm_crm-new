@@ -5,7 +5,7 @@ import {getInvalidCategoryParams} from '@jsroot/common/shareScripts';
 
 export const renderTitleOptions = item => {
     return (
-        <option key={item.id} value={item.value}>
+        <option key={item.id} value={item.id}>
             {item.value}
         </option>
     );
@@ -13,7 +13,7 @@ export const renderTitleOptions = item => {
 
 export const renderLicenseeTypeOptions = item => {
     return (
-        <option key={item.id} value={item.name}>
+        <option key={item.id} value={item.id}>
             {item.name}
         </option>
     );
@@ -29,7 +29,7 @@ export const renderStatus = item => {
 
 export const renderLanguage = item => {
     return (
-        <option key={item.settingId} value={item.settingName}>
+        <option key={item.settingId} value={item.settingId}>
             {item.settingName}
         </option>
     );
@@ -38,7 +38,7 @@ export const renderLanguage = item => {
 
 export const renderResponse = item => {
     return (
-        <option key={item.id} value={item.value}>
+        <option key={item.id} value={item.id}>
             {item.value}
         </option>
     );
@@ -46,7 +46,7 @@ export const renderResponse = item => {
 
 export const renderCountry = item => {
     return (
-        <option key={item.id} value={item.name}>
+        <option key={item.id} value={item.id}>
             {item.name}
         </option>
     );
@@ -87,8 +87,8 @@ export const validateFormik = (values, settings) => {
         }
     }
 
-    if (values.language === 0) {
-        errors.language = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language'));
+    if (values.languageId === 0) {
+        errors.languageId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language'));
     }
 
     if (values.subject === '') {

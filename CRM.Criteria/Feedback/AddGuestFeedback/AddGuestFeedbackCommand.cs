@@ -13,7 +13,7 @@
     {
         public int UserId { get; set; }
 
-        public string Name { get; set; }
+        public string UserName { get; set; }
 
         public string FirstName { get; set; }
 
@@ -21,7 +21,9 @@
 
         public int TitleID { get; set; }
 
-        public DateTime Birthday { get; set; }
+        public int SiteId { get; set; } = 0;
+
+        public string Birthday { get; set; }
 
         public int LanguageID { get; set; }
 
@@ -83,9 +85,7 @@
 
         public string Pic4Name { get; set; }
 
-        public int SiteID { get; set; }
-
-        public int RoleID { get; set; }
+        public int RoleID { get; set; } = RoleIdConstants.CRMGuest;
 
         public bool IsVip { get; set; }
 
@@ -145,8 +145,6 @@
 
         public int LicenseeType { get; set; }
 
-        public short UserRole { get; } = Constants.UserRole;
-
         public string IP { get; set; } = string.Empty;
 
         public string AutoField { get; set; }
@@ -154,10 +152,6 @@
         public int NoInquiries { get; set; }
 
         public int CreatorId { get; set; }
-
-        public int ErrorCode { get; set; }
-
-        public string ErrorMessage { get; set; }
 
         public override string GetSettingKey()
         {
