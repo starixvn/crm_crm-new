@@ -140,14 +140,14 @@
             return base.GetBettype(subProducts, transactionInfos, settings, settingMappings);
         }
 
-        public Tuple<int, int, string> Public_GetCategorySubCategory(IEnumerable<SettingItem> settings)
+        public Tuple<int, int, string> Public_GetCategorySubCategory(IEnumerable<SettingItem> settings, int IssueTypeId)
         {
-            return base.GetCategorySubCategory(settings);
+            return base.GetCategorySubCategory(settings, IssueTypeId);
         }
 
-        public string Public_GetRelatedCustomerXml(int headlineId, IEnumerable<TransactionInfo> transactionInfos)
+        public string Public_GetRelatedCustomerXml(int headlineId, IEnumerable<TransactionInfo> transactionInfos, int IssueTypeId)
         {
-            return base.GetRelatedCustomerXml(headlineId, transactionInfos);
+            return base.GetRelatedCustomerXml(headlineId, transactionInfos, IssueTypeId);
         }
 
         public string Public_GetAutoField(

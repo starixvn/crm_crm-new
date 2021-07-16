@@ -115,6 +115,7 @@
             string LastRuntimeNameEnv
         )
         {
+
             var settingNames = new[] { SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
@@ -181,7 +182,7 @@
                 && x.SettingValue.Equals("Neutral", StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
-            var category = GetCategorySubCategory(settings);
+            var category = GetCategorySubCategory(settings, matchInfo.IssueTypeId);
 
             var criteria = new CreateMutipleFeedbackCommand
             {
@@ -251,7 +252,7 @@
                 IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.CustId));
                 criteria.ProductXml = GetProductXml(matchInfo, transactions, settings, settingMappings);
                 criteria.Solution = GetSolutionForCreditSite(message, transactions);
-                criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, transactions);
+                criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, transactions, matchInfo.IssueTypeId);
                 criteria.MessageId = message.MessageId;
                 criteria.ListOrigCustIds = string.Join(",", batch);
 
@@ -318,7 +319,7 @@
                 && x.SettingValue.Equals("Neutral", StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
-            var category = GetCategorySubCategory(settings);
+            var category = GetCategorySubCategory(settings, matchInfo.IssueTypeId);
 
             var criteria = new CreateFeedbackCommand
             {
@@ -534,7 +535,7 @@
                 };
         }
 
-        protected internal virtual Tuple<int, int, string> GetCategorySubCategory(IEnumerable<SettingItem> settings)
+        protected internal virtual Tuple<int, int, string> GetCategorySubCategory(IEnumerable<SettingItem> settings, int IssueTypeId)
         {
             var category = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.MainCategory, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals("Special Notification", StringComparison.OrdinalIgnoreCase));
@@ -544,9 +545,9 @@
             {
                 var subCategory = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.SubCategory, StringComparison.OrdinalIgnoreCase)
                     && x.ParentIds.Any(y => y == category.SettingId)
-                    && x.SettingValue.Equals("Abnormal Bets", StringComparison.OrdinalIgnoreCase));
-
+                    && x.SettingValue.Equals(IssueTypeId == abnormalAccount ? "Abnormal Account" : "Abnormal Bets", StringComparison.OrdinalIgnoreCase));
                 subCategoryId = subCategory != null ? subCategory.SettingId : 0;
+                
             }
 
             return new Tuple<int, int, string>(
@@ -557,14 +558,16 @@
                     subCategoryId));
         }
 
-        protected internal virtual string GetRelatedCustomerXml(int headlineId, IEnumerable<TransactionInfo> transactionInfos)
+        protected internal virtual string GetRelatedCustomerXml(int headlineId, IEnumerable<TransactionInfo> transactionInfos, int IssueTypeId)
         {
             const string XmlTemplate = "<Row CustId='{0}' RelatedCustId='{1}' Username='{2}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             var transactions = transactionInfos.GroupBy(x => x.CustId).Select(x => x.First());
             foreach (var transaction in transactions)
             {
-                stringBuilder.AppendFormat(XmlTemplate, headlineId, transaction.CustId, transaction.Username);
+                var custId = IssueTypeId == abnormalAccount ? transaction.RelatedCustID : transaction.CustId;
+                var userName = IssueTypeId == abnormalAccount ? transaction.RelatedUserName : transaction.Username;
+                stringBuilder.AppendFormat(XmlTemplate, headlineId, custId, userName);
             }
 
             return stringBuilder.Append(Constants.EndRootTag).ToString();
@@ -630,12 +633,6 @@
             var stringBuilder = new StringBuilder(message.Content_en);
             stringBuilder.Append("<br /><br />").Append(message.Content_cs);
             stringBuilder.Append("<br /><br />Kindly refer to Agency site \"Cancelled Bets\" for Voided user.");
-            stringBuilder.Append("<br /><br />Affected users / 受影响会员:");
-            foreach (var transaction in transactionInfos)
-            {
-                stringBuilder.AppendFormat("<br />{0}", transaction.Username);
-            }
-
             return stringBuilder.ToString();
         }
     }

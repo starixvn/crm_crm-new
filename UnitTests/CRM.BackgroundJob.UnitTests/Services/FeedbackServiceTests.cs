@@ -808,7 +808,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategory(settings);
+            var actual = service.Public_GetCategorySubCategory(settings, Arg.Any<int>());
 
             // Assert
             Assert.Equal(0, actual.Item1);
@@ -827,7 +827,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategory(settings);
+            var actual = service.Public_GetCategorySubCategory(settings, Arg.Any<int>());
 
             // Assert
             Assert.Equal(1, actual.Item1);
@@ -847,7 +847,27 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategory(settings);
+            var actual = service.Public_GetCategorySubCategory(settings, Arg.Any<int>());
+
+            // Assert
+            Assert.Equal(1, actual.Item1);
+            Assert.Equal(2, actual.Item2);
+            Assert.Equal("<ROOT><Category MainCategoryID='1' SubCategoryID='2' /></ROOT>", actual.Item3);
+        }
+
+        [Fact]
+        public void GetCategorySubCategory_ExistedMainAndSubCategoryAndIssuesTypeEqual13_ReturnExpectedTuple()
+        {
+            // Arrange
+            var settings = new List<SettingItem>
+            {
+                new SettingItem { SettingId = 1, SettingName = "MainCategory", SettingValue = "Special Notification" },
+                new SettingItem { SettingId = 2, SettingName = "SubCategory", SettingValue = "Abnormal Account", ParentIds = new List<int>{ 1 } }
+            };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetCategorySubCategory(settings, 13);
 
             // Assert
             Assert.Equal(1, actual.Item1);
@@ -870,7 +890,26 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetRelatedCustomerXml(headlineId, transactions);
+            var actual = service.Public_GetRelatedCustomerXml(headlineId, transactions, Arg.Any<int>());
+
+            // Assert
+            Assert.Equal(xml, actual);
+        }
+
+        [Fact]
+        public void GetRelatedCustomerXml_IssuesType13_ReturnExpectedXml()
+        {
+            // Arrange
+            var headlineId = 1;
+            var transactions = new List<TransactionInfo>
+            {
+                new TransactionInfo { CustId = 1, Username = "starixIT", RelatedUserName = "RelatedUserName", RelatedCustID = 2 }
+            };
+            var xml = "<ROOT><Row CustId='1' RelatedCustId='2' Username='RelatedUserName' /></ROOT>";
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetRelatedCustomerXml(headlineId, transactions, 13);
 
             // Assert
             Assert.Equal(xml, actual);
