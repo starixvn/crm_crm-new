@@ -79,8 +79,8 @@ export const validateFormik = (values, settings) => {
         const invalidCategories = getInvalidCategoryParams(
             values.category.split(','),
             values.subCategory.split(','),
-            settings.mainCategoryList,
-            settings.subCategoryList
+            settings.mainCategories,
+            settings.subCategories
         );
         if (invalidCategories.length > 0) {
             errors.category = LangHelper.formatString(LangHelper.getResource('InvalidCategoryField'), invalidCategories.join(', '));

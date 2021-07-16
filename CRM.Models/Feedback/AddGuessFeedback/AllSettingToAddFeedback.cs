@@ -8,35 +8,35 @@ namespace CRM.Models.Feedback.AddGuessFeedback
     [Serializable]
     public class AllSettingToAddFeedback
     {
-        public IEnumerable<SettingRelation> ExtensionList { get; set; }
+        public IEnumerable<SettingRelation> Extensions { get; set; }
 
-        public IEnumerable<Country> CountryList { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
 
-        public IEnumerable<Province> ProvinceList { get; set; }
+        public IEnumerable<Province> Provinces { get; set; }
 
-        public IEnumerable<Setting> CommunicationToolList { get; set; }
+        public IEnumerable<Setting> CommunicationTools { get; set; }
 
-        public IEnumerable<Setting> LanguageList { get; set; }
+        public IEnumerable<Setting> Languages { get; set; }
 
-        public IEnumerable<Setting> MainCategoryList { get; set; }
+        public IEnumerable<Setting> MainCategories { get; set; }
 
-        public IEnumerable<Setting> SubCategoryList { get; set; }
+        public IEnumerable<Setting> SubCategories { get; set; }
 
-        public IEnumerable<Product> ProductList { get; set; }
+        public IEnumerable<Product> Products { get; set; }
 
-        public IEnumerable<Product> SubProductList { get; set; }
+        public IEnumerable<Product> SubProducts { get; set; }
 
-        public IEnumerable<Product> BettypeList { get; set; }
+        public IEnumerable<Product> Bettypes { get; set; }
 
-        public IEnumerable<SiteSetting> SiteList { get; set; }
+        public IEnumerable<SiteSetting> Sites { get; set; }
 
-        public IEnumerable<SettingRelation> ResponseList { get; set; }
+        public IEnumerable<SettingRelation> Responses { get; set; }
 
-        public IEnumerable<FeedbackStatus> StatusList { get; set; }
+        public IEnumerable<FeedbackStatus> Status { get; set; }
 
-        public IEnumerable<SettingRelation> TitleList { get; set; }
+        public IEnumerable<SettingRelation> Titles { get; set; }
 
-        public IEnumerable<SettingRelation> RoleList { get; set; }
+        public IEnumerable<SettingRelation> Roles { get; set; }
 
         public IEnumerable<BaseModel> LicenseeType { get; set; }
 

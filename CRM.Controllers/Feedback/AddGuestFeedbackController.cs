@@ -53,7 +53,7 @@
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             if (isHost)
             {
-                settings.StatusList = settings.StatusList.Where(s => !s.Name.Equals("Deleted", StringComparison.OrdinalIgnoreCase));
+                settings.Status = settings.Status.Where(s => !s.Name.Equals("Deleted", StringComparison.OrdinalIgnoreCase));
             }
 
             return Json(settings);
@@ -100,32 +100,32 @@
 
             var settings = new AllSettingToAddFeedback
             {
-                ExtensionList = extentionListRemmoveNA,
-                CountryList = countries,
-                ProvinceList = provinces,
-                CommunicationToolList = communicationToolList,
-                LanguageList = languages,
-                SiteList = siteList,
-                ResponseList = responsesLists,
-                StatusList = statusListRemoveDelete,
-                TitleList = titleList,
+                Extensions = extentionListRemmoveNA,
+                Countries = countries,
+                Provinces = provinces,
+                CommunicationTools = communicationToolList,
+                Languages = languages,
+                Sites = siteList,
+                Responses = responsesLists,
+                Status = statusListRemoveDelete,
+                Titles = titleList,
                 LicenseeType = licenseeTypeList,
                 ProductNA = productNA,
                 SubProductNA = subproductNA,
                 BettypeNA = bettypeNA,
                 ExtensionNA = extentionNA,
-                ProductList = productListRemoveNAAndActive,
-                SubProductList = subproductRemoveNA,
-                BettypeList = bettypeRemoveNAAndActive,
-                MainCategoryList = mainCategoryList,
-                SubCategoryList = subCategoryList
+                Products = productListRemoveNAAndActive,
+                SubProducts = subproductRemoveNA,
+                Bettypes = bettypeRemoveNAAndActive,
+                MainCategories = mainCategoryList,
+                SubCategories = subCategoryList
             };
 
             return settings;
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] AddGuestFeedbackCommand command)
         {
             var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);

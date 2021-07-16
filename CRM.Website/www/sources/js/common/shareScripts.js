@@ -113,7 +113,7 @@ export const getProductParams = function (selectedProductIds, selectedSubProduct
             const index = settings.subProducts.findIndex(item => item.id === parseInt(subProductId, 10));
             const subProductBettypes = [];
             selectedBettypeIds.forEach(bettypeId => {
-                if (settings.bettypes.filter(item => id.id == parseInt(bettypeId, 10) && item.parentId === parseInt(subProductId, 10)).length > 0) {
+                if (settings.bettypes.filter(item => item.id === parseInt(bettypeId, 10) && item.parentId === parseInt(subProductId, 10)).length > 0) {
                     subProductBettypes.push({
                         productId: settings.subProducts[index].parentId,
                         subProductId: settings.subProducts[index].id,
