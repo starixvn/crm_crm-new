@@ -83,12 +83,12 @@ export const getInvalidCategoryParams = (selectedCategoryIds, selectedSubCategor
     selectedCategoryIds.forEach(categoryId => {
         let isInvalid = false;
         selectedSubCategoryIds.forEach(subCategoryId => {
-            if (subCategories.filter(item => item.subCategoryId === parseInt(subCategoryId, 10) && item.mainCategoryID === parseInt(categoryId, 10)).length === 0) {
+            if (CheckCategorySubCategory(categoryId, subCategoryId, subCategories)) {
                 isInvalid = true;
             }
         });
 
-        if (isInvalid) {
+        if (!isInvalid) {
             const index = categories.findIndex(item => item.mainCategoryID === parseInt(categoryId, 10));
             invalidCategories.push(categories[index].settingName);
         }
@@ -97,7 +97,16 @@ export const getInvalidCategoryParams = (selectedCategoryIds, selectedSubCategor
     return invalidCategories;
 };
 
-export const getProductParams = (selectedProductIds, selectedSubProductIds, selectedBettypeIds, settings) => {
+const CheckCategorySubCategory = (categoryId, subCategoryId, subCategories) =>{
+    let flag = false;
+    subCategories.forEach(sub => {
+        if (sub.subCategoryId === parseInt(subCategoryId, 10) && sub.mainCategoryID === parseInt(categoryId, 10)) {
+            flag = true;
+        }
+    });
+    return flag;
+};
+
     let products = [];
     if (selectedProductIds.length === 0) {
         products = [
@@ -118,7 +127,7 @@ export const getProductParams = (selectedProductIds, selectedSubProductIds, sele
                             subProductBettypes.push({
                                 productId: parseInt(productId, 10),
                                 subProductId: parseInt(subProductId, 10),
-                                bettypeId: bettypeId
+                        	bettypeId: parseInt(bettypeId, 10)
                             });
                         }
                     });
@@ -135,8 +144,8 @@ export const getProductParams = (selectedProductIds, selectedSubProductIds, sele
                 } else {
                     products.push({
                         productId: parseInt(productId, 10),
-                        subProductId: settings.subProductNA.id,
-                        bettypeId: settings.bettypeNA.id
+                    subProductId: settings.subProductNA.id,
+                    bettypeId: settings.bettypeNA.id
                     });
                 }
             });

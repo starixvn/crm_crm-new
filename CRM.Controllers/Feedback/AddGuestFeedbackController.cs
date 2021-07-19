@@ -56,7 +56,7 @@
                 settings.Status = settings.Status.Where(s => !s.Name.Equals("Deleted", StringComparison.OrdinalIgnoreCase));
             }
 
-            return Json(settings);
+                return Json(settings);
         }
 
         public async Task<AllSettingToAddFeedback> AllSettingToAddFeedback()
@@ -88,7 +88,7 @@
             var productNA = productList.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
 
             var subproduct = await settingService.GetSubProductAsync(active: SettingConstants.Active);
-            var subproductRemoveNA = subproduct.Where(p => p.Id != NAConstants.SubProductNA);
+            var subproductRemoveNA = subproduct.Where(p => p.Id != NAConstants.SubProductNA && p.ParentId != 0);
             var subproductNA = subproduct.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
 
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
