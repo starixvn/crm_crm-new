@@ -1359,7 +1359,7 @@ export class CreateForm extends Component {
         FirstName: values.firstName,
         lastName: values.lastName,
         TitleId: parseInt(values.title, 10),
-        BirthdayString: values.birthDay === '' ? values.birthDay : DateTimeService.toShortDateTimeFormat(new Date(values.birthDay)),
+        BirthdayString: values.birthday === '' ? values.birthday : DateTimeService.toShortDateTimeFormat(new Date(values.birthday)),
         LanguageId: parseInt(values.languageId, 10),
         Phone: values.phoneNumber,
         PhoneCountryCode: values.countryCode,
