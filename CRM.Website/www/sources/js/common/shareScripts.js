@@ -107,6 +107,8 @@ const CheckCategorySubCategory = (categoryId, subCategoryId, subCategories) =>{
     return flag;
 };
 
+
+export const getProductParams = function (selectedProductIds, selectedSubProductIds, selectedBettypeIds, settings){
     let products = [];
     if (selectedProductIds.length === 0) {
         products = [
@@ -127,7 +129,7 @@ const CheckCategorySubCategory = (categoryId, subCategoryId, subCategories) =>{
                             subProductBettypes.push({
                                 productId: parseInt(productId, 10),
                                 subProductId: parseInt(subProductId, 10),
-                        	bettypeId: parseInt(bettypeId, 10)
+                        	    bettypeId: parseInt(bettypeId, 10)
                             });
                         }
                     });
