@@ -58,10 +58,14 @@
             if (feedbackInfos.Any())
             {
                 feedback = feedbackInfos.First();
+                feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
+                feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
+                feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
+                feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
                 feedback.RelatedCustomers = relatedCustomers;
                 feedback.Settings = settingItems.ToList();
 
-                var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteID);
+                var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteId);
                 feedback.SiteSetting = new Models.Common.Site
                 {
                     Id = siteSetting.Id,

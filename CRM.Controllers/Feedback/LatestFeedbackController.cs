@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.Feedback
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -86,40 +87,33 @@
 
         public async Task<IActionResult> GetAllSettings()
         {
-            var languages = await settingService.GetLanguageAsync(SettingConstants.Active, true);
-            var countries = await settingService.GetCountryAsync(SettingConstants.Active, true);
-            var titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
-            var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var statusListRemoveDelete = statusList.Where(s => s.StatusId != (int)CRMStatus.Deleted).ToList();
-            var communicationToolList = await settingService.GetCommunicationToolAsync(SettingConstants.Active);
-            var productList = await settingService.GetProductAsync(SettingConstants.Active);
-            var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active);
-            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
-            var mainCategoryList = await settingService.GetMainCategoryAsync(SettingConstants.Active);
-            var subCategoryList = await settingService.GetSubCategoryAsync(active: SettingConstants.Active);
-            var subproduct = await settingService.GetSubProductAsync();
-            var extentionList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var statues = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var products = await settingService.GetProductAsync(SettingConstants.Active);
+            var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
-            var licenseeTypeList = await settingService.GetLicenseeTypeAsync();
-            var sites = await settingService.GetAllSitesWithGroupAsync();
 
             var settings = new
             {
-                CommunicationToolList = communicationToolList,
-                ProductList = productList,
-                Roles = roles,
-                Responses = responses,
-                MainCategoryList = mainCategoryList,
-                SubCategoryList = subCategoryList,
-                SubProductList = subproduct,
-                CountryList = countries,
-                LanguageList = languages,
-                ExtensionList = extentionList,
-                StatusList = statusListRemoveDelete,
-                BettypeList = bettypes,
-                Titles = titles,
-                LicenseeType = licenseeTypeList,
-                Sites = sites
+                extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
+                communicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
+                roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active),
+                responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
+                countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
+                languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
+                statuses = statues.Where(x => !string.Equals(x.Name, ViewResources.Deleted, StringComparison.OrdinalIgnoreCase)),
+                titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active),
+                licenseeTypes = await settingService.GetLicenseeTypeAsync(),
+                sites = await settingService.GetAllSitesWithGroupAsync(),
+                products = products.Where(x => x.Id != NAConstants.ProductNA),
+                subProducts = subproducts.Where(x => x.Id != NAConstants.SubProductNA),
+                bettypes = bettypes.Where(x => x.Id != NAConstants.BettypeNA),
+                mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
+                subCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
+                productNA = products.FirstOrDefault(x => x.Id == NAConstants.ProductNA),
+                subProductNA = subproducts.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
+                bettypeNA = bettypes.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
+                extensionNA = extentions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA)
             };
 
             return Json(settings);
@@ -134,8 +128,17 @@
         [HttpPost]
         public async Task<IActionResult> EditFeedback([FromBody] EditFeedbackCommand command)
         {
-            command.UserID = napSession.UserId;
+            command.UserId = napSession.UserId;
             command.IP = ClientIP;
+            if (command.IsReviewed)
+            {
+                command.ReviewerId = napSession.UserId;
+            }
+            else
+            {
+                command.Review = string.Empty;
+            }
+
             var commandResult = await feedbackService.EditFeedbackAsync(command);
 
             return Json(commandResult);

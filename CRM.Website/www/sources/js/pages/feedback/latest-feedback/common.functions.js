@@ -5,16 +5,6 @@ export const validateNoOfInquiries = event => {
     return event.target.validity.valid
         || event.target.value < 1 && (event.target.value = 1)
         || event.target.value > 32000 && (event.target.value = 32000);
-}
-
-export const validateInquiriesInput = (event) => {
-    if ([8, 46, 37, 39, 35, 36].includes(event.which)) {
-        return;
-    }
-
-    if (!event.ctrlKey && !event.key.match(/^\d+$/)) {
-        event.preventDefault();
-    }
 };
 
 export const validateFormik = (values) => {

@@ -39,12 +39,12 @@
             if (customers.Any())
             {
                 customerInfo = customers.FirstOrDefault();
-                customerInfo.Role.Id = customerInfo.RoleID;
-                customerInfo.Role.Name = RoleSettingService.GetRoleName(customerInfo.RoleID);
+                customerInfo.Role.Id = customerInfo.RoleId;
+                customerInfo.Role.Name = RoleSettingService.GetRoleName(customerInfo.RoleId);
                 customerInfo.Languages = languageIds.ToList();
-                customerInfo.LanguageID = string.Join(",", languageIds);
+                customerInfo.LanguageId = string.Join(",", languageIds);
 
-                var site = await settingService.GetSiteByIdAsync(customerInfo.SiteID);
+                var site = await settingService.GetSiteByIdAsync(customerInfo.SiteId);
                 customerInfo.SiteSetting = new Site
                 {
                     Id = site.Id,
@@ -67,13 +67,13 @@
             var customers = await baseService.GetDataAsync<CustomerInfo>(criteria);
             foreach (var item in customers)
             {
-                if (criteria.CustId == item.CustId || item.RoleID == RoleIdConstants.Headline)
+                if (criteria.CustId == item.CustId || item.RoleId == RoleIdConstants.Headline)
                 {
                     continue;
                 }
 
-                item.Role.Id = item.RoleID;
-                item.Role.Name = RoleSettingService.GetRoleName(item.RoleID);
+                item.Role.Id = item.RoleId;
+                item.Role.Name = RoleSettingService.GetRoleName(item.RoleId);
                 uplineInfos.Add(item);
             }
 

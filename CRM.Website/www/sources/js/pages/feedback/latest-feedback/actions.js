@@ -8,7 +8,8 @@ import {
     setEditFeedbackResult,
     setEditNoOfInquiryDialog,
     setAllSettings,
-    setFeedback
+    setFeedback,
+    setFeedbackSubjectTemplates
 } from './latestFeedbackSlide';
 
 const getAllSettings = () => async dispatch => {
@@ -57,6 +58,13 @@ export const editFeedback = data => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const getFeedbackSubjectTemplates = subject => async dispatch => {
+    const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
+    await DataService.getDataAsync(url, { subject }).then(response => {
+        dispatch(setFeedbackSubjectTemplates(response.data));
+    });
+};
+
 export const ActionCreators = {
     setLatestFeedback,
     setGridParams,
@@ -71,5 +79,7 @@ export const ActionCreators = {
     setAllSettings,
     verifyUserName,
     getFeedbackById,
-    setFeedback
+    setFeedback,
+    getFeedbackSubjectTemplates,
+    setFeedbackSubjectTemplates
 };

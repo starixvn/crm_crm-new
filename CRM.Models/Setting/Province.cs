@@ -2,7 +2,7 @@
 {
     public class Province
     {
-        public int ProvinceID { get; set; }
+        public int ProvinceId { get; set; }
 
         public string ProvinceName { get; set; }
 

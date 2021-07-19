@@ -259,7 +259,7 @@ describe('DataGridCustomerInfo', () => {
                         data: {
                             custId: 0,
                             username: '',
-                            siteID: 0,
+                            siteId: 0,
                             countryId: 0,
                             lastName: '',
                             firstName: '',
@@ -305,8 +305,8 @@ describe('DataGridCustomerInfo', () => {
                 const values = {
                     custId: customerInfo.custId,
                     username: customerInfo.username || '',
-                    siteId: customerInfo.siteID || 0,
-                    countryId: customerInfo.countryID || 0,
+                    siteId: customerInfo.siteId || 0,
+                    countryId: customerInfo.countryId || 0,
                     firstName: customerInfo.firstName || '',
                     lastName: customerInfo.lastName || '',
                     nickname: customerInfo.nickname || '', 
@@ -444,7 +444,7 @@ describe('DataGridCustomerInfo', () => {
                     pic3Name: '',
                     pic4: '',
                     pic4Name: '',
-                    provinceID: 0,
+                    provinceId: 0,
                     site: 0,
                     skype: '',
                     custId: 0,
@@ -454,7 +454,7 @@ describe('DataGridCustomerInfo', () => {
                 const params = {
                     site: 0,
                     countryId: 0,
-                    provinceID: 0,
+                    provinceId: 0,
                     firstName: '',
                     lastName: '',
                     language: '',
@@ -493,7 +493,7 @@ describe('DataGridCustomerInfo', () => {
                     gridData: {
                         data: {
                             id: 0,
-                            provinceID: 0,
+                            provinceId: 0,
                             languages: [1, 2],
                             uplineInfo: [],
                             role: { name: 'test' }
@@ -532,7 +532,7 @@ describe('DataGridCustomerInfo', () => {
                     editCustomerInfoResult: { isSuccessful: false, message: '' },
                     gridData:{
                         data: {
-                            provinceID: 0,
+                            provinceId: 0,
                             id: 0,
                             languages: [],
                         }

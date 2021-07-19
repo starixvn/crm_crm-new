@@ -117,7 +117,7 @@ export class NewCommunitionSetting extends PureComponent {
 
     renderTooltipCustomers = props => (
         <Tooltip id="tooltip-customers" {...props}>
-            {LangHelper.getResource('MultipleCustomersToolTip')}
+            {LangHelper.getResource('MultipleCustomersTooltip')}
         </Tooltip>
     );
 

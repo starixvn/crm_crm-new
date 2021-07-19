@@ -129,7 +129,7 @@ export class DataGrid extends Component {
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
-                        {LangHelper.getResource('CustomerSite')}
+                        {LangHelper.getResource('Site')}
                     </Form.Label>
                     <Col md="9">
                         <SelectWithSearch
@@ -139,15 +139,13 @@ export class DataGrid extends Component {
                             value={values.siteId}
                             name={values.site.name}
                             isHideNA={false}
-                            OnChangeValue = {this.handleChangeSite}
+                            OnChangeValue={this.handleChangeSite}
                         />
                     </Col>
                 </Form.Group>
-
-
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
-                        {LangHelper.getResource('CustomerCountry')}
+                        {LangHelper.getResource('Country')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control as="select" size="sm" className="shadow-none" id="countryId"
@@ -163,7 +161,7 @@ export class DataGrid extends Component {
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
-                        {LangHelper.getResource('CustomerFirstName')}
+                        {LangHelper.getResource('FirstName')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="shadow-none"
@@ -173,7 +171,7 @@ export class DataGrid extends Component {
                 </Form.Group>
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="lastName" >
-                        {LangHelper.getResource('CustomerLastName')}
+                        {LangHelper.getResource('LastName')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="shadow-none"
@@ -183,7 +181,7 @@ export class DataGrid extends Component {
                 </Form.Group>
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="nickname" >
-                        {LangHelper.getResource('CustomerNickname')}
+                        {LangHelper.getResource('Nickname')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Label size="sm" className="">
@@ -193,7 +191,7 @@ export class DataGrid extends Component {
                 </Form.Group>
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
-                        {LangHelper.getResource('CustomerLanguage')}
+                        {LangHelper.getResource('Language')}
                     </Form.Label>
                     <Col md="9" className="form-control-wrapper">
                         <MultipleSelect
@@ -214,7 +212,7 @@ export class DataGrid extends Component {
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="phoneCountryCode" >
-                        {LangHelper.getResource('CustomerPhone1')}
+                        {LangHelper.getResource('Phone1')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
@@ -231,7 +229,7 @@ export class DataGrid extends Component {
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="phoneCountryCode" >
-                        {LangHelper.getResource('CustomerPhone2')}
+                        {LangHelper.getResource('Phone2')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
@@ -248,7 +246,7 @@ export class DataGrid extends Component {
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="phoneCountryCode" >
-                        {LangHelper.getResource('CustomerPhone3')}
+                        {LangHelper.getResource('Phone3')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
@@ -265,7 +263,7 @@ export class DataGrid extends Component {
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="mobile" >
-                        {LangHelper.getResource('CustomerMobile')}
+                        {LangHelper.getResource('Mobile')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
@@ -281,8 +279,8 @@ export class DataGrid extends Component {
                 </Form.Group>
 
                 <Form.Group className="row item no-border-bg">
-                    <Form.Label column md="3" htmlFor="email" >
-                        {LangHelper.getResource('CustomerEmail')}
+                    <Form.Label column md="3" htmlFor="email">
+                        {LangHelper.getResource('Email')}
                     </Form.Label>
                     <Col md="9">
                         <Form.Control type="text" size="sm" className="shadow-none"
@@ -384,7 +382,7 @@ export class DataGrid extends Component {
     }
 
     handleChangeSite = (item) => {
-        this.setState({ 
+        this.setState({
             siteId: item.id
         });
     }
@@ -394,7 +392,7 @@ export class DataGrid extends Component {
             custId: values.custId,
             site: this.state.siteId || values.siteId,
             countryId: values.countryId,
-            provinceID: this.props.gridData.data.provinceID ,
+            provinceId: this.props.gridData.data.provinceId,
             firstName: values.firstName,
             lastName: values.lastName,
             language: values.languageId,
@@ -455,9 +453,9 @@ export class DataGrid extends Component {
         const initialValues = {
             custId: customerInfo.custId,
             username: customerInfo.username || '',
-            siteId: customerInfo.siteID || 0,
+            siteId: customerInfo.siteId || 0,
             site: customerInfo.siteSetting || '',
-            countryId: customerInfo.countryID || 0,
+            countryId: customerInfo.countryId || 0,
             firstName: customerInfo.firstName || '',
             lastName: customerInfo.lastName || '',
             nickname: customerInfo.nickname || '',

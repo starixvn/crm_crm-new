@@ -13,19 +13,19 @@
     {
         public int UserId { get; set; }
 
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public int TitleID { get; set; }
+        public int TitleId { get; set; }
 
         public int SiteId { get; set; } = 0;
 
         public string Birthday { get; set; }
 
-        public int LanguageID { get; set; }
+        public int LanguageId { get; set; }
 
         public string Phone { get; set; }
 
@@ -85,7 +85,7 @@
 
         public string Pic4Name { get; set; }
 
-        public int RoleID { get; set; } = RoleIdConstants.CRMGuest;
+        public int RoleId { get; set; } = RoleIdConstants.CRMGuest;
 
         public bool IsVip { get; set; }
 
@@ -113,7 +113,7 @@
         [SpParam(SqlParamName = "product")]
         public string ProductsContent => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
 
-        public int ResponseID { get; set; }
+        public int ResponseId { get; set; }
 
         [SpParam(Ignored = true)]
         public IEnumerable<CategorySubCategorySetting> Categories { get; set; }
@@ -121,13 +121,13 @@
         [SpParam(SqlParamName = "category")]
         public string CategoriesContent => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
 
-        public int StatusID { get; set; }
+        public int StatusId { get; set; }
 
-        public string StationID { get; set; }
+        public string StationId { get; set; }
 
-        public int CountryID { get; set; }
+        public int CountryId { get; set; }
 
-        public int ProvinceID { get; set; }
+        public int ProvinceId { get; set; }
 
         public string Subject { get; set; }
 

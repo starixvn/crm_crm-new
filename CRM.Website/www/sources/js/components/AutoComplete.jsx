@@ -24,7 +24,7 @@ export default class AutoComplete extends Component {
 
         this.state = {
             showOptionList: false,
-            searchValue: '',
+            searchValue: props.value,
             selectedItem: -1
         }
     }

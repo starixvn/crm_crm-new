@@ -13,22 +13,6 @@
     font-size: 16px;
 }
 
-.react-datepicker-wrapper-container {
-    height: 28px;
-
-    .react-datepicker-wrapper {
-        display: block;
-    }
-
-    .react-datepicker__input-container {
-        height: 100%;
-
-        input {
-            height: 100%;
-        }
-    }
-}
-
 .panel-group {
     border: 1px solid #b1b1b1;
 
@@ -37,14 +21,19 @@
     }
 
     .panel-title {
+        display: flex;
+        align-items: center;
         height: 28px;
-        line-height: 18px;
         margin: 0;
-        padding: 8px 15px;
+        padding: 0 15px;
         color: #2f70b4;
         background: linear-gradient(#e7e7e7, #e2e2e2);
         border-bottom: 1px solid #b1b1b1;
         cursor: pointer;
+
+        .form-label {
+            margin: 0;
+        }
     }
 
     .panel-content {

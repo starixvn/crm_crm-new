@@ -131,7 +131,7 @@
             try
             {
                 var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
-                if (command.StatusID == (int)CRMStatus.Deleted && !isHostDeletedFeedback)
+                if (command.StatusId == (int)CRMStatus.Deleted && !isHostDeletedFeedback)
                 {
                     var commandResult = new CommandResult
                     {

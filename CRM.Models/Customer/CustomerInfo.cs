@@ -8,7 +8,7 @@
     public class CustomerInfo
     {
         public int CustId { get; set; }
-        public int TitleID { get; set; }
+        public int TitleId { get; set; }
 
         public string FirstName { get; set; }
 
@@ -28,9 +28,9 @@
 
         public string Username { get; set; }
 
-        public int RoleID { get; set; }
+        public int RoleId { get; set; }
 
-        public int SiteID { get; set; }
+        public int SiteId { get; set; }
 
         /* --- bank info---*/
         public string BankName { get; set; }
@@ -46,9 +46,9 @@
 
         public string CreatorName { get; set; }
 
-        public int CountryID { get; set; }
+        public int CountryId { get; set; }
 
-        public int ProvinceID { get; set; }
+        public int ProvinceId { get; set; }
 
         public int LicenseeType { get; set; }
 
@@ -60,9 +60,9 @@
 
         public DateTime CreateDate { get; set; }
 
-        public string BirthDay { get; set; }
+        public DateTime? Birthday { get; set; }
 
-        public string PassPort { get; set; }
+        public string Passport { get; set; }
 
         public string WeChat { get; set; }
 
@@ -140,7 +140,7 @@
 
         public int OtherSportsDangerLevel { get; set; }
 
-        public string LanguageID { get; set; }
+        public string LanguageId { get; set; }
 
         public bool IsHeadline { get; set; }
 
@@ -158,7 +158,7 @@
 
         public bool IsGuest => Role != null && (Role.Id == RoleIdConstants.Guest || Role.Id == RoleIdConstants.CRMGuest);
 
-        public Setting Title => new Setting { Id = TitleID, Name = string.Empty };
+        public Setting Title => new Setting { Id = TitleId, Name = string.Empty };
 
         public Fax FaxInfo => new Fax { CountryCode = FaxCountryCode, AreaCode = FaxAreaCode, FaxNumber = Fax };
 
