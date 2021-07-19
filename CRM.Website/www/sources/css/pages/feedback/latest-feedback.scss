@@ -35,144 +35,6 @@
     text-align: left
 }
 
-.feedback-info {
-    padding-left: 17px;
-}
-
-.panel-group {
-    border: 1px solid #b1b1b1;
-    border-width: 1px 1px 0 1px;
-
-    .row {
-        padding: 3px 9px;
-    }
-
-    .title {
-        height: 28px;
-        line-height: 18px;
-        border-bottom: 1px solid #b1b1b1;
-        padding: 3px 6px;
-        color: #2f70b4;
-        font-size: 13px;
-        background-color: #e8e8e8;
-    }
-
-    .content {
-        padding: 4px 0;
-    }
-
-    .customername {
-        font-weight: bold;
-        color: red;
-    }
-
-    .separate {
-        padding-left: 15px;
-        padding-right: 14px;
-
-        hr {
-            border-top-color: #b1b1b1;
-            height: 1px;
-            margin: 6px -15px;
-        }
-    }
-
-    .code-country {
-        margin-right: 1%;
-        padding: 0 2px;
-        width: 22%;
-    }
-
-    .code-area {
-        margin-right: 1%;
-        padding: 0 1px;
-        width: 23%;
-    }
-
-    .consecutive-container-before {
-        display: none
-    }
-
-    .customerShow {
-        border-left: 18px solid green;
-    }
-
-    .guestShow {
-        border-left: 18px solid #06c;
-    }
-
-    .invalidShow {
-        border-left: 18px solid red;
-    }
-
-    .customersList {
-        border: 1px solid #ced4da;
-    }
-
-    .txt-customer, .txt-guest, .txt-invalid {
-        display: flex;
-        align-items: center;
-        border: 1px solid #8e8e8e;
-        border-radius: 5px;
-
-        .fa-times {
-            cursor: pointer;
-        }
-    }
-
-    .txt-customer {
-        color: green;
-    }
-
-    .txt-guest {
-        color: #06c
-    }
-
-    .txt-invalid {
-        color: red;
-    }
-
-    .checkbox {
-        margin: 10px
-    }
-
-    .preview {
-        padding: 3px 9px;
-    }
-
-    .pull-right {
-        float: right !important;
-        cursor: pointer
-    }
-
-    .react-datepicker-wrapper {
-        display: block;
-    }
-
-    .checkboxOverWrite {
-        padding-left: 0px;
-    }
-}
-
-.reviewby {
-    font-style: italic;
-}
-
-.checkbox-review {
-    margin-right: 10px;
-    margin-left: 10px;
-    margin-top: 3px;
-}
-
-.verify-customer {
-    margin-left: 15px;
-    margin-right: 10px;
-}
-
-.check-related {
-    display: inherit;
-}
-
 #tooltip-customers [class$="inner"] {
     min-width: 300px;
     text-align: left;
@@ -187,7 +49,7 @@
                 border: 1px solid #b1b1b1;
 
                 .form-group {
-                    margin-bottom: 0;
+                    margin-bottom: 4px;
 
                     .col-form-label {
                         padding-right: 0;
@@ -216,6 +78,8 @@
                 }
 
                 .panel-content {
+                    padding: 4px 9px;
+
                     .phone-container {
                         display: flex;
 
@@ -244,6 +108,18 @@
 
                         .phone {
                             width: 55%;
+                        }
+                    }
+
+                    .customersList {
+                        padding: 5px;
+
+                        .txt-customer, .txt-guest, .txt-invalid {
+                            width: auto;
+                            border: 1px solid #8e8e8e;
+                            border-radius: 5px;
+                            padding: 1px 4px;
+                            margin: 0 0.5rem 0.5rem 0;
                         }
                     }
                 }

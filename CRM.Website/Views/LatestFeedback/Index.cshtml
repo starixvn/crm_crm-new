@@ -1,5 +1,6 @@
 ﻿@model bool
 @{
+    bool hasReviewFeedbackPermission = (bool)ViewBag.HasReviewFeedbackPermission;
     ViewData["Title"] = ViewResources.LatestFeedback;
 }
 @section Styles {
@@ -7,10 +8,13 @@
         <link rel="stylesheet" href="~/css/dev/pages/feedback/latest-feedback.chunk.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/pro/pages/feedback/latest-feedback.chunk.css"  asp-append-version="true"/>
+        <link rel="stylesheet" href="~/css/pro/pages/feedback/latest-feedback.chunk.css" asp-append-version="true" />
     </environment>
 }
 @section Scripts{
+    <script type="text/javascript">
+        window.hasReviewFeedbackPermission = true;
+    </script>
     <environment include="Development">
         <script src="~/js/dev/pages/feedback/latest-feedback.chunk.js"></script>
     </environment>

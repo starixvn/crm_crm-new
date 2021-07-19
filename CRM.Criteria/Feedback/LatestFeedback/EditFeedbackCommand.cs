@@ -11,76 +11,51 @@
     public class EditFeedbackCommand : BaseNonQueryCommand
     {
         public int FeedbackId { get; set; }
-
         public int TitleId { get; set; }
-
         public int UserId { get; set; }
-
-        public DateTime Birthday { get; set; }
-
+        public DateTime? Birthday { get; set; }
         public int CountryId { get; set; }
-
         public int ProvinceId { get; set; }
-
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
-
         public int SiteId { get; set; }
 
         public string Phone { get; set; }
-
         public string PhoneCountryCode { get; set; }
-
         public string PhoneAreaCode { get; set; }
 
         public string Phone2 { get; set; }
-
         public string Phone2CountryCode { get; set; }
-
         public string Phone2AreaCode { get; set; }
 
         public string Phone3 { get; set; }
-
         public string Phone3CountryCode { get; set; }
-
         public string Phone3AreaCode { get; set; }
 
         public string MobilePhone { get; set; }
-
         public string MobilePhoneCountryCode { get; set; }
-
         public string MobilePhoneAreaCode { get; set; }
 
         public string Fax { get; set; }
-
         public string FaxCountryCode { get; set; }
-
         public string FaxAreaCode { get; set; }
 
         public string Email { get; set; }
-
         public string Skype { get; set; }
-
         public string MSN { get; set; }
-
         public string BBM { get; set; }
-
         public string QQ { get; set; }
-
         public string Yahoo { get; set; }
-
         public string WeChat { get; set; }
-
         public string Line { get; set; }
-
         public string WhatsApp { get; set; }
 
         public string LanguageId { get; set; }
 
         public string Subject { get; set; }
 
-        public string RelatedCustId { get; set; }
+        [SpParam(SqlParamName = "RelatedCustId")]
+        public string RelatedCustomerIds { get; set; }
 
         public DateTime FeedbackDate { get; set; }
 
@@ -93,10 +68,12 @@
 
         public int RoleId { get; set; }
 
+        [SpParam(Ignored = true)]
         public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; }
 
         public string Product => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
 
+        [SpParam(Ignored = true)]
         public IEnumerable<CategorySubCategorySetting> Categories { get; set; }
 
         public string Category => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
@@ -112,7 +89,7 @@
 
         public string Solution { get; set; }
 
-        public int UpdateReviewedMode { get; set; }
+        public byte UpdateReviewedMode { get; set; }
 
         public bool IsReviewed { get; set; }
 
@@ -133,19 +110,15 @@
         public int LicenseeTypeId { get; set; }
 
         public string Pic1Name { get; set; }
-
         public string Pic1 { get; set; }
 
         public string Pic2Name { get; set; }
-
         public string Pic2 { get; set; }
 
         public string Pic3Name { get; set; }
-
         public string Pic3 { get; set; }
 
         public string Pic4Name { get; set; }
-
         public string Pic4 { get; set; }
 
         public int CustId { get; set; }
