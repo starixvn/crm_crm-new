@@ -163,9 +163,9 @@
             return base.GetDescriptionForDepositeSite(messageId, requestIds);
         }
 
-        public string Public_GetDescriptionForCreditSite(int messageId, string requestIds, MatchInfo matchInfo)
+        public string Public_GetDescriptionForCreditSite(int messageId, string requestIds, MatchInfo matchInfo, IEnumerable<TransactionInfo> transactionInfos)
         {
-            return base.GetDescriptionForCreditSite(messageId, requestIds, matchInfo);
+            return base.GetDescriptionForCreditSite(messageId, requestIds, matchInfo, transactionInfos);
         }
 
         public string Public_GetSolution(Message message)

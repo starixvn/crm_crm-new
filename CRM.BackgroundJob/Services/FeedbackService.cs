@@ -262,7 +262,7 @@
                     string.Join(",", batch)));
                 IEnumerable<int> requestIds = transactions.Select(x => x.RequestId).Distinct().ToList();
                 criteria.RequestIds = string.Join(",", requestIds);
-                criteria.Description = GetDescriptionForCreditSite(message.MessageId, criteria.RequestIds, matchInfo);
+                criteria.Description = GetDescriptionForCreditSite(message.MessageId, criteria.RequestIds, matchInfo, transactions);
                 try
                 {
                     logService.LogInformation(string.Format("Abnormal Bet - Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
@@ -595,7 +595,7 @@
             return stringBuilder.ToString();
         }
 
-        protected internal virtual string GetDescriptionForCreditSite(int messageId, string requestIds, MatchInfo matchInfo)
+        protected internal virtual string GetDescriptionForCreditSite(int messageId, string requestIds, MatchInfo matchInfo,IEnumerable<TransactionInfo> transactionInfos)
         {
             if (matchInfo.IssueTypeId != abnormalAccount)
             {
@@ -610,10 +610,12 @@
             }
             else
             {
+                var transactions = transactionInfos.GroupBy(x => x.CustId).Select(x => x.First()).OrderBy(x=>x.RelatedUserName);
+                var affectedAccount = string.Join(", ", transactions.Select(x=>x.RelatedUserName));
                 var stringBuilderAbnormalAccount = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
                 stringBuilderAbnormalAccount.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
                 stringBuilderAbnormalAccount.AppendFormat("<br />Event Date: {0} - {1}", matchInfo.MinWinlostdate.ToString("dd-MMM-yyyy"), matchInfo.MaxWinlostdate.ToString("dd-MMM-yyyy"));
-                stringBuilderAbnormalAccount.AppendFormat("<br />Affected accounts: {0}", matchInfo.AffectedAccounts);
+                stringBuilderAbnormalAccount.AppendFormat("<br />Affected accounts: {0}", affectedAccount);
                 stringBuilderAbnormalAccount.AppendFormat("<br />Decided By: {0}", matchInfo.DecidedBy);
                 stringBuilderAbnormalAccount.AppendFormat("<br />Requested by: {0}", matchInfo.Requestby);
                 stringBuilderAbnormalAccount.AppendFormat("<br />Voided by: {0}", matchInfo.VoidBy);

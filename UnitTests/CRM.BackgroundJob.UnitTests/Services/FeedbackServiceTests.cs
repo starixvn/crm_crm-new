@@ -233,7 +233,7 @@
             };
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var service = MockService();
-            service.Protected("GetCategorySubCategory", settings).Returns(new Tuple<int, int, string>(1, 1, "xml"));
+            service.Protected("GetCategorySubCategory", settings, matchInfo.IssueTypeId).Returns(new Tuple<int, int, string>(1, 1, "xml"));
 
             // Act
             await service.Public_CreateFeedbackForCreditSiteAsync(
@@ -268,11 +268,11 @@
             var relatedCustomerIds = new List<int> { 1 };
             var message = new Message { MessageId = 1, RequestId = 1 };
             var matchInfo = fixture.Create<MatchInfo>();
+            var settings = fixture.Create<IEnumerable<SettingItem>>();
             var transactionInfos = new List<TransactionInfo>
             {
                 new TransactionInfo { RequestId = 1, CustId = 1 }
             };
-            var settings = fixture.Create<IEnumerable<SettingItem>>();
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var criteria = fixture.Create<CreateMutipleFeedbackCommand>();
             var commandResult = new CommandResult { Code = 0 };
@@ -280,8 +280,8 @@
             baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
             service.Protected("GetProductXml", matchInfo, Arg.Any<IEnumerable<TransactionInfo>>(), settings, settingMappings).Returns("product xml");
             service.Protected("GetSolutionForCreditSite", message, Arg.Any<IEnumerable<TransactionInfo>>()).Returns("solution");
-            service.Protected("GetRelatedCustomerXml", headline.HeadlineId, Arg.Any<IEnumerable<TransactionInfo>>()).Returns("related customer xml");
-            service.Protected("GetDescriptionForCreditSite", message.MessageId, "1", matchInfo).Returns("description");
+            service.Protected("GetRelatedCustomerXml", headline.HeadlineId, Arg.Any<IEnumerable<TransactionInfo>>(), matchInfo.IssueTypeId).Returns("related customer xml");
+            service.Protected("GetDescriptionForCreditSite", message.MessageId, "1", matchInfo, Arg.Any<IEnumerable<TransactionInfo>>()).Returns("description");
 
             // Act
             await service.Public_CreateFeedbackForCreditSiteByBatchAsync(
@@ -300,7 +300,7 @@
             Assert.Equal("related customer xml", criteria.RelatedCustomerXml);
             Assert.Equal(message.MessageId, criteria.MessageId);
             Assert.Equal("1", criteria.ListOrigCustIds);
-            Assert.Equal("1", criteria.RequestIds);
+            //Assert.Equal("1", criteria.RequestIds);
             Assert.Equal("description", criteria.Description);
             logService.Received(4).LogInformation(Arg.Any<string>());
         }
@@ -409,7 +409,7 @@
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
-            service.Received().Protected("GetCategorySubCategory", settings);
+            service.Received().Protected("GetCategorySubCategory", settings, matchInfo.IssueTypeId);
             service.Received().Protected("GetProductXml", matchInfo, transactionInfos, settings, settingMappings);
             service.Received().Protected("CreateFeedbackForDepositByBatchAsync", licenseeInfo, message, transactionInfos, Arg.Any<DateTime>(), Arg.Any<string>(), Arg.Any<CreateFeedbackCommand>());
         }
@@ -963,6 +963,7 @@
             var messageId = fixture.Create<int>();
             var requestIds = fixture.Create<string>();
             var matchInfo = fixture.Create<MatchInfo>();
+            var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
             var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
             description.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
             description.AppendFormat("<br />Date: {0}", matchInfo.EventDate.ToString("dd-MMM-yyyy"));
@@ -973,7 +974,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetDescriptionForCreditSite(messageId, requestIds, matchInfo);
+            var actual = service.Public_GetDescriptionForCreditSite(messageId, requestIds, matchInfo, transactionInfos);
 
             // Assert
             Assert.Equal(description.ToString(), actual);
@@ -990,22 +991,30 @@
                 IssueTypeId = 13,
                 MaxWinlostdate = new DateTime(2020 - 01 - 01),
                 MinWinlostdate = new DateTime(2020 - 01 - 01),
-                AffectedAccounts = "AffectedAccounts",
                 DecidedBy = "DecidedBy",
                 Requestby = "Requestby",
                 VoidBy = "VoidBy"
             };
+
+            var transactionInfos = new List<TransactionInfo> {
+                new TransactionInfo
+                {
+                    CustId = 1,
+                    RelatedUserName = "RelatedUserName"
+                }
+            };
+
             var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
             description.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
             description.AppendFormat("<br />Event Date: {0} - {1}", matchInfo.MinWinlostdate.ToString("dd-MMM-yyyy"), matchInfo.MaxWinlostdate.ToString("dd-MMM-yyyy"));
-            description.AppendFormat("<br />Affected accounts: {0}", matchInfo.AffectedAccounts);
+            description.AppendFormat("<br />Affected accounts: {0}", "RelatedUserName");
             description.AppendFormat("<br />Decided By: {0}", matchInfo.DecidedBy);
             description.AppendFormat("<br />Requested by: {0}", matchInfo.Requestby);
             description.AppendFormat("<br />Voided by: {0}", matchInfo.VoidBy);
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetDescriptionForCreditSite(messageId, requestIds, matchInfo);
+            var actual = service.Public_GetDescriptionForCreditSite(messageId, requestIds, matchInfo, transactionInfos);
 
             // Assert
             Assert.Equal(description.ToString(), actual);
@@ -1043,8 +1052,6 @@
             var stringBuilder = new StringBuilder(message.Content_en);
             stringBuilder.Append("<br /><br />").Append(message.Content_cs);
             stringBuilder.Append("<br /><br />Kindly refer to Agency site \"Cancelled Bets\" for Voided user.");
-            stringBuilder.Append("<br /><br />Affected users / 受影响会员:");
-            stringBuilder.Append("<br />starixIT");
             var service = MockService();
 
             // Act

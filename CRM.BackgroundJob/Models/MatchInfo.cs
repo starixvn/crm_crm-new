@@ -16,7 +16,6 @@
         public string DecidedBy { get; set; }
         public string Requestby { get; set; }
         public string VoidBy { get; set; }
-        public string AffectedAccounts { get; set; }
         public DateTime MinWinlostdate { get; set; }
         public DateTime MaxWinlostdate { get; set; }
     }
