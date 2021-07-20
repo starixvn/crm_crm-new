@@ -514,7 +514,6 @@ export class EditFeedback extends Component {
             resolutionDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.resolutionDate)),
             extensionIds: this.getExtensionParams(values.extensionIds, this.props.settings.extensionNA),
             communicationToolIds: values.communicationToolIds,
-            extensionIds: this.getExtensionParams(values.extensionIds, this.props.settings.extensionNA),
             products: getProductParams(values.productIds.length > 0 ? values.productIds.split(',') : [],
                 values.subProductIds.length > 0 ? values.subProductIds.split(',') : [],
                 values.betTypeIds.length > 0 ? values.betTypeIds.split(',') : [],
@@ -1184,7 +1183,7 @@ export class EditFeedback extends Component {
                                                 <MultipleSelect
                                                     isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
                                                     dataSource={mainCategoryOptions}
-                                                    keyField='mainCategoryID' valueField='settingName'
+                                                    keyField='mainCategoryID' valueField='name'
                                                     hasAllOption={mainCategoryOptions.length > 0}
                                                     isAllTextShown={mainCategoryOptions.length > 0}
                                                     hasSearchBox isNAOption
@@ -1205,7 +1204,7 @@ export class EditFeedback extends Component {
                                                 <MultipleSelect
                                                     isInvalid={touched.subCategoryIds && errors.subCategoryIds}
                                                     dataSource={subCategoryOptions}
-                                                    keyField='subCategoryId' valueField='settingName'
+                                                    keyField='subCategoryId' valueField='name'
                                                     hasAllOption={subCategoryOptions.length > 0}
                                                     isAllTextShown={subCategoryOptions.length > 0}
                                                     hasSearchBox isNAOption
@@ -1307,7 +1306,7 @@ export class EditFeedback extends Component {
                                                     id="languageId" name="languageId"
                                                     value={values.languageId} onChange={handleChange}
                                                 >
-                                                    {languages.map(item => <option key={item.settingId} value={item.settingId}>{item.settingName}</option>)}
+                                                    {languages.map(item => <option key={item.languageId} value={item.languageId}>{item.name}</option>)}
                                                 </Form.Control>
                                             </Col>
                                         </Form.Group>

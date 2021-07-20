@@ -54,7 +54,7 @@ export class CreateForm extends Component {
             startTime,
             endTime,
             extensionIds: settings.extensions[0].id.toString(),
-            languageId: settings.languages[0].settingId,
+            languageId: settings.languages[0].languageId,
             countryId: settings.countries[0].id,
             communicationToolIds: '',
             categoryIds: '',
@@ -630,8 +630,8 @@ export class CreateForm extends Component {
                                     <option value="" hidden disabled />
                                     {
                                         languages.map(item =>
-                                            <option key={item.settingId} value={item.settingId}>
-                                                {item.settingName}
+                                            <option key={item.languageId} value={item.languageId}>
+                                                {item.name}
                                             </option>
                                         )
                                     }
@@ -654,7 +654,7 @@ export class CreateForm extends Component {
                                 <MultipleSelect
                                     isInvalid={touched.categoryIds && errors.categoryIds}
                                     dataSource={mainCategories}
-                                    keyField='mainCategoryID' valueField='settingName'
+                                    keyField='mainCategoryID' valueField='name'
                                     hasAllOption={mainCategories.length > 0}
                                     isAllTextShown={mainCategories.length > 0}
                                     hasSearchBox isNAOption
@@ -670,7 +670,7 @@ export class CreateForm extends Component {
                                 <MultipleSelect
                                     isInvalid={touched.subCategoryIds && errors.subCategoryIds}
                                     dataSource={subCategoryOptions}
-                                    keyField='subCategoryId' valueField='settingName'
+                                    keyField='subCategoryId' valueField='name'
                                     hasAllOption={subCategoryOptions.length > 0}
                                     isAllTextShown={subCategoryOptions.length > 0}
                                     hasSearchBox isNAOption

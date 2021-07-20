@@ -16,7 +16,7 @@ namespace CRM.Models.Feedback.AddGuessFeedback
 
         public IEnumerable<Setting> CommunicationTools { get; set; }
 
-        public IEnumerable<Setting> Languages { get; set; }
+        public IEnumerable<Language> Languages { get; set; }
 
         public IEnumerable<Setting> MainCategories { get; set; }
 

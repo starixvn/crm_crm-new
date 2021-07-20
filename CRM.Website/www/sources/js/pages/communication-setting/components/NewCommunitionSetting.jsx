@@ -220,7 +220,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 isInvalid={touched.mainCategoryTypesNew && errors.mainCategoryTypesNew}
                                 dataSource={this.state.mainCategoryOptionsNew}
                                 keyField='mainCategoryID'
-                                valueField='settingName'
+                                valueField='name'
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 isAllTextShown={this.state.mainCategoryOptionsNew.length > 0}
                                 hasSearchBox
@@ -239,7 +239,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 isInvalid={touched.subCategoryTypesNew && errors.subCategoryTypesNew}
                                 dataSource={this.state.subCategoryOptionsNew}
                                 keyField='subCategoryId'
-                                valueField='settingName'
+                                valueField='name'
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 isAllTextShown={this.state.subCategoryOptionsNew.length > 0}
                                 hasAllOption={this.state.subCategoryOptionsNew.length > 0}
@@ -263,7 +263,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 isInvalid={touched.comunicationToolTypesNew && errors.comunicationToolTypesNew}
                                 dataSource={this.state.communicationToolOptionsNew}
                                 keyField='id'
-                                valueField='settingName'
+                                valueField='name'
                                 hasSearchBox
                                 onChange={(currentItem, selectedItemsKey) => {
                                     handleChange('comunicationToolTypesNew')(selectedItemsKey);

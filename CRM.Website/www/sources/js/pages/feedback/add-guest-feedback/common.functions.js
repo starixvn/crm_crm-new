@@ -29,8 +29,8 @@ export const renderStatus = item => {
 
 export const renderLanguage = item => {
     return (
-        <option key={item.settingId} value={item.settingId}>
-            {item.settingName}
+        <option key={item.languageId} value={item.languageId}>
+            {item.name}
         </option>
     );
 };

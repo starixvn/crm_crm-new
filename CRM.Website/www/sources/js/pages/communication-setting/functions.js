@@ -10,7 +10,7 @@ export const getSubCategories = (isCheckDefault, subCategoryList, selectedSubCat
 
     const distinctSubCategories = distinctSub.map(sub => {
         return {
-            settingName: sub.settingName,
+            name: sub.name,
             subCategoryId: sub.subCategoryId,
             checked: isCheckDefault ? true : selectedSubCategoryIds.indexOf(sub.subCategoryId.toString()) >= 0 ? true : false
         };

@@ -31,7 +31,7 @@
 
         Task<IEnumerable<Setting>> GetSettingRelationAsync();
 
-        Task<IEnumerable<Setting>> GetLanguageAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
+        Task<IEnumerable<Language>> GetLanguageAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 
         Task<IEnumerable<FeedbackStatus>> GetStatusAsync(byte statusType);
 

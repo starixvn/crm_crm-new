@@ -11,7 +11,7 @@
         public IEnumerable<Province> Provinces { get; set; } = new List<Province>();
         public IEnumerable<FeedbackStatus> Statuses { get; set; } = new List<FeedbackStatus>();
         public IEnumerable<SettingRelation> Responses { get; set; } = new List<SettingRelation>();
-        public IEnumerable<Setting> Languages { get; set; } = new List<Setting>();
+        public IEnumerable<Language> Languages { get; set; } = new List<Language>();
         public IEnumerable<Country> Countries { get; set; } = new List<Country>();
         public IEnumerable<Product> Products { get; set; } = new List<Product>();
         public IEnumerable<Product> SubProducts { get; set; } = new List<Product>();

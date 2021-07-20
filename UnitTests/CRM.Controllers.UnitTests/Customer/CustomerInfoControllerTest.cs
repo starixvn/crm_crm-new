@@ -73,7 +73,7 @@
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var sites = fixture.Create<IEnumerable<SiteSetting>>();
             var countries = fixture.Create<IEnumerable<Country>>();
-            var languages = fixture.Create<IEnumerable<Setting>>();
+            var languages = fixture.Create<IEnumerable<Language>>();
             var controller = GetController();
             settingService.GetSiteAsync().Returns(sites);
             settingService.GetCountryAsync(SettingConstants.Active).Returns(countries);

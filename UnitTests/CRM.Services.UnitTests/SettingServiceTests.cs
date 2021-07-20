@@ -135,10 +135,10 @@
         public async Task GetLanguageAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = fixture.Create<IEnumerable<Language>>();
             var criteria = new GetAllLanguageCriteria();
             var service = GetService();
-            baseService.GetDataAsync<Setting>(Arg.Do<GetAllLanguageCriteria>(x => criteria = x)).Returns(expected);
+            baseService.GetDataAsync<Language>(Arg.Do<GetAllLanguageCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await service.GetLanguageAsync(0);

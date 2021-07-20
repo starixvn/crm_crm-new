@@ -39,9 +39,9 @@ export class DataGrid extends Component {
             const data = this.props.gridData.data;
             const languages = this.props.settings.languages.map(x => {
                 return {
-                    id: x.settingId,
-                    name: x.settingName,
-                    checked: data !== null ? (data.languages.some(y => y === x.settingId) ? true : false) : false
+                    languageId: x.languageId,
+                    name: x.name,
+                    checked: data !== null ? (data.languages.some(y => y === x.languageId) ? true : false) : false
                 };
             });
             this.setState({
@@ -197,7 +197,7 @@ export class DataGrid extends Component {
                         <MultipleSelect
                             isInvalid={touched.languageId && errors.languageId}
                             dataSource={this.state.languages}
-                            keyField='id'
+                            keyField='languageId'
                             valueField='name'
                             statusField='checked'
                             isAllTextShown

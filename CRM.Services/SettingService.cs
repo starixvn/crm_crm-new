@@ -128,21 +128,21 @@
             return await baseService.GetDataAsync<Setting>(new GetAllSettingRelationCriteria());
         }
 
-        public async Task<IEnumerable<Setting>> GetLanguageAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false)
+        public async Task<IEnumerable<Language>> GetLanguageAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false)
         {
             var criteria = new GetAllLanguageCriteria
             {
                 Active = active
             };
-            var languages = (await baseService.GetDataAsync<Setting>(criteria)).ToList();
+            var languages = (await baseService.GetDataAsync<Language>(criteria)).ToList();
             if (isIncludeNA)
             {
                 languages.Insert(
                     0,
-                    new Setting
+                    new Language
                     {
-                        SettingId = SettingConstants.NotApply,
-                        SettingName = ViewResources.Symbol_NotApply,
+                        LanguageId = SettingConstants.NotApply,
+                        Name = ViewResources.Symbol_NotApply,
                         IsActive = true
                     });
             }

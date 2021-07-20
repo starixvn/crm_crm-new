@@ -910,7 +910,7 @@ export class CreateForm extends Component {
                                         isInvalid={touched.communication && errors.communication}
                                         dataSource={communicationTools}
                                         keyField='id'
-                                        valueField='settingName'
+                                        valueField='name'
                                         hasAllOption={communicationTools.length > 0}
                                         isAllTextShown={communicationTools.length > 0}
                                         hasSearchBox
@@ -930,7 +930,7 @@ export class CreateForm extends Component {
                                         isInvalid={touched.category && errors.category}
                                         dataSource={mainCategories}
                                         keyField='mainCategoryID'
-                                        valueField='settingName'
+                                        valueField='name'
                                         hasAllOption={mainCategories.length > 0}
                                         isAllTextShown={mainCategories.length > 0}
                                         hasSearchBox
@@ -952,7 +952,7 @@ export class CreateForm extends Component {
                                         isInvalid={touched.subCategory && errors.subCategory}
                                         dataSource={subCategoriesOptions}
                                         keyField='subCategoryId'
-                                        valueField='settingName'
+                                        valueField='name'
                                         hasAllOption={subCategoriesOptions.length > 0}
                                         isAllTextShown={subCategoriesOptions.length > 0}
                                         hasSearchBox
@@ -1511,7 +1511,7 @@ export class CreateForm extends Component {
             product: '',
             subProduct: '',
             betType: '',
-            languageId: languages[0].settingId,
+            languageId: languages[0].languageId,
             noOfInquiries: '',
             customerNameInput: '',
             subject: '',
