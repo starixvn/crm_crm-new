@@ -9,7 +9,6 @@ const latestFeedbackSlice = createSlice({
         editFeedbackDialog: { show: false },
         editFeedbackResult: null,
         editNoOfInquiryDialog: { show: false },
-        settings: null,
         feedback: null,
         feedbackSubjectTemplates: []
     },
@@ -32,9 +31,6 @@ const latestFeedbackSlice = createSlice({
         setEditNoOfInquiryDialog: (state, action) => {
             state.editNoOfInquiryDialog = action.payload;
         },
-        setAllSettings: (state, action) => {
-            state.settings = action.payload;
-        },
         setFeedback: (state, action) => {
             state.feedback = action.payload;
         },
@@ -53,7 +49,6 @@ export const {
     setEditFeedbackDialog,
     setEditFeedbackResult,
     setEditNoOfInquiryDialog,
-    setAllSettings,
     setFeedback,
     setFeedbackSubjectTemplates
 } = actions;

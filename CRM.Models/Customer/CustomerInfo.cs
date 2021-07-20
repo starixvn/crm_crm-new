@@ -140,7 +140,7 @@
 
         public int OtherSportsDangerLevel { get; set; }
 
-        public string LanguageId { get; set; }
+        public string LanguageIds { get; set; }
 
         public bool IsHeadline { get; set; }
 

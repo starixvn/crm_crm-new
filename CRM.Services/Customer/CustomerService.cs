@@ -42,7 +42,7 @@
                 customerInfo.Role.Id = customerInfo.RoleId;
                 customerInfo.Role.Name = RoleSettingService.GetRoleName(customerInfo.RoleId);
                 customerInfo.Languages = languageIds.ToList();
-                customerInfo.LanguageId = string.Join(",", languageIds);
+                customerInfo.LanguageIds = string.Join(",", languageIds);
 
                 var site = await settingService.GetSiteByIdAsync(customerInfo.SiteId);
                 customerInfo.SiteSetting = new Site

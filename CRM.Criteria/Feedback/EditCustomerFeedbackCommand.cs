@@ -1,4 +1,4 @@
-﻿namespace CRM.Criteria.Feedback.LatestFeedback
+﻿namespace CRM.Criteria.Feedback
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,7 @@
     using CRM.Models.Feedback;
     using Fanex.Data;
 
-    public class EditFeedbackCommand : BaseNonQueryCommand
+    public class EditCustomerFeedbackCommand : BaseNonQueryCommand
     {
         public int FeedbackId { get; set; }
         public int TitleId { get; set; }
@@ -50,7 +50,7 @@
         public string Line { get; set; }
         public string WhatsApp { get; set; }
 
-        public string LanguageId { get; set; }
+        public int LanguageId { get; set; }
 
         public string Subject { get; set; }
 
@@ -126,17 +126,15 @@
 
         public string IP { get; set; }
 
-        public bool IsOverWrite { get; set; }
+        public bool IsOverwrite { get; set; }
 
         public int? NoInquiries { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_FeedbackInfoUpd";
 
-        public override bool IsValid()
-        {
-            return FeedbackId > 0 && !string.IsNullOrWhiteSpace(CommunicationToolIds)
-                    && !string.IsNullOrWhiteSpace(LanguageId)
-                    && !string.IsNullOrWhiteSpace(Category);
-        }
+        public override bool IsValid() => FeedbackId > 0
+            && !string.IsNullOrWhiteSpace(CommunicationToolIds)
+            && LanguageId > 0
+            && Categories.Any();
     }
 }

@@ -161,7 +161,7 @@
     OnlyShowUnassignedDirectAccounts: 'Only show unassigned direct accounts',
     Open: 'Open',
     OverMaxUnernameWhenAssignPic: 'You are not allowed to input over {0} usernames. Please check it!',
-    OverWriteCurrentCRMInfo: 'Overwrite current CRM Info',
+    OverwriteCurrentCRMInfo: 'Overwrite current CRM Info',
     PIC: 'PIC',
     PIC1: 'PIC 1',
     PIC2: 'PIC 2',

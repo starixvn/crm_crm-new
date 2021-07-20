@@ -22,6 +22,7 @@
 
         public int StatusId { get; set; }
         public int ResponseId { get; set; }
+        public int LanguageId { get; set; }
         public bool HasRelated { get; set; }
 
         public IEnumerable<RelatedCustomer> RelatedCustomers { get; set; } = new List<RelatedCustomer>();

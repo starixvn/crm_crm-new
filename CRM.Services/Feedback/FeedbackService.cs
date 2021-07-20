@@ -22,9 +22,9 @@
 
         Task<EditNoOfInquiry> GetNoOfInquiryByFeedbackIdAsync(int feedbackId);
 
-        Task<CustomerFeedback> GetFeedbackByIdAsync(int feedbackId);
+        Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId);
 
-        Task<CommandResult> EditFeedbackAsync(EditFeedbackCommand command);
+        Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command);
     }
 
     public class FeedbackService : IFeedbackService
@@ -46,9 +46,9 @@
             this.feedbackRepository = feedbackRepository;
         }
 
-        public async Task<CustomerFeedback> GetFeedbackByIdAsync(int feedbackId)
+        public async Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId)
         {
-            var criteria = new GetFeedbackByIdCriteria
+            var criteria = new GetCustomerFeedbackByIdCriteria
             {
                 FeedbackId = feedbackId
             };
@@ -115,7 +115,7 @@
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
-        public async Task<CommandResult> EditFeedbackAsync(EditFeedbackCommand command)
+        public async Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command)
         {
             return await baseService.ExecuteNonQueryAsync(command);
         }

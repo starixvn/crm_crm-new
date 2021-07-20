@@ -7,17 +7,9 @@ import {
     setEditFeedbackDialog,
     setEditFeedbackResult,
     setEditNoOfInquiryDialog,
-    setAllSettings,
     setFeedback,
     setFeedbackSubjectTemplates
 } from './latestFeedbackSlide';
-
-const getAllSettings = () => async dispatch => {
-    const url = Site.resolveClientUrl('LatestFeedback/GetAllSettings');
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setAllSettings(response.data));
-    });
-};
 
 const getLatestFeedback = params => async dispatch => {
     Site.blockUI();
@@ -41,7 +33,7 @@ const verifyUserName = data => async () => {
 };
 
 const getFeedbackById = (id, callback) => async dispatch => {
-    const url = Site.resolveClientUrl(`LatestFeedback/GetFeedbackById/${id}`);
+    const url = Site.resolveClientUrl(`Feedback/GetCustomerFeedbackById/${id}`);
     await DataService.getDataAsync(url).then(response => {
         dispatch(setFeedback(response.data));
         if (typeof callback === 'function') {
@@ -75,8 +67,6 @@ export const ActionCreators = {
     exportExcel,
     setEditNoOfInquiryDialog,
     editFeedback,
-    getAllSettings,
-    setAllSettings,
     verifyUserName,
     getFeedbackById,
     setFeedback,

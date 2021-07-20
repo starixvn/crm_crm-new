@@ -1,9 +1,9 @@
-﻿namespace CRM.Criteria.Feedback.LatestFeedback
+﻿namespace CRM.Criteria.Feedback
 {
     using CRM.Core.Constants;
     using Fanex.Data.Repository;
 
-    public class GetFeedbackByIdCriteria : CriteriaBase
+    public class GetCustomerFeedbackByIdCriteria : CriteriaBase
     {
         public int FeedbackId { get; set; }
 
