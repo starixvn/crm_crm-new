@@ -240,14 +240,14 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var expected = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<ChatBotUserNameList>>();
+            var expected = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>>();
             var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
             var xml = userNameList.ToXML("root").ToString();
             var criteria = new GetChatBotTicketVoidingInfoCriteria {
                 Messages = xml
             };
             var service = GetService();
-            baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, ChatBotUserNameList>(Arg.Any<GetChatBotTicketVoidingInfoCriteria>()).Returns(expected);
+            baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(Arg.Any<GetChatBotTicketVoidingInfoCriteria>()).Returns(expected);
 
             // Act
             var actual = await service.GetTicketVoidingInfoAsync(userNameList,"Live", true);
@@ -261,18 +261,17 @@
         public async Task ImportTicketVoidingAsync_WhenCalled_ReturnExpectedCommandResult()
         {
             // Arrange
-            const string XmlTemplate = "<r MessageID='{0}' Username='{1}' CustId='{2}' " +
+            const string XmlTemplate = "<r MessageID='{0}' UsernameList='{1}' CustId='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
                 "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}'/>";
             const string messageTemplate = "<r MessageID='{0}' RequestID='{1}' UsernameList='{2}'/>";
             var messageStringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             var fixture = new Fixture();
-            var userNames = new List<ChatBotUserNameList> { 
-                new ChatBotUserNameList
+            var voidings = new List<VoidingMessage> { 
+                new VoidingMessage
                 {
                     MessageId = 1,
                     RequestId = 1,
-                    UsernameList = "UsernameList"
                 }
             };
 
@@ -294,7 +293,7 @@
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             stringBuilder.AppendFormat(XmlTemplate,
                     ticketInfo.MessageId,
-                    ticketInfo.Username,
+                    ticketInfo.UsernameList,
                     ticketInfo.CustId,
                     ticketInfo.Recommend,
                     ticketInfo.Mrecommend,
@@ -312,7 +311,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, userNames, Constants.DefaultEnvironment);
+            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, voidings, Constants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -327,16 +326,15 @@
         public async Task ImportTicketVoidingAsync_WhenMessageIdNotEqual_ReturnExpectedXml()
         {
             // Arrange
-            const string XmlTemplate = "<r MessageID='{0}' Username='{1}' CustId='{2}' " +
+            const string XmlTemplate = "<r MessageID='{0}' UsernameList='{1}' CustId='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
                 "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}'/>";
             var fixture = new Fixture();
-            var userNames = new List<ChatBotUserNameList> {
-                new ChatBotUserNameList
+            var voidings = new List<VoidingMessage> {
+                new VoidingMessage
                 {
                     MessageId = 1,
                     RequestId = 1,
-                    UsernameList = "UsernameList"
                 }
             };
 
@@ -361,7 +359,7 @@
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             stringBuilder.AppendFormat(XmlTemplate,
                     ticketInfo.MessageId,
-                    ticketInfo.Username,
+                    ticketInfo.UsernameList,
                     ticketInfo.CustId,
                     ticketInfo.Recommend,
                     ticketInfo.Mrecommend,
@@ -379,7 +377,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, userNames, Constants.DefaultEnvironment);
+            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, voidings, Constants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(expected, actual);

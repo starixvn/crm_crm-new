@@ -31,7 +31,7 @@
 
         Task<IEnumerable<Message>> GetMessageInfoAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages);
 
-        Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<ChatBotUserNameList>>> GetTicketVoidingInfoAsync(
+        Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>>> GetTicketVoidingInfoAsync(
             IEnumerable<ChatBotUserNameList> userNames,
             string environment,
             bool IncludeUUSCurrency
@@ -40,7 +40,7 @@
         Task<CommandResult> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
-            IEnumerable<ChatBotUserNameList> userNames,
+            IEnumerable<VoidingMessage> voidingMessages,
             string Environment = Constants.DefaultEnvironment);
     }
 
@@ -141,7 +141,7 @@
             return messages;
         }
 
-        public async Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<ChatBotUserNameList>>> GetTicketVoidingInfoAsync(
+        public async Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>>> GetTicketVoidingInfoAsync(
             IEnumerable<ChatBotUserNameList> userNames,
             string environment,
             bool IncludeUUSCurrency
@@ -153,27 +153,27 @@
                 Environment = environment,
                 IncludeUUSCurrency = IncludeUUSCurrency
             };
-            return await baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, ChatBotUserNameList>(criteria);
+            return await baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(criteria);
         }
 
         public async Task<CommandResult> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
-            IEnumerable<ChatBotUserNameList> userNames,
+            IEnumerable<VoidingMessage> voidingMessages,
             string Environment = Constants.DefaultEnvironment)
         {
-            const string XmlTemplate = "<r MessageID='{0}' Username='{1}' CustId='{2}' " +
+            const string XmlTemplate = "<r MessageID='{0}' UsernameList='{1}' CustId='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
                 "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
-            const string messageTemplate = "<r MessageID='{0}' RequestID='{1}' UsernameList='{2}'/>";
+            const string messageTemplate = "<r MessageID='{0}' RequestID='{1}'/>";
             var messageStringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             foreach (ChatBotVoidingTicketInfo ticketInfo in ticketInfos)
             {
                 Message message = messages.FirstOrDefault(x => x.MessageId == ticketInfo.MessageId);
                 stringBuilder.AppendFormat(XmlTemplate,
                     ticketInfo.MessageId,
-                    ticketInfo.Username,
+                    ticketInfo.UsernameList,
                     ticketInfo.CustId,
                     ticketInfo.Recommend,
                     ticketInfo.Mrecommend,
@@ -187,9 +187,9 @@
              );
             }
 
-            foreach(ChatBotUserNameList userName in userNames)
+            foreach(VoidingMessage voidingMessage in voidingMessages)
             {
-                messageStringBuilder.AppendFormat(messageTemplate, userName.MessageId, userName.RequestId, userName.UsernameList);
+                messageStringBuilder.AppendFormat(messageTemplate, voidingMessage.MessageId, voidingMessage.RequestId);
             }
 
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());

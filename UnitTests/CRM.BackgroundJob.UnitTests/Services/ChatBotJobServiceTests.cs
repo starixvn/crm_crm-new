@@ -83,10 +83,11 @@
             var voidingHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
             var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
             var messageImport = fixture.Create<IEnumerable<ChatBotUserNameList>>();
+            var voidingMessagesImport = fixture.Create<IEnumerable<VoidingMessage>>();
             var voidingMessagesHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
             var voidingInfo = new ValueTuple<IEnumerable<ChatBotVoidingMessage>, IEnumerable<ChatBotVoidingHistory>>(voidingMessages, voidingMessagesHis);
             var ticketInfo = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
-            var ticketInfoValueTupe = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<ChatBotUserNameList>>(ticketInfo, messageImport);
+            var ticketInfoValueTupe = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>>(ticketInfo, voidingMessagesImport);
             var commandResult = new CommandResult { Code = 0 };
             var commandResultImportTicket = new CommandResult { Code = 0};
             var service = GetService();
