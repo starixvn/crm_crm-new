@@ -1421,15 +1421,15 @@ export class CreateForm extends Component {
         if(inValidName.length > 0)
         {
             params.UserName =  params.UserName.replace(/<|>|#|&/g,'');
-            this.confirmCreateMultipleLogs(params, LangHelper.getResource('ConfirmAddGuestFeedbackSpecialChar'));
+            this.confirmCreateAddGuestFeedback(params, LangHelper.getResource('ConfirmAddGuestFeedbackSpecialChar'));
         }
         else
         {
-            this.confirmCreateMultipleLogs(params, LangHelper.getResource('ConfirmAddGuestFeedback'));
+            this.confirmCreateAddGuestFeedback(params, LangHelper.getResource('ConfirmAddGuestFeedback'));
         }
     };
 
-    confirmCreateMultipleLogs = (params, confirmMessage) => {
+    confirmCreateAddGuestFeedback = (params, confirmMessage) => {
         this.props.setConfirmCreateGuestDialog({
             show: true,
             params,

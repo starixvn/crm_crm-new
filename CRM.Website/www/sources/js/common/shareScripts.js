@@ -108,7 +108,7 @@ const CheckCategorySubCategory = (categoryId, subCategoryId, subCategories) =>{
 };
 
 
-export const getProductParams = function (selectedProductIds, selectedSubProductIds, selectedBettypeIds, settings){
+export const getProductParams = (selectedProductIds, selectedSubProductIds, selectedBettypeIds, settings) =>{
     let products = [];
     if (selectedProductIds.length === 0) {
         products = [
@@ -127,9 +127,9 @@ export const getProductParams = function (selectedProductIds, selectedSubProduct
                     selectedBettypeIds.forEach(bettypeId => {
                         if (settings.bettypes.filter(item => item.id === parseInt(bettypeId, 10) && item.parentId === parseInt(subProductId, 10)).length > 0) {
                             subProductBettypes.push({
-                                productId: parseInt(productId, 10),
-                                subProductId: parseInt(subProductId, 10),
-                        	    bettypeId: parseInt(bettypeId, 10)
+                            productId: parseInt(productId, 10),
+                            subProductId: parseInt(subProductId, 10),
+                            bettypeId: parseInt(bettypeId, 10)
                             });
                         }
                     });
@@ -144,11 +144,17 @@ export const getProductParams = function (selectedProductIds, selectedSubProduct
 
                     products = products.concat(subProductBettypes);
                 } else {
-                    products.push({
-                        productId: parseInt(productId, 10),
-                    subProductId: settings.subProductNA.id,
-                    bettypeId: settings.bettypeNA.id
-                    });
+                    const isProductExist = products.filter(x=>x.productId === parseInt(productId, 10)
+                     && x.subProductId === settings.subProductNA.id 
+                     && x.bettypeId === settings.bettypeNA.id).length > 0;
+                    if(!isProductExist)
+                    {
+                        products.push({
+                            productId: parseInt(productId, 10),
+                            subProductId: settings.subProductNA.id,
+                            bettypeId: settings.bettypeNA.id
+                        });
+                    }
                 }
             });
         });

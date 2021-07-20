@@ -13,7 +13,7 @@
         [XMLName("SubProductID")]
         public int SubProductId { get; set; }
 
-        [XMLName("BettypeID")]
+        [XMLName("BetTypeID")]
         public int BettypeId { get; set; }
     }
 }
