@@ -43,12 +43,12 @@ export class DataGrid extends Component {
         ];
     };
 
-    handleEdit = id => {
+    handleEditNoOfInquiry = id => {
         this.props.setEditNoOfInquiryDialog({ show: true, feedbackId: id });
     };
 
     handleEditFeedback = id => {
-        this.props.getFeedbackById(id, () => this.props.setEditFeedbackDialog({ show: true }));
+        this.props.setEditFeedbackDialog({ show: true, feedbackId: id });
     };
 
     renderCategoryColumn = item => {
@@ -113,7 +113,7 @@ export class DataGrid extends Component {
         if (mainCategory) {
             for (let j = 0; j < mainCategory.childSettings.length; j++) {
                 if (mainCategory.childSettings[j].subCategoryId == subCategoryId) {
-                    return mainCategory.childSettings[j].settingName;
+                    return mainCategory.childSettings[j].name;
                 }
             }
         }
@@ -149,7 +149,7 @@ export class DataGrid extends Component {
                     isHost &&
                     <Cell className="text-center">
                         <span className="rounded-circle fa fa-pencil icon-edit"
-                            onClick={() => this.handleEdit(item.feedbackId)}
+                            onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}
                         />
                     </Cell>
                 }

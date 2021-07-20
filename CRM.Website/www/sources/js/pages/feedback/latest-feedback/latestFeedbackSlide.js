@@ -7,10 +7,7 @@ const latestFeedbackSlice = createSlice({
         gridParams: { top: 10 },
         viewRelatedCustomerDialog: { show: false },
         editFeedbackDialog: { show: false },
-        editFeedbackResult: null,
-        editNoOfInquiryDialog: { show: false },
-        feedback: null,
-        feedbackSubjectTemplates: []
+        editNoOfInquiryDialog: { show: false }
     },
     reducers: {
         setGridParams: (state, action) => {
@@ -25,17 +22,8 @@ const latestFeedbackSlice = createSlice({
         setEditFeedbackDialog: (state, action) => {
             state.editFeedbackDialog = action.payload;
         },
-        setEditFeedbackResult: (state, action) => {
-            state.editFeedbackResult = action.payload;
-        },
         setEditNoOfInquiryDialog: (state, action) => {
             state.editNoOfInquiryDialog = action.payload;
-        },
-        setFeedback: (state, action) => {
-            state.feedback = action.payload;
-        },
-        setFeedbackSubjectTemplates: (state, action) => {
-            state.feedbackSubjectTemplates = action.payload;
         }
     }
 });
@@ -47,10 +35,7 @@ export const {
     setLatestFeedback,
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
-    setEditFeedbackResult,
-    setEditNoOfInquiryDialog,
-    setFeedback,
-    setFeedbackSubjectTemplates
+    setEditNoOfInquiryDialog
 } = actions;
 
 export default reducer;

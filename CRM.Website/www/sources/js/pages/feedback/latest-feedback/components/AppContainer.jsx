@@ -7,7 +7,7 @@ import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import EditNoOfInquiry from '../../edit-no-of-inquiry/AppContainer';
-import EditFeedback from './EditFeedback';
+import EditFeedback from '../../edit-customer-feedback/AppContainer';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 
@@ -26,15 +26,11 @@ export class AppContainer extends Component {
         editFeedbackDialog: { show: false },
         getLatestFeedback: function () {
             // nothing
-        },
-        getAllSettings: function () {
-            // nothing
         }
     };
 
     componentDidMount() {
         this.props.getLatestFeedback(this.props.gridParams);
-        this.props.getAllSettings();
     };
 
     handleCloseEditNoInquiryDialog = () => {
@@ -43,7 +39,7 @@ export class AppContainer extends Component {
 
     handleCloseEditFeedbackDialog = () => {
         this.props.setEditFeedbackDialog({ show: false });
-        this.props.setEditFeedbackResult(null);
+        this.props.getLatestFeedback(this.props.gridParams);
     };
 
     handleEditFeedbackSuccess = () => {
@@ -84,9 +80,8 @@ export class AppContainer extends Component {
                 }
                 {
                     editFeedbackDialog.show &&
-                    <EditFeedback
+                    <EditFeedback feedbackId={editFeedbackDialog.feedbackId}
                         onClose={this.handleCloseEditFeedbackDialog}
-                        onSuccess={this.handleEditFeedbackSuccess}
                     />
                 }
             </Fragment>

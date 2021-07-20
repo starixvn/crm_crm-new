@@ -89,7 +89,7 @@
             return Json(commandResult);
         }
 
-        protected internal virtual async Task<IActionResult> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback)
+        protected internal virtual async Task<object> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback)
         {
             var feedbackSettings = feedback.Settings;
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);
@@ -108,7 +108,7 @@
                 communicationTools = GetCommunicationTools(communicationTools, feedbackSettings),
                 responses = responses.Where(x => x.IsActive || x.Id == feedback.ResponseId).ToList(),
                 languages = languages.Where(x => x.IsActive || x.LanguageId == feedback.LanguageId).ToList(),
-                statuses = GetStatusAsync(feedback),
+                statuses = await GetStatusAsync(feedback),
                 roles = roles.Where(x => x.IsActive || x.Id == feedback.RoleId).ToList(),
                 countries = countries.Where(x => x.IsActive || x.Id == feedback.CountryId).ToList(),
                 titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active),
@@ -126,7 +126,7 @@
                 communicationToolNA = communicationTools.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.CommunicationNA)
             };
 
-            return Json(settings);
+            return settings;
         }
 
         private static IList<FeedbackSettingRelation> GetFeedbackSettingByType(IEnumerable<FeedbackSettingRelation> settings, string settingType)
@@ -157,14 +157,14 @@
 
         private async Task<IList<Setting>> GetMainCategoryAsync(IEnumerable<FeedbackSettingRelation> settings)
         {
-            var feedbackSettings = GetFeedbackSettingByType(settings, SettingTypeConstants.MainCategory);
+            var feedbackSettings = GetFeedbackSettingByType(settings, "Category");
             var mainCategories = await settingService.GetMainCategoryAsync();
             return mainCategories.Where(x => x.IsActive || feedbackSettings.Any(y => y.SettingId == x.MainCategoryID)).ToList();
         }
 
         private async Task<IList<Setting>> GetSubCategoryAsync(IEnumerable<FeedbackSettingRelation> settings)
         {
-            var feedbackSettings = GetFeedbackSettingByType(settings, SettingTypeConstants.MainCategory);
+            var feedbackSettings = GetFeedbackSettingByType(settings, "Category");
             var subCategories = await settingService.GetSubCategoryAsync();
             return subCategories.Where(x => x.IsActive || feedbackSettings.Any(y => y.SubSettingId == x.SubCategoryId)).ToList();
         }

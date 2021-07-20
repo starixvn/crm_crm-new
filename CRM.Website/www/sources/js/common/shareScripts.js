@@ -83,7 +83,7 @@ export const getInvalidCategoryParams = (selectedCategoryIds, selectedSubCategor
     selectedCategoryIds.forEach(categoryId => {
         let isInvalid = false;
         selectedSubCategoryIds.forEach(subCategoryId => {
-            if (CheckCategorySubCategory(categoryId, subCategoryId, subCategories)) {
+            if (checkCategorySubCategory(categoryId, subCategoryId, subCategories)) {
                 isInvalid = true;
             }
         });
@@ -97,66 +97,75 @@ export const getInvalidCategoryParams = (selectedCategoryIds, selectedSubCategor
     return invalidCategories;
 };
 
-const CheckCategorySubCategory = (categoryId, subCategoryId, subCategories) =>{
-    let flag = false;
-    subCategories.forEach(sub => {
-        if (sub.subCategoryId === parseInt(subCategoryId, 10) && sub.mainCategoryID === parseInt(categoryId, 10)) {
-            flag = true;
-        }
-    });
-    return flag;
+const checkCategorySubCategory = (categoryId, subCategoryId, subCategories) => {
+    return subCategories.filter(sub => sub.subCategoryId === parseInt(subCategoryId, 10)
+        && sub.mainCategoryID === parseInt(categoryId, 10)).length > 0;
 };
 
+const checkExistProductParams = (products, productId, subProductId, betTypeId) => {
+    return products.filter(item => item.productId === parseInt(productId, 10)
+        && item.subProductId === parseInt(subProductId, 10)
+        && item.betTypeId === parseInt(betTypeId, 10)
+    ).length > 0;
+};
 
-export const getProductParams = (selectedProductIds, selectedSubProductIds, selectedBettypeIds, settings) =>{
+const checkExistBetType = (subProductId, betTypeId, betTypes) => {
+    return betTypes.filter(item => item.id === parseInt(betTypeId, 10) && item.parentId === parseInt(subProductId, 10)).length > 0;
+};
+
+export const getProductParams = (selectedProductIds, selectedSubProductIds, selectedBettypeIds, settings) => {
     let products = [];
     if (selectedProductIds.length === 0) {
         products = [
             {
-                productId: settings.productNA.id,
-                subProductId: settings.subProductNA.id,
-                bettypeId: settings.bettypeNA.id
+                productId: settings.productNA?.id,
+                subProductId: settings.subProductNA?.id,
+                betTypeId: settings.bettypeNA?.id
             }
         ];
     } else {
         selectedProductIds.forEach(productId => {
-            selectedSubProductIds.forEach(subProductId => {
-                const index = settings.subProducts.findIndex(item => item.id === parseInt(subProductId, 10) && item.parentId === parseInt(productId, 10));
-                if (index >= 0) {
-                    const subProductBettypes = [];
-                    selectedBettypeIds.forEach(bettypeId => {
-                        if (settings.bettypes.filter(item => item.id === parseInt(bettypeId, 10) && item.parentId === parseInt(subProductId, 10)).length > 0) {
+            if (selectedSubProductIds.length === 0) {
+                products.push({
+                    productId: parseInt(productId, 10),
+                    subProductId: settings.subProductNA?.id,
+                    betTypeId: settings.bettypeNA?.id
+                });
+            } else {
+                selectedSubProductIds.forEach(subProductId => {
+                    const index = settings.subProducts.findIndex(item => item.id === parseInt(subProductId, 10) && item.parentId === parseInt(productId, 10));
+                    if (index >= 0) {
+                        const subProductBettypes = [];
+                        selectedBettypeIds.forEach(betTypeId => {
+                            if (checkExistBetType(subProductId, betTypeId, settings.bettypes)) {
+                                subProductBettypes.push({
+                                    productId: parseInt(productId, 10),
+                                    subProductId: parseInt(subProductId, 10),
+                                    betTypeId: parseInt(betTypeId, 10)
+                                });
+                            }
+                        });
+
+                        if (subProductBettypes.length === 0) {
                             subProductBettypes.push({
-                            productId: parseInt(productId, 10),
-                            subProductId: parseInt(subProductId, 10),
-                            bettypeId: parseInt(bettypeId, 10)
+                                productId: parseInt(productId, 10),
+                                subProductId: parseInt(subProductId, 10),
+                                betTypeId: settings.bettypeNA?.id
                             });
                         }
-                    });
 
-                    if (subProductBettypes.length === 0) {
-                        subProductBettypes.push({
-                            productId: parseInt(productId, 10),
-                            subProductId: parseInt(subProductId, 10),
-                            bettypeId: settings.bettypeNA.id
-                        });
+                        products = products.concat(subProductBettypes);
+                    } else {
+                        if (!checkExistProductParams(products, productId, settings.subProductNA?.id, settings.bettypeNA?.id)) {
+                            products.push({
+                                productId: parseInt(productId, 10),
+                                subProductId: settings.subProductNA?.id,
+                                betTypeId: settings.bettypeNA?.id
+                            });
+                        }
                     }
-
-                    products = products.concat(subProductBettypes);
-                } else {
-                    const isProductExist = products.filter(x=>x.productId === parseInt(productId, 10)
-                     && x.subProductId === settings.subProductNA.id 
-                     && x.bettypeId === settings.bettypeNA.id).length > 0;
-                    if(!isProductExist)
-                    {
-                        products.push({
-                            productId: parseInt(productId, 10),
-                            subProductId: settings.subProductNA.id,
-                            bettypeId: settings.bettypeNA.id
-                        });
-                    }
-                }
-            });
+                });
+            }
         });
     }
 
@@ -177,15 +186,6 @@ export const getSubjectOnChangeCategories = (selectedCategoryIds, subject, categ
     return tempSubject;
 };
 
-function generateCustomerPrefix(hasRelated, relatedCustomers) {
-    let customers = [];
-    if (hasRelated) {
-        customers = relatedCustomers.filter(item => item.custId !== 0).map(item => item.val);
-    }
-
-    return 'System ID: ' + customers.join(', ');
-};
-
 export const updateAutoGeneratedCustomerPrefix = (hasRelated, relatedCustomers, autoGeneratedText) => {
     const customerPrefix = generateCustomerPrefix(hasRelated, relatedCustomers);
     autoGeneratedText = autoGeneratedText.indexOf('System ID:') >= 0
@@ -194,3 +194,12 @@ export const updateAutoGeneratedCustomerPrefix = (hasRelated, relatedCustomers, 
 
     return autoGeneratedText;
 };
+
+function generateCustomerPrefix(hasRelated, relatedCustomers) {
+    let customers = [];
+    if (hasRelated) {
+        customers = relatedCustomers.filter(item => item.custId !== 0).map(item => item.val);
+    }
+
+    return 'System ID: ' + customers.join(', ');
+}

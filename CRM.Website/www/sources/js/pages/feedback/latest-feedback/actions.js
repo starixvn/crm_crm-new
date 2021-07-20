@@ -5,10 +5,7 @@ import {
     setLatestFeedback,
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
-    setEditFeedbackResult,
-    setEditNoOfInquiryDialog,
-    setFeedback,
-    setFeedbackSubjectTemplates
+    setEditNoOfInquiryDialog
 } from './latestFeedbackSlide';
 
 const getLatestFeedback = params => async dispatch => {
@@ -27,49 +24,12 @@ const exportExcel = params => async () => {
     });
 };
 
-const verifyUserName = data => async () => {
-    const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
-    return await DataService.postDataAsync(url, data).then(response => response.data);
-};
-
-const getFeedbackById = (id, callback) => async dispatch => {
-    const url = Site.resolveClientUrl(`Feedback/GetCustomerFeedbackById/${id}`);
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setFeedback(response.data));
-        if (typeof callback === 'function') {
-            callback();
-        }
-    });
-};
-
-export const editFeedback = data => async dispatch => {
-    Site.blockUI();
-    const url = Site.resolveClientUrl('LatestFeedback/EditFeedback');
-    await DataService.postDataAsync(url, data).then(response => {
-        dispatch(setEditFeedbackResult(response.data));
-    }).then(() => Site.unblockUI());
-};
-
-const getFeedbackSubjectTemplates = subject => async dispatch => {
-    const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
-    await DataService.getDataAsync(url, { subject }).then(response => {
-        dispatch(setFeedbackSubjectTemplates(response.data));
-    });
-};
-
 export const ActionCreators = {
     setLatestFeedback,
     setGridParams,
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
-    setEditFeedbackResult,
     getLatestFeedback,
     exportExcel,
-    setEditNoOfInquiryDialog,
-    editFeedback,
-    verifyUserName,
-    getFeedbackById,
-    setFeedback,
-    getFeedbackSubjectTemplates,
-    setFeedbackSubjectTemplates
+    setEditNoOfInquiryDialog
 };
