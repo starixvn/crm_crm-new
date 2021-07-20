@@ -64,10 +64,7 @@
             <Mapping DataField="CountryName" ObjectProperty="Name" />
         </Setting>
         <Setting Key="Acc_CRM_ProvinceSel" SpName="Acc_CRM_ProvinceSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_LanguageList" SpName="Acc_CRM_LanguageList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
-            <Mapping DataField="LanguageID" ObjectProperty="SettingId" />
-            <Mapping DataField="Name" ObjectProperty="SettingName" />
-        </Setting>
+        <Setting Key="Acc_CRM_LanguageList" SpName="Acc_CRM_LanguageList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SiteSel" SpName="Acc_CRM_SiteSel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="SiteID" ObjectProperty="Id" />
             <Mapping DataField="SiteName" ObjectProperty="Name" />
