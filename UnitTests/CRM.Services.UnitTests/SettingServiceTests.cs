@@ -1,5 +1,6 @@
 ﻿namespace CRM.Services.UnitTests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -22,7 +23,7 @@
         public async Task GetCommunicationToolAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = new List<Setting>();
             var expectedOrder = expected.OrderBy(s => s.DisplayOrder).ToList();
             var service = GetService();
             baseService.GetDataAsync<Setting>(Arg.Any<GetAllCommunicationToolCriteria>()).Returns(expected);
@@ -38,7 +39,7 @@
         public async Task GetSettingAsync_WhenCalled_ReturnExpectedListSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = new List<Setting>();
             var service = GetService();
             baseService.GetDataAsync<Setting>(Arg.Any<GetSettingCriteria>()).Returns(expected);
 
@@ -120,7 +121,7 @@
         public async Task GetSettingRelationAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = new List<Setting>();
             var service = GetService();
             baseService.GetDataAsync<Setting>(Arg.Any<GetAllSettingRelationCriteria>()).Returns(expected);
 
@@ -155,38 +156,36 @@
             var expected = fixture.Create<IEnumerable<FeedbackStatus>>();
             var criteria = fixture.Create<GetAllStatusCriteria>();
             var service = GetService();
-            baseService.GetDataAsync<FeedbackStatus>(criteria).Returns(expected);
+            baseService.GetDataAsync<FeedbackStatus>(Arg.Do<GetAllStatusCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
             var actual = await service.GetStatusAsync(1);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.ToList(), actual);
         }
 
         [Fact]
         public async Task GetBetTypeAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<Product>>();
+            var expected = new List<Product> { new Product { Id = 1, Name ="Name"} };
             var criteria = new GetAllBetTypeCriteria();
             var service = GetService();
             baseService.GetDataAsync<Product>(Arg.Do<GetAllBetTypeCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetBetTypeAsync(1, 0);
+            var actual = await service.GetBetTypeAsync();
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(1, criteria.ProductId);
-            Assert.Equal(0, criteria.Active);
         }
 
         [Fact]
         public async Task GetSubProductAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<Product>>();
+            var expected = new List<Product>();
             var criteria = new SubProductCriteria();
             var service = GetService();
             baseService.GetDataAsync<Product>(Arg.Do<SubProductCriteria>(x => criteria = x)).Returns(expected);
@@ -219,8 +218,15 @@
         public async Task GetLicenseeTypeAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<BaseModel>>();
+            var expected = new List<BaseModel>();
             var criteria = fixture.Create<GetAllLicenseeTypeCriteria>();
+            expected.Insert(
+               0,
+               new BaseModel
+               {
+                   Id = SettingConstants.NotApply,
+                   Name = ViewResources.Symbol_NotApply
+               });
             var service = GetService();
             baseService.GetDataAsync<BaseModel>(criteria).Returns(expected);
 
@@ -228,7 +234,7 @@
             var actual = await service.GetLicenseeTypeAsync();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.First().Id, actual.First().Id);
         }
 
         [Fact]
