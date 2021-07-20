@@ -1,6 +1,5 @@
 ﻿namespace CRM.Services.UnitTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -36,6 +35,50 @@
         }
 
         [Fact]
+        public async Task GetCommunicationToolAsync_NotsIncludeNA_ReturnExpectedSettings()
+        {
+            // Arrange
+            var expected = new List<Setting> { 
+                new Setting {
+                    Id = SettingConstants.CommunicationNA,
+                },
+                new Setting
+                {
+                    Id = 1,
+                }
+            };
+            var criteria = new GetAllCommunicationToolCriteria();
+            var expectedOrder = expected.Where(x=> x.Id != SettingConstants.CommunicationNA).OrderBy(s => s.DisplayOrder).ToList();
+            var service = GetService();
+            baseService.GetDataAsync<Setting>(Arg.Do<GetAllCommunicationToolCriteria>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.GetCommunicationToolAsync(2, false);
+
+            // Assert
+            Assert.Equal(expectedOrder, actual);
+            // Assert
+            Assert.Equal(2, criteria.Active);
+        }
+
+        [Fact]
+        public async Task GetSiteAsync_WhenCalled_ReturnExpectedSiteSettings()
+        {
+            // Arrange
+            var expected = new List<SiteSetting>();
+            var service = GetService();
+            baseService.GetDataAsync<SiteSetting>(Arg.Any<GetAllSiteCriteria>()).Returns(expected);
+
+            // Act
+            var actual = await service.GetSiteAsync();
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        
+
+        [Fact]
         public async Task GetSettingAsync_WhenCalled_ReturnExpectedListSettings()
         {
             // Arrange
@@ -54,7 +97,7 @@
         public async Task GetMainCategoryAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = new List<Setting>();
             var criteria = new GetAllMainCategoryCriteria();
             var service = GetService();
             baseService.GetDataAsync<Setting>(Arg.Do<GetAllMainCategoryCriteria>(x => criteria = x)).Returns(expected);
@@ -67,11 +110,30 @@
             Assert.Equal(0, criteria.Active);
         }
 
+
+        [Fact]
+        public async Task GetSettingRelationByNameAsync_WhenCalled_ReturnExpectedSettingRelations()
+        {
+            // Arrange
+            var expected = new List<SettingRelation>();
+            var criteria = new GetSettingRelationByNameCriteria();
+            var service = GetService();
+            baseService.GetDataAsync<SettingRelation>(Arg.Do<GetSettingRelationByNameCriteria>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.GetSettingRelationByNameAsync("product");
+
+            // Assert
+            Assert.Equal(expected, actual);
+            Assert.Equal("product", criteria.SettingName);
+        }
+        
+
         [Fact]
         public async Task GetSubCategoryAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = new List<Setting>();
             var criteria = new GetAllSubCategoryCriteria();
             var service = GetService();
             baseService.GetDataAsync<Setting>(Arg.Do<GetAllSubCategoryCriteria>(x => criteria = x)).Returns(expected);
@@ -86,7 +148,7 @@
         }
 
         [Fact]
-        public async Task GetCountryAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetCountryAsync_WhenCalled_ReturnExpectedCountry()
         {
             // Arrange
             var expected = fixture.Create<IEnumerable<Country>>();
@@ -101,6 +163,49 @@
             Assert.Equal(expected, actual);
             Assert.Equal(0, criteria.Active);
         }
+
+        [Fact]
+        public async Task GetCountryAsync_IsIncludeNA_ReturnExpectedCountry()
+        {
+            // Arrange
+            var countries = new List<Country>
+            {
+                new Country
+                {
+                    Id = 1,
+                    Name ="name",
+                    IsActive = true
+                }
+            };
+
+            var criteria = new GetAllCountryCriteria();
+            var expected = new List<Country>
+            {
+                new Country
+                {
+                    Id = SettingConstants.NotApply,
+                    Name = ViewResources.Symbol_NotApply,
+                    IsActive = true
+                },
+                new Country
+                {
+                    Id = 1,
+                    Name ="name",
+                    IsActive = true
+                }
+            };
+            var service = GetService();
+            baseService.GetDataAsync<Country>(Arg.Do<GetAllCountryCriteria>(x => criteria = x)).Returns(countries);
+
+            // Act
+            var actual = await service.GetCountryAsync(0, true);
+
+            // Assert
+            Assert.Equal(expected.First().Id, actual.First().Id);
+            Assert.Equal(expected.Last().Id, actual.Last().Id);
+            Assert.Equal(0, criteria.Active);
+        }
+
 
         [Fact]
         public async Task GetProvinceAsync_WhenCalled_ReturnExpectedSettings()
@@ -133,7 +238,7 @@
         }
 
         [Fact]
-        public async Task GetLanguageAsync_WhenCalled_ReturnExpectedSettings()
+        public async Task GetLanguageAsync_WhenCalled_ReturnExpectedLanguages()
         {
             // Arrange
             var expected = fixture.Create<IEnumerable<Language>>();
@@ -147,6 +252,48 @@
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal(0, criteria.Active);
+        }
+
+        [Fact]
+        public async Task GetLanguageAsync_IsIncludeNA_ReturnExpectedLanguages()
+        {
+            // Arrange
+            var languages = new List<Language>
+            {
+                new Language
+                {
+                    LanguageId = 1,
+                    Name ="name",
+                    IsActive = true
+                }
+            };
+
+            var criteria = new GetAllLanguageCriteria();
+            var expected = new List<Language>
+            {
+                new Language
+                {
+                    LanguageId = SettingConstants.NotApply,
+                    Name = ViewResources.Symbol_NotApply,
+                    IsActive = true
+                },
+                new Language
+                {
+                    LanguageId = 1,
+                    Name ="name",
+                    IsActive = true
+                }
+            };
+            var service = GetService();
+            baseService.GetDataAsync<Language>(Arg.Do<GetAllLanguageCriteria>(x => criteria = x)).Returns(languages);
+
+            // Act
+            var actual = await service.GetLanguageAsync(1, true);
+
+            // Assert
+            Assert.Equal(expected.First().LanguageId, actual.First().LanguageId);
+            Assert.Equal(expected.Last().LanguageId, actual.Last().LanguageId);
+            Assert.Equal(1, criteria.Active);
         }
 
         [Fact]
@@ -180,6 +327,23 @@
             // Assert
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public async Task GetProductAsync_WhenCalled_ReturnExpectedSettings()
+        {
+            // Arrange
+            var expected = new List<Product> { new Product { Id = 1, Name = "Name" } };
+            var criteria = new GetSettingRelationByNameCriteria();
+            var service = GetService();
+            baseService.GetDataAsync<Product>(Arg.Do<GetSettingRelationByNameCriteria>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.GetProductAsync();
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+        
 
         [Fact]
         public async Task GetSubProductAsync_WhenCalled_ReturnExpectedSettings()
