@@ -57,9 +57,9 @@
         {
             // Arrange
             var controller = GetController();
-            var sites = fixture.Create<IEnumerable<Models.PicAndHeadline.SiteInfo>>();
+            var sites = new List<Models.PicAndHeadline.SiteInfo>();
             var currencies = fixture.Create<IEnumerable<BaseModel>>();
-            var positions = fixture.Create<IEnumerable<Setting>>();
+            var positions= fixture.CreateMany<Setting>(1).ToList();
             var pics = fixture.Create<IEnumerable<PicInfo>>();
             var headlines = fixture.Create<IEnumerable<BaseModel>>();
             var statuses = Enum.GetValues(typeof(CustomerStatus)).Cast<CustomerStatus>().Select(status => status.ToString());

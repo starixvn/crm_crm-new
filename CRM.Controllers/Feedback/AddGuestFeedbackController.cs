@@ -19,9 +19,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    //public class AddGuestFeedbackController : BaseController
-    //{
-    public class AddGuestFeedbackController : Controller
+    public class AddGuestFeedbackController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
@@ -45,18 +43,18 @@
 
         public IActionResult Index()
         {
-            // var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            return View(true);
+            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            return View(isHost);
         }
 
         public async Task<ActionResult> AllSetting()
         {
             var settings = await AllSettingToAddFeedback();
-            //var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            //if (isHost)
-            //{
-            //    settings.Status = settings.Status.Where(s => !s.Name.Equals("Deleted", StringComparison.OrdinalIgnoreCase));
-            //}
+            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            if (isHost)
+            {
+                settings.Status = settings.Status.Where(s => !s.Name.Equals("Deleted", StringComparison.OrdinalIgnoreCase));
+            }
 
             return Json(settings);
         }
@@ -127,25 +125,25 @@
         }
 
         [HttpPost]
-        //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] AddGuestFeedbackCommand command)
         {
             try
             {
-                //var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
-                //if (command.StatusId == (int)CRMStatus.Deleted && !isHostDeletedFeedback)
-                //{
-                //    var commandResult = new CommandResult
-                //    {
-                //        Code = (int)HttpStatusCode.Forbidden,
-                //        Message = ViewResources.AddCustomerFeedbackPermission
-                //    };
-                //    return Json(commandResult);
-                //}
+                var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
+                if (command.StatusId == (int)CRMStatus.Deleted && !isHostDeletedFeedback)
+                {
+                    var commandResult = new CommandResult
+                    {
+                        Code = (int)HttpStatusCode.Forbidden,
+                        Message = ViewResources.AddCustomerFeedbackPermission
+                    };
+                    return Json(commandResult);
+                }
 
-                command.CreatorId = 52519963;
-                command.UserId = 52519963;
-                command.IP = "";
+                command.CreatorId = napSession.UserId;
+                command.UserId = napSession.UserId;
+                command.IP = ClientIP;
                 var result = await baseService.ExecuteNonQueryAsync(command);
                 return Json(result);
             }

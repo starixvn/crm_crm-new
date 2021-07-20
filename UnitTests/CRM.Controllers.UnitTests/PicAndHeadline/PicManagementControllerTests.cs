@@ -73,11 +73,10 @@
         public async Task GetAllSetting_WhenCalled_ReturnExpectedJsonResult()
         {
             // Arrange
-            var fixture = new Fixture();
-            var roleList = fixture.Create<IEnumerable<Setting>>();
-            var communicationTools = fixture.Create<IEnumerable<Setting>>();
-            var languages = fixture.Create<IEnumerable<Setting>>();
-            var countries = fixture.Create<IEnumerable<Country>>();
+            var roleList = new List<Setting>();
+            var communicationTools = new List<Setting>();
+            var languages = new List<Setting>();
+            var countries = new List<Country>();
 
             var expected = new
             {

@@ -5,7 +5,7 @@
     using AutoFixture;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
-    using CRM.Models;
+    using CRM.Models.Customer;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -21,15 +21,15 @@
             // Arrange
             var controler = GetController();
             var criteria = fixture.Create<VerifyRelatedCustomerCriteria>();
-            var expected = fixture.Create<IEnumerable<BaseModel>>();
-            baseService.GetDataAsync<BaseModel>(criteria).Returns(expected);
+            var expected = fixture.Create<IEnumerable<RelatedCustomer>>();
+            baseService.GetDataAsync<RelatedCustomer>(criteria).Returns(expected);
 
             // Act
             var result = await controler.VerifyUsername(criteria);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var actual = Assert.IsAssignableFrom<IEnumerable<BaseModel>>(jsonResult.Value);
+            var actual = Assert.IsAssignableFrom<IEnumerable<RelatedCustomer>>(jsonResult.Value);
             Assert.Equal(expected, actual);
         }
 

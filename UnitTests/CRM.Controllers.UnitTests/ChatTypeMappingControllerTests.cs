@@ -60,7 +60,7 @@
         {
             var fixture = new Fixture();
             var bots = fixture.Create<IEnumerable<BaseModel>>();
-            var langs = fixture.Create<IEnumerable<Models.Setting.Setting>>();
+            var langs = new List<Models.Setting.Setting>();
             var recipientTypes = fixture.Create<IEnumerable<BaseModel>>();
             var chatTypes = fixture.Create<IEnumerable<BaseModel>>();
             var mappingStatues = fixture.Create<IEnumerable<BaseModel>>();

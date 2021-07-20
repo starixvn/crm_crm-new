@@ -45,10 +45,9 @@
         public async Task GetAllSettings_WhenCalled_ReturnExpectedDataAsync()
         {
             //Arrange
-            var fixture = new Fixture();
-            var communicationTools = fixture.Create<IEnumerable<Setting>>();
-            var mainCategories = fixture.Create<IEnumerable<Setting>>();
-            var subCategories = fixture.Create<IEnumerable<Setting>>();
+            var communicationTools = new List<Setting>();
+            var mainCategories = new List<Setting>();
+            var subCategories = new List<Setting>();
             var controller = GetController();
             settingService.GetCommunicationToolAsync().Returns(communicationTools);
             settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategories);
