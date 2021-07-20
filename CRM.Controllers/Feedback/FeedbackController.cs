@@ -107,7 +107,7 @@
                 extensions = GetExtentions(extentions, feedbackSettings),
                 communicationTools = GetCommunicationTools(communicationTools, feedbackSettings),
                 responses = responses.Where(x => x.IsActive || x.Id == feedback.ResponseId).ToList(),
-                languages = languages.Where(x => x.IsActive || x.Id == feedback.LanguageId).ToList(),
+                languages = languages.Where(x => x.IsActive || x.LanguageId == feedback.LanguageId).ToList(),
                 statuses = GetStatusAsync(feedback),
                 roles = roles.Where(x => x.IsActive || x.Id == feedback.RoleId).ToList(),
                 countries = countries.Where(x => x.IsActive || x.Id == feedback.CountryId).ToList(),
