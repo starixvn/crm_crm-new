@@ -178,6 +178,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to update feedback..
+        /// </summary>
+        public static string DoNoEditFeedbackPermission {
+            get {
+                return ResourceManager.GetString("DoNoEditFeedbackPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Top_{0}_Feedback.
         /// </summary>
         public static string FeedbackReport_Title {

@@ -64,7 +64,8 @@
         [SpParam(SqlParamName = "CommunicationId")]
         public string CommunicationToolIds { get; set; }
 
-        public string StationId { get; set; }
+        [SpParam(SqlParamName = "StationId")]
+        public string ExtensionIds { get; set; }
 
         public int RoleId { get; set; }
 
@@ -104,8 +105,6 @@
 
         public string Passport { get; set; }
 
-        public string IsVip { get; set; }
-
         [SpParam(SqlParamName = "LicenseeType")]
         public int LicenseeTypeId { get; set; }
 
@@ -122,6 +121,8 @@
         public string Pic4 { get; set; }
 
         public int CustId { get; set; }
+
+        public bool IsVIP { get; set; }
 
         public string IP { get; set; }
 

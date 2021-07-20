@@ -42,7 +42,6 @@ export class EditFeedback extends Component {
             subProductOptions: [],
             betTypeOptions: [],
             relatedCustomers: [],
-            site: [],
             feedbackSubjectTemplates: []
         };
 
@@ -69,7 +68,6 @@ export class EditFeedback extends Component {
                     break;
             }
         });
-        const site = this.props.feedback.siteSetting;
         const relatedCustomers = this.props.feedback.relatedCustomers.map(customer => {
             return {
                 custId: customer.custId,
@@ -139,13 +137,12 @@ export class EditFeedback extends Component {
             productOptions,
             subProductOptions,
             betTypeOptions,
-            relatedCustomers,
-            site: site
+            relatedCustomers
         });
     }
 
     initFormikData = () => {
-        const { feedback } = this.props;
+        const { feedback, settings } = this.props;
         const feedbackSettings = feedback.settings;
         const selectedExtensionIds = [],
             selectedCommunicationToolIds = [],
@@ -157,19 +154,29 @@ export class EditFeedback extends Component {
         feedbackSettings.forEach(x => {
             switch (x.settingType) {
                 case 'Station':
-                    selectedExtensionIds.push(x.settingId);
+                    if (x.settingId !== settings.extensionNA?.id) {
+                        selectedExtensionIds.push(x.settingId);
+                    }
                     break;
                 case 'Communication':
-                    selectedCommunicationToolIds.push(x.settingId);
+                    if (x.settingId !== settings.communicationToolNA?.id) {
+                        selectedCommunicationToolIds.push(x.settingId);
+                    }
                     break;
                 case 'Category':
                     selectedCategoryIds.push(x.settingId);
                     selectedSubCategoryIds.push(x.subSettingId);
                     break;
                 case 'Product':
-                    selectedProductIds.push(x.settingId);
-                    selectedSubProductIds.push(x.subSettingId);
-                    selectedBetTypeIds.push(x.subSettingIdLevel3);
+                    if (x.settingId !== settings.productNA?.id) {
+                        selectedProductIds.push(x.settingId);
+                    }
+                    if (x.subSettingId !== settings.subProductNA?.id) {
+                        selectedSubProductIds.push(x.subSettingId);
+                    }
+                    if (x.subSettingIdLevel3 !== settings.bettypeNA?.id) {
+                        selectedBetTypeIds.push(x.subSettingIdLevel3);
+                    }
                     break;
             }
         });
@@ -188,6 +195,8 @@ export class EditFeedback extends Component {
             passport: feedback.passport,
             refCode1: feedback.refCode1,
             refCode2: feedback.refCode2,
+            siteId: feedback.siteSetting.id,
+            siteName: feedback.siteSetting.name,
             licenseeTypeId: feedback.licenseeType,
             countryCode1: feedback.phoneInfo[0].countryCode,
             areaCode1: feedback.phoneInfo[0].areaCode,
@@ -221,6 +230,7 @@ export class EditFeedback extends Component {
             letstalk: feedback.yahoo,
             qq: feedback.qq,
             zalo: feedback.bbm,
+            isVIP: feedback.isVIP,
             // feedback info
             feedbackDate: new Date(feedback.feedbackDate),
             resolutionDate: new Date(feedback.resolutionDate),
@@ -293,12 +303,6 @@ export class EditFeedback extends Component {
         } else {
             this.setState({ betTypeOptions: [] });
         }
-    };
-
-    handleChangeSite = (item) => {
-        this.setState({
-            siteId: item.id
-        });
     };
 
     validateNoOfInquiries = event => {
@@ -392,11 +396,11 @@ export class EditFeedback extends Component {
             errors.startTime = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('FeedbackDate'), LangHelper.getResource('ResolutionTime'));
         }
 
-        if (!values.communicationToolIds.length === 0) {
+        if (values.communicationToolIds.length === 0) {
             errors.communicationToolIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('CommunicationTool'));
         }
 
-        if (!values.isUseDefaultLanguage && values.languageId === 0) {
+        if (parseInt(values.languageId, 10) === 0) {
             errors.languageId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language'));
         }
 
@@ -465,9 +469,9 @@ export class EditFeedback extends Component {
             titleId: values.titleId,
             firstName: values.firstName,
             lastName: values.lastName,
-            birthday: values.birthday,
+            birthday: values.birthday ? DateTimeService.toShortDateFormat(values.birthday) : null,
             passport: values.passport,
-            siteId: this.state.site.id,
+            siteId: values.siteId,
             refCode1: values.refCode1,
             refCode2: values.refCode2,
             licenseeTypeId: values.licenseeTypeId,
@@ -504,6 +508,8 @@ export class EditFeedback extends Component {
             yahoo: values.letstalk,
             QQ: values.qq,
             BBM: values.zalo,
+            isVIP: values.isVIP,
+            // feedback info
             feedbackDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.feedbackDate)),
             resolutionDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.resolutionDate)),
             extensionIds: this.getExtensionParams(values.extensionIds, this.props.settings.extensionNA),
@@ -653,9 +659,9 @@ export class EditFeedback extends Component {
                                             </Form.Label>
                                             <Col sm="8" md="8">
                                                 <SelectWithSearch className='basic-single'
-                                                    OnChange={value => this.handleChangeSite(value)}
+                                                    OnChange={value => setFieldValue('siteId', value.id)}
                                                     options={this.props.settings.sites}
-                                                    name={this.state.site.name} value={this.state.site.siteId} isHideNA={false}
+                                                    name={values.siteName} value={values.siteId} isHideNA
                                                 />
                                             </Col>
                                         </Form.Group>

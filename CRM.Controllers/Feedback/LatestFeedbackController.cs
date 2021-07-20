@@ -7,6 +7,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
+    using CRM.Core.Models;
     using CRM.Criteria.Feedback.LatestFeedback;
     using CRM.Models.Feedback;
     using CRM.Models.LatestFeedback;
@@ -89,6 +90,7 @@
         public async Task<IActionResult> GetAllSettings()
         {
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var communicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active, true);
             var statues = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var products = await settingService.GetProductAsync(SettingConstants.Active);
             var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
@@ -97,7 +99,7 @@
             var settings = new
             {
                 extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
-                communicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
+                communicationTools = communicationTools.Where(x => x.Id != NAConstants.CommunicationNA),
                 roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active),
                 responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
                 countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
@@ -114,7 +116,8 @@
                 productNA = products.FirstOrDefault(x => x.Id == NAConstants.ProductNA),
                 subProductNA = subproducts.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
                 bettypeNA = bettypes.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
-                extensionNA = extentions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA)
+                extensionNA = extentions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA),
+                communicationToolNA = communicationTools.FirstOrDefault(x => x.Id == NAConstants.CommunicationNA)
             };
 
             return Json(settings);
@@ -140,9 +143,32 @@
                 command.Review = string.Empty;
             }
 
-            var commandResult = await feedbackService.EditFeedbackAsync(command);
+            CommandResult commandResult = CheckEditCustomerFeedbackPermission(command);
+            if (commandResult.IsSuccessful)
+            {
+                commandResult = await feedbackService.EditFeedbackAsync(command);
+            }
 
             return Json(commandResult);
+        }
+
+        private CommandResult CheckEditCustomerFeedbackPermission(EditFeedbackCommand command)
+        {
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+                || (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host) &&
+                    command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate))
+            {
+                return new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.DoNoEditFeedbackPermission
+                };
+            }
+
+            return new CommandResult
+            {
+                Code = 0
+            };
         }
     }
 }
