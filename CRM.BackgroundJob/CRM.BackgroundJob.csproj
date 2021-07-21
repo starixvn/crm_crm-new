@@ -122,9 +122,9 @@
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-        <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta02" />
-        <PackageReference Include="ONEbook.UM.Transport" Version="3.1.0-beta02" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta05" />
+        <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />
         <PackageReference Include="SonarAnalyzer.CSharp" Version="8.19.0.28253">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

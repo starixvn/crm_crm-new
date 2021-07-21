@@ -70,14 +70,16 @@
         public int RoleId { get; set; }
 
         [SpParam(Ignored = true)]
-        public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; }
+        public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; } = new List<ProductSubProductBettypeSetting>();
 
-        public string Product => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
+        [SpParam(SqlParamName = "Product")]
+        public string ProductXml => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
 
         [SpParam(Ignored = true)]
-        public IEnumerable<CategorySubCategorySetting> Categories { get; set; }
+        public IEnumerable<CategorySubCategorySetting> Categories { get; set; } = new List<CategorySubCategorySetting>();
 
-        public string Category => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
+        [SpParam(SqlParamName = "Category")]
+        public string CategoryXml => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
 
         public int ResponseId { get; set; }
 

@@ -48,16 +48,16 @@
         public string AutoField3 { get; set; }
 
         [SpParam(Ignored = true)]
-        public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; }
+        public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; } = new List<ProductSubProductBettypeSetting>();
 
         [SpParam(SqlParamName = "product")]
-        public string ProductsContent => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
+        public string ProductXml => Products.Any() ? Products.ToXML("ROOT").ToString() : string.Empty;
 
         [SpParam(Ignored = true)]
-        public IEnumerable<CategorySubCategorySetting> Categories { get; set; }
+        public IEnumerable<CategorySubCategorySetting> Categories { get; set; } = new List<CategorySubCategorySetting>();
 
         [SpParam(SqlParamName = "category")]
-        public string CategoriesContent => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
+        public string CategoryXml => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
 
         [SpParam(SqlParamName = "Categorystr")]
         public string CategoryIds { get; set; }
@@ -73,12 +73,16 @@
         {
             get
             {
-                var xml = new StringBuilder("<ROOT>");
-                foreach (BaseModel cust in Customers)
+                var xml = new StringBuilder();
+                if (Customers.Any())
                 {
-                    xml.AppendFormat("<Cust CustId='{0}' Username='{1}' />", cust.Id, cust.Name);
+                    xml.Append("<ROOT>");
+                    foreach (BaseModel cust in Customers)
+                    {
+                        xml.AppendFormat("<Cust CustId='{0}' Username='{1}' />", cust.Id, cust.Name);
+                    }
+                    xml.Append("</ROOT>");
                 }
-                xml.Append("</ROOT>");
 
                 return xml.ToString();
             }
@@ -96,7 +100,7 @@
         public IEnumerable<VerifyRelatedCustomerResult> RelatedCustomers { get; set; } = new List<VerifyRelatedCustomerResult>();
 
         [SpParam(SqlParamName = "RelatedCustomers")]
-        public string RelatedCustomerXml => RelatedCustomers.ToXML("ROOT").ToString();
+        public string RelatedCustomerXml => RelatedCustomers.Any() ? RelatedCustomers.ToXML("ROOT").ToString() : string.Empty;
 
         public bool IsManualMultiple { get; set; }
 

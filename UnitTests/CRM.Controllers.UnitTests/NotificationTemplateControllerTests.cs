@@ -20,6 +20,7 @@
 
     public class NotificationTemplateControllerTests
     {
+        private readonly IFixture fixture = new Fixture();
         private INapSession napSession;
         private INapSettings napSettings;
         private IUserService userService;
@@ -46,7 +47,6 @@
         public async Task GetNotificationTemplate_WhenCalled_ReturnExpectedData()
         {
             // Arrange
-            var fixture = new Fixture();
             var templates = fixture.Create<IEnumerable<NotificationTemplate>>();
             var param = fixture.Create<GetNotificationTemplateParam>();
             var controller = GetController();
@@ -67,7 +67,6 @@
         public async Task GetById_WhenCalled_ReturnExpectedData()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<NotificationTemplate>();
             var id = fixture.Create<int>();
             var controller = GetController();
@@ -86,7 +85,6 @@
         public async Task Create_WhenCalled_ReturnExpectedData()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<CommandResult>();
             var model = fixture.Create<CreateNotificationTemplate>();
             var controller = GetController();
@@ -105,7 +103,6 @@
         public async Task Edit_WhenCalled_ReturnExpectedData()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<CommandResult>();
             var model = fixture.Create<EditNotificationTemplate>();
             var controller = GetController();
@@ -124,7 +121,6 @@
         public async Task Delete_WhenCalled_ReturnExpectedData()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = fixture.Create<CommandResult>();
             var model = fixture.Create<DeleteNotificationTemplate>();
             var controller = GetController();
@@ -143,7 +139,6 @@
         public async Task GetLanguages_WhenCalled_ReturnExpectedData()
         {
             // Arrange
-            var fixture = new Fixture();
             var expected = new List<Setting>();
             var controller = GetController();
             settingService.GetSettingAsync(SettingName.NotificationTemplateLanguage, true).Returns(expected);

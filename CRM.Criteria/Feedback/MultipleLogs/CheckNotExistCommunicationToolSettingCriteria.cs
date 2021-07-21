@@ -1,6 +1,7 @@
 ﻿namespace CRM.Criteria.Feedback.MultipleLogs
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using CRM.Models;
     using Fanex.Data;
@@ -16,12 +17,17 @@
         {
             get
             {
-                var xml = new StringBuilder("<ROOT>");
-                foreach (BaseModel customer in Customers)
+                var xml = new StringBuilder();
+                if (Customers.Any())
                 {
-                    xml.AppendFormat("<Cust CustID='{0}' Username='{1}' />", customer.Id, customer.Name);
+                    xml.Append("<ROOT>");
+                    foreach (BaseModel customer in Customers)
+                    {
+                        xml.AppendFormat("<Cust CustID='{0}' Username='{1}' />", customer.Id, customer.Name);
+                    }
+                    xml.Append("</ROOT>");
                 }
-                xml.Append("</ROOT>");
+
                 return xml.ToString();
             }
         }
