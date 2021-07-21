@@ -19,6 +19,7 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import Site from '@jsroot/common/site';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import { validateNoOfInquiry } from '../../common.functions';
 
 export class CreateForm extends Component {
     static propTypes = {
@@ -270,12 +271,6 @@ export class CreateForm extends Component {
             listOfCustomerValid
         });
     };
-
-    validateNoOfInquiries = event => {
-        return event.target.validity.valid
-            || event.target.value < 1 && (event.target.value = 1)
-            || event.target.value > 32000 && (event.target.value = 32000);
-    }
 
     handleGetFeedbackSubjectTemplates = Site.debounce(searchText => {
         if (searchText.length >= 2) {
@@ -1113,7 +1108,7 @@ export class CreateForm extends Component {
                                 <Col sm="8" md="8">
                                 <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries"
                                     min={1} max={3200} value={values.noOfInquiries}
-                                    onInput={this.validateNoOfInquiries} onChange={handleChange}
+                                    onInput={validateNoOfInquiry} onChange={handleChange}
                                 />
                                 </Col>
                             </Form.Group>

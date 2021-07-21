@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
 import { renderSystemOption, validateFormik } from '../common.functions';
@@ -41,7 +41,7 @@ export class DataGrid extends Component {
                 return {
                     languageId: x.languageId,
                     name: x.name,
-                    checked: data !== null ? (data.languages.some(y => y === x.languageId) ? true : false) : false
+                    checked: data !== null ? data.languages.some(y => y === x.languageId) : false
                 };
             });
             this.setState({
@@ -57,31 +57,33 @@ export class DataGrid extends Component {
         touched,
         handleSubmit,
         isSubmitting,
-        setFieldValue,
+        setFieldValue
     }) => {
         return (
             <Form className="form-customer" noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                 <Form.Group className="mrb0">
-                    {values.uplineInfo.map((value, index) => {
-                        return (
-                            <Row className="item" key={index}>
-                                <Col md="3" className="text-left">
-                                    {value.role.name}
-                                </Col>
-                                <Col md="5" className="text-left">
-                                    {
-                                        value.username === 'Unassigned' ?
-                                            value.username
-                                            : <a href="#" onClick={() => this.handleSearchUplineInfo(value.username)}>{value.username}</a>
-                                    }
-                                </Col>
-                                <Col md="4" className="status text-right">
-                                    {value.status !== '' ? value.status : ' '}
-                                </Col>
-                            </Row>
-                        )
-                    })}
+                    {
+                        values.uplineInfo.map((value, index) => {
+                            return (
+                                <Row className="item" key={index}>
+                                    <Col md="3" className="text-left">
+                                        {value.role.name}
+                                    </Col>
+                                    <Col md="5" className="text-left">
+                                        {
+                                            value.username === 'Unassigned'
+                                                ? value.username
+                                                : <a href="#" onClick={() => this.handleSearchUplineInfo(value.username)}>{value.username}</a>
+                                        }
+                                    </Col>
+                                    <Col md="4" className="status text-right">
+                                        {value.status !== '' ? value.status : ''}
+                                    </Col>
+                                </Row>
+                            );
+                        })
+                    }
                 </Form.Group>
                 <Form.Group className="row item current">
                     <Col md="3" className="text-left">
@@ -94,7 +96,8 @@ export class DataGrid extends Component {
                         {values.status}
                     </Col>
                 </Form.Group>
-                { (values.role.id === RoleIds.Member || values.role.id === RoleIds.CRMMember) ? (
+                {
+                    (values.role.id === RoleIds.Member || values.role.id === RoleIds.CRMMember) &&
                     <Form.Group className="row item">
                         <Form.Label column md="3" htmlFor="name" >
                             {LangHelper.getResource('Danger')}
@@ -114,18 +117,36 @@ export class DataGrid extends Component {
 
                             <Row>
                                 <Col md="3" >
-                                    <span className={'lv' + values.originalDangerLevel}>{values.originalDangerLevel !== 0 ? LangHelper.getResource('Lv1') + ' ' + values.originalDangerLevel : LangHelper.getResource('None')}</span>
+                                    <span className={'lv' + values.originalDangerLevel}>
+                                        {
+                                            values.originalDangerLevel !== 0
+                                                ? LangHelper.getResource('Lv1') + ' ' + values.originalDangerLevel
+                                                : LangHelper.getResource('None')
+                                        }
+                                    </span>
                                 </Col>
                                 <Col md="4">
-                                    <span className={'lv' + values.abtDangerLevel}>{values.abtDangerLevel !== 0 ? LangHelper.getResource('Lv1') + ' ' + values.abtDangerLevel : LangHelper.getResource('None')}</span>
+                                    <span className={'lv' + values.abtDangerLevel}>
+                                        {
+                                            values.abtDangerLevel !== 0
+                                                ? LangHelper.getResource('Lv1') + ' ' + values.abtDangerLevel
+                                                : LangHelper.getResource('None')
+                                        }
+                                    </span>
                                 </Col>
                                 <Col md="5">
-                                    <span className={'lv' + values.otherSportsDangerLevel}>{values.otherSportsDangerLevel !== 0 ? LangHelper.getResource('Lv1') + ' ' + values.otherSportsDangerLevel : LangHelper.getResource('None')}</span>
+                                    <span className={'lv' + values.otherSportsDangerLevel}>
+                                        {
+                                            values.otherSportsDangerLevel !== 0
+                                                ? LangHelper.getResource('Lv1') + ' ' + values.otherSportsDangerLevel
+                                                : LangHelper.getResource('None')
+                                        }
+                                    </span>
                                 </Col>
                             </Row>
                         </Col>
-                    </Form.Group>)
-                    : (null)}
+                    </Form.Group>
+                }
 
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
@@ -153,7 +174,7 @@ export class DataGrid extends Component {
                             value={values.countryId}
                             onChange={handleChange}
                         >
-                            <option value="0" >N/A</option>
+                            <option value="0">N/A</option>
                             {this.props.settings.countries.map(renderSystemOption)}
                         </Form.Control>
                     </Col>
@@ -379,13 +400,13 @@ export class DataGrid extends Component {
 
             </Form>
         );
-    }
+    };
 
     handleChangeSite = (item) => {
         this.setState({
             siteId: item.id
         });
-    }
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         const data = {
@@ -433,7 +454,7 @@ export class DataGrid extends Component {
                 setSubmitting(false);
             }
         });
-    }
+    };
 
     handleSearchUplineInfo = username => {
         const params = {
@@ -491,23 +512,18 @@ export class DataGrid extends Component {
             status: customerInfo.status,
             originalDangerLevel: customerInfo.originalDangerLevel,
             abtDangerLevel: customerInfo.abtDangerLevel,
-            otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
+            otherSportsDangerLevel: customerInfo.otherSportsDangerLevel
         };
-        const { isHost } = this.props;
         return (
-            <Fragment>
-                <Formik
-                    enableReinitialize // enable re render when change initValue
-                    innerRef={p => (this.formik = p)}
-                    initialValues={initialValues}
-                    validate={values => validateFormik(values)}
-                    onSubmit={this.handleSubmit}
-                >
-                    {this.renderForm}
-                </Formik>
-
-            </Fragment>
-
+            <Formik
+                enableReinitialize
+                innerRef={p => this.formik = p}
+                initialValues={initialValues}
+                validate={values => validateFormik(values)}
+                onSubmit={this.handleSubmit}
+            >
+                {this.renderForm}
+            </Formik>
         );
     }
 }

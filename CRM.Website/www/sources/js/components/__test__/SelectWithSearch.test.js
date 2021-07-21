@@ -1,12 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import SelectWithSearch from '../SelectWithSearch';
 import LangHelper from '@jsroot/common/langHelper';
-import { shallow, mount } from 'enzyme';
-import configureMockStore from 'redux-mock-store';
+import { shallow } from 'enzyme';
 
-
- describe('SelectWithSearch', () => {
-
+describe('SelectWithSearch', () => {
     beforeAll(() => {
         LangHelper.getResource = jest.fn((key) => key);
     });
@@ -19,7 +16,7 @@ import configureMockStore from 'redux-mock-store';
         selectFormStatus: '',
         selectedItem: {
             id: 0,
-            name: "N/A"
+            name: 'N/A'
         },
         options: [],
         filter: '',
@@ -27,7 +24,7 @@ import configureMockStore from 'redux-mock-store';
         collapsedAll: true
     }
     const props = {
-        name: "N/A",
+        name: 'N/A',
         value: 0,
         options: [],
         isHideNA: false,
@@ -43,8 +40,7 @@ import configureMockStore from 'redux-mock-store';
         expect(container).toMatchSnapshot();
     });
 
-    it('component has correct initialState', () =>{
-        
+    it('component has correct initialState', () => {
         // Action
         const container = shallow(<SelectWithSearch {...props} />);
 
@@ -73,20 +69,19 @@ import configureMockStore from 'redux-mock-store';
                 //Arrange
                 const expected = {
                     id: 0,
-                    name: "N/A"
+                    name: 'N/A'
                 }
                 const newProps = {
                     id: 1,
-                    name: "test"
+                    name: 'test'
                 }
                 const container = shallow(<SelectWithSearch {...props} />);
                 //Act
-                
+
                 container.instance().componentDidUpdate(newProps);
 
                 //Assert
                 expect(container.instance().state.selectedItem).toEqual(expected);
-
             });
         });
 
@@ -112,7 +107,7 @@ import configureMockStore from 'redux-mock-store';
                     selectFormStatus: 'open',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: '',
@@ -126,7 +121,6 @@ import configureMockStore from 'redux-mock-store';
 
                 //Assert
                 expect(container.state()).toEqual(expected);
-
             });
 
             it('toggleSelect should close select form', () => {
@@ -135,7 +129,7 @@ import configureMockStore from 'redux-mock-store';
                     selectFormStatus: 'open',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: '',
@@ -150,20 +144,18 @@ import configureMockStore from 'redux-mock-store';
 
                 //Assert
                 expect(container.instance().state.selectFormStatus).toEqual('');
-
             });
         });
-
 
         describe('selectItem', () => {
             it('should set exactly data', () => {
                 //Arrange
-                const item = {name: "test", id: 1}
+                const item = { name: 'test', id: 1 }
                 const expected = {
                     selectFormStatus: '',
                     selectedItem: {
                         id: 1,
-                        name: "test"
+                        name: 'test'
                     },
                     options: [],
                     filter: '',
@@ -184,12 +176,12 @@ import configureMockStore from 'redux-mock-store';
         describe('handleChangeSearchInput', () => {
             it('should set exactly data', () => {
                 //Arrange
-                const event = {target: {value: "ch", name: "filter"}};
+                const event = { target: { value: 'ch', name: 'filter' } };
                 const expected = {
                     selectFormStatus: '',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: 'test',
@@ -197,9 +189,9 @@ import configureMockStore from 'redux-mock-store';
                     collapsedAll: true
                 }
                 const newProps = {
-                    name: "N/A",
+                    name: 'N/A',
                     value: 0,
-                    options: [{name:"parent", childSites:[{name:"child"}]}],
+                    options: [{ name: 'parent', childSites: [{ name: 'child' }] }],
                     isHideNA: false,
                     OnChangeValue: jest.fn()
                 }
@@ -209,7 +201,7 @@ import configureMockStore from 'redux-mock-store';
                 container.instance().handleChangeSearchInput(event);
 
                 //Assert
-                expect(container.state().filter).toEqual("ch");
+                expect(container.state().filter).toEqual('ch');
                 expect(container.state().options).toEqual(newProps.options);
             });
         });
@@ -221,7 +213,7 @@ import configureMockStore from 'redux-mock-store';
                     selectFormStatus: '',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: '',
@@ -245,7 +237,7 @@ import configureMockStore from 'redux-mock-store';
                     selectFormStatus: '',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: '',
@@ -270,7 +262,7 @@ import configureMockStore from 'redux-mock-store';
                     selectFormStatus: '',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: '',
@@ -298,7 +290,7 @@ import configureMockStore from 'redux-mock-store';
                     selectFormStatus: '',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: '',
@@ -326,7 +318,7 @@ import configureMockStore from 'redux-mock-store';
                     selectFormStatus: 'open',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: '',
@@ -347,7 +339,6 @@ import configureMockStore from 'redux-mock-store';
 
         describe('render', () => {
             it('returns correct first div', () => {
-
                 //Act
                 const container = shallow(<SelectWithSearch {...props} />);
 
@@ -369,7 +360,7 @@ import configureMockStore from 'redux-mock-store';
                     selectFormStatus: 'open',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: '',
@@ -393,7 +384,7 @@ import configureMockStore from 'redux-mock-store';
                     selectFormStatus: 'open',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
                     options: [],
                     filter: '',
@@ -411,16 +402,15 @@ import configureMockStore from 'redux-mock-store';
                 expect(container.instance().toggleCollapseExpanse).toHaveBeenCalled();
             });
 
-
             it('fourth li has onclick', () => {
                 //Arrange
                 const state = {
                     selectFormStatus: 'open',
                     selectedItem: {
                         id: 0,
-                        name: "N/A"
+                        name: 'N/A'
                     },
-                    options: [{name: "parent1", childSites:[{name: "child1"}]}],
+                    options: [{ name: 'parent1', childSites: [{ name: 'child1' }] }],
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
@@ -430,13 +420,12 @@ import configureMockStore from 'redux-mock-store';
                 const container = shallow(<SelectWithSearch {...props} />);
                 container.instance().setState(state);
 
-
                 //Assert
-                expect(container.find('ul li').at(3).find('ul').find('li').first().html()).toContain("N/A");
-                for(let i = 0; i < state.options.length; i++) {
+                expect(container.find('ul li').at(3).find('ul').find('li').first().html()).toContain('N/A');
+                for (let i = 0; i < state.options.length; i++) {
                     let item = state.options[i];
                     expect(container.find('ul li').at(3).find('ul').find('li').at(i + 1).html()).toContain(item.name);
-                    for(let j = 0; j < item.childSites.length; j++ ) {
+                    for (let j = 0; j < item.childSites.length; j++) {
                         let child = item.childSites[j];
                         expect(container.find('ul li').at(3).find('ul').find('li').at(i + 1).find('ul').find('li').at(j).html()).toContain(child.name);
                     }
@@ -450,9 +439,9 @@ import configureMockStore from 'redux-mock-store';
                         selectFormStatus: 'open',
                         selectedItem: {
                             id: 0,
-                            name: "N/A"
+                            name: 'N/A'
                         },
-                        options: [{name: "parent1", childSites:[{name: "child1"}]}],
+                        options: [{ name: 'parent1', childSites: [{ name: 'child1' }] }],
                         filter: '',
                         isHideNA: false,
                         collapsedAll: true
@@ -464,23 +453,22 @@ import configureMockStore from 'redux-mock-store';
 
                     //Act
                     container.find('ul li').at(3).find('ul').find('li').at(i + 1).find('ul').find('li').at(j).find('a').simulate('click', value);
-                    
+
                     //Assert
                     expect(container.instance().selectItem).toHaveBeenCalledWith(value);
-                    
                 });
             }
 
             describe('has child option onclick', () => {
                 //Arrange
                 const data = {
-                    options: [{name: "parent1", childSites:[{name: "child1"}]}],
+                    options: [{ name: 'parent1', childSites: [{ name: 'child1' }] }],
                 };
 
                 //Act
-                for(let i = 0; i < data.options.length; i++) {
+                for (let i = 0; i < data.options.length; i++) {
                     let item = data.options[i];
-                    for(let j = 0; j < item.childSites.length; j++ ) {
+                    for (let j = 0; j < item.childSites.length; j++) {
                         let child = item.childSites[j];
                         simulateClickChild(i, j, child);
                     }
@@ -488,5 +476,4 @@ import configureMockStore from 'redux-mock-store';
             });
         });
     });
-
- });
+});

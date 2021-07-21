@@ -53,20 +53,20 @@ export class DataGrid extends Component {
 
     renderCategoryColumn = item => {
         const { mainCategories } = this.props.gridData;
-        let settings = item.settings;
+        const settings = item.settings;
 
-        let mainCategoryIds = [];
+        const mainCategoryIds = [];
         for (let i = 0; i < settings.length; i++) {
-            if ((settings[i].settingType == 'Category') && mainCategoryIds.indexOf(settings[i].settingId) < 0) {
+            if ((settings[i].settingType === 'Category') && mainCategoryIds.indexOf(settings[i].settingId) < 0) {
                 mainCategoryIds.push(settings[i].settingId);
             }
         }
 
-        let categories = [];
+        const categories = [];
         for (let i = 0; i < mainCategoryIds.length; i++) {
             let subCategoryIds = [];
             for (let j = 0; j < settings.length; j++) {
-                if ((settings[j].settingType == 'Category') && settings[j].settingId == mainCategoryIds[i]) {
+                if ((settings[j].settingType === 'Category') && settings[j].settingId == mainCategoryIds[i]) {
                     subCategoryIds.push(settings[j].subSettingId);
                 }
             }
@@ -91,20 +91,20 @@ export class DataGrid extends Component {
         return result;
     };
 
-    getMainCategoryName = function (mainCategoryId, mainCategories) {
+    getMainCategoryName = (mainCategoryId, mainCategories) => {
         for (let i = 0; i < mainCategories.length; i++) {
-            if (mainCategories[i].settingId == mainCategoryId) {
+            if (mainCategories[i].settingId === mainCategoryId) {
                 return mainCategories[i].settingValue;
             }
         }
 
         return 'N/A';
-    }
+    };
 
-    getSubCategoryName = function (mainCategoryId, subCategoryId, mainCategories) {
+    getSubCategoryName = (mainCategoryId, subCategoryId, mainCategories) => {
         let mainCategory = null;
         for (let i = 0; i < mainCategories.length; i++) {
-            if (mainCategories[i].settingId == mainCategoryId) {
+            if (mainCategories[i].settingId === mainCategoryId) {
                 mainCategory = mainCategories[i];
                 break;
             }
@@ -112,18 +112,18 @@ export class DataGrid extends Component {
 
         if (mainCategory) {
             for (let j = 0; j < mainCategory.childSettings.length; j++) {
-                if (mainCategory.childSettings[j].subCategoryId == subCategoryId) {
+                if (mainCategory.childSettings[j].subCategoryId === subCategoryId) {
                     return mainCategory.childSettings[j].name;
                 }
             }
         }
 
         return '';
-    }
+    };
 
     handleOpenViewRelatedCustomerDialog = relatedCustomers => {
         this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
-    }
+    };
 
     renderRelatedCustomerColumn = relatedCustomers => {
         let html = '';
@@ -192,8 +192,8 @@ export class DataGrid extends Component {
     };
 
     tooltipFeedback = item => {
-        const desctiptionText = !item.description ? '' : 'Description: <br>' + item.description + '<br>',
-            solutionText = !item.solution ? '' : 'Solution: <br>' + item.solution + '<br>',
+        const desctiptionText = !item.description ? '' : `Description: <br>${item.description}<br>`,
+            solutionText = !item.solution ? '' : `Solution: <br>${item.solution}<br>`,
             lastCharacterSlit = desctiptionText.substring(578, 580),
             isEscapseWord = '<br />'.includes(lastCharacterSlit),
             subLength = isEscapseWord ? 592 : 580;

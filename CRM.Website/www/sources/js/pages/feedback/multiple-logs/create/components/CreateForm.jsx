@@ -21,6 +21,7 @@ import {
     getSubCategories, getSubProducts, getBetTypes, getInvalidCategoryParams, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams, generateTimeAndToolPrefix
 } from '@jsroot/common/shareScripts';
+import { validateNoOfInquiry } from '../../../common.functions';
 
 export class CreateForm extends Component {
     constructor(props) {
@@ -255,12 +256,6 @@ export class CreateForm extends Component {
         } else {
             this.setState({ betTypeOptions: [] });
         }
-    };
-
-    validateNoOfInquiries = event => {
-        return event.target.validity.valid
-            || event.target.value < 1 && (event.target.value = 1)
-            || event.target.value > 32000 && (event.target.value = 32000);
     };
 
     handleGetFeedbackSubjectTemplates = Site.debounce(searchText => {
@@ -786,7 +781,7 @@ export class CreateForm extends Component {
                             <Col sm="3" md="3">
                                 <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries"
                                     min={1} max={3200} value={values.noOfInquiries}
-                                    onInput={this.validateNoOfInquiries} onChange={handleChange}
+                                    onInput={validateNoOfInquiry} onChange={handleChange}
                                 />
                             </Col>
                         </Form.Group>

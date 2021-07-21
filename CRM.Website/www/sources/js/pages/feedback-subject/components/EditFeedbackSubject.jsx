@@ -138,7 +138,6 @@ export class EditFeedbackSubject extends PureComponent {
 
     render() {
         const feedback = this.props.feedback;
-        console.log(feedback);
         const initialValues = {
             subject: feedback.subject,
             templateId: feedback.templateId

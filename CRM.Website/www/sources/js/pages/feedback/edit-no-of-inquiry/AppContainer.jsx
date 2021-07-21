@@ -7,6 +7,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
+import { validateNoOfInquiry } from '../common.functions';
 
 export default class AppContainer extends Component {
     static propTypes = {
@@ -37,12 +38,6 @@ export default class AppContainer extends Component {
         await DataService.getDataAsync(url).then(response => {
             this.setState({ noInquiries: response.data.noInquiries });
         });
-    }
-
-    validateNoOfInquiry = event => {
-        return event.target.validity.valid
-            || event.target.value < 1 && (event.target.value = 1)
-            || event.target.value > 32000 && (event.target.value = 32000);
     }
 
     handleSubmit = async (values) => {
@@ -88,7 +83,7 @@ export default class AppContainer extends Component {
                         <Col md="6" sm="8">
                             <Form.Control type="number" size="sm" className="shadow-none" name="noInquiries"
                                 min={1} max={3200} value={values.noInquiries}
-                                onInput={this.validateNoOfInquiry} onChange={handleChange}
+                                onInput={validateNoOfInquiry} onChange={handleChange}
                             />
                         </Col>
                     </Form.Group>

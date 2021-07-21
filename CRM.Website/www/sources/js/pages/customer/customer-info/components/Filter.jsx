@@ -17,7 +17,7 @@ export class Filter extends Component {
             showEmptyConfirmPopup: false,
             showEmptyCustomerInfoPopup: false
         };
-    };
+    }
 
     componentDidUpdate(prevProps) {
         if (this.props.gridParams !== prevProps.gridParams) {
@@ -51,18 +51,17 @@ export class Filter extends Component {
                 this.setState({
                     showEmptyConfirmPopup: true
                 });
-            } else if (this.props.gridData.data === null ) {
+            } else if (this.props.gridData.data === null) {
                 this.setState({
                     showEmptyCustomerInfoPopup: true
                 });
             }
         });
-    }
+    };
 
     handleSubmit = event => {
         event.preventDefault();
         this.getCustomerInfo();
-        
     };
 
     handleGetCustomerIsGuest = () => {
@@ -71,21 +70,21 @@ export class Filter extends Component {
         });
         this.handleCloseEmptyConfirm();
         this.getCustomerInfo();
-    }
+    };
 
     handleCloseEmptyConfirm = () => {
-        this.setState({ showEmptyConfirmPopup: false});
-    }
+        this.setState({ showEmptyConfirmPopup: false });
+    };
 
     handleCloseEmptyCustomerInfoPopup = () => {
-        this.setState({ showEmptyCustomerInfoPopup: false});
-    }
+        this.setState({ showEmptyCustomerInfoPopup: false });
+    };
 
     handleChangeSuggestion = value => {
         this.setState({
             username: value
         });
-    }
+    };
 
     debounceUserNameInputChange = Site.debounce(searchText => {
         this.setState({
@@ -131,7 +130,7 @@ export class Filter extends Component {
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleCloseEmptyCustomerInfoPopup}>
                                 {LangHelper.getResource('OK')}
-                            </Button>,
+                            </Button>
                         ]}
                         onClose={this.handleCloseEmptyCustomerInfoPopup}
                     />
@@ -155,7 +154,6 @@ export class Filter extends Component {
                     />
                 }
             </div>
-
         );
     }
 }

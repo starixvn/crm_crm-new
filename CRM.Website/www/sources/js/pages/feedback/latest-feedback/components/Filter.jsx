@@ -9,14 +9,12 @@ export class Filter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            top: ''
+            top: 10
         };
     }
 
-    getParams = (top) => {
-        return {
-            top: top,
-        };
+    getParams = top => {
+        return { top };
     };
 
     handleTopChange = event => {

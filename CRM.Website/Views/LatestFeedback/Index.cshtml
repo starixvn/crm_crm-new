@@ -1,6 +1,5 @@
 ﻿@model bool
 @{
-    bool hasReviewFeedbackPermission = (bool)ViewBag.HasReviewFeedbackPermission;
     ViewData["Title"] = ViewResources.LatestFeedback;
 }
 @section Styles {
@@ -12,9 +11,6 @@
     </environment>
 }
 @section Scripts{
-    <script type="text/javascript">
-        window.hasReviewFeedbackPermission = '@hasReviewFeedbackPermission';
-    </script>
     <environment include="Development">
         <script src="~/js/dev/pages/feedback/latest-feedback.chunk.js"></script>
     </environment>

@@ -26,7 +26,7 @@ export default class AutoComplete extends Component {
             showOptionList: false,
             searchValue: props.value,
             selectedItem: -1
-        }
+        };
     }
 
     componentDidMount() {
@@ -34,13 +34,13 @@ export default class AutoComplete extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.options != prevProps.options && this.props.options.length > 0) {
+        if (this.props.options !== prevProps.options && this.props.options.length > 0) {
             this.setState({
                 showOptionList: true
             });
         }
 
-        if (this.props.value != prevProps.value) {
+        if (this.props.value !== prevProps.value) {
             this.setState({
                 searchValue: this.props.value
             });
@@ -59,7 +59,7 @@ export default class AutoComplete extends Component {
         });
 
         this.props.onChange && this.props.onChange(item);
-    }
+    };
 
     handleClickOutside = event => {
         if (this.state.showOptionList && this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
@@ -67,7 +67,7 @@ export default class AutoComplete extends Component {
                 showOptionList: false
             });
         }
-    }
+    };
 
     handleChange = event => {
         const value = event.target.value;
@@ -76,18 +76,21 @@ export default class AutoComplete extends Component {
             selectedItem: -1
         }, () => {
             this.props.onInputChange(value.trim());
-            this.props.onChange(value.trim());
+            this.props.onChange && this.props.onChange(value.trim());
         });
-    }
+    };
 
     handleSetSelectedItem = index => {
         this.setState({
             selectedItem: index
         });
-    }
+    };
 
     handleKeyDown = event => {
-        if (!this.state.showOptionList) return;
+        if (!this.state.showOptionList) {
+            return;
+        }
+
         switch (event.keyCode) {
             case 27: //Event.KEY_ESC
             case 9: //EVENT.KEY_TAB
@@ -106,12 +109,15 @@ export default class AutoComplete extends Component {
             default:
                 return;
         }
-    }
+    };
 
     moveUp = () => {
         const { selectedItem } = this.state;
 
-        if (selectedItem === -1) return;
+        if (selectedItem === -1) {
+            return;
+        }
+
         if (selectedItem === 0) {
             this.setState({ selectedItem: -1 });
         } else {
@@ -122,15 +128,17 @@ export default class AutoComplete extends Component {
                 selectedItem: index,
                 searchValue: value
             });
-            this.props.onChange(value);
+            this.props.onChange && this.props.onChange(value);
         }
-    }
+    };
 
     moveDown = () => {
         const { selectedItem } = this.state;
         const { diplayField, options } = this.props;
 
-        if (selectedItem === options.length - 1) return;
+        if (selectedItem === options.length - 1) {
+            return;
+        }
 
         const index = selectedItem + 1
         const value = diplayField.length > 0 ? options[index][diplayField] : options[index];
@@ -138,8 +146,8 @@ export default class AutoComplete extends Component {
             selectedItem: index,
             searchValue: value
         });
-        this.props.onChange(value);
-    }
+        this.props.onChange && this.props.onChange(value);
+    };
 
     render() {
         const { showOptionList, searchValue } = this.state;
@@ -167,7 +175,7 @@ export default class AutoComplete extends Component {
                                         <div className={`autocomplete-item ${selected}`} onClick={() => this.selectOption(item)} key={index}
                                             dangerouslySetInnerHTML={{ __html: displayValue }} onMouseOver={() => this.handleSetSelectedItem(index)}
                                         />
-                                    )
+                                    );
                                 })
                             }
                         </div>

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Filter from './Filter';
 import PropTypes from 'prop-types';
@@ -17,7 +17,7 @@ export class AppContainer extends Component {
     static propTypes = {
         isHost: PropTypes.bool.isRequired,
         editCustomerInfoPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        getCustomerInfo: PropTypes.func,
+        getCustomerInfo: PropTypes.func
     };
 
     static defaultProps = {
@@ -25,12 +25,12 @@ export class AppContainer extends Component {
         editCustomerInfoPopup: { show: false },
         getCustomerInfo: function () {
             //nothing
-        },
+        }
     };
 
     handleEditSuccess = () => {
         this.props.getCustomerInfo(this.props.gridParams);
-    }
+    };
 
     handleCloseEditCustomerInfoPopup = () => {
         this.props.setEditCustomerInfoPopup({ show: false });
@@ -56,28 +56,21 @@ export class AppContainer extends Component {
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleCloseEditCustomerInfoPopup}>
                                 {LangHelper.getResource('OK')}
-                            </Button>,
+                            </Button>
                         ]}
                         onClose={this.handleCloseEditCustomerInfoPopup}
                     />
                 }
-                
             </div>
-        )
+        );
     }
-};
+}
+
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const {
-        gridParams, gridData,
-        editCustomerInfoPopup,
-    } = state;
-    return {
-        gridParams,
-        gridData,
-        editCustomerInfoPopup,
-    };
+    const { gridParams, gridData, editCustomerInfoPopup } = state;
+    return { gridParams, gridData, editCustomerInfoPopup };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

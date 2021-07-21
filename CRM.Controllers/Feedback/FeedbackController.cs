@@ -63,7 +63,8 @@
         {
             CustomerFeedback feedback = await feedbackService.GetCustomerFeedbackByIdAsync(id);
             var settings = await GetEditCustomerFeedbackSettingAsync(feedback);
-            return Json(new { feedback, settings });
+            var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
+            return Json(new { feedback, settings, hasReviewFeedbackPermission });
         }
 
         [HttpPost]
