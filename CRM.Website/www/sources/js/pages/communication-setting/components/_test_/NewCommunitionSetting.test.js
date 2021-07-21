@@ -564,7 +564,7 @@ describe('NewCommunitionSetting', () => {
 
                 // Assert
                 expect(actual).toEqual(<Tooltip id='tooltip-customers' {...props}>
-                    {LangHelper.getResource('MultiplecustomersToolTip')}
+                    {LangHelper.getResource('MultipleCustomersTooltip')}
                 </Tooltip>);
             });
         });
@@ -576,8 +576,8 @@ describe('NewCommunitionSetting', () => {
                     settings: {}
                 };
                 const state = {
-                    listOfCustomer: [{ id: '1' }, { id: '2' }, { id: '3' }],
-                    listOfCustomerValid: [{ id: '1' }, { id: '2' }, { id: '3' }]
+                    listOfCustomer: [{ custId: '1' }, { custId: '2' }, { custId: '3' }],
+                    listOfCustomerValid: [{ custId: '1' }, { custId: '2' }, { custId: '3' }]
                 };
 
                 // Act
@@ -586,8 +586,8 @@ describe('NewCommunitionSetting', () => {
                 container.deleteCustomer('1');
 
                 // Assert
-                expect(container.state.listOfCustomer).toEqual([{ id: '2' }, { id: '3' }]);
-                expect(container.state.listOfCustomerValid).toEqual([{ id: '2' }, { id: '3' }]);
+                expect(container.state.listOfCustomer).toEqual([{ custId: '2' }, { custId: '3' }]);
+                expect(container.state.listOfCustomerValid).toEqual([{ custId: '2' }, { custId: '3' }]);
             });
         });
 
@@ -632,7 +632,7 @@ describe('NewCommunitionSetting', () => {
                     "isVerifiedCustomers": LangHelper.getResource('VerifyListOfUsernameBeforeInsertSetting'),
                     "customerNameInput": LangHelper.getResource('ListofcustomersRequired'),
                     "mainCategoryTypesNew": LangHelper.getResource('CategoryRequired'),
-                    "subCategoryTypesNew": LangHelper.getResource('SubCategoryRequied'),
+                    "subCategoryTypesNew": LangHelper.getResource('SubCategoryRequired'),
                     "comunicationToolTypesNew": LangHelper.getResource('CommunicationToolRequired')
                 };
 

@@ -538,7 +538,7 @@ describe('EditCommunitionSetting', () => {
                 };
                 const expected = {
                     "mainCategoryTypesEdit": LangHelper.getResource('CategoryRequired'),
-                    "subCategoryTypesEdit": LangHelper.getResource('SubCategoryRequied'),
+                    "subCategoryTypesEdit": LangHelper.getResource('SubCategoryRequired'),
                     "comunicationToolTypesEdit": LangHelper.getResource('CommunicationToolRequired')
                 };
 

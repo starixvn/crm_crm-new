@@ -38,15 +38,15 @@ describe('ValidateCustomerResult', () => {
     });
 
     const testCases = [
-        { id: 1, name: 'a', expected: 'customer' },
-        { id: -1, name: 'b', expected: 'guest' },
-        { id: 0, name: 'c', expected: 'invalid' }
+        { custId: 1, val: 'a', expected: 'customer' },
+        { custId: -1, val: 'b', expected: 'guest' },
+        { custId: 0, val: 'c', expected: 'invalid' }
     ];
     testCases.forEach(test => {
-        it(`'renders customerShow correctly with id: ${test.id}'`, () => {
+        it(`'renders customerShow correctly with id: ${test.custId}'`, () => {
             // Arrange
             const props = {
-                listOfCustomers: [{ id: test.id, name: test.name }]
+                listOfCustomers: [{ custId: test.custId, val: test.val }]
             };
 
             // Action
@@ -59,7 +59,7 @@ describe('ValidateCustomerResult', () => {
 
             expect(validate.find(Form.Group).at(1).find(Col).find('div').find('div').at(1).props().className).toBe(`m-2 px-2 txt-${test.expected}`);
             expect(validate.find(Form.Group).at(1).find(Col).find('div').find('div').at(1).find('div').at(2).html()).toEqual(
-                `<div class=\"customer-name\">${props.listOfCustomers[0].name}</div>`
+                `<div class=\"customer-name\">${props.listOfCustomers[0].val}</div>`
             );
         });
     }),
