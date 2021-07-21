@@ -137,15 +137,15 @@
         private static IList<SettingRelation> GetExtentions(IEnumerable<SettingRelation> extentions, IEnumerable<FeedbackSettingRelation> settings)
         {
             var feedbackSettings = GetFeedbackSettingByType(settings, SettingTypeConstants.Status);
-            return extentions.Where(x => x.IsActive
-                || (x.Id != NAConstants.ExtentionNA && feedbackSettings.Any(y => y.SettingId == x.Id))).ToList();
+            return extentions.Where(x => (x.IsActive || feedbackSettings.Any(y => y.SettingId == x.Id))
+                && x.Id != NAConstants.ExtentionNA).ToList();
         }
 
         private static IList<Setting> GetCommunicationTools(IEnumerable<Setting> communicationTools, IEnumerable<FeedbackSettingRelation> settings)
         {
             var feedbackSettings = GetFeedbackSettingByType(settings, SettingTypeConstants.CommunicationTool);
-            return communicationTools.Where(x => x.IsActive
-                || (x.Id != NAConstants.CommunicationNA && feedbackSettings.Any(y => y.SettingId == x.Id))).ToList();
+            return communicationTools.Where(x => (x.IsActive || feedbackSettings.Any(y => y.SettingId == x.Id))
+                && x.Id != NAConstants.CommunicationNA).ToList();
         }
 
         private async Task<IList<FeedbackStatus>> GetStatusAsync(CustomerFeedback feedback)
@@ -172,22 +172,22 @@
         private static IList<Product> GetProducts(IEnumerable<Product> products, IEnumerable<FeedbackSettingRelation> settings)
         {
             var feedbackSettings = GetFeedbackSettingByType(settings, SettingTypeConstants.Product);
-            return products.Where(x => x.IsActive
-                || (x.Id != NAConstants.ProductNA && feedbackSettings.Any(y => y.SettingId == x.Id))).ToList();
+            return products.Where(x => (x.IsActive || feedbackSettings.Any(y => y.SettingId == x.Id))
+                && x.Id != NAConstants.ProductNA).ToList();
         }
 
         private static IList<Product> GetSubProducts(IEnumerable<Product> subProducts, IEnumerable<FeedbackSettingRelation> settings)
         {
             var feedbackSettings = GetFeedbackSettingByType(settings, SettingTypeConstants.Product);
-            return subProducts.Where(x => x.IsActive
-                || (x.Id != NAConstants.SubProductNA && feedbackSettings.Any(y => y.SubSettingId == x.Id))).ToList();
+            return subProducts.Where(x => (x.IsActive || feedbackSettings.Any(y => y.SubSettingId == x.Id))
+                && x.Id != NAConstants.SubProductNA).ToList();
         }
 
         private static IList<Product> GetBetTypes(IEnumerable<Product> betTypes, IEnumerable<FeedbackSettingRelation> settings)
         {
             var feedbackSettings = GetFeedbackSettingByType(settings, SettingTypeConstants.Product);
-            return betTypes.Where(x => x.IsActive
-                || (x.Id != NAConstants.BettypeNA && feedbackSettings.Any(y => y.SubSettingIdLevel3 == x.Id))).ToList();
+            return betTypes.Where(x => (x.IsActive || feedbackSettings.Any(y => y.SubSettingIdLevel3 == x.Id))
+                && x.Id != NAConstants.BettypeNA).ToList();
         }
 
         protected internal virtual CommandResult CheckEditCustomerFeedbackPermission(EditCustomerFeedbackCommand command)

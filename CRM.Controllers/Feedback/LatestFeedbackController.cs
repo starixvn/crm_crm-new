@@ -54,12 +54,12 @@
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await GetAllMainCategoriesFromAllSettings();
+            IEnumerable<Setting> mainCategories = await GetMainCategoryAsync();
 
             return Json(new { data = feedbacks, mainCategories });
         }
 
-        private async Task<IEnumerable<Setting>> GetAllMainCategoriesFromAllSettings()
+        private async Task<IEnumerable<Setting>> GetMainCategoryAsync()
         {
             var mainCategories = await settingService.GetSettingAsync(SettingName.MainCategory, true);
             var subCategories = await settingService.GetSubCategoryAsync();
@@ -76,7 +76,7 @@
         public async Task<IActionResult> ExportLatestFeedbackReport([FromBody] GetLatestFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await GetAllMainCategoriesFromAllSettings();
+            IEnumerable<Setting> mainCategories = await GetMainCategoryAsync();
 
             var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, param.Top);
             string reportName = string.Format(ViewResources.FeedbackReport_Title, param.Top);

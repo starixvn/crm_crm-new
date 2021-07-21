@@ -37,14 +37,11 @@ export class AppContainer extends Component {
         this.props.setEditNoOfInquiryDialog({ show: false });
     };
 
-    handleCloseEditFeedbackDialog = () => {
+    handleCloseEditFeedbackDialog = (isSuccessful) => {
         this.props.setEditFeedbackDialog({ show: false });
-        this.props.getLatestFeedback(this.props.gridParams);
-    };
-
-    handleEditFeedbackSuccess = () => {
-        this.handleCloseEditFeedbackDialog();
-        this.props.getLatestFeedback(this.props.gridParams);
+        if (isSuccessful) {
+            this.props.getLatestFeedback(this.props.gridParams);
+        }
     };
 
     handleCloseViewRelatedCustomerDialog = () => {

@@ -1,6 +1,5 @@
 ﻿namespace CRM.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using CRM.Core;
@@ -58,7 +57,7 @@
             var colIndex = 1;
             var feedbackCellValue = GetFeedbackCellValue(feedbackDetail);
             var categoryContents = BuildCategoryContent(feedbackDetail, mainCategories);
-            var categoryCellValue = String.Join("\n\n", categoryContents);
+            var categoryCellValue = string.Join("\n\n", categoryContents);
             worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.FeedbackId;
             worksheet.Cells[rowIndex, colIndex++].Value = feedbackCellValue;
             worksheet.Cells[rowIndex, colIndex++].Value = categoryCellValue;
@@ -108,116 +107,21 @@
             }
         }
 
-        protected static string[] BuildCategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
+        private static string[] BuildCategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
         {
-            return GetCategoryContent(feedback.Settings, mainCategories);
-        }
-
-        private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
-        {
-            return GetCategoryContentWithoutSettingType(settings.Where(i => i.SettingType == "Category"), mainCategories);
-        }
-
-        public static string[] GetCategoryContentWithoutSettingType(
-            IEnumerable<FeedbackSettingRelation> settings,
-            IEnumerable<Setting> mainCategories)
-        {
-            return settings
-                    .GroupBy(s => s.SettingId)
+            var settings = feedback.Settings.Where(i => i.SettingType == "Category");
+            return settings.GroupBy(s => s.SettingId)
                     .Select(s =>
                     {
-                        var con = GetMainCategoryName(s.Key, mainCategories);
+                        var content = GetMainCategoryName(s.Key, mainCategories);
                         var subIds = s.Select(e => e.SubSettingId).ToList();
                         foreach (var id in subIds)
                         {
-                            con = string.Join(string.Empty, con, "\n  ", GetSubCategoryName(s.Key, id, mainCategories));
+                            content = string.Join(string.Empty, content, "\n  ", GetSubCategoryName(s.Key, id, mainCategories));
                         }
 
-                        return con;
-                    })
-                    .ToArray();
-        }
-
-        public static string[] GetProductContent(
-                IEnumerable<FeedbackSettingRelation> settings,
-                IEnumerable<Product> productList,
-                IEnumerable<Product> subProductList)
-        {
-            return settings
-                  .Where(i => i.SettingType == "Product")
-                  .GroupBy(s => s.SettingId)
-                  .Select(s =>
-                  {
-                      var con = GetProductName(s.Key, productList);
-                      var subIds = s.Select(e => e.SubSettingId).Distinct().ToList();
-                      foreach (var id in subIds)
-                      {
-                          con = string.Join(string.Empty, con, "\n  ", GetSubProductName(id, subProductList));
-                      }
-
-                      return con;
-                  })
-                  .ToArray();
-        }
-
-        public static string[] GetCommunicationContent(
-            IEnumerable<FeedbackSettingRelation> settings,
-            IEnumerable<Setting> communicationToolList)
-        {
-            return settings
-                   .Where(i => i.SettingType == "Communication")
-                   .Select(s =>
-                   {
-                       return GetCommunicationName(s.SettingId, communicationToolList);
-                   })
-                   .ToArray();
-        }
-
-        public static string[] GetExtensionContent(
-            IEnumerable<FeedbackSettingRelation> settings,
-            IEnumerable<SettingRelation> extensionList)
-        {
-            return settings
-                  .Where(i => i.SettingType == "Station")
-                  .Select(s =>
-                  {
-                      return GetExtensionName(s.SettingId, extensionList);
-                  })
-                  .ToArray();
-        }
-
-        public static string GetSubCategoryName(
-            int mainCategoryId,
-            int subCategoryId,
-            IEnumerable<Setting> mainCategories)
-        {
-            var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
-            var child = mainCategory?.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
-            return child == null ? string.Empty : child.SettingName;
-        }
-
-        public static string GetProductName(int id, IEnumerable<Product> productList)
-        {
-            var product = productList.FirstOrDefault(c => c.Id == id);
-            return product == null ? ViewResources.Symbol_NotApply : product.Name;
-        }
-
-        public static string GetSubProductName(int id, IEnumerable<Product> subProductList)
-        {
-            var subProduct = subProductList.FirstOrDefault(c => c.Id == id);
-            return subProduct == null ? ViewResources.Symbol_NotApply : subProduct.Name;
-        }
-
-        public static string GetCommunicationName(int id, IEnumerable<Setting> communicationToolList)
-        {
-            var item = communicationToolList.FirstOrDefault(c => c.Id == id);
-            return item == null ? string.Empty : item.Name;
-        }
-
-        public static string GetExtensionName(int id, IEnumerable<SettingRelation> extensionList)
-        {
-            var item = extensionList.FirstOrDefault(c => c.Id == id);
-            return item == null ? ViewResources.Symbol_NotApply : item.Value;
+                        return content;
+                    }).ToArray();
         }
 
         private static string GetMainCategoryName(int mainCategoryId, IEnumerable<Setting> mainCategories)
@@ -226,7 +130,17 @@
             return mainCategory == null ? string.Empty : mainCategory.SettingValue;
         }
 
-        protected static string GetFeedbackCellValue(FeedbackDetail feedback)
+        private static string GetSubCategoryName(
+            int mainCategoryId,
+            int subCategoryId,
+            IEnumerable<Setting> mainCategories)
+        {
+            var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
+            var child = mainCategory?.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
+            return child == null ? string.Empty : child.Name;
+        }
+
+        private static string GetFeedbackCellValue(FeedbackDetail feedback)
         {
             var cellValue = string.Format(
                 "{0}\n{1}\n{2}\n{3}",

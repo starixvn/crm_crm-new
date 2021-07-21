@@ -535,7 +535,7 @@ export default class AppContainer extends Component {
             if (data.isSuccessful) {
                 this.setState({ editResult: data });
                 setTimeout(() => {
-                    this.props.onClose();
+                    this.props.onClose(true);
                 }, 3000);
             } else {
                 this.formik.setSubmitting(false);
@@ -614,7 +614,7 @@ export default class AppContainer extends Component {
             solution: values.solution,
             isReviewed: values.isReviewed,
             review: values.review,
-            updateReviewMode: !window.hasReviewFeedbackPermission
+            updateReviewMode: window.hasReviewFeedbackPermission !== 'True'
                 ? 0 : (!values.isReviewed ? 2 : (this.formikValues.review === values.review ? 0 : 1)) // 0: do nothing, 1: update, 2: remove
         };
         this.confirmEditFeedback(params);
