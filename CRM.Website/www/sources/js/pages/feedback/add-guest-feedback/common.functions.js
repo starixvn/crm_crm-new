@@ -60,7 +60,7 @@ export const validateFormik = (values, settings) => {
     }
 
     if (moment(values.feedbackDate).isAfter(moment(values.resolutionTime))) {
-        errors.startTime = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('FeedbackDate'), LangHelper.getResource('ResolutionTime'));
+        errors.feedbackDate = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('FeedbackDate'), LangHelper.getResource('ResolutionTime'));
     }
 
     if (values.communication.length === 0) {

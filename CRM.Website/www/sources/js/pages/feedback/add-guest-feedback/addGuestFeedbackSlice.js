@@ -6,7 +6,7 @@ const addGuestFeedbackSlice = createSlice({
         settings: null,
         addFeedbackResult: null,
         feedbackSubjectTemplates: [],
-        confirmCreateGuestDialog: { show: false },
+        confirmCreateGuestDialog: { show: false }
     },
     reducers: {
         setAllSettings: (state, action) => {

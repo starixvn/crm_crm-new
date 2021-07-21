@@ -847,6 +847,7 @@ export class CreateForm extends Component {
                                 </Form.Label>
                                 <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
                                     <DatePicker
+                                        isInvalid={touched.feedbackDate && errors.feedbackDate}
                                         selected={values.feedbackDate}
                                         timeInputLabel="Time:"
                                         dateFormat="MMM dd, yyyy hh:mm aa"
@@ -863,6 +864,7 @@ export class CreateForm extends Component {
                                 </Form.Label>
                                 <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
                                     <DatePicker
+                                        isInvalid={touched.resolutionTime && errors.resolutionTime}
                                         selected={values.resolutionTime}
                                         timeInputLabel="Time:"
                                         dateFormat="MMM dd, yyyy hh:mm aa"
