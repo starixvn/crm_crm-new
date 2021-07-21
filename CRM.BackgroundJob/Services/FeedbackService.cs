@@ -562,7 +562,8 @@
         {
             const string XmlTemplate = "<Row CustId='{0}' RelatedCustId='{1}' Username='{2}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            var transactions = transactionInfos.GroupBy(x => x.CustId).Select(x => x.First());
+
+            var transactions = IssueTypeId == abnormalAccount ? transactionInfos.GroupBy(x => x.RelatedCustID).Select(x => x.First()) : transactionInfos.GroupBy(x => x.CustId).Select(x => x.First());
             foreach (var transaction in transactions)
             {
                 var custId = IssueTypeId == abnormalAccount ? transaction.RelatedCustID : transaction.CustId;
@@ -610,7 +611,7 @@
             }
             else
             {
-                var transactions = transactionInfos.GroupBy(x => x.CustId).Select(x => x.First()).OrderBy(x=>x.RelatedUserName);
+                var transactions = transactionInfos.GroupBy(x => x.RelatedCustID).Select(x => x.First()).OrderBy(x=>x.RelatedUserName);
                 var affectedAccount = string.Join(", ", transactions.Select(x=>x.RelatedUserName));
                 var stringBuilderAbnormalAccount = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
                 stringBuilderAbnormalAccount.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
