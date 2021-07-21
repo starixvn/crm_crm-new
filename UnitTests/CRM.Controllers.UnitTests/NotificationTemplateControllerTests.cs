@@ -144,7 +144,7 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var expected = fixture.Create<IEnumerable<Setting>>();
+            var expected = new List<Setting>();
             var controller = GetController();
             settingService.GetSettingAsync(SettingName.NotificationTemplateLanguage, true).Returns(expected);
 

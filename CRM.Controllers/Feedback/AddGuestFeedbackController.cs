@@ -1,6 +1,5 @@
 ﻿namespace CRM.Controllers.Feedback
 {
-    using System;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -49,55 +48,30 @@
 
         public async Task<ActionResult> AllSetting()
         {
-            var settings = await AllSettingToAddFeedback();
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            if (isHost)
-            {
-                settings.Status = settings.Status.Where(s => !s.Name.Equals("Deleted", StringComparison.OrdinalIgnoreCase));
-            }
-
-            return Json(settings);
-        }
-
-        public async Task<AllSettingToAddFeedback> AllSettingToAddFeedback()
-        {
             var languages = await settingService.GetLanguageAsync(SettingConstants.Active, true);
             var countries = await settingService.GetCountryAsync(SettingConstants.Active, true);
-
             var extentionList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var extentionListRemmoveNA = extentionList.Where(x => x.Id != NAConstants.ExtentionNA);
             var extentionNA = extentionList.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
-
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var statusListRemoveDelete = statusList.Where(s => s.StatusId != (int)CRMStatus.Deleted).ToList();
-
             var provinces = await settingService.GetProvinceAsync();
-
             var communicationToolList = await settingService.GetCommunicationToolAsync(SettingConstants.Active);
-
             var siteList = await settingService.GetSiteAsync();
-
             var responsesLists = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
-
             var titleList = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
-
             var licenseeTypeList = await settingService.GetLicenseeTypeAsync();
-
             var productList = await settingService.GetProductAsync(SettingConstants.Active);
             var productListRemoveNAAndActive = productList.Where(p => p.Id != NAConstants.ProductNA);
             var productNA = productList.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
-
             var subproduct = await settingService.GetSubProductAsync(active: SettingConstants.Active);
             var subproductRemoveNA = subproduct.Where(p => p.Id != NAConstants.SubProductNA && p.ParentId != 0);
             var subproductNA = subproduct.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
-
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
             var bettypeRemoveNAAndActive = bettypes.Where(b => b.Id != NAConstants.BettypeNA);
             var bettypeNA = bettypes.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
-
             var mainCategoryList = await settingService.GetMainCategoryAsync(SettingConstants.Active);
             var subCategoryList = await settingService.GetSubCategoryAsync(active: SettingConstants.Active);
-
             var settings = new AllSettingToAddFeedback
             {
                 Extensions = extentionListRemmoveNA,
@@ -121,36 +95,29 @@
                 SubCategories = subCategoryList
             };
 
-            return settings;
+            return Json(settings);
         }
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] AddGuestFeedbackCommand command)
         {
-            try
+            var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
+            if (command.StatusId == (int)CRMStatus.Deleted && !isHostDeletedFeedback)
             {
-                var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
-                if (command.StatusId == (int)CRMStatus.Deleted && !isHostDeletedFeedback)
+                var commandResult = new CommandResult
                 {
-                    var commandResult = new CommandResult
-                    {
-                        Code = (int)HttpStatusCode.Forbidden,
-                        Message = ViewResources.AddCustomerFeedbackPermission
-                    };
-                    return Json(commandResult);
-                }
+                    Code = (int)HttpStatusCode.Forbidden,
+                    Message = ViewResources.AddCustomerFeedbackPermission
+                };
+                return Json(commandResult);
+            }
 
-                command.CreatorId = napSession.UserId;
-                command.UserId = napSession.UserId;
-                command.IP = ClientIP;
-                var result = await baseService.ExecuteNonQueryAsync(command);
-                return Json(result);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            command.CreatorId = napSession.UserId;
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            var result = await baseService.ExecuteNonQueryAsync(command);
+            return Json(result);
         }
     }
 }

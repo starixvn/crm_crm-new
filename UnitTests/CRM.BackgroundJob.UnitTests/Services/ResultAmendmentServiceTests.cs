@@ -189,7 +189,14 @@
             await service.Public_ResultAmendmentUpdateSystemSetting(true, resultAmendmentSetting, custAmendmentNotifications, "JobStatusNameEnv");
 
             // Assert
-            await commonFeedback.Received().EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeqUAT", Arg.Any<int>(), "LastSubmitTimeUAT", Arg.Any<string>(), "JobStatusNameEnv");
+            await commonFeedback.Received().EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync(
+               Arg.Any<string>(),
+               Arg.Any<string>(),
+               Arg.Any<int>(),
+               Arg.Any<string>(),
+               Arg.Any<string>(),
+               Constants.ServiceName_ResultAmendment
+          );
         }
 
         [Fact]
@@ -204,7 +211,15 @@
             await service.Public_ResultAmendmentUpdateSystemSetting(false, resultAmendmentSetting, custAmendmentNotifications, "JobStatusNameEnv");
 
             // Assert
-            await commonFeedback.Received().EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeq", Arg.Any<int>(), "LastSubmitTime", Arg.Any<string>(), "JobStatusNameEnv");
+            await commonFeedback.Received().EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync(
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                Arg.Any<int>(),
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                Constants.ServiceName_ResultAmendment
+           );
+            //await commonFeedback.Received().EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeq", Arg.Any<int>(), "LastSubmitTime", Arg.Any<string>(), "AmendmentNotiFB");
         }
 
         #endregion ResultAmendmentUpdateSystemSetting

@@ -434,6 +434,31 @@
         }
 
         [Fact]
+        public async Task GetAllSitesWithGroupAsync_WhenCalled_ReturnExpectedSiteInfos()
+        {
+            // Arrange
+            var siteInfos = new List<SiteInfo> { 
+                new SiteInfo {Id = 1, IsLicensee = true, IsActive = true},
+                new SiteInfo {Id = 2, IsLicensee = true, IsActive = true},
+                new SiteInfo {Id = 3, IsLicensee = false, IsActive = true}
+            };
+            var expected = new List<SiteInfo> {
+                new SiteInfo {Id = 1, IsLicensee = true, Name = "Credit", IsActive = true},
+                new SiteInfo {Id = 2, IsLicensee = true, Name = "Licensee", IsActive = true}
+            };
+            var service = GetService();
+            baseService.GetDataAsync<SiteInfo>(Arg.Any<GetAllSiteCriteria>()).Returns(siteInfos);
+
+            // Act
+            var actual = await service.GetAllSitesWithGroupAsync();
+
+            // Assert
+            Assert.Equal(expected.FirstOrDefault().Name, actual.FirstOrDefault().Name);
+            Assert.Equal(expected.LastOrDefault().Name, actual.LastOrDefault().Name);
+
+        }
+
+        [Fact]
         public void GetPositions_WhenCalledWithParamIsTrue_ReturnExpectedSettings()
         {
             // Arrange

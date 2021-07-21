@@ -187,7 +187,7 @@
             var fixture = new Fixture();
             var templates = fixture.Create<PicReport>();
             var param = fixture.Create<GetReportCriteria>();
-            var communicationTools = fixture.Create<IEnumerable<Setting>>();
+            var communicationTools = new List<Setting>();
             var fileName = "PIC Management";
             var expected = fixture.Create<byte[]>();
             var controller = GetController();
