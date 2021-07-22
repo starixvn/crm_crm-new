@@ -5,11 +5,15 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.Feedback;
+    using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback.MultipleLogs;
+    using CRM.Models;
     using CRM.Models.Feedback.MultipleLogs;
+    using CRM.Models.Setting;
     using CRM.Services;
+    using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -66,6 +70,92 @@
         }
 
         [Fact]
+        public async Task GetSettings_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var extentions = new List<SettingRelation>
+            {
+                new SettingRelation { Id = 1 },
+                new SettingRelation { Id = 2022 }
+            };
+            var communicationTools = new List<Setting> { new Setting { Id = 1 } };
+            var statuses = new List<FeedbackStatus>
+            {
+                new FeedbackStatus { StatusId = 1, Name = "Pending" },
+                new FeedbackStatus { StatusId = 2, Name = "Deleted" }
+            };
+            var responses = fixture.Create<IEnumerable<SettingRelation>>();
+            var languages = fixture.Create<IEnumerable<Language>>();
+            var countries = fixture.Create<IEnumerable<Country>>();
+            var mainCategories = new List<Setting> { new Setting { Id = 1 } };
+            var subCategories = new List<Setting> { new Setting { Id = 1 } };
+            var products = new List<Product> { new Product { Id = 1 }, new Product { Id = 46004 } };
+            var subProducts = new List<Product> { new Product { Id = 1 }, new Product { Id = 8063 } };
+            var bettypes = new List<Product> { new Product { Id = 1 }, new Product { Id = 9144 } };
+
+            var controller = GetController();
+            settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active).Returns(extentions);
+            settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
+            settingService.GetProductAsync(SettingConstants.Active).Returns(products);
+            settingService.GetSubProductAsync(active: SettingConstants.Active).Returns(subProducts);
+            settingService.GetBetTypeAsync(active: SettingConstants.Active).Returns(bettypes);
+            settingService.GetCommunicationToolAsync(SettingConstants.Active).Returns(communicationTools);
+            settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active).Returns(responses);
+            settingService.GetLanguageAsync(SettingConstants.Active, true).Returns(languages);
+            settingService.GetCountryAsync(SettingConstants.Active, true).Returns(countries);
+            settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategories);
+            settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategories);
+
+            // Act
+            var result = await controller.GetSettings();
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var viewModel = Assert.IsAssignableFrom<CreateFeedbackViewModel>(jsonResult.Value);
+            Assert.Equal(communicationTools, viewModel.CommunicationTools);
+            Assert.Equal(responses, viewModel.Responses);
+            Assert.Equal(languages, viewModel.Languages);
+            Assert.Equal(countries, viewModel.Countries);
+            Assert.Equal(mainCategories, viewModel.MainCategories);
+            Assert.Equal(subCategories, viewModel.SubCategories);
+
+            Assert.Single(viewModel.Extensions);
+            Assert.Collection(viewModel.Extensions, item =>
+            {
+                Assert.Equal(extentions[0], item);
+            });
+
+            Assert.Single(viewModel.Statuses);
+            Assert.Collection(viewModel.Statuses, item =>
+            {
+                Assert.Equal(statuses[0], item);
+            });
+
+            Assert.Single(viewModel.Products);
+            Assert.Collection(viewModel.Products, item =>
+            {
+                Assert.Equal(products[0], item);
+            });
+
+            Assert.Single(viewModel.SubProducts);
+            Assert.Collection(viewModel.SubProducts, item =>
+            {
+                Assert.Equal(subProducts[0], item);
+            });
+
+            Assert.Single(viewModel.Bettypes);
+            Assert.Collection(viewModel.Bettypes, item =>
+            {
+                Assert.Equal(bettypes[0], item);
+            });
+
+            Assert.Equal(products[1], viewModel.ProductNA);
+            Assert.Equal(subProducts[1], viewModel.SubProductNA);
+            Assert.Equal(bettypes[1], viewModel.BettypeNA);
+            Assert.Equal(extentions[1], viewModel.ExtensionNA);
+        }
+
+        [Fact]
         public async Task VerifyCustomer_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
@@ -98,6 +188,24 @@
             // Arrange
             var jsonResult = Assert.IsType<JsonResult>(result);
             var actual = Assert.IsAssignableFrom<IEnumerable<VerifyRelatedCustomerResult>>(jsonResult.Value);
+            Assert.Equal(customers, actual);
+        }
+
+        [Fact]
+        public async Task CheckNotExistCommunicationToolSetting_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var criteria = fixture.Create<CheckNotExistCommunicationToolSettingCriteria>();
+            var customers = fixture.Create<IEnumerable<VerifyCommunicationToolSetting>>();
+            var controller = GetController();
+            baseService.GetDataAsync<VerifyCommunicationToolSetting>(criteria).Returns(customers);
+
+            // Act
+            var result = await controller.CheckNotExistCommunicationToolSetting(criteria);
+
+            // Arrange
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var actual = Assert.IsAssignableFrom<IEnumerable<VerifyCommunicationToolSetting>>(jsonResult.Value);
             Assert.Equal(customers, actual);
         }
 

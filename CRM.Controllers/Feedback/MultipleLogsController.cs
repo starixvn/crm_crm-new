@@ -51,7 +51,7 @@
         public async Task<IActionResult> GetSettings()
         {
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-            var statues = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var products = await settingService.GetProductAsync(SettingConstants.Active);
             var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
@@ -59,16 +59,15 @@
             {
                 Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
                 CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
-                Provinces = await settingService.GetProvinceAsync(),
-                Statuses = statues.Where(x => !string.Equals(x.Name, ViewResources.Deleted, StringComparison.OrdinalIgnoreCase)),
+                Statuses = statuses.Where(x => !string.Equals(x.Name, ViewResources.Deleted, StringComparison.OrdinalIgnoreCase)),
                 Responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
                 Languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
                 Countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
+                MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
+                SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
                 Products = products.Where(x => x.Id != NAConstants.ProductNA),
                 SubProducts = subproducts.Where(x => x.Id != NAConstants.SubProductNA),
                 Bettypes = bettypes.Where(x => x.Id != NAConstants.BettypeNA),
-                MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
-                SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
                 ProductNA = products.FirstOrDefault(x => x.Id == NAConstants.ProductNA),
                 SubProductNA = subproducts.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
                 BettypeNA = bettypes.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),

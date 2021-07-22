@@ -8,7 +8,6 @@
     {
         public IEnumerable<SettingRelation> Extensions { get; set; } = new List<SettingRelation>();
         public IEnumerable<Setting> CommunicationTools { get; set; } = new List<Setting>();
-        public IEnumerable<Province> Provinces { get; set; } = new List<Province>();
         public IEnumerable<FeedbackStatus> Statuses { get; set; } = new List<FeedbackStatus>();
         public IEnumerable<SettingRelation> Responses { get; set; } = new List<SettingRelation>();
         public IEnumerable<Language> Languages { get; set; } = new List<Language>();
