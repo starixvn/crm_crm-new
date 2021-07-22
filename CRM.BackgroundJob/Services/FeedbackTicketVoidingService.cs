@@ -89,7 +89,7 @@
             if (messageIds.Any())
             {
                 var messages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
-                await messageService.EditStatusVoidingMessageAsync(messages);
+                await messageService.EditStatusVoidingMessageAsync(messages, Environment);
                 logService.LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", messageIds)));
             }
 
@@ -118,7 +118,7 @@
             if (messageIds.Any())
             {
                 var messages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
-                await messageService.EditStatusVoidingMessageAsync(messages);
+                await messageService.EditStatusVoidingMessageAsync(messages, Environment);
                 logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", messageIds)));
             }
 

@@ -60,7 +60,7 @@
 
             // Assert
             logService.Received().LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", matchInfos.Select(x => x.MessageId))));
-            await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
+            await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), Arg.Any<string>());
 
             Assert.Empty(actual.Item1);
             Assert.Equal(transactionInfos, actual.Item2);
@@ -104,7 +104,7 @@
 
             // Assert
             logService.DidNotReceive().LogInformation(Arg.Any<string>());
-            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
+            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), Arg.Any<string>());
 
             Assert.Equal(expectedMatchInfos, actual.Item1);
             Assert.Equal(transactionInfos, actual.Item2);
@@ -141,7 +141,7 @@
                 licenseeInfo);
 
             // Assert
-            await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
+            await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), Arg.Any<string>());
 
             Assert.Empty(actual.Item1);
             Assert.Empty(actual.Item2);
@@ -187,7 +187,7 @@
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
-            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
+            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), Arg.Any<string>());
 
             Assert.Equal(matchInfos, actual.Item1);
             Assert.Equal(transactionInfos, actual.Item2);
@@ -233,7 +233,7 @@
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
-            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>());
+            await messageService.DidNotReceive().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), Arg.Any<string>());
 
             Assert.Equal(matchInfos, actual.Item1);
             Assert.Equal(transactionInfos, actual.Item2);

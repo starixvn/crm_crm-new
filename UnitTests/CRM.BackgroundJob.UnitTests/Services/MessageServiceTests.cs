@@ -163,7 +163,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<EditStatusVoidingMessageCommand>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.EditStatusVoidingMessageAsync(voidingMessageUserNames);
+            var actual = await service.EditStatusVoidingMessageAsync(voidingMessageUserNames, "Live");
 
             // Assert
             Assert.Equal(expected, actual);

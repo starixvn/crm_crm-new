@@ -32,7 +32,7 @@
 
         Task<IEnumerable<Message>> GetMessageInfoAsync(IEnumerable<int> messageIds);
 
-        Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessageUserName> voidingMessageUserNames);
+        Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessageUserName> voidingMessageUserNames, string environment);
     }
 
     public class MessageService : IMessageService
@@ -125,7 +125,7 @@
             return messages;
         }
 
-        public async Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessageUserName> voidingMessageUserNames)
+        public async Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessageUserName> voidingMessageUserNames, string environment)
         {
             const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' />";
             var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
@@ -136,7 +136,8 @@
             stringBuilder.Append(Constants.Constants.EndRootTag);
             var criteria = new EditStatusVoidingMessageCommand
             {
-                MessageIds = stringBuilder.ToString()
+                MessageIds = stringBuilder.ToString(),
+                Environment = environment
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
