@@ -5,7 +5,7 @@ import { ActionCreators } from '../actions';
 import PropTypes from 'prop-types';
 import CreateForm from "./CreateForm";
 
-class AppContainer extends Component {
+export class AppContainer extends Component {
     static propTypes = {
         getAllSettings: PropTypes.func
     };
@@ -18,8 +18,6 @@ class AppContainer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        };
     }
     
    
@@ -32,7 +30,7 @@ class AppContainer extends Component {
             return null;
         }
         return (
-            <CreateForm />
+            <CreateForm isHost={this.props.isHost}/>
         );
     }
 }
