@@ -118,7 +118,7 @@
                 }
             };
             var service = GetService();
-            feedbackRepository.GetDeletedFeedbacksAsync(Arg.Do<GetLatestFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
+            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<GetLatestFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
             settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 

@@ -1,10 +1,10 @@
-﻿namespace CRM.ViewModels.Feedback.MultipleLogs
+﻿namespace CRM.ViewModels.Feedback
 {
     using System.Collections.Generic;
     using CRM.Models;
     using CRM.Models.Setting;
 
-    public class CreateMultipleLogsViewModel
+    public class CreateFeedbackViewModel
     {
         public IEnumerable<SettingRelation> Extensions { get; set; } = new List<SettingRelation>();
         public IEnumerable<Setting> CommunicationTools { get; set; } = new List<Setting>();
@@ -18,9 +18,14 @@
         public IEnumerable<Product> Bettypes { get; set; } = new List<Product>();
         public IEnumerable<Setting> MainCategories { get; set; } = new List<Setting>();
         public IEnumerable<Setting> SubCategories { get; set; } = new List<Setting>();
+        public IEnumerable<SettingRelation> Roles { get; set; } = new List<SettingRelation>();
+        public IEnumerable<SettingRelation> Titles { get; set; } = new List<SettingRelation>();
+        public IEnumerable<BaseModel> LicenseeTypes { get; set; } = new List<BaseModel>();
+        public IEnumerable<SiteInfo> Sites { get; set; } = new List<SiteInfo>();
         public Product ProductNA { get; set; }
         public Product SubProductNA { get; set; }
         public Product BettypeNA { get; set; }
         public SettingRelation ExtensionNA { get; set; }
+        public Setting CommunicationToolNA { get; set; }
     }
 }

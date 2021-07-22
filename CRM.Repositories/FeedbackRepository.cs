@@ -1,6 +1,5 @@
 ﻿namespace CRM.Repositories
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,12 +9,12 @@
 
     public interface IFeedbackRepository
     {
-        Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbacksAsync(ICriteria criteria);
+        Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(ICriteria criteria);
     }
 
     public class FeedbackRepository : IFeedbackRepository
     {
-        public async Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbacksAsync(ICriteria criteria)
+        public async Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(ICriteria criteria)
         {
             using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
             {
@@ -24,28 +23,14 @@
                     var feedbacks = multi.Read<DeletedFeedback>();
                     var settings = multi.Read<FeedbackSettingRelation>();
 
-                    return GenerateDeletedFeedbackWithSetting(feedbacks, settings);
+                    foreach (var feedback in feedbacks)
+                    {
+                        feedback.Settings = settings.Where(x => x.FeedbackId == feedback.FeedbackId).ToList();
+                    }
+
+                    return feedbacks;
                 }
             }
-        }
-
-        private static IEnumerable<DeletedFeedback> GenerateDeletedFeedbackWithSetting(
-            IEnumerable<DeletedFeedback> feedbacks,
-            IEnumerable<FeedbackSettingRelation> settings)
-        {
-            Func<DeletedFeedback, List<FeedbackSettingRelation>, DeletedFeedback> regenerateDeletedFeedback =
-                delegate (DeletedFeedback f, List<FeedbackSettingRelation> s)
-            {
-                f.Settings = s;
-                return f;
-            };
-            var result = from f in feedbacks
-                         join s in settings on f.FeedbackId equals s.FeedbackId
-                         select new { f, s } into t1
-                         group t1 by t1.f.FeedbackId into g
-                         select regenerateDeletedFeedback(g.FirstOrDefault().f, g.Select(i => i.s).ToList());
-
-            return result.ToList();
         }
     }
 }

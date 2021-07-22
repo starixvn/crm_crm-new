@@ -7,6 +7,7 @@
     using CRM.Criteria.NotificationType;
     using CRM.Models;
     using CRM.Models.Common;
+    using CRM.Models.FeedbackSubject;
     using CRM.Models.NotificationType;
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@
     {
         private INotificationTypeService notificationTypeService;
         private ICommonService commonService;
+        private IFeedbackSubjectService feedbackSubjectService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -66,11 +68,30 @@
             Assert.Equal(expected, (IEnumerable<RecipientModel>)result.Value);
         }
 
+        [Fact]
+        public async Task GetFeedbackSubjectTemplate_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var templates = fixture.Create<IEnumerable<FeedbackSubjectTemplate>>();
+            var subject = fixture.Create<string>();
+            var param = new GetFeedbackSubjectParam();
+            var controller = GetController();
+            feedbackSubjectService.GetFeedbackSubjectTemplateAsync(Arg.Do<GetFeedbackSubjectParam>(x => param = x)).Returns(templates);
+
+            // Act
+            var result = await controller.GetFeedbackSubjectTemplate(subject);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var actual = Assert.IsAssignableFrom<IEnumerable<FeedbackSubjectTemplate>>(jsonResult.Value);
+            Assert.Equal(templates, actual);
+        }
+
         private CommonController GetController()
         {
             notificationTypeService = Substitute.For<INotificationTypeService>();
             commonService = Substitute.For<ICommonService>();
-            var feedbackSubjectService = Substitute.For<IFeedbackSubjectService>();
+            feedbackSubjectService = Substitute.For<IFeedbackSubjectService>();
 
             return new CommonController(notificationTypeService, commonService, feedbackSubjectService);
         }

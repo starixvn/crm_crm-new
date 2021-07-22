@@ -9,7 +9,7 @@
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
-    internal class FeedbackReportExcel : ExcelBase
+    internal class LatestFeedbackExcel : ExcelBase
     {
         private readonly IEnumerable<FeedbackDetail> feedbacks;
         private readonly IEnumerable<Setting> mainCategories;
@@ -19,7 +19,7 @@
         private const byte RowStartHeader = 4;
         private const byte StartComToolsIndex = 7;
 
-        public FeedbackReportExcel(
+        public LatestFeedbackExcel(
             string templatePath,
             IEnumerable<FeedbackDetail> feedbacks,
             IEnumerable<Setting> mainCategories,

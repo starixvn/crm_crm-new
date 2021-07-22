@@ -14,6 +14,7 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
+    using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -90,7 +91,7 @@
             return Json(commandResult);
         }
 
-        protected internal virtual async Task<object> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback)
+        protected internal virtual async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback)
         {
             var feedbackSettings = feedback.Settings;
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);
@@ -103,28 +104,28 @@
             var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
             var countries = await settingService.GetCountryAsync(isIncludeNA: true);
 
-            var settings = new
+            var settings = new CreateFeedbackViewModel
             {
-                extensions = GetExtentions(extentions, feedbackSettings),
-                communicationTools = GetCommunicationTools(communicationTools, feedbackSettings),
-                responses = responses.Where(x => x.IsActive || x.Id == feedback.ResponseId).ToList(),
-                languages = languages.Where(x => x.IsActive || x.LanguageId == feedback.LanguageId).ToList(),
-                statuses = await GetStatusAsync(feedback),
-                roles = roles.Where(x => x.IsActive || x.Id == feedback.RoleId).ToList(),
-                countries = countries.Where(x => x.IsActive || x.Id == feedback.CountryId).ToList(),
-                titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active),
-                licenseeTypes = await settingService.GetLicenseeTypeAsync(),
-                sites = await settingService.GetAllSitesWithGroupAsync(),
-                mainCategories = await GetMainCategoryAsync(feedbackSettings),
-                subCategories = await GetSubCategoryAsync(feedbackSettings),
-                products = GetProducts(products, feedbackSettings),
-                subProducts = GetSubProducts(subProducts, feedbackSettings),
-                bettypes = GetBetTypes(betTypes, feedbackSettings),
-                productNA = products.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ProductNA),
-                subProductNA = subProducts.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.SubProductNA),
-                bettypeNA = betTypes.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.BettypeNA),
-                extensionNA = extentions.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ExtentionNA),
-                communicationToolNA = communicationTools.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.CommunicationNA)
+                Extensions = GetExtentions(extentions, feedbackSettings),
+                CommunicationTools = GetCommunicationTools(communicationTools, feedbackSettings),
+                Responses = responses.Where(x => x.IsActive || x.Id == feedback.ResponseId).ToList(),
+                Languages = languages.Where(x => x.IsActive || x.LanguageId == feedback.LanguageId).ToList(),
+                Statuses = await GetStatusAsync(feedback),
+                Roles = roles.Where(x => x.IsActive || x.Id == feedback.RoleId).ToList(),
+                Countries = countries.Where(x => x.IsActive || x.Id == feedback.CountryId).ToList(),
+                Titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active),
+                LicenseeTypes = await settingService.GetLicenseeTypeAsync(),
+                Sites = await settingService.GetAllSitesWithGroupAsync(),
+                MainCategories = await GetMainCategoryAsync(feedbackSettings),
+                SubCategories = await GetSubCategoryAsync(feedbackSettings),
+                Products = GetProducts(products, feedbackSettings),
+                SubProducts = GetSubProducts(subProducts, feedbackSettings),
+                Bettypes = GetBetTypes(betTypes, feedbackSettings),
+                ProductNA = products.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ProductNA),
+                SubProductNA = subProducts.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.SubProductNA),
+                BettypeNA = betTypes.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.BettypeNA),
+                ExtensionNA = extentions.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ExtentionNA),
+                CommunicationToolNA = communicationTools.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.CommunicationNA)
             };
 
             return settings;

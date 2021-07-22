@@ -82,7 +82,7 @@
             {
                 Top = param.Top
             };
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbacksAsync(criteria);
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var statusHash = statusList.ToDictionary(k => k.StatusId, v => v.Name);
             statusHash.Add(1, ViewResources.Symbol_NotApply);

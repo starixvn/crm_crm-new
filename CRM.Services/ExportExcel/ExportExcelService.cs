@@ -75,7 +75,7 @@
         {
             const string ExcelTemplatePath = "ExcelTemplates/LatestFeedback.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new FeedbackReportExcel(templatePath, feedbacks, mainCategories, top);
+            var excel = new LatestFeedbackExcel(templatePath, feedbacks, mainCategories, top);
             return excel.Export();
         }
     }

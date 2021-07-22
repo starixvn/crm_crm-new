@@ -11,7 +11,7 @@
     using CRM.Models.Feedback.MultipleLogs;
     using CRM.Resources;
     using CRM.Services;
-    using CRM.ViewModels.Feedback.MultipleLogs;
+    using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
@@ -38,6 +38,16 @@
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateMultipleLogsCommand command)
+        {
+            command.CreatorId = napSession.UserId;
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+        }
+
         public async Task<IActionResult> GetSettings()
         {
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
@@ -45,7 +55,7 @@
             var products = await settingService.GetProductAsync(SettingConstants.Active);
             var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
-            var settings = new CreateMultipleLogsViewModel
+            var settings = new CreateFeedbackViewModel
             {
                 Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
                 CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
@@ -87,16 +97,6 @@
         {
             var customers = await baseService.GetDataAsync<VerifyCommunicationToolSetting>(criteria);
             return Json(customers);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateMultipleLogsCommand command)
-        {
-            command.CreatorId = napSession.UserId;
-            command.UserId = napSession.UserId;
-            command.IP = ClientIP;
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
-            return Json(commandResult);
         }
     }
 }
