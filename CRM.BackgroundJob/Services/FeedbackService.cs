@@ -251,7 +251,7 @@
 
                 IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.CustId));
                 criteria.ProductXml = GetProductXml(matchInfo, transactions, settings, settingMappings);
-                criteria.Solution = GetSolutionForCreditSite(message, transactions);
+                criteria.Solution = GetSolutionForCreditSite(message, transactions, matchInfo.IssueTypeId);
                 criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, transactions, matchInfo.IssueTypeId);
                 criteria.MessageId = message.MessageId;
                 criteria.ListOrigCustIds = string.Join(",", batch);
@@ -631,11 +631,19 @@
             return stringBuilder.ToString();
         }
 
-        protected internal virtual string GetSolutionForCreditSite(Message message, IEnumerable<TransactionInfo> transactionInfos)
+        protected internal virtual string GetSolutionForCreditSite(Message message, IEnumerable<TransactionInfo> transactionInfos, int issueTypeId)
         {
             var stringBuilder = new StringBuilder(message.Content_en);
             stringBuilder.Append("<br /><br />").Append(message.Content_cs);
             stringBuilder.Append("<br /><br />Kindly refer to Agency site \"Cancelled Bets\" for Voided user.");
+            if(issueTypeId != abnormalAccount)
+            {
+                foreach (var transaction in transactionInfos)
+                {
+                    stringBuilder.AppendFormat("<br />{0} {1}", transaction.Username, transaction.TransId);
+                }
+
+            }
             return stringBuilder.ToString();
         }
     }

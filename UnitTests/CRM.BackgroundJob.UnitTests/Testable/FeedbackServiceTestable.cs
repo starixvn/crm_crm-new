@@ -173,9 +173,9 @@
             return base.GetSolution(message);
         }
 
-        public string Public_GetSolutionForCreditSite(Message message, IEnumerable<TransactionInfo> transactionInfos)
+        public string Public_GetSolutionForCreditSite(Message message, IEnumerable<TransactionInfo> transactionInfos, int issueTypeId)
         {
-            return base.GetSolutionForCreditSite(message, transactionInfos);
+            return base.GetSolutionForCreditSite(message, transactionInfos, issueTypeId);
         }
     }
 }

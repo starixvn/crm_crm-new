@@ -279,7 +279,7 @@
             var service = MockService();
             baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
             service.Protected("GetProductXml", matchInfo, Arg.Any<IEnumerable<TransactionInfo>>(), settings, settingMappings).Returns("product xml");
-            service.Protected("GetSolutionForCreditSite", message, Arg.Any<IEnumerable<TransactionInfo>>()).Returns("solution");
+            service.Protected("GetSolutionForCreditSite", message, Arg.Any<IEnumerable<TransactionInfo>>(), Arg.Any<int>()).Returns("solution");
             service.Protected("GetRelatedCustomerXml", headline.HeadlineId, Arg.Any<IEnumerable<TransactionInfo>>(), matchInfo.IssueTypeId).Returns("related customer xml");
             service.Protected("GetDescriptionForCreditSite", message.MessageId, "1", matchInfo, Arg.Any<IEnumerable<TransactionInfo>>()).Returns("description");
 
@@ -1041,7 +1041,7 @@
         }
 
         [Fact]
-        public void GetSolutionForCreditSite_WhenCalled_ReturnExpectedSolution()
+        public void GetSolutionForCreditSite_AbnormalAccount_ReturnExpectedSolution()
         {
             // Arrange
             var message = fixture.Create<Message>();
@@ -1055,7 +1055,29 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetSolutionForCreditSite(message, transactions);
+            var actual = service.Public_GetSolutionForCreditSite(message, transactions, 13);
+
+            // Assert
+            Assert.Equal(stringBuilder.ToString(), actual);
+        }
+
+        [Fact]
+        public void GetSolutionForCreditSite_AbnormalBet_ReturnExpectedSolution()
+        {
+            // Arrange
+            var message = fixture.Create<Message>();
+            var transactions = new List<TransactionInfo>
+            {
+                new TransactionInfo {TransId = 1, Username = "starixIT"}
+            };
+            var stringBuilder = new StringBuilder(message.Content_en);
+            stringBuilder.Append("<br /><br />").Append(message.Content_cs);
+            stringBuilder.Append("<br /><br />Kindly refer to Agency site \"Cancelled Bets\" for Voided user.");
+            stringBuilder.Append("<br />starixIT 1");
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetSolutionForCreditSite(message, transactions, 11);
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
