@@ -64,9 +64,9 @@ export class DataGrid extends Component {
 
         const categories = [];
         for (let i = 0; i < mainCategoryIds.length; i++) {
-            let subCategoryIds = [];
+            const subCategoryIds = [];
             for (let j = 0; j < settings.length; j++) {
-                if ((settings[j].settingType === 'Category') && settings[j].settingId == mainCategoryIds[i]) {
+                if ((settings[j].settingType === 'Category') && settings[j].settingId === mainCategoryIds[i]) {
                     subCategoryIds.push(settings[j].subSettingId);
                 }
             }
@@ -74,13 +74,13 @@ export class DataGrid extends Component {
             categories.push({
                 mainCategoryId: mainCategoryIds[i],
                 subCategoryIds: subCategoryIds
-            })
+            });
         }
 
         let result = '';
         for (let i = 0; i < categories.length; i++) {
             result += `<div class="font-weight-bold">${this.getMainCategoryName(categories[i].mainCategoryId, mainCategories)}</div>`;
-            let subCategoryIds = categories[i].subCategoryIds;
+            const subCategoryIds = categories[i].subCategoryIds;
             for (let j = 0; j < subCategoryIds.length; j++) {
                 result += `<div class="font-italic ml-3">
                         ${this.getSubCategoryName(categories[i].mainCategoryId, subCategoryIds[j], mainCategories)}

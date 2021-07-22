@@ -30,7 +30,7 @@ export default class SelectWithSearch extends Component {
                     id: this.props.value,
                     name: this.props.name
                 }
-            })
+            });
         }
     }
 
@@ -65,9 +65,7 @@ export default class SelectWithSearch extends Component {
         const value = event.target.value;
 
         const options = this.props.options.map(item => {
-            const childSites = item.childSites.filter(site => {
-                return site.name.toLowerCase().includes(value.toLowerCase());
-            });
+            const childSites = item.childSites.filter(site => site.name.toLowerCase().includes(value.toLowerCase()));
             return { name: item.name, id: item.id, childSites };
         });
         this.setState({
@@ -87,7 +85,7 @@ export default class SelectWithSearch extends Component {
         const item = {
             id: 0,
             name: 'N/A'
-        }
+        };
         this.setState({
             selectFormStatus: '',
             selectedItem: item
@@ -98,12 +96,11 @@ export default class SelectWithSearch extends Component {
     toggleCollapseExpanse = () => {
         this.setState({
             collapsedAll: !this.state.collapsedAll
-        })
+        });
     };
 
     clickHandler = event => {
-        const { target } = event
-        if (this.wrapperRef && !this.wrapperRef.current.contains(target)) {
+        if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
             this.setState({
                 selectFormStatus: ''
             });
@@ -153,29 +150,31 @@ export default class SelectWithSearch extends Component {
 
                                 {
                                     options.map((item, index) => {
-                                        if (item.childSites.length > 0) {
-                                            return (
-                                                <li className="parent" key={index}>
-                                                    <a>
-                                                        <span className="group-text">{item.name}</span>
-                                                    </a>
-                                                    <ul className="list-unstyled">
-                                                        {
-                                                            this.state.collapsedAll &&
-                                                            item.childSites.map((item1, index1) => {
-                                                                return (
-                                                                    <li key={index1}>
-                                                                        <a onClick={() => this.selectItem(item1)}>
-                                                                            <span>{item1.name}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                )
-                                                            })
-                                                        }
-                                                    </ul>
-                                                </li>
-                                            );
+                                        if (item.childSites.length === 0) {
+                                            return null;
                                         }
+
+                                        return (
+                                            <li className="parent" key={index}>
+                                                <a>
+                                                    <span className="group-text">{item.name}</span>
+                                                </a>
+                                                <ul className="list-unstyled">
+                                                    {
+                                                        this.state.collapsedAll &&
+                                                        item.childSites.map((item1, index1) => {
+                                                            return (
+                                                                <li key={index1}>
+                                                                    <a onClick={() => this.selectItem(item1)}>
+                                                                        <span>{item1.name}</span>
+                                                                    </a>
+                                                                </li>
+                                                            );
+                                                        })
+                                                    }
+                                                </ul>
+                                            </li>
+                                        );
                                     })}
                             </ul>
                         </div>

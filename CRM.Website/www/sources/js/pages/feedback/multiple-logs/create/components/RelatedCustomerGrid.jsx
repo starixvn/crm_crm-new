@@ -55,7 +55,7 @@ export class RelatedCustomerGrid extends Component {
 
     handleOpenViewRelatedCustomerDialog = relatedCustomers => {
         this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
-    }
+    };
 
     renderRelatedCustomerColumn = customer => {
         let html = '';

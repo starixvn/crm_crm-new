@@ -122,7 +122,7 @@ export default class AutoComplete extends Component {
             this.setState({ selectedItem: -1 });
         } else {
             const { diplayField, options } = this.props;
-            const index = selectedItem - 1
+            const index = selectedItem - 1;
             const value = diplayField.length > 0 ? options[index][diplayField] : options[index];
             this.setState({
                 selectedItem: index,
@@ -140,7 +140,7 @@ export default class AutoComplete extends Component {
             return;
         }
 
-        const index = selectedItem + 1
+        const index = selectedItem + 1;
         const value = diplayField.length > 0 ? options[index][diplayField] : options[index];
         this.setState({
             selectedItem: index,
@@ -166,14 +166,16 @@ export default class AutoComplete extends Component {
                         <div className="autocomplete-items">
                             {
                                 options.map((item, index) => {
-                                    const reg = new RegExp('(' + searchValue + ')', 'gi');
-                                    const selected = this.state.selectedItem === index ? 'selected' : ''
+                                    const reg = new RegExp(`(${searchValue})`, 'gi');
+                                    const selected = this.state.selectedItem === index ? 'selected' : '';
                                     const displayValue = (diplayField.length > 0 ? item[diplayField] : item)
                                         .replace(reg, "<span class='text-matched'>$1</span>");
 
                                     return (
-                                        <div className={`autocomplete-item ${selected}`} onClick={() => this.selectOption(item)} key={index}
-                                            dangerouslySetInnerHTML={{ __html: displayValue }} onMouseOver={() => this.handleSetSelectedItem(index)}
+                                        <div key={index} className={`autocomplete-item ${selected}`}
+                                            dangerouslySetInnerHTML={{ __html: displayValue }}
+                                            onClick={() => this.selectOption(item)}
+                                            onMouseOver={() => this.handleSetSelectedItem(index)}
                                         />
                                     );
                                 })

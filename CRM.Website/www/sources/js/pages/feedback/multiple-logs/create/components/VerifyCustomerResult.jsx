@@ -16,7 +16,7 @@ export class VerifyCustomerResult extends Component {
                     const totalItems = relatedCustomers.length;
                     relatedCustomers.push({ index: totalItems + 1, username: child.username, isValid: true });
                 }
-            })
+            });
         });
 
         this.props.setAddRelatedCustomerDialog({
@@ -25,24 +25,21 @@ export class VerifyCustomerResult extends Component {
             relatedCustomers,
             relatedCustomerResults: [...this.props.relatedCustomerResults]
         });
-    }
+    };
 
     renderCustomerItem = (customer, index) => {
+        const className = customer.custId > 0 ? 'customer' : customer.custId < 0 ? 'guest' : 'invalid';
         return (
             <div key={index} className="customer-item mr-2 mb-2">
                 <span className="fa fa-times mr-2" onClick={() => this.props.removeCustomer(customer)}></span>
-                <span className={customer.custId > 0 ? 'customer' : customer.custId < 0 ? 'guest' : 'invalid'}>
-                    {customer.username}
-                </span>
+                <span className={className}>{customer.username}</span>
             </div>
         );
     };
 
     render() {
         const { verifyCustomerResults, relatedCustomerResults } = this.props;
-        const showAddRelatedCustomer = verifyCustomerResults.filter(item => {
-            return item.isHeadline || item.isDirectAccount;
-        }).length > 0;
+        const showAddRelatedCustomer = verifyCustomerResults.filter(item => item.isHeadline || item.isDirectAccount).length > 0;
 
         return (
             <div>

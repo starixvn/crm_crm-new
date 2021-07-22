@@ -13,7 +13,7 @@ export default class DatePickerField extends React.Component {
         super(props);
 
         this.state = {
-            selected: this.props.selected,
+            selected: this.props.selected
         };
     }
 
@@ -25,7 +25,7 @@ export default class DatePickerField extends React.Component {
 
     handleTimeNow = () => {
         this.setState({ selected: new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))) });
-    }
+    };
 
     render() {
         const { className, selected, isInvalid, ...rest } = this.props;

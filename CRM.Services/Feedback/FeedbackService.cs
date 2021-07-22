@@ -7,7 +7,6 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
-    using CRM.Criteria.Feedback.LatestFeedback;
     using CRM.Models.Customer;
     using CRM.Models.Feedback;
     using CRM.Models.LatestFeedback;
@@ -79,7 +78,7 @@
 
         public async Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param)
         {
-            var criteria = new LatestFeedbackCriteria
+            var criteria = new GetLatestFeedbackCriteria
             {
                 Top = param.Top
             };

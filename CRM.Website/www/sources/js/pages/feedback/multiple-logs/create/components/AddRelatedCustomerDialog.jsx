@@ -150,7 +150,7 @@ export class AddRelatedCustomerDialog extends Component {
     handleCloseAddRelatedCustomerDialog = () => {
         this.props.setRelatedCustomerResults([...this.props.addRelatedCustomerDialog.relatedCustomerResults]);
         this.props.setAddRelatedCustomerDialog({ show: false });
-    }
+    };
 
     verifyRelatedCustomers = () => {
         const errMsgs = [];
@@ -224,11 +224,11 @@ export class AddRelatedCustomerDialog extends Component {
 
             Site.unblockUI();
         });
-    }
+    };
 
     handleSubmit = () => {
         this.props.setAddRelatedCustomerDialog({ show: false });
-    }
+    };
 
     render() {
         const { relatedCustomers, errMsgs, verified } = this.state;

@@ -1,17 +1,16 @@
 ﻿namespace CRM.Controllers.Feedback
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Feedback.MultipleLogs;
     using CRM.Models.Feedback.MultipleLogs;
     using CRM.Resources;
     using CRM.Services;
-    using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback.MultipleLogs;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
@@ -21,16 +20,16 @@
     public class MultipleLogsController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly IMultipleLogsService multipleLogsService;
+        private readonly IBaseService baseService;
         private readonly ISettingService settingService;
 
         public MultipleLogsController(
             INapSession napSession,
-            IMultipleLogsService multipleLogsService,
+            IBaseService baseService,
             ISettingService settingService)
         {
             this.napSession = napSession;
-            this.multipleLogsService = multipleLogsService;
+            this.baseService = baseService;
             this.settingService = settingService;
         }
 
@@ -72,21 +71,21 @@
         [HttpPost]
         public async Task<IActionResult> VerifyCustomer([FromBody] VerifyCustomerCriteria criteria)
         {
-            IEnumerable<VerifyCustomerResult> customers = await multipleLogsService.VerifyCustomerAsync(criteria);
+            var customers = await baseService.GetDataAsync<VerifyCustomerResult>(criteria);
             return Json(customers);
         }
 
         [HttpPost]
         public async Task<IActionResult> VerifyRelatedCustomer([FromBody] VerifyRelatedCustomerCriteria criteria)
         {
-            IEnumerable<VerifyRelatedCustomerResult> customers = await multipleLogsService.VerifyRelatedCustomerAsync(criteria);
+            var customers = await baseService.GetDataAsync<VerifyRelatedCustomerResult>(criteria);
             return Json(customers);
         }
 
         [HttpPost]
         public async Task<IActionResult> CheckNotExistCommunicationToolSetting([FromBody] CheckNotExistCommunicationToolSettingCriteria criteria)
         {
-            IEnumerable<VerifyCommunicationToolSetting> customers = await multipleLogsService.CheckNotExistCommunicationToolSettingAsync(criteria);
+            var customers = await baseService.GetDataAsync<VerifyCommunicationToolSetting>(criteria);
             return Json(customers);
         }
 
@@ -96,7 +95,7 @@
             command.CreatorId = napSession.UserId;
             command.UserId = napSession.UserId;
             command.IP = ClientIP;
-            CommandResult commandResult = await multipleLogsService.CreateAsync(command);
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }
     }

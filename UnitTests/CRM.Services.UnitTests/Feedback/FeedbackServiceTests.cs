@@ -1,0 +1,211 @@
+﻿namespace CRM.Services.UnitTests.Feedback
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using AutoFixture;
+    using CRM.Core.Constants;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using CRM.Criteria.Feedback;
+    using CRM.Models.Customer;
+    using CRM.Models.Feedback;
+    using CRM.Models.LatestFeedback;
+    using CRM.Models.Setting;
+    using CRM.Repositories;
+    using CRM.Services.Feedback;
+    using NSubstitute;
+    using Xunit;
+
+    public class FeedbackServiceTests
+    {
+        private readonly IFixture fixture = new Fixture();
+        private IBaseService baseService;
+        private ISettingService settingService;
+        private ICommonService commonService;
+        private IFeedbackRepository feedbackRepository;
+
+        #region GetCustomerFeedbackByIdAsync
+
+        [Fact]
+        public async Task GetCustomerFeedbackByIdAsync_FeedbackIsNotExist_ReturnNull()
+        {
+            // Arrange
+            var feedbacks = new List<CustomerFeedback>();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
+            var criteria = new GetCustomerFeedbackByIdCriteria();
+            var service = GetService();
+            baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomer, FeedbackSettingRelation>(
+                Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x)).Returns((feedbacks, relatedCustomers, settings));
+
+            // Act
+            var actual = await service.GetCustomerFeedbackByIdAsync(1);
+
+            // Assert
+            Assert.Null(actual);
+            Assert.Equal(1, criteria.FeedbackId);
+            commonService.DidNotReceive().ConvertToClientDateTime(Arg.Any<DateTime>());
+            await settingService.DidNotReceive().GetSiteByIdAsync(Arg.Any<int>());
+        }
+
+        [Fact]
+        public async Task GetCustomerFeedbackByIdAsync_FeedbackIsExist_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var date = fixture.Create<DateTime>();
+            var clientdate = fixture.Create<DateTime>();
+            var feedbacks = new List<CustomerFeedback>
+            {
+                new CustomerFeedback
+                {
+                    FeedbackId = 1, SiteId = 1, FeedbackDate = date,
+                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                }
+            };
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
+            var site = fixture.Create<SiteSetting>();
+            var criteria = new GetCustomerFeedbackByIdCriteria();
+            var service = GetService();
+            baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomer, FeedbackSettingRelation>(
+                Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x)).Returns((feedbacks, relatedCustomers, settings));
+            settingService.GetSiteByIdAsync(1).Returns(site);
+            commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
+
+            // Act
+            var actual = await service.GetCustomerFeedbackByIdAsync(1);
+
+            // Assert
+            Assert.Equal(feedbacks.First(), actual);
+            Assert.Equal(clientdate, actual.FeedbackDate);
+            Assert.Equal(clientdate, actual.ResolutionDate);
+            Assert.Equal(clientdate, actual.SolveDate);
+            Assert.Equal(clientdate, actual.CreateDate);
+            Assert.Equal(relatedCustomers, actual.RelatedCustomers);
+            Assert.Equal(settings, actual.Settings);
+            Assert.Equal(site.Id, actual.SiteSetting.Id);
+            Assert.Equal(site.Name, actual.SiteSetting.Name);
+            Assert.True(actual.HasRelated);
+        }
+
+        #endregion GetCustomerFeedbackByIdAsync
+
+        [Fact]
+        public async Task GetLatestFeedbackAsync_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var date = fixture.Create<DateTime>();
+            var clientdate = fixture.Create<DateTime>();
+            var param = fixture.Create<GetLatestFeedbackParam>();
+            var criteria = new GetLatestFeedbackCriteria();
+            var statuses = new List<FeedbackStatus>
+            {
+                new FeedbackStatus { StatusId = 100, Name = "Pending" }
+            };
+            var feedbacks = new List<DeletedFeedback>
+            {
+                new DeletedFeedback
+                {
+                    FeedbackId = 1, StatusId = 100, FeedbackDate = date,
+                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                },
+                new DeletedFeedback
+                {
+                    FeedbackId = 2, StatusId = 101, FeedbackDate = date,
+                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                }
+            };
+            var service = GetService();
+            feedbackRepository.GetDeletedFeedbacksAsync(Arg.Do<GetLatestFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
+            settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
+            commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
+
+            // Act
+            var actual = await service.GetLatestFeedbackAsync(param);
+
+            // Assert
+            Assert.Equal(feedbacks, actual);
+            Assert.Equal(param.Top, criteria.Top);
+            Assert.Collection(actual, item =>
+            {
+                Assert.Equal(clientdate, item.FeedbackDate);
+                Assert.Equal(clientdate, item.ResolutionDate);
+                Assert.Equal(clientdate, item.SolveDate);
+                Assert.Equal(clientdate, item.CreateDate);
+                Assert.Equal("Pending", item.Status);
+            }, item =>
+            {
+                Assert.Equal(clientdate, item.FeedbackDate);
+                Assert.Equal(clientdate, item.ResolutionDate);
+                Assert.Equal(clientdate, item.SolveDate);
+                Assert.Equal(clientdate, item.CreateDate);
+                Assert.Empty(item.Status);
+            });
+        }
+
+        [Fact]
+        public async Task GetNoOfInquiryByFeedbackIdAsync_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var feedback = fixture.Create<EditNoOfInquiry>();
+            var criteria = new GetNoOfInquiryByFeedbackIdCriteria();
+            var service = GetService();
+            baseService.GetDataEntityAsync<EditNoOfInquiry>(Arg.Do<GetNoOfInquiryByFeedbackIdCriteria>(x => criteria = x)).Returns(feedback);
+
+            // Act
+            var actual = await service.GetNoOfInquiryByFeedbackIdAsync(1);
+
+            // Assert
+            Assert.Equal(feedback, actual);
+            Assert.Equal(1, criteria.FeedbackId);
+        }
+
+        [Fact]
+        public async Task EditNoOfInquiryAsync_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var commandResult = fixture.Create<CommandResult>();
+            var command = new EditNoOfInquiryCommand();
+            var service = GetService();
+            baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
+
+            // Act
+            var actual = await service.EditNoOfInquiryAsync(command);
+
+            // Assert
+            Assert.Equal(commandResult, actual);
+        }
+
+        [Fact]
+        public async Task EditCustomerFeedbackAsync_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var commandResult = fixture.Create<CommandResult>();
+            var command = new EditCustomerFeedbackCommand();
+            var service = GetService();
+            baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
+
+            // Act
+            var actual = await service.EditCustomerFeedbackAsync(command);
+
+            // Assert
+            Assert.Equal(commandResult, actual);
+        }
+
+        #region Helpers
+
+        private FeedbackService GetService()
+        {
+            baseService = Substitute.For<IBaseService>();
+            settingService = Substitute.For<ISettingService>();
+            commonService = Substitute.For<ICommonService>();
+            feedbackRepository = Substitute.For<IFeedbackRepository>();
+
+            return new FeedbackService(baseService, settingService, commonService, feedbackRepository);
+        }
+
+        #endregion Helpers
+    }
+}

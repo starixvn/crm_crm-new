@@ -33,7 +33,6 @@
             services.AddScoped<IExportExcelService, ExportExcelService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddTransient<IMultipleLogsService, MultipleLogsService>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)
