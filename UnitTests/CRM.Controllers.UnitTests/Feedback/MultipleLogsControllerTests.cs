@@ -82,7 +82,7 @@
             var statuses = new List<FeedbackStatus>
             {
                 new FeedbackStatus { StatusId = 1, Name = "Pending" },
-                new FeedbackStatus { StatusId = 2, Name = "Deleted" }
+                new FeedbackStatus { StatusId = 11004, Name = "Deleted" }
             };
             var responses = fixture.Create<IEnumerable<SettingRelation>>();
             var languages = fixture.Create<IEnumerable<Language>>();

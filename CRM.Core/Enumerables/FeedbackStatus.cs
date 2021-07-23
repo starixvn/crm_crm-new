@@ -1,6 +1,6 @@
 ﻿namespace CRM.Core.Enumerables
 {
-    public enum Status
+    public enum FeedbackStatus
     {
         None = 0,
         Pending = 11001,

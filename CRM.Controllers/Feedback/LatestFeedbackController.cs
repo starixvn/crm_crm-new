@@ -72,7 +72,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> ExportLatestFeedbackReport([FromBody] GetLatestFeedbackParam param)
+        public async Task<IActionResult> ExportExcel([FromBody] GetLatestFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
             IEnumerable<Setting> mainCategories = await GetMainCategoryAsync();

@@ -17,7 +17,7 @@ const getLatestFeedback = params => async dispatch => {
 };
 
 const exportExcel = params => async () => {
-    const url = Site.resolveClientUrl('LatestFeedback/ExportLatestFeedbackReport');
+    const url = Site.resolveClientUrl('LatestFeedback/ExportExcel');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);

@@ -54,7 +54,7 @@
             var extentionListRemmoveNA = extentionList.Where(x => x.Id != NAConstants.ExtentionNA);
             var extentionNA = extentionList.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var statusListRemoveDelete = statusList.Where(s => s.StatusId != (int)Status.Deleted).ToList();
+            var statusListRemoveDelete = statusList.Where(s => s.StatusId != (int)FeedbackStatus.Deleted).ToList();
             var provinces = await settingService.GetProvinceAsync();
             var communicationToolList = await settingService.GetCommunicationToolAsync(SettingConstants.Active);
             var siteList = await settingService.GetSiteAsync();
@@ -103,7 +103,7 @@
         public async Task<IActionResult> Create([FromBody] AddGuestFeedbackCommand command)
         {
             var isHostDeletedFeedback = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
-            if (command.StatusId == (int)Status.Deleted && !isHostDeletedFeedback)
+            if (command.StatusId == (int)FeedbackStatus.Deleted && !isHostDeletedFeedback)
             {
                 var commandResult = new CommandResult
                 {

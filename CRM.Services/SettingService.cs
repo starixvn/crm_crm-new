@@ -150,15 +150,15 @@
             return languages;
         }
 
-        public async Task<IEnumerable<FeedbackStatus>> GetStatusAsync(byte statusType)
+        public async Task<IEnumerable<Models.Setting.FeedbackStatus>> GetStatusAsync(byte statusType)
         {
             var criteria = new GetAllStatusCriteria
             {
                 ViewType = statusType
             };
 
-            var statuses = (await baseService.GetDataAsync<FeedbackStatus>(criteria)).ToList();
-            var closedStatus = statuses.FirstOrDefault(d => d.StatusId == (int)Status.Closed);
+            var statuses = (await baseService.GetDataAsync<Models.Setting.FeedbackStatus>(criteria)).ToList();
+            var closedStatus = statuses.FirstOrDefault(d => d.StatusId == (int)Core.Enumerables.FeedbackStatus.Closed);
             if (closedStatus != null)
             {
                 statuses.Remove(closedStatus);

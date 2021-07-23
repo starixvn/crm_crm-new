@@ -71,27 +71,38 @@
         [HttpPost]
         public async Task<IActionResult> EditCustomerFeedback([FromBody] EditCustomerFeedbackCommand command)
         {
-            command.UserId = napSession.UserId;
-            command.IP = ClientIP;
-            if (command.IsReviewed)
+            var commandResult = new CommandResult { Code = 0 };
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+                || (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host) &&
+                    command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate))
             {
-                command.ReviewerId = napSession.UserId;
-            }
-            else
-            {
-                command.Review = string.Empty;
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.DoNoEditFeedbackPermission
+                };
             }
 
-            CommandResult commandResult = CheckEditCustomerFeedbackPermission(command);
             if (commandResult.IsSuccessful)
             {
+                command.UserId = napSession.UserId;
+                command.IP = ClientIP;
+                if (command.IsReviewed)
+                {
+                    command.ReviewerId = napSession.UserId;
+                }
+                else
+                {
+                    command.Review = string.Empty;
+                }
+
                 commandResult = await feedbackService.EditCustomerFeedbackAsync(command);
             }
 
             return Json(commandResult);
         }
 
-        protected internal virtual async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback)
+        private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback)
         {
             var feedbackSettings = feedback.Settings;
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);
@@ -138,7 +149,7 @@
 
         private static IList<SettingRelation> GetExtentions(IEnumerable<SettingRelation> extentions, IEnumerable<FeedbackSettingRelation> settings)
         {
-            var feedbackSettings = GetFeedbackSettingByType(settings, SettingTypeConstants.Status);
+            var feedbackSettings = GetFeedbackSettingByType(settings, "Station");
             return extentions.Where(x => (x.IsActive || feedbackSettings.Any(y => y.SettingId == x.Id))
                 && x.Id != NAConstants.ExtentionNA).ToList();
         }
@@ -150,11 +161,11 @@
                 && x.Id != NAConstants.CommunicationNA).ToList();
         }
 
-        private async Task<IList<FeedbackStatus>> GetStatusAsync(CustomerFeedback feedback)
+        private async Task<IList<Models.Setting.FeedbackStatus>> GetStatusAsync(CustomerFeedback feedback)
         {
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             return statuses.Where(x => (x.IsActive || x.StatusId == feedback.StatusId)
-                && !string.Equals(x.Name, ViewResources.Deleted, StringComparison.OrdinalIgnoreCase)).ToList();
+                && x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted).ToList();
         }
 
         private async Task<IList<Setting>> GetMainCategoryAsync(IEnumerable<FeedbackSettingRelation> settings)
@@ -190,25 +201,6 @@
             var feedbackSettings = GetFeedbackSettingByType(settings, SettingTypeConstants.Product);
             return betTypes.Where(x => (x.IsActive || feedbackSettings.Any(y => y.SubSettingIdLevel3 == x.Id))
                 && x.Id != NAConstants.BettypeNA).ToList();
-        }
-
-        protected internal virtual CommandResult CheckEditCustomerFeedbackPermission(EditCustomerFeedbackCommand command)
-        {
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
-                || (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host) &&
-                    command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate))
-            {
-                return new CommandResult
-                {
-                    Code = 1,
-                    Message = ViewResources.DoNoEditFeedbackPermission
-                };
-            }
-
-            return new CommandResult
-            {
-                Code = 0
-            };
         }
     }
 }
