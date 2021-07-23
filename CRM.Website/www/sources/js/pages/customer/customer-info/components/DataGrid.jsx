@@ -470,7 +470,7 @@ export class DataGrid extends Component {
             return null;
         }
 
-        let customerInfo = this.props.gridData.data;
+        const customerInfo = this.props.gridData.data;
         const initialValues = {
             custId: customerInfo.custId,
             username: customerInfo.username || '',
