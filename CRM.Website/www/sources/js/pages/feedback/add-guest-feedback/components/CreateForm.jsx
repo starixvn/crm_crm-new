@@ -248,7 +248,6 @@ export class CreateForm extends Component {
         const customer = customers.trim();
         const items = (event.clipboardData || window.clipboardData).getData('text').replace(/ /g, ',')
             .replace(/\r\n/g, ',').replace(/\n/g, ',').replace(/\t/g, ',').split(',').filter(item => item !== '');
-    
         setTimeout(() => {
             const customersInput = (customer.length > 0 ? customer + ',' : '').concat(items.join(','));
             setFieldValue('customerNameInput', customersInput);
@@ -322,9 +321,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control as="select" size="sm" className="shadow-none"
-                                            name="title" id="title"
-                                            value={values.title}
-                                            onChange={handleChange}
+                                            name="title" id="title" value={values.title} onChange={handleChange}
                                         >
                                             <option value="Mr" hidden disabled />
                                             {this.props.settings.titles.map(renderTitleOptions)}
@@ -339,9 +336,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.firstName}
-                                            name="firstName" id="firstName"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="firstName" id="firstName" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -353,9 +348,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.lastName}
-                                            name="lastName" id="lastName"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="lastName" id="lastName" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -383,9 +376,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.passportNo}
-                                            name="passportNo" id="passportNo"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="passportNo" id="passportNo" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -397,9 +388,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control as="select" size="sm" className="shadow-none"
-                                            name="licenseeType" id="licenseeType"
-                                            value={values.licenseeType}
-                                            onChange={handleChange}
+                                            name="licenseeType" id="licenseeType" value={values.licenseeType} onChange={handleChange}
                                         >
                                             <option value='' hidden disabled />
                                             {this.props.settings.licenseeType.map(renderLicenseeTypeOptions)}
@@ -421,55 +410,43 @@ export class CreateForm extends Component {
                                         <div className="d-flex">
                                             <div className="code-country">
                                                 <Form.Control type="text" size="sm" value={values.countryCode}
-                                                    name="countryCode"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="countryCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="code-area">
                                                 <Form.Control type="text" size="sm" value={values.areaCode}
-                                                    name="areaCode"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="areaCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" value={values.phoneNumber}
-                                                    name="phoneNumber"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    className="shadow-none" autoComplete="off" onChange={handleChange} name="phoneNumber"
                                                 />
                                             </div>
                                         </div>
                                     </Col>
                                 </Form.Group>
                             </Col>
-                            <Col sm="4" md="4">
+                            <Col md="4" sm="4">
                                 <Form.Group as={Row}>
                                     <Form.Label column sm="4" md="4" htmlFor="phone2">
                                         {LangHelper.getResource('Phone2')}
                                     </Form.Label>
-                                    <Col sm="8" md="8">
+                                    <Col md="8" sm="8">
                                         <div className="d-flex">
                                             <div className="code-country">
                                                 <Form.Control type="text" size="sm" value={values.countryCode2}
-                                                    name="countryCode2"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="countryCode2" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="code-area">
                                                 <Form.Control type="text" size="sm" value={values.areaCode2}
-                                                    name="areaCode2"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="areaCode2" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" value={values.phoneNumber2}
-                                                    name="phoneNumber2"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="phoneNumber2" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -485,23 +462,17 @@ export class CreateForm extends Component {
                                         <div className="d-flex">
                                             <div className="code-country">
                                                 <Form.Control type="text" size="sm" value={values.countryCode3}
-                                                    name="countryCode3"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="countryCode3" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="code-area">
                                                 <Form.Control type="text" size="sm" value={values.areaCode3}
-                                                    name="areaCode3"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="areaCode3" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" value={values.phoneNumber3}
-                                                    name="phoneNumber3"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="phoneNumber3" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -519,23 +490,17 @@ export class CreateForm extends Component {
                                         <div className="d-flex">
                                             <div className="code-country">
                                                 <Form.Control type="text" size="sm" value={values.faxCountryCode}
-                                                    name="faxCountryCode"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="faxCountryCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="code-area">
                                                 <Form.Control type="text" size="sm" value={values.faxAreaCode}
-                                                    name="faxAreaCode"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    className="shadow-none" autoComplete="off" name="faxAreaCode" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" value={values.faxNumber}
-                                                    name="faxNumber"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    autoComplete="off" name="faxNumber" className="shadow-none" onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -551,23 +516,17 @@ export class CreateForm extends Component {
                                         <div className="d-flex">
                                             <div className="code-country">
                                                 <Form.Control type="text" size="sm" value={values.mobileCountryCode}
-                                                    name="mobileCountryCode"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="mobileCountryCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="code-area">
                                                 <Form.Control type="text" size="sm" value={values.mobileAreaCode}
-                                                    name="mobileAreaCode"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="mobileAreaCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" value={values.mobilePhoneNumber}
-                                                    name="mobilePhoneNumber"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    onChange={handleChange} name="mobilePhoneNumber" className="shadow-none" autoComplete="off"
                                                 />
                                             </div>
                                         </div>
@@ -583,16 +542,12 @@ export class CreateForm extends Component {
                                         <div className="d-flex">
                                             <div className="picName">
                                                 <Form.Control type="text" size="sm" value={values.pic1Name}
-                                                    name="pic1Name"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="pic1Name" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" value={values.pic1PhoneNumber}
-                                                    name="pic1PhoneNumber"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="pic1PhoneNumber" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -610,16 +565,12 @@ export class CreateForm extends Component {
                                         <div className="d-flex">
                                             <div className="picName">
                                                 <Form.Control type="text" size="sm" value={values.pic2Name}
-                                                    name="pic2Name"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="pic2Name" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" value={values.pic2PhoneNumber}
-                                                    name="pic2PhoneNumber"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="pic2PhoneNumber" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -635,16 +586,12 @@ export class CreateForm extends Component {
                                         <div className="d-flex">
                                             <div className="picName">
                                                 <Form.Control type="text" size="sm" value={values.pic3Name}
-                                                    name="pic3Name"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="pic3Name" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" value={values.pic3PhoneNumber}
-                                                    name="pic3PhoneNumber"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="pic3PhoneNumber" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -660,16 +607,12 @@ export class CreateForm extends Component {
                                         <div className="d-flex">
                                             <div className="picName">
                                                 <Form.Control type="text" size="sm" value={values.pic4Name}
-                                                    name="pic4Name"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="pic4Name" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" value={values.pic4PhoneNumber}
-                                                    name="pic4PhoneNumber"
-                                                    className="shadow-none" autoComplete="off"
-                                                    onChange={handleChange}
+                                                    name="pic4PhoneNumber" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -685,9 +628,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.skype}
-                                            name="skype" id="skype"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="skype" id="skype" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -699,9 +640,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.email}
-                                            name="email" id="email"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="email" id="email" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -713,9 +652,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.telegram}
-                                            name="telegram" id="telegram"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="telegram" id="telegram" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -729,9 +666,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.weChat}
-                                            name="weChat" id="weChat"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="weChat" id="weChat" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -743,9 +678,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.whatApp}
-                                            name="whatApp" id="whatApp"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="whatApp" id="whatApp" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -757,9 +690,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.line}
-                                            name="line" id="line"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="line" id="line" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -773,9 +704,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.letstalk}
-                                            name="letstalk" id="letstalk"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="letstalk" id="letstalk" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -787,9 +716,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.qq}
-                                            name="qq" id="qq"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="qq" id="qq" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -801,9 +728,7 @@ export class CreateForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={values.zalo}
-                                            name="zalo" id="zalo"
-                                            className="shadow-none" autoComplete="off"
-                                            onChange={handleChange}
+                                            name="zalo" id="zalo" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -816,8 +741,8 @@ export class CreateForm extends Component {
     };
 
     renderDetails = (values, errors, touched, handleChange, setFieldValue) => {
-        const { subCategoriesOptions, subProductOptions, betTypeOptions, collapse } = this.state;
-        const { mainCategories, products, status, languages, responses, countries, extensions, communicationTools } = this.props.settings;
+        const collapse = this.state.collapse;
+        const { status, languages, responses, countries, extensions } = this.props.settings;
         return (
             <div className='panel-group'>
                 <Form.Group as={Row} className="title"
@@ -887,140 +812,7 @@ export class CreateForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row}>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="communication" className="required">
-                                        {LangHelper.getResource('Communication')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <MultipleSelect
-                                            isInvalid={touched.communication && errors.communication}
-                                            dataSource={communicationTools}
-                                            keyField='id'
-                                            valueField='name'
-                                            hasAllOption={communicationTools.length > 0}
-                                            isAllTextShown={communicationTools.length > 0}
-                                            hasSearchBox
-                                            isNAOption
-                                            onChange={(currentItem, selectedItemsKey) => this.handleCommunicationChange(currentItem, selectedItemsKey, setFieldValue)}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="category" className="required">
-                                        {LangHelper.getResource('Category')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <MultipleSelect
-                                            isInvalid={touched.category && errors.category}
-                                            dataSource={mainCategories}
-                                            keyField='mainCategoryID'
-                                            valueField='name'
-                                            hasAllOption={mainCategories.length > 0}
-                                            isAllTextShown={mainCategories.length > 0}
-                                            hasSearchBox
-                                            isNAOption
-                                            onChange={(currentItem, selectedItemsKey) => {
-                                                this.mainCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue, values.subject);
-                                            }}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="subCategory" className="required">
-                                        {LangHelper.getResource('SubCategory')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <MultipleSelect
-                                            isInvalid={touched.subCategory && errors.subCategory}
-                                            dataSource={subCategoriesOptions}
-                                            keyField='subCategoryId'
-                                            valueField='name'
-                                            hasAllOption={subCategoriesOptions.length > 0}
-                                            isAllTextShown={subCategoriesOptions.length > 0}
-                                            hasSearchBox
-                                            isNAOption
-                                            onChange={(currentItem, selectedItemsKey) => {
-                                                this.subCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue);
-                                            }}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="product">
-                                        {LangHelper.getResource('Product')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <MultipleSelect
-                                            isInvalid={touched.product && errors.product}
-                                            dataSource={products}
-                                            keyField='id'
-                                            valueField='value'
-                                            hasAllOption={products.length > 0}
-                                            isAllTextShown={products.length > 0}
-                                            hasSearchBox
-                                            isNAOption
-                                            onChange={(currentItem, selectedItemsKey) => {
-                                                this.productHandleChange(currentItem, selectedItemsKey, setFieldValue);
-                                            }}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="subProduct">
-                                        {LangHelper.getResource('SubProduct')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <MultipleSelect
-                                            isInvalid={touched.subProduct && errors.subProduct}
-                                            dataSource={subProductOptions}
-                                            keyField='id'
-                                            valueField='value'
-                                            hasAllOption={subProductOptions.length > 0}
-                                            isAllTextShown={subProductOptions.length > 0}
-                                            hasSearchBox
-                                            isNAOption
-                                            onChange={(currentItem, selectedItemsKey) => {
-                                                this.subProductHandleChange(currentItem, selectedItemsKey, setFieldValue);
-                                            }}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="betType">
-                                        {LangHelper.getResource('BetType')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <MultipleSelect
-                                            isInvalid={touched.betType && errors.betType}
-                                            dataSource={betTypeOptions}
-                                            keyField='id'
-                                            valueField='value'
-                                            hasAllOption={betTypeOptions.length > 0}
-                                            isAllTextShown={betTypeOptions.length > 0}
-                                            hasSearchBox
-                                            isNAOption
-                                            onChange={(currentItem, selectedItemsKey) => {
-                                                this.betTypeHandleChange(currentItem, selectedItemsKey, setFieldValue);
-                                            }}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
+                        {this.renderDetailDropdown(values, errors, touched, handleChange, setFieldValue)}
                         <Form.Group as={Row}>
                             <Col sm="4" md="4">
                                 <Form.Group as={Row}>
@@ -1169,6 +961,149 @@ export class CreateForm extends Component {
         );
     };
 
+    renderDetailDropdown = (values, errors, touched, handleChange, setFieldValue) => {
+        const { subCategoriesOptions, subProductOptions, betTypeOptions } = this.state;
+        const { mainCategories, products, communicationTools } = this.props.settings;
+        return (
+            <div>
+                <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="communication" className="required">
+                                {LangHelper.getResource('Communication')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    keyField='id'
+                                    valueField='name'
+                                    hasAllOption={communicationTools.length > 0}
+                                    isAllTextShown={communicationTools.length > 0}
+                                    isInvalid={touched.communication && errors.communication}
+                                    dataSource={communicationTools}
+                                    hasSearchBox
+                                    isNAOption
+                                    onChange={(currentItem, selectedItemsKey) => this.handleCommunicationChange(currentItem, selectedItemsKey, setFieldValue)}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="category" className="required">
+                                {LangHelper.getResource('Category')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    hasAllOption={mainCategories.length > 0}
+                                    isAllTextShown={mainCategories.length > 0}
+                                    hasSearchBox
+                                    isNAOption
+                                    isInvalid={touched.category && errors.category}
+                                    dataSource={mainCategories}
+                                    keyField='mainCategoryID'
+                                    valueField='name'
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        this.mainCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue, values.subject);
+                                    }}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="subCategory" className="required">
+                                {LangHelper.getResource('SubCategory')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    hasAllOption={subCategoriesOptions.length > 0}
+                                    isAllTextShown={subCategoriesOptions.length > 0}
+                                    hasSearchBox
+                                    isNAOption
+                                    isInvalid={touched.subCategory && errors.subCategory}
+                                    dataSource={subCategoriesOptions}
+                                    keyField='subCategoryId'
+                                    valueField='name'
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        this.subCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                    }}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="product">
+                                {LangHelper.getResource('Product')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    valueField='value'
+                                    hasAllOption={products.length > 0}
+                                    isAllTextShown={products.length > 0}
+                                    hasSearchBox
+                                    isNAOption
+                                    isInvalid={touched.product && errors.product}
+                                    dataSource={products}
+                                    keyField='id'
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        this.productHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                    }}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="subProduct">
+                                {LangHelper.getResource('SubProduct')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    keyField='id'
+                                    valueField='value'
+                                    hasAllOption={subProductOptions.length > 0}
+                                    isAllTextShown={subProductOptions.length > 0}
+                                    hasSearchBox
+                                    isInvalid={touched.subProduct && errors.subProduct}
+                                    dataSource={subProductOptions}
+                                    isNAOption
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        this.subProductHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                    }}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="betType">
+                                {LangHelper.getResource('BetType')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    hasAllOption={betTypeOptions.length > 0}
+                                    isAllTextShown={betTypeOptions.length > 0}
+                                    hasSearchBox
+                                    isNAOption
+                                    isInvalid={touched.betType && errors.betType}
+                                    dataSource={betTypeOptions}
+                                    keyField='id'
+                                    valueField='value'
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        this.betTypeHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                    }}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+            </div>
+        );
+    };
+
     renderEditBlockDescription = (values, errors, touched, handleChange, setFieldValue) => {
         return (
             <div>
@@ -1190,7 +1125,7 @@ export class CreateForm extends Component {
                         aria-expanded={!this.state.collapse.description}
                     >
                         <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Description')}</Form.Label>
-                        <div className="float-right pr-3" onClick={(e) => this.handleEditBlock(e, 'isEditDescription')}>
+                        <div className="float-right pr-3" onClick={e => this.handleEditBlock(e, 'isEditDescription')}>
                             <span className="fa fa-eye pr-2" />
                             <span>{LangHelper.getResource('Preview')}</span>
                         </div>
@@ -1220,7 +1155,7 @@ export class CreateForm extends Component {
                     aria-expanded={!this.state.collapse.description}
                 >
                     <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Description')}</Form.Label>
-                    <div className="float-right pr-3" onClick={(e) => this.handleEditBlock(e, 'isEditDescription')}>
+                    <div className="float-right pr-3" onClick={e => this.handleEditBlock(e, 'isEditDescription')}>
                         <span>{LangHelper.getResource('Edit')}</span>
                     </div>
                 </div>
@@ -1249,7 +1184,7 @@ export class CreateForm extends Component {
                         aria-expanded={!this.state.collapse.solution}
                     >
                         <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Solution')}</Form.Label>
-                        <div className="float-right pr-3" onClick={(e) => this.handleEditBlock(e, 'isEditSolution')}>
+                        <div className="float-right pr-3" onClick={e => this.handleEditBlock(e, 'isEditSolution')}>
                             {
                                 !this.state.editBlock.isEditSolution ?
                                     <span>{LangHelper.getResource('Edit')}</span>

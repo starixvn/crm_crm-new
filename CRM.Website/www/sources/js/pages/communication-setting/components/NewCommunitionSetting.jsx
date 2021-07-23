@@ -70,7 +70,6 @@ export class NewCommunitionSetting extends PureComponent {
             .replace(/\n/g, ',')
             .replace(/\t/g, ',')
             .split(',').filter(item => item !== '');
-    
         setTimeout(() => {
             const customersInput = (customer.length > 0 ? customer + ',' : '').concat(items.join(','));
             setFieldValue('customerNameInput', customersInput);

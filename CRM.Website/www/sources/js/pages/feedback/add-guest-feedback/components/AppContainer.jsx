@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import PropTypes from 'prop-types';
-import CreateForm from "./CreateForm";
+import CreateForm from './CreateForm';
 
 export class AppContainer extends Component {
     static propTypes = {

@@ -85,7 +85,7 @@ describe('CreateForm', () => {
                   languages: [{languageId: 1}]
             }
         };
-        const expected = `Date Time & Tool: {0}/{1} \n System ID: `;
+        const expected = `Date Time & Tool: {0}/{1}\nSystem ID: `;
     
 
         // Action
