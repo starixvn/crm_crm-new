@@ -110,7 +110,8 @@
 
             var criteria = new ImportFeedbackInfoCriteria
             {
-                Xml = xml
+                Xml = xml,
+                Environment = Environment
             };
             var feedbackInfos = await baseService.GetDataAsync<AutoFeedbackInfo>(criteria);
 
