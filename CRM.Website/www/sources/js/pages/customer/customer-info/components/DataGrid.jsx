@@ -120,7 +120,7 @@ export class DataGrid extends Component {
                                     <span className={'lv' + values.originalDangerLevel}>
                                         {
                                             values.originalDangerLevel !== 0
-                                                ? LangHelper.getResource('Lv1') + ' ' + values.originalDangerLevel
+                                                ? `${LangHelper.getResource('Lv1')} ${values.originalDangerLevel}`
                                                 : LangHelper.getResource('None')
                                         }
                                     </span>
@@ -129,7 +129,7 @@ export class DataGrid extends Component {
                                     <span className={'lv' + values.abtDangerLevel}>
                                         {
                                             values.abtDangerLevel !== 0
-                                                ? LangHelper.getResource('Lv1') + ' ' + values.abtDangerLevel
+                                                ? `${LangHelper.getResource('Lv1')} ${values.abtDangerLevel}`
                                                 : LangHelper.getResource('None')
                                         }
                                     </span>
@@ -138,7 +138,7 @@ export class DataGrid extends Component {
                                     <span className={'lv' + values.otherSportsDangerLevel}>
                                         {
                                             values.otherSportsDangerLevel !== 0
-                                                ? LangHelper.getResource('Lv1') + ' ' + values.otherSportsDangerLevel
+                                                ? `${LangHelper.getResource('Lv1')} ${values.otherSportsDangerLevel}`
                                                 : LangHelper.getResource('None')
                                         }
                                     </span>
@@ -402,7 +402,7 @@ export class DataGrid extends Component {
         );
     };
 
-    handleChangeSite = (item) => {
+    handleChangeSite = item => {
         this.setState({
             siteId: item.id
         });
