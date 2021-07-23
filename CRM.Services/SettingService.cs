@@ -158,7 +158,7 @@
             };
 
             var statuses = (await baseService.GetDataAsync<FeedbackStatus>(criteria)).ToList();
-            var closedStatus = statuses.FirstOrDefault(d => d.StatusId == (int)CRMStatus.Closed);
+            var closedStatus = statuses.FirstOrDefault(d => d.StatusId == (int)Status.Closed);
             if (closedStatus != null)
             {
                 statuses.Remove(closedStatus);

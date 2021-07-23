@@ -203,3 +203,18 @@ function generateCustomerPrefix(hasRelated, relatedCustomers) {
 
     return 'System ID: ' + customers.join(', ');
 }
+
+export const pasteCustomerHandler = (event, customers, setFieldValue) => {
+    const customer = customers.trim();
+    const items = (event.clipboardData || window.clipboardData).getData('text')
+        .replace(/ /g, ',')
+        .replace(/\r\n/g, ',')
+        .replace(/\n/g, ',')
+        .replace(/\t/g, ',')
+        .split(',').filter(item => item !== '');
+
+    setTimeout(() => {
+        const customersInput = (customer.length > 0 ? customer + ',' : '').concat(items.join(','));
+        setFieldValue('customerNameInput', customersInput);
+    }, 100);
+};

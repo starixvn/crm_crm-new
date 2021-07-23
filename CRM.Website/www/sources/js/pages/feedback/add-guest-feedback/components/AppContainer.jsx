@@ -19,9 +19,8 @@ export class AppContainer extends Component {
     constructor(props) {
         super(props);
     }
-    
-   
-    componentDidMount(){
+
+    componentDidMount() {
         this.props.getAllSettings();
     }
 
@@ -30,12 +29,12 @@ export class AppContainer extends Component {
             return null;
         }
         return (
-            <CreateForm isHost={this.props.isHost}/>
+            <CreateForm isHost={this.props.isHost} />
         );
     }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators( ActionCreators, dispatch );
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
     const { settings } = state;
@@ -44,4 +43,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect( mapStateToProps, mapDispatchToProps )( AppContainer );
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

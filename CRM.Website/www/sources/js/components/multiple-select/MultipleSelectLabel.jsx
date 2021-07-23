@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MAX_SELECTED_ITEM_FOR_DISPLAY } from './constants';
 
-
 export default class MultipleSelectLabel extends Component {
     static propTypes = {
         textOptions: PropTypes.object,
@@ -33,19 +32,19 @@ export default class MultipleSelectLabel extends Component {
             displayText = textOptions['SelectedItemCount'].replace('#', selectedItemCount);
         } else if (selectedItemCount >= 1) {
             displayText = selectedValues.join(', ');
-        } else if(!dataSourceSize && !isNAOption){
+        } else if (!dataSourceSize && !isNAOption) {
             displayText = textOptions['NoData'];
         }
-        else if(isNAOption && selectedItemCount === 0){
-             displayText = textOptions['NA'];
+        else if (isNAOption && selectedItemCount === 0) {
+            displayText = textOptions['NA'];
         }
 
         return displayText;
-    }
+    };
 
     render() {
         return (
-            <button type='button' disabled = {this.props.isDisable} className='multiple-select-default multiple-select-label'
+            <button type='button' disabled={this.props.isDisable} className='multiple-select-default multiple-select-label'
                 onClick={this.props.onToggle}
             >
                 <span className='text-display'>{this.selectedItemsString}</span>

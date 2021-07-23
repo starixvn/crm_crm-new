@@ -1,7 +1,7 @@
 import React from 'react';
 import LangHelper from '@jsroot/common/langHelper';
 import moment from 'moment';
-import {getInvalidCategoryParams} from '@jsroot/common/shareScripts';
+import { getInvalidCategoryParams } from '@jsroot/common/shareScripts';
 
 export const renderTitleOptions = item => {
     return (
@@ -35,7 +35,6 @@ export const renderLanguage = item => {
     );
 };
 
-
 export const renderResponse = item => {
     return (
         <option key={item.id} value={item.id}>
@@ -52,15 +51,10 @@ export const renderCountry = item => {
     );
 };
 
-
 export const validateFormik = (values, settings) => {
     const errors = {};
     if (!values.identityInformation) {
-        errors.identityInformation = LangHelper.formatString(LangHelper.getResource('FieldRequired'),LangHelper.getResource('Identity'));
-    }
-
-    if (moment(values.feedbackDate).isAfter(moment(values.resolutionTime))) {
-        errors.feedbackDate = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('FeedbackDate'), LangHelper.getResource('ResolutionTime'));
+        errors.identityInformation = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Identity'));
     }
 
     if (values.communication.length === 0) {

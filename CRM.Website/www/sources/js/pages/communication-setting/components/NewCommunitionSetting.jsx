@@ -14,6 +14,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import MultipleSelect from '../../../components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
+import { pasteCustomerHandler } from '@jsroot/common/shareScripts';
 
 export class NewCommunitionSetting extends PureComponent {
     constructor(props) {
@@ -36,13 +37,7 @@ export class NewCommunitionSetting extends PureComponent {
         });
     }
 
-    isValidCustomer = customers => {
-        return customers.split(',').filter(function (value) {
-            return value.length > 50;
-        }).length === 0;
-    };
-
-    handleVerify = (event, setFieldValue, value) => {
+    handleVerifyCustomer = (event, setFieldValue, value) => {
         event.preventDefault();
         const regex1 = new RegExp(/,\s+/g);
         const regex2 = new RegExp(/^,+|,+$/g);
@@ -51,7 +46,10 @@ export class NewCommunitionSetting extends PureComponent {
         const customersInput = value.trim().replace(regex1, ',') // NOSONAR
             .replace(regex2, '') // NOSONAR
             .replace(regex3, ','); // NOSONAR
-        if (this.isValidCustomer(customersInput)) {
+
+        const isValidCustomer = customersInput.split(',').filter(value => value.length > 50).length === 0;
+
+        if (isValidCustomer) {
             this.props.verifyUsername({ Username: customersInput }).then(data => {
                 let customers = [...this.state.listOfCustomer, ...data];
                 customers = customers.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
@@ -63,21 +61,6 @@ export class NewCommunitionSetting extends PureComponent {
             setFieldValue('isVerifiedCustomers', true);
         }
         setFieldValue('customerNameInput', '');
-    };
-
-    pasteCustomerHandler = (event, customers, setFieldValue) => {
-        const customer = customers.trim();
-        const items = (event.clipboardData || window.clipboardData).getData('text')
-            .replace(/ /g, ',')
-            .replace(/\r\n/g, ',')
-            .replace(/\n/g, ',')
-            .replace(/\t/g, ',')
-            .split(',').filter(item => item !== '');
-
-        setTimeout(() => {
-            const customersInput = (customer.length > 0 ? customer + ',' : '').concat(items.join(','));
-            setFieldValue('customerNameInput', customersInput);
-        }, 100);
     };
 
     mainCategoriesChangeNew = (currentItem, selectedItemsKey, setFieldValue) => {
@@ -194,7 +177,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 <Col>
                                     <Form.Control type="text" size="sm" value={values.customerNameInput}
                                         name="customerNameInput" id="customerNameInput"
-                                        onPaste={event => this.pasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
+                                        onPaste={event => pasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
                                         isInvalid={touched.customerNameInput && errors.customerNameInput}
                                         className="shadow-none" autoComplete="off"
                                         onChange={handleChange}
@@ -202,7 +185,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 </Col>
                                 <Col sm="2" md="2">
                                     <Button disabled={values.customerNameInput.length === 0} name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
-                                        size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
+                                        size="sm" onClick={event => this.handleVerifyCustomer(event, setFieldValue, values.customerNameInput)}
                                     >
                                         {LangHelper.getResource('Verify')}
                                     </Button>

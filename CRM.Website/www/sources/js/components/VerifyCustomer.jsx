@@ -31,12 +31,12 @@ export default class VerifyCustomer extends PureComponent {
                 <Form.Group as={Row} className="pt-2 pb-2">
                     <Form.Label column sm="3" md="3" />
                     <Col sm="9" md="9">
-                        <div className="d-flex flex-wrap customersList">
+                        <div className="customersList d-flex flex-wrap">
                             {
                                 listOfCustomers.map((item, index) => {
                                     return (
-                                        <div className={`txt-${this.renderClassNameCustomer(item.custId)}`} key={index}>
-                                            <div className="fa fa-times pr-2" onClick={() => this.props.onClick(item.custId)} />
+                                        <div key={`${index}-${item.custId}`} className={`txt-${this.renderClassNameCustomer(item.custId)}`}>
+                                            <div onClick={() => this.props.onClick(item.custId)} className="pr-2 fa fa-times"/>
                                             <div className="customer-name">{item.val}</div>
                                         </div>);
                                 })
