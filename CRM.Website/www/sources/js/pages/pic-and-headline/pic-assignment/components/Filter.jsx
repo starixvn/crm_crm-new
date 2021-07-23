@@ -98,22 +98,22 @@ export class Filter extends Component {
             }
         }));
 
-    handleChange = e => {
-        e.persist();
+    handleChange = event => {
+        event.persist();
         this.setState(prevState => ({
             filter: {
                 ...prevState.filter,
-                [e.target.name]: e.target.value
+                [event.target.name]: event.target.value
             }
         }));
     };
 
-    handleCheckBoxChange = e => {
-        e.persist();
+    handleCheckBoxChange = event => {
+        event.persist();
         this.setState(prevState => ({
             filter: {
                 ...prevState.filter,
-                [e.target.name]: e.target.checked
+                [event.target.name]: event.target.checked
             }
         }));
     };
@@ -160,8 +160,7 @@ export class Filter extends Component {
         this.props.getGridData(params, data => functions.handleNewRemoveOptions(data, this.props.setRemoveOptions));
     };
 
-    handleOpenAssignPicPopup = () =>
-        this.props.setAssignPicPopup({ show: true });
+    handleOpenAssignPicPopup = () => this.props.setAssignPicPopup({ show: true });
 
     handleToggleFilter = value => {
         this.setState({ showFilter: value });
@@ -172,7 +171,7 @@ export class Filter extends Component {
         const { isHost } = this.props;
 
         return (
-            <Form className='form-filter' onSubmit={() => this.handleSubmit()}>
+            <Form className='form-filter' onSubmit={this.handleSubmit}>
                 {
                     this.state.showFilter &&
                     <Fragment>
@@ -229,7 +228,7 @@ export class Filter extends Component {
                                 <Form.Label>{LangHelper.getResource('HeadlineType')}</Form.Label>
                                 <Form.Control as='select' size='sm' className='shadow-none'
                                     name='headlineType' value={this.state.filter.headlineType}
-                                    onChange={e => this.handleChange(e)}
+                                    onChange={this.handleChange}
                                 >
                                     <option value={2}>{LangHelper.getResource('All')}</option>
                                     {
@@ -244,21 +243,21 @@ export class Filter extends Component {
                                 <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
                                 <Form.Control as='input' size='sm' className='shadow-none'
                                     name='groupHeadline' value={this.state.filter.groupHeadline}
-                                    onChange={e => this.handleChange(e)}
+                                    onChange={this.handleChange}
                                 />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>{LangHelper.getResource('PIC')}</Form.Label>
                                 <Form.Control as='input' size='sm' className='shadow-none'
                                     name='picName' value={this.state.filter.picName}
-                                    onChange={e => this.handleChange(e)}
+                                    onChange={this.handleChange}
                                 />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>{LangHelper.getResource('DirectAccount')}</Form.Label>
                                 <Form.Control as='input' size='sm' className='shadow-none'
                                     name='directAccount' value={this.state.filter.directAccount}
-                                    onChange={e => this.handleChange(e)}
+                                    onChange={this.handleChange}
                                 />
                             </Form.Group>
                             <Form.Group>
@@ -284,36 +283,33 @@ export class Filter extends Component {
                                     className='shadow-none'
                                     name='excludeAssignedAcc'
                                     checked={this.state.filter.excludeAssignedAcc}
-                                    onChange={e => this.handleCheckBoxChange(e)}
+                                    onChange={this.handleCheckBoxChange}
                                 />
                                 <div className='filter-checkbox-text'>{LangHelper.getResource('OnlyShowUnassignedDirectAccounts')}</div>
                                 <input type='checkbox'
                                     className='shadow-none'
                                     name='excludeIgnoredAcc'
                                     checked={this.state.filter.excludeIgnoredAcc}
-                                    onChange={e => this.handleCheckBoxChange(e)}
+                                    onChange={this.handleCheckBoxChange}
                                 />
                                 <div className='filter-checkbox-text'>{LangHelper.getResource('ExcludeIgnoredAccounts')}</div>
                                 <input type='checkbox'
                                     className='shadow-none'
                                     name='excludeIsTest'
                                     checked={this.state.filter.excludeIsTest}
-                                    onChange={e => this.handleCheckBoxChange(e)}
+                                    onChange={this.handleCheckBoxChange}
                                 />
                                 <div className='filter-checkbox-text'>{LangHelper.getResource('ExcludeTestAccounts')}</div>
                             </div>
                         </Form.Row>
                         <Form.Row>
                             <div className='button-row'>
-                                <Button className='mr-4' variant='primary' size='sm'
-                                    onClick={() => this.handleSubmit()}
-                                >
+                                <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
                                     {LangHelper.getResource('Submit')}
                                 </Button>
                                 {
-                                    this.props.isHost&&<Button className='mr-2' variant='primary' size='sm'
-                                        onClick={() => this.handleOpenAssignPicPopup()}
-                                    >
+                                    isHost &&
+                                    <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
                                         {LangHelper.getResource('AssignPIC')}
                                     </Button>
                                 }

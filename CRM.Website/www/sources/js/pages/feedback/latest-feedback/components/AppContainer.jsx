@@ -16,7 +16,7 @@ export class AppContainer extends Component {
         isHost: PropTypes.bool.isRequired,
         getLatestFeedback: PropTypes.func,
         editNoOfInquiryDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        editFeedbackDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editFeedbackDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
@@ -31,13 +31,13 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getLatestFeedback(this.props.gridParams);
-    };
+    }
 
     handleCloseEditNoInquiryDialog = () => {
         this.props.setEditNoOfInquiryDialog({ show: false });
     };
 
-    handleCloseEditFeedbackDialog = (isSuccessful) => {
+    handleCloseEditFeedbackDialog = isSuccessful => {
         this.props.setEditFeedbackDialog({ show: false });
         if (isSuccessful) {
             this.props.getLatestFeedback(this.props.gridParams);
