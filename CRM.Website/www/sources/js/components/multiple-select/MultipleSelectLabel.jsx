@@ -34,13 +34,12 @@ export default class MultipleSelectLabel extends Component {
             displayText = selectedValues.join(', ');
         } else if (!dataSourceSize && !isNAOption) {
             displayText = textOptions['NoData'];
-        }
-        else if (isNAOption && selectedItemCount === 0) {
+        } else if (isNAOption && selectedItemCount === 0) {
             displayText = textOptions['NA'];
         }
 
         return displayText;
-    };
+    }
 
     render() {
         return (

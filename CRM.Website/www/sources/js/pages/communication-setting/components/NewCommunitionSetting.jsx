@@ -14,7 +14,6 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import MultipleSelect from '../../../components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
-import { pasteCustomerHandler } from '@jsroot/common/shareScripts';
 
 export class NewCommunitionSetting extends PureComponent {
     constructor(props) {
@@ -61,6 +60,21 @@ export class NewCommunitionSetting extends PureComponent {
             setFieldValue('isVerifiedCustomers', true);
         }
         setFieldValue('customerNameInput', '');
+    };
+
+    pasteCustomerHandler = (event, customers, setFieldValue) => {
+        const customer = customers.trim();
+        const items = (event.clipboardData || window.clipboardData).getData('text')
+            .replace(/ /g, ',')
+            .replace(/\r\n/g, ',')
+            .replace(/\n/g, ',')
+            .replace(/\t/g, ',')
+            .split(',').filter(item => item !== '');
+    
+        setTimeout(() => {
+            const customersInput = (customer.length > 0 ? customer + ',' : '').concat(items.join(','));
+            setFieldValue('customerNameInput', customersInput);
+        }, 100);
     };
 
     mainCategoriesChangeNew = (currentItem, selectedItemsKey, setFieldValue) => {
@@ -177,7 +191,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 <Col>
                                     <Form.Control type="text" size="sm" value={values.customerNameInput}
                                         name="customerNameInput" id="customerNameInput"
-                                        onPaste={event => pasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
+                                        onPaste={event => this.pasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
                                         isInvalid={touched.customerNameInput && errors.customerNameInput}
                                         className="shadow-none" autoComplete="off"
                                         onChange={handleChange}

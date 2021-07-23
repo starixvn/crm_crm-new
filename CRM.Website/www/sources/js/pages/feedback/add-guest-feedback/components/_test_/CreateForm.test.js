@@ -85,7 +85,7 @@ describe('CreateForm', () => {
                   languages: [{languageId: 1}]
             }
         };
-        const expected = 'Date Time & Tool: {0}/{1}' + ' \n' + 'System ID: ';
+        const expected = `Date Time & Tool: {0}/{1} \n System ID: `;
     
 
         // Action
@@ -132,7 +132,7 @@ describe('CreateForm', () => {
                 touched: {},
                 handleChange: jest.fn(),
                 setFieldValue: jest.fn(),
-                isSubmitting: jest.fn(),
+                isSubmitting: jest.fn()
             };
             it('renderForm call exact function', () => {
                 //Arrange
@@ -904,7 +904,7 @@ describe('CreateForm', () => {
                 const {values, errors, touched, handleChange, setFieldValue} = params;
                 const createForm = shallow(<CreateForm {...props} />);
                 createForm.instance().setState(state);
-                createForm.instance().pasteCustomerHandler = jest.fn();
+                createForm.instance().onPasteCustomerHandler = jest.fn();
                 const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('event') } };
                 const formRender = shallow(createForm.instance().renderDetails(values, errors, touched, handleChange, setFieldValue));
                 
@@ -912,7 +912,7 @@ describe('CreateForm', () => {
                 formRender.find(Form.Control).at(5).simulate('paste', event);
                
                 // Assert
-                expect(createForm.instance().pasteCustomerHandler).toHaveBeenCalled();
+                expect(createForm.instance().onPasteCustomerHandler).toHaveBeenCalled();
             });
 
             it('onClick verify customer call exact function', () => {
