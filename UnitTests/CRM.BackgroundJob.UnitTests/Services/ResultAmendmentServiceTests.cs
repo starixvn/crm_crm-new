@@ -22,13 +22,13 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
     public class ResultAmendmentServiceTests
     {
-        private  AppJobSettings appSettings;
-        private  IBaseService baseService;
-        private  ISettingService settingService;
-        private  ICustomerService customerService;
-        private  ICRMLogService logService;
-        private  ICommonFeedback commonFeedback;
-        private  IFeedbackTransactionService transactionService;
+        private AppJobSettings appSettings;
+        private IBaseService baseService;
+        private ISettingService settingService;
+        private ICustomerService customerService;
+        private ICRMLogService logService;
+        private ICommonFeedback commonFeedback;
+        private IFeedbackTransactionService transactionService;
         private readonly IFixture fixture = new Fixture();
 
 
@@ -135,12 +135,12 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
 
-           service.Received().Protected("ResultAmendmentUpdateSystemSetting", false, resultAmendmentSetting, custNotifications, SystemSettingName.JobStatus);
-           service.Received().Protected(
-                "CreateResultAmendmentFeedbackCreditAsync",
-                Arg.Any<AmendmentAutoFeedbackInfor>(),
-                Arg.Any<IEnumerable<SettingItem>>(),
-                Arg.Any<IEnumerable<SystemSettingMapping>>());
+            service.Received().Protected("ResultAmendmentUpdateSystemSetting", false, resultAmendmentSetting, custNotifications, SystemSettingName.JobStatus);
+            service.Received().Protected(
+                 "CreateResultAmendmentFeedbackCreditAsync",
+                 Arg.Any<AmendmentAutoFeedbackInfor>(),
+                 Arg.Any<IEnumerable<SettingItem>>(),
+                 Arg.Any<IEnumerable<SystemSettingMapping>>());
         }
 
         [Fact]
@@ -184,7 +184,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var service = MockService();
             var resultAmendmentSetting = fixture.Create<ResultAmendmentSetting>();
             var custAmendmentNotifications = fixture.Create<IEnumerable<CusReachAmendmentNotification>>();
-            
+
 
             // Act
             await service.Public_ResultAmendmentUpdateSystemSetting(true, resultAmendmentSetting, custAmendmentNotifications, "JobStatusNameEnv");
@@ -898,7 +898,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             stringBuilder.Append("");
             stringBuilder.Append(Constants.Break);
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("");
-            
+
             // Act
             var actual = service.Public_GetAmendmentDescription(amendment);
 
@@ -1187,7 +1187,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             var numberGame = new StringBuilder("numberGame");
 
-            service.Protected("GetAmendmentDescriptionNumberGame", amendment, testDescTemp,"LeagueName","SportName", "24-Feb-2021").Returns(numberGame);
+            service.Protected("GetAmendmentDescriptionNumberGame", amendment, testDescTemp, "LeagueName", "SportName", "24-Feb-2021").Returns(numberGame);
 
             stringBuilder.Append(numberGame);
             stringBuilder.Append(Constants.Break);
@@ -1229,7 +1229,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             // Act
             var actual = service.Public_GetAmendmentDescriptionVirtualSports(amendment,
                 amendmentDescTemplate,
-                "sportName", 
+                "sportName",
                 "homeName",
                 "awayName",
                 "07:59 AM",
@@ -1443,7 +1443,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var messageContent = fixture.Create<IEnumerable<Message>>();
             var service = MockService();
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Sportsbook");
-            
+
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(expectedAppend);
 
@@ -1509,7 +1509,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN).Returns("leagueNameSC");
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN).Returns("sportNameYN");
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
-            
+
             service.Protected("GetAmendmentSolutionTemplateYnScVirtualSport", amendment.affectedName,
                 amendmentSolTemplate,
                 false,
@@ -1535,13 +1535,13 @@ namespace CRM.BackgroundJob.UnitTests.Services
         }
 
         [Theory]
-        [InlineData("Sportsbook", "789y", true, 0,"test Sportsbook Yn")]
+        [InlineData("Sportsbook", "789y", true, 0, "test Sportsbook Yn")]
         [InlineData("Sportsbook", "789y", false, 0, "test Sportsbook Sc")]
         [InlineData("Sportsbook", "789y", false, 2, "test Outright Sc")]
         [InlineData("Sportsbook", "789y", false, 9, "test Outright Sc")]
         [InlineData("Sportsbook", "789y", false, 3, "test Sportsbook Sc")]
-        [InlineData("Virtual Sports 2", "789y", true, 0,"test VirtualSports2 Yn")]
-        [InlineData("Virtual Sports 2", "789y", false, 0,"test VirtualSports2 Sc")]
+        [InlineData("Virtual Sports 2", "789y", true, 0, "test VirtualSports2 Yn")]
+        [InlineData("Virtual Sports 2", "789y", false, 0, "test VirtualSports2 Sc")]
 
         public void GetAmendmentSolutionTemplateYNSC_DependProductNameAndIsVip_ReturnExactTemplate(string productName, string site, bool isVip, byte EventType, string expected)
         {
@@ -1587,8 +1587,8 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 OutrightSC = "test Outright Sc",
                 VirtualSportsSC = "test Sportsbook sc"
             };
-            var sportBook = new StringBuilder(expected);
-            var sportBookOrOutright = new StringBuilder(expected);
+            var expectedReturn = new StringBuilder(expected);
+
 
             var messageContent = fixture.Create<IEnumerable<Message>>();
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
@@ -1598,7 +1598,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
             commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.vi_VN).Returns("homeNameYN");
             commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.vi_VN).Returns("awayNameYN");
-            var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formatddmm);
 
             service.Protected("GetAmendmentSolutionTemplateYnSportBook", amendment,
                 amendmentSolTemplate,
@@ -1606,10 +1605,9 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 "sportNameYN",
                 "homeNameYN",
                 "awayNameYN",
-                "leagueNameYN").Returns(sportBook);
-            service.Protected("GetAmendmentSolutionTemplateSportBookOrOutright", amendment, isVipCust, sportBook, messageContent, amendmentSolTemplate, Eventdate).Returns(sportBookOrOutright);
+                "leagueNameYN").Returns(expectedReturn);
             var stringBuilder = new StringBuilder();
-            stringBuilder.Append(sportBookOrOutright);
+            stringBuilder.Append(expectedReturn);
 
             // Act
             var actual = service.Public_GetAmendmentSolutionTemplateYNSC(amendment, amendmentSolTemplate, messageContent, isVipCust);
