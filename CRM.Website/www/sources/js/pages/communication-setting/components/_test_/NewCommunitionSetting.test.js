@@ -128,14 +128,14 @@ describe('NewCommunitionSetting', () => {
             }
         };
         const tempFunc = jest.fn();
-        const mEvent = { clipboardData: { getData: jest.fn().mockReturnValueOnce('asd') } };
+        const mEvent = { clipboardData: { getData: jest.fn().mockReturnValueOnce('test') } };
         const param = {
-            values: { customerNameInput: 'asd' },
+            values: { customerNameInput: 'test' },
             errors: {
                 mainCategoryTypesNew: 'main',
                 subCategoryTypesNew: 'sub',
                 comunicationToolTypesNew: 'tool',
-                customerNameInput: 'asd'
+                customerNameInput: 'test'
             },
             touched: {
                 mainCategoryTypesNew: true,
@@ -154,7 +154,7 @@ describe('NewCommunitionSetting', () => {
         };
         const container = shallow(<NewCommunitionSetting {...props} />).instance();
         container.mainCategoriesChangeNew = jest.fn();
-        container.handleVerify = jest.fn();
+        container.handleVerifyCustomer = jest.fn();
         container.pasteCustomerHandler = jest.fn();
         container.setState(state);
         const form = shallow(container.renderFormNewCommunication(param));
@@ -165,7 +165,7 @@ describe('NewCommunitionSetting', () => {
             form.find(Button).at(0).simulate('click');
 
             // Assert
-            expect(container.handleVerify).toHaveBeenCalled();
+            expect(container.handleVerifyCustomer).toHaveBeenCalled();
         });
 
         it('should call correct function pasteCustomerHandler', () => {
@@ -230,46 +230,12 @@ describe('NewCommunitionSetting', () => {
     });
 
     describe('methods', () => {
-        describe('isValidCustomer', () => {
-            it('return true', async () => {
-                // Arrange
-                const props = {
-                    createCommunicationResult: {},
-                    settings: {}
-                };
-
-                const container = shallow(<NewCommunitionSetting {...props} />).instance();
-
-                // Act
-                const actual = container.isValidCustomer('asd');
-
-                // Assert
-                expect(actual).toEqual(true);
-            });
-
-            it('return false', async () => {
-                // Arrange
-                const props = {
-                    createCommunicationResult: {},
-                    settings: {}
-                };
-
-                const container = shallow(<NewCommunitionSetting {...props} />).instance();
-
-                // Act
-                const actual = container.isValidCustomer('asdsasdasadadsdsdaaaaaaaaaaaaadassadsdasddsasdasasadssadsdaassdasadsdasdadsads');
-
-                // Assert
-                expect(actual).toEqual(false);
-            });
-        });
-
-        describe('handleVerify', () => {
+        describe('handleVerifyCustomer', () => {
             it('should calls setState when click', async () => {
                 // Arrange
                 const response = [{
                     id: 1,
-                    name: 'ASD'
+                    name: 'test'
                 }];
                 const promise = Promise.resolve(response);
                 const props = {
@@ -281,17 +247,15 @@ describe('NewCommunitionSetting', () => {
                 const event = {
                     preventDefault: jest.fn()
                 };
-                const expected = [{ 'id': 1, 'name': 'ASD' }];
+                const expected = [{ 'id': 1, 'name': 'test' }];
                 const container = shallow(<NewCommunitionSetting {...props} />).instance();
-                container.isValidCustomer = jest.fn(() => { return true; });
                 // Act
-                container.handleVerify(event, setFieldValue, 'asd');
+                container.handleVerifyCustomer(event, setFieldValue, 'test');
                 await promise;
 
                 // Assert
                 expect(event.preventDefault).toHaveBeenCalled();
-                expect(container.isValidCustomer).toHaveBeenCalledWith('asd');
-                expect(props.verifyUsername).toHaveBeenCalledWith({ Username: 'asd' });
+                expect(props.verifyUsername).toHaveBeenCalledWith({ Username: 'test' });
                 expect(container.state.listOfCustomer).toEqual(expected);
                 expect(container.state.listOfCustomerValid).toEqual(expected);
                 expect(setFieldValue).toHaveBeenCalled();
@@ -301,7 +265,7 @@ describe('NewCommunitionSetting', () => {
                 // Arrange
                 const response = [{
                     id: 1,
-                    name: 'ASD'
+                    name: 'test'
                 }];
                 const promise = Promise.resolve(response);
                 const props = {
@@ -313,11 +277,10 @@ describe('NewCommunitionSetting', () => {
                 const event = {
                     preventDefault: jest.fn()
                 };
-                const expected = [{ 'id': 1, 'name': 'ASD' }];
+                const expected = [{ 'id': 1, 'name': 'test' }];
                 const container = shallow(<NewCommunitionSetting {...props} />).instance();
-                container.isValidCustomer = jest.fn(() => { return false; });
                 // Act
-                container.handleVerify(event, setFieldValue, 'asd');
+                container.handleVerifyCustomer(event, setFieldValue, 'test');
                 await promise;
 
                 // Assert
@@ -328,8 +291,8 @@ describe('NewCommunitionSetting', () => {
             it('should calls setState and remove duplicate when click ', async () => {
                 // Arrange
                 const response = [
-                    { id: 1, name: 'ASD' },
-                    { id: 1, name: 'ASD' }
+                    { id: 1, name: 'test' },
+                    { id: 1, name: 'test' }
                 ];
                 const promise = Promise.resolve(response);
                 const props = {
@@ -341,11 +304,11 @@ describe('NewCommunitionSetting', () => {
                     preventDefault: jest.fn()
                 };
                 const setFieldValue = jest.fn();
-                const expected = [{ 'id': 1, 'name': 'ASD' }];
+                const expected = [{ 'id': 1, 'name': 'test' }];
                 const container = shallow(<NewCommunitionSetting {...props} />).instance();
 
                 // Act
-                container.handleVerify(event, setFieldValue, 'asd,asd');
+                container.handleVerifyCustomer(event, setFieldValue, 'test,test');
                 await promise;
 
                 // Assert
@@ -363,12 +326,12 @@ describe('NewCommunitionSetting', () => {
                     settings: {}
                 };
                 const setFieldValue = jest.fn();
-                const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('asd') } };
+                const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('test') } };
 
                 // Act
                 const container = shallow(<NewCommunitionSetting {...props} />).instance();
                 container.isValidCustomer = jest.fn().mockReturnValue(true);
-                container.pasteCustomerHandler(event, 'asd', setFieldValue);
+                container.pasteCustomerHandler(event, 'test', setFieldValue);
 
                 // Assert
                 expect(event.clipboardData.getData).toBeCalledWith('text');
@@ -597,13 +560,13 @@ describe('NewCommunitionSetting', () => {
                 const props = {
                     settings: {}
                 };
-                const state = { listOfCustomerValid: 'asd' };
+                const state = { listOfCustomerValid: 'test' };
                 const values = {
                     mainCategoryTypesNew: '1',
                     subCategoryTypesNew: '1',
                     comunicationToolTypesNew: '1',
                     isSaveAndContinue: true,
-                    customerNameInput: 'asd',
+                    customerNameInput: 'test',
                     isVerifiedCustomers: true
                 };
 
@@ -625,7 +588,7 @@ describe('NewCommunitionSetting', () => {
                     mainCategoryTypesNew: '',
                     subCategoryTypesNew: '',
                     comunicationToolTypesNew: '',
-                    customerNameInput: 'asd',
+                    customerNameInput: 'test',
                     isVerifiedCustomers: false
                 };
                 const expected = {
@@ -653,9 +616,9 @@ describe('NewCommunitionSetting', () => {
                     subCategoryTypesNew: '1',
                     comunicationToolTypesNew: '1',
                     isSaveAndContinue: true,
-                    customerNameInput: 'asd'
+                    customerNameInput: 'test'
                 };
-                const state = { listOfCustomerValid: 'asd' };
+                const state = { listOfCustomerValid: 'test' };
                 const formikBag = {
                     setSubmitting: jest.fn(),
                     resetForm: jest.fn()
@@ -684,7 +647,7 @@ describe('NewCommunitionSetting', () => {
                     CategoryIds: '1',
                     SubCategoryIds: '1',
                     CommunicationIds: '1',
-                    Customers: 'asd'
+                    Customers: 'test'
                 });
                 expect(values.customerNameInput).toEqual('');
                 expect(container.state.listOfCustomerValid).toEqual('');
@@ -704,7 +667,7 @@ describe('NewCommunitionSetting', () => {
                     comunicationToolTypesNew: '1',
                     isSaveAndContinue: false
                 };
-                const state = { listOfCustomerValid: 'asd', subCategoryOptionsNew: [1] };
+                const state = { listOfCustomerValid: 'test', subCategoryOptionsNew: [1] };
                 const formikBag = {
                     setSubmitting: jest.fn(),
                     resetForm: jest.fn()
@@ -734,7 +697,7 @@ describe('NewCommunitionSetting', () => {
                     CategoryIds: '0',
                     SubCategoryIds: '0',
                     CommunicationIds: '1',
-                    Customers: 'asd'
+                    Customers: 'test'
                 });
                 expect(props.onSuccess).toHaveBeenCalled();
             });
@@ -747,7 +710,7 @@ describe('NewCommunitionSetting', () => {
                     comunicationToolTypesNew: '1',
                     isSaveAndContinue: false
                 };
-                const state = { listOfCustomerValid: 'asd', subCategoryOptionsNew: [1] };
+                const state = { listOfCustomerValid: 'test', subCategoryOptionsNew: [1] };
                 const formikBag = {
                     setSubmitting: jest.fn(),
                     resetForm: jest.fn()
