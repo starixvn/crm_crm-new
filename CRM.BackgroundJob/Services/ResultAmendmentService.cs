@@ -679,32 +679,12 @@
             var numberGame = GetAmendmentSolutionTemplateYnScNumberGame(
                             amendment.MatchCode, amendment.affectedName, amendmentSolTemplate, isVipCust,
                             numberGameNameYn, Eventdate, numberGameNameSc);
-            var content_cs = messageContent?.FirstOrDefault()?.Content_cs;
-            var content_en = messageContent?.FirstOrDefault()?.Content_en;
+
+            var sportBookOrOutright = GetAmendmentSolutionTemplateSportBookOrOutright(amendment, isVipCust, sportBook, messageContent, amendmentSolTemplate, Eventdate);
             switch (productName)
             {
                 case "Sportsbook":
-                    if (isVipCust)
-                    {
-                        stringBuilder.Append(sportBook);
-                    }
-                    else
-                    {
-                        if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
-                        {
-                            var outRightMessageSc = string.IsNullOrEmpty(content_cs) ? content_en : content_cs;
-                            stringBuilder.AppendFormat(amendmentSolTemplate.OutrightSC,
-                            outRightMessageSc,
-                            amendment.affectedName,
-                            Constants.LineBreak);
-                        }
-                        else
-                        {
-                            stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookSC, sportNameSC, homeNameSC, awayNameSC,
-                            leagueNameSC, Eventdate, amendment.ActualResult, amendment.WrongResult,
-                            amendment.affectedName, Constants.Break, Constants.LineBreak);
-                        }
-                    }
+                    stringBuilder.Append(sportBookOrOutright);
                     break;
 
                 case "Virtual Sports 2":
@@ -733,6 +713,46 @@
                     break;
             }
             logService.LogInformation("End create template desctiption YNSC");
+            return stringBuilder;
+        }
+
+        protected internal virtual StringBuilder GetAmendmentSolutionTemplateSportBookOrOutright(
+            AmendmentAutoFeedbackInfor amendment,
+            bool isVipCust,
+            StringBuilder sportBook,
+            IEnumerable<Message> messageContent,
+            AmendmentSolutionTemplate amendmentSolTemplate,
+            string Eventdate
+            )
+        {
+            var stringBuilder = new StringBuilder();
+            var content_cs = messageContent?.FirstOrDefault()?.Content_cs;
+            var content_en = messageContent?.FirstOrDefault()?.Content_en;
+            var sportNameSC = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN);
+            var homeNameSC = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.zh_CN);
+            var awayNameSC = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.zh_CN);
+            var leagueNameSC = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN);
+            if (isVipCust)
+            {
+                stringBuilder.Append(sportBook);
+            }
+            else
+            {
+                if (amendment.EventType == EventType2 || amendment.EventType == EventType9)
+                {
+                    var outRightMessageSc = string.IsNullOrEmpty(content_cs) ? content_en : content_cs;
+                    stringBuilder.AppendFormat(amendmentSolTemplate.OutrightSC,
+                    outRightMessageSc,
+                    amendment.affectedName,
+                    Constants.LineBreak);
+                }
+                else
+                {
+                    stringBuilder.AppendFormat(amendmentSolTemplate.SportsbookSC, sportNameSC, homeNameSC, awayNameSC,
+                    leagueNameSC, Eventdate, amendment.ActualResult, amendment.WrongResult,
+                    amendment.affectedName, Constants.Break, Constants.LineBreak);
+                }
+            }
             return stringBuilder;
         }
 
