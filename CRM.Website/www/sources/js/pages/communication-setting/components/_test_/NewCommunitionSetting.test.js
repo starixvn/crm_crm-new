@@ -330,7 +330,6 @@ describe('NewCommunitionSetting', () => {
 
                 // Act
                 const container = shallow(<NewCommunitionSetting {...props} />).instance();
-                container.isValidCustomer = jest.fn().mockReturnValue(true);
                 container.pasteCustomerHandler(event, 'test', setFieldValue);
 
                 // Assert

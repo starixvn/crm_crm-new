@@ -255,7 +255,7 @@ export class CreateForm extends Component {
         }, 100);
     };
 
-    deleteCustomerInvalid = id => {
+    deleteCustomerVerify = id => {
         const listOfCustomer = this.state.listOfCustomer.filter(item => item.custId !== id);
         const listOfCustomerValid = this.state.listOfCustomerValid.filter(item => item.custId !== id);
         this.setState({
@@ -894,7 +894,7 @@ export class CreateForm extends Component {
                                 </Row>
                             </Col>
                         </Form.Group>
-                        <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomerInvalid} />
+                        <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomerVerify} />
                         <Form.Group as={Row} className="pt-1 pb-1">
                             <Form.Label column sm="3" md="3" className="required">
                                 {LangHelper.getResource('Subject')}
