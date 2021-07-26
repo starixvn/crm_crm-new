@@ -188,7 +188,6 @@ describe('DataGrid', () => {
 
             it('should render expected header when isHost = true', () => {
                 // Arrange
-                // Arrange
                 const container = shallow(<DataGrid />).instance();
 
                 // Act

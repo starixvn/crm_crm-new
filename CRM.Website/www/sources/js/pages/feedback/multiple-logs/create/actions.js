@@ -20,13 +20,11 @@ const getSettings = () => async dispatch => {
 };
 
 const verifyCustomers = params => async () => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('MultipleLogs/VerifyCustomer');
     return await DataService.postDataAsync(url, params).then(response => response);
 };
 
 const verifyRelatedCustomers = params => async () => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('MultipleLogs/VerifyRelatedCustomer');
     return await DataService.postDataAsync(url, params).then(response => response);
 };
@@ -42,7 +40,7 @@ const checkNotExistCommunicationToolSetting = params => async () => {
     const url = Site.resolveClientUrl('MultipleLogs/CheckNotExistCommunicationToolSetting');
     return await DataService.postDataAsync(url, params).then(response => response);
 };
-
+ 
 const createMultipleLogs = params => async () => {
     const url = Site.resolveClientUrl('MultipleLogs/Create');
     return await DataService.postDataAsync(url, params).then(response => response);
@@ -54,6 +52,7 @@ export const ActionCreators = {
     setRelatedCustomerResults,
     setFeedbackSubjectTemplates,
     setViewRelatedCustomerDialog,
+    setSettings,
     getSettings,
     verifyCustomers,
     verifyRelatedCustomers,

@@ -9,6 +9,14 @@ import Site from '@jsroot/common/site';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class AddRelatedCustomerDialog extends Component {
+    static defaultProps = {
+        addRelatedCustomerDialog: {
+            isEdit: false,
+            relatedCustomers: []
+        },
+        relatedCustomerResults: []
+    };
+
     constructor(props) {
         super(props);
 

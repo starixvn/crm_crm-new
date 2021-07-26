@@ -9,15 +9,15 @@
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
-    internal class LatestFeedbackExcel : ExcelBase
+    public class LatestFeedbackExcel : ExcelBase
     {
         private readonly IEnumerable<FeedbackDetail> feedbacks;
         private readonly IEnumerable<Setting> mainCategories;
         private readonly int top;
 
-        private const byte RowStartBody = 6;
         private const byte RowStartHeader = 4;
-        private const byte StartComToolsIndex = 7;
+        private const byte RowStartBody = 6;
+        private const byte TotalCols = 5;
 
         public LatestFeedbackExcel(
             string templatePath,
@@ -32,37 +32,39 @@
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]
-                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
+            templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
+                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
             worksheet.Cells[1, 1].Value = string.Format(ViewResources.FeedbackReport_Title, top);
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]
-              .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]);
+            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, TotalCols]
+              .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, TotalCols]);
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             int rowIndex = RowStartBody;
-            for (var index = 0; index < feedbacks.Count() - 1; index++)
+            int index = 1;
+            foreach (var feedback in feedbacks)
             {
-                RenderRow(worksheet, feedbacks.ToList()[index], index + 1, rowIndex++);
+                RenderRow(worksheet, feedback, index, rowIndex++);
+                index++;
             }
         }
 
-        private void RenderRow(ExcelWorksheet worksheet, FeedbackDetail feedbackDetail, int index, int rowIndex)
+        protected internal virtual void RenderRow(ExcelWorksheet worksheet, FeedbackDetail feedback, int index, int rowIndex)
         {
             var colIndex = 1;
-            var feedbackCellValue = GetFeedbackCellValue(feedbackDetail);
-            var categoryContents = BuildCategoryContent(feedbackDetail, mainCategories);
+            var feedbackCellValue = GetFeedbackCellValue(feedback);
+            var categoryContents = BuildCategoryContent(feedback);
             var categoryCellValue = string.Join("\n\n", categoryContents);
-            worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.FeedbackId;
+            worksheet.Cells[rowIndex, colIndex++].Value = feedback.FeedbackId;
             worksheet.Cells[rowIndex, colIndex++].Value = feedbackCellValue;
             worksheet.Cells[rowIndex, colIndex++].Value = categoryCellValue;
-            worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Status;
-            worksheet.Cells[rowIndex, colIndex].Value = feedbackDetail.RelatedCustomer.Replace(",", ", ");
+            worksheet.Cells[rowIndex, colIndex++].Value = feedback.Status;
+            worksheet.Cells[rowIndex, colIndex].Value = feedback.RelatedCustomer.Replace(",", ", ");
 
             if ((index & 1) == 0)
             {
@@ -107,33 +109,30 @@
             }
         }
 
-        private static string[] BuildCategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
+        private string[] BuildCategoryContent(FeedbackDetail feedback)
         {
             var settings = feedback.Settings.Where(i => i.SettingType == "Category");
             return settings.GroupBy(s => s.SettingId)
                     .Select(s =>
                     {
-                        var content = GetMainCategoryName(s.Key, mainCategories);
+                        var content = GetMainCategoryName(s.Key);
                         var subIds = s.Select(e => e.SubSettingId).ToList();
                         foreach (var id in subIds)
                         {
-                            content = string.Join(string.Empty, content, "\n  ", GetSubCategoryName(s.Key, id, mainCategories));
+                            content = string.Join(string.Empty, content, "\n  ", GetSubCategoryName(s.Key, id));
                         }
 
                         return content;
                     }).ToArray();
         }
 
-        private static string GetMainCategoryName(int mainCategoryId, IEnumerable<Setting> mainCategories)
+        private string GetMainCategoryName(int mainCategoryId)
         {
             var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
             return mainCategory == null ? string.Empty : mainCategory.SettingValue;
         }
 
-        private static string GetSubCategoryName(
-            int mainCategoryId,
-            int subCategoryId,
-            IEnumerable<Setting> mainCategories)
+        private string GetSubCategoryName(int mainCategoryId, int subCategoryId)
         {
             var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
             var child = mainCategory?.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
