@@ -39,12 +39,12 @@
     </Function>
     <Function Name="Chatbot CWL">
         <Setting Key="Acc_CRM_Chatbot_CWL_Log_Sel" SpName="Acc_CRM_Chatbot_CWL_Log_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Chatbot_CWL_Import" SpName="Acc_CRM_Chatbot_CWL_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_CWL_Import" SpName="Acc_CRM_Chatbot_CWL_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot CTO">
         <Setting Key="Acc_Chatbot_TOControlSetting_Sel" SpName="Acc_Chatbot_TOControlSetting_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_Chatbot_TOControlSMAInfo_Sel" SpName="Acc_Chatbot_TOControlSMAInfo_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Chatbot_TOControl_Import" SpName="Acc_CRM_Chatbot_TOControl_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_TOControl_Import" SpName="Acc_CRM_Chatbot_TOControl_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot ProblemAccount">
         <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Sel" SpName="Acc_CRM_Chatbot_ProblemAccounts_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />

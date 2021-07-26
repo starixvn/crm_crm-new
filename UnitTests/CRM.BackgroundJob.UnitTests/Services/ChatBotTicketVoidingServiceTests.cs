@@ -264,7 +264,7 @@
             const string XmlTemplate = "<r MessageID='{0}' UsernameList='{1}' CustId='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
                 "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}'/>";
-            const string messageTemplate = "<r MessageID='{0}' RequestID='{1}' UsernameList='{2}'/>";
+            const string messageTemplate = "<r MessageID='{0}' RequestID='{1}'/>";
             var messageStringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             var fixture = new Fixture();
             var voidings = new List<VoidingMessage> { 
@@ -275,7 +275,7 @@
                 }
             };
 
-            messageStringBuilder.AppendFormat(messageTemplate, 1, 1, "UsernameList");
+            messageStringBuilder.AppendFormat(messageTemplate, 1, 1);
             messageStringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
 
             var messages = new List<Message>
