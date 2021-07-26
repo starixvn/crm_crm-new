@@ -264,6 +264,7 @@
             Assert.Equal(string.Join(",", custIds), criteria.CustIds);
             Assert.Equal(string.Join(",", status), criteria.Status);
             Assert.Equal(string.Join(",", description), criteria.Description);
+            Assert.Equal(string.Join(",", "LIVE"), criteria.Environment);
         }
 
         #region Helpers

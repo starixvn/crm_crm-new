@@ -62,7 +62,6 @@
                Arg.Any<string>()
                );
         }
-
         [Fact]
         public async Task CreateFeedbackForVoidingAbnormalBetAsync_NotExistedTicketVoiding_ExpectedUpdateSystemSetting()
         {
@@ -83,7 +82,7 @@
             ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), setting).Returns(ticketInfo);
 
             // Act
-            await service.CreateFeedbackForVoidingAbnormalBetAsync(setting, false, setting.LastDateUAT, "LastRuntime", setting.JobStatus, "Live");
+            await service.CreateFeedbackForVoidingAbnormalBetAsync(setting, false, setting.LastDateUAT, "LastRuntime", SystemSettingName.JobStatus, "LIVE");
 
             // Assert
             await commonFeedback.Received().EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());

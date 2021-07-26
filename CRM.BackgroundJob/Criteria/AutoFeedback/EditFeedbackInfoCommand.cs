@@ -9,6 +9,7 @@
         public string CustIds { get; set; }
         public string Status { get; set; }
         public string Description { get; set; }
+        public string Environment { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_AutoFeedbackInfoUpd";
 

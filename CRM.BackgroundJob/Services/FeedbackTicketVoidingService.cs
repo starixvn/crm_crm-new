@@ -193,7 +193,8 @@
                 RequestIds = string.Join(",", requestIds),
                 CustIds = string.Join(",", custIds),
                 Status = status,
-                Description = description
+                Description = description,
+                Environment = Environment
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
