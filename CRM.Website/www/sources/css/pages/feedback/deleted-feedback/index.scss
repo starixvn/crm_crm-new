@@ -1,0 +1,71 @@
+@import '../../../abstracts/variables';
+@import '../../../components/forms';
+@import '../../../components/messages';
+@import '../../../components/modal';
+@import '../../../components/date-picker/style';
+@import '../../../components/ckeditor';
+@import '../../../components/multiple-select/style';
+@import "../../../components/tables";
+@import "../../../components/react-grid/react-grid";
+@import '../../../components/autocomplete';
+
+.fa-exclamation-circle {
+    font-size: 16px; 
+}
+
+.form-filter {
+    border: 1px solid #b7b7b7;
+    margin-bottom: 1rem;
+    padding: 1rem 1rem 0;
+    background-color: #e8e8e8;
+}
+
+strong.link-click {
+    cursor: pointer;
+    color: $link-color !important;
+
+    &:hover {
+        color: $draft-color !important;
+    }
+}
+
+.rounded-circle {
+    padding-right: 5px;
+}
+
+.feedback-info {
+    padding-left: 17px;
+
+    .info{
+        padding: 3px 0px;
+    }
+}
+
+.panel-group {
+    border: 1px solid #b1b1b1;
+    background-color: #e8e8e8;
+
+    .form-group {
+        margin-bottom: 4px;
+    }
+
+    .panel-title {
+        display: flex;
+        align-items: center;
+        height: 28px;
+        margin: 0;
+        padding: 0 15px;
+        color: #2f70b4;
+        background: linear-gradient(#e7e7e7, #e2e2e2);
+        border-bottom: 1px solid #b1b1b1;
+        cursor: pointer;
+
+        .form-label {
+            margin: 0;
+        }
+    }
+
+    .panel-content {
+        padding: 4px 15px;
+    }
+}

@@ -19,7 +19,8 @@ const cssPaths = {
     latest_feedback: ['./www/sources/css/pages/feedback/latest-feedback.scss'],
     add_guest_feedback: ['./www/sources/css/pages/feedback/add-guest-feedback/index.scss'],
     customer_info: ['./www/sources/css/pages/customer/customer-info/index.scss'],
-    create_multiple_logs: ['./www/sources/css/pages/feedback/multiple-logs/create.scss']
+    create_multiple_logs: ['./www/sources/css/pages/feedback/multiple-logs/create.scss'],
+    deleted_feedback: ['./www/sources/css/pages/feedback/deleted-feedback/index.scss']
 };
 
 const scriptPaths = {
@@ -40,7 +41,8 @@ const scriptPaths = {
     latest_feedback: ['./www/sources/js/pages/feedback/latest-feedback/index.js'],
     add_guest_feedback: ['./www/sources/js/pages/feedback/add-guest-feedback/index.js'],
     customer_info: ['./www/sources/js/pages/customer/customer-info/index.js'],
-    create_multiple_logs: ['./www/sources/js/pages/feedback/multiple-logs/create/index.js']
+    create_multiple_logs: ['./www/sources/js/pages/feedback/multiple-logs/create/index.js'],
+    deleted_feedback: ['./www/sources/js/pages/feedback/deleted-feedback/index.js']
 };
 
 module.exports = {

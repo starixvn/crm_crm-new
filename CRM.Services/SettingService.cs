@@ -293,5 +293,27 @@
                 }
             };
         }
+
+        public IEnumerable<Setting> GetReviews()
+        {
+            return new[]
+            {
+                new Setting
+                {
+                    SettingId = ReviewConstants.All,
+                    SettingValue = ViewResources.All
+                },
+                new Setting
+                {
+                    SettingId = ReviewConstants.IsReviewed,
+                    SettingValue = ViewResources.Reviewed
+                },
+                new Setting
+                {
+                    SettingId = ReviewConstants.NotReviewed,
+                    SettingValue = ViewResources.NotReviewed
+                }
+            };
+        }
     }
 }

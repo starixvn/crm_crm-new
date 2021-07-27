@@ -1,17 +1,19 @@
 ﻿namespace CRM.Services.Feedback
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
+    using CRM.Criteria.Feedback.DeletedFeedback;
     using CRM.Models.Customer;
+    using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
     using CRM.Models.LatestFeedback;
     using CRM.Repositories;
     using CRM.Resources;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public interface IFeedbackService
     {
@@ -24,6 +26,8 @@
         Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId);
 
         Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command);
+
+        Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(GetDeletedFeedbackParam param);
     }
 
     public class FeedbackService : IFeedbackService
@@ -117,6 +121,34 @@
         public async Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command)
         {
             return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(GetDeletedFeedbackParam param)
+        {
+            var criteria = new DeletedFeedbackCriteria
+            {
+                Username = param.Username,
+                IsGuest = param.IsGuest,
+                FromDate = param.FromDate,
+                ToDate = param.ToDate,
+                MainCategoryId = param.MainCategoryId,
+                SubCategoryId = param.SubCategoryId,
+                CommunicationId = param.CommunicationId,
+                ResponseId = param.ResponseId,
+                IsReviewed = param.IsReviewed,
+
+            };
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbacksAsync(criteria);
+            var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var statusHash = statusList.ToDictionary(k => k.StatusId, v => v.Name);
+            statusHash.Add(1, ViewResources.Symbol_NotApply);
+
+            foreach (var feedback in feedbacks)
+            {
+                feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
+            }
+
+            return feedbacks;
         }
     }
 }

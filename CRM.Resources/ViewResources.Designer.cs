@@ -187,6 +187,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted Feedback.
+        /// </summary>
+        public static string DeletedFeedback {
+            get {
+                return ResourceManager.GetString("DeletedFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Top_{0}_Feedback.
         /// </summary>
         public static string FeedbackReport_Title {
@@ -331,6 +340,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Reviewed.
+        /// </summary>
+        public static string NotReviewed {
+            get {
+                return ResourceManager.GetString("NotReviewed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No..
         /// </summary>
         public static string NumberColumn {
@@ -381,6 +399,15 @@ namespace CRM.Resources {
         public static string ResultMessage_NoInfo {
             get {
                 return ResourceManager.GetString("ResultMessage_NoInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reviewed.
+        /// </summary>
+        public static string Reviewed {
+            get {
+                return ResourceManager.GetString("Reviewed", resourceCulture);
             }
         }
         

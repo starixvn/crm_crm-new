@@ -30,6 +30,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/feedback/addguestfeedback/index`]: pathConfig.scriptPaths.add_guest_feedback,
             [`${jsPath}/pages/feedback/latest-feedback`]: pathConfig.scriptPaths.latest_feedback,
             [`${jsPath}/pages/feedback/multiple-logs/create`]: pathConfig.scriptPaths.create_multiple_logs,
+            [`${jsPath}/pages/feedback/deleted-feedback/index`]: pathConfig.scriptPaths.deleted_feedback,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -46,7 +47,8 @@ function generateConfig(environment) {
             [`${cssPath}/pages/customer/customerinfo/index`]: pathConfig.cssPaths.customer_info,
             [`${cssPath}/pages/feedback/addguestfeedback/index`]: pathConfig.cssPaths.add_guest_feedback,
             [`${cssPath}/pages/feedback/latest-feedback`]: pathConfig.cssPaths.latest_feedback,
-            [`${cssPath}/pages/feedback/multiple-logs/create`]: pathConfig.cssPaths.create_multiple_logs
+            [`${cssPath}/pages/feedback/multiple-logs/create`]: pathConfig.cssPaths.create_multiple_logs,
+            [`${cssPath}/pages/feedback/deleted-feedback/index`]: pathConfig.cssPaths.deleted_feedback
         },
         output: {
             path: pathConfig.projectRoot,
