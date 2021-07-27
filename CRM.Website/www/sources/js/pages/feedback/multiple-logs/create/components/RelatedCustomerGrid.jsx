@@ -7,6 +7,10 @@ import LangHelper from '@jsroot/common/langHelper';
 import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
 
 export class RelatedCustomerGrid extends Component {
+    static defaultProps = {
+        relatedCustomerResults: []
+    };
+
     constructor(props) {
         super(props);
 
@@ -20,15 +24,11 @@ export class RelatedCustomerGrid extends Component {
         this.setState({ pageIndex, pageSize });
     };
 
-    buildGridHeader = () => {
-        return (
-            <HeaderRow>
-                <HeaderCell colWidth={50}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
-                <HeaderCell colWidth={50}>{LangHelper.getResource('Username')}</HeaderCell>
-                <HeaderCell colWidth={100}>{LangHelper.getResource('RelatedCustomer')}</HeaderCell>
-            </HeaderRow>
-        );
-    };
+    buildGridHeader = () => <HeaderRow>
+        <HeaderCell colWidth={50}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
+        <HeaderCell colWidth={50}>{LangHelper.getResource('Username')}</HeaderCell>
+        <HeaderCell colWidth={100}>{LangHelper.getResource('RelatedCustomer')}</HeaderCell>
+    </HeaderRow>;
 
     buildGridBody = () => {
         const { pageIndex, pageSize } = this.state;
@@ -71,13 +71,11 @@ export class RelatedCustomerGrid extends Component {
         return html;
     };
 
-    renderRow = customer => (
-        <Row key={customer.headlineId}>
-            <Cell>{customer.headlineId > 0 ? customer.headline : 'Not assign group'}</Cell>
-            <Cell>{customer.username}</Cell>
-            <Cell>{this.renderRelatedCustomerColumn(customer)}</Cell>
-        </Row>
-    );
+    renderRow = customer => <Row key={customer.headlineId}>
+        <Cell>{customer.headlineId > 0 ? customer.headline : 'Not assign group'}</Cell>
+        <Cell>{customer.username}</Cell>
+        <Cell>{this.renderRelatedCustomerColumn(customer)}</Cell>
+    </Row>;
 
     render() {
         const pagingOption = {

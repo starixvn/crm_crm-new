@@ -1,7 +1,8 @@
 ﻿import React from 'react';
 import { AddRelatedCustomerDialog } from '../AddRelatedCustomerDialog';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
+import Site from '@jsroot/common/site';
 
 describe('AddRelatedCustomerDialog', () => {
     beforeAll(() => {
@@ -21,10 +22,10 @@ describe('AddRelatedCustomerDialog', () => {
                 username: 'test',
                 isValid: true
             };
-            const container = shallow(<AddRelatedCustomerDialog />);
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
 
             // Act
-            const actual = container.instance().renderRelatedCustomerItem(customer, 1);
+            const actual = container.renderRelatedCustomerItem(customer, 1);
 
             // Assert
             expect(shallow(actual).html()).toMatchSnapshot();
@@ -37,10 +38,10 @@ describe('AddRelatedCustomerDialog', () => {
                 username: 'test',
                 isValid: false
             };
-            const container = shallow(<AddRelatedCustomerDialog />);
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
 
             // Act
-            const actual = container.instance().renderRelatedCustomerItem(customer, 1);
+            const actual = container.renderRelatedCustomerItem(customer, 1);
 
             // Assert
             expect(shallow(actual).html()).toMatchSnapshot();
@@ -68,21 +69,21 @@ describe('AddRelatedCustomerDialog', () => {
     describe('addRelatedCustomerItem', () => {
         it('should not update state when username is invalid', () => {
             // Arrange
-            const container = shallow(<AddRelatedCustomerDialog />);
-            container.instance().inputRef = {
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
+            container.inputRef = {
                 value: 'test'
             };
             container.setState = jest.fn();
             container.state = { relatedCustomers: [{ custId: 1, username: 'sa', isValid: true }] };
 
             // Act
-            container.instance().addRelatedCustomerItem();
+            container.addRelatedCustomerItem();
             jest.runAllTimers();
 
             // Assert
             expect(container.setState).not.toHaveBeenCalled();
             expect(container.state.relatedCustomers).toEqual([{ custId: 1, username: 'sa', isValid: true }]);
-            expect(container.instance().inputRef.value).toEqual('');
+            expect(container.inputRef.value).toEqual('');
         });
 
         it('should update state when username is valid', () => {
@@ -163,7 +164,7 @@ describe('AddRelatedCustomerDialog', () => {
     });
 
     describe('handleBlurRelatedCustomer', () => {
-        it('when called - do as expected', () => {
+        it('should do as expected', () => {
             // Arrange
             const container = shallow(<AddRelatedCustomerDialog />).instance();
             container.setState = jest.fn();
@@ -180,7 +181,7 @@ describe('AddRelatedCustomerDialog', () => {
     });
 
     describe('handleCloseAddRelatedCustomerDialog', () => {
-        it('when called - do as expected', () => {
+        it('should do as expected', () => {
             // Arrange
             const props = {
                 addRelatedCustomerDialog: {
@@ -207,19 +208,106 @@ describe('AddRelatedCustomerDialog', () => {
             // Arrange
             LangHelper.formatString = jest.fn(() => 'error');
             const container = shallow(<AddRelatedCustomerDialog />).instance();
-            container.setState = jest.fn();
 
             // Act
             container.verifyRelatedCustomers();
 
             // Assert
             expect(LangHelper.formatString).toHaveBeenCalledWith('FieldRequired', 'Username');
-            expect(container.setState).toHaveBeenCalledWith({ errMsgs: ['error'] });
+            expect(container.state.errMsgs).toEqual(['error']);
+            expect(container.state.verified).toBeTruthy();
+        });
+
+        it('should do as expected when related customers include invalid customer', async () => {
+            // Arrange
+            Site.blockUI = jest.fn();
+            Site.unblockUI = jest.fn();
+            const response = {
+                data: [
+                    { headlineId: 1, custId: 1, username: 'sa', resultTypeId: 0 },
+                    { custId: 2, username: 'test 1', resultTypeId: 1 },
+                    { custId: 3, username: 'test 2', resultTypeId: 2 },
+                    { custId: 4, username: 'test 3', resultTypeId: 3 },
+                    { custId: 5, username: 'test 4', resultTypeId: 4 },
+                    { custId: 6, username: 'test 5', resultTypeId: 5 },
+                    { custId: 7, username: 'test 6', resultTypeId: 6 }
+                ]
+            };
+            const expectedErrMsgs = [
+                'Invalid usernames: test 1',
+                'The system does not support to add related customer for deposit and guest customer. Please check usernames: test 2, test 3',
+                'These usernames do not belong to any headline or direct accounts without group headline: test 4',
+                'You are not allowed to add related customers for itself. Please check usernames: test 5',
+                'The system does not support to add related customer for internal accounts. Please check usernames: test 6'
+            ];
+            const promise = Promise.resolve(response);
+            const props = {
+                addRelatedCustomerDialog: {
+                    isEdit: false,
+                    relatedCustomers: [{ custId: 1, username: 'sa' }, { custId: 2, username: 'test 1' }],
+                    relatedCustomerResults: []
+                },
+                verifyCustomerResults: [{ custId: 1, isHeadline: true }],
+                verifyRelatedCustomers: jest.fn(() => promise),
+                setRelatedCustomerResults: jest.fn()
+            };
+            const container = shallow(<AddRelatedCustomerDialog {...props} />).instance();
+
+            // Act
+            container.verifyRelatedCustomers();
+            await promise;
+
+            // Assert
+            expect(props.verifyRelatedCustomers).toHaveBeenCalledWith({ headlineIds: '1', username: 'sa,test 1' });
+            expect(props.setRelatedCustomerResults).toHaveBeenCalledWith([]);
+            expect(container.state.relatedCustomers).toEqual([
+                { custId: 1, username: 'sa', isValid: true },
+                { custId: 2, username: 'test 1', isValid: false }
+            ]);
+            expect(container.state.errMsgs).toEqual(expectedErrMsgs);
+            expect(container.state.verified).toBeTruthy();
+        });
+
+        it('should do as expected when related customers are valid', async () => {
+            // Arrange
+            Site.blockUI = jest.fn();
+            Site.unblockUI = jest.fn();
+            const response = {
+                data: [{ headlineId: 1, custId: 1, username: 'sa', resultTypeId: 0 }]
+            };
+            const promise = Promise.resolve(response);
+            const props = {
+                addRelatedCustomerDialog: {
+                    isEdit: false,
+                    relatedCustomers: [{ custId: 1, username: 'sa' }, { custId: 2, username: 'test 1' }],
+                    relatedCustomerResults: []
+                },
+                verifyCustomerResults: [{ custId: 1, isHeadline: true }],
+                verifyRelatedCustomers: jest.fn(() => promise),
+                setRelatedCustomerResults: jest.fn()
+            };
+            const container = shallow(<AddRelatedCustomerDialog {...props} />).instance();
+
+            // Act
+            container.verifyRelatedCustomers();
+            await promise;
+
+            // Assert
+            expect(props.verifyRelatedCustomers).toHaveBeenCalledWith({ headlineIds: '1', username: 'sa,test 1' });
+            expect(props.setRelatedCustomerResults).toHaveBeenCalledWith([
+                { custId: 1, isHeadline: true, relatedCustomers: [{ headlineId: 1, custId: 1, username: 'sa', resultTypeId: 0 }] }
+            ]);
+            expect(container.state.relatedCustomers).toEqual([
+                { custId: 1, username: 'sa', isValid: true },
+                { custId: 2, username: 'test 1', isValid: true }
+            ]);
+            expect(container.state.errMsgs).toEqual([]);
+            expect(container.state.verified).toBeTruthy();
         });
     });
 
     describe('handleSubmit', () => {
-        it('when called - do as expected', () => {
+        it('should do as expected', () => {
             // Arrange
             const props = {
                 addRelatedCustomerDialog: {
