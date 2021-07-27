@@ -71,6 +71,7 @@ export class Filter extends Component {
             responseId: values.responseId,
             isReviewed: values.isReviewed === 1 ? 1 : 0
         }
+        this.props.getGridParams(params);
         this.props.getDeletedFeedback(params);
     }
 

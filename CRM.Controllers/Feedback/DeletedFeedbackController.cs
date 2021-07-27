@@ -88,5 +88,16 @@
 
             return mainCategories;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportDeletedFeedbackReport([FromBody] GetDeletedFeedbackParam param)
+        {
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetDeletedFeedbackAsync(param);
+            IEnumerable<Setting> mainCategories = await GetAllMainCategoriesFromAllSettings();
+
+            var bytes = excelService.ExportDeletedFeedbackReport(feedbacks, mainCategories);
+            string reportName = ViewResources.DeletedFeedbackReport_Title;
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
     }
 }

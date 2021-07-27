@@ -83,6 +83,26 @@ export class DataGrid extends Component {
         );
     };
 
+    handleExportExcel = () => {
+        const { gridParams } = this.props;
+        this.props.exportExcel(gridParams);
+    };
+
+    renderExportExcelText = () => {
+        return (
+            <OverlayTrigger
+                placement="auto"
+                overlay={
+                    <Tooltip>
+                        <span>Export to Excel</span>
+                    </Tooltip>
+                }
+            >
+                <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcel} />
+            </OverlayTrigger>
+        );
+    };
+
     render() {
         const {gridData} = this.props;
         if(!gridData || !gridData.data)
@@ -100,7 +120,7 @@ export class DataGrid extends Component {
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>Deleted Feedback</span>
                     {
-                        
+                        gridData.data.length > 0 && this.renderExportExcelText()
                     }
                 </div>
 

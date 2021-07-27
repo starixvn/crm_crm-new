@@ -25,6 +25,8 @@
         byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
 
         byte[] ExportLatestFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, int top);
+
+        byte[] ExportDeletedFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -76,6 +78,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/LatestFeedback.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new LatestFeedbackExcel(templatePath, feedbacks, mainCategories, top);
+            return excel.Export();
+        }
+
+        public byte[] ExportDeletedFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/Deleted_Feedback.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new DeletedFeedbackExcel(templatePath, feedbacks, mainCategories);
             return excel.Export();
         }
     }

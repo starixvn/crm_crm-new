@@ -196,6 +196,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted_Feedback.
+        /// </summary>
+        public static string DeletedFeedbackReport_Title {
+            get {
+                return ResourceManager.GetString("DeletedFeedbackReport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Top_{0}_Feedback.
         /// </summary>
         public static string FeedbackReport_Title {

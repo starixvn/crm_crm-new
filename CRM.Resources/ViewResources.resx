@@ -162,6 +162,9 @@
   <data name="DeletedFeedback" xml:space="preserve">
     <value>Deleted Feedback</value>
   </data>
+  <data name="DeletedFeedbackReport_Title" xml:space="preserve">
+    <value>Deleted_Feedback</value>
+  </data>
   <data name="FeedbackReport_Title" xml:space="preserve">
     <value>Top_{0}_Feedback</value>
   </data>
