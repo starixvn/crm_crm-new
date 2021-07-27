@@ -19,7 +19,6 @@ export default class DataService {
         customAxios.interceptors.response.use(response =>{
             return response;
         }, error => {
-            Promise.reject(error);
             return Site.handleAxiosError(error);
         });
 
