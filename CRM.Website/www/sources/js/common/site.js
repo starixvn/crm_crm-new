@@ -46,8 +46,8 @@ export default class Site {
                     url = 'error/InternalError';
                     break;
             }
-
            window.location = _rootUrl + url;
+           return Promise.reject(error);
         }
     }
 

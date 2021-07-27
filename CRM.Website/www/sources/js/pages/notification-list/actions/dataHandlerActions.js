@@ -26,6 +26,9 @@ export const getGridData = (params, callback) => async dispatch => {
     
     const url = Site.resolveClientUrl('NotificationList/GetGridData');
     await DataService.postDataAsync(url, params).then(response => {
+        if(!response){
+            return;
+        }
         if (typeof callback === 'function') {
             if(response.data || response.data.data)
             {
