@@ -1530,5 +1530,327 @@ describe('CreateForm', () => {
                 expect(createForm.state.betTypeOptions).toEqual([]);
             });
         });
+
+        describe('productHandleChange ', () => {
+            it('selectedItemsKey has value call exact function', async () => {
+                // Arrange
+                jest.useFakeTimers();
+                const props = {
+                    settings: {
+                        subProducts: [1]
+                    }
+                }
+                const state = {subProductSelected : ''};
+                const setFieldValue = jest.fn();
+                const createForm = shallow(<CreateForm  {...props}/>).instance();
+                createForm.setState({state});
+                shareScripts.getSubProducts = jest.fn(()=> [1]);
+
+                // Act
+                createForm.productHandleChange('currentItem', '1,2', setFieldValue);
+                jest.runAllTimers();
+
+                // Assert
+                expect(setFieldValue).toHaveBeenCalledWith('product', '1,2');
+                expect(createForm.state.subProductOptions).toEqual([1]);
+            });
+
+            it('selectedItemsKey is empty call exact function', async () => {
+                // Arrange
+                jest.useFakeTimers();
+                const props = {
+                    settings: {
+                        subProducts: [1]
+                    }
+                };
+                const state = {subProductSelected : ''};
+                const setFieldValue = jest.fn();
+                const createForm = shallow(<CreateForm  {...props}/>).instance();
+                createForm.setState({state});
+                shareScripts.getSubProducts = jest.fn(()=> [1]);
+
+                // Act
+                createForm.productHandleChange('currentItem', '', setFieldValue);
+                jest.runAllTimers();
+
+                // Assert
+                expect(createForm.state.subProductOptions).toEqual([]);
+                expect(createForm.state.subProductSelected).toEqual([]);
+            });
+        });
+
+        it('subCategoriesHandleChange call exact function', async () => {
+            // Arrange
+            jest.useFakeTimers();
+            const state = {subCategoriesSelected : ''};
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm />).instance();
+            createForm.setState({state});
+
+            // Act
+            createForm.subCategoriesHandleChange ('currentItem', '1,2', setFieldValue);
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('subCategory', '1,2');
+            expect(createForm.state.subCategoriesSelected).toEqual('1,2');
+        });
+
+        describe('mainCategoriesHandleChange', () => {
+            it('selectedItemsKey has value call exact function', async () => {
+                // Arrange
+                jest.useFakeTimers();
+                const props = {
+                    settings: {
+                        mainCategories: [1]
+                    }
+                };
+                const state = {subCategoriesSelected: ''};
+                const setFieldValue = jest.fn();
+                const createForm = shallow(<CreateForm  {...props}/>).instance();
+                createForm.setState({state});
+                shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
+                shareScripts.getSubCategories = jest.fn(()=> [1]);
+                // Act
+                createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, 'subject');
+                jest.runAllTimers();
+
+                // Assert
+                expect(setFieldValue).toHaveBeenCalledWith('subject', 'tempSubject');
+                expect(setFieldValue).toHaveBeenCalledWith('category', '1,2');
+                expect(createForm.state.subCategoriesOptions).toEqual([1]);
+            });
+
+            it('selectedItemsKey has value and subCategoriesSelected length > 0 call exact function', async () => {
+                // Arrange
+                jest.useFakeTimers();
+                const props = {
+                    settings: {
+                        mainCategories: [1]
+                    }
+                };
+                const state = {subCategoriesSelected: [{id: 1}]};
+                const setFieldValue = jest.fn();
+                const createForm = shallow(<CreateForm  {...props}/>).instance();
+                createForm.setState({state});
+                shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
+                shareScripts.getSubCategories = jest.fn(()=> [1]);
+                // Act
+                createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, 'subject');
+                jest.runAllTimers();
+
+                // Assert
+                expect(setFieldValue).toHaveBeenCalledWith('subject', 'tempSubject');
+                expect(setFieldValue).toHaveBeenCalledWith('category', '1,2');
+                expect(createForm.state.subCategoriesOptions).toEqual([1]);
+            });
+
+            it('selectedItemsKey is empty call exact function', async () => {
+                // Arrange
+                jest.useFakeTimers();
+                const setFieldValue = jest.fn();
+                const createForm = shallow(<CreateForm />).instance();
+
+                // Act
+                createForm.mainCategoriesHandleChange ('currentItem', '', setFieldValue);
+                jest.runAllTimers();
+
+                // Assert
+                expect(createForm.state.subCategoriesOptions).toEqual([]);
+                expect(createForm.state.subCategoriesSelected).toEqual([]);
+            });
+        });
+
+        it('handleEditBlock  call exact function', async () => {
+            // Arrange
+            jest.useFakeTimers();
+            const prevState = {
+                collapse: {
+                    isShowCustomerDetailOption: false
+                }
+            };
+            const createForm = shallow(<CreateForm />).instance();
+            createForm.setState({prevState});
+
+            // Act
+            createForm.handleCollapseExpend('isShowCustomerDetailOption');
+
+            // Assert
+            expect(createForm.state.collapse.isShowCustomerDetailOption).toEqual(true);
+        });
+
+        it('handleEditBlock call exact function', async () => {
+            // Arrange
+            jest.useFakeTimers();
+            const prevState = {
+                editBlock: {
+                    isEditDescription: true
+                }
+            };
+            const event = {
+                stopPropagation: jest.fn()
+            };
+
+            const createForm = shallow(<CreateForm />).instance();
+            createForm.setState({prevState});
+
+            // Act
+            createForm.handleEditBlock(event, 'isEditDescription');
+
+            // Assert
+            expect(createForm.state.editBlock.isEditDescription).toEqual(false);
+            expect(event.stopPropagation).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleCommunicationChange', () => {
+        it('selectedItemsKey has value equal length communication get first name', async () => {
+            // Arrange
+            jest.useFakeTimers();
+            const props = {
+                settings: {
+                    communicationTools: [{id: 1, name: '1'}, {id: 2, name: '1'}]
+                }
+            };
+            const state = {communicationToolVal: ''};
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm  {...props}/>).instance();
+            createForm.setState({state});
+            createForm.renderAutoGeneratedText = jest.fn(() => 'test');
+
+            // Act
+            createForm.handleCommunicationChange('currentItem', '1,2', setFieldValue);
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('autoGenerated', 'test');
+            expect(createForm.state.communicationToolVal).toEqual('1');
+        });
+
+        it('get current communication tool checked', async () => {
+            // Arrange
+            jest.useFakeTimers();
+            const props = {
+                settings: {
+                    communicationTools: [{id: 1, name: '1'}]
+                }
+            };
+            const state = {communicationToolVal: ''};
+            const currentItem = {
+                checked: true,
+                name: '3'
+            };
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm  {...props}/>).instance();
+            createForm.setState({state});
+            createForm.renderAutoGeneratedText = jest.fn(() => 'test');
+
+            // Act
+            createForm.handleCommunicationChange(currentItem, '1,2', setFieldValue);
+            jest.runAllTimers();
+
+            // Assert
+            expect(createForm.state.communicationToolVal).toEqual('3');
+        });
+
+        it('multiple select set first name', async () => {
+            // Arrange
+            jest.useFakeTimers();
+            const props = {
+                settings: {
+                    communicationTools: [{id: 1, name: '1'}]
+                }
+            };
+            const state = {communicationToolVal: ''};
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm  {...props}/>).instance();
+            createForm.setState({state});
+            createForm.renderAutoGeneratedText = jest.fn(() => 'test');
+
+            // Act
+            createForm.handleCommunicationChange('currentItem', '1,2', setFieldValue);
+            jest.runAllTimers();
+
+            // Assert
+            expect(createForm.state.communicationToolVal).toEqual('1');
+        });
+    });
+
+    it('handleChangeResolutionTime call exact function', async () => {
+        // Arrange
+        jest.useFakeTimers();
+        const setFieldValue = jest.fn();
+        const createForm = shallow(<CreateForm />).instance();
+
+        // Act
+        createForm.handleChangeResolutionTime(setFieldValue, '2021-01-02', '2021-01-01');
+        jest.runAllTimers();
+
+        // Assert
+        expect(setFieldValue).toHaveBeenCalledTimes(2);
+    });
+
+    it('handleChangeResolutionTime feedbackDate smaller than solution time don not call setFieldValue', async () => {
+        // Arrange
+        jest.useFakeTimers();
+        const setFieldValue = jest.fn();
+        const createForm = shallow(<CreateForm />).instance();
+
+        // Act
+        createForm.handleChangeResolutionTime(setFieldValue, '2021-01-01', '2021-01-02');
+        jest.runAllTimers();
+
+        // Assert
+        expect(setFieldValue).toHaveBeenCalledTimes(1);
+    });
+
+    it('handleChangeFeedbackTime call exact function', async () => {
+        // Arrange
+        jest.useFakeTimers();
+        const setFieldValue = jest.fn();
+        const createForm = shallow(<CreateForm />).instance();
+        // Act
+        createForm.handleChangeFeedbackTime (setFieldValue, '2021-01-02', '2021-01-01');
+        createForm.renderAutoGeneratedText = jest.fn(() =>'test');
+
+        jest.runAllTimers();
+
+        // Assert
+        expect(setFieldValue).toHaveBeenCalledTimes(3);
+    });
+
+    it('handleChangeFeedbackTime feedbackDate smaller than solution time don not call setFieldValue', async () => {
+        // Arrange
+        jest.useFakeTimers();
+        const setFieldValue = jest.fn();
+        const createForm = shallow(<CreateForm />).instance();
+
+        // Act
+        createForm.handleChangeFeedbackTime(setFieldValue, '2021-01-01', '2021-01-02');
+        createForm.renderAutoGeneratedText = jest.fn(() =>'test');
+
+        jest.runAllTimers();
+
+        // Assert
+        expect(setFieldValue).toHaveBeenCalledTimes(2);
+    });
+
+    it('handleSubmit remove special characters', async () => {
+        // Arrange
+        const params= {UserName: 'test#'};
+        const props = {
+            setConfirmCreateGuestDialog: jest.fn()
+        };
+        commonFunction.getParams = jest.fn(() => params);
+        const createForm = shallow(<CreateForm {...props} />).instance();
+        createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
+
+        // Act
+        createForm.handleSubmit([{userName: 'test'}]);
+
+
+        // Assert
+        expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
+            LangHelper.getResource('ConfirmAddGuestFeedbackSpecialChar'));
     });
 });

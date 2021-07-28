@@ -1,5 +1,8 @@
 ﻿namespace CRM.Controllers.UnitTests.Feedback
 {
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.Feedback;
     using CRM.Core.Constants;
@@ -17,10 +20,6 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Threading.Tasks;
     using Xunit;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -59,10 +58,10 @@
                 Extensions = fixture.Create<IEnumerable<SettingRelation>>(),
                 Countries = fixture.Create<IEnumerable<Country>>(),
                 Provinces = fixture.Create<IEnumerable<Province>>(),
-                CommunicationTools = new List<Setting> { new Setting { Id = 1, Name = "CommunicationTools", ChildSettings = new List<Setting>()} },
+                CommunicationTools = new List<Setting> { new Setting { Id = 1, Name = "CommunicationTools", ChildSettings = new List<Setting>() } },
                 Languages = fixture.Create<IEnumerable<Language>>(),
-                MainCategories = new List<Setting> { new Setting { Id = 1, Name = "MainCategories", ChildSettings = new List<Setting>()}},
-                SubCategories = new List<Setting> { new Setting { Id = 1, Name= "SubCategories", ChildSettings = new List<Setting>()}},
+                MainCategories = new List<Setting> { new Setting { Id = 1, Name = "MainCategories", ChildSettings = new List<Setting>() } },
+                SubCategories = new List<Setting> { new Setting { Id = 1, Name = "SubCategories", ChildSettings = new List<Setting>() } },
                 Products = new List<Product> { new Product { Id = 1, Name = "Products", ParentId = 2, ChildSettings = new List<Product>() } },
                 SubProducts = new List<Product> { new Product { Id = 1, Name = "SubProducts", ParentId = 2, ChildSettings = new List<Product>() } },
                 Bettypes = new List<Product> { new Product { Id = 1, Name = "Bettypes", ParentId = 2, ChildSettings = new List<Product>() } },
@@ -91,48 +90,31 @@
             settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(settings.SubCategories);
 
             // Act
-            var result = await controller.AllSetting() as JsonResult;
-            var Extensions = (IEnumerable<SettingRelation>)result.Value.GetType().GetProperty("Extensions").GetValue(result.Value);
-            var Countries = (IEnumerable<Country>)result.Value.GetType().GetProperty("Countries").GetValue(result.Value);
-            var Provinces = (IEnumerable<Province>)result.Value.GetType().GetProperty("Provinces").GetValue(result.Value);
-            var CommunicationTools = (IEnumerable<Setting>)result.Value.GetType().GetProperty("CommunicationTools").GetValue(result.Value);
-            var Languages = (IEnumerable<Language>)result.Value.GetType().GetProperty("Languages").GetValue(result.Value);
-            var MainCategories = (IEnumerable<Setting>)result.Value.GetType().GetProperty("MainCategories").GetValue(result.Value);
-            var SubCategories = (IEnumerable<Setting>)result.Value.GetType().GetProperty("SubCategories").GetValue(result.Value);
-            var Products = (IEnumerable<Product>)result.Value.GetType().GetProperty("Products").GetValue(result.Value);
-            var SubProducts = (IEnumerable<Product>)result.Value.GetType().GetProperty("SubProducts").GetValue(result.Value);
-            var Bettypes = (IEnumerable<Product>)result.Value.GetType().GetProperty("Bettypes").GetValue(result.Value);
-            var Sites = (IEnumerable<SiteSetting>)result.Value.GetType().GetProperty("Sites").GetValue(result.Value);
-            var Responses = (IEnumerable<SettingRelation>)result.Value.GetType().GetProperty("Responses").GetValue(result.Value);
-            var Status = (IEnumerable<FeedbackStatus>)result.Value.GetType().GetProperty("Status").GetValue(result.Value);
-            var Titles = (IEnumerable<SettingRelation>)result.Value.GetType().GetProperty("Titles").GetValue(result.Value);
-            var LicenseeType = (IEnumerable<BaseModel>)result.Value.GetType().GetProperty("LicenseeType").GetValue(result.Value);
-            var ProductNA = result.Value.GetType().GetProperty("ProductNA").GetValue(result.Value);
-            var SubProductNA = result.Value.GetType().GetProperty("SubProductNA").GetValue(result.Value);
-            var BettypeNA = result.Value.GetType().GetProperty("BettypeNA").GetValue(result.Value);
-            var ExtensionNA = result.Value.GetType().GetProperty("ExtensionNA").GetValue(result.Value);
+            var result = await controller.AllSetting();
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var viewModel = Assert.IsAssignableFrom<AllSettingToAddFeedback>(jsonResult.Value);
 
             // Assert
-            Assert.Equal(settings.Extensions, Extensions);
-            Assert.Equal(settings.Extensions, Extensions);
-            Assert.Equal(settings.Countries, Countries);
-            Assert.Equal(settings.Provinces, Provinces);
-            Assert.Equal(settings.CommunicationTools, CommunicationTools);
-            Assert.Equal(settings.Languages, Languages);
-            Assert.Equal(settings.MainCategories, MainCategories);
-            Assert.Equal(settings.SubCategories, SubCategories);
-            Assert.Equal(settings.Products, Products);
-            Assert.Equal(settings.SubProducts, SubProducts);
-            Assert.Equal(settings.Bettypes, Bettypes);
-            Assert.Equal(settings.Sites, Sites);
-            Assert.Equal(settings.Responses, Responses);
-            Assert.Equal(settings.Status, Status);
-            Assert.Equal(settings.Titles, Titles);
-            Assert.Equal(settings.LicenseeType, LicenseeType);
-            Assert.Equal(settings.ProductNA, ProductNA);
-            Assert.Equal(settings.SubProductNA, SubProductNA);
-            Assert.Equal(settings.BettypeNA, BettypeNA);
-            Assert.Equal(settings.ExtensionNA, ExtensionNA);
+            Assert.Equal(settings.Extensions, viewModel.Extensions);
+            Assert.Equal(settings.Extensions, viewModel.Extensions);
+            Assert.Equal(settings.Countries, viewModel.Countries);
+            Assert.Equal(settings.Provinces, viewModel.Provinces);
+            Assert.Equal(settings.CommunicationTools, viewModel.CommunicationTools);
+            Assert.Equal(settings.Languages, viewModel.Languages);
+            Assert.Equal(settings.MainCategories, viewModel.MainCategories);
+            Assert.Equal(settings.SubCategories, viewModel.SubCategories);
+            Assert.Equal(settings.Products, viewModel.Products);
+            Assert.Equal(settings.SubProducts, viewModel.SubProducts);
+            Assert.Equal(settings.Bettypes, viewModel.Bettypes);
+            Assert.Equal(settings.Sites, viewModel.Sites);
+            Assert.Equal(settings.Responses, viewModel.Responses);
+            Assert.Equal(settings.Status, viewModel.Status);
+            Assert.Equal(settings.Titles, viewModel.Titles);
+            Assert.Equal(settings.LicenseeType, viewModel.LicenseeType);
+            Assert.Equal(settings.ProductNA, viewModel.ProductNA);
+            Assert.Equal(settings.SubProductNA, viewModel.SubProductNA);
+            Assert.Equal(settings.BettypeNA, viewModel.BettypeNA);
+            Assert.Equal(settings.ExtensionNA, viewModel.ExtensionNA);
         }
 
         [Fact]
@@ -167,7 +149,7 @@
         {
             // Arrange
             var controller = GetController();
-            fixture.Customize<AddGuestFeedbackCommand>(x=>x.With(b=>b.StatusId, 11004));
+            fixture.Customize<AddGuestFeedbackCommand>(x => x.With(b => b.StatusId, 11004));
             var command = fixture.Create<AddGuestFeedbackCommand>();
             var clientIP = new DefaultHttpContext
             {
