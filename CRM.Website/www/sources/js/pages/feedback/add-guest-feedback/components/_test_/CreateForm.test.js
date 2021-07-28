@@ -1361,7 +1361,7 @@ describe('CreateForm', () => {
 
         describe('onPasteCustomerHandler', () => {
             it('should handle paste event', () => {
-                // // Arrange
+                // Arrange
                 jest.useFakeTimers();
                 const setFieldValue = jest.fn();
                 const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('test') } };
@@ -1377,7 +1377,7 @@ describe('CreateForm', () => {
             });
 
             it('input is null do not join string', () => {
-                // // Arrange
+                // Arrange
                 jest.useFakeTimers();
                 const setFieldValue = jest.fn();
                 const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('') } };
@@ -1393,27 +1393,28 @@ describe('CreateForm', () => {
             });
         });
 
-        // it('deleteCustomerVerify correctly setState', () => {
-        //     // // Arrange
-        //     const props = {
-        //         settings: {}
-        //     };
-        //     const state = {
-        //         listOfCustomer: [{ custId: '1' }, { custId: '2' }, { custId: '3' }],
-        //         listOfCustomerValid: [{ custId: '1' }, { custId: '2' }, { custId: '3' }]
-        //     };
+        it('deleteCustomerVerify correctly setState', () => {
+            // Arrange
+            const props = {
+                settings: {}
+            };
+            const state = {
+                listOfCustomer: [{ custId: '1' }, { custId: '2' }, { custId: '3' }],
+                listOfCustomerValid: [{ custId: '1' }, { custId: '2' }, { custId: '3' }]
+            };
 
-        //     // Act
-        //     const createForm = shallow(<CreateForm {...props} />);
-        //     createForm.instance().setState(state);
-        //     createForm.instance().deleteCustomerInvalid('1');
+            // Act
+            const createForm = shallow(<CreateForm {...props} />);
+            createForm.instance().setState(state);
+            createForm.instance().deleteCustomerVerify('1');
 
-        //     // Assert
-        //     expect(createForm.instance().state.listOfCustomer).toEqual([{ custId: '2' }, { custId: '3' }]);
-        //     expect(createForm.instance().state.listOfCustomerValid).toEqual([{ custId: '2' }, { custId: '3' }]);
-        // });
+            // Assert
+            expect(createForm.instance().state.listOfCustomer).toEqual([{ custId: '2' }, { custId: '3' }]);
+            expect(createForm.instance().state.listOfCustomerValid).toEqual([{ custId: '2' }, { custId: '3' }]);
+        });
 
         it('validateInquiriesInput includes key', async () => {
+            // Arrange
             const event = {
                 preventDefault: jest.fn(),
                 which: 8
@@ -1427,6 +1428,7 @@ describe('CreateForm', () => {
         });
 
         it('validateInquiriesInput do not includes key', async () => {
+            // Arrange
             const event = {
                 preventDefault: jest.fn(),
                 ctrlKey : false,
@@ -1439,6 +1441,70 @@ describe('CreateForm', () => {
 
             // Assert
             expect(event.preventDefault).toHaveBeenCalledTimes(1);
+        });
+
+        it('betTypeHandleChange call exact function', async () => {
+            // Arrange
+            jest.useFakeTimers();
+            const state = {betTypeSelected: ''};
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm />).instance();
+            createForm.setState({state});
+
+            // Act
+            createForm.betTypeHandleChange('currentItem', '1,2', setFieldValue);
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('betType', '1,2');
+            expect(createForm.state.betTypeSelected).toEqual('1,2');
+        });
+
+        it('subProductHandleChange call exact function', async () => {
+            // Arrange
+            jest.useFakeTimers();
+            const props = {
+                settings: {
+                    bettypes: [1]
+                }
+            };
+            const state = {subProductSelected: '', betTypeSelected: '1,2'};
+            const setFieldValue = jest.fn();
+            shareScripts.getBetTypes = jest.fn(()=> [1]);
+            const createForm = shallow(<CreateForm {...props}/>).instance();
+            createForm.setState({state});
+
+            // Act
+            createForm.subProductHandleChange('currentItem', '1,2', setFieldValue);
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('subProduct', '1,2');
+            expect(createForm.state.subProductSelected).toEqual('1,2');
+            expect(createForm.state.betTypeOptions).toEqual([1]);
+        });
+
+        it('subProductHandleChange selectedItemsKey is empty call exact function', async () => {
+            // Arrange
+            jest.useFakeTimers();
+            const props = {
+                settings: {
+                    bettypes: [1]
+                }
+            };
+            const state = {subProductSelected: '', betTypeSelected: '1,2'};
+            const setFieldValue = jest.fn();
+            shareScripts.getBetTypes = jest.fn(()=> [1]);
+            const createForm = shallow(<CreateForm {...props}/>).instance();
+            createForm.setState({state});
+
+            // Act
+            createForm.subProductHandleChange('currentItem', '', setFieldValue);
+            jest.runAllTimers();
+
+            // Assert
+            expect(createForm.state.betTypeOptions).toEqual([]);
+            expect(createForm.state.betTypeSelected).toEqual([]);
         });
     });
 });
