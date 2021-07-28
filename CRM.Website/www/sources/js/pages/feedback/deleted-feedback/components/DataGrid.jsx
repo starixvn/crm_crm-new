@@ -60,7 +60,7 @@ export class DataGrid extends Component {
         return (
             <Row key={index}>
                 <Cell>
-                    <div>
+                    <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
                         <span className="rounded-circle fa fa-pencil-square-o" />
                         <strong className='link-click'>{item.subject}</strong>
                     </div>
@@ -86,6 +86,11 @@ export class DataGrid extends Component {
     handleExportExcel = () => {
         const { gridParams } = this.props;
         this.props.exportExcel(gridParams);
+    };
+
+    handleEditFeedback = id => {
+        console.log(id);
+        this.props.setEditFeedbackDialog({ show: true, feedbackId: id });
     };
 
     renderExportExcelText = () => {

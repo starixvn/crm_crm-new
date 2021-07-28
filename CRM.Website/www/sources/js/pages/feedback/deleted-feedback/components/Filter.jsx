@@ -107,7 +107,7 @@ export class Filter extends Component {
         const data = this.props.settings;
         const mainCategories = this.filterMainCategory(data);
         const subCategories = this.filterSubCategory(mainCategories,values);
-        console.log({values,errors});
+
         return (
             <Form onSubmit={handleSubmit} className="form-filter">
                 <div className="panel-content">
@@ -251,7 +251,6 @@ export class Filter extends Component {
             <>
                 <Formik
                     initialValues={this.initialValues}
-                    validate={this.validate}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}

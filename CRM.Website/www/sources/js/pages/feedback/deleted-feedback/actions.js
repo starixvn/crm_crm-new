@@ -4,7 +4,8 @@ import Site from '@jsroot/common/site';
 import{
     setGridParams,
     setAllSettings,
-    setDeletedFeedback
+    setDeletedFeedback,
+    setEditFeedbackDialog
 } from './deletedFeedbackSlice';
 
 const getGridParams = (params) => dispatch => {
@@ -38,5 +39,6 @@ export const ActionCreators = {
     getGridParams,
     getAllSettings,
     getDeletedFeedback,
-    exportExcel
+    exportExcel,
+    setEditFeedbackDialog
 };

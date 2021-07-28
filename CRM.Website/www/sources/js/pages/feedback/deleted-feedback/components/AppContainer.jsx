@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux';
 import { Button } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import EditNoOfInquiry from '../../edit-no-of-inquiry/AppContainer';
+import EditFeedback from '../../edit-customer-feedback/AppContainer';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
-
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -31,16 +31,25 @@ export class AppContainer extends Component {
         this.props.getAllSettings();
     };
 
+    handleCloseEditFeedbackDialog = isSuccessful => {
+        this.props.setEditFeedbackDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getDeletedFeedback(this.props.gridParams);
+        }
+    };
+
     render() {
-        console.log("Lang Re",LangHelper.getResource('ListofcustomersRequired'));
-        console.log("Lang Fo",LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('StartTime'), LangHelper.getResource('EndTime')));
-        console.log("Lang He",LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject')));
-        
-        const { isHost} = this.props;
+        const { isHost, editFeedbackDialog} = this.props;
         return (
             <>
                 <Filter/>
                 <DataGrid isHost={isHost}/>
+                {
+                    editFeedbackDialog.show &&
+                    <EditFeedback feedbackId={editFeedbackDialog.feedbackId}
+                        onClose={this.handleCloseEditFeedbackDialog}
+                    />
+                }
             </>
         )
     }
@@ -50,7 +59,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     return { 
-        settings: state.settings
+        settings: state.settings,
+        editFeedbackDialog: state.editFeedbackDialog
     };
 };
 

@@ -6,6 +6,7 @@ const deletedFeedbackSlice = createSlice({
         gridParams: null,
         settings: null,
         gridData: null
+        editFeedbackDialog: { show: false },
     },
     reducers: {
         setGridParams: (state, action) => {
@@ -17,6 +18,9 @@ const deletedFeedbackSlice = createSlice({
         setDeletedFeedback: (state, action) => {
             state.gridData = action.payload;
         }
+        setEditFeedbackDialog: (state, action) => {
+            state.editFeedbackDialog = action.payload;
+        },
     }
 });
 
@@ -25,7 +29,8 @@ const { actions, reducer } = deletedFeedbackSlice;
 export const {
     setGridParams,
     setAllSettings,
-    setDeletedFeedback
+    setDeletedFeedback,
+    setEditFeedbackDialog
 } = actions;
 
 export default reducer;
