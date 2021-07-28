@@ -34,18 +34,40 @@ export class DataGrid extends Component {
         ];
     };
 
-    renderCategoryColumn = (item) => {
-        const filterCategory = item.settings.find(element => element.settingType === 'Category');
-        const subSettingId = filterCategory.subSettingId;       
-        const filterMainCategory = this.props.gridData.mainCategories.find(element => element.settingId === filterCategory.settingId);
-        const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subSettingId);
+    handleGroupCategory = (filterCategory) => {
+        const groupCategory = filterCategory.reduce( (accumulator, currentValue) => {
+            const itemExist = accumulator.find(item => currentValue.settingId === item.settingId)
+            if(itemExist){
+                itemExist.subSettingId = [...itemExist.subSettingId, currentValue.subSettingId]
+            }else{
+                accumulator.push({settingId: currentValue.settingId, subSettingId: [currentValue.subSettingId]})
+            }
+            return accumulator;
+        },[]);
+        return groupCategory;
+    }
 
-        return (
-            <>
-                <div className="font-weight-bold">{item.subject}</div>
-                <div className="font-italic ml-3">{filterSubCategory.name}</div>
-            </>     
-        )
+    renderCategoryColumn = (item) => {
+        const { mainCategories } = this.props.gridData;
+        const filterCategory = item.settings.filter(element => element.settingType === 'Category');
+        const groupCategory = this.handleGroupCategory(filterCategory);
+
+        return groupCategory.map((value,key) => {
+            const filterMainCategory = mainCategories.find(element => element.settingId === value.settingId);
+            return (
+                <>
+                    <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
+                    {
+                        value.subSettingId.map((subId,index) => {
+                            const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subId);
+                            return(
+                                <div key={index} className="font-italic ml-3">{filterSubCategory.name}</div>
+                            )
+                        })
+                    }
+                </>     
+            )
+        })
     };
 
     renderRelatedCustomerColumn = (item) => {
