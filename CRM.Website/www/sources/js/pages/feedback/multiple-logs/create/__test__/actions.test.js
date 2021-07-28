@@ -9,6 +9,8 @@ const mockStore = configureMockStore(middlewares);
 
 describe('actionCreators', () => {
     beforeAll(() => {
+        Site.blockUI = jest.fn();
+        Site.unblockUI = jest.fn();
         Site.resolveClientUrl = jest.fn((url) => url);
     });
 
@@ -19,8 +21,6 @@ describe('actionCreators', () => {
     describe('getSettings', () => {
         it('should handle setSettings when fetching settings have been done', async () => {
             // Arrange
-            Site.blockUI = jest.fn();
-            Site.unblockUI = jest.fn();
             const response = { data: { extensions: { id: 1, type: 'tests' } } };
             const promise = Promise.resolve(response);
             DataService.getDataAsync = jest.fn(() => promise);
