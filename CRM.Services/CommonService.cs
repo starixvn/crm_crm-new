@@ -82,5 +82,10 @@
         {
             return date.AddHours(appSettings.ServerTimezone - appSettings.ClientTimezone);
         }
+
+        public DateTime ConvertServerToClientDateTime(DateTime date)
+        {
+            return date.AddHours(appSettings.ClientTimezone - appSettings.ServerTimezone);
+        }
     }
 }

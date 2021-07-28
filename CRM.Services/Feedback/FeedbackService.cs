@@ -145,6 +145,11 @@
 
             foreach (var feedback in feedbacks)
             {
+                feedback.FeedbackDate = commonService.ConvertServerToClientDateTime(feedback.FeedbackDate);
+                feedback.ResolutionDate = commonService.ConvertServerToClientDateTime(feedback.ResolutionDate);
+                feedback.SolveDate = commonService.ConvertServerToClientDateTime(feedback.SolveDate);
+                feedback.CreateDate = commonService.ConvertServerToClientDateTime(feedback.CreateDate);
+
                 feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
             }
 

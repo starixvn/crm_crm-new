@@ -28,5 +28,7 @@
         DateTime ConvertToServerDateTime(DateTime date);
 
         DateTime ConvertClientToServerDateTime(DateTime date);
+
+        DateTime ConvertServerToClientDateTime(DateTime date);
     }
 }
