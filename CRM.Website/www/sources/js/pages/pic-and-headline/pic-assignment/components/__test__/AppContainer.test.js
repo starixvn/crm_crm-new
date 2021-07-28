@@ -49,7 +49,7 @@ describe('AppContainer', () => {
                 assignPicPopup: {},
                 defaultPicPopup: {},
                 isHost: true,
-                isReadPicManagement: true,
+                isReadPicManagement: true
             };
 
             // Action

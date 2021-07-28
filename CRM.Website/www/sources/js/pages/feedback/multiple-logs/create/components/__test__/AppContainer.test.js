@@ -3,7 +3,7 @@ import { AppContainer } from '../AppContainer';
 import CreateForm from '../CreateForm';
 import { shallow } from 'enzyme';
 
-describe('AddRelatedCustomerDialog', () => {
+describe('AppContainer', () => {
     afterAll(() => {
         jest.clearAllMocks();
     });

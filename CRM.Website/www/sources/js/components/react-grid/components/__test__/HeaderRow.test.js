@@ -15,7 +15,7 @@ describe('HeaderRow', () => {
         // Arrange
         const props = {
             onSort: jest.fn(),
-            children: <div></div>,
+            children: <div />,
             sortBy: 'somthing',
             sortOrder: 'asc'
         };

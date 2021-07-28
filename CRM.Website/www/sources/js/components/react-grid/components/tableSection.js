@@ -20,7 +20,7 @@ const createTableSection = (extendedContainerProps, extendedTableProps) => {
             onSort: null,
             tableClass: "table",
             autoWidth: true,
-            shouldUseMaxWidth: false,
+            shouldUseMaxWidth: false
         };
 
         constructor(props) {
@@ -73,8 +73,8 @@ const createTableSection = (extendedContainerProps, extendedTableProps) => {
                 sortOrder: sortOrder
             },
             () => {
-                onSort && onSort(sortBy, sortOrder)
-            })
+                onSort && onSort(sortBy, sortOrder);
+            });
         }
 
         render() {

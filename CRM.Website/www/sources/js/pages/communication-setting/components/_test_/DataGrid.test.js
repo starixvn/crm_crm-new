@@ -254,7 +254,7 @@ describe('DataGrid', () => {
                 expect(actual).toEqual(<OverlayTrigger
                     placement="auto"
                     overlay={<div />}
-                >
+                                       >
                     <span>
                         a, b, c, e, f, d, a, d, f, d, q, d, d, a, b...
                      </span>

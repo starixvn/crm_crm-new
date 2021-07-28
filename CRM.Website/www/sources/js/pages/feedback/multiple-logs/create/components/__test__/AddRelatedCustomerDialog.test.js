@@ -18,7 +18,7 @@ describe('AddRelatedCustomerDialog', () => {
         it('should match snapshot when customer is valid', () => {
             // Arrange
             const customer = {
-                custId: '1',
+                custId: 1,
                 username: 'test',
                 isValid: true
             };
@@ -34,7 +34,7 @@ describe('AddRelatedCustomerDialog', () => {
         it('should match snapshot when customer is invalid', () => {
             // Arrange
             const customer = {
-                custId: '1',
+                custId: 1,
                 username: 'test',
                 isValid: false
             };
@@ -50,7 +50,7 @@ describe('AddRelatedCustomerDialog', () => {
         it('should call correct function when click on delete icon', () => {
             // Arrange
             const customer = {
-                custId: '1',
+                custId: 1,
                 username: 'test',
                 isValid: false
             };

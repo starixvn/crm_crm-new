@@ -139,7 +139,7 @@ describe('AppContainer', () => {
             expect(container).toMatchSnapshot();
             expect(container.find(SweetModalDialog).length).toBe(1);
             expect(container.find(SweetModalDialog).props().contents)
-                .toStrictEqual(<div>Are you sure you want to <span>deactivate</span> Feedback Subject Template <strong>1</strong>?</div>)
+                .toStrictEqual(<div>Are you sure you want to <span>deactivate</span> Feedback Subject Template <strong>1</strong>?</div>);
         });
 
         it('should call exactly functions when close popup', () => {

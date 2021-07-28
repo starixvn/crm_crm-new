@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomInput from '../CustomInput'
+import CustomInput from '../CustomInput';
 import { Form } from 'react-bootstrap';
 import { shallow } from 'enzyme';
 

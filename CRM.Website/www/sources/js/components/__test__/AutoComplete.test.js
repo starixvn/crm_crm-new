@@ -18,14 +18,14 @@ describe('AutoComplete', () => {
         searchValue: '',
         currentValue: '',
         selectedItem: -1
-    }
+    };
 
     const props = {
         options: [],
         diplayField: '',
         onChange: jest.fn(),
         onInputChange: jest.fn()
-    }
+    };
 
     it('should have correct snapshots', () => {
         //Act
@@ -65,12 +65,12 @@ describe('AutoComplete', () => {
                 //Arrange
                 const expected = {
                     showOptionList: true
-                }
+                };
 
                 const newProps = {
                     options: ["test"],
                     display: true
-                }
+                };
                 const promise = Promise.resolve({});
 
                 //Act
@@ -109,7 +109,7 @@ describe('AutoComplete', () => {
                     searchValue: 'value',
                     currentValue: '',
                     selectedItem: -1
-                }
+                };
                 const container = shallow(<AutoComplete {...props} />);
 
                 // Action
@@ -130,7 +130,7 @@ describe('AutoComplete', () => {
                     searchValue: '',
                     currentValue: '',
                     selectedItem: -1
-                }
+                };
                 const container = shallow(<AutoComplete {...props} />);
                 container.instance().wrapperRef = null;
                 container.instance().componentDidMount();
@@ -149,7 +149,7 @@ describe('AutoComplete', () => {
                 const expected = {
                     showOptionList: true,
                     searchValue: ""
-                }
+                };
                 const container = shallow(<AutoComplete {...props} />);
                 container.instance().wrapperRef.current = mockRef;
                 container.instance().setState(expected);
@@ -164,13 +164,13 @@ describe('AutoComplete', () => {
         describe('handleChange', () => {
             it('should call exacly methods', () => {
                 //Arange
-                const event = {target:{name:"searchValue", value:"test"}}
+                const event = {target:{name:"searchValue", value:"test"}};
                 const expected = {
                     showOptionList: false,
                     searchValue: 'test',
                     currentValue: 'test',
                     selectedItem: -1
-                }
+                };
 
                 const container = shallow(<AutoComplete {...props} />);
 
@@ -207,16 +207,16 @@ describe('AutoComplete', () => {
                     showOptionList: true,
                     selectedItem: 0,
                     searchValue: 'test',
-                    currentValue: 'test',
-                }
+                    currentValue: 'test'
+                };
                 const expected = {
                     showOptionList: false,
                     selectedItem: -1,
                     searchValue: 'test',
-                    currentValue: 'test',
-                }
+                    currentValue: 'test'
+                };
                 const container = shallow(<AutoComplete {...props} />);
-                container.instance().setState(state)
+                container.instance().setState(state);
 
                 //Act
                 container.instance().handleKeyDown(event);
@@ -232,11 +232,11 @@ describe('AutoComplete', () => {
                     showOptionList: true,
                     selectedItem: 0,
                     searchValue: 'test',
-                    currentValue: 'test',
-                }
+                    currentValue: 'test'
+                };
                
                 const container = shallow(<AutoComplete {...props} />);
-                container.instance().setState(state)
+                container.instance().setState(state);
 
                 //Act
                 container.instance().handleKeyDown(event);
@@ -263,7 +263,7 @@ describe('AutoComplete', () => {
                 const event = {keyCode: 38};
                 const state = {
                     showOptionList: true
-                } 
+                }; 
                 const container = shallow(<AutoComplete />);
                 container.instance().setState(state);
                 container.instance().moveUp = jest.fn();
@@ -280,7 +280,7 @@ describe('AutoComplete', () => {
                 const event = {keyCode: 40};
                 const state = {
                     showOptionList: true
-                } 
+                }; 
                
                 const container = shallow(<AutoComplete {...props} />);
                 container.instance().setState(state);
@@ -298,7 +298,7 @@ describe('AutoComplete', () => {
                 const event = {keyCode: 10};
                 const state = {
                     showOptionList: true
-                } 
+                }; 
                
                 const container = shallow(<AutoComplete {...props} />);
                 container.instance().setState(state);
@@ -325,7 +325,7 @@ describe('AutoComplete', () => {
                 container.instance().moveUp();
 
                 //Assert
-                expect(container.state)
+                expect(container.state);
                 
 
             });
@@ -341,7 +341,7 @@ describe('AutoComplete', () => {
                     diplayField: '',
                     onChange: jest.fn(),
                     onInputChange: jest.fn()
-                }
+                };
                 const container = shallow(<AutoComplete {...props} />);
                 container.instance().setState(state);
 
@@ -368,7 +368,7 @@ describe('AutoComplete', () => {
                     diplayField: '',
                     onChange: jest.fn(),
                     onInputChange: jest.fn()
-                }
+                };
                 const container = shallow(<AutoComplete {...props} />);
                 container.instance().setState(state);
 
@@ -395,7 +395,7 @@ describe('AutoComplete', () => {
             it('has input search with onClick', () => {
                 //Arrange
                 const container = shallow(<AutoComplete {...props} />);
-                container.instance().handleKeyDown = jest.fn()
+                container.instance().handleKeyDown = jest.fn();
 
                 //Act
                 container.find('div input').first().simulate('keyDown');
@@ -408,7 +408,7 @@ describe('AutoComplete', () => {
             it('has option with onClick', () => {
                 //Arrange
                 const container = shallow(<AutoComplete {...props} />);
-                container.instance().handleKeyDown = jest.fn()
+                container.instance().handleKeyDown = jest.fn();
 
                 //Act
                 container.find('div input').first().simulate('keyDown');
@@ -429,7 +429,7 @@ describe('AutoComplete', () => {
                     };
                     const props = {
                         options: ["test1", "test2"]
-                    }
+                    };
                     const container = shallow(<AutoComplete {...props} />);
                     container.instance().setState(state);
                     container.instance().selectOption = jest.fn();

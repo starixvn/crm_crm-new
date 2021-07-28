@@ -132,5 +132,5 @@ describe('common functions', () => {
             // Assert
             expect(actual).toEqual(expected);
         });
-    })
+    });
 });

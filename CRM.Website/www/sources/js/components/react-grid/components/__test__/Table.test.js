@@ -455,7 +455,7 @@ describe('Table', () => {
 
             const state = { maxWidth: 123 };
             const diffWidth = 10;
-            const maxWidth = document.body.clientWidth - diffWidth
+            const maxWidth = document.body.clientWidth - diffWidth;
             const event = { preventDefault: jest.fn() };
             const table = shallow(<Table {...props} />);
             table.instance().diffWidth = diffWidth;

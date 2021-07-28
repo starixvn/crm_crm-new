@@ -22,7 +22,7 @@ describe('SelectWithSearch', () => {
         filter: '',
         isHideNA: false,
         collapsedAll: true
-    }
+    };
     const props = {
         name: 'N/A',
         value: 0,
@@ -70,11 +70,11 @@ describe('SelectWithSearch', () => {
                 const expected = {
                     id: 0,
                     name: 'N/A'
-                }
+                };
                 const newProps = {
                     id: 1,
                     name: 'test'
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
                 //Act
 
@@ -113,7 +113,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
 
                 //Act
@@ -135,7 +135,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
                 container.instance().setState(state);
 
@@ -150,7 +150,7 @@ describe('SelectWithSearch', () => {
         describe('selectItem', () => {
             it('should set exactly data', () => {
                 //Arrange
-                const item = { name: 'test', id: 1 }
+                const item = { name: 'test', id: 1 };
                 const expected = {
                     selectFormStatus: '',
                     selectedItem: {
@@ -161,7 +161,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
 
                 //Act
@@ -187,14 +187,14 @@ describe('SelectWithSearch', () => {
                     filter: 'test',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const newProps = {
                     name: 'N/A',
                     value: 0,
                     options: [{ name: 'parent', childSites: [{ name: 'child' }] }],
                     isHideNA: false,
                     OnChangeValue: jest.fn()
-                }
+                };
                 const container = shallow(<SelectWithSearch {...newProps} />);
 
                 //Act
@@ -219,7 +219,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
 
                 //Act
@@ -243,7 +243,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
 
                 //Act
@@ -268,7 +268,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: false
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
 
                 //Act
@@ -296,7 +296,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
                 container.instance().wrapperRef = null;
                 container.instance().componentDidMount();
@@ -324,7 +324,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
                 container.instance().wrapperRef.current = mockRef;
                 container.instance().setState(state);
@@ -366,7 +366,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
                 container.instance().setState(state);
                 container.instance().clearSearchBox = jest.fn();
@@ -390,7 +390,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
                 const container = shallow(<SelectWithSearch {...props} />);
                 container.instance().setState(state);
                 container.instance().toggleCollapseExpanse = jest.fn();
@@ -414,7 +414,7 @@ describe('SelectWithSearch', () => {
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
-                }
+                };
 
                 //Act
                 const container = shallow(<SelectWithSearch {...props} />);
@@ -445,7 +445,7 @@ describe('SelectWithSearch', () => {
                         filter: '',
                         isHideNA: false,
                         collapsedAll: true
-                    }
+                    };
 
                     const container = shallow(<SelectWithSearch {...props} />);
                     container.instance().setState(state);
@@ -462,7 +462,7 @@ describe('SelectWithSearch', () => {
             describe('has child option onclick', () => {
                 //Arrange
                 const data = {
-                    options: [{ name: 'parent1', childSites: [{ name: 'child1' }] }],
+                    options: [{ name: 'parent1', childSites: [{ name: 'child1' }] }]
                 };
 
                 //Act

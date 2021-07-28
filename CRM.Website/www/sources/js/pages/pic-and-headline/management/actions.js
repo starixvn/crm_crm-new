@@ -42,28 +42,28 @@ const changeActiveStatus = params => async dispatch => {
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setActiveResult(response.data));
     });
-}
+};
 
 const createPic = params => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/CreatePic');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setCreatePicResult(response.data));
     });
-}
+};
 
 const editPic = params => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/EditPic');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setEditPicResult(response.data));
     });
-}
+};
 
 const validateEditPic = params => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/ValidateEditPic');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setValidateEditPicResult(response.data));
     });
-}
+};
 
 export const ActionCreators = {
     setSetting,

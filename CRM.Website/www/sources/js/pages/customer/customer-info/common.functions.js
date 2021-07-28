@@ -20,7 +20,7 @@ export const validateFormik = (values) => {
 
 const functions = {
     renderSystemOption,
-    validateFormik,
+    validateFormik
 };
 
 export default functions;

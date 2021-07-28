@@ -137,7 +137,7 @@ describe('DataGrid', () => {
             const  uniqueCommunication = [{displayOrder: 1,
                 id: 0,                        
                 settingValue: "Letstalk"
-            }]
+            }];
 
             const dataGrid = shallow(<DataGrid {...props} />).instance();
             dataGrid.renderHeaderCommunicationTools = jest.fn();
@@ -188,7 +188,7 @@ describe('DataGrid', () => {
             const props = {
                 picAssignmentGridData: {},
                 gridParams: {},
-                removeOptions: {},
+                removeOptions: {}
 
             };
 
@@ -280,7 +280,7 @@ describe('DataGrid', () => {
                     }]
                 },
                 gridParams: {},
-                removeOptions: {},
+                removeOptions: {}
             };
 
             const dataGrid = shallow(<DataGrid {...props} />).instance();
@@ -305,7 +305,7 @@ describe('DataGrid', () => {
                     }]
                 },
                 gridParams: {},
-                removeOptions: {},
+                removeOptions: {}
             };
 
             const dataGrid = shallow(<DataGrid {...props} />).instance();
@@ -341,7 +341,7 @@ describe('DataGrid', () => {
                     }]
                 },
                 gridParams: {},
-                removeOptions: {},
+                removeOptions: {}
             };
 
             const dataGrid = shallow(<DataGrid {...props} />).instance();
@@ -370,7 +370,7 @@ describe('DataGrid', () => {
                 picAssignmentGridData: {
                 },
                 gridParams: {},
-                removeOptions: {},
+                removeOptions: {}
             };
 
             const dataGrid = shallow(<DataGrid {...props} />).instance();
@@ -430,7 +430,7 @@ describe('DataGrid', () => {
                     displayOrder: 1,
                     settingValue: "Letstalk"
                 }]
-            },
+            }
         };
         const dataGrid = shallow(<DataGrid {...props}/>).instance();
         const expected = [<Cell />, <Cell />];
@@ -452,7 +452,7 @@ describe('DataGrid', () => {
                     displayOrder: 1,
                     settingValue: "Letstalk"
                 }]
-            },
+            }
         };
         const comm = {
             picName: "Oliver_PIC",
@@ -464,7 +464,7 @@ describe('DataGrid', () => {
             roleId: 48001,
             username: "Oliver_PIC"
             }]
-        }
+        };
         const dataGrid = shallow(<DataGrid {...props}/>).instance();
         const expected = [<Cell>Oliver_PIC</Cell>,
             <Cell className="text-center">t381023</Cell>];

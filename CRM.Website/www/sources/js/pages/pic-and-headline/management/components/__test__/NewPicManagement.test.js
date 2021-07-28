@@ -363,7 +363,7 @@ describe('NewPicManagement', () => {
 
             const communicationTools = [
                 { type: 1, value: 'a', unique: 1 },
-                { type: 2, value: 'b', unique: 2 },
+                { type: 2, value: 'b', unique: 2 }
             ];
 
             it('should render expected', () => {
@@ -373,7 +373,7 @@ describe('NewPicManagement', () => {
                         languages: [],
                         communicationTools: [
                             { settingId: 1, settingValue: 'email' },
-                            { settingId: 2, settingValue: 'phone' },
+                            { settingId: 2, settingValue: 'phone' }
                         ]
                     }
                 };
@@ -397,7 +397,7 @@ describe('NewPicManagement', () => {
                         languages: [],
                         communicationTools: [
                             { settingId: 1, settingValue: 'email' },
-                            { settingId: 2, settingValue: 'phone' },
+                            { settingId: 2, settingValue: 'phone' }
                         ]
                     }
                 };
@@ -422,7 +422,7 @@ describe('NewPicManagement', () => {
                         languages: [],
                         communicationTools: [
                             { settingId: 1, settingValue: 'email' },
-                            { settingId: 2, settingValue: 'phone' },
+                            { settingId: 2, settingValue: 'phone' }
                         ]
                     }
                 };
@@ -525,10 +525,10 @@ describe('NewPicManagement', () => {
                 const selectedItemsKey = 'selectedItemsKey';
 
                 // Act
-                result.find(MultipleSelect).simulate('change', 'currentItem', selectedItemsKey);;
+                result.find(MultipleSelect).simulate('change', 'currentItem', selectedItemsKey);
 
                 // Assert
-                expect(tempFunc).toHaveBeenCalledWith((selectedItemsKey));
+                expect(tempFunc).toHaveBeenCalledWith(selectedItemsKey);
             });
         });
     });

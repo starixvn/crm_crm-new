@@ -33,7 +33,7 @@ describe('connect', () => {
             gridParams: {},
             createFeedbackSubjectPopup: { show: false },
             editStatusFeedbackSubjectPopup: { show: false },
-            editFeedbackSubjectPopup: { show: false },
+            editFeedbackSubjectPopup: { show: false }
         };
 
         // Act

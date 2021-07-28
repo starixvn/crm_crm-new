@@ -2,7 +2,7 @@ import addGuestFeedback, {
     setAllSettings,
     setFeedbackSubjectTemplates,
     setAddFeedback,
-    setConfirmCreateGuestDialog,
+    setConfirmCreateGuestDialog
 } from '../addGuestFeedbackSlice';
 
 describe('addGuestFeedback reducer', () => {

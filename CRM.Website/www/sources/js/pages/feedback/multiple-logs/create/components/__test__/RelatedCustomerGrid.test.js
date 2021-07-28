@@ -4,7 +4,7 @@ import { RelatedCustomerGrid } from '../RelatedCustomerGrid';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 
-describe('AddRelatedCustomerDialog', () => {
+describe('RelatedCustomerGrid', () => {
     beforeAll(() => {
         LangHelper.getResource = jest.fn(key => key);
     });

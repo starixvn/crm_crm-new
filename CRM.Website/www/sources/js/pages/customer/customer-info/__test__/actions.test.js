@@ -20,7 +20,7 @@ describe('actionCreators', () => {
         it('should handle setCustomerInfo when fetching customer information have been done', async () =>{
             // Arrange
             const expectParams = { username: null, isGuest: false };
-            const response = { data: {id: 1,username: 'test',siteId: 0 }}
+            const response = { data: {id: 1,username: 'test',siteId: 0 }};
             const expectedActions = [{ type: ActionCreators.setCustomerInfo.type, payload: response.data}];
             const store = mockStore({gridData: []});
             Site.blockUI = jest.fn();

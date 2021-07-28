@@ -15,7 +15,7 @@ describe('customerInfo reducer', () => {
             CustomerSuggestion: [],
             gridParams: {
                 username: null,
-                isGuest: false,
+                isGuest: false
             },
             settings: {
                 sites: [],

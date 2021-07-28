@@ -24,11 +24,11 @@ describe('connect', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            settings: {},
+            settings: {}
            
         };
         const state = {
-            settings: {},
+            settings: {}
         };
 
         // Act

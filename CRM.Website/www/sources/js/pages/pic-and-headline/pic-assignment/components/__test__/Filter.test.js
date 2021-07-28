@@ -830,7 +830,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = {};
+            const event = { persist: jest.fn() };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
             const control = filter.find(Form.Group).at(3).find(Form.Control);
@@ -881,7 +881,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = {};
+            const event = { persist: jest.fn() };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
             const control = filter.find(Form.Group).at(4).find(Form.Control);
@@ -932,7 +932,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = {};
+            const event = { persist: jest.fn() };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
             const control = filter.find(Form.Group).at(5).find(Form.Control);
@@ -983,7 +983,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = {};
+            const event = { persist: jest.fn() };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
             const control = filter.find(Form.Group).at(6).find(Form.Control);
@@ -1099,7 +1099,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = {};
+            const event = { persist: jest.fn() };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
             const input = filter.find(Form.Row).at(2).find('input').at(0);
@@ -1120,7 +1120,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = {};
+            const event = { persist: jest.fn() };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
             const input = filter.find(Form.Row).at(2).find('input').at(1);
@@ -1141,7 +1141,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = {};
+            const event = { persist: jest.fn() };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
             const input = filter.find(Form.Row).at(2).find('input').at(2);

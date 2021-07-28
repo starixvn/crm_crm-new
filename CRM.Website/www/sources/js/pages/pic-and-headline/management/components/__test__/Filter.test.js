@@ -85,7 +85,7 @@ describe('Filter', () => {
         };
 
         const settingRoles = props.setting.roleListWithInActive.map(r => {
-            return ({ ...r, checked: true });
+            return { ...r, checked: true };
         });
 
         // Action

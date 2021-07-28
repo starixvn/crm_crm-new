@@ -475,5 +475,5 @@ describe('DataGrid', () => {
                 }
                 </OverlayTrigger>);
         });
-    })
+    });
 });

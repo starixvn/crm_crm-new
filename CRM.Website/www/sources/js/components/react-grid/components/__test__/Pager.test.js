@@ -181,7 +181,7 @@ describe('Pager', () => {
             // Assert
             expect(goToPage).toHaveBeenCalledWith(9, props.pageOption.PageSize);
         });
-    })
+    });
 
     describe('onClickHandle', () => {
         it('should call handleFunc when isDisable false' , () => {
@@ -346,7 +346,7 @@ describe('Pager', () => {
             };
     
             // Action
-            result.simulate('change', event)
+            result.simulate('change', event);
 
             // Assert
             expect(onChange).toHaveBeenCalledWith(1, Number(event.target.value));
@@ -368,7 +368,7 @@ describe('Pager', () => {
         const expected = [
             <option key='pagesize0' value={value1}>{value1}</option>,
             <option key='pagesize1' value={value2}>{value2}</option>
-        ]
+        ];
         const pager = shallow(<Pager {...props} />);
 
         // Action
@@ -515,7 +515,7 @@ describe('Pager', () => {
             const index = 1;
             const pageSize = 10;
             const totalItem = 100;
-            const viewFrom = ((index - 1) * pageSize) + 1;
+            const viewFrom = (index - 1) * pageSize + 1;
             const viewTo = index * pageSize;
             const expected = <span className='page-info'>{`Display ${viewFrom} to ${viewTo} of ${totalItem} item(s)`}</span>;
             const pager = shallow(<Pager {...props} />);
@@ -539,7 +539,7 @@ describe('Pager', () => {
             const index = 2;
             const pageSize = 10;
             const totalItem = 10;
-            const viewFrom = ((index - 1) * pageSize) + 1;
+            const viewFrom = (index - 1) * pageSize + 1;
             const expected = <span className='page-info'>{`Display ${viewFrom} to ${totalItem} of ${totalItem} item(s)`}</span>;
             const pager = shallow(<Pager {...props} />);
     

@@ -91,12 +91,12 @@ describe('DataGridCustomerInfo', () => {
                 };
                 const newProps = {
                     gridData: null
-                }
+                };
                
                 const expected = {
                     langagues: [{id: 1, name: 'name', checked: true}],
                     siteId: 0
-                }
+                };
                 
                 const container = shallow(<DataGrid {...props} />);
 
@@ -123,7 +123,7 @@ describe('DataGridCustomerInfo', () => {
                             role: { name: 'test' }
                         }
                     },
-                    getSettings: jest.fn(),
+                    getSettings: jest.fn()
                     
                 };
                 const formikProps = {
@@ -159,7 +159,7 @@ describe('DataGridCustomerInfo', () => {
                         }
                     },
                     
-                    getSettings: jest.fn(),
+                    getSettings: jest.fn()
                     
                 };
                 const formikProps = {
@@ -174,18 +174,18 @@ describe('DataGridCustomerInfo', () => {
                     handleChange: jest.fn(),
                     handleSubmit: jest.fn(),
                     isSubmitting: jest.fn(),
-                    setFieldValue: jest.fn(),
+                    setFieldValue: jest.fn()
                 };
                 const container = shallow(<DataGrid {...props} />);
                 container.instance().handleSearchUplineInfo = jest.fn();
         
                 // Act
                 const form = shallow(container.instance().renderForm(formikProps));
-                form.find('form').find(Row).find(Col).at(1).find('a').simulate('click', 'tesla')
+                form.find('form').find(Row).find(Col).at(1).find('a').simulate('click', 'tesla');
         
                 // Assert 
                 expect(container.instance().handleSearchUplineInfo).toHaveBeenCalledWith('tesla');
-            })
+            });
 
         });
 
@@ -203,11 +203,11 @@ describe('DataGridCustomerInfo', () => {
                 handleChange: jest.fn(),
                 handleSubmit: jest.fn(),
                 isSubmitting: jest.fn(),
-                setFieldValue: jest.fn(),
+                setFieldValue: jest.fn()
             };
 
             const props = {
-                getSettings: jest.fn(),
+                getSettings: jest.fn()
             };
 
             const container = shallow(<DataGrid {...props} />);
@@ -234,7 +234,7 @@ describe('DataGridCustomerInfo', () => {
                             role: { name: 'test' }
                         }
                     },
-                    getSettings: jest.fn(),
+                    getSettings: jest.fn()
                 };
                 const values = {
                     languageId: null
@@ -296,11 +296,11 @@ describe('DataGridCustomerInfo', () => {
                             originalDangerLevel: 0,
                             abtDangerLevel: 0,
                             otherSportsDangerLevel: 0,
-                            site: '',
+                            site: ''
                         }
                     },
                     getSettings: jest.fn()
-                }
+                };
                 const customerInfo = props.gridData.data;
                 const values = {
                     custId: customerInfo.custId,
@@ -344,7 +344,7 @@ describe('DataGridCustomerInfo', () => {
                     abtDangerLevel: customerInfo.abtDangerLevel,
                     otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
                     site: customerInfo.site
-                }
+                };
                 const container = shallow(<DataGrid {...props} />);
 
                 //Act
@@ -379,7 +379,7 @@ describe('DataGridCustomerInfo', () => {
 
                 const props =  {
                     getSettings: jest.fn()
-                }
+                };
 
                 const container = shallow(<DataGrid {...props} />);
 
@@ -397,10 +397,10 @@ describe('DataGridCustomerInfo', () => {
                 const expected = {
                     languages: [],
                     siteId: 1
-                }
+                };
                 const props =  {
                     getSettings: jest.fn()
-                }
+                };
                 const container = shallow(<DataGrid {...props} />);
 
                 //Act
@@ -481,7 +481,7 @@ describe('DataGridCustomerInfo', () => {
                     pic3: '',
                     pic4Name: '',
                     pic4: '',
-                    custId: 0,
+                    custId: 0
                 };
                 const props = {
                     settings: {
@@ -534,7 +534,7 @@ describe('DataGridCustomerInfo', () => {
                         data: {
                             provinceId: 0,
                             id: 0,
-                            languages: [],
+                            languages: []
                         }
                     },
                     onSuccess: jest.fn(),

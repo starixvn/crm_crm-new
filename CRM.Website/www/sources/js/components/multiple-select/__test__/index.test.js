@@ -507,7 +507,7 @@ describe('index', () => {
 
             const id = 1;
             const checkAllHandler = jest.fn();
-            const expected = <OptionAll id={id} checked={true} textOptions={props.textOptions} onChange={checkAllHandler} />;
+            const expected = <OptionAll id={id} checked textOptions={props.textOptions} onChange={checkAllHandler} />;
             const index = shallow(<Index {...props} />);
             index.instance().id = id;
             index.instance().checkAllHandler = checkAllHandler;

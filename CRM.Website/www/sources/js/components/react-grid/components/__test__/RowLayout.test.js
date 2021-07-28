@@ -30,7 +30,7 @@ describe('RowLayout', () => {
             const result = rowLayout.instance()._getRowLayout();
     
             // Assert
-            expect(result).toEqual([<td key='cellLayout0' style={{ width: `${width}px` }}></td>]);
+            expect(result).toEqual([<td key='cellLayout0' style={{ width: `${width}px` }} />]);
         });
         
         it('should return expected row layout when with is string', () => {
@@ -46,7 +46,7 @@ describe('RowLayout', () => {
             const result = rowLayout.instance()._getRowLayout();
     
             // Assert
-            expect(result).toEqual([<td key='cellLayout0' style={{ width: width }}></td>]);
+            expect(result).toEqual([<td key='cellLayout0' style={{ width: width }} />]);
         });
     });
 

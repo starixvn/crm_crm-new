@@ -103,7 +103,7 @@ describe('RemovePicAssignment', () => {
     
             const pic = {
                 picId: 1,
-                picName: 'name',
+                picName: 'name'
             };
     
             const item = {
@@ -135,7 +135,7 @@ describe('RemovePicAssignment', () => {
     
             const pic = {
                 picId: 1,
-                picName: 'name',
+                picName: 'name'
             };
     
             const item = {
@@ -274,7 +274,7 @@ describe('RemovePicAssignment', () => {
                 gridParams: {}
             };
 
-            const expectedRow = <Row></Row>;
+            const expectedRow = <Row />;
             const removePicAssignment = shallow(<RemovePicAssignment {...props} />);
             removePicAssignment.instance().renderRow = jest.fn(() => expectedRow);
 
@@ -305,7 +305,7 @@ describe('RemovePicAssignment', () => {
                 gridParams: {}
             };
 
-            const expectedRow = <Row></Row>;
+            const expectedRow = <Row />;
             const removePicAssignment = shallow(<RemovePicAssignment {...props} />);
             removePicAssignment.instance().renderRow = jest.fn(() => expectedRow);
 
@@ -358,7 +358,7 @@ describe('RemovePicAssignment', () => {
                 ]
             };
 
-            const cell = <Cell></Cell>;
+            const cell = <Cell />;
             const state = { picNames: [ name ] };
             const removePicAssignment = shallow(<RemovePicAssignment {...props} />);
             removePicAssignment.instance().renderCell = jest.fn(() => cell);
@@ -386,7 +386,7 @@ describe('RemovePicAssignment', () => {
                 picList: []
             };
 
-            const cell = <Cell></Cell>;
+            const cell = <Cell />;
             const state = { picNames: [ name ] };
             const removePicAssignment = shallow(<RemovePicAssignment {...props} />);
             removePicAssignment.instance().renderCell = jest.fn(() => cell);

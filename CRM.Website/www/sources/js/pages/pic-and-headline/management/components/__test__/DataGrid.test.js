@@ -148,7 +148,7 @@ describe('DataGrid', () => {
                         total: 1,
                         dataList: []
                     },
-                    exportExcel: jest.fn(),
+                    exportExcel: jest.fn()
                 };
                 const container = shallow(<DataGrid {...props} />).instance();
 
@@ -272,7 +272,7 @@ describe('DataGrid', () => {
             it('should return expected value', () => {
                 // Arrange
                 const communicationTools = [
-                    { settingId: 1, value: '111' },
+                    { settingId: 1, value: '111' }
                 ];
                 const props = {
                     setting: {

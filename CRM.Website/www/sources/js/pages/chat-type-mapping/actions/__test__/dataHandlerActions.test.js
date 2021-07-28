@@ -193,7 +193,7 @@ describe('dataHandlerActions', () => {
             headers: {
                 ['content-disposition']: 'a; filename="test.txt";'
             }
-        }
+        };
         const filename = response.headers['content-disposition'].split('filename=')[1].split("\"")[1];
         const expectedParams = {
             pageIndex: 1,

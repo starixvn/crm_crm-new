@@ -14,6 +14,6 @@ export const convertDataSourceToState = ({ keyField, valueField, statusField, da
 
 const functions = {
     convertDataSourceToState
-}
+};
 
 export default functions;

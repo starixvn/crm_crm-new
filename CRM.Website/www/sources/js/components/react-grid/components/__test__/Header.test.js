@@ -87,7 +87,7 @@ describe('HeaderCell', () => {
                 children: 'children'
             };
 
-            const expected = <th>{props.children}</th>
+            const expected = <th>{props.children}</th>;
             const headerCell = shallow(<HeaderCell {...props} />);
 
             // Action

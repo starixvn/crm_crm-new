@@ -32,7 +32,7 @@ describe('filter', () => {
             isGuest: false,
             showEmptyConfirmPopup: false,
             showEmptyCustomerInfoPopup: false
-        }
+        };
         const props = {
             gridParams: {},
             gridData: {},
@@ -61,19 +61,19 @@ describe('filter', () => {
                         username: 'test',
                         isGuest: false
                     }
-                }
+                };
 
                 const params = {
                     username: state.username,
                     isGuest: state.isGuest
-                }
+                };
 
                 const newProps = {
                     gridParams: {
                         username: '',
                         isGuest: false
                     }
-                }
+                };
 
                 //Act
                 const container = shallow(<Filter {...props} />);
@@ -83,14 +83,14 @@ describe('filter', () => {
                 //Assert
                 promise.then(() => {
                     expect(container.instance().state.username).toEqual('test');
-                })
+                });
             });
         });
 
         describe('handleChange', () => {
             const props = {
                 getCustomerSuggestion: jest.fn()
-            }
+            };
             it('should call setState when change username field', () => {
                 //Arrange
                 const expected = {
@@ -98,7 +98,7 @@ describe('filter', () => {
                     isGuest: false,
                     showEmptyConfirmPopup: false,
                     showEmptyCustomerInfoPopup: false
-                }
+                };
                 const container = shallow(<Filter {...props} />);
 
                 //Act
@@ -115,7 +115,7 @@ describe('filter', () => {
                     isGuest: true,
                     showEmptyConfirmPopup: false,
                     showEmptyCustomerInfoPopup: false
-                }
+                };
                 const container = shallow(<Filter {...props} />);
 
                 //Act
@@ -132,7 +132,7 @@ describe('filter', () => {
                 const state = {
                     username: '',
                     isGuest: false
-                }
+                };
                 const expected = {
                     username: state.username,
                     isGuest: state.isGuest
@@ -152,7 +152,7 @@ describe('filter', () => {
                 const state = {
                     username: null,
                     isGuest: null
-                }
+                };
                 const expected = {
                     username: state.username,
                     isGuest: state.isGuest
@@ -178,7 +178,7 @@ describe('filter', () => {
                     isGuest: false,
                     showEmptyConfirmPopup: false,
                     showEmptyCustomerInfoPopup: false
-                }
+                };
 
                 const props = {
                     setGridParams: jest.fn(),
@@ -186,7 +186,7 @@ describe('filter', () => {
                     gridData: {
                         data: null
                     }
-                }
+                };
 
                const filter = shallow(<Filter {...props} />);
                filter.instance().setState(state);
@@ -207,7 +207,7 @@ describe('filter', () => {
                     isGuest: true,
                     showEmptyConfirmPopup: false,
                     showEmptyCustomerInfoPopup: false
-                }
+                };
 
                 const props = {
                     setGridParams: jest.fn(),
@@ -215,7 +215,7 @@ describe('filter', () => {
                     gridData: {
                         data: null
                     }
-                }
+                };
 
                const filter = shallow(<Filter {...props} />);
                filter.instance().setState(state);
@@ -239,8 +239,8 @@ describe('filter', () => {
 
                const props = {
                    setGridParams: jest.fn(),
-                   getCustomerInfo: jest.fn(() => promise),
-               }
+                   getCustomerInfo: jest.fn(() => promise)
+               };
 
                const filter = shallow(<Filter {...props} />);
                filter.instance().getCustomerInfo = jest.fn();
@@ -267,7 +267,7 @@ describe('filter', () => {
                     },
                     setGridParams: jest.fn(),
                     getCustomerInfo: jest.fn(() => promise)
-                }
+                };
  
                 const filter = shallow(<Filter {...props} />);
                 filter.instance().getParams = jest.fn();
@@ -279,7 +279,7 @@ describe('filter', () => {
                 // Assert
                 promise.then(() => {
                     expect(props.setEmptyCustomerInfoPopup).toHaveBeenCalled();
-                })
+                });
              });
 
         });
@@ -293,7 +293,7 @@ describe('filter', () => {
                      },
                      setGridParams: jest.fn(),
                      getCustomerInfo: jest.fn(() => promise)
-                 }
+                 };
   
                 const filter = shallow(<Filter {...props} />);
                 filter.instance().handleCloseEmptyConfirm = jest.fn();
@@ -318,7 +318,7 @@ describe('filter', () => {
                      },
                      setGridParams: jest.fn(),
                      getCustomerInfo: jest.fn(() => promise)
-                 }
+                 };
   
                 const filter = shallow(<Filter {...props} />);
 
@@ -340,7 +340,7 @@ describe('filter', () => {
                      },
                      setGridParams: jest.fn(),
                      getCustomerInfo: jest.fn(() => promise)
-                 }
+                 };
   
                 const filter = shallow(<Filter {...props} />);
 
@@ -362,7 +362,7 @@ describe('filter', () => {
                     isGuest: false,
                     showEmptyConfirmPopup: false,
                     showEmptyCustomerInfoPopup: false
-                }
+                };
                 const container = shallow(<Filter />);
 
                 //Act
@@ -381,7 +381,7 @@ describe('filter', () => {
                 const props = {
                     getCustomerSuggestion: jest.fn(),
                     setCustomerSuggestion: jest.fn()
-                }
+                };
                 const params = {
                     username: 'test',
                     isGuest: false
@@ -403,7 +403,7 @@ describe('filter', () => {
                 const props = {
                     getCustomerSuggestion: jest.fn(),
                     setCustomerSuggestion: jest.fn()
-                }
+                };
                 const container = shallow(<Filter {...props} />);
 
                 //Act
@@ -418,7 +418,7 @@ describe('filter', () => {
         describe('render', () => {
             it('should call exacly functions ', () => {
                 //Arrange
-                const container = shallow(<Filter />)
+                const container = shallow(<Filter />);
                 container.instance().handleChangeSuggestion = jest.fn();
                 container.instance().debounceUserNameInputChange = jest.fn();
 
@@ -428,7 +428,7 @@ describe('filter', () => {
 
                 //Assert
                 expect(container.instance().handleChangeSuggestion).toHaveBeenCalled();
-                expect(container.instance().debounceUserNameInputChange).toHaveBeenCalled()
+                expect(container.instance().debounceUserNameInputChange).toHaveBeenCalled();
             });
         });
     });

@@ -74,7 +74,7 @@ describe('DataGrid', () => {
                     gridParams: { pageSize: 100, pageIndex: 1 },
                     gridData: {
                         totalItems: 1,
-                        data: [],
+                        data: []
                     },
                     setGridParams: jest.fn(),
                     getFeedBackSubject: jest.fn()
@@ -145,7 +145,7 @@ describe('DataGrid', () => {
                         gridData: {
                             totalItems: 1,
                             data: []
-                        },
+                        }
                     };
                     const container = shallow(<DataGrid {...props} />).instance();
 
@@ -164,7 +164,7 @@ describe('DataGrid', () => {
                     gridData: {
                         totalItems: 1,
                         data: []
-                    },
+                    }
                 };
                 const container = shallow(<DataGrid {...props} />).instance();
 

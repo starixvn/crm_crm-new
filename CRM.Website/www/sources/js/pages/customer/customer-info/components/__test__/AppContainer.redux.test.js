@@ -27,12 +27,12 @@ describe('connect', () => {
         const expected = {
             gridParams: {},
             gridData: {},
-            editCustomerInfoPopup: { show: false },
+            editCustomerInfoPopup: { show: false }
         };
         const state = {
             gridParams: {},
             gridData: {},
-            editCustomerInfoPopup: { show: false },
+            editCustomerInfoPopup: { show: false }
         };
 
         // Act

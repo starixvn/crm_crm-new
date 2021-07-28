@@ -27,7 +27,7 @@ describe('NewFeedbackSubject', () => {
     it('renders Modal, Formik components', () => {
         // Arrange
         const props = {
-            createCommunicationResult: {},
+            createCommunicationResult: {}
         };
 
         // Act 
@@ -36,7 +36,7 @@ describe('NewFeedbackSubject', () => {
         // Assert
         expect(container.find(Modal)).toHaveLength(1);
         expect(container.find(Formik)).toHaveLength(1);
-    })
+    });
 
     it('component render correctly message', () => {
         // Arrange
@@ -122,7 +122,7 @@ describe('NewFeedbackSubject', () => {
                     createFeedbackSubject: jest.fn(() => promise),
                     createFeedbackSubjectResult: { isSuccessful: false, message: ''},
                     onSuccess: jest.fn()
-                }
+                };
                 const container = shallow(<NewFeedbackSubject {...props} />).instance();
 
                 // Act
@@ -230,6 +230,6 @@ describe('NewFeedbackSubject', () => {
                 // Assert
                 expect(container.state.showConfirmClose).toBeFalse;
             });
-        })
+        });
     });
 });

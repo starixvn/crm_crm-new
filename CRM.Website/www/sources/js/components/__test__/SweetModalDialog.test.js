@@ -61,7 +61,7 @@ describe('SweetModalDialog', () => {
         it('should have Modal Body with contents', () => {
             // Arrange
             const props = {
-                contents: <div></div>
+                contents: <div />
             };
 
             const sweetModalDialog = shallow(<SweetModalDialog {...props} />);
@@ -102,14 +102,14 @@ describe('SweetModalDialog', () => {
 
         it('should have Modal Footer with not empty buttons', () => {
             // Arrange
-            const button = <div></div>;
+            const button = <div />;
             const props = {
                 buttons: [
                     button
                 ]
             };
 
-            const expected = [<Fragment key={0}>{button}</Fragment>]
+            const expected = [<Fragment key={0}>{button}</Fragment>];
             const sweetModalDialog = shallow(<SweetModalDialog {...props} />);
 
             // Action

@@ -189,7 +189,7 @@ describe('EditFeedbackSubject', () => {
         describe('handleConfirmCancelPopup', () => {
             const initialValues = {
                 subject: 'feedback',
-                templateId: 1,
+                templateId: 1
             };
 
             const props = {

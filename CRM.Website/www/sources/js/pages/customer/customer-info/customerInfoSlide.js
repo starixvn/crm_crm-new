@@ -7,7 +7,7 @@ const customerInfoSlide = createSlice({
         CustomerSuggestion: [],
         gridParams: {
             username: null,
-            isGuest: false,
+            isGuest: false
         },
         settings: {
             sites: [],
@@ -39,7 +39,7 @@ const customerInfoSlide = createSlice({
         },
         setCustomerSuggestion: (state, action) => {
             state.CustomerSuggestion = action.payload;
-        },
+        }
     }
 });
 

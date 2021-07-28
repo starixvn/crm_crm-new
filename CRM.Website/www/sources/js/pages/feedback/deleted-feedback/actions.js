@@ -9,7 +9,7 @@ import{
 
 const getGridParams = (params) => dispatch => {
     dispatch(setGridParams(params));
-}
+};
 
 const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('DeletedFeedback/GetAllSettings');

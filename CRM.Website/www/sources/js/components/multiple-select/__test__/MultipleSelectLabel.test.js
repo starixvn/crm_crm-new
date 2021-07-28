@@ -27,7 +27,7 @@ describe('MultipleSelectLabel', () => {
                 textOptions: {
                     Texts: 'Texts'
                 }
-            }
+            };
     
             const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
     
@@ -50,7 +50,7 @@ describe('MultipleSelectLabel', () => {
                 textOptions: {
                     SelectedItemCount: '# items'
                 }
-            }
+            };
     
             const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
     
@@ -74,7 +74,7 @@ describe('MultipleSelectLabel', () => {
                     }
                 ],
                 textOptions: {}
-            }
+            };
     
             const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
     
@@ -94,7 +94,7 @@ describe('MultipleSelectLabel', () => {
                     NoData: 'NoData'
                 },
                 dataSourceSize: 0
-            }
+            };
     
             const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
     
@@ -113,7 +113,7 @@ describe('MultipleSelectLabel', () => {
                     SelectOptions: 'SelectOptions'
                 },
                 dataSourceSize: 10
-            }
+            };
     
             const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
     
@@ -134,7 +134,7 @@ describe('MultipleSelectLabel', () => {
                 SelectOptions: 'SelectOptions'
             },
             dataSourceSize: 10
-        }
+        };
 
         // Action
         const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);

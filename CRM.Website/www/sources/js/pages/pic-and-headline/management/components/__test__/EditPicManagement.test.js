@@ -231,7 +231,7 @@ describe('EditPicManagement', () => {
             const expected = [
                 { type: '', value: '', unique: 123456 },
                 { type: '', value: '', unique: 1466424490000 }
-            ]
+            ];
             const props = {
                 setting: {
                     languages: []
@@ -243,7 +243,7 @@ describe('EditPicManagement', () => {
             };
             const container = shallow(<EditPicManagement {...props} />);
             container.instance().state.communicationTools = [expected[0]];
-            const valueCommunication = { type: expected[1].type, value: expected[1].value }
+            const valueCommunication = { type: expected[1].type, value: expected[1].value };
             container.instance()['formik'] = {
                 values: {
                     ['communication-123456']: {}
@@ -263,7 +263,7 @@ describe('EditPicManagement', () => {
             const communicationTools = [
                 { type: '', value: '', unique: 123456 },
                 { type: '', value: '', unique: 111111 }
-            ]
+            ];
             const props = {
                 setting: {
                     languages: []
@@ -278,7 +278,7 @@ describe('EditPicManagement', () => {
             container.instance()['formik'] = {
                 values: {
                     ['communication-123456']: {},
-                    ['communication-111111']: {},
+                    ['communication-111111']: {}
                 }
             };
 
@@ -445,13 +445,13 @@ describe('EditPicManagement', () => {
 
             const communicationTools = [
                 { type: 1, value: 'a', unique: 1 },
-                { type: 2, value: 'b', unique: 2 },
+                { type: 2, value: 'b', unique: 2 }
             ];
 
             const values = {
                 'communication-1': { type: 1 },
                 'communication-2': { type: 2 }
-            }
+            };
 
             it('should render expected', () => {
                 // Arrange
@@ -460,7 +460,7 @@ describe('EditPicManagement', () => {
                         languages: [],
                         communicationTools: [
                             { settingId: 1, settingValue: 'email' },
-                            { settingId: 2, settingValue: 'phone' },
+                            { settingId: 2, settingValue: 'phone' }
                         ]
                     },
                     selectedPic: {
@@ -488,7 +488,7 @@ describe('EditPicManagement', () => {
                         languages: [],
                         communicationTools: [
                             { settingId: 1, settingValue: 'email' },
-                            { settingId: 2, settingValue: 'phone' },
+                            { settingId: 2, settingValue: 'phone' }
                         ]
                     },
                     selectedPic: {
@@ -517,7 +517,7 @@ describe('EditPicManagement', () => {
                         languages: [],
                         communicationTools: [
                             { settingId: 1, settingValue: 'email' },
-                            { settingId: 2, settingValue: 'phone' },
+                            { settingId: 2, settingValue: 'phone' }
                         ]
                     },
                     selectedPic: {
@@ -636,10 +636,10 @@ describe('EditPicManagement', () => {
                 const selectedItemsKey = 'selectedItemsKey';
 
                 // Act
-                result.find(MultipleSelect).simulate('change', 'currentItem', selectedItemsKey);;
+                result.find(MultipleSelect).simulate('change', 'currentItem', selectedItemsKey);
 
                 // Assert
-                expect(tempFunc).toHaveBeenCalledWith((selectedItemsKey));
+                expect(tempFunc).toHaveBeenCalledWith(selectedItemsKey);
             });
         });
 
@@ -680,7 +680,7 @@ describe('EditPicManagement', () => {
                 const expectedParams = {
                     picId: templateCreate.picId,
                     picCommunicationTools: templateCreate.picCommunicationTools
-                }
+                };
 
                 // Act
                 container.instance().handleConfirmSavePopup();
@@ -707,20 +707,20 @@ describe('EditPicManagement', () => {
                         communicationTools: []
                     },
                     validateEditPic: jest.fn(() => promise),
-                    validateEditPicResult: null,
+                    validateEditPicResult: null
                 };
                 const container = shallow(<EditPicManagement {...props} />);
                 const formik = {
                     values,
                     handleSubmit: jest.fn()
                 };
-                container.instance()['formik'] = formik
+                container.instance()['formik'] = formik;
 
                 container.instance().getTemplateEdit = jest.fn(values => templateCreate);
                 const expectedParams = {
                     picId: templateCreate.picId,
                     picCommunicationTools: templateCreate.picCommunicationTools
-                }
+                };
 
                 // Act
                 container.instance().handleConfirmSavePopup();

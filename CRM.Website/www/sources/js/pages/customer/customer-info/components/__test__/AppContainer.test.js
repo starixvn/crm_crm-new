@@ -31,13 +31,13 @@ describe('AppContainer', () => {
             };
 
             //Act
-            const container = shallow(<AppContainer {...props} />)
+            const container = shallow(<AppContainer {...props} />);
 
             //Assert
             expect(container).toMatchSnapshot();
             expect(container.find(SweetModalDialog).length).toBe(1);
             expect(container.find(SweetModalDialog).props().contents)
-                .toStrictEqual(<div>{LangHelper.getResource('EditCustomerInfoSuccessfully')}</div>)
+                .toStrictEqual(<div>{LangHelper.getResource('EditCustomerInfoSuccessfully')}</div>);
         });
 
         it('should call exactly functions when close popup', () => {
@@ -58,7 +58,7 @@ describe('AppContainer', () => {
             //Arrange
             const props = {
                 getCustomerInfo: jest.fn()
-            }
+            };
             const container = shallow(<AppContainer {...props} />).instance();
             
             //Act

@@ -6,6 +6,11 @@ import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class VerifyCustomerResult extends Component {
+    static defaultProps = {
+        verifyCustomerResults: [],
+        relatedCustomerResults: []
+    };
+
     handleOpenAddRelatedCustomerDialog = () => {
         const relatedCustomers = [];
 
@@ -28,10 +33,16 @@ export class VerifyCustomerResult extends Component {
     };
 
     renderCustomerItem = (customer, index) => {
-        const className = customer.custId > 0 ? 'customer' : customer.custId < 0 ? 'guest' : 'invalid';
+        let className = '';
+        if (customer.custId > 0) {
+            className = 'customer';
+        } else {
+            className = customer.custId < 0 ? 'guest' : 'invalid';
+        }
+
         return (
             <div key={index} className="customer-item mr-2 mb-2">
-                <span className="fa fa-times mr-2" onClick={() => this.props.removeCustomer(customer)}></span>
+                <span className="fa fa-times mr-2" onClick={() => this.props.removeCustomer(customer)} />
                 <span className={className}>{customer.username}</span>
             </div>
         );
