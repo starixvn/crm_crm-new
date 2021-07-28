@@ -1443,68 +1443,92 @@ describe('CreateForm', () => {
             expect(event.preventDefault).toHaveBeenCalledTimes(1);
         });
 
-        it('betTypeHandleChange call exact function', async () => {
-            // Arrange
-            jest.useFakeTimers();
-            const state = {betTypeSelected: ''};
-            const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm />).instance();
-            createForm.setState({state});
+        describe('betTypeHandleChange', () => {
+            it('call exact function', async () => {
+                // Arrange
+                jest.useFakeTimers();
+                const state = {betTypeSelected: ''};
+                const setFieldValue = jest.fn();
+                const createForm = shallow(<CreateForm />).instance();
+                createForm.setState({state});
 
-            // Act
-            createForm.betTypeHandleChange('currentItem', '1,2', setFieldValue);
-            jest.runAllTimers();
+                // Act
+                createForm.betTypeHandleChange('currentItem', '1,2', setFieldValue);
+                jest.runAllTimers();
 
-            // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('betType', '1,2');
-            expect(createForm.state.betTypeSelected).toEqual('1,2');
-        });
+                // Assert
+                expect(setFieldValue).toHaveBeenCalledWith('betType', '1,2');
+                expect(createForm.state.betTypeSelected).toEqual('1,2');
+            });
 
-        it('subProductHandleChange call exact function', async () => {
-            // Arrange
-            jest.useFakeTimers();
-            const props = {
-                settings: {
-                    bettypes: [1]
-                }
-            };
-            const state = {subProductSelected: '', betTypeSelected: '1,2'};
-            const setFieldValue = jest.fn();
-            shareScripts.getBetTypes = jest.fn(()=> [1]);
-            const createForm = shallow(<CreateForm {...props}/>).instance();
-            createForm.setState({state});
+            it('selectedItemsKey has value call exact function', async () => {
+                // Arrange
+                jest.useFakeTimers();
+                const props = {
+                    settings: {
+                        bettypes: [1]
+                    }
+                };
+                const state = {subProductSelected: '', betTypeSelected: '1,2'};
+                const setFieldValue = jest.fn();
+                shareScripts.getBetTypes = jest.fn(()=> [1]);
+                const createForm = shallow(<CreateForm {...props}/>).instance();
+                createForm.setState({state});
 
-            // Act
-            createForm.subProductHandleChange('currentItem', '1,2', setFieldValue);
-            jest.runAllTimers();
+                // Act
+                createForm.subProductHandleChange('currentItem', '1,2', setFieldValue);
+                jest.runAllTimers();
 
-            // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('subProduct', '1,2');
-            expect(createForm.state.subProductSelected).toEqual('1,2');
-            expect(createForm.state.betTypeOptions).toEqual([1]);
-        });
+                // Assert
+                expect(setFieldValue).toHaveBeenCalledWith('subProduct', '1,2');
+                expect(createForm.state.subProductSelected).toEqual('1,2');
+                expect(createForm.state.betTypeOptions).toEqual([1]);
+            });
 
-        it('subProductHandleChange selectedItemsKey is empty call exact function', async () => {
-            // Arrange
-            jest.useFakeTimers();
-            const props = {
-                settings: {
-                    bettypes: [1]
-                }
-            };
-            const state = {subProductSelected: '', betTypeSelected: '1,2'};
-            const setFieldValue = jest.fn();
-            shareScripts.getBetTypes = jest.fn(()=> [1]);
-            const createForm = shallow(<CreateForm {...props}/>).instance();
-            createForm.setState({state});
+            it('selectedItemsKey is empty call exact function', async () => {
+                // Arrange
+                jest.useFakeTimers();
+                const props = {
+                    settings: {
+                        bettypes: [1]
+                    }
+                };
+                const state = {subProductSelected: '', betTypeSelected: '1,2'};
+                const setFieldValue = jest.fn();
+                shareScripts.getBetTypes = jest.fn(()=> [1]);
+                const createForm = shallow(<CreateForm {...props}/>).instance();
+                createForm.setState({state});
 
-            // Act
-            createForm.subProductHandleChange('currentItem', '', setFieldValue);
-            jest.runAllTimers();
+                // Act
+                createForm.subProductHandleChange('currentItem', '', setFieldValue);
+                jest.runAllTimers();
 
-            // Assert
-            expect(createForm.state.betTypeOptions).toEqual([]);
-            expect(createForm.state.betTypeSelected).toEqual([]);
+                // Assert
+                expect(createForm.state.betTypeOptions).toEqual([]);
+                expect(createForm.state.betTypeSelected).toEqual([]);
+            });
+
+            it('betTypeSelected length < 0 call exact function', async () => {
+                // Arrange
+                jest.useFakeTimers();
+                const props = {
+                    settings: {
+                        bettypes: [1]
+                    }
+                };
+                const state = {subProductSelected: '', betTypeSelected: ''};
+                const setFieldValue = jest.fn();
+                shareScripts.getBetTypes = jest.fn(()=> [1]);
+                const createForm = shallow(<CreateForm {...props}/>).instance();
+                createForm.setState({state});
+
+                // Act
+                createForm.subProductHandleChange('currentItem', '', setFieldValue);
+                jest.runAllTimers();
+
+                // Assert
+                expect(createForm.state.betTypeOptions).toEqual([]);
+            });
         });
     });
 });
