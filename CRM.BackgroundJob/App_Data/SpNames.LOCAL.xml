@@ -13,8 +13,6 @@
     <Function Name="Feedback">
         <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_VoidingMessageSel" SpName="Acc_CRM_VoidingMessageSel_xpre" DbName="DBACC.bodb02.bodbAdminNet" />
-        <Setting Key="Acc_CRM_crmMessageImport_Check" SpName="Acc_CRM_crmMessageImport_Check_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_AbnormalAccount_GetUsernameList_xpre" DbName="DBTXN.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_VoidingMessageIns" SpName="Acc_CRM_VoidingMessageIns_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_VoidingMessageBatchUpd" SpName="Acc_CRM_VoidingMessageBatchUpd_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FailMessageSel" SpName="Acc_CRM_FailMessageSel_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -41,12 +39,12 @@
     </Function>
     <Function Name="Chatbot CWL">
         <Setting Key="Acc_CRM_Chatbot_CWL_Log_Sel" SpName="Acc_CRM_Chatbot_CWL_Log_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Chatbot_CWL_Import" SpName="Acc_CRM_Chatbot_CWL_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_CWL_Import" SpName="Acc_CRM_Chatbot_CWL_Import_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot CTO">
         <Setting Key="Acc_Chatbot_TOControlSetting_Sel" SpName="Acc_Chatbot_TOControlSetting_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_Chatbot_TOControlSMAInfo_Sel" SpName="Acc_Chatbot_TOControlSMAInfo_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Chatbot_TOControl_Import" SpName="Acc_CRM_Chatbot_TOControl_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_TOControl_Import" SpName="Acc_CRM_Chatbot_TOControl_Import_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot ProblemAccount">
         <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Sel" SpName="Acc_CRM_Chatbot_ProblemAccounts_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
