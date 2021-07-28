@@ -1252,7 +1252,7 @@ export class CreateForm extends Component {
             this.handleCloseConfirmCreateGuestDialog();
             if (this.props.addFeedbackResult.isSuccessful) {
                 setTimeout(() => {
-                    window.location = Site.resolveClientUrl('ManageFeedback/Index');
+                    window.location = Site.resolveClientUrl('CustomerInfo/Index');
                 }, 3000);
             }
         });

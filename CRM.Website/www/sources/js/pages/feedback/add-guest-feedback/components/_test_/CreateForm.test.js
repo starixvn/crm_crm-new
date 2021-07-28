@@ -1853,4 +1853,84 @@ describe('CreateForm', () => {
         expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
             LangHelper.getResource('ConfirmAddGuestFeedbackSpecialChar'));
     });
+
+    it('handleSubmit do not have special characters expect call exact function', async () => {
+        // Arrange
+        const params= {UserName: 'test'};
+        const props = {
+            setConfirmCreateGuestDialog: jest.fn()
+        };
+        commonFunction.getParams = jest.fn(() => params);
+        const createForm = shallow(<CreateForm {...props} />).instance();
+        createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
+
+        // Act
+        createForm.handleSubmit([{userName: 'test'}]);
+
+
+        // Assert
+        expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
+            LangHelper.getResource('ConfirmAddGuestFeedback'));
+    });
+
+    it('confirmCreateAddGuestFeedback call exact function', async () => {
+        // Arrange
+        const props = {
+            setConfirmCreateGuestDialog: jest.fn()
+        };
+        const expected = {show: true, params:'params', confirmMessage:'confirmMessage'};
+        const createForm = shallow(<CreateForm {...props} />).instance();
+
+        // Act
+        createForm.confirmCreateAddGuestFeedback ('params', 'confirmMessage');
+
+        // Assert
+        expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith(expected);
+    });
+
+    it('handleCreateGuestFeedback  call exact function', async () => {
+        // Arrange
+        jest.useFakeTimers();
+        const promise = Promise.resolve();
+        const props = {
+            confirmCreateGuestDialog: {param: 'params'},
+            addFeedback: jest.fn(() => promise),
+            addFeedbackResult: {isSuccessful: true}
+        };
+
+        Site.resolveClientUrl = jest.fn(url => url);
+        const createForm = shallow(<CreateForm {...props} />).instance();
+        createForm.handleCloseConfirmCreateGuestDialog = jest.fn();
+
+        // Act
+        createForm.handleCreateGuestFeedback();
+        await promise;
+        jest.runAllTimers();
+
+        // Assert
+        expect(Site.resolveClientUrl).toHaveBeenCalledWith('CustomerInfo/Index');
+    });
+
+    it('handleCreateGuestFeedback isSuccessful is false do nothing', async () => {
+        // Arrange
+        jest.useFakeTimers();
+        const promise = Promise.resolve();
+        const props = {
+            confirmCreateGuestDialog: {param: 'params'},
+            addFeedback: jest.fn(() => promise),
+            addFeedbackResult: {isSuccessful: false}
+        };
+
+        Site.resolveClientUrl = jest.fn(url => url);
+        const createForm = shallow(<CreateForm {...props} />).instance();
+        createForm.handleCloseConfirmCreateGuestDialog = jest.fn();
+
+        // Act
+        createForm.handleCreateGuestFeedback();
+        await promise;
+        jest.runAllTimers();
+
+        // Assert
+        expect(Site.resolveClientUrl).not.toHaveBeenCalled();
+    });
 });

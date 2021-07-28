@@ -1,6 +1,7 @@
 import React from 'react';
 import LangHelper from '@jsroot/common/langHelper';
 import * as commonFuns from '../common.functions';
+import * as shareScripts from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
 
 describe('common functions', () => {
@@ -246,5 +247,77 @@ describe('common functions', () => {
 
         // Assert
         expect(initialValues).toEqual(values);
+    });
+
+    it('getParams return exact params', () => {
+        // Arrange
+        const values = {
+            birthday: '',
+            identityInformation: '1',
+            product: [],
+            subProduct: [],
+            betType: [],
+            category: '1,2',
+            subCategory:'1,2',
+            noOfInquiries: ''
+        };
+        const listOfCustomerValid = [
+            {custId: '1'},
+            {custId: '2'}
+        ];
+        
+        const settings = {
+            subCategories: [{subCategoryId: 1, mainCategoryID: 1}],
+            extensionNA: {id: 1}
+        };
+
+        shareScripts.getProductParams = jest.fn(()=>'getProductParams');
+        shareScripts.getCategoryParams = jest.fn(()=>'getCategoryParams');
+        // Act
+        const params = commonFuns.getParams (values, settings, listOfCustomerValid);
+
+        // Assert
+        expect(params.Products).toEqual('getProductParams');
+        expect(params.Categories).toEqual('getCategoryParams');
+        expect(params.Birthday).toEqual(null);
+        expect(params.StationId).toEqual(1);
+        expect(params.CountryId).toEqual(0);
+        expect(params.NoInquiries).toEqual(0);
+        expect(params.RelatedCustId).toEqual('1,2');
+    });
+
+    it('getParams return exact params when values not null', () => {
+        // Arrange
+        const values = {
+            birthday: '2021-01-01',
+            product: '1,2',
+            subProduct: '1,2,',
+            betType: '1,2,',
+            category: '1,2',
+            subCategory:'1,2',
+            extension: 1,
+            country: 1,
+            noOfInquiries: 1
+        };
+        const listOfCustomerValid = [];
+        
+        const settings = {
+            subCategories: [{subCategoryId: 1, mainCategoryID: 1}],
+            extensionNA: {id: 1}
+        };
+        const expectedProductParams = {"extensionNA": {"id": 1}, "subCategories": [{"mainCategoryID": 1, "subCategoryId": 1}]};
+
+        shareScripts.getProductParams = jest.fn();
+        shareScripts.getCategoryParams = jest.fn(()=>'getCategoryParams');
+        // Act
+        const params = commonFuns.getParams (values, settings, listOfCustomerValid);
+
+        // Assert
+        expect(shareScripts.getProductParams).toHaveBeenCalledWith(["1", "2"], ["1", "2", ""], ["1", "2", ""], expectedProductParams);
+        expect(params.Birthday).toEqual('Jan 01, 2021 07:00 AM');
+        expect(params.StationId).toEqual(1);
+        expect(params.CountryId).toEqual(1);
+        expect(params.NoInquiries).toEqual(1);
+        expect(params.RelatedCustId).toEqual(null);
     });
 });
