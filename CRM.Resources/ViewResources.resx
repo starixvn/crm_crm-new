@@ -261,4 +261,7 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="ManageFeedback" xml:space="preserve">
+    <value>Manage Feedback</value>
+  </data>
 </root>

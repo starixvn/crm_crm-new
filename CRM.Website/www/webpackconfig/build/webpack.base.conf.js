@@ -27,10 +27,11 @@ function generateConfig(environment) {
             [`${jsPath}/pages/report/settlement/index`]: pathConfig.scriptPaths.report_settlement,
             [`${jsPath}/pages/feedbacksubject/index`]: pathConfig.scriptPaths.feedback_subject,
             [`${jsPath}/pages/customer/customerinfo/index`]: pathConfig.scriptPaths.customer_info,
-            [`${jsPath}/pages/feedback/addguestfeedback/index`]: pathConfig.scriptPaths.add_guest_feedback,
+            [`${jsPath}/pages/feedback/add-guest-feedback/index`]: pathConfig.scriptPaths.add_guest_feedback,
             [`${jsPath}/pages/feedback/latest-feedback`]: pathConfig.scriptPaths.latest_feedback,
             [`${jsPath}/pages/feedback/multiple-logs/create`]: pathConfig.scriptPaths.create_multiple_logs,
             [`${jsPath}/pages/feedback/deleted-feedback/index`]: pathConfig.scriptPaths.deleted_feedback,
+            [`${jsPath}/pages/feedback/manage-feedback/index`]: pathConfig.scriptPaths.manage_feedback,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -45,15 +46,16 @@ function generateConfig(environment) {
             [`${cssPath}/pages/report/settlement/index`]: pathConfig.cssPaths.report_settlement,
             [`${cssPath}/pages/feedbacksubject/index`]: pathConfig.cssPaths.feedback_subject,
             [`${cssPath}/pages/customer/customerinfo/index`]: pathConfig.cssPaths.customer_info,
-            [`${cssPath}/pages/feedback/addguestfeedback/index`]: pathConfig.cssPaths.add_guest_feedback,
+            [`${cssPath}/pages/feedback/add-guest-feedback/index`]: pathConfig.cssPaths.add_guest_feedback,
             [`${cssPath}/pages/feedback/latest-feedback`]: pathConfig.cssPaths.latest_feedback,
             [`${cssPath}/pages/feedback/multiple-logs/create`]: pathConfig.cssPaths.create_multiple_logs,
-            [`${cssPath}/pages/feedback/deleted-feedback/index`]: pathConfig.cssPaths.deleted_feedback
+            [`${cssPath}/pages/feedback/deleted-feedback/index`]: pathConfig.cssPaths.deleted_feedback,
+            [`${cssPath}/pages/feedback/manage-feedback/index`]: pathConfig.cssPaths.manage_feedback
         },
         output: {
             path: pathConfig.projectRoot,
             filename: "[name].chunk.js",
-            chunkFilename: `${jsPath}/lib/[name].chunk.js`,
+            chunkFilename: `${jsPath}/lib/[name].chunk.js`
         },
         module: {
             rules: [

@@ -1,0 +1,14 @@
+@import '../../../abstracts/variables';
+@import '../../../components/forms';
+@import '../../../components/messages';
+@import '../../../components/modal';
+@import '../../../components/date-picker/style';
+@import '../../../components/react-select';
+@import '../../../components/multiple-select/style';
+
+.form-filter {
+    border: 1px solid #b7b7b7;
+    margin-bottom: 1rem;
+    padding: 1rem 1rem 0;
+    background-color: #e8e8e8;
+}

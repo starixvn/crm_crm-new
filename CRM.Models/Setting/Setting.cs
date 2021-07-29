@@ -34,7 +34,7 @@
 
         public string SettingSource { get; set; }
 
-        public List<Setting> ChildSettings { get; set; }
+        public List<Setting> ChildSettings { get; set; } = new List<Setting>();
 
     }
 }

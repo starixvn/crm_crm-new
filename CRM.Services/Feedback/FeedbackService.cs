@@ -5,6 +5,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
     using CRM.Criteria.Feedback.DeletedFeedback;
+    using CRM.Criteria.Feedback.ManageFeedback;
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
@@ -28,6 +29,8 @@
         Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command);
 
         Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(GetDeletedFeedbackParam param);
+
+        Task<IEnumerable<DeletedFeedback>> GetManageFeedbackAsync(ManageFeedbackCriteria criteria);
     }
 
     public class FeedbackService : IFeedbackService
@@ -153,6 +156,11 @@
                 feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
             }
 
+            return feedbacks;
+        }
+        public async Task<IEnumerable<DeletedFeedback>> GetManageFeedbackAsync(ManageFeedbackCriteria criteria)
+        {
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
             return feedbacks;
         }
     }

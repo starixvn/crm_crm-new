@@ -293,5 +293,84 @@
                 }
             };
         }
+
+        public IEnumerable<Setting> GetReviews()
+        {
+            return new[]
+            {
+                new Setting
+                {
+                    SettingId = ReviewConstants.All,
+                    SettingValue = ViewResources.All
+                },
+                new Setting
+                {
+                    SettingId = ReviewConstants.IsReviewed,
+                    SettingValue = ViewResources.Reviewed
+                },
+                new Setting
+                {
+                    SettingId = ReviewConstants.NotReviewed,
+                    SettingValue = ViewResources.NotReviewed
+                }
+            };
+        }
+
+        public async Task<IEnumerable<Setting>> GetAllMainSubCategoriesAsync()
+        {
+            var mainCategories = await GetMainCategoryAsync();
+            var subCategories = await GetSubCategoryAsync();
+            foreach (var category in mainCategories)
+            {
+                category.ChildSettings = subCategories.Where(x => x.MainCategoryID == category.MainCategoryID).OrderBy(s => s.DisplayOrder).ToList();
+            }
+            return mainCategories;
+        }
+
+        public async Task<IEnumerable<Setting>> GetMainCategoriesAndChildSettingAsync()
+        {
+            var subCate = new Setting
+            {
+                SubCategoryId = SettingConstants.NotApply,
+                Name = ViewResources.All,
+                IsActive = true
+            };
+
+            var mainCategories = new List<Setting>
+            {
+                new Setting
+                {
+                    MainCategoryID = SettingConstants.NotApply,
+                    Name = ViewResources.All,
+                    IsActive = true,
+                    ChildSettings = new List<Setting>
+                    {
+                        subCate
+                    }
+                }
+            };
+
+            var mainSubCate = await GetAllMainSubCategoriesAsync();
+            foreach (var main in mainSubCate)
+            {
+                main.ChildSettings.Insert(0, subCate);
+                mainCategories.Add(main);
+            }
+
+            return mainCategories;
+        }
+
+        public async Task<IEnumerable<Setting>> GetAllMainCategoriesFromAllSettings()
+        {
+            var mainCategories = await GetSettingAsync(SettingName.MainCategory, true);
+            var subCategories = await GetSubCategoryAsync();
+
+            foreach (var category in mainCategories)
+            {
+                category.ChildSettings = subCategories.Where(x => x.MainCategoryID == category.SettingId).OrderBy(s => s.DisplayOrder).ToList();
+            }
+
+            return mainCategories;
+        }
     }
 }

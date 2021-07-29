@@ -178,15 +178,6 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You don&apos;t have permission to update feedback..
-        /// </summary>
-        public static string DoNoEditFeedbackPermission {
-            get {
-                return ResourceManager.GetString("DoNoEditFeedbackPermission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Deleted Feedback.
         /// </summary>
         public static string DeletedFeedback {
@@ -201,6 +192,15 @@ namespace CRM.Resources {
         public static string DeletedFeedbackReport_Title {
             get {
                 return ResourceManager.GetString("DeletedFeedbackReport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to update feedback..
+        /// </summary>
+        public static string DoNoEditFeedbackPermission {
+            get {
+                return ResourceManager.GetString("DoNoEditFeedbackPermission", resourceCulture);
             }
         }
         
@@ -282,6 +282,15 @@ namespace CRM.Resources {
         public static string LetstalkInvalidMessage {
             get {
                 return ResourceManager.GetString("LetstalkInvalidMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Feedback.
+        /// </summary>
+        public static string ManageFeedback {
+            get {
+                return ResourceManager.GetString("ManageFeedback", resourceCulture);
             }
         }
         

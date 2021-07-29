@@ -70,29 +70,16 @@
         public async Task<IActionResult> SearchDeletedFeedback([FromBody] GetDeletedFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetDeletedFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await GetAllMainCategoriesFromAllSettings();
+            IEnumerable<Setting> mainCategories = await settingService.GetAllMainCategoriesFromAllSettings();
 
             return Json(new { data = feedbacks, mainCategories });
-        }
-
-        private async Task<IEnumerable<Setting>> GetAllMainCategoriesFromAllSettings()
-        {
-            var mainCategories = await settingService.GetSettingAsync(SettingName.MainCategory, true);
-            var subCategories = await settingService.GetSubCategoryAsync();
-
-            foreach (var category in mainCategories)
-            {
-                category.ChildSettings = subCategories.Where(x => x.MainCategoryID == category.SettingId).OrderBy(s => s.DisplayOrder).ToList();
-            }
-
-            return mainCategories;
         }
 
         [HttpPost]
         public async Task<IActionResult> ExportDeletedFeedbackReport([FromBody] GetDeletedFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetDeletedFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await GetAllMainCategoriesFromAllSettings();
+            IEnumerable<Setting> mainCategories = await settingService.GetAllMainCategoriesFromAllSettings();
 
             var bytes = excelService.ExportDeletedFeedbackReport(feedbacks, mainCategories);
             string reportName = ViewResources.DeletedFeedbackReport_Title;

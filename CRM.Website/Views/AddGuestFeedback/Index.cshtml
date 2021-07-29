@@ -4,18 +4,18 @@
 }
 @section Styles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/dev/pages/feedback/addguestfeedback/index.chunk.css" />
+        <link rel="stylesheet" href="~/css/dev/pages/feedback/add-guest-feedback/index.chunk.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/pro/pages/feedback/addguestfeedback/index.chunk.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/pro/pages/feedback/add-guest-feedback/index.chunk.css" asp-append-version="true" />
     </environment>
 }
 @section Scripts{
     <environment include="Development">
-        <script src="~/js/dev/pages/feedback/addguestfeedback/index.chunk.js"></script>
+        <script src="~/js/dev/pages/feedback/add-guest-feedback/index.chunk.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/js/pro/pages/feedback/addguestfeedback/index.chunk.js" asp-append-version="true"></script>
+        <script src="~/js/pro/pages/feedback/add-guest-feedback/index.chunk.js" asp-append-version="true"></script>
     </environment>
 }
 <input type="checkbox" hidden id="IsHost" @(Model ? "checked" : string.Empty) />
