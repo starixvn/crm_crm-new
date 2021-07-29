@@ -542,6 +542,31 @@
             Assert.Equal(expected[2].SettingValue, actual[2].SettingValue);
         }
 
+        [Fact]
+        public void GetReviews_WhenCalled_ReturnExpectedSettings()
+        {
+            // Arrange
+            var expected = new List<Setting>
+            {
+                new Setting{ SettingId = ReviewConstants.All, SettingValue = ViewResources.All },
+                new Setting{ SettingId = ReviewConstants.IsReviewed, SettingValue = ViewResources.Reviewed },
+                new Setting{ SettingId = ReviewConstants.NotReviewed, SettingValue = ViewResources.NotReviewed }
+            };
+            var service = GetService();
+
+            // Act
+            var actual = service.GetReviews().ToList();
+
+            // Assert
+            Assert.Equal(expected.Count, actual.Count);
+            Assert.Equal(expected[0].SettingId, actual[0].SettingId);
+            Assert.Equal(expected[0].SettingValue, actual[0].SettingValue);
+            Assert.Equal(expected[1].SettingId, actual[1].SettingId);
+            Assert.Equal(expected[1].SettingValue, actual[1].SettingValue);
+            Assert.Equal(expected[2].SettingId, actual[2].SettingId);
+            Assert.Equal(expected[2].SettingValue, actual[2].SettingValue);
+        }
+
         #region Helpers
 
         private SettingService GetService()

@@ -9,7 +9,9 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
+    using CRM.Criteria.Feedback.DeletedFeedback;
     using CRM.Models.Customer;
+    using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
     using CRM.Models.LatestFeedback;
     using CRM.Models.Setting;
@@ -192,6 +194,58 @@
 
             // Assert
             Assert.Equal(commandResult, actual);
+        }
+
+        [Fact]
+        public async Task GetDeletedFeedbackAsync_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var date = fixture.Create<DateTime>();
+            var clientdate = fixture.Create<DateTime>();
+            var param = fixture.Create<GetDeletedFeedbackParam>();
+            var criteria = new DeletedFeedbackCriteria();
+            var statuses = new List<FeedbackStatus>
+            {
+                new FeedbackStatus { StatusId = 100, Name = "Pending" }
+            };
+            var feedbacks = new List<DeletedFeedback>
+            {
+                new DeletedFeedback
+                {
+                    FeedbackId = 1, StatusId = 100, FeedbackDate = date,
+                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                },
+                new DeletedFeedback
+                {
+                    FeedbackId = 2, StatusId = 101, FeedbackDate = date,
+                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                }
+            };
+            var service = GetService();
+            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<DeletedFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
+            settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
+            commonService.ConvertServerToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
+
+            // Act
+            var actual = await service.GetDeletedFeedbackAsync(param);
+
+            // Assert
+            Assert.Equal(feedbacks, actual);
+            Assert.Collection(actual, item =>
+            {
+                Assert.Equal(clientdate, item.FeedbackDate);
+                Assert.Equal(clientdate, item.ResolutionDate);
+                Assert.Equal(clientdate, item.SolveDate);
+                Assert.Equal(clientdate, item.CreateDate);
+                Assert.Equal("Pending", item.Status);
+            }, item =>
+            {
+                Assert.Equal(clientdate, item.FeedbackDate);
+                Assert.Equal(clientdate, item.ResolutionDate);
+                Assert.Equal(clientdate, item.SolveDate);
+                Assert.Equal(clientdate, item.CreateDate);
+                Assert.Empty(item.Status);
+            });
         }
 
         #region Helpers

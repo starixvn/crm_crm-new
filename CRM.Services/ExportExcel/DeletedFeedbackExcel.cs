@@ -50,7 +50,7 @@
             }
         }
 
-        private void RenderRow(ExcelWorksheet worksheet, FeedbackDetail feedbackDetail, int index, int rowIndex)
+        protected internal virtual void RenderRow(ExcelWorksheet worksheet, FeedbackDetail feedbackDetail, int index, int rowIndex)
         {
             var colIndex = 1;
             var feedbackCellValue = GetFeedbackCellValue(feedbackDetail);

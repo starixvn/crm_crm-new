@@ -2,7 +2,6 @@
 {
     using Fanex.Data.Repository;
     using System;
-    using System.Collections;
 
     public class DeletedFeedbackCriteria : CriteriaBase
     {
@@ -31,7 +30,7 @@
 
         public override bool IsValid()
         {
-            return FromDate <= ToDate && (ToDate - FromDate).Days <= 365;
+            return FromDate <= ToDate;
         }
 
     }
