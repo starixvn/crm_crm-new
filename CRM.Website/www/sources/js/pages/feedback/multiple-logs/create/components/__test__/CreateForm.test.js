@@ -11,7 +11,7 @@ describe('CreateForm', () => {
         settings: {
             extensions: [{ id: 1 }],
             languages: [{ languageId: 1 }],
-            countries: [{ id: 1 }],
+            countries: [{ id: 1, name: 'eng' }],
             statuses: [{ statusId: 1 }],
             responses: [{ id: 1 }]
         }
@@ -22,6 +22,7 @@ describe('CreateForm', () => {
         jest.useFakeTimers();
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
+        Site.resolveClientUrl = jest.fn(url => url);
         LangHelper.getResource = jest.fn(key => key);
     });
 
@@ -411,6 +412,268 @@ describe('CreateForm', () => {
 
             // Assert
             expect(actual).toEqual('1,2');
+        });
+
+        it('should return as expected when selectedExtensionIds is empty and extensionNA is null', () => {
+            // Arrange
+            const selectedExtensionIds = '';
+            const container = shallow(<CreateForm {...defaultProps} />).instance();
+
+            // Act
+            const actual = container.getExtensionParams(selectedExtensionIds, null);
+
+            // Assert
+            expect(actual).toEqual('');
+        });
+
+        it('should return as expected when selectedExtensionIds is empty and extensionNA is valid', () => {
+            // Arrange
+            const selectedExtensionIds = '';
+            const extensionNA = { id: 1 };
+            const container = shallow(<CreateForm {...defaultProps} />).instance();
+
+            // Act
+            const actual = container.getExtensionParams(selectedExtensionIds, extensionNA);
+
+            // Assert
+            expect(actual).toEqual('1');
+        });
+    });
+
+    describe('getCountryName', () => {
+        it('should return correct country name', () => {
+            // Arrange
+            const container = shallow(<CreateForm {...defaultProps} />).instance();
+
+            // Act
+            const actual = container.getCountryName(1);
+
+            // Assert
+            expect(actual).toEqual('eng');
+        });
+    });
+
+    describe('getCustomers', () => {
+        it('should return valid customers', () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                verifyCustomerResults: [
+                    { custId: -1, username: 'test' },
+                    { custId: 0, username: 'invalid' },
+                    { custId: 1, username: 'sa' }
+                ]
+            };
+            const container = shallow(<CreateForm {...props} />).instance();
+
+            // Act
+            const actual = container.getCustomers();
+
+            // Assert
+            expect(actual).toEqual([
+                { id: -1, name: 'test' },
+                { id: 1, name: 'sa' }
+            ]);
+        });
+    });
+
+    describe('getRelatedCustomers', () => {
+        it('should return as expected related customers', () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                relatedCustomerResults: [
+                    { custId: -1, username: 'test', relatedCustomers: [] },
+                    {
+                        custId: 1, username: 'sa',
+                        relatedCustomers: [
+                            { headlineId: 1, headline: 'sa', custId: 1, username: 'sa' }
+                        ]
+                    }
+                ]
+            };
+            const container = shallow(<CreateForm {...props} />).instance();
+
+            // Act
+            const actual = container.getRelatedCustomers();
+
+            // Assert
+            expect(actual).toEqual([
+                { headlineId: 1, headline: 'sa', custId: 1, username: 'sa' }
+            ]);
+        });
+    });
+
+    describe('confirmCreateMultipleLogs', () => {
+        it('should call correct function', () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                setConfirmCreateMultipleLogsDialog: jest.fn()
+            };
+            const params = { languageId: 1 };
+            const confirmMessage = 'Are you sure you want to Add or Update the Feedback/Log?';
+            const container = shallow(<CreateForm {...props} />).instance();
+
+            // Act
+            container.confirmCreateMultipleLogs(params, confirmMessage);
+
+            // Assert
+            expect(props.setConfirmCreateMultipleLogsDialog).toHaveBeenCalledWith({ show: true, params, confirmMessage });
+        });
+    });
+
+    describe('checkNotExistCommunicationToolSetting', () => {
+        it('should do as expected when all customers have default communication tool', async () => {
+            // Arrange
+            const response = { data: [] };
+            const promise = Promise.resolve(response);
+            const props = {
+                ...defaultProps,
+                checkNotExistCommunicationToolSetting: jest.fn(() => promise)
+            };
+            const params = { customers: '1', categoryIds: '1', subCategoryIds: '1' };
+            const confirmMessage = 'Are you sure you want to Add or Update the Feedback/Log?';
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.confirmCreateMultipleLogs = jest.fn();
+
+            // Act
+            container.checkNotExistCommunicationToolSetting(params);
+            await promise;
+
+            // Assert
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+            expect(props.checkNotExistCommunicationToolSetting).toHaveBeenCalledWith({ customers: '1', categoryIds: '1', subCategoryIds: '1' });
+            expect(container.confirmCreateMultipleLogs).toHaveBeenCalledWith(params, confirmMessage);
+        });
+
+        it('should do as expected when some customers do not have default communication tool', async () => {
+            // Arrange
+            const response = {
+                data: [
+                    { custId: 1, username: 'test', role: 'Guest' },
+                    { custId: 2, username: 'test 2', role: 'Guest' }
+                ]
+            };
+            const promise = Promise.resolve(response);
+            const props = {
+                ...defaultProps,
+                checkNotExistCommunicationToolSetting: jest.fn(() => promise)
+            };
+            const params = { customers: '1', categoryIds: '1', subCategoryIds: '1' };
+            const confirmMessage = `The Default Communication Setting of customers does not match the selected Category / Sub-Category, here are the customers:
+                    <strong> test(Guest), test 2(Guest)</strong>
+                    <br />Do you want to continue to create the Feedback/Logs?`;
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.confirmCreateMultipleLogs = jest.fn();
+
+            // Act
+            container.checkNotExistCommunicationToolSetting(params);
+            await promise;
+
+            // Assert
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+            expect(props.checkNotExistCommunicationToolSetting).toHaveBeenCalledWith({ customers: '1', categoryIds: '1', subCategoryIds: '1' });
+            expect(container.confirmCreateMultipleLogs).toHaveBeenCalledWith(params, confirmMessage);
+        });
+    });
+
+    describe('handleCloseViewRelatedCustomerDialog', () => {
+        it('should call correct function', () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                setViewRelatedCustomerDialog: jest.fn()
+            };
+            const container = shallow(<CreateForm {...props} />).instance();
+
+            // Act
+            container.handleCloseViewRelatedCustomerDialog();
+
+            // Assert
+            expect(props.setViewRelatedCustomerDialog).toHaveBeenCalledWith({ show: false });
+        });
+    });
+
+    describe('handleCloseConfirmCreateMultipleLogsDialog', () => {
+        it('should call correct function', () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                setConfirmCreateMultipleLogsDialog: jest.fn()
+            };
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.formik = { setSubmitting: jest.fn() };
+
+            // Act
+            container.handleCloseConfirmCreateMultipleLogsDialog();
+
+            // Assert
+            expect(container.formik.setSubmitting).toHaveBeenCalledWith(false);
+            expect(props.setConfirmCreateMultipleLogsDialog).toHaveBeenCalledWith({ show: false });
+        });
+    });
+
+    describe('handleCreateMultipleLogs', () => {
+        it('should do as expected when create is unsuccessful', async () => {
+            // Arrange
+            const response = { data: { isSuccessful: false, message: '' } };
+            const promise = Promise.resolve(response);
+            const params = { customers: '1', categoryIds: '1', subCategoryIds: '1' };
+            const props = {
+                ...defaultProps,
+                createMultipleLogs: jest.fn(() => promise),
+                confirmCreateMultipleLogsDialog: { params }
+            };
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.setState = jest.fn();
+            container.formik = { setSubmitting: jest.fn() };
+
+            // Act
+            container.handleCreateMultipleLogs();
+            await promise;
+
+            // Assert
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+            expect(props.createMultipleLogs).toHaveBeenCalledWith(params);
+            expect(container.setState).toHaveBeenCalledWith({ createMultipleLogsResult: response.data });
+            expect(container.formik.setSubmitting).toHaveBeenCalledWith(false);
+        });
+
+        it('should do as expected when create is successful', async () => {
+            // Arrange
+            Object.defineProperty(window, 'location', {
+                value: {
+                    href: ''
+                },
+                writable: true
+            });
+            const response = { data: { isSuccessful: true, message: '' } };
+            const promise = Promise.resolve(response);
+            const params = { customers: '1', categoryIds: '1', subCategoryIds: '1' };
+            const props = {
+                ...defaultProps,
+                createMultipleLogs: jest.fn(() => promise),
+                confirmCreateMultipleLogsDialog: { params }
+            };
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.setState = jest.fn();
+            container.formik = { setSubmitting: jest.fn() };
+
+            // Act
+            container.handleCreateMultipleLogs();
+            await promise;
+
+            // Assert
+            expect(Site.blockUI).toHaveBeenCalled();
+            expect(Site.unblockUI).toHaveBeenCalled();
+            expect(props.createMultipleLogs).toHaveBeenCalledWith(params);
+            expect(container.setState).toHaveBeenCalledWith({ createMultipleLogsResult: response.data });
+            expect(container.formik.setSubmitting).not.toHaveBeenCalled();
+            expect(window.location).toEqual('ManageFeedback/Index');
         });
     });
 });

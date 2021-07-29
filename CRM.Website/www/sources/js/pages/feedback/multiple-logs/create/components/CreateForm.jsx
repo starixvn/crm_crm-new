@@ -335,7 +335,7 @@ export class CreateForm extends Component {
         }
 
         if (extensionIds.length === 0 && extensionNA !== null && extensionNA.id !== undefined) {
-            extensionIds.push(extensionNA.Id);
+            extensionIds.push(extensionNA.id);
         }
 
         return extensionIds.join(',');

@@ -11,7 +11,7 @@ describe('actionCreators', () => {
     beforeAll(() => {
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
-        Site.resolveClientUrl = jest.fn((url) => url);
+        Site.resolveClientUrl = jest.fn(url => url);
     });
 
     afterEach(() => {
