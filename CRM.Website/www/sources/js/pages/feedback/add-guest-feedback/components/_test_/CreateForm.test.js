@@ -1205,7 +1205,6 @@ describe('CreateForm', () => {
     describe('handleGetFeedbackSubjectTemplates', () => {
         it('should do as expected when search text is valid', () => {
             //Arrange
-            jest.useFakeTimers();
             const searchText = 'length > 2';
             const props = {
                 getFeedbackSubjectTemplates: jest.fn()
@@ -1223,7 +1222,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when searchText is invalid', () => {
             //Arrange
-            jest.useFakeTimers();
             const searchText = '1';
             const props = {
             setFeedbackSubjectTemplates: jest.fn()
@@ -1245,7 +1243,6 @@ describe('CreateForm', () => {
                 id: 1,
                 val: 'test'
             }];
-            jest.useFakeTimers();
             const promise = Promise.resolve(response);
             const props = {
                 verifyUserName: jest.fn(() => promise)
@@ -1328,7 +1325,6 @@ describe('CreateForm', () => {
     describe('onPasteCustomerHandler', () => {
         it('should handle paste event', () => {
             // Arrange
-            jest.useFakeTimers();
             const setFieldValue = jest.fn();
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('test') } };
 
@@ -1344,7 +1340,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when input is null', () => {
             // Arrange
-            jest.useFakeTimers();
             const setFieldValue = jest.fn();
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('') } };
 
@@ -1384,7 +1379,6 @@ describe('CreateForm', () => {
     describe('betTypeHandleChange', () => {
         it('should call exact function', async () => {
             // Arrange
-            jest.useFakeTimers();
             const state = {betTypeSelected: ''};
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm />).instance();
@@ -1401,7 +1395,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when selectedItemsKey has value', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     bettypes: [1]
@@ -1425,7 +1418,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when selectedItemsKey is empty', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     bettypes: [1]
@@ -1448,7 +1440,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when betType Selected length < 0', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     bettypes: [1]
@@ -1472,7 +1463,6 @@ describe('CreateForm', () => {
     describe('productHandleChange ', () => {
         it('should do as expected when selectedItemsKey has value', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     subProducts: [1]
@@ -1495,7 +1485,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when selectedItemsKey is empty', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     subProducts: [1]
@@ -1520,7 +1509,6 @@ describe('CreateForm', () => {
     describe('subCategoriesHandleChange ', () => {
         it('should call exact function', async () => {
             // Arrange
-            jest.useFakeTimers();
             const state = {subCategoriesSelected : ''};
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm />).instance();
@@ -1539,7 +1527,6 @@ describe('CreateForm', () => {
     describe('mainCategoriesHandleChange', () => {
         it('should do as expected when selectedItemsKey has value', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     mainCategories: [1]
@@ -1563,7 +1550,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when selectedItemsKey has value and subCategoriesSelected length > 0', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     mainCategories: [1]
@@ -1587,7 +1573,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when selectedItemsKey is empty', async () => {
             // Arrange
-            jest.useFakeTimers();
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm />).instance();
 
@@ -1604,7 +1589,6 @@ describe('CreateForm', () => {
     describe('handleEditBlock', () => {
         it('should call exact function', async () => {
             // Arrange
-            jest.useFakeTimers();
             const prevState = {
                 collapse: {
                     isShowCustomerDetailOption: false
@@ -1622,7 +1606,6 @@ describe('CreateForm', () => {
 
         it('should call exact function', async () => {
             // Arrange
-            jest.useFakeTimers();
             const prevState = {
                 editBlock: {
                     isEditDescription: true
@@ -1647,7 +1630,6 @@ describe('CreateForm', () => {
     describe('handleCommunicationChange', () => {
         it('should do as expected when selectedItemsKey has value equal length communication get first name', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     communicationTools: [{id: 1, name: '1'}, {id: 2, name: '1'}]
@@ -1670,7 +1652,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when current communication tool checked', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     communicationTools: [{id: 1, name: '1'}]
@@ -1696,7 +1677,6 @@ describe('CreateForm', () => {
 
         it('should do as expected when multiple select', async () => {
             // Arrange
-            jest.useFakeTimers();
             const props = {
                 settings: {
                     communicationTools: [{id: 1, name: '1'}]
@@ -1718,9 +1698,8 @@ describe('CreateForm', () => {
     });
 
     describe('handleChangeResolutionTime', () => {
-        it('should not update resolution time when startTime is before resolutionTime', async () => {
+        it('should call twice setFieldValue if feedback date greater than solution date', async () => {
             // Arrange
-            jest.useFakeTimers();
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm />).instance();
 
@@ -1731,54 +1710,54 @@ describe('CreateForm', () => {
             // Assert
             expect(setFieldValue).toHaveBeenCalledTimes(2);
         });
+
+        it('should call 1 setFieldValue if feedback date smaller than solution date', async () => {
+            // Arrange
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm />).instance();
+    
+            // Act
+            createForm.handleChangeResolutionTime(setFieldValue, '2021-01-01', '2021-01-02');
+            jest.runAllTimers();
+    
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledTimes(1);
+        });
     });
 
-    it('handleChangeResolutionTime feedbackDate smaller than solution time don not call setFieldValue', async () => {
-        // Arrange
-        jest.useFakeTimers();
-        const setFieldValue = jest.fn();
-        const createForm = shallow(<CreateForm />).instance();
-
-        // Act
-        createForm.handleChangeResolutionTime(setFieldValue, '2021-01-01', '2021-01-02');
-        jest.runAllTimers();
-
-        // Assert
-        expect(setFieldValue).toHaveBeenCalledTimes(1);
+    describe('handleChangeFeedbackTime', () => {
+        it('should call twice setFieldValue if feedback date greater than solution date', async () => {
+            // Arrange
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm />).instance();
+            // Act
+            createForm.handleChangeFeedbackTime (setFieldValue, '2021-01-02', '2021-01-01');
+            createForm.renderAutoGeneratedText = jest.fn(() =>'test');
+    
+            jest.runAllTimers();
+    
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledTimes(3);
+        });
+    
+        it('should call 1 setFieldValue if feedback date smaller than solution date', async () => {
+            // Arrange
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm />).instance();
+    
+            // Act
+            createForm.handleChangeFeedbackTime(setFieldValue, '2021-01-01', '2021-01-02');
+            createForm.renderAutoGeneratedText = jest.fn(() =>'test');
+    
+            jest.runAllTimers();
+    
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledTimes(2);
+        });
     });
 
-    it('handleChangeFeedbackTime call exact function', async () => {
-        // Arrange
-        jest.useFakeTimers();
-        const setFieldValue = jest.fn();
-        const createForm = shallow(<CreateForm />).instance();
-        // Act
-        createForm.handleChangeFeedbackTime (setFieldValue, '2021-01-02', '2021-01-01');
-        createForm.renderAutoGeneratedText = jest.fn(() =>'test');
-
-        jest.runAllTimers();
-
-        // Assert
-        expect(setFieldValue).toHaveBeenCalledTimes(3);
-    });
-
-    it('handleChangeFeedbackTime feedbackDate smaller than solution time don not call setFieldValue', async () => {
-        // Arrange
-        jest.useFakeTimers();
-        const setFieldValue = jest.fn();
-        const createForm = shallow(<CreateForm />).instance();
-
-        // Act
-        createForm.handleChangeFeedbackTime(setFieldValue, '2021-01-01', '2021-01-02');
-        createForm.renderAutoGeneratedText = jest.fn(() =>'test');
-
-        jest.runAllTimers();
-
-        // Assert
-        expect(setFieldValue).toHaveBeenCalledTimes(2);
-    });
-
-    it('handleSubmit remove special characters', async () => {
+    describe('handleSubmit', () => {
+        it('should remove special characters', async () => {
         // Arrange
         const params= {UserName: 'test#'};
         const props = {
@@ -1795,85 +1774,88 @@ describe('CreateForm', () => {
         // Assert
         expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
             LangHelper.getResource('ConfirmAddGuestFeedbackSpecialChar'));
+        });
+
+        it('should  call exact function when do not have special characters', async () => {
+            // Arrange
+            const params= {UserName: 'test'};
+            const props = {
+                setConfirmCreateGuestDialog: jest.fn()
+            };
+            commonFunction.getParams = jest.fn(() => params);
+            const createForm = shallow(<CreateForm {...props} />).instance();
+            createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
+
+            // Act
+            createForm.handleSubmit([{userName: 'test'}]);
+
+
+            // Assert
+            expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
+                LangHelper.getResource('ConfirmAddGuestFeedback'));
+        });
     });
 
-    it('handleSubmit do not have special characters expect call exact function', async () => {
-        // Arrange
-        const params= {UserName: 'test'};
-        const props = {
-            setConfirmCreateGuestDialog: jest.fn()
-        };
-        commonFunction.getParams = jest.fn(() => params);
-        const createForm = shallow(<CreateForm {...props} />).instance();
-        createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
-
-        // Act
-        createForm.handleSubmit([{userName: 'test'}]);
-
-
-        // Assert
-        expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
-            LangHelper.getResource('ConfirmAddGuestFeedback'));
+    describe('confirmCreateAddGuestFeedback', () => {
+        it('should call exact function', async () => {
+            // Arrange
+            const props = {
+                setConfirmCreateGuestDialog: jest.fn()
+            };
+            const expected = {show: true, params:'params', confirmMessage:'confirmMessage'};
+            const createForm = shallow(<CreateForm {...props} />).instance();
+    
+            // Act
+            createForm.confirmCreateAddGuestFeedback ('params', 'confirmMessage');
+    
+            // Assert
+            expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith(expected);
+        });
     });
 
-    it('confirmCreateAddGuestFeedback call exact function', async () => {
-        // Arrange
-        const props = {
-            setConfirmCreateGuestDialog: jest.fn()
-        };
-        const expected = {show: true, params:'params', confirmMessage:'confirmMessage'};
-        const createForm = shallow(<CreateForm {...props} />).instance();
+    describe('handleCreateGuestFeedback', () => {
+        it('should call exact function when isSuccessful is true', async () => {
+            // Arrange
+            const promise = Promise.resolve();
+            const props = {
+                confirmCreateGuestDialog: {param: 'params'},
+                addFeedback: jest.fn(() => promise),
+                addFeedbackResult: {isSuccessful: true}
+            };
 
-        // Act
-        createForm.confirmCreateAddGuestFeedback ('params', 'confirmMessage');
+            Site.resolveClientUrl = jest.fn(url => url);
+            const createForm = shallow(<CreateForm {...props} />).instance();
+            createForm.handleCloseConfirmCreateGuestDialog = jest.fn();
 
-        // Assert
-        expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith(expected);
-    });
+            // Act
+            createForm.handleCreateGuestFeedback();
+            await promise;
+            jest.runAllTimers();
 
-    it('handleCreateGuestFeedback  call exact function', async () => {
-        // Arrange
-        jest.useFakeTimers();
-        const promise = Promise.resolve();
-        const props = {
-            confirmCreateGuestDialog: {param: 'params'},
-            addFeedback: jest.fn(() => promise),
-            addFeedbackResult: {isSuccessful: true}
-        };
+            // Assert
+            expect(Site.resolveClientUrl).toHaveBeenCalledWith('CustomerInfo/Index');
+        });
 
-        Site.resolveClientUrl = jest.fn(url => url);
-        const createForm = shallow(<CreateForm {...props} />).instance();
-        createForm.handleCloseConfirmCreateGuestDialog = jest.fn();
+        it('should do nothing when isSuccessful is false', async () => {
+            // Arrange
+            const promise = Promise.resolve();
+            const props = {
+                confirmCreateGuestDialog: {param: 'params'},
+                addFeedback: jest.fn(() => promise),
+                addFeedbackResult: {isSuccessful: false}
+            };
 
-        // Act
-        createForm.handleCreateGuestFeedback();
-        await promise;
-        jest.runAllTimers();
+            Site.resolveClientUrl = jest.fn(url => url);
+            const createForm = shallow(<CreateForm {...props} />).instance();
+            createForm.handleCloseConfirmCreateGuestDialog = jest.fn();
 
-        // Assert
-        expect(Site.resolveClientUrl).toHaveBeenCalledWith('CustomerInfo/Index');
-    });
+            // Act
+            createForm.handleCreateGuestFeedback();
+            await promise;
+            jest.runAllTimers();
 
-    it('handleCreateGuestFeedback isSuccessful is false do nothing', async () => {
-        // Arrange
-        jest.useFakeTimers();
-        const promise = Promise.resolve();
-        const props = {
-            confirmCreateGuestDialog: {param: 'params'},
-            addFeedback: jest.fn(() => promise),
-            addFeedbackResult: {isSuccessful: false}
-        };
-
-        Site.resolveClientUrl = jest.fn(url => url);
-        const createForm = shallow(<CreateForm {...props} />).instance();
-        createForm.handleCloseConfirmCreateGuestDialog = jest.fn();
-
-        // Act
-        createForm.handleCreateGuestFeedback();
-        await promise;
-        jest.runAllTimers();
-
-        // Assert
-        expect(Site.resolveClientUrl).not.toHaveBeenCalled();
+            // Assert
+            expect(Site.resolveClientUrl).not.toHaveBeenCalled();
+        });
     });
 });

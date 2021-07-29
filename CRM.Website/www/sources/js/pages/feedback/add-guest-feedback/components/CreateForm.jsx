@@ -202,12 +202,6 @@ export class CreateForm extends Component {
         this.setState({ betTypeSelected: selectedItemsKey });
     };
 
-    renderTooltipCustomers = props => (
-        <Tooltip id="tooltip-customers" {...props}>
-            {LangHelper.getResource('MultipleCustomersTooltip')}
-        </Tooltip>
-    );
-
     handleVerify = (event, setFieldValue, value) => {
         event.preventDefault();
         const regex1 = new RegExp(/,\s+/g);
