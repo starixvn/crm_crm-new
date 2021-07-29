@@ -112,7 +112,7 @@ export class Filter extends Component {
             <Form onSubmit={handleSubmit} className="form-filter">
                 <div className="panel-content">
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2">
+                        <Form.Label column sm="2" md="2" className="filter-title">
                             {LangHelper.getResource('Username')}
                         </Form.Label>
                         <Col sm="2" md="2">
@@ -132,7 +132,7 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Form.Label column sm="1" md="1">
+                        <Form.Label column sm="2" md="2" className="filter-title">
                             {LangHelper.getResource('From Date')}
                         </Form.Label>
                         <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper">
@@ -160,7 +160,7 @@ export class Filter extends Component {
                     </Form.Group>
 
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2">
+                        <Form.Label column sm="2" md="2" className="filter-title">
                             {LangHelper.getResource('Main Category')}
                         </Form.Label>
                         <Col sm="4" md="4">
@@ -174,7 +174,7 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Form.Label column sm="1" md="1">
+                        <Form.Label column sm="2" md="2" className="filter-title">
                             {LangHelper.getResource('SubCategory')}
                         </Form.Label>
                         <Col sm="2" md="2">
@@ -190,10 +190,10 @@ export class Filter extends Component {
                     </Form.Group>
 
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2">
+                        <Form.Label column sm="2" md="2" className="filter-title">
                             {LangHelper.getResource('Communication')}
                         </Form.Label>
-                        <Col sm="1" md="1">
+                        <Col sm="2" md="2" className="filter-title">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="communicationId"
                                 onChange={value => setFieldValue('communicationId', parseInt(value.target.value))}
@@ -204,10 +204,10 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Form.Label column sm="2" md="2">
+                        <Form.Label column sm="2" md="2" className="filter-title">
                             {LangHelper.getResource('Customer Response')}
                         </Form.Label>
-                        <Col sm="1" md="1">
+                        <Col sm="2" md="2" className="filter-res">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="responseId"
                                 onChange={value => setFieldValue('responseId', parseInt(value.target.value))}
@@ -218,7 +218,7 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Form.Label column sm="1" md="1">
+                        <Form.Label column sm="2" md="2" className="filter-title">
                             {LangHelper.getResource('Is Reviewed')}
                         </Form.Label>
                         <Col sm="2" md="2">
