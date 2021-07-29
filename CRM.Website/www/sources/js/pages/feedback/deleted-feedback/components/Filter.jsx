@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Col, Form, Row, OverlayTrigger, Tooltip, Collapse, Alert } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import moment from 'moment';
 import { ActionCreators } from '../actions';
@@ -16,7 +16,7 @@ export class Filter extends Component {
     }
 
     initFormData = () => {
-        var nextDay = new Date();
+        let nextDay = new Date();
         nextDay.setDate(nextDay.getDate() + 1);
 
         const fromDate = new Date(DateTimeService.toShortDateFormat(new Date()));
@@ -31,8 +31,8 @@ export class Filter extends Component {
             communicationId: 1005,
             responseId: 10002,
             isReviewed: 0,
-        }
-    }
+        };
+    };
 
     handleChangeFromDate = (setFieldValue, fromDate, toDate) => {
         setFieldValue('fromDate', fromDate);
@@ -42,7 +42,7 @@ export class Filter extends Component {
             toDate.setMinutes(toDate.getMinutes() + 1);
 
             setFieldValue('toDate', toDate);
-        }
+        };
     };
 
     handleChangeToDate = (setFieldValue, fromDate, toDate) => {
@@ -53,7 +53,7 @@ export class Filter extends Component {
             fromDate.setMinutes(fromDate.getMinutes() - 1);
 
             setFieldValue('fromDate', fromDate);
-        }
+        };
     };
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
@@ -73,9 +73,9 @@ export class Filter extends Component {
         }
         this.props.getGridParams(params);
         this.props.getDeletedFeedback(params);
-    }
+    };
 
-    filterMainCategory = (data) => {
+    filterMainCategory = data => {
         const mainCategories = [];
         data.mainCategory.map(value => {            
             const filter = data.subCategory.filter(item => item.mainCategoryID === value.mainCategoryID);
@@ -89,12 +89,12 @@ export class Filter extends Component {
         mainCategories.unshift({mainCategoryID: 0, name: "All", subCate: [{name: "All", subCategoryId: 0}]});
 
         return mainCategories;
-    }
+    };
 
     filterSubCategory = (mainCate,values) =>{
         const subCategories = mainCate.filter(item => item.mainCategoryID === values.mainCategoryId);
         return subCategories;
-    }
+    };
  
     renderForm = ({
         values,
@@ -108,6 +108,11 @@ export class Filter extends Component {
         const mainCategories = this.filterMainCategory(data);
         const subCategories = this.filterSubCategory(mainCategories,values);
 
+        const review = [
+            { settingValue: "All", settingId: 0 },
+            { settingValue: "Review", settingId: 1 },
+            { settingValue: "Not Reviewd", settingId: -1 }
+        ]
         return (
             <Form onSubmit={handleSubmit} className="form-filter">
                 <div className="panel-content">
@@ -227,7 +232,7 @@ export class Filter extends Component {
                                 onChange={value => setFieldValue('isReviewed', parseInt(value.target.value))}
                             >
                                 {
-                                    data.review.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
+                                    review.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
                                 }
                             </Form.Control>
                         </Col>
@@ -239,8 +244,8 @@ export class Filter extends Component {
                     </Form.Group>
                 </div>       
             </Form>
-        )
-    }
+        );
+    };
 
     render() {
         const { settings } = this.props;
@@ -256,15 +261,15 @@ export class Filter extends Component {
                     {this.renderForm}
                 </Formik>
             </>
-        )
-    }
-}
+        );
+    };
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, settings, editNoOfInquiryDialog, editFeedbackDialog } = state;
-    return { gridParams, settings, editNoOfInquiryDialog, editFeedbackDialog };
+    const { gridParams, settings } = state;
+    return { gridParams, settings };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Filter)
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

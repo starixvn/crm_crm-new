@@ -56,7 +56,6 @@
             var settings = new
             {
                 customerType = settingService.GetAllCustomerTypes(),
-                review = settingService.GetReviews(),
                 customerResponse = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
                 mainCategory = await settingService.GetMainCategoryAsync(SettingConstants.Active),
                 subCategory = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),

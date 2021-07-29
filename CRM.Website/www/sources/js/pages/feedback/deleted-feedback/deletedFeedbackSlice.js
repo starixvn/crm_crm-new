@@ -5,7 +5,7 @@ const deletedFeedbackSlice = createSlice({
     initialState: {
         gridParams: null,
         settings: null,
-        gridData: null
+        gridData: null,
         editFeedbackDialog: { show: false },
     },
     reducers: {
@@ -17,7 +17,7 @@ const deletedFeedbackSlice = createSlice({
         },
         setDeletedFeedback: (state, action) => {
             state.gridData = action.payload;
-        }
+        },
         setEditFeedbackDialog: (state, action) => {
             state.editFeedbackDialog = action.payload;
         },

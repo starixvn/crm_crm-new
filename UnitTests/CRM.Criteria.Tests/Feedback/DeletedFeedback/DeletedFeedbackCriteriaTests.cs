@@ -44,12 +44,12 @@
             var criteria = new GetDeletedFeedbackCriteria
             {
                 Username = "",
-                IsGuest = 0,
+                IsGuest = true,
                 MainCategoryId = null,
                 SubCategoryId = 0,
                 CommunicationId = 0,
                 ResponseId = 0,
-                IsReviewed = 0,
+                IsReviewed = false,
                 FromDate = new DateTime(2020, 07, 01),
                 ToDate = new DateTime(2021, 07, 30)
             };

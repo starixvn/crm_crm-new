@@ -50,14 +50,12 @@
             // Arrange
             var customerType = new List<Setting> { new Setting { Id = 1 } };
             var customerResponse = new List<SettingRelation>{ new SettingRelation { Id = 1, IsActive = false },};
-            var review = new List<Setting> { new Setting { Id = 1 } };
             var mainCategory = new List<Setting> { new Setting { Id = 1 } };
             var subCategory = new List<Setting> { new Setting { Id = 1 } };
             var communication = new List<Setting> { new Setting { Id = 1 } };
             var status = new List<FeedbackStatus>{ new FeedbackStatus { StatusId = 11002, Name = "Closed", IsActive = true }};
             var controller = GetController();
             settingService.GetAllCustomerTypes().Returns(customerType);
-            settingService.GetReviews().Returns(review);
             settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active).Returns(customerResponse);
             settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategory);
             settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategory);
@@ -74,7 +72,6 @@
             var expected = new
             {
                 customerType,
-                review,
                 customerResponse,
                 mainCategory,
                 subCategory,

@@ -52,8 +52,5 @@
         IEnumerable<Setting> GetPositions(bool isExcludeGuest);
 
         IEnumerable<Setting> GetAllCustomerTypes();
-
-        IEnumerable<Setting> GetReviews();
-
     }
 }

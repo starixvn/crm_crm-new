@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -34,20 +34,20 @@ export class DataGrid extends Component {
         ];
     };
 
-    handleGroupCategory = (filterCategory) => {
+    handleGroupCategory = filterCategory => {
         const groupCategory = filterCategory.reduce( (accumulator, currentValue) => {
             const itemExist = accumulator.find(item => currentValue.settingId === item.settingId)
             if(itemExist){
-                itemExist.subSettingId = [...itemExist.subSettingId, currentValue.subSettingId]
+                itemExist.subSettingId = [...itemExist.subSettingId, currentValue.subSettingId];
             }else{
-                accumulator.push({settingId: currentValue.settingId, subSettingId: [currentValue.subSettingId]})
+                accumulator.push({settingId: currentValue.settingId, subSettingId: [currentValue.subSettingId]});
             }
             return accumulator;
         },[]);
         return groupCategory;
-    }
+    };
 
-    renderCategoryColumn = (item) => {
+    renderCategoryColumn = item => {
         const { mainCategories } = this.props.gridData;
         const filterCategory = item.settings.filter(element => element.settingType === 'Category');
         const groupCategory = this.handleGroupCategory(filterCategory);
@@ -62,19 +62,20 @@ export class DataGrid extends Component {
                             const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subId);
                             return(
                                 <div key={index} className="font-italic ml-3">{filterSubCategory.name}</div>
-                            )
+                            );
                         })
                     }
                 </>     
-            )
-        })
+            );
+        });
     };
 
-    renderRelatedCustomerColumn = (item) => {
+    renderRelatedCustomerColumn = item => {
         return item.map((value,key) => {
-            if(key === item.length - 1)
-                return <div key={key}>{`${value}`}</div>
-            return <div key={key}>{`${value},`}</div>
+            if(key === item.length - 1){
+                return(<div key={key}>{`${value}`}</div>);
+            }
+            return(<div key={key}>{`${value},`}</div>);
         });
     };
 
@@ -111,7 +112,6 @@ export class DataGrid extends Component {
     };
 
     handleEditFeedback = id => {
-        console.log(id);
         this.props.setEditFeedbackDialog({ show: true, feedbackId: id });
     };
 
@@ -132,8 +132,9 @@ export class DataGrid extends Component {
 
     render() {
         const {gridData} = this.props;
-        if(!gridData || !gridData.data)
+        if(!gridData || !gridData.data){
             return null;
+        }
 
         const pagingOption = {
             PageIndex: 1,
@@ -162,15 +163,15 @@ export class DataGrid extends Component {
                     adjustedHeight={10}
                 />
             </>
-        )
-    }
+        );
+    };
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, settings, gridData ,editNoOfInquiryDialog, editFeedbackDialog } = state;
-    return { gridParams, settings, gridData ,editNoOfInquiryDialog, editFeedbackDialog };
+    const { gridParams, settings, gridData } = state;
+    return { gridParams, settings, gridData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);
