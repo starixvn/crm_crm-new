@@ -202,16 +202,6 @@ export class CreateForm extends Component {
         this.setState({ betTypeSelected: selectedItemsKey });
     };
 
-    validateInquiriesInput = event => {
-        if ([8, 46, 37, 39, 35, 36].includes(event.which)) {
-            return;
-        }
-
-        if (!event.ctrlKey && !event.key.match(/^\d+$/)) {
-            event.preventDefault();
-        }
-    };
-
     renderTooltipCustomers = props => (
         <Tooltip id="tooltip-customers" {...props}>
             {LangHelper.getResource('MultipleCustomersTooltip')}

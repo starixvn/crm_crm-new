@@ -1,16 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import CreateFormWrapper, { CreateForm } from '../CreateForm';
 import { Formik } from 'formik';
-import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
-import { Button, Col, Form, Row, OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import * as commonFunction from '../../common.functions';
 import DatePicker from '@jsroot/components/date-picker/index';
-import DateTimeService from '@jsroot/common/dateTimeService';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import * as shareScripts from '@jsroot/common/shareScripts';
-import VerifyCustomer from '@jsroot/components/verifyCustomer';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import Site from '@jsroot/common/site';
