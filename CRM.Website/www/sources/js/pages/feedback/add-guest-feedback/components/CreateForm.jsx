@@ -859,7 +859,10 @@ export class CreateForm extends Component {
                             </Col>
                             <Col sm="1" md="1">
                                 <Form.Label>
-                                    <OverlayTrigger placement="bottom-start" overlay={this.renderTooltipCustomers()}>
+                                    <OverlayTrigger placement="bottom-start" overlay={
+                                        <Tooltip id="tooltip-customers">
+                                            {LangHelper.getResource('MultipleCustomersTooltip')}
+                                        </Tooltip>}>
                                         <span className="fa fa-question-circle-o" />
                                     </OverlayTrigger>
                                 </Form.Label>
