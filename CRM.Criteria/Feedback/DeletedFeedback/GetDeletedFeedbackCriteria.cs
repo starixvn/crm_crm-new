@@ -29,7 +29,5 @@
         }
 
         public override bool IsValid() => FromDate <= ToDate;
-        
-
     }
 }

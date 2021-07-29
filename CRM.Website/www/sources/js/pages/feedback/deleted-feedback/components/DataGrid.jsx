@@ -36,7 +36,7 @@ export class DataGrid extends Component {
 
     handleGroupCategory = filterCategory => {
         const groupCategory = filterCategory.reduce( (accumulator, currentValue) => {
-            const itemExist = accumulator.find(item => currentValue.settingId === item.settingId)
+            const itemExist = accumulator.find(item => currentValue.settingId === item.settingId);
             if(itemExist){
                 itemExist.subSettingId = [...itemExist.subSettingId, currentValue.subSettingId];
             }else{
@@ -65,7 +65,7 @@ export class DataGrid extends Component {
                             );
                         })
                     }
-                </>     
+                </>
             );
         });
     };
@@ -100,7 +100,7 @@ export class DataGrid extends Component {
                 </Cell>
                 <Cell>{item.username}</Cell>
                 <Cell>{this.renderCategoryColumn(item)}</Cell>
-                <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>    
+                <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>  
                 <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
             </Row>
         );
@@ -164,7 +164,7 @@ export class DataGrid extends Component {
                 />
             </>
         );
-    };
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);

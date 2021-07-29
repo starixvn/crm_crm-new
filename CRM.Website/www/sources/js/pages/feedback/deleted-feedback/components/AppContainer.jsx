@@ -10,20 +10,17 @@ import DataGrid from './DataGrid';
 export class AppContainer extends Component {
     static propTypes = {
         isHost: PropTypes.bool.isRequired,
-        editFeedbackDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editFeedbackDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
         isHost: false,
-        editFeedbackDialog: { show: false },
-        getAllSettings: function () {
-            // nothing
-        }
+        editFeedbackDialog: { show: false }
     };
     
     componentDidMount() {
         this.props.getAllSettings();
-    };
+    }
 
     handleCloseEditFeedbackDialog = isSuccessful => {
         this.props.setEditFeedbackDialog({ show: false });
@@ -45,14 +42,14 @@ export class AppContainer extends Component {
                     />
                 }
             </>
-        )
-    }
+        );
+    };
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    return { 
+    return {
         settings: state.settings,
         editFeedbackDialog: state.editFeedbackDialog
     };

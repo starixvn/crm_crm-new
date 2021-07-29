@@ -16,11 +16,11 @@ export class Filter extends Component {
     }
 
     initFormData = () => {
-        let nextDay = new Date();
+        const nextDay = new Date();
         nextDay.setDate(nextDay.getDate() + 1);
 
         const fromDate = new Date(DateTimeService.toShortDateFormat(new Date()));
-        const toDate = new Date(DateTimeService.toShortDateFormat(new Date(nextDay)));      
+        const toDate = new Date(DateTimeService.toShortDateFormat(new Date(nextDay)));  
         return{
             userName: '',
             isGuest: 0,
@@ -30,7 +30,7 @@ export class Filter extends Component {
             subCategoryId: 0,
             communicationId: 1005,
             responseId: 10002,
-            isReviewed: 0,
+            isReviewed: 0
         };
     };
 
@@ -42,7 +42,7 @@ export class Filter extends Component {
             toDate.setMinutes(toDate.getMinutes() + 1);
 
             setFieldValue('toDate', toDate);
-        };
+        }
     };
 
     handleChangeToDate = (setFieldValue, fromDate, toDate) => {
@@ -53,7 +53,7 @@ export class Filter extends Component {
             fromDate.setMinutes(fromDate.getMinutes() - 1);
 
             setFieldValue('fromDate', fromDate);
-        };
+        }
     };
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
@@ -70,24 +70,23 @@ export class Filter extends Component {
             communicationId: values.communicationId,
             responseId: values.responseId,
             isReviewed: values.isReviewed === 1 ? 1 : 0
-        }
+        };
         this.props.getGridParams(params);
         this.props.getDeletedFeedback(params);
     };
 
     filterMainCategory = data => {
         const mainCategories = [];
-        data.mainCategory.map(value => {            
+        data.mainCategory.map(value => { 
             const filter = data.subCategory.filter(item => item.mainCategoryID === value.mainCategoryID);
-            filter.unshift({name: "All", subCategoryId: 0});
+            filter.unshift({name: 'All', subCategoryId: 0});
             mainCategories.push({
-                mainCategoryID: value.mainCategoryID, 
-                name: value.name, 
+                mainCategoryID: value.mainCategoryID,
+                name: value.name,
                 subCate: filter
-            });            
+            });
         });
-        mainCategories.unshift({mainCategoryID: 0, name: "All", subCate: [{name: "All", subCategoryId: 0}]});
-
+        mainCategories.unshift({mainCategoryID: 0, name: 'All', subCate: [{name: 'All', subCategoryId: 0}]});
         return mainCategories;
     };
 
@@ -95,24 +94,24 @@ export class Filter extends Component {
         const subCategories = mainCate.filter(item => item.mainCategoryID === values.mainCategoryId);
         return subCategories;
     };
- 
+
     renderForm = ({
         values,
         errors,
         touched,
         handleChange,
         handleSubmit,
-        setFieldValue,
-    }) => {       
+        setFieldValue
+    }) => {
         const data = this.props.settings;
         const mainCategories = this.filterMainCategory(data);
         const subCategories = this.filterSubCategory(mainCategories,values);
 
         const review = [
-            { settingValue: "All", settingId: 0 },
-            { settingValue: "Review", settingId: 1 },
-            { settingValue: "Not Reviewd", settingId: -1 }
-        ]
+            { settingValue: 'All', settingId: 0 },
+            { settingValue: 'Review', settingId: 1 },
+            { settingValue: 'Not Reviewd', settingId: -1 }
+        ];
         return (
             <Form onSubmit={handleSubmit} className="form-filter">
                 <div className="panel-content">
@@ -121,7 +120,7 @@ export class Filter extends Component {
                             {LangHelper.getResource('Username')}
                         </Form.Label>
                         <Col sm="2" md="2">
-                            <Form.Control type="text" size="sm" 
+                            <Form.Control type="text" size="sm"
                                 name="userName"
                                 onChange={handleChange}
                             />
@@ -242,7 +241,7 @@ export class Filter extends Component {
                         </Col>
 
                     </Form.Group>
-                </div>       
+                </div>
             </Form>
         );
     };
@@ -262,8 +261,8 @@ export class Filter extends Component {
                 </Formik>
             </>
         );
-    };
-};
+    }
+}
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
