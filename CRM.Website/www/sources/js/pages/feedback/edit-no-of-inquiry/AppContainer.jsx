@@ -104,7 +104,7 @@ export default class AppContainer extends Component {
         const { feedbackId, noInquiries } = this.state;
         const initialValues = {
             feedbackId: feedbackId,
-            noInquiries: noInquiries === 0 ? '' : noInquiries
+            noInquiries: isNaN(parseInt(noInquiries, 10)) || parseInt(noInquiries, 10) === 0 ? '' : noInquiries
         };
         return (
             <Modal show className="edit-no-of-inquiry-modal-dialog" dialogAs={DraggableModalDialog}

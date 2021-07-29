@@ -223,4 +223,194 @@ describe('CreateForm', () => {
             expect(setFieldValue).toHaveBeenLastCalledWith('startTime', new Date('7/28/2021 2:25:27 PM'));
         });
     });
+
+    describe('handleChangeMainCategory', () => {
+        it('should do as expected when selectedCategoryIds is invalid', () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                settings: {
+                    ...defaultProps.settings,
+                    mainCategories: [{ id: 1, name: 'Special Notification' }]
+                }
+            };
+            const setFieldValue = jest.fn();
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.setState = jest.fn();
+            shareScripts.getSubjectOnChangeCategories = jest.fn(() => 'subject');
+
+            // Act
+            container.handleChangeMainCategory(setFieldValue, '', '', '');
+
+            // Assert
+            expect(setFieldValue.mock.calls[0]).toEqual(['categoryIds', '']);
+            expect(setFieldValue).toHaveBeenLastCalledWith('subject', 'subject');
+            expect(shareScripts.getSubjectOnChangeCategories).toHaveBeenCalledWith([], '', [{ id: 1, name: 'Special Notification' }]);
+            expect(container.setState).toHaveBeenCalledWith({ subCategoryOptions: [] });
+        });
+
+        it('should do as expected when selectedCategoryIds is valid', () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                settings: {
+                    ...defaultProps.settings,
+                    mainCategories: [{ id: 1, name: 'Special Notification' }],
+                    subCategories: [{ id: 1, name: 'Void Abnormal' }]
+                }
+            };
+            const setFieldValue = jest.fn();
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.setState = jest.fn();
+            shareScripts.getSubjectOnChangeCategories = jest.fn(() => 'subject');
+            shareScripts.getSubCategories = jest.fn(() => [{ id: 1, name: 'Void Abnormal' }]);
+
+            // Act
+            container.handleChangeMainCategory(setFieldValue, '1,2', '1,2', '');
+
+            // Assert
+            expect(setFieldValue.mock.calls[0]).toEqual(['categoryIds', '1,2']);
+            expect(setFieldValue).toHaveBeenLastCalledWith('subject', 'subject');
+            expect(shareScripts.getSubjectOnChangeCategories).toHaveBeenCalledWith(['1', '2'], '', [{ id: 1, name: 'Special Notification' }]);
+            expect(shareScripts.getSubCategories).toHaveBeenCalledWith(
+                ['1', '2'],
+                [{ id: 1, name: 'Void Abnormal' }],
+                ['1', '2'],
+                false
+            );
+            expect(container.setState).toHaveBeenCalledWith({ subCategoryOptions: [{ id: 1, name: 'Void Abnormal' }] });
+        });
+    });
+
+    describe('handleChangeProduct', () => {
+        it('should do as expected when selectedProductIds is invalid', () => {
+            // Arrange
+            const setFieldValue = jest.fn();
+            const container = shallow(<CreateForm {...defaultProps} />).instance();
+            container.setState = jest.fn();
+
+            // Act
+            container.handleChangeProduct(setFieldValue, '', '');
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('productIds', '');
+            expect(container.setState).toHaveBeenCalledWith({ subProductOptions: [] });
+        });
+
+        it('should do as expected when selectedProductIds is valid', () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                settings: {
+                    ...defaultProps.settings,
+                    subProducts: [{ id: 1, name: 'Soccer' }]
+                }
+            };
+            const setFieldValue = jest.fn();
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.setState = jest.fn();
+            shareScripts.getSubProducts = jest.fn(() => [{ id: 1, name: 'Soccer' }]);
+
+            // Act
+            container.handleChangeProduct(setFieldValue, '1,2', '1,2');
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('productIds', '1,2');
+            expect(shareScripts.getSubProducts).toHaveBeenCalledWith(
+                ['1', '2'],
+                [{ id: 1, name: 'Soccer' }],
+                ['1', '2'],
+                false
+            );
+            expect(container.setState).toHaveBeenCalledWith({ subProductOptions: [{ id: 1, name: 'Soccer' }] });
+        });
+    });
+
+    describe('handleChangeSubProduct', () => {
+        it('should do as expected when selectedSubProductIds is invalid', () => {
+            // Arrange
+            const setFieldValue = jest.fn();
+            const container = shallow(<CreateForm {...defaultProps} />).instance();
+            container.setState = jest.fn();
+
+            // Act
+            container.handleChangeSubProduct(setFieldValue, '', '');
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('subProductIds', '');
+            expect(container.setState).toHaveBeenCalledWith({ betTypeOptions: [] });
+        });
+
+        it('should do as expected when selectedSubProductIds is valid', () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                settings: {
+                    ...defaultProps.settings,
+                    bettypes: [{ id: 1, name: 'HDP' }]
+                }
+            };
+            const setFieldValue = jest.fn();
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.setState = jest.fn();
+            shareScripts.getBetTypes = jest.fn(() => [{ id: 1, name: 'HDP' }]);
+
+            // Act
+            container.handleChangeSubProduct(setFieldValue, '1,2', '1,2');
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('subProductIds', '1,2');
+            expect(shareScripts.getBetTypes).toHaveBeenCalledWith(
+                ['1', '2'],
+                [{ id: 1, name: 'HDP' }],
+                ['1', '2'],
+                false
+            );
+            expect(container.setState).toHaveBeenCalledWith({ betTypeOptions: [{ id: 1, name: 'HDP' }] });
+        });
+    });
+
+    describe('handleGetFeedbackSubjectTemplates', () => {
+        it('should call correct function when search text length >= 2', () => {
+            // Arrange
+            const props = { ...defaultProps, getFeedbackSubjectTemplates: jest.fn() };
+            const searchText = 'search text';
+            const container = shallow(<CreateForm {...props} />).instance();
+
+            // Act
+            container.handleGetFeedbackSubjectTemplates(searchText);
+            jest.runAllTimers();
+
+            // Assert
+            expect(props.getFeedbackSubjectTemplates).toHaveBeenCalledWith(searchText);
+        });
+
+        it('should call correct function when search text length < 2', () => {
+            // Arrange
+            const props = { ...defaultProps, setFeedbackSubjectTemplates: jest.fn() };
+            const searchText = 's';
+            const container = shallow(<CreateForm {...props} />).instance();
+
+            // Act
+            container.handleGetFeedbackSubjectTemplates(searchText);
+            jest.runAllTimers();
+
+            // Assert
+            expect(props.setFeedbackSubjectTemplates).toHaveBeenCalledWith([]);
+        });
+    });
+
+    describe('getExtensionParams', () => {
+        it('should return as expected when selectedExtensionIds is valid', () => {
+            // Arrange
+            const selectedExtensionIds = '1,2';
+            const container = shallow(<CreateForm {...defaultProps} />).instance();
+
+            // Act
+            const actual = container.getExtensionParams(selectedExtensionIds, null);
+
+            // Assert
+            expect(actual).toEqual('1,2');
+        });
+    });
 });

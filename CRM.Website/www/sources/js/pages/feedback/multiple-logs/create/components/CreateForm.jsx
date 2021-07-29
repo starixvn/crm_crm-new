@@ -257,7 +257,7 @@ export class CreateForm extends Component {
     };
 
     handleChangeSubProduct = (setFieldValue, selectedSubProductIds, selectedBetTypeIds) => {
-        setFieldValue('subCategory', selectedSubProductIds);
+        setFieldValue('subProductIds', selectedSubProductIds);
         if (selectedSubProductIds) {
             const betTypeIds = selectedBetTypeIds.length > 0 ? selectedBetTypeIds.split(',') : [];
             const betTypes = getBetTypes(selectedSubProductIds.split(','), this.props.settings.bettypes, betTypeIds, false);
@@ -378,8 +378,9 @@ export class CreateForm extends Component {
     };
 
     getCountryName = countryId => {
-        const index = this.props.settings.countries.findIndex(item => item.id === countryId);
-        return this.props.countries[index].name;
+        const countries = this.props.settings.countries;
+        const index = countries.findIndex(item => item.id === countryId);
+        return countries[index].name;
     };
 
     getCustomers = () => {
