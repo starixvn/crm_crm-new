@@ -136,20 +136,6 @@
             Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(result));
         }
 
-        [Fact]
-        public void ConvertClientToServerDateTime_WhenCalled_ReturnExpectedDateTime()
-        {
-            // Arrange
-            var service = GetService();
-            var expected = new DateTime(2020, 10, 5, 0, 0, 0);
-
-            // Action
-            var result = service.ConvertClientToServerDateTime(expected);
-
-            // Assert
-            Assert.Equal(expected.AddHours(appSettings.Value.ServerTimezone - appSettings.Value.ClientTimezone), result);
-        }
-
         private CommonService GetService()
         {
             baseService = Substitute.For<IBaseService>();

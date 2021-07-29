@@ -95,7 +95,7 @@
             var criteria = fixture.Create<GetNotificationListCriteria>();
             var expectedDate = fixture.Create<DateTime>();
             var notificationList = fixture.Create<IEnumerable<Notification>>();
-            commonService.ConvertClientToServerDateTime(Arg.Any<DateTime>()).Returns(expectedDate);
+            commonService.ConvertToServerDateTime(Arg.Any<DateTime>()).Returns(expectedDate);
             notificationListService.GetNotificationListAsync(criteria).Returns(notificationList);
 
             // Act

@@ -224,7 +224,7 @@
             var service = GetService();
             feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<DeletedFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
             settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
-            commonService.ConvertServerToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
+            commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 
             // Act
             var actual = await service.GetDeletedFeedbackAsync(param);
