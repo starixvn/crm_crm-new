@@ -3,11 +3,11 @@
     using Fanex.Data.Repository;
     using System;
 
-    public class DeletedFeedbackCriteria : CriteriaBase
+    public class GetDeletedFeedbackCriteria : CriteriaBase
     {
         public string Username { get; set; }
 
-        public int IsGuest { get; set; }
+        public bool? IsGuest { get; set; }
 
         public DateTime FromDate { get; set; }
 
@@ -21,17 +21,15 @@
 
         public int ResponseId { get; set; }
 
-        public int IsReviewed { get; set; }
+        public bool? IsReviewed { get; set; }
 
         public override string GetSettingKey()
         {
             return "Acc_CRM_FeedbackGetDeleted";
         }
 
-        public override bool IsValid()
-        {
-            return FromDate <= ToDate;
-        }
+        public override bool IsValid() => FromDate <= ToDate;
+        
 
     }
 }

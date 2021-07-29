@@ -203,7 +203,7 @@
             var date = fixture.Create<DateTime>();
             var clientdate = fixture.Create<DateTime>();
             var param = fixture.Create<GetDeletedFeedbackParam>();
-            var criteria = new DeletedFeedbackCriteria();
+            var criteria = new GetDeletedFeedbackCriteria();
             var statuses = new List<FeedbackStatus>
             {
                 new FeedbackStatus { StatusId = 100, Name = "Pending" }
@@ -222,7 +222,7 @@
                 }
             };
             var service = GetService();
-            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<DeletedFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
+            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<GetDeletedFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
             settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 

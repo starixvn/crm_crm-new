@@ -5,7 +5,7 @@
     {
         public string Username { get; set; }
 
-        public int IsGuest { get; set; }
+        public bool? IsGuest { get; set; }
 
         public DateTime FromDate { get; set; }
 
@@ -19,6 +19,6 @@
 
         public int ResponseId { get; set; }
 
-        public int IsReviewed { get; set; }
+        public bool? IsReviewed { get; set; }
     }
 }

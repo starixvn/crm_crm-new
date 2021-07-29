@@ -125,7 +125,7 @@
 
         public async Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(GetDeletedFeedbackParam param)
         {
-            var criteria = new DeletedFeedbackCriteria
+            var criteria = new GetDeletedFeedbackCriteria
             {
                 Username = param.Username,
                 IsGuest = param.IsGuest,

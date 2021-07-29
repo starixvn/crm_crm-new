@@ -10,7 +10,7 @@
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             // Arrange
-            var criteria = new DeletedFeedbackCriteria();
+            var criteria = new GetDeletedFeedbackCriteria();
             var expected = "Acc_CRM_FeedbackGetDeleted";
 
             // Act
@@ -24,7 +24,7 @@
         public void IsValid_ParamIdIsInvalid_ReturnFalse()
         {
             // Arrange
-            var criteria = new DeletedFeedbackCriteria
+            var criteria = new GetDeletedFeedbackCriteria
             {
                 FromDate = new DateTime(2021, 07, 30),
                 ToDate = new DateTime(2021, 07, 1)
@@ -41,7 +41,7 @@
         public void IsValid_ParamIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new DeletedFeedbackCriteria
+            var criteria = new GetDeletedFeedbackCriteria
             {
                 Username = "",
                 IsGuest = 0,
