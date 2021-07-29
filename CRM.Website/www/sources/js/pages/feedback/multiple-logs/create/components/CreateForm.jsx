@@ -252,7 +252,10 @@ export class CreateForm extends Component {
             const subProducts = getSubProducts(selectedProductIds.split(','), this.props.settings.subProducts, subProductIds, false);
             this.setState({ subProductOptions: subProducts });
         } else {
-            this.setState({ subProductOptions: [] });
+            this.setState({
+                subProductOptions: [],
+                betTypeOptions: []
+            });
         }
     };
 

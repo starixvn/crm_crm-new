@@ -295,7 +295,7 @@ describe('CreateForm', () => {
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('productIds', '');
-            expect(container.setState).toHaveBeenCalledWith({ subProductOptions: [] });
+            expect(container.setState).toHaveBeenCalledWith({ subProductOptions: [], betTypeOptions: [] });
         });
 
         it('should do as expected when selectedProductIds is valid', () => {

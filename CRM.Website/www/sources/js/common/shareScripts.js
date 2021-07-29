@@ -83,14 +83,14 @@ export const getInvalidCategoryParams = (selectedCategoryIds, selectedSubCategor
     selectedCategoryIds.forEach(categoryId => {
         let isInvalid = false;
         selectedSubCategoryIds.forEach(subCategoryId => {
-            if (checkCategorySubCategory(categoryId, subCategoryId, subCategories)) {
+            if (!checkCategorySubCategory(categoryId, subCategoryId, subCategories)) {
                 isInvalid = true;
             }
         });
 
         if (!isInvalid) {
             const index = categories.findIndex(item => item.mainCategoryID === parseInt(categoryId, 10));
-            invalidCategories.push(categories[index].settingName);
+            invalidCategories.push(categories[index].name);
         }
     });
 
