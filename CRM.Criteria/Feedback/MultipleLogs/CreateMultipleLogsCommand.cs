@@ -60,7 +60,7 @@
         public string CategoryXml => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
 
         [SpParam(SqlParamName = "Categorystr")]
-        public string CategoryIds { get; set; }
+        public string MainCategoryIds { get; set; }
 
         [SpParam(SqlParamName = "SubCategorystr")]
         public string SubCategoryIds { get; set; }

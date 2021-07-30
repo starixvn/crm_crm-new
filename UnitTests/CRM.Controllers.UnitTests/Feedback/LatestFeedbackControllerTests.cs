@@ -51,16 +51,11 @@
             {
                 new Setting { MainCategoryID = 1, Name = "Special Notification" }
             };
-            var subCategories = new List<Setting>
-            {
-                new Setting { SettingId = 1, MainCategoryID = 1, Name = "Voiding Abnormal" }
-            };
             var feedbacks = fixture.Create<IEnumerable<DeletedFeedback>>();
             var param = fixture.Create<GetLatestFeedbackParam>();
             var controller = GetController();
             feedbackService.GetLatestFeedbackAsync(param).Returns(feedbacks);
-            settingService.GetSettingAsync(SettingName.MainCategory, true).Returns(mainCategories);
-            settingService.GetSubCategoryAsync().Returns(subCategories);
+            settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
             var result = await controller.GetLatestFeedback(param);
@@ -81,17 +76,12 @@
             {
                 new Setting { MainCategoryID = 1, Name = "Special Notification" }
             };
-            var subCategories = new List<Setting>
-            {
-                new Setting { SettingId = 1, MainCategoryID = 1, Name = "Voiding Abnormal" }
-            };
             var feedbacks = fixture.Create<IEnumerable<DeletedFeedback>>();
             var param = fixture.Create<GetLatestFeedbackParam>();
             var fileName = $"Top_{param.Top}_Feedback.xlsx";
             var controller = GetController();
             feedbackService.GetLatestFeedbackAsync(param).Returns(feedbacks);
-            settingService.GetSettingAsync(SettingName.MainCategory, true).Returns(mainCategories);
-            settingService.GetSubCategoryAsync().Returns(subCategories);
+            settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
             var result = await controller.ExportExcel(param);

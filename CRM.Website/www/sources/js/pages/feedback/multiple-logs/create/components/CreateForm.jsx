@@ -18,10 +18,10 @@ import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import {
-    getSubCategories, getSubProducts, getBetTypes, getInvalidCategoryParams, getSubjectOnChangeCategories,
+    getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams, generateTimeAndToolPrefix
 } from '@jsroot/common/shareScripts';
-import { validateNoOfInquiry } from '../../../common.functions';
+import { validateNoOfInquiry, validateMainCategorySubCategory } from '../../../common.functions';
 
 export class CreateForm extends Component {
     static defaultProps = {
@@ -66,7 +66,7 @@ export class CreateForm extends Component {
             languageId: settings.languages[0].languageId,
             countryId: settings.countries[0].id,
             communicationToolIds: '',
-            categoryIds: '',
+            mainCategoryIds: '',
             subCategoryIds: '',
             productIds: '',
             subProductIds: '',
@@ -234,7 +234,7 @@ export class CreateForm extends Component {
         const tempSubject = getSubjectOnChangeCategories(selectedCategoryIds ? selectedCategoryIds.split(',') : [],
             subject,
             this.props.settings.mainCategories);
-        setFieldValue('categoryIds', selectedCategoryIds);
+        setFieldValue('mainCategoryIds', selectedCategoryIds);
         setFieldValue('subject', tempSubject);
         if (selectedCategoryIds) {
             const subCategoryIds = selectedSubCategoryIds.length > 0 ? selectedSubCategoryIds.split(',') : [];
@@ -292,29 +292,12 @@ export class CreateForm extends Component {
             errors.communicationToolIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('CommunicationTool'));
         }
 
-        if (!values.isUseDefaultLanguage && values.languageId === 0) {
+        if (!values.isUseDefaultLanguage && parseInt(values.languageId, 10) === 0) {
             errors.languageId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language'));
         }
 
-        if (values.categoryIds === '') {
-            errors.categoryIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Category'));
-        }
-
-        if (values.subCategoryIds === '') {
-            errors.subCategoryIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SubCategory'));
-        }
-
-        if (values.categoryIds !== '' && values.subCategoryIds !== '') {
-            const invalidCategories = getInvalidCategoryParams(
-                values.categoryIds.split(','),
-                values.subCategoryIds.split(','),
-                this.props.settings.mainCategories,
-                this.props.settings.subCategories
-            );
-            if (invalidCategories.length > 0) {
-                errors.categoryIds = LangHelper.formatString(LangHelper.getResource('InvalidCategoryField'), invalidCategories.join(', '));
-            }
-        }
+        const { mainCategories, subCategories } = this.props.settings;
+        validateMainCategorySubCategory(errors, values.mainCategoryIds, values.subCategoryIds, mainCategories, subCategories);
 
         if (values.subject === '') {
             errors.subject = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject'));
@@ -418,7 +401,7 @@ export class CreateForm extends Component {
         Site.blockUI();
         this.props.checkNotExistCommunicationToolSetting({
             customers: params.customers,
-            categoryIds: params.categoryIds,
+            mainCategoryIds: params.mainCategoryIds,
             subCategoryIds: params.subCategoryIds
         }).then(response => {
             Site.unblockUI();
@@ -459,9 +442,9 @@ export class CreateForm extends Component {
                 values.subProductIds.length > 0 ? values.subProductIds.split(',') : [],
                 values.betTypeIds.length > 0 ? values.betTypeIds.split(',') : [],
                 this.props.settings),
-            categories: getCategoryParams(values.categoryIds.split(','), values.subCategoryIds.split(','), this.props.settings.subCategories),
+            categories: getCategoryParams(values.mainCategoryIds.split(','), values.subCategoryIds.split(','), this.props.settings.subCategories),
             noInquiries: values.noInquiries,
-            categoryIds: values.categoryIds.split(',').map(item => parseInt(item, 10)).sort().join(','),
+            mainCategoryIds: values.mainCategoryIds.split(',').map(item => parseInt(item, 10)).sort().join(','),
             subCategoryIds: values.subCategoryIds.split(',').map(item => parseInt(item, 10)).sort().join(','),
             isUseDefaultCommunicationTool: values.isUseDefaultCommunicationTool,
             relatedCustomers: this.getRelatedCustomers(),
@@ -660,7 +643,7 @@ export class CreateForm extends Component {
                             <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Category')}</Form.Label>
                             <Col sm="3" md="3">
                                 <MultipleSelect
-                                    isInvalid={touched.categoryIds && errors.categoryIds}
+                                    isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
                                     dataSource={mainCategories}
                                     keyField='mainCategoryID' valueField='name'
                                     hasAllOption={mainCategories.length > 0}

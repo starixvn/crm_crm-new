@@ -54,6 +54,6 @@
         IEnumerable<Setting> GetAllCustomerTypes();
         Task<IEnumerable<Setting>> GetMainCategoriesAndChildSettingAsync();
 
-        Task<IEnumerable<Setting>> GetAllMainCategoriesFromAllSettings();
+        Task<IEnumerable<Setting>> GetMainCategoryWithSubCategoryAsync();
     }
 }

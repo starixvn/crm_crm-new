@@ -360,10 +360,10 @@
             return mainCategories;
         }
 
-        public async Task<IEnumerable<Setting>> GetAllMainCategoriesFromAllSettings()
+        public async Task<IEnumerable<Setting>> GetMainCategoryWithSubCategoryAsync()
         {
             var mainCategories = await GetSettingAsync(SettingName.MainCategory, true);
-            var subCategories = await GetSubCategoryAsync();
+            var subCategories = await GetSubCategoryAsync(active: SettingConstants.Active);
 
             foreach (var category in mainCategories)
             {

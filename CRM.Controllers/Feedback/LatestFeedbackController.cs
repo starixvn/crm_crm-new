@@ -1,7 +1,6 @@
 ﻿namespace CRM.Controllers.Feedback
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
@@ -53,29 +52,16 @@
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await GetMainCategoryAsync();
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
             return Json(new { data = feedbacks, mainCategories });
-        }
-
-        private async Task<IEnumerable<Setting>> GetMainCategoryAsync()
-        {
-            var mainCategories = await settingService.GetSettingAsync(SettingName.MainCategory, true);
-            var subCategories = await settingService.GetSubCategoryAsync();
-
-            foreach (var category in mainCategories)
-            {
-                category.ChildSettings = subCategories.Where(x => x.MainCategoryID == category.SettingId).OrderBy(s => s.DisplayOrder).ToList();
-            }
-
-            return mainCategories;
         }
 
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetLatestFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await GetMainCategoryAsync();
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
             var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, param.Top);
             string reportName = string.Format(ViewResources.FeedbackReport_Title, param.Top);

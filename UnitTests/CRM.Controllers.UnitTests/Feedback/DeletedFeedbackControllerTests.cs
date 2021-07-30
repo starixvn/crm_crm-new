@@ -5,9 +5,10 @@
     using AutoFixture;
     using CRM.Controllers.Feedback;
     using CRM.Core.Constants;
-    using CRM.Models.Feedback;
     using CRM.Models.DeletedFeedback;
+    using CRM.Models.Feedback;
     using CRM.Models.Setting;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
     using Fanex.NAP.Client.Configuration;
@@ -17,7 +18,6 @@
     using NSubstitute;
     using Xunit;
     using static Fanex.NAP.Core.Business.Constant;
-    using CRM.Resources;
 
     public class DeletedFeedbackControllerTests
     {
@@ -49,11 +49,11 @@
         {
             // Arrange
             var customerType = new List<Setting> { new Setting { Id = 1 } };
-            var customerResponse = new List<SettingRelation>{ new SettingRelation { Id = 1, IsActive = false },};
+            var customerResponse = new List<SettingRelation> { new SettingRelation { Id = 1, IsActive = false }, };
             var mainCategory = new List<Setting> { new Setting { Id = 1 } };
             var subCategory = new List<Setting> { new Setting { Id = 1 } };
             var communication = new List<Setting> { new Setting { Id = 1 } };
-            var status = new List<FeedbackStatus>{ new FeedbackStatus { StatusId = 11002, Name = "Closed", IsActive = true }};
+            var status = new List<FeedbackStatus> { new FeedbackStatus { StatusId = 11002, Name = "Closed", IsActive = true } };
             var controller = GetController();
             settingService.GetAllCustomerTypes().Returns(customerType);
             settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active).Returns(customerResponse);
@@ -61,7 +61,7 @@
             settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategory);
             settingService.GetCommunicationToolAsync(SettingConstants.Active, true).Returns(communication);
             settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(status);
-            
+
             // Act
             var result = await controller.GetAllSettings();
 
@@ -78,9 +78,9 @@
                 communication,
                 status
             };
-            expected.Equals(settingsResult);  
+            expected.Equals(settingsResult);
         }
-        
+
         [Fact]
         public async Task SearchDeletedFeedback_WhenCalled_ReturnAsExpectedResult()
         {
@@ -89,17 +89,11 @@
             {
                 new Setting { MainCategoryID = 1, Name = "Special Notification" }
             };
-            var subCategories = new List<Setting>
-            {
-                new Setting { SettingId = 1, MainCategoryID = 1, Name = "MA Notification" }
-            };
             var feedbacks = fixture.Create<IEnumerable<DeletedFeedback>>();
             var param = fixture.Create<GetDeletedFeedbackParam>();
             var controller = GetController();
             feedbackService.GetDeletedFeedbackAsync(param).Returns(feedbacks);
-            settingService.GetSubCategoryAsync().Returns(subCategories);
-            settingService.GetSettingAsync(SettingName.MainCategory, true).Returns(mainCategories);
-            
+            settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
             var result = await controller.SearchDeletedFeedback(param);
@@ -120,17 +114,12 @@
             {
                 new Setting { MainCategoryID = 1, Name = "Special Notification" }
             };
-            var subCategories = new List<Setting>
-            {
-                new Setting { SettingId = 1, MainCategoryID = 1, Name = "MA Notification" }
-            };
             var feedbacks = fixture.Create<IEnumerable<DeletedFeedback>>();
             var param = fixture.Create<GetDeletedFeedbackParam>();
             var fileName = $"{ViewResources.DeletedFeedbackReport_Title}.xlsx";
             var controller = GetController();
             feedbackService.GetDeletedFeedbackAsync(param).Returns(feedbacks);
-            settingService.GetSettingAsync(SettingName.MainCategory, true).Returns(mainCategories);
-            settingService.GetSubCategoryAsync().Returns(subCategories);
+            settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
             var result = await controller.ExportDeletedFeedbackReport(param);

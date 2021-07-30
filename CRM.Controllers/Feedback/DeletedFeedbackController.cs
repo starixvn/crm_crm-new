@@ -70,7 +70,7 @@
         public async Task<IActionResult> SearchDeletedFeedback([FromBody] GetDeletedFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetDeletedFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await settingService.GetAllMainCategoriesFromAllSettings();
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
             return Json(new { data = feedbacks, mainCategories });
         }
@@ -79,7 +79,7 @@
         public async Task<IActionResult> ExportDeletedFeedbackReport([FromBody] GetDeletedFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetDeletedFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await settingService.GetAllMainCategoriesFromAllSettings();
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
             var bytes = excelService.ExportDeletedFeedbackReport(feedbacks, mainCategories);
             string reportName = ViewResources.DeletedFeedbackReport_Title;

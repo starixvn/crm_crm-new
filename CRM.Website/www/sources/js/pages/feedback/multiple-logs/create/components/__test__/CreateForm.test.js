@@ -46,7 +46,7 @@ describe('CreateForm', () => {
                 languageId: 1,
                 countryId: 1,
                 communicationToolIds: '',
-                categoryIds: '',
+                mainCategoryIds: '',
                 subCategoryIds: '',
                 productIds: '',
                 subProductIds: '',
@@ -244,7 +244,7 @@ describe('CreateForm', () => {
             container.handleChangeMainCategory(setFieldValue, '', '', '');
 
             // Assert
-            expect(setFieldValue.mock.calls[0]).toEqual(['categoryIds', '']);
+            expect(setFieldValue.mock.calls[0]).toEqual(['mainCategoryIds', '']);
             expect(setFieldValue).toHaveBeenLastCalledWith('subject', 'subject');
             expect(shareScripts.getSubjectOnChangeCategories).toHaveBeenCalledWith([], '', [{ id: 1, name: 'Special Notification' }]);
             expect(container.setState).toHaveBeenCalledWith({ subCategoryOptions: [] });
@@ -270,7 +270,7 @@ describe('CreateForm', () => {
             container.handleChangeMainCategory(setFieldValue, '1,2', '1,2', '');
 
             // Assert
-            expect(setFieldValue.mock.calls[0]).toEqual(['categoryIds', '1,2']);
+            expect(setFieldValue.mock.calls[0]).toEqual(['mainCategoryIds', '1,2']);
             expect(setFieldValue).toHaveBeenLastCalledWith('subject', 'subject');
             expect(shareScripts.getSubjectOnChangeCategories).toHaveBeenCalledWith(['1', '2'], '', [{ id: 1, name: 'Special Notification' }]);
             expect(shareScripts.getSubCategories).toHaveBeenCalledWith(
@@ -532,7 +532,7 @@ describe('CreateForm', () => {
                 ...defaultProps,
                 checkNotExistCommunicationToolSetting: jest.fn(() => promise)
             };
-            const params = { customers: '1', categoryIds: '1', subCategoryIds: '1' };
+            const params = { customers: '1', mainCategoryIds: '1', subCategoryIds: '1' };
             const confirmMessage = 'Are you sure you want to Add or Update the Feedback/Log?';
             const container = shallow(<CreateForm {...props} />).instance();
             container.confirmCreateMultipleLogs = jest.fn();
@@ -544,7 +544,7 @@ describe('CreateForm', () => {
             // Assert
             expect(Site.blockUI).toHaveBeenCalled();
             expect(Site.unblockUI).toHaveBeenCalled();
-            expect(props.checkNotExistCommunicationToolSetting).toHaveBeenCalledWith({ customers: '1', categoryIds: '1', subCategoryIds: '1' });
+            expect(props.checkNotExistCommunicationToolSetting).toHaveBeenCalledWith({ customers: '1', mainCategoryIds: '1', subCategoryIds: '1' });
             expect(container.confirmCreateMultipleLogs).toHaveBeenCalledWith(params, confirmMessage);
         });
 
@@ -561,7 +561,7 @@ describe('CreateForm', () => {
                 ...defaultProps,
                 checkNotExistCommunicationToolSetting: jest.fn(() => promise)
             };
-            const params = { customers: '1', categoryIds: '1', subCategoryIds: '1' };
+            const params = { customers: '1', mainCategoryIds: '1', subCategoryIds: '1' };
             const confirmMessage = `The Default Communication Setting of customers does not match the selected Category / Sub-Category, here are the customers:
                     <strong> test(Guest), test 2(Guest)</strong>
                     <br />Do you want to continue to create the Feedback/Logs?`;
@@ -575,7 +575,7 @@ describe('CreateForm', () => {
             // Assert
             expect(Site.blockUI).toHaveBeenCalled();
             expect(Site.unblockUI).toHaveBeenCalled();
-            expect(props.checkNotExistCommunicationToolSetting).toHaveBeenCalledWith({ customers: '1', categoryIds: '1', subCategoryIds: '1' });
+            expect(props.checkNotExistCommunicationToolSetting).toHaveBeenCalledWith({ customers: '1', mainCategoryIds: '1', subCategoryIds: '1' });
             expect(container.confirmCreateMultipleLogs).toHaveBeenCalledWith(params, confirmMessage);
         });
     });
@@ -621,7 +621,7 @@ describe('CreateForm', () => {
             // Arrange
             const response = { data: { isSuccessful: false, message: '' } };
             const promise = Promise.resolve(response);
-            const params = { customers: '1', categoryIds: '1', subCategoryIds: '1' };
+            const params = { customers: '1', mainCategoryIds: '1', subCategoryIds: '1' };
             const props = {
                 ...defaultProps,
                 createMultipleLogs: jest.fn(() => promise),
@@ -653,7 +653,7 @@ describe('CreateForm', () => {
             });
             const response = { data: { isSuccessful: true, message: '' } };
             const promise = Promise.resolve(response);
-            const params = { customers: '1', categoryIds: '1', subCategoryIds: '1' };
+            const params = { customers: '1', mainCategoryIds: '1', subCategoryIds: '1' };
             const props = {
                 ...defaultProps,
                 createMultipleLogs: jest.fn(() => promise),
