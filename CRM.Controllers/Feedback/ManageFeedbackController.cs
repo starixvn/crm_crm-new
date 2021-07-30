@@ -52,31 +52,19 @@
             //if(isReadCreateFb || isReadDeleteFb)
             //{
             var customerType = settingService.GetAllCustomerTypes();
-            var review = settingService.GetReviews();
+           // var review = settingService.GetReviews();
             var response = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.ActiveAndInactive);
-            var responseList = response.ToList();
-            responseList.Insert(
-            0,
-            new SettingRelation
-            {
-                Id = SettingConstants.NotApply,
-                Value = ViewResources.All
-            });
             var mainCategories = await settingService.GetMainCategoriesAndChildSettingAsync();
-            var communication = await settingService.GetCommunicationToolAsync(SettingConstants.ActiveAndInactive, true);
-            var communicationList = communication.ToList();
-            communicationList.Insert(0, new Models.Setting.Setting { Id = SettingConstants.NotApply, Name = ViewResources.All });
+            var communications = await settingService.GetCommunicationToolAsync(SettingConstants.ActiveAndInactive, true);
             var status = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var statusList = status.Where(r => !string.Equals(r.Name, "Deleted")).ToList();
-            statusList.Insert(0, new FeedbackStatus { StatusId = SettingConstants.NotApply, Name = ViewResources.All });
             var settings = new
             {
                 CustomerTypes = customerType,
-                Reviews = review,
-                CustomerResponses = responseList,
+                //Reviews = review,
+                CustomerResponses = response,
                 MainCategories = mainCategories,
-                Communications = communicationList,
-                Status = statusList
+                Communications = communications,
+                Status = status.Where(r => !string.Equals(r.Name, "Deleted"))
             };
             return Json(settings);
 

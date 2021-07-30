@@ -179,7 +179,7 @@ export const getSubjectOnChangeCategories = (selectedCategoryIds, subject, categ
     } else {
         if (selectedCategoryIds.length === 1) {
             const index = categories.findIndex(item => item.mainCategoryID === parseInt(selectedCategoryIds[0], 10));
-            tempSubject = categories[index].settingName;
+            tempSubject = categories[index].name;
         }
     }
 

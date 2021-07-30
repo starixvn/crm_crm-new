@@ -4,54 +4,6 @@ import { getInvalidCategoryParams } from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import  { getProductParams, getCategoryParams }from '@jsroot/common/shareScripts';
 
-export const renderTitleOptions = item => {
-    return (
-        <option key={item.id} value={item.id}>
-            {item.value}
-        </option>
-    );
-};
-
-export const renderLicenseeTypeOptions = item => {
-    return (
-        <option key={item.id} value={item.id}>
-            {item.name}
-        </option>
-    );
-};
-
-export const renderStatus = item => {
-    return (
-        <option key={item.statusId} value={item.statusId}>
-            {item.name}
-        </option>
-    );
-};
-
-export const renderLanguage = item => {
-    return (
-        <option key={item.languageId} value={item.languageId}>
-            {item.name}
-        </option>
-    );
-};
-
-export const renderResponse = item => {
-    return (
-        <option key={item.id} value={item.id}>
-            {item.value}
-        </option>
-    );
-};
-
-export const renderCountry = item => {
-    return (
-        <option key={item.id} value={item.id}>
-            {item.name}
-        </option>
-    );
-};
-
 export const validateFormik = (values, settings) => {
     const errors = {};
     if (!values.identityInformation) {
