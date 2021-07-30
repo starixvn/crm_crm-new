@@ -100,7 +100,7 @@ export class DataGrid extends Component {
                 </Cell>
                 <Cell>{item.username}</Cell>
                 <Cell>{this.renderCategoryColumn(item)}</Cell>
-                <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>  
+                <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
                 <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
             </Row>
         );

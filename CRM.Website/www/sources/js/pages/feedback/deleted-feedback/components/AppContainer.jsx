@@ -17,7 +17,7 @@ export class AppContainer extends Component {
         isHost: false,
         editFeedbackDialog: { show: false }
     };
-    
+
     componentDidMount() {
         this.props.getAllSettings();
     }
@@ -43,16 +43,14 @@ export class AppContainer extends Component {
                 }
             </>
         );
-    };
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    return {
-        settings: state.settings,
-        editFeedbackDialog: state.editFeedbackDialog
-    };
+    const { settings, gridParams, editFeedbackDialog } = state;
+    return { settings, gridParams, editFeedbackDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

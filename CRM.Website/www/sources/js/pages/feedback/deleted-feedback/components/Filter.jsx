@@ -20,7 +20,7 @@ export class Filter extends Component {
         nextDay.setDate(nextDay.getDate() + 1);
 
         const fromDate = new Date(DateTimeService.toShortDateFormat(new Date()));
-        const toDate = new Date(DateTimeService.toShortDateFormat(new Date(nextDay)));  
+        const toDate = new Date(DateTimeService.toShortDateFormat(new Date(nextDay)));
         return{
             userName: '',
             isGuest: 0,
@@ -62,14 +62,14 @@ export class Filter extends Component {
         setSubmitting(true);
         const params = {
             userName: values.userName,
-            isGuest: values.isGuest > 0 ? 1 : 0,
+            isGuest: values.isGuest === 0 ? null : values.isGuest === 1 ? false : true,
             fromDate: DateTimeService.toShortDateFormat(values.fromDate),
             toDate: DateTimeService.toShortDateFormat(values.toDate),
             mainCategoryId: values.mainCategoryId > 0 ? values.mainCategoryId : null,
             subCategoryId: values.subCategoryId,
             communicationId: values.communicationId,
             responseId: values.responseId,
-            isReviewed: values.isReviewed === 1 ? 1 : 0
+            isReviewed: values.isReviewed === 0 ? null : values.isReviewed === 1 ? true : false
         };
         this.props.getGridParams(params);
         this.props.getDeletedFeedback(params);
@@ -77,7 +77,7 @@ export class Filter extends Component {
 
     filterMainCategory = data => {
         const mainCategories = [];
-        data.mainCategory.map(value => { 
+        data.mainCategory.map(value => {
             const filter = data.subCategory.filter(item => item.mainCategoryID === value.mainCategoryID);
             filter.unshift({name: 'All', subCategoryId: 0});
             mainCategories.push({
