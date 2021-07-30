@@ -1,5 +1,7 @@
 ﻿import React from 'react';
+import { Modal, Alert } from 'react-bootstrap';
 import { AddRelatedCustomerDialog } from '../AddRelatedCustomerDialog';
+import RelatedCustomerGrid from '../RelatedCustomerGrid';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
@@ -160,6 +162,143 @@ describe('AddRelatedCustomerDialog', () => {
             // Assert
             expect(container.state.relatedCustomers).toEqual([]);
             expect(container.state.errMsgs).toEqual([]);
+        });
+    });
+
+    describe('handleClearRelatedCustomerInput', () => {
+        it('should do nothing when RelatedCustomerInput is inputed', () => {
+            // Arrange
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
+            container.setState = jest.fn();
+            container.inputRef = { value: 'sa' };
+
+            // Act
+            container.handleClearRelatedCustomerInput();
+
+            // Assert
+            expect(container.setState).not.toHaveBeenCalled();
+        });
+
+        it('should update state correctly when isSelectedAll = true', () => {
+            // Arrange
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
+            container.setState({
+                isSelectedAll: true,
+                relatedCustomers: ['sa', 'test'],
+                errMsgs: ['You are not allowed to input over 2 usernames. Please check it!']
+            });
+            container.inputRef = { value: '' };
+
+            // Act
+            container.handleClearRelatedCustomerInput();
+
+            // Assert
+            expect(container.state.isSelectedAll).toBeFalsy();
+            expect(container.state.relatedCustomers).toEqual([]);
+            expect(container.state.errMsgs).toEqual([]);
+        });
+
+        it('should update state correctly when isSelectedAll = false', () => {
+            // Arrange
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
+            container.setState({
+                isSelectedAll: false,
+                relatedCustomers: ['sa', 'test'],
+                errMsgs: ['You are not allowed to input over 2 usernames. Please check it!']
+            });
+            container.inputRef = { value: '' };
+
+            // Act
+            container.handleClearRelatedCustomerInput();
+
+            // Assert
+            expect(container.state.isSelectedAll).toBeFalsy();
+            expect(container.state.relatedCustomers).toEqual(['sa']);
+            expect(container.state.errMsgs).toEqual(['You are not allowed to input over 2 usernames. Please check it!']);
+        });
+    });
+
+    describe('handleKeyDownRelatedCustomer', () => {
+        it('should update state correctly when press ctrl + a', () => {
+            // Arrange
+            const event = { ctrlKey: true, keyCode: 65 };
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
+            container.setState({ isSelectedAll: false });
+            container.inputRef = { value: '' };
+
+            // Act
+            container.handleKeyDownRelatedCustomer(event);
+
+            // Assert
+            expect(container.state.isSelectedAll).toBeTruthy();
+        });
+
+        it('should do as expected when press backspace', () => {
+            // Arrange
+            const event = { ctrlKey: false, keyCode: 8 };
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
+            container.handleClearRelatedCustomerInput = jest.fn();
+
+            // Act
+            container.handleKeyDownRelatedCustomer(event);
+
+            // Assert
+            expect(container.handleClearRelatedCustomerInput).toHaveBeenCalled();
+        });
+
+        it('should do as expected when press enter or space or semicolon', () => {
+            // Arrange
+            const event = { ctrlKey: false, keyCode: 13, preventDefault: jest.fn() };
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
+            container.addRelatedCustomerItem = jest.fn();
+            container.inputRef = { value: 'sa,' };
+
+            // Act
+            container.handleKeyDownRelatedCustomer(event);
+
+            // Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+            expect(container.inputRef.value).toEqual('sa');
+            expect(container.addRelatedCustomerItem).toHaveBeenCalledWith('sa');
+        });
+    });
+
+    describe('handlePasteRelatedCustomer', () => {
+        it('should do as expected when total customer input is under maximumRelatedCustomers', () => {
+            // Arrange
+            const event = { clipboardData: { getData: jest.fn(() => 'test1,test2') } };
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
+            container.setState = jest.fn();
+            container.addRelatedCustomerItem = jest.fn();
+
+            // Act
+            container.handlePasteRelatedCustomer(event);
+
+            // Assert
+            expect(container.setState).not.toHaveBeenCalled();
+            expect(container.addRelatedCustomerItem).toHaveBeenCalledTimes(2);
+            expect(container.addRelatedCustomerItem.mock.calls[0]).toEqual(['test1']);
+            expect(container.addRelatedCustomerItem).toHaveBeenLastCalledWith('test2');
+        });
+
+        it('should do as expected when total customer input is over maximumRelatedCustomers', () => {
+            // Arrange
+            const errMsgs = ['You are not allowed to input over 2 usernames. Please check it!'];
+            const event = { clipboardData: { getData: jest.fn(() => 'test1,test2,test3') } };
+            const container = shallow(<AddRelatedCustomerDialog />).instance();
+            container.setState = jest.fn();
+            container.maximumRelatedCustomers = 2;
+            container.inputRef = { value: 'test1,test2,test3' };
+            container.addRelatedCustomerItem = jest.fn();
+
+            // Act
+            container.handlePasteRelatedCustomer(event);
+            jest.runAllTimers();
+
+            // Assert
+            expect(container.setState).toHaveBeenCalledWith({ errMsgs });
+            expect(container.addRelatedCustomerItem).not.toHaveBeenCalled();
+            expect(container.inputRef.value).toEqual('');
         });
     });
 
@@ -324,6 +463,37 @@ describe('AddRelatedCustomerDialog', () => {
 
             // Assert
             expect(props.setAddRelatedCustomerDialog).toHaveBeenCalledWith({ show: false });
+        });
+    });
+
+    describe('render', () => {
+        it('should renders correctly with default state and props', () => {
+            // Act
+            const container = shallow(<AddRelatedCustomerDialog />);
+
+            // Assert
+            expect(container.find(RelatedCustomerGrid).length).toBe(1);
+
+            const modal = container.find(Modal);
+            expect(modal.props().className).toEqual('add-related-customer-modal-dialog');
+            expect(modal.find(Modal.Title).html()).toEqual('<div class="modal-title">AddRelatedCustomers</div>');
+            expect(modal.find(Alert).length).toBe(0);
+        });
+
+        it('should renders correctly with errMsgs', () => {
+            // Act
+            const container = shallow(<AddRelatedCustomerDialog />);
+            container.setState({ errMsgs: ['You are not allowed to input over 2 usernames. Please check it!'] });
+
+            // Assert
+            expect(container.find(RelatedCustomerGrid).length).toBe(1);
+
+            const modal = container.find(Modal);
+            expect(modal.props().className).toEqual('add-related-customer-modal-dialog');
+            expect(modal.find(Modal.Title).html()).toEqual('<div class="modal-title">AddRelatedCustomers</div>');
+            expect(modal.find(Alert).html()).toEqual('<div role="alert" class="fade alert alert-danger show">' +
+                '<ul class="list-message-error"><li>You are not allowed to input over 2 usernames. Please check it!</li></ul>' +
+                '</div>');
         });
     });
 });

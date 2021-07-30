@@ -12,6 +12,47 @@ describe('VerifyCustomerResult', () => {
         jest.clearAllMocks();
     });
 
+    describe('handleOpenAddRelatedCustomerDialog', () => {
+        it('should call correctly function', () => {
+            // Arrange
+            const props = {
+                relatedCustomerResults: [
+                    {
+                        custId: 1, username: 'sa',
+                        relatedCustomers: [
+                            { headlineId: 1, headline: 'sa', custId: 1, username: 'sa' },
+                            { headlineId: 1, headline: 'sa', custId: 2, username: 'sa1' }
+                        ]
+                    },
+                    {
+                        custId: 3, username: 'test',
+                        relatedCustomers: [
+                            { headlineId: 3, headline: 'test', custId: 2, username: 'sa1' },
+                            { headlineId: 3, headline: 'test', custId: 3, username: 'test1' }
+                        ]
+                    }
+                ],
+                setAddRelatedCustomerDialog: jest.fn()
+            };
+            const container = shallow(<VerifyCustomerResult {...props} />).instance();
+
+            // Act
+            container.handleOpenAddRelatedCustomerDialog();
+
+            //
+            expect(props.setAddRelatedCustomerDialog).toHaveBeenCalledWith({
+                show: true,
+                isEdit: true,
+                relatedCustomers: [
+                    { index: 1, username: 'sa', isValid: true },
+                    { index: 2, username: 'sa1', isValid: true },
+                    { index: 3, username: 'test1', isValid: true }
+                ],
+                relatedCustomerResults: props.relatedCustomerResults
+            });
+        });
+    });
+
     describe('renderCustomerItem', () => {
         it('should match snapshot when customer is valid', () => {
             // Arrange
@@ -57,8 +98,8 @@ describe('VerifyCustomerResult', () => {
                 removeCustomer: jest.fn()
             };
             const customer = { custId: 1, username: 'test' };
-            const container = shallow(<VerifyCustomerResult />).instance();
-            const item = shallow(container.renderRelatedCustomerItem(customer, 1));
+            const container = shallow(<VerifyCustomerResult {...props} />).instance();
+            const item = shallow(container.renderCustomerItem(customer, 1));
 
             // Act
             item.find('span').at(0).props().onClick();
@@ -79,13 +120,12 @@ describe('VerifyCustomerResult', () => {
                 ],
                 relatedCustomerResults: []
             };
-            const container = shallow(<VerifyCustomerResult {...props} />).instance();
 
             // Act
-            const actual = container.render();
+            const container = shallow(<VerifyCustomerResult {...props} />);
 
             // Assert
-            expect(shallow(actual).html()).toMatchSnapshot();
+            expect(container.html()).toMatchSnapshot();
         });
 
         it('should match snapshot when edit related customer', () => {
@@ -98,13 +138,12 @@ describe('VerifyCustomerResult', () => {
                 ],
                 relatedCustomerResults: [{ headlineId: 1, custId: 1, username: 'sa' }]
             };
-            const container = shallow(<VerifyCustomerResult {...props} />).instance();
 
             // Act
-            const actual = container.render();
+            const container = shallow(<VerifyCustomerResult {...props} />);
 
             // Assert
-            expect(shallow(actual).html()).toMatchSnapshot();
+            expect(container.html()).toMatchSnapshot();
         });
     });
 });

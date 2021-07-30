@@ -83,6 +83,28 @@ export class AddRelatedCustomerDialog extends Component {
         });
     };
 
+    handleClearRelatedCustomerInput = () => {
+        if (this.inputRef.value === '') {
+            let { relatedCustomers, isSelectedAll, errMsgs } = this.state;
+            if (isSelectedAll) {
+                relatedCustomers = [];
+                isSelectedAll = false;
+            } else {
+                relatedCustomers.pop();
+            }
+
+            if (relatedCustomers.length === 0) {
+                errMsgs = [];
+            }
+
+            this.setState({
+                relatedCustomers,
+                isSelectedAll,
+                errMsgs
+            });
+        }
+    };
+
     handleKeyDownRelatedCustomer = event => {
         // ctrl + a
         if (event.ctrlKey && event.keyCode === 65 && this.inputRef.value === '') {
@@ -90,29 +112,9 @@ export class AddRelatedCustomerDialog extends Component {
             return;
         }
 
-        let { relatedCustomers, isSelectedAll, errMsgs } = this.state;
         switch (event.keyCode) {
             case 8: // backspace
-                if (this.inputRef.value === '') {
-                    if (isSelectedAll) {
-                        relatedCustomers = [];
-                        isSelectedAll = false;
-                    } else {
-                        relatedCustomers.pop();
-                    }
-
-                    if (relatedCustomers.length === 0) {
-                        errMsgs = [];
-                    }
-
-                    this.setState({
-                        relatedCustomers,
-                        isSelectedAll,
-                        errMsgs
-                    });
-
-                    return;
-                }
+                this.handleClearRelatedCustomerInput();
                 break;
             case 13: // enter
             case 32: // space
@@ -257,9 +259,7 @@ export class AddRelatedCustomerDialog extends Component {
                             errMsgs.length > 0 &&
                             <Alert variant='danger'>
                                 <ul className='list-message-error'>
-                                    {
-                                        errMsgs.map((message, index) => <li key={index}>{message}</li>)
-                                    }
+                                    {errMsgs.map((message, index) => <li key={index}>{message}</li>)}
                                 </ul>
                             </Alert>
                         }
@@ -269,9 +269,7 @@ export class AddRelatedCustomerDialog extends Component {
                             </Form.Label>
                             <Col sm="3" md="9">
                                 <div className="related-customer-container" onClick={() => this.inputRef.focus()}>
-                                    {
-                                        relatedCustomers.map(this.renderRelatedCustomerItem)
-                                    }
+                                    {relatedCustomers.map(this.renderRelatedCustomerItem)}
                                     <input ref={input => this.inputRef = input} type="text"
                                         onKeyDown={this.handleKeyDownRelatedCustomer}
                                         onPaste={this.handlePasteRelatedCustomer}
