@@ -36,8 +36,8 @@ describe('CreateForm', () => {
             const props = {
                settings: {
                   titles: [{id: 1}],
-                  licenseeType: [{id: 1}],
-                  status: [{statusId: 1}],
+                  licenseeTypes: [{id: 1}],
+                  statuses: [{statusId: 1}],
                   responses: [{id: 1}],
                   languages: [{languageId: 1}]
                }
@@ -55,8 +55,8 @@ describe('CreateForm', () => {
             const props = {
                settings: {
                   titles: [{id: 1}],
-                  licenseeType: [{id: 1}],
-                  status: [{statusId: 1}],
+                  licenseeTypes: [{id: 1}],
+                  statuses: [{statusId: 1}],
                   responses: [{id: 1}],
                   languages: [{languageId: 1}]
                }
@@ -76,8 +76,8 @@ describe('CreateForm', () => {
             const props = {
                 settings: {
                     titles: [{id: 1}],
-                    licenseeType: [{id: 1}],
-                    status: [{statusId: 1}],
+                    licenseeTypes: [{id: 1}],
+                    statuses: [{statusId: 1}],
                     responses: [{id: 1}],
                     languages: [{languageId: 1}]
                 }
@@ -97,8 +97,8 @@ describe('CreateForm', () => {
             const props = {
                 settings: {
                     titles: [{id: 1}],
-                    licenseeType: [{id: 1}],
-                    status: [{statusId: 1}],
+                    licenseeTypes: [{id: 1}],
+                    statuses: [{statusId: 1}],
                     responses: [{id: 1}],
                     languages: [{languageId: 1}]
                 },
@@ -125,8 +125,8 @@ describe('CreateForm', () => {
         const props = {
             settings: {
                titles: [{id: 1}],
-               licenseeType: [{id: 1}],
-               status: [{statusId: 1}],
+               licenseeTypes: [{id: 1}],
+               statuses: [{statusId: 1}],
                responses: [{id: 1}],
                languages: [{languageId: 1}]
             },
@@ -211,8 +211,8 @@ describe('CreateForm', () => {
         const props = {
             settings: {
                 titles: [{id: 1, value: 'titles'}],
-                licenseeType: [{id: 1, name: 'licenseeType'}],
-                status: [{statusId: 1, name: 'status'}],
+                licenseeTypes: [{id: 1, name: 'licenseeTypes'}],
+                statuses: [{statusId: 1, name: 'statuses'}],
                 responses: [{id: 1, value: 'responses'}],
                 languages: [{languageId: 1, name: 'languages'}],
                 communicationTools: [{id: 1, name: 'communicationTools'}],
@@ -323,8 +323,8 @@ describe('CreateForm', () => {
         const props = {
             settings: {
                 titles: [{id: 1, value: 'titles'}],
-                licenseeType: [{id: 1, name: 'licenseeType'}],
-                status: [{statusId: 1, name: 'status'}],
+                licenseeTypes: [{id: 1, name: 'licenseeTypes'}],
+                statuses: [{statusId: 1, name: 'statuses'}],
                 responses: [{id: 1, value: 'responses'}],
                 languages: [{languageId: 1, name: 'languages'}],
                 communicationTools: [{id: 1, name: 'communicationTools'}],
@@ -518,7 +518,7 @@ describe('CreateForm', () => {
 
 
             // Assert
-            expect(createForm.instance().mainCategoriesHandleChange).toHaveBeenCalledWith(currentItem, selectedItemsKey, setFieldValue, values.subject);
+            expect(createForm.instance().mainCategoriesHandleChange).toHaveBeenCalledWith(currentItem, selectedItemsKey, setFieldValue, values);
         });
 
         it('invalid category correctly', () => {
@@ -549,7 +549,6 @@ describe('CreateForm', () => {
             const {values, errors, touched, handleChange, setFieldValue} = params;
             const createForm = shallow(<CreateForm {...props} />);
             createForm.instance().setState(state);
-            createForm.instance().subCategoriesHandleChange = jest.fn();
             const formRender = shallow(createForm.instance().renderDetails(values, errors, touched, handleChange, setFieldValue));
 
             // Action
@@ -557,7 +556,7 @@ describe('CreateForm', () => {
 
 
             // Assert
-            expect(createForm.instance().subCategoriesHandleChange).toHaveBeenCalledWith(currentItem, selectedItemsKey, setFieldValue);
+            expect(setFieldValue).toHaveBeenCalledWith('subCategory', selectedItemsKey);
         });
 
         it('invalid category correctly', () => {
@@ -588,7 +587,6 @@ describe('CreateForm', () => {
             const {values, errors, touched, handleChange, setFieldValue} = params;
             const createForm = shallow(<CreateForm {...props} />);
             createForm.instance().setState(state);
-            createForm.instance().subCategoriesHandleChange = jest.fn();
             const formRender = shallow(createForm.instance().renderDetails(values, errors, touched, handleChange, setFieldValue));
 
             // Action
@@ -596,7 +594,7 @@ describe('CreateForm', () => {
 
 
             // Assert
-            expect(createForm.instance().subCategoriesHandleChange).toHaveBeenCalledWith(currentItem, selectedItemsKey, setFieldValue);
+            expect(setFieldValue).toHaveBeenCalledWith('subCategory', selectedItemsKey);
         });
 
         it('invalid subCategory correctly', () => {
@@ -625,6 +623,7 @@ describe('CreateForm', () => {
             const currentItem = 'currentItem';
             const selectedItemsKey = 'selectedItemsKey';
             const {values, errors, touched, handleChange, setFieldValue} = params;
+            values.subProduct = 'subProduct';
             const createForm = shallow(<CreateForm {...props} />);
             createForm.instance().setState(state);
             createForm.instance().productHandleChange = jest.fn();
@@ -635,7 +634,7 @@ describe('CreateForm', () => {
 
 
             // Assert
-            expect(createForm.instance().productHandleChange).toHaveBeenCalledWith(currentItem, selectedItemsKey, setFieldValue);
+            expect(createForm.instance().productHandleChange).toHaveBeenCalledWith(currentItem, selectedItemsKey, setFieldValue,'subProduct');
         });
 
         it('invalid product correctly', () => {
@@ -664,6 +663,7 @@ describe('CreateForm', () => {
             const currentItem = 'currentItem';
             const selectedItemsKey = 'selectedItemsKey';
             const {values, errors, touched, handleChange, setFieldValue} = params;
+            values.betType = 'betType';
             const createForm = shallow(<CreateForm {...props} />);
             createForm.instance().setState(state);
             createForm.instance().subProductHandleChange = jest.fn();
@@ -674,7 +674,7 @@ describe('CreateForm', () => {
 
 
             // Assert
-            expect(createForm.instance().subProductHandleChange).toHaveBeenCalledWith(currentItem, selectedItemsKey, setFieldValue);
+            expect(createForm.instance().subProductHandleChange).toHaveBeenCalledWith(currentItem, selectedItemsKey, setFieldValue, 'betType');
         });
 
         it('invalid subProduct correctly', () => {
@@ -705,7 +705,6 @@ describe('CreateForm', () => {
             const {values, errors, touched, handleChange, setFieldValue} = params;
             const createForm = shallow(<CreateForm {...props} />);
             createForm.instance().setState(state);
-            createForm.instance().betTypeHandleChange = jest.fn();
             const formRender = shallow(createForm.instance().renderDetails(values, errors, touched, handleChange, setFieldValue));
 
             // Action
@@ -713,7 +712,7 @@ describe('CreateForm', () => {
 
 
             // Assert
-            expect(createForm.instance().betTypeHandleChange).toHaveBeenCalledWith(currentItem, selectedItemsKey, setFieldValue);
+            expect(setFieldValue).toHaveBeenCalledWith('betType', selectedItemsKey);
         });
 
         it('invalid betType correctly', () => {
@@ -866,8 +865,8 @@ describe('CreateForm', () => {
         const props = {
             settings: {
                 titles: [{id: 1, value: 'titles'}],
-                licenseeType: [{id: 1, name: 'licenseeType'}],
-                status: [{statusId: 1, name: 'status'}],
+                licenseeTypes: [{id: 1, name: 'licenseeTypes'}],
+                statuses: [{statusId: 1, name: 'statuses'}],
                 responses: [{id: 1, value: 'responses'}],
                 languages: [{languageId: 1, name: 'languages'}],
                 communicationTools: [{id: 1, name: 'communicationTools'}],
@@ -1131,8 +1130,8 @@ describe('CreateForm', () => {
             const props = {
                 settings: {
                         titles: [{id: 1}],
-                        licenseeType: [{id: 1}],
-                        status: [{statusId: 1}],
+                        licenseeTypes: [{id: 1}],
+                        statuses: [{statusId: 1}],
                         responses: [{id: 1}],
                         languages: [{languageId: 1}]
                 }
@@ -1376,90 +1375,6 @@ describe('CreateForm', () => {
         });
     });
 
-    describe('betTypeHandleChange', () => {
-        it('should call exact function', async () => {
-            // Arrange
-            const state = {betTypeSelected: ''};
-            const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm />).instance();
-            createForm.setState({state});
-
-            // Act
-            createForm.betTypeHandleChange('currentItem', '1,2', setFieldValue);
-            jest.runAllTimers();
-
-            // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('betType', '1,2');
-            expect(createForm.state.betTypeSelected).toEqual('1,2');
-        });
-
-        it('should do as expected when selectedItemsKey has value', async () => {
-            // Arrange
-            const props = {
-                settings: {
-                    bettypes: [1]
-                }
-            };
-            const state = {subProductSelected: '', betTypeSelected: '1,2'};
-            const setFieldValue = jest.fn();
-            shareScripts.getBetTypes = jest.fn(()=> [1]);
-            const createForm = shallow(<CreateForm {...props}/>).instance();
-            createForm.setState({state});
-
-            // Act
-            createForm.subProductHandleChange('currentItem', '1,2', setFieldValue);
-            jest.runAllTimers();
-
-            // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('subProduct', '1,2');
-            expect(createForm.state.subProductSelected).toEqual('1,2');
-            expect(createForm.state.betTypeOptions).toEqual([1]);
-        });
-
-        it('should do as expected when selectedItemsKey is empty', async () => {
-            // Arrange
-            const props = {
-                settings: {
-                    bettypes: [1]
-                }
-            };
-            const state = {subProductSelected: '', betTypeSelected: '1,2'};
-            const setFieldValue = jest.fn();
-            shareScripts.getBetTypes = jest.fn(()=> [1]);
-            const createForm = shallow(<CreateForm {...props}/>).instance();
-            createForm.setState({state});
-
-            // Act
-            createForm.subProductHandleChange('currentItem', '', setFieldValue);
-            jest.runAllTimers();
-
-            // Assert
-            expect(createForm.state.betTypeOptions).toEqual([]);
-            expect(createForm.state.betTypeSelected).toEqual([]);
-        });
-
-        it('should do as expected when betType Selected length < 0', async () => {
-            // Arrange
-            const props = {
-                settings: {
-                    bettypes: [1]
-                }
-            };
-            const state = {subProductSelected: '', betTypeSelected: ''};
-            const setFieldValue = jest.fn();
-            shareScripts.getBetTypes = jest.fn(()=> [1]);
-            const createForm = shallow(<CreateForm {...props}/>).instance();
-            createForm.setState({state});
-
-            // Act
-            createForm.subProductHandleChange('currentItem', '', setFieldValue);
-            jest.runAllTimers();
-
-            // Assert
-            expect(createForm.state.betTypeOptions).toEqual([]);
-        });
-    });
-
     describe('productHandleChange ', () => {
         it('should do as expected when selectedItemsKey has value', async () => {
             // Arrange
@@ -1468,14 +1383,12 @@ describe('CreateForm', () => {
                     subProducts: [1]
                 }
             };
-            const state = {subProductSelected : ''};
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm  {...props}/>).instance();
-            createForm.setState({state});
             shareScripts.getSubProducts = jest.fn(()=> [1]);
 
             // Act
-            createForm.productHandleChange('currentItem', '1,2', setFieldValue);
+            createForm.productHandleChange('currentItem', '1,2', setFieldValue, '1,2');
             jest.runAllTimers();
 
             // Assert
@@ -1490,38 +1403,82 @@ describe('CreateForm', () => {
                     subProducts: [1]
                 }
             };
-            const state = {subProductSelected : ''};
+            const values = {subProduct: '1,2', betType: '1,2'};
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm  {...props}/>).instance();
-            createForm.setState({state});
             shareScripts.getSubProducts = jest.fn(()=> [1]);
 
             // Act
-            createForm.productHandleChange('currentItem', '', setFieldValue);
+            createForm.productHandleChange('currentItem', '', setFieldValue, values);
             jest.runAllTimers();
 
             // Assert
             expect(createForm.state.subProductOptions).toEqual([]);
-            expect(createForm.state.subProductSelected).toEqual([]);
+            expect(createForm.state.betTypeOptions).toEqual([]);
+            expect(setFieldValue).toHaveBeenCalledWith('subProduct', '');
+            expect(setFieldValue).toHaveBeenCalledWith('betType', '');
         });
     });
 
-    describe('subCategoriesHandleChange ', () => {
-        it('should call exact function', async () => {
-            // Arrange
-            const state = {subCategoriesSelected : ''};
-            const setFieldValue = jest.fn();
-            const createForm = shallow(<CreateForm />).instance();
-            createForm.setState({state});
+    describe('subProductHandleChange ', () => {
+            it('should do as expected when selectedItemsKey has value', async () => {
+                // Arrange
+                const props = {
+                    settings: {
+                        bettypes: [1]
+                    }
+                };
+                const setFieldValue = jest.fn();
+                shareScripts.getBetTypes = jest.fn(()=> [1]);
+                const createForm = shallow(<CreateForm {...props}/>).instance();
 
-            // Act
-            createForm.subCategoriesHandleChange ('currentItem', '1,2', setFieldValue);
-            jest.runAllTimers();
+                // Act
+                createForm.subProductHandleChange('currentItem', '1,2', setFieldValue, '1,2');
+                jest.runAllTimers();
 
-            // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('subCategory', '1,2');
-            expect(createForm.state.subCategoriesSelected).toEqual('1,2');
-        });
+                // Assert
+                expect(setFieldValue).toHaveBeenCalledWith('subProduct', '1,2');
+                expect(createForm.state.betTypeOptions).toEqual([1]);
+            });
+
+            it('should do as expected when selectedItemsKey is empty', async () => {
+                // Arrange
+                const props = {
+                    settings: {
+                        bettypes: [1]
+                    }
+                };
+                const setFieldValue = jest.fn();
+                shareScripts.getBetTypes = jest.fn(()=> [1]);
+                const createForm = shallow(<CreateForm {...props}/>).instance();
+
+                // Act
+                createForm.subProductHandleChange('currentItem', '', setFieldValue, '1,2');
+                jest.runAllTimers();
+
+                // Assert
+                expect(createForm.state.betTypeOptions).toEqual([]);
+                expect(setFieldValue).toHaveBeenCalledWith('betType', '');
+            });
+
+            it('should do as expected when betType Selected length < 0', async () => {
+                // Arrange
+                const props = {
+                    settings: {
+                        bettypes: [1]
+                    }
+                };
+                const setFieldValue = jest.fn();
+                shareScripts.getBetTypes = jest.fn(()=> [1]);
+                const createForm = shallow(<CreateForm {...props}/>).instance();
+
+                // Act
+                createForm.subProductHandleChange('currentItem', '', setFieldValue, '1,2');
+                jest.runAllTimers();
+
+                // Assert
+                expect(createForm.state.betTypeOptions).toEqual([]);
+            });
     });
 
     describe('mainCategoriesHandleChange', () => {
@@ -1532,14 +1489,13 @@ describe('CreateForm', () => {
                     mainCategories: [1]
                 }
             };
-            const state = {subCategoriesSelected: ''};
+            const values = {subject: 'subject', subCategory: '1,2'};
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm  {...props}/>).instance();
-            createForm.setState({state});
             shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
             shareScripts.getSubCategories = jest.fn(()=> [1]);
             // Act
-            createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, 'subject');
+            createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, values);
             jest.runAllTimers();
 
             // Assert
@@ -1555,14 +1511,13 @@ describe('CreateForm', () => {
                     mainCategories: [1]
                 }
             };
-            const state = {subCategoriesSelected: [{id: 1}]};
+            const values = {subject: 'subject', subCategory: '1,2'};
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm  {...props}/>).instance();
-            createForm.setState({state});
             shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
             shareScripts.getSubCategories = jest.fn(()=> [1]);
             // Act
-            createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, 'subject');
+            createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, values);
             jest.runAllTimers();
 
             // Assert
@@ -1582,7 +1537,7 @@ describe('CreateForm', () => {
 
             // Assert
             expect(createForm.state.subCategoriesOptions).toEqual([]);
-            expect(createForm.state.subCategoriesSelected).toEqual([]);
+            expect(setFieldValue).toHaveBeenCalledWith('subCategory', '');
         });
     });
 
@@ -1768,7 +1723,7 @@ describe('CreateForm', () => {
         createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
 
         // Act
-        createForm.handleSubmit([{userName: 'test'}]);
+        createForm.handleSubmit([{username: 'test'}]);
 
 
         // Assert

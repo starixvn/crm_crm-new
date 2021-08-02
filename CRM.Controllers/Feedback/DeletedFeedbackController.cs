@@ -18,8 +18,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.DeleteFeedback, Policy = Policy.Read)]
-    public class DeletedFeedbackController : BaseController
+    //[CrmPermission(FunctionKey = FunctionKey.DeleteFeedback, Policy = Policy.Read)]
+    public class DeletedFeedbackController : Controller
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
@@ -46,8 +46,8 @@
 
         public IActionResult Index()
         {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
-            return View(isHost);
+           // var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
+            return View(true);
         }
 
         public async Task<IActionResult> GetAllSettings()

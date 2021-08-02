@@ -21,7 +21,7 @@ export class Filter extends Component {
         const fromDate = new Date(DateTimeService.toShortDateFormat(new Date()));
         const toDate = new Date(DateTimeService.toShortDateFormat(new Date(nextDay)));      
         return {
-            userName: '',
+            username: '',
             isGuest: 0,
             fromDate,
             toDate,
@@ -106,137 +106,148 @@ export class Filter extends Component {
         // const subCategoryOptions = this.filterSubCategory(values, mainCategories);
         
         return (
-            <Form onSubmit={handleSubmit} className="form-filter">
-                <div className="panel-content">
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" className="filter-title">
-                            {LangHelper.getResource('Username')}
-                        </Form.Label>
-                        <Col sm="2" md="2">
-                            <Form.Control type="text" size="sm" 
-                                name="userName"
-                                onChange={handleChange}
-                            />
-                        </Col>
-                        <Col sm="2" md="2">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="isGuest"
-                                onChange={value => setFieldValue('isGuest', parseInt(value.target.value))}
-                            >
-                                {
-                                    customerTypes.map((value,key) => this.renderOptions(value.settingValue,value.settingId,key))
-                                }
-                            </Form.Control>
-                        </Col>
-
-                        <Form.Label column sm="2" md="2" className="filter-title">
-                            {LangHelper.getResource('From Date')}
-                        </Form.Label>
-                        <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper">
-                            <DatePicker isInvalid={touched.fromDate && errors.fromDate}
-                                selected={values.fromDate}
-                                timeInputLabel="Time:"
-                                dateFormat="MMM dd, yyyy"
-                                showTimeInput
-                                onChange={value => this.handleChangeFromDate(setFieldValue, value, values.fromDate)}
-                            />
-                        </Col>
-
-                        <Form.Label column sm="1" md="1">
-                            {LangHelper.getResource('To Date')}
-                        </Form.Label>
-                        <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper">
-                            <DatePicker
-                                selected={values.toDate}
-                                timeInputLabel="Time:"
-                                dateFormat="MMM dd, yyyy"
-                                showTimeInput
-                                onChange={value => this.handleChangeToDate(setFieldValue, values.fromDate, value)}
-                            />
-                        </Col>
-                    </Form.Group>
-
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" className="filter-title">
-                            {LangHelper.getResource('Main Category')}
-                        </Form.Label>
-                        <Col sm="4" md="4">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="mainCategoryId"
-                                onChange={value => setFieldValue('mainCategoryId', parseInt(value.target.value))}
-                            >
-                                {/* {
-                                    mainCategoryOptions.map((value,key) => this.renderOptions(value.name, value.mainCategoryID, key))
-                                } */}
-                            </Form.Control>
-                        </Col>
-
-                        <Form.Label column sm="2" md="2" className="filter-title">
-                            {LangHelper.getResource('SubCategory')}
-                        </Form.Label>
-                        <Col sm="2" md="2">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="subCategoryId"
-                                onChange={value => setFieldValue('subCategoryId', parseInt(value.target.value))}
-                            >
-                                {/* {
-                                    subCategoryOptions[0].subCate.map((value,key) => this.renderOptions(value.name, value.subCategoryId, key))
-                                } */}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" className="filter-title">
-                            {LangHelper.getResource('Communication')}
-                        </Form.Label>
-                        <Col sm="2" md="2" className="filter-title">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="communicationId"
-                                onChange={value => setFieldValue('communicationId', parseInt(value.target.value))}
-                            >
-                                {
-                                    communications.map((value,key) => this.renderOptions(value.name, value.id, key))
-                                }
-                            </Form.Control>
-                        </Col>
-
-                        <Form.Label column sm="2" md="2" className="filter-title">
-                            {LangHelper.getResource('Customer Response')}
-                        </Form.Label>
-                        <Col sm="2" md="2" className="filter-res">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="responseId"
-                                onChange={value => setFieldValue('responseId', parseInt(value.target.value))}
-                            >
-                                {
-                                    customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
-                                }
-                            </Form.Control>
-                        </Col>
-
-                        <Form.Label column sm="2" md="2" className="filter-title">
-                            {LangHelper.getResource('Is Reviewed')}
-                        </Form.Label>
-                        <Col sm="2" md="2">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="isReviewed"
-                                onChange={value => setFieldValue('isReviewed', parseInt(value.target.value))}
-                            >
-                                {
-                                    reviews.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
-                                }
-                            </Form.Control>
-                        </Col>
-
-                        <Col sm="2" md="2">
-                            <button type="submit" className="btn btn-primary btn-sm">Submit</button>
-                        </Col>
-
-                    </Form.Group>
-                </div>       
+            <Form className='form-filter' onSubmit={e => this.submitHandler(e)}>
+            <Form.Row bsPrefix='form-row'>
+                <Form.Group>
+                    <Form.Label htmlFor="runningNumber">{LangHelper.getResource('RunningNumber')}</Form.Label>
+                    <Form.Control type="text" size="sm" value={values.runningNumber}
+                        name="runningNumber" id="runningNumber"
+                        className="shadow-none" autoComplete="off"
+                        isInvalid={touched.runningNumber && errors.runningNumber}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Form.Group className='sm-width'>
+                        <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                        <DatePicker
+                            selected={values.fromDate}
+                            onChange={value => this.handleChangeFromDate(setFieldValue, value, values.fromDate)}
+                        />
+                        </div>
+                </Form.Group>
+                <Form.Group className='sm-width'>
+                        <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                        <DatePicker
+                            selected={values.toDate}
+                            onChange={value => this.handleChangeToDate(setFieldValue, value, values.toDate)}    
+                        />
+                        </div>
+                </Form.Group>
+            </Form.Row>
+            <Form.Row bsPrefix='form-row'>
+                <Form.Group>
+                    <Form.Label htmlFor="username">{LangHelper.getResource('Username')}</Form.Label>
+                    <Form.Control type="text" size="sm" value={values.username}
+                        name="username"
+                        className="shadow-none username-width" autoComplete="off"
+                        isInvalid={touched.username && errors.username}
+                        onChange={handleChange}
+                    />
+                    <Form.Control as="select" size="sm"
+                        name="responseId" className="shadow-none response-width"
+                        onChange={value => setFieldValue('responseId', parseInt(value.target.value))}
+                    >
+                    {
+                        customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
+                    }
+                     </Form.Control>
+                </Form.Group>
+                <Form.Group className='sm-width'>
+                    <Form.Label htmlFor="isReviewed">{LangHelper.getResource('IsReviewed')}</Form.Label>
+                    <Form.Control as="select" size="sm"
+                        name="isReviewed" className='select-options'
+                        onChange={value => setFieldValue('isReviewed', parseInt(value.target.value))}
+                    >
+                    {
+                        reviews.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
+                    }
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group className='sm-width'>
+                    <Form.Label htmlFor="customerResponse">{LangHelper.getResource('CustomerResponse')}</Form.Label>
+                    <Form.Control as="select" size="sm"
+                        name="customerResponse" className='select-options'
+                        onChange={value => setFieldValue('customerResponse', parseInt(value.target.value))}
+                    >
+                    {
+                        customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
+                    }
+                    </Form.Control>
+                </Form.Group>
+            </Form.Row>
+            <Form.Row bsPrefix='form-row'>
+                <Form.Group>
+                    <Form.Label htmlFor="mainCategory">{LangHelper.getResource('MainCategory')}</Form.Label>
+                    <Form.Control as="select" size="sm"
+                        name="mainCategoryId"
+                        onChange={value => setFieldValue('mainCategoryId', parseInt(value.target.value))}
+                    >
+                        {
+                            mainCategories.map((value,key) => this.renderOptions(value.name, value.mainCategoryID, key))
+                        }
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group className='subCategory-width'>
+                    <Form.Label htmlFor="subCategory">{LangHelper.getResource('SubCategory')}</Form.Label>
+                    <Form.Control as="select" size="sm"
+                        name="subCategoryId"
+                        onChange={value => setFieldValue('subCategoryId', parseInt(value.target.value))}
+                    >
+                    {/* {
+                        subCategories[0].subCate.map((value,key) => this.renderOptions(value.name, value.subCategoryId, key))
+                    } */}
+                </Form.Control>
+                </Form.Group>
+            </Form.Row>
+            <Form.Row bsPrefix='form-row'>
+                <Form.Group>
+                    <Form.Label htmlFor="communication">{LangHelper.getResource('Communication')}</Form.Label>
+                    <Form.Control as="select" size="sm"
+                        name="communicationId" className='select-options-sm mr-2'
+                        onChange={value => setFieldValue('communicationId', parseInt(value.target.value))}
+                    >
+                        {
+                            communications.map((value,key) => this.renderOptions(value.name, value.id, key))
+                        }
+                    </Form.Control>
+                    <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                        <Form.Control as="select" size="sm"
+                            name="status" className='select-options-sm'
+                            onChange={value => setFieldValue('statusId', parseInt(value.target.value))}
+                        >
+                        {
+                            customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
+                        }
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group className='sm-width'>
+                    <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
+                    <Form.Control type="text" size="sm" value={values.handler}
+                        name="isReviewed" autoComplete="off"
+                        className="shadow-none select-options"
+                        isInvalid={touched.handler && errors.handler}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Form.Group className='sm-width'>
+                    <Form.Label htmlFor="handler">{LangHelper.getResource('Reviewer')}</Form.Label>
+                    <Form.Control type="text" size="sm" value={values.reviewer}
+                        name="reviewer" autoComplete="off"
+                        className="shadow-none select-options"
+                        isInvalid={touched.reviewer && errors.reviewer}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Button type="submit" variant="primary" size="sm">
+                        {LangHelper.getResource('Save')}
+                    </Button>
+                </Form.Group>
+            </Form.Row>
             </Form>
-        )
+        );
     }
 
     render() {

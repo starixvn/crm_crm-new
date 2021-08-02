@@ -29,7 +29,7 @@ export class AppContainer extends Component {
             return null;
         }
         return (
-            <CreateForm isHost={this.props.isHost} />
+            <CreateForm />
         );
     }
 }

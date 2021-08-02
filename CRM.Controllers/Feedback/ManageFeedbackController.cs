@@ -1,9 +1,12 @@
 ﻿namespace CRM.Controllers.Feedback
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
+    using CRM.Core.Extensions;
     using CRM.Core.Filters;
     using CRM.Criteria.Feedback.ManageFeedback;
     using CRM.Models.Feedback;
@@ -51,16 +54,17 @@
             //var isReadDeleteFb = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Read);
             //if(isReadCreateFb || isReadDeleteFb)
             //{
-            var customerType = settingService.GetAllCustomerTypes();
-           // var review = settingService.GetReviews();
+            var customerTypes = settingService.GetAllCustomerTypes();
+            var reviews = Enum.GetValues(typeof(ReviewStatus)).Cast<ReviewStatus>()
+                .Select(type => new Setting { SettingId = (int)type, SettingValue = EnumHelper.GetDesciption(type) });
             var response = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.ActiveAndInactive);
             var mainCategories = await settingService.GetMainCategoriesAndChildSettingAsync();
             var communications = await settingService.GetCommunicationToolAsync(SettingConstants.ActiveAndInactive, true);
             var status = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var settings = new
             {
-                CustomerTypes = customerType,
-                //Reviews = review,
+                CustomerTypes = customerTypes,
+                Reviews = reviews,
                 CustomerResponses = response,
                 MainCategories = mainCategories,
                 Communications = communications,

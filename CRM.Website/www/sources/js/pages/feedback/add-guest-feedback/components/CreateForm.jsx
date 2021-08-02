@@ -54,11 +54,8 @@ export class CreateForm extends Component {
             },
             communicationToolVal: '',
             subCategoriesOptions: [],
-            subCategoriesSelected: '',
             subProductOptions: [],
-            subProductSelected: '',
             betTypeOptions: [],
-            betTypeSelected: [],
             listOfCustomerValid: [],
             listOfCustomer: []
         };
@@ -129,36 +126,29 @@ export class CreateForm extends Component {
         }));
     };
 
-    mainCategoriesHandleChange = (currentItem, selectedItemsKey, setFieldValue, subject) => {
+    mainCategoriesHandleChange = (currentItem, selectedItemsKey, setFieldValue, values) => {
         if (selectedItemsKey) {
             const tempSubject = getSubjectOnChangeCategories(selectedItemsKey ? selectedItemsKey.split(',') : [],
-                subject,
+                values.subject,
                 this.props.settings.mainCategories);
             setFieldValue('subject', tempSubject);
             setFieldValue('category', selectedItemsKey);
-            const { subCategoriesSelected } = this.state;
             const subCategories = this.props.settings.subCategories;
             const selectedMainCategories = selectedItemsKey.split(',');
-            const subCategoriesSelectedArr = subCategoriesSelected.length > 0 ? subCategoriesSelected.split(',') : [];
+            const subCategoriesSelectedArr = values.subCategory.length > 0 ? values.subCategory.split(',') : [];
             const findSubByMain = getSubCategories(selectedMainCategories, subCategories, subCategoriesSelectedArr, false);
             this.setState({ subCategoriesOptions: findSubByMain });
         } else {
             this.setState({
-                subCategoriesOptions: [],
-                subCategoriesSelected: []
+                subCategoriesOptions: []
             });
+            setFieldValue('subCategory', '');
         }
     };
 
-    subCategoriesHandleChange = (currentItem, selectedItemsKey, setFieldValue) => {
-        setFieldValue('subCategory', selectedItemsKey);
-        this.setState({ subCategoriesSelected: selectedItemsKey });
-    };
-
-    productHandleChange = (currentItem, selectedItemsKey, setFieldValue) => {
+    productHandleChange = (currentItem, selectedItemsKey, setFieldValue, subProductSelected) => {
         if (selectedItemsKey) {
             setFieldValue('product', selectedItemsKey);
-            const { subProductSelected } = this.state;
             const subProducts = this.props.settings.subProducts;
             const selectedProduct = selectedItemsKey.split(',');
             const subProductSelectedArr = subProductSelected.length > 0 ? subProductSelected.split(',') : [];
@@ -167,37 +157,27 @@ export class CreateForm extends Component {
         } else {
             this.setState({
                 subProductOptions: [],
-                subProductSelected: []
+                betTypeOptions: []
             });
+            setFieldValue('subProduct', '');
+            setFieldValue('betType', '');
         }
     };
 
-    subProductHandleChange = (currentItem, selectedItemsKey, setFieldValue) => {
+    subProductHandleChange = (currentItem, selectedItemsKey, setFieldValue, betTypesSelected) => {
         setFieldValue('subProduct', selectedItemsKey);
-        this.setState(
-            {
-                subProductSelected: selectedItemsKey
-            }, () => {
-                if (selectedItemsKey) {
-                    const { betTypeSelected } = this.state;
-                    const betTypes = this.props.settings.bettypes;
-                    const selectedSubProducts = selectedItemsKey.split(',');
-                    const betTypeSelectedArr = betTypeSelected.length > 0 ? betTypeSelected.split(',') : [];
-                    const findBetTypeBySubProduct = getBetTypes(selectedSubProducts, betTypes, betTypeSelectedArr, false);
-                    this.setState({ betTypeOptions: findBetTypeBySubProduct });
-                } else {
-                    this.setState({
-                        betTypeOptions: [],
-                        betTypeSelected: []
-                    });
-                }
-            }
-        );
-    };
-
-    betTypeHandleChange = (currentItem, selectedItemsKey, setFieldValue) => {
-        setFieldValue('betType', selectedItemsKey);
-        this.setState({ betTypeSelected: selectedItemsKey });
+        if (selectedItemsKey) {
+            const betTypes = this.props.settings.bettypes;
+            const selectedSubProducts = selectedItemsKey.split(',');
+            const betTypeSelectedArr = betTypesSelected.length > 0 ? betTypesSelected.split(',') : [];
+            const findBetTypeBySubProduct = getBetTypes(selectedSubProducts, betTypes, betTypeSelectedArr, false);
+            this.setState({ betTypeOptions: findBetTypeBySubProduct });
+        } else {
+            this.setState({
+                betTypeOptions: []
+            });
+            setFieldValue('betType', '');
+        }
     };
 
     handleVerify = (event, setFieldValue, value) => {
@@ -374,7 +354,7 @@ export class CreateForm extends Component {
                                             name="licenseeType" id="licenseeType" value={values.licenseeType} onChange={handleChange}
                                         >
                                             <option value='' hidden disabled />
-                                            {this.props.settings.licenseeType.map(item => this.renderOptions(item.name, item.id))}
+                                            {this.props.settings.licenseeTypes.map(item => this.renderOptions(item.name, item.id))}
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -706,7 +686,7 @@ export class CreateForm extends Component {
 
     renderDetails = (values, errors, touched, handleChange, setFieldValue) => {
         const collapse = this.state.collapse;
-        const { status, languages, responses, countries, extensions } = this.props.settings;
+        const { statuses, languages, responses, countries, extensions } = this.props.settings;
         return (
             <div className='panel-group'>
                 <Form.Group as={Row} className="title"
@@ -782,7 +762,7 @@ export class CreateForm extends Component {
                                             onChange={handleChange}
                                         >
                                             <option value="" hidden disabled />
-                                            {status.map(item => this.renderOptions(item.name, item.statusId))}
+                                            {statuses.map(item => this.renderOptions(item.name, item.statusId))}
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -943,7 +923,7 @@ export class CreateForm extends Component {
                                     keyField='mainCategoryID'
                                     valueField='name'
                                     onChange={(currentItem, selectedItemsKey) => {
-                                        this.mainCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue, values.subject);
+                                        this.mainCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue, values);
                                     }}
                                 />
                             </Col>
@@ -965,7 +945,7 @@ export class CreateForm extends Component {
                                     keyField='subCategoryId'
                                     valueField='name'
                                     onChange={(currentItem, selectedItemsKey) => {
-                                        this.subCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                        setFieldValue('subCategory', selectedItemsKey);
                                     }}
                                 />
                             </Col>
@@ -989,7 +969,7 @@ export class CreateForm extends Component {
                                     dataSource={products}
                                     keyField='id'
                                     onChange={(currentItem, selectedItemsKey) => {
-                                        this.productHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                        this.productHandleChange(currentItem, selectedItemsKey, setFieldValue, values.subProduct);
                                     }}
                                 />
                             </Col>
@@ -1011,7 +991,7 @@ export class CreateForm extends Component {
                                     dataSource={subProductOptions}
                                     isNAOption
                                     onChange={(currentItem, selectedItemsKey) => {
-                                        this.subProductHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                        this.subProductHandleChange(currentItem, selectedItemsKey, setFieldValue, values.betType);
                                     }}
                                 />
                             </Col>
@@ -1033,7 +1013,7 @@ export class CreateForm extends Component {
                                     keyField='id'
                                     valueField='value'
                                     onChange={(currentItem, selectedItemsKey) => {
-                                        this.betTypeHandleChange(currentItem, selectedItemsKey, setFieldValue);
+                                        setFieldValue('betType', selectedItemsKey);
                                     }}
                                 />
                             </Col>

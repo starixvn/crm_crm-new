@@ -23,7 +23,7 @@
 
         public int SiteId { get; set; }
 
-        public string Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
 
         public int LanguageId { get; set; }
 

@@ -1,14 +1,59 @@
-@import '../../../abstracts/variables';
+@import '../../../components/react-grid/react-grid';
+@import '../../../components/form-filter';
 @import '../../../components/forms';
+@import '../../../components/icons';
 @import '../../../components/messages';
 @import '../../../components/modal';
+@import '../../../components/tables';
 @import '../../../components/date-picker/style';
 @import '../../../components/react-select';
 @import '../../../components/multiple-select/style';
 
 .form-filter {
-    border: 1px solid #b7b7b7;
-    margin-bottom: 1rem;
-    padding: 1rem 1rem 0;
-    background-color: #e8e8e8;
+    min-width: 1120px;
+    
+    .form-row {
+        .sm-width{
+            width: 290px !important;
+        }
+
+        .subCategory-width{
+            width: 593px !important;
+        }
+
+        .label-status{
+            width: 50px !important;
+        }
+
+        .form-group {
+            width: 440px;
+
+            .form-label {
+                width: 115px;
+            }
+
+            .react-datepicker-wrapper-container{
+                input{
+                    width: 170px;
+                }
+            }
+
+            .username-width{
+                width: 211px;
+                margin-right: 10px;
+                margin-left: -4px;
+            }
+
+            .response-width{
+                width: 100px;
+            }
+
+            .select-options{
+                width: 170px;
+            }
+            .select-options-sm{
+                width: 133px;
+            }
+        }
+    }
 }
