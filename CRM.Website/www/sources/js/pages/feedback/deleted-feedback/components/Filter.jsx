@@ -115,6 +115,10 @@ export class Filter extends Component {
         const mainCategories = this.filterMainCategories(data);
         const subCategories = this.filterSubCategories(mainCategories, formData);
         const reviews = [
+            { settingValue: 'All', settingId: 0 },
+            { settingValue: 'Review', settingId: 1 },
+            { settingValue: 'Not Reviewd', settingId: -1 }
+        ];
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter">
@@ -220,7 +224,7 @@ export class Filter extends Component {
                                 onChange={this.handleChangeFormData}
                             >
                                 {
-                                    data.customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
+                                    data.customerResponse.map((value,key) => this.renderOptions(value.value, value.id, key))
                                 }
                             </Form.Control>
                         </Col>
