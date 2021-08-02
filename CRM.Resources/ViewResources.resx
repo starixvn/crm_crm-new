@@ -156,7 +156,7 @@
   <data name="Deleted" xml:space="preserve">
     <value>Deleted</value>
   </data>
-  <data name="DoNoEditFeedbackPermission" xml:space="preserve">
+  <data name="DoNotEditFeedbackPermission" xml:space="preserve">
     <value>You don't have permission to update feedback.</value>
   </data>
   <data name="DeletedFeedback" xml:space="preserve">
@@ -263,5 +263,8 @@
   </data>
   <data name="ManageFeedback" xml:space="preserve">
     <value>Manage Feedback</value>
+  </data>
+  <data name="DoNotDeleteFeedbackPermission" xml:space="preserve">
+    <value>You don't have permission to delete feedback.</value>
   </data>
 </root>

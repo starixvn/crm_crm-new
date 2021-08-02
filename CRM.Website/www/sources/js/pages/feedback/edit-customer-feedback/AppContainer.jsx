@@ -22,11 +22,13 @@ import { validateMainCategorySubCategory } from '../common.functions';
 export default class AppContainer extends Component {
     static propTypes = {
         feedbackId: PropTypes.number.isRequired,
+        isDeletedFeedbackView: PropTypes.bool.isRequired,
         onClose: PropTypes.func.isRequired
     };
 
     static defaultProps = {
         feedbackId: 0,
+        isDeletedFeedbackView: false,
         onClose: function () {
             // nothing
         }
@@ -61,7 +63,7 @@ export default class AppContainer extends Component {
     }
 
     async componentDidMount() {
-        const url = Site.resolveClientUrl(`Feedback/GetCustomerFeedbackById/${this.props.feedbackId}`);
+        const url = Site.resolveClientUrl(`Feedback/GetCustomerFeedbackById/${this.props.feedbackId}?isDeletedFeedbackView=${this.props.isDeletedFeedbackView}`);
         await DataService.getDataAsync(url).then(response => {
             const data = response.data;
             const feedbackSettings = this.getFeedbackSettings(data.feedback, data.settings);
@@ -598,7 +600,8 @@ export default class AppContainer extends Component {
             review: values.review,
              // 0: do nothing, 1: update, 2: remove
             updateReviewMode: !this.state.hasReviewFeedbackPermission
-                ? 0 : (!values.isReviewed ? 2 : (this.formikValues.review === values.review ? 0 : 1))
+                ? 0 : (!values.isReviewed ? 2 : (this.formikValues.review === values.review ? 0 : 1)),
+            isDeletedFeedbackView: this.props.isDeletedFeedbackView
         };
         this.confirmEditFeedback(params);
     };

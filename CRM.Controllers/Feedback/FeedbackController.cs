@@ -60,10 +60,10 @@
             return Json(commandResult);
         }
 
-        public async Task<IActionResult> GetCustomerFeedbackById(int id)
+        public async Task<IActionResult> GetCustomerFeedbackById(int id, bool isDeletedFeedbackView = false)
         {
             CustomerFeedback feedback = await feedbackService.GetCustomerFeedbackByIdAsync(id);
-            var settings = await GetEditCustomerFeedbackSettingAsync(feedback);
+            var settings = await GetEditCustomerFeedbackSettingAsync(feedback, isDeletedFeedbackView);
             var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
             return Json(new { feedback, settings, hasReviewFeedbackPermission });
         }
@@ -71,18 +71,7 @@
         [HttpPost]
         public async Task<IActionResult> EditCustomerFeedback([FromBody] EditCustomerFeedbackCommand command)
         {
-            var commandResult = new CommandResult { Code = 0 };
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
-                || (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host) &&
-                    command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate))
-            {
-                commandResult = new CommandResult
-                {
-                    Code = 1,
-                    Message = ViewResources.DoNoEditFeedbackPermission
-                };
-            }
-
+            CommandResult commandResult = CheckEditCustomerFeedbackPermission(command);
             if (commandResult.IsSuccessful)
             {
                 command.UserId = napSession.UserId;
@@ -102,7 +91,36 @@
             return Json(commandResult);
         }
 
-        private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback)
+        private CommandResult CheckEditCustomerFeedbackPermission(EditCustomerFeedbackCommand command)
+        {
+            var commandResult = new CommandResult { Code = 0 };
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+                || (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host) &&
+                    command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate))
+            {
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.DoNotEditFeedbackPermission
+                };
+            }
+
+            var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted;
+            var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusId == (int)Core.Enumerables.FeedbackStatus.Deleted;
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+                && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
+            {
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.DoNotDeleteFeedbackPermission
+                };
+            }
+
+            return commandResult;
+        }
+
+        private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)
         {
             var feedbackSettings = feedback.Settings;
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);
@@ -121,7 +139,7 @@
                 CommunicationTools = GetCommunicationTools(communicationTools, feedbackSettings),
                 Responses = responses.Where(x => x.IsActive || x.Id == feedback.ResponseId).ToList(),
                 Languages = languages.Where(x => x.IsActive || x.LanguageId == feedback.LanguageId).ToList(),
-                Statuses = await GetStatusAsync(feedback),
+                Statuses = await GetStatusAsync(feedback, isDeletedFeedbackView),
                 Roles = roles.Where(x => x.IsActive || x.Id == feedback.RoleId).ToList(),
                 Countries = countries.Where(x => x.IsActive || x.Id == feedback.CountryId).ToList(),
                 Titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active),
@@ -161,11 +179,18 @@
                 && x.Id != NAConstants.CommunicationNA).ToList();
         }
 
-        private async Task<IList<Models.Setting.FeedbackStatus>> GetStatusAsync(CustomerFeedback feedback)
+        private async Task<IList<Models.Setting.FeedbackStatus>> GetStatusAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)
         {
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            return statuses.Where(x => (x.IsActive || x.StatusId == feedback.StatusId)
-                && x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted).ToList();
+            statuses = statuses.Where(x => (x.IsActive || x.StatusId == feedback.StatusId)).ToList();
+
+            if (!isDeletedFeedbackView
+                || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host))
+            {
+                return statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted).ToList();
+            }
+
+            return statuses.ToList();
         }
 
         private async Task<IList<Setting>> GetMainCategoryAsync(IEnumerable<FeedbackSettingRelation> settings)

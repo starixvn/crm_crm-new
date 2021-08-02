@@ -196,11 +196,20 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to delete feedback..
+        /// </summary>
+        public static string DoNotDeleteFeedbackPermission {
+            get {
+                return ResourceManager.GetString("DoNotDeleteFeedbackPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have permission to update feedback..
         /// </summary>
-        public static string DoNoEditFeedbackPermission {
+        public static string DoNotEditFeedbackPermission {
             get {
-                return ResourceManager.GetString("DoNoEditFeedbackPermission", resourceCulture);
+                return ResourceManager.GetString("DoNotEditFeedbackPermission", resourceCulture);
             }
         }
         
