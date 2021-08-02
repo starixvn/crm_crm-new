@@ -244,45 +244,6 @@
         }
 
         [Fact]
-        public async Task GetAllSettings_WhenCalled_ReturnAsExpectedJson()
-        {
-            // Arrange
-            var customerTypes = new List<Setting> { new Setting { Id = 1 } };
-            var customerResponse = new List<SettingRelation> { new SettingRelation { Id = 1, IsActive = false }, };
-            var mainCategories = new List<Setting> { new Setting { Id = 1 } };
-            var subCategories = new List<Setting> { new Setting { Id = 1 } };
-            var communications = new List<Setting> { new Setting { Id = 1 } };
-            var statuses = new List<FeedbackStatus> { new FeedbackStatus { StatusId = 11002, Name = "Closed", IsActive = true } };
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Read).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Read).Returns(true);
-            settingService.GetAllCustomerTypes().Returns(customerTypes);
-            settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active).Returns(customerResponse);
-            settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategories);
-            settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategories);
-            settingService.GetCommunicationToolAsync(SettingConstants.Active, true).Returns(communications);
-            settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
-
-            // Act
-            var result = await controller.GetAllSettings();
-
-            //Assert
-            var jsonResult = Assert.IsType<JsonResult>(result);
-            var settingsResult = jsonResult.Value;
-
-            var expected = new
-            {
-                customerTypes,
-                customerResponse,
-                mainCategories,
-                subCategories,
-                communications,
-                statuses
-            };
-            expected.Equals(settingsResult);
-        }
-
-        [Fact]
         public async Task EditCustomerFeedback_DoNotHaveReviewPermission_ReturnAsExpectedResult()
         {
             // Arrange

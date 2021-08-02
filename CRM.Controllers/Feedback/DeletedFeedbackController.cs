@@ -13,6 +13,8 @@
     using CRM.Services.Feedback;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
+    using CRM.Core.Enumerables;
+    using CRM.Core.Extensions;
 
     //[CrmPermission(FunctionKey = FunctionKey.DeleteFeedback, Policy = Policy.Read)]
     public class DeletedFeedbackController : Controller
@@ -34,6 +36,25 @@
         public IActionResult Index()
         {
             return View(true);
+        }
+
+        public async Task<IActionResult> GetAllSettings()
+        {
+            var status = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var reviews = Enum.GetValues(typeof(ReviewStatus)).Cast<ReviewStatus>()
+                .Select(type => new Setting { SettingId = (int)type, SettingValue = EnumHelper.GetDesciption(type) });
+            var settings = new
+            {
+                reviews = reviews,
+                customerTypes = settingService.GetAllCustomerTypes(),
+                customerResponses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
+                mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
+                subCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
+                communications = await settingService.GetCommunicationToolAsync(SettingConstants.Active,true),
+                statuses = status.Where(x => !string.Equals(x.Name, ViewResources.Deleted, StringComparison.OrdinalIgnoreCase))
+            };
+
+            return Json(settings);
         }
 
         [HttpPost]

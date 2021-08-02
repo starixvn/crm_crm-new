@@ -48,6 +48,29 @@
             return View(true);
         }
 
+        public async Task<ActionResult> GetAllSettings()
+        {
+            var customerTypes = settingService.GetAllCustomerTypes();
+            var reviews = Enum.GetValues(typeof(ReviewStatus)).Cast<ReviewStatus>()
+                .Select(type => new Setting { SettingId = (int)type, SettingValue = EnumHelper.GetDesciption(type) });
+            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.ActiveAndInactive);
+            var mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.ActiveAndInactive);
+            var subCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.ActiveAndInactive);
+            var communications = await settingService.GetCommunicationToolAsync(SettingConstants.ActiveAndInactive, true);
+            var status = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var settings = new
+            {
+                CustomerTypes = customerTypes,
+                Reviews = reviews,
+                Responses = responses,
+                MainCategories = mainCategories,
+                subCategories = subCategories,
+                Communications = communications,
+                Statuses = status.Where(r => !string.Equals(r.Name, "Deleted"))
+            };
+            return Json(settings);
+        }
+
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<ActionResult> SearchManageFeedback([FromBody] ManageFeedbackCriteria criteria)

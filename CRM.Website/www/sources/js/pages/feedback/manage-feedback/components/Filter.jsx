@@ -71,26 +71,22 @@ export class Filter extends Component {
         this.props.getDeletedFeedback(params);
     }
 
-    // filterMainCategory = mainCategories => {
-    //     const mainCates= [];
-    //     mainCategories.map(value => {            
-    //         const filter = value.childSettings.filter(item => item.mainCategoryID === value.mainCategoryID);
-    //         filter.unshift({name: "All", subCategoryId: 0});
-    //         mainCates.push({
-    //             mainCategoryID: value.mainCategoryID, 
-    //             name: value.name, 
-    //             subCate: filter
-    //         });            
-    //     });
-    //     mainCates.unshift({mainCategoryID: 0, name: "All", subCate: [{name: "All", subCategoryId: 0}]});
+    filterCategories = (mainCategories, subCategories) => {
+        const mainCategoriesArr = [];
+        mainCategories.map(value => {
+            const subCategoriesFilter = subCategories.filter(item => item.mainCategoryID === value.mainCategoryID);
+            subCategoriesFilter.unshift({name: 'All', subCategoryId: 0});
+            mainCategoriesArr.push({
+                mainCategoryID: value.mainCategoryID,
+                name: value.name,
+                subCate: subCategoriesFilter
+            });
+        });
+        mainCategoriesArr.unshift({mainCategoryID: 0, name: 'All', subCate: [{name: 'All', subCategoryId: 0}]});
+        return mainCategoriesArr;
+    };
 
-    //     return mainCates;
-    // }
-
-    // filterSubCategory = (values, mainCategories) =>{
-    //     const subCategories = mainCategories.filter(item => item.mainCategoryID === values.mainCategoryId);
-    //     return subCategories;
-    // }
+    filterSubCategories = (mainCategories, mainCategoryId) => mainCategories.filter(item => item.mainCategoryID === parseInt(mainCategoryId, 10));
  
     renderForm = ({
         values,
@@ -100,10 +96,9 @@ export class Filter extends Component {
         handleSubmit,
         setFieldValue
     }) => {       
-        const {customerTypes, customerResponse, mainCategories, subCategories, communications, statuses, reviews} = this.props.settings;
-
-        // const mainCategoryOptions = this.filterMainCategory(mainCategories);
-        // const subCategoryOptions = this.filterSubCategory(values, mainCategories);
+        const {customerTypes, responses , mainCategories, subCategories, communications, statuses, reviews} = this.props.settings;
+        const mainCategoryOptions = this.filterCategories(mainCategories, subCategories);
+        const subCategoryOptions = this.filterSubCategories(mainCategoryOptions, values.mainCategoryId);
         
         return (
             <Form className='form-filter' onSubmit={e => this.submitHandler(e)}>
@@ -140,7 +135,7 @@ export class Filter extends Component {
                 <Form.Group>
                     <Form.Label htmlFor="username">{LangHelper.getResource('Username')}</Form.Label>
                     <Form.Control type="text" size="sm" value={values.username}
-                        name="username"
+                        name="username" id = "username"
                         className="shadow-none username-width" autoComplete="off"
                         isInvalid={touched.username && errors.username}
                         onChange={handleChange}
@@ -150,15 +145,16 @@ export class Filter extends Component {
                         onChange={value => setFieldValue('responseId', parseInt(value.target.value))}
                     >
                     {
-                        customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
+                        customerTypes.map((value,key) => this.renderOptions(value.value, value.id, key))
                     }
                      </Form.Control>
                 </Form.Group>
                 <Form.Group className='sm-width'>
                     <Form.Label htmlFor="isReviewed">{LangHelper.getResource('IsReviewed')}</Form.Label>
                     <Form.Control as="select" size="sm"
-                        name="isReviewed" className='select-options'
-                        onChange={value => setFieldValue('isReviewed', parseInt(value.target.value))}
+                        name="isReviewed" id = "isReviewed"
+                        className='select-options'
+                        onChange={handleChange}
                     >
                     {
                         reviews.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
@@ -166,47 +162,49 @@ export class Filter extends Component {
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className='sm-width'>
-                    <Form.Label htmlFor="customerResponse">{LangHelper.getResource('CustomerResponse')}</Form.Label>
+                    <Form.Label htmlFor="responseId">{LangHelper.getResource('CustomerResponse')}</Form.Label>
                     <Form.Control as="select" size="sm"
-                        name="customerResponse" className='select-options'
-                        onChange={value => setFieldValue('customerResponse', parseInt(value.target.value))}
+                        name="responseId" id = "responseId"
+                        className='select-options'
+                        onChange={handleChange}
                     >
                     {
-                        customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
+                        responses.map((value,key) => this.renderOptions(value.value, value.id, key))
                     }
                     </Form.Control>
                 </Form.Group>
             </Form.Row>
             <Form.Row bsPrefix='form-row'>
                 <Form.Group>
-                    <Form.Label htmlFor="mainCategory">{LangHelper.getResource('MainCategory')}</Form.Label>
+                    <Form.Label htmlFor="mainCategoryId">{LangHelper.getResource('MainCategory')}</Form.Label>
                     <Form.Control as="select" size="sm"
-                        name="mainCategoryId"
-                        onChange={value => setFieldValue('mainCategoryId', parseInt(value.target.value))}
+                        name="mainCategoryId" id = "mainCategoryId"
+                        onChange={handleChange}
                     >
                         {
-                            mainCategories.map((value,key) => this.renderOptions(value.name, value.mainCategoryID, key))
+                            mainCategoryOptions.map((value,key) => this.renderOptions(value.name, value.mainCategoryID, key))
                         }
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className='subCategory-width'>
-                    <Form.Label htmlFor="subCategory">{LangHelper.getResource('SubCategory')}</Form.Label>
+                    <Form.Label htmlFor="subCategoryId">{LangHelper.getResource('SubCategory')}</Form.Label>
                     <Form.Control as="select" size="sm"
                         name="subCategoryId"
                         onChange={value => setFieldValue('subCategoryId', parseInt(value.target.value))}
                     >
-                    {/* {
-                        subCategories[0].subCate.map((value,key) => this.renderOptions(value.name, value.subCategoryId, key))
-                    } */}
+                        {
+                            subCategoryOptions[0].subCate.map((value,key) => this.renderOptions(value.name, value.subCategoryId, key))
+                        }
                 </Form.Control>
                 </Form.Group>
             </Form.Row>
             <Form.Row bsPrefix='form-row'>
                 <Form.Group>
-                    <Form.Label htmlFor="communication">{LangHelper.getResource('Communication')}</Form.Label>
+                    <Form.Label htmlFor="communicationId">{LangHelper.getResource('Communication')}</Form.Label>
                     <Form.Control as="select" size="sm"
-                        name="communicationId" className='select-options-sm mr-2'
-                        onChange={value => setFieldValue('communicationId', parseInt(value.target.value))}
+                        name="communicationId" id="communicationId"
+                        className='select-options-sm mr-2'
+                        onChange={handleChange}
                     >
                         {
                             communications.map((value,key) => this.renderOptions(value.name, value.id, key))
@@ -214,11 +212,12 @@ export class Filter extends Component {
                     </Form.Control>
                     <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
                         <Form.Control as="select" size="sm"
-                            name="status" className='select-options-sm'
+                            name="statusId" id="statusId"
+                            className='select-options-sm'
                             onChange={value => setFieldValue('statusId', parseInt(value.target.value))}
                         >
                         {
-                            customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
+                            statuses.map((value,key) => this.renderOptions(value.value, value.id, key))
                         }
                     </Form.Control>
                 </Form.Group>

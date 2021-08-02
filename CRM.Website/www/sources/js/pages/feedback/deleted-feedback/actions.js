@@ -14,7 +14,7 @@ const getGridParams = (params) => dispatch => {
 };
 
 const getAllSettings = () => async dispatch => {
-    const url = Site.resolveClientUrl('Feedback/GetAllSettings');
+    const url = Site.resolveClientUrl('DeletedFeedback/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
     });

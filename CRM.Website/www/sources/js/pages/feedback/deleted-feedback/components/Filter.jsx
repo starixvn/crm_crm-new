@@ -224,7 +224,7 @@ export class Filter extends Component {
                                 onChange={this.handleChangeFormData}
                             >
                                 {
-                                    data.customerResponse.map((value,key) => this.renderOptions(value.value, value.id, key))
+                                    data.customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
                                 }
                             </Form.Control>
                         </Col>
