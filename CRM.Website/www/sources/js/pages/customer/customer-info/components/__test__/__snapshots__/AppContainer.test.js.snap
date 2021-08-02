@@ -2,6 +2,4 @@
 
 exports[`AppContainer edit customer info should render correctly 1`] = `ShallowWrapper {}`;
 
-exports[`AppContainer empty data customer info should render correctly 1`] = `ShallowWrapper {}`;
-
 exports[`AppContainer should render correctly 1`] = `ShallowWrapper {}`;

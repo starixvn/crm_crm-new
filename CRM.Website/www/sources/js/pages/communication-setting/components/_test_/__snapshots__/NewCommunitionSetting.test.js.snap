@@ -1,7 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NewCommunitionSetting component with redux component render correctly 1`] = `ShallowWrapper {}`;
-
-exports[`NewCommunitionSetting redux connect component render correctly 1`] = `ShallowWrapper {}`;
-
-exports[`NewCommunitionSetting renders component correctly 1`] = `ShallowWrapper {}`;

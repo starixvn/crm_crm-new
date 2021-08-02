@@ -1,9 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppContainer render Confirm component correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer render Confirm component correctly when checked is false 1`] = `ShallowWrapper {}`;
-
 exports[`AppContainer render EditPicManagement component correctly 1`] = `ShallowWrapper {}`;
 
 exports[`AppContainer render NewPicManagement component correctly 1`] = `ShallowWrapper {}`;
