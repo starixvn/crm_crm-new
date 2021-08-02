@@ -50,22 +50,6 @@
             return View(true);
         }
 
-        public async Task<IActionResult> GetAllSettings()
-        {
-            var status = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var settings = new
-            {
-                customerType = settingService.GetAllCustomerTypes(),
-                customerResponse = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
-                mainCategory = await settingService.GetMainCategoryAsync(SettingConstants.Active),
-                subCategory = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
-                communication = await settingService.GetCommunicationToolAsync(SettingConstants.Active,true),
-                status = status.Where(x => !string.Equals(x.Name, ViewResources.Deleted, StringComparison.OrdinalIgnoreCase))
-            };
-
-            return Json(settings);
-        }
-
         [HttpPost]
         public async Task<IActionResult> SearchDeletedFeedback([FromBody] GetDeletedFeedbackParam param)
         {

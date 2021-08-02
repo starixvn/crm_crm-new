@@ -100,7 +100,7 @@ export class Filter extends Component {
         handleSubmit,
         setFieldValue
     }) => {       
-        const {communications, customerResponses, customerTypes, mainCategories, reviews} = this.props.settings;
+        const {customerTypes, customerResponse, mainCategories, subCategories, communications, statuses, reviews} = this.props.settings;
 
         // const mainCategoryOptions = this.filterMainCategory(mainCategories);
         // const subCategoryOptions = this.filterSubCategory(values, mainCategories);

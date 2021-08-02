@@ -51,7 +51,6 @@
         IEnumerable<Setting> GetPositions(bool isExcludeGuest);
 
         IEnumerable<Setting> GetAllCustomerTypes();
-        Task<IEnumerable<Setting>> GetMainCategoriesAndChildSettingAsync();
 
         Task<IEnumerable<Setting>> GetMainCategoryWithSubCategoryAsync();
     }

@@ -76,18 +76,18 @@ export class Filter extends Component {
     };
 
     filterMainCategory = data => {
-        const mainCategories = [];
-        data.mainCategory.map(value => {
-            const filter = data.subCategory.filter(item => item.mainCategoryID === value.mainCategoryID);
+        const mainCategoriesArr = [];
+        data.mainCategories.map(value => {
+            const filter = data.subCategories.filter(item => item.mainCategoryID === value.mainCategoryID);
             filter.unshift({name: 'All', subCategoryId: 0});
-            mainCategories.push({
+            mainCategoriesArr.push({
                 mainCategoryID: value.mainCategoryID,
                 name: value.name,
                 subCate: filter
             });
         });
-        mainCategories.unshift({mainCategoryID: 0, name: 'All', subCate: [{name: 'All', subCategoryId: 0}]});
-        return mainCategories;
+        mainCategoriesArr.unshift({mainCategoryID: 0, name: 'All', subCate: [{name: 'All', subCategoryId: 0}]});
+        return mainCategoriesArr;
     };
 
     filterSubCategory = (mainCate,values) =>{
@@ -107,11 +107,6 @@ export class Filter extends Component {
         const mainCategories = this.filterMainCategory(data);
         const subCategories = this.filterSubCategory(mainCategories,values);
 
-        const review = [
-            { settingValue: 'All', settingId: 0 },
-            { settingValue: 'Review', settingId: 1 },
-            { settingValue: 'Not Reviewd', settingId: -1 }
-        ];
         return (
             <Form onSubmit={handleSubmit} className="form-filter">
                 <div className="panel-content">
@@ -131,7 +126,7 @@ export class Filter extends Component {
                                 onChange={value => setFieldValue('isGuest', parseInt(value.target.value))}
                             >
                                 {
-                                    data.customerType.map((value,key) => this.renderOptions(value.settingValue,value.settingId,key))
+                                    data.customerTypes.map((value,key) => this.renderOptions(value.settingValue,value.settingId,key))
                                 }
                             </Form.Control>
                         </Col>
@@ -203,7 +198,7 @@ export class Filter extends Component {
                                 onChange={value => setFieldValue('communicationId', parseInt(value.target.value))}
                             >
                                 {
-                                    data.communication.map((value,key) => this.renderOptions(value.name, value.id, key))
+                                    data.communications.map((value,key) => this.renderOptions(value.name, value.id, key))
                                 }
                             </Form.Control>
                         </Col>
@@ -231,7 +226,7 @@ export class Filter extends Component {
                                 onChange={value => setFieldValue('isReviewed', parseInt(value.target.value))}
                             >
                                 {
-                                    review.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
+                                    data.reviews.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
                                 }
                             </Form.Control>
                         </Col>

@@ -48,34 +48,6 @@
             return View(true);
         }
 
-        public async Task<ActionResult> AllSetting()
-        {
-            //var isReadCreateFb = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Read);
-            //var isReadDeleteFb = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Read);
-            //if(isReadCreateFb || isReadDeleteFb)
-            //{
-            var customerTypes = settingService.GetAllCustomerTypes();
-            var reviews = Enum.GetValues(typeof(ReviewStatus)).Cast<ReviewStatus>()
-                .Select(type => new Setting { SettingId = (int)type, SettingValue = EnumHelper.GetDesciption(type) });
-            var response = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.ActiveAndInactive);
-            var mainCategories = await settingService.GetMainCategoriesAndChildSettingAsync();
-            var communications = await settingService.GetCommunicationToolAsync(SettingConstants.ActiveAndInactive, true);
-            var status = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var settings = new
-            {
-                CustomerTypes = customerTypes,
-                Reviews = reviews,
-                CustomerResponses = response,
-                MainCategories = mainCategories,
-                Communications = communications,
-                Status = status.Where(r => !string.Equals(r.Name, "Deleted"))
-            };
-            return Json(settings);
-
-            //}
-            //return Json(null);
-        }
-
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<ActionResult> SearchManageFeedback([FromBody] ManageFeedbackCriteria criteria)

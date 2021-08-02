@@ -305,39 +305,6 @@
             return mainCategories;
         }
 
-        public async Task<IEnumerable<Setting>> GetMainCategoriesAndChildSettingAsync()
-        {
-            var subCate = new Setting
-            {
-                SubCategoryId = SettingConstants.NotApply,
-                Name = ViewResources.All,
-                IsActive = true
-            };
-
-            var mainCategories = new List<Setting>
-            {
-                new Setting
-                {
-                    MainCategoryID = SettingConstants.NotApply,
-                    Name = ViewResources.All,
-                    IsActive = true,
-                    ChildSettings = new List<Setting>
-                    {
-                        subCate
-                    }
-                }
-            };
-
-            var mainSubCate = await GetAllMainSubCategoriesAsync();
-            foreach (var main in mainSubCate)
-            {
-                main.ChildSettings.Insert(0, subCate);
-                mainCategories.Add(main);
-            }
-
-            return mainCategories;
-        }
-
         public async Task<IEnumerable<Setting>> GetMainCategoryWithSubCategoryAsync()
         {
             var mainCategories = await GetSettingAsync(SettingName.MainCategory, true);

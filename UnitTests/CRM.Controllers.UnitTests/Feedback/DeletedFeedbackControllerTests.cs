@@ -45,43 +45,6 @@
         }
 
         [Fact]
-        public async Task GetAllSettings_WhenCalled_ReturnAsExpectedJson()
-        {
-            // Arrange
-            var customerType = new List<Setting> { new Setting { Id = 1 } };
-            var customerResponse = new List<SettingRelation> { new SettingRelation { Id = 1, IsActive = false }, };
-            var mainCategory = new List<Setting> { new Setting { Id = 1 } };
-            var subCategory = new List<Setting> { new Setting { Id = 1 } };
-            var communication = new List<Setting> { new Setting { Id = 1 } };
-            var status = new List<FeedbackStatus> { new FeedbackStatus { StatusId = 11002, Name = "Closed", IsActive = true } };
-            var controller = GetController();
-            settingService.GetAllCustomerTypes().Returns(customerType);
-            settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active).Returns(customerResponse);
-            settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategory);
-            settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategory);
-            settingService.GetCommunicationToolAsync(SettingConstants.Active, true).Returns(communication);
-            settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(status);
-
-            // Act
-            var result = await controller.GetAllSettings();
-
-            //Assert
-            var jsonResult = Assert.IsType<JsonResult>(result);
-            var settingsResult = jsonResult.Value;
-
-            var expected = new
-            {
-                customerType,
-                customerResponse,
-                mainCategory,
-                subCategory,
-                communication,
-                status
-            };
-            expected.Equals(settingsResult);
-        }
-
-        [Fact]
         public async Task SearchDeletedFeedback_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange

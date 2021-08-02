@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
+    using CRM.Core.Extensions;
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Criteria.Feedback;
@@ -89,6 +90,32 @@
             }
 
             return Json(commandResult);
+        }
+
+        public async Task<IActionResult> GetAllSettings()
+        {
+            var isReadCreateFb = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Read);
+            var isReadDeleteFb = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Read);
+            if (isReadCreateFb || isReadDeleteFb)
+            {
+                var reviews = Enum.GetValues(typeof(ReviewStatus)).Cast<ReviewStatus>()
+               .Select(type => new Setting { SettingId = (int)type, SettingValue = EnumHelper.GetDesciption(type) });
+                var status = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+                var settings = new
+                {
+                    customerTypes = settingService.GetAllCustomerTypes(),
+                    customerResponse = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
+                    mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
+                    subCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
+                    communications = await settingService.GetCommunicationToolAsync(SettingConstants.Active, true),
+                    statuses = status.Where(x => !string.Equals(x.Name, ViewResources.Deleted, StringComparison.OrdinalIgnoreCase)),
+                    reviews = reviews
+                };
+
+                return Json(settings);
+            }
+
+            return Json(null);
         }
 
         private CommandResult CheckEditCustomerFeedbackPermission(EditCustomerFeedbackCommand command)
