@@ -7,6 +7,7 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
 
@@ -70,18 +71,31 @@ export class DataGrid extends Component {
         });
     };
 
+    handleOpenViewRelatedCustomerDialog = relatedCustomers => {
+        this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
+    };
+
     renderRelatedCustomerColumn = item => {
-        return item.map((value,key) => {
-            if(key === item.length - 1){
-                return(<div key={key}>{`${value}`}</div>);
-            }
-            return(<div key={key}>{`${value},`}</div>);
-        });
+        const totalItems = item.length;
+        if(totalItems > MaximumDisplayRelatedCustomer){
+            return(
+                <a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(item.join(', '))}>
+                    {totalItems} customers
+                </a>
+            );
+        }else{
+            return item.map((value,key) => {
+                if(key === item.length - 1){
+                    return(<div key={key}>{`${value}`}</div>);
+                }
+                return(<div key={key}>{`${value},`}</div>);
+            });
+        }
     };
 
     renderRow = (item, index) => {
         return (
-            <Row key={index}>
+            <Row key={index} className="deleted">
                 <Cell>
                     <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
                         <span className="rounded-circle fa fa-pencil-square-o" />
@@ -130,22 +144,31 @@ export class DataGrid extends Component {
         );
     };
 
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params['pageSize'] = pageSize;
+        params['pageIndex'] = pageIndex;
+        this.props.getGridParams(params);
+        this.props.getDeletedFeedback(params);
+    };
+
     render() {
         const {gridData} = this.props;
         if(!gridData || !gridData.data){
             return null;
         }
 
+        const { pageIndex, pageSize } = this.props.gridParams;
         const pagingOption = {
-            PageIndex: 1,
-            PageSize: 100,
-            TotalItem: gridData.data.length,
+            PageIndex: pageIndex,
+            PageSize: pageSize,
+            TotalItem: gridData.totalItems,
             PageList: [100, 200, 300, 400, 500]
         };
 
         return (
             <>
-                <div className='table-title d-flex justify-content-between align-items-center'>
+                <div className='table-title d-flex justify-content-between align-items-center ha'>
                     <span>Deleted Feedback</span>
                     {
                         gridData.data.length > 0 && this.renderExportExcelText()
@@ -159,6 +182,7 @@ export class DataGrid extends Component {
                     body={this.buildBody()}
                     isPaging
                     pageOption={pagingOption}
+                    onPaging={this.onPaging}
                     containerPadding={0}
                     adjustedHeight={10}
                 />

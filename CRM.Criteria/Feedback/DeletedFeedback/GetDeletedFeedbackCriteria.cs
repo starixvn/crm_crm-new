@@ -13,13 +13,13 @@
 
         public DateTime ToDate { get; set; }
 
-        public string MainCategoryId { get; set; }
+        public int? MainCategoryId { get; set; }
 
-        public int SubCategoryId { get; set; }
+        public int? SubCategoryId { get; set; }
 
-        public int CommunicationId { get; set; }
+        public int? CommunicationId { get; set; }
 
-        public int ResponseId { get; set; }
+        public int? ResponseId { get; set; }
 
         public bool? IsReviewed { get; set; }
 

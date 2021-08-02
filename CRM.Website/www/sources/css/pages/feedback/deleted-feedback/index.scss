@@ -9,6 +9,10 @@
 @import "../../../components/react-grid/react-grid";
 @import '../../../components/autocomplete';
 
+#app-container {
+    width: 1336px;
+}
+
 .fa-exclamation-circle {
     font-size: 16px; 
 }
@@ -78,9 +82,12 @@ span.fa.fa-file-excel-o.icon-excel {
 
 @media screen and (min-width : 992px){
     .filter-title{
-        max-width: 11%;
+        max-width: 10%;
     }
     .filter-res{
-        max-width: 11.4%;
+        max-width: 12.4%;
+    }
+    .filter-customer-response{
+        max-width: 11%;
     }
 }

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Col, Form, Row } from 'react-bootstrap';
-import { Formik } from 'formik';
 import moment from 'moment';
 import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
@@ -12,70 +11,83 @@ import LangHelper from '@jsroot/common/langHelper';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.initialValues = this.initFormData();
+        const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const toDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        toDate.setMinutes(toDate.getMinutes() + 1);
+
+        this.state = {
+            formData: {
+                username: '',
+                isGuest: 0,
+                fromDate: fromDate,
+                toDate: toDate,
+                mainCategoryId: 0,
+                subCategoryId: 0,
+                communicationId: 1005,
+                responseId: 10002,
+                isReviewed: 0
+            }
+        }
     }
 
-    initFormData = () => {
-        const nextDay = new Date();
-        nextDay.setDate(nextDay.getDate() + 1);
-
-        const fromDate = new Date(DateTimeService.toShortDateFormat(new Date()));
-        const toDate = new Date(DateTimeService.toShortDateFormat(new Date(nextDay)));
-        return{
-            userName: '',
-            isGuest: 0,
-            fromDate,
-            toDate,
-            mainCategoryId: 0,
-            subCategoryId: 0,
-            communicationId: 1005,
-            responseId: 10002,
-            isReviewed: 0
-        };
-    };
-
-    handleChangeFromDate = (setFieldValue, fromDate, toDate) => {
-        setFieldValue('fromDate', fromDate);
+    handleChangeFromDate = (fromDate, toDate) => {
+        this.setState({
+            formData: {...this.state.formData, fromDate: fromDate}
+        });
 
         if (moment(fromDate).isAfter(moment(toDate))) {
-            toDate = new Date(DateTimeService.toShortDateFormat(new Date(fromDate)));
+            toDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(fromDate)));
             toDate.setMinutes(toDate.getMinutes() + 1);
 
-            setFieldValue('toDate', toDate);
+            this.setState({
+                formData: {...this.state.formData, toDate: toDate}
+            });
         }
     };
 
-    handleChangeToDate = (setFieldValue, fromDate, toDate) => {
-        setFieldValue('toDate', toDate);
+    handleChangeToDate = (fromDate, toDate) => {
+        this.setState({
+            formData: {...this.state.formData, toDate: toDate}
+        });
 
         if (moment(fromDate).isAfter(moment(toDate))) {
-            fromDate = new Date(DateTimeService.toShortDateFormat(new Date(toDate)));
+            fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(toDate)));
             fromDate.setMinutes(fromDate.getMinutes() - 1);
 
-            setFieldValue('fromDate', fromDate);
+            this.setState({
+                formData: {...this.state.formData, fromDate: fromDate}
+            });
         }
     };
 
-    renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
+    handleChangeFormData = (event) => {
+        const name = event.target.name;
+        this.setState({
+            formData: {...this.state.formData,[name]: event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value}
+        });
+    }
 
-    handleSubmit = (values, { setSubmitting }) => {
-        setSubmitting(true);
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const {username, isGuest, fromDate, toDate, mainCategoryId, subCategoryId, communicationId, responseId, isReviewed } = this.state.formData;
         const params = {
-            userName: values.userName,
-            isGuest: values.isGuest === 0 ? null : values.isGuest === 1 ? false : true,
-            fromDate: DateTimeService.toShortDateFormat(values.fromDate),
-            toDate: DateTimeService.toShortDateFormat(values.toDate),
-            mainCategoryId: values.mainCategoryId > 0 ? values.mainCategoryId : null,
-            subCategoryId: values.subCategoryId,
-            communicationId: values.communicationId,
-            responseId: values.responseId,
-            isReviewed: values.isReviewed === 0 ? null : values.isReviewed === 1 ? true : false
+            username: username,
+            isGuest: isGuest === 0 ? null : isGuest === 1 ? false : true,
+            fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
+            toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate)),
+            mainCategoryId: mainCategoryId === 0 ? null : mainCategoryId,
+            subCategoryId: subCategoryId === 0 ? null : subCategoryId,
+            communicationId: communicationId,
+            responseId: responseId,
+            isReviewed: isReviewed === 0 ? null : isReviewed === 1 ? true : false,
+            pageIndex: 1,
+            pageSize: 100
         };
         this.props.getGridParams(params);
         this.props.getDeletedFeedback(params);
     };
 
-    filterMainCategory = data => {
+    filterMainCategories = data => {
         const mainCategoriesArr = [];
         data.mainCategories.map(value => {
             const filter = data.subCategories.filter(item => item.mainCategoryID === value.mainCategoryID);
@@ -90,40 +102,38 @@ export class Filter extends Component {
         return mainCategoriesArr;
     };
 
-    filterSubCategory = (mainCate,values) =>{
-        const subCategories = mainCate.filter(item => item.mainCategoryID === values.mainCategoryId);
+    filterSubCategories = (mainCate,values) =>{
+        const subCategories = mainCate.find(item => item.mainCategoryID === values.mainCategoryId);
         return subCategories;
     };
 
-    renderForm = ({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleSubmit,
-        setFieldValue
-    }) => {
+    renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
+
+    renderForm = () => {
+        const formData = this.state.formData;
         const data = this.props.settings;
-        const mainCategories = this.filterMainCategory(data);
-        const subCategories = this.filterSubCategory(mainCategories,values);
+        const mainCategories = this.filterMainCategories(data);
+        const subCategories = this.filterSubCategories(mainCategories, formData);
+        const reviews = [
 
         return (
-            <Form onSubmit={handleSubmit} className="form-filter">
+            <Form onSubmit={this.handleSubmit} className="form-filter">
                 <div className="panel-content">
                     <Form.Group as={Row}>
                         <Form.Label column sm="2" md="2" className="filter-title">
                             {LangHelper.getResource('Username')}
                         </Form.Label>
                         <Col sm="2" md="2">
-                            <Form.Control type="text" size="sm"
-                                name="userName"
-                                onChange={handleChange}
+                            <Form.Control type="text" size="sm" className="shadow-none"
+                                autoComplete="off"
+                                name="username"
+                                onChange={this.handleChangeFormData}
                             />
                         </Col>
                         <Col sm="2" md="2">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="isGuest"
-                                onChange={value => setFieldValue('isGuest', parseInt(value.target.value))}
+                                onChange={this.handleChangeFormData}
                             >
                                 {
                                     data.customerTypes.map((value,key) => this.renderOptions(value.settingValue,value.settingId,key))
@@ -135,12 +145,11 @@ export class Filter extends Component {
                             {LangHelper.getResource('From Date')}
                         </Form.Label>
                         <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper">
-                            <DatePicker isInvalid={touched.fromDate && errors.fromDate}
-                                selected={values.fromDate}
+                            <DatePicker
+                                selected={formData.fromDate}
                                 timeInputLabel="Time:"
                                 dateFormat="MMM dd, yyyy"
-                                showTimeInput
-                                onChange={value => this.handleChangeFromDate(setFieldValue, value, values.fromDate)}
+                                onChange={value => this.handleChangeFromDate(value, formData.toDate)}
                             />
                         </Col>
 
@@ -149,11 +158,10 @@ export class Filter extends Component {
                         </Form.Label>
                         <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper">
                             <DatePicker
-                                selected={values.toDate}
+                                selected={formData.toDate}
                                 timeInputLabel="Time:"
                                 dateFormat="MMM dd, yyyy"
-                                showTimeInput
-                                onChange={value => this.handleChangeToDate(setFieldValue, values.fromDate, value)}
+                                onChange={value => this.handleChangeToDate(formData.fromDate, value)}
                             />
                         </Col>
                     </Form.Group>
@@ -165,7 +173,7 @@ export class Filter extends Component {
                         <Col sm="4" md="4">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="mainCategoryId"
-                                onChange={value => setFieldValue('mainCategoryId', parseInt(value.target.value))}
+                                onChange={this.handleChangeFormData}
                             >
                                 {
                                     mainCategories.map((value,key) => this.renderOptions(value.name, value.mainCategoryID, key))
@@ -179,10 +187,10 @@ export class Filter extends Component {
                         <Col sm="2" md="2">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="subCategoryId"
-                                onChange={value => setFieldValue('subCategoryId', parseInt(value.target.value))}
+                                onChange={this.handleChangeFormData}
                             >
                                 {
-                                    subCategories[0].subCate.map((value,key) => this.renderOptions(value.name, value.subCategoryId, key))
+                                    subCategories.subCate.map((value,key) => this.renderOptions(value.name, value.subCategoryId, key))
                                 }
                             </Form.Control>
                         </Col>
@@ -195,7 +203,7 @@ export class Filter extends Component {
                         <Col sm="2" md="2" className="filter-title">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="communicationId"
-                                onChange={value => setFieldValue('communicationId', parseInt(value.target.value))}
+                                onChange={this.handleChangeFormData}
                             >
                                 {
                                     data.communications.map((value,key) => this.renderOptions(value.name, value.id, key))
@@ -203,16 +211,16 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Form.Label column sm="2" md="2" className="filter-title">
+                        <Form.Label column sm="2" md="2" className="filter-customer-response">
                             {LangHelper.getResource('Customer Response')}
                         </Form.Label>
                         <Col sm="2" md="2" className="filter-res">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="responseId"
-                                onChange={value => setFieldValue('responseId', parseInt(value.target.value))}
+                                onChange={this.handleChangeFormData}
                             >
                                 {
-                                    data.customerResponse.map((value,key) => this.renderOptions(value.value, value.id, key))
+                                    data.customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
                                 }
                             </Form.Control>
                         </Col>
@@ -223,10 +231,10 @@ export class Filter extends Component {
                         <Col sm="2" md="2">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="isReviewed"
-                                onChange={value => setFieldValue('isReviewed', parseInt(value.target.value))}
+                                onChange={this.handleChangeFormData}
                             >
                                 {
-                                    data.reviews.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
+                                    reviews.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
                                 }
                             </Form.Control>
                         </Col>
@@ -243,17 +251,13 @@ export class Filter extends Component {
 
     render() {
         const { settings } = this.props;
-        if (settings === null || this.initialValues === null) {
+        if (settings === null){
             return null;
         }
+
         return (
             <>
-                <Formik
-                    initialValues={this.initialValues}
-                    onSubmit={this.handleSubmit}
-                >
-                    {this.renderForm}
-                </Formik>
+                {this.renderForm()}
             </>
         );
     }

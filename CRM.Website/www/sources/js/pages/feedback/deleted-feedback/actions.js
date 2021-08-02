@@ -5,7 +5,8 @@ import{
     setGridParams,
     setAllSettings,
     setDeletedFeedback,
-    setEditFeedbackDialog
+    setEditFeedbackDialog,
+    setViewRelatedCustomerDialog
 } from './deletedFeedbackSlice';
 
 const getGridParams = (params) => dispatch => {
@@ -40,5 +41,6 @@ export const ActionCreators = {
     getAllSettings,
     getDeletedFeedback,
     exportExcel,
-    setEditFeedbackDialog
+    setEditFeedbackDialog,
+    setViewRelatedCustomerDialog
 };

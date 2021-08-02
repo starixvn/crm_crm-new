@@ -78,6 +78,12 @@ $paddingRightContainer: 17px;
             }
         }
 
+        &.deleted {
+            td {
+                background: #ffffff !important;
+            }
+        }
+
         &:last-child {
             td {
                 border-bottom: none;
