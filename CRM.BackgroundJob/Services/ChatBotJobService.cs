@@ -22,6 +22,7 @@
         Task PullMessageCWLAndSendNotificationToHeadlineAsync();
         Task PullMessageCTOAndSendNotificationToHeadlineAsync();
         Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
+        Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
     }
 
     public class ChatBotJobService : IChatBotJobService
@@ -163,6 +164,16 @@
             else
             {
                 logService.LogInformation(commandResult.Message);
+            }
+        }
+
+        public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync()
+        {
+            AbnormalBetSystemSetting settingResultAmendment = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Environment);
+            if (!settingResultAmendment.ServiceFlag)
+            {
+                logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
+                return;
             }
         }
     }

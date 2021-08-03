@@ -80,13 +80,22 @@
                    job => job.PullMessageCTOForChatBotAsync(),
                    cronExpression,
                    TimeZoneInfo.Local, QueuePriority.Critical);
-            }
+            }  
 
             if (IsEnabledJob(HangfireJobName.PullMessageProblemAccountForChatBot))
             {
                 var cronExpression = GetCronExpression(HangfireJobName.PullMessageProblemAccountForChatBot);
                 recurringJob.AddOrUpdate<IBackgroundService>("Pull Message Problems Account For Chat Bot",
                    job => job.PullMessageProblemsAccountForChatBotAsync(),
+                   cronExpression,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
+            }
+
+            if (IsEnabledJob(HangfireJobName.PullMessageResultAmendmentForChatBot))
+            {
+                var cronExpression = GetCronExpression(HangfireJobName.PullMessageResultAmendmentForChatBot);
+                recurringJob.AddOrUpdate<IBackgroundService>("Pull Message ResultAmendment For Chat Bot",
+                   job => job.PullMessageResultAmendmentForChatBotAsync(),
                    cronExpression,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }
