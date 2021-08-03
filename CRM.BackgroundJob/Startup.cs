@@ -209,6 +209,7 @@
             services.AddScoped<IProblemsAccountFeedbackService, ProblemsAccountFeedbackService>();
             services.AddScoped<IResultAmendmentService, ResultAmendmentService>();
             services.AddScoped<IChatBotProblemAccountService, ChatBotProblemAccountService>();
+            services.AddScoped<IChatBotResultAmendmentService, ChatBotResultAmendmentService>();
         }
 
         private static void RegisterHangfire(IServiceCollection services, ConnectionMultiplexer redis, IConfiguration configuration)

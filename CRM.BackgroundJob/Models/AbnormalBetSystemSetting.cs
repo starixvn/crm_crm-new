@@ -15,5 +15,7 @@
         public DateTime LastRuntime { get; set; }
         public DateTime LastDateUAT { get; set; }
         public DateTime LastRuntimeUAT { get; set; }
+        public DateTime SubmitDate { get; set; }
+        public int Seq { get; set; }
     }
 }

@@ -34,7 +34,7 @@
         private readonly IChatBotCWLService chatBotCWLService;
         private readonly IChatBotCTOService chatBotCTOService;
         private readonly IChatBotProblemAccountService chatBotProblemAccountService;
-
+        private readonly IChatBotResultAmendmentService chatBotResultAmendmentService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -48,7 +48,8 @@
             IChatBotCWLService chatBotCWLService,
             IConfiguration configuration,
             IChatBotCTOService chatBotCTOService,
-            IChatBotProblemAccountService chatBotProblemAccountService)
+            IChatBotProblemAccountService chatBotProblemAccountService,
+            IChatBotResultAmendmentService chatBotResultAmendmentService)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             this.logService = logService;
@@ -58,6 +59,7 @@
             this.chatBotCWLService = chatBotCWLService; 
             this.chatBotCTOService = chatBotCTOService;
             this.chatBotProblemAccountService = chatBotProblemAccountService;
+            this.chatBotResultAmendmentService = chatBotResultAmendmentService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -175,6 +177,14 @@
                 logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
                 return;
             }
+
+            var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfo(settingResultAmendment);
+            var messages = Enumerable.Empty<Message>();
+            if (resultAmendmentInfo.Item3.Any())
+            {
+                messages = await chatBotResultAmendmentService.GetChatBotMessageInfo(resultAmendmentInfo.Item3);
+            }
+
         }
     }
 }

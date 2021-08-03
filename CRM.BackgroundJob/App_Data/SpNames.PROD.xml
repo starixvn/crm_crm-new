@@ -50,6 +50,11 @@
         <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Sel" SpName="Acc_CRM_Chatbot_ProblemAccounts_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Import" SpName="Acc_CRM_Chatbot_ProblemAccounts_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
+    <Function Name="Chatbot Result Amendment">
+        <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Sel" SpName="Acc_CRM_Chatbot_ResultAmendment_Sel" DbName="DBEXT.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_Msg_Sel" SpName="Acc_CRM_Chatbot_Msg_Sel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Import" SpName="Acc_CRM_Chatbot_ResultAmendment_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+    </Function>
     <Function Name="Send Notification">
         <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_Chatbot_SendNotification_Status_Upd" SpName="Acc_CRM_Chatbot_SendNotification_Status_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>

@@ -1,0 +1,13 @@
+﻿namespace CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment
+{
+    using System;
+    using Fanex.Data.Repository;
+    public class GetChatBotResultAmendmentCriteria : CriteriaBase
+    {
+        public int BatchSize { get; set; }
+        public DateTime SubmitDate { get; set; }
+        public int Seq { get; set; }
+        public override string GetSettingKey() => "Acc_CRM_Chatbot_ResultAmendment_Sel";
+        public override bool IsValid() => true;
+    }
+}
