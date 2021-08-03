@@ -18,8 +18,12 @@ export class AppContainer extends Component {
     };
 
     static defaultProps = {
-        getAllSettings: function (){},
-        getDeletedFeedback: function (){},
+        getAllSettings: function (){
+            // nothing
+        },
+        getDeletedFeedback: function (){
+            // nothing
+        },
         editFeedbackDialog: { show: false },
         viewRelatedCustomerDialog: { show: false }
     };

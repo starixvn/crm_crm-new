@@ -10,7 +10,7 @@
 @import '../../../components/autocomplete';
 
 #app-container {
-    width: 1336px;
+    width: 1200px;
 }
 
 .fa-exclamation-circle {
@@ -80,14 +80,54 @@ span.fa.fa-file-excel-o.icon-excel {
     }
 }
 
+.filter-title{
+    width: 9%;
+}
+
+.row{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.filter-col{
+    padding-left: 0;
+}
+
+.filter-colDate{
+    padding-left: 0;
+    padding-right: 15px;
+}
+
+.filter-coll-all{
+    padding-left: 0;
+}
+
+.filter-res{
+    padding-left: 0;
+}
+
 @media screen and (min-width : 992px){
-    .filter-title{
-        max-width: 10%;
+    .filter-colDate{
+        padding-left: 0;
+        padding-right: 74px;
     }
+
+    .filter-toDate{
+        width: 5%;
+    }
+
+    .filter-customer-response {
+        max-width: 10%;
+        margin-right: 15px;
+        margin-left: 20px;
+    }
+
     .filter-res{
         max-width: 12.4%;
     }
-    .filter-customer-response{
-        max-width: 11%;
+    
+    .filter-coll-all{
+        padding-left: 0;
+        padding-right: 0;
     }
 }

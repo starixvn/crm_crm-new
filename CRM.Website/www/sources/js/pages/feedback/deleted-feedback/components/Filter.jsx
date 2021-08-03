@@ -27,7 +27,7 @@ export class Filter extends Component {
                 responseId: 10002,
                 isReviewed: 0
             }
-        }
+        };
     }
 
     handleChangeFromDate = (fromDate, toDate) => {
@@ -60,26 +60,34 @@ export class Filter extends Component {
         }
     };
 
-    handleChangeFormData = (event) => {
+    handleChangeFormData = event => {
         const name = event.target.name;
         this.setState({
             formData: {...this.state.formData,[name]: event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value}
         });
-    }
+    };
 
-    handleSubmit = (event) => {
+    handleConvertValue = (item, key) => {
+        if(item === 0){
+            return null;
+        }
+        return item === key ? true : false;
+    };
+
+    handleSubmit = event => {
         event.preventDefault();
         const {username, isGuest, fromDate, toDate, mainCategoryId, subCategoryId, communicationId, responseId, isReviewed } = this.state.formData;
+
         const params = {
             username: username,
-            isGuest: isGuest === 0 ? null : isGuest === 1 ? false : true,
+            isGuest: this.handleConvertValue(isGuest, 2),
             fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
             toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate)),
             mainCategoryId: mainCategoryId === 0 ? null : mainCategoryId,
             subCategoryId: subCategoryId === 0 ? null : subCategoryId,
             communicationId: communicationId,
             responseId: responseId,
-            isReviewed: isReviewed === 0 ? null : isReviewed === 1 ? true : false,
+            isReviewed: this.handleConvertValue(isReviewed, 1),
             pageIndex: 1,
             pageSize: 100
         };
@@ -124,17 +132,17 @@ export class Filter extends Component {
             <Form onSubmit={this.handleSubmit} className="form-filter">
                 <div className="panel-content">
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" className="filter-title">
+                        <Form.Label className="filter-title col-form-label">
                             {LangHelper.getResource('Username')}
                         </Form.Label>
-                        <Col sm="2" md="2">
+                        <Col sm="2" md="2" className="filter-col">
                             <Form.Control type="text" size="sm" className="shadow-none"
                                 autoComplete="off"
                                 name="username"
                                 onChange={this.handleChangeFormData}
                             />
                         </Col>
-                        <Col sm="2" md="2">
+                        <Col sm="2" md="2" className="filter-col">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="isGuest"
                                 onChange={this.handleChangeFormData}
@@ -145,10 +153,10 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Form.Label column sm="2" md="2" className="filter-title">
+                        <Form.Label className="filter-title col-form-label">
                             {LangHelper.getResource('From Date')}
                         </Form.Label>
-                        <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper">
+                        <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper filter-colDate">
                             <DatePicker
                                 selected={formData.fromDate}
                                 timeInputLabel="Time:"
@@ -157,10 +165,10 @@ export class Filter extends Component {
                             />
                         </Col>
 
-                        <Form.Label column sm="1" md="1">
+                        <Form.Label className="filter-toDate col-form-label">
                             {LangHelper.getResource('To Date')}
                         </Form.Label>
-                        <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper">
+                        <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper filter-colDate">
                             <DatePicker
                                 selected={formData.toDate}
                                 timeInputLabel="Time:"
@@ -171,10 +179,10 @@ export class Filter extends Component {
                     </Form.Group>
 
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" className="filter-title">
+                        <Form.Label className="filter-title col-form-label">
                             {LangHelper.getResource('Main Category')}
                         </Form.Label>
-                        <Col sm="4" md="4">
+                        <Col sm="4" md="4" className="filter-col">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="mainCategoryId"
                                 onChange={this.handleChangeFormData}
@@ -185,10 +193,10 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Form.Label column sm="2" md="2" className="filter-title">
+                        <Form.Label className="filter-title col-form-label">
                             {LangHelper.getResource('SubCategory')}
                         </Form.Label>
-                        <Col sm="2" md="2">
+                        <Col sm="4" md="4" className="filter-col">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="subCategoryId"
                                 onChange={this.handleChangeFormData}
@@ -201,10 +209,10 @@ export class Filter extends Component {
                     </Form.Group>
 
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" className="filter-title">
+                        <Form.Label className="filter-title col-form-label">
                             {LangHelper.getResource('Communication')}
                         </Form.Label>
-                        <Col sm="2" md="2" className="filter-title">
+                        <Col sm="1" md="1" className="filter-coll-all">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="communicationId"
                                 onChange={this.handleChangeFormData}
@@ -215,7 +223,7 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Form.Label column sm="2" md="2" className="filter-customer-response">
+                        <Form.Label className="filter-customer-response col-form-label">
                             {LangHelper.getResource('Customer Response')}
                         </Form.Label>
                         <Col sm="2" md="2" className="filter-res">
@@ -229,10 +237,10 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Form.Label column sm="2" md="2" className="filter-title">
+                        <Form.Label className="filter-title col-form-label">
                             {LangHelper.getResource('Is Reviewed')}
                         </Form.Label>
-                        <Col sm="2" md="2">
+                        <Col sm="2" md="2" className="filter-col">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="isReviewed"
                                 onChange={this.handleChangeFormData}
@@ -243,7 +251,7 @@ export class Filter extends Component {
                             </Form.Control>
                         </Col>
 
-                        <Col sm="2" md="2">
+                        <Col sm="2" md="2" className="filter-col">
                             <button type="submit" className="btn btn-primary btn-sm">Submit</button>
                         </Col>
 
