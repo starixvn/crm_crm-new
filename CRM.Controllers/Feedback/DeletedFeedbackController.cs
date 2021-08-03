@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
-    using CRM.Core.Filters;
     using CRM.Models.Feedback;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Setting;

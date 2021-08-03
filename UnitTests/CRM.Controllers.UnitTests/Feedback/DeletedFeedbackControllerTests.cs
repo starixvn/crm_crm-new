@@ -72,14 +72,12 @@
             var mainCategories = new List<Setting> { new Setting { Id = 1 } };
             var subCategories = new List<Setting> { new Setting { Id = 1 } };
             var communications = new List<Setting> { new Setting { Id = 1 } };
-            var statuses = new List<FeedbackStatus> { new FeedbackStatus { StatusId = 11002, Name = "Closed", IsActive = true } };
             var controller = GetController();
             settingService.GetAllCustomerTypes().Returns(customerTypes);
             settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active).Returns(customerResponse);
             settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategories);
             settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategories);
             settingService.GetCommunicationToolAsync(SettingConstants.Active, true).Returns(communications);
-            settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
 
             // Act
             var result = await controller.GetAllSettings();
@@ -94,8 +92,7 @@
                 customerResponse,
                 mainCategories,
                 subCategories,
-                communications,
-                statuses
+                communications
             };
             expected.Equals(settingsResult);
         }
