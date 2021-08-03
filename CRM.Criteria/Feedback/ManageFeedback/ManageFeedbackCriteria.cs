@@ -1,11 +1,14 @@
 ﻿namespace CRM.Criteria.Feedback.ManageFeedback
 {
     using System;
+    using CRM.Core.Constants;
     using Fanex.Data.Repository;
 
     public class ManageFeedbackCriteria : CriteriaBase
     {
         public int? FeedbackId { get; set; }
+
+        public short UserRole { get; } = Constants.UserRole;
 
         public DateTime FromDate { get; set; }
 

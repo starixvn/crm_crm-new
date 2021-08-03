@@ -51,8 +51,6 @@
         public async Task<ActionResult> GetAllSettings()
         {
             var customerTypes = settingService.GetAllCustomerTypes();
-            var reviews = Enum.GetValues(typeof(ReviewStatus)).Cast<ReviewStatus>()
-                .Select(type => new Setting { SettingId = (int)type, SettingValue = EnumHelper.GetDesciption(type) });
             var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.ActiveAndInactive);
             var mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.ActiveAndInactive);
             var subCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.ActiveAndInactive);
@@ -61,7 +59,6 @@
             var settings = new
             {
                 CustomerTypes = customerTypes,
-                Reviews = reviews,
                 Responses = responses,
                 MainCategories = mainCategories,
                 subCategories = subCategories,
@@ -72,18 +69,24 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<ActionResult> SearchManageFeedback([FromBody] ManageFeedbackCriteria criteria)
         {
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetManageFeedbackAsync(criteria);
-            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
-            var data = new
+            try
             {
-                Feedbacks = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId),
-                TotalItems = criteria.TotalRows,
-                MainCategories = mainCategories
-            };
-            return Json(data);
+                IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetManageFeedbackAsync(criteria);
+                IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+                int totalItems = feedbacks.ToList().Count;
+                if (totalItems > 0)
+                {
+                    feedbacks = feedbacks.Skip(criteria.ItemsPerPage * (criteria.PageIndex - 1)).Take(criteria.ItemsPerPage).ToList();
+                }
+                return Json(new { data = feedbacks, mainCategories, totalItems });
+            }
+          catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

@@ -1,15 +1,12 @@
 ﻿namespace CRM.Controllers.Feedback
 {
     using System.Linq;
-    using System.Net;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback.AddGuestFeedback;
-    using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Configuration;
