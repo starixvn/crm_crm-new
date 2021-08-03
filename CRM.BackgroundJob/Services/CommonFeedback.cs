@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
@@ -52,6 +53,8 @@
            string lastSubmitTimeEnvName,
            string maxLastSubmitTime,
            string serviceName);
+
+        string GetMatchCoddFormat(string matchCode, string language);
     }
     public class CommonFeedback : ICommonFeedback
     {
@@ -209,6 +212,23 @@
                 new SystemSettingItem { SettingName = lastSubmitTimeEnvName, Value = maxLastSubmitTime},
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
+        }
+
+        public string GetMatchCoddFormat(string matchCode, string language)
+        {
+            var MatchCodeReplace = matchCode;
+            if (!string.IsNullOrEmpty(matchCode))
+            {
+                const string pattern = @"({[^}]*})";
+                var regex = Regex.Matches(matchCode, pattern);
+                var matchCodeRegexId = regex.Cast<Match>().Select(m => m.Groups[1].Value).ToList();
+                foreach (var matchCodeId in matchCodeRegexId)
+                {
+                    var matchCodeName = GetMatchCode(matchCodeId, language);
+                    MatchCodeReplace = MatchCodeReplace.Replace(matchCodeId, matchCodeName);
+                }
+            }
+            return MatchCodeReplace;
         }
     }
 }

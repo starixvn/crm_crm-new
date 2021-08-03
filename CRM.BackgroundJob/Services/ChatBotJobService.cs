@@ -185,6 +185,18 @@
                 messages = await chatBotResultAmendmentService.GetChatBotMessageInfo(resultAmendmentInfo.Item3);
             }
 
+            var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResult(
+                resultAmendmentInfo.Item1, resultAmendmentInfo.Item2, messages, resultAmendmentInfo.Item3, Environment
+                );
+
+            if (commandResult.IsSuccessful)
+            {
+                await sendNotificationService.SendNotificationToLetstalk();
+            }
+            else
+            {
+                logService.LogInformation(commandResult.Message);
+            }
         }
     }
 }
