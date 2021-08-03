@@ -14,7 +14,7 @@ describe('DataGrid', () => {
         const mockStore = configureMockStore();
         const initialState = {
             settings: { customerTypes: [{ id: 1, name: 'Text' }] },
-            gridParams: { username: "" },
+            gridParams: { pageIndex: 1, pageSize: 100 },
             gridData: { username: "" }
         };
 
@@ -50,10 +50,8 @@ describe('DataGrid', () => {
         it('should render no data when gridData is empty', () => {
             // Arrange
             const props = {
-                gridData: {
-                    totalItems: 1,
-                    data: []
-                }
+                gridData: { totalItems: 1, data: [] },
+                gridParams: { pageIndex: 1, pageSize: 100 }              
             };
             const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={5}>ThereIsNoData</Cell></Row>];
             const container = shallow(<DataGrid {...props} />).instance();
@@ -70,13 +68,10 @@ describe('DataGrid', () => {
             const props = {
                 gridData: {
                     totalItems: 1,
-                    data: [
-                        {
-                            feedbackId: 1234,settings: [{settingType: 'Category',settingId: 0, subSettingId : 0}], relatedCustomer: "test1,test2"
-                        }
-                    ],
+                    data: [ { feedbackId: 1234,settings: [{settingType: 'Category',settingId: 0, subSettingId : 0}], relatedCustomer: "test1,test2" } ],
                     mainCategories: [{settingId: 0, settingValue: "test", childSettings: [{subCategoryId: 0, name: "All"}]}]
-                }
+                },
+                gridParams: { pageIndex: 1, pageSize: 100 } 
             };
             const container = shallow(<DataGrid {...props} />).instance();
             container.renderRow = jest.fn(() => <div />);
@@ -160,6 +155,71 @@ describe('DataGrid', () => {
 
             // Assert
             expect(props.setViewRelatedCustomerDialog).toHaveBeenCalledWith(expectedParams);
+        });
+    });
+
+    describe('onPaging', () => {
+        it('should call exactly function', () => {
+            // Arrange
+            const props = {
+                gridParams: { pageIndex: 1, pageSize: 100 },
+                gridData: { totalItems: 1, data: [] },
+                getGridParams: jest.fn(),
+                getDeletedFeedback: jest.fn()
+            };
+            const expectedGridParams = { pageIndex: 1, pageSize: 100 };
+            const container = shallow(<DataGrid {...props} />).instance();
+
+            // Act
+            container.onPaging(expectedGridParams.pageIndex, expectedGridParams.pageSize);
+
+            // Assert
+            expect(props.getGridParams).toHaveBeenCalledWith(expectedGridParams);
+            expect(props.getDeletedFeedback).toHaveBeenCalledWith(expectedGridParams);
+        });
+    });
+
+    describe('renderRow', () => {
+        it('should call handleEditFeedback when click FeedbackId', () => {
+            // Arrange
+            const props = {
+                gridData: {
+                    totalItems: 1,
+                    mainCategories: [{settingId: 0, settingValue: "test", childSettings: [{subCategoryId: 0, name: "All"}]}]
+                },
+                gridParams: { pageIndex: 1, pageSize: 100 } 
+            };
+            const item = {
+                feedbackId: 1234,settings: [{settingType: 'Category',settingId: 0, subSettingId : 0}], relatedCustomer: "test1,test2"
+            }
+            const container = shallow(<DataGrid {...props}/>).instance();
+            container.handleEditFeedback = jest.fn();
+
+            const row = shallow(container.renderRow(item, 1));
+
+            // Act
+            row.find(Cell).at(0).find('div').at(0).props().onClick();
+
+            // Assert
+            expect(container.handleEditFeedback).toHaveBeenCalledWith(1234);
+        });
+    });
+
+    describe('renderRelatedCustomerColumn', () => {
+        it('should call handleOpenViewRelatedCustomerDialog when item greater than 20', () => {
+            // Arrange
+            const relatedCustomer = ["test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test"];
+            const container = shallow(<DataGrid />).instance();
+
+            const expectedRelatedCustomer = "test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test";
+            container.handleOpenViewRelatedCustomerDialog = jest.fn();
+            const link = shallow(container.renderRelatedCustomerColumn(relatedCustomer));
+
+            // Act
+            link.find('a').at(0).props().onClick();
+
+            // Assert
+            expect(container.handleOpenViewRelatedCustomerDialog).toHaveBeenCalledWith(expectedRelatedCustomer);
         });
     });
 });

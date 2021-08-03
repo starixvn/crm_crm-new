@@ -28,10 +28,14 @@ describe('actionCreators', () => {
         it('should handle getGridParams when fetching data have been done', () => {
             // Arrange
             const expectedParams = {
-                userName:""
+                pageIndex: 1,
+                pageSize: 100
             };
             const response = {
-                customerType: [{settingValue: 'All'}]
+                data: {
+                    pageIndex: 1,
+                    pageSize: 100
+                }
             };
             const expectedActions = [{ type: setGridParams.type, payload: response.data }];
             const store = mockStore({ gridParams: null });

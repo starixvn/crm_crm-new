@@ -148,6 +148,8 @@ describe('Filter', () => {
                 isGuest: null,
                 fromDate: "Jan 01, 1970",
                 toDate: "Jan 01, 1970",
+                pageIndex: 1,
+                pageSize: 100,
                 mainCategoryId: null,
                 subCategoryId: null,
                 communicationId: 1005,

@@ -8,10 +8,14 @@ import deletedFeedback, {
 describe('deletedFeedbackSlice reducer', () => {
     it('should handle initial state', () => {
         expect(deletedFeedback(undefined, {})).toEqual({
-            gridParams: null,
+            gridParams: {
+                pageIndex: 1,
+                pageSize: 100
+            },
             settings: null,
             gridData: null,
             editFeedbackDialog: { show: false },
+            viewRelatedCustomerDialog: { show: false }
         });
     });
 
