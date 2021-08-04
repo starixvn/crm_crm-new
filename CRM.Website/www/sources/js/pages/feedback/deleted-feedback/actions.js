@@ -18,14 +18,14 @@ const getAllSettings = () => async dispatch => {
 
 const getDeletedFeedback = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('DeletedFeedback/SearchDeletedFeedback');
+    const url = Site.resolveClientUrl('DeletedFeedback/GetDeletedFeedback');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setDeletedFeedback(response.data));
     }).then(() => Site.unblockUI());
 };
 
 const exportExcel = params => async () => {
-    const url = Site.resolveClientUrl('DeletedFeedback/ExportDeletedFeedbackReport');
+    const url = Site.resolveClientUrl('DeletedFeedback/ExportExcel');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);

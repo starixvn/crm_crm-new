@@ -8,7 +8,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
-import { PAGING_SIZES_HALF } from '@jsroot/common/constants';
+import { PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
 
@@ -159,7 +159,7 @@ export class DataGrid extends Component {
             PageIndex: pageIndex,
             PageSize: pageSize,
             TotalItem: gridData.totalItems,
-            PageList: PAGING_SIZES_HALF
+            PageList: PAGING_SIZES
         };
 
         return (

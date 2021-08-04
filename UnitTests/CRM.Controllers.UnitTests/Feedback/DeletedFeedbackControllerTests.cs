@@ -32,12 +32,11 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
+            Assert.Null(viewResult.ViewName);
         }
 
         [Fact]
-        public async Task SearchDeletedFeedback_WhenCalled_ReturnAsExpectedResult()
+        public async Task GetDeletedFeedback_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
             var mainCategories = new List<Setting>
@@ -53,7 +52,7 @@
             settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
-            var result = await controller.SearchDeletedFeedback(param);
+            var result = await controller.GetDeletedFeedback(param);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -66,14 +65,12 @@
         [Fact]
         public async Task GetAllSettings_WhenCalled_ReturnAsExpectedJson()
         {
-            // Arrange
-            var customerTypes = new List<Setting> { new Setting { Id = 1 } };
+            // Arrange            
             var customerResponse = new List<SettingRelation> { new SettingRelation { Id = 1, IsActive = false }, };
             var mainCategories = new List<Setting> { new Setting { Id = 1 } };
             var subCategories = new List<Setting> { new Setting { Id = 1 } };
             var communications = new List<Setting> { new Setting { Id = 1 } };
             var controller = GetController();
-            settingService.GetAllCustomerTypes().Returns(customerTypes);
             settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active).Returns(customerResponse);
             settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategories);
             settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategories);
@@ -88,7 +85,6 @@
 
             var expected = new
             {
-                customerTypes,
                 customerResponse,
                 mainCategories,
                 subCategories,
@@ -98,7 +94,7 @@
         }
 
         [Fact]
-        public async Task ExportDeletedFeedbackReport_WhenCalled_ReturnAsExpectedResult()
+        public async Task ExportExcel_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
             var mainCategories = new List<Setting>
@@ -113,7 +109,7 @@
             settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
-            var result = await controller.ExportDeletedFeedbackReport(param);
+            var result = await controller.ExportExcel(param);
 
             // Assert
             var excelResult = Assert.IsType<FileContentResult>(result);

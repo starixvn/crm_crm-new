@@ -132,7 +132,6 @@ describe('Filter', () => {
                     communications: [{ id: 1, name: "test"}],
                     customerResponses: [{ id: 1, name: "test"}]
                 },
-                getGridParams: jest.fn(),
                 getDeletedFeedback: jest.fn()
             };
             

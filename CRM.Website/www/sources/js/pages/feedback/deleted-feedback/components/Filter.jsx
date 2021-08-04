@@ -38,10 +38,10 @@ export class Filter extends Component {
         maxDate.setDate(fromDate.getDate() - 1);
 
         this.minToDate = fromDate;
-        this.maxToDate = ((maxDate < currentTime) ? maxDate : currentTime );
+        this.maxToDate = (maxDate < currentTime) ? maxDate : currentTime;
         this.setState({
             fromDate: fromDate,
-            toDate:((maxDate < currentTime) ? maxDate : currentTime )
+            toDate: (maxDate < currentTime) ? maxDate : currentTime
         });
     };
 
@@ -64,7 +64,7 @@ export class Filter extends Component {
 
         const params = {
             username: username,
-            isGuest: isGuest === -1 ? '' : isGuest,
+            isGuest: isGuest,
             fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
             toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate)),
             mainCategoryId: mainCategoryId === 0 ? '' : mainCategoryId,
@@ -99,7 +99,12 @@ export class Filter extends Component {
             { settingValue: 'Review', settingId: 1 },
             { settingValue: 'Not Reviewd', settingId: 0 }
         ];
-        
+        const customerTypes = [
+            { settingValue: 'All', settingId: '' },
+            { settingValue: 'Customer', settingId: 0 },
+            { settingValue: 'Guest', settingId: 1 }   
+        ];
+
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter">
                 <div className="panel-content">
@@ -120,7 +125,7 @@ export class Filter extends Component {
                                 onChange={this.handleChange}
                             >
                                 {
-                                    data.customerTypes.map((value,key) => this.renderOptions(value.settingValue,value.settingId-1,key))
+                                    customerTypes.map((value,key) => this.renderOptions(value.settingValue,value.settingId,key))
                                 }
                             </Form.Control>
                         </Col>

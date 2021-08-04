@@ -14,7 +14,7 @@
     using CRM.Core.Filters;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.DeleteFeedback, Policy = Policy.Host)]
+    [CrmPermission(FunctionKey = FunctionKey.DeleteFeedback, Policy = Policy.Read)]
     public class DeletedFeedbackController : BaseController
     {
         private readonly ISettingService settingService;
@@ -40,7 +40,6 @@
         {
             var settings = new
             {
-                customerTypes = settingService.GetAllCustomerTypes(),
                 customerResponses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
                 mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
                 subCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
@@ -51,7 +50,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> SearchDeletedFeedback([FromBody] GetDeletedFeedbackParam param)
+        public async Task<IActionResult> GetDeletedFeedback([FromBody] GetDeletedFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetDeletedFeedbackAsync(param);
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
@@ -65,7 +64,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> ExportDeletedFeedbackReport([FromBody] GetDeletedFeedbackParam param)
+        public async Task<IActionResult> ExportExcel([FromBody] GetDeletedFeedbackParam param)
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetDeletedFeedbackAsync(param);
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();

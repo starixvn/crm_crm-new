@@ -24,30 +24,6 @@ describe('actionCreators', () => {
         jest.clearAllMocks();
     });
 
-    describe('getGridParams', () => {
-        it('should handle getGridParams when fetching data have been done', () => {
-            // Arrange
-            const expectedParams = {
-                pageIndex: 1,
-                pageSize: 100
-            };
-            const response = {
-                data: {
-                    pageIndex: 1,
-                    pageSize: 100
-                }
-            };
-            const expectedActions = [{ type: setGridParams.type, payload: response.data }];
-            const store = mockStore({ gridParams: null });
-
-            // Act
-            store.dispatch(ActionCreators.getGridParams(expectedParams));
-
-            // Assert
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-    });
-
     describe('getAllSettings', () => {
         it('should handle getAllSettings when fetching data have been done', async () => {
             // Arrange
