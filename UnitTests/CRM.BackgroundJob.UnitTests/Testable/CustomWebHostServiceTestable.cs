@@ -29,6 +29,7 @@
             base.CheckEnabledJobChatBot();
         }
 
+
         public void Public_CheckEnabledJobAutoFeedback()
         {
             base.CheckEnabledJobAutoFeedback();

@@ -172,37 +172,31 @@
 
         public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync()
         {
-            try
+            AbnormalBetSystemSetting settingResultAmendment = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Environment);
+            if (!settingResultAmendment.ServiceFlag)
             {
-                AbnormalBetSystemSetting settingResultAmendment = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Environment);
-                if (!settingResultAmendment.ServiceFlag)
-                {
-                    logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
-                    return;
-                }
+                logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
+                return;
+            }
 
-                var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
-                var messages = Enumerable.Empty<Message>();
-                if (resultAmendmentInfo.Item3.Any())
-                {
-                    messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(resultAmendmentInfo.Item3);
-                }
-
-                var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResult(
-                    resultAmendmentInfo.Item1, resultAmendmentInfo.Item2, messages, resultAmendmentInfo.Item3, Environment
-                    );
-
-                if (commandResult.IsSuccessful)
-                {
-                    await sendNotificationService.SendNotificationToLetstalk();
-                }
-                else
-                {
-                    logService.LogInformation(commandResult.Message);
-                }
-            }catch(Exception e)
+            var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
+            var messages = Enumerable.Empty<Message>();
+            if (resultAmendmentInfo.Item3.Any())
             {
-                throw new Exception(e.Message);
+                messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(resultAmendmentInfo.Item3);
+            }
+
+            var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
+                resultAmendmentInfo.Item1, resultAmendmentInfo.Item2, messages, resultAmendmentInfo.Item3, Environment
+                );
+
+            if (commandResult.IsSuccessful)
+            {
+                await sendNotificationService.SendNotificationToLetstalk();
+            }
+            else
+            {
+                logService.LogInformation(commandResult.Message);
             }
         }
     }

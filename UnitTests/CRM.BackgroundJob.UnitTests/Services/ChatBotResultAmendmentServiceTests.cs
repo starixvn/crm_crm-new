@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Linq;
     using AutoFixture;
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
@@ -14,11 +15,12 @@
     using Fanex.CRM.BackgroundJob.Models;
     using NSubstitute;
     using Xunit;
+    using CRM.Core.Extensions.XML;
 
     public class ChatBotResultAmendmentServiceTests
     {
-        private  IBaseService baseService;
-        private  ICommonFeedback commonFeedback;
+        private IBaseService baseService;
+        private ICommonFeedback commonFeedback;
 
         [Fact]
         public async Task GetChatBotResultAmendmentInfoAsync_WhenCalled_ReturnExpectedData()
@@ -29,7 +31,7 @@
             var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
             var ticketTransactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
             var events = fixture.Create<IEnumerable<TicketEvent>>();
-            var expected = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>,IEnumerable<AmendmentResultTransaction>,IEnumerable<TicketEvent>>(ticketEvents, ticketTransactions, events);
+            var expected = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>(ticketEvents, ticketTransactions, events);
             var service = GetService();
             baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, TicketEvent>(Arg.Any<GetChatBotResultAmendmentCriteria>()).Returns(expected);
 
@@ -60,83 +62,107 @@
             Assert.Equal(Xml, criteria.Messages);
         }
 
-        //[Fact]
-        //public async Task ImportProblemsAccountInfoAsync_WhenCalled_ReturnExpectedCommandResult()
-        //{
-        //    // Arrange
-        //    var fixture = new Fixture();
-        //    var service = GetService();
-        //    var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
-        //    var transactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
-        //    var transaction = transactions
-        //    const string XmlTemplate = "<r TicketEventId='{0}' ProductId='{1}' EventDate='{2}' " +
-        //         "SubmitDate='{3}' EventType='{4}' ActualResult='{5}' WrongResult='{6}' " +
-        //         "MessageId='{7}' SportNameEN='{8}' SportNameSC='{9}' SportNameTH='{10}' " +
-        //         "SportNameYN='{11}' HomeNameEN='{12}' HomeNameSC='{13}' HomeNameTH='{14}' " +
-        //         "HomeNameYN='{15}' AwayNameEN='{16}' AwayNameSC='{17}' AwayNameTH='{18}' " +
-        //         "AwayNameYN='{19}' LeagueNameEN='{20}' LeagueNameSC='{21}' LeagueNameTH='{22}' " +
-        //         "LeagueNameYN='{23}' MatchCode='{24}' MatchInfoEN='{25}' MatchInfoSC='{26}' " +
-        //         "MatchInfoTH='{27}' MatchInfoYN='{28}' Type='{29}'/>";
+        [Fact]
+        public async Task ImportChatBotAmendmentResultAsync_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var service = GetService();
+            var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
+            var transactions = new List<AmendmentResultTransaction> {
+                new AmendmentResultTransaction
+                {
+                    TicketEventId = 1,
+                    ProductId = 1,
+                    EventDate = new DateTime(),
+                    SubmitDate = new DateTime(),
+                    EventType = 2,
+                    ActualResult = "WrongResult",
+                    WrongResult = "WrongResult",
+                    MessageId = 1,
+                    Sporttype = 1,
+                    HomeId = 1,
+                    AwayId = 2,
+                    LeagueId = 1,
+                    MatchCode = "1",
+                    MatchId = 1,
+                    Type = 1
+                }
+            };
 
-        //    const string xmlTemplateMessage = "<r TicketEventId='{0}' MessageId='{1}' Content_en='{2}' Content_cs='{3}' Content_th='{4}' Content_yn='{5}'/>";
+            var events = new List<TicketEvent> { new TicketEvent { MessageId = 1, TicketEventId = 1 } };
+            var messages = new List<Message> { new Message {
+                MessageId = 1, RequestId = 1, Content_en = "Content_en", Content_cs ="Content_cs", Content_th = "Content_th", Content_vn = "Content_yn"
+            } };
 
-        //    var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            var transaction = transactions.FirstOrDefault();
 
-        //    commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.en_US).Returns("sportNameEN");
-        //    var sportNameSC = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.zh_CN);
-        //    var sportNameTH = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.th_TH);
-        //    var sportNameYN = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.vi_VN);
+            const string XmlTemplate = "<r TicketEventId='{0}' ProductId='{1}' EventDate='{2}' " +
+               "SubmitDate='{3}' EventType='{4}' ActualResult='{5}' WrongResult='{6}' MessageId='{7}' " +
+               "SportNameEN='{8}' SportNameSC='{9}' SportNameTH='{10}' SportNameYN='{11}' " +
+               "HomeNameEN='{12}' HomeNameSC='{13}' HomeNameTH='{14}' HomeNameYN='{15}' " +
+               "AwayNameEN='{16}' AwayNameSC='{17}' AwayNameTH='{18}' AwayNameYN='{19}' " +
+               "LeagueNameEN='{20}' LeagueNameSC='{21}' LeagueNameTH='{22}' LeagueNameYN='{23}' MatchCode='{24}' " +
+               "MatchInfoEN='{25}' MatchInfoSC='{26}' MatchInfoTH='{27}' MatchInfoYN='{28}' Type='{29}'/>";
 
-        //    var leagueNameEN = commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.en_US);
-        //    var leagueNameSC = commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.zh_CN);
-        //    var leagueNameTH = commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.th_TH);
-        //    var leagueNameYN = commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.vi_VN);
+            var stringBuilderEventData = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
 
-        //    var homeNameEN = commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.en_US);
-        //    var homeNameSC = commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.zh_CN);
-        //    var homeNameTH = commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.th_TH);
-        //    var homeNameYN = commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.vi_VN);
+            commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.en_US).Returns("sportNameEN");
+            commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
+            commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.th_TH).Returns("sportNameTH");
+            commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.vi_VN).Returns("sportNameYN");
 
-        //    var awayNameEN = commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.en_US);
-        //    var awayNameSC = commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.zh_CN);
-        //    var awayNameTH = commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.th_TH);
-        //    var awayNameYN = commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.vi_VN);
+            commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.en_US).Returns("leagueNameEN");
+            commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.zh_CN).Returns("leagueNameSC");
+            commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.th_TH).Returns("leagueNameTH");
+            commonFeedback.GetLeagueName(transaction.LeagueId.ToString(), Language.vi_VN).Returns("leagueNameYN");
 
-        //    var matchInfoEN = commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.en_US);
-        //    var matchInfoSC = commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.zh_CN);
-        //    var matchInfoTH = commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.th_TH);
-        //    var matchInfoYN = commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.vi_VN);
+            commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.en_US).Returns("homeNameEN");
+            commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.zh_CN).Returns("homeNameSC");
+            commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.th_TH).Returns("homeNameTH");
+            commonFeedback.GetTeamName(transaction.HomeId.ToString(), Language.vi_VN).Returns("homeNameYN");
 
-        //    stringBuilder.AppendFormat(XmlTemplate,
-        //            problemsAccount.LogId,
-        //            problemsAccount.CustId,
-        //            problemsAccount.UserName,
-        //            problemsAccount.Recommend,
-        //            problemsAccount.Mrecommend,
-        //            problemsAccount.Srecommend,
-        //            problemsAccount.CategoryId,
-        //            'a',
-        //            'b',
-        //            'c',
-        //            'd',
-        //            problemsAccount.IsTest);
-        //    stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
-        //    var criteria = new ImportChatBotResultAmendmentCommand();
+            commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.en_US).Returns("awayNameEN");
+            commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.zh_CN).Returns("awayNameSC");
+            commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.th_TH).Returns("awayNameTH");
+            commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.vi_VN).Returns("awayNameYN");
 
-        //    var expected = fixture.Create<CommandResult>();
-        //    baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotResultAmendmentCommand>(x => criteria = x)).Returns(expected);
+            commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.en_US).Returns("matchInfoEN");
+            commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.zh_CN).Returns("matchInfoSC");
+            commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.th_TH).Returns("matchInfoTH");
+            commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.vi_VN).Returns("matchInfoYN");
 
-        //    // Act
-        //    var actual = await service.ImportChatBotAmendmentResult(ticketEvents, Constants.DefaultEnvironment);
+            stringBuilderEventData.AppendFormat(XmlTemplate,
+                        transaction.TicketEventId, transaction.ProductId, transaction.EventDate,
+                        transaction.SubmitDate, transaction.EventType, transaction.ActualResult,
+                        transaction.WrongResult, transaction.MessageId, "sportNameEN", "sportNameSC",
+                        "sportNameTH", "sportNameYN", "homeNameEN", "homeNameSC", "homeNameTH", "homeNameYN",
+                        "awayNameEN", "awayNameSC", "awayNameTH", "awayNameYN", "leagueNameEN", "leagueNameSC",
+                        "leagueNameTH", "leagueNameYN", transaction.MatchCode, "matchInfoEN", "matchInfoSC",
+                        "matchInfoTH", "matchInfoYN", transaction.Type
+                        );
 
-        //    // Assert
-        //    Assert.Equal(expected, actual);
-        //    Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
-        //    Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
-        //    Assert.Equal(0, criteria.ErrCode);
-        //    Assert.Null(criteria.ErrMsg);
+            stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
 
-        //}
+            const string xmlTemplateMessage = "<root><r TicketEventId='1' MessageId='1' Content_en='Content_en' Content_cs='Content_cs' Content_th='Content_th' Content_yn='Content_yn'/></root>";
+
+            var criteria = new ImportChatBotResultAmendmentCommand();
+            var expected = fixture.Create<CommandResult>();
+            baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotResultAmendmentCommand>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.ImportChatBotAmendmentResultAsync(ticketEvents, transactions, messages, events, Constants.DefaultEnvironment);
+
+            // Assert
+            Assert.Equal(expected, actual);
+            Assert.Equal(ticketEvents.ToXML("root").ToString(), criteria.TicketData);
+            Assert.Equal(stringBuilderEventData.ToString(), criteria.EventData);
+            Assert.Equal(xmlTemplateMessage, criteria.MessageData);
+            Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal(0, criteria.ErrCode);
+            Assert.Null(criteria.ErrMsg);
+
+        }
 
         #region Helpers
         private ChatBotResultAmendmentService GetService()

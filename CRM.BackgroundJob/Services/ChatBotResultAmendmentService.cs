@@ -20,7 +20,7 @@
 
         Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<TicketEvent> ticketEvents);
 
-        Task<CommandResult> ImportChatBotAmendmentResult(
+        Task<CommandResult> ImportChatBotAmendmentResultAsync(
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
             IEnumerable<AmendmentResultTransaction> transactions,
             IEnumerable<Message> messages,
@@ -69,7 +69,7 @@
             return await baseService.GetDataAsync<Message>(criteria);
         }
 
-        public async Task<CommandResult> ImportChatBotAmendmentResult(
+        public async Task<CommandResult> ImportChatBotAmendmentResultAsync(
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
             IEnumerable<AmendmentResultTransaction> transactions,
             IEnumerable<Message> messages,
@@ -81,13 +81,12 @@
             var stringBuilderMessage = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
 
             const string XmlTemplate = "<r TicketEventId='{0}' ProductId='{1}' EventDate='{2}' " +
-                "SubmitDate='{3}' EventType='{4}' ActualResult='{5}' WrongResult='{6}' " +
-                "MessageId='{7}' SportNameEN='{8}' SportNameSC='{9}' SportNameTH='{10}' " +
-                "SportNameYN='{11}' HomeNameEN='{12}' HomeNameSC='{13}' HomeNameTH='{14}' " +
-                "HomeNameYN='{15}' AwayNameEN='{16}' AwayNameSC='{17}' AwayNameTH='{18}' " +
-                "AwayNameYN='{19}' LeagueNameEN='{20}' LeagueNameSC='{21}' LeagueNameTH='{22}' " +
-                "LeagueNameYN='{23}' MatchCode='{24}' MatchInfoEN='{25}' MatchInfoSC='{26}' " +
-                "MatchInfoTH='{27}' MatchInfoYN='{28}' Type='{29}'/>";
+                "SubmitDate='{3}' EventType='{4}' ActualResult='{5}' WrongResult='{6}' MessageId='{7}' " +
+                "SportNameEN='{8}' SportNameSC='{9}' SportNameTH='{10}' SportNameYN='{11}' " +
+                "HomeNameEN='{12}' HomeNameSC='{13}' HomeNameTH='{14}' HomeNameYN='{15}' " +
+                "AwayNameEN='{16}' AwayNameSC='{17}' AwayNameTH='{18}' AwayNameYN='{19}' " +
+                "LeagueNameEN='{20}' LeagueNameSC='{21}' LeagueNameTH='{22}' LeagueNameYN='{23}' MatchCode='{24}' " +
+                "MatchInfoEN='{25}' MatchInfoSC='{26}' MatchInfoTH='{27}' MatchInfoYN='{28}' Type='{29}'/>";
 
             foreach (var transaction in transactions)
             {
@@ -119,11 +118,12 @@
                 stringBuilderEventData.AppendFormat(XmlTemplate,
                         transaction.TicketEventId, transaction.ProductId, transaction.EventDate,
                         transaction.SubmitDate, transaction.EventType, transaction.ActualResult,
-                        transaction.WrongResult, transaction.MessageId, sportNameEN, sportNameSC,
-                        sportNameTH, sportNameYN, homeNameEN, homeNameSC, homeNameTH, homeNameYN,
-                        awayNameEN, awayNameSC, awayNameTH, awayNameYN, leagueNameEN, leagueNameSC,
-                        leagueNameTH, leagueNameYN, transaction.MatchCode, matchInfoEN, matchInfoSC,
-                        matchInfoTH, matchInfoYN, transaction.Type
+                        transaction.WrongResult, transaction.MessageId, 
+                        sportNameEN, sportNameSC, sportNameTH, sportNameYN, 
+                        homeNameEN, homeNameSC, homeNameTH, homeNameYN,
+                        awayNameEN, awayNameSC, awayNameTH, awayNameYN,
+                        leagueNameEN, leagueNameSC, leagueNameTH, leagueNameYN, transaction.MatchCode,
+                        matchInfoEN, matchInfoSC, matchInfoTH, matchInfoYN, transaction.Type
                         );
             }
             stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());

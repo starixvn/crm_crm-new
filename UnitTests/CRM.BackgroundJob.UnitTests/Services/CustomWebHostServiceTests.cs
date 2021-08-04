@@ -165,6 +165,28 @@
         }
 
         [Fact]
+        public void CheckEnabledJobChatBot_EnabledPullMessageResultAmendmentForChatBot_ExpectedAddRecurringJob()
+        {
+            // Arrange
+            var jobSettings = new List<HangfireJobSetting>
+            {
+                new HangfireJobSetting { JobName = "PullMessageResultAmendmentForChatBot", CronExpression = "CronExpression", IsEnabled = true }
+            };
+            var service = MockService(jobSettings);
+            service.Protected("IsEnabledJob", "PullMessageResultAmendmentForChatBot").Returns(true);
+            service.Protected("GetCronExpression", "PullMessageResultAmendmentForChatBot").Returns("CronExpression");
+
+            // Act
+            service.Public_CheckEnabledJobChatBot();
+
+            // Assert
+            recurringJob.Received().AddOrUpdate("Pull Message ResultAmendment For Chat Bot",
+                Arg.Is<Job>(job => job.Method.Name == "PullMessageResultAmendmentForChatBotAsync"),
+                "CronExpression",
+                Arg.Any<RecurringJobOptions>());
+        }
+
+        [Fact]
         public void CheckEnabledJobChatBot_EnabledScanAndSendLetstalkNotification_ExpectedAddRecurringJob()
         {
             // Arrange
