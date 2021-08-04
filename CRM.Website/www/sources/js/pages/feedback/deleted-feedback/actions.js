@@ -9,10 +9,6 @@ import{
     setViewRelatedCustomerDialog
 } from './deletedFeedbackSlice';
 
-const getGridParams = (params) => dispatch => {
-    dispatch(setGridParams(params));
-};
-
 const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('DeletedFeedback/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
@@ -37,7 +33,7 @@ const exportExcel = params => async () => {
 };
 
 export const ActionCreators = {
-    getGridParams,
+    setGridParams,
     getAllSettings,
     getDeletedFeedback,
     exportExcel,

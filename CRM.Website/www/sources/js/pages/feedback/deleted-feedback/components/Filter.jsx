@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Col, Form, Row } from 'react-bootstrap';
-import moment from 'moment';
 import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -11,123 +10,96 @@ import LangHelper from '@jsroot/common/langHelper';
 export class Filter extends Component {
     constructor(props) {
         super(props);
+        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
-        const toDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
-        toDate.setMinutes(toDate.getMinutes() + 1);
+        fromDate.setDate(fromDate.getDate() - 1);
+        const toDate = currentDate;
+        this.maxFromDate = currentDate;
+        this.maxToDate = currentDate;
+        this.minToDate = fromDate;
 
         this.state = {
-            formData: {
-                username: '',
-                isGuest: 0,
-                fromDate: fromDate,
-                toDate: toDate,
-                mainCategoryId: 0,
-                subCategoryId: 0,
-                communicationId: 1005,
-                responseId: 10002,
-                isReviewed: 0
-            }
+            username: '',
+            isGuest: '',
+            fromDate: fromDate,
+            toDate: toDate,
+            mainCategoryId: 0,
+            subCategoryId: 0,
+            communicationId: 1005,
+            responseId: 10002,
+            isReviewed: ''
         };
     }
 
-    handleChangeFromDate = (fromDate, toDate) => {
+    handleChangeFromDate = fromDate => {
+        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const maxDate = new Date(fromDate.getTime());
+        maxDate.setMonth(fromDate.getMonth() + 12);
+        maxDate.setDate(fromDate.getDate() - 1);
+
+        this.minToDate = fromDate;
+        this.maxToDate = ((maxDate < currentTime) ? maxDate : currentTime );
         this.setState({
-            formData: {...this.state.formData, fromDate: fromDate}
+            fromDate: fromDate,
+            toDate:((maxDate < currentTime) ? maxDate : currentTime )
         });
-
-        if (moment(fromDate).isAfter(moment(toDate))) {
-            toDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(fromDate)));
-            toDate.setMinutes(toDate.getMinutes() + 1);
-
-            this.setState({
-                formData: {...this.state.formData, toDate: toDate}
-            });
-        }
     };
 
-    handleChangeToDate = (fromDate, toDate) => {
+    handleChangeToDate = toDate => {  
         this.setState({
-            formData: {...this.state.formData, toDate: toDate}
+            toDate: toDate
         });
-
-        if (moment(fromDate).isAfter(moment(toDate))) {
-            fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(toDate)));
-            fromDate.setMinutes(fromDate.getMinutes() - 1);
-
-            this.setState({
-                formData: {...this.state.formData, fromDate: fromDate}
-            });
-        }
     };
 
-    handleChangeFormData = event => {
+    handleChange = event => {
         const name = event.target.name;
         this.setState({
-            formData: {...this.state.formData,[name]: event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value}
+            [name]: event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value
         });
-    };
-
-    handleConvertValue = (item, key) => {
-        if(item === 0){
-            return null;
-        }
-        return item === key ? true : false;
     };
 
     handleSubmit = event => {
         event.preventDefault();
-        const {username, isGuest, fromDate, toDate, mainCategoryId, subCategoryId, communicationId, responseId, isReviewed } = this.state.formData;
+        const { username, isGuest, fromDate, toDate, mainCategoryId, subCategoryId, communicationId, responseId, isReviewed } = this.state;
 
         const params = {
             username: username,
-            isGuest: this.handleConvertValue(isGuest, 2),
+            isGuest: isGuest === -1 ? '' : isGuest,
             fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
             toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate)),
-            mainCategoryId: mainCategoryId === 0 ? null : mainCategoryId,
-            subCategoryId: subCategoryId === 0 ? null : subCategoryId,
+            mainCategoryId: mainCategoryId === 0 ? '' : mainCategoryId,
+            subCategoryId: subCategoryId === 0 ? '' : subCategoryId,
             communicationId: communicationId,
             responseId: responseId,
-            isReviewed: this.handleConvertValue(isReviewed, 1),
+            isReviewed: isReviewed,
             pageIndex: 1,
             pageSize: 100
         };
-        this.props.getGridParams(params);
+        this.props.setGridParams(params);
         this.props.getDeletedFeedback(params);
     };
 
-    filterMainCategories = data => {
-        const mainCategoriesArr = [];
-        data.mainCategories.map(value => {
-            const filter = data.subCategories.filter(item => item.mainCategoryID === value.mainCategoryID);
-            filter.unshift({name: 'All', subCategoryId: 0});
-            mainCategoriesArr.push({
-                mainCategoryID: value.mainCategoryID,
-                name: value.name,
-                subCate: filter
-            });
-        });
-        mainCategoriesArr.unshift({mainCategoryID: 0, name: 'All', subCate: [{name: 'All', subCategoryId: 0}]});
-        return mainCategoriesArr;
-    };
-
-    filterSubCategories = (mainCate,values) =>{
-        const subCategories = mainCate.find(item => item.mainCategoryID === values.mainCategoryId);
+    filterSubCategories = (subCate,mainCateId) =>{
+        if(mainCateId === 0){
+            const subCategory = [{ name: 'All', subCategoryId: 0 }];
+            return subCategory;
+        }
+        const subCategories = subCate.filter(item => item.mainCategoryID === mainCateId);
+        subCategories.unshift({ name: 'All', subCategoryId: 0 });
         return subCategories;
     };
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     renderForm = () => {
-        const formData = this.state.formData;
         const data = this.props.settings;
-        const mainCategories = this.filterMainCategories(data);
-        const subCategories = this.filterSubCategories(mainCategories, formData);
+        const subCategories = this.filterSubCategories(data.subCategories, this.state.mainCategoryId);
         const reviews = [
-            { settingValue: 'All', settingId: 0 },
+            { settingValue: 'All', settingId: '' },
             { settingValue: 'Review', settingId: 1 },
-            { settingValue: 'Not Reviewd', settingId: -1 }
+            { settingValue: 'Not Reviewd', settingId: 0 }
         ];
-
+        
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter">
                 <div className="panel-content">
@@ -139,56 +111,58 @@ export class Filter extends Component {
                             <Form.Control type="text" size="sm" className="shadow-none"
                                 autoComplete="off"
                                 name="username"
-                                onChange={this.handleChangeFormData}
+                                onChange={this.handleChange}
                             />
                         </Col>
                         <Col sm="2" md="2" className="filter-col">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="isGuest"
-                                onChange={this.handleChangeFormData}
+                                onChange={this.handleChange}
                             >
                                 {
-                                    data.customerTypes.map((value,key) => this.renderOptions(value.settingValue,value.settingId,key))
+                                    data.customerTypes.map((value,key) => this.renderOptions(value.settingValue,value.settingId-1,key))
                                 }
                             </Form.Control>
                         </Col>
 
                         <Form.Label className="filter-title col-form-label">
-                            {LangHelper.getResource('From Date')}
+                            {LangHelper.getResource('FromDate')}
                         </Form.Label>
                         <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper filter-colDate">
                             <DatePicker
-                                selected={formData.fromDate}
-                                timeInputLabel="Time:"
+                                selected={this.state.fromDate}
                                 dateFormat="MMM dd, yyyy"
-                                onChange={value => this.handleChangeFromDate(value, formData.toDate)}
+                                maxDate={new Date(this.maxFromDate)}
+                                onChange={value => this.handleChangeFromDate(value)}
                             />
                         </Col>
 
                         <Form.Label className="filter-toDate col-form-label">
-                            {LangHelper.getResource('To Date')}
+                            {LangHelper.getResource('ToDate')}
                         </Form.Label>
                         <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper filter-colDate">
                             <DatePicker
-                                selected={formData.toDate}
-                                timeInputLabel="Time:"
+                                selected={this.state.toDate}
                                 dateFormat="MMM dd, yyyy"
-                                onChange={value => this.handleChangeToDate(formData.fromDate, value)}
+                                minDate={new Date(this.minToDate)}
+                                maxDate={new Date(this.maxToDate)}
+                                onChange={value => this.handleChangeToDate(value)}
                             />
                         </Col>
                     </Form.Group>
 
                     <Form.Group as={Row}>
                         <Form.Label className="filter-title col-form-label">
-                            {LangHelper.getResource('Main Category')}
+                            {LangHelper.getResource('MainCategory')}
                         </Form.Label>
                         <Col sm="4" md="4" className="filter-col">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="mainCategoryId"
-                                onChange={this.handleChangeFormData}
+                                onChange={this.handleChange}
                             >
+                                <option value="0">All</option>
                                 {
-                                    mainCategories.map((value,key) => this.renderOptions(value.name, value.mainCategoryID, key))
+                                    data.mainCategories.map((value,key) => this.renderOptions(value.name, value.mainCategoryID, key))
                                 }
                             </Form.Control>
                         </Col>
@@ -199,10 +173,10 @@ export class Filter extends Component {
                         <Col sm="4" md="4" className="filter-col">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="subCategoryId"
-                                onChange={this.handleChangeFormData}
+                                onChange={this.handleChange}
                             >
                                 {
-                                    subCategories.subCate.map((value,key) => this.renderOptions(value.name, value.subCategoryId, key))
+                                    subCategories.map((value,key) => this.renderOptions(value.name, value.subCategoryId, key))
                                 }
                             </Form.Control>
                         </Col>
@@ -215,7 +189,7 @@ export class Filter extends Component {
                         <Col sm="1" md="1" className="filter-coll-all">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="communicationId"
-                                onChange={this.handleChangeFormData}
+                                onChange={this.handleChange}
                             >
                                 {
                                     data.communications.map((value,key) => this.renderOptions(value.name, value.id, key))
@@ -224,12 +198,12 @@ export class Filter extends Component {
                         </Col>
 
                         <Form.Label className="filter-customer-response col-form-label">
-                            {LangHelper.getResource('Customer Response')}
+                            {LangHelper.getResource('CustomerResponse')}
                         </Form.Label>
                         <Col sm="2" md="2" className="filter-res">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="responseId"
-                                onChange={this.handleChangeFormData}
+                                onChange={this.handleChange}
                             >
                                 {
                                     data.customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
@@ -243,7 +217,7 @@ export class Filter extends Component {
                         <Col sm="2" md="2" className="filter-col">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="isReviewed"
-                                onChange={this.handleChangeFormData}
+                                onChange={this.handleChange}
                             >
                                 {
                                     reviews.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
@@ -252,7 +226,7 @@ export class Filter extends Component {
                         </Col>
 
                         <Col sm="2" md="2" className="filter-col">
-                            <button type="submit" className="btn btn-primary btn-sm">Submit</button>
+                            <button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</button>
                         </Col>
 
                     </Form.Group>

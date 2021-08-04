@@ -2,6 +2,8 @@
 
 export const PAGING_SIZES = [100, 200, 300, 400, 500, 1000];
 
+export const PAGING_SIZES_HALF = [100, 200, 300, 400, 500];
+
 export const DefaultPageSize = 100;
 
 export const DateFormat = 'MM/dd/yyyy';

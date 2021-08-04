@@ -11,9 +11,11 @@
     using CRM.Services;
     using CRM.Services.Feedback;
     using Microsoft.AspNetCore.Mvc;
-    using System;
+    using CRM.Core.Filters;
+    using static Fanex.NAP.Core.Business.Constant;
 
-    public class DeletedFeedbackController : Controller
+    [CrmPermission(FunctionKey = FunctionKey.DeleteFeedback, Policy = Policy.Host)]
+    public class DeletedFeedbackController : BaseController
     {
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
@@ -31,7 +33,7 @@
 
         public IActionResult Index()
         {
-            return View(true);
+            return View();
         }
 
         public async Task<IActionResult> GetAllSettings()

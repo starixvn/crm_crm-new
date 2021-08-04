@@ -1,38 +1,11 @@
 import React from 'react';
-import DataGridWrapper, { DataGrid } from '../DataGrid';
+import { DataGrid } from '../DataGrid';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { shallow } from 'enzyme';
-import configureMockStore from 'redux-mock-store';
 
 describe('DataGrid', () => {
     afterAll(() => {
         jest.clearAllMocks();
-    });
-
-    describe('component with redux', () => {
-        // Arrange
-        const mockStore = configureMockStore();
-        const initialState = {
-            settings: { customerTypes: [{ id: 1, name: 'Text' }] },
-            gridParams: { pageIndex: 1, pageSize: 100 },
-            gridData: { username: "" }
-        };
-
-        const store = mockStore(initialState);
-
-        // Act
-        const wrapper = shallow(<DataGridWrapper store={store} />);
-
-        // Assert
-        it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
-        });
-
-        it('component has correct props', () => {
-            expect(wrapper.props().children.props.settings).toEqual(initialState.settings);
-            expect(wrapper.props().children.props.gridParams).toEqual(initialState.gridParams);
-            expect(wrapper.props().children.props.gridData).toEqual(initialState.gridData);
-        });
     });
 
     describe('buildHeader', () => {
@@ -164,7 +137,7 @@ describe('DataGrid', () => {
             const props = {
                 gridParams: { pageIndex: 1, pageSize: 100 },
                 gridData: { totalItems: 1, data: [] },
-                getGridParams: jest.fn(),
+                setGridParams: jest.fn(),
                 getDeletedFeedback: jest.fn()
             };
             const expectedGridParams = { pageIndex: 1, pageSize: 100 };
@@ -174,7 +147,7 @@ describe('DataGrid', () => {
             container.onPaging(expectedGridParams.pageIndex, expectedGridParams.pageSize);
 
             // Assert
-            expect(props.getGridParams).toHaveBeenCalledWith(expectedGridParams);
+            expect(props.setGridParams).toHaveBeenCalledWith(expectedGridParams);
             expect(props.getDeletedFeedback).toHaveBeenCalledWith(expectedGridParams);
         });
     });
