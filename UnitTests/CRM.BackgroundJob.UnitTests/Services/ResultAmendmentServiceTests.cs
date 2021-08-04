@@ -1681,25 +1681,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
         }
         #endregion GetAmendmentSolutionTemplateYnScNumberGame
 
-        #region GetMatchCoddFormat
-        [Theory]
-        [InlineData("", "")]
-        [InlineData("{2} 23, {0} 6666", "match code 2 23, match code 0 6666")]
-        public void GetMatchCoddFormat_WhenCalled_ReturnExpectString(string matchCode, string expected)
-        {
-            // Arrange
-            var service = MockService();
-            commonFeedback.GetMatchCode("{2}", Language.en_US).Returns("match code 2");
-            commonFeedback.GetMatchCode("{0}", Language.en_US).Returns("match code 0");
-
-            // Act
-            var actual = service.Public_GetMatchCoddFormat(matchCode, Language.en_US);
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-        #endregion GetMatchCoddFormat
-
         #region Helpers
 
         private ResultAmendmentServiceTestable MockService()

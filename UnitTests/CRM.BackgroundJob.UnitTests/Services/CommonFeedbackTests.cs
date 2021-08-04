@@ -432,6 +432,25 @@
             await systemSetting.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Arg.Any<string>());
         }
 
+        #region GetMatchCoddFormat
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("{2} 23, {0} 6666", "match code 2 23, match code 0 6666")]
+        public void GetMatchCoddFormat_WhenCalled_ReturnExpectString(string matchCode, string expected)
+        {
+            // Arrange
+            var service = GetService();
+            service.GetMatchCode("{2}", Language.en_US).Returns("match code 2");
+            service.GetMatchCode("{0}", Language.en_US).Returns("match code 0");
+
+            // Act
+            var actual = service.GetMatchCoddFormat(matchCode, Language.en_US);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+        #endregion GetMatchCoddFormat
+
         #region Helpers
         private CommonFeedback GetService()
         {

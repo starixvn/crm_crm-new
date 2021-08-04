@@ -30,6 +30,7 @@
         private IConfiguration configuration;
         private IChatBotCTOService chatBotCTOService;
         private IChatBotProblemAccountService chatBotProblemAccountService;
+        private IChatBotResultAmendmentService chatBotResultAmendmentService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -293,6 +294,7 @@
             configuration = Substitute.For<IConfiguration>();
             chatBotCTOService = Substitute.For<IChatBotCTOService>();
             chatBotProblemAccountService = Substitute.For<IChatBotProblemAccountService>();
+            chatBotResultAmendmentService = Substitute.For<IChatBotResultAmendmentService>();
             return new ChatBotJobService(logService,
                 systemSettingService,
                 ticketVoidingService, 
@@ -300,7 +302,8 @@
                 chatBotCWLService, 
                 configuration,
                 chatBotCTOService,
-                chatBotProblemAccountService);
+                chatBotProblemAccountService,
+                chatBotResultAmendmentService);
         }
 
         #endregion Helpers

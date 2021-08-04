@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Linq;
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.Core.Extensions.XML;
@@ -15,10 +15,10 @@
 
     public interface IChatBotResultAmendmentService
     {
-        Task<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>> GetChatBotResultAmendmentInfo(
+        Task<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>> GetChatBotResultAmendmentInfoAsync(
             AbnormalBetSystemSetting settingResultAmendment);
 
-        Task<IEnumerable<Message>> GetChatBotMessageInfo(IEnumerable<TicketEvent> ticketEvents);
+        Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<TicketEvent> ticketEvents);
 
         Task<CommandResult> ImportChatBotAmendmentResult(
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
@@ -29,7 +29,7 @@
         );
     }
 
-    public class ChatBotResultAmendmentService: IChatBotResultAmendmentService
+    public class ChatBotResultAmendmentService : IChatBotResultAmendmentService
     {
         private readonly IBaseService baseService;
         private readonly ICommonFeedback commonFeedback;
@@ -40,7 +40,7 @@
             this.commonFeedback = commonFeedback;
         }
 
-        public async Task<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>,IEnumerable<TicketEvent>>> GetChatBotResultAmendmentInfo(
+        public async Task<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>> GetChatBotResultAmendmentInfoAsync(
             AbnormalBetSystemSetting settingResultAmendment
             )
         {
@@ -53,14 +53,13 @@
             return await baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, TicketEvent>(criteria);
         }
 
-        public async Task<IEnumerable<Message>> GetChatBotMessageInfo(IEnumerable<TicketEvent> ticketEvents)
+        public async Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<TicketEvent> ticketEvents)
         {
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             const string Xml = "<r MessageID='{0}'/>";
-            foreach(var ticket in ticketEvents)
+            foreach (var ticket in ticketEvents)
             {
                 stringBuilder.AppendFormat(Xml, ticket.MessageId);
-
             }
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var criteria = new GetChatBotMsgCriteria
@@ -70,7 +69,7 @@
             return await baseService.GetDataAsync<Message>(criteria);
         }
 
-        public async Task<CommandResult>ImportChatBotAmendmentResult(
+        public async Task<CommandResult> ImportChatBotAmendmentResult(
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
             IEnumerable<AmendmentResultTransaction> transactions,
             IEnumerable<Message> messages,
@@ -87,11 +86,11 @@
                 "SportNameYN='{11}' HomeNameEN='{12}' HomeNameSC='{13}' HomeNameTH='{14}' " +
                 "HomeNameYN='{15}' AwayNameEN='{16}' AwayNameSC='{17}' AwayNameTH='{18}' " +
                 "AwayNameYN='{19}' LeagueNameEN='{20}' LeagueNameSC='{21}' LeagueNameTH='{22}' " +
-                "LeagueNameYN='{23}' MatchCode='{24}' MatchInfo='{25}' Type='{26}'/>";
+                "LeagueNameYN='{23}' MatchCode='{24}' MatchInfoEN='{25}' MatchInfoSC='{26}' " +
+                "MatchInfoTH='{27}' MatchInfoYN='{28}' Type='{29}'/>";
 
-            var transaction = transactions.FirstOrDefault();
-            //foreach (var transaction in transactions)
-            //{
+            foreach (var transaction in transactions)
+            {
                 var sportNameEN = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.en_US);
                 var sportNameSC = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.zh_CN);
                 var sportNameTH = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.th_TH);
@@ -111,23 +110,28 @@
                 var awayNameSC = commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.zh_CN);
                 var awayNameTH = commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.th_TH);
                 var awayNameYN = commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.vi_VN);
-                var matchInfo = transaction.Type == 2 ? commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.zh_CN): "";
+
+                var matchInfoEN = commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.en_US);
+                var matchInfoSC = commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.zh_CN);
+                var matchInfoTH = commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.th_TH);
+                var matchInfoYN = commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.vi_VN);
+
                 stringBuilderEventData.AppendFormat(XmlTemplate,
-                    transaction.TicketEventId, transaction.ProductId, transaction.EventDate,
-                    transaction.SubmitDate, transaction.EventType, transaction.ActualResult,
-                    transaction.WrongResult, transaction.MessageId, sportNameEN, sportNameSC,
-                    sportNameTH, sportNameYN, homeNameEN, homeNameSC, homeNameTH, homeNameYN,
-                    awayNameEN, awayNameSC, awayNameTH, awayNameYN, leagueNameEN, leagueNameSC,
-                    leagueNameTH, leagueNameYN, transaction.MatchCode, matchInfo, transaction.Type
-                    );
-           //}
+                        transaction.TicketEventId, transaction.ProductId, transaction.EventDate,
+                        transaction.SubmitDate, transaction.EventType, transaction.ActualResult,
+                        transaction.WrongResult, transaction.MessageId, sportNameEN, sportNameSC,
+                        sportNameTH, sportNameYN, homeNameEN, homeNameSC, homeNameTH, homeNameYN,
+                        awayNameEN, awayNameSC, awayNameTH, awayNameYN, leagueNameEN, leagueNameSC,
+                        leagueNameTH, leagueNameYN, transaction.MatchCode, matchInfoEN, matchInfoSC,
+                        matchInfoTH, matchInfoYN, transaction.Type
+                        );
+            }
             stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
 
             const string xmlTemplateMessage = "<r TicketEventId='{0}' MessageId='{1}' Content_en='{2}' Content_cs='{3}' Content_th='{4}' Content_yn='{5}'/>";
 
-            //foreach (var message in messages)
-            //{
-            var message = messages.FirstOrDefault();
+            foreach (var message in messages)
+            {
                 var TicketEventId = events.FirstOrDefault(x => x.MessageId == message.MessageId).TicketEventId;
                 stringBuilderMessage.AppendFormat(
                     xmlTemplateMessage,
@@ -138,13 +142,13 @@
                     message.Content_th?.Trim().Replace("@@", string.Empty),
                     message.Content_vn?.Trim().Replace("@@", string.Empty)
                     );
-            //}
+            }
 
             stringBuilderMessage.Append(Constants.EndRootTag.ToLowerInvariant());
 
             var criteria = new ImportChatBotResultAmendmentCommand
             {
-                TicketData = ticketEvents.Take(2).ToXML("root").ToString(),
+                TicketData = ticketEvents.ToXML("root").ToString(),
                 EventData = stringBuilderEventData.ToString(),
                 MessageData = stringBuilderMessage.ToString(),
                 Environment = Environment

@@ -243,10 +243,5 @@
            Eventdate,
            leagueNameSC);
         }
-
-        public string Public_GetMatchCoddFormat(string matchCode, string language)
-        {
-            return base.GetMatchCoddFormat(matchCode, language);
-        }
     }
 }

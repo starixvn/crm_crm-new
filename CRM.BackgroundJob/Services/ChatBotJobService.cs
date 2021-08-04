@@ -181,11 +181,11 @@
                     return;
                 }
 
-                var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfo(settingResultAmendment);
+                var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
                 var messages = Enumerable.Empty<Message>();
                 if (resultAmendmentInfo.Item3.Any())
                 {
-                    messages = await chatBotResultAmendmentService.GetChatBotMessageInfo(resultAmendmentInfo.Item3);
+                    messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(resultAmendmentInfo.Item3);
                 }
 
                 var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResult(
