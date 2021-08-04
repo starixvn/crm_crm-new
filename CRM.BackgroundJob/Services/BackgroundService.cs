@@ -20,7 +20,7 @@
 
         Task PullMessageProblemsAccountForChatBotAsync();
 
-        Task PullMessageResultAmendmentForChatBotAsync()
+        Task PullMessageResultAmendmentForChatBotAsync();
 
         Task ScanAndSenLetstalkNotification();
 

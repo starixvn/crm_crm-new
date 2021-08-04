@@ -86,11 +86,12 @@
                 "MessageId='{7}' SportNameEN='{8}' SportNameSC='{9}' SportNameTH='{10}' " +
                 "SportNameYN='{11}' HomeNameEN='{12}' HomeNameSC='{13}' HomeNameTH='{14}' " +
                 "HomeNameYN='{15}' AwayNameEN='{16}' AwayNameSC='{17}' AwayNameTH='{18}' " +
-                "AwayNameYN='{19}' LeagueNameEN='{20}' LeagueNameSC='{21}' LeagueNameTH='{22} " +
+                "AwayNameYN='{19}' LeagueNameEN='{20}' LeagueNameSC='{21}' LeagueNameTH='{22}' " +
                 "LeagueNameYN='{23}' MatchCode='{24}' MatchInfo='{25}' Type='{26}'/>";
 
-            foreach (var transaction in transactions)
-            {
+            var transaction = transactions.FirstOrDefault();
+            //foreach (var transaction in transactions)
+            //{
                 var sportNameEN = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.en_US);
                 var sportNameSC = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.zh_CN);
                 var sportNameTH = commonFeedback.GetSportName(transaction.Sporttype.ToString(), Language.th_TH);
@@ -119,30 +120,31 @@
                     awayNameEN, awayNameSC, awayNameTH, awayNameYN, leagueNameEN, leagueNameSC,
                     leagueNameTH, leagueNameYN, transaction.MatchCode, matchInfo, transaction.Type
                     );
-            }
+           //}
             stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
 
             const string xmlTemplateMessage = "<r TicketEventId='{0}' MessageId='{1}' Content_en='{2}' Content_cs='{3}' Content_th='{4}' Content_yn='{5}'/>";
 
-            foreach (var message in messages)
-            {
-                var TicketEventId = events.FirstOrDefault(x => x.MessageId == message.MessageId);
+            //foreach (var message in messages)
+            //{
+            var message = messages.FirstOrDefault();
+                var TicketEventId = events.FirstOrDefault(x => x.MessageId == message.MessageId).TicketEventId;
                 stringBuilderMessage.AppendFormat(
                     xmlTemplateMessage,
                     TicketEventId,
                     message.MessageId,
-                    message.Content_en,
-                    message.Content_cs,
-                    message.Content_th,
-                    message.Content_vn
+                    message.Content_en?.Trim().Replace("@@", string.Empty),
+                    message.Content_cs?.Trim().Replace("@@", string.Empty),
+                    message.Content_th?.Trim().Replace("@@", string.Empty),
+                    message.Content_vn?.Trim().Replace("@@", string.Empty)
                     );
-            }
+            //}
 
             stringBuilderMessage.Append(Constants.EndRootTag.ToLowerInvariant());
 
             var criteria = new ImportChatBotResultAmendmentCommand
             {
-                TicketData = ticketEvents.ToXML("root").ToString(),
+                TicketData = ticketEvents.Take(2).ToXML("root").ToString(),
                 EventData = stringBuilderEventData.ToString(),
                 MessageData = stringBuilderMessage.ToString(),
                 Environment = Environment
