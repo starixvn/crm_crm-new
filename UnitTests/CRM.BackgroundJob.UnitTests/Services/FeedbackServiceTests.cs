@@ -156,7 +156,7 @@
                 new TransactionInfo { MessageId = 1, IsDeposit = true }
             };
             var settings = fixture.Create<IEnumerable<SettingItem>>();
-            var messages = new List<Message> { 
+            var messages = new List<Message> {
                 new Message
                 {
                     MessageId = 1
@@ -213,6 +213,7 @@
         }
         #endregion CreateFeedbackForCreditDepositSiteAsync
 
+        #region CreateFeedbackForCreditSiteAsync
         [Fact]
         public async Task CreateFeedbackForCreditSiteAsync_WhenCalled_ExpectedCallCreateFeedbackForCreditSiteByBatchAsync()
         {
@@ -256,6 +257,7 @@
                 settingMappings,
                 Arg.Any<CreateMutipleFeedbackCommand>());
         }
+        #endregion CreateFeedbackForCreditSiteAsync
 
         #region CreateFeedbackForCreditSiteByBatchAsync
 
@@ -299,7 +301,6 @@
             Assert.Equal("related customer xml", criteria.RelatedCustomerXml);
             Assert.Equal(message.MessageId, criteria.MessageId);
             Assert.Equal("1", criteria.ListOrigCustIds);
-            //Assert.Equal("1", criteria.RequestIds);
             Assert.Equal("description", criteria.Description);
             logService.Received(4).LogInformation(Arg.Any<string>());
         }
@@ -378,6 +379,7 @@
 
         #endregion CreateFeedbackForCreditSiteByBatchAsync
 
+        #region CreateFeedbackForDepositSiteAsync
         [Fact]
         public async Task CreateFeedbackForDepositSiteAsync_WhenCalled_ExpectedCallCreateFeedbackForDepositByBatchAsync()
         {
@@ -412,94 +414,7 @@
             service.Received().Protected("GetProductXml", matchInfo, transactionInfos, settings, settingMappings);
             service.Received().Protected("CreateFeedbackForDepositByBatchAsync", licenseeInfo, message, transactionInfos, Arg.Any<DateTime>(), Arg.Any<string>(), Arg.Any<CreateFeedbackCommand>());
         }
-
-        #region CreateFeedbackForDepositByBatchAsync
-
-        [Fact]
-        public async Task CreateFeedbackForDepositByBatchAsync_CreateSuccessful_ExpectedWriteLog()
-        {
-            // Arrange
-            var licenseeInfo = new CustomerInfo { CustId = 1 };
-            var message = new Message { RequestId = 1 };
-            var feedbackDate = fixture.Create<DateTime>();
-            var communicationTool = fixture.Create<string>();
-            var criteria = fixture.Create<CreateFeedbackCommand>();
-            var transactionInfos = new List<TransactionInfo>
-            {
-                new TransactionInfo { RequestId = 1, CustId = 1, LicenseeManagerId = 1, LicenseeManager = "starixIT" }
-            };
-            var commandResult = new CommandResult { Code = 0 };
-            var service = MockService();
-            baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
-            service.Protected("GetAutoField", feedbackDate, communicationTool, Arg.Any<IList<string>>()).Returns("auto field");
-
-            // Act
-            await service.Public_CreateFeedbackForDepositByBatchAsync(licenseeInfo, message, transactionInfos, feedbackDate, communicationTool, criteria);
-
-            // Assert
-            Assert.Equal("1", criteria.RelatedCustId);
-            Assert.Equal("auto field", criteria.AutoField);
-            Assert.Equal(message.MessageId, criteria.MessageId);
-            Assert.Equal("1", criteria.ListOrigCustIds);
-            Assert.Equal("1", criteria.RequestIds);
-            logService.Received(2).LogInformation(Arg.Any<string>());
-        }
-
-        [Fact]
-        public async Task CreateFeedbackForDepositByBatchAsync_CreateUnsuccessful_ExpectedWriteLogAndUpdateStatus()
-        {
-            // Arrange
-            var licenseeInfo = new CustomerInfo { CustId = 1 };
-            var message = new Message { RequestId = 1 };
-            var feedbackDate = fixture.Create<DateTime>();
-            var communicationTool = fixture.Create<string>();
-            var criteria = fixture.Create<CreateFeedbackCommand>();
-            var transactionInfos = new List<TransactionInfo>
-            {
-                new TransactionInfo { RequestId = 1, CustId = 1, LicenseeManagerId = 1, LicenseeManager = "starixIT" }
-            };
-            var commandResult = new CommandResult();
-            var service = MockService();
-            baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
-            service.Protected("GetAutoField", feedbackDate, communicationTool, Arg.Any<IList<string>>()).Returns("auto field");
-
-            // Act
-            await service.Public_CreateFeedbackForDepositByBatchAsync(licenseeInfo, message, transactionInfos, feedbackDate, communicationTool, criteria);
-
-            // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
-            await ticketVoidingService.EditFeedbackInfoAsync(message.MessageId, Arg.Any<IEnumerable<int>>(), Arg.Any<IEnumerable<int>>(), CreateFeedbackJobStatus.Fail, commandResult.Message);
-            await logService.ErrorAsync(commandResult, criteria);
-        }
-
-        [Fact]
-        public async Task CreateFeedbackForDepositByBatchAsync_Exception_ExpectedWriteLogAndUpdateStatus()
-        {
-            // Arrange
-            var exception = fixture.Create<Exception>();
-            var licenseeInfo = new CustomerInfo { CustId = 1 };
-            var message = new Message { RequestId = 1 };
-            var feedbackDate = fixture.Create<DateTime>();
-            var communicationTool = fixture.Create<string>();
-            var criteria = fixture.Create<CreateFeedbackCommand>();
-            var transactionInfos = new List<TransactionInfo>
-            {
-                new TransactionInfo { RequestId = 1, CustId = 1, LicenseeManagerId = 1, LicenseeManager = "starixIT" }
-            };
-            var service = MockService();
-            baseService.When(x => x.ExecuteNonQueryAsync(criteria)).Throw(exception);
-            service.Protected("GetAutoField", feedbackDate, communicationTool, Arg.Any<IList<string>>()).Returns("auto field");
-
-            // Act
-            await service.Public_CreateFeedbackForDepositByBatchAsync(licenseeInfo, message, transactionInfos, feedbackDate, communicationTool, criteria);
-
-            // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
-            await ticketVoidingService.EditFeedbackInfoAsync(message.MessageId, Arg.Any<IEnumerable<int>>(), Arg.Any<IEnumerable<int>>(), CreateFeedbackJobStatus.Fail, exception.Message);
-            await logService.ErrorAsync(exception);
-        }
-
-        #endregion CreateFeedbackForDepositByBatchAsync
+        #endregion CreateFeedbackForDepositSiteAsync
 
         #region GetLicenseeManager
 
@@ -807,7 +722,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategory(settings, Arg.Any<int>());
+            var actual = service.Public_GetCategorySubCategory(settings, 13);
 
             // Assert
             Assert.Equal(0, actual.Item1);
@@ -826,7 +741,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategory(settings, Arg.Any<int>());
+            var actual = service.Public_GetCategorySubCategory(settings, 13);
 
             // Assert
             Assert.Equal(1, actual.Item1);
@@ -846,7 +761,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategory(settings, Arg.Any<int>());
+            var actual = service.Public_GetCategorySubCategory(settings, 11);
 
             // Assert
             Assert.Equal(1, actual.Item1);
@@ -876,6 +791,7 @@
 
         #endregion GetCategorySubCategory
 
+        #region GetRelatedCustomerXml
         [Fact]
         public void GetRelatedCustomerXml_WhenCalled_ReturnExpectedXml()
         {
@@ -889,7 +805,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetRelatedCustomerXml(headlineId, transactions, Arg.Any<int>());
+            var actual = service.Public_GetRelatedCustomerXml(headlineId, transactions, 11);
 
             // Assert
             Assert.Equal(xml, actual);
@@ -913,6 +829,7 @@
             // Assert
             Assert.Equal(xml, actual);
         }
+        #endregion GetRelatedCustomerXml
 
         [Fact]
         public void GetAutoField_WhenCalled_ReturnExpectedAutoField()

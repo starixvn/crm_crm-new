@@ -306,11 +306,15 @@
             var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
             var transactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
             var events = new List<TicketEvent>();
+            var commandResult = new CommandResult { Code = 0 };
             var resultAmendmentInfo = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>(ticketEvents, transactions, events);
 
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
             chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(setting).Returns(resultAmendmentInfo);
+            chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
+                resultAmendmentInfo.Item1, resultAmendmentInfo.Item2, Arg.Any<IEnumerable<Message>>(), resultAmendmentInfo.Item3, Constants.DefaultEnvironment
+                ).Returns(commandResult);
 
             // Act
             await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
