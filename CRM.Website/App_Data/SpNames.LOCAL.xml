@@ -59,6 +59,7 @@
             <Mapping DataField="CommunicationId" ObjectProperty="Id" />
         </Setting>
         <Setting Key="Acc_CRM_MainCategoryList" SpName="Acc_CRM_MainCategoryList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingGetRelationBySettingName" SpName="Acc_CRM_SettingGetRelationBySettingName" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CountryList" SpName="Acc_CRM_CountryList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CountryID" ObjectProperty="Id" />
             <Mapping DataField="CountryName" ObjectProperty="Name" />
@@ -95,7 +96,6 @@
     <Function Name="Report">
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSettlement" SpName="Acc_CRM_Rpt_FeedbackStatisticsSettlement" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
-    <Function Name="Setting SubCatagogy">
         <Setting Key="Acc_CRM_SubCategoryList" SpName="Acc_CRM_SubCategoryList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Default Communication Setting">
@@ -105,16 +105,17 @@
         <Setting Key="Acc_CRM_DefaultCommToolSel" SpName="Acc_CRM_DefaultCommToolSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_DefaultCommToolDel" SpName="Acc_CRM_DefaultCommToolDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
-    <Function Name="CustomerFeedback">
-        <Setting Key="Acc_CRM_RelatedCustomerVerify" SpName="Acc_CRM_RelatedCustomerVerify" DbName="DBCRM.bodb_CRM.bodbAdminNet">
-            <Mapping DataField="CustId" ObjectProperty="Id" />
-            <Mapping DataField="val" ObjectProperty="Name" />
+    <Function Name="Report">
+        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSettlement" SpName="Acc_CRM_Rpt_FeedbackStatisticsSettlement" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+            <Mapping DataField="CurrencyID" ObjectProperty="Id" />
+            <Mapping DataField="Currency" ObjectProperty="Name" />
         </Setting>
     </Function>
+        <Setting Key="Acc_CRM_CurrencyList_Redemption" SpName="Acc_CRM_CurrencyList_Redemption" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     <Function Name="Pic and Headline">
-        <Setting Key="Acc_CRM_PicIns" SpName="Acc_CRM_PicIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PicIns" SpName="Acc_CRM_PicIns_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicUpd" SpName="Acc_CRM_PicUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PicManagementSel" SpName="Acc_CRM_PicManagementSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PicManagementSel" SpName="Acc_CRM_PicManagementSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PICStatusUpd" SpName="Acc_CRM_PICStatusUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PICAssignmentValidation" SpName="Acc_CRM_PICAssignmentValidation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_SiteSel_Credit" SpName="Acc_SiteSel_Credit" DbName="DBEXT.bodb02.bodbAdminNet" />
