@@ -11,6 +11,7 @@
     using CRM.Services.Feedback;
     using CRM.Services.Customer;
     using Microsoft.Extensions.DependencyInjection;
+    using CRM.Services.InformHeadline;
 
     public static class ServiceDIExtensions
     {
@@ -33,6 +34,7 @@
             services.AddScoped<IExportExcelService, ExportExcelService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddTransient<IInformHeadlineService, InformHeadlineService>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)

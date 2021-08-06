@@ -268,6 +268,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inform Headlines.
+        /// </summary>
+        public static string InformHeadline {
+            get {
+                return ResourceManager.GetString("InformHeadline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InformHeadlines.
+        /// </summary>
+        public static string InformHeadline_Title {
+            get {
+                return ResourceManager.GetString("InformHeadline_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {

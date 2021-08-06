@@ -5,6 +5,7 @@
     using CRM.Models;
     using CRM.Models.ChatTypeMapping;
     using CRM.Models.Feedback;
+    using CRM.Models.InformHeadline;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report.SettlementReport;
     using CRM.Models.Setting;
@@ -27,6 +28,8 @@
         byte[] ExportLatestFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, int top);
 
         byte[] ExportDeletedFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
+
+        byte[] ExportInformHeadline(IEnumerable<InformHeadlineDetail> informs);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -86,6 +89,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/Deleted_Feedback.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new DeletedFeedbackExcel(templatePath, feedbacks, mainCategories);
+            return excel.Export();
+        }
+
+        public byte[] ExportInformHeadline(IEnumerable<InformHeadlineDetail> informs)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/InformHeadlines.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new InformHeadlineExcel(templatePath, informs);
             return excel.Export();
         }
     }

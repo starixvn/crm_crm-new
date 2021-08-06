@@ -19,5 +19,6 @@
         public const string CreateUpdateFeedbackAndCustomerInfo = "CreateUpdateFeedback_CustomerInfo";
         public const string CustomerInfo = "CreateUpdateFeedback_CustomerInfo";
 
+        public const string InformHeadline = "InformHeadline";
     }
 }

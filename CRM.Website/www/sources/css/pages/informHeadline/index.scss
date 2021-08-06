@@ -1,0 +1,24 @@
+@import '../../components/form-filter';
+@import '../../components/react-grid/react-grid';
+@import '../../components/multiple-select/style';
+@import '../../components/date-picker/style';
+@import '../../abstracts/variables';
+@import '../../components/modal';
+@import '../../components/tables';
+@import '../../components/react-select';
+
+
+.link-click {
+    cursor: pointer;
+    color: $link-color !important;
+
+    &:hover {
+        color: $draft-color !important;
+    }
+}
+
+.icon-excel {
+    color: #28a745;
+    font-size: 14px;
+    cursor: pointer;
+}
