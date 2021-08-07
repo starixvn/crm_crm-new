@@ -29,7 +29,6 @@
         public override string GetSettingKey() => "Acc_CRM_ChatBot_ChatTypeMapping_Upd";
 
         private bool IsValidStringProps() => !string.IsNullOrWhiteSpace(ConversationGroupName) &&
-            !string.IsNullOrWhiteSpace(HeadlineIds) &&
             !string.IsNullOrWhiteSpace(RecipientIds) &&
             !string.IsNullOrWhiteSpace(LetstalkId);
 

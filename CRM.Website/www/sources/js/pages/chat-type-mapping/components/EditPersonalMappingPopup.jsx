@@ -30,6 +30,7 @@ export class EditPersonalMappingPopup extends Component {
                 languageId: this.props.updatePersonalMappingData.data.languageId,
                 remark: this.props.updatePersonalMappingData.data.remark
             },
+            groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
             settings: {
                 letstalkIds: '',
@@ -184,7 +185,7 @@ export class EditPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LetstalkIdRequired'));
         }
 
-        if (!validateData.groupHeadlines) {
+        if (!validateData.groupHeadlines && parseInt(validateData.recipientType, 10) !== 9) {
             isValid = false;
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
         }
@@ -255,6 +256,8 @@ export class EditPersonalMappingPopup extends Component {
     };
 
     renderForm = () => {
+        const groupHeadlinesOption = parseInt(this.state.form.recipientType, 10) === 9 ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
+
         return (
             <Form onSubmit={this.handleEditPersonalSubmitForm}>
                 <Modal.Body>
@@ -364,10 +367,11 @@ export class EditPersonalMappingPopup extends Component {
                                 keyField='id'
                                 valueField='name'
                                 statusField='checked'
-                                dataSource={this.state.settings.headlineOptions}
+                                dataSource={groupHeadlinesOption}
                                 onChange={this.handleGroupHeadlineChange}
                                 isSummited={false}
                                 hasSearchBox
+                                isDisable={parseInt(this.state.form.recipientType, 10) === 9}
                             />
                         </Col>
                     </Form.Group>

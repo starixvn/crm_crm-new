@@ -33,6 +33,7 @@ export class EditGroupMappingPopup extends Component {
                 languageId: this.props.updateGroupMappingData.data.languageId || '',
                 remark: this.props.updateGroupMappingData.data.remark || ''
             },
+            groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
             settings: {
                 displayLetstalkIds: [],
@@ -193,7 +194,7 @@ export class EditGroupMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LanguageRequired'));
         }
 
-        if (!data.groupHeadlines) {
+        if (!data.groupHeadlines && parseInt(data.recipientTypeId, 10) !== 9) {
             isValid = false;
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
         }
@@ -264,6 +265,7 @@ export class EditGroupMappingPopup extends Component {
     };
 
     renderForm = () => {
+        const groupHeadlinesOption = parseInt(this.state.form.recipientTypeId, 10) === 9 ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
         return (
             <Form onSubmit={this.handleSubmitForm}>
                 <Modal.Body>
@@ -369,8 +371,9 @@ export class EditGroupMappingPopup extends Component {
                                 hasSearchBox
                                 width={'100%'}
                                 name="headlineIds"
-                                dataSource={this.state.settings.headlineOptions}
+                                dataSource={groupHeadlinesOption}
                                 keyField='id'
+                                isDisable={parseInt(this.state.form.recipientTypeId, 10) === 9}
                             />
                         </Col>
                     </Form.Group>

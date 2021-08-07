@@ -26,6 +26,7 @@ export class InsertPersonalMappingPopup extends Component {
                 languageId: '',
                 remark: ''
             },
+            groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
             letstalkIds: '',
             validate: {
@@ -67,6 +68,12 @@ export class InsertPersonalMappingPopup extends Component {
     handleRecipientTypeChange = value => {
         this.handleChange('recipientType', value);
         this.props.getRecipientByRecipientType(value);
+        this.handleChange('letstalkId', '');
+        this.handleChange('displayName', '');
+        this.setState({
+            letstalkIds: ''
+        });
+        this.handleChange('recipient', '');
     };
 
     handleRecipientChange = option => {
@@ -144,7 +151,7 @@ export class InsertPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LetstalkIdRequired'));
         }
 
-        if (!data.groupHeadlines) {
+        if (!data.groupHeadlines && parseInt(data.recipientType, 10) !== 9) {
             isValid = false;
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
         }
@@ -222,6 +229,8 @@ export class InsertPersonalMappingPopup extends Component {
                 letstalkIds: item.letstalkIds
             };
         });
+        const groupHeadlinesOption = parseInt(this.state.form.recipientType, 10) === 9 ? this.state.groupHeadlineDefault : this.props.groupHeadline;
+
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Modal.Body>
@@ -328,14 +337,14 @@ export class InsertPersonalMappingPopup extends Component {
                             <MultipleSelect
                                 width={'100%'}
                                 name="headlineIds"
-                                dataSource={this.props.groupHeadline}
+                                dataSource={groupHeadlinesOption}
                                 keyField='id'
                                 valueField='name'
                                 statusField='checked'
                                 isSummited={false}
                                 onChange={this.handleGroupHeadlineChange}
                                 hasSearchBox
-
+                                isDisable={parseInt(this.state.form.recipientType, 10) === 9}
                             />
                         </Col>
                     </Form.Group>
