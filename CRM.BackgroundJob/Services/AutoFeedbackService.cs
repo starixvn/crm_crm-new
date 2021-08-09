@@ -9,6 +9,7 @@
     using global::CRM.BackgroundJob.Models.ResultAmendment;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.BackgroundJob.Services;
+    using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
@@ -20,6 +21,7 @@
         Task TurnoverControlExecuteJobAsync();
         Task ProblemsAcccountExecuteJobAsync();
         Task ResultAmendmentExecuteJobAsync();
+        Task SynchronizeNewLicenseeOICExecuteJobAsync();
     }
 
     public class AutoFeedbackService : IAutoFeedbackService
@@ -33,6 +35,7 @@
         private readonly ICRMLogService logService;
         private readonly IProblemsAccountFeedbackService problemsAccountFeedbackService;
         private readonly IFeedbackService feedbackService;
+        private readonly ISynchronizeLicenseeService licenseeService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -49,6 +52,7 @@
             IResultAmendmentService resultAmendmentService,
             IProblemsAccountFeedbackService problemsAccountFeedbackService,
             IFeedbackService feedbackService,
+            ISynchronizeLicenseeService licenseeService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -61,6 +65,7 @@
             this.resultAmendmentService = resultAmendmentService;
             this.problemsAccountFeedbackService = problemsAccountFeedbackService;
             this.feedbackService = feedbackService;
+            this.licenseeService = licenseeService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -348,5 +353,29 @@
                 }
             }
         }
-    } 
+
+        public async Task SynchronizeNewLicenseeOICExecuteJobAsync()
+        {
+            try
+            {
+                var licenseeInfo = await licenseeService.GetOICLicenseeInfo();
+                CommandResult commandResult = await licenseeService.ImportLicenseeStatus(
+                    licenseeInfo,
+                    Environment);
+                if (commandResult.IsSuccessful)
+                {
+                    logService.LogInformation("Synchronize New Licensee OIC Successful!!!");
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+    }
 }

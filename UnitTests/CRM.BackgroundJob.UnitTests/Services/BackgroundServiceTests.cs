@@ -316,7 +316,7 @@
             await service.SynchronizeNewLicenseeOICToSiteSetting();
 
             // Assert
-            await winlossService.Received().SynchronizeNewLicenseeOICExecuteJobAsync();
+            await autoFeedbackService.Received().SynchronizeNewLicenseeOICExecuteJobAsync();
         }
 
         #endregion SynchronizeNewLicenseeOICToSiteSetting
