@@ -135,7 +135,9 @@ describe('popupHandlerActions', () => {
             const expectedActions = [
                 { type: types.GROUP_MAPPING_POPUP_DATA, data: { isShow: false, data: null } },
                 { type: types.GROUP_MAPPING_UPDATE_RESULT, data: null },
-                { type: types.GROUP_MAPPING_LETSTALK_VERIFICATION_DATA, data: [] },
+                { type: types.GROUP_MAPPING_LETSTALK_VERIFICATION_DATA, data: {
+                            "isBotRemoved": false,
+                            "recipients": []}},
                 { type: types.RECIPIENT_DATA, data: [] },
                 { type: types.GROUP_HEADLINE_DATA, data: [] }
             ];
@@ -163,7 +165,7 @@ describe('popupHandlerActions', () => {
     describe('letstalk verify', () => {
         it('should handle setLetstalkVerifationData with empty array when invalid params', () => {
             const params = { botId: 0, groupConversationId: '', recipients: [] };
-            const expectedActions = [{ type: types.GROUP_MAPPING_LETSTALK_VERIFICATION_DATA, data: [] }];
+            const expectedActions = [{ type: types.GROUP_MAPPING_LETSTALK_VERIFICATION_DATA, data: {isBotRemoved: false, recipients:[]} }];
             const store = mockStore({ letstalkVerification: null });
 
             store.dispatch(actions.verifyLetstalkInGroup(params));

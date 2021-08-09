@@ -150,7 +150,7 @@ describe('InsertPersonalMappingPopup', () => {
             recipients: [],
             groupHeadline: [],
             gridParams: {},
-            insertPersonalMappingResult: {},
+            insertPersonalMappingResult: { isSuccessful: true },
             letstalkName: '',
             getLetstalkDisplayName: jest.fn(() => promise),
             getRecipientByRecipientType: jest.fn(),
@@ -162,14 +162,16 @@ describe('InsertPersonalMappingPopup', () => {
         };
         const popup = shallow(<InsertPersonalMappingPopup {...props} />);
 
-        it('handleBotChange with call correct props with correct params', () => {
+        it('handleBotChange with call correct props with correct params',async () => {
+            jest.useFakeTimers();
             popup.instance().handleChange = jest.fn();
             popup.instance().handleBotChange('value');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('botId', 'value');
             expect(props.getLetstalkDisplayName).toHaveBeenCalledWith('value', '');
-            promise.then(() => {
-                expect(popup.instance().handleChange).toHaveBeenCalledWith('displayName', props.letstalkName);
-            });
+            await promise;
+            jest.runAllTimers();
+            expect(popup.instance().handleChange).toHaveBeenCalledWith('displayName', props.letstalkName);
+            expect(popup.instance().state.isLoading).toEqual(false);
         });
 
         it('handleGroupHeadlineChange with call correct props with correct params', () => {
@@ -195,17 +197,19 @@ describe('InsertPersonalMappingPopup', () => {
             expect(props.getGroupHeadlineByRecipient).toHaveBeenCalledWith('value');
         });
 
-        it('handleLetstalkSelect with call correct props with correct params', () => {
+        it('handleLetstalkSelect with call correct props with correct params',async () => {
             const event = {
                 target: { value: 'value' }
             };
+            jest.useFakeTimers();
             popup.instance().handleChange = jest.fn();
             popup.instance().handleLetstalkSelect(event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('letstalkId', 'value');
             expect(props.getLetstalkDisplayName).toHaveBeenCalledWith(1, 'value');
-            promise.then(() => {
-                expect(popup.instance().handleChange).toHaveBeenCalledWith('displayName', props.letstalkName);
-            });
+            await promise;
+            jest.runAllTimers();
+            expect(popup.instance().handleChange).toHaveBeenCalledWith('displayName', props.letstalkName);
+            expect(popup.instance().state.isLoading).toEqual(false);
         });
 
         it('renderOptions return expected result', () => {
@@ -304,7 +308,7 @@ describe('InsertPersonalMappingPopup', () => {
             expect(props.getGridData).not.toHaveBeenCalled();
         });
 
-        it('handleSumit will call expected props when Valid params', () => {
+        it('handleSumit will call expected props when Valid params',async () => {
             const event = { preventDefault: jest.fn() };
             popup.instance().isValidParams = jest.fn().mockReturnValue(true);
             popup.instance().getParams = jest.fn().mockReturnValue('valueParams');
@@ -312,10 +316,10 @@ describe('InsertPersonalMappingPopup', () => {
 
             expect(props.setInsertPersonalMappingResult).toHaveBeenCalledWith(null);
             expect(props.insertPersonalMapping).toHaveBeenCalledWith('valueParams');
-            promise.then(() => {
-                expect(props.closeInsertPersonalMappingPopup).toHaveBeenCalled();
-                expect(props.getGridData).toHaveBeenCalledWith(props.gridParams);
-            });
+            await promise;
+            jest.runAllTimers();
+            expect(props.closeInsertPersonalMappingPopup).toHaveBeenCalled();
+            expect(props.getGridData).toHaveBeenCalledWith(props.gridParams);
         });
 
         it('isDirtyForm return expected true value', () => {
@@ -384,7 +388,6 @@ describe('InsertPersonalMappingPopup', () => {
             popup.instance().isDirtyForm = jest.fn().mockReturnValue(true);
             popup.instance().onCloseInsertPopup();
             expect(popup.instance().state.dirtyFormConfirmation.isShow).toBeTrue;
-            expect(props.closeInsertPersonalMappingPopup).not.toHaveBeenCalled();
         });
 
         it('onCloseInsertPopup when is not dirty form will call correct props', () => {

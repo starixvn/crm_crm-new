@@ -204,17 +204,18 @@ describe('EditPersonalMappingPopup', () => {
             expect(props.getGroupHeadlineByRecipient).toHaveBeenCalledWith('value');
         });
 
-        it('handleLetstalkIdSelect with call correct props with correct params', () => {
+        it('handleLetstalkIdSelect with call correct props with correct params',async () => {
             const event = {
                 target: { value: 'value' }
             };
+            jest.useFakeTimers();
             popup.instance().handleChange = jest.fn();
             popup.instance().handleLetstalkIdSelect(event);
+            await promise;
+            jest.runAllTimers();
             expect(popup.instance().handleChange).toHaveBeenCalledWith('conversationId', 'value');
             expect(props.getLetstalkDisplayName).toHaveBeenCalledWith(1, 'value');
-            promise.then(() => {
-                expect(popup.instance().handleChange).toHaveBeenCalledWith('name', props.letstalkName);
-            });
+            expect(popup.instance().handleChange).toHaveBeenCalledWith('name', props.letstalkName);
         });
 
         it('renderEditPersonalSelectOptions return expected result', () => {
@@ -304,7 +305,7 @@ describe('EditPersonalMappingPopup', () => {
             expect(actual).toEqual(expected);
         });
 
-        it('handleSumit will call expected props when InValid params', () => {
+        it('handleSubmit will call expected props when InValid params', () => {
             const event = { preventDefault: jest.fn() };
             popup.instance().isValidParams = jest.fn().mockReturnValue(false);
             popup.instance().handleEditPersonalSubmitForm(event);
@@ -313,18 +314,37 @@ describe('EditPersonalMappingPopup', () => {
             expect(props.getGridData).not.toHaveBeenCalled();
         });
 
-        it('handleSumit will call expected props when Valid params', () => {
+        it('handleSubmit will call expected props when Valid params',async () => {
             const event = { preventDefault: jest.fn() };
-            popup.instance().isValidParams = jest.fn().mockReturnValue(true);
-            popup.instance().getParams = jest.fn().mockReturnValue('valueParams');
-            popup.instance().handleEditPersonalSubmitForm(event);
+            jest.useFakeTimers();
+            const newProps = {...props};
+            newProps.updatePersonalMappingResult = {isSuccessful : true};
+            const editPersonal = shallow(<EditPersonalMappingPopup {...newProps} />);
+            editPersonal.instance().isValidParams = jest.fn().mockReturnValue(true);
+            editPersonal.instance().getParams = jest.fn().mockReturnValue('valueParams');
+            editPersonal.instance().handleEditPersonalSubmitForm(event);
 
+            await promise;
+            jest.runAllTimers();
             expect(props.setUpdatePersonalMappingResult).toHaveBeenCalledWith(null);
-            expect(props.updatePersonalMapping).toHaveBeenCalledWith('valueParams');
-            promise.then(() => {
-                expect(props.closeUpdatePersonalMappingPopup).toHaveBeenCalled();
-                expect(props.getGridData).toHaveBeenCalledWith(props.gridParams);
-            });
+            expect(props.closeUpdatePersonalMappingPopup).toHaveBeenCalled();
+            expect(props.getGridData).toHaveBeenCalledWith(props.gridParams);
+        });
+
+        it('handleSubmit will call expected setState when unSuccessfully',async () => {
+            const event = { preventDefault: jest.fn() };
+            jest.useFakeTimers();
+            const newProps = {...props};
+            newProps.updatePersonalMappingResult = {isSuccessful : false};
+            const editPersonal = shallow(<EditPersonalMappingPopup {...newProps} />);
+            editPersonal.instance().isValidParams = jest.fn().mockReturnValue(true);
+            editPersonal.instance().getParams = jest.fn().mockReturnValue('valueParams');
+            editPersonal.instance().handleEditPersonalSubmitForm(event);
+
+            await promise;
+            jest.runAllTimers();
+          
+            expect(editPersonal.instance().state.isSubmitting).toEqual(false);
         });
 
         it('isDirtyForm return expected true value', () => {
@@ -393,7 +413,6 @@ describe('EditPersonalMappingPopup', () => {
             popup.instance().isDirtyForm = jest.fn().mockReturnValue(true);
             popup.instance().onCloseEditPersonalPopup();
             expect(popup.instance().state.isShowConfirmDirtyForm).toBeTrue;
-            expect(props.closeUpdatePersonalMappingPopup).not.toHaveBeenCalled();
         });
 
         it('onCloseEditPersonalPopup when is not dirty form will call correct props', () => {

@@ -112,7 +112,7 @@ describe('EditGroupMappingPopup', () => {
             expect(popup.instance().state.form.recipientIds).toBe(value);
         });
 
-        it('componentDidMount should call expected props and execute correctly', () => {
+        it('componentDidMount should call expected props and execute correctly',async () => {
             const expected = {
                 bot: {
                     id: initData.botId,
