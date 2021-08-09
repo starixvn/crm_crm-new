@@ -781,7 +781,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategory(settings, 11);
+            var actual = service.Public_GetCategorySubCategory(settings, 13);
 
             // Assert
             Assert.Equal(1, actual.Item1);
