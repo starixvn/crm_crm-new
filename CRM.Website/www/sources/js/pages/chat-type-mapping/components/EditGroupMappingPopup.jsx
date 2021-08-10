@@ -238,7 +238,7 @@ export class EditGroupMappingPopup extends Component {
             name: this.state.form.name,
             recipientTypeId: this.state.form.recipientTypeId,
             letstalkId: this.state.form.conversationId,
-            groupHeadlineIds: this.state.form.groupHeadlines,
+            groupHeadlineIds: parseInt(this.state.form.recipientTypeId, 10) === 9 ? '' : this.state.form.groupHeadlines,
             recipientIds: this.state.form.recipientIds,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark

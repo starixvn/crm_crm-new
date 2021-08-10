@@ -228,7 +228,7 @@ export class EditPersonalMappingPopup extends Component {
             botId: this.state.form.botId,
             recipientTypeId: this.state.form.recipientType,
             letstalkId: this.state.form.conversationId,
-            groupHeadlineIds: this.state.form.groupHeadlines,
+            groupHeadlineIds: parseInt(this.state.form.recipientType, 10) === 9 ? '' : this.state.form.groupHeadlines,
             recipientIds: this.state.form.recipient.value,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark
