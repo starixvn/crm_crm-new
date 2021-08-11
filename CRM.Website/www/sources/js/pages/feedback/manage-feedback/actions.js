@@ -3,7 +3,10 @@ import DataService from '@jsroot/common/dataService';
 import {
     setAllSettings,
     setGridParams,
-    setGridFeedbacks
+    setGridFeedbacks,
+    setViewRelatedCustomerDialog,
+    setEditFeedbackDialog,
+    setEditNoOfInquiryDialog
 } from './manageFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -22,10 +25,22 @@ const getGridFeedbacks = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const exportExcel = params => async () => {
+    const url = Site.resolveClientUrl('ManageFeedback/ExportExcel');
+    await DataService.getFileAsync(url, params).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
+        Site.downloadFile(response.data, fileName);
+    });
+};
+
 export const ActionCreators = {
     setAllSettings,
     getAllSettings,
     setGridParams,
     getGridFeedbacks,
-    setGridFeedbacks
+    setGridFeedbacks,
+    exportExcel,
+    setViewRelatedCustomerDialog,
+    setEditFeedbackDialog,
+    setEditNoOfInquiryDialog
 };

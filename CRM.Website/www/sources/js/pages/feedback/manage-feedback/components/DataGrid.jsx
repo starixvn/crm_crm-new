@@ -34,7 +34,7 @@ export class DataGrid extends Component {
                     </HeaderCell>
                 }
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Update')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('Feedback')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('Customer')}</HeaderCell>
                 <HeaderCell colWidth={40}>{LangHelper.getResource('Category')}</HeaderCell>
@@ -96,7 +96,7 @@ export class DataGrid extends Component {
                         value.subSettingId.map((subId,index) => {
                             const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subId);
                             return(
-                                <div key={index} className="font-italic ml-3">{filterSubCategory.name}</div>
+                                <div key={index} className="font-italic ml-3 py-1">{filterSubCategory.name}</div>
                             );
                         })
                     }
@@ -163,16 +163,21 @@ export class DataGrid extends Component {
                         onChange={this.handleChangeCheckbox}
                     />
                 </Cell>
-                <Cell className='text-center'><span className="edit-feedback pr-1 fa fa-pencil" /></Cell>
+                {
+                    this.props.isHost &&
+                    <Cell className='text-center'>
+                        <span className="edit-feedback pr-1 fa fa-pencil" onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}/>
+                    </Cell>
+                }
                 <Cell className='text-center'>{item.feedbackId}</Cell>
                 <Cell>
                     <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
                         <span className="pr-1 fa fa-pencil-square-o" />
                         <strong className='link-click'>{item.subject}</strong>
                     </div>
-                    <div className="feedback-info">
-                        <div className="info">Feedback date <strong>{feedbackDateFormat}</strong></div>
-                        <div className="info">By<strong> {item.creatorName} </strong>on {createDateFormat}</div>
+                    <div className="pl-3">
+                        <div className="py-1">Feedback date <strong>{feedbackDateFormat}</strong></div>
+                        <div className="py-1">By<strong> {item.creatorName} </strong>on {createDateFormat}</div>
                         {
                             item.reviewerName &&
                             <div className="info">
@@ -192,6 +197,10 @@ export class DataGrid extends Component {
     handleExportExcel = () => {
         const { gridParams } = this.props;
         this.props.exportExcel(gridParams);
+    };
+
+    handleEditNoOfInquiry = id => {
+        this.props.setEditNoOfInquiryDialog({ show: true, feedbackId: id });
     };
 
     handleEditFeedback = id => {
@@ -245,15 +254,14 @@ export class DataGrid extends Component {
                 </div>
 
                 <Table
-                    width={1250}
+                    width={1350}
                     autoWidth={false}
-                    maxWidth={1250}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
-                    containerPadding={0}
+                    containerPadding={10}
                     shouldResetScrollPosition={false}
                 />
             </Fragment>
