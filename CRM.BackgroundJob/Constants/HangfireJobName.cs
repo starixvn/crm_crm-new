@@ -14,5 +14,6 @@
         public const string CreateFeedbackForTurnoverControl = "CreateFeedbackForTurnoverControl";
         public const string CreateFeedbackForProblemsAccount = "CreateFeedbackForProblemsAccount";
         public const string CreateFeedbackForResultAmendment = "CreateFeedbackForResultAmendment";
+        public const string SynchronizeNewLicenseeOICToSiteSetting = "SynchronizeNewLicenseeOICToSiteSetting";
     }
 }
