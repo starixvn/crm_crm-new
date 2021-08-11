@@ -1,0 +1,271 @@
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import LangHelper from '@jsroot/common/langHelper';
+import Tooltip from 'react-bootstrap/Tooltip';
+import DateTimeService from '@jsroot/common/dateTimeService';
+import { ActionCreators } from '../actions';
+import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
+import { PAGING_SIZES } from '@jsroot/common/constants';
+
+export class DataGrid extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            checkedItems: new Map()
+        };
+    }
+    
+    buildHeader = isHost => {
+        const isCheckAll = this.isCheckAll();
+        return (
+            <HeaderRow>
+                {
+                    isHost && <HeaderCell colWidth={10}>
+                    <div>
+                        <input type='checkbox' className='cursor-pointer'
+                            checked={isCheckAll}
+                            onChange={this.handleChangeCheckBoxAll}
+                        />
+                    </div>
+                    </HeaderCell>
+                }
+                <HeaderCell colWidth={10}>{LangHelper.getResource('Update')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={50}>{LangHelper.getResource('Feedback')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('Customer')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('RelatedCustomer')}</HeaderCell>
+            </HeaderRow>
+        );
+    };
+
+    buildBody = isHost => {
+        const { gridDataFeedbacks } = this.props;
+        if (gridDataFeedbacks.data.length > 0) {
+            return gridDataFeedbacks.data.map((item, index) => this.renderRow(item, index));
+        }
+        return [
+            <Row key='body-nodata' className="no-data" >
+                <Cell className='text-center' colSpan={8}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+            </Row>
+        ];
+    };
+
+    isCheckAll = () =>{
+        if(this.props.gridDataFeedbacks.data.length === 0){
+            return false;
+        }
+        let countChecked = 0;
+        for(let [key, value] of this.state.checkedItems.entries()) {
+            if(value === true){
+                countChecked++;
+            }
+        }
+        return countChecked === this.props.gridDataFeedbacks.data.length;
+    }
+
+    handleGroupCategory = filterCategory => {
+        const groupCategory = filterCategory.reduce( (category, currentValue) => {
+            const CategorySetting = category.find(item => currentValue.settingId === item.settingId);
+            if(CategorySetting){
+                CategorySetting.subSettingId = [...CategorySetting.subSettingId, currentValue.subSettingId];
+            }else{
+                category.push({settingId: currentValue.settingId, subSettingId: [currentValue.subSettingId]});
+            }
+            return category;
+        },[]);
+        return groupCategory;
+    };
+
+    renderCategoryColumn = item => {
+        const { mainCategories } = this.props.gridDataFeedbacks;
+        const filterCategories = item.settings.filter(element => element.settingType === 'Category');
+        const groupCategory = this.handleGroupCategory(filterCategories);
+
+        return groupCategory.map((value,key) => {
+            const filterMainCategory = mainCategories.find(element => element.settingId === value.settingId);
+            return (
+                <div>
+                    <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
+                    {
+                        value.subSettingId.map((subId,index) => {
+                            const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subId);
+                            return(
+                                <div key={index} className="font-italic ml-3">{filterSubCategory.name}</div>
+                            );
+                        })
+                    }
+                </div>
+            );
+        });
+    };
+
+    handleOpenViewRelatedCustomerDialog = relatedCustomers => {
+        this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
+    };
+
+    renderRelatedCustomerColumn = item => {
+        const totalItems = item.length;
+        if(totalItems > MaximumDisplayRelatedCustomer){
+            return(
+                <a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(item.join(', '))}>
+                    {totalItems} customers
+                </a>
+            );
+        }else{
+            return item.join(', ');
+        }
+    };
+
+    handleChangeCheckbox = event =>{
+        const item = event.target.name;
+        const isChecked = event.target.checked;
+        this.setState(prevState => ({
+            checkedItems: prevState.checkedItems.set(parseInt(item, 10), isChecked)
+        }));
+    }
+
+    handleChangeCheckBoxAll = event => {
+        const isChecked = event.target.checked;
+        let checkedItems = this.state.checkedItems;
+        if(isChecked){
+            this.props.gridDataFeedbacks.data.forEach(element => {
+                if(!checkedItems.has(element.feedbackId))
+                {
+                    checkedItems.set(element.feedbackId, true);
+                }
+            });
+
+            this.setState({checkedItems: checkedItems});
+        }
+        else
+        {
+            const clearCheckedItems = new Map();
+            this.setState({ checkedItems: clearCheckedItems });
+        }
+    }
+
+    renderRow = (item, index) => {
+        const feedbackDateFormat = DateTimeService.toShortDateTimeFormat(item.feedbackDate);
+        const createDateFormat = DateTimeService.toShortDateTimeFormat(item.createDate);
+        const solveDateFormat = DateTimeService.toShortDateTimeFormat(item.solveDate);
+        return (
+            <Row key={`${item.feedbackId}-${index}`} className="manage-feedback-row">
+                <Cell className='text-center'>
+                    <input type='checkbox' 
+                        name={item.feedbackId} key={item.feedbackId}
+                        checked={this.state.checkedItems.get(item.feedbackId) || false}
+                        onChange={this.handleChangeCheckbox}
+                    />
+                </Cell>
+                <Cell className='text-center'><span className="edit-feedback pr-1 fa fa-pencil" /></Cell>
+                <Cell className='text-center'>{item.feedbackId}</Cell>
+                <Cell>
+                    <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
+                        <span className="pr-1 fa fa-pencil-square-o" />
+                        <strong className='link-click'>{item.subject}</strong>
+                    </div>
+                    <div className="feedback-info">
+                        <div className="info">Feedback date <strong>{feedbackDateFormat}</strong></div>
+                        <div className="info">By<strong> {item.creatorName} </strong>on {createDateFormat}</div>
+                        {
+                            item.reviewerName &&
+                            <div className="info">
+                                Reviewed by <strong> {item.reviewerName} </strong> on {solveDateFormat}
+                            </div>
+                        }
+                    </div>
+                </Cell>
+                <Cell>{item.username}</Cell>
+                <Cell>{this.renderCategoryColumn(item)}</Cell>
+                <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
+                <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
+            </Row>
+        );
+    };
+
+    handleExportExcel = () => {
+        const { gridParams } = this.props;
+        this.props.exportExcel(gridParams);
+    };
+
+    handleEditFeedback = id => {
+        this.props.setEditFeedbackDialog({ show: true, feedbackId: id });
+    };
+
+    renderExportExcelText = () => {
+        return (
+            <OverlayTrigger
+                placement="auto"
+                overlay={
+                    <Tooltip>
+                        <span>Export to Excel</span>
+                    </Tooltip>
+                }
+            >
+                <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcel} />
+            </OverlayTrigger>
+        );
+    };
+
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params['pageSize'] = pageSize;
+        params['pageIndex'] = pageIndex;
+        this.props.setGridParams(params);
+        this.props.getGridFeedbacks(params);
+    };
+
+    render() {
+        const {gridDataFeedbacks, isHost} = this.props;
+        if(!gridDataFeedbacks || !gridDataFeedbacks.data){
+            return null;
+        }
+
+        const { pageIndex, pageSize } = this.props.gridParams;
+        const pagingOption = {
+            PageIndex: pageIndex,
+            PageSize: pageSize,
+            TotalItem: gridDataFeedbacks.totalItems,
+            PageList: PAGING_SIZES
+        };
+
+        return (
+            <Fragment>
+                <div className='table-title d-flex justify-content-between align-items-center'>
+                    <span>{LangHelper.getResource('Feedback')}</span>
+                    {
+                        gridDataFeedbacks.data.length > 0 && this.renderExportExcelText()
+                    }
+                </div>
+
+                <Table
+                    width={1250}
+                    autoWidth={false}
+                    maxWidth={1250}
+                    isPaging
+                    pageOption={pagingOption}
+                    onPaging={this.onPaging}
+                    header={this.buildHeader(isHost)}
+                    body={this.buildBody(isHost)}
+                    containerPadding={0}
+                    shouldResetScrollPosition={false}
+                />
+            </Fragment>
+        );
+    }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { gridParams, settings, gridDataFeedbacks } = state;
+    return { gridParams, settings, gridDataFeedbacks };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

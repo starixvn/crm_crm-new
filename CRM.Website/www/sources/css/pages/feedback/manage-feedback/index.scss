@@ -57,3 +57,42 @@
         }
     }
 }
+
+.table-title{
+    max-width: 1250px;
+}
+
+.manage-feedback-row{
+    .edit-feedback{
+        cursor: pointer;
+    
+        &:hover {
+            color: $draft-color !important;
+        }
+    }
+
+    strong.link-click {
+        cursor: pointer;
+        color: $link-color !important;
+    
+        &:hover {
+            color: $draft-color !important;
+        }
+    }
+    
+    .feedback-info {
+        padding-left: 17px;
+    
+        .info{
+            padding: 3px 0px;
+        }
+    }
+
+    span.fa.fa-file-excel-o.icon-excel {
+        color: #28a745;
+        font-size: 14px;
+        cursor: pointer;
+    }
+}
+
+

@@ -12,50 +12,51 @@ import LangHelper from '@jsroot/common/langHelper';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        var nextDay = new Date();
-        nextDay.setDate(nextDay.getDate() + 1);
-        const fromDate = new Date(DateTimeService.toShortDateFormat(new Date()));
-        const toDate = new Date(DateTimeService.toShortDateFormat(new Date(nextDay)));    
+        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        fromDate.setDate(fromDate.getDate() - 1);   
+        this.maxFromDate = currentDate;
+        this.maxToDate = currentDate;
+        this.minToDate = fromDate;
         this.state = {
             runningNumber: '',
             fromDate: fromDate,
-            toDate: toDate,
+            toDate: currentDate,
             username: '',
             handler: '',
             mainCategoryId: 0,
             subCategoryId: 0,
-            communicationId: 1005,
+            communicationId: 0,
             reviewer: '',
             statusId: 0,
             responseId: 0,
-            isReviewed: 0,
+            isReviewed: '',
             isGuest: 0
         };
     }
 
-    handleChangeFromDate = (fromDate, toDate) => {
-        this.setState({fromDate});
-        if (moment(fromDate).isAfter(moment(toDate))) {
-            toDate = new Date(DateTimeService.toShortDateFormat(new Date(fromDate)));
-            toDate.setMinutes(toDate.getMinutes() + 1);
-            this.setState(toDate);
-        }
+    handleChangeFromDate = fromDate => {
+        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const maxDate = new Date(fromDate.getTime());
+        maxDate.setMonth(fromDate.getMonth() + 12);
+        maxDate.setDate(fromDate.getDate() - 1);
+
+        this.minToDate = fromDate;
+        this.maxToDate = (maxDate < currentTime) ? maxDate : currentTime;
+        this.setState({
+            fromDate: fromDate,
+            toDate: maxDate < currentTime ? maxDate : currentTime
+        });
     };
 
     handleChangeToDate = (fromDate, toDate) => {
         this.setState({toDate});
-        if (moment(fromDate).isAfter(moment(toDate))) {
-            fromDate = new Date(DateTimeService.toShortDateFormat(new Date(toDate)));
-            fromDate.setMinutes(fromDate.getMinutes() - 1);
-            this.setState({fromDate});
-        }
     };
 
     handleChange = evt => {
-        const value = evt.target.value;
         this.setState({
           ...this.state,
-          [evt.target.name]: value
+          [evt.target.name]: evt.target.type === 'select-one' ? parseInt(evt.target.value) : evt.target.value
         });
       }
 
@@ -65,21 +66,21 @@ export class Filter extends Component {
         const  {mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
                     reviewer, statusId, responseId, isReviewed, isGuest} = this.state; 
         const params = {
-            FeedbackId: runningNumber !== '' ? runningNumber : null,
-            UserName: username,
-            IsGuest: isGuest > 0 ? 1 : 0,
-            FromDate: DateTimeService.toShortDateFormat(fromDate),
-            ToDate: DateTimeService.toShortDateFormat(toDate),
-            MainCategoryId: mainCategoryId,
-            subCategoryId: subCategoryId,
-            CommunicationId: communicationId,
-            StatusId: statusId,
-            ResponseId: responseId,
-            IsReviewed: isReviewed,
-            HandledBy: handler,
-            Reviewer: reviewer,
-            ItemsPerPage: 1,
-            PageSize: 100
+            feedbackId: runningNumber !== '' ? runningNumber : null,
+            userName: username,
+            isGuest: isGuest,
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate),
+            mainCategoryId: mainCategoryId === 0 ? '' : mainCategoryId,
+            subCategoryId: subCategoryId === 0 ? '' : subCategoryId,
+            communicationId: communicationId === 0 ? '' : communicationId,
+            statusId: statusId === 0 ? '' : statusId,
+            responseId: responseId === 0 ? '' : responseId,
+            isReviewed: isReviewed,
+            handledBy: handler,
+            reviewer: reviewer,
+            pageIndex: 1,
+            pageSize: 100
         };
 
         this.props.setGridParams(params);
@@ -111,9 +112,9 @@ export class Filter extends Component {
         }
 
         const reviews = [
-            { settingValue: 'All', settingId: 0 },
+            { settingValue: 'All', settingId: '' },
             { settingValue: 'Review', settingId: 1 },
-            { settingValue: 'Not Reviewed', settingId: -1 }
+            { settingValue: 'Not Reviewed', settingId: 0 }
         ];
 
         const  {mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
@@ -121,6 +122,7 @@ export class Filter extends Component {
         const {customerTypes, responses , mainCategories, subCategories, communications, statuses} = this.props.settings;
         const responsesOptions = [{ id: 0, value: 'All'}, ...responses];
         const statusesOptions= [{statusId: 0, name: 'All'}, ...statuses ];
+        const communicationOptions = [{ id: 0, name: 'All'}, ...communications];
         const mainCategoryOptions = this.filterCategories(mainCategories, subCategories);
         const subCategoryOptions = this.filterSubCategories(mainCategoryOptions, mainCategoryId);
 
@@ -141,7 +143,8 @@ export class Filter extends Component {
                         <div className='react-datepicker-wrapper-container'>
                         <DatePicker
                             selected={fromDate}
-                            onChange={value => this.handleChangeFromDate(value, toDate)}
+                            maxDate={new Date(this.maxFromDate)}
+                            onChange={value => this.handleChangeFromDate(value)}
                         />
                         </div>
                 </Form.Group>
@@ -150,6 +153,8 @@ export class Filter extends Component {
                         <div className='react-datepicker-wrapper-container'>
                         <DatePicker
                             selected={toDate}
+                            minDate={new Date(this.minToDate)}
+                            maxDate={new Date(this.maxToDate)}
                             onChange={value => this.handleChangeToDate(fromDate, value)}    
                         />
                         </div>
@@ -238,7 +243,7 @@ export class Filter extends Component {
                         onChange={this.handleChange}
                     >
                         {
-                            communications.map((value,key) => this.renderOptions(value.name, value.id, key))
+                            communicationOptions.map((value,key) => this.renderOptions(value.name, value.id, key))
                         }
                     </Form.Control>
                     <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
@@ -272,7 +277,7 @@ export class Filter extends Component {
                 </Form.Group>
                 <Form.Group>
                     <Button variant="primary" size="sm" onClick={this.handleSubmit}>
-                        {LangHelper.getResource('Save')}
+                        {LangHelper.getResource('Submit')}
                     </Button>
                 </Form.Group>
             </Form.Row>

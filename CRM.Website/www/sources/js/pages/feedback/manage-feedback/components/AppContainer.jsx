@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 import Filter from './Filter';
+import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -27,6 +28,7 @@ export class AppContainer extends Component {
         return (
             <Fragment>
                 <Filter />
+                <DataGrid isHost={isHost}/>
             </Fragment>
         );
     }

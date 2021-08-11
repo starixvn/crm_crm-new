@@ -4,7 +4,10 @@ const manageFeedbackSlice = createSlice({
     name: 'manageFeedback',
     initialState: {
         settings: null,
-        gridParams: null,
+        gridParams: {
+            pageIndex: 1,
+            pageSize: 100
+        },
         gridDataFeedbacks: null
     },
     reducers: {

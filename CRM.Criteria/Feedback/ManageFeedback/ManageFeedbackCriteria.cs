@@ -2,6 +2,7 @@
 {
     using System;
     using CRM.Core.Constants;
+    using Fanex.Data;
     using Fanex.Data.Repository;
 
     public class ManageFeedbackCriteria : CriteriaBase
@@ -16,19 +17,19 @@
 
         public string Username { get; set; }
 
-        public int IsGuest { get; set; }
+        public bool IsGuest { get; set; }
 
-        public int CommunicationId { get; set; }
+        public int? CommunicationId { get; set; }
 
-        public int MainCategoryId { get; set; }
+        public int? MainCategoryId { get; set; }
 
-        public int SubCategoryId { get; set; }
+        public int? SubCategoryId { get; set; }
 
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
 
-        public int IsReviewed { get; set; }
+        public bool? IsReviewed { get; set; }
 
-        public int ResponseId { get; set; }
+        public int? ResponseId { get; set; }
 
         public string HandledBy { get; set; }
 
@@ -36,7 +37,8 @@
 
         public int PageIndex { get; set; }
 
-        public int ItemsPerPage { get; set; }
+        [SpParam(SqlParamName = "ItemsPerPage")]
+        public int PageSize { get; set; }
 
         public int TotalRows { get; set; }
 

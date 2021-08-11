@@ -76,12 +76,8 @@
             {
                 IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetManageFeedbackAsync(criteria);
                 IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
-                int totalItems = feedbacks.ToList().Count;
-                if (totalItems > 0)
-                {
-                    feedbacks = feedbacks.Skip(criteria.ItemsPerPage * (criteria.PageIndex - 1)).Take(criteria.ItemsPerPage).ToList();
-                }
-                return Json(new { data = feedbacks, mainCategories, totalItems });
+                var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
+                return Json(new { data = feedbacksOrder, mainCategories, totalItems = criteria.TotalRows });
             }
           catch(Exception e)
             {
