@@ -14,6 +14,11 @@
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Services;
     using static Fanex.NAP.Core.Business.Constant;
+    using CRM.Core.Models;
+    using CRM.Criteria.InformHeadline;
+    using System.Text;
+    using CRM.Core.Extensions.XML;
+    using CRM.Core.Services;
 
     [CrmPermission(FunctionKey = FunctionKey.InformHeadline, Policy = Policy.Read)]
     public class InformHeadlineController : BaseController
@@ -21,6 +26,7 @@
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
+        private readonly IBaseService baseService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         private readonly IInformHeadlineService informHeadlineService;
@@ -29,6 +35,7 @@
             INapSession napSession,
             INapSettings napSettings,
             IUserService userService,
+            IBaseService baseService,
             ISettingService settingService,
             IExportExcelService excelService,
             IInformHeadlineService informHeadlineService
@@ -37,6 +44,7 @@
             this.napSession = napSession;
             this.napSettings = napSettings;
             this.userService = userService;
+            this.baseService = baseService;
             this.settingService = settingService;
             this.excelService = excelService;
             this.informHeadlineService = informHeadlineService;
@@ -44,24 +52,63 @@
 
         public IActionResult Index()
         {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadline, Policy.Host);
-            return View(isHost);
+            var permission = new GetPermissionInform
+            {
+                ContactPolicy = ((Policy)userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact)).ToString(),
+                SearchPolicy = ((Policy)userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch)).ToString()
+            };
+            return View(permission);
         }
 
-        [HttpGet]
         public async Task<IActionResult> GetInforms()
         {
-            IEnumerable<InformHeadlineDetail> informs = await informHeadlineService.GetInformAsync();
+            IEnumerable<InformHeadlineModel> informs = await informHeadlineService.GetInformAsync();
             return Json(informs);
         }
 
         [HttpPost]
         public async Task<IActionResult> ExportInformExcel()
         {
-            IEnumerable<InformHeadlineDetail> informs = await informHeadlineService.GetInformAsync();
+            IEnumerable<InformHeadlineModel> informs = await informHeadlineService.GetInformAsync();
             var bytes = excelService.ExportInformHeadline(informs);
             string reportName = ViewResources.InformHeadline_Title;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetTitleDetail([FromBody] GetTitleDetailParam param)
+        {
+            IEnumerable<InformTitleDetail> titles = await informHeadlineService.GetTitleDetailAsync(param);
+            return Json(titles);
+        }
+
+        public async Task<IActionResult> GetContactInformSettings()
+        {
+            var contactInformSettings = new
+            {
+                filterStatuses = await informHeadlineService.GetInformStatuses(true),
+                productStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline),
+                stations = await settingService.GetStations(),
+                statuses = await informHeadlineService.GetInformStatuses()
+            };
+            return Json(contactInformSettings);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetContactInforms([FromBody] GetContactInformParam param)
+        {
+            IEnumerable<UpdateInform> contactInforms = await informHeadlineService.GetContactInforms(param);
+            return Json(contactInforms);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineContact, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateContentInforms([FromBody] UpdateContentInformsCommand param)
+        {
+            param.IP = ClientIP;
+            param.UserId = napSession.UserId;
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(param);
+            return Json(commandResult);
         }
     }
 }

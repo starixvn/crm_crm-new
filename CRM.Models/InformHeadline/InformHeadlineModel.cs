@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class InformHeadlineDetail
+    public class InformHeadlineModel
     {
         public int TitleId { get; set; }
 

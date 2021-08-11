@@ -29,7 +29,7 @@
 
         byte[] ExportDeletedFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
 
-        byte[] ExportInformHeadline(IEnumerable<InformHeadlineDetail> informs);
+        byte[] ExportInformHeadline(IEnumerable<InformHeadlineModel> informs);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -92,7 +92,7 @@
             return excel.Export();
         }
 
-        public byte[] ExportInformHeadline(IEnumerable<InformHeadlineDetail> informs)
+        public byte[] ExportInformHeadline(IEnumerable<InformHeadlineModel> informs)
         {
             const string ExcelTemplatePath = "ExcelTemplates/InformHeadlines.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);

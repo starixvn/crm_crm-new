@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { ActionCreators } from '../actions';
+import { Button } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -13,26 +14,26 @@ export class DataGrid extends Component {
         return(
             <HeaderRow>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Edit')}</HeaderCell>
-                <HeaderCell colWidth={35}>{LangHelper.getResource('Title')}</HeaderCell>
+                <HeaderCell colWidth={45}>{LangHelper.getResource('Title')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('CreatedDate')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('NoDirectAccounts')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('Done')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('RequestToCallBack')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('NoNeedToCall')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('NoReply')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('UnContactable')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('InternalAccount')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('NeverTouch')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('KeptForReference')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('NoDirectAccounts')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Done')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('RequestToCallBack')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('NoNeedToCall')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('NoReply')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('UnContactable')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('InternalAccount')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('NeverTouch')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('KeptForReference')}</HeaderCell>
             </HeaderRow>
         )
     };
 
     buildBody = () => {
-        const { gridData } = this.props;
+        const { contactPolicy, gridData } = this.props;
         if (gridData.length > 0) {
-            return gridData.map((item, index) => this.renderRow(item, index));
+            return gridData.map((item, index) => this.renderRow(item, index, contactPolicy));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -41,17 +42,48 @@ export class DataGrid extends Component {
         ];
     };
 
-    renderRow = (item, index) => {
+    handleEditDetail = async titleId => {
+        await this.props.getContactInformSettings();
+        const selectedStatuses = this.props.contactInformSettings.filterStatuses.map(item => {
+            return item.settingId;
+        }).join();
+
+        this.props.getTitleDetail({
+            titleId: titleId
+        });
+        this.props.getContactInforms({
+            titleId: titleId,
+            username: '',
+            statusId: selectedStatuses,
+            pageIndex: 1,
+            pageSize: 300
+        });
+
+        this.props.setGridParams({
+            pageIndex: 1,
+            pageSize: 100
+        });
+        this.props.setEditInformHeadline({show: true, titleId: titleId, selectedStatuses: selectedStatuses});
+    }
+
+    renderRow = (item, index, contactPolicy) => {
+        const cssClass = item.status ? item.status.toLowerCase() : '';
         return (
-            <Row key={index} className="deleted">
+            <Row key={index} className={cssClass}>
                 <Cell className='text-center'>
                     <span className="fa fa-pencil-square-o"></span>
                 </Cell>
-                <Cell>
-                    <div>
-                        <span className='link-click'>{item.title}</span>
-                    </div>
-                </Cell>
+                {
+                    !contactPolicy.hasAttribute('none') ?
+                    (
+                        <Cell>
+                            <span className='link-click' onClick={() => this.handleEditDetail(item.titleId)}>{item.title}</span>
+                        </Cell>
+                    ) :
+                    (
+                        <Cell>{item.title}</Cell>
+                    )
+                }
                 <Cell>{item.clientCreatedDate}</Cell>
                 <Cell className='text-center'>{item.total}</Cell>
                 <Cell className='text-center'>{item.status}</Cell>
@@ -102,12 +134,20 @@ export class DataGrid extends Component {
                 </div>
 
                 <Table
+                    maxWidth={1600}
                     autoWidth={true}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     containerPadding={0}
                     adjustedHeight={10}
                 />
+
+                {
+                    this.props.searchPolicy.hasAttribute('host') &&
+                    <Button variant="primary" size="sm" style={{width: '75px'}}>
+                        {LangHelper.getResource('NewCase')}
+                    </Button>
+                }
             </>
         )
     }
@@ -116,8 +156,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridData } = state;
-    return { gridData };
+    const { gridData, titleDetail, contactInformSettings, contactInforms } = state;
+    return { gridData, titleDetail, contactInformSettings, contactInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

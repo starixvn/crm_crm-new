@@ -20,5 +20,7 @@
         public const string CustomerInfo = "CreateUpdateFeedback_CustomerInfo";
 
         public const string InformHeadline = "InformHeadline";
+        public const string InformHeadlineSearch = "InformHeadlineSearch";
+        public const string InformHeadlineContact = "InformHeadlineContact";
     }
 }

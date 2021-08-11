@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
     using System.Linq;
     using System.Web;
     using CRM.Core;
@@ -12,7 +13,7 @@
     using OfficeOpenXml.Style;
     public class InformHeadlineExcel : ExcelBase
     {
-        private readonly IEnumerable<InformHeadlineDetail> informs;
+        private readonly IEnumerable<InformHeadlineModel> informs;
 
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
@@ -20,7 +21,7 @@
 
         public InformHeadlineExcel(
             string templatePath, 
-            IEnumerable<InformHeadlineDetail> informs) : base(templatePath, 0, ViewResources.InformHeadline)
+            IEnumerable<InformHeadlineModel> informs) : base(templatePath, 0, ViewResources.InformHeadline)
         {
             this.informs = informs;
         }
@@ -49,7 +50,7 @@
             }
         }
 
-        protected internal virtual void RenderRow(ExcelWorksheet worksheet, InformHeadlineDetail inform, int index, int rowIndex)
+        protected internal virtual void RenderRow(ExcelWorksheet worksheet, InformHeadlineModel inform, int index, int rowIndex)
         {
             var colIndex = 1;
             worksheet.Cells[rowIndex, colIndex++].Value = HttpUtility.HtmlDecode(inform.Title);
@@ -65,10 +66,15 @@
             worksheet.Cells[rowIndex, colIndex++].Value = inform.NeverTouch;
             worksheet.Cells[rowIndex, colIndex++].Value = inform.KeptForReference;
 
-
-            if ((index & 1) == 0)
+            Color colOpen = ColorTranslator.FromHtml("#f0edc4");
+            Color colClosed = ColorTranslator.FromHtml("#f2f2f2");
+            if (inform.Status == "Open")
             {
-                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colOpen);
+            }
+            else
+            {
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colClosed);
             }
         }
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
@@ -98,7 +104,7 @@
             {
                 worksheet.Column(index).Width = WidthNormal;
             }
-            for (var index = 0; index < informs.Count() - 1; index++)
+            for (var index = 0; index < informs.Count(); index++)
             {
                 worksheet.Row(RowStartBody + index).Height = RowHeight;
                 DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalCols]);

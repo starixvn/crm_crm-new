@@ -1,4 +1,4 @@
-﻿@model bool
+﻿@model CRM.Models.InformHeadline.GetPermissionInform
 @{
     ViewData["Title"] = ViewResources.InformHeadline;
 }
@@ -18,5 +18,6 @@
         <script src="~/js/pro/pages/informheadline/index.chunk.js" asp-append-version="true"></script>
     </environment>
 }
-<input type="checkbox" hidden id="IsHost" @(Model ? "checked" : string.Empty) />
+<input type="checkbox" hidden id="ContactPolicy" @(Model.ContactPolicy) />
+<input type="checkbox" hidden id="SearchPolicy" @(Model.SearchPolicy) />
 <div id="app-container"></div>

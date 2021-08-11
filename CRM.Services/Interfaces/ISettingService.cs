@@ -53,5 +53,7 @@
         IEnumerable<Setting> GetAllCustomerTypes();
 
         Task<IEnumerable<Setting>> GetMainCategoryWithSubCategoryAsync();
+
+        Task<IEnumerable<Station>> GetStations();
     }
 }

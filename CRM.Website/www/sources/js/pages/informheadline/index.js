@@ -10,11 +10,15 @@ const store = configureStore({
     reducer: informHeadline
 });
 
-const isHost = document.getElementById('IsHost').checked;
+const contactPolicy = document.getElementById('ContactPolicy');
+const searchPolicy = document.getElementById('SearchPolicy');
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer isHost={isHost} />
+            <AppContainer 
+                contactPolicy={contactPolicy}
+                searchPolicy={searchPolicy}
+            />
         </Layout>
     </Provider>,
     document.getElementById('app-container'));

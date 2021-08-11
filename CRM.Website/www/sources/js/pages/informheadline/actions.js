@@ -1,14 +1,21 @@
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import{
-    setInformHeadline
+    setInforms,
+    setTitleDetail,
+    setContactInformSettings,
+    setContactInforms,
+    setEditInformHeadline,
+    setUpdateContentInforms,
+    setGridParams
 } from './informHeadlineSlice';
 
-const getInformHeadline = () => async dispatch => {
+const getInforms = () => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/GetInforms');
     await DataService.getDataAsync(url).then(response => {
-        dispatch(setInformHeadline(response.data));
-    });
+        dispatch(setInforms(response.data));
+    }).then(() => Site.unblockUI());
 };
 
 const ExportInformExcel = params => async () => {
@@ -19,7 +26,45 @@ const ExportInformExcel = params => async () => {
     });
 };
 
+const getTitleDetail = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/GetTitleDetail');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setTitleDetail(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const getContactInformSettings = () => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/GetContactInformSettings');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setContactInformSettings(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const getContactInforms = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/GetContactInforms');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setContactInforms(response.data));
+    }).then(() => Site.unblockUI());
+}
+
+const getUpdateContentInforms = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/UpdateContentInforms');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setUpdateContentInforms(response.data));
+    }).then(() => Site.unblockUI());
+}
+
 export const ActionCreators = {
-    getInformHeadline,
-    ExportInformExcel
+    getInforms,
+    ExportInformExcel,
+    getTitleDetail,
+    getContactInformSettings,
+    getContactInforms,
+    setEditInformHeadline,
+    getUpdateContentInforms,
+    setGridParams
 };

@@ -22,3 +22,27 @@
     font-size: 14px;
     cursor: pointer;
 }
+
+.body-content tr.open td{
+    background: rgb(240, 237, 196) !important;
+}
+
+.body-content tr.closed td{
+    background: rgb(242, 242, 242) !important;
+}
+
+.body-content tr.free-grid td{
+    background: rgb(208, 230, 244) !important;
+}
+
+.select-body{
+    width: 105px;
+    height: 35px;
+    margin: auto;
+}
+
+@media screen and (min-width: 1200px){
+    .modal-xl {
+        max-width: 1200px;
+    }
+}

@@ -317,5 +317,11 @@
 
             return mainCategories;
         }
+
+        public async Task<IEnumerable<Station>> GetStations()
+        {
+            var criteria = new GetAllStationCriteria();
+            return await baseService.GetDataAsync<Station>(criteria);
+        }
     }
 }
