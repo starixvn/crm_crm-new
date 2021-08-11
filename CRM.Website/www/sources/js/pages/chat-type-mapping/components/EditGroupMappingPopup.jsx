@@ -362,7 +362,7 @@ export class EditGroupMappingPopup extends Component {
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
                         </Form.Label>
-                        <Col sm="9" md="10">
+                        <Col sm="9" md="10" className={`${parseInt(this.state.form.recipientTypeId, 10) === 9 ? 'disabled-select' : ''}`}>
                             <MultipleSelect
                                 valueField='name'
                                 statusField='checked'

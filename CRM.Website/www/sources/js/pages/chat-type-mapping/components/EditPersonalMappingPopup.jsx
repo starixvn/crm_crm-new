@@ -360,7 +360,7 @@ export class EditPersonalMappingPopup extends Component {
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
                         </Form.Label>
-                        <Col sm="9" md="10">
+                        <Col sm="9" md="10" className={`${parseInt(this.state.form.recipientType, 10) === 9 ? 'disabled-select' : ''}`}>
                             <MultipleSelect
                                 width={'100%'}
                                 name="headlineIds"

@@ -122,3 +122,12 @@
         top: 75%;
     }
 }
+
+.disabled-select{
+    .multiple-select-container{
+        button[disabled] {
+            opacity: 0.8 !important;
+            background-color: #C3C3C3 !important;
+        }
+    }
+}
