@@ -427,7 +427,7 @@ export default class AppContainer extends Component {
             errors.languageId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language'));
         }
 
-        const { mainCategories, subCategories } = this.props.settings;
+        const { mainCategories, subCategories } = this.state.settings;
         validateMainCategorySubCategory(errors, values.mainCategoryIds, values.subCategoryIds, mainCategories, subCategories);
 
         if (values.subject === '') {

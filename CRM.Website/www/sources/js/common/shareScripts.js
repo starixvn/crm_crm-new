@@ -83,7 +83,7 @@ export const getInvalidCategoryParams = (selectedCategoryIds, selectedSubCategor
     selectedCategoryIds.forEach(categoryId => {
         let isInvalid = false;
         selectedSubCategoryIds.forEach(subCategoryId => {
-            if (!checkCategorySubCategory(categoryId, subCategoryId, subCategories)) {
+            if (checkCategorySubCategory(categoryId, subCategoryId, subCategories)) {
                 isInvalid = true;
             }
         });
