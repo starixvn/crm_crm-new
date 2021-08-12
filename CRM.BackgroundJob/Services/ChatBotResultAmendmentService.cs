@@ -47,7 +47,7 @@
             var criteria = new GetChatBotResultAmendmentCriteria
             {
                 BatchSize = settingResultAmendment.BatchSize,
-                SubmitDate = settingResultAmendment.SubmitDate,
+                SubmitDate = settingResultAmendment.SubmitDate.ToString("yyyy-MM-dd H:mm:ss.fffffff"),
                 Seq = settingResultAmendment.Seq
             };
             return await baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, TicketEvent>(criteria);

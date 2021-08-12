@@ -27,7 +27,7 @@
             var criteria = new GetChatBotResultAmendmentCriteria
             {
                 BatchSize = 3000,
-                SubmitDate = DateTime.Now,
+                SubmitDate = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss.fffffff"),
                 Seq = 1
             };
 
