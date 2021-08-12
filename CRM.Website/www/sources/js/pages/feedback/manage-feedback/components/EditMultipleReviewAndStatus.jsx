@@ -50,6 +50,8 @@ export default class EditMultipleReviewAndStatus extends Component {
     //     });
     // };
 
+    renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
+
     renderForm = ({
         values,
         handleChange,
@@ -65,18 +67,38 @@ export default class EditMultipleReviewAndStatus extends Component {
                             message={editResult.message || LangHelper.getResource('UpdateFeedbackSuccessfully')}
                         />
                     }
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="6">
-                            {LangHelper.getResource('NoOfInquiries')}
+                    <div className="panel-group">
+                        <div className='alert-box-warn'>
+                        <Form.Label className='text' column sm="12" md="12">
+                            {LangHelper.getResource('MultipleReviewAndUpdateStatusText')}
                         </Form.Label>
-                    </Form.Group>
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="2" md="2" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                            <Col sm="3" md="3">
+                                <Form.Control as="select" size="sm"
+                                    column sm="3" md="3"
+                                    name="statusId" id="statusId"
+                                    value={statusId}
+                                    onChange={this.handleChange}
+                                >
+                                {
+                                    this.props.statuses.map((value,key) => this.renderOptions(value.name, value.statusId, key))
+                                }
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row}>
+                            <Form.Label className="mr-1" column sm="1" md="1" htmlFor="status">{LangHelper.getResource('Reviewed')}</Form.Label>
+                            <input type='checkbox' className='cursor-pointer'
+                                onChange={this.handleChangeCheckBoxAll}
+                            />
+                        </Form.Group>
+                        </div>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button size="sm" type="submit" variant="primary" disabled={this.state.isSubmitting}>
                         {LangHelper.getResource('Save')}
-                    </Button>
-                    <Button size="sm" type="button" variant="primary" size="sm" onClick={this.props.onClose}>
-                        {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
             </Form>
@@ -84,15 +106,19 @@ export default class EditMultipleReviewAndStatus extends Component {
     };
 
     render() {
+        const initialValues = {
+            statusId: ''
+        };
         return (
             <Modal show className="edit-multiple-review-status-modal-dialog" dialogAs={DraggableModalDialog}
-                backdrop="static" keyboard={false} size="md" centered
+                backdrop="static" keyboard={false} size="lg" centered
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title as="div">{LangHelper.getResource('QuickUpdate')}</Modal.Title>
+                    <Modal.Title as="div">{LangHelper.getResource('MultipleReviewAndUpdateStatus')}</Modal.Title>
                 </Modal.Header>
                 <Formik
+                    initialValues={initialValues}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}

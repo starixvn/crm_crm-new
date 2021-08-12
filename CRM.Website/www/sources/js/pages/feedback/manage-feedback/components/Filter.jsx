@@ -122,6 +122,7 @@ export class Filter extends Component {
         const {customerTypes, responses , mainCategories, subCategories, communications, statuses} = this.props.settings;
         const responsesOptions = [{ id: 0, value: 'All'}, ...responses];
         const statusesOptions= [{statusId: 0, name: 'All'}, ...statuses ];
+        const statuesFilterDelete = statusesOptions.filter(x=>x.name !== 'Deleted');
         const communicationOptions = [{ id: 0, name: 'All'}, ...communications];
         const mainCategoryOptions = this.filterCategories(mainCategories, subCategories);
         const subCategoryOptions = this.filterSubCategories(mainCategoryOptions, mainCategoryId);
@@ -247,15 +248,15 @@ export class Filter extends Component {
                         }
                     </Form.Control>
                     <Form.Label className="label-status" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="statusId" id="statusId"
-                            className='select-options-sm'
-                            value={statusId}
-                            onChange={this.handleChange}
-                        >
-                        {
-                            statusesOptions.map((value,key) => this.renderOptions(value.name, value.statusId, key))
-                        }
+                    <Form.Control as="select" size="sm"
+                        name="statusId" id="statusId"
+                        className='select-options-sm'
+                        value={statusId}
+                        onChange={this.handleChange}
+                    >
+                    {
+                        statuesFilterDelete.map((value,key) => this.renderOptions(value.name, value.statusId, key))
+                    }
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className='sm-width'>

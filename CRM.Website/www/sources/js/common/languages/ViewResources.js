@@ -150,6 +150,7 @@
     MultipleCustomersTooltip: 'Multiple customers can be entered, separated by commas. Ex: abc, xyz, etc.',
     Mobile: 'Mobile',
     MultipleReviewAndUpdateStatus: 'Multiple Review & Update Status',
+    MultipleReviewAndUpdateStatusText: 'This function will only update Status and Review. Communication Logs other information will NOT be updated.',
     MultipleEdit: 'Multiple Edit',
     Name: 'Name',
     NameRequired: 'Name is required!',

@@ -274,12 +274,12 @@ export class DataGrid extends Component {
                 <div>
                     <span className='mx-1'>{LangHelper.getResource('Feedback')}</span>
                     <span className='mx-1'>|</span>
-                    <span className={`mx-1 cursor-pointer ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleEdit}>
+                    <span className={`mx-1 cursor-pointer multiple-edit ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleEdit}>
                         <span className="mx-1 fa fa-pencil-square-o cursor-pointer" />
                         <strong className='link-click'>{LangHelper.getResource('MultipleEdit')}</strong>
                     </span>
                     <span className='mx-1'>|</span>
-                    <span className={`cursor-pointer ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleReviewAndStatus}>
+                    <span className={`cursor-pointer multiple-edit ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleReviewAndStatus}>
                         <span className='mx-1 fa fa-pencil-square-o' />
                         <strong className='link-click'>{LangHelper.getResource('MultipleReviewAndUpdateStatus')}</strong>
                     </span> 

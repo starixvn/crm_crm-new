@@ -64,7 +64,7 @@
                 MainCategories = mainCategories,
                 subCategories = subCategories,
                 Communications = communications,
-                Statuses = status.Where(r => !string.Equals(r.Name, "Deleted"))
+                Statuses = status
             };
             return Json(settings);
         }
