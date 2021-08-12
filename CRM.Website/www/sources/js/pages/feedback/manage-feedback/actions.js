@@ -7,7 +7,8 @@ import {
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
     setEditNoOfInquiryDialog,
-    setEditMultipleLogStatuses
+    setEditMultipleLogStatuses,
+    setEditMultipleLogStatusDialog
 } from './manageFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -53,5 +54,6 @@ export const ActionCreators = {
     setEditFeedbackDialog,
     setEditNoOfInquiryDialog,
     editMultipleLogStatuses,
-    setEditMultipleLogStatuses
+    setEditMultipleLogStatuses,
+    setEditMultipleLogStatusDialog
 };

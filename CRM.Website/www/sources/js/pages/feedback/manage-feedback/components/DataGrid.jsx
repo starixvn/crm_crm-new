@@ -60,13 +60,7 @@ export class DataGrid extends Component {
         if(this.props.gridDataFeedbacks.data.length === 0){
             return false;
         }
-        let countChecked = 0;
-        for(let [key, value] of this.state.checkedItems.entries()) {
-            if(value === true){
-                countChecked++;
-            }
-        }
-        return countChecked === this.props.gridDataFeedbacks.data.length;
+        return Array.from(this.state.checkedItems.values()).filter(x =>x === true).length === this.props.gridDataFeedbacks.data.length;
     }
 
     handleGroupCategory = filterCategory => {
@@ -132,16 +126,16 @@ export class DataGrid extends Component {
 
     handleChangeCheckBoxAll = event => {
         const isChecked = event.target.checked;
-        let checkedItems = this.state.checkedItems;
+        let items = this.state.checkedItems;
         if(isChecked){
             this.props.gridDataFeedbacks.data.forEach(element => {
-                if(!checkedItems.has(element.feedbackId))
+                if(!items.get(element.feedbackId))
                 {
-                    checkedItems.set(element.feedbackId, true);
+                    items.set(element.feedbackId, true);
                 }
             });
 
-            this.setState({checkedItems: checkedItems});
+            this.setState({checkedItems: items});
         }
         else
         {
@@ -166,7 +160,7 @@ export class DataGrid extends Component {
                 {
                     this.props.isHost &&
                     <Cell className='text-center'>
-                        <span className="edit-feedback pr-1 fa fa-pencil" onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}/>
+                        <span className="edit-feedback cursor-pointer pr-1 fa fa-pencil" onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}/>
                     </Cell>
                 }
                 <Cell className='text-center'>{item.feedbackId}</Cell>
@@ -214,7 +208,7 @@ export class DataGrid extends Component {
                     </Tooltip>
                 }
             >
-                <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcel} />
+                <span className="fa fa-file-excel-o icon-excel cursor-pointer" onClick={this.handleExportExcel} />
             </OverlayTrigger>
         );
     };
@@ -244,7 +238,7 @@ export class DataGrid extends Component {
             >
                 <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
                         <span className="pr-1 fa fa-pencil-square-o" />
-                        <strong className='link-click'>{item.subject}</strong>
+                        <strong className='link-click cursor-pointer'>{item.subject}</strong>
                 </div>
             </OverlayTrigger>
         );
@@ -258,19 +252,35 @@ export class DataGrid extends Component {
         this.props.setGridParams(params);
     };
 
+    handleMultipleReviewAndStatus = () =>{
+        let feedbackSelected = [];
+        for(let [key, value] of this.state.checkedItems.entries()) {
+            if(value === true){
+                feedbackSelected.push(key);
+            }
+        }
+
+        this.props.setEditMultipleLogStatusDialog({ show: true, feedbackIds: feedbackSelected.join(', ') });
+    }
+
+    handleMultipleEdit = () =>{
+
+    }
+
     renderTableTitle = (gridDataFeedbacks) =>{
+        const isClickableEditMultiple = Array.from(this.state.checkedItems.values()).includes(true);
         return (
             <div className='table-title d-flex justify-content-between align-items-center'>
                 <div>
                     <span className='mx-1'>{LangHelper.getResource('Feedback')}</span>
                     <span className='mx-1'>|</span>
-                    <span className='mx-1' onClick={() => this.handleMultipleEdit(item.feedbackId)}>
-                        <span className="mx-1 fa fa-pencil-square-o" />
+                    <span className={`mx-1 cursor-pointer ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleEdit}>
+                        <span className="mx-1 fa fa-pencil-square-o cursor-pointer" />
                         <strong className='link-click'>{LangHelper.getResource('MultipleEdit')}</strong>
                     </span>
                     <span className='mx-1'>|</span>
-                    <span onClick={() => this.handleMultipleReviewAndStatus(item.feedbackId)}>
-                        <span className="mx-1 fa fa-pencil-square-o" />
+                    <span className={`cursor-pointer ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleReviewAndStatus}>
+                        <span className='mx-1 fa fa-pencil-square-o' />
                         <strong className='link-click'>{LangHelper.getResource('MultipleReviewAndUpdateStatus')}</strong>
                     </span> 
                 </div>

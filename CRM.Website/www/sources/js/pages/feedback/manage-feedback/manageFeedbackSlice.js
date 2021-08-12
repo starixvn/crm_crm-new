@@ -12,6 +12,7 @@ const manageFeedbackSlice = createSlice({
         viewRelatedCustomerDialog: { show: false },
         editFeedbackDialog: { show: false },
         editNoOfInquiryDialog: { show: false },
+        editMultipleLogStatusDialog: { show: false },
         editMultipleLogStatuses: null
     },
     reducers: {
@@ -33,6 +34,9 @@ const manageFeedbackSlice = createSlice({
         setEditNoOfInquiryDialog: (state, action) => {
             state.editNoOfInquiryDialog = action.payload;
         },
+        setEditMultipleLogStatusDialog: (state, action) => {
+            state.editMultipleLogStatusDialog = action.payload;
+        },
         setEditMultipleLogStatuses: (state, action) => {
             state.editMultipleLogStatuses = action.payload;
         }
@@ -48,6 +52,7 @@ export const {
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
     setEditNoOfInquiryDialog,
+    setEditMultipleLogStatusDialog,
     setEditMultipleLogStatuses
 } = actions;
 

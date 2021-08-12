@@ -8,6 +8,7 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 import EditNoOfInquiry from '../../edit-no-of-inquiry/AppContainer';
 import EditFeedback from '../../edit-customer-feedback/AppContainer';
+import EditMultipleReviewAndStatus from './EditMultipleReviewAndStatus';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 
@@ -41,8 +42,12 @@ export class AppContainer extends Component {
         this.props.setViewRelatedCustomerDialog({ show: false });
     };
 
+    handleCloseMultipleEditStatusDialog = () => {
+        this.props.setEditMultipleLogStatusDialog({ show: false });
+    };
+
     render() {
-        const { isHost, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog } = this.props;
+        const { isHost, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog } = this.props;
         return (
             <Fragment>
                 <Filter />
@@ -74,6 +79,13 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditFeedbackDialog}
                     />
                 }
+                {
+                    editMultipleLogStatusDialog.show &&
+                    <EditMultipleReviewAndStatus feedbackIds={editMultipleLogStatusDialog.feedbackIds}
+                        statuses={this.props.settings.statuses}
+                        onClose={this.handleCloseMultipleEditStatusDialog}
+                    />
+                }
             </Fragment>
         );
     }
@@ -82,9 +94,9 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog} = state;
+    const { settings, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog} = state;
     return {
-        settings, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog
+        settings, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog
     };
 };
 
