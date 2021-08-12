@@ -134,7 +134,7 @@
 
             stringBuilderEventData.AppendFormat(XmlTemplate,
                         transaction.TicketEventId, transaction.ProductId, transaction.EventDate,
-                        transaction.SubmitDate, transaction.EventType, transaction.ActualResult,
+                        transaction.SubmitDate.ToString("yyyy-MM-dd H:mm:ss.fffffff"), transaction.EventType, transaction.ActualResult,
                         transaction.WrongResult, transaction.MessageId, "sportNameEN", "sportNameSC",
                         "sportNameTH", "sportNameYN", "homeNameEN", "homeNameSC", "homeNameTH", "homeNameYN",
                         "awayNameEN", "awayNameSC", "awayNameTH", "awayNameYN", "leagueNameEN", "leagueNameSC",

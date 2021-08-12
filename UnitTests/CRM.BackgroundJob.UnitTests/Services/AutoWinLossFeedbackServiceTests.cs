@@ -865,7 +865,7 @@
         }
 
         [Fact]
-        public async Task SynchronizeNewLicenseeOICExecuteJobAsync_ImportDataIsSuccessfull_ExpectedWriteLog()
+        public async Task SynchronizeNewLicenseeOICExecuteJobAsync_ImportDataIsSuccessfull_DoNothing()
         {
             // Arrange
             var service = GetService();
@@ -878,7 +878,7 @@
             await service.SynchronizeNewLicenseeOICExecuteJobAsync();
 
             // Act
-            logService.Received().LogInformation("Synchronize New Licensee OIC Successful!!!");
+            logService.DidNotReceive();
         }
         #endregion SynchronizeNewLicenseeOICExecuteJobAsync
 
