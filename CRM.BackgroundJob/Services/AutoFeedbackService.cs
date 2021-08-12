@@ -362,11 +362,7 @@
                 CommandResult commandResult = await licenseeService.ImportLicenseeStatus(
                     licenseeInfo,
                     Environment);
-                if (commandResult.IsSuccessful)
-                {
-                    logService.LogInformation("Synchronize New Licensee OIC Successful!!!");
-                }
-                else
+                if (!commandResult.IsSuccessful)
                 {
                     logService.LogInformation(commandResult.Message);
                 }
