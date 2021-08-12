@@ -22,6 +22,8 @@
 
         Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command);
 
+        Task<CommandResult> EditMultipleLogStatusAsync(EditMultipleLogStatusCommand command);
+
         Task<EditNoOfInquiry> GetNoOfInquiryByFeedbackIdAsync(int feedbackId);
 
         Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId);
@@ -122,6 +124,11 @@
         }
 
         public async Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command)
+        {
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<CommandResult> EditMultipleLogStatusAsync(EditMultipleLogStatusCommand command)
         {
             return await baseService.ExecuteNonQueryAsync(command);
         }

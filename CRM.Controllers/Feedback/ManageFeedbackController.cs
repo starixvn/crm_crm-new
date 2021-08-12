@@ -85,5 +85,21 @@
                 throw new Exception(e.Message);
             }
         }
+
+        [HttpPost]
+        //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        public async Task<ActionResult> EditMultipleLogStatuses([FromBody] EditMultipleLogStatusCommand command)
+        {
+            try
+            {
+                command.ReviewerId = napSession.UserId;
+                var result = await feedbackService.EditMultipleLogStatusAsync(command);
+                return Json(result);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

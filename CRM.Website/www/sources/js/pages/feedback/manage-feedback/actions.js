@@ -6,7 +6,8 @@ import {
     setGridFeedbacks,
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
-    setEditNoOfInquiryDialog
+    setEditNoOfInquiryDialog,
+    setEditMultipleLogStatuses
 } from './manageFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -33,6 +34,14 @@ const exportExcel = params => async () => {
     });
 };
 
+const editMultipleLogStatuses =  params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('ManageFeedback/EditMultipleLogStatuses');
+    return await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setEditMultipleLogStatuses(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     setAllSettings,
     getAllSettings,
@@ -42,5 +51,7 @@ export const ActionCreators = {
     exportExcel,
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
-    setEditNoOfInquiryDialog
+    setEditNoOfInquiryDialog,
+    editMultipleLogStatuses,
+    setEditMultipleLogStatuses
 };

@@ -149,6 +149,8 @@
     Month: 'Month',
     MultipleCustomersTooltip: 'Multiple customers can be entered, separated by commas. Ex: abc, xyz, etc.',
     Mobile: 'Mobile',
+    MultipleReviewAndUpdateStatus: 'Multiple Review & Update Status',
+    MultipleEdit: 'Multiple Edit',
     Name: 'Name',
     NameRequired: 'Name is required!',
     MainCategory: 'Main Category',

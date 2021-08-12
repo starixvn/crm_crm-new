@@ -82,19 +82,19 @@ export class DataGrid extends Component {
         return groupCategory;
     };
 
-    renderCategoryColumn = item => {
+    renderCategory = item => {
         const { mainCategories } = this.props.gridDataFeedbacks;
-        const filterCategories = item.settings.filter(element => element.settingType === 'Category');
+        const filterCategories = item.settings.filter(el => el.settingType === 'Category');
         const groupCategory = this.handleGroupCategory(filterCategories);
 
         return groupCategory.map((value,key) => {
-            const filterMainCategory = mainCategories.find(element => element.settingId === value.settingId);
+            const filterMainCategory = mainCategories.find(el => el.settingId === value.settingId);
             return (
                 <div>
                     <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
                     {
                         value.subSettingId.map((subId,index) => {
-                            const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subId);
+                            const filterSubCategory = filterMainCategory.childSettings.find(el => el.subCategoryId === subId);
                             return(
                                 <div key={index} className="font-italic ml-3 py-1">{filterSubCategory.name}</div>
                             );
@@ -105,15 +105,15 @@ export class DataGrid extends Component {
         });
     };
 
-    handleOpenViewRelatedCustomerDialog = relatedCustomers => {
+    handleOpenViewRelatedCustomer = relatedCustomers => {
         this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
     };
 
-    renderRelatedCustomerColumn = item => {
+    renderRelatedCustomer = item => {
         const totalItems = item.length;
         if(totalItems > MaximumDisplayRelatedCustomer){
             return(
-                <a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(item.join(', '))}>
+                <a href="#" onClick={() => this.handleOpenViewRelatedCustomer(item.join(', '))}>
                     {totalItems} customers
                 </a>
             );
@@ -171,10 +171,7 @@ export class DataGrid extends Component {
                 }
                 <Cell className='text-center'>{item.feedbackId}</Cell>
                 <Cell>
-                    <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
-                        <span className="pr-1 fa fa-pencil-square-o" />
-                        <strong className='link-click'>{item.subject}</strong>
-                    </div>
+                    {this.tooltipFeedback(item)}
                     <div className="pl-3">
                         <div className="py-1">Feedback date <strong>{feedbackDateFormat}</strong></div>
                         <div className="py-1">By<strong> {item.creatorName} </strong>on {createDateFormat}</div>
@@ -187,9 +184,9 @@ export class DataGrid extends Component {
                     </div>
                 </Cell>
                 <Cell>{item.username}</Cell>
-                <Cell>{this.renderCategoryColumn(item)}</Cell>
+                <Cell>{this.renderCategory(item)}</Cell>
                 <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
-                <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
+                <Cell>{this.renderRelatedCustomer(item.relatedCustomer.split(','))}</Cell>
             </Row>
         );
     };
@@ -207,7 +204,7 @@ export class DataGrid extends Component {
         this.props.setEditFeedbackDialog({ show: true, feedbackId: id });
     };
 
-    renderExportExcelText = () => {
+    renderExportExcel = () => {
         return (
             <OverlayTrigger
                 placement="auto"
@@ -222,13 +219,67 @@ export class DataGrid extends Component {
         );
     };
 
+    tooltipFeedback = item => {
+        const description = !item.description ? '' : `Description: <br>${item.description}<br>`,
+            solution = !item.solution ? '' : `Solution: <br>${item.solution}<br>`,
+            lastCharacterSlit = description.substring(578, 580),
+            isEscapesWord = '<br />'.includes(lastCharacterSlit),
+            subLength = isEscapesWord ? 592 : 580;
+
+        const lastCharacterSlitSolution = solution.substring(578, 580),
+            isEscapesWordSolution = '<br />'.includes(lastCharacterSlitSolution),
+            subLengthSolution = isEscapesWordSolution ? 592 : 580;
+
+        const tooltipDescription = description.length > subLength ? description.substring(0, subLength) + ' ... <br><br>' : description;
+        const tooltipSolution = solution.length > subLengthSolution  ? solution.substring(0, subLengthSolution) + ' ... <br><br>' : solution;
+
+        return (
+            <OverlayTrigger
+                placement="right-start"
+                overlay={
+                    <Tooltip className="tooltipManageFeedback">
+                        <div dangerouslySetInnerHTML={{ __html: tooltipDescription + tooltipSolution }} />
+                    </Tooltip>
+                }
+            >
+                <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
+                        <span className="pr-1 fa fa-pencil-square-o" />
+                        <strong className='link-click'>{item.subject}</strong>
+                </div>
+            </OverlayTrigger>
+        );
+    };
+
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
-        params['pageSize'] = pageSize;
         params['pageIndex'] = pageIndex;
-        this.props.setGridParams(params);
+        params['pageSize'] = pageSize;
         this.props.getGridFeedbacks(params);
+        this.props.setGridParams(params);
     };
+
+    renderTableTitle = (gridDataFeedbacks) =>{
+        return (
+            <div className='table-title d-flex justify-content-between align-items-center'>
+                <div>
+                    <span className='mx-1'>{LangHelper.getResource('Feedback')}</span>
+                    <span className='mx-1'>|</span>
+                    <span className='mx-1' onClick={() => this.handleMultipleEdit(item.feedbackId)}>
+                        <span className="mx-1 fa fa-pencil-square-o" />
+                        <strong className='link-click'>{LangHelper.getResource('MultipleEdit')}</strong>
+                    </span>
+                    <span className='mx-1'>|</span>
+                    <span onClick={() => this.handleMultipleReviewAndStatus(item.feedbackId)}>
+                        <span className="mx-1 fa fa-pencil-square-o" />
+                        <strong className='link-click'>{LangHelper.getResource('MultipleReviewAndUpdateStatus')}</strong>
+                    </span> 
+                </div>
+                {
+                    gridDataFeedbacks.data.length > 0 && this.renderExportExcel()
+                }
+            </div>
+        );
+    }
 
     render() {
         const {gridDataFeedbacks, isHost} = this.props;
@@ -246,13 +297,7 @@ export class DataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>{LangHelper.getResource('Feedback')}</span>
-                    {
-                        gridDataFeedbacks.data.length > 0 && this.renderExportExcelText()
-                    }
-                </div>
-
+                {this.renderTableTitle(gridDataFeedbacks)}
                 <Table
                     width={1350}
                     autoWidth={false}
