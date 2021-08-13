@@ -61,7 +61,7 @@
         <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Turnover Controll">
-        <Setting Key="Acc_CRM_TOControl_CustOutstandingSel" SpName="Acc_CRM_TOControl_CustOutstandingSel" DbName="DBAGE.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_TOControl_CustOutstandingSel" SpName="Acc_CRM_TOControl_CustOutstandingSel" DbName="DBCRM.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_TOControl_SystemSettingSel" SpName="Acc_CRM_TOControl_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoIns" SpName="Acc_CRM_TOControl_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoUpd" SpName="Acc_CRM_TOControl_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
