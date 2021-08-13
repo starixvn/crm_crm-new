@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Web;
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.Core.Extensions.XML;
@@ -123,8 +124,9 @@
                         homeNameEN, homeNameSC, homeNameTH, homeNameYN,
                         awayNameEN, awayNameSC, awayNameTH, awayNameYN,
                         leagueNameEN, leagueNameSC, leagueNameTH, leagueNameYN, transaction.MatchCode,
-                        matchInfoEN, matchInfoSC, matchInfoTH, matchInfoYN, transaction.Type
-                        );
+                        HttpUtility.HtmlEncode(matchInfoEN), HttpUtility.HtmlEncode(matchInfoSC), 
+                        HttpUtility.HtmlEncode(matchInfoTH), HttpUtility.HtmlEncode(matchInfoYN), transaction.Type
+               );
             }
             stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
 
