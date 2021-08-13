@@ -82,6 +82,7 @@ export class AppContainer extends Component {
                 {
                     editMultipleLogStatusDialog.show &&
                     <EditMultipleReviewAndStatus feedbackIds={editMultipleLogStatusDialog.feedbackIds}
+                        statusesSelected={editMultipleLogStatusDialog.statusesSelected}
                         statuses={this.props.settings.statuses}
                         onClose={this.handleCloseMultipleEditStatusDialog}
                     />

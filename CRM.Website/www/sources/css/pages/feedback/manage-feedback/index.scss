@@ -247,6 +247,15 @@
                     position: relative;
                     top: 9px;
                 }
+
+                .title{
+                    background: linear-gradient(rgb(231, 231, 231), rgb(226, 226, 226));
+                    color: rgb(47, 112, 180)
+                }
+            }
+
+            .modal-footer{
+                display:block !important;
             }
         }
     }

@@ -10,6 +10,7 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 
+
 export class DataGrid extends Component {
     constructor(props) {
         super(props);
@@ -260,7 +261,8 @@ export class DataGrid extends Component {
             }
         }
 
-        this.props.setEditMultipleLogStatusDialog({ show: true, feedbackIds: feedbackSelected.join(', ') });
+        const statusesSelected = this.props.gridDataFeedbacks.data.filter(x=>feedbackSelected.includes(x.feedbackId)).map(y=> y.status);
+        this.props.setEditMultipleLogStatusDialog({ show: true, feedbackIds: feedbackSelected.join(', '), statusesSelected });
     }
 
     handleMultipleEdit = () =>{

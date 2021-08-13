@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
+import CkEditor from '@jsroot/components/ckeditor/index';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
+import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 
 export default class EditMultipleReviewAndStatus extends Component {
     static propTypes = {
@@ -23,44 +25,61 @@ export default class EditMultipleReviewAndStatus extends Component {
         super(props);
 
         this.state = {
+            isReviewed: false,
             feedbackIds: props.feedbackIds,
             editResult: null,
             isSubmitting: false
         };
     }
 
-    // handleSubmit = async values => {
-    //     this.setState({ isSubmitting: true });
-    //     const params = {
-    //         feedbackId: values.feedbackId,
-    //         noInquiries: values.noInquiries
-    //     };
+    handleSubmit = async values => {
+        this.setState({ isSubmitting: true });
+        // const params = {
+        //     feedbackId: values.feedbackId,
+        //     noInquiries: values.noInquiries
+        // };
 
-    //     const url = Site.resolveClientUrl('Feedback/EditNoOfInquiry');
-    //     await DataService.postDataAsync(url, params).then(response => {
-    //         this.setState({ editResult: response.data });
+        // const url = Site.resolveClientUrl('Feedback/EditNoOfInquiry');
+        // await DataService.postDataAsync(url, params).then(response => {
+        //     this.setState({ editResult: response.data });
 
-    //         if (response.data.isSuccessful) {
-    //             setTimeout(() => {
-    //                 this.props.onClose();
-    //             }, 3000);
-    //         } else {
-    //             this.setState({ isSubmitting: true });
-    //         }
-    //     });
-    // };
+        //     if (response.data.isSuccessful) {
+        //         setTimeout(() => {
+        //             this.props.onClose();
+        //         }, 3000);
+        //     } else {
+        //         this.setState({ isSubmitting: true });
+        //     }
+        // });
+    };
+    handleChangeCheckBox = () =>{
+        this.setState(prevState =>({
+            isReviewed: !prevState.isReviewed
+        }));
+    }
 
-    renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
+    validateFormik = values =>{
+        const errors = {};
+        if (this.state.isReviewed && values.review === '') {
+            errors.review = LangHelper.getResource('ReviewRequired');
+        }
+
+        return errors;
+    }
 
     renderForm = ({
         values,
+        errors,
+        touched,
         handleChange,
-        handleSubmit
+        handleSubmit,
+        setFieldValue
     }) => {
         const editResult = this.state.editResult;
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editResult &&
                         <ResponseMessage isSuccessful={editResult.isSuccessful}
@@ -78,21 +97,35 @@ export default class EditMultipleReviewAndStatus extends Component {
                                 <Form.Control as="select" size="sm"
                                     column sm="3" md="3"
                                     name="statusId" id="statusId"
-                                    value={statusId}
-                                    onChange={this.handleChange}
+                                    value={values.statusId}
+                                    onChange={handleChange}
                                 >
                                 {
-                                    this.props.statuses.map((value,key) => this.renderOptions(value.name, value.statusId, key))
+                                    this.props.statuses.map(item =>
+                                        <option key={item.statusId} value={item.statusId}>
+                                            {item.name}
+                                        </option>
+                                    )
                                 }
+                               
                                 </Form.Control>
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row}>
+                        <Form.Group as={Row} className='title'>
                             <Form.Label className="mr-1" column sm="1" md="1" htmlFor="status">{LangHelper.getResource('Reviewed')}</Form.Label>
                             <input type='checkbox' className='cursor-pointer'
-                                onChange={this.handleChangeCheckBoxAll}
+                                checked={this.state.isReviewed}
+                                onChange={this.handleChangeCheckBox}
                             />
                         </Form.Group>
+                        {
+                            this.state.isReviewed && <div className="text-editor">
+                            <CkEditor isInvalid={touched.review && errors.review}
+                                data={values.review}
+                                onChange={value => setFieldValue('review', value)}
+                            />
+                        </div>
+                        }
                         </div>
                     </div>
                 </Modal.Body>
@@ -107,7 +140,8 @@ export default class EditMultipleReviewAndStatus extends Component {
 
     render() {
         const initialValues = {
-            statusId: ''
+            statusId: this.props.statusesSelected.length > 0 ? this.props.statusesSelected[0] : '',
+            review: ''
         };
         return (
             <Modal show className="edit-multiple-review-status-modal-dialog" dialogAs={DraggableModalDialog}
@@ -119,6 +153,7 @@ export default class EditMultipleReviewAndStatus extends Component {
                 </Modal.Header>
                 <Formik
                     initialValues={initialValues}
+                    validate={this.validateFormik}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}
