@@ -10,6 +10,8 @@
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Criteria.Feedback;
+    using CRM.Criteria.Feedback.ManageFeedback;
+    using CRM.Models.CommunicationLogs;
     using CRM.Models.Feedback;
     using CRM.Models.Setting;
     using CRM.Resources;
@@ -120,6 +122,103 @@
             }
 
             return commandResult;
+        }
+
+        public async Task<ActionResult> GetLogByFeedbackId(int id)
+        {
+            var result = await feedbackService.GetLogByFeedbackIdAsync(id);
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EditMultipleLogStatuses([FromBody] EditMultipleLogStatusCommand command)
+        {
+            //CommandResult commandResult = CheckEditMultipleLogPermission();
+            //if (commandResult.IsSuccessful)
+            //{
+                command.ReviewerId = string.IsNullOrEmpty(command.ReviewNote) ? 0 : napSession.UserId;
+                command.UserId = napSession.UserId;
+                //command.IP = ClientIP;
+                command.IP = "ClientIP";
+                var result = await feedbackService.EditMultipleLogStatusesAsync(command);
+                return Json(result);
+            //}
+            //return Json(commandResult);
+        }
+
+        private CommandResult CheckEditMultipleLogPermission()
+        {
+            var commandResult = new CommandResult { Code = 0 };
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+                || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host))
+            {
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.DoNotEditFeedbackPermission
+                };
+            }
+
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host))
+            {
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.DoNotDeleteFeedbackPermission
+                };
+            }
+
+            return commandResult;
+        }
+
+        public async Task<IActionResult> GetLogSettingByFeedbackId(int id)
+        {
+            var communicationLogs = await feedbackService.GetLogByFeedbackIdAsync(id);
+            var settings = await GetEditMultipleLogsSettingAsync(communicationLogs);
+            //var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
+            var hasReviewFeedbackPermission = true;
+            return Json(new { communicationLogs, settings, hasReviewFeedbackPermission });
+        }
+
+        private async Task<CreateFeedbackViewModel> GetEditMultipleLogsSettingAsync(CommunicationLog communicationLogs)
+        {
+            var communicationLogsSetting = communicationLogs.Settings;
+            var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);
+            var communicationTools = await settingService.GetCommunicationToolAsync(isIncludeNA: true);
+            var products = await settingService.GetProductAsync();
+            var subProducts = await settingService.GetSubProductAsync();
+            var betTypes = await settingService.GetBetTypeAsync();
+            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response);
+            var languages = await settingService.GetLanguageAsync(isIncludeNA: true);
+            var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
+            var countries = await settingService.GetCountryAsync(isIncludeNA: true);
+            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+
+            var settings = new CreateFeedbackViewModel
+            {
+                Extensions = GetExtentions(extentions, communicationLogsSetting),
+                CommunicationTools = GetCommunicationTools(communicationTools, communicationLogsSetting),
+                Responses = responses.Where(x => x.IsActive || x.Id == communicationLogs.ResponseId).ToList(),
+                Languages = languages.Where(x => x.IsActive || x.LanguageId == communicationLogs.LanguageId).ToList(),
+                Statuses = statuses.Where(x => (x.IsActive || x.StatusId == communicationLogs.StatusId)).ToList(),
+                Roles = roles.Where(x => x.IsActive || x.Id == communicationLogs.RoleId).ToList(),
+                Countries = countries.Where(x => x.IsActive || x.Id == communicationLogs.CountryId).ToList(),
+                Titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active),
+                LicenseeTypes = await settingService.GetLicenseeTypeAsync(),
+                Sites = await settingService.GetAllSitesWithGroupAsync(),
+                MainCategories = await GetMainCategoryAsync(communicationLogsSetting),
+                SubCategories = await GetSubCategoryAsync(communicationLogsSetting),
+                Products = GetProducts(products, communicationLogsSetting),
+                SubProducts = GetSubProducts(subProducts, communicationLogsSetting),
+                Bettypes = GetBetTypes(betTypes, communicationLogsSetting),
+                ProductNA = products.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ProductNA),
+                SubProductNA = subProducts.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.SubProductNA),
+                BettypeNA = betTypes.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.BettypeNA),
+                ExtensionNA = extentions.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ExtentionNA),
+                CommunicationToolNA = communicationTools.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.CommunicationNA)
+            };
+
+            return settings;
         }
 
         private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)

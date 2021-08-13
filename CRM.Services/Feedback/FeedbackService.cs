@@ -6,6 +6,8 @@
     using CRM.Criteria.Feedback;
     using CRM.Criteria.Feedback.DeletedFeedback;
     using CRM.Criteria.Feedback.ManageFeedback;
+    using CRM.Criteria.MultipleLogs;
+    using CRM.Models.CommunicationLogs;
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
@@ -20,9 +22,11 @@
     {
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
 
-        Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command);
+        Task<CommunicationLog> GetLogByFeedbackIdAsync(int feedbackId);
 
-        Task<CommandResult> EditMultipleLogStatusAsync(EditMultipleLogStatusCommand command);
+        Task<CommandResult> EditMultipleLogStatusesAsync(EditMultipleLogStatusCommand command);
+
+        Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command);
 
         Task<EditNoOfInquiry> GetNoOfInquiryByFeedbackIdAsync(int feedbackId);
 
@@ -85,6 +89,36 @@
             return feedback;
         }
 
+        public async Task<CommunicationLog> GetLogByFeedbackIdAsync(int feedbackId)
+        {
+            var criteria = new GetLogByFeedbackIdCriteria
+            {
+                FeedbackId = feedbackId
+            };
+
+            var (communicationLogInfos, relatedCustomers, settingItems) = await baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomer, FeedbackSettingRelation>(criteria);
+            CommunicationLog communicationLog = null;
+
+            if (communicationLogInfos.Any())
+            {
+                communicationLog = communicationLogInfos.First();
+                communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
+                communicationLog.StartTime = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
+                communicationLog.EndTime = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
+                communicationLog.ResolutionDate = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
+                communicationLog.SolveDate = commonService.ConvertToClientDateTime(communicationLog.SolveDate);
+                communicationLog.RelatedCustomers = relatedCustomers;
+                communicationLog.Settings = settingItems.ToList();
+            }
+
+            return communicationLog;
+        }
+
+        public async Task<CommandResult> EditMultipleLogStatusesAsync(EditMultipleLogStatusCommand command)
+        {
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+
         public async Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param)
         {
             var criteria = new GetLatestFeedbackCriteria
@@ -124,11 +158,6 @@
         }
 
         public async Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command)
-        {
-            return await baseService.ExecuteNonQueryAsync(command);
-        }
-
-        public async Task<CommandResult> EditMultipleLogStatusAsync(EditMultipleLogStatusCommand command)
         {
             return await baseService.ExecuteNonQueryAsync(command);
         }

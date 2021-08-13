@@ -9,6 +9,7 @@ import DataGrid from './DataGrid';
 import EditNoOfInquiry from '../../edit-no-of-inquiry/AppContainer';
 import EditFeedback from '../../edit-customer-feedback/AppContainer';
 import EditMultipleReviewAndStatus from './EditMultipleReviewAndStatus';
+import EditMultipleLogs from './EditMultipleLogs';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 
@@ -34,20 +35,27 @@ export class AppContainer extends Component {
     handleCloseEditFeedbackDialog = isSuccessful => {
         this.props.setEditFeedbackDialog({ show: false });
         if (isSuccessful) {
-            this.props.getLatestFeedback(this.props.gridParams);
+            this.props.getGridFeedbacks(this.props.gridParams);
         }
     };
 
-    handleCloseViewRelatedCustomerDialog = () => {
+    handleCloseViewRelatedCustomerDialog = isSuccessful => {
         this.props.setViewRelatedCustomerDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getGridFeedbacks(this.props.gridParams);
+        }
     };
 
-    handleCloseMultipleEditStatusDialog = () => {
+    handleCloseMultipleEditStatusDialog = isSuccessful => {
         this.props.setEditMultipleLogStatusDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getGridFeedbacks(this.props.gridParams);
+        }
     };
 
     render() {
-        const { isHost, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog } = this.props;
+        const { isHost, viewRelatedCustomerDialog, editNoOfInquiryDialog, 
+                editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog } = this.props;
         return (
             <Fragment>
                 <Filter />
@@ -82,8 +90,14 @@ export class AppContainer extends Component {
                 {
                     editMultipleLogStatusDialog.show &&
                     <EditMultipleReviewAndStatus feedbackIds={editMultipleLogStatusDialog.feedbackIds}
-                        statusesSelected={editMultipleLogStatusDialog.statusesSelected}
                         statuses={this.props.settings.statuses}
+                        onClose={this.handleCloseMultipleEditStatusDialog}
+                    />
+                }
+                 {
+                    editMultipleLogDialog.show &&
+                    <EditMultipleLogs feedbackArr={editMultipleLogDialog.feedbackArr}
+                        settings={this.props.settings}
                         onClose={this.handleCloseMultipleEditStatusDialog}
                     />
                 }
@@ -95,9 +109,15 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog} = state;
+    const { 
+        settings, viewRelatedCustomerDialog, editNoOfInquiryDialog, 
+        editFeedbackDialog, editMultipleLogStatusDialog, gridParams,
+        editMultipleLogDialog
+    } = state;
     return {
-        settings, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog
+        settings, viewRelatedCustomerDialog, editNoOfInquiryDialog,
+        editFeedbackDialog, editMultipleLogStatusDialog, gridParams,
+        editMultipleLogDialog
     };
 };
 

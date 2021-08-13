@@ -7,15 +7,18 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
+import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
+import DateTimeService from '@jsroot/common/dateTimeService';
 
 export default class EditMultipleReviewAndStatus extends Component {
     static propTypes = {
-        feedbackIds: PropTypes.string.isRequired,
+        feedbackIds: PropTypes.array.isRequired,
         onClose: PropTypes.func.isRequired
     };
 
     static defaultProps = {
-        feedbackId: 0,
+        feedbackId: [],
         onClose: function () {
             // nothing
         }
@@ -23,35 +26,46 @@ export default class EditMultipleReviewAndStatus extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
-            isReviewed: false,
             feedbackIds: props.feedbackIds,
+            logInfo: null,
             editResult: null,
+            isReviewed: false,
             isSubmitting: false
         };
     }
 
+    async componentDidMount() {
+        const id = this.props.feedbackIds[0];
+        const url = Site.resolveClientUrl(`Feedback/GetLogByFeedbackId/${id}`);
+        await DataService.getDataAsync(url).then(response => {
+            this.setState({ logInfo: response.data, isReviewed: response.data.isReviewed});
+        });
+    }
+
     handleSubmit = async values => {
         this.setState({ isSubmitting: true });
-        // const params = {
-        //     feedbackId: values.feedbackId,
-        //     noInquiries: values.noInquiries
-        // };
+        const params = {
+            listFeedbackId: this.props.feedbackIds.join(', '),
+            statusId: parseInt(values.statusId, 10),
+            reviewNote: values.review,
+            isReviewed: this.state.isReviewed
+        };
 
-        // const url = Site.resolveClientUrl('Feedback/EditNoOfInquiry');
-        // await DataService.postDataAsync(url, params).then(response => {
-        //     this.setState({ editResult: response.data });
+        const url = Site.resolveClientUrl('Feedback/EditMultipleLogStatuses');
+        await DataService.postDataAsync(url, params).then(response => {
+            this.setState({ editResult: response.data });
 
-        //     if (response.data.isSuccessful) {
-        //         setTimeout(() => {
-        //             this.props.onClose();
-        //         }, 3000);
-        //     } else {
-        //         this.setState({ isSubmitting: true });
-        //     }
-        // });
+            if (response.data.isSuccessful) {
+                setTimeout(() => {
+                    this.props.onClose(true);
+                }, 3000);
+            } else {
+                this.setState({ isSubmitting: false });
+            }
+        });
     };
+
     handleChangeCheckBox = () =>{
         this.setState(prevState =>({
             isReviewed: !prevState.isReviewed
@@ -75,7 +89,8 @@ export default class EditMultipleReviewAndStatus extends Component {
         handleSubmit,
         setFieldValue
     }) => {
-        const editResult = this.state.editResult;
+        const {editResult, logInfo, isReviewed} = this.state;
+        const dateFormat = DateTimeService.toShortDateTimeFormat(logInfo.solveDate);
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -83,7 +98,7 @@ export default class EditMultipleReviewAndStatus extends Component {
                     {
                         editResult &&
                         <ResponseMessage isSuccessful={editResult.isSuccessful}
-                            message={editResult.message || LangHelper.getResource('UpdateFeedbackSuccessfully')}
+                            message={editResult.message || LangHelper.getResource('UpdateMultipleLogsSuccessfully')}
                         />
                     }
                     <div className="panel-group">
@@ -91,7 +106,7 @@ export default class EditMultipleReviewAndStatus extends Component {
                         <Form.Label className='text' column sm="12" md="12">
                             {LangHelper.getResource('MultipleReviewAndUpdateStatusText')}
                         </Form.Label>
-                        <Form.Group as={Row}>
+                        <Form.Group as={Row} className='pb-2'>
                             <Form.Label column sm="2" md="2" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
                             <Col sm="3" md="3">
                                 <Form.Control as="select" size="sm"
@@ -112,14 +127,15 @@ export default class EditMultipleReviewAndStatus extends Component {
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className='title'>
-                            <Form.Label className="mr-1" column sm="1" md="1" htmlFor="status">{LangHelper.getResource('Reviewed')}</Form.Label>
+                            <Form.Label className="mr-2" column sm="1" md="1">{LangHelper.getResource('Reviewed')}</Form.Label>
                             <input type='checkbox' className='cursor-pointer'
-                                checked={this.state.isReviewed}
+                                checked={isReviewed}
                                 onChange={this.handleChangeCheckBox}
                             />
+                            {logInfo.isReviewed && <Form.Label column sm="5" md="5">{`(Reviewed by ${logInfo.reviewer} on ${dateFormat})`}</Form.Label>}
                         </Form.Group>
                         {
-                            this.state.isReviewed && <div className="text-editor">
+                            isReviewed && <div className="text-editor">
                             <CkEditor isInvalid={touched.review && errors.review}
                                 data={values.review}
                                 onChange={value => setFieldValue('review', value)}
@@ -139,9 +155,13 @@ export default class EditMultipleReviewAndStatus extends Component {
     };
 
     render() {
+        if(this.state.logInfo === null){
+            return null;
+        }
+
         const initialValues = {
-            statusId: this.props.statusesSelected.length > 0 ? this.props.statusesSelected[0] : '',
-            review: ''
+            statusId: this.state.logInfo.statusId,
+            review: this.state.logInfo.review
         };
         return (
             <Modal show className="edit-multiple-review-status-modal-dialog" dialogAs={DraggableModalDialog}

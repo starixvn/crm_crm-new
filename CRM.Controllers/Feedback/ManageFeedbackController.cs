@@ -8,6 +8,7 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions;
     using CRM.Core.Filters;
+    using CRM.Core.Models;
     using CRM.Criteria.Feedback.ManageFeedback;
     using CRM.Models.Feedback;
     using CRM.Models.Setting;
@@ -34,7 +35,8 @@
             INapSettings napSettings,
             IUserService userService,
             ISettingService settingService,
-            IFeedbackService feedbackService)
+            IFeedbackService feedbackService
+            )
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
@@ -70,36 +72,12 @@
         }
 
         [HttpPost]
-        //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<ActionResult> SearchManageFeedback([FromBody] ManageFeedbackCriteria criteria)
         {
-            try
-            {
-                IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetManageFeedbackAsync(criteria);
-                IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
-                var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
-                return Json(new { data = feedbacksOrder, mainCategories, totalItems = criteria.TotalRows });
-            }
-          catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        [HttpPost]
-        //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
-        public async Task<ActionResult> EditMultipleLogStatuses([FromBody] EditMultipleLogStatusCommand command)
-        {
-            try
-            {
-                command.ReviewerId = napSession.UserId;
-                var result = await feedbackService.EditMultipleLogStatusAsync(command);
-                return Json(result);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetManageFeedbackAsync(criteria);
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
+            return Json(new { data = feedbacksOrder, mainCategories, totalItems = criteria.TotalRows });
         }
     }
 }

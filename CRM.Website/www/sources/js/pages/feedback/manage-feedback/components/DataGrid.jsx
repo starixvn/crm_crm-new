@@ -150,7 +150,7 @@ export class DataGrid extends Component {
         const createDateFormat = DateTimeService.toShortDateTimeFormat(item.createDate);
         const solveDateFormat = DateTimeService.toShortDateTimeFormat(item.solveDate);
         return (
-            <Row key={`${item.feedbackId}-${index}`} className="manage-feedback-row">
+            <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${item.status === 'Pending' ? 'pending': ''}`}>
                 <Cell className='text-center'>
                     <input type='checkbox' 
                         name={item.feedbackId} key={item.feedbackId}
@@ -261,15 +261,26 @@ export class DataGrid extends Component {
             }
         }
 
-        const statusesSelected = this.props.gridDataFeedbacks.data.filter(x=>feedbackSelected.includes(x.feedbackId)).map(y=> y.status);
-        this.props.setEditMultipleLogStatusDialog({ show: true, feedbackIds: feedbackSelected.join(', '), statusesSelected });
+        this.props.setEditMultipleLogStatusDialog({ show: true, feedbackIds: feedbackSelected });
     }
 
     handleMultipleEdit = () =>{
+        let feedbackArr = [];
+        for(let [key, value] of this.state.checkedItems.entries()) {
+            if(value === true){
+                const feedbackInfo = this.props.gridDataFeedbacks.filter(x=>x.feedbackId === key);
+                feedbackArr.push({
+                    feedbackId: feedbackInfo.feedbackId,
+                    username: feedbackInfo.username
+                });
+            }
+        }
 
+        this.props.setEditMultipleLogDialog({ show: true, feedbackArr: feedbackArr });
     }
 
-    renderTableTitle = (gridDataFeedbacks) =>{
+
+    renderTableTitle = gridDataFeedbacks =>{
         const isClickableEditMultiple = Array.from(this.state.checkedItems.values()).includes(true);
         return (
             <div className='table-title d-flex justify-content-between align-items-center'>

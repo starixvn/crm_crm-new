@@ -301,6 +301,7 @@
     UpdateRelatedCustomers: 'Update Related Customers',
     UpdateSetting: 'Update Setting',
     UpdatedTime: 'Updated Time',
+    UpdateMultipleLogsSuccessfully: 'Update multiple logs successfully!',
     Username: 'Username',
     Verify: 'Verify',
     VerifyListOfUsernameBeforeInsertSetting: 'You must verify the list of usernames before inserting this setting!',
