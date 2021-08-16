@@ -16,8 +16,13 @@
 
     public interface IChatBotResultAmendmentService
     {
-        Task<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>> GetChatBotResultAmendmentInfoAsync(
-            AbnormalBetSystemSetting settingResultAmendment);
+        Task<IEnumerable<MessageVoidSettled>> GetChatBotMessageVoidSettledAsync();
+        Task<CommandResult> ImportMessageVoidSettledAsync(IEnumerable<MessageVoidSettled> messages);
+        Task<ValueTuple<IEnumerable<int>, IEnumerable<TargetMessageInfo>, IEnumerable<TargetMessage>>> 
+            GetChatbotMessageVoidSettledInfoAsync(int BatchSizeGetMsg);
+
+        Task<ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>, string>>
+            GetChatBotResultAmendmentInfoAsync(AbnormalBetSystemSetting settingResultAmendment);
 
         Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<TicketEvent> ticketEvents);
 
@@ -41,17 +46,43 @@
             this.commonFeedback = commonFeedback;
         }
 
-        public async Task<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>> GetChatBotResultAmendmentInfoAsync(
-            AbnormalBetSystemSetting settingResultAmendment
-            )
+        public async Task<IEnumerable<MessageVoidSettled>> GetChatBotMessageVoidSettledAsync()
         {
+            var criteria = new GetMesssagesVoidSettledCriteria();
+            return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
+        }
+
+        public async Task<CommandResult> ImportMessageVoidSettledAsync(IEnumerable<MessageVoidSettled> messages)
+        {
+            var criteria = new ImportMessageVoidSettledCommand
+            {
+                Message = messages.ToXML("root").ToString(),
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<ValueTuple<IEnumerable<int>, IEnumerable<TargetMessageInfo>, IEnumerable<TargetMessage>>> GetChatbotMessageVoidSettledInfoAsync(
+            int BatchSizeGetMsg)
+        {
+            var criteria = new GetChatbotMessageVoidSettledInfo
+            {
+                BatchSizeGetMsg = BatchSizeGetMsg
+            };
+            return await baseService.FetchMultipleAsync<int, TargetMessageInfo,TargetMessage>(criteria);
+        }
+
+        public async Task<ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>, string>> 
+            GetChatBotResultAmendmentInfoAsync(AbnormalBetSystemSetting settingResultAmendment)
+        {
+            
             var criteria = new GetChatBotResultAmendmentCriteria
             {
                 BatchSize = settingResultAmendment.BatchSize,
                 SubmitDate = settingResultAmendment.SubmitDate.ToString("yyyy-MM-dd H:mm:ss.fffffff"),
                 Seq = settingResultAmendment.Seq
             };
-            return await baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, TicketEvent>(criteria);
+            var result =  await baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, TicketEvent>(criteria);
+            return new ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>, string>(result, criteria.ServerName);
         }
 
         public async Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<TicketEvent> ticketEvents)

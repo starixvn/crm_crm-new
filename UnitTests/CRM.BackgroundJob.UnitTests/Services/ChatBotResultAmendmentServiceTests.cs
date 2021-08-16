@@ -22,25 +22,25 @@
         private IBaseService baseService;
         private ICommonFeedback commonFeedback;
 
-        [Fact]
-        public async Task GetChatBotResultAmendmentInfoAsync_WhenCalled_ReturnExpectedData()
-        {
-            // Arrange
-            var fixture = new Fixture();
-            var settingResultAmendment = fixture.Create<AbnormalBetSystemSetting>();
-            var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
-            var ticketTransactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
-            var events = fixture.Create<IEnumerable<TicketEvent>>();
-            var expected = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>(ticketEvents, ticketTransactions, events);
-            var service = GetService();
-            baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, TicketEvent>(Arg.Any<GetChatBotResultAmendmentCriteria>()).Returns(expected);
+        //[Fact]
+        //public async Task GetChatBotResultAmendmentInfoAsync_WhenCalled_ReturnExpectedData()
+        //{
+        //    // Arrange
+        //    var fixture = new Fixture();
+        //    var settingResultAmendment = fixture.Create<AbnormalBetSystemSetting>();
+        //    var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
+        //    var ticketTransactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
+        //    var events = fixture.Create<IEnumerable<TicketEvent>>();
+        //    var expected = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>(ticketEvents, ticketTransactions, events);
+        //    var service = GetService();
+        //    baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, TicketEvent>(Arg.Any<GetChatBotResultAmendmentCriteria>()).Returns(expected);
 
-            // Act
-            var actual = await service.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
+        //    // Act
+        //    var actual = await service.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
 
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+        //    // Assert
+        //    Assert.Equal(expected, actual);
+        //}
 
         [Fact]
         public async Task GetChatBotMessageInfoAsync_WhenCalled_ReturnExpectedData()

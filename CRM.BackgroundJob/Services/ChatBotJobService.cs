@@ -179,25 +179,25 @@
                 return;
             }
 
-            var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
-            var messages = Enumerable.Empty<Message>();
-            if (resultAmendmentInfo.Item3.Any())
-            {
-                messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(resultAmendmentInfo.Item3);
-            }
+            //var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
+            //var messages = Enumerable.Empty<Message>();
+            //if (resultAmendmentInfo.Item3.Any())
+            //{
+            //    messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(resultAmendmentInfo.Item3);
+            //}
 
-            var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
-                resultAmendmentInfo.Item1, resultAmendmentInfo.Item2, messages, resultAmendmentInfo.Item3, Environment
-                );
+            //var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
+            //    resultAmendmentInfo.Item1, resultAmendmentInfo.Item2, messages, resultAmendmentInfo.Item3, Environment
+            //    );
 
-            if (commandResult.IsSuccessful)
-            {
-                await sendNotificationService.SendNotificationToLetstalk();
-            }
-            else
-            {
-                logService.LogInformation(commandResult.Message);
-            }
+            //if (commandResult.IsSuccessful)
+            //{
+            //    await sendNotificationService.SendNotificationToLetstalk();
+            //}
+            //else
+            //{
+            //    logService.LogInformation(commandResult.Message);
+            //}
         }
     }
 }

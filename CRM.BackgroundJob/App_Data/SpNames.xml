@@ -53,7 +53,10 @@
     <Function Name="Chatbot Result Amendment">
         <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Sel" SpName="Acc_CRM_Chatbot_ResultAmendment_Sel_xtest" DbName="DBEXT.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_Msg_Sel" SpName="Acc_CRM_Chatbot_Msg_Sel_xtest" DbName="DBMSG.bodb_Message.bodbAdminNet" />
+        <Setting Key="Acc_CRM_VoidingMsg_GetMessage" SpName="Acc_CRM_VoidingMsg_GetMessage_xtest" DbName="DBMSG.bodb_Message.bodbAdminNet" />
+        <Setting Key="Acc_CRM_VodingMessage_Ins" SpName="Acc_CRM_VodingMessage_Ins_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Import" SpName="Acc_CRM_Chatbot_ResultAmendment_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_VodingMessage_Sel" SpName="Acc_CRM_Chatbot_VodingMessage_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Send Notification">
         <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
