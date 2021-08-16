@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 
-export class FilterInformHeadlines extends Component {
+export class FilterContactInforms extends PureComponent {
     render() {
-        const {titleDetail, onChange, filterStatuses, onChangeStatus, onSearch} = this.props;
+        const { titleDetail, onChange, filterStatuses, onChangeStatus, onSearch, renderExportExcelText } = this.props;
 
         return (
             <>
                 <div className="table-title d-flex justify-content-between align-items-center">
-                    {titleDetail[0].title}
+                    {titleDetail.title}
+                    {renderExportExcelText()}
                 </div>
 
                 <Form onSubmit={onSearch} className="form-filter">
@@ -56,4 +57,4 @@ export class FilterInformHeadlines extends Component {
     };
 }
 
-export default FilterInformHeadlines;
+export default FilterContactInforms;

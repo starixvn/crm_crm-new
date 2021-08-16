@@ -1,13 +1,10 @@
 ﻿namespace CRM.Services.ExportExcel
 {
-    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
     using System.Web;
-    using CRM.Core;
     using CRM.Models.InformHeadline;
-    using CRM.Models.Setting;
     using CRM.Resources;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
@@ -21,7 +18,7 @@
 
         public InformHeadlineExcel(
             string templatePath, 
-            IEnumerable<InformHeadlineModel> informs) : base(templatePath, 0, ViewResources.InformHeadline)
+            IEnumerable<InformHeadlineModel> informs) : base(templatePath, 0, ViewResources.InformHeadlineCase)
         {
             this.informs = informs;
         }
@@ -30,7 +27,7 @@
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
-            worksheet.Cells[1, 1].Value = ViewResources.InformHeadline;
+            worksheet.Cells[1, 1].Value = ViewResources.InformHeadlineCase;
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)

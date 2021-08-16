@@ -10,6 +10,7 @@
     using CRM.Models.Report.SettlementReport;
     using CRM.Models.Setting;
     using CRM.Services.ExportExcel;
+    using CRM.Services.InformHeadline;
     using Microsoft.AspNetCore.Hosting;
 
     public interface IExportExcelService
@@ -30,6 +31,8 @@
         byte[] ExportDeletedFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
 
         byte[] ExportInformHeadline(IEnumerable<InformHeadlineModel> informs);
+
+        byte[] ExportUpdateInformHeadline(IEnumerable<UpdateInform> updateInforms, IInformHeadlineService informHeadlineService, ISettingService settingService, string informHeadlineTitle);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -97,6 +100,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/InformHeadlines.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new InformHeadlineExcel(templatePath, informs);
+            return excel.Export();
+        }
+
+        public byte[] ExportUpdateInformHeadline(IEnumerable<UpdateInform> updateInforms, IInformHeadlineService informHeadlineService, ISettingService settingService, string informHeadlineTitle)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/UpdateInformHeadlines.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new UpdateInformHeadlineExcel(templatePath, updateInforms, informHeadlineService, settingService, informHeadlineTitle);
             return excel.Export();
         }
     }

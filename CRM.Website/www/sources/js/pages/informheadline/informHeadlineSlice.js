@@ -7,12 +7,16 @@ const informHeadlineSlice = createSlice({
         titleDetail: null,
         contactInformSettings: null,
         contactInforms: null,
-        editInformHeadline: {show: false},
-        updateContentInforms: null,
+        editContactInform: {show: false},
         gridParams: {
             pageIndex: 1,
             pageSize: 100
         },
+        allSettings: null,
+        searchInforms: null,
+        editSearchInform: {show: false},
+        resultUpdateContactInforms: null,
+        resultUpdateSearchInforms: null
     },
     reducers: {
         setInforms: (state, action) => {
@@ -27,15 +31,27 @@ const informHeadlineSlice = createSlice({
         setContactInforms: (state, action) => {
             state.contactInforms = action.payload;
         },
-        setEditInformHeadline: (state, action) => {
-            state.editInformHeadline = action.payload;
-        },
-        setUpdateContentInforms: (state, action) => {
-            state.updateContentInforms = action.payload;
+        setEditContactInform: (state, action) => {
+            state.editContactInform = action.payload;
         },
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
+        setAllSettings: (state, action) => {
+            state.allSettings = action.payload;
+        },
+        setSearchInforms: (state, action) => {
+            state.searchInforms = action.payload
+        },
+        setEditSearchInform: (state, action) => {
+            state.editSearchInform = action.payload;
+        },
+        setUpdateContactInforms: (state, action) => {
+            state.resultUpdateContactInforms = action.payload;
+        },
+        setUpdateSearchInforms: (state, action) => {
+            state.resultUpdateSearchInforms = action.payload;
+        }
     }
 });
 
@@ -46,9 +62,13 @@ export const {
     setTitleDetail,
     setContactInformSettings,
     setContactInforms,
-    setEditInformHeadline,
-    setUpdateContentInforms,
-    setGridParams
+    setEditContactInform,
+    setGridParams,
+    setAllSettings,
+    setSearchInforms,
+    setEditSearchInform,
+    setUpdateContactInforms,
+    setUpdateSearchInforms
 } = actions;
 
 export default reducer;

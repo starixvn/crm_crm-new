@@ -7,7 +7,7 @@
     using System.Linq;
     using System.Text;
 
-    public class UpdateContentInformsCommand : BaseNonQueryCommand
+    public class UpdateContactInformsCommand : BaseNonQueryCommand
     {
         public int TitleId { get; set; }
 
@@ -32,7 +32,7 @@
                         xml.AppendFormat("<Headline HeadlineID='{0}' StatusID='{1}' Remark='{2}' Extension='{3}' ProductStatus='{4}'/>", 
                             inform.HeadlineId, 
                             inform.InformHeadlineStatusId,
-                            inform.Remark, 
+                            ReplaceBreaklineXml(inform.Remark), 
                             inform.Extension, 
                             inform.ProductStatus);
                     }

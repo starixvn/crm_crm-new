@@ -1,23 +1,20 @@
 ﻿namespace CRM.Services.InformHeadline
 {
-    using CRM.Core.Constants;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.InformHeadline;
     using CRM.Models.InformHeadline;
-    using CRM.Repositories;
-    using CRM.Resources;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Web;
 
     public interface IInformHeadlineService
     {
         Task<IEnumerable<InformHeadlineModel>> GetInformAsync();
-        Task<IEnumerable<InformTitleDetail>> GetTitleDetailAsync(GetTitleDetailParam param);
+        Task<InformTitleDetail> GetTitleDetailAsync(GetTitleDetailParam param);
         Task<IEnumerable<InformStatus>> GetInformStatuses(bool isIncludeKeptForRefence = false);
         Task<IEnumerable<UpdateInform>> GetContactInforms(GetContactInformParam param);
+        Task<IEnumerable<UpdateInform>> GetSearchInforms(GetSearchInformParam param);
     }
 
     public class InformHeadlineService : IInformHeadlineService
@@ -49,13 +46,13 @@
             return informs;
         }
 
-        public async Task<IEnumerable<InformTitleDetail>> GetTitleDetailAsync(GetTitleDetailParam param)
+        public async Task<InformTitleDetail> GetTitleDetailAsync(GetTitleDetailParam param)
         {
             var criteria = new GetInformTitleDetailCriteria
             {
                 TitleId = param.TitleId
             };
-            return await baseService.GetDataAsync<InformTitleDetail>(criteria);
+            return await baseService.GetDataEntityAsync<InformTitleDetail>(criteria);
         }
 
         public async Task<IEnumerable<InformStatus>> GetInformStatuses(bool isIncludeKeptForRefence = false)
@@ -80,9 +77,31 @@
             IEnumerable<UpdateInform> contactInforms = await baseService.GetDataAsync<UpdateInform>(criteria);
             foreach (var contactInform in contactInforms)
             {
-                contactInform.ClientUpdatedTime = contactInform.UpdatedTime.HasValue ? commonService.ConvertToClientDateTime((System.DateTime)contactInform.UpdatedTime).ToString() : string.Empty;
+                contactInform.ClientUpdatedTime = contactInform.UpdatedTime.HasValue ? string.Format("{0:MMM dd, yyyy hh:mm:ss tt}", commonService.ConvertToClientDateTime((System.DateTime)contactInform.UpdatedTime)) : string.Empty;
+                contactInform.Remark = HttpUtility.HtmlDecode(contactInform.Remark);
             }
             return contactInforms;
+        }
+
+        public async Task<IEnumerable<UpdateInform>> GetSearchInforms(GetSearchInformParam param)
+        {
+            var criteria = new GetSearchInformsCriteria
+            {
+                TitleId = param.TitleId,
+                TypeAccount = param.TypeAccount,
+                Currencies = param.Currencies,
+                Levels = param.Levels,
+                Sites = param.Sites,
+                IsVip = param.IsVip,
+                ExcludeIgnoredAccounts = param.ExcludeIgnoredAccounts
+            };
+            IEnumerable<UpdateInform> updateInforms = await baseService.GetDataAsync<UpdateInform>(criteria);
+            foreach (var updateInform in updateInforms)
+            {
+                updateInform.ClientUpdatedTime = updateInform.UpdatedTime.HasValue ? string.Format("{0:MMM dd, yyyy hh:mm:ss tt}", commonService.ConvertToClientDateTime((System.DateTime)updateInform.UpdatedTime)) : string.Empty;
+                updateInform.Remark = HttpUtility.HtmlDecode(updateInform.Remark);
+            }
+            return updateInforms;
         }
     }
 }

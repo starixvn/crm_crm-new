@@ -24,21 +24,30 @@
 }
 
 .body-content tr.open td{
-    background: rgb(240, 237, 196) !important;
+    background: #f0edc4 !important;
 }
 
 .body-content tr.closed td{
-    background: rgb(242, 242, 242) !important;
+    background: #f2f2f2 !important;
 }
 
-.body-content tr.free-grid td{
-    background: rgb(208, 230, 244) !important;
+.body-content tr.free-grid-headline td{
+    background: #d0e6f4 !important;
+}
+
+.body-content tr.free-grid-direct td{
+    background: #f1f1f1 !important;
 }
 
 .select-body{
     width: 105px;
     height: 35px;
     margin: auto;
+}
+
+.check-btn{
+    padding-left: 30px;
+    padding-top: 2px;
 }
 
 @media screen and (min-width: 1200px){

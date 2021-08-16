@@ -43,35 +43,69 @@ export class DataGrid extends Component {
     };
 
     handleEditDetail = async titleId => {
+        await this.props.getTitleDetail({
+            titleId: titleId
+        });
+
         await this.props.getContactInformSettings();
         const selectedStatuses = this.props.contactInformSettings.filterStatuses.map(item => {
             return item.settingId;
         }).join();
 
-        this.props.getTitleDetail({
-            titleId: titleId
-        });
+
         this.props.getContactInforms({
             titleId: titleId,
             username: '',
             statusId: selectedStatuses,
             pageIndex: 1,
-            pageSize: 300
+            pageSize: 2200
         });
 
         this.props.setGridParams({
             pageIndex: 1,
             pageSize: 100
         });
-        this.props.setEditInformHeadline({show: true, titleId: titleId, selectedStatuses: selectedStatuses});
-    }
+        this.props.setEditContactInform({show: true, titleId: titleId, selectedStatuses: selectedStatuses});
+    };
+
+    getIncludeInSetting = (detail, setting) => {
+        const includes = [];
+        setting.map(item => {
+            if(detail.split(",").includes(item.id.toString()))
+                includes.push(item.id);
+        });
+        return includes.join(",");
+    };
+
+    handleEditNumberAccount = async titleId => {
+        await this.props.getTitleDetail({
+            titleId: titleId
+        });
+        await this.props.getAllSettings();
+
+        const { titleDetail, allSettings } = this.props;
+        const includeCurrencies = this.getIncludeInSetting(titleDetail.currencies, allSettings.currencies);
+        const includeSites = this.getIncludeInSetting(titleDetail.sites, allSettings.sites[0].childSites);
+        
+        this.props.getSearchInforms({
+            titleId: titleId,
+            typeAccount: titleDetail.typeAccount,
+            currencies: includeCurrencies,
+            levels: titleDetail.positions,
+            sites: includeSites,
+            isVip: titleDetail.isVip,
+            excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts
+        });
+
+        this.props.setEditSearchInform({show: true, titleId: titleId, includeCurrencies: includeCurrencies, includeSites: includeSites});
+    };
 
     renderRow = (item, index, contactPolicy) => {
         const cssClass = item.status ? item.status.toLowerCase() : '';
         return (
             <Row key={index} className={cssClass}>
                 <Cell className='text-center'>
-                    <span className="fa fa-pencil-square-o"></span>
+                    <span className="fa fa-pencil-square-o" onClick={() => this.handleEditNumberAccount(item.titleId)}></span>
                 </Cell>
                 {
                     !contactPolicy.hasAttribute('none') ?
@@ -100,7 +134,7 @@ export class DataGrid extends Component {
     };
 
     handleExportExcel = () => {
-        this.props.ExportInformExcel();
+        this.props.ExportInforms();
     };
 
     renderExportExcelText = () => {
@@ -122,11 +156,11 @@ export class DataGrid extends Component {
         const { gridData } = this.props;
         if(!gridData){
             return null;
-        }
+        };
 
         return (
             <>
-                <div className='table-title d-flex justify-content-between align-items-center ha'>
+                <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>Inform Headlines Cases</span>
                     {
                         gridData.length > 0 && this.renderExportExcelText()
@@ -149,15 +183,15 @@ export class DataGrid extends Component {
                     </Button>
                 }
             </>
-        )
-    }
-}
+        );
+    };
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridData, titleDetail, contactInformSettings, contactInforms } = state;
-    return { gridData, titleDetail, contactInformSettings, contactInforms };
+    const { gridData, titleDetail, contactInformSettings, contactInforms, allSettings } = state;
+    return { gridData, titleDetail, contactInformSettings, contactInforms, allSettings };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

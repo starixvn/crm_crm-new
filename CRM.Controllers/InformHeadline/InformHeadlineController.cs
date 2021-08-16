@@ -1,6 +1,6 @@
 ﻿namespace CRM.Controllers.InformHeadline
 {
-    using System.Linq;
+    using System.Web;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
@@ -16,8 +16,6 @@
     using static Fanex.NAP.Core.Business.Constant;
     using CRM.Core.Models;
     using CRM.Criteria.InformHeadline;
-    using System.Text;
-    using CRM.Core.Extensions.XML;
     using CRM.Core.Services;
 
     [CrmPermission(FunctionKey = FunctionKey.InformHeadline, Policy = Policy.Read)]
@@ -67,7 +65,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> ExportInformExcel()
+        public async Task<IActionResult> ExportInforms()
         {
             IEnumerable<InformHeadlineModel> informs = await informHeadlineService.GetInformAsync();
             var bytes = excelService.ExportInformHeadline(informs);
@@ -78,7 +76,7 @@
         [HttpPost]
         public async Task<IActionResult> GetTitleDetail([FromBody] GetTitleDetailParam param)
         {
-            IEnumerable<InformTitleDetail> titles = await informHeadlineService.GetTitleDetailAsync(param);
+            InformTitleDetail titles = await informHeadlineService.GetTitleDetailAsync(param);
             return Json(titles);
         }
 
@@ -103,12 +101,71 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.InformHeadlineContact, Policy = Policy.Host)]
-        public async Task<IActionResult> UpdateContentInforms([FromBody] UpdateContentInformsCommand param)
+        public async Task<IActionResult> UpdateContactInforms([FromBody] UpdateContactInformsCommand command)
         {
-            param.IP = ClientIP;
-            param.UserId = napSession.UserId;
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(param);
+            command.IP = ClientIP;
+            command.UserId = napSession.UserId;
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineContact, Policy = Policy.Host)]
+        public async Task<IActionResult> ExportContactInforms([FromBody] GetContactInformParam param)
+        {
+            IEnumerable<UpdateInform> contactInforms = await informHeadlineService.GetContactInforms(param);
+            InformTitleDetail titles = await baseService.GetDataEntityAsync<InformTitleDetail>(new GetInformTitleDetailCriteria
+            {
+                TitleId = param.TitleId
+            });
+            var bytes = excelService.ExportUpdateInformHeadline(contactInforms, informHeadlineService, settingService, titles.Title);
+            string reportName = ViewResources.ContactInformHeadlines;
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
+
+        public async Task<IActionResult> GetAllSettings()
+        {
+            var allSettings = new
+            {
+                currencies = await settingService.GetCurrencyAsync(),
+                productStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline),
+                sites = await settingService.GetAllSitesWithGroupAsync(),
+                stations = await settingService.GetStations(),
+                statuses = await informHeadlineService.GetInformStatuses()
+            };
+            return Json(allSettings);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetSearchInforms([FromBody] GetSearchInformParam param)
+        {
+            IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInforms(param);
+            return Json(searchInforms);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateSearchInforms([FromBody] UpdateSearchInformsCommand command)
+        {
+            command.IP = ClientIP;
+            command.UserId = napSession.UserId;
+            command.Title = HttpUtility.HtmlEncode(command.Title);
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
+        public async Task<IActionResult> ExportSearchInforms([FromBody] GetSearchInformParam param)
+        {
+            IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInforms(param);
+            InformTitleDetail titles = await baseService.GetDataEntityAsync<InformTitleDetail>(new GetInformTitleDetailCriteria
+            {
+                TitleId = param.TitleId
+            });
+            var bytes = excelService.ExportUpdateInformHeadline(searchInforms, informHeadlineService, settingService, titles.Title);
+            string reportName = ViewResources.UpdateInformHeadlines;
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }
 }

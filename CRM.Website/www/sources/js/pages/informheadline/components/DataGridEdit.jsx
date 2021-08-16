@@ -1,37 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 
-export class DataGridEdit extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            informs: []
-        };
-    };
-
-    handleChange = (event, item) => {
-        const name = event.target.name;
-
-        var result = {
-            headlineId: item,
-            [name]: event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value
-        };
-        this.setState(prevState => {
-            let newInforms = prevState.informs;
-            let element  = newInforms.find(value => value.headlineId === result.headlineId);
-
-            if(element){
-                Object.assign(element, result);
-                return({informs: newInforms});
-            }
-            else{
-                return({informs: [...newInforms, result]});
-            }
-        });
-    };
+export class DataGridEdit extends PureComponent {
 
     buildHeader = () => {
         return(
@@ -48,12 +21,12 @@ export class DataGridEdit extends Component {
     };
 
     buildBody = () => {
-        const { contactInformSettings } = this.props;
-        const productStatuses = [...contactInformSettings.productStatuses];
+        const { InformSettings, onChange } = this.props;
+        const productStatuses = [...InformSettings.productStatuses];
         productStatuses.unshift({statusId: 0, name: 'N/A'});
 
-        if (this.props.contactInforms.length > 0) {
-            return this.props.contactInforms.map((item, index) => this.renderRow(item, index, productStatuses));
+        if (this.props.Informs.length > 0) {
+            return this.props.Informs.map((item, index) => this.renderRow(item, index, productStatuses, InformSettings, onChange));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -64,30 +37,30 @@ export class DataGridEdit extends Component {
 
     renderOptions = (name, id, key) => <option key={key} value={id}>{name}</option>;
 
-    renderRow = (item, index, productStatuses) => {
-        const { contactInformSettings } = this.props;
-
+    renderRow = (item, index, productStatuses, informSettings, onChange) => {
         return (
-            <Row key={index} className="free-grid">
+            <Row key={index} className={item.groupId > 0 ? "free-grid-headline" : "free-grid-direct"}>
                 <Cell>{item.username}</Cell>
                 <Cell className='text-center'>
                     <Form.Control as="select" size="sm" className="shadow-none select-body"
                         name="informHeadlineStatusId"
                         defaultValue={item.informHeadlineStatusId}
-                        key={item.informHeadlineStatusId}
-                        onChange={(event) => this.handleChange(event,item.headlineId)}
+                        key={item.informHeadlineStatusId}  
+                        onChange={(event) => onChange(event,item.headlineId)}
                     >
                         {
-                            contactInformSettings.statuses.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
+                            informSettings.statuses.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
                         }
                     </Form.Control>
                 </Cell>
                 <Cell>{item.clientUpdatedTime}</Cell>
                 <Cell className='text-center'>
-                    <Form.Control  as="textarea" size="sm" className="shadow-none"
+                    <Form.Control as="textarea" size="sm" className="shadow-none"
                         name="remark"
                         defaultValue={item.remark}
-                        onChange={(event) => this.handleChange(event,item.headlineId)}
+                        key={item.remark}
+                        style={{'height':'38px'}}
+                        onChange={(event) => onChange(event,item.headlineId)}
                     />
                 </Cell>
                 <Cell>{item.handler}</Cell>
@@ -97,10 +70,10 @@ export class DataGridEdit extends Component {
                         name="extension"
                         defaultValue={item.extension}
                         key={item.extension}
-                        onChange={(event) => this.handleChange(event,item.headlineId)}
+                        onChange={(event) => onChange(event,item.headlineId)}
                     >
                         {
-                            contactInformSettings.stations.map((value, key) => this.renderOptions(value.name, value.stationId, key))
+                            informSettings.stations.map((value, key) => this.renderOptions(value.name, value.stationId, key))
                         }
                     </Form.Control>
                 </Cell>
@@ -110,7 +83,7 @@ export class DataGridEdit extends Component {
                         name="productStatus"
                         defaultValue={item.productStatus}
                         key={item.productStatus}
-                        onChange={(event) => this.handleChange(event,item.headlineId)}
+                        onChange={(event) => onChange(event,item.headlineId)}
                     >
                         {
                             productStatuses.map((value, key) => this.renderOptions(value.name, value.statusId, key))
@@ -123,13 +96,13 @@ export class DataGridEdit extends Component {
 
 
     render() {
-        const { gridParams, onPaging, onSubmit } = this.props;
+        const { gridParams, onPaging, handleSubmit, values, setFieldValue } = this.props;
         const { pageIndex, pageSize } = gridParams;
 
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
-            TotalItem: 300,
+            TotalItem: 2200,
             PageList: PAGING_SIZES
         };
 
@@ -146,12 +119,30 @@ export class DataGridEdit extends Component {
                     containerPadding={0}
                     adjustedHeight={10}
                 />
-                <Button variant="primary" size="sm" style={{width: '65px'}} onClick={() => onSubmit(this.state.informs)}>
-                    {LangHelper.getResource('Save')}
-                </Button>
+                {
+                    values ?
+                    (
+                        <Button variant="primary" size="sm" style={{width: '65px'}} 
+                            type="submit"
+                            onClick={() => {
+                                setFieldValue('submit',true);
+                                handleSubmit;
+                            }}
+                        >
+                            {LangHelper.getResource('Save')}
+                        </Button>
+                    ) :
+                    (
+                        <Button variant="primary" size="sm" style={{width: '65px'}} 
+                            onClick={handleSubmit}
+                        >
+                            {LangHelper.getResource('Save')}
+                        </Button>
+                    )
+                }  
             </>
         )
     };
-}
+};
 
 export default DataGridEdit;

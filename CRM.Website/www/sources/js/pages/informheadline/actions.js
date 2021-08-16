@@ -5,9 +5,13 @@ import{
     setTitleDetail,
     setContactInformSettings,
     setContactInforms,
-    setEditInformHeadline,
-    setUpdateContentInforms,
-    setGridParams
+    setEditContactInform,
+    setGridParams,
+    setAllSettings,
+    setSearchInforms,
+    setEditSearchInform,
+    setUpdateContactInforms,
+    setUpdateSearchInforms
 } from './informHeadlineSlice';
 
 const getInforms = () => async dispatch => {
@@ -18,8 +22,8 @@ const getInforms = () => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const ExportInformExcel = params => async () => {
-    const url = Site.resolveClientUrl('InformHeadline/ExportInformExcel');
+const ExportInforms = params => async () => {
+    const url = Site.resolveClientUrl('InformHeadline/ExportInforms');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
@@ -35,36 +39,82 @@ const getTitleDetail = params => async dispatch => {
 };
 
 const getContactInformSettings = () => async dispatch => {
-    Site.blockUI();
+
     const url = Site.resolveClientUrl('InformHeadline/GetContactInformSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setContactInformSettings(response.data));
-    }).then(() => Site.unblockUI());
+    });
 };
 
 const getContactInforms = params => async dispatch => {
-    Site.blockUI();
+
     const url = Site.resolveClientUrl('InformHeadline/GetContactInforms');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setContactInforms(response.data));
+    });
+}
+
+const updateContactInforms = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/UpdateContactInforms');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setUpdateContactInforms(response.data));
     }).then(() => Site.unblockUI());
 }
 
-const getUpdateContentInforms = params => async dispatch => {
+const getAllSettings = () => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('InformHeadline/UpdateContentInforms');
-    await DataService.postDataAsync(url, params).then(response => {
-        dispatch(setUpdateContentInforms(response.data));
+    const url = Site.resolveClientUrl('InformHeadline/GetAllSettings');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setAllSettings(response.data));
     }).then(() => Site.unblockUI());
-}
+};
+
+const getSearchInforms = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/GetSearchInforms');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setSearchInforms(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const updateSearchInforms = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/UpdateSearchInforms');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setUpdateSearchInforms(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const ExportContactInforms = params => async () => {
+    const url = Site.resolveClientUrl('InformHeadline/ExportContactInforms');
+    await DataService.getFileAsync(url, params).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
+        Site.downloadFile(response.data, fileName);
+    });
+};
+
+const ExportSearchInforms = params => async () => {
+    const url = Site.resolveClientUrl('InformHeadline/ExportSearchInforms');
+    await DataService.getFileAsync(url, params).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
+        Site.downloadFile(response.data, fileName);
+    });
+};
 
 export const ActionCreators = {
     getInforms,
-    ExportInformExcel,
+    ExportInforms,
     getTitleDetail,
     getContactInformSettings,
     getContactInforms,
-    setEditInformHeadline,
-    getUpdateContentInforms,
-    setGridParams
+    setEditContactInform,
+    updateContactInforms,
+    setGridParams,
+    getAllSettings,
+    getSearchInforms,
+    setEditSearchInform,
+    updateSearchInforms,
+    ExportContactInforms,
+    ExportSearchInforms
 };

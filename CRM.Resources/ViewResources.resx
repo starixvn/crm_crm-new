@@ -273,4 +273,13 @@
   <data name="InformHeadline_Title" xml:space="preserve">
     <value>InformHeadlines</value>
   </data>
+  <data name="UpdateInformHeadlines" xml:space="preserve">
+    <value>UpdateInformHeadlines</value>
+  </data>
+  <data name="ContactInformHeadlines" xml:space="preserve">
+    <value>ContactInformHeadlines</value>
+  </data>
+  <data name="InformHeadlineCase" xml:space="preserve">
+    <value>Inform Headlines Cases</value>
+  </data>
 </root>

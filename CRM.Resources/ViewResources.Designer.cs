@@ -124,6 +124,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ContactInformHeadlines.
+        /// </summary>
+        public static string ContactInformHeadlines {
+            get {
+                return ResourceManager.GetString("ContactInformHeadlines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Country.
         /// </summary>
         public static string Country {
@@ -282,6 +291,15 @@ namespace CRM.Resources {
         public static string InformHeadline_Title {
             get {
                 return ResourceManager.GetString("InformHeadline_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inform Headlines Cases.
+        /// </summary>
+        public static string InformHeadlineCase {
+            get {
+                return ResourceManager.GetString("InformHeadlineCase", resourceCulture);
             }
         }
         
@@ -516,6 +534,15 @@ namespace CRM.Resources {
         public static string Symbol_NotApply {
             get {
                 return ResourceManager.GetString("Symbol_NotApply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UpdateInformHeadlines.
+        /// </summary>
+        public static string UpdateInformHeadlines {
+            get {
+                return ResourceManager.GetString("UpdateInformHeadlines", resourceCulture);
             }
         }
         
