@@ -53,6 +53,13 @@ export class AppContainer extends Component {
         }
     };
 
+    handleCloseMultipleEditLog = isSuccessful => {
+        this.props.setEditMultipleLogDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getGridFeedbacks(this.props.gridParams);
+        }
+    };
+
     render() {
         const { isHost, viewRelatedCustomerDialog, editNoOfInquiryDialog, 
                 editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog } = this.props;
@@ -97,8 +104,7 @@ export class AppContainer extends Component {
                  {
                     editMultipleLogDialog.show &&
                     <EditMultipleLogs feedbackArr={editMultipleLogDialog.feedbackArr}
-                        settings={this.props.settings}
-                        onClose={this.handleCloseMultipleEditStatusDialog}
+                        onClose={this.handleCloseMultipleEditLog}
                     />
                 }
             </Fragment>

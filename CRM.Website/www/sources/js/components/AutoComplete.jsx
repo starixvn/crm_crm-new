@@ -6,7 +6,7 @@ export default class AutoComplete extends Component {
     static propTypes = {
         value: PropTypes.string,
         options: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
-        diplayField: PropTypes.string,
+        displayField: PropTypes.string,
         onChange: PropTypes.func,
         onInputChange: PropTypes.func
     };
@@ -14,7 +14,7 @@ export default class AutoComplete extends Component {
     static defaultProps = {
         value: '',
         options: [],
-        diplayField: '',
+        displayField: '',
         isInvalid: false
     };
 
@@ -52,10 +52,10 @@ export default class AutoComplete extends Component {
     }
 
     selectOption = item => {
-        const diplayField = this.props.diplayField;
+        const displayField = this.props.displayField;
         this.setState({
             showOptionList: false,
-            searchValue: diplayField.length > 0 ? item[diplayField] : item
+            searchValue: displayField.length > 0 ? item[displayField] : item
         });
 
         this.props.onChange && this.props.onChange(item);
@@ -121,9 +121,9 @@ export default class AutoComplete extends Component {
         if (selectedItem === 0) {
             this.setState({ selectedItem: -1 });
         } else {
-            const { diplayField, options } = this.props;
+            const { displayField, options } = this.props;
             const index = selectedItem - 1;
-            const value = diplayField.length > 0 ? options[index][diplayField] : options[index];
+            const value = displayField.length > 0 ? options[index][displayField] : options[index];
             this.setState({
                 selectedItem: index,
                 searchValue: value
@@ -134,14 +134,14 @@ export default class AutoComplete extends Component {
 
     moveDown = () => {
         const { selectedItem } = this.state;
-        const { diplayField, options } = this.props;
+        const { displayField, options } = this.props;
 
         if (selectedItem === options.length - 1) {
             return;
         }
 
         const index = selectedItem + 1;
-        const value = diplayField.length > 0 ? options[index][diplayField] : options[index];
+        const value = displayField.length > 0 ? options[index][displayField] : options[index];
         this.setState({
             selectedItem: index,
             searchValue: value
@@ -151,7 +151,7 @@ export default class AutoComplete extends Component {
 
     render() {
         const { showOptionList, searchValue } = this.state;
-        const { options, diplayField, isInvalid } = this.props;
+        const { options, displayField, isInvalid } = this.props;
         return (
             <div className="autocomplete-container" ref={this.wrapperRef}>
                 <Form.Control type="text" size="sm" autoComplete="off"
@@ -168,7 +168,7 @@ export default class AutoComplete extends Component {
                                 options.map((item, index) => {
                                     const reg = new RegExp(`(${searchValue})`, 'gi');
                                     const selected = this.state.selectedItem === index ? 'selected' : '';
-                                    const displayValue = (diplayField.length > 0 ? item[diplayField] : item)
+                                    const displayValue = (displayField.length > 0 ? item[displayField] : item)
                                         .replace(reg, "<span class='text-matched'>$1</span>");
 
                                     return (

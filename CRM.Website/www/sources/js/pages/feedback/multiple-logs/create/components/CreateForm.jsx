@@ -795,7 +795,7 @@ export class CreateForm extends Component {
                             <Col sm="9" md="9">
                                 <AutoComplete isInvalid={touched.subject && errors.subject}
                                     value={values.subject}
-                                    options={feedbackSubjectTemplates} diplayField="subject"
+                                    options={feedbackSubjectTemplates} displayField="subject"
                                     onChange={value => setFieldValue('subject', value)}
                                     onInputChange={this.handleGetFeedbackSubjectTemplates}
                                 />

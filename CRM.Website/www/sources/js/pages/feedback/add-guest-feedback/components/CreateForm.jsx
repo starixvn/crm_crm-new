@@ -866,7 +866,7 @@ export class CreateForm extends Component {
                             </Form.Label>
                             <Col sm="9" md="9">
                                 <AutoComplete
-                                    options={this.props.feedbackSubjectTemplates} diplayField="subject"
+                                    options={this.props.feedbackSubjectTemplates} displayField="subject"
                                     value={values.subject}
                                     onChange={value => setFieldValue('subject', value)} isInvalid={touched.subject && errors.subject}
                                     onInputChange={searchText => {

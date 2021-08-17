@@ -22,7 +22,7 @@ describe('AutoComplete', () => {
 
     const props = {
         options: [],
-        diplayField: '',
+        displayField: '',
         onChange: jest.fn(),
         onInputChange: jest.fn()
     };
@@ -338,7 +338,7 @@ describe('AutoComplete', () => {
                 };
                 const props = {
                     options: ["test"],
-                    diplayField: '',
+                    displayField: '',
                     onChange: jest.fn(),
                     onInputChange: jest.fn()
                 };
@@ -365,7 +365,7 @@ describe('AutoComplete', () => {
                 };
                 const props = {
                     options: ["test"],
-                    diplayField: '',
+                    displayField: '',
                     onChange: jest.fn(),
                     onInputChange: jest.fn()
                 };

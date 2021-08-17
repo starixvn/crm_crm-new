@@ -166,7 +166,7 @@ export default class EditMultipleReviewAndStatus extends Component {
         return (
             <Modal show className="edit-multiple-review-status-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="lg" centered
-                onHide={this.props.onClose}
+                onHide={() => this.props.onClose(false)}
             >
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('MultipleReviewAndUpdateStatus')}</Modal.Title>

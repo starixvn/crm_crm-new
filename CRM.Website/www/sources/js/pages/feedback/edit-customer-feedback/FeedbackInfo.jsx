@@ -495,7 +495,7 @@ export default class FeedbackInfo extends Component {
                                         <Col>
                                             <AutoComplete isInvalid={touched.subject && errors.subject}
                                                 value={values.subject}
-                                                options={feedbackSubjectTemplates} diplayField="subject"
+                                                options={feedbackSubjectTemplates} displayField="subject"
                                                 onChange={value => setFieldValue('subject', value)}
                                                 onInputChange={onGetFeedbackSubjectTemplates}
                                             />
