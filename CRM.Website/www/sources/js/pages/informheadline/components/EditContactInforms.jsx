@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import { Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
@@ -204,4 +207,11 @@ export class EditContactInforms extends Component {
     };
 }
 
-export default EditContactInforms;
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { titleDetail, contactInformSettings, contactInforms, gridParams, resultUpdateContactInforms } = state;
+    return { titleDetail, contactInformSettings, contactInforms, gridParams, resultUpdateContactInforms };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditContactInforms);

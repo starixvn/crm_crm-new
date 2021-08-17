@@ -31,7 +31,7 @@ const getInforms = () => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const ExportInforms = params => async () => {
+const exportInforms = params => async () => {
     const url = Site.resolveClientUrl('InformHeadline/ExportInforms');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
@@ -93,7 +93,7 @@ const updateSearchInforms = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const ExportContactInforms = params => async () => {
+const exportContactInforms = params => async () => {
     const url = Site.resolveClientUrl('InformHeadline/ExportContactInforms');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
@@ -101,7 +101,7 @@ const ExportContactInforms = params => async () => {
     });
 };
 
-const ExportSearchInforms = params => async () => {
+const exportSearchInforms = params => async () => {
     const url = Site.resolveClientUrl('InformHeadline/ExportSearchInforms');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
@@ -143,7 +143,7 @@ const insertInforms = params => async dispatch => {
 
 export const ActionCreators = {
     getInforms,
-    ExportInforms,
+    exportInforms,
     getTitleDetail,
     getContactInformSettings,
     getContactInforms,
@@ -154,8 +154,8 @@ export const ActionCreators = {
     getSearchInforms,
     setShowEditSearchInform,
     updateSearchInforms,
-    ExportContactInforms,
-    ExportSearchInforms,
+    exportContactInforms,
+    exportSearchInforms,
     getRemovedAccountLogs,
     getRemovedAccountLogDetails,
     setShowRemovedLogs,

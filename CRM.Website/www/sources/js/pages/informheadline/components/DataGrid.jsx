@@ -185,7 +185,7 @@ export class DataGrid extends Component {
     };
 
     handleExportExcel = () => {
-        this.props.ExportInforms();
+        this.props.exportInforms();
     };
 
     renderExportExcelText = () => {

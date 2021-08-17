@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
+import { Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import DataGridEdit from './DataGridEdit';
@@ -270,7 +273,6 @@ export class EditSearchInforms extends Component {
 
     handleExportExcel = values => {
         this.getTypeAccount(values);
-
         const params = {
             titleId: this.props.titleId,
             typeAccount: values.typeAccount,
@@ -280,7 +282,6 @@ export class EditSearchInforms extends Component {
             isVip: parseInt(values.vipId),
             excludeIgnoredAccounts: values.isExcludeIgnoredAccounts
         };
-
         this.props.exportSearchInforms(params);
     };
 
@@ -300,7 +301,7 @@ export class EditSearchInforms extends Component {
     };
 
     render() {
-        const {titleDetail, allSettings, searchInforms, gridParams} = this.props;
+        const {titleDetail, allSettings, searchInforms} = this.props;
         if(!titleDetail || !allSettings || !searchInforms){
             return null;
         };
@@ -324,8 +325,6 @@ export class EditSearchInforms extends Component {
                         >
                             { this.renderFilterForm }
                         </Formik>
-
-
                     </Modal.Body>
                 </Modal>
             </>
@@ -333,4 +332,11 @@ export class EditSearchInforms extends Component {
     };
 }
 
-export default EditSearchInforms
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { titleDetail, allSettings, searchInforms, gridParams, resultUpdateSearchInforms } = state;
+    return { titleDetail, allSettings, searchInforms, gridParams, resultUpdateSearchInforms };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditSearchInforms);

@@ -69,15 +69,6 @@ export class AppContainer extends Component {
                         titleId={showEditContactInform.titleId}
                         onClose={this.handleCloseShowEditContactInforms}
                         selectedStatuses={showEditContactInform.selectedStatuses}
-                        titleDetail={this.props.titleDetail}
-                        contactInforms={this.props.contactInforms}
-                        contactInformSettings={this.props.contactInformSettings}
-                        gridParams={this.props.gridParams}
-                        getContactInforms={this.props.getContactInforms}
-                        setGridParams={this.props.setGridParams}
-                        updateContactInforms={this.props.updateContactInforms}
-                        resultUpdateContactInforms={this.props.resultUpdateContactInforms}
-                        exportContactInforms={this.props.ExportContactInforms}
                     />
                 }
                 {
@@ -85,17 +76,8 @@ export class AppContainer extends Component {
                     <EditSearchInforms
                         titleId={showEditSearchInform.titleId}
                         onClose={this.handleCloseShowEditSearchInforms}
-                        titleDetail={this.props.titleDetail}
                         includeCurrencies={showEditSearchInform.includeCurrencies}
                         includeSites={showEditSearchInform.includeSites}
-                        searchInforms={this.props.searchInforms}
-                        allSettings={this.props.allSettings}
-                        getSearchInforms={this.props.getSearchInforms}
-                        gridParams={this.props.gridParams}
-                        setGridParams={this.props.setGridParams}
-                        updateSearchInforms={this.props.updateSearchInforms}
-                        resultUpdateSearchInforms={this.props.resultUpdateSearchInforms}
-                        exportSearchInforms={this.props.ExportSearchInforms}
                     />
                 }
                 {
@@ -125,18 +107,9 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        showEditContactInform, titleDetail, contactInforms,
-        contactInformSettings, gridParams, showEditSearchInform,
-        searchInforms, allSettings, resultUpdateContactInforms,
-        resultUpdateSearchInforms, showRemovedLogs, showRemovedLogDetails,
-        showNewInforms
-    } = state;
+        showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms } = state;
     return {
-        showEditContactInform, titleDetail, contactInforms,
-        contactInformSettings, gridParams, showEditSearchInform,
-        searchInforms, allSettings, resultUpdateContactInforms,
-        resultUpdateSearchInforms, showRemovedLogs, showRemovedLogDetails,
-        showNewInforms
+        showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms
     };
 };
 
