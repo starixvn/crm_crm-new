@@ -5,13 +5,18 @@ import{
     setTitleDetail,
     setContactInformSettings,
     setContactInforms,
-    setEditContactInform,
+    setShowEditContactInform,
     setGridParams,
     setAllSettings,
     setSearchInforms,
-    setEditSearchInform,
+    setShowEditSearchInform,
     setUpdateContactInforms,
-    setUpdateSearchInforms
+    setUpdateSearchInforms,
+    setRemovedAccountLogs,
+    setRemovedAccountLogDetails,
+    setShowRemovedLogs,
+    setShowRemovedLogDetails,
+    setGridParamRemovedLogs
 } from './informHeadlineSlice';
 
 const getInforms = () => async dispatch => {
@@ -39,7 +44,6 @@ const getTitleDetail = params => async dispatch => {
 };
 
 const getContactInformSettings = () => async dispatch => {
-
     const url = Site.resolveClientUrl('InformHeadline/GetContactInformSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setContactInformSettings(response.data));
@@ -47,7 +51,6 @@ const getContactInformSettings = () => async dispatch => {
 };
 
 const getContactInforms = params => async dispatch => {
-
     const url = Site.resolveClientUrl('InformHeadline/GetContactInforms');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setContactInforms(response.data));
@@ -102,19 +105,40 @@ const ExportSearchInforms = params => async () => {
     });
 };
 
+const getRemovedAccountLogs = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/GetRemovedAccountLogs');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setRemovedAccountLogs(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const getRemovedAccountLogDetails = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/GetRemovedAccountLogDetails');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setRemovedAccountLogDetails(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     getInforms,
     ExportInforms,
     getTitleDetail,
     getContactInformSettings,
     getContactInforms,
-    setEditContactInform,
+    setShowEditContactInform,
     updateContactInforms,
     setGridParams,
     getAllSettings,
     getSearchInforms,
-    setEditSearchInform,
+    setShowEditSearchInform,
     updateSearchInforms,
     ExportContactInforms,
-    ExportSearchInforms
+    ExportSearchInforms,
+    getRemovedAccountLogs,
+    getRemovedAccountLogDetails,
+    setShowRemovedLogs,
+    setShowRemovedLogDetails,
+    setGridParamRemovedLogs
 };

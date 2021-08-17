@@ -4,6 +4,7 @@
     using CRM.Criteria.InformHeadline;
     using CRM.Models.InformHeadline;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Web;
@@ -15,6 +16,8 @@
         Task<IEnumerable<InformStatus>> GetInformStatuses(bool isIncludeKeptForRefence = false);
         Task<IEnumerable<UpdateInform>> GetContactInforms(GetContactInformParam param);
         Task<IEnumerable<UpdateInform>> GetSearchInforms(GetSearchInformParam param);
+        Task<(IEnumerable<RemovedAccountLog>, int)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param);
+        Task<(IEnumerable<RemovedAccountLogDetail>, int)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param);
     }
 
     public class InformHeadlineService : IInformHeadlineService
@@ -102,6 +105,40 @@
                 updateInform.Remark = HttpUtility.HtmlDecode(updateInform.Remark);
             }
             return updateInforms;
+        }
+
+        public async Task<(IEnumerable<RemovedAccountLog>,int)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param)
+        {
+            var criteria = new GetRemovedAccountLogsCriteria()
+            {
+                TitleId = param.TitleId,
+                PageIndex = param.PageIndex,
+                PageSize = param.PageSize
+            };
+            var result = await baseService.GetDataAsync<RemovedAccountLog>(criteria);
+            foreach (var item in result)
+            {
+                item.ClientLogDate = string.Format("{0:MMM dd, yyyy hh:mm:ss tt}", commonService.ConvertToClientDateTime(item.LogDate));
+            }
+
+            return (result, criteria.TotalRows);
+        }
+
+        public async Task<(IEnumerable<RemovedAccountLogDetail>, int)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param)
+        {
+            var criteria = new GetRemovedAccountLogDetailsCriteria()
+            {
+                LogId = param.LogId,
+                PageIndex = param.PageIndex,
+                PageSize = param.PageSize
+            };
+            var result = await baseService.GetDataAsync<RemovedAccountLogDetail>(criteria);
+            foreach (var item in result)
+            {
+                item.ClientUpdatedTime = string.Format("{0:MMM dd, yyyy hh:mm:ss tt}", commonService.ConvertToClientDateTime(item.UpdatedTime));
+            }
+
+            return (result, criteria.TotalRows);
         }
     }
 }

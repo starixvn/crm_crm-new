@@ -9,18 +9,18 @@
 
         public byte TypeAccount { get; set; }
 
-        [SpParam(SqlParamName = "currency")]
+        [SpParam(SqlParamName = "Currency")]
         public string Currencies { get; set; }
 
-        [SpParam(SqlParamName = "level")]
+        [SpParam(SqlParamName = "Level")]
         public string Levels { get; set; }
 
-        [SpParam(SqlParamName = "site")]
+        [SpParam(SqlParamName = "Site")]
         public string Sites { get; set; }
 
         public byte IsVip { get; set; }
 
-        [SpParam(SqlParamName = "ignored")]
+        [SpParam(SqlParamName = "Ignored")]
         public bool ExcludeIgnoredAccounts { get; set; }
 
         public override string GetSettingKey()

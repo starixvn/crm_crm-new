@@ -7,16 +7,24 @@ const informHeadlineSlice = createSlice({
         titleDetail: null,
         contactInformSettings: null,
         contactInforms: null,
-        editContactInform: {show: false},
+        showEditContactInform: {show: false},
         gridParams: {
             pageIndex: 1,
             pageSize: 100
         },
         allSettings: null,
         searchInforms: null,
-        editSearchInform: {show: false},
+        showEditSearchInform: {show: false},
         resultUpdateContactInforms: null,
-        resultUpdateSearchInforms: null
+        resultUpdateSearchInforms: null,
+        removedAccountLogs: null,
+        removedAccountLogDetails: null,
+        showRemovedLogs: {show: false},
+        showRemovedLogDetails: {show: false},
+        gridParamRemovedLogs: {
+            pageIndex: 1,
+            pageSize: 100
+        }
     },
     reducers: {
         setInforms: (state, action) => {
@@ -31,8 +39,8 @@ const informHeadlineSlice = createSlice({
         setContactInforms: (state, action) => {
             state.contactInforms = action.payload;
         },
-        setEditContactInform: (state, action) => {
-            state.editContactInform = action.payload;
+        setShowEditContactInform: (state, action) => {
+            state.showEditContactInform = action.payload;
         },
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
@@ -43,14 +51,29 @@ const informHeadlineSlice = createSlice({
         setSearchInforms: (state, action) => {
             state.searchInforms = action.payload
         },
-        setEditSearchInform: (state, action) => {
-            state.editSearchInform = action.payload;
+        setShowEditSearchInform: (state, action) => {
+            state.showEditSearchInform = action.payload;
         },
         setUpdateContactInforms: (state, action) => {
             state.resultUpdateContactInforms = action.payload;
         },
         setUpdateSearchInforms: (state, action) => {
             state.resultUpdateSearchInforms = action.payload;
+        },
+        setRemovedAccountLogs: (state, action) => {
+            state.removedAccountLogs = action.payload;
+        },
+        setRemovedAccountLogDetails: (state, action) => {
+            state.removedAccountLogDetails = action.payload;
+        },
+        setShowRemovedLogs: (state, action) => {
+            state.showRemovedLogs = action.payload;
+        },
+        setShowRemovedLogDetails: (state, action) => {
+            state.showRemovedLogDetails = action.payload;
+        },
+        setGridParamRemovedLogs: (state, action) => {
+            state.gridParamRemovedLogs = action.payload;
         }
     }
 });
@@ -62,13 +85,18 @@ export const {
     setTitleDetail,
     setContactInformSettings,
     setContactInforms,
-    setEditContactInform,
+    setShowEditContactInform,
     setGridParams,
     setAllSettings,
     setSearchInforms,
-    setEditSearchInform,
+    setShowEditSearchInform,
     setUpdateContactInforms,
-    setUpdateSearchInforms
+    setUpdateSearchInforms,
+    setRemovedAccountLogs,
+    setRemovedAccountLogDetails,
+    setShowRemovedLogs,
+    setShowRemovedLogDetails,
+    setGridParamRemovedLogs
 } = actions;
 
 export default reducer;

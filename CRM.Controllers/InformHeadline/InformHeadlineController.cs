@@ -167,5 +167,19 @@
             string reportName = ViewResources.UpdateInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetRemovedAccountLogs([FromBody] GetRemovedAccountLogParam param)
+        {
+            var result = await informHeadlineService.GetRemovedAccountLogAsync(param);
+            return Json(new { item = result.Item1, totalItems = result.Item2 });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetRemovedAccountLogDetails([FromBody] GetRemovedAccountLogDetailParam param)
+        {
+            var result = await informHeadlineService.GetRemovedAccountLogDetailAsync(param);
+            return Json(new { item = result.Item1, totalItems = result.Item2 });
+        }
     }
 }

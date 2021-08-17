@@ -6,6 +6,7 @@ import { ActionCreators } from '../actions';
 import DataGrid from './DataGrid';
 import EditContactInforms from './EditContactInforms';
 import EditSearchInforms from './EditSearchInforms';
+import RemovedAccountLogs from './RemovedAccountLogs';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -26,18 +27,23 @@ export class AppContainer extends Component {
         this.props.getInforms();
     }
 
-    handleCloseEditContactInforms = () => {
+    handleCloseShowEditContactInforms = () => {
         this.props.getInforms();
-        this.props.setEditContactInform({show: false});
+        this.props.setShowEditContactInform({show: false});
     }
 
-    handleCloseEditSearchInforms = () => {
+    handleCloseShowEditSearchInforms = () => {
         this.props.getInforms();
-        this.props.setEditSearchInform({show: false});
+        this.props.setShowEditSearchInform({show: false});
+    }
+
+    handleCloseShowRemovedLogs = () => {
+        this.props.getInforms();
+        this.props.setShowRemovedLogs({show: false});
     }
 
     render() {
-        const { searchPolicy, contactPolicy, editContactInform, editSearchInform } = this.props;
+        const { searchPolicy, contactPolicy, showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails } = this.props;
 
         return (
             <>
@@ -49,11 +55,11 @@ export class AppContainer extends Component {
                     />
                 }
                 {
-                    editContactInform.show &&
+                    showEditContactInform.show &&
                     <EditContactInforms
-                        titleId={editContactInform.titleId}
-                        onClose={this.handleCloseEditContactInforms}
-                        selectedStatuses={editContactInform.selectedStatuses}
+                        titleId={showEditContactInform.titleId}
+                        onClose={this.handleCloseShowEditContactInforms}
+                        selectedStatuses={showEditContactInform.selectedStatuses}
                         titleDetail={this.props.titleDetail}
                         contactInforms={this.props.contactInforms}
                         contactInformSettings={this.props.contactInformSettings}
@@ -66,13 +72,13 @@ export class AppContainer extends Component {
                     />
                 }
                 {
-                    editSearchInform.show &&
+                    showEditSearchInform.show &&
                     <EditSearchInforms
-                        titleId={editSearchInform.titleId}
-                        onClose={this.handleCloseEditSearchInforms}
+                        titleId={showEditSearchInform.titleId}
+                        onClose={this.handleCloseShowEditSearchInforms}
                         titleDetail={this.props.titleDetail}
-                        includeCurrencies={editSearchInform.includeCurrencies}
-                        includeSites={editSearchInform.includeSites}
+                        includeCurrencies={showEditSearchInform.includeCurrencies}
+                        includeSites={showEditSearchInform.includeSites}
                         searchInforms={this.props.searchInforms}
                         allSettings={this.props.allSettings}
                         getSearchInforms={this.props.getSearchInforms}
@@ -83,6 +89,12 @@ export class AppContainer extends Component {
                         exportSearchInforms={this.props.ExportSearchInforms}
                     />
                 }
+                {
+                    showRemovedLogs.show &&
+                    <RemovedAccountLogs
+                        onClose={this.handleCloseShowRemovedLogs}
+                    />
+                }
             </>
         );
     };
@@ -91,8 +103,18 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { editContactInform, titleDetail, contactInforms, contactInformSettings, gridParams, editSearchInform, searchInforms, allSettings, resultUpdateContactInforms, resultUpdateSearchInforms} = state;
-    return { editContactInform,titleDetail, contactInforms, contactInformSettings, gridParams, editSearchInform, searchInforms, allSettings, resultUpdateContactInforms, resultUpdateSearchInforms };
+    const {
+        showEditContactInform, titleDetail, contactInforms,
+        contactInformSettings, gridParams, showEditSearchInform,
+        searchInforms, allSettings, resultUpdateContactInforms,
+        resultUpdateSearchInforms, showRemovedLogs, showRemovedLogDetails
+    } = state;
+    return {
+        showEditContactInform, titleDetail, contactInforms,
+        contactInformSettings, gridParams, showEditSearchInform,
+        searchInforms, allSettings, resultUpdateContactInforms,
+        resultUpdateSearchInforms, showRemovedLogs, showRemovedLogDetails
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

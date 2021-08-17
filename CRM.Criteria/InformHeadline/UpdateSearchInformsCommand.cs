@@ -13,13 +13,13 @@
 
         public string Title { get; set; }
 
-        [SpParam(SqlParamName = "currency")]
+        [SpParam(SqlParamName = "Currency")]
         public string Currencies { get; set; }
 
-        [SpParam(SqlParamName = "level")]
+        [SpParam(SqlParamName = "Level")]
         public string Levels { get; set; }
 
-        [SpParam(SqlParamName = "site")]
+        [SpParam(SqlParamName = "Site")]
         public string Sites { get; set; }
 
         public byte TypeAccount { get; set; }
@@ -28,7 +28,7 @@
 
         public int IsVip { get; set; }
 
-        [SpParam(SqlParamName = "excludeignored")]
+        [SpParam(SqlParamName = "ExcludeIgnored")]
         public bool ExcludeIgnoredAccounts { get; set; }
 
 

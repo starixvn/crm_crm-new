@@ -3,12 +3,26 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { ActionCreators } from '../actions';
-import { Button } from 'react-bootstrap';
+import { Button, Popover } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
+import OptionsEdit from '@jsroot/components/OptionsEdit';
 
 export class DataGrid extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showOption: 'none',
+            position:{
+                top: 0,
+                left: 0
+            },
+            titleIdSearch: null
+        };
+        this.wrapperRef = React.createRef();
+    };
+
 
     buildHeader = () => {
         return(
@@ -42,7 +56,7 @@ export class DataGrid extends Component {
         ];
     };
 
-    handleEditDetail = async titleId => {
+    handleEditContact = async titleId => {
         await this.props.getTitleDetail({
             titleId: titleId
         });
@@ -65,7 +79,7 @@ export class DataGrid extends Component {
             pageIndex: 1,
             pageSize: 100
         });
-        this.props.setEditContactInform({show: true, titleId: titleId, selectedStatuses: selectedStatuses});
+        this.props.setShowEditContactInform({show: true, titleId: titleId, selectedStatuses: selectedStatuses});
     };
 
     getIncludeInSetting = (detail, setting) => {
@@ -77,7 +91,7 @@ export class DataGrid extends Component {
         return includes.join(",");
     };
 
-    handleEditNumberAccount = async titleId => {
+    handleEditSearch = async titleId => {
         await this.props.getTitleDetail({
             titleId: titleId
         });
@@ -97,7 +111,50 @@ export class DataGrid extends Component {
             excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts
         });
 
-        this.props.setEditSearchInform({show: true, titleId: titleId, includeCurrencies: includeCurrencies, includeSites: includeSites});
+        this.props.setShowEditSearchInform({show: true, titleId: titleId, includeCurrencies: includeCurrencies, includeSites: includeSites});
+    };
+
+    handleRemovedAccountLogs = titleId => {
+        const params = {
+            titleId: titleId,
+            pageIndex: 1,
+            pageSize: 100
+        };
+        
+        this.props.setGridParamRemovedLogs(params);
+        this.props.getRemovedAccountLogs(params);
+        this.props.setShowRemovedLogs({show: true});
+    };
+
+    getPositionEdit = (event, titleId) => {
+        var position = event.target.getClientRects()[0];
+        console.log(event.target);
+
+        this.setState({
+            showOption: 'block',
+            position:{
+                top: position.top,
+                left: position.left
+            },
+            titleIdSearch: titleId
+        });
+        
+        // if(!this.wrapperRef.current.contains(event.target)) {
+        //     this.setState({
+        //         showOption: 'none'
+        //     });
+        // };
+
+        // this.props.getRemovedAccountLogs({
+        //     titleId: 715,
+        //     pageIndex: 1,
+        //     pageSize: 50
+        // });
+        // this.props.getRemovedAccountLogDetails({
+        //     logId: 31,
+        //     pageIndex: 1,
+        //     pageSize: 50
+        // });
     };
 
     renderRow = (item, index, contactPolicy) => {
@@ -105,13 +162,17 @@ export class DataGrid extends Component {
         return (
             <Row key={index} className={cssClass}>
                 <Cell className='text-center'>
-                    <span className="fa fa-pencil-square-o" onClick={() => this.handleEditNumberAccount(item.titleId)}></span>
+                    {/* <OverlayTrigger trigger="click" placement="bottom" overlay={this.chooseOption}>
+                        <span className="fa fa-pencil-square-o"></span>
+                    </OverlayTrigger> */}
+                    <span ref={this.wrapperRef} className="fa fa-pencil-square-o" onClick={(event) => this.getPositionEdit(event, item.titleId)}></span>
+                    
                 </Cell>
                 {
                     !contactPolicy.hasAttribute('none') ?
                     (
                         <Cell>
-                            <span className='link-click' onClick={() => this.handleEditDetail(item.titleId)}>{item.title}</span>
+                            <span className='link-click' onClick={() => this.handleEditContact(item.titleId)}>{item.title}</span>
                         </Cell>
                     ) :
                     (
@@ -160,6 +221,16 @@ export class DataGrid extends Component {
 
         return (
             <>
+                {
+                    <OptionsEdit
+                        showOption={this.state.showOption}
+                        top={this.state.position.top}
+                        left={this.state.position.left}
+                        titleIdSearch={this.state.titleIdSearch}
+                        handleEditSearch={this.handleEditSearch}
+                        handleRemovedAccountLogs={this.handleRemovedAccountLogs}
+                    />
+                }
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>Inform Headlines Cases</span>
                     {

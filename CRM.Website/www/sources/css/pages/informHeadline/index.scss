@@ -6,6 +6,7 @@
 @import '../../components/modal';
 @import '../../components/tables';
 @import '../../components/react-select';
+@import '../../components/options-edit';
 
 
 .link-click {
@@ -53,5 +54,16 @@
 @media screen and (min-width: 1200px){
     .modal-xl {
         max-width: 1200px;
+    }
+}
+@media screen and (min-width: 768px) {
+    .modal-dialog.modal-lg {
+      width: 600px;
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+    .modal-content {
+      -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 }
