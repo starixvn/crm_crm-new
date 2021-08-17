@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { ActionCreators } from '../actions';
-import { Button, Popover } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -14,15 +14,22 @@ export class DataGrid extends Component {
         super(props);
         this.state = {
             showOption: 'none',
+            status: '',
             position:{
                 top: 0,
                 left: 0
             },
             titleIdSearch: null
         };
-        this.wrapperRef = React.createRef();
     };
 
+    componentDidMount() {
+        document.addEventListener('click', () => {
+            this.setState({
+                showOption: 'none'
+            });
+        });
+    };
 
     buildHeader = () => {
         return(
@@ -135,23 +142,27 @@ export class DataGrid extends Component {
         this.props.getInforms();
     };
 
-    getPositionEdit = (event, titleId) => {
+    handleOpenCase = titleId => {
+        const params = {
+            titleId: titleId,
+            statusType: false
+        }
+        this.props.updateInformStatus(params);
+        this.props.getInforms();
+    };
+
+    getPositionEdit = (event, titleId, status) => {
         var position = event.target.getClientRects()[0];
 
         this.setState({
             showOption: 'block',
+            status: status,
             position:{
                 top: position.top,
                 left: position.left
             },
             titleIdSearch: titleId
         });
-        
-        // if(!this.wrapperRef.current.contains(event.target)) {
-        //     this.setState({
-        //         showOption: 'none'
-        //     });
-        // };
     };
 
     handleNewInforms = () => {
@@ -164,7 +175,7 @@ export class DataGrid extends Component {
         return (
             <Row key={index} className={cssClass}>
                 <Cell className='text-center'>
-                    <span ref={this.wrapperRef} className="fa fa-pencil-square-o" onClick={(event) => this.getPositionEdit(event, item.titleId)}></span>                   
+                    <span className="fa fa-pencil-square-o" onClick={(event) => this.getPositionEdit(event, item.titleId, item.status)}></span>                   
                 </Cell>
                 {
                     !contactPolicy.hasAttribute('none') ?
@@ -222,12 +233,14 @@ export class DataGrid extends Component {
                 {
                     <OptionsEdit
                         showOption={this.state.showOption}
+                        status={this.state.status}
                         top={this.state.position.top}
                         left={this.state.position.left}
                         titleIdSearch={this.state.titleIdSearch}
                         handleEditSearch={this.handleEditSearch}
                         handleRemovedAccountLogs={this.handleRemovedAccountLogs}
                         handleCloseCase={this.handleCloseCase}
+                        handleOpenCase={this.handleOpenCase}
                     />
                 }
                 <div className='table-title d-flex justify-content-between align-items-center'>
