@@ -172,48 +172,41 @@
 
         public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync()
         {
-            try
+            AbnormalBetSystemSetting settingResultAmendment = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Environment);
+            if (!settingResultAmendment.ServiceFlag)
             {
-                AbnormalBetSystemSetting settingResultAmendment = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Environment);
-                if (!settingResultAmendment.ServiceFlag)
-                {
-                    logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
-                    return;
-                }
-
-                var voidingMesssageSettled = await chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync();
-                var commandMessage = await chatBotResultAmendmentService.ImportMessageVoidSettledAsync(voidingMesssageSettled);
-                if (!commandMessage.IsSuccessful)
-                {
-                    logService.LogInformation("Import Messages Settled Fail!!!");
-                    return;
-                }
-                var voidingMessageInfo = await chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(settingResultAmendment.BatchSizeGetMsg);
-                var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
-                var messagesCombineDistinct = resultAmendmentInfo.Item1.Item3.Concat(voidingMessageInfo.Item1).Distinct().ToList();
-                var messages = Enumerable.Empty<Message>();
-                if (messagesCombineDistinct.Any())
-                {
-                    messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(messagesCombineDistinct);
-                }
-
-                var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
-                    resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
-                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, resultAmendmentInfo.Item2, Environment
-                   );
-
-                if (commandResult.IsSuccessful)
-                {
-                    await sendNotificationService.SendNotificationToLetstalk();
-                }
-                else
-                {
-                    logService.LogInformation(commandResult.Message);
-                }
+                logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
+                return;
             }
-           catch (Exception e)
+
+            var voidingMesssageSettled = await chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync();
+            var commandMessage = await chatBotResultAmendmentService.ImportMessageVoidSettledAsync(voidingMesssageSettled);
+            if (!commandMessage.IsSuccessful)
             {
-                throw new Exception(e.Message);
+                logService.LogInformation("Import Messages Settled Fail!!!");
+                return;
+            }
+            var voidingMessageInfo = await chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(settingResultAmendment.BatchSizeGetMsg);
+            var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
+            var messagesCombineDistinct = resultAmendmentInfo.Item1.Item3.Concat(voidingMessageInfo.Item1).Distinct().ToList();
+            var messages = Enumerable.Empty<Message>();
+            if (messagesCombineDistinct.Any())
+            {
+                messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(messagesCombineDistinct);
+            }
+
+            var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
+                resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
+                voidingMessageInfo.Item2, voidingMessageInfo.Item3, resultAmendmentInfo.Item2, Environment
+                );
+
+            if (commandResult.IsSuccessful)
+            {
+                await sendNotificationService.SendNotificationToLetstalk();
+            }
+            else
+            {
+                logService.LogInformation(commandResult.Message);
             }
         }
     }
