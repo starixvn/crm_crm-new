@@ -22,25 +22,81 @@
         private IBaseService baseService;
         private ICommonFeedback commonFeedback;
 
-        //[Fact]
-        //public async Task GetChatBotResultAmendmentInfoAsync_WhenCalled_ReturnExpectedData()
-        //{
-        //    // Arrange
-        //    var fixture = new Fixture();
-        //    var settingResultAmendment = fixture.Create<AbnormalBetSystemSetting>();
-        //    var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
-        //    var ticketTransactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
-        //    var events = fixture.Create<IEnumerable<TicketEvent>>();
-        //    var expected = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>(ticketEvents, ticketTransactions, events);
-        //    var service = GetService();
-        //    baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, TicketEvent>(Arg.Any<GetChatBotResultAmendmentCriteria>()).Returns(expected);
+        [Fact]
+        public async Task GetChatBotMessageVoidSettledAsync_WhenCalled_ReturnExpectedMessages()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var service = GetService();
+            baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<GetMesssagesVoidSettledCriteria>()).Returns(expected);
 
-        //    // Act
-        //    var actual = await service.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
+            // Act
+            var actual = await service.GetChatBotMessageVoidSettledAsync();
 
-        //    // Assert
-        //    Assert.Equal(expected, actual);
-        //}
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task ImportMessageVoidSettledAsync_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<CommandResult>();
+            var messages = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var service = GetService();
+            var criteria = new ImportMessageVoidSettledCommand();
+            baseService.ExecuteNonQueryAsync(Arg.Do<ImportMessageVoidSettledCommand>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.ImportMessageVoidSettledAsync(messages);
+
+            // Assert
+            Assert.Equal(expected, actual);
+            Assert.Equal(criteria.Message, messages.ToXML("root").ToString());
+        }
+
+        [Fact]
+        public async Task GetChatbotMessageVoidSettledInfoAsync_WhenCalled_ReturnExpectedData()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var settingResultAmendment = fixture.Create<AbnormalBetSystemSetting>();
+            var targetMessages = fixture.Create<IEnumerable<TargetMessage>>();
+            var targetMessageInfos = fixture.Create<IEnumerable<TargetMessageInfo>>();
+            var messageIds = fixture.Create<IEnumerable<int>>();
+            var expected = new ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>(messageIds, targetMessages, targetMessageInfos);
+            var service = GetService();
+            baseService.FetchMultipleAsync<int, TargetMessage, TargetMessageInfo>(Arg.Any<GetChatbotMessageVoidSettledInfo>()).Returns(expected);
+
+            // Act
+            var actual = await service.GetChatbotMessageVoidSettledInfoAsync(settingResultAmendment.BatchSizeGetMsg);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetChatBotResultAmendmentInfoAsync_WhenCalled_ReturnExpectedData()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var settingResultAmendment = fixture.Create<AbnormalBetSystemSetting>();
+            var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
+            var ticketTransactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
+            var messageIds = fixture.Create<IEnumerable<int>>();
+            var criteria = fixture.Create<GetChatBotResultAmendmentCriteria>();
+            var expected = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>(ticketEvents, ticketTransactions, messageIds);
+            var service = GetService();
+            baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, int>(Arg.Do<GetChatBotResultAmendmentCriteria>(x => criteria = x)).Returns(expected);
+            
+            // Act
+            var actual = await service.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
+
+            // Assert
+            Assert.Equal(expected, actual.Item1);
+        }
 
         [Fact]
         public async Task GetChatBotMessageInfoAsync_WhenCalled_ReturnExpectedData()
@@ -51,11 +107,11 @@
             var criteria = new GetChatBotMsgCriteria();
             var expected = fixture.Create<IEnumerable<Message>>();
             baseService.GetDataAsync<Message>(Arg.Do<GetChatBotMsgCriteria>(x => criteria = x)).Returns(expected);
-            const string Xml = "<root><r MessageID='1'/></root>";
-            var ticketEvents = new List<TicketEvent> { new TicketEvent { MessageId = 1 } };
+            const string Xml = "<root><r MessageId='1'/></root>";
+            var messages = new List<int> {1};
 
             // Act
-            var actual = await service.GetChatBotMessageInfoAsync(ticketEvents);
+            var actual = await service.GetChatBotMessageInfoAsync(messages);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -90,9 +146,8 @@
                 }
             };
 
-            var events = new List<TicketEvent> { new TicketEvent { MessageId = 1, TicketEventId = 1 } };
             var messages = new List<Message> { new Message {
-                MessageId = 1, RequestId = 1, Content_en = "Content_en", Content_cs ="Content_cs", Content_th = "Content_th", Content_vn = "Content_yn"
+                MessageId = 1, RequestId = 1, Content_en = "Content_en", Content_cs ="Content_cs", Content_th = "Content_th", Content_vn = "Content_vn"
             } };
 
             var transaction = transactions.FirstOrDefault();
@@ -144,24 +199,28 @@
 
             stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
 
-            const string xmlTemplateMessage = "<root><r TicketEventId='1' MessageId='1' Content_en='Content_en' Content_cs='Content_cs' Content_th='Content_th' Content_yn='Content_yn'/></root>";
-
+            const string xmlTemplateMessage = "<root><r MessageId='1' Content_en='Content_en' Content_cs='Content_cs' Content_th='Content_th' Content_vn='Content_vn'/></root>";
+            var targetMessages = fixture.Create<IEnumerable<TargetMessage>>();
+            var targetMessagesInfo = fixture.Create<IEnumerable<TargetMessageInfo>>();
             var criteria = new ImportChatBotResultAmendmentCommand();
             var expected = fixture.Create<CommandResult>();
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotResultAmendmentCommand>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.ImportChatBotAmendmentResultAsync(ticketEvents, transactions, messages, events, Constants.DefaultEnvironment);
+            var actual = await service.ImportChatBotAmendmentResultAsync(ticketEvents, transactions, messages, targetMessages, targetMessagesInfo, Constants.DefaultEnvironment, "Servername");
 
             // Assert
             Assert.Equal(expected, actual);
             Assert.Equal(ticketEvents.ToXML("root").ToString(), criteria.TicketData);
             Assert.Equal(stringBuilderEventData.ToString(), criteria.EventData);
             Assert.Equal(xmlTemplateMessage, criteria.MessageData);
+            Assert.Equal(targetMessages.ToXML("root").ToString(), criteria.TargetMessage);
+            Assert.Equal(targetMessagesInfo.ToXML("root").ToString(), criteria.InfoMessage);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
+            Assert.Equal("Servername", criteria.Servername);
+
             Assert.Equal(0, criteria.ErrCode);
             Assert.Null(criteria.ErrMsg);
-
         }
 
         #region Helpers

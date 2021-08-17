@@ -28,7 +28,10 @@
                 EventData = "EventData",
                 TicketData = "TicketData",
                 MessageData = "TicketData",
+                TargetMessage = "TargetMessage",
+                InfoMessage = "InfoMessage",
                 Environment = "LIVE",
+                Servername = "Servername",
                 ErrCode = 0,
                 ErrMsg = ""
             };
@@ -38,27 +41,6 @@
 
             // Assert
             Assert.True(actual);
-        }
-
-        [Theory]
-        [InlineData(null, null , null)]
-        [InlineData("", "1", "2")]
-        [InlineData(" ", "", null)]
-        public void IsValid_ParamIsInvalid_ReturnFalse(string EventData, string TicketData, string MessageData)
-        {
-            // Arrange
-            var criteria = new ImportChatBotResultAmendmentCommand
-            {
-                EventData = EventData,
-                TicketData = TicketData,
-                MessageData = MessageData
-            };
-
-            // Act
-            var actual = criteria.IsValid();
-
-            // Assert
-            Assert.False(actual);
         }
     }
 }

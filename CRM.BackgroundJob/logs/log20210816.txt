@@ -1,0 +1,1143 @@
+2021-08-16 14:00:00.335 +07:00 [INF] User profile is available. Using 'C:\Users\teddy.le\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-08-16 14:00:00.544 +07:00 [INF] Starting Hangfire Server using job storage: 'redis://ha.nexdev.net:16379,password=foo1@bared,defaultDatabase=6/7'
+2021-08-16 14:00:00.545 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 5
+    Listening queues: 'critical', 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2021-08-16 14:00:00.665 +07:00 [INF] Server cp007-teddy:20072:102aac94 successfully announced in 47.2356 ms
+2021-08-16 14:00:00.694 +07:00 [INF] Server cp007-teddy:20072:102aac94 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2021-08-16 14:00:00.925 +07:00 [INF] 1 servers were removed due to timeout
+2021-08-16 14:00:00.990 +07:00 [INF] Removing expired records from the 'succeeded' list...
+2021-08-16 14:00:01.044 +07:00 [INF] Removing 13 expired jobs from 'succeeded' list...
+2021-08-16 14:00:01.215 +07:00 [INF] 5 timed out jobs were found in the 'critical' queue and re-queued.
+2021-08-16 14:00:01.445 +07:00 [INF] Server cp007-teddy:20072:102aac94 all the dispatchers started
+2021-08-16 14:00:03.256 +07:00 [INF] Start Service Result Amendment!
+2021-08-16 14:00:03.256 +07:00 [INF] Start Service Result Amendment!
+2021-08-16 14:00:19.052 +07:00 [INF] Result amendment service is running.
+2021-08-16 14:00:19.052 +07:00 [INF] Result amendment service is running.
+2021-08-16 14:00:20.724 +07:00 [INF] Update  status and return serive result amendment.
+2021-08-16 14:00:20.724 +07:00 [INF] Update  status and return serive result amendment.
+2021-08-16 14:00:21.031 +07:00 [INF] Start Service Problems Account!
+2021-08-16 14:00:21.076 +07:00 [INF] Start run problems account serivce with last LastLogID: 107787 isUAT: False!
+2021-08-16 14:00:21.504 +07:00 [INF] Start Service Result Amendment!
+2021-08-16 14:00:22.000 +07:00 [INF] Import Amendment Notification Auto FeedBack Successfull!
+2021-08-16 14:00:22.042 +07:00 [INF] Start create amendment feedback logId: 458 , headlineName: AHN productId: 1!
+2021-08-16 14:00:22.094 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:22.097 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:00:22.102 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:22.103 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 1.
+2021-08-16 14:00:22.131 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:22.136 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:22.136 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:22.137 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:22.137 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:22.137 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:22.231 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:22.319 +07:00 [INF] Start create problems account feedback
+2021-08-16 14:00:22.419 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:22.426 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:22.430 +07:00 [INF] Successful!!!
+2021-08-16 14:00:22.485 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:22.485 +07:00 [INF] End create template solution.
+2021-08-16 14:00:22.489 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:22.841 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:00:22.842 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:22.842 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:22.842 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:22.842 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:22.842 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:22.843 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:22.843 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:22.843 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:22.845 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:22.845 +07:00 [INF] Begin insert amendment feedback : HeadlineId 1628290 HeadlineName:AHN CustName: AHFFF83377,AHFFF83296,AHFFF83837 CustId: 10477648,11999996,13327631
+2021-08-16 14:00:22.882 +07:00 [INF] Don't have ticket info: 1074531756
+2021-08-16 14:00:22.885 +07:00 [INF] Abnormal Bet - Create feedback for messages: 1074531763,1074531764,1074531734,1074531742,1074531757,1074531758,1074531762,1074531766
+2021-08-16 14:00:23.088 +07:00 [INF] Abnormal Bet - Begin import ticket info
+2021-08-16 14:00:23.136 +07:00 [INF] Abnormal Bet - End import ticket info
+2021-08-16 14:00:23.141 +07:00 [INF] Abnormal Bet - Begin mapping setting for MessageId: 1074531763
+2021-08-16 14:00:23.165 +07:00 [INF] Abnormal Bet - Begin mapping product, sub-product, bet type.
+2021-08-16 14:00:23.229 +07:00 [INF] Abnormal Bet - End mapping product, sub-product, bet type.
+2021-08-16 14:00:23.230 +07:00 [INF] Abnormal Bet - End mapping setting for MessageId: 1074531763
+2021-08-16 14:00:23.242 +07:00 [INF] Abnormal Bet - Begin create feedback for MessageId: 1074531763
+HeadlineId: -2368
+RelatedCustIds: -5948
+CustIds: 4879320
+2021-08-16 14:00:23.284 +07:00 [INF] Create amendment feedback successfully HeadlineId 1628290 HeadlineName:AHN
+2021-08-16 14:00:23.284 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:23.284 +07:00 [INF] Start create amendment feedback logId: 459 , headlineName: 8U97 productId: 1!
+2021-08-16 14:00:23.285 +07:00 [INF] Insert feedback problems account successfully. HeadlineId: 44178477,44178477,44178477,44178477,44178477,44178477,44178477,44178477,44178477,44178477 logID:110580,110585,110586,110587,110588,110589,110592,110594,110579,110577
+2021-08-16 14:00:23.285 +07:00 [INF] Start create problems account feedback
+2021-08-16 14:00:23.286 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:23.286 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:00:23.286 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:23.286 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 1.
+2021-08-16 14:00:23.288 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:23.288 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:23.288 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:23.288 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:23.288 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:23.288 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:23.298 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:23.298 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:23.298 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:23.298 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:23.298 +07:00 [INF] End create template solution.
+2021-08-16 14:00:23.298 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:23.299 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:00:23.299 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:23.299 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:23.299 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:23.299 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:23.299 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:23.299 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:23.299 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:23.299 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:23.299 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:23.299 +07:00 [INF] Begin insert amendment feedback : HeadlineId 42261944 HeadlineName:8U97 CustName: 8U970007002,8U970007004 CustId: 46092833,46108004
+2021-08-16 14:00:23.340 +07:00 [INF] Abnormal Bet - Create feedback successfully. MessageId: 1074531763
+HeadlineId: -2368
+RelatedCustIds: -5948
+CustIds: 4879320
+2021-08-16 14:00:23.340 +07:00 [INF] Abnormal Bet - Begin mapping setting for MessageId: 1074531764
+2021-08-16 14:00:23.341 +07:00 [INF] Abnormal Bet - Begin mapping product, sub-product, bet type.
+2021-08-16 14:00:23.372 +07:00 [INF] Abnormal Bet - End mapping product, sub-product, bet type.
+2021-08-16 14:00:23.372 +07:00 [INF] Abnormal Bet - End mapping setting for MessageId: 1074531764
+2021-08-16 14:00:23.372 +07:00 [INF] Abnormal Bet - Begin create feedback for MessageId: 1074531764
+HeadlineId: -2368
+RelatedCustIds: -5948
+CustIds: 4879320
+2021-08-16 14:00:23.388 +07:00 [INF] Insert feedback problems account successfully. HeadlineId: 15518562 logID:110583
+2021-08-16 14:00:23.399 +07:00 [INF] Abnormal Bet - Create feedback successfully. MessageId: 1074531764
+HeadlineId: -2368
+RelatedCustIds: -5948
+CustIds: 4879320
+2021-08-16 14:00:23.402 +07:00 [INF] Abnormal Bet - Begin mapping common setting for MessageId: 1074531734
+2021-08-16 14:00:23.411 +07:00 [INF] Abnormal Bet - End mapping common setting for MessageId: 1074531734
+2021-08-16 14:00:23.418 +07:00 [INF] Abnormal Bet - Begin mapping setting for MessageId: 1074531734
+HeadlineId: 405017
+RelatedCustIds: 48339845,48339899,48339957,48339970
+2021-08-16 14:00:23.418 +07:00 [INF] Abnormal Bet - Begin mapping product, sub-product, bet type.
+2021-08-16 14:00:23.452 +07:00 [INF] Abnormal Bet - End mapping product, sub-product, bet type.
+2021-08-16 14:00:23.454 +07:00 [INF] Abnormal Bet - End mapping setting for MessageId: 1074531734
+HeadlineId: 405017
+RelatedCustIds: 48339845,48339899,48339957,48339970
+2021-08-16 14:00:23.456 +07:00 [INF] Abnormal Bet - Begin create feedback for MessageId: 1074531734
+HeadlineId: 405017
+RelatedCustIds: 48339845,48339899,48339957,48339970
+2021-08-16 14:00:23.477 +07:00 [INF] Create amendment feedback successfully HeadlineId 42261944 HeadlineName:8U97
+2021-08-16 14:00:23.477 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:23.477 +07:00 [INF] Start create amendment feedback logId: 460 , headlineName: 8U97 productId: 1!
+2021-08-16 14:00:23.480 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:23.480 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:00:23.481 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:23.481 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 1.
+2021-08-16 14:00:23.514 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:23.514 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:23.514 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:23.514 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:23.514 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:23.514 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:23.515 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:23.515 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:23.515 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:23.515 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:23.515 +07:00 [INF] End create template solution.
+2021-08-16 14:00:23.515 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:23.516 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:00:23.516 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:23.516 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:23.516 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:23.516 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:23.516 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:23.516 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:23.516 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:23.516 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:23.516 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:23.516 +07:00 [INF] Begin insert amendment feedback : HeadlineId 42261944 HeadlineName:8U97 CustName: 8U970008004 CustId: 46350742
+2021-08-16 14:00:23.572 +07:00 [INF] Create amendment feedback successfully HeadlineId 42261944 HeadlineName:8U97
+2021-08-16 14:00:23.572 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:23.572 +07:00 [INF] Start create amendment feedback logId: 461 , headlineName: 8U97 productId: 1!
+2021-08-16 14:00:26.434 +07:00 [INF] Abnormal Bet - Create feedback successfully. MessageId: 1074531734
+HeadlineId: 405017
+RelatedCustIds: 48339845,48339899,48339957,48339970
+2021-08-16 14:00:26.437 +07:00 [INF] Abnormal Bet - Begin mapping setting for MessageId: 1074531734
+HeadlineId: 17131337
+RelatedCustIds: 48339867
+2021-08-16 14:00:26.437 +07:00 [INF] Abnormal Bet - Begin mapping product, sub-product, bet type.
+2021-08-16 14:00:26.438 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:26.438 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:00:26.438 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:26.472 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 1.
+2021-08-16 14:00:26.497 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:26.501 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:26.501 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:26.501 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:26.501 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:26.501 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:26.502 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:26.502 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:26.502 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:26.502 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:26.502 +07:00 [INF] End create template solution.
+2021-08-16 14:00:26.502 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:27.407 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:00:27.407 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:27.437 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:27.437 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.437 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.437 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.437 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.437 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:27.437 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:27.437 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.437 +07:00 [INF] Begin insert amendment feedback : HeadlineId 42261944 HeadlineName:8U97 CustName: 8U97000800H CustId: 48839897
+2021-08-16 14:00:27.487 +07:00 [INF] Create amendment feedback successfully HeadlineId 42261944 HeadlineName:8U97
+2021-08-16 14:00:27.487 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.487 +07:00 [INF] Start create amendment feedback logId: 462 , headlineName: 8U97 productId: 1!
+2021-08-16 14:00:27.592 +07:00 [INF] Successful!!!
+2021-08-16 14:00:27.628 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:27.628 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:00:27.628 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:27.628 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 1.
+2021-08-16 14:00:27.695 +07:00 [INF] Abnormal Bet - End mapping product, sub-product, bet type.
+2021-08-16 14:00:27.695 +07:00 [INF] Abnormal Bet - End mapping setting for MessageId: 1074531734
+HeadlineId: 17131337
+RelatedCustIds: 48339867
+2021-08-16 14:00:27.695 +07:00 [INF] Abnormal Bet - Begin create feedback for MessageId: 1074531734
+HeadlineId: 17131337
+RelatedCustIds: 48339867
+2021-08-16 14:00:27.699 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:27.699 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:27.699 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:27.699 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:27.699 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:27.699 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:27.701 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:27.701 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:27.701 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:27.701 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:27.701 +07:00 [INF] End create template solution.
+2021-08-16 14:00:27.701 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:27.733 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:00:27.733 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:27.733 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:27.733 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.733 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.733 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.733 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.733 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:27.733 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:27.733 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.733 +07:00 [INF] Begin insert amendment feedback : HeadlineId 42261944 HeadlineName:8U97 CustName: 8U97000800I CustId: 49830513
+2021-08-16 14:00:27.765 +07:00 [INF] Abnormal Bet - Create feedback successfully. MessageId: 1074531734
+HeadlineId: 17131337
+RelatedCustIds: 48339867
+2021-08-16 14:00:27.766 +07:00 [INF] Abnormal Bet - Begin mapping setting for MessageId: 1074531734
+HeadlineId: 7756637
+RelatedCustIds: 48340032
+2021-08-16 14:00:27.766 +07:00 [INF] Abnormal Bet - Begin mapping product, sub-product, bet type.
+2021-08-16 14:00:27.767 +07:00 [INF] Create amendment feedback successfully HeadlineId 42261944 HeadlineName:8U97
+2021-08-16 14:00:27.768 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.768 +07:00 [INF] Start create amendment feedback logId: 463 , headlineName: EP productId: 1!
+2021-08-16 14:00:27.774 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:27.774 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:00:27.774 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:27.774 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 1.
+2021-08-16 14:00:27.794 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:27.794 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:27.794 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:27.794 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:27.794 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:27.794 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:27.799 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:27.799 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:27.799 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:27.799 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:27.799 +07:00 [INF] End create template solution.
+2021-08-16 14:00:27.799 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:27.800 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:00:27.800 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:27.800 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:27.800 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.800 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.800 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.800 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.800 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:27.800 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:27.800 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.800 +07:00 [INF] Begin insert amendment feedback : HeadlineId 2877058 HeadlineName:EP CustName: EP0106006 CustId: 46646168
+2021-08-16 14:00:27.832 +07:00 [INF] Abnormal Bet - End mapping product, sub-product, bet type.
+2021-08-16 14:00:27.832 +07:00 [INF] Abnormal Bet - End mapping setting for MessageId: 1074531734
+HeadlineId: 7756637
+RelatedCustIds: 48340032
+2021-08-16 14:00:27.832 +07:00 [INF] Abnormal Bet - Begin create feedback for MessageId: 1074531734
+HeadlineId: 7756637
+RelatedCustIds: 48340032
+2021-08-16 14:00:27.851 +07:00 [INF] Create amendment feedback successfully HeadlineId 2877058 HeadlineName:EP
+2021-08-16 14:00:27.851 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.851 +07:00 [INF] Start create amendment feedback logId: 464 , headlineName: SKUS productId: 1!
+2021-08-16 14:00:27.853 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:27.853 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:00:27.853 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:27.853 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 1.
+2021-08-16 14:00:27.856 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:27.856 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:27.856 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:27.856 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:27.856 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:27.856 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:27.857 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:27.857 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:27.857 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:27.857 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:27.857 +07:00 [INF] End create template solution.
+2021-08-16 14:00:27.857 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:27.857 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:00:27.857 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:27.857 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:27.857 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.857 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.857 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.857 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.857 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:27.857 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:27.857 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.857 +07:00 [INF] Begin insert amendment feedback : HeadlineId 12013962 HeadlineName:SKUS CustName: SKUSAB05000 CustId: 13330345
+2021-08-16 14:00:27.901 +07:00 [INF] Abnormal Bet - Create feedback successfully. MessageId: 1074531734
+HeadlineId: 7756637
+RelatedCustIds: 48340032
+2021-08-16 14:00:27.901 +07:00 [INF] Abnormal Bet - Begin mapping setting for MessageId: 1074531734
+HeadlineId: 900801
+RelatedCustIds: 48341588
+2021-08-16 14:00:27.901 +07:00 [INF] Abnormal Bet - Begin mapping product, sub-product, bet type.
+2021-08-16 14:00:27.902 +07:00 [INF] Create amendment feedback successfully HeadlineId 12013962 HeadlineName:SKUS
+2021-08-16 14:00:27.902 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.902 +07:00 [INF] Start create amendment feedback logId: 465 , headlineName: EP productId: 1!
+2021-08-16 14:00:27.908 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:27.908 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:00:27.908 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:27.908 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 1.
+2021-08-16 14:00:27.911 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:27.911 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:27.911 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:27.911 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:27.911 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:27.911 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:27.912 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:27.912 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:27.912 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:27.912 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:27.912 +07:00 [INF] End create template solution.
+2021-08-16 14:00:27.912 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:27.912 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:00:27.912 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:27.912 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:27.912 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.912 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.912 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:27.912 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:27.912 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:27.912 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:27.912 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.912 +07:00 [INF] Begin insert amendment feedback : HeadlineId 2877058 HeadlineName:EP CustName: EP0173000,EP0173003 CustId: 45255027,49007233
+2021-08-16 14:00:27.940 +07:00 [INF] Abnormal Bet - End mapping product, sub-product, bet type.
+2021-08-16 14:00:27.940 +07:00 [INF] Abnormal Bet - End mapping setting for MessageId: 1074531734
+HeadlineId: 900801
+RelatedCustIds: 48341588
+2021-08-16 14:00:27.940 +07:00 [INF] Abnormal Bet - Begin create feedback for MessageId: 1074531734
+HeadlineId: 900801
+RelatedCustIds: 48341588
+2021-08-16 14:00:27.969 +07:00 [INF] Create amendment feedback successfully HeadlineId 2877058 HeadlineName:EP
+2021-08-16 14:00:27.969 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:27.969 +07:00 [INF] Start create amendment feedback logId: 466 , headlineName: TVM9 productId: 1!
+2021-08-16 14:00:27.973 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:27.977 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:00:27.982 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:27.982 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 1.
+2021-08-16 14:00:28.012 +07:00 [INF] Abnormal Bet - Create feedback successfully. MessageId: 1074531734
+HeadlineId: 900801
+RelatedCustIds: 48341588
+2021-08-16 14:00:28.012 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:28.012 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:28.012 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:28.012 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:28.012 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:28.012 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:28.013 +07:00 [INF] Abnormal Bet - Begin mapping setting for MessageId: 1074531734
+HeadlineId: 43922832
+RelatedCustIds: 48341595
+2021-08-16 14:00:28.013 +07:00 [INF] Abnormal Bet - Begin mapping product, sub-product, bet type.
+2021-08-16 14:00:28.015 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:28.015 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:28.015 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:28.015 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:28.015 +07:00 [INF] End create template solution.
+2021-08-16 14:00:28.015 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:28.015 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:00:28.015 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:28.015 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:28.015 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:28.015 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:28.015 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:28.015 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:28.015 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:28.015 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:28.015 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:28.015 +07:00 [INF] Begin insert amendment feedback : HeadlineId 21763922 HeadlineName:TVM9 CustName: TVM92805002,TVM90801005,TVM92702345,TVM927TY003,TVM92706102 CustId: 21809406,26969553,42933070,48054510,48349031
+2021-08-16 14:00:28.045 +07:00 [INF] Abnormal Bet - End mapping product, sub-product, bet type.
+2021-08-16 14:00:28.045 +07:00 [INF] Abnormal Bet - End mapping setting for MessageId: 1074531734
+HeadlineId: 43922832
+RelatedCustIds: 48341595
+2021-08-16 14:00:28.045 +07:00 [INF] Abnormal Bet - Begin create feedback for MessageId: 1074531734
+HeadlineId: 43922832
+RelatedCustIds: 48341595
+2021-08-16 14:00:28.114 +07:00 [INF] Abnormal Bet - Create feedback successfully. MessageId: 1074531734
+HeadlineId: 43922832
+RelatedCustIds: 48341595
+2021-08-16 14:00:28.115 +07:00 [INF] Abnormal Bet - Begin mapping setting for MessageId: 1074531734
+2021-08-16 14:00:28.121 +07:00 [INF] Abnormal Bet - Begin mapping product, sub-product, bet type.
+2021-08-16 14:00:28.154 +07:00 [INF] Abnormal Bet - End mapping product, sub-product, bet type.
+2021-08-16 14:00:28.154 +07:00 [INF] Abnormal Bet - End mapping setting for MessageId: 1074531734
+2021-08-16 14:00:28.155 +07:00 [INF] Abnormal Bet - Begin create feedback for MessageId: 1074531734
+HeadlineId: -2368
+RelatedCustIds: -2199,-5948,-2881,0
+CustIds: 1598461,1605594,1614722,1614730,1614960,1614980,1615063,1615361,1615575,1615622,4507126,4508403,4508476,4513206,4517504,4526433,4547936,4554841,4558158,4569311,12049215,12212169,12246730,12248244,12297787,12300787,12341439,12352450,12353528,12369981,33368036,33576370,33643158,33655992,33694620,33703109,33738373,33738424,33751333,33758423
+2021-08-16 14:00:28.237 +07:00 [INF] Abnormal Bet - Create feedback successfully. MessageId: 1074531734
+HeadlineId: -2368
+RelatedCustIds: -2199,-5948,-2881,0
+CustIds: 1598461,1605594,1614722,1614730,1614960,1614980,1615063,1615361,1615575,1615622,4507126,4508403,4508476,4513206,4517504,4526433,4547936,4554841,4558158,4569311,12049215,12212169,12246730,12248244,12297787,12300787,12341439,12352450,12353528,12369981,33368036,33576370,33643158,33655992,33694620,33703109,33738373,33738424,33751333,33758423
+2021-08-16 14:00:28.237 +07:00 [INF] Abnormal Bet - Begin mapping setting for MessageId: 1074531742
+2021-08-16 14:00:28.245 +07:00 [INF] Create amendment feedback successfully HeadlineId 21763922 HeadlineName:TVM9
+2021-08-16 14:00:28.245 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:28.245 +07:00 [INF] Start create amendment feedback logId: 467 , headlineName: S99M productId: 27!
+2021-08-16 14:00:28.245 +07:00 [INF] Abnormal Bet - Begin mapping product, sub-product, bet type.
+2021-08-16 14:00:28.252 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:00:28.252 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:00:28.259 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:00:28.259 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 190.
+2021-08-16 14:00:28.290 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:00:28.290 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:00:28.292 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:00:28.292 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:28.292 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:00:28.292 +07:00 [INF] Begin create template solution.
+2021-08-16 14:00:28.293 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:00:28.327 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:00:28.327 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:00:28.328 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:00:28.328 +07:00 [INF] End create template solution.
+2021-08-16 14:00:28.328 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:00:28.331 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:00:28.331 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:00:28.331 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:00:28.331 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:28.331 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:28.331 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:00:28.331 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:00:28.331 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:00:28.331 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:00:28.331 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:00:28.331 +07:00 [INF] Begin insert amendment feedback : HeadlineId 1448199 HeadlineName:S99M CustName: S99BEIB02121 CustId: 25346812
+2021-08-16 14:00:28.340 +07:00 [INF] Abnormal Bet - End mapping product, sub-product, bet type.
+2021-08-16 14:00:28.340 +07:2021-08-16 14:09:59.257 +07:00 [INF] User profile is available. Using 'C:\Users\teddy.le\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-08-16 14:09:59.418 +07:00 [INF] Starting Hangfire Server using job storage: 'redis://ha.nexdev.net:16379,password=foo1@bared,defaultDatabase=6/7'
+2021-08-16 14:09:59.418 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 5
+    Listening queues: 'critical', 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2021-08-16 14:09:59.479 +07:00 [INF] Server cp007-teddy:1176:1b0ababb successfully announced in 28.9584 ms
+2021-08-16 14:09:59.488 +07:00 [INF] Server cp007-teddy:1176:1b0ababb is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2021-08-16 14:09:59.627 +07:00 [INF] Removing expired records from the 'succeeded' list...
+2021-08-16 14:09:59.641 +07:00 [INF] Server cp007-teddy:1176:1b0ababb all the dispatchers started
+2021-08-16 14:09:59.653 +07:00 [INF] 2 servers were removed due to timeout
+2021-08-16 14:10:01.059 +07:00 [INF] Start Service Problems Account!
+2021-08-16 14:10:01.059 +07:00 [INF] Start Service Result Amendment!
+2021-08-16 14:10:01.670 +07:00 [INF] Start run problems account serivce with last LastLogID: 110594 isUAT: False!
+2021-08-16 14:10:01.841 +07:00 [INF] Import problems account doesn't have any data with custId:  headlineName: !
+2021-08-16 14:10:01.960 +07:00 [INF] Start create amendment feedback logId: 468 , headlineName: KJ59 productId: 27!
+2021-08-16 14:10:06.338 +07:00 [INF] Successful!!!
+2021-08-16 14:10:06.355 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:06.357 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:10:06.367 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:06.368 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 192.
+2021-08-16 14:10:07.131 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:07.137 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:07.137 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:07.138 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:07.138 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:07.138 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:07.724 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:07.822 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:07.824 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:07.826 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:07.826 +07:00 [INF] End create template solution.
+2021-08-16 14:10:07.828 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:09.339 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:10:09.339 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:09.339 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:09.339 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:09.340 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:09.341 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:09.341 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:09.341 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:09.341 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:09.349 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:09.351 +07:00 [INF] Begin insert amendment feedback : HeadlineId 36383752 HeadlineName:KJ59 CustName: KJ591100001 CustId: 50371182
+2021-08-16 14:10:10.239 +07:00 [INF] Create amendment feedback successfully HeadlineId 36383752 HeadlineName:KJ59
+2021-08-16 14:10:10.239 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.239 +07:00 [INF] Start create amendment feedback logId: 469 , headlineName: TVKJ productId: 27!
+2021-08-16 14:10:10.247 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:10.248 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:10:10.248 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:10.248 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 193.
+2021-08-16 14:10:10.250 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:10.250 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:10.250 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:10.250 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.250 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.250 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:10.251 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:10.256 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:10.256 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:10.256 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:10.256 +07:00 [INF] End create template solution.
+2021-08-16 14:10:10.256 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:10.257 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:10:10.257 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:10.257 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:10.257 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.257 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.257 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.257 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.257 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:10.257 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:10.257 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.257 +07:00 [INF] Begin insert amendment feedback : HeadlineId 23834636 HeadlineName:TVKJ CustName: TVKJ01AB228 CustId: 34988541
+2021-08-16 14:10:10.315 +07:00 [INF] Create amendment feedback successfully HeadlineId 23834636 HeadlineName:TVKJ
+2021-08-16 14:10:10.315 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.315 +07:00 [INF] Start create amendment feedback logId: 470 , headlineName: TVKJ productId: 27!
+2021-08-16 14:10:10.321 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:10.321 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:10:10.321 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:10.321 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 193.
+2021-08-16 14:10:10.324 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:10.324 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:10.324 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:10.324 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.324 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.324 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:10.325 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:10.328 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:10.328 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:10.328 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:10.328 +07:00 [INF] End create template solution.
+2021-08-16 14:10:10.328 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:10.328 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:10:10.328 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:10.329 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:10.329 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.329 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.329 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.329 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.329 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:10.329 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:10.329 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.329 +07:00 [INF] Begin insert amendment feedback : HeadlineId 23834636 HeadlineName:TVKJ CustName: TVKJ01AB228 CustId: 34988541
+2021-08-16 14:10:10.369 +07:00 [INF] Create amendment feedback successfully HeadlineId 23834636 HeadlineName:TVKJ
+2021-08-16 14:10:10.369 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.369 +07:00 [INF] Start create amendment feedback logId: 471 , headlineName: TVKJ productId: 27!
+2021-08-16 14:10:10.372 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:10.372 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:10:10.372 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:10.372 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 193.
+2021-08-16 14:10:10.374 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:10.375 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:10.375 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:10.375 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.375 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.375 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:10.375 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:10.376 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:10.376 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:10.376 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:10.376 +07:00 [INF] End create template solution.
+2021-08-16 14:10:10.376 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:10.376 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:10:10.376 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:10.376 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:10.376 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.376 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.376 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.376 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.376 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:10.376 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:10.376 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.376 +07:00 [INF] Begin insert amendment feedback : HeadlineId 23834636 HeadlineName:TVKJ CustName: TVKJ01AB228 CustId: 34988541
+2021-08-16 14:10:10.415 +07:00 [INF] Create amendment feedback successfully HeadlineId 23834636 HeadlineName:TVKJ
+2021-08-16 14:10:10.415 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.415 +07:00 [INF] Start create amendment feedback logId: 472 , headlineName: TVKJ productId: 27!
+2021-08-16 14:10:10.418 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:10.418 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:10:10.418 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:10.418 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 193.
+2021-08-16 14:10:10.420 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:10.420 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:10.420 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:10.420 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.420 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.420 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:10.421 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:10.425 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:10.425 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:10.425 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:10.425 +07:00 [INF] End create template solution.
+2021-08-16 14:10:10.425 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:10.426 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:10:10.426 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:10.426 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:10.426 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.426 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.426 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.426 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.426 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:10.426 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:10.426 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.426 +07:00 [INF] Begin insert amendment feedback : HeadlineId 23834636 HeadlineName:TVKJ CustName: TVKJ01AB228 CustId: 34988541
+2021-08-16 14:10:10.461 +07:00 [INF] Create amendment feedback successfully HeadlineId 23834636 HeadlineName:TVKJ
+2021-08-16 14:10:10.461 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.461 +07:00 [INF] Start create amendment feedback logId: 473 , headlineName: TVKJ productId: 27!
+2021-08-16 14:10:10.464 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:10.464 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:10:10.465 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:10.465 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 193.
+2021-08-16 14:10:10.467 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:10.467 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:10.467 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:10.467 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.467 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.467 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:10.468 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:10.472 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:10.472 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:10.472 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:10.472 +07:00 [INF] End create template solution.
+2021-08-16 14:10:10.472 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:10.473 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:10:10.473 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:10.473 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:10.473 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.473 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.473 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.473 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.473 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:10.473 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:10.473 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.473 +07:00 [INF] Begin insert amendment feedback : HeadlineId 23834636 HeadlineName:TVKJ CustName: TVKJ01AB228 CustId: 34988541
+2021-08-16 14:10:10.510 +07:00 [INF] Create amendment feedback successfully HeadlineId 23834636 HeadlineName:TVKJ
+2021-08-16 14:10:10.510 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.510 +07:00 [INF] Start create amendment feedback logId: 474 , headlineName: TVKJ productId: 27!
+2021-08-16 14:10:10.513 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:10.513 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:10:10.513 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:10.513 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 193.
+2021-08-16 14:10:10.515 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:10.515 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:10.515 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:10.515 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.515 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.515 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:10.516 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:10.520 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:10.520 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:10.520 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:10.520 +07:00 [INF] End create template solution.
+2021-08-16 14:10:10.520 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:10.521 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:10:10.521 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:10.521 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:10.521 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.521 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.521 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.521 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.521 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:10.521 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:10.521 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.521 +07:00 [INF] Begin insert amendment feedback : HeadlineId 23834636 HeadlineName:TVKJ CustName: TVKJ01AB228 CustId: 34988541
+2021-08-16 14:10:10.558 +07:00 [INF] Create amendment feedback successfully HeadlineId 23834636 HeadlineName:TVKJ
+2021-08-16 14:10:10.558 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.558 +07:00 [INF] Start create amendment feedback logId: 475 , headlineName: TVKJ productId: 27!
+2021-08-16 14:10:10.561 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:10.561 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:10:10.561 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:10.561 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 193.
+2021-08-16 14:10:10.565 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:10.565 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:10.565 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:10.565 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.565 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.565 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:10.567 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:10.570 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:10.570 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:10.570 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:10.570 +07:00 [INF] End create template solution.
+2021-08-16 14:10:10.570 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:10.572 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:10:10.572 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:10.572 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:10.572 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.572 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.572 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.572 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.572 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:10.572 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:10.572 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.572 +07:00 [INF] Begin insert amendment feedback : HeadlineId 23834636 HeadlineName:TVKJ CustName: TVKJ01AB228 CustId: 34988541
+2021-08-16 14:10:10.608 +07:00 [INF] Create amendment feedback successfully HeadlineId 23834636 HeadlineName:TVKJ
+2021-08-16 14:10:10.608 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.608 +07:00 [INF] Start create amendment feedback logId: 476 , headlineName: TV71rbsuper productId: 27!
+2021-08-16 14:10:10.611 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:10.611 +07:00 [INF] Begin mapping amenment product with productId:27.
+2021-08-16 14:10:10.611 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:10.611 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 192.
+2021-08-16 14:10:10.614 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:10.614 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:10.614 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:10.614 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.614 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.614 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:10.615 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:10.619 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:10.619 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:10.619 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:10.619 +07:00 [INF] End create template solution.
+2021-08-16 14:10:10.619 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:10.620 +07:00 [INF] Begin create template desctiption productName: Virtual Sports 2.
+2021-08-16 14:10:10.620 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:10.620 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:10.620 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.620 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.620 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.620 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.620 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:10.620 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:10.620 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.620 +07:00 [INF] Begin insert amendment feedback : HeadlineId 50728066 HeadlineName:TV71rbsuper CustName: TV71rbmem27 CustId: 50728104
+2021-08-16 14:10:10.669 +07:00 [INF] Create amendment feedback successfully HeadlineId 50728066 HeadlineName:TV71rbsuper
+2021-08-16 14:10:10.669 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.669 +07:00 [INF] Start create amendment feedback logId: 477 , headlineName: WT productId: 5!
+2021-08-16 14:10:10.678 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:10.678 +07:00 [INF] Begin mapping amenment product with productId:5.
+2021-08-16 14:10:10.682 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:10.682 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 181.
+2021-08-16 14:10:10.691 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:10.691 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:10.692 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:10.692 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.692 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:10.692 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:10.694 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:10.707 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:10.707 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:10.707 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:10.707 +07:00 [INF] End create template solution.
+2021-08-16 14:10:10.707 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:10.709 +07:00 [INF] Begin create template desctiption productName: Virtual Sports.
+2021-08-16 14:10:10.709 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:10.709 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:10.709 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.709 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.709 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:10.709 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:10.709 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:10.709 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:10.709 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.709 +07:00 [INF] Begin insert amendment feedback : HeadlineId 1465925 HeadlineName:WT CustName: SWN2100338 CustId: 50560940
+2021-08-16 14:10:10.750 +07:00 [INF] Create amendment feedback successfully HeadlineId 1465925 HeadlineName:WT
+2021-08-16 14:10:10.750 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:10.758 +07:00 [INF] end service result amendment serivce!
+2021-08-16 14:10:14.933 +07:00 [INF] Start Service Problems Account!
+2021-08-16 14:10:14.936 +07:00 [INF] Start run problems account serivce with last LastLogID: 110594 isUAT: False!
+2021-08-16 14:10:14.944 +07:00 [INF] Start Service Result Amendment!
+2021-08-16 14:10:14.997 +07:00 [INF] Start create amendment feedback logId: 478 , headlineName: STAFF productId: 5!
+2021-08-16 14:10:14.999 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:14.999 +07:00 [INF] Begin mapping amenment product with productId:5.
+2021-08-16 14:10:14.999 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:14.999 +07:00 [INF] Begin mapping amenment subproduct with productId:46001, sportTypeId: 184.
+2021-08-16 14:10:15.002 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:15.002 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:15.002 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:15.002 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:15.002 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:15.002 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:15.003 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:15.005 +07:00 [INF] Import problems account doesn't have any data with custId:  headlineName: !
+2021-08-16 14:10:15.013 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:15.013 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:15.013 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:15.013 +07:00 [INF] End create template solution.
+2021-08-16 14:10:15.013 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:15.013 +07:00 [INF] Begin create template desctiption productName: Virtual Sports.
+2021-08-16 14:10:15.013 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:15.013 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:15.013 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:15.013 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:15.013 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:15.013 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:15.013 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:15.013 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:15.014 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:15.014 +07:00 [INF] Begin insert amendment feedback : HeadlineId 1338545 HeadlineName:STAFF CustName: i-nsdkarl CustId: 22274680
+2021-08-16 14:10:35.968 +07:00 [INF] Create amendment feedback successfully HeadlineId 1338545 HeadlineName:STAFF
+2021-08-16 14:10:35.968 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:35.968 +07:00 [INF] Start create amendment feedback logId: 479 , headlineName: TV61 productId: 3!
+2021-08-16 14:10:37.334 +07:00 [INF] Successful!!!
+2021-08-16 14:10:37.348 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:37.351 +07:00 [INF] Begin mapping amenment product with productId:3.
+2021-08-16 14:10:37.370 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:37.370 +07:00 [INF] Begin mapping amenment subproduct with productId:46004, sportTypeId: 161.
+2021-08-16 14:10:38.057 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:38.057 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:38.057 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:38.057 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:38.057 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:38.057 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:38.060 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:38.076 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:38.076 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:38.087 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:38.087 +07:00 [INF] End create template solution.
+2021-08-16 14:10:38.087 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:38.552 +07:00 [INF] Begin create template desctiption productName: Number Game.
+2021-08-16 14:10:38.552 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:38.552 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:38.552 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:38.552 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:38.552 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:38.552 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:38.552 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:38.552 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:38.552 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:38.552 +07:00 [INF] Begin insert amendment feedback : HeadlineId 12141626 HeadlineName:TV61 CustName: TV617123322 CustId: 45423710
+2021-08-16 14:10:39.322 +07:00 [INF] Create amendment feedback successfully HeadlineId 12141626 HeadlineName:TV61
+2021-08-16 14:10:39.323 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:39.323 +07:00 [INF] Start create amendment feedback logId: 480 , headlineName: TV71rbsuper productId: 3!
+2021-08-16 14:10:40.103 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:40.104 +07:00 [INF] Begin mapping amenment product with productId:3.
+2021-08-16 14:10:40.104 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:40.104 +07:00 [INF] Begin mapping amenment subproduct with productId:46004, sportTypeId: 161.
+2021-08-16 14:10:40.111 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:40.111 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:40.111 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:40.111 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:40.111 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:40.111 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:40.112 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:40.112 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:40.112 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:40.112 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:40.112 +07:00 [INF] End create template solution.
+2021-08-16 14:10:40.112 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:40.112 +07:00 [INF] Begin create template desctiption productName: Number Game.
+2021-08-16 14:10:40.112 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:40.112 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:40.112 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:40.112 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:40.112 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:40.112 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:40.112 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:40.112 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:40.112 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:40.112 +07:00 [INF] Begin insert amendment feedback : HeadlineId 50728066 HeadlineName:TV71rbsuper CustName: TV71rbmem1,TV71rbmem26 CustId: 50728071,50728103
+2021-08-16 14:10:41.061 +07:00 [INF] Create amendment feedback successfully HeadlineId 50728066 HeadlineName:TV71rbsuper
+2021-08-16 14:10:41.073 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:41.073 +07:00 [INF] Start create amendment feedback logId: 481 , headlineName: WI productId: 3!
+2021-08-16 14:10:41.078 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:41.078 +07:00 [INF] Begin mapping amenment product with productId:3.
+2021-08-16 14:10:41.078 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:41.078 +07:00 [INF] Begin mapping amenment subproduct with productId:46004, sportTypeId: 164.
+2021-08-16 14:10:41.081 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:41.081 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:41.081 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:41.081 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:41.081 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:41.081 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:41.082 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:41.084 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:41.084 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:41.084 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:41.084 +07:00 [INF] End create template solution.
+2021-08-16 14:10:41.084 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:41.085 +07:00 [INF] Begin create template desctiption productName: Number Game.
+2021-08-16 14:10:41.085 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:41.085 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:41.085 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:41.085 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:41.085 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:41.085 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:41.085 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:41.085 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:41.085 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:41.085 +07:00 [INF] Begin insert amendment feedback : HeadlineId 1124040 HeadlineName:WI CustName: WI88AL111 CustId: 23970143
+2021-08-16 14:10:41.345 +07:00 [INF] Create amendment feedback successfully HeadlineId 1124040 HeadlineName:WI
+2021-08-16 14:10:41.345 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:41.345 +07:00 [INF] Start create amendment feedback logId: 482 , headlineName: TV71rbsuper productId: 3!
+2021-08-16 14:10:41.352 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:41.352 +07:00 [INF] Begin mapping amenment product with productId:3.
+2021-08-16 14:10:41.352 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:41.352 +07:00 [INF] Begin mapping amenment subproduct with productId:46004, sportTypeId: 164.
+2021-08-16 14:10:41.355 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:41.355 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:41.355 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:41.355 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:41.355 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:41.355 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:41.356 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:41.356 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:41.356 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:41.356 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:41.356 +07:00 [INF] End create template solution.
+2021-08-16 14:10:41.356 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:41.356 +07:00 [INF] Begin create template desctiption productName: Number Game.
+2021-08-16 14:10:41.356 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:41.356 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:41.356 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:41.356 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:41.356 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:41.356 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:41.356 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:41.356 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:41.356 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:41.356 +07:00 [INF] Begin insert amendment feedback : HeadlineId 50728066 HeadlineName:TV71rbsuper CustName: TV71rbmem26,TV71rbmem27 CustId: 50728103,50728104
+2021-08-16 14:10:41.392 +07:00 [INF] Create amendment feedback successfully HeadlineId 50728066 HeadlineName:TV71rbsuper
+2021-08-16 14:10:41.392 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:41.392 +07:00 [INF] Start create amendment feedback logId: 483 , headlineName: S56RM productId: 3!
+2021-08-16 14:10:41.404 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:41.404 +07:00 [INF] Begin mapping amenment product with productId:3.
+2021-08-16 14:10:41.404 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:41.404 +07:00 [INF] Begin mapping amenment subproduct with productId:46004, sportTypeId: 168.
+2021-08-16 14:10:41.406 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:41.406 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:41.406 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:41.406 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:41.406 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:41.406 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:41.407 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:41.410 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:41.410 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:41.410 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:41.410 +07:00 [INF] End create template solution.
+2021-08-16 14:10:41.410 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:41.411 +07:00 [INF] Begin create template desctiption productName: Number Game.
+2021-08-16 14:10:41.411 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:41.411 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:41.411 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:41.411 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:41.411 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:41.411 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:41.411 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:41.411 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:41.411 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:41.411 +07:00 [INF] Begin insert amendment feedback : HeadlineId 405017 HeadlineName:S56RM CustName: TM03MM55927 CustId: 18922832
+2021-08-16 14:10:42.485 +07:00 [INF] Create amendment feedback successfully HeadlineId 405017 HeadlineName:S56RM
+2021-08-16 14:10:42.485 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:42.485 +07:00 [INF] Start create amendment feedback logId: 484 , headlineName: S56RM productId: 3!
+2021-08-16 14:10:42.489 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:42.489 +07:00 [INF] Begin mapping amenment product with productId:3.
+2021-08-16 14:10:42.489 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:42.489 +07:00 [INF] Begin mapping amenment subproduct with productId:46004, sportTypeId: 168.
+2021-08-16 14:10:42.491 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:42.491 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:42.491 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:42.491 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:42.491 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:42.491 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:42.492 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:42.496 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:42.496 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:42.496 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:42.496 +07:00 [INF] End create template solution.
+2021-08-16 14:10:42.496 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:42.497 +07:00 [INF] Begin create template desctiption productName: Number Game.
+2021-08-16 14:10:42.497 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:42.497 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:42.497 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:42.497 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:42.497 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:42.497 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:42.497 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:42.497 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:42.497 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:42.497 +07:00 [INF] Begin insert amendment feedback : HeadlineId 405017 HeadlineName:S56RM CustName: TM03MM55927 CustId: 18922832
+2021-08-16 14:10:42.533 +07:00 [INF] Create amendment feedback successfully HeadlineId 405017 HeadlineName:S56RM
+2021-08-16 14:10:42.533 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:42.533 +07:00 [INF] Start create amendment feedback logId: 485 , headlineName: 141SD productId: 1!
+2021-08-16 14:10:42.539 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:42.539 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:10:42.542 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:42.542 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 0.
+2021-08-16 14:10:42.544 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:42.544 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:42.544 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:42.544 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:42.544 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:42.544 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:42.545 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:42.563 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:42.563 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:42.563 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:42.563 +07:00 [INF] End create template solution.
+2021-08-16 14:10:42.563 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:42.564 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:10:42.564 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:42.564 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:42.564 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:42.564 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:42.564 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:42.564 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:42.564 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:42.564 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:42.564 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:42.564 +07:00 [INF] Begin insert amendment feedback : HeadlineId 1309 HeadlineName:141SD CustName: 141SD CustId: 1309
+2021-08-16 14:10:42.600 +07:00 [INF] Create amendment feedback successfully HeadlineId 1309 HeadlineName:141SD
+2021-08-16 14:10:42.600 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:42.600 +07:00 [INF] Start create amendment feedback logId: 486 , headlineName: TN1G productId: 1!
+2021-08-16 14:10:42.603 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:42.603 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:10:42.603 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:42.603 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 0.
+2021-08-16 14:10:42.605 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:42.605 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:42.605 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:42.605 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:42.605 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:42.605 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:42.606 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:42.606 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:42.606 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:10:42.606 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:10:42.606 +07:00 [INF] End create template solution.
+2021-08-16 14:10:42.606 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:10:42.607 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:10:42.607 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:10:42.607 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:10:42.607 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:42.607 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:42.607 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:10:42.607 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:10:42.607 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:10:42.607 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:10:42.607 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:42.607 +07:00 [INF] Begin insert amendment feedback : HeadlineId 45693044 HeadlineName:TN1G CustName: TN1G1201000 CustId: 49599387
+2021-08-16 14:10:42.727 +07:00 [INF] Create amendment feedback successfully HeadlineId 45693044 HeadlineName:TN1G
+2021-08-16 14:10:42.727 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:10:42.727 +07:00 [INF] Start create amendment feedback logId: 487 , headlineName: 141SD productId: 1!
+2021-08-16 14:10:42.731 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:10:42.732 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:10:42.732 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:10:42.732 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 0.
+2021-08-16 14:10:42.739 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:10:42.739 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:10:42.740 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:10:42.740 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:42.740 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:10:42.740 +07:00 [INF] Begin create template solution.
+2021-08-16 14:10:42.742 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:10:42.742 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:10:42.742 +07:00 [INF] begin create templat2021-08-16 14:11:48.849 +07:00 [INF] User profile is available. Using 'C:\Users\teddy.le\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-08-16 14:11:49.024 +07:00 [INF] Starting Hangfire Server using job storage: 'redis://ha.nexdev.net:16379,password=foo1@bared,defaultDatabase=6/7'
+2021-08-16 14:11:49.025 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 5
+    Listening queues: 'critical', 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2021-08-16 14:11:49.079 +07:00 [INF] Server cp007-teddy:17968:28c09882 successfully announced in 23.4895 ms
+2021-08-16 14:11:49.085 +07:00 [INF] Server cp007-teddy:17968:28c09882 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2021-08-16 14:11:49.141 +07:00 [INF] Server cp007-teddy:17968:28c09882 all the dispatchers started
+2021-08-16 14:11:49.150 +07:00 [INF] Removing expired records from the 'succeeded' list...
+2021-08-16 14:11:50.833 +07:00 [INF] Start Service Problems Account!
+2021-08-16 14:11:50.833 +07:00 [INF] Start Service Result Amendment!
+2021-08-16 14:11:51.467 +07:00 [INF] Start run problems account serivce with last LastLogID: 110594 isUAT: False!
+2021-08-16 14:11:51.768 +07:00 [INF] Import problems account doesn't have any data with custId:  headlineName: !
+2021-08-16 14:11:51.786 +07:00 [INF] Start create amendment feedback logId: 488 , headlineName: 141SD productId: 1!
+2021-08-16 14:11:51.863 +07:00 [INF] Successful!!!
+2021-08-16 14:11:51.919 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:11:53.899 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:11:53.906 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:11:53.907 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 0.
+2021-08-16 14:11:53.911 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:11:53.912 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:11:53.912 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:11:53.918 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:11:53.918 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:11:53.919 +07:00 [INF] Begin create template solution.
+2021-08-16 14:11:54.028 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:11:54.042 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:11:54.043 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:11:54.045 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:11:54.045 +07:00 [INF] End create template solution.
+2021-08-16 14:11:54.047 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:11:54.080 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:11:54.081 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:11:54.081 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:11:54.081 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:11:54.081 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:11:54.082 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:11:54.082 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:11:54.082 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:11:54.082 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:11:54.084 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:11:54.085 +07:00 [INF] Begin insert amendment feedback : HeadlineId 1309 HeadlineName:141SD CustName: 141SD CustId: 1309
+2021-08-16 14:11:55.602 +07:00 [INF] Create amendment feedback successfully HeadlineId 1309 HeadlineName:141SD
+2021-08-16 14:11:55.603 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:11:55.603 +07:00 [INF] Start create amendment feedback logId: 489 , headlineName: 141SD productId: 1!
+2021-08-16 14:11:55.605 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:11:55.605 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:11:55.606 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:11:55.606 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 0.
+2021-08-16 14:11:55.609 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:11:55.609 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:11:55.609 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:11:55.609 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:11:55.609 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:11:55.609 +07:00 [INF] Begin create template solution.
+2021-08-16 14:11:55.610 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:11:55.611 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:11:55.611 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:11:55.611 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:11:55.611 +07:00 [INF] End create template solution.
+2021-08-16 14:11:55.611 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:11:55.612 +07:00 [INF] Begin create template desctiption productName: Sportsbook.
+2021-08-16 14:11:55.612 +07:00 [INF] Begin create template desctiption virtual sport.
+2021-08-16 14:11:55.612 +07:00 [INF] End create template desctiption virtual sport.
+2021-08-16 14:11:55.612 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:11:55.612 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:11:55.612 +07:00 [INF] Begin create template desctiption number game.
+2021-08-16 14:11:55.612 +07:00 [INF] End create template desctiption number game.
+2021-08-16 14:11:55.612 +07:00 [INF] End create template desctiption Result Amendment
+2021-08-16 14:11:55.612 +07:00 [INF] end create result amendment criteria!!!
+2021-08-16 14:11:55.612 +07:00 [INF] Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:11:55.612 +07:00 [INF] Begin insert amendment feedback : HeadlineId 1309 HeadlineName:141SD CustName: 141SD CustId: 1309
+2021-08-16 14:11:55.660 +07:00 [INF] Create amendment feedback successfully HeadlineId 1309 HeadlineName:141SD
+2021-08-16 14:11:55.660 +07:00 [INF] End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!
+2021-08-16 14:11:55.660 +07:00 [INF] Start create amendment feedback logId: 490 , headlineName: 141SD productId: 1!
+2021-08-16 14:11:55.664 +07:00 [INF] Begin create result amendment criteria!!!
+2021-08-16 14:11:55.664 +07:00 [INF] Begin mapping amenment product with productId:1.
+2021-08-16 14:11:55.664 +07:00 [INF] End mapping amenment product.
+2021-08-16 14:11:55.664 +07:00 [INF] Begin mapping amenment subproduct with productId:46000, sportTypeId: 0.
+2021-08-16 14:11:55.667 +07:00 [INF] End mapping amenment subproduct.
+2021-08-16 14:11:55.667 +07:00 [INF] Begin mapping amenment betType.
+2021-08-16 14:11:55.667 +07:00 [INF] End mapping amenment betType.
+2021-08-16 14:11:55.667 +07:00 [INF] Begin mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:11:55.667 +07:00 [INF] end mapping product, sub-product, bet type Result Amendment.
+2021-08-16 14:11:55.667 +07:00 [INF] Begin create template solution.
+2021-08-16 14:11:55.668 +07:00 [INF] begin create template desctiption EN
+2021-08-16 14:11:55.668 +07:00 [INF] end create template desctiption EN
+2021-08-16 14:11:55.668 +07:00 [INF] begin create template desctiption SCYN
+2021-08-16 14:11:55.668 +07:00 [INF] End create template desctiption YNSC
+2021-08-16 14:11:55.668 +07:00 [INF] End create template solution.
+2021-08-16 14:11:55.668 +07:00 [INF] Begin create template desctiption Result Amendment.
+2021-08-16 14:11:5

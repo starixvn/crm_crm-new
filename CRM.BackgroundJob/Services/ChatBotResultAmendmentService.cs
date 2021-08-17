@@ -18,21 +18,22 @@
     {
         Task<IEnumerable<MessageVoidSettled>> GetChatBotMessageVoidSettledAsync();
         Task<CommandResult> ImportMessageVoidSettledAsync(IEnumerable<MessageVoidSettled> messages);
-        Task<ValueTuple<IEnumerable<int>, IEnumerable<TargetMessageInfo>, IEnumerable<TargetMessage>>> 
-            GetChatbotMessageVoidSettledInfoAsync(int BatchSizeGetMsg);
+        Task<ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>>
+             GetChatbotMessageVoidSettledInfoAsync(int BatchSizeGetMsg);
 
-        Task<ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>, string>>
+        Task<ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>>
             GetChatBotResultAmendmentInfoAsync(AbnormalBetSystemSetting settingResultAmendment);
 
-        Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<TicketEvent> ticketEvents);
+        Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<int> messageIds);
 
         Task<CommandResult> ImportChatBotAmendmentResultAsync(
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
             IEnumerable<AmendmentResultTransaction> transactions,
             IEnumerable<Message> messages,
-            IEnumerable<TicketEvent> events,
-            string Environment
-        );
+            IEnumerable<TargetMessage> targetMessages,
+            IEnumerable<TargetMessageInfo> targetMessagesInfo,
+            string Environment,
+            string Servername);
     }
 
     public class ChatBotResultAmendmentService : IChatBotResultAmendmentService
@@ -61,37 +62,36 @@
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        public async Task<ValueTuple<IEnumerable<int>, IEnumerable<TargetMessageInfo>, IEnumerable<TargetMessage>>> GetChatbotMessageVoidSettledInfoAsync(
+        public async Task<ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>> GetChatbotMessageVoidSettledInfoAsync(
             int BatchSizeGetMsg)
         {
             var criteria = new GetChatbotMessageVoidSettledInfo
             {
                 BatchSizeGetMsg = BatchSizeGetMsg
             };
-            return await baseService.FetchMultipleAsync<int, TargetMessageInfo,TargetMessage>(criteria);
+            return await baseService.FetchMultipleAsync<int, TargetMessage, TargetMessageInfo>(criteria);
         }
 
-        public async Task<ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>, string>> 
+        public async Task<ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>> 
             GetChatBotResultAmendmentInfoAsync(AbnormalBetSystemSetting settingResultAmendment)
         {
-            
             var criteria = new GetChatBotResultAmendmentCriteria
             {
                 BatchSize = settingResultAmendment.BatchSize,
                 SubmitDate = settingResultAmendment.SubmitDate.ToString("yyyy-MM-dd H:mm:ss.fffffff"),
                 Seq = settingResultAmendment.Seq
             };
-            var result =  await baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, TicketEvent>(criteria);
-            return new ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>, string>(result, criteria.ServerName);
+            var result =  await baseService.FetchMultipleAsync<AmendmentResultTicketEvent, AmendmentResultTransaction, int>(criteria);
+            return new ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>(result, criteria.ServerName);
         }
 
-        public async Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<TicketEvent> ticketEvents)
+        public async Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<int> messageIds)
         {
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
-            const string Xml = "<r MessageID='{0}'/>";
-            foreach (var ticket in ticketEvents)
+            const string Xml = "<r MessageId='{0}'/>";
+            foreach (var messageId in messageIds)
             {
-                stringBuilder.AppendFormat(Xml, ticket.MessageId);
+                stringBuilder.AppendFormat(Xml, messageId);
             }
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var criteria = new GetChatBotMsgCriteria
@@ -105,8 +105,10 @@
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
             IEnumerable<AmendmentResultTransaction> transactions,
             IEnumerable<Message> messages,
-            IEnumerable<TicketEvent> events,
-            string Environment
+            IEnumerable<TargetMessage> targetMessages,
+            IEnumerable<TargetMessageInfo> targetMessagesInfo,
+            string Environment,
+            string Servername
             )
         {
             var stringBuilderEventData = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
@@ -150,8 +152,8 @@
                 stringBuilderEventData.AppendFormat(XmlTemplate,
                         transaction.TicketEventId, transaction.ProductId, transaction.EventDate,
                         transaction.SubmitDate.ToString("yyyy-MM-dd H:mm:ss.fffffff"), transaction.EventType,
-                        transaction.ActualResult, transaction.WrongResult, transaction.MessageId, 
-                        sportNameEN, sportNameSC, sportNameTH, sportNameYN, 
+                        HttpUtility.HtmlEncode(transaction.ActualResult), HttpUtility.HtmlEncode(transaction.WrongResult),
+                        transaction.MessageId, sportNameEN, sportNameSC, sportNameTH, sportNameYN, 
                         homeNameEN, homeNameSC, homeNameTH, homeNameYN,
                         awayNameEN, awayNameSC, awayNameTH, awayNameYN,
                         leagueNameEN, leagueNameSC, leagueNameTH, leagueNameYN, transaction.MatchCode,
@@ -161,20 +163,18 @@
             }
             stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
 
-            const string xmlTemplateMessage = "<r TicketEventId='{0}' MessageId='{1}' Content_en='{2}' Content_cs='{3}' Content_th='{4}' Content_yn='{5}'/>";
+            const string xmlTemplateMessage = "<r MessageId='{0}' Content_en='{1}' Content_cs='{2}' Content_th='{3}' Content_vn='{4}'/>";
 
             foreach (var message in messages)
             {
-                var TicketEventId = events.FirstOrDefault(x => x.MessageId == message.MessageId).TicketEventId;
                 stringBuilderMessage.AppendFormat(
                     xmlTemplateMessage,
-                    TicketEventId,
                     message.MessageId,
                     message.Content_en?.Trim().Replace("@@", string.Empty),
                     message.Content_cs?.Trim().Replace("@@", string.Empty),
                     message.Content_th?.Trim().Replace("@@", string.Empty),
                     message.Content_vn?.Trim().Replace("@@", string.Empty)
-                    );
+                );
             }
 
             stringBuilderMessage.Append(Constants.EndRootTag.ToLowerInvariant());
@@ -184,7 +184,10 @@
                 TicketData = ticketEvents.ToXML("root").ToString(),
                 EventData = stringBuilderEventData.ToString(),
                 MessageData = stringBuilderMessage.ToString(),
-                Environment = Environment
+                TargetMessage = targetMessages.ToXML("root").ToString(),
+                InfoMessage = targetMessagesInfo.ToXML("root").ToString(),
+                Environment = Environment,
+                Servername = Servername
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
         }

@@ -20,6 +20,7 @@
     using System;
     using CRM.BackgroundJob.Models.ChatBot;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
+    using System.Linq;
 
     public class ChatBotJobServiceTests
     {
@@ -298,82 +299,92 @@
             logService.Received().LogInformation("Chat Bot Result Amendment Service is shutdown.");
         }
 
-        //[Fact]
-        //public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync_ValueTupe3IsNull_ExpectNotCallFunction()
-        //{
-        //    // Arrange
-        //    var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
-        //    var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
-        //    var transactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
-        //    var events = new List<TicketEvent>();
-        //    var commandResult = new CommandResult { Code = 0 };
-        //    var resultAmendmentInfo = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>(ticketEvents, transactions, events);
+        [Fact]
+        public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync_ImportMessageVoidSettledAsyncIsFail_ExpectLogInfo()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
+            var voidingMesssageSettled = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var commandMessage = new CommandResult { Code = 1};
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
+            chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync().Returns(voidingMesssageSettled);
+            chatBotResultAmendmentService.ImportMessageVoidSettledAsync(voidingMesssageSettled).Returns(commandMessage);
 
-        //    var service = GetService();
-        //    systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
-        //    chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(setting).Returns(resultAmendmentInfo);
-        //    chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
-        //        resultAmendmentInfo.Item1, resultAmendmentInfo.Item2, Arg.Any<IEnumerable<Message>>(), resultAmendmentInfo.Item3, Constants.DefaultEnvironment
-        //        ).Returns(commandResult);
+            // Act
+            await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
 
-        //    // Act
-        //    await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
+            // Assert
+            logService.Received().LogInformation("Import Messages Settled Fail!!!");
+        }
 
-        //    // Assert
-        //    await chatBotResultAmendmentService.DidNotReceive().GetChatBotMessageInfoAsync(resultAmendmentInfo.Item3);
-        //}
+        [Fact]
+        public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync_ImportChatBotAmendmentResultAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true, BatchSizeGetMsg = 10 };
+            var targetMessages = fixture.Create<IEnumerable<TargetMessage>>();
+            var targetMessageInfos = fixture.Create<IEnumerable<TargetMessageInfo>>();
+            var messageId = new List<int>();
+            var messages = Enumerable.Empty<Message>();
+            var voidingMessageInfo = new ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>(messageId, targetMessages, targetMessageInfos);
+            var voidingMesssageSettled = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
+            var transactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
+            var valueTupe = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>(ticketEvents, transactions, messageId);
+            var resultAmendmentInfo = new ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>(valueTupe, "ServerName");
+            var commandMessage = new CommandResult { Code = 0 };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
+            chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync().Returns(voidingMesssageSettled);
+            chatBotResultAmendmentService.ImportMessageVoidSettledAsync(voidingMesssageSettled).Returns(commandMessage);
+            chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(setting.BatchSizeGetMsg).Returns(voidingMessageInfo);
+            chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(setting).Returns(resultAmendmentInfo);
+            var test = new CommandResult { Code = 1 };
+            chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
+                    resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
+                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, resultAmendmentInfo.Item2, Constants.DefaultEnvironment
+                   ).Returns(test);
+            // Act
+            await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
 
-        //[Fact]
-        //public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync_ImportChatBotAmendmentResultAsyncUnsuccessful_ExpectedWriteLog()
-        //{
-        //    // Arrange
-        //    var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
-        //    var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
-        //    var transactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
-        //    var events = fixture.Create<IEnumerable<TicketEvent>>();
-        //    var resultAmendmentInfo = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>(ticketEvents, transactions, events);
-        //    var messages = fixture.Create<IEnumerable<Message>>();
-        //    var commandResult = new CommandResult { Code = 1 };
-        //    var service = GetService();
-        //    systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
-        //    chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(setting).Returns(resultAmendmentInfo);
-        //    chatBotResultAmendmentService.GetChatBotMessageInfoAsync(resultAmendmentInfo.Item3).Returns(messages);
-        //    chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
-        //        resultAmendmentInfo.Item1, resultAmendmentInfo.Item2, messages, resultAmendmentInfo.Item3, Constants.DefaultEnvironment
-        //        ).Returns(commandResult);
+            // Assert
+            logService.Received(1).LogInformation(Arg.Any<string>());
+        }
 
-        //    // Act
-        //    await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
+        [Fact]
+        public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync_ImportChatBotAmendmentResultAsyncSuccessful_ExpectedToCallSendNotificationToLetstalk()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true, BatchSizeGetMsg = 10 };
+            var targetMessages = fixture.Create<IEnumerable<TargetMessage>>();
+            var targetMessageInfos = fixture.Create<IEnumerable<TargetMessageInfo>>();
+            var messageId = new List<int>();
+            var messages = Enumerable.Empty<Message>();
+            var voidingMessageInfo = new ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>(messageId, targetMessages, targetMessageInfos);
+            var voidingMesssageSettled = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
+            var transactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
+            var valueTupe = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>(ticketEvents, transactions, messageId);
+            var resultAmendmentInfo = new ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>(valueTupe, "ServerName");
+            var commandMessage = new CommandResult { Code = 0 };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
+            chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync().Returns(voidingMesssageSettled);
+            chatBotResultAmendmentService.ImportMessageVoidSettledAsync(voidingMesssageSettled).Returns(commandMessage);
+            chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(setting.BatchSizeGetMsg).Returns(voidingMessageInfo);
+            chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(setting).Returns(resultAmendmentInfo);
+            var test = new CommandResult { Code = 0 };
+            chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
+                    resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
+                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, resultAmendmentInfo.Item2, Constants.DefaultEnvironment
+                   ).Returns(test);
+            // Act
+            await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
 
-        //    // Assert
-        //    logService.Received().LogInformation(commandResult.Message);
-        //}
-
-        //[Fact]
-        //public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync_ImportChatBotAmendmentResultAsyncSuccessful_ExpectedToCallSendNotificationToLetstalk()
-        //{
-        //    // Arrange
-        //    var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
-        //    var ticketEvents = fixture.Create<IEnumerable<AmendmentResultTicketEvent>>();
-        //    var transactions = fixture.Create<IEnumerable<AmendmentResultTransaction>>();
-        //    var events = fixture.Create<IEnumerable<TicketEvent>>();
-        //    var resultAmendmentInfo = new ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<TicketEvent>>(ticketEvents, transactions, events);
-        //    var messages = fixture.Create<IEnumerable<Message>>();
-        //    var commandResult = new CommandResult { Code = 0 };
-        //    var service = GetService();
-        //    systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
-        //    chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(setting).Returns(resultAmendmentInfo);
-        //    chatBotResultAmendmentService.GetChatBotMessageInfoAsync(resultAmendmentInfo.Item3).Returns(messages);
-        //    chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
-        //        resultAmendmentInfo.Item1, resultAmendmentInfo.Item2, messages, resultAmendmentInfo.Item3, Constants.DefaultEnvironment
-        //        ).Returns(commandResult);
-
-        //    // Act
-        //    await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
-
-        //    // Assert
-        //    await sendNotificationService.Received().SendNotificationToLetstalk();
-        //}
+            // Assert
+            await sendNotificationService.Received().SendNotificationToLetstalk();
+        }
 
         #region Helpers
 

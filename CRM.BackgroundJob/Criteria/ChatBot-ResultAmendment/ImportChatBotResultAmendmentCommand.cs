@@ -7,11 +7,13 @@
         public string TicketData { get; set; }
         public string EventData { get; set; }
         public string MessageData { get; set; }
+        public string TargetMessage { get; set; }
+        public string InfoMessage { get; set; }
         public string Environment { get; set; }
+        public string Servername { get; set; }
         public int ErrCode { get; set; }
         public string ErrMsg { get; set; }
         public override string GetSettingKey() => "Acc_CRM_Chatbot_ResultAmendment_Import";
-        public override bool IsValid() => !string.IsNullOrWhiteSpace(TicketData) &&
-            !string.IsNullOrWhiteSpace(EventData) && !string.IsNullOrWhiteSpace(MessageData);
+        public override bool IsValid() => true;
     }
 }
