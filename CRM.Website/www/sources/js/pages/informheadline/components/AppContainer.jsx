@@ -7,6 +7,7 @@ import DataGrid from './DataGrid';
 import EditContactInforms from './EditContactInforms';
 import EditSearchInforms from './EditSearchInforms';
 import RemovedAccountLogs from './RemovedAccountLogs';
+import RemovedAccountLogDetails from './RemovedAccountLogDetails';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -38,8 +39,11 @@ export class AppContainer extends Component {
     }
 
     handleCloseShowRemovedLogs = () => {
-        this.props.getInforms();
         this.props.setShowRemovedLogs({show: false});
+    }
+
+    handleCloseShowRemovedLogDetails = () => {
+        this.props.setShowRemovedLogDetails({show: false});
     }
 
     render() {
@@ -93,6 +97,12 @@ export class AppContainer extends Component {
                     showRemovedLogs.show &&
                     <RemovedAccountLogs
                         onClose={this.handleCloseShowRemovedLogs}
+                    />
+                }
+                {
+                    showRemovedLogDetails.show &&
+                    <RemovedAccountLogDetails
+                        onClose={this.handleCloseShowRemovedLogDetails}
                     />
                 }
             </>

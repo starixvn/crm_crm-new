@@ -2,13 +2,24 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 
 export class RemovedAccountLogs extends Component {
+
+    handleRemovedAccountLogDetails = logId => {
+        const params = {
+            logId: logId,
+            pageIndex: 1,
+            pageSize: 100
+        };
+        
+        this.props.setGridParamRemovedLogDetails(params);
+        this.props.getRemovedAccountLogDetails(params);
+        this.props.setShowRemovedLogDetails({show: true});
+    };
 
     buildHeader = () => {
         return(
@@ -38,7 +49,9 @@ export class RemovedAccountLogs extends Component {
             <Row key={index}>
                 <Cell className='text-center'>{item.clientLogDate}</Cell>
                 <Cell className='text-center'>{item.username}</Cell>
-                <Cell className='text-center'>{item.totals}</Cell>
+                <Cell className='text-center'>
+                    <span className="number-remove" onClick={() => this.handleRemovedAccountLogDetails(item.logId)}>{item.totals}</span>
+                </Cell>
             </Row>
         );
     };
@@ -47,7 +60,7 @@ export class RemovedAccountLogs extends Component {
         const params = { ...this.props.gridParamRemovedLogs };
         params['pageSize'] = pageSize;
         params['pageIndex'] = pageIndex;
-        console.log(params);
+
         this.props.setGridParamRemovedLogs(params);
         this.props.getRemovedAccountLogs(params);
     };
@@ -71,6 +84,7 @@ export class RemovedAccountLogs extends Component {
                 <Modal show
                     backdrop="static" keyboard={false} size="lg"
                     onHide={this.props.onClose}
+                    className="modal-remove"
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('InformHeadlines') + ' - ' + LangHelper.getResource('RemovedEditedAccountsLogs')}</Modal.Title>
@@ -89,11 +103,17 @@ export class RemovedAccountLogs extends Component {
                             adjustedHeight={10}
                         />
                     </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="primary" size="sm" style={{width: '65px'}} onClick={this.props.onClose}>
+                            {LangHelper.getResource('Close')}
+                        </Button>
+                    </Modal.Footer>
                 </Modal>
             </>
         )
     };
-};
+}
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 

@@ -136,6 +136,7 @@
             foreach (var item in result)
             {
                 item.ClientUpdatedTime = string.Format("{0:MMM dd, yyyy hh:mm:ss tt}", commonService.ConvertToClientDateTime(item.UpdatedTime));
+                item.Remark = HttpUtility.HtmlDecode(item.Remark);
             }
 
             return (result, criteria.TotalRows);

@@ -16,7 +16,8 @@ import{
     setRemovedAccountLogDetails,
     setShowRemovedLogs,
     setShowRemovedLogDetails,
-    setGridParamRemovedLogs
+    setGridParamRemovedLogs,
+    setGridParamRemovedLogDetails
 } from './informHeadlineSlice';
 
 const getInforms = () => async dispatch => {
@@ -140,5 +141,6 @@ export const ActionCreators = {
     getRemovedAccountLogDetails,
     setShowRemovedLogs,
     setShowRemovedLogDetails,
-    setGridParamRemovedLogs
+    setGridParamRemovedLogs,
+    setGridParamRemovedLogDetails
 };

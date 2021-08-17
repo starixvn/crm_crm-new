@@ -51,16 +51,30 @@
     padding-top: 2px;
 }
 
+.number-remove{
+    cursor: pointer;
+    color: #0255a5;
+}
+
+.number-remove:hover{
+    color: #ffb400;
+}
+
 @media screen and (min-width: 1200px){
     .modal-xl {
         max-width: 1200px;
     }
 }
 @media screen and (min-width: 768px) {
-    .modal-dialog.modal-lg {
+
+    .modal-removeDetail .modal-content{
+        width: 1080px;
+        margin: auto;
+    }
+
+    .modal-remove .modal-content {
       width: 600px;
-      padding-top: 30px;
-      padding-bottom: 30px;
+      margin: auto;
     }
     .modal-content {
       -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
