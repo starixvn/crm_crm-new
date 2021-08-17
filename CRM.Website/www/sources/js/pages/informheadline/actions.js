@@ -17,7 +17,9 @@ import{
     setShowRemovedLogs,
     setShowRemovedLogDetails,
     setGridParamRemovedLogs,
-    setGridParamRemovedLogDetails
+    setGridParamRemovedLogDetails,
+    setNewInforms,
+    setShowNewInforms
 } from './informHeadlineSlice';
 
 const getInforms = () => async dispatch => {
@@ -122,6 +124,14 @@ const getRemovedAccountLogDetails = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const getNewInforms = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/GetNewInforms');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setNewInforms(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     getInforms,
     ExportInforms,
@@ -142,5 +152,7 @@ export const ActionCreators = {
     setShowRemovedLogs,
     setShowRemovedLogDetails,
     setGridParamRemovedLogs,
-    setGridParamRemovedLogDetails
+    setGridParamRemovedLogDetails,
+    getNewInforms,
+    setShowNewInforms
 };

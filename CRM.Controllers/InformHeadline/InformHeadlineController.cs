@@ -181,5 +181,12 @@
             var result = await informHeadlineService.GetRemovedAccountLogDetailAsync(param);
             return Json(new { item = result.Item1, totalItems = result.Item2 });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetNewInforms([FromBody] GetNewInformParam param)
+        {
+            IEnumerable<NewInform> newInforms = await informHeadlineService.GetNewInforms(param);
+            return Json(newInforms);
+        }
     }
 }

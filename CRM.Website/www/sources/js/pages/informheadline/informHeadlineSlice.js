@@ -28,7 +28,9 @@ const informHeadlineSlice = createSlice({
         gridRemovedLogDetails: {
             pageIndex: 1,
             pageSize: 100
-        }
+        },
+        newInforms: null,
+        showNewInforms: {show: false}
     },
     reducers: {
         setInforms: (state, action) => {
@@ -81,6 +83,12 @@ const informHeadlineSlice = createSlice({
         },
         setGridParamRemovedLogDetails: (state, action) => {
             state.gridParamRemovedLogDetails = action.payload;
+        },
+        setNewInforms: (state, action) => {
+            state.newInforms = action.payload
+        },
+        setShowNewInforms: (state, action) => {
+            state.showNewInforms = action.payload;
         }
     }
 });
@@ -104,7 +112,9 @@ export const {
     setShowRemovedLogs,
     setShowRemovedLogDetails,
     setGridParamRemovedLogs,
-    setGridParamRemovedLogDetails
+    setGridParamRemovedLogDetails,
+    setNewInforms,
+    setShowNewInforms
 } = actions;
 
 export default reducer;

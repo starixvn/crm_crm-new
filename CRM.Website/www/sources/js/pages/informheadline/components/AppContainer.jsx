@@ -8,6 +8,7 @@ import EditContactInforms from './EditContactInforms';
 import EditSearchInforms from './EditSearchInforms';
 import RemovedAccountLogs from './RemovedAccountLogs';
 import RemovedAccountLogDetails from './RemovedAccountLogDetails';
+import NewInforms from './NewInforms';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -46,8 +47,12 @@ export class AppContainer extends Component {
         this.props.setShowRemovedLogDetails({show: false});
     }
 
+    handleCloseShowNewInforms = () => {
+        this.props.setShowNewInforms({show: false});
+    }
+
     render() {
-        const { searchPolicy, contactPolicy, showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails } = this.props;
+        const { searchPolicy, contactPolicy, showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms } = this.props;
 
         return (
             <>
@@ -105,6 +110,12 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseShowRemovedLogDetails}
                     />
                 }
+                {
+                    showNewInforms.show &&
+                    <NewInforms
+                        onClose={this.handleCloseShowNewInforms}
+                    />
+                }
             </>
         );
     };
@@ -117,13 +128,15 @@ const mapStateToProps = state => {
         showEditContactInform, titleDetail, contactInforms,
         contactInformSettings, gridParams, showEditSearchInform,
         searchInforms, allSettings, resultUpdateContactInforms,
-        resultUpdateSearchInforms, showRemovedLogs, showRemovedLogDetails
+        resultUpdateSearchInforms, showRemovedLogs, showRemovedLogDetails,
+        showNewInforms
     } = state;
     return {
         showEditContactInform, titleDetail, contactInforms,
         contactInformSettings, gridParams, showEditSearchInform,
         searchInforms, allSettings, resultUpdateContactInforms,
-        resultUpdateSearchInforms, showRemovedLogs, showRemovedLogDetails
+        resultUpdateSearchInforms, showRemovedLogs, showRemovedLogDetails,
+        showNewInforms
     };
 };
 

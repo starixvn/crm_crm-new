@@ -9,7 +9,6 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import FilterSearchInforms from './FilterSearchInforms';
-import { isFulfilled } from '@reduxjs/toolkit';
 
 export class EditSearchInforms extends Component {
     constructor(props) {
