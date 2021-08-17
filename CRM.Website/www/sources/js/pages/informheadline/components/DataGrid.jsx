@@ -128,7 +128,6 @@ export class DataGrid extends Component {
 
     getPositionEdit = (event, titleId) => {
         var position = event.target.getClientRects()[0];
-        console.log(event.target);
 
         this.setState({
             showOption: 'block',
@@ -156,9 +155,6 @@ export class DataGrid extends Component {
         return (
             <Row key={index} className={cssClass}>
                 <Cell className='text-center'>
-                    {/* <OverlayTrigger trigger="click" placement="bottom" overlay={this.chooseOption}>
-                        <span className="fa fa-pencil-square-o"></span>
-                    </OverlayTrigger> */}
                     <span ref={this.wrapperRef} className="fa fa-pencil-square-o" onClick={(event) => this.getPositionEdit(event, item.titleId)}></span>
                     
                 </Cell>

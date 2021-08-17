@@ -188,5 +188,23 @@
             IEnumerable<NewInform> newInforms = await informHeadlineService.GetNewInforms(param);
             return Json(newInforms);
         }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
+        public async Task<IActionResult> InsertInforms([FromBody] InsertInformHeadlinesCommand command)
+        {
+            command.IP = ClientIP;
+            command.UserId = napSession.UserId;
+            command.Title = HttpUtility.HtmlEncode(command.Title);
+            await baseService.ExecuteNonQueryAsync(command);
+            var updateContactCriteria = new UpdateContactInformsCommand
+            {
+                Informs = command.Informs,
+                TitleId = command.TitleId,
+                IP = ClientIP,
+                UserId = napSession.UserId
+            };
+            return await UpdateContactInforms(updateContactCriteria);
+        }
     }
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import DataGridEdit from './DataGridEdit';
@@ -80,7 +80,7 @@ export class NewInforms extends Component {
                     {
                         this.state.saveResult &&
                         <ResponseMessage isSuccessful={this.state.saveResult.isSuccessful}
-                            message={this.state.saveResult.message || LangHelper.getResource('SaveInformHeadlinesSuccessfully')}
+                            message={this.state.saveResult.message || LangHelper.getResource('AddNewCaseSuccessfully')}
                         />
                     }
                     <FilterSearchInforms
@@ -165,14 +165,22 @@ export class NewInforms extends Component {
         values.typeAccount = accountType;
     };
 
+    setAlert = () => {
+        this.setState({
+            saveResult: this.props.resultInsertInforms
+        });
+        setTimeout(() => {
+            this.setState({
+                saveResult: null
+            });
+            this.props.setShowNewInforms({show: false});
+            this.props.getInforms();
+        }, 3000);
+    };
+
     handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
         if(!values.submit){
-            this.props.setGridParams({
-                pageIndex: 1,
-                pageSize: 100
-            });
-            
             this.getTypeAccount(values);
 
             const params = {
@@ -186,9 +194,28 @@ export class NewInforms extends Component {
                 pageIndex: this.props.gridParams.pageIndex,
                 pageSize: this.props.gridParams.pageSize
             };
-
+            this.props.setGridParams(params);
             this.props.getNewInforms(params);
         };
+
+        if(values.submit){
+            this.getTypeAccount(values);
+
+            const params = {
+                title: values.title,
+                currencies: values.currencyId,
+                levels: values.levelId,
+                sites: values.siteId,
+                isVip: values.vipId,
+                typeAccount: values.typeAccount,
+                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
+                pageIndex: 1,
+                pageSize: 1000,            
+                informs: this.state.informs
+            }
+            await this.props.insertInforms(params);            
+            this.setAlert();
+        }
     };
 
     handleExportExcel = values => {
@@ -214,8 +241,9 @@ export class NewInforms extends Component {
         const params = { ...this.props.gridParams };
         params['pageSize'] = pageSize;
         params['pageIndex'] = pageIndex;
-        this.props.setGridParams(params);
 
+        this.props.setGridParams(params);
+        this.props.getNewInforms(params);
     };
 
     htmlDecode = value => {
@@ -258,11 +286,11 @@ export class NewInforms extends Component {
         return (
             <>
                 <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
-                    backdrop="static" keyboard={false} size="xl" centered
+                    backdrop="static" keyboard={false} size="xl"
                     onHide={this.props.onClose}         
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('UpdateInformHeadlines') + " - " + LangHelper.getResource('EditNumberOfAccounts')}</Modal.Title>
+                        <Modal.Title as="div">{LangHelper.getResource('NewInformHeadlines')}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -274,8 +302,6 @@ export class NewInforms extends Component {
                         >
                             { this.renderFilterForm }
                         </Formik>
-
-
                     </Modal.Body>
                 </Modal>
             </>
@@ -286,8 +312,8 @@ export class NewInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, newInforms, gridParams } = state;
-    return { allSettings, newInforms, gridParams };
+    const { allSettings, newInforms, gridParams, resultInsertInforms } = state;
+    return { allSettings, newInforms, gridParams, resultInsertInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewInforms)

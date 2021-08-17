@@ -30,7 +30,8 @@ const informHeadlineSlice = createSlice({
             pageSize: 100
         },
         newInforms: null,
-        showNewInforms: {show: false}
+        showNewInforms: {show: false},
+        resultInsertInforms: null
     },
     reducers: {
         setInforms: (state, action) => {
@@ -89,6 +90,9 @@ const informHeadlineSlice = createSlice({
         },
         setShowNewInforms: (state, action) => {
             state.showNewInforms = action.payload;
+        },
+        setInsertInforms: (state, action) => {
+            state.resultInsertInforms = action.payload;
         }
     }
 });
@@ -114,7 +118,8 @@ export const {
     setGridParamRemovedLogs,
     setGridParamRemovedLogDetails,
     setNewInforms,
-    setShowNewInforms
+    setShowNewInforms,
+    setInsertInforms
 } = actions;
 
 export default reducer;
