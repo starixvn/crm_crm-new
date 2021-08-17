@@ -147,18 +147,6 @@ export class DataGrid extends Component {
     };
 
     handleNewInforms = () => {
-        const params = {
-            currencies: "2,3,5,6,7,9,12,13,15,16,20,22,33,34,35,41,43,45,47,50,51,52,53,54,57,58,64,67,69,71,72,81,95",
-            excludeIgnoredAccounts: true,
-            isVip: 2,
-            levels: "4,3,2,1,0",
-            pageIndex: 1,
-            pageSize: 1000,
-            sites: "6026,6027,6028,6029,6025,6343,6006,6344,6004,6474,6014,6037,6055,6599,6016,6401",
-            title: "ha",
-            typeAccount: 3
-        };
-        this.props.getNewInforms(params);
         this.props.getAllSettings();
         this.props.setShowNewInforms({show: true});
     };

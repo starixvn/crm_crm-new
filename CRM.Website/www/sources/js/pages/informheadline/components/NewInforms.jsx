@@ -34,7 +34,7 @@ export class NewInforms extends Component {
         setFieldValue
     }) => {
 
-        const { allSettings , newInforms } = this.props;
+        const { allSettings , newInforms, gridParams } = this.props;
         const allPositions = [
             { "id": 4, "name": "Super" },
             { "id": 3, "name": "Master" },
@@ -98,6 +98,20 @@ export class NewInforms extends Component {
                         setFieldValue={setFieldValue}
                     />
 
+                    {
+                        newInforms &&
+                        <DataGridEdit
+                            Informs={newInforms}
+                            InformSettings={allSettings}
+                            gridParams={gridParams}
+                            onPaging={this.onPaging}
+                            onChange={this.handleChangeDataGrid}
+
+                            values={values}
+                            handleSubmit={handleSubmit}
+                            setFieldValue={setFieldValue}
+                        />
+                    }
                 </Form>
             </>
         );
@@ -154,10 +168,10 @@ export class NewInforms extends Component {
     handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
         if(!values.submit){
-            // this.props.setGridParams({
-            //     pageIndex: 1,
-            //     pageSize: 100
-            // });
+            this.props.setGridParams({
+                pageIndex: 1,
+                pageSize: 100
+            });
             
             this.getTypeAccount(values);
 
@@ -168,10 +182,12 @@ export class NewInforms extends Component {
                 levels: values.levelId,
                 sites: values.siteId,
                 isVip: parseInt(values.vipId),
-                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts
+                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
+                pageIndex: this.props.gridParams.pageIndex,
+                pageSize: this.props.gridParams.pageSize
             };
 
-            this.props.getSearchInforms(params);
+            this.props.getNewInforms(params);
         };
     };
 
@@ -194,9 +210,48 @@ export class NewInforms extends Component {
         );
     };
 
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params['pageSize'] = pageSize;
+        params['pageIndex'] = pageIndex;
+        this.props.setGridParams(params);
+
+    };
+
+    htmlDecode = value => {
+        var remark = value.replace(/&/g, '&amp;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+        return remark;
+    };
+
+    handleChangeDataGrid = (event, headlineId) => {
+        const name = event.target.name;
+        var value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
+        if(name === 'remark'){
+            value = this.htmlDecode(value);
+        };
+        const item = {...this.props.newInforms.find(element => element.headlineId === headlineId), [name]: value};
+
+        this.setState(prevState =>{
+            let oldInforms = prevState.informs;
+            let element  = oldInforms.find(value => value.headlineId === item.headlineId);
+
+            if(element){
+                Object.assign(element, {[name]: value});
+                return({informs: oldInforms});
+            }
+            else{
+                return({informs: [...oldInforms, item]});
+            }
+        });
+    };
+
     render() {
-        const {allSettings, newInforms} = this.props;
-        if(!allSettings || !newInforms){
+        const { allSettings } = this.props;
+        if( !allSettings ){
             return null;
         };
 
@@ -231,8 +286,8 @@ export class NewInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, newInforms } = state;
-    return { allSettings, newInforms };
+    const { allSettings, newInforms, gridParams } = state;
+    return { allSettings, newInforms, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewInforms)
