@@ -206,5 +206,15 @@
             };
             return await UpdateContactInforms(updateContactCriteria);
         }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateInformStatus([FromBody] UpdateInformStatusCommand command)
+        {
+            command.IP = ClientIP;
+            command.UserId = napSession.UserId;
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+        }
     }
 }

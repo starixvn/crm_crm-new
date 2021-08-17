@@ -139,7 +139,13 @@ const insertInforms = params => async dispatch => {
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setInsertInforms(response.data));
     }).then(() => Site.unblockUI());
-}
+};
+
+const updateInformStatus = params => async () => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('InformHeadline/UpdateInformStatus');
+    await DataService.postDataAsync(url, params).then(() => Site.unblockUI());
+};
 
 export const ActionCreators = {
     getInforms,
@@ -164,5 +170,6 @@ export const ActionCreators = {
     setGridParamRemovedLogDetails,
     getNewInforms,
     setShowNewInforms,
-    insertInforms
+    insertInforms,
+    updateInformStatus
 };

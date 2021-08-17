@@ -126,6 +126,15 @@ export class DataGrid extends Component {
         this.props.setShowRemovedLogs({show: true});
     };
 
+    handleCloseCase = titleId => {
+        const params = {
+            titleId: titleId,
+            statusType: true
+        }
+        this.props.updateInformStatus(params);
+        this.props.getInforms();
+    };
+
     getPositionEdit = (event, titleId) => {
         var position = event.target.getClientRects()[0];
 
@@ -155,8 +164,7 @@ export class DataGrid extends Component {
         return (
             <Row key={index} className={cssClass}>
                 <Cell className='text-center'>
-                    <span ref={this.wrapperRef} className="fa fa-pencil-square-o" onClick={(event) => this.getPositionEdit(event, item.titleId)}></span>
-                    
+                    <span ref={this.wrapperRef} className="fa fa-pencil-square-o" onClick={(event) => this.getPositionEdit(event, item.titleId)}></span>                   
                 </Cell>
                 {
                     !contactPolicy.hasAttribute('none') ?
@@ -219,6 +227,7 @@ export class DataGrid extends Component {
                         titleIdSearch={this.state.titleIdSearch}
                         handleEditSearch={this.handleEditSearch}
                         handleRemovedAccountLogs={this.handleRemovedAccountLogs}
+                        handleCloseCase={this.handleCloseCase}
                     />
                 }
                 <div className='table-title d-flex justify-content-between align-items-center'>

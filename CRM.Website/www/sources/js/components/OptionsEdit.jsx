@@ -4,7 +4,7 @@ import LangHelper from '@jsroot/common/langHelper';
 export class OptionsEdit extends PureComponent {
 
     render() {
-        const { showOption ,top, left, titleIdSearch, handleEditSearch, handleRemovedAccountLogs } = this.props;
+        const { showOption ,top, left, titleIdSearch, handleEditSearch, handleRemovedAccountLogs, handleCloseCase } = this.props;
 
         return (
             <div id="contextMenu" className="dropdown clearfix">
@@ -23,7 +23,7 @@ export class OptionsEdit extends PureComponent {
                         </div>
                     </li>
                     <li className="divider" ></li>
-                    <li>
+                    <li onClick={() => handleCloseCase(titleIdSearch)}>
                         <div class="edit-menu-item">
                             <i className="fa fa-times" style={{color: '#de5144'}}></i>
                             {LangHelper.getResource('CloseCase')}
