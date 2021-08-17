@@ -103,8 +103,6 @@
             {
                 communicationLog = communicationLogInfos.First();
                 communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
-                communicationLog.StartTime = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
-                communicationLog.EndTime = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
                 communicationLog.ResolutionDate = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
                 communicationLog.SolveDate = commonService.ConvertToClientDateTime(communicationLog.SolveDate);
                 communicationLog.RelatedCustomers = relatedCustomers;

@@ -268,7 +268,7 @@ export class DataGrid extends Component {
         let feedbackArr = [];
         for(let [key, value] of this.state.checkedItems.entries()) {
             if(value === true){
-                const feedbackInfo = this.props.gridDataFeedbacks.filter(x=>x.feedbackId === key);
+                const feedbackInfo = this.props.gridDataFeedbacks.data.filter(x=>x.feedbackId === key)[0];
                 feedbackArr.push({
                     feedbackId: feedbackInfo.feedbackId,
                     username: feedbackInfo.username

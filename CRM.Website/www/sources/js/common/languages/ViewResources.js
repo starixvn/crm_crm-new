@@ -82,6 +82,7 @@
     EditPIC: 'Edit PIC',
     EditPICSuccess: 'Edit PIC successfully!',
     EditStatusFeedbackSubjectSuccessfully: 'Edit Status Feedback Subject Successfully',
+    EditMultipleLogs: 'Edit Multiple Logs',
     Error: 'Error',
     ErrorNotification: 'Error Notification',
     ErrorOccuredWhileSendingTheNotificationToTheFollowingRecipient: 'Error occured while sending the notification to the following recipient',

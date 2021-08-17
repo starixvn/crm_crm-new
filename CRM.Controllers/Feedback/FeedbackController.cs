@@ -188,7 +188,7 @@
             var products = await settingService.GetProductAsync();
             var subProducts = await settingService.GetSubProductAsync();
             var betTypes = await settingService.GetBetTypeAsync();
-            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response);
+            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
             var languages = await settingService.GetLanguageAsync(isIncludeNA: true);
             var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
             var countries = await settingService.GetCountryAsync(isIncludeNA: true);
@@ -198,7 +198,7 @@
             {
                 Extensions = GetExtentions(extentions, communicationLogsSetting),
                 CommunicationTools = GetCommunicationTools(communicationTools, communicationLogsSetting),
-                Responses = responses.Where(x => x.IsActive || x.Id == communicationLogs.ResponseId).ToList(),
+                Responses = responses.Where(x => x.Id == communicationLogs.ResponseId).ToList(),
                 Languages = languages.Where(x => x.IsActive || x.LanguageId == communicationLogs.LanguageId).ToList(),
                 Statuses = statuses.Where(x => (x.IsActive || x.StatusId == communicationLogs.StatusId)).ToList(),
                 Roles = roles.Where(x => x.IsActive || x.Id == communicationLogs.RoleId).ToList(),
