@@ -191,8 +191,9 @@ export class EditContactInforms extends Component {
         return (    
             <>
                 <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
-                    backdrop="static" keyboard={false} size="xl" centered
-                    onHide={this.props.onClose}         
+                    backdrop="static" keyboard={false} size="xl"
+                    className="modal-edit"
+                    onHide={this.props.onClose}    
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('UpdateInformHeadlines')}</Modal.Title>

@@ -185,8 +185,8 @@
         [HttpPost]
         public async Task<IActionResult> GetNewInforms([FromBody] GetNewInformParam param)
         {
-            IEnumerable<NewInform> newInforms = await informHeadlineService.GetNewInforms(param);
-            return Json(newInforms);
+            var newInforms = await informHeadlineService.GetNewInforms(param);
+            return Json(newInforms.Item1);
         }
 
         [HttpPost]
@@ -215,6 +215,16 @@
             command.UserId = napSession.UserId;
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
+        public async Task<IActionResult> ExportNewInforms([FromBody] GetNewInformParam param)
+        {
+            var newInforms = await informHeadlineService.GetNewInforms(param);
+            var bytes = excelService.ExportNewInformHeadline(newInforms.Item1, informHeadlineService, newInforms.Item2);
+            string reportName = ViewResources.NewInformHeadlines;
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }
 }

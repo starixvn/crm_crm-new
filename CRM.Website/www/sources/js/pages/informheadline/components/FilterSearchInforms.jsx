@@ -15,8 +15,8 @@ export class FilterSearchInforms extends PureComponent {
             <>
                 <Form className="form-filter">
                     <Form.Group as={Row}>
-                        <Col sm="11" md="11">
-                            <Form.Control type="text" size="sm" className="shadow-none"
+                        <Col sm="12" md="12" className="group-input-excel">
+                            <Form.Control type="text" size="sm" className="shadow-none input-excel"
                                 autoComplete="off"
                                 name="username"
                                 defaultValue={titleDetail.title}
@@ -24,9 +24,6 @@ export class FilterSearchInforms extends PureComponent {
                                     setFieldValue('title', event.target.value)
                                 }}
                             />
-                        </Col>
-
-                        <Col sm="1" md="1">
                             {renderExportExcelText()}
                         </Col>
                     </Form.Group>

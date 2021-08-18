@@ -220,6 +220,18 @@ export class NewInforms extends Component {
 
     handleExportExcel = values => {
         this.getTypeAccount(values);
+        const params = {
+            title: values.title,
+            typeAccount: values.typeAccount,
+            currencies: values.currencyId,
+            levels: values.levelId,
+            sites: values.siteId,
+            isVip: parseInt(values.vipId),
+            excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
+            pageIndex: this.props.gridParams.pageIndex,
+            pageSize: this.props.gridParams.pageSize
+        };
+        this.props.exportNewInforms(params);
     };
 
     renderExportExcelText = values => {
@@ -287,7 +299,8 @@ export class NewInforms extends Component {
             <>
                 <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl"
-                    onHide={this.props.onClose}         
+                    className="modal-edit"
+                    onHide={this.props.onClose}   
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('NewInformHeadlines')}</Modal.Title>

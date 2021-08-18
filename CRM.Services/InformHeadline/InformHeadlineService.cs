@@ -18,7 +18,7 @@
         Task<IEnumerable<UpdateInform>> GetSearchInforms(GetSearchInformParam param);
         Task<(IEnumerable<RemovedAccountLog>, int)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param);
         Task<(IEnumerable<RemovedAccountLogDetail>, int)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param);
-        Task<IEnumerable<NewInform>> GetNewInforms(GetNewInformParam param);
+        Task<(IEnumerable<NewInform>, string)> GetNewInforms(GetNewInformParam param);
     }
 
     public class InformHeadlineService : IInformHeadlineService
@@ -143,7 +143,7 @@
             return (result, criteria.TotalRows);
         }
 
-        public async Task<IEnumerable<NewInform>> GetNewInforms(GetNewInformParam param)
+        public async Task<(IEnumerable<NewInform>, string)> GetNewInforms(GetNewInformParam param)
         {
             var criteria = new GetNewInformsCriteria
             {
@@ -158,7 +158,7 @@
                 PageSize = param.PageSize
             };
             IEnumerable<NewInform> newInforms = await baseService.GetDataAsync<NewInform>(criteria);
-            return newInforms;
+            return (newInforms, criteria.Title);
         }
     }
 }

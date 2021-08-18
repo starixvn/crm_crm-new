@@ -367,6 +367,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NewInformHeadlines.
+        /// </summary>
+        public static string NewInformHeadlines {
+            get {
+                return ResourceManager.GetString("NewInformHeadlines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         public static string No {

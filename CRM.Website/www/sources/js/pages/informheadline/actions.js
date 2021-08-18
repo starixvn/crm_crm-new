@@ -147,6 +147,14 @@ const updateInformStatus = params => async () => {
     await DataService.postDataAsync(url, params).then(() => Site.unblockUI());
 };
 
+const exportNewInforms = params => async () => {
+    const url = Site.resolveClientUrl('InformHeadline/ExportNewInforms');
+    await DataService.getFileAsync(url, params).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
+        Site.downloadFile(response.data, fileName);
+    });
+};
+
 export const ActionCreators = {
     getInforms,
     exportInforms,
@@ -171,5 +179,6 @@ export const ActionCreators = {
     getNewInforms,
     setShowNewInforms,
     insertInforms,
-    updateInformStatus
+    updateInformStatus,
+    exportNewInforms
 };

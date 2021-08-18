@@ -282,4 +282,7 @@
   <data name="InformHeadlineCase" xml:space="preserve">
     <value>Inform Headlines Cases</value>
   </data>
+  <data name="NewInformHeadlines" xml:space="preserve">
+    <value>NewInformHeadlines</value>
+  </data>
 </root>

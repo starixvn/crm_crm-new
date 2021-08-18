@@ -23,13 +23,13 @@ export class DataGrid extends Component {
         };
     };
 
-    componentDidMount() {
-        document.addEventListener('click', () => {
-            this.setState({
-                showOption: 'none'
-            });
-        });
-    };
+    // componentDidMount() {
+    //     document.addEventListener('click', () => {
+    //         this.setState({
+    //             showOption: 'none'
+    //         });
+    //     });
+    // };
 
     buildHeader = () => {
         return(
@@ -261,7 +261,7 @@ export class DataGrid extends Component {
 
                 {
                     this.props.searchPolicy.hasAttribute('host') &&
-                    <Button variant="primary" size="sm" style={{width: '75px'}} onClick={this.handleNewInforms}>
+                    <Button variant="primary" size="sm" style={{width: '80px','marginTop': '10px'}} onClick={this.handleNewInforms}>
                         {LangHelper.getResource('NewCase')}
                     </Button>
                 }

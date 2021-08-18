@@ -60,8 +60,19 @@
     color: #ffb400;
 }
 
+.group-input-excel{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.input-excel{
+    width: 98%;
+}
+
 @media screen and (min-width: 1200px){
-    .modal-xl {
+    .modal-edit .modal-xl {
         max-width: 1200px;
     }
 }
