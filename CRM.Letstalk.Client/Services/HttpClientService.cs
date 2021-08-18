@@ -43,26 +43,28 @@
         {
             ValidateEndPoint(endPoint);
 
-            var request = CreateRequest(endPoint, method);
-
-            if (data != null)
+            using (var request = CreateRequest(endPoint, method))
             {
-                var encodedData = Encode(data);
-                var content = new StringContent(encodedData, Encoding.UTF8, "text/plain");
-                request.Content = content;
+                if (data != null)
+                {
+                    var encodedData = Encode(data);
+                    var content = new StringContent(encodedData, Encoding.UTF8, "text/plain");
+                    request.Content = content;
+                }
+                var client = clientFactory.CreateClient(HttpClientName.DefaultHttpClientWithProxy);
+                using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseData = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<T>(responseData);
+
+                        return result;
+                    }
+
+                    return default;
+                }
             }
-            var client = clientFactory.CreateClient(HttpClientName.DefaultHttpClientWithProxy);
-            var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var responseData = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<T>(responseData);
-
-                return result;
-            }
-
-            return default;
         }
 
         private HttpRequestMessage CreateRequest(string endPoint, HttpMethod method)
