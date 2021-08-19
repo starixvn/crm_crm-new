@@ -174,48 +174,40 @@
         public async Task<IActionResult> GetLogSettingByFeedbackId(int id)
         {
             var communicationLogs = await feedbackService.GetLogByFeedbackIdAsync(id);
-            var settings = await GetEditMultipleLogsSettingAsync(communicationLogs);
+            var settings = await GetEditMultipleLogsSettingAsync();
             //var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
             var hasReviewFeedbackPermission = true;
             return Json(new { communicationLogs, settings, hasReviewFeedbackPermission });
         }
 
-        private async Task<CreateFeedbackViewModel> GetEditMultipleLogsSettingAsync(CommunicationLog communicationLogs)
+        private async Task<CreateFeedbackViewModel> GetEditMultipleLogsSettingAsync()
         {
-            var communicationLogsSetting = communicationLogs.Settings;
-            var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);
-            var communicationTools = await settingService.GetCommunicationToolAsync(isIncludeNA: true);
-            var products = await settingService.GetProductAsync();
-            var subProducts = await settingService.GetSubProductAsync();
-            var betTypes = await settingService.GetBetTypeAsync();
-            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
-            var languages = await settingService.GetLanguageAsync(isIncludeNA: true);
-            var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
-            var countries = await settingService.GetCountryAsync(isIncludeNA: true);
+            var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-
+            var products = await settingService.GetProductAsync(SettingConstants.Active);
+            var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
+            var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
+            var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active);
             var settings = new CreateFeedbackViewModel
             {
-                Extensions = GetExtentions(extentions, communicationLogsSetting),
-                CommunicationTools = GetCommunicationTools(communicationTools, communicationLogsSetting),
-                Responses = responses.Where(x => x.Id == communicationLogs.ResponseId).ToList(),
-                Languages = languages.Where(x => x.IsActive || x.LanguageId == communicationLogs.LanguageId).ToList(),
-                Statuses = statuses.Where(x => (x.IsActive || x.StatusId == communicationLogs.StatusId)).ToList(),
-                Roles = roles.Where(x => x.IsActive || x.Id == communicationLogs.RoleId).ToList(),
-                Countries = countries.Where(x => x.IsActive || x.Id == communicationLogs.CountryId).ToList(),
-                Titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active),
-                LicenseeTypes = await settingService.GetLicenseeTypeAsync(),
+                Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
                 Sites = await settingService.GetAllSitesWithGroupAsync(),
-                MainCategories = await GetMainCategoryAsync(communicationLogsSetting),
-                SubCategories = await GetSubCategoryAsync(communicationLogsSetting),
-                Products = GetProducts(products, communicationLogsSetting),
-                SubProducts = GetSubProducts(subProducts, communicationLogsSetting),
-                Bettypes = GetBetTypes(betTypes, communicationLogsSetting),
-                ProductNA = products.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ProductNA),
-                SubProductNA = subProducts.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.SubProductNA),
-                BettypeNA = betTypes.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.BettypeNA),
-                ExtensionNA = extentions.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ExtentionNA),
-                CommunicationToolNA = communicationTools.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.CommunicationNA)
+                Roles = roles,
+                LicenseeTypes = await settingService.GetLicenseeTypeAsync(),
+                CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
+                Statuses = statuses,
+                Responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
+                Languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
+                Countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
+                MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
+                SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
+                Products = products.Where(x => x.Id != NAConstants.ProductNA),
+                SubProducts = subproducts.Where(x => x.Id != NAConstants.SubProductNA),
+                Bettypes = bettypes.Where(x => x.Id != NAConstants.BettypeNA),
+                ProductNA = products.FirstOrDefault(x => x.Id == NAConstants.ProductNA),
+                SubProductNA = subproducts.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
+                BettypeNA = bettypes.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
+                ExtensionNA = extentions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA)
             };
 
             return settings;
