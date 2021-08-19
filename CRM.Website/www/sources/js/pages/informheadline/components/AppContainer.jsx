@@ -9,6 +9,7 @@ import EditSearchInforms from './EditSearchInforms';
 import RemovedAccountLogs from './RemovedAccountLogs';
 import RemovedAccountLogDetails from './RemovedAccountLogDetails';
 import NewInforms from './NewInforms';
+import OptionsEdit from './OptionsEdit';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -27,48 +28,58 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getInforms();
-    }
+    };
 
     handleCloseShowEditContactInforms = () => {
         this.props.getInforms();
         this.props.setShowEditContactInform({show: false});
-    }
+    };
 
     handleCloseShowEditSearchInforms = () => {
         this.props.getInforms();
         this.props.setShowEditSearchInform({show: false});
-    }
+    };
 
     handleCloseShowRemovedLogs = () => {
         this.props.setShowRemovedLogs({show: false});
-    }
+    };
 
     handleCloseShowRemovedLogDetails = () => {
         this.props.setShowRemovedLogDetails({show: false});
-    }
+    };
 
     handleCloseShowNewInforms = () => {
         this.props.setShowNewInforms({show: false});
-    }
+    };
 
     render() {
-        const { searchPolicy, contactPolicy, showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms } = this.props;
+        const { searchPolicy, contactPolicy, showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms, showOptions } = this.props;
 
         return (
             <>
                 {
                     (!searchPolicy.hasAttribute('none') || !contactPolicy.hasAttribute('none')) &&
-                    <DataGrid
-                        contactPolicy={contactPolicy}
-                        searchPolicy={searchPolicy}
-                    />
+                    (
+                        <>
+                            <DataGrid
+                                contactPolicy={contactPolicy}
+                                searchPolicy={searchPolicy}
+                            />
+                            {
+                                showOptions.show &&
+                                <OptionsEdit
+                                    ref={this.wrapperRef}
+                                />
+                            }
+                        </>
+                        
+                    )
                 }
                 {
                     showEditContactInform.show &&
                     <EditContactInforms
                         titleId={showEditContactInform.titleId}
                         onClose={this.handleCloseShowEditContactInforms}
-                        selectedStatuses={showEditContactInform.selectedStatuses}
                     />
                 }
                 {
@@ -76,8 +87,6 @@ export class AppContainer extends Component {
                     <EditSearchInforms
                         titleId={showEditSearchInform.titleId}
                         onClose={this.handleCloseShowEditSearchInforms}
-                        includeCurrencies={showEditSearchInform.includeCurrencies}
-                        includeSites={showEditSearchInform.includeSites}
                     />
                 }
                 {
@@ -107,9 +116,9 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms } = state;
+        showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms, showOptions } = state;
     return {
-        showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms
+        showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms, showOptions
     };
 };
 

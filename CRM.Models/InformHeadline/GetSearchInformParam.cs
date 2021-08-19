@@ -15,5 +15,9 @@
         public byte IsVip { get; set; }
 
         public bool ExcludeIgnoredAccounts { get; set; }
+
+        public int PageIndex { get; set; }
+
+        public int PageSize { get; set; }
     }
 }

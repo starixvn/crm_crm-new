@@ -96,13 +96,13 @@ export class DataGridEdit extends PureComponent {
 
 
     render() {
-        const { gridParams, onPaging, handleSubmit, values, setFieldValue } = this.props;
+        const { gridParams, onPaging, handleSubmit, values, setFieldValue, totalItem } = this.props;
         const { pageIndex, pageSize } = gridParams;
 
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
-            TotalItem: 2200,
+            TotalItem: totalItem,
             PageList: PAGING_SIZES
         };
 
@@ -122,7 +122,7 @@ export class DataGridEdit extends PureComponent {
                 {
                     values ?
                     (
-                        <Button variant="primary" size="sm" style={{width: '65px'}} 
+                        <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}} 
                             type="submit"
                             onClick={() => {
                                 setFieldValue('submit',true);
@@ -133,7 +133,7 @@ export class DataGridEdit extends PureComponent {
                         </Button>
                     ) :
                     (
-                        <Button variant="primary" size="sm" style={{width: '65px'}} 
+                        <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}} 
                             onClick={handleSubmit}
                         >
                             {LangHelper.getResource('Save')}

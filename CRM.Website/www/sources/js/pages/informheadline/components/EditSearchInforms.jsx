@@ -17,11 +17,55 @@ export class EditSearchInforms extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            includeCurrencies: '',
+            includeSites: '',
+            filterData: null,
             informs: [],
-            saveResult: null
+            saveResult: null,
+            totalSearchInform: 0
         };
+    };
 
-        this.filterData = this.initFormData();
+    async componentDidMount() {
+        await this.props.getTitleDetail({
+            titleId: this.props.titleId
+        });
+        await this.props.getAllSettings();
+
+        const { titleDetail, allSettings } = this.props;
+        const includeCurrencies = this.getIncludeInSetting(titleDetail.currencies, allSettings.currencies);
+        const includeSites = this.getIncludeInSetting(titleDetail.sites, allSettings.sites[0].childSites);      
+        await this.props.getSearchInforms({
+            titleId: this.props.titleId,
+            typeAccount: titleDetail.typeAccount,
+            currencies: includeCurrencies,
+            levels: titleDetail.positions,
+            sites: includeSites,
+            isVip: titleDetail.isVip,
+            excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts,
+            pageIndex: 1,
+            pageSize: 10000
+        });
+
+        this.props.setGridParams({
+            pageIndex: 1,
+            pageSize: 100
+        });
+        this.setState({
+            totalSearchInform: this.props.searchInforms.length,
+            includeCurrencies: includeCurrencies,
+            includeSites: includeSites,
+            filterData: this.initFormData(includeCurrencies,includeSites)
+        })
+    };
+
+    getIncludeInSetting = (detail, setting) => {
+        const includes = [];
+        setting.map(item => {
+            if(detail.split(",").includes(item.id.toString()))
+                includes.push(item.id);
+        });
+        return includes.join(",");
     };
 
     renderFilterForm = ({
@@ -100,6 +144,7 @@ export class EditSearchInforms extends Component {
                     <DataGridEdit
                         Informs={searchInforms}
                         InformSettings={allSettings}
+                        totalItem={this.state.totalSearchInform}
                         gridParams={gridParams}
                         onPaging={this.onPaging}
                         onChange={this.handleChangeDataGrid}
@@ -113,9 +158,8 @@ export class EditSearchInforms extends Component {
         );
     };
 
-    initFormData = () => {
+    initFormData = (includeCurrencies,includeSites) => {
         const { title, positions, isVip, excludeIgnoredAccounts, typeAccount } = this.props.titleDetail;
-        const { includeCurrencies, includeSites } = this.props;
         return {
             title: title,
             currencyId: includeCurrencies,
@@ -164,7 +208,7 @@ export class EditSearchInforms extends Component {
     };
 
     getChangeFilter = (values) => {
-        const initData = this.filterData;
+        const initData = this.state.filterData;
         if(values.currencyId !== initData.currencyId 
             || values.levelId !== initData.levelId
             || values.siteId !== initData.siteId
@@ -205,16 +249,27 @@ export class EditSearchInforms extends Component {
                 levels: values.levelId,
                 sites: values.siteId,
                 isVip: parseInt(values.vipId),
-                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts
+                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
+                pageIndex: 1,
+                pageSize: 10000
             };
 
-            this.props.getSearchInforms(params);
+            await this.props.getSearchInforms(params);
+            this.setState({
+                totalSearchInform: this.props.searchInforms.length
+            });
         };
 
         if(values.submit){
             this.getTypeAccount(values);
             const result = this.props.searchInforms.map(element => this.state.informs.find(item => item.headlineId === element.headlineId) || element);
 
+            const resultInforms = result.map(item => {
+                if(item.remark){
+                    return {...item, remark: this.htmlDecode(item.remark)}
+                };
+                return item;
+            });
             const params = {
                 titleId: this.props.titleId,
                 title: values.title,
@@ -225,7 +280,7 @@ export class EditSearchInforms extends Component {
                 isVip: values.vipId,
                 typeAccount: values.typeAccount,
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,               
-                informs: result
+                informs: resultInforms
             }
             await this.props.updateSearchInforms(params);            
             this.setAlert();
@@ -234,10 +289,21 @@ export class EditSearchInforms extends Component {
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
+        const { titleDetail } = this.props;
         params['pageSize'] = pageSize;
         params['pageIndex'] = pageIndex;
         this.props.setGridParams(params);
-
+        this.props.getSearchInforms({
+            titleId: this.props.titleId,
+            typeAccount: titleDetail.typeAccount,
+            currencies: this.state.includeCurrencies,
+            levels: titleDetail.positions,
+            sites: this.state.includeSites,
+            isVip: titleDetail.isVip,
+            excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts,
+            pageIndex: pageIndex,
+            pageSize: pageSize
+        });
     };
 
     htmlDecode = value => {
@@ -252,9 +318,7 @@ export class EditSearchInforms extends Component {
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;
         var value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
-        if(name === 'remark'){
-            value = this.htmlDecode(value);
-        };
+
         const item = {...this.props.searchInforms.find(element => element.headlineId === headlineId), [name]: value};
 
         this.setState(prevState =>{
@@ -280,7 +344,9 @@ export class EditSearchInforms extends Component {
             levels: values.levelId,
             sites: values.siteId,
             isVip: parseInt(values.vipId),
-            excludeIgnoredAccounts: values.isExcludeIgnoredAccounts
+            excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
+            pageIndex: 1,
+            pageSize: 10000
         };
         this.props.exportSearchInforms(params);
     };
@@ -302,7 +368,7 @@ export class EditSearchInforms extends Component {
 
     render() {
         const {titleDetail, allSettings, searchInforms} = this.props;
-        if(!titleDetail || !allSettings || !searchInforms){
+        if(!titleDetail || !allSettings || !searchInforms || !this.state.filterData){
             return null;
         };
 
@@ -320,7 +386,7 @@ export class EditSearchInforms extends Component {
                     <Modal.Body>
                         <Formik
                             //innerRef={el => this.formik = el}
-                            initialValues={this.filterData}
+                            initialValues={this.state.filterData}
                             validate={this.validateFormik}
                             onSubmit={this.handleSubmit}
                         >

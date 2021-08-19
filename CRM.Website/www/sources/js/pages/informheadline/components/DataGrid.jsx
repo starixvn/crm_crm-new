@@ -7,29 +7,9 @@ import { Button } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
-import OptionsEdit from '@jsroot/components/OptionsEdit';
+import OptionsEdit from './OptionsEdit';
 
 export class DataGrid extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showOption: 'none',
-            status: '',
-            position:{
-                top: 0,
-                left: 0
-            },
-            titleIdSearch: null
-        };
-    };
-
-    // componentDidMount() {
-    //     document.addEventListener('click', () => {
-    //         this.setState({
-    //             showOption: 'none'
-    //         });
-    //     });
-    // };
 
     buildHeader = () => {
         return(
@@ -64,103 +44,17 @@ export class DataGrid extends Component {
     };
 
     handleEditContact = async titleId => {
-        await this.props.getTitleDetail({
-            titleId: titleId
-        });
-
-        await this.props.getContactInformSettings();
-        const selectedStatuses = this.props.contactInformSettings.filterStatuses.map(item => {
-            return item.settingId;
-        }).join();
-
-
-        this.props.getContactInforms({
-            titleId: titleId,
-            username: '',
-            statusId: selectedStatuses,
-            pageIndex: 1,
-            pageSize: 2200
-        });
-
-        this.props.setGridParams({
-            pageIndex: 1,
-            pageSize: 100
-        });
-        this.props.setShowEditContactInform({show: true, titleId: titleId, selectedStatuses: selectedStatuses});
-    };
-
-    getIncludeInSetting = (detail, setting) => {
-        const includes = [];
-        setting.map(item => {
-            if(detail.split(",").includes(item.id.toString()))
-                includes.push(item.id);
-        });
-        return includes.join(",");
-    };
-
-    handleEditSearch = async titleId => {
-        await this.props.getTitleDetail({
-            titleId: titleId
-        });
-        await this.props.getAllSettings();
-
-        const { titleDetail, allSettings } = this.props;
-        const includeCurrencies = this.getIncludeInSetting(titleDetail.currencies, allSettings.currencies);
-        const includeSites = this.getIncludeInSetting(titleDetail.sites, allSettings.sites[0].childSites);
-        
-        this.props.getSearchInforms({
-            titleId: titleId,
-            typeAccount: titleDetail.typeAccount,
-            currencies: includeCurrencies,
-            levels: titleDetail.positions,
-            sites: includeSites,
-            isVip: titleDetail.isVip,
-            excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts
-        });
-
-        this.props.setShowEditSearchInform({show: true, titleId: titleId, includeCurrencies: includeCurrencies, includeSites: includeSites});
-    };
-
-    handleRemovedAccountLogs = titleId => {
-        const params = {
-            titleId: titleId,
-            pageIndex: 1,
-            pageSize: 100
-        };
-        
-        this.props.setGridParamRemovedLogs(params);
-        this.props.getRemovedAccountLogs(params);
-        this.props.setShowRemovedLogs({show: true});
-    };
-
-    handleCloseCase = titleId => {
-        const params = {
-            titleId: titleId,
-            statusType: true
-        }
-        this.props.updateInformStatus(params);
-        this.props.getInforms();
-    };
-
-    handleOpenCase = titleId => {
-        const params = {
-            titleId: titleId,
-            statusType: false
-        }
-        this.props.updateInformStatus(params);
-        this.props.getInforms();
+        this.props.setShowEditContactInform({show: true, titleId: titleId});
     };
 
     getPositionEdit = (event, titleId, status) => {
         var position = event.target.getClientRects()[0];
-
-        this.setState({
+        this.props.setShowOptions({
+            show: true,
             showOption: 'block',
             status: status,
-            position:{
-                top: position.top,
-                left: position.left
-            },
+            top: position.top,
+            left: position.left,
             titleIdSearch: titleId
         });
     };
@@ -230,19 +124,6 @@ export class DataGrid extends Component {
 
         return (
             <>
-                {
-                    <OptionsEdit
-                        showOption={this.state.showOption}
-                        status={this.state.status}
-                        top={this.state.position.top}
-                        left={this.state.position.left}
-                        titleIdSearch={this.state.titleIdSearch}
-                        handleEditSearch={this.handleEditSearch}
-                        handleRemovedAccountLogs={this.handleRemovedAccountLogs}
-                        handleCloseCase={this.handleCloseCase}
-                        handleOpenCase={this.handleOpenCase}
-                    />
-                }
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>Inform Headlines Cases</span>
                     {
@@ -273,8 +154,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridData, titleDetail, contactInformSettings, contactInforms, allSettings } = state;
-    return { gridData, titleDetail, contactInformSettings, contactInforms, allSettings };
+    const { gridData } = state;
+    return { gridData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

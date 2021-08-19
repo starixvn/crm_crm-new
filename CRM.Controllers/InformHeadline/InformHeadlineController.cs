@@ -17,6 +17,7 @@
     using CRM.Core.Models;
     using CRM.Criteria.InformHeadline;
     using CRM.Core.Services;
+    using System.Linq;
 
     [CrmPermission(FunctionKey = FunctionKey.InformHeadline, Policy = Policy.Read)]
     public class InformHeadlineController : BaseController
@@ -140,6 +141,12 @@
         public async Task<IActionResult> GetSearchInforms([FromBody] GetSearchInformParam param)
         {
             IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInforms(param);
+            
+            int totalItems = searchInforms.Count();
+            if (totalItems > 0)
+            {
+                searchInforms = searchInforms.Skip(param.PageSize * (param.PageIndex - 1)).Take(param.PageSize).ToList();
+            }
             return Json(searchInforms);
         }
 

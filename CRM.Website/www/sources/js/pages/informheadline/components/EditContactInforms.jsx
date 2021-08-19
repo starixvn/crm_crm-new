@@ -16,10 +16,36 @@ export class EditContactInforms extends Component {
         super(props);
         this.state = {
             username:'',
-            selectedStatusId: this.props.selectedStatuses,
+            selectedStatusId: '',
             informs: [],
             saveResult: null,
+            totalContactInform: 0
         };
+    };
+
+    async componentDidMount() {
+        await this.props.getTitleDetail({
+            titleId: this.props.titleId
+        });
+        await this.props.getContactInformSettings();
+        const selectedStatuses = this.props.contactInformSettings.filterStatuses.map(item => {
+            return item.settingId;
+        }).join();
+        await this.props.getContactInforms({
+            titleId: this.props.titleId,
+            username: '',
+            statusId: selectedStatuses,
+            pageIndex: 1,
+            pageSize: 10000
+        });
+        this.props.setGridParams({
+            pageIndex: 1,
+            pageSize: 100
+        });
+        this.setState({
+            totalContactInform: this.props.contactInforms.length,
+            selectedStatusId : selectedStatuses
+        });
     };
 
     handleChangeStatus = (selectedItemsKey) => {
@@ -35,17 +61,20 @@ export class EditContactInforms extends Component {
         });
     };
 
-    handleSearch = () => {
+    handleSearch = async () => {
         this.props.setGridParams({
             pageIndex: 1,
             pageSize: 100
         });
-        this.props.getContactInforms({
+        await this.props.getContactInforms({
             titleId: this.props.titleId,
             username: this.state.username,
             statusId: this.state.selectedStatusId,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: 10000
+        });
+        this.setState({
+            totalContactInform: this.props.contactInforms.length
         });
     };
 
@@ -75,9 +104,15 @@ export class EditContactInforms extends Component {
     };
 
     handleSubmit = async () => {
+        const informs = this.state.informs.map(item => {
+            if(item.remark){
+                return {...item, remark: this.htmlDecode(item.remark)}
+            };
+            return item;
+        });
         await this.props.updateContactInforms({
             titleId: this.props.titleId,
-            informs: this.state.informs
+            informs: informs
         });
         this.setAlert();
     };
@@ -94,9 +129,7 @@ export class EditContactInforms extends Component {
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;
         var value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
-        if(name === 'remark'){
-            value = this.htmlDecode(value);
-        };
+
         const item = {...this.props.contactInforms.find(element => element.headlineId === headlineId), [name]: value};
 
         this.setState(prevState =>{
@@ -119,7 +152,7 @@ export class EditContactInforms extends Component {
             username: this.state.username,
             statusId: this.state.selectedStatusId,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: 10000
         };
         this.props.exportContactInforms(params);
     };
@@ -171,12 +204,11 @@ export class EditContactInforms extends Component {
                         Informs={contactInforms}
                         InformSettings={contactInformSettings}
                         gridParams={gridParams}
+                        totalItem={this.state.totalContactInform}
                         onPaging={this.onPaging}
                         onChange={this.handleChangeDataGrid}
                         handleSubmit={this.handleSubmit}
                     />
-
-
                 </Modal.Body>
             </>
         );
@@ -186,7 +218,7 @@ export class EditContactInforms extends Component {
         const {titleDetail, contactInformSettings, contactInforms} = this.props;
         if(!titleDetail || !contactInformSettings || !contactInforms){
             return null;
-        }
+        };
 
         return (    
             <>

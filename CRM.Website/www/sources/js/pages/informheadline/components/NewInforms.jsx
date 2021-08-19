@@ -18,7 +18,8 @@ export class NewInforms extends Component {
         super(props);
         this.state = {
             informs: [],
-            saveResult: null
+            saveResult: null,
+            totalNewItem: 0
         };
 
         this.filterData = this.initFormData();
@@ -103,6 +104,7 @@ export class NewInforms extends Component {
                         <DataGridEdit
                             Informs={newInforms}
                             InformSettings={allSettings}
+                            totalItem={this.state.totalNewItem}
                             gridParams={gridParams}
                             onPaging={this.onPaging}
                             onChange={this.handleChangeDataGrid}
@@ -191,11 +193,18 @@ export class NewInforms extends Component {
                 sites: values.siteId,
                 isVip: parseInt(values.vipId),
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
-                pageIndex: this.props.gridParams.pageIndex,
-                pageSize: this.props.gridParams.pageSize
+                pageIndex: 1,
+                pageSize: 10000
             };
-            this.props.setGridParams(params);
-            this.props.getNewInforms(params);
+            const paramGrid = {...params};
+            paramGrid['pageIndex'] = 1;
+            paramGrid['pageSize'] = 100;
+            
+            this.props.setGridParams(paramGrid);
+            await this.props.getNewInforms(params);
+            this.setState({
+                totalNewItem: this.props.newInforms.length
+            });
         };
 
         if(values.submit){
@@ -228,8 +237,8 @@ export class NewInforms extends Component {
             sites: values.siteId,
             isVip: parseInt(values.vipId),
             excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
-            pageIndex: this.props.gridParams.pageIndex,
-            pageSize: this.props.gridParams.pageSize
+            pageIndex: 1,
+            pageSize: 10000
         };
         this.props.exportNewInforms(params);
     };

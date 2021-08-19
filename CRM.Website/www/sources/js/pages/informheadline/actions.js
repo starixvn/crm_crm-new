@@ -20,7 +20,8 @@ import{
     setGridParamRemovedLogDetails,
     setNewInforms,
     setShowNewInforms,
-    setInsertInforms
+    setInsertInforms,
+    setShowOptions
 } from './informHeadlineSlice';
 
 const getInforms = () => async dispatch => {
@@ -48,17 +49,19 @@ const getTitleDetail = params => async dispatch => {
 };
 
 const getContactInformSettings = () => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/GetContactInformSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setContactInformSettings(response.data));
-    });
+    }).then(() => Site.unblockUI());
 };
 
 const getContactInforms = params => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/GetContactInforms');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setContactInforms(response.data));
-    });
+    }).then(() => Site.unblockUI());
 }
 
 const updateContactInforms = params => async dispatch => {
@@ -180,5 +183,6 @@ export const ActionCreators = {
     setShowNewInforms,
     insertInforms,
     updateInformStatus,
-    exportNewInforms
+    exportNewInforms,
+    setShowOptions
 };
