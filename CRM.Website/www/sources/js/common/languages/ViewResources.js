@@ -34,6 +34,8 @@
     ComfirmResendNotification: 'Are you sure you want to resend selected Notification{0}: {1}?',
     ConfirmAddGuestFeedback: 'Are you sure you want to Add or Update the Feedback/Log?',
     ConfirmAddGuestFeedbackSpecialChar: 'Content will be saved without special characters such as <, >, &, #',
+    ConfirmEditMultipleLogsContent: 'These changes will be applied to all selected feedbacks. Are you sure you want to save these changes?',
+    ConfirmMultipleUpdates: 'Confirm Multiple Updates',
     Communication: 'Communication ',
     CommunicationMustHaveValue: 'Communication must have value!',
     CommunicationRequired: 'Communication tool is required!',

@@ -37,7 +37,7 @@ export default class EditMultipleReviewAndStatus extends Component {
 
     async componentDidMount() {
         const id = this.props.feedbackIds[0];
-        const url = Site.resolveClientUrl(`Feedback/GetLogByFeedbackId/${id}`);
+        const url = Site.resolveClientUrl(`MultipleLogs/GetLogByFeedbackId/${id}`);
         await DataService.getDataAsync(url).then(response => {
             this.setState({ logInfo: response.data, isReviewed: response.data.isReviewed});
         });
@@ -52,7 +52,7 @@ export default class EditMultipleReviewAndStatus extends Component {
             isReviewed: this.state.isReviewed
         };
 
-        const url = Site.resolveClientUrl('Feedback/EditMultipleLogStatuses');
+        const url = Site.resolveClientUrl('MultipleLogs/EditMultipleLogStatuses');
         await DataService.postDataAsync(url, params).then(response => {
             this.setState({ editResult: response.data });
 
