@@ -197,7 +197,7 @@
 
             var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
                 resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
-                voidingMessageInfo.Item2, voidingMessageInfo.Item3, resultAmendmentInfo.Item2, Environment
+                voidingMessageInfo.Item2, voidingMessageInfo.Item3, Environment, resultAmendmentInfo.Item2
                 );
 
             if (commandResult.IsSuccessful)
