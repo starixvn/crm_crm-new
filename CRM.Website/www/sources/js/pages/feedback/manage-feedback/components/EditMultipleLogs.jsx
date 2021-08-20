@@ -832,7 +832,7 @@ export class EditMultipleLogs extends Component {
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const params = {
-            listFeedbackId: values.usernames,
+            listFeedbackId: this.state.feedbackArr.map(x=>x.feedbackId).join(' ,'),
             countryId: values.countryId,
             isUpdateCountryId: values.isCheck.country,
             siteId: values.siteInfo.id,

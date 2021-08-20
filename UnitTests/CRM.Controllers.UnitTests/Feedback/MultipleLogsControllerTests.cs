@@ -13,8 +13,11 @@
     using CRM.Models.Feedback.MultipleLogs;
     using CRM.Models.Setting;
     using CRM.Services;
+    using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -24,8 +27,11 @@
     {
         private readonly IFixture fixture = new Fixture();
         private INapSession napSession;
+        private INapSettings napSettings;
+        private IUserService userService;
         private IBaseService baseService;
         private ISettingService settingService;
+        private IFeedbackService feedbackService;
 
         [Fact]
         public void Create_Get_WhenCalled_ReturnAsExpectedResult()
@@ -214,9 +220,12 @@
         private MultipleLogsController GetController()
         {
             napSession = Substitute.For<INapSession>();
+            napSettings = Substitute.For<INapSettings>(); 
+            userService = Substitute.For<IUserService>();
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
-            return new MultipleLogsController(napSession, baseService, settingService);
+            feedbackService = Substitute.For<IFeedbackService>();
+            return new MultipleLogsController(napSession, napSettings, userService, baseService, settingService, feedbackService);
         }
 
         #endregion Helpers

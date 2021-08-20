@@ -22,8 +22,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
-    public class MultipleLogsController : Controller
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+    public class MultipleLogsController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
@@ -59,7 +59,7 @@
         {
             command.CreatorId = napSession.UserId;
             command.UserId = napSession.UserId;
-            //command.IP = ClientIP;
+            command.IP = ClientIP;
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }
@@ -102,17 +102,17 @@
         [HttpPost]
         public async Task<ActionResult> EditMultipleLogStatuses([FromBody] EditMultipleLogStatusCommand command)
         {
-            //CommandResult commandResult = CheckEditMultipleLogPermission();
-            //if (commandResult.IsSuccessful)
-            //{
-            command.ReviewerId = string.IsNullOrEmpty(command.ReviewNote) ? 0 : napSession.UserId;
+            CommandResult commandResult = CheckEditMultipleLogPermission();
+            if (commandResult.IsSuccessful)
+            {
+                command.ReviewerId = string.IsNullOrEmpty(command.ReviewNote) ? 0 : napSession.UserId;
             command.UserId = napSession.UserId;
-            //command.IP = ClientIP;
+            command.IP = ClientIP;
             command.IP = "ClientIP";
             var result = await feedbackService.EditMultipleLogStatusesAsync(command);
             return Json(result);
-            //}
-            //return Json(commandResult);
+            }
+            return Json(commandResult);
         }
 
         private CommandResult CheckEditMultipleLogPermission()
@@ -152,27 +152,20 @@
             settings.Roles = roles;
             settings.LicenseeTypes = licenseeTypes;
 
-            //var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
-            var hasReviewFeedbackPermission = true;
+            var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
             return Json(new { communicationLogs, settings, hasReviewFeedbackPermission });
         }
 
         [HttpPost]
         public async Task<ActionResult> EditMultipleLogs([FromBody] EditMultipleLogsCommand command)
         {
-            try
-            {
-                command.ReviewerId = !command.IsReviewed ? 0 : napSession.UserId;
-                command.UserId = napSession.UserId;
-                //command.IP = ClientIP;
-                command.IP = "ClientIP";
-                CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
-                return Json(commandResult);
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            command.ReviewerId = !command.IsReviewed ? 0 : napSession.UserId;
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            command.IP = "ClientIP";
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+            
         }
 
         private async Task<CreateFeedbackViewModel> GetAllSettingAsync()

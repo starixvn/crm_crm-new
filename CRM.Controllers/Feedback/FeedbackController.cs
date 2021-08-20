@@ -22,7 +22,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    public class FeedbackController : Controller
+    public class FeedbackController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
@@ -44,7 +44,7 @@
             this.feedbackService = feedbackService;
         }
 
-        //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> GetNoOfInquiryByFeedbackId(int id)
         {
             EditNoOfInquiry feedback = await feedbackService.GetNoOfInquiryByFeedbackIdAsync(id);
@@ -52,11 +52,11 @@
         }
 
         [HttpPost]
-        //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> EditNoOfInquiry([FromBody] EditNoOfInquiryCommand command)
         {
             command.UserId = napSession.UserId;
-            //command.IP = ClientIP;
+            command.IP = ClientIP;
             CommandResult commandResult = await feedbackService.EditNoOfInquiryAsync(command);
             return Json(commandResult);
         }
@@ -65,8 +65,7 @@
         {
             CustomerFeedback feedback = await feedbackService.GetCustomerFeedbackByIdAsync(id);
             var settings = await GetEditCustomerFeedbackSettingAsync(feedback, isDeletedFeedbackView);
-            //var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
-            var hasReviewFeedbackPermission = true;
+            var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
             return Json(new { feedback, settings, hasReviewFeedbackPermission });
         }
 
@@ -77,7 +76,7 @@
             if (commandResult.IsSuccessful)
             {
                 command.UserId = napSession.UserId;
-               // command.IP = ClientIP;
+                command.IP = ClientIP;
                 if (command.IsReviewed)
                 {
                     command.ReviewerId = napSession.UserId;
