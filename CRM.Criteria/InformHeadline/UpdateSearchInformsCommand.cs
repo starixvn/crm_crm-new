@@ -9,7 +9,7 @@
 
     public class UpdateSearchInformsCommand : BaseNonQueryCommand
     {
-        public string TitleId { get; set; }
+        public int TitleId { get; set; }
 
         public string Title { get; set; }
 

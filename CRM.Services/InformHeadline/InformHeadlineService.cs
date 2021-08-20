@@ -4,8 +4,6 @@
     using CRM.Criteria.InformHeadline;
     using CRM.Models.InformHeadline;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Web;
 
@@ -13,28 +11,25 @@
     {
         Task<IEnumerable<InformHeadlineModel>> GetInformAsync();
         Task<InformTitleDetail> GetTitleDetailAsync(GetTitleDetailParam param);
-        Task<IEnumerable<InformStatus>> GetInformStatuses(bool isIncludeKeptForRefence = false);
-        Task<IEnumerable<UpdateInform>> GetContactInforms(GetContactInformParam param);
-        Task<IEnumerable<UpdateInform>> GetSearchInforms(GetSearchInformParam param);
+        Task<IEnumerable<InformStatus>> GetInformStatusesAsync(bool isIncludeKeptForRefence = false);
+        Task<IEnumerable<UpdateInform>> GetContactInformsAsync(GetContactInformParam param);
+        Task<IEnumerable<UpdateInform>> GetSearchInformsAsync(GetSearchInformParam param);
         Task<(IEnumerable<RemovedAccountLog>, int)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param);
         Task<(IEnumerable<RemovedAccountLogDetail>, int)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param);
-        Task<(IEnumerable<NewInform>, string)> GetNewInforms(GetNewInformParam param);
+        Task<(IEnumerable<NewInform>, string)> GetNewInformsAsync(GetNewInformParam param);
     }
 
     public class InformHeadlineService : IInformHeadlineService
     {
         private readonly IBaseService baseService;
-        private readonly ISettingService settingService;
         private readonly ICommonService commonService;
 
         public InformHeadlineService(
             IBaseService baseService,
-            ISettingService settingService,
             ICommonService commonService
         )
         {
             this.baseService = baseService;
-            this.settingService = settingService;
             this.commonService = commonService;        
         }
 
@@ -59,7 +54,7 @@
             return await baseService.GetDataEntityAsync<InformTitleDetail>(criteria);
         }
 
-        public async Task<IEnumerable<InformStatus>> GetInformStatuses(bool isIncludeKeptForRefence = false)
+        public async Task<IEnumerable<InformStatus>> GetInformStatusesAsync(bool isIncludeKeptForRefence = false)
         {
             var criteria = new GetInformStatusesCriteria
             {
@@ -68,7 +63,7 @@
             return await baseService.GetDataAsync<InformStatus>(criteria);
         }
 
-        public async Task<IEnumerable<UpdateInform>> GetContactInforms(GetContactInformParam param)
+        public async Task<IEnumerable<UpdateInform>> GetContactInformsAsync(GetContactInformParam param)
         {
             var criteria = new GetContactInformsCriteria
             {
@@ -87,7 +82,7 @@
             return contactInforms;
         }
 
-        public async Task<IEnumerable<UpdateInform>> GetSearchInforms(GetSearchInformParam param)
+        public async Task<IEnumerable<UpdateInform>> GetSearchInformsAsync(GetSearchInformParam param)
         {
             var criteria = new GetSearchInformsCriteria
             {
@@ -143,7 +138,7 @@
             return (result, criteria.TotalRows);
         }
 
-        public async Task<(IEnumerable<NewInform>, string)> GetNewInforms(GetNewInformParam param)
+        public async Task<(IEnumerable<NewInform>, string)> GetNewInformsAsync(GetNewInformParam param)
         {
             var criteria = new GetNewInformsCriteria
             {

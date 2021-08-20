@@ -85,10 +85,10 @@
         {
             var contactInformSettings = new
             {
-                filterStatuses = await informHeadlineService.GetInformStatuses(true),
+                filterStatuses = await informHeadlineService.GetInformStatusesAsync(true),
                 productStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline),
                 stations = await settingService.GetStations(),
-                statuses = await informHeadlineService.GetInformStatuses()
+                statuses = await informHeadlineService.GetInformStatusesAsync()
             };
             return Json(contactInformSettings);
         }
@@ -96,7 +96,7 @@
         [HttpPost]
         public async Task<IActionResult> GetContactInforms([FromBody] GetContactInformParam param)
         {
-            IEnumerable<UpdateInform> contactInforms = await informHeadlineService.GetContactInforms(param);
+            IEnumerable<UpdateInform> contactInforms = await informHeadlineService.GetContactInformsAsync(param);
             return Json(contactInforms);
         }
 
@@ -114,7 +114,7 @@
         [CrmPermission(FunctionKey = FunctionKey.InformHeadlineContact, Policy = Policy.Host)]
         public async Task<IActionResult> ExportContactInforms([FromBody] GetContactInformParam param)
         {
-            IEnumerable<UpdateInform> contactInforms = await informHeadlineService.GetContactInforms(param);
+            IEnumerable<UpdateInform> contactInforms = await informHeadlineService.GetContactInformsAsync(param);
             InformTitleDetail titles = await baseService.GetDataEntityAsync<InformTitleDetail>(new GetInformTitleDetailCriteria
             {
                 TitleId = param.TitleId
@@ -132,7 +132,7 @@
                 productStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline),
                 sites = await settingService.GetAllSitesWithGroupAsync(),
                 stations = await settingService.GetStations(),
-                statuses = await informHeadlineService.GetInformStatuses()
+                statuses = await informHeadlineService.GetInformStatusesAsync()
             };
             return Json(allSettings);
         }
@@ -140,7 +140,7 @@
         [HttpPost]
         public async Task<IActionResult> GetSearchInforms([FromBody] GetSearchInformParam param)
         {
-            IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInforms(param);
+            IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInformsAsync(param);
             
             int totalItems = searchInforms.Count();
             if (totalItems > 0)
@@ -165,7 +165,7 @@
         [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
         public async Task<IActionResult> ExportSearchInforms([FromBody] GetSearchInformParam param)
         {
-            IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInforms(param);
+            IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInformsAsync(param);
             InformTitleDetail titles = await baseService.GetDataEntityAsync<InformTitleDetail>(new GetInformTitleDetailCriteria
             {
                 TitleId = param.TitleId
@@ -192,7 +192,7 @@
         [HttpPost]
         public async Task<IActionResult> GetNewInforms([FromBody] GetNewInformParam param)
         {
-            var newInforms = await informHeadlineService.GetNewInforms(param);
+            var newInforms = await informHeadlineService.GetNewInformsAsync(param);
             return Json(newInforms.Item1);
         }
 
@@ -228,7 +228,7 @@
         [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
         public async Task<IActionResult> ExportNewInforms([FromBody] GetNewInformParam param)
         {
-            var newInforms = await informHeadlineService.GetNewInforms(param);
+            var newInforms = await informHeadlineService.GetNewInformsAsync(param);
             var bytes = excelService.ExportNewInformHeadline(newInforms.Item1, informHeadlineService, newInforms.Item2);
             string reportName = ViewResources.NewInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");

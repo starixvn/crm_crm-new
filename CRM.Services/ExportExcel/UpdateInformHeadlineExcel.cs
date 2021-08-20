@@ -56,12 +56,12 @@
             int index = 1;
             foreach (var updateInform in updateInforms)
             {
-                RenderRowAsync(worksheet, updateInform, index, rowIndex++);
+                RenderRow(worksheet, updateInform, index, rowIndex++);
                 index++;
             }
         }
 
-        protected internal virtual void RenderRowAsync(ExcelWorksheet worksheet, UpdateInform updateInform, int index, int rowIndex)
+        protected internal virtual void RenderRow(ExcelWorksheet worksheet, UpdateInform updateInform, int index, int rowIndex)
         {
             var colIndex = 1;
             worksheet.Cells[rowIndex, colIndex++].Value = updateInform.Username;
@@ -143,7 +143,7 @@
 
         private string GetInformStatusNameAsync(int id)
         {
-            var informStatuses = informHeadlineService.GetInformStatuses().Result;
+            var informStatuses = informHeadlineService.GetInformStatusesAsync().Result;
             var item = informStatuses.FirstOrDefault(x => x.SettingId == id);
             return item == null ? string.Empty : item.SettingValue;
         }

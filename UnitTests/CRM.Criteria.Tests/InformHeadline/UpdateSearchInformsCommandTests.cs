@@ -1,0 +1,49 @@
+﻿namespace CRM.Criteria.Tests.InformHeadline
+{
+    using CRM.Criteria.InformHeadline;
+    using Xunit;
+
+    public class UpdateSearchInformsCommandTests
+    {
+        [Fact]
+        public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
+        {
+            // Arrange
+            var criteria = new UpdateSearchInformsCommand();
+            var expected = "Acc_CRM_InformHeadlineSearchUpd";
+
+            // Act
+            var actual = criteria.GetSettingKey();
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void IsValid_ParamIsValid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new UpdateSearchInformsCommand()
+            {
+                TitleId = 10,
+                Title = "test",
+                ChangeFilter = true,
+                TypeAccount = 3,
+                Currencies = "1,2,3",
+                Levels = "1,2",
+                Sites = "1,2,30",
+                ExcludeIgnoredAccounts = true,
+                IsVip = 2,
+                UserId = 8,
+                IP = "1.0.0.0",
+                Informs = null
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
+        }
+    }
+}

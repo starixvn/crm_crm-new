@@ -117,7 +117,7 @@
 
         private string GetInformStatusNameAsync(int id)
         {
-            var informStatuses = informHeadlineService.GetInformStatuses().Result;
+            var informStatuses = informHeadlineService.GetInformStatusesAsync().Result;
             var item = informStatuses.FirstOrDefault(x => x.SettingId == id);
             return item == null ? string.Empty : item.SettingValue;
         }
