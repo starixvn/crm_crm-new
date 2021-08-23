@@ -246,7 +246,7 @@ export class EditMultipleLogs extends Component {
     });
 
     handleCheckAll = (checks, setFieldValue, event) => {
-        for (const [key, value] of Object.entries(checks)) {
+        for (const [key] of Object.entries(checks)) {
             setFieldValue(`isCheck.${key}`, event.target.checked);
         }
     };
@@ -380,7 +380,7 @@ export class EditMultipleLogs extends Component {
         } = this.state;
 
         const { responses, languages, statuses, roles, countries, licenseeTypes } = settings;
-
+        const disabled = 'disabled-filed';
         return (
             <Fragment>
                 <div className="panel-group border-bottom-0">
@@ -404,7 +404,7 @@ export class EditMultipleLogs extends Component {
                                 </Form.Label>
                                 <input className="ml-2" type='checkbox'
                                     name='isCheck.checkAll'
-                                    onChange={(event) => this.handleCheckAll(values.isCheck, setFieldValue, event)}
+                                    onChange={event => this.handleCheckAll(values.isCheck, setFieldValue, event)}
                                     checked={values.isCheck.checkAll}
                                 />
                             </Col>
@@ -414,7 +414,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('StartTime')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${!values.isCheck.startTime ? 'disabled-filed' : ''}`}>
+                                <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${!values.isCheck.startTime ? disabled : ''}`}>
                                     <DatePicker timeInputLabel="Time:" showTimeInput
                                         selected={values.startTime}
                                         onChange={value => setFieldValue('startTime', value)}
@@ -430,7 +430,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Ext')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.ext ? 'disabled-filed' : ''}`}>
+                                <div className={`pr-2 ${!values.isCheck.ext ? disabled : ''}`}>
                                     <MultipleSelect
                                         hasAllOption={extensionOptions.length > 0}
                                         isAllTextShown={extensionOptions.length > 0}
@@ -454,7 +454,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('EndTime')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${!values.isCheck.endTime ? 'disabled-filed' : ''}`}>
+                                <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${!values.isCheck.endTime ? disabled : ''}`}>
                                     <DatePicker timeInputLabel="Time:" showTimeInput
                                         selected={values.endTime}
                                         onChange={value => setFieldValue('endTime', value)}
@@ -470,7 +470,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Response')}
                             </Form.Label>
                             <Col sm="4" md="4" className='d-flex'>
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.response ? 'disabled-filed' : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.response ? disabled : ''}`}
                                     id="responseId" name="responseId"
                                     value={values.responseId} onChange={handleChange}
                                     disabled={!values.isCheck.response}
@@ -489,7 +489,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Communication')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.communication ? 'disabled-filed' : ''}`}>
+                                <div className={`pr-2 ${!values.isCheck.communication ? disabled : ''}`}>
                                     <MultipleSelect
                                         isInvalid={touched.communicationToolIds && errors.communicationToolIds}
                                         dataSource={communicationToolOptions}
@@ -512,7 +512,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Language')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none shadow-none select-width-sm mr-2 ${!values.isCheck.language ? 'disabled-filed' : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none shadow-none select-width-sm mr-2 ${!values.isCheck.language ? disabled : ''}`}
                                     isInvalid={touched.languageId && errors.languageId}
                                     id="languageId" name="languageId"
                                     value={values.languageId} onChange={handleChange}
@@ -531,7 +531,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('MainCategory')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.mainCategory ? 'disabled-filed' : ''}`}>
+                                <div className={`pr-2 ${!values.isCheck.mainCategory ? disabled : ''}`}>
                                     <MultipleSelect
                                         isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
                                         dataSource={mainCategoryOptions}
@@ -558,7 +558,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('SubCate')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.subCategory ? 'disabled-filed' : ''}`}>
+                                <div className={`pr-2 ${!values.isCheck.subCategory ? disabled : ''}`}>
                                     <MultipleSelect
                                         isInvalid={touched.subCategoryIds && errors.subCategoryIds}
                                         dataSource={subCategoryOptions}
@@ -584,7 +584,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Product')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.product ? 'disabled-filed' : ''}`}>
+                                <div className={`pr-2 ${!values.isCheck.product ? disabled : ''}`}>
                                     <MultipleSelect
                                         dataSource={productOptions}
                                         keyField='id' valueField='value'
@@ -611,7 +611,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('SubProduct')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.product ? 'disabled-filed' : ''}`}>
+                                <div className={`pr-2 ${!values.isCheck.product ? disabled : ''}`}>
                                     <MultipleSelect
                                         dataSource={subProductOptions}
                                         keyField='id' valueField='value'
@@ -637,7 +637,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Status')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.status ? 'disabled-filed' : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.status ? disabled : ''}`}
                                     id="statusId" name="statusId"
                                     value={values.statusId} onChange={handleChange}
                                 >
@@ -653,7 +653,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('BetType')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.product ? 'disabled-filed' : ''}`}>
+                                <div className={`pr-2 ${!values.isCheck.product ? disabled : ''}`}>
                                     <MultipleSelect
                                         dataSource={betTypeOptions}
                                         keyField='id' valueField='value'
@@ -679,7 +679,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Role')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.role ? 'disabled-filed' : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.role ? disabled : ''}`}
                                     id='roleId' name='roleId'
                                     value={values.roleId} onChange={handleChange}
                                 >
@@ -695,7 +695,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Site')}
                             </Form.Label>
                             <Col column sm="4" md="4" className="d-flex">
-                                <div className={`mr-2 select-width-sm ${!values.isCheck.site ? 'disabled-filed' : ''}`}>
+                                <div className={`mr-2 select-width-sm ${!values.isCheck.site ? disabled : ''}`}>
                                     <SelectWithSearch
                                         className='basic-single'
                                         options={sitesOptions}
@@ -716,7 +716,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Country')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.country ? 'disabled-filed' : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.country ? disabled : ''}`}
                                     id="countryId" name="countryId"
                                     value={values.countryId} onChange={handleChange}
                                 >
@@ -732,7 +732,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('LicenseeType')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.licensee ? 'disabled-filed' : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.licensee ? disabled : ''}`}
                                     id="licenseeId" name="licenseeId"
                                     value={values.licenseeId} onChange={handleChange}
                                 >
@@ -752,7 +752,7 @@ export class EditMultipleLogs extends Component {
                             <Col sm="4" md="4" className="d-flex">
                                 <Form.Control size="sm" type="number" min={1} max={3200}
                                     value={values.noInquiries} id="noInquiries" name="noInquiries"
-                                    className={`shadow-none select-width-sm mr-2 ${!values.isCheck.inquiry ? 'disabled-filed' : ''}`} autoComplete="off"
+                                    className={`shadow-none select-width-sm mr-2 ${!values.isCheck.inquiry ? disabled : ''}`} autoComplete="off"
                                     onInput={validateNoOfInquiry} onChange={handleChange}
                                 />
                                 <input type='checkbox'
@@ -767,7 +767,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Subject')}
                             </Form.Label>
                             <Col sm="8" md="8" className="d-flex">
-                                <div className={`${!values.isCheck.subject ? 'disabled-filed' : ''} w-100`}>
+                                <div className={`${!values.isCheck.subject ? disabled : ''} w-100`}>
                                     <AutoComplete isInvalid={touched.subject && errors.subject}
                                         value={values.subject}
                                         options={feedbackSubjectTemplates} displayField="subject"
@@ -790,7 +790,7 @@ export class EditMultipleLogs extends Component {
                 {this.renderReview(values, touched, errors, setFieldValue)}
             </Fragment>
         );
-    }
+    };
 
     renderForm = ({
         errors,
@@ -873,11 +873,24 @@ export class EditMultipleLogs extends Component {
             isUpdateCategory: values.isCheck.mainCategory,
             noInquiries: values.noInquiries === '' ? 0 : parseInt(values.noInquiries, 10),
             isUpdateNoInquiries: values.isCheck.inquiry,
-            updateReviewedMode: !this.state.hasReviewFeedbackPermission
-                ? 0 : (!values.isReviewed ? 2 : (this.formikValues.review === values.review ? 0 : 1))
+            updateReviewedMode: this.reviewMode(values)
         };
         this.confirmEditMultipleLogs(params);
     };
+
+    reviewMode = values => {
+        if (!this.state.hasReviewFeedbackPermission) {
+            return 0;
+        }
+        else {
+            if (!values.isReviewed) {
+                return 2;
+            }
+            else {
+                return this.formikValues.review === values.review ? 0 : 1;
+            }
+        }
+    }
 
     confirmEditMultipleLogs = params => {
         this.setState({

@@ -123,7 +123,7 @@ export class DataGrid extends Component {
     };
 
     handleChangeCheckBoxAll = event => {
-        const isChecked = event.target.checked; items
+        const isChecked = event.target.checked;
         const items = this.state.checkedItems;
         if (isChecked) {
             this.props.gridDataFeedbacks.data.forEach(element => {

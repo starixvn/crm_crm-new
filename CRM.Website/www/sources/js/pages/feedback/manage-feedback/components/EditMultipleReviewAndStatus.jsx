@@ -39,7 +39,7 @@ export default class EditMultipleReviewAndStatus extends Component {
         const id = this.props.feedbackIds[0];
         const url = Site.resolveClientUrl(`MultipleLogs/GetLogByFeedbackId/${id}`);
         await DataService.getDataAsync(url).then(response => {
-            this.setState({ logInfo: response.data, isReviewed: response.data.isReviewed});
+            this.setState({ logInfo: response.data, isReviewed: response.data.isReviewed });
         });
     }
 
@@ -66,20 +66,20 @@ export default class EditMultipleReviewAndStatus extends Component {
         });
     };
 
-    handleChangeCheckBox = () =>{
-        this.setState(prevState =>({
+    handleChangeCheckBox = () => {
+        this.setState(prevState => ({
             isReviewed: !prevState.isReviewed
         }));
-    }
+    };
 
-    validateFormik = values =>{
+    validateFormik = values => {
         const errors = {};
         if (this.state.isReviewed && values.review === '') {
             errors.review = LangHelper.getResource('ReviewRequired');
         }
 
         return errors;
-    }
+    };
 
     renderForm = ({
         values,
@@ -89,7 +89,7 @@ export default class EditMultipleReviewAndStatus extends Component {
         handleSubmit,
         setFieldValue
     }) => {
-        const {editResult, logInfo, isReviewed} = this.state;
+        const { editResult, logInfo, isReviewed } = this.state;
         const dateFormat = DateTimeService.toShortDateTimeFormat(logInfo.solveDate);
         return (
             <Form noValidate onSubmit={handleSubmit}>
@@ -103,45 +103,45 @@ export default class EditMultipleReviewAndStatus extends Component {
                     }
                     <div className="panel-group">
                         <div className='alert-box-warn'>
-                        <Form.Label className='text' column sm="12" md="12">
-                            {LangHelper.getResource('MultipleReviewAndUpdateStatusText')}
-                        </Form.Label>
-                        <Form.Group as={Row} className='pb-2'>
-                            <Form.Label column sm="2" md="2" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <Form.Control as="select" size="sm"
-                                    column sm="3" md="3"
-                                    name="statusId" id="statusId"
-                                    value={values.statusId}
-                                    onChange={handleChange}
-                                >
-                                {
-                                    this.props.statuses.map(item =>
-                                        <option key={item.statusId} value={item.statusId}>
-                                            {item.name}
-                                        </option>
-                                    )
-                                }
-                               
-                                </Form.Control>
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className='title'>
-                            <Form.Label className="mr-2" column sm="1" md="1">{LangHelper.getResource('Reviewed')}</Form.Label>
-                            <input type='checkbox' className='cursor-pointer'
-                                checked={isReviewed}
-                                onChange={this.handleChangeCheckBox}
-                            />
-                            {logInfo.isReviewed && <Form.Label column sm="5" md="5">{`(Reviewed by ${logInfo.reviewer} on ${dateFormat})`}</Form.Label>}
-                        </Form.Group>
-                        {
-                            isReviewed && <div className="text-editor">
-                            <CkEditor isInvalid={touched.review && errors.review}
-                                data={values.review}
-                                onChange={value => setFieldValue('review', value)}
-                            />
-                        </div>
-                        }
+                            <Form.Label className='text' column sm="12" md="12">
+                                {LangHelper.getResource('MultipleReviewAndUpdateStatusText')}
+                            </Form.Label>
+                            <Form.Group as={Row} className='pb-2'>
+                                <Form.Label column sm="2" md="2" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                                <Col sm="3" md="3">
+                                    <Form.Control as="select" size="sm"
+                                        column sm="3" md="3"
+                                        name="statusId" id="statusId"
+                                        value={values.statusId}
+                                        onChange={handleChange}
+                                    >
+                                        {
+                                            this.props.statuses.map(item =>
+                                                <option key={item.statusId} value={item.statusId}>
+                                                    {item.name}
+                                                </option>
+                                            )
+                                        }
+
+                                    </Form.Control>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className='title'>
+                                <Form.Label className="mr-2" column sm="1" md="1">{LangHelper.getResource('Reviewed')}</Form.Label>
+                                <input type='checkbox' className='cursor-pointer'
+                                    checked={isReviewed}
+                                    onChange={this.handleChangeCheckBox}
+                                />
+                                {logInfo.isReviewed && <Form.Label column sm="5" md="5">{`(Reviewed by ${logInfo.reviewer} on ${dateFormat})`}</Form.Label>}
+                            </Form.Group>
+                            {
+                                isReviewed && <div className="text-editor">
+                                    <CkEditor isInvalid={touched.review && errors.review}
+                                        data={values.review}
+                                        onChange={value => setFieldValue('review', value)}
+                                    />
+                                </div>
+                            }
                         </div>
                     </div>
                 </Modal.Body>
@@ -155,7 +155,7 @@ export default class EditMultipleReviewAndStatus extends Component {
     };
 
     render() {
-        if(this.state.logInfo === null){
+        if (this.state.logInfo === null) {
             return null;
         }
 

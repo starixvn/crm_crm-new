@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
@@ -10,8 +9,6 @@ import EditNoOfInquiry from '../../edit-no-of-inquiry/AppContainer';
 import EditFeedback from '../../edit-customer-feedback/AppContainer';
 import EditMultipleReviewAndStatus from './EditMultipleReviewAndStatus';
 import EditMultipleLogs from './EditMultipleLogs';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -23,7 +20,7 @@ export class AppContainer extends Component {
             // nothing
         }
     };
-    
+
     componentDidMount() {
         this.props.getAllSettings();
     }
@@ -61,27 +58,11 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { isHost, viewRelatedCustomerDialog, editNoOfInquiryDialog, 
-                editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog } = this.props;
+        const { isHost, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog } = this.props;
         return (
             <Fragment>
                 <Filter />
-                <DataGrid isHost={isHost}/>
-                {
-                    viewRelatedCustomerDialog.show &&
-                    <SweetModalDialog size="lg"
-                        title={LangHelper.getResource('RelatedCustomer')}
-                        contents={
-                            <div>{viewRelatedCustomerDialog.relatedCustomers}</div>
-                        }
-                        buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleCloseViewRelatedCustomerDialog}>
-                                {LangHelper.getResource('Close')}
-                            </Button>
-                        ]}
-                        onClose={this.handleCloseViewRelatedCustomerDialog}
-                    />
-                }
+                <DataGrid isHost={isHost} />
                 {
                     editNoOfInquiryDialog.show &&
                     <EditNoOfInquiry feedbackId={editNoOfInquiryDialog.feedbackId}
@@ -101,7 +82,7 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseMultipleEditStatusDialog}
                     />
                 }
-                 {
+                {
                     editMultipleLogDialog.show &&
                     <EditMultipleLogs feedbackArr={editMultipleLogDialog.feedbackArr}
                         onClose={this.handleCloseMultipleEditLog}
@@ -115,8 +96,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { 
-        settings, viewRelatedCustomerDialog, editNoOfInquiryDialog, 
+    const {
+        settings, viewRelatedCustomerDialog, editNoOfInquiryDialog,
         editFeedbackDialog, editMultipleLogStatusDialog, gridParams,
         editMultipleLogDialog
     } = state;

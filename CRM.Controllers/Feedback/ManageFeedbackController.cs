@@ -17,7 +17,7 @@
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
-    public class ManageFeedbackController : Controller
+    public class ManageFeedbackController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
