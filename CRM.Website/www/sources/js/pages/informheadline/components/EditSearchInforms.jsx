@@ -24,7 +24,7 @@ export class EditSearchInforms extends Component {
             saveResult: null,
             totalSearchInform: 0
         };
-    };
+    }
 
     async componentDidMount() {
         await this.props.getTitleDetail({
@@ -34,7 +34,7 @@ export class EditSearchInforms extends Component {
 
         const { titleDetail, allSettings } = this.props;
         const includeCurrencies = this.getIncludeInSetting(titleDetail.currencies, allSettings.currencies);
-        const includeSites = this.getIncludeInSetting(titleDetail.sites, allSettings.sites[0].childSites);      
+        const includeSites = this.getIncludeInSetting(titleDetail.sites, allSettings.sites[0].childSites);
         await this.props.getSearchInforms({
             titleId: this.props.titleId,
             typeAccount: titleDetail.typeAccount,
@@ -56,16 +56,17 @@ export class EditSearchInforms extends Component {
             includeCurrencies: includeCurrencies,
             includeSites: includeSites,
             filterData: this.initFormData(includeCurrencies,includeSites)
-        })
-    };
+        });
+    }
 
     getIncludeInSetting = (detail, setting) => {
         const includes = [];
         setting.map(item => {
-            if(detail.split(",").includes(item.id.toString()))
+            if(detail.split(',').includes(item.id.toString())){
                 includes.push(item.id);
+            }
         });
-        return includes.join(",");
+        return includes.join(',');
     };
 
     renderFilterForm = ({
@@ -79,24 +80,24 @@ export class EditSearchInforms extends Component {
 
         const { titleDetail, searchInforms, allSettings, gridParams } = this.props;
         const allPositions = [
-            { "id": 4, "name": "Super" },
-            { "id": 3, "name": "Master" },
-            { "id": 2, "name": "Agent" },
-            { "id": 1, "name": "Member" },
-            { "id": 0, "name": "Guest" }
+            { id: 4, name: 'Super' },
+            { id: 3, name: 'Master' },
+            { id: 2, name: 'Agent' },
+            { id: 1, name: 'Member' },
+            { id: 0, name: 'Guest' }
         ];
 
         const allIsVip = [
-            { "id": 2, "name": "All" },
-            { "id": 1, "name": "Yes" },
-            { "id": 0, "name": "No" }
+            { id: 2, name: 'All' },
+            { id: 1, name: 'Yes' },
+            { id: 0, name: 'No' }
         ];
 
         const filterCurrencies = allSettings.currencies.map(item => {
             return {
                 id: item.id,
                 name: item.name,
-                checked: values.currencyId.split(",").includes(item.id.toString())
+                checked: values.currencyId.split(',').includes(item.id.toString())
             };
         });
 
@@ -104,7 +105,7 @@ export class EditSearchInforms extends Component {
             return {
                 id: item.id,
                 name: item.name,
-                checked: values.levelId.split(",").includes(item.id.toString())
+                checked: values.levelId.split(',').includes(item.id.toString())
             };
         });
 
@@ -112,10 +113,10 @@ export class EditSearchInforms extends Component {
             return {
                 id: item.id,
                 name: item.name,
-                checked: values.siteId.split(",").includes(item.id.toString())
+                checked: values.siteId.split(',').includes(item.id.toString())
             };
         });
-        
+
         return(
             <Form noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
@@ -147,7 +148,7 @@ export class EditSearchInforms extends Component {
                     gridParams={gridParams}
                     onPaging={this.onPaging}
                     onChange={this.handleChangeDataGrid}
-                    
+
                     handleSubmit={handleSubmit}
                 />
             </Form>
@@ -178,7 +179,7 @@ export class EditSearchInforms extends Component {
         }
         if(values.currencyId === ''){
             errors.currencyId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'));
-        }    
+        }
         if(values.levelId === ''){
             errors.levelId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Position'));
         }
@@ -192,8 +193,8 @@ export class EditSearchInforms extends Component {
         return errors;
     };
 
-    getTypeAccount = (values) => {
-        var accountType = 0;
+    getTypeAccount = values => {
+        let accountType = 0;
         if(values.isHeadline){
             accountType = accountType + 1;
         }
@@ -203,17 +204,17 @@ export class EditSearchInforms extends Component {
         values.typeAccount = accountType;
     };
 
-    getChangeFilter = (values) => {
+    getChangeFilter = values => {
         const initData = this.state.filterData;
-        if(values.currencyId !== initData.currencyId 
-            || values.levelId !== initData.levelId
-            || values.siteId !== initData.siteId
-            || parseInt(values.vipId) !== initData.vipId
-            || values.typeAccount !== initData.typeAccount
-            || values.isExcludeIgnoredAccounts !== initData.isExcludeIgnoredAccounts
+        if(values.currencyId !== initData.currencyId ||
+            values.levelId !== initData.levelId ||
+            values.siteId !== initData.siteId ||
+            parseInt(values.vipId) !== initData.vipId ||
+            values.typeAccount !== initData.typeAccount ||
+            values.isExcludeIgnoredAccounts !== initData.isExcludeIgnoredAccounts
         ){
             return true;
-        };
+        }
         return false;
     };
 
@@ -235,7 +236,7 @@ export class EditSearchInforms extends Component {
                 pageIndex: 1,
                 pageSize: 100
             });
-            
+
             this.getTypeAccount(values);
 
             const params = {
@@ -256,7 +257,7 @@ export class EditSearchInforms extends Component {
             });
             values.submit = true;
             return;
-        };
+        }
 
         if(values.submit){
             this.getTypeAccount(values);
@@ -264,8 +265,8 @@ export class EditSearchInforms extends Component {
 
             const resultInforms = result.map(item => {
                 if(item.remark){
-                    return {...item, remark: this.htmlDecode(item.remark)}
-                };
+                    return {...item, remark: this.htmlDecode(item.remark)};
+                }
                 return item;
             });
             const params = {
@@ -277,12 +278,12 @@ export class EditSearchInforms extends Component {
                 sites: values.siteId,
                 isVip: parseInt(values.vipId),
                 typeAccount: values.typeAccount,
-                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,               
+                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,           
                 informs: resultInforms
             }
-            await this.props.updateSearchInforms(params);            
+            await this.props.updateSearchInforms(params);   
             this.setAlert();
-        }
+        };
     };
 
     onPaging = (pageIndex, pageSize) => {
@@ -305,7 +306,7 @@ export class EditSearchInforms extends Component {
     };
 
     htmlDecode = value => {
-        var remark = value.replace(/&/g, '&amp;')
+        const remark = value.replace(/&/g, '&amp;')
                         .replace(/"/g, '&quot;')
                         .replace(/'/g, '&#39;')
                         .replace(/</g, '&lt;')
@@ -315,19 +316,19 @@ export class EditSearchInforms extends Component {
 
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;
-        var value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
+        const value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
 
         const item = {...this.props.searchInforms.find(element => element.headlineId === headlineId), [name]: value};
 
         this.setState(prevState =>{
-            let oldInforms = prevState.informs;
-            let element  = oldInforms.find(value => value.headlineId === item.headlineId);
+            const oldInforms = prevState.informs;
+            const element  = oldInforms.find(value => value.headlineId === item.headlineId);
 
-            if(element){
+            if(element)
+            {
                 Object.assign(element, {[name]: value});
                 return({informs: oldInforms});
-            }
-            else{
+            }else{
                 return({informs: [...oldInforms, item]});
             }
         });
@@ -368,9 +369,9 @@ export class EditSearchInforms extends Component {
         const {titleDetail, allSettings, searchInforms} = this.props;
         if(!titleDetail || !allSettings || !searchInforms || !this.state.filterData){
             return null;
-        };
+        }
 
-        return (    
+        return (
             <>
                 <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl"
@@ -378,12 +379,11 @@ export class EditSearchInforms extends Component {
                     onHide={this.props.onClose}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('UpdateInformHeadlines') + " - " + LangHelper.getResource('EditNumberOfAccounts')}</Modal.Title>
+                        <Modal.Title as="div">{`${LangHelper.getResource('UpdateInformHeadlines')} - ${LangHelper.getResource('EditNumberOfAccounts')}`}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <Formik
-                            //innerRef={el => this.formik = el}
                             initialValues={this.state.filterData}
                             validate={this.validateFormik}
                             onSubmit={this.handleSubmit}
@@ -394,7 +394,7 @@ export class EditSearchInforms extends Component {
                 </Modal>
             </>
         );
-    };
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);

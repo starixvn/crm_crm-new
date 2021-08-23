@@ -208,6 +208,12 @@ export class NewInforms extends Component {
         if(values.submit){
             this.getTypeAccount(values);
 
+            const informs = this.state.informs.map(item => {
+                if(item.remark){
+                    return {...item, remark: this.htmlDecode(item.remark)}
+                };
+                return item;
+            });
             const params = {
                 title: values.title,
                 currencies: values.currencyId,
@@ -218,7 +224,7 @@ export class NewInforms extends Component {
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 pageIndex: 1,
                 pageSize: 10000,     
-                informs: this.state.informs
+                informs: informs
             };
             await this.props.insertInforms(params);     
             this.setAlert();
@@ -276,10 +282,8 @@ export class NewInforms extends Component {
 
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;
-        let value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
-        if(name === 'remark'){
-            value = this.htmlDecode(value);
-        }
+        const value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
+
         const item = {...this.props.newInforms.find(element => element.headlineId === headlineId), [name]: value};
 
         this.setState(prevState =>{
@@ -314,7 +318,6 @@ export class NewInforms extends Component {
 
                     <Modal.Body>
                         <Formik
-                            //innerRef={el => this.formik = el}
                             initialValues={this.filterData}
                             validate={this.validateFormik}
                             onSubmit={this.handleSubmit}

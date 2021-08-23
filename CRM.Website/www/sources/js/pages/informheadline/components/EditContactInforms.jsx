@@ -21,16 +21,16 @@ export class EditContactInforms extends Component {
             saveResult: null,
             totalContactInform: 0
         };
-    };
+    }
 
     async componentDidMount() {
         await this.props.getTitleDetail({
             titleId: this.props.titleId
         });
         await this.props.getContactInformSettings();
-        const selectedStatuses = this.props.contactInformSettings.filterStatuses.map(item => {
-            return item.settingId;
-        }).join();
+        const selectedStatuses = this.props.contactInformSettings.filterStatuses.map(item =>
+            item.settingId
+        ).join();
         await this.props.getContactInforms({
             titleId: this.props.titleId,
             username: '',
@@ -46,9 +46,9 @@ export class EditContactInforms extends Component {
             totalContactInform: this.props.contactInforms.length,
             selectedStatusId : selectedStatuses
         });
-    };
+    }
 
-    handleChangeStatus = (selectedItemsKey) => {
+    handleChangeStatus = selectedItemsKey => {
         this.setState({
             selectedStatusId: selectedItemsKey
         });
@@ -106,8 +106,8 @@ export class EditContactInforms extends Component {
     handleSubmit = async () => {
         const informs = this.state.informs.map(item => {
             if(item.remark){
-                return {...item, remark: this.htmlDecode(item.remark)}
-            };
+                return {...item, remark: this.htmlDecode(item.remark)};
+            }
             return item;
         });
         await this.props.updateContactInforms({
@@ -118,7 +118,7 @@ export class EditContactInforms extends Component {
     };
 
     htmlDecode = value => {
-        var remark = value.replace(/&/g, '&amp;')
+        const remark = value.replace(/&/g, '&amp;')
                         .replace(/"/g, '&quot;')
                         .replace(/'/g, '&#39;')
                         .replace(/</g, '&lt;')
@@ -128,19 +128,19 @@ export class EditContactInforms extends Component {
 
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;
-        var value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
+        const value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
 
         const item = {...this.props.contactInforms.find(element => element.headlineId === headlineId), [name]: value};
 
         this.setState(prevState =>{
-            let oldInforms = prevState.informs;
-            let element  = oldInforms.find(value => value.headlineId === item.headlineId);
+            const oldInforms = prevState.informs;
+            const element  = oldInforms.find(value => value.headlineId === item.headlineId);
 
-            if(element){
+            if(element)
+            {
                 Object.assign(element, {[name]: value});
                 return({informs: oldInforms});
-            }
-            else{
+            }else{
                 return({informs: [...oldInforms, item]});
             }
         });
@@ -178,7 +178,7 @@ export class EditContactInforms extends Component {
             return {
                 settingId: item.settingId,
                 settingValue: item.settingValue,
-                checked: this.state.selectedStatusId.split(",").includes(item.settingId.toString())
+                checked: this.state.selectedStatusId.split(',').includes(item.settingId.toString())
             };
         });
 
@@ -218,14 +218,14 @@ export class EditContactInforms extends Component {
         const {titleDetail, contactInformSettings, contactInforms} = this.props;
         if(!titleDetail || !contactInformSettings || !contactInforms){
             return null;
-        };
+        }
 
-        return (    
+        return (
             <>
                 <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl"
                     className="modal-edit"
-                    onHide={this.props.onClose}    
+                    onHide={this.props.onClose}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('UpdateInformHeadlines')}</Modal.Title>
@@ -237,7 +237,7 @@ export class EditContactInforms extends Component {
                 </Modal>
             </>
         );
-    };
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
