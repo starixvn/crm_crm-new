@@ -144,7 +144,7 @@ export class DataGrid extends Component {
         const createDateFormat = DateTimeService.toShortDateTimeFormat(item.createDate);
         const solveDateFormat = DateTimeService.toShortDateTimeFormat(item.solveDate);
         return (
-            <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${item.status === 'Pending' ? 'pending' : ''}`}>
+            <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${item.status === 'Pending' ? 'pending' : item.status === 'Closed' ? 'closed' : ''}`}>
                 <Cell className='text-center'>
                     <input type='checkbox'
                         name={item.feedbackId} key={item.feedbackId}

@@ -285,4 +285,7 @@
   <data name="NewInformHeadlines" xml:space="preserve">
     <value>NewInformHeadlines</value>
   </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
 </root>

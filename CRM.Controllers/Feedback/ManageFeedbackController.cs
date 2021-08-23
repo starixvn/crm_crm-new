@@ -8,6 +8,7 @@
     using CRM.Criteria.Feedback.ManageFeedback;
     using CRM.Models.Feedback;
     using CRM.Models.Setting;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
     using Fanex.NAP.Client.Configuration;
@@ -24,13 +25,15 @@
         private readonly IUserService userService;
         private readonly ISettingService settingService;
         private readonly IFeedbackService feedbackService;
+        private readonly IExportExcelService exportExcelService;
 
         public ManageFeedbackController(
             INapSession napSession,
             INapSettings napSettings,
             IUserService userService,
             ISettingService settingService,
-            IFeedbackService feedbackService
+            IFeedbackService feedbackService,
+            IExportExcelService exportExcelService
             )
         {
             this.napSession = napSession;
@@ -38,6 +41,7 @@
             this.userService = userService;
             this.settingService = settingService;
             this.feedbackService = feedbackService;
+            this.exportExcelService = exportExcelService;
         }
 
         public IActionResult Index()
@@ -73,6 +77,19 @@
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
             var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
             return Json(new { data = feedbacksOrder, mainCategories, totalItems = criteria.TotalRows });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcel([FromBody] ManageFeedbackCriteria criteria)
+        {
+            criteria.PageIndex = 0;
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetManageFeedbackAsync(criteria);
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
+
+            var bytes = exportExcelService.ExportManageFeedbackReport(feedbacks, mainCategories);
+            string reportName = ViewResources.Feedback;
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }
 }

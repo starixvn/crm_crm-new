@@ -35,6 +35,8 @@
         byte[] ExportUpdateInformHeadline(IEnumerable<UpdateInform> updateInforms, IInformHeadlineService informHeadlineService, ISettingService settingService, string informHeadlineTitle);
 
         byte[] ExportNewInformHeadline(IEnumerable<NewInform> newInforms, IInformHeadlineService informHeadlineService, string title);
+
+        byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -118,6 +120,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/NewInformHeadlines.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new NewInformHeadlineExcel(templatePath, newInforms, informHeadlineService, title);
+            return excel.Export();
+        }
+
+        public byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/ManageFeedback.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories);
             return excel.Export();
         }
     }

@@ -1,0 +1,190 @@
+﻿namespace CRM.Services.ExportExcel
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Linq;
+    using CRM.Core;
+    using CRM.Models.Feedback;
+    using CRM.Models.Setting;
+    using CRM.Resources;
+    using OfficeOpenXml;
+    using OfficeOpenXml.Style;
+
+    public class ManageFeedbackExcel : ExcelBase
+    {
+        private readonly IEnumerable<FeedbackDetail> feedbacks;
+        private readonly IEnumerable<Setting> mainCategories;
+
+        private const byte RowStartBody = 5;
+        private const byte RowStartHeader = 4;
+        private const byte StartComToolsIndex = 7;
+        protected static readonly Color PendingColor = Color.FromArgb(240, 237, 196);
+        protected static readonly Color ClosedColor =  Color.FromArgb(221,221,221);
+        protected static readonly Color NormalColor = Color.FromArgb(255, 255, 255);
+
+        public ManageFeedbackExcel(
+            string templatePath,
+            IEnumerable<FeedbackDetail> feedbacks,
+            IEnumerable<Setting> mainCategories)
+        : base(templatePath, 0, ViewResources.ManageFeedback)
+        {
+            this.feedbacks = feedbacks;
+            this.mainCategories = mainCategories;
+        }
+
+        protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+            templateWorksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]
+                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
+            worksheet.Cells[1, 1].Value = string.Format(ViewResources.DeletedFeedback);
+        }
+
+        protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]
+                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]);
+        }
+
+        protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
+        {
+            int rowIndex = RowStartBody;
+            var feedbackList = feedbacks.ToList();
+            for (var index = 0; index < feedbackList.Count; index++)
+            {
+                RenderRow(worksheet, feedbackList[index], index + 1, rowIndex++);
+            }
+        }
+
+        protected internal virtual void RenderRow(ExcelWorksheet worksheet, FeedbackDetail feedbackDetail, int index, int rowIndex)
+        {
+            var colIndex = 1;
+            var feedbackCellValue = GetFeedbackCellValue(feedbackDetail);
+            var categoryContents = CategoryContent(feedbackDetail, mainCategories);
+            var categoryCellValue = string.Join("\n\n", categoryContents);
+            worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.FeedbackId;
+            worksheet.Cells[rowIndex, colIndex++].Value = feedbackCellValue;
+            worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Username;
+            worksheet.Cells[rowIndex, colIndex++].Value = categoryCellValue;
+            worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Status;
+            worksheet.Cells[rowIndex, colIndex].Value = feedbackDetail.RelatedCustomer.Replace(",", ", ");
+
+            if (feedbackDetail.Status == "Pending")
+            {
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], PendingColor);
+            }
+            else if(feedbackDetail.Status == "Closed")
+            {
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], ClosedColor);
+            }
+            else
+            {
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], NormalColor);
+            }
+        }
+
+        protected internal override void ProcessUI(ExcelWorksheet worksheet)
+        {
+            SetStyle(worksheet);
+            SetWidthColumn(worksheet);
+        }
+
+        protected internal virtual void SetStyle(ExcelWorksheet worksheet)
+        {
+            StyleDefault(worksheet);
+            worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+        }
+
+        protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
+        {
+            const int WidthNormal = 15;
+            const int RowHeight = 60;
+            const int WidthLarge = 35;
+            const int ColumnRunningNo = 1;
+            const int ColumnFeedback = 2;
+            const int ColumnCustomer = 3;
+            const int ColumnCategory = 4;
+            const int ColumnStatus = 5;
+            const int ColumnRelCustomer = 6;
+            const int TotalColumn = ColumnRelCustomer;
+            worksheet.DefaultColWidth = WidthLarge;
+            worksheet.Cells.AutoFitColumns();
+            worksheet.Column(ColumnRunningNo).Width = WidthNormal;
+            worksheet.Column(ColumnFeedback).Width = WidthLarge;
+            worksheet.Column(ColumnCustomer).Width = WidthLarge;
+            worksheet.Column(ColumnCategory).Width = WidthLarge;
+            worksheet.Column(ColumnStatus).Width = WidthNormal;
+            worksheet.Column(ColumnRelCustomer).Width = WidthLarge;
+            var feedbacksList = feedbacks.ToList();
+            for (var index = 0; index < feedbacksList.Count; index++)
+            {
+                worksheet.Row(RowStartBody + index).Height = RowHeight;
+                DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumn]);
+            }
+        }
+
+        protected static string[] CategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
+        {
+            return GetCategoryContent(feedback.Settings, mainCategories);
+        }
+
+        private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
+        {
+            return GetCategoryContentWithoutSettingType(settings.Where(i => i.SettingType == "Category"), mainCategories);
+        }
+
+        public static string[] GetCategoryContentWithoutSettingType(
+            IEnumerable<FeedbackSettingRelation> settings,
+            IEnumerable<Setting> mainCategories)
+        {
+            return settings
+                    .GroupBy(s => s.SettingId)
+                    .Select(s =>
+                    {
+                        var mainCategoryName = GetMainCategoryName(s.Key, mainCategories);
+                        var subIds = s.Select(e => e.SubSettingId).ToList();
+                        foreach (var id in subIds)
+                        {
+                            mainCategoryName = string.Join(string.Empty, mainCategoryName, "\n  ", GetSubCategoryName(s.Key, id, mainCategories));
+                        }
+
+                        return mainCategoryName;
+                    })
+                    .ToArray();
+        }
+
+        private static string GetMainCategoryName(int mainCategoryId, IEnumerable<Setting> mainCategories)
+        {
+            var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
+            return mainCategory == null ? string.Empty : mainCategory.SettingValue;
+        }
+
+        public static string GetSubCategoryName(
+            int mainCategoryId,
+            int subCategoryId,
+            IEnumerable<Setting> mainCategories)
+        {
+            var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
+            var child = mainCategory?.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
+            return child == null ? string.Empty : child.Name;
+        }
+
+        protected static string GetFeedbackCellValue(FeedbackDetail feedback)
+        {
+            var cellValue = string.Format(
+                "{0}\n{1}\n{2}\n{3}",
+                feedback.Subject,
+                "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
+                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
+                "Solving Duration: " + feedback.DurationTime);
+
+            if (!string.IsNullOrEmpty(feedback.ReviewerName))
+            {
+                var reviewText = string.Format("\nReviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat());
+                return cellValue + reviewText;
+            }
+
+            return cellValue;
+        }
+    }
+}
