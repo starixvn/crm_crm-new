@@ -15,7 +15,13 @@ export class AppContainer extends Component {
     static propTypes = {
         searchPolicy: PropTypes.instanceOf(Element).isRequired,
         contactPolicy: PropTypes.instanceOf(Element).isRequired,
-        getInforms: PropTypes.func
+        getInforms: PropTypes.func,
+        showEditContactInform: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        showEditSearchInform: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        showRemovedLogs: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        showRemovedLogDetails: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        showNewInforms: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        showOptions: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
@@ -23,7 +29,13 @@ export class AppContainer extends Component {
         contactPolicy: null,
         getInforms: function (){
             // nothing
-        }
+        },
+        showEditContactInform: { show: false },
+        showEditSearchInform: { show: false },
+        showRemovedLogs: { show: false },
+        showRemovedLogDetails: { show: false },
+        showNewInforms: { show: false },
+        showOptions: { show: false }
     };
 
     componentDidMount() {
@@ -67,9 +79,7 @@ export class AppContainer extends Component {
                             />
                             {
                                 showOptions.show &&
-                                <OptionsEdit
-                                    ref={this.wrapperRef}
-                                />
+                                <OptionsEdit/>
                             }
                         </>
                         

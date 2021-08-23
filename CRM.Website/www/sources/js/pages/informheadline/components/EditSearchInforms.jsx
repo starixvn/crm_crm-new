@@ -117,44 +117,40 @@ export class EditSearchInforms extends Component {
         });
         
         return(
-            <>
-                <Form noValidate onSubmit={handleSubmit}>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
-                    {
-                        this.state.saveResult &&
-                        <ResponseMessage isSuccessful={this.state.saveResult.isSuccessful}
-                            message={this.state.saveResult.message || LangHelper.getResource('SaveInformHeadlinesSuccessfully')}
-                        />
-                    }
-                    <FilterSearchInforms
-                        titleDetail={titleDetail}
-                        filterCurrencies={filterCurrencies}
-                        filterLevels={filterLevels}
-                        filterSites={filterSites}
-                        allIsVip={allIsVip}
-                        renderExportExcelText={() => this.renderExportExcelText(values)}
-
-                        values={values}
-                        touched={touched} errors={errors}
-                        handleChange={handleChange}
-                        handleSubmit={handleSubmit}
-                        setFieldValue={setFieldValue}
+            <Form noValidate onSubmit={handleSubmit}>
+                <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                {
+                    this.state.saveResult &&
+                    <ResponseMessage isSuccessful={this.state.saveResult.isSuccessful}
+                        message={this.state.saveResult.message || LangHelper.getResource('SaveInformHeadlinesSuccessfully')}
                     />
+                }
+                <FilterSearchInforms
+                    titleDetail={titleDetail}
+                    filterCurrencies={filterCurrencies}
+                    filterLevels={filterLevels}
+                    filterSites={filterSites}
+                    allIsVip={allIsVip}
+                    renderExportExcelText={() => this.renderExportExcelText(values)}
 
-                    <DataGridEdit
-                        Informs={searchInforms}
-                        InformSettings={allSettings}
-                        totalItem={this.state.totalSearchInform}
-                        gridParams={gridParams}
-                        onPaging={this.onPaging}
-                        onChange={this.handleChangeDataGrid}
+                    values={values}
+                    touched={touched} errors={errors}
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                    setFieldValue={setFieldValue}
+                />
 
-                        values={values}
-                        handleSubmit={handleSubmit}
-                        setFieldValue={setFieldValue}
-                    />
-                </Form>
-            </>
+                <DataGridEdit
+                    Informs={searchInforms}
+                    InformSettings={allSettings}
+                    totalItem={this.state.totalSearchInform}
+                    gridParams={gridParams}
+                    onPaging={this.onPaging}
+                    onChange={this.handleChangeDataGrid}
+                    
+                    handleSubmit={handleSubmit}
+                />
+            </Form>
         );
     };
 
@@ -258,6 +254,8 @@ export class EditSearchInforms extends Component {
             this.setState({
                 totalSearchInform: this.props.searchInforms.length
             });
+            values.submit = true;
+            return;
         };
 
         if(values.submit){
@@ -277,7 +275,7 @@ export class EditSearchInforms extends Component {
                 currencies: values.currencyId,
                 levels: values.levelId,
                 sites: values.siteId,
-                isVip: values.vipId,
+                isVip: parseInt(values.vipId),
                 typeAccount: values.typeAccount,
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,               
                 informs: resultInforms

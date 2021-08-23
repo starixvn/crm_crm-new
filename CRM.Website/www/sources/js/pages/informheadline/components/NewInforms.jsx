@@ -75,47 +75,45 @@ export class NewInforms extends Component {
         });
         
         return(
-            <>
-                <Form noValidate onSubmit={handleSubmit}>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
-                    {
-                        this.state.saveResult &&
-                        <ResponseMessage isSuccessful={this.state.saveResult.isSuccessful}
-                            message={this.state.saveResult.message || LangHelper.getResource('AddNewCaseSuccessfully')}
-                        />
-                    }
-                    <FilterSearchInforms
-                        titleDetail={values.title}
-                        filterCurrencies={filterCurrencies}
-                        filterLevels={filterLevels}
-                        filterSites={filterSites}
-                        allIsVip={allIsVip}
-                        renderExportExcelText={() => this.renderExportExcelText(values)}
+            <Form noValidate onSubmit={handleSubmit}>
+                <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                {
+                    this.state.saveResult &&
+                    <ResponseMessage isSuccessful={this.state.saveResult.isSuccessful}
+                        message={this.state.saveResult.message || LangHelper.getResource('AddNewCaseSuccessfully')}
+                    />
+                }
+                <FilterSearchInforms
+                    titleDetail={values.title}
+                    filterCurrencies={filterCurrencies}
+                    filterLevels={filterLevels}
+                    filterSites={filterSites}
+                    allIsVip={allIsVip}
+                    renderExportExcelText={() => this.renderExportExcelText(values)}
+
+                    values={values}
+                    touched={touched} errors={errors}
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                    setFieldValue={setFieldValue}
+                />
+
+                {
+                    newInforms &&
+                    <DataGridEdit
+                        Informs={newInforms}
+                        InformSettings={allSettings}
+                        totalItem={this.state.totalNewItem}
+                        gridParams={gridParams}
+                        onPaging={this.onPaging}
+                        onChange={this.handleChangeDataGrid}
 
                         values={values}
-                        touched={touched} errors={errors}
-                        handleChange={handleChange}
                         handleSubmit={handleSubmit}
                         setFieldValue={setFieldValue}
                     />
-
-                    {
-                        newInforms &&
-                        <DataGridEdit
-                            Informs={newInforms}
-                            InformSettings={allSettings}
-                            totalItem={this.state.totalNewItem}
-                            gridParams={gridParams}
-                            onPaging={this.onPaging}
-                            onChange={this.handleChangeDataGrid}
-
-                            values={values}
-                            handleSubmit={handleSubmit}
-                            setFieldValue={setFieldValue}
-                        />
-                    }
-                </Form>
-            </>
+                }
+            </Form>
         );
     };
 
@@ -215,11 +213,11 @@ export class NewInforms extends Component {
                 currencies: values.currencyId,
                 levels: values.levelId,
                 sites: values.siteId,
-                isVip: values.vipId,
+                isVip: parseInt(values.vipId),
                 typeAccount: values.typeAccount,
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 pageIndex: 1,
-                pageSize: 1000,            
+                pageSize: 10000,            
                 informs: this.state.informs
             }
             await this.props.insertInforms(params);            

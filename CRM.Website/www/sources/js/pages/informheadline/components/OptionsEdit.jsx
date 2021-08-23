@@ -14,12 +14,14 @@ export class OptionsEdit extends Component {
         document.addEventListener('click', this.handleOutSideClick)
     };
 
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleOutSideClick);
+    }
+
     handleOutSideClick = (event) => {
         const { target } = event
-        if(this.wrapperRef.current){
-            if (!this.wrapperRef.current.contains(target)) {
-                this.props.setShowOptions({show: false});
-            };
+        if(this.wrapperRef && !this.wrapperRef.current.contains(target)){
+            this.props.setShowOptions({show: false});
         }
     };
 
