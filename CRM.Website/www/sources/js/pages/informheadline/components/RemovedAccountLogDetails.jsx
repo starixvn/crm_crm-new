@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
@@ -20,7 +20,7 @@ export class RemovedAccountLogDetails extends Component {
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Extension')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('ProductStatus')}</HeaderCell>
             </HeaderRow>
-        )
+        );
     };
 
     buildBody = () => {
@@ -44,8 +44,8 @@ export class RemovedAccountLogDetails extends Component {
                 <Cell className='text-center'>{item.clientUpdatedTime}</Cell>
                 <Cell>{item.remark}</Cell>
                 <Cell className='text-center'>{item.handler}</Cell>
-                <Cell className='text-center'>{item.extension}</Cell> 
-                <Cell className='text-center'>{item.productStatus}</Cell> 
+                <Cell className='text-center'>{item.extension}</Cell>
+                <Cell className='text-center'>{item.productStatus}</Cell>
             </Row>
         );
     };
@@ -81,7 +81,7 @@ export class RemovedAccountLogDetails extends Component {
                     className="modal-removeDetail"
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('InformHeadlines') + ' - ' + LangHelper.getResource('RemovedEditedAccountsLogs')}</Modal.Title>
+                        <Modal.Title as="div">{`${LangHelper.getResource('InformHeadlines')} - ${LangHelper.getResource('RemovedEditedAccountsLogs')}`}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -105,7 +105,7 @@ export class RemovedAccountLogDetails extends Component {
                     </Modal.Footer>
                 </Modal>
             </>
-        )
+        );
     }
 }
 
@@ -116,4 +116,4 @@ const mapStateToProps = state => {
     return { removedAccountLogDetails, gridParamRemovedLogDetails };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RemovedAccountLogDetails)
+export default connect(mapStateToProps, mapDispatchToProps)(RemovedAccountLogDetails);

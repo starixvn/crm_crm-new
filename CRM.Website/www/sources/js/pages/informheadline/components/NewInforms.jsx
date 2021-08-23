@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
@@ -23,7 +23,7 @@ export class NewInforms extends Component {
         };
 
         this.filterData = this.initFormData();
-    };
+    }
 
 
     renderFilterForm = ({
@@ -37,24 +37,24 @@ export class NewInforms extends Component {
 
         const { allSettings , newInforms, gridParams } = this.props;
         const allPositions = [
-            { "id": 4, "name": "Super" },
-            { "id": 3, "name": "Master" },
-            { "id": 2, "name": "Agent" },
-            { "id": 1, "name": "Member" },
-            { "id": 0, "name": "Guest" }
+            { id: 4, name: 'Super' },
+            { id: 3, name: 'Master' },
+            { id: 2, name: 'Agent' },
+            { id: 1, name: 'Member' },
+            { id: 0, name: 'Guest' }
         ];
 
         const allIsVip = [
-            { "id": 2, "name": "All" },
-            { "id": 1, "name": "Yes" },
-            { "id": 0, "name": "No" }
+            { id: 2, name: 'All' },
+            { id: 1, name: 'Yes' },
+            { id: 0, name: 'No' }
         ];
 
         const filterCurrencies = allSettings.currencies.map(item => {
             return {
                 id: item.id,
                 name: item.name,
-                checked: values.currencyId.split(",").includes(item.id.toString())
+                checked: values.currencyId.split(',').includes(item.id.toString())
             };
         });
 
@@ -62,7 +62,7 @@ export class NewInforms extends Component {
             return {
                 id: item.id,
                 name: item.name,
-                checked: values.levelId.split(",").includes(item.id.toString())
+                checked: values.levelId.split(',').includes(item.id.toString())
             };
         });
 
@@ -70,10 +70,10 @@ export class NewInforms extends Component {
             return {
                 id: item.id,
                 name: item.name,
-                checked: values.siteId.split(",").includes(item.id.toString())
+                checked: values.siteId.split(',').includes(item.id.toString())
             };
         });
-        
+
         return(
             <Form noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
@@ -140,7 +140,7 @@ export class NewInforms extends Component {
         }
         if(values.currencyId === ''){
             errors.currencyId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'));
-        }    
+        }
         if(values.levelId === ''){
             errors.levelId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Position'));
         }
@@ -154,8 +154,8 @@ export class NewInforms extends Component {
         return errors;
     };
 
-    getTypeAccount = (values) => {
-        var accountType = 0;
+    getTypeAccount = values => {
+        let accountType = 0;
         if(values.isHeadline){
             accountType = accountType + 1;
         }
@@ -197,13 +197,13 @@ export class NewInforms extends Component {
             const paramGrid = {...params};
             paramGrid['pageIndex'] = 1;
             paramGrid['pageSize'] = 100;
-            
+
             this.props.setGridParams(paramGrid);
             await this.props.getNewInforms(params);
             this.setState({
                 totalNewItem: this.props.newInforms.length
             });
-        };
+        }
 
         if(values.submit){
             this.getTypeAccount(values);
@@ -217,10 +217,10 @@ export class NewInforms extends Component {
                 typeAccount: values.typeAccount,
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 pageIndex: 1,
-                pageSize: 10000,            
+                pageSize: 10000,     
                 informs: this.state.informs
-            }
-            await this.props.insertInforms(params);            
+            };
+            await this.props.insertInforms(params);     
             this.setAlert();
         }
     };
@@ -266,7 +266,7 @@ export class NewInforms extends Component {
     };
 
     htmlDecode = value => {
-        var remark = value.replace(/&/g, '&amp;')
+        const remark = value.replace(/&/g, '&amp;')
                         .replace(/"/g, '&quot;')
                         .replace(/'/g, '&#39;')
                         .replace(/</g, '&lt;')
@@ -276,21 +276,20 @@ export class NewInforms extends Component {
 
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;
-        var value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
+        let value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
         if(name === 'remark'){
             value = this.htmlDecode(value);
-        };
+        }
         const item = {...this.props.newInforms.find(element => element.headlineId === headlineId), [name]: value};
 
         this.setState(prevState =>{
-            let oldInforms = prevState.informs;
-            let element  = oldInforms.find(value => value.headlineId === item.headlineId);
+            const oldInforms = prevState.informs;
+            const element  = oldInforms.find(value => value.headlineId === item.headlineId);
 
             if(element){
                 Object.assign(element, {[name]: value});
                 return({informs: oldInforms});
-            }
-            else{
+            }else{
                 return({informs: [...oldInforms, item]});
             }
         });
@@ -300,14 +299,14 @@ export class NewInforms extends Component {
         const { allSettings } = this.props;
         if( !allSettings ){
             return null;
-        };
+        }
 
         return (
             <>
                 <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl"
                     className="modal-edit"
-                    onHide={this.props.onClose}   
+                    onHide={this.props.onClose}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('NewInformHeadlines')}</Modal.Title>
@@ -325,7 +324,7 @@ export class NewInforms extends Component {
                     </Modal.Body>
                 </Modal>
             </>
-        )
+        );
     }
 }
 
@@ -336,4 +335,4 @@ const mapStateToProps = state => {
     return { allSettings, newInforms, gridParams, resultInsertInforms };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewInforms)
+export default connect(mapStateToProps, mapDispatchToProps)(NewInforms);

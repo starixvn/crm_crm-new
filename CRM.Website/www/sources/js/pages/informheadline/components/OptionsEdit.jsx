@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
@@ -8,28 +8,29 @@ export class OptionsEdit extends Component {
     constructor(props) {
         super(props);
         this.wrapperRef = React.createRef();
-    };
+    }
 
     componentDidMount() {
-        document.addEventListener('click', this.handleOutSideClick)
-    };
+        document.addEventListener('click', this.handleOutSideClick);
+    }
 
     componentWillUnmount() {
         document.removeEventListener('click', this.handleOutSideClick);
     }
 
-    handleOutSideClick = (event) => {
-        const { target } = event
+    handleOutSideClick = event => {
+        const { target } = event;
         if(this.wrapperRef && !this.wrapperRef.current.contains(target)){
             this.props.setShowOptions({show: false});
         }
     };
 
-    handleEditSearch = (titleId) =>{
+    handleEditSearch = titleId =>{
         this.props.setShowOptions({show: false});
         this.props.setShowEditSearchInform({show: true, titleId: titleId});
     };
-    handleRemovedAccountLogs = (titleId) =>{
+
+    handleRemovedAccountLogs = titleId =>{
         const params = {
             titleId: titleId,
             pageIndex: 1,
@@ -40,7 +41,8 @@ export class OptionsEdit extends Component {
         this.props.getRemovedAccountLogs(params);
         this.props.setShowRemovedLogs({show: true});
     };
-    handleCloseCase = (titleId) =>{
+
+    handleCloseCase = titleId =>{
         const params = {
             titleId: titleId,
             statusType: true
@@ -49,7 +51,8 @@ export class OptionsEdit extends Component {
         this.props.updateInformStatus(params);
         this.props.getInforms();
     };
-    handleOpenCase = (titleId) =>{
+
+    handleOpenCase = titleId =>{
         const params = {
             titleId: titleId,
             statusType: false
@@ -72,7 +75,7 @@ export class OptionsEdit extends Component {
                                     <div className="edit-menu-item">
                                         <i className="fa fa-pencil-square-o" style={{color: '#0789d1'}}></i>
                                         {LangHelper.getResource('EditNumberOfAccounts')}
-                                    </div>               
+                                    </div>      
                                 </li>
                                 <li className="divider"></li>
                                 <li onClick={() => this.handleRemovedAccountLogs(titleIdSearch)}>
@@ -113,8 +116,8 @@ export class OptionsEdit extends Component {
                 </ul>
             </div>
         );
-    };
-};
+    }
+}
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 

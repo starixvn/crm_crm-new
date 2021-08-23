@@ -16,7 +16,7 @@ export class FilterContactInforms extends PureComponent {
 
                 <Form onSubmit={onSearch} className="form-filter">
                     <Form.Group as={Row}>
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"10px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'10px'}}>
                             {LangHelper.getResource('Username')}
                         </Form.Label>
 
@@ -28,7 +28,7 @@ export class FilterContactInforms extends PureComponent {
                             />
                         </Col>
 
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"10px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'10px'}}>
                             {LangHelper.getResource('Status')}
                         </Form.Label>
 
@@ -54,7 +54,7 @@ export class FilterContactInforms extends PureComponent {
                 </Form>
             </>
         );
-    };
+    }
 }
 
 export default FilterContactInforms;

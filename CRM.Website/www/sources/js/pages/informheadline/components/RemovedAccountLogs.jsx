@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
@@ -14,8 +14,7 @@ export class RemovedAccountLogs extends Component {
             logId: logId,
             pageIndex: 1,
             pageSize: 100
-        };
-        
+        };   
         this.props.setGridParamRemovedLogDetails(params);
         this.props.getRemovedAccountLogDetails(params);
         this.props.setShowRemovedLogDetails({show: true});
@@ -28,7 +27,7 @@ export class RemovedAccountLogs extends Component {
                 <HeaderCell colWidth={15}>{LangHelper.getResource('EditedBy')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('NumberOfRemovedEditedAccounts')}</HeaderCell>
             </HeaderRow>
-        )
+        );
     };
 
     buildBody = () => {
@@ -87,7 +86,7 @@ export class RemovedAccountLogs extends Component {
                     className="modal-remove"
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('InformHeadlines') + ' - ' + LangHelper.getResource('RemovedEditedAccountsLogs')}</Modal.Title>
+                        <Modal.Title as="div">{`${LangHelper.getResource('InformHeadlines')} - ${LangHelper.getResource('RemovedEditedAccountsLogs')}`}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -111,8 +110,8 @@ export class RemovedAccountLogs extends Component {
                     </Modal.Footer>
                 </Modal>
             </>
-        )
-    };
+        );
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
@@ -122,4 +121,4 @@ const mapStateToProps = state => {
     return { removedAccountLogs, gridParamRemovedLogs };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RemovedAccountLogs)
+export default connect(mapStateToProps, mapDispatchToProps)(RemovedAccountLogs);

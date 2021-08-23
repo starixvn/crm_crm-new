@@ -3,7 +3,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 
-export class FilterSearchInforms extends PureComponent {   
+export class FilterSearchInforms extends PureComponent {
     renderOptions = (name, id, key) => <option key={key} value={id}>{name}</option>;
 
     render() {
@@ -20,8 +20,8 @@ export class FilterSearchInforms extends PureComponent {
                                 autoComplete="off"
                                 name="username"
                                 defaultValue={titleDetail.title}
-                                onChange={(event) => {
-                                    setFieldValue('title', event.target.value)
+                                onChange={event => {
+                                    setFieldValue('title', event.target.value);
                                 }}
                             />
                             {renderExportExcelText()}
@@ -29,7 +29,7 @@ export class FilterSearchInforms extends PureComponent {
                     </Form.Group>
 
                     <Form.Group as={Row}>
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"15px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'15px'}}>
                             {LangHelper.getResource('Currency')}
                         </Form.Label>
 
@@ -47,7 +47,7 @@ export class FilterSearchInforms extends PureComponent {
                             />
                         </Col>
 
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"15px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'15px'}}>
                             {LangHelper.getResource('Position')}
                         </Form.Label>
 
@@ -65,7 +65,7 @@ export class FilterSearchInforms extends PureComponent {
                             />
                         </Col>
 
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"15px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'15px'}}>
                             {LangHelper.getResource('Site')}
                         </Form.Label>
 
@@ -83,7 +83,7 @@ export class FilterSearchInforms extends PureComponent {
                             />
                         </Col>
 
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"15px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'15px'}}>
                             {LangHelper.getResource('VIP')}
                         </Form.Label>
 
@@ -101,7 +101,7 @@ export class FilterSearchInforms extends PureComponent {
                         </Col>
 
                         <Col sm="1" md="1" >
-                            <Button variant="primary" size="sm" style={{width: '65px'}} 
+                            <Button variant="primary" size="sm" style={{width: '65px'}}
                                 type="submit"
                                 onClick={() => {
                                     setFieldValue('submit',false);
@@ -114,7 +114,7 @@ export class FilterSearchInforms extends PureComponent {
 
                     </Form.Group>
 
-                    <Form.Group as={Row} style={{"alignItems":"center"}}>
+                    <Form.Group as={Row} style={{alignItems:'center'}}>
                         <Form.Label className="col-form-label" style={{"paddingLeft":"15px"}}>
                             {LangHelper.getResource('DirectAccount')}
                         </Form.Label>
@@ -124,7 +124,7 @@ export class FilterSearchInforms extends PureComponent {
                             onChange={event => setFieldValue('isHeadline', event.target.checked)}
                         />
 
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"2px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'2px'}}>
                             {LangHelper.getResource('Headline')}
                         </Form.Label>
 
@@ -133,7 +133,7 @@ export class FilterSearchInforms extends PureComponent {
                             onChange={event => setFieldValue('isNoGroup', event.target.checked)}
                         />
 
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"2px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'2px'}}>
                             {LangHelper.getResource('WithoutAnyGroup')}
                         </Form.Label>
 
@@ -142,14 +142,14 @@ export class FilterSearchInforms extends PureComponent {
                             onChange={event => setFieldValue('isExcludeIgnoredAccounts', event.target.checked)}
                         />
 
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"2px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'2px'}}>
                             {LangHelper.getResource('ExcludeIgnoredAccounts')}
                         </Form.Label>
                     </Form.Group>
                 </Form>
             </>
         );
-    };
+    }
 }
 
-export default FilterSearchInforms
+export default FilterSearchInforms;
