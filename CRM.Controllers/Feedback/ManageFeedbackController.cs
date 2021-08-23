@@ -1,18 +1,13 @@
 ﻿namespace CRM.Controllers.Feedback
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
-    using CRM.Core.Enumerables;
-    using CRM.Core.Extensions;
     using CRM.Core.Filters;
-    using CRM.Core.Models;
     using CRM.Criteria.Feedback.ManageFeedback;
     using CRM.Models.Feedback;
     using CRM.Models.Setting;
-    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
     using Fanex.NAP.Client.Configuration;
@@ -48,23 +43,23 @@
         public IActionResult Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            return View(true);
+            return View(isHost);
         }
 
         public async Task<ActionResult> GetAllSettings()
         {
             var customerTypes = settingService.GetAllCustomerTypes();
-            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.ActiveAndInactive);
-            var mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.ActiveAndInactive);
-            var subCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.ActiveAndInactive);
-            var communications = await settingService.GetCommunicationToolAsync(SettingConstants.ActiveAndInactive, true);
+            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response);
+            var mainCategories = await settingService.GetMainCategoryAsync();
+            var subCategories = await settingService.GetSubCategoryAsync();
+            var communications = await settingService.GetCommunicationToolAsync(isIncludeNA:true);
             var status = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var settings = new
             {
                 CustomerTypes = customerTypes,
                 Responses = responses,
                 MainCategories = mainCategories,
-                subCategories = subCategories,
+                SubCategories = subCategories,
                 Communications = communications,
                 Statuses = status
             };

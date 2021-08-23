@@ -40,7 +40,7 @@ export class EditMultipleLogs extends Component {
         super(props);
         this.state = {
             feedbackArr: props.feedbackArr,
-            communication :null,
+            communication: null,
             communicationToolOptions: [],
             mainCategoryOptions: [],
             subCategoryOptions: [],
@@ -117,7 +117,6 @@ export class EditMultipleLogs extends Component {
                 };
             });
 
-
             this.setState({
                 communication: this.initFormik(data.communicationLogs, data.settings),
                 settings: data.settings,
@@ -136,11 +135,11 @@ export class EditMultipleLogs extends Component {
 
     getCommunicationSettings = (communicationLog, settings) => {
         const communicationLogSettings = communicationLog.settings;
-        let siteInfos = [];
-        
+        const siteInfos = [];
+
         settings.sites.forEach(site => {
             const siteFilter = site.childSites.filter(item => item.id === communicationLog.siteId);
-            if(siteFilter.length > 0){
+            if (siteFilter.length > 0) {
                 siteInfos.push(siteFilter[0]);
             }
         });
@@ -153,33 +152,33 @@ export class EditMultipleLogs extends Component {
             selectedMainCategoryIds = [],
             selectedSubCategoryIds = [];
         communicationLogSettings.forEach(x => {
-        switch (x.settingType) {
-            case 'Station':
-                if (x.settingId !== settings.extensionNA?.id) {
-                    selectedExtensionIds.push(x.settingId);
-                }
-                break;
-            case 'Communication':
-                if (x.settingId !== settings.communicationToolNA?.id) {
-                    selectedCommunicationToolIds.push(x.settingId);
-                }
-                break;
-            case 'Category':
-                selectedMainCategoryIds.push(x.settingId);
-                selectedSubCategoryIds.push(x.subSettingId);
-                break;
-            case 'Product':
-                if (x.settingId !== settings.productNA?.id) {
-                    selectedProductIds.push(x.settingId);
-                }
-                if (x.subSettingId !== settings.subProductNA?.id) {
-                    selectedSubProductIds.push(x.subSettingId);
-                }
-                if (x.subSettingIdLevel3 !== settings.bettypeNA?.id) {
-                    selectedBetTypeIds.push(x.subSettingIdLevel3);
-                }
-                break;
-        }
+            switch (x.settingType) {
+                case 'Station':
+                    if (x.settingId !== settings.extensionNA?.id) {
+                        selectedExtensionIds.push(x.settingId);
+                    }
+                    break;
+                case 'Communication':
+                    if (x.settingId !== settings.communicationToolNA?.id) {
+                        selectedCommunicationToolIds.push(x.settingId);
+                    }
+                    break;
+                case 'Category':
+                    selectedMainCategoryIds.push(x.settingId);
+                    selectedSubCategoryIds.push(x.subSettingId);
+                    break;
+                case 'Product':
+                    if (x.settingId !== settings.productNA?.id) {
+                        selectedProductIds.push(x.settingId);
+                    }
+                    if (x.subSettingId !== settings.subProductNA?.id) {
+                        selectedSubProductIds.push(x.subSettingId);
+                    }
+                    if (x.subSettingIdLevel3 !== settings.bettypeNA?.id) {
+                        selectedBetTypeIds.push(x.subSettingIdLevel3);
+                    }
+                    break;
+            }
         });
 
         return {
@@ -234,8 +233,7 @@ export class EditMultipleLogs extends Component {
             this.setState({ betTypeOptions: [] });
         }
     };
-   
-    
+
     onGetFeedbackSubjectTemplates = Site.debounce(async searchText => {
         if (searchText.length >= 2) {
             const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
@@ -247,10 +245,10 @@ export class EditMultipleLogs extends Component {
         }
     });
 
-    handleCheckAll = (checks, setFieldValue, event) =>{
+    handleCheckAll = (checks, setFieldValue, event) => {
         for (const [key, value] of Object.entries(checks)) {
-            setFieldValue(`isCheck.${key}` , event.target.checked);
-          }
+            setFieldValue(`isCheck.${key}`, event.target.checked);
+        }
     };
 
     getExtensionParams = (selectedExtensionIds, extensionNA) => {
@@ -281,7 +279,7 @@ export class EditMultipleLogs extends Component {
                     />
                 </Form.Group>
                 <div className="panel-content">
-                    <Form.Control as="textarea" rows={3} className="shadow-none" 
+                    <Form.Control as="textarea" rows={3} className="shadow-none"
                         name="autoGenerated" disabled={!values.isCheck.autoGenerated}
                         value={values.autoGenerated} onChange={handleChange}
                     />
@@ -377,8 +375,8 @@ export class EditMultipleLogs extends Component {
     };
 
     renderMultipleLogs = (errors, values, handleChange, touched, setFieldValue) => {
-        const {settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
-            productOptions, subProductOptions, betTypeOptions, feedbackSubjectTemplates, editResult, sitesOptions
+        const { settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
+            productOptions, subProductOptions, betTypeOptions, feedbackSubjectTemplates, sitesOptions
         } = this.state;
 
         const { responses, languages, statuses, roles, countries, licenseeTypes } = settings;
@@ -402,7 +400,7 @@ export class EditMultipleLogs extends Component {
                             </Col>
                             <Col sm="2" md="2" className="select-all-field">
                                 <Form.Label>
-                                        {LangHelper.getResource('SelectAll')}
+                                    {LangHelper.getResource('SelectAll')}
                                 </Form.Label>
                                 <input className="ml-2" type='checkbox'
                                     name='isCheck.checkAll'
@@ -449,7 +447,7 @@ export class EditMultipleLogs extends Component {
                                     onChange={event => setFieldValue('isCheck.ext', event.target.checked)}
                                     checked={values.isCheck.ext}
                                 />
-                            </Col> 
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2" htmlFor="endTime">
@@ -511,7 +509,7 @@ export class EditMultipleLogs extends Component {
                                 />
                             </Col>
                             <Form.Label column sm="2" md="2" htmlFor="languageId" className="required">
-                                        {LangHelper.getResource('Language')}
+                                {LangHelper.getResource('Language')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
                                 <Form.Control as="select" size="sm" className={`shadow-none shadow-none select-width-sm mr-2 ${!values.isCheck.language ? 'disabled-filed' : ''}`}
@@ -557,7 +555,7 @@ export class EditMultipleLogs extends Component {
                                 />
                             </Col>
                             <Form.Label column sm="2" md="2" htmlFor="subCategoryIds" className="required">
-                                    {LangHelper.getResource('SubCate')}
+                                {LangHelper.getResource('SubCate')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
                                 <div className={`pr-2 ${!values.isCheck.subCategory ? 'disabled-filed' : ''}`}>
@@ -634,25 +632,25 @@ export class EditMultipleLogs extends Component {
                                 />
                             </Col>
                         </Form.Group>
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="2" md="2" htmlFor="statusId">
-                                    {LangHelper.getResource('Status')}
-                                </Form.Label>
-                                <Col sm="4" md="4" className="d-flex">
-                                    <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.status ? 'disabled-filed' : ''}`}
-                                        id="statusId" name="statusId"
-                                        value={values.statusId} onChange={handleChange}
-                                    >
-                                        {statuses.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
-                                    </Form.Control>
-                                    <input type='checkbox'
-                                        name='isCheck.status'
-                                        onChange={event => setFieldValue('isCheck.status', event.target.checked)}
-                                        checked={values.isCheck.status}
-                                    />
-                                </Col>
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="2" md="2" htmlFor="statusId">
+                                {LangHelper.getResource('Status')}
+                            </Form.Label>
+                            <Col sm="4" md="4" className="d-flex">
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.status ? 'disabled-filed' : ''}`}
+                                    id="statusId" name="statusId"
+                                    value={values.statusId} onChange={handleChange}
+                                >
+                                    {statuses.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
+                                </Form.Control>
+                                <input type='checkbox'
+                                    name='isCheck.status'
+                                    onChange={event => setFieldValue('isCheck.status', event.target.checked)}
+                                    checked={values.isCheck.status}
+                                />
+                            </Col>
                             <Form.Label column sm="2" md="2" htmlFor="betTypeIds">
-                                    {LangHelper.getResource('BetType')}
+                                {LangHelper.getResource('BetType')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
                                 <div className={`pr-2 ${!values.isCheck.product ? 'disabled-filed' : ''}`}>
@@ -703,7 +701,7 @@ export class EditMultipleLogs extends Component {
                                         options={sitesOptions}
                                         value={values.siteInfo.id}
                                         name={values.siteInfo.name}
-                                        OnChangeValue={value =>setFieldValue('siteInfo', value)}
+                                        OnChangeValue={value => setFieldValue('siteInfo', value)}
                                     />
                                 </div>
                                 <input type='checkbox'
@@ -711,7 +709,7 @@ export class EditMultipleLogs extends Component {
                                     onChange={event => setFieldValue('isCheck.site', event.target.checked)}
                                     checked={values.isCheck.site}
                                 />
-                             </Col>   
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2" htmlFor="countryId">
@@ -766,7 +764,7 @@ export class EditMultipleLogs extends Component {
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2" htmlFor="subject" className="required">
-                                    {LangHelper.getResource('Subject')}
+                                {LangHelper.getResource('Subject')}
                             </Form.Label>
                             <Col sm="8" md="8" className="d-flex">
                                 <div className={`${!values.isCheck.subject ? 'disabled-filed' : ''} w-100`}>
@@ -789,9 +787,9 @@ export class EditMultipleLogs extends Component {
                 {this.renderAutoGenerated(values, handleChange, setFieldValue)}
                 {this.renderDescription(values, touched, errors, setFieldValue)}
                 {this.renderSolution(values, touched, errors, setFieldValue)}
-                {this.renderReview(values, touched, errors, setFieldValue)} 
+                {this.renderReview(values, touched, errors, setFieldValue)}
             </Fragment>
-        ); 
+        );
     }
 
     renderForm = ({
@@ -827,12 +825,12 @@ export class EditMultipleLogs extends Component {
                 </Modal.Footer>
             </Form>
         );
-    }; 
+    };
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const params = {
-            listFeedbackId: this.state.feedbackArr.map(x=>x.feedbackId).join(' ,'),
+            listFeedbackId: this.state.feedbackArr.map(x => x.feedbackId).join(' ,'),
             countryId: values.countryId,
             isUpdateCountryId: values.isCheck.country,
             siteId: values.siteInfo.id,
@@ -876,9 +874,8 @@ export class EditMultipleLogs extends Component {
             noInquiries: values.noInquiries === '' ? 0 : parseInt(values.noInquiries, 10),
             isUpdateNoInquiries: values.isCheck.inquiry,
             updateReviewedMode: !this.state.hasReviewFeedbackPermission
-                 ? 0 : (!values.isReviewed ? 2 : (this.formikValues.review === values.review ? 0 : 1))
+                ? 0 : (!values.isReviewed ? 2 : (this.formikValues.review === values.review ? 0 : 1))
         };
-        console.log(params);
         this.confirmEditMultipleLogs(params);
     };
 
@@ -895,7 +892,6 @@ export class EditMultipleLogs extends Component {
 
         this.formik.setSubmitting(false);
     };
-
 
     handleConfirmEditMultipleLogs = () => {
         const { params } = this.state.confirmEditMultipleLogsDialog;
@@ -941,15 +937,12 @@ export class EditMultipleLogs extends Component {
             errors.languageId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language'));
         }
 
-        if(values.isCheck.mainCategory && categoriesParams.length === 0)
-        {
+        if (values.isCheck.mainCategory && categoriesParams.length === 0) {
             errors.mainCategoryIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory'));
             errors.subCategoryIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SubCategory'));
-            
         }
-        
-        if(values.isCheck.mainCategory)
-        {
+
+        if (values.isCheck.mainCategory) {
             const { mainCategories, subCategories } = this.state.settings;
             validateMainCategorySubCategory(errors, values.mainCategoryIds, values.subCategoryIds, mainCategories, subCategories);
         }
@@ -975,9 +968,9 @@ export class EditMultipleLogs extends Component {
 
     initFormik = (communicationLog, settings) => {
         const communicationSettings = this.getCommunicationSettings(communicationLog, settings);
-        const initSite = {id: 0, name:''};
+        const initSite = { id: 0, name: '' };
         return {
-            usernames: this.state.feedbackArr.map(x=>x.username).join(' ,'),
+            usernames: this.state.feedbackArr.map(x => x.username).join(' ,'),
             siteInfo: communicationSettings.siteInfos.length > 0 ? communicationSettings.siteInfos[0] : initSite,
             extensionIds: communicationSettings.extensionIds.join(','),
             communicationToolIds: communicationSettings.communicationToolIds.join(','),
@@ -1008,22 +1001,22 @@ export class EditMultipleLogs extends Component {
                 endTime: false,
                 ext: false,
                 response: false,
-                communication: false, 
-                language: false, 
-                mainCategory: false, 
-                subCategory: false, 
-                product: false, 
-                subProduct: false, 
-                status: false, 
-                betType: false, 
-                role: false, 
-                site: false, 
-                country: false, 
-                licensee: false, 
-                inquiry: false, 
-                subject: false, 
-                autoGenerated: false, 
-                remark: false, 
+                communication: false,
+                language: false,
+                mainCategory: false,
+                subCategory: false,
+                product: false,
+                subProduct: false,
+                status: false,
+                betType: false,
+                role: false,
+                site: false,
+                country: false,
+                licensee: false,
+                inquiry: false,
+                subject: false,
+                autoGenerated: false,
+                remark: false,
                 description: false,
                 solution: false,
                 reviewed: communicationLog.isReviewed
@@ -1032,7 +1025,7 @@ export class EditMultipleLogs extends Component {
     };
 
     render() {
-        const { communication, settings, confirmEditMultipleLogsDialog} = this.state;
+        const { communication, settings, confirmEditMultipleLogsDialog } = this.state;
         if (communication === null || settings === null) {
             return null;
         }

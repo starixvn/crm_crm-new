@@ -7,9 +7,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
-import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
-import { PAGING_SIZES } from '@jsroot/common/constants';
-
+import { MaximumDisplayRelatedCustomer, PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -19,19 +17,18 @@ export class DataGrid extends Component {
             checkedItems: new Map()
         };
     }
-    
     buildHeader = isHost => {
         const isCheckAll = this.isCheckAll();
         return (
             <HeaderRow>
                 {
                     isHost && <HeaderCell colWidth={10}>
-                    <div>
-                        <input type='checkbox' className='cursor-pointer'
-                            checked={isCheckAll}
-                            onChange={this.handleChangeCheckBoxAll}
-                        />
-                    </div>
+                        <div>
+                            <input type='checkbox' className='cursor-pointer'
+                                checked={isCheckAll}
+                                onChange={this.handleChangeCheckBoxAll}
+                            />
+                        </div>
                     </HeaderCell>
                 }
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Update')}</HeaderCell>
@@ -48,7 +45,7 @@ export class DataGrid extends Component {
     buildBody = isHost => {
         const { gridDataFeedbacks } = this.props;
         if (gridDataFeedbacks.data.length > 0) {
-            return gridDataFeedbacks.data.map((item, index) => this.renderRow(item, index));
+            return gridDataFeedbacks.data.map((item, index) => this.renderRow(item, index, isHost));
         }
         return [
             <Row key='body-nodata' className="no-data" >
@@ -57,23 +54,23 @@ export class DataGrid extends Component {
         ];
     };
 
-    isCheckAll = () =>{
-        if(this.props.gridDataFeedbacks.data.length === 0){
+    isCheckAll = () => {
+        if (this.props.gridDataFeedbacks.data.length === 0) {
             return false;
         }
-        return Array.from(this.state.checkedItems.values()).filter(x =>x === true).length === this.props.gridDataFeedbacks.data.length;
-    }
+        return Array.from(this.state.checkedItems.values()).filter(x => x === true).length === this.props.gridDataFeedbacks.data.length;
+    };
 
     handleGroupCategory = filterCategory => {
-        const groupCategory = filterCategory.reduce( (category, currentValue) => {
+        const groupCategory = filterCategory.reduce((category, currentValue) => {
             const CategorySetting = category.find(item => currentValue.settingId === item.settingId);
-            if(CategorySetting){
+            if (CategorySetting) {
                 CategorySetting.subSettingId = [...CategorySetting.subSettingId, currentValue.subSettingId];
-            }else{
-                category.push({settingId: currentValue.settingId, subSettingId: [currentValue.subSettingId]});
+            } else {
+                category.push({ settingId: currentValue.settingId, subSettingId: [currentValue.subSettingId] });
             }
             return category;
-        },[]);
+        }, []);
         return groupCategory;
     };
 
@@ -82,15 +79,15 @@ export class DataGrid extends Component {
         const filterCategories = item.settings.filter(el => el.settingType === 'Category');
         const groupCategory = this.handleGroupCategory(filterCategories);
 
-        return groupCategory.map((value,key) => {
+        return groupCategory.map((value, key) => {
             const filterMainCategory = mainCategories.find(el => el.settingId === value.settingId);
             return (
                 <div>
                     <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
                     {
-                        value.subSettingId.map((subId,index) => {
+                        value.subSettingId.map((subId, index) => {
                             const filterSubCategory = filterMainCategory.childSettings.find(el => el.subCategoryId === subId);
-                            return(
+                            return (
                                 <div key={index} className="font-italic ml-3 py-1">{filterSubCategory.name}</div>
                             );
                         })
@@ -106,62 +103,59 @@ export class DataGrid extends Component {
 
     renderRelatedCustomer = item => {
         const totalItems = item.length;
-        if(totalItems > MaximumDisplayRelatedCustomer){
-            return(
+        if (totalItems > MaximumDisplayRelatedCustomer) {
+            return (
                 <a href="#" onClick={() => this.handleOpenViewRelatedCustomer(item.join(', '))}>
                     {totalItems} customers
                 </a>
             );
-        }else{
+        } else {
             return item.join(', ');
         }
     };
 
-    handleChangeCheckbox = event =>{
+    handleChangeCheckbox = event => {
         const item = event.target.name;
         const isChecked = event.target.checked;
         this.setState(prevState => ({
             checkedItems: prevState.checkedItems.set(parseInt(item, 10), isChecked)
         }));
-    }
+    };
 
     handleChangeCheckBoxAll = event => {
-        const isChecked = event.target.checked;
-        let items = this.state.checkedItems;
-        if(isChecked){
+        const isChecked = event.target.checked; items
+        const items = this.state.checkedItems;
+        if (isChecked) {
             this.props.gridDataFeedbacks.data.forEach(element => {
-                if(!items.get(element.feedbackId))
-                {
+                if (!items.get(element.feedbackId)) {
                     items.set(element.feedbackId, true);
                 }
             });
 
-            this.setState({checkedItems: items});
-        }
-        else
-        {
+            this.setState({ checkedItems: items });
+        } else {
             const clearCheckedItems = new Map();
             this.setState({ checkedItems: clearCheckedItems });
         }
-    }
+    };
 
-    renderRow = (item, index) => {
+    renderRow = (item, index, isHost) => {
         const feedbackDateFormat = DateTimeService.toShortDateTimeFormat(item.feedbackDate);
         const createDateFormat = DateTimeService.toShortDateTimeFormat(item.createDate);
         const solveDateFormat = DateTimeService.toShortDateTimeFormat(item.solveDate);
         return (
-            <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${item.status === 'Pending' ? 'pending': ''}`}>
+            <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${item.status === 'Pending' ? 'pending' : ''}`}>
                 <Cell className='text-center'>
-                    <input type='checkbox' 
+                    <input type='checkbox'
                         name={item.feedbackId} key={item.feedbackId}
                         checked={this.state.checkedItems.get(item.feedbackId) || false}
                         onChange={this.handleChangeCheckbox}
                     />
                 </Cell>
                 {
-                    this.props.isHost &&
+                    isHost &&
                     <Cell className='text-center'>
-                        <span className="edit-feedback cursor-pointer pr-1 fa fa-pencil" onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}/>
+                        <span className="edit-feedback cursor-pointer pr-1 fa fa-pencil" onClick={() => this.handleEditNoOfInquiry(item.feedbackId)} />
                     </Cell>
                 }
                 <Cell className='text-center'>{item.feedbackId}</Cell>
@@ -226,7 +220,7 @@ export class DataGrid extends Component {
             subLengthSolution = isEscapesWordSolution ? 592 : 580;
 
         const tooltipDescription = description.length > subLength ? description.substring(0, subLength) + ' ... <br><br>' : description;
-        const tooltipSolution = solution.length > subLengthSolution  ? solution.substring(0, subLengthSolution) + ' ... <br><br>' : solution;
+        const tooltipSolution = solution.length > subLengthSolution ? solution.substring(0, subLengthSolution) + ' ... <br><br>' : solution;
 
         return (
             <OverlayTrigger
@@ -238,8 +232,8 @@ export class DataGrid extends Component {
                 }
             >
                 <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
-                        <span className="pr-1 fa fa-pencil-square-o" />
-                        <strong className='link-click cursor-pointer'>{item.subject}</strong>
+                    <span className="pr-1 fa fa-pencil-square-o" />
+                    <strong className='link-click cursor-pointer'>{item.subject}</strong>
                 </div>
             </OverlayTrigger>
         );
@@ -253,22 +247,22 @@ export class DataGrid extends Component {
         this.props.setGridParams(params);
     };
 
-    handleMultipleReviewAndStatus = () =>{
-        let feedbackSelected = [];
-        for(let [key, value] of this.state.checkedItems.entries()) {
-            if(value === true){
+    handleMultipleReviewAndStatus = () => {
+        const feedbackSelected = [];
+        for (const [key, value] of this.state.checkedItems.entries()) {
+            if (value === true) {
                 feedbackSelected.push(key);
             }
         }
 
         this.props.setEditMultipleLogStatusDialog({ show: true, feedbackIds: feedbackSelected });
-    }
+    };
 
-    handleMultipleEdit = () =>{
-        let feedbackArr = [];
-        for(let [key, value] of this.state.checkedItems.entries()) {
-            if(value === true){
-                const feedbackInfo = this.props.gridDataFeedbacks.data.filter(x=>x.feedbackId === key)[0];
+    handleMultipleEdit = () => {
+        const feedbackArr = [];
+        for (const [key, value] of this.state.checkedItems.entries()) {
+            if (value === true) {
+                const feedbackInfo = this.props.gridDataFeedbacks.data.filter(x => x.feedbackId === key)[0];
                 feedbackArr.push({
                     feedbackId: feedbackInfo.feedbackId,
                     username: feedbackInfo.username
@@ -277,10 +271,9 @@ export class DataGrid extends Component {
         }
 
         this.props.setEditMultipleLogDialog({ show: true, feedbackArr: feedbackArr });
-    }
+    };
 
-
-    renderTableTitle = gridDataFeedbacks =>{
+    renderTableTitle = gridDataFeedbacks => {
         const isClickableEditMultiple = Array.from(this.state.checkedItems.values()).includes(true);
         return (
             <div className='table-title d-flex justify-content-between align-items-center'>
@@ -295,18 +288,18 @@ export class DataGrid extends Component {
                     <span className={`cursor-pointer multiple-edit ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleReviewAndStatus}>
                         <span className='mx-1 fa fa-pencil-square-o' />
                         <strong className='link-click'>{LangHelper.getResource('MultipleReviewAndUpdateStatus')}</strong>
-                    </span> 
+                    </span>
                 </div>
                 {
                     gridDataFeedbacks.data.length > 0 && this.renderExportExcel()
                 }
             </div>
         );
-    }
+    };
 
     render() {
-        const {gridDataFeedbacks, isHost} = this.props;
-        if(!gridDataFeedbacks || !gridDataFeedbacks.data){
+        const { gridDataFeedbacks, isHost } = this.props;
+        if (!gridDataFeedbacks || !gridDataFeedbacks.data) {
             return null;
         }
 
