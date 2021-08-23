@@ -101,11 +101,11 @@ export class EditMultipleLogs extends Component {
                 };
             });
             const subProducts = data.settings.subProducts.filter(item => communicationSettings.productIds.includes(item.parentId) && item.parentId !== 0);
-            const subProductOptions = subProducts.map(item => {
+            const subProductOptions = subProducts.map(sub => {
                 return {
-                    id: item.id,
-                    value: item.value,
-                    checked: communicationSettings.productIds.includes(item.id)
+                    id: sub.id,
+                    value: sub.value,
+                    checked: communicationSettings.productIds.includes(sub.id)
                 };
             });
             const bettypes = data.settings.bettypes.filter(item => communicationSettings.subProductIds.includes(item.parentId) && item.parentId !== 0);
@@ -153,20 +153,6 @@ export class EditMultipleLogs extends Component {
             selectedSubCategoryIds = [];
         communicationLogSettings.forEach(x => {
             switch (x.settingType) {
-                case 'Station':
-                    if (x.settingId !== settings.extensionNA?.id) {
-                        selectedExtensionIds.push(x.settingId);
-                    }
-                    break;
-                case 'Communication':
-                    if (x.settingId !== settings.communicationToolNA?.id) {
-                        selectedCommunicationToolIds.push(x.settingId);
-                    }
-                    break;
-                case 'Category':
-                    selectedMainCategoryIds.push(x.settingId);
-                    selectedSubCategoryIds.push(x.subSettingId);
-                    break;
                 case 'Product':
                     if (x.settingId !== settings.productNA?.id) {
                         selectedProductIds.push(x.settingId);
@@ -176,6 +162,20 @@ export class EditMultipleLogs extends Component {
                     }
                     if (x.subSettingIdLevel3 !== settings.bettypeNA?.id) {
                         selectedBetTypeIds.push(x.subSettingIdLevel3);
+                    }
+                    break;
+                case 'Category':
+                    selectedMainCategoryIds.push(x.settingId);
+                    selectedSubCategoryIds.push(x.subSettingId);
+                    break;
+                case 'Communication':
+                    if (x.settingId !== settings.communicationToolNA?.id) {
+                        selectedCommunicationToolIds.push(x.settingId);
+                    }
+                    break;
+                case 'Station':
+                    if (x.settingId !== settings.extensionNA?.id) {
+                        selectedExtensionIds.push(x.settingId);
                     }
                     break;
             }
@@ -193,17 +193,17 @@ export class EditMultipleLogs extends Component {
         };
     };
 
-    onChangeMainCategory = (setFieldValue, selectedCategoryIds, selectedSubCategoryIds, subject) => {
+    onChangeMainCategory = (setFieldValue, selectedCategories, selectedSubCategoryIds, subject) => {
         const settings = this.state.settings;
-        const tempSubject = getSubjectOnChangeCategories(selectedCategoryIds ? selectedCategoryIds.split(',') : [],
+        const subjectChange = getSubjectOnChangeCategories(selectedCategories ? selectedCategories.split(',') : [],
             subject,
             settings.mainCategories);
-        setFieldValue('mainCategoryIds', selectedCategoryIds);
-        setFieldValue('subject', tempSubject);
-        if (selectedCategoryIds) {
+        setFieldValue('mainCategoryIds', selectedCategories);
+        setFieldValue('subject', subjectChange);
+        if (selectedCategories) {
             const subCategoryIds = selectedSubCategoryIds.length > 0 ? selectedSubCategoryIds.split(',') : [];
-            const subCategories = getSubCategories(selectedCategoryIds.split(','), settings.subCategories, subCategoryIds, false);
-            this.setState({ subCategoryOptions: subCategories });
+            const subCategoryOptions = getSubCategories(selectedCategories.split(','), settings.subCategories, subCategoryIds, false);
+            this.setState({ subCategoryOptions });
         } else {
             this.setState({ subCategoryOptions: [] });
         }
@@ -374,13 +374,20 @@ export class EditMultipleLogs extends Component {
         );
     };
 
+    isDisabledField = checked => {
+        if(!checked){
+            return 'disabled-filed';
+        }
+        return '';
+    };
+
     renderMultipleLogs = (errors, values, handleChange, touched, setFieldValue) => {
         const { settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
             productOptions, subProductOptions, betTypeOptions, feedbackSubjectTemplates, sitesOptions
         } = this.state;
 
-        const { responses, languages, statuses, roles, countries, licenseeTypes } = settings;
         const disabled = 'disabled-filed';
+        const { responses, languages, statuses, roles, countries, licenseeTypes } = settings;
         return (
             <Fragment>
                 <div className="panel-group border-bottom-0">
@@ -414,7 +421,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('StartTime')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${!values.isCheck.startTime ? disabled : ''}`}>
+                                <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${this.isDisabledField(values.isCheck.startTime)}`}>
                                     <DatePicker timeInputLabel="Time:" showTimeInput
                                         selected={values.startTime}
                                         onChange={value => setFieldValue('startTime', value)}
@@ -430,7 +437,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Ext')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.ext ? disabled : ''}`}>
+                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.ext)}`}>
                                     <MultipleSelect
                                         hasAllOption={extensionOptions.length > 0}
                                         isAllTextShown={extensionOptions.length > 0}
@@ -454,7 +461,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('EndTime')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${!values.isCheck.endTime ? disabled : ''}`}>
+                                <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${this.isDisabledField(values.isCheck.endTime)}`}>
                                     <DatePicker timeInputLabel="Time:" showTimeInput
                                         selected={values.endTime}
                                         onChange={value => setFieldValue('endTime', value)}
@@ -470,7 +477,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Response')}
                             </Form.Label>
                             <Col sm="4" md="4" className='d-flex'>
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.response ? disabled : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.response)}`}
                                     id="responseId" name="responseId"
                                     value={values.responseId} onChange={handleChange}
                                     disabled={!values.isCheck.response}
@@ -489,7 +496,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Communication')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.communication ? disabled : ''}`}>
+                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.communication)}`}>
                                     <MultipleSelect
                                         isInvalid={touched.communicationToolIds && errors.communicationToolIds}
                                         dataSource={communicationToolOptions}
@@ -512,7 +519,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Language')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none shadow-none select-width-sm mr-2 ${!values.isCheck.language ? disabled : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.language)}`}
                                     isInvalid={touched.languageId && errors.languageId}
                                     id="languageId" name="languageId"
                                     value={values.languageId} onChange={handleChange}
@@ -531,7 +538,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('MainCategory')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.mainCategory ? disabled : ''}`}>
+                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.mainCategory)}`}>
                                     <MultipleSelect
                                         isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
                                         dataSource={mainCategoryOptions}
@@ -558,7 +565,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('SubCate')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.subCategory ? disabled : ''}`}>
+                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.subCategory)}`}>
                                     <MultipleSelect
                                         isInvalid={touched.subCategoryIds && errors.subCategoryIds}
                                         dataSource={subCategoryOptions}
@@ -584,7 +591,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Product')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.product ? disabled : ''}`}>
+                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.product)}`}>
                                     <MultipleSelect
                                         dataSource={productOptions}
                                         keyField='id' valueField='value'
@@ -611,7 +618,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('SubProduct')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.product ? disabled : ''}`}>
+                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.product)}`}>
                                     <MultipleSelect
                                         dataSource={subProductOptions}
                                         keyField='id' valueField='value'
@@ -637,7 +644,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Status')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.status ? disabled : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.status)}`}
                                     id="statusId" name="statusId"
                                     value={values.statusId} onChange={handleChange}
                                 >
@@ -653,7 +660,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('BetType')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${!values.isCheck.product ? disabled : ''}`}>
+                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.product)}`}>
                                     <MultipleSelect
                                         dataSource={betTypeOptions}
                                         keyField='id' valueField='value'
@@ -679,7 +686,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Role')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.role ? disabled : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.role)}`}
                                     id='roleId' name='roleId'
                                     value={values.roleId} onChange={handleChange}
                                 >
@@ -695,7 +702,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Site')}
                             </Form.Label>
                             <Col column sm="4" md="4" className="d-flex">
-                                <div className={`mr-2 select-width-sm ${!values.isCheck.site ? disabled : ''}`}>
+                                <div className={`mr-2 select-width-sm ${this.isDisabledField(values.isCheck.site)}`}>
                                     <SelectWithSearch
                                         className='basic-single'
                                         options={sitesOptions}
@@ -716,7 +723,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Country')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.country ? disabled : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.country)}`}
                                     id="countryId" name="countryId"
                                     value={values.countryId} onChange={handleChange}
                                 >
@@ -732,7 +739,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('LicenseeType')}
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${!values.isCheck.licensee ? disabled : ''}`}
+                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.licensee)}`}
                                     id="licenseeId" name="licenseeId"
                                     value={values.licenseeId} onChange={handleChange}
                                 >
@@ -752,7 +759,7 @@ export class EditMultipleLogs extends Component {
                             <Col sm="4" md="4" className="d-flex">
                                 <Form.Control size="sm" type="number" min={1} max={3200}
                                     value={values.noInquiries} id="noInquiries" name="noInquiries"
-                                    className={`shadow-none select-width-sm mr-2 ${!values.isCheck.inquiry ? disabled : ''}`} autoComplete="off"
+                                    className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.inquiry)}`} autoComplete="off"
                                     onInput={validateNoOfInquiry} onChange={handleChange}
                                 />
                                 <input type='checkbox'
@@ -767,7 +774,7 @@ export class EditMultipleLogs extends Component {
                                 {LangHelper.getResource('Subject')}
                             </Form.Label>
                             <Col sm="8" md="8" className="d-flex">
-                                <div className={`${!values.isCheck.subject ? disabled : ''} w-100`}>
+                                <div className={`${this.isDisabledField(values.isCheck.subject)} w-100`}>
                                     <AutoComplete isInvalid={touched.subject && errors.subject}
                                         value={values.subject}
                                         options={feedbackSubjectTemplates} displayField="subject"
@@ -881,16 +888,14 @@ export class EditMultipleLogs extends Component {
     reviewMode = values => {
         if (!this.state.hasReviewFeedbackPermission) {
             return 0;
-        }
-        else {
+        } else {
             if (!values.isReviewed) {
                 return 2;
-            }
-            else {
+            } else {
                 return this.formikValues.review === values.review ? 0 : 1;
             }
         }
-    }
+    };
 
     confirmEditMultipleLogs = params => {
         this.setState({
@@ -918,9 +923,8 @@ export class EditMultipleLogs extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('MultipleLogs/EditMultipleLogs');
         await DataService.postDataAsync(url, params).then(response => {
-            const data = response.data;
-            if (data.isSuccessful) {
-                this.setState({ editResult: data });
+            if (response.data.isSuccessful) {
+                this.setState({ editResult: response.data });
                 setTimeout(() => {
                     this.props.onClose(true);
                 }, 3000);
@@ -964,6 +968,13 @@ export class EditMultipleLogs extends Component {
             errors.subject = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject'));
         }
 
+        const errorsMsg = this.validateDescriptionSolutionAndReview(values);
+        const errorsMerge = {...errors, ...errorsMsg};
+        return errorsMerge;
+    };
+
+    validateDescriptionSolutionAndReview = values =>{
+        const errors = {};
         if (values.isCheck.description && values.description === '') {
             errors.description = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Description'));
         }
@@ -972,12 +983,12 @@ export class EditMultipleLogs extends Component {
             errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Solution'));
         }
 
-        if (values.isCheck.reviewed && values.reviewed === '') {
-            errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Review'));
+        if (values.isCheck.reviewed && values.review === null) {
+            errors.review = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Review'));
         }
 
         return errors;
-    };
+    }
 
     initFormik = (communicationLog, settings) => {
         const communicationSettings = this.getCommunicationSettings(communicationLog, settings);
