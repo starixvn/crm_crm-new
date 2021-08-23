@@ -943,21 +943,19 @@ export class CreateForm extends Component {
                                     isInvalid={touched.subCategory && errors.subCategory}
                                     dataSource={subCategoriesOptions}
                                     keyField='subCategoryId'
-                                    valueField='name'
                                     onChange={(currentItem, selectedItemsKey) => {
                                         setFieldValue('subCategory', selectedItemsKey);
                                     }}
+                                    valueField='name'
                                 />
                             </Col>
                         </Form.Group>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Col sm="4" md="4">
+                    <Col md="4" sm="4">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="product">
-                                {LangHelper.getResource('Product')}
-                            </Form.Label>
+                            <Form.Label column sm="4" md="4" htmlFor="product">{LangHelper.getResource('Product')}</Form.Label>
                             <Col sm="8" md="8">
                                 <MultipleSelect
                                     valueField='value'

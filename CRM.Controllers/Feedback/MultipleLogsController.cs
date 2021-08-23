@@ -106,11 +106,10 @@
             if (commandResult.IsSuccessful)
             {
                 command.ReviewerId = string.IsNullOrEmpty(command.ReviewNote) ? 0 : napSession.UserId;
-            command.UserId = napSession.UserId;
-            command.IP = ClientIP;
-            command.IP = "ClientIP";
-            var result = await feedbackService.EditMultipleLogStatusesAsync(command);
-            return Json(result);
+                command.UserId = napSession.UserId;
+                command.IP = ClientIP;
+                var result = await feedbackService.EditMultipleLogStatusesAsync(command);
+                return Json(result);
             }
             return Json(commandResult);
         }
@@ -142,7 +141,7 @@
 
         public async Task<IActionResult> GetLogSettingByFeedbackId(int id)
         {
-            var communicationLogs = await feedbackService.GetLogByFeedbackIdAsync(id);
+            var communicationLog = await feedbackService.GetLogByFeedbackIdAsync(id);
             var settings = await GetAllSettingAsync();
             var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active);
             var sites = await settingService.GetAllSitesWithGroupAsync();
@@ -153,7 +152,7 @@
             settings.LicenseeTypes = licenseeTypes;
 
             var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
-            return Json(new { communicationLogs, settings, hasReviewFeedbackPermission });
+            return Json(new { communicationLog, settings, hasReviewFeedbackPermission });
         }
 
         [HttpPost]
@@ -162,7 +161,6 @@
             command.ReviewerId = !command.IsReviewed ? 0 : napSession.UserId;
             command.UserId = napSession.UserId;
             command.IP = ClientIP;
-            command.IP = "ClientIP";
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
             

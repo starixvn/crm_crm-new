@@ -87,7 +87,7 @@
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
             var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
-            var bytes = exportExcelService.ExportManageFeedbackReport(feedbacks, mainCategories);
+            var bytes = exportExcelService.ExportManageFeedbackReport(feedbacksOrder, mainCategories);
             string reportName = ViewResources.Feedback;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }

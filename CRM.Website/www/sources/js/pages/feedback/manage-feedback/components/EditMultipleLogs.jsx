@@ -60,7 +60,7 @@ export class EditMultipleLogs extends Component {
         const url = Site.resolveClientUrl(`MultipleLogs/GetLogSettingByFeedbackId/${id}`);
         await DataService.getDataAsync(url).then(response => {
             const data = response.data;
-            const communicationSettings = this.getCommunicationSettings(data.communicationLogs, data.settings);
+            const communicationSettings = this.getCommunicationSettings(data.communicationLog, data.settings);
             const extensionOptions = data.settings.extensions.map(item => {
                 return {
                     id: item.id,
@@ -117,7 +117,7 @@ export class EditMultipleLogs extends Component {
             });
 
             this.setState({
-                communication: this.initFormik(data.communicationLogs, data.settings),
+                communication: this.initFormik(data.communicationLog, data.settings),
                 settings: data.settings,
                 hasReviewFeedbackPermission: data.hasReviewFeedbackPermission,
                 extensionOptions,
