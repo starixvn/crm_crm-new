@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, Row, Collapse, Modal } from 'react-bootstrap';
 import { Formik } from 'formik';
-import moment from 'moment';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
@@ -15,9 +14,9 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import AutoComplete from '@jsroot/components/AutoComplete';
-import { validateNoOfInquiry, validateMainCategorySubCategory } from '../../common.functions';
+import { validateNoOfInquiry } from '../../common.functions';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-
+import { getInitFormik, getValidateFormik } from '../common.functions.js';
 import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams
@@ -374,6 +373,242 @@ export class EditMultipleLogs extends Component {
         );
     };
 
+    renderDropdownDetail = (errors, values, handleChange, touched, setFieldValue) =>{
+        const { settings, mainCategoryOptions, subCategoryOptions, productOptions, subProductOptions, betTypeOptions, sitesOptions } = this.state;
+        const { statuses, roles } = settings;
+        return (
+            <>
+            <Form.Group as={Row}>
+                <Form.Label column sm="2" md="2" htmlFor="mainCategoryIds" className="required">
+                    {LangHelper.getResource('MainCategory')}
+                </Form.Label>
+                <Col sm="4" md="4" className="d-flex">
+                    <div className={`pr-2 ${this.isDisabledField(values.isCheck.mainCategory)}`}>
+                        <MultipleSelect
+                            isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
+                            dataSource={mainCategoryOptions}
+                            keyField='mainCategoryID' valueField='name'
+                            hasAllOption={mainCategoryOptions.length > 0}
+                            isAllTextShown={mainCategoryOptions.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                this.onChangeMainCategory(setFieldValue, selectedItemsKey, values.subCategoryIds, values.subject);
+                            }}
+                        />
+                    </div>
+                    <input type='checkbox'
+                        name='isCheck.mainCategory'
+                        onChange={event => {
+                            setFieldValue('isCheck.mainCategory', event.target.checked);
+                            setFieldValue('isCheck.subCategory', event.target.checked);
+                        }}
+                        checked={values.isCheck.mainCategory}
+                    />
+                </Col>
+                <Form.Label column sm="2" md="2" htmlFor="subCategoryIds" className="required">
+                    {LangHelper.getResource('SubCate')}
+                </Form.Label>
+                <Col sm="4" md="4" className="d-flex">
+                    <div className={`pr-2 ${this.isDisabledField(values.isCheck.subCategory)}`}>
+                        <MultipleSelect
+                            isInvalid={touched.subCategoryIds && errors.subCategoryIds}
+                            dataSource={subCategoryOptions}
+                            keyField='subCategoryId' valueField='name'
+                            hasAllOption={subCategoryOptions.length > 0}
+                            isAllTextShown={subCategoryOptions.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                setFieldValue('subCategoryIds', selectedItemsKey);
+                            }}
+                        />
+                    </div>
+                    <input type='checkbox'
+                        disabled
+                        name='isCheck.subCategory'
+                        checked={values.isCheck.subCategory}
+                    />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+                <Form.Label column sm="2" md="2" htmlFor="product">
+                    {LangHelper.getResource('Product')}
+                </Form.Label>
+                <Col sm="4" md="4" className="d-flex">
+                    <div className={`pr-2 ${this.isDisabledField(values.isCheck.product)}`}>
+                        <MultipleSelect
+                            dataSource={productOptions}
+                            keyField='id' valueField='value'
+                            hasAllOption={productOptions.length > 0}
+                            isAllTextShown={productOptions.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                this.onChangeProduct(setFieldValue, selectedItemsKey, values.subProductIds);
+                            }}
+                        />
+                    </div>
+                    <input type='checkbox'
+                        name='isCheck.product'
+                        onChange={event => {
+                            setFieldValue('isCheck.product', event.target.checked);
+                            setFieldValue('isCheck.subProduct', event.target.checked);
+                            setFieldValue('isCheck.betType', event.target.checked);
+                        }}
+                        checked={values.isCheck.product}
+                    />
+                </Col>
+                <Form.Label column sm="2" md="2" htmlFor="subProductIds">
+                    {LangHelper.getResource('SubProduct')}
+                </Form.Label>
+                <Col sm="4" md="4" className="d-flex">
+                    <div className={`pr-2 ${this.isDisabledField(values.isCheck.product)}`}>
+                        <MultipleSelect
+                            dataSource={subProductOptions}
+                            keyField='id' valueField='value'
+                            hasAllOption={subProductOptions.length > 0}
+                            isAllTextShown={subProductOptions.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                this.onChangeSubProduct(setFieldValue, selectedItemsKey, values.betTypeIds);
+                            }}
+                        />
+                    </div>
+                    <input type='checkbox'
+                        name='isCheck.subProduct'
+                        disabled
+                        onChange={event => setFieldValue('isCheck.subProduct', event.target.checked)}
+                        checked={values.isCheck.subProduct}
+                    />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+                <Form.Label column sm="2" md="2" htmlFor="statusId">
+                    {LangHelper.getResource('Status')}
+                </Form.Label>
+                <Col sm="4" md="4" className="d-flex">
+                    <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.status)}`}
+                        id="statusId" name="statusId"
+                        value={values.statusId} onChange={handleChange}
+                    >
+                        {statuses.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
+                    </Form.Control>
+                    <input type='checkbox'
+                        name='isCheck.status'
+                        onChange={event => setFieldValue('isCheck.status', event.target.checked)}
+                        checked={values.isCheck.status}
+                    />
+                </Col>
+                <Form.Label column sm="2" md="2" htmlFor="betTypeIds">
+                    {LangHelper.getResource('BetType')}
+                </Form.Label>
+                <Col sm="4" md="4" className="d-flex">
+                    <div className={`pr-2 ${this.isDisabledField(values.isCheck.product)}`}>
+                        <MultipleSelect
+                            dataSource={betTypeOptions}
+                            keyField='id' valueField='value'
+                            hasAllOption={betTypeOptions.length > 0}
+                            isAllTextShown={betTypeOptions.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                setFieldValue('betTypeIds', selectedItemsKey);
+                            }}
+                        />
+                    </div>
+                    <input type='checkbox'
+                        name='isCheck.betType'
+                        disabled
+                        onChange={event => setFieldValue('isCheck.betType', event.target.checked)}
+                        checked={values.isCheck.betType}
+                    />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+                <Form.Label column sm="2" md="2" htmlFor="roleId">
+                    {LangHelper.getResource('Role')}
+                </Form.Label>
+                <Col sm="4" md="4" className="d-flex">
+                    <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.role)}`}
+                        id='roleId' name='roleId'
+                        value={values.roleId} onChange={handleChange}
+                    >
+                        {roles.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
+                    </Form.Control>
+                    <input type='checkbox'
+                        name='isCheck.role'
+                        onChange={event => setFieldValue('isCheck.role', event.target.checked)}
+                        checked={values.isCheck.role}
+                    />
+                </Col>
+                <Form.Label column sm="2" md="2" htmlFor="siteInfo" >
+                    {LangHelper.getResource('Site')}
+                </Form.Label>
+                <Col column sm="4" md="4" className="d-flex">
+                    <div className={`mr-2 select-width-sm ${this.isDisabledField(values.isCheck.site)}`}>
+                        <SelectWithSearch
+                            className='basic-single'
+                            options={sitesOptions}
+                            value={values.siteInfo.id}
+                            name={values.siteInfo.name}
+                            OnChangeValue={value => setFieldValue('siteInfo', value)}
+                        />
+                    </div>
+                    <input type='checkbox'
+                        name='isCheck.site'
+                        onChange={event => setFieldValue('isCheck.site', event.target.checked)}
+                        checked={values.isCheck.site}
+                    />
+                </Col>
+            </Form.Group>
+            </>                            
+        );
+    };
+
+    renderSelectOptions = (values, handleChange, setFieldValue) =>{
+        const  {countries, licenseeTypes } = this.state.settings;
+        return(
+            <>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2" md="2" htmlFor="countryId">
+                        {LangHelper.getResource('Country')}
+                    </Form.Label>
+                    <Col sm="4" md="4" className="d-flex">
+                        <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.country)}`}
+                            id="countryId" name="countryId"
+                            value={values.countryId} onChange={handleChange}
+                        >
+                            {countries.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                        </Form.Control>
+                        <input type='checkbox'
+                            name='isCheck.country'
+                            onChange={event => setFieldValue('isCheck.country', event.target.checked)}
+                            checked={values.isCheck.country}
+                        />
+                    </Col>
+                    <Form.Label column sm="2" md="2" htmlFor="licenseeId">
+                        {LangHelper.getResource('LicenseeType')}
+                    </Form.Label>
+                    <Col sm="4" md="4" className="d-flex">
+                        <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.licensee)}`}
+                            id="licenseeId" name="licenseeId"
+                            value={values.licenseeId} onChange={handleChange}
+                        >
+                            {licenseeTypes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                        </Form.Control>
+                        <input type='checkbox'
+                            name='isCheck.licensee'
+                            onChange={event => setFieldValue('isCheck.licensee', event.target.checked)}
+                            checked={values.isCheck.licensee}
+                        />
+                    </Col>
+                </Form.Group>
+            </>
+        );
+    }
+
     isDisabledField = checked => {
         if(!checked){
             return 'disabled-filed';
@@ -382,12 +617,9 @@ export class EditMultipleLogs extends Component {
     };
 
     renderMultipleLogs = (errors, values, handleChange, touched, setFieldValue) => {
-        const { settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
-            productOptions, subProductOptions, betTypeOptions, feedbackSubjectTemplates, sitesOptions
-        } = this.state;
+        const { settings, extensionOptions, communicationToolOptions,  feedbackSubjectTemplates } = this.state;
 
-        const disabled = 'disabled-filed';
-        const { responses, languages, statuses, roles, countries, licenseeTypes } = settings;
+        const { responses, languages } = settings;
         return (
             <Fragment>
                 <div className="panel-group border-bottom-0">
@@ -533,225 +765,8 @@ export class EditMultipleLogs extends Component {
                                 />
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" htmlFor="mainCategoryIds" className="required">
-                                {LangHelper.getResource('MainCategory')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.mainCategory)}`}>
-                                    <MultipleSelect
-                                        isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
-                                        dataSource={mainCategoryOptions}
-                                        keyField='mainCategoryID' valueField='name'
-                                        hasAllOption={mainCategoryOptions.length > 0}
-                                        isAllTextShown={mainCategoryOptions.length > 0}
-                                        hasSearchBox isNAOption
-                                        maxDisplayItemCount={1}
-                                        onChange={(currentItem, selectedItemsKey) => {
-                                            this.onChangeMainCategory(setFieldValue, selectedItemsKey, values.subCategoryIds, values.subject);
-                                        }}
-                                    />
-                                </div>
-                                <input type='checkbox'
-                                    name='isCheck.mainCategory'
-                                    onChange={event => {
-                                        setFieldValue('isCheck.mainCategory', event.target.checked);
-                                        setFieldValue('isCheck.subCategory', event.target.checked);
-                                    }}
-                                    checked={values.isCheck.mainCategory}
-                                />
-                            </Col>
-                            <Form.Label column sm="2" md="2" htmlFor="subCategoryIds" className="required">
-                                {LangHelper.getResource('SubCate')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.subCategory)}`}>
-                                    <MultipleSelect
-                                        isInvalid={touched.subCategoryIds && errors.subCategoryIds}
-                                        dataSource={subCategoryOptions}
-                                        keyField='subCategoryId' valueField='name'
-                                        hasAllOption={subCategoryOptions.length > 0}
-                                        isAllTextShown={subCategoryOptions.length > 0}
-                                        hasSearchBox isNAOption
-                                        maxDisplayItemCount={1}
-                                        onChange={(currentItem, selectedItemsKey) => {
-                                            setFieldValue('subCategoryIds', selectedItemsKey);
-                                        }}
-                                    />
-                                </div>
-                                <input type='checkbox'
-                                    disabled
-                                    name='isCheck.subCategory'
-                                    checked={values.isCheck.subCategory}
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" htmlFor="product">
-                                {LangHelper.getResource('Product')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.product)}`}>
-                                    <MultipleSelect
-                                        dataSource={productOptions}
-                                        keyField='id' valueField='value'
-                                        hasAllOption={productOptions.length > 0}
-                                        isAllTextShown={productOptions.length > 0}
-                                        hasSearchBox isNAOption
-                                        maxDisplayItemCount={1}
-                                        onChange={(currentItem, selectedItemsKey) => {
-                                            this.onChangeProduct(setFieldValue, selectedItemsKey, values.subProductIds);
-                                        }}
-                                    />
-                                </div>
-                                <input type='checkbox'
-                                    name='isCheck.product'
-                                    onChange={event => {
-                                        setFieldValue('isCheck.product', event.target.checked);
-                                        setFieldValue('isCheck.subProduct', event.target.checked);
-                                        setFieldValue('isCheck.betType', event.target.checked);
-                                    }}
-                                    checked={values.isCheck.product}
-                                />
-                            </Col>
-                            <Form.Label column sm="2" md="2" htmlFor="subProductIds">
-                                {LangHelper.getResource('SubProduct')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.product)}`}>
-                                    <MultipleSelect
-                                        dataSource={subProductOptions}
-                                        keyField='id' valueField='value'
-                                        hasAllOption={subProductOptions.length > 0}
-                                        isAllTextShown={subProductOptions.length > 0}
-                                        hasSearchBox isNAOption
-                                        maxDisplayItemCount={1}
-                                        onChange={(currentItem, selectedItemsKey) => {
-                                            this.onChangeSubProduct(setFieldValue, selectedItemsKey, values.betTypeIds);
-                                        }}
-                                    />
-                                </div>
-                                <input type='checkbox'
-                                    name='isCheck.subProduct'
-                                    disabled
-                                    onChange={event => setFieldValue('isCheck.subProduct', event.target.checked)}
-                                    checked={values.isCheck.subProduct}
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" htmlFor="statusId">
-                                {LangHelper.getResource('Status')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.status)}`}
-                                    id="statusId" name="statusId"
-                                    value={values.statusId} onChange={handleChange}
-                                >
-                                    {statuses.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
-                                </Form.Control>
-                                <input type='checkbox'
-                                    name='isCheck.status'
-                                    onChange={event => setFieldValue('isCheck.status', event.target.checked)}
-                                    checked={values.isCheck.status}
-                                />
-                            </Col>
-                            <Form.Label column sm="2" md="2" htmlFor="betTypeIds">
-                                {LangHelper.getResource('BetType')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <div className={`pr-2 ${this.isDisabledField(values.isCheck.product)}`}>
-                                    <MultipleSelect
-                                        dataSource={betTypeOptions}
-                                        keyField='id' valueField='value'
-                                        hasAllOption={betTypeOptions.length > 0}
-                                        isAllTextShown={betTypeOptions.length > 0}
-                                        hasSearchBox isNAOption
-                                        maxDisplayItemCount={1}
-                                        onChange={(currentItem, selectedItemsKey) => {
-                                            setFieldValue('betTypeIds', selectedItemsKey);
-                                        }}
-                                    />
-                                </div>
-                                <input type='checkbox'
-                                    name='isCheck.betType'
-                                    disabled
-                                    onChange={event => setFieldValue('isCheck.betType', event.target.checked)}
-                                    checked={values.isCheck.betType}
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" htmlFor="roleId">
-                                {LangHelper.getResource('Role')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.role)}`}
-                                    id='roleId' name='roleId'
-                                    value={values.roleId} onChange={handleChange}
-                                >
-                                    {roles.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
-                                </Form.Control>
-                                <input type='checkbox'
-                                    name='isCheck.role'
-                                    onChange={event => setFieldValue('isCheck.role', event.target.checked)}
-                                    checked={values.isCheck.role}
-                                />
-                            </Col>
-                            <Form.Label column sm="2" md="2" htmlFor="siteInfo" >
-                                {LangHelper.getResource('Site')}
-                            </Form.Label>
-                            <Col column sm="4" md="4" className="d-flex">
-                                <div className={`mr-2 select-width-sm ${this.isDisabledField(values.isCheck.site)}`}>
-                                    <SelectWithSearch
-                                        className='basic-single'
-                                        options={sitesOptions}
-                                        value={values.siteInfo.id}
-                                        name={values.siteInfo.name}
-                                        OnChangeValue={value => setFieldValue('siteInfo', value)}
-                                    />
-                                </div>
-                                <input type='checkbox'
-                                    name='isCheck.site'
-                                    onChange={event => setFieldValue('isCheck.site', event.target.checked)}
-                                    checked={values.isCheck.site}
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" htmlFor="countryId">
-                                {LangHelper.getResource('Country')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.country)}`}
-                                    id="countryId" name="countryId"
-                                    value={values.countryId} onChange={handleChange}
-                                >
-                                    {countries.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-                                </Form.Control>
-                                <input type='checkbox'
-                                    name='isCheck.country'
-                                    onChange={event => setFieldValue('isCheck.country', event.target.checked)}
-                                    checked={values.isCheck.country}
-                                />
-                            </Col>
-                            <Form.Label column sm="2" md="2" htmlFor="licenseeId">
-                                {LangHelper.getResource('LicenseeType')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <Form.Control as="select" size="sm" className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(values.isCheck.licensee)}`}
-                                    id="licenseeId" name="licenseeId"
-                                    value={values.licenseeId} onChange={handleChange}
-                                >
-                                    {licenseeTypes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-                                </Form.Control>
-                                <input type='checkbox'
-                                    name='isCheck.licensee'
-                                    onChange={event => setFieldValue('isCheck.licensee', event.target.checked)}
-                                    checked={values.isCheck.licensee}
-                                />
-                            </Col>
-                        </Form.Group>
+                        {this.renderDropdownDetail(errors, values, handleChange, touched, setFieldValue)}
+                        {this.renderSelectOptions(values, handleChange, setFieldValue)}
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2" htmlFor="noInquiries">
                                 {LangHelper.getResource('NoOfInquiries')}
@@ -934,118 +949,13 @@ export class EditMultipleLogs extends Component {
         }).then(() => Site.unblockUI());
     };
 
-    validateFormik = values => {
-        const errors = {};
-        const categoriesParams = getCategoryParams(values.mainCategoryIds.split(','), values.subCategoryIds.split(','), this.state.settings.subCategories);
-        if (moment(values.startTime).isAfter(moment(values.endTime))) {
-            errors.startTime = LangHelper.formatString(
-                LangHelper.getResource('FieldLessThanOrEqualTo'),
-                LangHelper.getResource('StartTime'),
-                LangHelper.getResource('EndTime'));
-        }
-
-        if (values.isCheck.communication && values.communicationToolIds.length === 0) {
-            errors.communicationToolIds = LangHelper.formatString(
-                LangHelper.getResource('FieldRequired'),
-                LangHelper.getResource('CommunicationTool'));
-        }
-
-        if (values.isCheck.language && parseInt(values.languageId, 10) === 0) {
-            errors.languageId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language'));
-        }
-
-        if (values.isCheck.mainCategory && categoriesParams.length === 0) {
-            errors.mainCategoryIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory'));
-            errors.subCategoryIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SubCategory'));
-        }
-
-        if (values.isCheck.mainCategory) {
-            const { mainCategories, subCategories } = this.state.settings;
-            validateMainCategorySubCategory(errors, values.mainCategoryIds, values.subCategoryIds, mainCategories, subCategories);
-        }
-
-        if (values.isCheck.subject && values.subject === '') {
-            errors.subject = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject'));
-        }
-
-        const errorsMsg = this.validateDescriptionSolutionAndReview(values);
-        const errorsMerge = {...errors, ...errorsMsg};
-        return errorsMerge;
-    };
-
-    validateDescriptionSolutionAndReview = values =>{
-        const errors = {};
-        if (values.isCheck.description && values.description === '') {
-            errors.description = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Description'));
-        }
-
-        if (values.isCheck.solution && values.solution === '') {
-            errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Solution'));
-        }
-
-        if (values.isCheck.reviewed && values.review === null) {
-            errors.review = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Review'));
-        }
-
-        return errors;
-    }
+    
 
     initFormik = (communicationLog, settings) => {
         const communicationSettings = this.getCommunicationSettings(communicationLog, settings);
-        const initSite = { id: 0, name: '' };
-        return {
-            usernames: this.state.feedbackArr.map(x => x.username).join(' ,'),
-            siteInfo: communicationSettings.siteInfos.length > 0 ? communicationSettings.siteInfos[0] : initSite,
-            extensionIds: communicationSettings.extensionIds.join(','),
-            communicationToolIds: communicationSettings.communicationToolIds.join(','),
-            productIds: communicationSettings.productIds.join(','),
-            subProductIds: communicationSettings.subProductIds.join(','),
-            betTypeIds: communicationSettings.betTypeIds.join(','),
-            mainCategoryIds: communicationSettings.mainCategoryIds.join(','),
-            subCategoryIds: communicationSettings.subCategoryIds.join(','),
-            roleId: communicationLog.roleId,
-            countryId: communicationLog.countryId,
-            licenseeId: communicationLog.licenseeType,
-            responseId: communicationLog.responseId,
-            languageId: communicationLog.languageId,
-            statusId: communicationLog.statusId,
-            noInquiries: communicationLog.noInquiries > 0 ? communicationLog.noInquiries : '',
-            subject: communicationLog.subject,
-            autoGenerated: communicationLog.autoField,
-            description: communicationLog.description,
-            solution: communicationLog.solution,
-            startTime: new Date(communicationLog.feedbackDate),
-            endTime: new Date(communicationLog.resolutionDate),
-            review: communicationLog.review,
-            reviewer: communicationLog.reviewer,
-            solveDate: DateTimeService.toShortDateTimeFormat(communicationLog.solveDate),
-            isCheck: {
-                checkAll: false,
-                startTime: false,
-                endTime: false,
-                ext: false,
-                response: false,
-                communication: false,
-                language: false,
-                mainCategory: false,
-                subCategory: false,
-                product: false,
-                subProduct: false,
-                status: false,
-                betType: false,
-                role: false,
-                site: false,
-                country: false,
-                licensee: false,
-                inquiry: false,
-                subject: false,
-                autoGenerated: false,
-                remark: false,
-                description: false,
-                solution: false,
-                reviewed: communicationLog.isReviewed
-            }
-        };
+        const usernames = this.state.feedbackArr.map(x => x.username).join(' ,');
+        const init = getInitFormik(communicationLog, communicationSettings, usernames);
+        return init;
     };
 
     render() {
@@ -1066,7 +976,7 @@ export class EditMultipleLogs extends Component {
                     <Formik
                         innerRef={el => this.formik = el}
                         initialValues={communication}
-                        validate={this.validateFormik}
+                        validate={values => getValidateFormik(values, settings)}
                         onSubmit={this.handleSubmit}
                     >
                         {this.renderForm}

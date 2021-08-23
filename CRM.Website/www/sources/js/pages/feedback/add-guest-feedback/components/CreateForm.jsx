@@ -963,14 +963,14 @@ export class CreateForm extends Component {
                                     valueField='value'
                                     hasAllOption={products.length > 0}
                                     isAllTextShown={products.length > 0}
-                                    hasSearchBox
-                                    isNAOption
                                     isInvalid={touched.product && errors.product}
                                     dataSource={products}
                                     keyField='id'
                                     onChange={(currentItem, selectedItemsKey) => {
                                         this.productHandleChange(currentItem, selectedItemsKey, setFieldValue, values.subProduct);
                                     }}
+                                    hasSearchBox
+                                    isNAOption
                                 />
                             </Col>
                         </Form.Group>
@@ -984,12 +984,12 @@ export class CreateForm extends Component {
                                 <MultipleSelect
                                     keyField='id'
                                     valueField='value'
-                                    hasAllOption={subProductOptions.length > 0}
-                                    isAllTextShown={subProductOptions.length > 0}
-                                    hasSearchBox
                                     isInvalid={touched.subProduct && errors.subProduct}
                                     dataSource={subProductOptions}
                                     isNAOption
+                                    hasAllOption={subProductOptions.length > 0}
+                                    isAllTextShown={subProductOptions.length > 0}
+                                    hasSearchBox
                                     onChange={(currentItem, selectedItemsKey) => {
                                         this.subProductHandleChange(currentItem, selectedItemsKey, setFieldValue, values.betType);
                                     }}
