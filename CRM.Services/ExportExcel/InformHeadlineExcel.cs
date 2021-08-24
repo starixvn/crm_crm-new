@@ -61,7 +61,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = inform.Uncontactable;
             worksheet.Cells[rowIndex, colIndex++].Value = inform.InternalAccount;
             worksheet.Cells[rowIndex, colIndex++].Value = inform.NeverTouch;
-            worksheet.Cells[rowIndex, colIndex++].Value = inform.KeptForReference;
+            worksheet.Cells[rowIndex, colIndex].Value = inform.KeptForReference;
 
             Color colOpen = ColorTranslator.FromHtml("#f0edc4");
             Color colClosed = ColorTranslator.FromHtml("#f2f2f2");
@@ -69,7 +69,7 @@
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colOpen);
             }
-            else
+            if (inform.Status == "Closed")
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colClosed);
             }

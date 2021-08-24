@@ -115,11 +115,14 @@
         public async Task<IActionResult> ExportContactInforms([FromBody] GetContactInformParam param)
         {
             IEnumerable<UpdateInform> contactInforms = await informHeadlineService.GetContactInformsAsync(param);
+            var informStatuses = await informHeadlineService.GetInformStatusesAsync();
+            var informStations = await settingService.GetStations();
+            var informProductStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline);
             InformTitleDetail titles = await baseService.GetDataEntityAsync<InformTitleDetail>(new GetInformTitleDetailCriteria
             {
                 TitleId = param.TitleId
             });
-            var bytes = excelService.ExportUpdateInformHeadline(contactInforms, informHeadlineService, settingService, titles.Title);
+            var bytes = excelService.ExportUpdateInformHeadline(contactInforms, informStatuses, informStations, informProductStatuses, titles.Title);
             string reportName = ViewResources.ContactInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
@@ -166,11 +169,14 @@
         public async Task<IActionResult> ExportSearchInforms([FromBody] GetSearchInformParam param)
         {
             IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInformsAsync(param);
+            var informStatuses = await informHeadlineService.GetInformStatusesAsync();
+            var informStations = await settingService.GetStations();
+            var informProductStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline);
             InformTitleDetail titles = await baseService.GetDataEntityAsync<InformTitleDetail>(new GetInformTitleDetailCriteria
             {
                 TitleId = param.TitleId
             });
-            var bytes = excelService.ExportUpdateInformHeadline(searchInforms, informHeadlineService, settingService, titles.Title);
+            var bytes = excelService.ExportUpdateInformHeadline(searchInforms, informStatuses, informStations, informProductStatuses, titles.Title);
             string reportName = ViewResources.UpdateInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
@@ -229,7 +235,8 @@
         public async Task<IActionResult> ExportNewInforms([FromBody] GetNewInformParam param)
         {
             var newInforms = await informHeadlineService.GetNewInformsAsync(param);
-            var bytes = excelService.ExportNewInformHeadline(newInforms.Item1, informHeadlineService, newInforms.Item2);
+            var informStatuses = await informHeadlineService.GetInformStatusesAsync();
+            var bytes = excelService.ExportNewInformHeadline(newInforms.Item1, informStatuses, newInforms.Item2);
             string reportName = ViewResources.NewInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }

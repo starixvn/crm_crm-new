@@ -1,9 +1,8 @@
 ﻿namespace CRM.Services.ExportExcel
 {
-    using CRM.Core.Constants;
     using CRM.Models.InformHeadline;
+    using CRM.Models.Setting;
     using CRM.Resources;
-    using CRM.Services.InformHeadline;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
     using System.Collections.Generic;
@@ -15,24 +14,28 @@
     public class UpdateInformHeadlineExcel : ExcelBase
     {
         private readonly IEnumerable<UpdateInform> updateInforms;
-        private readonly IInformHeadlineService informHeadlineService;
-        private readonly ISettingService settingService;
+        private readonly IEnumerable<InformStatus> informStatuses;
+        private readonly IEnumerable<Station> informStations;
+        private readonly IEnumerable<FeedbackStatus> informProductStatuses;
         private readonly string informHeadlineTitle;
 
         private const byte RowStartHeader = 6;
         private const byte RowStartBody = 7;
         private const byte TotalCols = 7;
+        private const byte RowStartTitle = 4;
 
         public UpdateInformHeadlineExcel(
             string templatePath,
             IEnumerable<UpdateInform> updateInforms,
-            IInformHeadlineService informHeadlineService,
-            ISettingService settingService,
+            IEnumerable<InformStatus> informStatuses,
+            IEnumerable<Station> informStations,
+            IEnumerable<FeedbackStatus> informProductStatuses,
             string informHeadlineTitle) : base(templatePath, 0, ViewResources.InformHeadlineCase)
         {
             this.updateInforms = updateInforms;
-            this.informHeadlineService = informHeadlineService;
-            this.settingService = settingService;
+            this.informStatuses = informStatuses;
+            this.informStations = informStations;
+            this.informProductStatuses = informProductStatuses;
             this.informHeadlineTitle = informHeadlineTitle;
         }
 
@@ -41,7 +44,7 @@
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
             worksheet.Cells[1, 1].Value = ViewResources.InformHeadlineCase;
-            worksheet.Cells[4, 1].Value = informHeadlineTitle;
+            worksheet.Cells[RowStartTitle, 1].Value = informHeadlineTitle;
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -70,7 +73,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = NormalizeLineBreaks(HttpUtility.HtmlDecode(updateInform.Remark));
             worksheet.Cells[rowIndex, colIndex++].Value = updateInform.Handler;
             worksheet.Cells[rowIndex, colIndex++].Value = GetStationNameAsync(updateInform.Extension);
-            worksheet.Cells[rowIndex, colIndex++].Value = GetProductStatusNameAsync(updateInform.ProductStatus);
+            worksheet.Cells[rowIndex, colIndex].Value = GetProductStatusNameAsync(updateInform.ProductStatus);
 
             Color colHeadline = ColorTranslator.FromHtml("#d0e6f4");
             Color colDirect = ColorTranslator.FromHtml("#f1f1f1");
@@ -78,7 +81,7 @@
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colHeadline);
             }
-            else
+            if (updateInform.GroupId <= 0)
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colDirect);
             }
@@ -105,7 +108,6 @@
             const int WidthLarge = 35;
             const int WidthNormal = 20;
             const int WidthSmall = 15;
-            const int RowHeight = 15;
             const int ColumnDirectAccount = 1;
             const int ColumnStatus = 2;
             const int ColumnUpdateTime = 3;
@@ -126,7 +128,6 @@
 
             for (var index = 0; index < updateInforms.Count(); index++)
             {
-                worksheet.Row(RowStartBody + index).Height = RowHeight;
                 DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalCols]);
             }
         }
@@ -143,21 +144,18 @@
 
         private string GetInformStatusNameAsync(int id)
         {
-            var informStatuses = informHeadlineService.GetInformStatusesAsync().Result;
             var item = informStatuses.FirstOrDefault(x => x.SettingId == id);
             return item == null ? string.Empty : item.SettingValue;
         }
 
         private string GetStationNameAsync(int id)
         {
-            var informStations = settingService.GetStations().Result;
             var item = informStations.FirstOrDefault(x => x.StationId == id);
             return item == null ? ViewResources.Symbol_NotApply : item.Name;
         }
 
         private string GetProductStatusNameAsync(int id)
         {
-            var informProductStatuses = settingService.GetStatusAsync(ViewTypeConstants.InformHeadline).Result;
             var item = informProductStatuses.FirstOrDefault(x => x.StatusId == id);
             return item == null ? ViewResources.Symbol_NotApply : item.Name;
         }

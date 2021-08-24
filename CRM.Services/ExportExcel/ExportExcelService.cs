@@ -32,9 +32,14 @@
 
         byte[] ExportInformHeadline(IEnumerable<InformHeadlineModel> informs);
 
-        byte[] ExportUpdateInformHeadline(IEnumerable<UpdateInform> updateInforms, IInformHeadlineService informHeadlineService, ISettingService settingService, string informHeadlineTitle);
+        byte[] ExportUpdateInformHeadline(
+            IEnumerable<UpdateInform> updateInforms, 
+            IEnumerable<InformStatus> informStatuses, 
+            IEnumerable<Station> informStations, 
+            IEnumerable<FeedbackStatus> informProductStatuses, 
+            string informHeadlineTitle);
 
-        byte[] ExportNewInformHeadline(IEnumerable<NewInform> newInforms, IInformHeadlineService informHeadlineService, string title);
+        byte[] ExportNewInformHeadline(IEnumerable<NewInform> newInforms, IEnumerable<InformStatus> informStatuses, string title);
 
         byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
     }
@@ -107,19 +112,22 @@
             return excel.Export();
         }
 
-        public byte[] ExportUpdateInformHeadline(IEnumerable<UpdateInform> updateInforms, IInformHeadlineService informHeadlineService, ISettingService settingService, string informHeadlineTitle)
+        public byte[] ExportUpdateInformHeadline(IEnumerable<UpdateInform> updateInforms,
+            IEnumerable<InformStatus> informStatuses, IEnumerable<Station> informStations,
+            IEnumerable<FeedbackStatus> informProductStatuses,
+            string informHeadlineTitle)
         {
             const string ExcelTemplatePath = "ExcelTemplates/UpdateInformHeadlines.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new UpdateInformHeadlineExcel(templatePath, updateInforms, informHeadlineService, settingService, informHeadlineTitle);
+            var excel = new UpdateInformHeadlineExcel(templatePath, updateInforms, informStatuses, informStations, informProductStatuses, informHeadlineTitle);
             return excel.Export();
         }
 
-        public byte[] ExportNewInformHeadline(IEnumerable<NewInform> newInforms, IInformHeadlineService informHeadlineService, string title)
+        public byte[] ExportNewInformHeadline(IEnumerable<NewInform> newInforms, IEnumerable<InformStatus> informStatuses, string title)
         {
             const string ExcelTemplatePath = "ExcelTemplates/NewInformHeadlines.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new NewInformHeadlineExcel(templatePath, newInforms, informHeadlineService, title);
+            var excel = new NewInformHeadlineExcel(templatePath, newInforms, informStatuses, title);
             return excel.Export();
         }
 

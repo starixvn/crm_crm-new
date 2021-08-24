@@ -5,28 +5,28 @@
     using System.Linq;
     using CRM.Models.InformHeadline;
     using CRM.Resources;
-    using CRM.Services.InformHeadline;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
     public class NewInformHeadlineExcel : ExcelBase
     {
         private readonly IEnumerable<NewInform> newInforms;
-        private readonly IInformHeadlineService informHeadlineService;
+        private readonly IEnumerable<InformStatus> informStatuses;
         private readonly string title;
 
         private const byte RowStartHeader = 6;
         private const byte RowStartBody = 7;
         private const byte TotalCols = 7;
+        private const byte RowStartTitle = 4;
 
         public NewInformHeadlineExcel(
             string templatePath,
             IEnumerable<NewInform> newInforms,
-            IInformHeadlineService informHeadlineService,
+            IEnumerable<InformStatus> informStatuses,
             string title) : base(templatePath, 0, ViewResources.InformHeadlineCase)
         {
             this.newInforms = newInforms;
-            this.informHeadlineService = informHeadlineService;
+            this.informStatuses = informStatuses;
             this.title = title;
         }
 
@@ -35,7 +35,7 @@
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
             worksheet.Cells[1, 1].Value = ViewResources.InformHeadlineCase;
-            worksheet.Cells[4, 1].Value = title;
+            worksheet.Cells[RowStartTitle, 1].Value = title;
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -64,7 +64,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = string.Empty;
             worksheet.Cells[rowIndex, colIndex++].Value = string.Empty;
             worksheet.Cells[rowIndex, colIndex++].Value = string.Empty;
-            worksheet.Cells[rowIndex, colIndex++].Value = string.Empty;
+            worksheet.Cells[rowIndex, colIndex].Value = string.Empty;
 
 
             Color colOpen = ColorTranslator.FromHtml("#d0e6f4");
@@ -73,7 +73,7 @@
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colOpen);
             }
-            else
+            if (newInform.GroupId <= 0)
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colClosed);
             }
@@ -107,7 +107,7 @@
             {
                 worksheet.Column(index).Width = WidthNormal;
             }
-            worksheet.Column(4).Width = WidthLargest;
+            worksheet.Column(RowStartTitle).Width = WidthLargest;
             for (var index = 0; index < newInforms.Count(); index++)
             {
                 worksheet.Row(RowStartBody + index).Height = RowHeight;
@@ -117,7 +117,6 @@
 
         private string GetInformStatusNameAsync(int id)
         {
-            var informStatuses = informHeadlineService.GetInformStatusesAsync().Result;
             var item = informStatuses.FirstOrDefault(x => x.SettingId == id);
             return item == null ? string.Empty : item.SettingValue;
         }

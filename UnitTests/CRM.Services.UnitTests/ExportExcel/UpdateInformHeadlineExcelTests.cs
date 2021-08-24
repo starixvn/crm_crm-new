@@ -2,9 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Drawing;
-    using CRM.Core.Services;
     using CRM.Models.InformHeadline;
-    using CRM.Services.InformHeadline;
+    using CRM.Models.Setting;
     using CRM.Services.UnitTests.ExportExcel.TestableClasses;
     using NSubstitute;
     using OfficeOpenXml;
@@ -15,8 +14,9 @@
     {
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
         private IEnumerable<UpdateInform> updateInforms;
-        private IInformHeadlineService informHeadlineService;
-        private ISettingService settingService;
+        private IEnumerable<InformStatus> informStatuses;
+        private IEnumerable<Station> informStations;
+        private IEnumerable<FeedbackStatus> informProductStatuses;
 
         private const byte RowStartHeader = 6;
         private const byte RowStartBody = 7;
@@ -200,13 +200,31 @@
                 new UpdateInform()
             };
 
-            var baseService = Substitute.For<IBaseService>();
-            var commonService = Substitute.For<ICommonService>();
+            informStatuses = new List<InformStatus>
+            {
+                new InformStatus
+                {
+                    SettingId = 1, SettingValue = "Done"
+                }
+            };
 
-            informHeadlineService = new InformHeadlineService(baseService, commonService);
-            settingService = Substitute.For<ISettingService>();
+            informStations = new List<Station>
+            {
+                new Station
+                {
+                    StationId = 1, Name = "5231"
+                }
+            };
 
-            return Substitute.For<UpdateInformHeadlineExcelTestable>(string.Empty, updateInforms, informHeadlineService, settingService , "test");
+            informProductStatuses = new List<FeedbackStatus>
+            {
+                new FeedbackStatus
+                {
+                    StatusId = 1, Name = "Enable"
+                }
+            };
+
+            return Substitute.For<UpdateInformHeadlineExcelTestable>(string.Empty, updateInforms, informStatuses, informStations, informProductStatuses , "test");
         }
     }
 }

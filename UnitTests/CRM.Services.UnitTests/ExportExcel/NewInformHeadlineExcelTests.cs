@@ -2,9 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Drawing;
-    using CRM.Core.Services;
     using CRM.Models.InformHeadline;
-    using CRM.Services.InformHeadline;
     using CRM.Services.UnitTests.ExportExcel.TestableClasses;
     using NSubstitute;
     using OfficeOpenXml;
@@ -15,7 +13,7 @@
     {
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
         private IEnumerable<NewInform> newInforms;
-        private IInformHeadlineService informHeadlineService;
+        private IEnumerable<InformStatus> informStatuses;
         private const byte RowStartHeader = 6;
         private const byte TotalCols = 7;
         private const int WidthLargest = 40;
@@ -168,12 +166,15 @@
                 new NewInform()
             };
 
-            var baseService = Substitute.For<IBaseService>();
-            var commonService = Substitute.For<ICommonService>();
+            informStatuses = new List<InformStatus>
+            {
+                new InformStatus
+                {
+                    SettingId = 1, SettingValue = "Done"
+                }
+            };
 
-            informHeadlineService = new InformHeadlineService(baseService, commonService);
-
-            return Substitute.For<NewInformHeadlineExcelTestable>(string.Empty, newInforms, informHeadlineService, "test");
+            return Substitute.For<NewInformHeadlineExcelTestable>(string.Empty, newInforms, informStatuses, "test");
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using CRM.Models.InformHeadline;
+    using CRM.Models.Setting;
     using CRM.Services.ExportExcel;
-    using CRM.Services.InformHeadline;
     using OfficeOpenXml;
 
     public class UpdateInformHeadlineExcelTestable : UpdateInformHeadlineExcel
@@ -11,9 +11,10 @@
         public UpdateInformHeadlineExcelTestable(
             string templatePath,
             IEnumerable<UpdateInform> updateInforms,
-            IInformHeadlineService informHeadlineService,
-            ISettingService settingService,
-            string informHeadlineTitle) : base(templatePath, updateInforms, informHeadlineService, settingService, informHeadlineTitle)
+            IEnumerable<InformStatus> informStatuses,
+            IEnumerable<Station> informStations,
+            IEnumerable<FeedbackStatus> informProductStatuses,
+            string informHeadlineTitle) : base(templatePath, updateInforms, informStatuses, informStations, informProductStatuses, informHeadlineTitle)
         {
         }
 

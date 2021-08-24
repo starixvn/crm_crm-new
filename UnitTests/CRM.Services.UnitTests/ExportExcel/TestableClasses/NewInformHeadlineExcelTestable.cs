@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using CRM.Models.InformHeadline;
     using CRM.Services.ExportExcel;
-    using CRM.Services.InformHeadline;
     using OfficeOpenXml;
 
     public class NewInformHeadlineExcelTestable : NewInformHeadlineExcel
@@ -11,8 +10,8 @@
         public NewInformHeadlineExcelTestable(
             string templatePath,
             IEnumerable<NewInform> newInforms,
-            IInformHeadlineService informHeadlineService,
-            string title) : base(templatePath, newInforms, informHeadlineService, title)
+            IEnumerable<InformStatus> informStatuses,
+            string title) : base(templatePath, newInforms, informStatuses, title)
         {
         }
         public void Public_RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)

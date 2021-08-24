@@ -3,6 +3,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.InformHeadline;
     using CRM.Models.InformHeadline;
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Web;
@@ -32,6 +33,8 @@
             this.baseService = baseService;
             this.commonService = commonService;        
         }
+
+        private readonly string formatTime = "{0:MMM dd, yyyy hh:mm:ss tt}";
 
         public async Task<IEnumerable<InformHeadlineModel>> GetInformAsync()
         {
@@ -76,7 +79,14 @@
             IEnumerable<UpdateInform> contactInforms = await baseService.GetDataAsync<UpdateInform>(criteria);
             foreach (var contactInform in contactInforms)
             {
-                contactInform.ClientUpdatedTime = contactInform.UpdatedTime.HasValue ? string.Format("{0:MMM dd, yyyy hh:mm:ss tt}", commonService.ConvertToClientDateTime((System.DateTime)contactInform.UpdatedTime)) : string.Empty;
+                if (contactInform.UpdatedTime.HasValue)
+                {
+                    contactInform.ClientUpdatedTime = string.Format(formatTime, commonService.ConvertToClientDateTime((DateTime)contactInform.UpdatedTime));
+                }
+                if (!contactInform.UpdatedTime.HasValue)
+                {
+                    contactInform.ClientUpdatedTime = string.Empty;
+                }
                 contactInform.Remark = HttpUtility.HtmlDecode(contactInform.Remark);
             }
             return contactInforms;
@@ -97,7 +107,14 @@
             IEnumerable<UpdateInform> updateInforms = await baseService.GetDataAsync<UpdateInform>(criteria);
             foreach (var updateInform in updateInforms)
             {
-                updateInform.ClientUpdatedTime = updateInform.UpdatedTime.HasValue ? string.Format("{0:MMM dd, yyyy hh:mm:ss tt}", commonService.ConvertToClientDateTime((System.DateTime)updateInform.UpdatedTime)) : string.Empty;
+                if (updateInform.UpdatedTime.HasValue)
+                {
+                    updateInform.ClientUpdatedTime = string.Format(formatTime, commonService.ConvertToClientDateTime((DateTime)updateInform.UpdatedTime));
+                }
+                if (!updateInform.UpdatedTime.HasValue)
+                {
+                    updateInform.ClientUpdatedTime = string.Empty;
+                }
                 updateInform.Remark = HttpUtility.HtmlDecode(updateInform.Remark);
             }
             return updateInforms;
@@ -105,7 +122,7 @@
 
         public async Task<(IEnumerable<RemovedAccountLog>,int)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param)
         {
-            var criteria = new GetRemovedAccountLogsCriteria()
+            var criteria = new GetRemovedAccountLogsCriteria
             {
                 TitleId = param.TitleId,
                 PageIndex = param.PageIndex,
@@ -114,7 +131,7 @@
             var result = await baseService.GetDataAsync<RemovedAccountLog>(criteria);
             foreach (var item in result)
             {
-                item.ClientLogDate = string.Format("{0:MMM dd, yyyy hh:mm:ss tt}", commonService.ConvertToClientDateTime(item.LogDate));
+                item.ClientLogDate = string.Format(formatTime, commonService.ConvertToClientDateTime(item.LogDate));
             }
 
             return (result, criteria.TotalRows);
@@ -122,7 +139,7 @@
 
         public async Task<(IEnumerable<RemovedAccountLogDetail>, int)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param)
         {
-            var criteria = new GetRemovedAccountLogDetailsCriteria()
+            var criteria = new GetRemovedAccountLogDetailsCriteria
             {
                 LogId = param.LogId,
                 PageIndex = param.PageIndex,
@@ -131,7 +148,7 @@
             var result = await baseService.GetDataAsync<RemovedAccountLogDetail>(criteria);
             foreach (var item in result)
             {
-                item.ClientUpdatedTime = string.Format("{0:MMM dd, yyyy hh:mm:ss tt}", commonService.ConvertToClientDateTime(item.UpdatedTime));
+                item.ClientUpdatedTime = string.Format(formatTime, commonService.ConvertToClientDateTime(item.UpdatedTime));
                 item.Remark = HttpUtility.HtmlDecode(item.Remark);
             }
 

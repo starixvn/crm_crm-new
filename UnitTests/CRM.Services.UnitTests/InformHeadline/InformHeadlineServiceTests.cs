@@ -76,7 +76,7 @@
         }
 
         [Fact]
-        public async Task GetContactInforms_WhenCalledReturnExpectResult()
+        public async Task GetContactInforms_WhenCalled_ReturnExpectResult()
         {
             // Arrange
             var contactInforms = fixture.Create<IEnumerable<UpdateInform>>();
@@ -102,7 +102,61 @@
         }
 
         [Fact]
+        public async Task GetContactInforms_WhenCalledTimeIsNull_ReturnExpectResult()
+        {
+            // Arrange
+            var contactInforms = fixture.Create<IEnumerable<UpdateInform>>();
+            var criteria = fixture.Create<GetContactInformsCriteria>();
+            var param = fixture.Create<GetContactInformParam>();
+            foreach (var contactInform in contactInforms)
+            {
+                contactInform.Remark = "&lt;";
+                contactInform.UpdatedTime = null;
+            }
+            var service = GetService();
+            baseService.GetDataAsync<UpdateInform>(Arg.Do<GetContactInformsCriteria>(x => criteria = x)).Returns(contactInforms);
+
+            // Act
+            var actual = await service.GetContactInformsAsync(param);
+
+            // Assert
+            Assert.Equal(contactInforms, actual);
+            Assert.All(actual, item =>
+            {
+                Assert.Equal("<", item.Remark);
+                Assert.Equal(string.Empty, item.ClientUpdatedTime);
+            });
+        }
+
+        [Fact]
         public async Task GetSearchInforms_WhenCalled_ReturnExpectResult()
+        {
+            // Arrange
+            var searchInforms = fixture.Create<IEnumerable<UpdateInform>>();
+            var criteria = fixture.Create<GetSearchInformsCriteria>();
+            var param = fixture.Create<GetSearchInformParam>();
+            foreach (var searchInform in searchInforms)
+            {
+                searchInform.Remark = "&lt;";
+                searchInform.UpdatedTime = null;
+            }
+            var service = GetService();
+            baseService.GetDataAsync<UpdateInform>(Arg.Do<GetSearchInformsCriteria>(x => criteria = x)).Returns(searchInforms);
+
+            // Act
+            var actual = await service.GetSearchInformsAsync(param);
+
+            // Assert
+            Assert.Equal(searchInforms, actual);
+            Assert.All(actual, item =>
+            {
+                Assert.Equal("<", item.Remark);
+                Assert.Equal(string.Empty, item.ClientUpdatedTime);
+            });
+        }
+
+        [Fact]
+        public async Task GetSearchInforms_WhenCalledTimeIsNull_ReturnExpectResult()
         {
             // Arrange
             var searchInforms = fixture.Create<IEnumerable<UpdateInform>>();
