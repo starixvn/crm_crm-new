@@ -40,7 +40,7 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getInforms();
-    };
+    }
 
     handleCloseShowEditContactInforms = () => {
         this.props.getInforms();
@@ -82,7 +82,7 @@ export class AppContainer extends Component {
                                 <OptionsEdit/>
                             }
                         </>
-                        
+    
                     )
                 }
                 {
@@ -119,8 +119,8 @@ export class AppContainer extends Component {
                 }
             </>
         );
-    };
-};
+    }
+}
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 

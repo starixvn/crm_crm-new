@@ -17,7 +17,7 @@ export class DataGridEdit extends PureComponent {
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Extension')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('ProductStatus')}</HeaderCell>
             </HeaderRow>
-        )
+        );
     };
 
     buildBody = () => {
@@ -39,14 +39,14 @@ export class DataGridEdit extends PureComponent {
 
     renderRow = (item, index, productStatuses, informSettings, onChange) => {
         return (
-            <Row key={index} className={item.groupId > 0 ? "free-grid-headline" : "free-grid-direct"}>
+            <Row key={index} className={item.groupId > 0 ? 'free-grid-headline' : 'free-grid-direct'}>
                 <Cell>{item.username}</Cell>
                 <Cell className='text-center'>
                     <Form.Control as="select" size="sm" className="shadow-none select-body"
                         name="informHeadlineStatusId"
                         defaultValue={item.informHeadlineStatusId}
-                        key={item.informHeadlineStatusId}  
-                        onChange={(event) => onChange(event,item.headlineId)}
+                        key={item.informHeadlineStatusId}
+                        onChange={event => onChange(event,item.headlineId)}
                     >
                         {
                             informSettings.statuses.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
@@ -60,7 +60,7 @@ export class DataGridEdit extends PureComponent {
                         defaultValue={item.remark}
                         key={item.remark}
                         style={{'height':'38px'}}
-                        onChange={(event) => onChange(event,item.headlineId)}
+                        onChange={event => onChange(event,item.headlineId)}
                     />
                 </Cell>
                 <Cell>{item.handler}</Cell>
@@ -70,7 +70,7 @@ export class DataGridEdit extends PureComponent {
                         name="extension"
                         defaultValue={item.extension}
                         key={item.extension}
-                        onChange={(event) => onChange(event,item.headlineId)}
+                        onChange={event => onChange(event,item.headlineId)}
                     >
                         {
                             informSettings.stations.map((value, key) => this.renderOptions(value.name, value.stationId, key))
@@ -83,7 +83,7 @@ export class DataGridEdit extends PureComponent {
                         name="productStatus"
                         defaultValue={item.productStatus}
                         key={item.productStatus}
-                        onChange={(event) => onChange(event,item.headlineId)}
+                        onChange={event => onChange(event,item.headlineId)}
                     >
                         {
                             productStatuses.map((value, key) => this.renderOptions(value.name, value.statusId, key))
@@ -122,7 +122,7 @@ export class DataGridEdit extends PureComponent {
                 {
                     values ?
                     (
-                        <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}} 
+                        <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}}
                             type="submit"
                             onClick={() => {
                                 setFieldValue('submit',true);
@@ -133,16 +133,16 @@ export class DataGridEdit extends PureComponent {
                         </Button>
                     ) :
                     (
-                        <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}} 
+                        <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}}
                             onClick={handleSubmit}
                         >
                             {LangHelper.getResource('Save')}
                         </Button>
                     )
-                }  
+                }
             </>
-        )
-    };
-};
+        );
+    }
+}
 
 export default DataGridEdit;

@@ -7,7 +7,6 @@ import { Button } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
-import OptionsEdit from './OptionsEdit';
 
 export class DataGrid extends Component {
 
@@ -28,7 +27,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={20}>{LangHelper.getResource('NeverTouch')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('KeptForReference')}</HeaderCell>
             </HeaderRow>
-        )
+        );
     };
 
     buildBody = () => {
@@ -48,7 +47,7 @@ export class DataGrid extends Component {
     };
 
     getPositionEdit = (event, titleId, status) => {
-        var position = event.target.getClientRects()[0];
+        const position = event.target.getClientRects()[0];
         this.props.setShowOptions({
             show: true,
             showOption: 'block',
@@ -69,7 +68,7 @@ export class DataGrid extends Component {
         return (
             <Row key={index} className={cssClass}>
                 <Cell className='text-center'>
-                    <span className="fa fa-pencil-square-o" onClick={(event) => this.getPositionEdit(event, item.titleId, item.status)}></span>                   
+                    <span className="fa fa-pencil-square-o" onClick={event => this.getPositionEdit(event, item.titleId, item.status)}></span>         
                 </Cell>
                 {
                     !contactPolicy.hasAttribute('none') ?
@@ -120,7 +119,7 @@ export class DataGrid extends Component {
         const { gridData } = this.props;
         if(!gridData){
             return null;
-        };
+        }
 
         return (
             <>
@@ -148,8 +147,8 @@ export class DataGrid extends Component {
                 }
             </>
         );
-    };
-};
+    }
+}
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
