@@ -36,7 +36,7 @@ export class DataGrid extends Component {
             <HeaderCell colWidth={23}>{LangHelper.getResource('Sender')}/{LangHelper.getResource('NotificationType')}</HeaderCell>
             <HeaderCell colWidth={12}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
             <HeaderCell colWidth={16}>{LangHelper.getResource('LetstalkName')}</HeaderCell>
-            <HeaderCell colWidth={29}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
+            <HeaderCell colWidth={26}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
             <HeaderCell colWidth={19}>{LangHelper.getResource('Recipient')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Title')}/{LangHelper.getResource('Content')}</HeaderCell>
             <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
@@ -44,7 +44,7 @@ export class DataGrid extends Component {
                 isHost && <HeaderCell colWidth={10}>{LangHelper.getResource('Action')}</HeaderCell>
             }
             {
-                isHost && <HeaderCell colWidth={7}>
+                isHost && <HeaderCell colWidth={10}>
                     <input
                         type='button'
                         value={LangHelper.getResource('Resend')}
