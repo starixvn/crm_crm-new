@@ -47,7 +47,7 @@ export class Filter extends Component {
         });
     };
 
-    handleChangeToDate = (fromDate, toDate) => {
+    handleChangeToDate = toDate => {
         this.setState({ toDate });
     };
 
@@ -125,7 +125,7 @@ export class Filter extends Component {
         const subCategoryOptions = this.filterSubCategories(mainCategoryOptions, mainCategoryId);
 
         return (
-            <Form className='form-filter' onSubmit={e => this.submitHandler(e)}>
+            <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="runningNumber">{LangHelper.getResource('RunningNumber')}</Form.Label>
@@ -153,7 +153,7 @@ export class Filter extends Component {
                                 selected={toDate}
                                 minDate={new Date(this.minToDate)}
                                 maxDate={new Date(this.maxToDate)}
-                                onChange={value => this.handleChangeToDate(fromDate, value)}
+                                onChange={value => this.handleChangeToDate(value)}
                             />
                         </div>
                     </Form.Group>

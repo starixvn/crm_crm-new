@@ -97,12 +97,12 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        settings, viewRelatedCustomerDialog, editNoOfInquiryDialog,
+        settings, editNoOfInquiryDialog,
         editFeedbackDialog, editMultipleLogStatusDialog, gridParams,
         editMultipleLogDialog
     } = state;
     return {
-        settings, viewRelatedCustomerDialog, editNoOfInquiryDialog,
+        settings, editNoOfInquiryDialog,
         editFeedbackDialog, editMultipleLogStatusDialog, gridParams,
         editMultipleLogDialog
     };

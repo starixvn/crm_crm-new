@@ -9,7 +9,6 @@ const manageFeedbackSlice = createSlice({
             pageSize: 100
         },
         gridDataFeedbacks: null,
-        viewRelatedCustomerDialog: { show: false },
         editFeedbackDialog: { show: false },
         editNoOfInquiryDialog: { show: false },
         editMultipleLogStatusDialog: { show: false },
@@ -24,9 +23,6 @@ const manageFeedbackSlice = createSlice({
         },
         setGridFeedbacks: (state, action) => {
             state.gridDataFeedbacks = action.payload;
-        },
-        setViewRelatedCustomerDialog: (state, action) => {
-            state.viewRelatedCustomerDialog = action.payload;
         },
         setEditFeedbackDialog: (state, action) => {
             state.editFeedbackDialog = action.payload;
@@ -49,11 +45,9 @@ export const {
     setAllSettings,
     setGridParams,
     setGridFeedbacks,
-    setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
     setEditNoOfInquiryDialog,
     setEditMultipleLogStatusDialog,
-    setEditMultipleLogStatuses,
     setEditMultipleLogDialog
 } = actions;
 
