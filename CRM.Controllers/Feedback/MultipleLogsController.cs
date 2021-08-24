@@ -108,7 +108,7 @@
                 command.ReviewerId = string.IsNullOrEmpty(command.ReviewNote) ? 0 : napSession.UserId;
                 command.UserId = napSession.UserId;
                 command.IP = ClientIP;
-                var result = await feedbackService.EditMultipleLogStatusesAsync(command);
+                var result = await baseService.ExecuteNonQueryAsync(command);
                 return Json(result);
             }
             return Json(commandResult);

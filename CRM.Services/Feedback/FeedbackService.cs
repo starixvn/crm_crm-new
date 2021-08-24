@@ -22,10 +22,6 @@
     {
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
 
-        Task<CommunicationLog> GetLogByFeedbackIdAsync(int feedbackId);
-
-        Task<CommandResult> EditMultipleLogStatusesAsync(EditMultipleLogStatusCommand command);
-
         Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command);
 
         Task<EditNoOfInquiry> GetNoOfInquiryByFeedbackIdAsync(int feedbackId);
@@ -37,6 +33,8 @@
         Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(GetDeletedFeedbackParam param);
 
         Task<IEnumerable<DeletedFeedback>> GetManageFeedbackAsync(ManageFeedbackCriteria criteria);
+
+        Task<CommunicationLog> GetLogByFeedbackIdAsync(int feedbackId);
     }
 
     public class FeedbackService : IFeedbackService
@@ -87,34 +85,6 @@
             }
 
             return feedback;
-        }
-
-        public async Task<CommunicationLog> GetLogByFeedbackIdAsync(int feedbackId)
-        {
-            var criteria = new GetLogByFeedbackIdCriteria
-            {
-                FeedbackId = feedbackId
-            };
-
-            var (communicationLogInfos, relatedCustomers, settingItems) = await baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomer, FeedbackSettingRelation>(criteria);
-            CommunicationLog communicationLog = null;
-
-            if (communicationLogInfos.Any())
-            {
-                communicationLog = communicationLogInfos.First();
-                communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
-                communicationLog.ResolutionDate = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
-                communicationLog.SolveDate = commonService.ConvertToClientDateTime(communicationLog.SolveDate);
-                communicationLog.RelatedCustomers = relatedCustomers;
-                communicationLog.Settings = settingItems.ToList();
-            }
-
-            return communicationLog;
-        }
-
-        public async Task<CommandResult> EditMultipleLogStatusesAsync(EditMultipleLogStatusCommand command)
-        {
-            return await baseService.ExecuteNonQueryAsync(command);
         }
 
         public async Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param)
@@ -196,6 +166,29 @@
         {
             IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
             return feedbacks;
+        }
+
+        public async Task<CommunicationLog> GetLogByFeedbackIdAsync(int feedbackId)
+        {
+            var criteria = new GetLogByFeedbackIdCriteria
+            {
+                FeedbackId = feedbackId
+            };
+
+            var (communicationLogInfos, relatedCustomers, settingItems) = await baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomer, FeedbackSettingRelation>(criteria);
+            CommunicationLog communicationLog = null;
+
+            if (communicationLogInfos.Any())
+            {
+                communicationLog = communicationLogInfos.First();
+                communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
+                communicationLog.ResolutionDate = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
+                communicationLog.SolveDate = commonService.ConvertToClientDateTime(communicationLog.SolveDate);
+                communicationLog.RelatedCustomers = relatedCustomers;
+                communicationLog.Settings = settingItems.ToList();
+            }
+
+            return communicationLog;
         }
     }
 }

@@ -31,6 +31,5 @@ namespace CRM.Criteria.Tests.Feedback.AddGuestFeedback
             // Assert
             Assert.True(actual);
         }
-
     }
 }

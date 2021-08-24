@@ -291,7 +291,7 @@
             };
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
-            feedbackService.EditMultipleLogStatusesAsync(Arg.Do<EditMultipleLogStatusCommand>(x => command = x)).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogStatusCommand>(x => command = x)).Returns(commandResult);
 
             // Act
             var result = await controller.EditMultipleLogStatuses(command);
@@ -322,7 +322,7 @@
             };
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
-            feedbackService.EditMultipleLogStatusesAsync(Arg.Do<EditMultipleLogStatusCommand>(x => command = x)).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogStatusCommand>(x => command = x)).Returns(commandResult);
 
             // Act
             var result = await controller.EditMultipleLogStatuses(command);

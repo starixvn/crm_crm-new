@@ -10,6 +10,9 @@
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
     using CRM.Criteria.Feedback.DeletedFeedback;
+    using CRM.Criteria.Feedback.ManageFeedback;
+    using CRM.Criteria.MultipleLogs;
+    using CRM.Models.CommunicationLogs;
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
@@ -248,6 +251,81 @@
             });
         }
 
+        #region GetCustomerFeedbackByIdAsync
+
+        [Fact]
+        public async Task GetLogByFeedbackIdAsync_CommunicationLogIsNotExist_ReturnNull()
+        {
+            // Arrange
+            var communicationLogInfos = new List<CommunicationLog>();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
+            var criteria = new GetLogByFeedbackIdCriteria();
+            var service = GetService();
+            baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomer, FeedbackSettingRelation>(
+                Arg.Do<GetLogByFeedbackIdCriteria>(x => criteria = x)).Returns((communicationLogInfos, relatedCustomers, settings));
+
+            // Act
+            var actual = await service.GetLogByFeedbackIdAsync(1);
+
+            // Assert
+            Assert.Null(actual);
+            Assert.Equal(1, criteria.FeedbackId);
+            commonService.DidNotReceive().ConvertToClientDateTime(Arg.Any<DateTime>());
+        }
+
+        [Fact]
+        public async Task GetLogByFeedbackIdAsync_CommunicationLog_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var date = fixture.Create<DateTime>();
+            var clientdate = fixture.Create<DateTime>();
+            var communicationLogs = new List<CommunicationLog>
+            {
+                new CommunicationLog
+                {
+                    FeedbackDate = date,
+                    ResolutionDate = date, SolveDate = date
+                }
+            };
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
+            var criteria = new GetLogByFeedbackIdCriteria();
+            var service = GetService();
+            baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomer, FeedbackSettingRelation>(
+                Arg.Do<GetLogByFeedbackIdCriteria>(x => criteria = x)).Returns((communicationLogs, relatedCustomers, settings));
+            commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
+
+            // Act
+            var actual = await service.GetLogByFeedbackIdAsync(1);
+
+            // Assert
+            Assert.Equal(communicationLogs.First(), actual);
+            Assert.Equal(clientdate, actual.FeedbackDate);
+            Assert.Equal(clientdate, actual.ResolutionDate);
+            Assert.Equal(clientdate, actual.SolveDate);
+            Assert.Equal(relatedCustomers, actual.RelatedCustomers);
+            Assert.Equal(settings, actual.Settings);
+        }
+
+        #endregion GetCustomerFeedbackByIdAsync
+
+        [Fact]
+        public async Task GetManageFeedbackAsync_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var service = GetService();
+            var feedbacks = fixture.Create<IEnumerable<DeletedFeedback>>();
+            var criteria = new ManageFeedbackCriteria();
+            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<ManageFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
+
+            // Act
+            var actual = await service.GetManageFeedbackAsync(criteria);
+
+            // Assert
+            Assert.Equal(feedbacks, actual);
+        }
+
         #region Helpers
 
         private FeedbackService GetService()
@@ -260,6 +338,6 @@
             return new FeedbackService(baseService, settingService, commonService, feedbackRepository);
         }
 
-        #endregion Helpers
+    #endregion Helpers
     }
 }

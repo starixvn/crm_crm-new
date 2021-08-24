@@ -240,7 +240,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(1, commandResult.Code);
-            Assert.Equal("You don't have permission to delete feedback.", commandResult.Message);
+            Assert.Equal("You don't have permission to update feedback.", commandResult.Message);
         }
 
         [Fact]
