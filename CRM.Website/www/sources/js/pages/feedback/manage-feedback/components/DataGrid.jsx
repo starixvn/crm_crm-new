@@ -97,10 +97,6 @@ export class DataGrid extends Component {
         });
     };
 
-    handleOpenViewRelatedCustomer = relatedCustomers => {
-        this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
-    };
-
     renderRelatedCustomer = item => {
         const totalItems = item.length;
         if (totalItems > MaximumDisplayRelatedCustomer) {

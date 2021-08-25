@@ -97,6 +97,32 @@ describe('AppContainer', () => {
         });
     });
 
+    describe('handleCloseMultipleEditLog ', () => {
+        it('should call exactly functions when close edit', () => {
+            // Arrange
+            const props = {
+                editFeedbackDialog: { show: false },
+                editNoOfInquiryDialog: { show: false },
+                editMultipleLogStatusDialog: { show: false },
+                editMultipleLogDialog: { show: true },
+                handleCloseMultipleEditLog : jest.fn(),
+                setEditMultipleLogDialog: jest.fn(),
+                getGridFeedbacks: jest.fn(),
+                gridParams: {},
+                settings:{statuses:[]}
+            };
+
+            // Act
+            const container = shallow(<AppContainer {...props}/>);
+            container.instance().handleCloseMultipleEditLog(true);
+           
+            // Assert
+            expect(props.setEditMultipleLogDialog).toHaveBeenCalledWith({ show: false });
+            expect(props.getGridFeedbacks).toHaveBeenCalledWith(props.gridParams);
+        });
+    });
+    
+
     describe('render', () => {
         it('should render correctly', () => {
             // Arrange
@@ -125,21 +151,5 @@ describe('AppContainer', () => {
             expect(container.find(DataGrid).length).toBe(1);
         });
     });
-
-    // describe('handleCloseViewRelatedCustomerDialog', () => {
-    //     it('should call exactly param', () => {
-    //         // Arrange
-    //         const props = {
-    //             setViewRelatedCustomerDialog: jest.fn()
-    //         }
-    //         const expectedParams = { show: false };
-
-    //         // Act
-    //         const container = shallow(<AppContainer {...props}/>);
-    //         container.instance().handleCloseViewRelatedCustomerDialog();
-
-    //         // Assert
-    //         expect(props.setViewRelatedCustomerDialog).toHaveBeenCalledWith(expectedParams);
-    //     });
-    // });
+    
 });

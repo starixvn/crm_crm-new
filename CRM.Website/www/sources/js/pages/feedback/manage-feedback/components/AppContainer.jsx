@@ -36,13 +36,6 @@ export class AppContainer extends Component {
         }
     };
 
-    handleCloseViewRelatedCustomerDialog = isSuccessful => {
-        this.props.setViewRelatedCustomerDialog({ show: false });
-        if (isSuccessful) {
-            this.props.getGridFeedbacks(this.props.gridParams);
-        }
-    };
-
     handleCloseMultipleEditStatusDialog = isSuccessful => {
         this.props.setEditMultipleLogStatusDialog({ show: false });
         if (isSuccessful) {

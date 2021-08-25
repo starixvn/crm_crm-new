@@ -55,7 +55,6 @@ export default class EditMultipleReviewAndStatus extends Component {
         const url = Site.resolveClientUrl('MultipleLogs/EditMultipleLogStatuses');
         await DataService.postDataAsync(url, params).then(response => {
             this.setState({ editResult: response.data });
-
             if (response.data.isSuccessful) {
                 setTimeout(() => {
                     this.props.onClose(true);
