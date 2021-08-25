@@ -203,7 +203,6 @@ export class NewInforms extends Component {
             });
             values.submit = true;
             return;
-        }
 
         if(values.submit){
             this.getTypeAccount(values);

@@ -257,7 +257,6 @@ export class EditSearchInforms extends Component {
             });
             values.submit = true;
             return;
-        }
 
         if(values.submit){
             this.getTypeAccount(values);

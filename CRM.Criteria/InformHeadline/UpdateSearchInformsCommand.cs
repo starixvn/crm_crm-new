@@ -79,10 +79,7 @@
             return xml;
         }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_InformHeadlineSearchUpd";
-        }
+        public override string GetSettingKey() => "Acc_CRM_InformHeadlineSearchUpd";
 
         public override bool IsValid() => true;
     }

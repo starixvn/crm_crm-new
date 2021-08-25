@@ -17,10 +17,7 @@
 
         public string IP { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_InformTitleStatusUpd";
-        }
+        public override string GetSettingKey() => "Acc_CRM_InformTitleStatusUpd";
 
         public override bool IsValid() => TitleId > 0;
     }

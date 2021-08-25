@@ -34,10 +34,7 @@
         [SpParam(Ignored = true)]
         public IEnumerable<UpdateInform> Informs { get; set; } = new List<UpdateInform>();
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_InformHeadlineIns";
-        }
+        public override string GetSettingKey() => "Acc_CRM_InformHeadlineIns";
 
         public override bool IsValid() => true;
     }
