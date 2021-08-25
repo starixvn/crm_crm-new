@@ -210,8 +210,8 @@ export class NewInforms extends Component {
 
             const informs = this.state.informs.map(item => {
                 if(item.remark){
-                    return {...item, remark: this.htmlDecode(item.remark)}
-                };
+                    return {...item, remark: this.htmlDecode(item.remark)};
+                }
                 return item;
             });
             const params = {
@@ -223,10 +223,10 @@ export class NewInforms extends Component {
                 typeAccount: values.typeAccount,
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 pageIndex: 1,
-                pageSize: 10000,     
+                pageSize: 10000,
                 informs: informs
             };
-            await this.props.insertInforms(params);     
+            await this.props.insertInforms(params);
             this.setAlert();
         }
     };

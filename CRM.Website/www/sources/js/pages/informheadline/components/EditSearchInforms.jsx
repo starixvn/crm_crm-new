@@ -278,12 +278,12 @@ export class EditSearchInforms extends Component {
                 sites: values.siteId,
                 isVip: parseInt(values.vipId),
                 typeAccount: values.typeAccount,
-                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,           
+                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 informs: resultInforms
-            }
-            await this.props.updateSearchInforms(params);   
+            };
+            await this.props.updateSearchInforms(params);
             this.setAlert();
-        };
+        }
     };
 
     onPaging = (pageIndex, pageSize) => {
@@ -324,8 +324,7 @@ export class EditSearchInforms extends Component {
             const oldInforms = prevState.informs;
             const element  = oldInforms.find(value => value.headlineId === item.headlineId);
 
-            if(element)
-            {
+            if(element){
                 Object.assign(element, {[name]: value});
                 return({informs: oldInforms});
             }else{

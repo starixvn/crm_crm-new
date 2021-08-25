@@ -75,7 +75,7 @@ export class OptionsEdit extends Component {
                                     <div className="edit-menu-item">
                                         <i className="fa fa-pencil-square-o" style={{color: '#0789d1'}}></i>
                                         {LangHelper.getResource('EditNumberOfAccounts')}
-                                    </div>      
+                                    </div>
                                 </li>
                                 <li className="divider"></li>
                                 <li onClick={() => this.handleRemovedAccountLogs(titleIdSearch)}>

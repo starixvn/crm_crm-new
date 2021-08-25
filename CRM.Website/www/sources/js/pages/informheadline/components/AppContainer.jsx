@@ -82,7 +82,7 @@ export class AppContainer extends Component {
                                 <OptionsEdit/>
                             }
                         </>
-    
+
                     )
                 }
                 {

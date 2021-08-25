@@ -136,8 +136,7 @@ export class EditContactInforms extends Component {
             const oldInforms = prevState.informs;
             const element  = oldInforms.find(value => value.headlineId === item.headlineId);
 
-            if(element)
-            {
+            if(element){
                 Object.assign(element, {[name]: value});
                 return({informs: oldInforms});
             }else{

@@ -14,7 +14,7 @@ export class RemovedAccountLogs extends Component {
             logId: logId,
             pageIndex: 1,
             pageSize: 100
-        };   
+        };
         this.props.setGridParamRemovedLogDetails(params);
         this.props.getRemovedAccountLogDetails(params);
         this.props.setShowRemovedLogDetails({show: true});

@@ -115,7 +115,7 @@ export class FilterSearchInforms extends PureComponent {
                     </Form.Group>
 
                     <Form.Group as={Row} style={{alignItems:'center'}}>
-                        <Form.Label className="col-form-label" style={{"paddingLeft":"15px"}}>
+                        <Form.Label className="col-form-label" style={{paddingLeft:'15px'}}>
                             {LangHelper.getResource('DirectAccount')}
                         </Form.Label>
 
