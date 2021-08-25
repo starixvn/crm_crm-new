@@ -54,7 +54,7 @@ export class Filter extends Component {
     handleChange = event => {
         const name = event.target.name;
         this.setState({
-            [name]: event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value
+            [name]: event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value
         });
     };
 
