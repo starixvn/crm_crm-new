@@ -7,8 +7,7 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
-import { PAGING_SIZES } from '@jsroot/common/constants';
+import { MaximumDisplayRelatedCustomer, PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
 

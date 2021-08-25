@@ -45,7 +45,7 @@ export class Filter extends Component {
         });
     };
 
-    handleChangeToDate = toDate => {  
+    handleChangeToDate = toDate => {
         this.setState({
             toDate: toDate
         });
@@ -102,7 +102,7 @@ export class Filter extends Component {
         const customerTypes = [
             { settingValue: 'All', settingId: '' },
             { settingValue: 'Customer', settingId: 0 },
-            { settingValue: 'Guest', settingId: 1 }   
+            { settingValue: 'Guest', settingId: 1 }
         ];
 
         return (
