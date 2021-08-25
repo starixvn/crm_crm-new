@@ -14,10 +14,7 @@
 
         public int TotalRows { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_InformHeadlineLogSel";
-        }
+        public override string GetSettingKey() => "Acc_CRM_InformHeadlineLogSel";
 
         public override bool IsValid() => TitleId > 0;
     }

@@ -91,7 +91,7 @@
         {
             // Arrange
             var title = fixture.Create<InformTitleDetail>();
-            var param = fixture.Create<GetTitleDetailParam>();
+            var param = fixture.Create<int>();
             var controller = GetController();
             informHeadlineService.GetTitleDetailAsync(param).Returns(title);
 
@@ -350,7 +350,7 @@
         public async Task GetNewInforms_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
-            var newInforms = fixture.Create<(IEnumerable<NewInform>, string)>();
+            var newInforms = fixture.Create<IEnumerable<NewInform>>();
             var param = fixture.Create<GetNewInformParam>();
             var controller = GetController();
             informHeadlineService.GetNewInformsAsync(param).Returns(newInforms);
@@ -361,7 +361,7 @@
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
             var actual = Assert.IsAssignableFrom<IEnumerable<NewInform>>(jsonResult.Value);
-            Assert.Equal(newInforms.Item1, actual);
+            Assert.Equal(newInforms, actual);
         }
 
         [Fact]
@@ -424,7 +424,7 @@
         {
             // Arrange
             var fileName = $"NewInformHeadlines.xlsx";
-            var newInforms = fixture.Create<(IEnumerable<NewInform>, string)>();
+            var newInforms = fixture.Create<IEnumerable<NewInform>>();
             var param = fixture.Create<GetNewInformParam>();
             var controller = GetController();
             informHeadlineService.GetNewInformsAsync(param).Returns(newInforms);

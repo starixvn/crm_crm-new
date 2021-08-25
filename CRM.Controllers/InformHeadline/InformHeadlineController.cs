@@ -1,23 +1,23 @@
 ﻿namespace CRM.Controllers.InformHeadline
 {
-    using System.Web;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+    using System.Web;
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using CRM.Criteria.InformHeadline;
     using CRM.Models.InformHeadline;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.InformHeadline;
-    using Microsoft.AspNetCore.Mvc;
-    using CRM.Core.Filters;
-    using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Configuration;
+    using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
+    using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
-    using CRM.Core.Models;
-    using CRM.Criteria.InformHeadline;
-    using CRM.Core.Services;
-    using System.Linq;
 
     [CrmPermission(FunctionKey = FunctionKey.InformHeadline, Policy = Policy.Read)]
     public class InformHeadlineController : BaseController
@@ -74,10 +74,10 @@
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetTitleDetail([FromBody] GetTitleDetailParam param)
+        [HttpGet]
+        public async Task<IActionResult> GetTitleDetail(int titleId)
         {
-            InformTitleDetail titles = await informHeadlineService.GetTitleDetailAsync(param);
+            InformTitleDetail titles = await informHeadlineService.GetTitleDetailAsync(titleId);
             return Json(titles);
         }
 
@@ -185,21 +185,21 @@
         public async Task<IActionResult> GetRemovedAccountLogs([FromBody] GetRemovedAccountLogParam param)
         {
             var result = await informHeadlineService.GetRemovedAccountLogAsync(param);
-            return Json(new { item = result.Item1, totalItems = result.Item2 });
+            return Json(new { item = result.listRemoveAccount, totalItems = result.totalRows });
         }
 
         [HttpPost]
         public async Task<IActionResult> GetRemovedAccountLogDetails([FromBody] GetRemovedAccountLogDetailParam param)
         {
             var result = await informHeadlineService.GetRemovedAccountLogDetailAsync(param);
-            return Json(new { item = result.Item1, totalItems = result.Item2 });
+            return Json(new { item = result.listRemoveAccountDetail, totalItems = result.totalRows });
         }
 
         [HttpPost]
         public async Task<IActionResult> GetNewInforms([FromBody] GetNewInformParam param)
         {
             var newInforms = await informHeadlineService.GetNewInformsAsync(param);
-            return Json(newInforms.Item1);
+            return Json(newInforms);
         }
 
         [HttpPost]
@@ -236,7 +236,7 @@
         {
             var newInforms = await informHeadlineService.GetNewInformsAsync(param);
             var informStatuses = await informHeadlineService.GetInformStatusesAsync();
-            var bytes = excelService.ExportNewInformHeadline(newInforms.Item1, informStatuses, newInforms.Item2);
+            var bytes = excelService.ExportNewInformHeadline(newInforms, informStatuses, param.Title);
             string reportName = ViewResources.NewInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }

@@ -16,10 +16,7 @@
         [SpParam(SqlParamName = "ItemsPerPage")]
         public int PageSize { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_InformHeadlineDetail";
-        }
+        public override string GetSettingKey() => "Acc_CRM_InformHeadlineDetail";
 
         public override bool IsValid() => TitleId > 0;
     }

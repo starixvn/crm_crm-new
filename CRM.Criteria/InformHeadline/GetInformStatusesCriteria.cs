@@ -8,10 +8,7 @@
         [SpParam(SqlParamName = "Mode")]
         public bool IsIncludeKeptForRefence { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_InformHeadlineStatusSel";
-        }
+        public override string GetSettingKey() => "Acc_CRM_InformHeadlineStatusSel";
 
         public override bool IsValid() => true;
     }
