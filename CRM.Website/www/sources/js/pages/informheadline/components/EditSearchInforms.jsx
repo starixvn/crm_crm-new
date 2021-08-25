@@ -209,7 +209,7 @@ export class EditSearchInforms extends Component {
         if(values.currencyId !== initData.currencyId ||
             values.levelId !== initData.levelId ||
             values.siteId !== initData.siteId ||
-            parseInt(values.vipId) !== initData.vipId ||
+            parseInt(values.vipId, 10) !== initData.vipId ||
             values.typeAccount !== initData.typeAccount ||
             values.isExcludeIgnoredAccounts !== initData.isExcludeIgnoredAccounts
         ){
@@ -245,7 +245,7 @@ export class EditSearchInforms extends Component {
                 currencies: values.currencyId,
                 levels: values.levelId,
                 sites: values.siteId,
-                isVip: parseInt(values.vipId),
+                isVip: parseInt(values.vipId, 10),
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 pageIndex: 1,
                 pageSize: 10000
@@ -276,7 +276,7 @@ export class EditSearchInforms extends Component {
                 currencies: values.currencyId,
                 levels: values.levelId,
                 sites: values.siteId,
-                isVip: parseInt(values.vipId),
+                isVip: parseInt(values.vipId, 10),
                 typeAccount: values.typeAccount,
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 informs: resultInforms
@@ -316,7 +316,7 @@ export class EditSearchInforms extends Component {
 
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;
-        const value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
+        const value = event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value;
 
         const item = {...this.props.searchInforms.find(element => element.headlineId === headlineId), [name]: value};
 
@@ -341,7 +341,7 @@ export class EditSearchInforms extends Component {
             currencies: values.currencyId,
             levels: values.levelId,
             sites: values.siteId,
-            isVip: parseInt(values.vipId),
+            isVip: parseInt(values.vipId, 10),
             excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
             pageIndex: 1,
             pageSize: 10000

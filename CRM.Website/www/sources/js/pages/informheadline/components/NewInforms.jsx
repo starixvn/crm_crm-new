@@ -187,7 +187,7 @@ export class NewInforms extends Component {
                 currencies: values.currencyId,
                 levels: values.levelId,
                 sites: values.siteId,
-                isVip: parseInt(values.vipId),
+                isVip: parseInt(values.vipId, 10),
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 pageIndex: 1,
                 pageSize: 10000
@@ -219,7 +219,7 @@ export class NewInforms extends Component {
                 currencies: values.currencyId,
                 levels: values.levelId,
                 sites: values.siteId,
-                isVip: parseInt(values.vipId),
+                isVip: parseInt(values.vipId, 10),
                 typeAccount: values.typeAccount,
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 pageIndex: 1,
@@ -239,7 +239,7 @@ export class NewInforms extends Component {
             currencies: values.currencyId,
             levels: values.levelId,
             sites: values.siteId,
-            isVip: parseInt(values.vipId),
+            isVip: parseInt(values.vipId, 10),
             excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
             pageIndex: 1,
             pageSize: 10000
@@ -282,7 +282,7 @@ export class NewInforms extends Component {
 
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;
-        const value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
+        const value = event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value;
 
         const item = {...this.props.newInforms.find(element => element.headlineId === headlineId), [name]: value};
 

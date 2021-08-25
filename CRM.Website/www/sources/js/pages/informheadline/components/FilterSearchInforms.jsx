@@ -104,8 +104,8 @@ export class FilterSearchInforms extends PureComponent {
                             <Button variant="primary" size="sm" style={{width: '65px'}}
                                 type="submit"
                                 onClick={() => {
-                                    setFieldValue('submit',false);
-                                    handleSubmit;
+                                    setFieldValue('submit',false)
+                                    handleSubmit
                                 }}
                             >
                                 {LangHelper.getResource('Search')}

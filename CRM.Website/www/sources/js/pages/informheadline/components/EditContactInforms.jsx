@@ -128,7 +128,7 @@ export class EditContactInforms extends Component {
 
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;
-        const value = event.target.type === 'select-one' ? parseInt(event.target.value) : event.target.value;
+        const value = event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value;
 
         const item = {...this.props.contactInforms.find(element => element.headlineId === headlineId), [name]: value};
 
