@@ -44,7 +44,24 @@ describe('NewInforms', () => {
     });
 
     describe('validateFormik', () => {
-        it('should return exactly when get validate formik', () => {
+        it('should return exactly when error with title', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                title: '',
+                submit: true,
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<NewInforms {...props} />);
+            const actual = container.instance().validateFormik(values);
+           
+            // Assert
+            expect(actual).toEqual({title: "FieldRequired"});
+        });
+
+        it('should return exactly when error with currencyId', () => {
             // Arrange
             const props = {...initProps};
             const values = {
@@ -58,6 +75,54 @@ describe('NewInforms', () => {
            
             // Assert
             expect(actual).toEqual({currencyId: "FieldRequired"});
+        });
+
+        it('should return exactly when error with levelId', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                levelId: '',
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<NewInforms {...props} />);
+            const actual = container.instance().validateFormik(values);
+           
+            // Assert
+            expect(actual).toEqual({levelId: "FieldRequired"});
+        });
+
+        it('should return exactly when error with siteId', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                siteId: '',
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<NewInforms {...props} />);
+            const actual = container.instance().validateFormik(values);
+           
+            // Assert
+            expect(actual).toEqual({siteId: "FieldRequired"});
+        });
+
+        it('should return exactly when error with DirectAccount', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                isHeadline: false,
+                isNoGroup: false
+            };
+
+            // Act
+            const container = shallow(<NewInforms {...props} />);
+            const actual = container.instance().validateFormik(values);
+           
+            // Assert
+            expect(actual).toEqual({isHeadline: "FieldRequired"});
         });
     });
 
@@ -85,16 +150,19 @@ describe('NewInforms', () => {
             // Arrange
             const props = {
                 ...initProps,
-                resultInsertInforms: 'Successfully!'
+                resultInsertInforms: 'Successfully!',
+                getInforms: jest.fn()
             };
             jest.useFakeTimers();
             // Act
             const container = shallow(<NewInforms {...props}/>);
             container.instance().setAlert();
+            setTimeout(props.getInforms, 3000);
            
             // Assert
             expect(container.state().saveResult).toBe('Successfully!');
-            expect(setTimeout).toHaveBeenCalledTimes(1);
+            expect(setTimeout).toHaveBeenCalledTimes(2);
+            expect(setTimeout).toHaveBeenLastCalledWith(props.getInforms, 3000);
         });
     });
 
@@ -149,7 +217,13 @@ describe('NewInforms', () => {
 
             // Act
             const container = shallow(<NewInforms {...props} />);
-            container.setState({filterData: {currencyId: '1,2,3'}});
+            container.setState({
+                filterData: {currencyId: '1,2,3'},
+                informs: [
+                    {headlineId: 720, groupId: 12, username: 'test', remark: '&t'},
+                    {headlineId: 722, groupId: 121, username: 'test'},
+                ]
+            });
             await container.instance().handleSubmit(values, {setSubmitting: jest.fn()});
            
             // Assert
@@ -159,7 +233,7 @@ describe('NewInforms', () => {
                 sites: '1,2', isVip: 2,
                 excludeIgnoredAccounts: true,
                 pageIndex: 1, pageSize: 10000,
-                informs: []
+                informs: [{headlineId: 720, groupId: 12, username: 'test', remark: '&amp;t'}, {headlineId: 722, groupId: 121, username: 'test'}]
             });
         });
     });
@@ -318,6 +392,21 @@ describe('NewInforms', () => {
             
             // Assert
             expect(container).toEqual({});
+        });
+    });
+
+    describe('renderExportExcelText', () => {
+        it('should call exactly function', () => {
+            // Act
+            const props = {...initProps};
+            const container = shallow(<NewInforms {...props}/>).instance();
+            container.handleExportExcel = jest.fn();
+            const actual = shallow(container.renderExportExcelText(5));
+            actual.find('.icon-excel').at(0).props().onClick();
+
+            // Assert
+            expect(actual.find('span').length).toBe(2);
+            expect(container.handleExportExcel).toHaveBeenCalledWith(5);
         });
     });
 });

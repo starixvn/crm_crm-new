@@ -1,6 +1,7 @@
 import React from 'react';
 import { EditContactInforms } from '../EditContactInforms';
 import { shallow } from 'enzyme';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import FilterContactInforms from '../FilterContactInforms';
 import DataGridEdit from '../DataGridEdit';
 
@@ -137,6 +138,23 @@ describe('EditContactInforms', () => {
             // Assert
             expect(props.updateContactInforms).toHaveBeenCalledWith({ titleId: 720, informs: [] });
         });
+
+        it('should call exactly functions with state', async () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                updateContactInforms: jest.fn()
+            };
+            const expected = [{headlineId: 720, groupId: 12, username: 'test', remark: '&amp;t'}];
+
+            // Act
+            const container = shallow(<EditContactInforms {...props}/>);
+            container.setState({informs: [{headlineId: 720, groupId: 12, username: 'test', remark: '&t'}]})
+            container.instance().handleSubmit();
+           
+            // Assert
+            expect(props.updateContactInforms).toHaveBeenCalledWith({ titleId: 720, informs: expected });
+        });
     });
 
     describe('htmlDecode', () => {
@@ -225,6 +243,19 @@ describe('EditContactInforms', () => {
             expect(container).toMatchSnapshot();
             expect(container.find(FilterContactInforms).length).toBe(1);
             expect(container.find(DataGridEdit).length).toBe(1);
+        });
+    });
+
+    describe('renderExportExcelText', () => {
+        it('should call exactly function', () => {
+            // Act
+            const props = {...initProps};
+            const container = shallow(<EditContactInforms {...props}/>).instance();
+            container.handleExportExcel = jest.fn();
+            const actual = shallow(container.renderExportExcelText());
+
+            // Assert
+            expect(actual.find('span').length).toBe(2);
         });
     });
 });

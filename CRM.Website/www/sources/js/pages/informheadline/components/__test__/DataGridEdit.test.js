@@ -60,4 +60,24 @@ describe('DataGridEdit', () => {
             expect(actual).toEqual([<div />]);
         });
     });
+
+    describe('renderRow', () => {
+        it('should call exactly function onChange', () => {
+            // Act
+            const props = {
+                ...initProps,
+                onChange: jest.fn()
+            };
+            const container = shallow(<DataGridEdit {...props}/>).instance();
+            const actual = shallow(container.renderRow(props.Informs[0],1,props.InformSettings.productStatuses,props.InformSettings,props.onChange));
+            actual.find('.informHeadlineStatusId').at(0).props().onChange();
+            actual.find('.remark').at(0).props().onChange();
+            actual.find('.extension').at(0).props().onChange();
+            actual.find('.productStatus').at(0).props().onChange();
+
+            // Assert
+            expect(actual.find(Cell).length).toBe(7);
+            expect(props.onChange).toHaveBeenCalledWith(undefined,1234);
+        });
+    });
 });

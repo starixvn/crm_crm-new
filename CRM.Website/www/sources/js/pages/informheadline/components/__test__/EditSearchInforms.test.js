@@ -27,7 +27,7 @@ describe('EditSearchInforms', () => {
         searchInformSettings:{
             filterStatuses: [{ settingId: 1, settingValue: 'test'}]
         },
-        searchInforms: [{headlineId: 720, groupId: 12, username: 'test'}],
+        searchInforms: [{headlineId: 720, groupId: 12, username: 'test', remark: '&t'}],
         getSearchInforms: jest.fn(),
         setGridParams: jest.fn()
     };
@@ -102,7 +102,24 @@ describe('EditSearchInforms', () => {
     });
 
     describe('validateFormik', () => {
-        it('should return exactly when get validate formik', () => {
+        it('should return exactly when error with title', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                title: '',
+                submit: true,
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<EditSearchInforms {...props} />);
+            const actual = container.instance().validateFormik(values);
+           
+            // Assert
+            expect(actual).toEqual({title: "FieldRequired"});
+        });
+
+        it('should return exactly when error with currencyId', () => {
             // Arrange
             const props = {...initProps};
             const values = {
@@ -116,6 +133,54 @@ describe('EditSearchInforms', () => {
            
             // Assert
             expect(actual).toEqual({currencyId: "FieldRequired"});
+        });
+
+        it('should return exactly when error with levelId', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                levelId: '',
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<EditSearchInforms {...props} />);
+            const actual = container.instance().validateFormik(values);
+           
+            // Assert
+            expect(actual).toEqual({levelId: "FieldRequired"});
+        });
+
+        it('should return exactly when error with siteId', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                siteId: '',
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<EditSearchInforms {...props} />);
+            const actual = container.instance().validateFormik(values);
+           
+            // Assert
+            expect(actual).toEqual({siteId: "FieldRequired"});
+        });
+
+        it('should return exactly when error with DirectAccount', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                isHeadline: false,
+                isNoGroup: false
+            };
+
+            // Act
+            const container = shallow(<EditSearchInforms {...props} />);
+            const actual = container.instance().validateFormik(values);
+           
+            // Assert
+            expect(actual).toEqual({isHeadline: "FieldRequired"});
         });
     });
 
@@ -218,7 +283,12 @@ describe('EditSearchInforms', () => {
 
             // Act
             const container = shallow(<EditSearchInforms {...props} />);
-            container.setState({filterData: {currencyId: '1,2,3'}});
+            container.setState({
+                filterData: {currencyId: '1,2,3'},
+                informs: [
+                    {headlineId: 720, groupId: 12, username: 'test', remark: '&t'}
+                ]
+            });
             await container.instance().handleSubmit(values, {setSubmitting: jest.fn()});
            
             // Assert
@@ -228,7 +298,7 @@ describe('EditSearchInforms', () => {
                 currencies: '1,2,3', levels: '4,5,6',
                 sites: '1,2', isVip: 2,
                 excludeIgnoredAccounts: true,
-                informs: props.searchInforms
+                informs: [{headlineId: 720, groupId: 12, username: 'test', remark: '&amp;t'}]
             });
         });
     });
@@ -283,7 +353,7 @@ describe('EditSearchInforms', () => {
            
             // Assert
             expect(container.state().informs).toEqual([
-                { groupId: 12, headlineId: 720, statuses: "Done", username: "test" }
+                { groupId: 12, headlineId: 720, statuses: "Done", username: "test", remark: "&t" }
             ]);
         });
         
@@ -382,6 +452,21 @@ describe('EditSearchInforms', () => {
             
             // Assert
             expect(container.find(Formik).length).toBe(1);
+        });
+    });
+
+    describe('renderExportExcelText', () => {
+        it('should call exactly function', () => {
+            // Act
+            const props = {...initProps};
+            const container = shallow(<EditSearchInforms {...props}/>).instance();
+            container.handleExportExcel = jest.fn();
+            const actual = shallow(container.renderExportExcelText(5));
+            actual.find('.icon-excel').at(0).props().onClick();
+
+            // Assert
+            expect(actual.find('span').length).toBe(2);
+            expect(container.handleExportExcel).toHaveBeenCalledWith(5);
         });
     });
 });
