@@ -108,9 +108,7 @@ export class NewInforms extends Component {
                         onPaging={this.onPaging}
                         onChange={this.handleChangeDataGrid}
 
-                        values={values}
                         handleSubmit={handleSubmit}
-                        setFieldValue={setFieldValue}
                     />
                 }
             </Form>
@@ -203,6 +201,8 @@ export class NewInforms extends Component {
             this.setState({
                 totalNewItem: this.props.newInforms.length
             });
+            values.submit = true;
+            return;
         }
 
         if(values.submit){

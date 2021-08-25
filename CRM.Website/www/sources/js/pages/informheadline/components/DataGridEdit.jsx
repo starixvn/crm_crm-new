@@ -12,7 +12,7 @@ export class DataGridEdit extends PureComponent {
                 <HeaderCell colWidth={15}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedTime')}</HeaderCell>
-                <HeaderCell colWidth={50}>{LangHelper.getResource('Remark')}</HeaderCell>
+                <HeaderCell colWidth={60}>{LangHelper.getResource('Remark')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Extension')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('ProductStatus')}</HeaderCell>
@@ -59,7 +59,7 @@ export class DataGridEdit extends PureComponent {
                         name="remark"
                         defaultValue={item.remark}
                         key={item.remark}
-                        style={{'height':'38px'}}
+                        rows={2}
                         onChange={event => onChange(event,item.headlineId)}
                     />
                 </Cell>
@@ -96,7 +96,7 @@ export class DataGridEdit extends PureComponent {
 
 
     render() {
-        const { gridParams, onPaging, handleSubmit, values, setFieldValue, totalItem } = this.props;
+        const { gridParams, onPaging, handleSubmit, totalItem } = this.props;
         const { pageIndex, pageSize } = gridParams;
 
         const pagingOption = {
@@ -120,20 +120,9 @@ export class DataGridEdit extends PureComponent {
                     adjustedHeight={10}
                 />
                 {
-                    values ?
                     (
                         <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}}
                             type="submit"
-                            onClick={() => {
-                                setFieldValue('submit',true);
-                                handleSubmit;
-                            }}
-                        >
-                            {LangHelper.getResource('Save')}
-                        </Button>
-                    ) :
-                    (
-                        <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}}
                             onClick={handleSubmit}
                         >
                             {LangHelper.getResource('Save')}
