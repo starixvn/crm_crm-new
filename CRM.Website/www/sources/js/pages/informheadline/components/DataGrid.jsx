@@ -68,7 +68,7 @@ export class DataGrid extends Component {
         return (
             <Row key={index} className={cssClass}>
                 <Cell className='text-center'>
-                    <span className="fa fa-pencil-square-o" onClick={event => this.getPositionEdit(event, item.titleId, item.status)}></span>     
+                    <span className="fa fa-pencil-square-o" onClick={event => this.getPositionEdit(event, item.titleId, item.status)}></span>
                 </Cell>
                 {
                     !contactPolicy.hasAttribute('none') ?
