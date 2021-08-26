@@ -14,6 +14,7 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.InformHeadline;
+    using CRM.ViewModels.InformHeadline;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -123,15 +124,11 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var actual = jsonResult.Value;
-            var expected = new
-            {
-                filterStatuses,
-                productStatuses,
-                stations,
-                statuses
-            };
-            expected.Equals(actual);
+            var contactInformSettings = (CreateInformHeadlineViewModel)jsonResult.Value;
+            Assert.Equal(filterStatuses, contactInformSettings.FilterStatuses);
+            Assert.Equal(productStatuses, contactInformSettings.ProductStatuses);
+            Assert.Equal(stations, contactInformSettings.Stations);
+            Assert.Equal(statuses, contactInformSettings.Statuses);
         }
 
         [Fact]
@@ -225,16 +222,12 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var actual = jsonResult.Value;
-            var expected = new
-            {
-                currencies,
-                productStatuses,
-                sites,
-                stations,
-                statuses
-            };
-            expected.Equals(actual);
+            var allSettings = (CreateInformHeadlineViewModel)jsonResult.Value;
+            Assert.Equal(currencies, allSettings.Currencies);
+            Assert.Equal(productStatuses, allSettings.ProductStatuses);
+            Assert.Equal(sites, allSettings.Sites);
+            Assert.Equal(stations, allSettings.Stations);
+            Assert.Equal(statuses, allSettings.Statuses);
         }
 
         [Fact]

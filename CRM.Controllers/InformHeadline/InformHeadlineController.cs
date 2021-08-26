@@ -13,6 +13,7 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.InformHeadline;
+    using CRM.ViewModels.InformHeadline;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -83,12 +84,12 @@
 
         public async Task<IActionResult> GetContactInformSettings()
         {
-            var contactInformSettings = new
+            var contactInformSettings = new CreateInformHeadlineViewModel
             {
-                filterStatuses = await informHeadlineService.GetInformStatusesAsync(true),
-                productStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline),
-                stations = await settingService.GetStations(),
-                statuses = await informHeadlineService.GetInformStatusesAsync()
+                FilterStatuses = await informHeadlineService.GetInformStatusesAsync(true),
+                ProductStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline),
+                Stations = await settingService.GetStations(),
+                Statuses = await informHeadlineService.GetInformStatusesAsync()
             };
             return Json(contactInformSettings);
         }
@@ -129,13 +130,13 @@
 
         public async Task<IActionResult> GetAllSettings()
         {
-            var allSettings = new
+            var allSettings = new CreateInformHeadlineViewModel
             {
-                currencies = await settingService.GetCurrencyAsync(),
-                productStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline),
-                sites = await settingService.GetAllSitesWithGroupAsync(),
-                stations = await settingService.GetStations(),
-                statuses = await informHeadlineService.GetInformStatusesAsync()
+                Currencies = await settingService.GetCurrencyAsync(),
+                ProductStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline),
+                Sites = await settingService.GetAllSitesWithGroupAsync(),
+                Stations = await settingService.GetStations(),
+                Statuses = await informHeadlineService.GetInformStatusesAsync()
             };
             return Json(allSettings);
         }
