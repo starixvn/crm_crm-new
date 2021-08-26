@@ -43,12 +43,12 @@ export class DataGrid extends Component {
     };
 
     handleEditContact = async titleId => {
-        this.props.setShowEditContactInform({show: true, titleId: titleId});
+        this.props.setEditContactInformDialog({show: true, titleId: titleId});
     };
 
     getPositionEdit = (event, titleId, status) => {
         const position = event.target.getClientRects()[0];
-        this.props.setShowOptions({
+        this.props.setOptionDialog({
             show: true,
             showOption: 'block',
             status: status,
@@ -60,7 +60,7 @@ export class DataGrid extends Component {
 
     handleNewInforms = () => {
         this.props.getAllSettings();
-        this.props.setShowNewInforms({show: true});
+        this.props.setNewInformDialog({show: true});
     };
 
     renderRow = (item, index) => {

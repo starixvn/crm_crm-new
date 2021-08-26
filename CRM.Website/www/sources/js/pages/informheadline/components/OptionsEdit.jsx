@@ -21,13 +21,13 @@ export class OptionsEdit extends Component {
     handleOutSideClick = event => {
         const { target } = event;
         if(this.wrapperRef && !this.wrapperRef.current.contains(target)){
-            this.props.setShowOptions({show: false});
+            this.props.setOptionDialog({show: false});
         }
     };
 
     handleEditSearch = titleId =>{
-        this.props.setShowOptions({show: false});
-        this.props.setShowEditSearchInform({show: true, titleId: titleId});
+        this.props.setOptionDialog({show: false});
+        this.props.setEditInformDialog({show: true, titleId: titleId});
     };
 
     handleRemovedAccountLogs = titleId =>{
@@ -36,10 +36,10 @@ export class OptionsEdit extends Component {
             pageIndex: 1,
             pageSize: 100
         };
-        this.props.setShowOptions({show: false});
+        this.props.setOptionDialog({show: false});
         this.props.setGridParamRemovedLogs(params);
         this.props.getRemovedAccountLogs(params);
-        this.props.setShowRemovedLogs({show: true});
+        this.props.setRemovedLogDialog({show: true});
     };
 
     handleCloseCase = titleId =>{
@@ -47,8 +47,8 @@ export class OptionsEdit extends Component {
             titleId: titleId,
             statusType: true
         };
-        this.props.setShowOptions({show: false});
-        this.props.updateInformStatus(params);
+        this.props.setOptionDialog({show: false});
+        this.props.editInformStatus(params);
         this.props.getInforms();
     };
 
@@ -57,13 +57,13 @@ export class OptionsEdit extends Component {
             titleId: titleId,
             statusType: false
         };
-        this.props.setShowOptions({show: false});
-        this.props.updateInformStatus(params);
+        this.props.setOptionDialog({show: false});
+        this.props.editInformStatus(params);
         this.props.getInforms();
     };
 
     render() {
-        const { showOption, top, left, status, titleIdSearch } = this.props.showOptions;
+        const { showOption, top, left, status, titleIdSearch } = this.props.optionDialog;
 
         return (
             <div ref={this.wrapperRef} id="contextMenu" className="dropdown clearfix">
@@ -122,8 +122,8 @@ export class OptionsEdit extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { showOptions } = state;
-    return { showOptions };
+    const { optionDialog } = state;
+    return { optionDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OptionsEdit);

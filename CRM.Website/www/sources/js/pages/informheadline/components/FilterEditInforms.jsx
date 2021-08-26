@@ -3,7 +3,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 
-export class FilterSearchInforms extends PureComponent {
+export class FilterEditInforms extends PureComponent {
     renderOptions = (name, id, key) => <option key={key} value={id}>{name}</option>;
 
     render() {
@@ -152,4 +152,4 @@ export class FilterSearchInforms extends PureComponent {
     }
 }
 
-export default FilterSearchInforms;
+export default FilterEditInforms;

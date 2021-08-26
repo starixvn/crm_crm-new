@@ -11,9 +11,9 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import FilterSearchInforms from './FilterSearchInforms';
+import FilterEditInforms from './FilterEditInforms';
 
-export class EditSearchInforms extends Component {
+export class EditInforms extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +22,7 @@ export class EditSearchInforms extends Component {
             filterData: null,
             informs: [],
             saveResult: null,
-            totalSearchInform: 0
+            totalEditInform: 0
         };
     }
 
@@ -35,7 +35,7 @@ export class EditSearchInforms extends Component {
         const { titleDetail, allSettings } = this.props;
         const includeCurrencies = this.getIncludeInSetting(titleDetail.currencies, allSettings.currencies);
         const includeSites = this.getIncludeInSetting(titleDetail.sites, allSettings.sites[0].childSites);
-        await this.props.getSearchInforms({
+        await this.props.getEditInforms({
             titleId: this.props.titleId,
             typeAccount: titleDetail.typeAccount,
             currencies: includeCurrencies,
@@ -52,7 +52,7 @@ export class EditSearchInforms extends Component {
             pageSize: 100
         });
         this.setState({
-            totalSearchInform: this.props.searchInforms.length,
+            totalEditInform: this.props.editDataInforms.length,
             includeCurrencies: includeCurrencies,
             includeSites: includeSites,
             filterData: this.initFormData(includeCurrencies,includeSites)
@@ -78,7 +78,7 @@ export class EditSearchInforms extends Component {
         setFieldValue
     }) => {
 
-        const { titleDetail, searchInforms, allSettings, gridParams } = this.props;
+        const { titleDetail, editDataInforms, allSettings, gridParams } = this.props;
         const allPositions = [
             { id: 4, name: 'Super' },
             { id: 3, name: 'Master' },
@@ -126,7 +126,7 @@ export class EditSearchInforms extends Component {
                         message={this.state.saveResult.message || LangHelper.getResource('SaveInformHeadlinesSuccessfully')}
                     />
                 }
-                <FilterSearchInforms
+                <FilterEditInforms
                     titleDetail={titleDetail}
                     filterCurrencies={filterCurrencies}
                     filterLevels={filterLevels}
@@ -142,9 +142,9 @@ export class EditSearchInforms extends Component {
                 />
 
                 <DataGridEdit
-                    Informs={searchInforms}
+                    Informs={editDataInforms}
                     InformSettings={allSettings}
-                    totalItem={this.state.totalSearchInform}
+                    totalItem={this.state.totalEditInform}
                     gridParams={gridParams}
                     onPaging={this.onPaging}
                     onChange={this.handleChangeDataGrid}
@@ -220,7 +220,7 @@ export class EditSearchInforms extends Component {
 
     setAlert = () => {
         this.setState({
-            saveResult: this.props.resultUpdateSearchInforms
+            saveResult: this.props.resultEditInforms
         });
         setTimeout(() => {
             this.setState({
@@ -251,16 +251,16 @@ export class EditSearchInforms extends Component {
                 pageSize: 10000
             };
 
-            await this.props.getSearchInforms(params);
+            await this.props.getEditInforms(params);
             this.setState({
-                totalSearchInform: this.props.searchInforms.length
+                totalEditInform: this.props.editDataInforms.length
             });
             values.submit = true;
             return;
 
         }else{
             this.getTypeAccount(values);
-            const result = this.props.searchInforms.map(element => this.state.informs.find(item => item.headlineId === element.headlineId) || element);
+            const result = this.props.editDataInforms.map(element => this.state.informs.find(item => item.headlineId === element.headlineId) || element);
 
             const resultInforms = result.map(item => {
                 if(item.remark){
@@ -280,7 +280,7 @@ export class EditSearchInforms extends Component {
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 informs: resultInforms
             };
-            await this.props.updateSearchInforms(params);
+            await this.props.editInforms(params);
             this.setAlert();
         }
     };
@@ -291,7 +291,7 @@ export class EditSearchInforms extends Component {
         params['pageSize'] = pageSize;
         params['pageIndex'] = pageIndex;
         this.props.setGridParams(params);
-        this.props.getSearchInforms({
+        this.props.getEditInforms({
             titleId: this.props.titleId,
             typeAccount: titleDetail.typeAccount,
             currencies: this.state.includeCurrencies,
@@ -317,7 +317,7 @@ export class EditSearchInforms extends Component {
         const name = event.target.name;
         const value = event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value;
 
-        const item = {...this.props.searchInforms.find(element => element.headlineId === headlineId), [name]: value};
+        const item = {...this.props.editDataInforms.find(element => element.headlineId === headlineId), [name]: value};
 
         this.setState(prevState =>{
             const oldInforms = prevState.informs;
@@ -345,7 +345,7 @@ export class EditSearchInforms extends Component {
             pageIndex: 1,
             pageSize: 10000
         };
-        this.props.exportSearchInforms(params);
+        this.props.exportEditInforms(params);
     };
 
     renderExportExcelText = values => {
@@ -364,8 +364,8 @@ export class EditSearchInforms extends Component {
     };
 
     render() {
-        const {titleDetail, allSettings, searchInforms} = this.props;
-        if(!titleDetail || !allSettings || !searchInforms || !this.state.filterData){
+        const {titleDetail, allSettings, editDataInforms} = this.props;
+        if(!titleDetail || !allSettings || !editDataInforms || !this.state.filterData){
             return null;
         }
 
@@ -398,8 +398,8 @@ export class EditSearchInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, allSettings, searchInforms, gridParams, resultUpdateSearchInforms } = state;
-    return { titleDetail, allSettings, searchInforms, gridParams, resultUpdateSearchInforms };
+    const { titleDetail, allSettings, editDataInforms, gridParams, resultEditInforms } = state;
+    return { titleDetail, allSettings, editDataInforms, gridParams, resultEditInforms };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditSearchInforms);
+export default connect(mapStateToProps, mapDispatchToProps)(EditInforms);

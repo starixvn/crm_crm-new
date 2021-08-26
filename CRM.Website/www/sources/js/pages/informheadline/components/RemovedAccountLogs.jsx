@@ -17,7 +17,7 @@ export class RemovedAccountLogs extends Component {
         };
         this.props.setGridParamRemovedLogDetails(params);
         this.props.getRemovedAccountLogDetails(params);
-        this.props.setShowRemovedLogDetails({show: true});
+        this.props.setRemovedLogDetailDialog({show: true});
     };
 
     buildHeader = () => {

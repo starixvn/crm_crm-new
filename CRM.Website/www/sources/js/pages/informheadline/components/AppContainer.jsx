@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import DataGrid from './DataGrid';
 import EditContactInforms from './EditContactInforms';
-import EditSearchInforms from './EditSearchInforms';
+import EditInforms from './EditInforms';
 import RemovedAccountLogs from './RemovedAccountLogs';
 import RemovedAccountLogDetails from './RemovedAccountLogDetails';
 import NewInforms from './NewInforms';
@@ -14,92 +14,92 @@ import OptionsEdit from './OptionsEdit';
 export class AppContainer extends Component {
     static propTypes = {
         getInforms: PropTypes.func,
-        showEditContactInform: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        showEditSearchInform: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        showRemovedLogs: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        showRemovedLogDetails: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        showNewInforms: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        showOptions: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        editContactInformDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editInformDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        removedLogDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        removedLogDetailDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        newInformDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        optionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
         getInforms: function (){
             // nothing
         },
-        showEditContactInform: { show: false },
-        showEditSearchInform: { show: false },
-        showRemovedLogs: { show: false },
-        showRemovedLogDetails: { show: false },
-        showNewInforms: { show: false },
-        showOptions: { show: false }
+        editContactInformDialog: { show: false },
+        editInformDialog: { show: false },
+        removedLogDialog: { show: false },
+        removedLogDetailDialog: { show: false },
+        newInformDialog: { show: false },
+        optionDialog: { show: false }
     };
 
     componentDidMount() {
         this.props.getInforms();
     }
 
-    handleCloseShowEditContactInforms = () => {
+    handleCloseEditContactInformDialog = () => {
         this.props.getInforms();
-        this.props.setShowEditContactInform({show: false});
+        this.props.setEditContactInformDialog({show: false});
     };
 
-    handleCloseShowEditSearchInforms = () => {
+    handleCloseEditInformDialog = () => {
         this.props.getInforms();
-        this.props.setShowEditSearchInform({show: false});
+        this.props.setEditInformDialog({show: false});
     };
 
-    handleCloseShowRemovedLogs = () => {
-        this.props.setShowRemovedLogs({show: false});
+    handleCloseRemovedLogDialog = () => {
+        this.props.setRemovedLogDialog({show: false});
     };
 
-    handleCloseShowRemovedLogDetails = () => {
-        this.props.setShowRemovedLogDetails({show: false});
+    handleCloseRemovedLogDetailDialog = () => {
+        this.props.setRemovedLogDetailDialog({show: false});
     };
 
-    handleCloseShowNewInforms = () => {
-        this.props.setShowNewInforms({show: false});
+    handleCloseNewInformDialog = () => {
+        this.props.setNewInformDialog({show: false});
     };
 
     render() {
-        const { showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms, showOptions } = this.props;
+        const { editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog, optionDialog } = this.props;
 
         return (
             <>
                 <DataGrid/>
                 {
-                    showOptions.show &&
+                    optionDialog.show &&
                     <OptionsEdit/>
                 }
                 {
-                    showEditContactInform.show &&
+                    editContactInformDialog.show &&
                     <EditContactInforms
-                        titleId={showEditContactInform.titleId}
-                        onClose={this.handleCloseShowEditContactInforms}
+                        titleId={editContactInformDialog.titleId}
+                        onClose={this.handleCloseEditContactInformDialog}
                     />
                 }
                 {
-                    showEditSearchInform.show &&
-                    <EditSearchInforms
-                        titleId={showEditSearchInform.titleId}
-                        onClose={this.handleCloseShowEditSearchInforms}
+                    editInformDialog.show &&
+                    <EditInforms
+                        titleId={editInformDialog.titleId}
+                        onClose={this.handleCloseEditInformDialog}
                     />
                 }
                 {
-                    showRemovedLogs.show &&
+                    removedLogDialog.show &&
                     <RemovedAccountLogs
-                        onClose={this.handleCloseShowRemovedLogs}
+                        onClose={this.handleCloseRemovedLogDialog}
                     />
                 }
                 {
-                    showRemovedLogDetails.show &&
+                    removedLogDetailDialog.show &&
                     <RemovedAccountLogDetails
-                        onClose={this.handleCloseShowRemovedLogDetails}
+                        onClose={this.handleCloseRemovedLogDetailDialog}
                     />
                 }
                 {
-                    showNewInforms.show &&
+                    newInformDialog.show &&
                     <NewInforms
-                        onClose={this.handleCloseShowNewInforms}
+                        onClose={this.handleCloseNewInformDialog}
                     />
                 }
             </>
@@ -111,9 +111,9 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms, showOptions } = state;
+        editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog, optionDialog } = state;
     return {
-        showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms, showOptions
+        editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog, optionDialog
     };
 };
 

@@ -11,7 +11,7 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import FilterSearchInforms from './FilterSearchInforms';
+import FilterEditInforms from './FilterEditInforms';
 
 export class NewInforms extends Component {
     constructor(props) {
@@ -83,7 +83,7 @@ export class NewInforms extends Component {
                         message={this.state.saveResult.message || LangHelper.getResource('AddNewCaseSuccessfully')}
                     />
                 }
-                <FilterSearchInforms
+                <FilterEditInforms
                     titleDetail={values.title}
                     filterCurrencies={filterCurrencies}
                     filterLevels={filterLevels}
@@ -171,7 +171,7 @@ export class NewInforms extends Component {
             this.setState({
                 saveResult: null
             });
-            this.props.setShowNewInforms({show: false});
+            this.props.setNewInformDialog({show: false});
             this.props.getInforms();
         }, 3000);
     };

@@ -7,20 +7,20 @@ const informHeadlineSlice = createSlice({
         titleDetail: null,
         contactInformSettings: null,
         contactInforms: null,
-        showEditContactInform: {show: false},
+        editContactInformDialog: {show: false},
         gridParams: {
             pageIndex: 1,
             pageSize: 100
         },
         allSettings: null,
-        searchInforms: null,
-        showEditSearchInform: {show: false},
-        resultUpdateContactInforms: null,
-        resultUpdateSearchInforms: null,
+        editDataInforms: null,
+        editInformDialog: {show: false},
+        resultEditContactInforms: null,
+        resultEditInforms: null,
         removedAccountLogs: null,
         removedAccountLogDetails: null,
-        showRemovedLogs: {show: false},
-        showRemovedLogDetails: {show: false},
+        removedLogDialog: {show: false},
+        removedLogDetailDialog: {show: false},
         gridParamRemovedLogs: {
             pageIndex: 1,
             pageSize: 100
@@ -30,9 +30,9 @@ const informHeadlineSlice = createSlice({
             pageSize: 100
         },
         newInforms: null,
-        showNewInforms: {show: false},
+        newInformDialog: {show: false},
         resultInsertInforms: null,
-        showOptions: {show: false}
+        optionDialog: {show: false}
     },
     reducers: {
         setInforms: (state, action) => {
@@ -47,8 +47,8 @@ const informHeadlineSlice = createSlice({
         setContactInforms: (state, action) => {
             state.contactInforms = action.payload;
         },
-        setShowEditContactInform: (state, action) => {
-            state.showEditContactInform = action.payload;
+        setEditContactInformDialog: (state, action) => {
+            state.editContactInformDialog = action.payload;
         },
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
@@ -56,17 +56,17 @@ const informHeadlineSlice = createSlice({
         setAllSettings: (state, action) => {
             state.allSettings = action.payload;
         },
-        setSearchInforms: (state, action) => {
-            state.searchInforms = action.payload
+        setEditInforms: (state, action) => {
+            state.editDataInforms = action.payload
         },
-        setShowEditSearchInform: (state, action) => {
-            state.showEditSearchInform = action.payload;
+        setEditInformDialog: (state, action) => {
+            state.editInformDialog = action.payload;
         },
-        setUpdateContactInforms: (state, action) => {
-            state.resultUpdateContactInforms = action.payload;
+        setResultEditContactInforms: (state, action) => {
+            state.resultEditContactInforms = action.payload;
         },
-        setUpdateSearchInforms: (state, action) => {
-            state.resultUpdateSearchInforms = action.payload;
+        setResultEditInforms: (state, action) => {
+            state.resultEditInforms = action.payload;
         },
         setRemovedAccountLogs: (state, action) => {
             state.removedAccountLogs = action.payload;
@@ -74,11 +74,11 @@ const informHeadlineSlice = createSlice({
         setRemovedAccountLogDetails: (state, action) => {
             state.removedAccountLogDetails = action.payload;
         },
-        setShowRemovedLogs: (state, action) => {
-            state.showRemovedLogs = action.payload;
+        setRemovedLogDialog: (state, action) => {
+            state.removedLogDialog = action.payload;
         },
-        setShowRemovedLogDetails: (state, action) => {
-            state.showRemovedLogDetails = action.payload;
+        setRemovedLogDetailDialog: (state, action) => {
+            state.removedLogDetailDialog = action.payload;
         },
         setGridParamRemovedLogs: (state, action) => {
             state.gridParamRemovedLogs = action.payload;
@@ -89,14 +89,14 @@ const informHeadlineSlice = createSlice({
         setNewInforms: (state, action) => {
             state.newInforms = action.payload
         },
-        setShowNewInforms: (state, action) => {
-            state.showNewInforms = action.payload;
+        setNewInformDialog: (state, action) => {
+            state.newInformDialog = action.payload;
         },
         setInsertInforms: (state, action) => {
             state.resultInsertInforms = action.payload;
         },
-        setShowOptions: (state, action) => {
-            state.showOptions = action.payload;
+        setOptionDialog: (state, action) => {
+            state.optionDialog = action.payload;
         }
     }
 });
@@ -108,23 +108,23 @@ export const {
     setTitleDetail,
     setContactInformSettings,
     setContactInforms,
-    setShowEditContactInform,
+    setEditContactInformDialog,
     setGridParams,
     setAllSettings,
-    setSearchInforms,
-    setShowEditSearchInform,
-    setUpdateContactInforms,
-    setUpdateSearchInforms,
+    setEditInforms,
+    setEditInformDialog,
+    setResultEditContactInforms,
+    setResultEditInforms,
     setRemovedAccountLogs,
     setRemovedAccountLogDetails,
-    setShowRemovedLogs,
-    setShowRemovedLogDetails,
+    setRemovedLogDialog,
+    setRemovedLogDetailDialog,
     setGridParamRemovedLogs,
     setGridParamRemovedLogDetails,
     setNewInforms,
-    setShowNewInforms,
+    setNewInformDialog,
     setInsertInforms,
-    setShowOptions
+    setOptionDialog
 } = actions;
 
 export default reducer;

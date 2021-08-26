@@ -5,23 +5,23 @@ import{
     setTitleDetail,
     setContactInformSettings,
     setContactInforms,
-    setShowEditContactInform,
+    setEditContactInformDialog,
     setGridParams,
     setAllSettings,
-    setSearchInforms,
-    setShowEditSearchInform,
-    setUpdateContactInforms,
-    setUpdateSearchInforms,
+    setEditInforms,
+    setEditInformDialog,
+    setResultEditContactInforms,
+    setResultEditInforms,
     setRemovedAccountLogs,
     setRemovedAccountLogDetails,
-    setShowRemovedLogs,
-    setShowRemovedLogDetails,
+    setRemovedLogDialog,
+    setRemovedLogDetailDialog,
     setGridParamRemovedLogs,
     setGridParamRemovedLogDetails,
     setNewInforms,
-    setShowNewInforms,
+    setNewInformDialog,
     setInsertInforms,
-    setShowOptions
+    setOptionDialog
 } from './informHeadlineSlice';
 
 const getInforms = () => async dispatch => {
@@ -33,11 +33,12 @@ const getInforms = () => async dispatch => {
 };
 
 const exportInforms = params => async () => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/ExportInforms');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
-    });
+    }).then(() => Site.unblockUI());
 };
 
 const getTitleDetail = params => async dispatch => {
@@ -64,11 +65,11 @@ const getContactInforms = params => async dispatch => {
     }).then(() => Site.unblockUI());
 }
 
-const updateContactInforms = params => async dispatch => {
+const editContactInforms = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('InformHeadline/UpdateContactInforms');
+    const url = Site.resolveClientUrl('InformHeadline/EditContactInforms');
     await DataService.postDataAsync(url, params).then(response => {
-        dispatch(setUpdateContactInforms(response.data));
+        dispatch(setResultEditContactInforms(response.data));
     }).then(() => Site.unblockUI());
 }
 
@@ -80,32 +81,33 @@ const getAllSettings = () => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getSearchInforms = params => async dispatch => {
+const getEditInforms = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('InformHeadline/GetSearchInforms');
+    const url = Site.resolveClientUrl('InformHeadline/GetEditInforms');
     await DataService.postDataAsync(url, params).then(response => {
-        dispatch(setSearchInforms(response.data));
+        dispatch(setEditInforms(response.data));
     }).then(() => Site.unblockUI());
 };
 
-const updateSearchInforms = params => async dispatch => {
+const editInforms = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('InformHeadline/UpdateSearchInforms');
+    const url = Site.resolveClientUrl('InformHeadline/EditInforms');
     await DataService.postDataAsync(url, params).then(response => {
-        dispatch(setUpdateSearchInforms(response.data));
+        dispatch(setResultEditInforms(response.data));
     }).then(() => Site.unblockUI());
 };
 
 const exportContactInforms = params => async () => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/ExportContactInforms');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
-    });
+    }).then(() => Site.unblockUI());
 };
 
-const exportSearchInforms = params => async () => {
-    const url = Site.resolveClientUrl('InformHeadline/ExportSearchInforms');
+const exportEditInforms = params => async () => {
+    const url = Site.resolveClientUrl('InformHeadline/ExportEditInforms');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
@@ -144,18 +146,19 @@ const insertInforms = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const updateInformStatus = params => async () => {
+const editInformStatus = params => async () => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('InformHeadline/UpdateInformStatus');
+    const url = Site.resolveClientUrl('InformHeadline/EditInformStatus');
     await DataService.postDataAsync(url, params).then(() => Site.unblockUI());
 };
 
 const exportNewInforms = params => async () => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/ExportNewInforms');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
-    });
+    }).then(() => Site.unblockUI());
 };
 
 export const ActionCreators = {
@@ -164,25 +167,25 @@ export const ActionCreators = {
     getTitleDetail,
     getContactInformSettings,
     getContactInforms,
-    setShowEditContactInform,
-    updateContactInforms,
+    setEditContactInformDialog,
+    editContactInforms,
     setGridParams,
     getAllSettings,
-    getSearchInforms,
-    setShowEditSearchInform,
-    updateSearchInforms,
+    getEditInforms,
+    setEditInformDialog,
+    editInforms,
     exportContactInforms,
-    exportSearchInforms,
+    exportEditInforms,
     getRemovedAccountLogs,
     getRemovedAccountLogDetails,
-    setShowRemovedLogs,
-    setShowRemovedLogDetails,
+    setRemovedLogDialog,
+    setRemovedLogDetailDialog,
     setGridParamRemovedLogs,
     setGridParamRemovedLogDetails,
     getNewInforms,
-    setShowNewInforms,
+    setNewInformDialog,
     insertInforms,
-    updateInformStatus,
+    editInformStatus,
     exportNewInforms,
-    setShowOptions
+    setOptionDialog
 };

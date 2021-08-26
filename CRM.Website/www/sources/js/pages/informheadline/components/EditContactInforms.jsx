@@ -94,7 +94,7 @@ export class EditContactInforms extends Component {
 
     setAlert = () => {
         this.setState({
-            saveResult: this.props.resultUpdateContactInforms
+            saveResult: this.props.resultEditContactInforms
         });
         setTimeout(() => {
             this.setState({
@@ -110,7 +110,7 @@ export class EditContactInforms extends Component {
             }
             return item;
         });
-        await this.props.updateContactInforms({
+        await this.props.editContactInforms({
             titleId: this.props.titleId,
             informs: informs
         });
@@ -242,8 +242,8 @@ export class EditContactInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInformSettings, contactInforms, gridParams, resultUpdateContactInforms } = state;
-    return { titleDetail, contactInformSettings, contactInforms, gridParams, resultUpdateContactInforms };
+    const { titleDetail, contactInformSettings, contactInforms, gridParams, resultEditContactInforms } = state;
+    return { titleDetail, contactInformSettings, contactInforms, gridParams, resultEditContactInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditContactInforms);
