@@ -1376,7 +1376,7 @@ describe('CreateForm', () => {
     });
 
     describe('productHandleChange ', () => {
-        it('should do as expected when selectedItemsKey has value', async () => {
+        it('should do as expected when selectedItemsKey has value', () => {
             // Arrange
             const props = {
                 settings: {
@@ -1396,7 +1396,7 @@ describe('CreateForm', () => {
             expect(createForm.state.subProductOptions).toEqual([1]);
         });
 
-        it('should do as expected when selectedItemsKey is empty', async () => {
+        it('should do as expected when selectedItemsKey is empty', () => {
             // Arrange
             const props = {
                 settings: {
@@ -1421,7 +1421,7 @@ describe('CreateForm', () => {
     });
 
     describe('subProductHandleChange ', () => {
-            it('should do as expected when selectedItemsKey has value', async () => {
+            it('should do as expected when selectedItemsKey has value', () => {
                 // Arrange
                 const props = {
                     settings: {
@@ -1441,7 +1441,7 @@ describe('CreateForm', () => {
                 expect(createForm.state.betTypeOptions).toEqual([1]);
             });
 
-            it('should do as expected when selectedItemsKey is empty', async () => {
+            it('should do as expected when selectedItemsKey is empty', () => {
                 // Arrange
                 const props = {
                     settings: {
@@ -1461,7 +1461,7 @@ describe('CreateForm', () => {
                 expect(setFieldValue).toHaveBeenCalledWith('betType', '');
             });
 
-            it('should do as expected when betType Selected length < 0', async () => {
+            it('should do as expected when betType Selected length < 0', () => {
                 // Arrange
                 const props = {
                     settings: {
@@ -1482,7 +1482,7 @@ describe('CreateForm', () => {
     });
 
     describe('mainCategoriesHandleChange', () => {
-        it('should do as expected when selectedItemsKey has value', async () => {
+        it('should do as expected when selectedItemsKey has value', () => {
             // Arrange
             const props = {
                 settings: {
@@ -1504,7 +1504,7 @@ describe('CreateForm', () => {
             expect(createForm.state.subCategoriesOptions).toEqual([1]);
         });
 
-        it('should do as expected when selectedItemsKey has value and subCategoriesSelected length > 0', async () => {
+        it('should do as expected when selectedItemsKey has value and subCategoriesSelected length > 0', () => {
             // Arrange
             const props = {
                 settings: {
@@ -1526,7 +1526,7 @@ describe('CreateForm', () => {
             expect(createForm.state.subCategoriesOptions).toEqual([1]);
         });
 
-        it('should do as expected when selectedItemsKey is empty', async () => {
+        it('should do as expected when selectedItemsKey is empty', () => {
             // Arrange
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm />).instance();
@@ -1542,7 +1542,7 @@ describe('CreateForm', () => {
     });
 
     describe('handleEditBlock', () => {
-        it('should call exact function', async () => {
+        it('should call exact function', () => {
             // Arrange
             const prevState = {
                 collapse: {
@@ -1559,7 +1559,7 @@ describe('CreateForm', () => {
             expect(createForm.state.collapse.isShowCustomerDetailOption).toEqual(true);
         });
 
-        it('should call exact function', async () => {
+        it('should call exact function', () => {
             // Arrange
             const prevState = {
                 editBlock: {
@@ -1583,7 +1583,7 @@ describe('CreateForm', () => {
     });
 
     describe('handleCommunicationChange', () => {
-        it('should do as expected when selectedItemsKey has value equal length communication get first name', async () => {
+        it('should do as expected when selectedItemsKey has value equal length communication get first name', () => {
             // Arrange
             const props = {
                 settings: {
@@ -1605,7 +1605,7 @@ describe('CreateForm', () => {
             expect(createForm.state.communicationToolVal).toEqual('1');
         });
 
-        it('should do as expected when current communication tool checked', async () => {
+        it('should do as expected when current communication tool checked', () => {
             // Arrange
             const props = {
                 settings: {
@@ -1624,13 +1624,12 @@ describe('CreateForm', () => {
 
             // Act
             createForm.handleCommunicationChange(currentItem, '1,2', setFieldValue);
-            jest.runAllTimers();
 
             // Assert
             expect(createForm.state.communicationToolVal).toEqual('3');
         });
 
-        it('should do as expected when multiple select', async () => {
+        it('should do as expected when multiple select',  () => {
             // Arrange
             const props = {
                 settings: {
@@ -1653,27 +1652,25 @@ describe('CreateForm', () => {
     });
 
     describe('handleChangeResolutionTime', () => {
-        it('should call twice setFieldValue if feedback date greater than solution date', async () => {
+        it('should call twice setFieldValue if feedback date greater than solution date', () => {
             // Arrange
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm />).instance();
 
             // Act
             createForm.handleChangeResolutionTime(setFieldValue, '2021-01-02', '2021-01-01');
-            jest.runAllTimers();
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledTimes(2);
         });
 
-        it('should call 1 setFieldValue if feedback date smaller than solution date', async () => {
+        it('should call 1 setFieldValue if feedback date smaller than solution date', () => {
             // Arrange
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm />).instance();
     
             // Act
             createForm.handleChangeResolutionTime(setFieldValue, '2021-01-01', '2021-01-02');
-            jest.runAllTimers();
     
             // Assert
             expect(setFieldValue).toHaveBeenCalledTimes(1);
@@ -1681,7 +1678,7 @@ describe('CreateForm', () => {
     });
 
     describe('handleChangeFeedbackTime', () => {
-        it('should call twice setFieldValue if feedback date greater than solution date', async () => {
+        it('should call twice setFieldValue if feedback date greater than solution date', () => {
             // Arrange
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm />).instance();
@@ -1689,13 +1686,11 @@ describe('CreateForm', () => {
             createForm.handleChangeFeedbackTime (setFieldValue, '2021-01-02', '2021-01-01');
             createForm.renderAutoGeneratedText = jest.fn(() =>'test');
     
-            jest.runAllTimers();
-    
             // Assert
             expect(setFieldValue).toHaveBeenCalledTimes(3);
         });
     
-        it('should call 1 setFieldValue if feedback date smaller than solution date', async () => {
+        it('should call 1 setFieldValue if feedback date smaller than solution date', () => {
             // Arrange
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm />).instance();
@@ -1704,15 +1699,13 @@ describe('CreateForm', () => {
             createForm.handleChangeFeedbackTime(setFieldValue, '2021-01-01', '2021-01-02');
             createForm.renderAutoGeneratedText = jest.fn(() =>'test');
     
-            jest.runAllTimers();
-    
             // Assert
             expect(setFieldValue).toHaveBeenCalledTimes(2);
         });
     });
 
     describe('handleSubmit', () => {
-        it('should remove special characters', async () => {
+        it('should remove special characters', () => {
         // Arrange
         const params= {UserName: 'test#'};
         const props = {
@@ -1731,7 +1724,7 @@ describe('CreateForm', () => {
             LangHelper.getResource('ConfirmAddGuestFeedbackSpecialChar'));
         });
 
-        it('should  call exact function when do not have special characters', async () => {
+        it('should  call exact function when do not have special characters', () => {
             // Arrange
             const params= {UserName: 'test'};
             const props = {

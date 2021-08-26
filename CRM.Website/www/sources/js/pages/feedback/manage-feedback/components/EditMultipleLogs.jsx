@@ -205,6 +205,7 @@ export class EditMultipleLogs extends Component {
             this.setState({ subCategoryOptions });
         } else {
             this.setState({ subCategoryOptions: [] });
+            setFieldValue('subCategoryIds', '');
         }
     };
 
@@ -219,17 +220,20 @@ export class EditMultipleLogs extends Component {
                 subProductOptions: [],
                 betTypeOptions: []
             });
+            setFieldValue('subProductIds', '');
+            setFieldValue('betTypeIds', '');
         }
     };
 
     onChangeSubProduct = (setFieldValue, selectedSubProductIds, selectedBetTypeIds) => {
-        setFieldValue('subCategory', selectedSubProductIds);
+        setFieldValue('subProductIds', selectedSubProductIds);
         if (selectedSubProductIds) {
             const betTypeIds = selectedBetTypeIds.length > 0 ? selectedBetTypeIds.split(',') : [];
             const betTypes = getBetTypes(selectedSubProductIds.split(','), this.state.settings.bettypes, betTypeIds, false);
             this.setState({ betTypeOptions: betTypes });
         } else {
             this.setState({ betTypeOptions: [] });
+            setFieldValue('betTypeIds', '');
         }
     };
 

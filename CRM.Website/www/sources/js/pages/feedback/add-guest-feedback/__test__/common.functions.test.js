@@ -55,7 +55,7 @@ describe('common functions', () => {
             const values = {
                 identityInformation: '1',
                 communication: [1],
-                category: '1',
+                category: '1, 2',
                 subCategory: '1',
                 languageId: 1,
                 solution: '1',
@@ -67,7 +67,7 @@ describe('common functions', () => {
             };
             const props = {
                 settings: {
-                    mainCategories: [{mainCategoryID: 1, name: 'settingName'}],
+                    mainCategories: [{mainCategoryID: 1, name: 'settingName'}, {mainCategoryID: 2, name: 'settingName'}],
                     subCategories: [{subCategoryId: 1, mainCategoryID: 1}]
                 }
             };
