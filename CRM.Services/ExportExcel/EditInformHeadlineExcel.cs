@@ -11,9 +11,9 @@
     using System.Text.RegularExpressions;
     using System.Web;
 
-    public class UpdateInformHeadlineExcel : ExcelBase
+    public class EditInformHeadlineExcel : ExcelBase
     {
-        private readonly IEnumerable<UpdateInform> updateInforms;
+        private readonly IEnumerable<EditInform> editInforms;
         private readonly IEnumerable<InformStatus> informStatuses;
         private readonly IEnumerable<Station> informStations;
         private readonly IEnumerable<FeedbackStatus> informProductStatuses;
@@ -24,15 +24,15 @@
         private const byte TotalCols = 7;
         private const byte RowStartTitle = 4;
 
-        public UpdateInformHeadlineExcel(
+        public EditInformHeadlineExcel(
             string templatePath,
-            IEnumerable<UpdateInform> updateInforms,
+            IEnumerable<EditInform> editInforms,
             IEnumerable<InformStatus> informStatuses,
             IEnumerable<Station> informStations,
             IEnumerable<FeedbackStatus> informProductStatuses,
             string informHeadlineTitle) : base(templatePath, 0, ViewResources.InformHeadlineCase)
         {
-            this.updateInforms = updateInforms;
+            this.editInforms = editInforms;
             this.informStatuses = informStatuses;
             this.informStations = informStations;
             this.informProductStatuses = informProductStatuses;
@@ -57,31 +57,31 @@
         {
             int rowIndex = RowStartBody;
             int index = 1;
-            foreach (var updateInform in updateInforms)
+            foreach (var editInform in editInforms)
             {
-                RenderRow(worksheet, updateInform, index, rowIndex++);
+                RenderRow(worksheet, editInform, index, rowIndex++);
                 index++;
             }
         }
 
-        protected internal virtual void RenderRow(ExcelWorksheet worksheet, UpdateInform updateInform, int index, int rowIndex)
+        protected internal virtual void RenderRow(ExcelWorksheet worksheet, EditInform editInform, int index, int rowIndex)
         {
             var colIndex = 1;
-            worksheet.Cells[rowIndex, colIndex++].Value = updateInform.Username;
-            worksheet.Cells[rowIndex, colIndex++].Value = GetInformStatusNameAsync(updateInform.InformHeadlineStatusId);
-            worksheet.Cells[rowIndex, colIndex++].Value = updateInform.ClientUpdatedTime;
-            worksheet.Cells[rowIndex, colIndex++].Value = NormalizeLineBreaks(HttpUtility.HtmlDecode(updateInform.Remark));
-            worksheet.Cells[rowIndex, colIndex++].Value = updateInform.Handler;
-            worksheet.Cells[rowIndex, colIndex++].Value = GetStationNameAsync(updateInform.Extension);
-            worksheet.Cells[rowIndex, colIndex].Value = GetProductStatusNameAsync(updateInform.ProductStatus);
+            worksheet.Cells[rowIndex, colIndex++].Value = editInform.Username;
+            worksheet.Cells[rowIndex, colIndex++].Value = GetInformStatusNameAsync(editInform.InformHeadlineStatusId);
+            worksheet.Cells[rowIndex, colIndex++].Value = editInform.ClientUpdatedTime;
+            worksheet.Cells[rowIndex, colIndex++].Value = NormalizeLineBreaks(HttpUtility.HtmlDecode(editInform.Remark));
+            worksheet.Cells[rowIndex, colIndex++].Value = editInform.Handler;
+            worksheet.Cells[rowIndex, colIndex++].Value = GetStationNameAsync(editInform.Extension);
+            worksheet.Cells[rowIndex, colIndex].Value = GetProductStatusNameAsync(editInform.ProductStatus);
 
             Color colHeadline = ColorTranslator.FromHtml("#d0e6f4");
             Color colDirect = ColorTranslator.FromHtml("#f1f1f1");
-            if (updateInform.GroupId > 0)
+            if (editInform.GroupId > 0)
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colHeadline);
             }
-            if (updateInform.GroupId <= 0)
+            if (editInform.GroupId <= 0)
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalCols], colDirect);
             }
@@ -110,7 +110,7 @@
             const int WidthSmall = 15;
             const int ColumnDirectAccount = 1;
             const int ColumnStatus = 2;
-            const int ColumnUpdateTime = 3;
+            const int ColumnUpdatedTime = 3;
             const int ColumnRemark = 4;
             const int ColumnHandler = 5;
             const int ColumnExtension = 6;
@@ -120,13 +120,13 @@
             worksheet.Cells.AutoFitColumns();
             worksheet.Column(ColumnDirectAccount).Width = WidthLarge;
             worksheet.Column(ColumnStatus).Width = WidthSmall;
-            worksheet.Column(ColumnUpdateTime).Width = WidthNormal;
+            worksheet.Column(ColumnUpdatedTime).Width = WidthNormal;
             worksheet.Column(ColumnRemark).Width = WidthLargest;
             worksheet.Column(ColumnHandler).Width = WidthSmall;
             worksheet.Column(ColumnExtension).Width = WidthSmall;
             worksheet.Column(ColumnProductStatus).Width = WidthSmall;
 
-            for (var index = 0; index < updateInforms.Count(); index++)
+            for (var index = 0; index < editInforms.Count(); index++)
             {
                 DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalCols]);
             }

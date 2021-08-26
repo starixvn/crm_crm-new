@@ -13,8 +13,8 @@
         Task<IEnumerable<InformHeadlineModel>> GetInformAsync();
         Task<InformTitleDetail> GetTitleDetailAsync(int titleId);
         Task<IEnumerable<InformStatus>> GetInformStatusesAsync(bool isIncludeKeptForRefence = false);
-        Task<IEnumerable<UpdateInform>> GetContactInformsAsync(GetContactInformParam param);
-        Task<IEnumerable<UpdateInform>> GetSearchInformsAsync(GetSearchInformParam param);
+        Task<IEnumerable<EditInform>> GetContactInformsAsync(GetContactInformParam param);
+        Task<IEnumerable<EditInform>> GetEditInformsAsync(GetEditInformParam param);
         Task<(IEnumerable<RemovedAccountLog> listRemoveAccount, int totalRows)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param);
         Task<(IEnumerable<RemovedAccountLogDetail> listRemoveAccountDetail, int totalRows)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param);
         Task<IEnumerable<NewInform>> GetNewInformsAsync(GetNewInformParam param);
@@ -64,7 +64,7 @@
             return await baseService.GetDataAsync<InformStatus>(criteria);
         }
 
-        public async Task<IEnumerable<UpdateInform>> GetContactInformsAsync(GetContactInformParam param)
+        public async Task<IEnumerable<EditInform>> GetContactInformsAsync(GetContactInformParam param)
         {
             var criteria = new GetContactInformsCriteria
             {
@@ -74,7 +74,7 @@
                 PageIndex = param.PageIndex,
                 PageSize = param.PageSize
             };
-            IEnumerable<UpdateInform> contactInforms = await baseService.GetDataAsync<UpdateInform>(criteria);
+            IEnumerable<EditInform> contactInforms = await baseService.GetDataAsync<EditInform>(criteria);
             foreach (var contactInform in contactInforms)
             {
                 if (contactInform.UpdatedTime.HasValue)
@@ -86,9 +86,9 @@
             return contactInforms;
         }
 
-        public async Task<IEnumerable<UpdateInform>> GetSearchInformsAsync(GetSearchInformParam param)
+        public async Task<IEnumerable<EditInform>> GetEditInformsAsync(GetEditInformParam param)
         {
-            var criteria = new GetSearchInformsCriteria
+            var criteria = new GetEditInformsCriteria
             {
                 TitleId = param.TitleId,
                 TypeAccount = param.TypeAccount,
@@ -98,7 +98,7 @@
                 IsVip = param.IsVip,
                 ExcludeIgnoredAccounts = param.ExcludeIgnoredAccounts
             };
-            IEnumerable<UpdateInform> updateInforms = await baseService.GetDataAsync<UpdateInform>(criteria);
+            IEnumerable<EditInform> updateInforms = await baseService.GetDataAsync<EditInform>(criteria);
             foreach (var updateInform in updateInforms)
             {
                 if (updateInform.UpdatedTime.HasValue)

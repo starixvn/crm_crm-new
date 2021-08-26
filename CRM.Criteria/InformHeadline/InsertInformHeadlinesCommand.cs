@@ -32,7 +32,7 @@
         public string IP { get; set; }
 
         [SpParam(Ignored = true)]
-        public IEnumerable<UpdateInform> Informs { get; set; } = new List<UpdateInform>();
+        public IEnumerable<EditInform> Informs { get; set; } = new List<EditInform>();
 
         public override string GetSettingKey() => "Acc_CRM_InformHeadlineIns";
 

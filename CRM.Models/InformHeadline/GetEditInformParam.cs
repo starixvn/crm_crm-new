@@ -1,6 +1,6 @@
 ﻿namespace CRM.Models.InformHeadline
 {
-    public class GetSearchInformParam
+    public class GetEditInformParam
     {
         public int TitleId { get; set; }
 

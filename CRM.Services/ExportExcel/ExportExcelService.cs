@@ -32,8 +32,8 @@
 
         byte[] ExportInformHeadline(IEnumerable<InformHeadlineModel> informs);
 
-        byte[] ExportUpdateInformHeadline(
-            IEnumerable<UpdateInform> updateInforms, 
+        byte[] ExportEditInformHeadline(
+            IEnumerable<EditInform> editInforms, 
             IEnumerable<InformStatus> informStatuses, 
             IEnumerable<Station> informStations, 
             IEnumerable<FeedbackStatus> informProductStatuses, 
@@ -112,14 +112,14 @@
             return excel.Export();
         }
 
-        public byte[] ExportUpdateInformHeadline(IEnumerable<UpdateInform> updateInforms,
+        public byte[] ExportEditInformHeadline(IEnumerable<EditInform> editInforms,
             IEnumerable<InformStatus> informStatuses, IEnumerable<Station> informStations,
             IEnumerable<FeedbackStatus> informProductStatuses,
             string informHeadlineTitle)
         {
             const string ExcelTemplatePath = "ExcelTemplates/UpdateInformHeadlines.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new UpdateInformHeadlineExcel(templatePath, updateInforms, informStatuses, informStations, informProductStatuses, informHeadlineTitle);
+            var excel = new EditInformHeadlineExcel(templatePath, editInforms, informStatuses, informStations, informProductStatuses, informHeadlineTitle);
             return excel.Export();
         }
 

@@ -7,16 +7,37 @@
     using System.Linq;
     using System.Text;
 
-    public class UpdateContactInformsCommand : BaseNonQueryCommand
+    public class EditInformsCommand : BaseNonQueryCommand
     {
         public int TitleId { get; set; }
+
+        public string Title { get; set; }
+
+        [SpParam(SqlParamName = "Currency")]
+        public string Currencies { get; set; }
+
+        [SpParam(SqlParamName = "Level")]
+        public string Levels { get; set; }
+
+        [SpParam(SqlParamName = "Site")]
+        public string Sites { get; set; }
+
+        public byte TypeAccount { get; set; }
+
+        public bool ChangeFilter { get; set; }
+
+        public int IsVip { get; set; }
+
+        [SpParam(SqlParamName = "ExcludeIgnored")]
+        public bool ExcludeIgnoredAccounts { get; set; }
+
 
         public int UserId { get; set; }
 
         public string IP { get; set; }
 
         [SpParam(Ignored = true)]
-        public IEnumerable<UpdateInform> Informs { get; set; } = new List<UpdateInform>();
+        public IEnumerable<EditInform> Informs { get; set; } = new List<EditInform>();
 
         [SpParam(SqlParamName = "Content")]
         public string ContentXml
@@ -27,13 +48,14 @@
                 if (Informs.Any())
                 {
                     xml.Append("<Content>");
-                    foreach (UpdateInform inform in Informs)
+                    foreach (EditInform inform in Informs)
                     {
-                        xml.AppendFormat("<Headline HeadlineID='{0}' StatusID='{1}' Remark='{2}' Extension='{3}' ProductStatus='{4}'/>", 
-                            inform.HeadlineId, 
+                        xml.AppendFormat("<Headline HeadlineID='{0}' GroupID='{1}' StatusID='{2}' Remark='{3}' Extension='{4}' ProductStatus='{5}'/>",
+                            inform.HeadlineId,
+                            inform.GroupId,
                             inform.InformHeadlineStatusId,
-                            ReplaceBreaklineXml(inform.Remark), 
-                            inform.Extension, 
+                            ReplaceBreaklineXml(inform.Remark),
+                            inform.Extension,
                             inform.ProductStatus);
                     }
                     xml.Append("</Content>");
@@ -57,7 +79,7 @@
             return xml;
         }
 
-        public override string GetSettingKey() => "Acc_CRM_InformHeadlineUpd";
+        public override string GetSettingKey() => "Acc_CRM_InformHeadlineSearchUpd";
 
         public override bool IsValid() => true;
     }

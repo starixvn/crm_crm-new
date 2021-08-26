@@ -7,7 +7,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    public class UpdateInformStatusCommand : BaseNonQueryCommand
+    public class EditInformStatusCommand : BaseNonQueryCommand
     {
         public int TitleId { get; set; }
 

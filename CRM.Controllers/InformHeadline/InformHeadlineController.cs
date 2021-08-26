@@ -97,13 +97,13 @@
         [HttpPost]
         public async Task<IActionResult> GetContactInforms([FromBody] GetContactInformParam param)
         {
-            IEnumerable<UpdateInform> contactInforms = await informHeadlineService.GetContactInformsAsync(param);
+            IEnumerable<EditInform> contactInforms = await informHeadlineService.GetContactInformsAsync(param);
             return Json(contactInforms);
         }
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.InformHeadlineContact, Policy = Policy.Host)]
-        public async Task<IActionResult> UpdateContactInforms([FromBody] UpdateContactInformsCommand command)
+        public async Task<IActionResult> EditContactInforms([FromBody] EditContactInformsCommand command)
         {
             command.IP = ClientIP;
             command.UserId = napSession.UserId;
@@ -115,7 +115,7 @@
         [CrmPermission(FunctionKey = FunctionKey.InformHeadlineContact, Policy = Policy.Host)]
         public async Task<IActionResult> ExportContactInforms([FromBody] GetContactInformParam param)
         {
-            IEnumerable<UpdateInform> contactInforms = await informHeadlineService.GetContactInformsAsync(param);
+            IEnumerable<EditInform> contactInforms = await informHeadlineService.GetContactInformsAsync(param);
             var informStatuses = await informHeadlineService.GetInformStatusesAsync();
             var informStations = await settingService.GetStations();
             var informProductStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline);
@@ -123,7 +123,7 @@
             {
                 TitleId = param.TitleId
             });
-            var bytes = excelService.ExportUpdateInformHeadline(contactInforms, informStatuses, informStations, informProductStatuses, titles.Title);
+            var bytes = excelService.ExportEditInformHeadline(contactInforms, informStatuses, informStations, informProductStatuses, titles.Title);
             string reportName = ViewResources.ContactInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
@@ -142,21 +142,21 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetSearchInforms([FromBody] GetSearchInformParam param)
+        public async Task<IActionResult> GetEditInforms([FromBody] GetEditInformParam param)
         {
-            IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInformsAsync(param);
+            IEnumerable<EditInform> editInforms = await informHeadlineService.GetEditInformsAsync(param);
             
-            int totalItems = searchInforms.Count();
+            int totalItems = editInforms.Count();
             if (totalItems > 0)
             {
-                searchInforms = searchInforms.Skip(param.PageSize * (param.PageIndex - 1)).Take(param.PageSize).ToList();
+                editInforms = editInforms.Skip(param.PageSize * (param.PageIndex - 1)).Take(param.PageSize).ToList();
             }
-            return Json(searchInforms);
+            return Json(editInforms);
         }
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
-        public async Task<IActionResult> UpdateSearchInforms([FromBody] UpdateSearchInformsCommand command)
+        public async Task<IActionResult> EditInforms([FromBody] EditInformsCommand command)
         {
             command.IP = ClientIP;
             command.UserId = napSession.UserId;
@@ -167,9 +167,9 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
-        public async Task<IActionResult> ExportSearchInforms([FromBody] GetSearchInformParam param)
+        public async Task<IActionResult> ExportEditInforms([FromBody] GetEditInformParam param)
         {
-            IEnumerable<UpdateInform> searchInforms = await informHeadlineService.GetSearchInformsAsync(param);
+            IEnumerable<EditInform> editInforms = await informHeadlineService.GetEditInformsAsync(param);
             var informStatuses = await informHeadlineService.GetInformStatusesAsync();
             var informStations = await settingService.GetStations();
             var informProductStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline);
@@ -177,7 +177,7 @@
             {
                 TitleId = param.TitleId
             });
-            var bytes = excelService.ExportUpdateInformHeadline(searchInforms, informStatuses, informStations, informProductStatuses, titles.Title);
+            var bytes = excelService.ExportEditInformHeadline(editInforms, informStatuses, informStations, informProductStatuses, titles.Title);
             string reportName = ViewResources.UpdateInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
@@ -211,19 +211,19 @@
             command.UserId = napSession.UserId;
             command.Title = HttpUtility.HtmlEncode(command.Title);
             await baseService.ExecuteNonQueryAsync(command);
-            var updateContactCriteria = new UpdateContactInformsCommand
+            var editContactCriteria = new EditContactInformsCommand
             {
                 Informs = command.Informs,
                 TitleId = command.TitleId,
                 IP = ClientIP,
                 UserId = napSession.UserId
             };
-            return await UpdateContactInforms(updateContactCriteria);
+            return await EditContactInforms(editContactCriteria);
         }
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
-        public async Task<IActionResult> UpdateInformStatus([FromBody] UpdateInformStatusCommand command)
+        public async Task<IActionResult> EditInformStatus([FromBody] EditInformStatusCommand command)
         {
             command.IP = ClientIP;
             command.UserId = napSession.UserId;

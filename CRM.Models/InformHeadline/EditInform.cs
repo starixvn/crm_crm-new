@@ -1,7 +1,7 @@
 ﻿namespace CRM.Models.InformHeadline
 {
     using System;
-    public class UpdateInform
+    public class EditInform
     {
         private const int NeverTouchStatusId = 45006;
 
