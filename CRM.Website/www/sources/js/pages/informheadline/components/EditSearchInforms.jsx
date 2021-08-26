@@ -258,7 +258,7 @@ export class EditSearchInforms extends Component {
             values.submit = true;
             return;
 
-        if(values.submit){
+        }else{
             this.getTypeAccount(values);
             const result = this.props.searchInforms.map(element => this.state.informs.find(item => item.headlineId === element.headlineId) || element);
 

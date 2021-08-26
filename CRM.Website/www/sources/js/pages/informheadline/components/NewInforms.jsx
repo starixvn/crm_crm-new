@@ -204,7 +204,7 @@ export class NewInforms extends Component {
             values.submit = true;
             return;
 
-        if(values.submit){
+        }else{
             this.getTypeAccount(values);
 
             const informs = this.state.informs.map(item => {

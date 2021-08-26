@@ -8,25 +8,7 @@ describe('DataGrid', () => {
         jest.clearAllMocks();
     });
 
-    var initProps = {};
-
-    beforeEach(() => {
-        const searchPolicy = document.createElement('input');
-        searchPolicy.setAttribute('id', 'SearchPolicy');
-        searchPolicy.setAttribute('host', '');
-        document.body.appendChild(searchPolicy);
-
-        initProps = {
-            searchPolicy: document.getElementById('SearchPolicy')
-        };
-    });
-
-    afterEach(() => {
-        const searchPolicy = document.getElementById('SearchPolicy');
-        if (searchPolicy) {
-            document.body.removeChild(searchPolicy);
-        }
-    });
+    const initProps = {};
 
     describe('buildHeader', () => {
         it('should render expected header', () => {
@@ -58,13 +40,9 @@ describe('DataGrid', () => {
 
         it('should render expected rows when gridData has data', () => {
             // Arrange
-            const contactPolicy = document.createElement('input');
-            contactPolicy.setAttribute('id', 'ContactPolicy');
-            document.body.appendChild(contactPolicy);
 
             const props = {
                 ...initProps,
-                contactPolicy: document.getElementById('ContactPolicy'),
                 gridData: [
                     { titleId: 720, title:'test'}
                 ]
@@ -140,13 +118,9 @@ describe('DataGrid', () => {
     describe('renderRow', () => {
         it('should call getPositionEdit when click edit', () => {
             // Arrange
-            const contactPolicy = document.createElement('input');
-            contactPolicy.setAttribute('id', 'ContactPolicy');
-            document.body.appendChild(contactPolicy);
 
             const props = {
                 ...initProps,
-                contactPolicy: document.getElementById('ContactPolicy'),
                 gridData: [
                     { titleId: 720, title:'test'}
                 ]
@@ -171,13 +145,9 @@ describe('DataGrid', () => {
 
         it('should call handleEditContact when click titleId', () => {
             // Arrange
-            const contactPolicy = document.createElement('input');
-            contactPolicy.setAttribute('id', 'ContactPolicy');
-            document.body.appendChild(contactPolicy);
 
             const props = {
                 ...initProps,
-                contactPolicy: document.getElementById('ContactPolicy'),
                 gridData: [
                     { titleId: 720, title:'test'}
                 ]

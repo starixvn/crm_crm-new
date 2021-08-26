@@ -13,8 +13,6 @@ import OptionsEdit from './OptionsEdit';
 
 export class AppContainer extends Component {
     static propTypes = {
-        searchPolicy: PropTypes.instanceOf(Element).isRequired,
-        contactPolicy: PropTypes.instanceOf(Element).isRequired,
         getInforms: PropTypes.func,
         showEditContactInform: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         showEditSearchInform: PropTypes.shape({ show: PropTypes.bool }).isRequired,
@@ -25,8 +23,6 @@ export class AppContainer extends Component {
     };
 
     static defaultProps = {
-        searchPolicy: null,
-        contactPolicy: null,
         getInforms: function (){
             // nothing
         },
@@ -65,25 +61,14 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { searchPolicy, contactPolicy, showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms, showOptions } = this.props;
+        const { showEditContactInform, showEditSearchInform, showRemovedLogs, showRemovedLogDetails, showNewInforms, showOptions } = this.props;
 
         return (
             <>
+                <DataGrid/>
                 {
-                    (!searchPolicy.hasAttribute('none') || !contactPolicy.hasAttribute('none')) &&
-                    (
-                        <>
-                            <DataGrid
-                                contactPolicy={contactPolicy}
-                                searchPolicy={searchPolicy}
-                            />
-                            {
-                                showOptions.show &&
-                                <OptionsEdit/>
-                            }
-                        </>
-
-                    )
+                    showOptions.show &&
+                    <OptionsEdit/>
                 }
                 {
                     showEditContactInform.show &&

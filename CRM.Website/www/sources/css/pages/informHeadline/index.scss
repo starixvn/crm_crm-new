@@ -1,12 +1,13 @@
 @import '../../components/form-filter';
 @import '../../components/react-grid/react-grid';
 @import '../../components/multiple-select/style';
-@import '../../components/date-picker/style';
+@import '../../components/messages';
 @import '../../abstracts/variables';
 @import '../../components/modal';
 @import '../../components/tables';
 @import '../../components/react-select';
 @import '../../components/options-edit';
+@import '../../components/icons';
 
 
 .link-click {
@@ -18,26 +19,25 @@
     }
 }
 
-.body-content tr.open td{
-    background: #f0edc4 !important;
+.cursor-pointer{
+    cursor: pointer;
 }
 
-.body-content tr.closed td{
-    background: #f2f2f2 !important;
-}
-
-.body-content tr.free-grid-headline td{
-    background: #d0e6f4 !important;
-}
-
-.body-content tr.free-grid-direct td{
-    background: #f1f1f1 !important;
-}
-
-.select-body{
-    width: 105px;
-    height: 35px;
-    margin: auto;
+.body-content{
+    tr{
+        &.open td{
+            background: #f0edc4 !important;
+        }
+        &.closed td{
+            background: #f2f2f2 !important;
+        }
+        &.free-grid-headline td{
+            background: #d0e6f4 !important;
+        }
+        &.free-grid-direct td{
+            background: #f1f1f1 !important;
+        }
+    }
 }
 
 .check-btn{
@@ -65,22 +65,18 @@
     width: 98%;
 }
 
-@media screen and (min-width: 1200px){
-    .modal-edit .modal-xl {
-        max-width: 1200px;
+
+.modal-edit .modal-xl {
+    max-width: 1200px;
 }
 
-    .modal-removeDetail .modal-content{
-        width: 1080px;
-        margin: auto;
-    }
-
-    .modal-remove .modal-content {
-      width: 600px;
-      margin: auto;
-    }
-    .modal-content {
-      -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    }
+.modal-removeDetail .modal-content{
+    width: 1080px;
+    margin: auto;
 }
+
+.modal-remove .modal-content {
+    width: 600px;
+    margin: auto;
+}
+

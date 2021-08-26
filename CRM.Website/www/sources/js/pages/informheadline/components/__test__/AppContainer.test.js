@@ -14,33 +14,9 @@ describe('AppContainer', () => {
         jest.clearAllMocks();
     });
 
-    var initProps = {};
-
-    beforeEach(() => {
-        const searchPolicy = document.createElement('input');
-        const contactPolicy = document.createElement('input');
-        searchPolicy.setAttribute('id', 'SearchPolicy');
-        contactPolicy.setAttribute('id', 'ContactPolicy');
-        document.body.appendChild(searchPolicy);
-        document.body.appendChild(contactPolicy);
-
-        initProps = {
-            searchPolicy: document.getElementById('SearchPolicy'),
-            contactPolicy: document.getElementById('ContactPolicy'),
-            getInforms: jest.fn()
-        };
-    });
-
-    afterEach(() => {
-        const searchPolicy = document.getElementById('SearchPolicy');
-        const contactPolicy = document.getElementById('ContactPolicy');
-        if (searchPolicy) {
-            document.body.removeChild(searchPolicy);
-        }
-        if (contactPolicy) {
-            document.body.removeChild(contactPolicy);
-        }
-    });
+    const initProps = {
+        getInforms: jest.fn()
+    };
 
     describe('componentDidMount', () => {
         it('should call getInforms', () => {
@@ -180,16 +156,10 @@ describe('AppContainer', () => {
 
     describe('render', () => {
         it('should render correctly with not permission', () => {
-            const searchPolicy = document.getElementById('SearchPolicy');
-            const contactPolicy = document.getElementById('ContactPolicy');
-            searchPolicy.setAttribute("none","");
-            contactPolicy.setAttribute("none","");
 
             // Arrange
             const props = {
                 ...initProps,
-                searchPolicy: searchPolicy,
-                contactPolicy: contactPolicy,
                 showEditContactInform: { show: true },
                 showEditSearchInform: { show: true },
                 showRemovedLogs: { show: true },
@@ -203,13 +173,13 @@ describe('AppContainer', () => {
 
             // Assert
             expect(container).toMatchSnapshot();
-            expect(container.find(DataGrid).length).toBe(0);
+            expect(container.find(DataGrid).length).toBe(1);
             expect(container.find(EditContactInforms).length).toBe(1);
             expect(container.find(EditSearchInforms).length).toBe(1);
             expect(container.find(RemovedAccountLogs).length).toBe(1);
             expect(container.find(RemovedAccountLogDetails).length).toBe(1);
             expect(container.find(NewInforms).length).toBe(1);
-            expect(container.find(OptionsEdit).length).toBe(0);
+            expect(container.find(OptionsEdit).length).toBe(1);
         });
     });
 });

@@ -10,15 +10,10 @@ const store = configureStore({
     reducer: informHeadline
 });
 
-const contactPolicy = document.getElementById('ContactPolicy');
-const searchPolicy = document.getElementById('SearchPolicy');
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer 
-                contactPolicy={contactPolicy}
-                searchPolicy={searchPolicy}
-            />
+            <AppContainer/>
         </Layout>
     </Provider>,
     document.getElementById('app-container'));

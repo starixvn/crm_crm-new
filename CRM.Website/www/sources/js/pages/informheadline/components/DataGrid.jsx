@@ -31,9 +31,9 @@ export class DataGrid extends Component {
     };
 
     buildBody = () => {
-        const { contactPolicy, gridData } = this.props;
+        const { gridData } = this.props;
         if (gridData.length > 0) {
-            return gridData.map((item, index) => this.renderRow(item, index, contactPolicy));
+            return gridData.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -63,19 +63,19 @@ export class DataGrid extends Component {
         this.props.setShowNewInforms({show: true});
     };
 
-    renderRow = (item, index, contactPolicy) => {
+    renderRow = (item, index) => {
         const cssClass = item.status ? item.status.toLowerCase() : '';
         return (
             <Row key={index} className={cssClass}>
                 <Cell className='text-center'>
-                    <span className="fa fa-pencil-square-o" onClick={event => this.getPositionEdit(event, item.titleId, item.status)}></span>
+                    <span className="cursor-pointer fa fa-list" onClick={event => this.getPositionEdit(event, item.titleId, item.status)}></span>
                 </Cell>
                 {
-                    !contactPolicy.hasAttribute('none') ?
+                    window.contactPolicy !== 'None' ?
                     (
                         <Cell>
                             <span className='link-click' onClick={() => this.handleEditContact(item.titleId)}>{item.title}</span>
-                        </Cell>
+                        </Cell>                   
                     ) :
                     (
                         <Cell>{item.title}</Cell>
@@ -117,7 +117,7 @@ export class DataGrid extends Component {
 
     render() {
         const { gridData } = this.props;
-        if(!gridData){
+        if(!gridData || window.searchPolicy === 'None' || window.contactPolicy === 'None'){
             return null;
         }
 
@@ -140,7 +140,7 @@ export class DataGrid extends Component {
                 />
 
                 {
-                    this.props.searchPolicy.hasAttribute('host') &&
+                    window.searchPolicy === 'Host' &&
                     <Button variant="primary" size="sm" style={{width: '80px','marginTop': '10px'}} onClick={this.handleNewInforms}>
                         {LangHelper.getResource('NewCase')}
                     </Button>

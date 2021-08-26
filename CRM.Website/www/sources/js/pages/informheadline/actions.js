@@ -43,7 +43,7 @@ const exportInforms = params => async () => {
 const getTitleDetail = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/GetTitleDetail');
-    await DataService.postDataAsync(url, params).then(response => {
+    await DataService.getDataAsync(url, params).then(response => {
         dispatch(setTitleDetail(response.data));
     }).then(() => Site.unblockUI());
 };

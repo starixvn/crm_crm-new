@@ -42,7 +42,7 @@ export class DataGridEdit extends PureComponent {
             <Row key={index} className={item.groupId > 0 ? 'free-grid-headline' : 'free-grid-direct'}>
                 <Cell>{item.username}</Cell>
                 <Cell className='text-center'>
-                    <Form.Control as="select" size="sm" className="shadow-none select-body"
+                    <Form.Control as="select" size="sm" className="shadow-none"
                         name="informHeadlineStatusId"
                         defaultValue={item.informHeadlineStatusId}
                         key={item.informHeadlineStatusId}
@@ -66,7 +66,7 @@ export class DataGridEdit extends PureComponent {
                 <Cell>{item.handler}</Cell>
 
                 <Cell className='text-center'>
-                    <Form.Control as="select" size="sm" className="shadow-none select-body"
+                    <Form.Control as="select" size="sm" className="shadow-none"
                         name="extension"
                         defaultValue={item.extension}
                         key={item.extension}
@@ -79,7 +79,7 @@ export class DataGridEdit extends PureComponent {
                 </Cell>
 
                 <Cell className='text-center'>
-                    <Form.Control as="select" size="sm" className="shadow-none select-body"
+                    <Form.Control as="select" size="sm" className="shadow-none"
                         name="productStatus"
                         defaultValue={item.productStatus}
                         key={item.productStatus}
