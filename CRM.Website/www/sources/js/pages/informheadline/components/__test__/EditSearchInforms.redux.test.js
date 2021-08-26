@@ -14,7 +14,7 @@ describe('connect ', () => {
             mapDispatchToProps = mapDispatchToPropsFunc;
             return connectMock;
         });
-        require('../EditSearchInforms').default;
+        require('../EditInforms').default;
     });
 
     afterAll(() => {
@@ -26,16 +26,16 @@ describe('connect ', () => {
         const expected = {
             titleDetail: { title: 'test', currencies: '1,2,3' },
             allSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] },
-            searchInforms: { headlineId: 720, groupId: 12, username: 'test' },
+            editDataInforms: { headlineId: 720, groupId: 12, username: 'test' },
             gridParams: { pageIndex: 1, pageSize: 100 },
-            resultUpdateSearchInforms: 'Successfully!'
+            resultEditInforms: 'Successfully!'
         };
         const state = {
             titleDetail: { title: 'test', currencies: '1,2,3' },
             allSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] },
-            searchInforms: { headlineId: 720, groupId: 12, username: 'test' },
+            editDataInforms: { headlineId: 720, groupId: 12, username: 'test' },
             gridParams: { pageIndex: 1, pageSize: 100 },
-            resultUpdateSearchInforms: 'Successfully!'
+            resultEditInforms: 'Successfully!'
         };
 
         // Act

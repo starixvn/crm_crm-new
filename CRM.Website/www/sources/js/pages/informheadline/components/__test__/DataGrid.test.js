@@ -62,8 +62,8 @@ describe('DataGrid', () => {
         it('should call exactly functions when handle edit', () => {
             // Arrange
             const props = {
-                showEditContactInform: { show: false },
-                setShowEditContactInform: jest.fn()
+                editContactInformDialog: { show: false },
+                setEditContactInformDialog: jest.fn()
             };
 
             // Act
@@ -71,7 +71,7 @@ describe('DataGrid', () => {
             container.instance().handleEditContact(147258);
            
             // Assert
-            expect(props.setShowEditContactInform).toHaveBeenCalledWith({ show: true, titleId: 147258 });
+            expect(props.setEditContactInformDialog).toHaveBeenCalledWith({ show: true, titleId: 147258 });
         });
     });
 
@@ -80,7 +80,7 @@ describe('DataGrid', () => {
             // Arrange
             const props = {
                 initProps,
-                setShowOptions: jest.fn()
+                setOptionDialog: jest.fn()
             };
 
             // Act
@@ -89,7 +89,7 @@ describe('DataGrid', () => {
             container.instance().getPositionEdit(mockEvent, 147258, 'Open');
            
             // Assert
-            expect(props.setShowOptions).toHaveBeenCalledWith({ 
+            expect(props.setOptionDialog).toHaveBeenCalledWith({ 
                 left: 10, top: 20,
                 show: true, showOption: 'block',
                 status: 'Open', titleIdSearch: 147258,
@@ -102,7 +102,7 @@ describe('DataGrid', () => {
             // Arrange
             const props = {
                 getAllSettings: jest.fn(),
-                setShowNewInforms: jest.fn()
+                setNewInformDialog: jest.fn()
             };
 
             // Act
@@ -110,7 +110,7 @@ describe('DataGrid', () => {
             container.instance().handleNewInforms();
            
             // Assert
-            expect(props.setShowNewInforms).toHaveBeenCalledWith({ show: true });
+            expect(props.setNewInformDialog).toHaveBeenCalledWith({ show: true });
             expect(props.getAllSettings).toHaveBeenCalledTimes(1);
         });
     });

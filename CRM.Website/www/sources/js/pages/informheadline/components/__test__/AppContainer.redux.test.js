@@ -24,20 +24,20 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            showEditContactInform: { show: false },
-            showEditSearchInform: { show: false },
-            showRemovedLogs: { show: false },
-            showRemovedLogDetails: { show: false },
-            showNewInforms: { show: false },
-            showOptions: { show: false }
+            editContactInformDialog: { show: false },
+            editInformDialog: { show: false },
+            removedLogDialog: { show: false },
+            removedLogDetailDialog: { show: false },
+            newInformDialog: { show: false },
+            optionDialog: { show: false }
         };
         const state = {
-            showEditContactInform: { show: false },
-            showEditSearchInform: { show: false },
-            showRemovedLogs: { show: false },
-            showRemovedLogDetails: { show: false },
-            showNewInforms: { show: false },
-            showOptions: { show: false }
+            editContactInformDialog: { show: false },
+            editInformDialog: { show: false },
+            removedLogDialog: { show: false },
+            removedLogDetailDialog: { show: false },
+            newInformDialog: { show: false },
+            optionDialog: { show: false }
         };
 
         // Act

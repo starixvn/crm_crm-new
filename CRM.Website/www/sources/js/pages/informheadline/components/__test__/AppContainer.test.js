@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
 import DataGrid from '../DataGrid';
 import EditContactInforms from '../EditContactInforms';
-import EditSearchInforms from '../EditSearchInforms';
+import EditInforms from '../EditInforms';
 import RemovedAccountLogs from '../RemovedAccountLogs';
 import RemovedAccountLogDetails from '../RemovedAccountLogDetails';
 import NewInforms from '../NewInforms';
@@ -31,112 +31,112 @@ describe('AppContainer', () => {
         });
     });
 
-    describe('handleCloseShowEditContactInforms', () => {
+    describe('handleCloseEditContactInformDialog', () => {
         it('should call exactly functions when close edit contact', () => {
             // Arrange
             const props = {
                 ...initProps,
-                showEditContactInform: { show: true },
-                setShowEditContactInform: jest.fn()
+                editContactInformDialog: { show: true },
+                setEditContactInformDialog: jest.fn()
             };
 
             // Act
             const container = shallow(<AppContainer {...props}/>);
-            container.instance().handleCloseShowEditContactInforms();
+            container.instance().handleCloseEditContactInformDialog();
            
             // Assert
-            expect(props.setShowEditContactInform).toHaveBeenCalledWith({ show: false });
+            expect(props.setEditContactInformDialog).toHaveBeenCalledWith({ show: false });
             expect(props.getInforms).toHaveBeenCalled();
         });
     });
 
-    describe('handleCloseShowEditSearchInforms', () => {
+    describe('handleCloseEditInformDialog', () => {
         it('should call exactly functions when close edit search', () => {
             // Arrange
             const props = {
                 ...initProps,
-                showEditSearchInform: { show: true },
-                setShowEditSearchInform: jest.fn()
+                editInformDialog: { show: true },
+                setEditInformDialog: jest.fn()
             };
 
             // Act
             const container = shallow(<AppContainer {...props}/>);
-            container.instance().handleCloseShowEditSearchInforms();
+            container.instance().handleCloseEditInformDialog();
            
             // Assert
-            expect(props.setShowEditSearchInform).toHaveBeenCalledWith({ show: false });
+            expect(props.setEditInformDialog).toHaveBeenCalledWith({ show: false });
             expect(props.getInforms).toHaveBeenCalled();
         });
     });
 
-    describe('handleCloseShowRemovedLogs', () => {
+    describe('handleCloseRemovedLogDialog', () => {
         it('should call exactly functions when close remove logs', () => {
             // Arrange
             const props = {
                 ...initProps,
-                showRemovedLogs: { show: true },
-                setShowRemovedLogs: jest.fn()
+                removedLogDialog: { show: true },
+                setRemovedLogDialog: jest.fn()
             };
 
             // Act
             const container = shallow(<AppContainer {...props}/>);
-            container.instance().handleCloseShowRemovedLogs();
+            container.instance().handleCloseRemovedLogDialog();
            
             // Assert
-            expect(props.setShowRemovedLogs).toHaveBeenCalledWith({ show: false });
+            expect(props.setRemovedLogDialog).toHaveBeenCalledWith({ show: false });
             expect(props.getInforms).toHaveBeenCalled();
         });
     });
 
-    describe('handleCloseShowRemovedLogDetails', () => {
+    describe('handleCloseRemovedLogDetailDialog', () => {
         it('should call exactly functions when close remove log details', () => {
             // Arrange
             const props = {
                 ...initProps,
-                showRemovedLogDetails: { show: true },
-                setShowRemovedLogDetails: jest.fn()
+                removedLogDetailDialog: { show: true },
+                setRemovedLogDetailDialog: jest.fn()
             };
 
             // Act
             const container = shallow(<AppContainer {...props}/>);
-            container.instance().handleCloseShowRemovedLogDetails();
+            container.instance().handleCloseRemovedLogDetailDialog();
            
             // Assert
-            expect(props.setShowRemovedLogDetails).toHaveBeenCalledWith({ show: false });
+            expect(props.setRemovedLogDetailDialog).toHaveBeenCalledWith({ show: false });
             expect(props.getInforms).toHaveBeenCalled();
         });
     });
 
-    describe('handleCloseShowNewInforms', () => {
+    describe('handleCloseNewInformDialog', () => {
         it('should call exactly functions when close new informs', () => {
             // Arrange
             const props = {
                 ...initProps,
-                showNewInforms: { show: true },
-                setShowNewInforms: jest.fn()
+                newInformDialog: { show: true },
+                setNewInformDialog: jest.fn()
             };
 
             // Act
             const container = shallow(<AppContainer {...props}/>);
-            container.instance().handleCloseShowNewInforms();
+            container.instance().handleCloseNewInformDialog();
            
             // Assert
-            expect(props.setShowNewInforms).toHaveBeenCalledWith({ show: false });
+            expect(props.setNewInformDialog).toHaveBeenCalledWith({ show: false });
             expect(props.getInforms).toHaveBeenCalled();
         });
     });
 
     describe('render', () => {
-        it('should render correctly with have permission', () => {
+        it('should render correctly', () => {
             // Arrange
             const props = {
                 ...initProps,
-                showEditContactInform: { show: true },
-                showEditSearchInform: { show: true },
-                showRemovedLogs: { show: true },
-                showRemovedLogDetails: { show: true },
-                showNewInforms: { show: true },
-                showOptions: { show: true }
+                editContactInformDialog: { show: true },
+                editInformDialog: { show: true },
+                removedLogDialog: { show: true },
+                removedLogDetailDialog: { show: true },
+                newInformDialog: { show: true },
+                optionDialog: { show: true }
             };
 
             // Act
@@ -146,36 +146,7 @@ describe('AppContainer', () => {
             expect(container).toMatchSnapshot();
             expect(container.find(DataGrid).length).toBe(1);
             expect(container.find(EditContactInforms).length).toBe(1);
-            expect(container.find(EditSearchInforms).length).toBe(1);
-            expect(container.find(RemovedAccountLogs).length).toBe(1);
-            expect(container.find(RemovedAccountLogDetails).length).toBe(1);
-            expect(container.find(NewInforms).length).toBe(1);
-            expect(container.find(OptionsEdit).length).toBe(1);
-        });
-    });
-
-    describe('render', () => {
-        it('should render correctly with not permission', () => {
-
-            // Arrange
-            const props = {
-                ...initProps,
-                showEditContactInform: { show: true },
-                showEditSearchInform: { show: true },
-                showRemovedLogs: { show: true },
-                showRemovedLogDetails: { show: true },
-                showNewInforms: { show: true },
-                showOptions: { show: true }
-            };
-
-            // Act
-            const container = shallow(<AppContainer {...props} />);
-
-            // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(DataGrid).length).toBe(1);
-            expect(container.find(EditContactInforms).length).toBe(1);
-            expect(container.find(EditSearchInforms).length).toBe(1);
+            expect(container.find(EditInforms).length).toBe(1);
             expect(container.find(RemovedAccountLogs).length).toBe(1);
             expect(container.find(RemovedAccountLogDetails).length).toBe(1);
             expect(container.find(NewInforms).length).toBe(1);

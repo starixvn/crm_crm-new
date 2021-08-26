@@ -1,11 +1,11 @@
 import React from 'react';
-import { EditSearchInforms } from '../EditSearchInforms';
+import { EditInforms } from '../EditInforms';
 import { shallow } from 'enzyme';
 import { Formik } from 'formik';
-import FilterSearchInforms from '../FilterSearchInforms';
+import FilterEditInforms from '../FilterEditInforms';
 import DataGridEdit from '../DataGridEdit';
 
-describe('EditSearchInforms', () => {
+describe('EditInforms', () => {
     afterAll(() => {
         jest.clearAllMocks();
     });
@@ -24,11 +24,8 @@ describe('EditSearchInforms', () => {
         },
         getTitleDetail: jest.fn(),
         getAllSettings: jest.fn(),
-        searchInformSettings:{
-            filterStatuses: [{ settingId: 1, settingValue: 'test'}]
-        },
-        searchInforms: [{headlineId: 720, groupId: 12, username: 'test', remark: '&t'}],
-        getSearchInforms: jest.fn(),
+        editDataInforms: [{headlineId: 720, groupId: 12, username: 'test', remark: '&t'}],
+        getEditInforms: jest.fn(),
         setGridParams: jest.fn()
     };
 
@@ -38,12 +35,12 @@ describe('EditSearchInforms', () => {
             const props = {...initProps};
 
             //Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
 
             // Assert
             expect(await props.getTitleDetail).toHaveBeenCalledWith({titleId: 720});
             expect(await props.getAllSettings).toHaveBeenCalled();
-            expect(await props.getSearchInforms).toHaveBeenCalledWith({
+            expect(await props.getEditInforms).toHaveBeenCalledWith({
                 titleId: 720, typeAccount: 3,
                 currencies: "1,2,3", levels: "4,5,6",
                 sites: "1,2", isVip: 2,
@@ -51,7 +48,7 @@ describe('EditSearchInforms', () => {
                 pageIndex: 1, pageSize: 10000
             });
             expect(props.setGridParams).toHaveBeenCalledWith({ pageIndex: 1,pageSize: 100 });
-            expect(container.state().totalSearchInform).toBe(1);
+            expect(container.state().totalEditInform).toBe(1);
             expect(container.state().includeCurrencies).toBe('1,2,3');
             expect(container.state().includeSites).toBe('1,2');
             expect(container.state().filterData).toEqual({
@@ -71,7 +68,7 @@ describe('EditSearchInforms', () => {
             const props = {...initProps};
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             const actual = container.instance().getIncludeInSetting(props.titleDetail.currencies,props.allSettings.currencies);
            
             // Assert
@@ -84,7 +81,7 @@ describe('EditSearchInforms', () => {
             // Arrange
             const props = {...initProps};
             // Act
-            const container = shallow(<EditSearchInforms {...props} />).instance();
+            const container = shallow(<EditInforms {...props} />).instance();
             const includeCurrencies = container.getIncludeInSetting(props.titleDetail.currencies, props.allSettings.currencies);
             const includeSites = container.getIncludeInSetting(props.titleDetail.sites, props.allSettings.sites[0].childSites);
             const actual = container.initFormData(includeCurrencies,includeSites);
@@ -112,7 +109,7 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             const actual = container.instance().validateFormik(values);
            
             // Assert
@@ -128,7 +125,7 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             const actual = container.instance().validateFormik(values);
            
             // Assert
@@ -144,7 +141,7 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             const actual = container.instance().validateFormik(values);
            
             // Assert
@@ -160,7 +157,7 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             const actual = container.instance().validateFormik(values);
            
             // Assert
@@ -176,7 +173,7 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             const actual = container.instance().validateFormik(values);
            
             // Assert
@@ -195,7 +192,7 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             container.instance().getTypeAccount(values);
            
             // Assert
@@ -212,7 +209,7 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             container.setState({filterData: {currencyId: '1,2,3'}});
             const actual = container.instance().getChangeFilter(values);
            
@@ -226,11 +223,11 @@ describe('EditSearchInforms', () => {
             // Arrange
             const props = {
                 ...initProps,
-                resultUpdateSearchInforms: 'Successfully!'
+                resultEditInforms: 'Successfully!'
             };
             jest.useFakeTimers();
             // Act
-            const container = shallow(<EditSearchInforms {...props}/>);
+            const container = shallow(<EditInforms {...props}/>);
             container.instance().setAlert();
            
             // Assert
@@ -252,12 +249,12 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             container.instance().handleSubmit(values, {setSubmitting: jest.fn()});
            
             // Assert
             expect(props.setGridParams).toHaveBeenCalledWith({ pageIndex: 1, pageSize: 100 });
-            expect(await props.getSearchInforms).toHaveBeenCalledWith({
+            expect(await props.getEditInforms).toHaveBeenCalledWith({
                 titleId: 720, typeAccount: 3,
                 currencies: '1,2,3', levels: '4,5,6',
                 sites: '1,2', isVip: 2,
@@ -270,7 +267,7 @@ describe('EditSearchInforms', () => {
             // Arrange
             const props = {
                 ...initProps,
-                updateSearchInforms: jest.fn()
+                editInforms: jest.fn()
             };
             const values = {
                 submit: true,
@@ -282,7 +279,7 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             container.setState({
                 filterData: {currencyId: '1,2,3'},
                 informs: [
@@ -292,7 +289,7 @@ describe('EditSearchInforms', () => {
             await container.instance().handleSubmit(values, {setSubmitting: jest.fn()});
            
             // Assert
-            expect(await props.updateSearchInforms).toHaveBeenCalledWith({
+            expect(await props.editInforms).toHaveBeenCalledWith({
                 titleId: 720, title: 'test',
                 changeFilter: true, typeAccount: 3,
                 currencies: '1,2,3', levels: '4,5,6',
@@ -309,12 +306,12 @@ describe('EditSearchInforms', () => {
             const props = {...initProps};
 
             // Act
-            const container = shallow(<EditSearchInforms {...props}/>);
+            const container = shallow(<EditInforms {...props}/>);
             container.instance().onPaging(1,100);
            
             // Assert
             expect(props.setGridParams).toHaveBeenCalledWith({ pageIndex: 1, pageSize: 100 });
-            expect(props.getSearchInforms).toHaveBeenCalledWith({
+            expect(props.getEditInforms).toHaveBeenCalledWith({
                 titleId: 720, typeAccount: 3,
                 currencies: '', levels: '4,5,6',
                 sites: '', isVip: 2,
@@ -330,7 +327,7 @@ describe('EditSearchInforms', () => {
             const props = {...initProps};
 
             // Act
-            const container = shallow(<EditSearchInforms {...props}/>);
+            const container = shallow(<EditInforms {...props}/>);
             const remark = container.instance().htmlDecode("&test");
            
             // Assert
@@ -347,7 +344,7 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props}/>);
+            const container = shallow(<EditInforms {...props}/>);
             const mockEvent = { target: { name: 'statuses', value: 'Done'}}
             container.instance().handleChangeDataGrid(mockEvent, 720);
            
@@ -362,7 +359,7 @@ describe('EditSearchInforms', () => {
             const props = { ...initProps };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props}/>);
+            const container = shallow(<EditInforms {...props}/>);
             const mockEvent = { target: { name: 'statuses', value: 'Done'}}
             container.setState({informs: [{ groupId: 12, headlineId: 720, username: "test" }]})
             container.instance().handleChangeDataGrid(mockEvent, 720);
@@ -379,7 +376,7 @@ describe('EditSearchInforms', () => {
             // Arrange
             const props = {
                 ...initProps, 
-                exportSearchInforms: jest.fn()
+                exportEditInforms: jest.fn()
             };
             const values = {
                 submit: true, title: 'test',
@@ -390,11 +387,11 @@ describe('EditSearchInforms', () => {
                 isExcludeIgnoredAccounts: true
             };
             // Act
-            const container = shallow(<EditSearchInforms {...props}/>);
+            const container = shallow(<EditInforms {...props}/>);
             container.instance().handleExportExcel(values);
            
             // Assert
-            expect(props.exportSearchInforms).toHaveBeenCalledWith({ 
+            expect(props.exportEditInforms).toHaveBeenCalledWith({ 
                 titleId: 720, typeAccount: 3,
                 currencies: '1,2,3', levels: '4,5,6',
                 sites: '1,2', isVip: 2,
@@ -430,13 +427,13 @@ describe('EditSearchInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />);
             container.setState({filterData: {currencyId: '1,2,3'}});
             const form = shallow(container.instance().renderFilterForm(param));
             
             // Assert
             expect(container).toMatchSnapshot();
-            expect(form.find(FilterSearchInforms).length).toBe(1);
+            expect(form.find(FilterEditInforms).length).toBe(1);
             expect(form.find(DataGridEdit).length).toBe(1);
         });
     });
@@ -447,7 +444,7 @@ describe('EditSearchInforms', () => {
             const props = {...initProps };
 
             // Act
-            const container = shallow(<EditSearchInforms {...props}/>);
+            const container = shallow(<EditInforms {...props}/>);
             container.setState({filterData: {currencyId: '1,2,3'}});
             
             // Assert
@@ -459,7 +456,7 @@ describe('EditSearchInforms', () => {
         it('should call exactly function', () => {
             // Act
             const props = {...initProps};
-            const container = shallow(<EditSearchInforms {...props}/>).instance();
+            const container = shallow(<EditInforms {...props}/>).instance();
             container.handleExportExcel = jest.fn();
             const actual = shallow(container.renderExportExcelText(5));
             actual.find('.icon-excel').at(0).props().onClick();

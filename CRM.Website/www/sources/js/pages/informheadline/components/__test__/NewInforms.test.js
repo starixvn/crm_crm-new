@@ -2,7 +2,7 @@ import React from 'react';
 import { NewInforms } from '../NewInforms';
 import { shallow } from 'enzyme';
 import { Formik } from 'formik';
-import FilterSearchInforms from '../FilterSearchInforms';
+import FilterEditInforms from '../FilterEditInforms';
 import DataGridEdit from '../DataGridEdit';
 
 describe('NewInforms', () => {
@@ -362,7 +362,7 @@ describe('NewInforms', () => {
             
             // Assert
             expect(container).toMatchSnapshot();
-            expect(form.find(FilterSearchInforms).length).toBe(1);
+            expect(form.find(FilterEditInforms).length).toBe(1);
             expect(form.find(DataGridEdit).length).toBe(1);
         });
     });

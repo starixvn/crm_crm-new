@@ -28,14 +28,14 @@ describe('connect ', () => {
             contactInformSettings: {filterStatuses: [{ settingId: 1, settingValue: 'test'}]},
             contactInforms: {headlineId: 720, groupId: 12, username: 'test'},
             gridParams: { pageIndex: 1, pageSize: 100 },
-            resultUpdateContactInforms: 'Successfully!'
+            resultEditContactInforms: 'Successfully!'
         };
         const state = {
             titleDetail: "test",
             contactInformSettings: {filterStatuses: [{ settingId: 1, settingValue: 'test'}]},
             contactInforms: {headlineId: 720, groupId: 12, username: 'test'},
             gridParams: { pageIndex: 1, pageSize: 100 },
-            resultUpdateContactInforms: 'Successfully!'
+            resultEditContactInforms: 'Successfully!'
         };
 
         // Act

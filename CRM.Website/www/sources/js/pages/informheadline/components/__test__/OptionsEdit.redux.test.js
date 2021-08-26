@@ -24,10 +24,10 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            showOptions: { show: false }
+            optionDialog: { show: false }
         };
         const state = {
-            showOptions: { show: false }
+            optionDialog: { show: false }
         };
 
         // Act

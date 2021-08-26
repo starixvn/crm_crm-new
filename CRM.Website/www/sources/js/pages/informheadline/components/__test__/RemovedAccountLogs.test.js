@@ -69,7 +69,7 @@ describe('RemovedAccountLogs', () => {
                 ...initProps,
                 setGridParamRemovedLogDetails: jest.fn(),
                 getRemovedAccountLogDetails: jest.fn(),
-                setShowRemovedLogDetails : jest.fn()
+                setRemovedLogDetailDialog : jest.fn()
             };
 
             // Act
@@ -79,7 +79,7 @@ describe('RemovedAccountLogs', () => {
             // Assert
             expect(props.setGridParamRemovedLogDetails).toHaveBeenCalledWith({ logId: 12, pageIndex: 1, pageSize: 100 });
             expect(props.getRemovedAccountLogDetails).toHaveBeenCalledWith({ logId: 12, pageIndex: 1, pageSize: 100 });
-            expect(props.setShowRemovedLogDetails).toHaveBeenCalledWith({show: true});
+            expect(props.setRemovedLogDetailDialog).toHaveBeenCalledWith({show: true});
         });
     });
 

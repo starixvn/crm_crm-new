@@ -1,7 +1,6 @@
 import React from 'react';
 import { EditContactInforms } from '../EditContactInforms';
 import { shallow } from 'enzyme';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import FilterContactInforms from '../FilterContactInforms';
 import DataGridEdit from '../DataGridEdit';
 
@@ -110,7 +109,7 @@ describe('EditContactInforms', () => {
             // Arrange
             const props = {
                 ...initProps,
-                resultUpdateContactInforms: 'Successfully!'
+                resultEditContactInforms: 'Successfully!'
             };
             jest.useFakeTimers();
             // Act
@@ -128,7 +127,7 @@ describe('EditContactInforms', () => {
             // Arrange
             const props = {
                 ...initProps,
-                updateContactInforms: jest.fn()
+                editContactInforms: jest.fn()
             };
 
             // Act
@@ -136,14 +135,14 @@ describe('EditContactInforms', () => {
             container.instance().handleSubmit();
            
             // Assert
-            expect(props.updateContactInforms).toHaveBeenCalledWith({ titleId: 720, informs: [] });
+            expect(props.editContactInforms).toHaveBeenCalledWith({ titleId: 720, informs: [] });
         });
 
         it('should call exactly functions with state', async () => {
             // Arrange
             const props = {
                 ...initProps,
-                updateContactInforms: jest.fn()
+                editContactInforms: jest.fn()
             };
             const expected = [{headlineId: 720, groupId: 12, username: 'test', remark: '&amp;t'}];
 
@@ -153,7 +152,7 @@ describe('EditContactInforms', () => {
             container.instance().handleSubmit();
            
             // Assert
-            expect(props.updateContactInforms).toHaveBeenCalledWith({ titleId: 720, informs: expected });
+            expect(props.editContactInforms).toHaveBeenCalledWith({ titleId: 720, informs: expected });
         });
     });
 

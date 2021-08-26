@@ -8,12 +8,12 @@ describe('OptionsEdit', () => {
     });
 
     const initProps = {
-        showOptions: {
+        optionDialog: {
             showOption: true,
             top: 0, left: 0,
             status: 'Open', titleIdSearch: 720,
         },
-        setShowOptions: jest.fn()
+        setOptionDialog: jest.fn()
     };
 
     const initFireEvent = () => {
@@ -34,7 +34,7 @@ describe('OptionsEdit', () => {
         const fireEvent = initFireEvent();
         const children = <div id="contextMenu"></div>;
 
-        it('should not call setShowOptions when clicking inside', () => {
+        it('should not call setOptionDialog when clicking inside', () => {
             // Arrange
             const props = {...initProps};
             const onClick = jest.fn();
@@ -46,10 +46,10 @@ describe('OptionsEdit', () => {
             fireEvent.click({ target: container.find("#contextMenu").instance() });
             
             // Assert
-            expect(props.setShowOptions).not.toHaveBeenCalled();
+            expect(props.setOptionDialog).not.toHaveBeenCalled();
         });
 
-        it('should call setShowOptions when clicking outside', () => {
+        it('should call setOptionDialog when clicking outside', () => {
             // Arrange
             const props = {...initProps};
             
@@ -58,8 +58,8 @@ describe('OptionsEdit', () => {
             fireEvent.click({ target: document.body });
 
             // Assert
-            expect(props.setShowOptions).toHaveBeenCalledTimes(1);
-            expect(props.setShowOptions).toHaveBeenCalledWith({show: false});
+            expect(props.setOptionDialog).toHaveBeenCalledTimes(1);
+            expect(props.setOptionDialog).toHaveBeenCalledWith({show: false});
         });
     });
 
@@ -68,7 +68,7 @@ describe('OptionsEdit', () => {
             // Arrange
             const props = {
                 ...initProps,
-                setShowEditSearchInform: jest.fn()
+                setEditInformDialog: jest.fn()
             };
 
             // Act
@@ -76,8 +76,8 @@ describe('OptionsEdit', () => {
             container.instance().handleEditSearch(720);
            
             // Assert
-            expect(props.setShowOptions).toHaveBeenCalledWith({show: false});
-            expect(props.setShowEditSearchInform).toHaveBeenCalledWith({show: true, titleId: 720});
+            expect(props.setOptionDialog).toHaveBeenCalledWith({show: false});
+            expect(props.setEditInformDialog).toHaveBeenCalledWith({show: true, titleId: 720});
         });
     });
 
@@ -88,7 +88,7 @@ describe('OptionsEdit', () => {
                 ...initProps,
                 setGridParamRemovedLogs: jest.fn(),
                 getRemovedAccountLogs: jest.fn(),
-                setShowRemovedLogs: jest.fn()
+                setRemovedLogDialog: jest.fn()
             };
             const expected = { titleId: 720, pageIndex: 1, pageSize: 100 };
 
@@ -97,10 +97,10 @@ describe('OptionsEdit', () => {
             container.instance().handleRemovedAccountLogs(720);
            
             // Assert
-            expect(props.setShowOptions).toHaveBeenCalledWith({show: false});
+            expect(props.setOptionDialog).toHaveBeenCalledWith({show: false});
             expect(props.setGridParamRemovedLogs).toHaveBeenCalledWith(expected);
             expect(props.getRemovedAccountLogs).toHaveBeenCalledWith(expected);
-            expect(props.setShowRemovedLogs).toHaveBeenCalledWith({show: true});
+            expect(props.setRemovedLogDialog).toHaveBeenCalledWith({show: true});
         });
     });
 
@@ -109,7 +109,7 @@ describe('OptionsEdit', () => {
             // Arrange
             const props = {
                 ...initProps,
-                updateInformStatus: jest.fn(),
+                editInformStatus: jest.fn(),
                 getInforms: jest.fn()
             }; 
 
@@ -118,8 +118,8 @@ describe('OptionsEdit', () => {
             container.instance().handleCloseCase(720);
            
             // Assert
-            expect(props.setShowOptions).toHaveBeenCalledWith({show: false});
-            expect(props.updateInformStatus).toHaveBeenCalledWith({ titleId: 720, statusType: true});
+            expect(props.setOptionDialog).toHaveBeenCalledWith({show: false});
+            expect(props.editInformStatus).toHaveBeenCalledWith({ titleId: 720, statusType: true});
             expect(props.getInforms).toHaveBeenCalled();
         });
     });
@@ -129,7 +129,7 @@ describe('OptionsEdit', () => {
             // Arrange
             const props = {
                 ...initProps,
-                updateInformStatus: jest.fn(),
+                editInformStatus: jest.fn(),
                 getInforms: jest.fn()
             }; 
 
@@ -138,8 +138,8 @@ describe('OptionsEdit', () => {
             container.instance().handleOpenCase(720);
            
             // Assert
-            expect(props.setShowOptions).toHaveBeenCalledWith({show: false});
-            expect(props.updateInformStatus).toHaveBeenCalledWith({ titleId: 720, statusType: false});
+            expect(props.setOptionDialog).toHaveBeenCalledWith({show: false});
+            expect(props.editInformStatus).toHaveBeenCalledWith({ titleId: 720, statusType: false});
             expect(props.getInforms).toHaveBeenCalled();
         });
     });
@@ -169,7 +169,7 @@ describe('OptionsEdit', () => {
             // Arrange
             const props = {
                 ...initProps,
-                showOptions: {
+                optionDialog: {
                     showOption: true,
                     top: 0, left: 0,
                     status: 'Closed', titleIdSearch: 720,
