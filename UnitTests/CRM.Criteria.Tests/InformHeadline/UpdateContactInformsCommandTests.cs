@@ -9,7 +9,7 @@
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             // Arrange
-            var criteria = new UpdateContactInformsCommand();
+            var criteria = new EditContactInformsCommand();
             var expected = "Acc_CRM_InformHeadlineUpd";
 
             // Act
@@ -23,7 +23,7 @@
         public void IsValid_ParamIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new UpdateContactInformsCommand()
+            var criteria = new EditContactInformsCommand()
             {
                 TitleId = 100,
                 UserId = 8,

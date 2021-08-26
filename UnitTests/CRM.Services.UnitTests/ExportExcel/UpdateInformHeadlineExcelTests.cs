@@ -13,7 +13,7 @@
     public class UpdateInformHeadlineExcelTests
     {
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
-        private IEnumerable<UpdateInform> updateInforms;
+        private IEnumerable<EditInform> updateInforms;
         private IEnumerable<InformStatus> informStatuses;
         private IEnumerable<Station> informStations;
         private IEnumerable<FeedbackStatus> informProductStatuses;
@@ -70,7 +70,7 @@
             service.Public_RenderBody(template, worksheet);
 
             // Assert
-            service.Received().Protected("RenderRow", worksheet, Arg.Any<UpdateInform>(), Arg.Any<int>(), Arg.Any<int>());
+            service.Received().Protected("RenderRow", worksheet, Arg.Any<EditInform>(), Arg.Any<int>(), Arg.Any<int>());
         }
 
         [Fact]
@@ -130,9 +130,9 @@
             service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), ColorTranslator.FromHtml("#f1f1f1"));
         }
 
-        private UpdateInform FakeUpdateInform(int groupId, string remark)
+        private EditInform FakeUpdateInform(int groupId, string remark)
         {
-            return new UpdateInform
+            return new EditInform
             {
                 Username = "test",
                 InformHeadlineStatusId = 45000,
@@ -195,9 +195,9 @@
 
         private UpdateInformHeadlineExcelTestable CreateExcel()
         {
-            updateInforms = new List<UpdateInform>
+            updateInforms = new List<EditInform>
             {
-                new UpdateInform()
+                new EditInform()
             };
 
             informStatuses = new List<InformStatus>

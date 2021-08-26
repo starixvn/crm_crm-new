@@ -6,11 +6,11 @@
     using CRM.Services.ExportExcel;
     using OfficeOpenXml;
 
-    public class UpdateInformHeadlineExcelTestable : UpdateInformHeadlineExcel
+    public class UpdateInformHeadlineExcelTestable : EditInformHeadlineExcel
     {
         public UpdateInformHeadlineExcelTestable(
             string templatePath,
-            IEnumerable<UpdateInform> updateInforms,
+            IEnumerable<EditInform> updateInforms,
             IEnumerable<InformStatus> informStatuses,
             IEnumerable<Station> informStations,
             IEnumerable<FeedbackStatus> informProductStatuses,
@@ -33,7 +33,7 @@
             base.RenderBody(templateWorksheet, worksheet);
         }
 
-        public void Public_RenderRow(ExcelWorksheet worksheet, UpdateInform updateInform, int index, int rowIndex)
+        public void Public_RenderRow(ExcelWorksheet worksheet, EditInform updateInform, int index, int rowIndex)
         {
             base.RenderRow(worksheet, updateInform, index, rowIndex);
         }

@@ -79,7 +79,7 @@
         public async Task GetContactInforms_WhenCalled_ReturnExpectResult()
         {
             // Arrange
-            var contactInforms = fixture.Create<IEnumerable<UpdateInform>>();
+            var contactInforms = fixture.Create<IEnumerable<EditInform>>();
             var criteria = fixture.Create<GetContactInformsCriteria>();
             var param = fixture.Create<GetContactInformParam>();
             foreach (var contactInform in contactInforms)
@@ -87,7 +87,7 @@
                 contactInform.Remark = "&lt;";
             }
             var service = GetService();
-            baseService.GetDataAsync<UpdateInform>(Arg.Do<GetContactInformsCriteria>(x => criteria = x)).Returns(contactInforms);
+            baseService.GetDataAsync<EditInform>(Arg.Do<GetContactInformsCriteria>(x => criteria = x)).Returns(contactInforms);
 
             // Act
             var actual = await service.GetContactInformsAsync(param);
@@ -102,24 +102,24 @@
         }
 
         [Fact]
-        public async Task GetSearchInforms_WhenCalled_ReturnExpectResult()
+        public async Task GetEditInforms_WhenCalled_ReturnExpectResult()
         {
             // Arrange
-            var searchInforms = fixture.Create<IEnumerable<UpdateInform>>();
-            var criteria = fixture.Create<GetSearchInformsCriteria>();
-            var param = fixture.Create<GetSearchInformParam>();
-            foreach (var searchInform in searchInforms)
+            var editInforms = fixture.Create<IEnumerable<EditInform>>();
+            var criteria = fixture.Create<GetEditInformsCriteria>();
+            var param = fixture.Create<GetEditInformParam>();
+            foreach (var editInform in editInforms)
             {
-                searchInform.Remark = "&lt;";
+                editInform.Remark = "&lt;";
             }
             var service = GetService();
-            baseService.GetDataAsync<UpdateInform>(Arg.Do<GetSearchInformsCriteria>(x => criteria = x)).Returns(searchInforms);
+            baseService.GetDataAsync<EditInform>(Arg.Do<GetEditInformsCriteria>(x => criteria = x)).Returns(editInforms);
 
             // Act
-            var actual = await service.GetSearchInformsAsync(param);
+            var actual = await service.GetEditInformsAsync(param);
 
             // Assert
-            Assert.Equal(searchInforms, actual);
+            Assert.Equal(editInforms, actual);
             Assert.All(actual, item =>
             {
                 Assert.Equal("<", item.Remark);

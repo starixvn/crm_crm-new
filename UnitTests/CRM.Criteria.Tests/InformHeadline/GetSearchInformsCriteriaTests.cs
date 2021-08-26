@@ -9,7 +9,7 @@
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             // Arrange
-            var criteria = new GetSearchInformsCriteria();
+            var criteria = new GetEditInformsCriteria();
             var expected = "Acc_CRM_InformHeadlineSearchSel";
 
             // Act
@@ -23,7 +23,7 @@
         public void IsValid_ParamIdIsInvalid_ReturnFalse()
         {
             // Arrange
-            var criteria = new GetSearchInformsCriteria()
+            var criteria = new GetEditInformsCriteria()
             {
                 TitleId = 0,
                 TypeAccount = 3,
@@ -45,7 +45,7 @@
         public void IsValid_ParamIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetSearchInformsCriteria()
+            var criteria = new GetEditInformsCriteria()
             {
                 TitleId = 10,
                 TypeAccount = 3,

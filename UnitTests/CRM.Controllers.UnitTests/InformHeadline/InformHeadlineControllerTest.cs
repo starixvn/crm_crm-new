@@ -135,7 +135,7 @@
         public async Task GetContactInforms_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
-            var contactInforms = fixture.Create<IEnumerable<UpdateInform>>();
+            var contactInforms = fixture.Create<IEnumerable<EditInform>>();
             var param = fixture.Create<GetContactInformParam>();
             var controller = GetController();
             informHeadlineService.GetContactInformsAsync(param).Returns(contactInforms);
@@ -145,7 +145,7 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var actual = Assert.IsAssignableFrom<IEnumerable<UpdateInform>>(jsonResult.Value);
+            var actual = Assert.IsAssignableFrom<IEnumerable<EditInform>>(jsonResult.Value);
             Assert.Equal(contactInforms, actual);
         }
 
@@ -153,7 +153,7 @@
         public async Task UpdateContactInforms_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
-            var command = fixture.Create<UpdateContactInformsCommand>();
+            var command = fixture.Create<EditContactInformsCommand>();
             var commandResult = fixture.Create<CommandResult>();
             var clientIP = new DefaultHttpContext
             {
@@ -182,7 +182,7 @@
         {
             // Arrange
             var fileName = $"ContactInformHeadlines.xlsx";
-            var contactInforms = fixture.Create<IEnumerable<UpdateInform>>();
+            var contactInforms = fixture.Create<IEnumerable<EditInform>>();
             var param = fixture.Create<GetContactInformParam>();
             var titles = fixture.Create<InformTitleDetail>();
             var controller = GetController();
@@ -231,30 +231,30 @@
         }
 
         [Fact]
-        public async Task GetSearchInforms_WhenCalled_ReturnExpectedResult()
+        public async Task GetEditInforms_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
-            var searchInforms = fixture.Create<IEnumerable<UpdateInform>>();
-            var param = fixture.Create<GetSearchInformParam>();
+            var editInforms = fixture.Create<IEnumerable<EditInform>>();
+            var param = fixture.Create<GetEditInformParam>();
             param.PageIndex = 1;
             param.PageSize = 10000;
             var controller = GetController();
-            informHeadlineService.GetSearchInformsAsync(param).Returns(searchInforms);
+            informHeadlineService.GetEditInformsAsync(param).Returns(editInforms);
 
             // Act
-            var result = await controller.GetSearchInforms(param);
+            var result = await controller.GetEditInforms(param);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var actual = Assert.IsAssignableFrom<IEnumerable<UpdateInform>>(jsonResult.Value);
-            Assert.Equal(searchInforms, actual);
+            var actual = Assert.IsAssignableFrom<IEnumerable<EditInform>>(jsonResult.Value);
+            Assert.Equal(editInforms, actual);
         }
 
         [Fact]
-        public async Task UpdateSearchInforms_WhenCalled_ReturnExpectedResult()
+        public async Task UpdateEditInforms_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
-            var command = fixture.Create<UpdateSearchInformsCommand>();
+            var command = fixture.Create<EditInformsCommand>();
             var commandResult = fixture.Create<CommandResult>();
             var clientIP = new DefaultHttpContext
             {
@@ -268,7 +268,7 @@
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
             // Act
-            var result = await controller.UpdateSearchInforms(command);
+            var result = await controller.UpdateEditInforms(command);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -279,19 +279,19 @@
         }
 
         [Fact]
-        public async Task ExportSearchInforms_WhenCalled_ReturnExpectedResult()
+        public async Task ExportEditInforms_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
             var fileName = $"UpdateInformHeadlines.xlsx";
-            var searchInforms = fixture.Create<IEnumerable<UpdateInform>>();
-            var param = fixture.Create<GetSearchInformParam>();
+            var editInforms = fixture.Create<IEnumerable<EditInform>>();
+            var param = fixture.Create<GetEditInformParam>();
             var titles = fixture.Create<InformTitleDetail>();
             var controller = GetController();
-            informHeadlineService.GetSearchInformsAsync(param).Returns(searchInforms);
+            informHeadlineService.GetEditInformsAsync(param).Returns(editInforms);
             baseService.GetDataEntityAsync<InformTitleDetail>(Arg.Any<GetInformTitleDetailCriteria>()).Returns(titles);
 
             // Act
-            var result = await controller.ExportSearchInforms(param);
+            var result = await controller.ExportEditInforms(param);
 
             // Assert
             var excelResult = Assert.IsType<FileContentResult>(result);
@@ -388,7 +388,7 @@
         public async Task UpdateInformStatus_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
-            var command = fixture.Create<UpdateInformStatusCommand>();
+            var command = fixture.Create<EditInformStatusCommand>();
             var commandResult = fixture.Create<CommandResult>();
             var clientIP = new DefaultHttpContext
             {

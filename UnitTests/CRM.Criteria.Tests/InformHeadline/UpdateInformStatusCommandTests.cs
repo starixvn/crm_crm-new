@@ -9,7 +9,7 @@
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             // Arrange
-            var criteria = new UpdateInformStatusCommand();
+            var criteria = new EditInformStatusCommand();
             var expected = "Acc_CRM_InformTitleStatusUpd";
 
             // Act
@@ -23,7 +23,7 @@
         public void IsValid_ParamIdIsInvalid_ReturnFalse()
         {
             // Arrange
-            var criteria = new UpdateInformStatusCommand()
+            var criteria = new EditInformStatusCommand()
             {
                 TitleId = 0,
                 StatusType = true,
@@ -42,7 +42,7 @@
         public void IsValid_ParamIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new UpdateInformStatusCommand()
+            var criteria = new EditInformStatusCommand()
             {
                 TitleId = 10,
                 StatusType = true,

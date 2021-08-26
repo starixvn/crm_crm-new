@@ -9,7 +9,7 @@
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             // Arrange
-            var criteria = new UpdateSearchInformsCommand();
+            var criteria = new EditInformsCommand();
             var expected = "Acc_CRM_InformHeadlineSearchUpd";
 
             // Act
@@ -23,7 +23,7 @@
         public void IsValid_ParamIsValid_ReturnTrue()
         {
             // Arrange
-            var criteria = new UpdateSearchInformsCommand()
+            var criteria = new EditInformsCommand()
             {
                 TitleId = 10,
                 Title = "test",
