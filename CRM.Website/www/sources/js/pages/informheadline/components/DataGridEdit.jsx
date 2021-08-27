@@ -60,7 +60,7 @@ export class DataGridEdit extends PureComponent {
                         defaultValue={item.remark}
                         key={item.remark}
                         rows={2}
-                        onChange={event => onChange(event,item.headlineId)}
+                        onBlur={event => onChange(event,item.headlineId)}
                     />
                 </Cell>
                 <Cell>{item.handler}</Cell>

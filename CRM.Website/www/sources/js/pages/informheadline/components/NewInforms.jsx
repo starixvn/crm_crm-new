@@ -74,6 +74,11 @@ export class NewInforms extends Component {
             };
         });
 
+        const { pageIndex, pageSize } = gridParams;
+        const skip = pageSize * (pageIndex - 1);
+        const result = newInforms && newInforms.map(element => this.state.informs.find(item => item.headlineId === element.headlineId) || element);
+        const data = result && result.slice(skip, pageSize * pageIndex);
+
         return(
             <Form noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
@@ -101,7 +106,7 @@ export class NewInforms extends Component {
                 {
                     newInforms &&
                     <DataGridEdit
-                        Informs={newInforms}
+                        Informs={data}
                         InformSettings={allSettings}
                         totalItem={this.state.totalNewItem}
                         gridParams={gridParams}
@@ -133,19 +138,19 @@ export class NewInforms extends Component {
     validateFormik = values => {
         const errors = {};
 
-        if(values.title === '' && values.submit){
+        if (values.title === '' && values.submit) {
             errors.title = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title'));
         }
-        if(values.currencyId === ''){
+        if (values.currencyId === '') {
             errors.currencyId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'));
         }
-        if(values.levelId === ''){
+        if (values.levelId === '') {
             errors.levelId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Position'));
         }
-        if(values.siteId === ''){
+        if (values.siteId === '') {
             errors.siteId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site'));
         }
-        if(!values.isHeadline && !values.isNoGroup){
+        if (!values.isHeadline && !values.isNoGroup) {
             errors.isHeadline = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('DirectAccount'));
         }
 
@@ -154,10 +159,10 @@ export class NewInforms extends Component {
 
     getTypeAccount = values => {
         let accountType = 0;
-        if(values.isHeadline){
+        if (values.isHeadline) {
             accountType = accountType + 1;
         }
-        if(values.isNoGroup){
+        if (values.isNoGroup) {
             accountType = accountType + 2;
         }
         values.typeAccount = accountType;
@@ -178,7 +183,7 @@ export class NewInforms extends Component {
 
     handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-        if(!values.submit){
+        if (!values.submit) {
             this.getTypeAccount(values);
 
             const params = {
@@ -190,14 +195,10 @@ export class NewInforms extends Component {
                 isVip: parseInt(values.vipId, 10),
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
                 pageIndex: 1,
-                pageSize: 10000
+                pageSize: -1
             };
-            const paramGrid = {...params};
-            paramGrid['pageIndex'] = 1;
-            paramGrid['pageSize'] = 100;
-
-            this.props.setGridParams(paramGrid);
             await this.props.getNewInforms(params);
+            this.props.setGridParams({pageIndex: 1,pageSize: 100});
             this.setState({
                 totalNewItem: this.props.newInforms.length
             });
@@ -221,8 +222,6 @@ export class NewInforms extends Component {
                 isVip: parseInt(values.vipId, 10),
                 typeAccount: values.typeAccount,
                 excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
-                pageIndex: 1,
-                pageSize: 10000,
                 informs: informs
             };
             await this.props.insertInforms(params);
@@ -241,7 +240,7 @@ export class NewInforms extends Component {
             isVip: parseInt(values.vipId, 10),
             excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
             pageIndex: 1,
-            pageSize: 10000
+            pageSize: -1
         };
         this.props.exportNewInforms(params);
     };
@@ -262,12 +261,7 @@ export class NewInforms extends Component {
     };
 
     onPaging = (pageIndex, pageSize) => {
-        const params = { ...this.props.gridParams };
-        params['pageSize'] = pageSize;
-        params['pageIndex'] = pageIndex;
-
-        this.props.setGridParams(params);
-        this.props.getNewInforms(params);
+        this.props.setGridParams({pageIndex: pageIndex, pageSize: pageSize});
     };
 
     htmlDecode = value => {
@@ -289,8 +283,8 @@ export class NewInforms extends Component {
             const oldInforms = prevState.informs;
             const element  = oldInforms.find(value => value.headlineId === item.headlineId);
 
-            if(element){
-                Object.assign(element, {[name]: value});
+            if (element) {
+                element[name] = value;
                 return({informs: oldInforms});
             }else{
                 return({informs: [...oldInforms, item]});
@@ -300,7 +294,7 @@ export class NewInforms extends Component {
 
     render() {
         const { allSettings } = this.props;
-        if( !allSettings ){
+        if (!allSettings) {
             return null;
         }
 

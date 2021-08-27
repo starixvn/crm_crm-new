@@ -145,12 +145,6 @@
         public async Task<IActionResult> GetEditInforms([FromBody] GetEditInformParam param)
         {
             IEnumerable<EditInform> editInforms = await informHeadlineService.GetEditInformsAsync(param);
-            
-            int totalItems = editInforms.Count();
-            if (totalItems > 0)
-            {
-                editInforms = editInforms.Skip(param.PageSize * (param.PageIndex - 1)).Take(param.PageSize).ToList();
-            }
             return Json(editInforms);
         }
 

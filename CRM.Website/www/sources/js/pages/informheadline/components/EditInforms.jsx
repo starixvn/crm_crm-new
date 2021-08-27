@@ -42,15 +42,10 @@ export class EditInforms extends Component {
             levels: titleDetail.positions,
             sites: includeSites,
             isVip: titleDetail.isVip,
-            excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts,
-            pageIndex: 1,
-            pageSize: 10000
+            excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts
         });
 
-        this.props.setGridParams({
-            pageIndex: 1,
-            pageSize: 100
-        });
+        this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.setState({
             totalEditInform: this.props.editDataInforms.length,
             includeCurrencies: includeCurrencies,
@@ -62,7 +57,7 @@ export class EditInforms extends Component {
     getIncludeInSetting = (detail, setting) => {
         const includes = [];
         setting.map(item => {
-            if(detail.split(',').includes(item.id.toString())){
+            if (detail.split(',').includes(item.id.toString())) {
                 includes.push(item.id);
             }
         });
@@ -117,6 +112,11 @@ export class EditInforms extends Component {
             };
         });
 
+        const { pageIndex, pageSize } = gridParams;
+        const skip = pageSize * (pageIndex - 1);
+        const result = editDataInforms.map(element => this.state.informs.find(item => item.headlineId === element.headlineId) || element);
+        const data = result.slice(skip, pageSize * pageIndex);
+
         return(
             <Form noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
@@ -142,7 +142,7 @@ export class EditInforms extends Component {
                 />
 
                 <DataGridEdit
-                    Informs={editDataInforms}
+                    Informs={data}
                     InformSettings={allSettings}
                     totalItem={this.state.totalEditInform}
                     gridParams={gridParams}
@@ -174,19 +174,19 @@ export class EditInforms extends Component {
     validateFormik = values => {
         const errors = {};
 
-        if(values.title === '' && values.submit){
+        if (values.title === '' && values.submit) {
             errors.title = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title'));
         }
-        if(values.currencyId === ''){
+        if (values.currencyId === '') {
             errors.currencyId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'));
         }
-        if(values.levelId === ''){
+        if (values.levelId === '') {
             errors.levelId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Position'));
         }
-        if(values.siteId === ''){
+        if (values.siteId === '') {
             errors.siteId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site'));
         }
-        if(!values.isHeadline && !values.isNoGroup){
+        if (!values.isHeadline && !values.isNoGroup) {
             errors.isHeadline = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('DirectAccount'));
         }
 
@@ -195,10 +195,10 @@ export class EditInforms extends Component {
 
     getTypeAccount = values => {
         let accountType = 0;
-        if(values.isHeadline){
+        if (values.isHeadline) {
             accountType = accountType + 1;
         }
-        if(values.isNoGroup){
+        if (values.isNoGroup) {
             accountType = accountType + 2;
         }
         values.typeAccount = accountType;
@@ -206,13 +206,13 @@ export class EditInforms extends Component {
 
     getChangeFilter = values => {
         const initData = this.state.filterData;
-        if(values.currencyId !== initData.currencyId ||
+        if (values.currencyId !== initData.currencyId ||
             values.levelId !== initData.levelId ||
             values.siteId !== initData.siteId ||
             parseInt(values.vipId, 10) !== initData.vipId ||
             values.typeAccount !== initData.typeAccount ||
             values.isExcludeIgnoredAccounts !== initData.isExcludeIgnoredAccounts
-        ){
+        ) {
             return true;
         }
         return false;
@@ -231,12 +231,8 @@ export class EditInforms extends Component {
 
     handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-        if(!values.submit){
-            this.props.setGridParams({
-                pageIndex: 1,
-                pageSize: 100
-            });
-
+        if (!values.submit) {
+            this.props.setGridParams({pageIndex: 1, pageSize: 100});
             this.getTypeAccount(values);
 
             const params = {
@@ -246,11 +242,8 @@ export class EditInforms extends Component {
                 levels: values.levelId,
                 sites: values.siteId,
                 isVip: parseInt(values.vipId, 10),
-                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
-                pageIndex: 1,
-                pageSize: 10000
+                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts
             };
-
             await this.props.getEditInforms(params);
             this.setState({
                 totalEditInform: this.props.editDataInforms.length
@@ -263,7 +256,7 @@ export class EditInforms extends Component {
             const result = this.props.editDataInforms.map(element => this.state.informs.find(item => item.headlineId === element.headlineId) || element);
 
             const resultInforms = result.map(item => {
-                if(item.remark){
+                if (item.remark) {
                     return {...item, remark: this.htmlDecode(item.remark)};
                 }
                 return item;
@@ -286,22 +279,7 @@ export class EditInforms extends Component {
     };
 
     onPaging = (pageIndex, pageSize) => {
-        const params = { ...this.props.gridParams };
-        const { titleDetail } = this.props;
-        params['pageSize'] = pageSize;
-        params['pageIndex'] = pageIndex;
-        this.props.setGridParams(params);
-        this.props.getEditInforms({
-            titleId: this.props.titleId,
-            typeAccount: titleDetail.typeAccount,
-            currencies: this.state.includeCurrencies,
-            levels: titleDetail.positions,
-            sites: this.state.includeSites,
-            isVip: titleDetail.isVip,
-            excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts,
-            pageIndex: pageIndex,
-            pageSize: pageSize
-        });
+        this.props.setGridParams({pageIndex: pageIndex, pageSize: pageSize});
     };
 
     htmlDecode = value => {
@@ -323,8 +301,8 @@ export class EditInforms extends Component {
             const oldInforms = prevState.informs;
             const element  = oldInforms.find(value => value.headlineId === item.headlineId);
 
-            if(element){
-                Object.assign(element, {[name]: value});
+            if (element) {
+                element[name] = value;
                 return({informs: oldInforms});
             }else{
                 return({informs: [...oldInforms, item]});
@@ -341,9 +319,7 @@ export class EditInforms extends Component {
             levels: values.levelId,
             sites: values.siteId,
             isVip: parseInt(values.vipId, 10),
-            excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
-            pageIndex: 1,
-            pageSize: 10000
+            excludeIgnoredAccounts: values.isExcludeIgnoredAccounts
         };
         this.props.exportEditInforms(params);
     };
@@ -365,7 +341,7 @@ export class EditInforms extends Component {
 
     render() {
         const {titleDetail, allSettings, editDataInforms} = this.props;
-        if(!titleDetail || !allSettings || !editDataInforms || !this.state.filterData){
+        if (!titleDetail || !allSettings || !editDataInforms || !this.state.filterData) {
             return null;
         }
 

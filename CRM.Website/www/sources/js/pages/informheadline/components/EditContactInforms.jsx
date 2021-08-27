@@ -35,13 +35,9 @@ export class EditContactInforms extends Component {
             titleId: this.props.titleId,
             username: '',
             statusId: selectedStatuses,
-            pageIndex: 1,
-            pageSize: 10000
+            pageIndex: 1, pageSize: -1
         });
-        this.props.setGridParams({
-            pageIndex: 1,
-            pageSize: 100
-        });
+        this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.setState({
             totalContactInform: this.props.contactInforms.length,
             selectedStatusId : selectedStatuses
@@ -62,16 +58,12 @@ export class EditContactInforms extends Component {
     };
 
     handleSearch = async () => {
-        this.props.setGridParams({
-            pageIndex: 1,
-            pageSize: 100
-        });
+        this.props.setGridParams({pageIndex: 1, pageSize: 100});
         await this.props.getContactInforms({
             titleId: this.props.titleId,
             username: this.state.username,
             statusId: this.state.selectedStatusId,
-            pageIndex: 1,
-            pageSize: 10000
+            pageIndex: 1, pageSize: -1
         });
         this.setState({
             totalContactInform: this.props.contactInforms.length
@@ -79,17 +71,7 @@ export class EditContactInforms extends Component {
     };
 
     onPaging = (pageIndex, pageSize) => {
-        const params = { ...this.props.gridParams };
-        params['pageSize'] = pageSize;
-        params['pageIndex'] = pageIndex;
-        this.props.setGridParams(params);
-        this.props.getContactInforms({
-            titleId: this.props.titleId,
-            username: this.state.username,
-            statusId: this.state.selectedStatusId,
-            pageIndex: pageIndex,
-            pageSize: pageSize
-        });
+        this.props.setGridParams({pageIndex: pageIndex, pageSize: pageSize});
     };
 
     setAlert = () => {
@@ -105,7 +87,7 @@ export class EditContactInforms extends Component {
 
     handleSubmit = async () => {
         const informs = this.state.informs.map(item => {
-            if(item.remark){
+            if (item.remark) {
                 return {...item, remark: this.htmlDecode(item.remark)};
             }
             return item;
@@ -136,8 +118,8 @@ export class EditContactInforms extends Component {
             const oldInforms = prevState.informs;
             const element  = oldInforms.find(value => value.headlineId === item.headlineId);
 
-            if(element){
-                Object.assign(element, {[name]: value});
+            if (element) {
+                element[name] = value;
                 return({informs: oldInforms});
             }else{
                 return({informs: [...oldInforms, item]});
@@ -150,8 +132,7 @@ export class EditContactInforms extends Component {
             titleId: this.props.titleId,
             username: this.state.username,
             statusId: this.state.selectedStatusId,
-            pageIndex: 1,
-            pageSize: 10000
+            pageIndex: 1, pageSize: -1
         };
         this.props.exportContactInforms(params);
     };
@@ -173,6 +154,10 @@ export class EditContactInforms extends Component {
 
     renderForm = () => {
         const { titleDetail, contactInforms, contactInformSettings, gridParams } = this.props;
+        const { pageIndex, pageSize } = gridParams;
+        const skip = pageSize * (pageIndex - 1);
+        const result = contactInforms.map(element => this.state.informs.find(item => item.headlineId === element.headlineId) || element);
+        const data = result.slice(skip, pageSize * pageIndex);
         const filterStatuses = contactInformSettings.filterStatuses.map(item => {
             return {
                 settingId: item.settingId,
@@ -200,7 +185,7 @@ export class EditContactInforms extends Component {
                     />
 
                     <DataGridEdit
-                        Informs={contactInforms}
+                        Informs={data}
                         InformSettings={contactInformSettings}
                         gridParams={gridParams}
                         totalItem={this.state.totalContactInform}
@@ -215,7 +200,7 @@ export class EditContactInforms extends Component {
 
     render() {
         const {titleDetail, contactInformSettings, contactInforms} = this.props;
-        if(!titleDetail || !contactInformSettings || !contactInforms){
+        if (!titleDetail || !contactInformSettings || !contactInforms) {
             return null;
         }
 

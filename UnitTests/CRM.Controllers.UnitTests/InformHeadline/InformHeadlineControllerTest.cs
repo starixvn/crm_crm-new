@@ -167,7 +167,7 @@
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
             // Act
-            var result = await controller.UpdateContactInforms(command);
+            var result = await controller.EditContactInforms(command);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -236,8 +236,6 @@
             // Arrange
             var editInforms = fixture.Create<IEnumerable<EditInform>>();
             var param = fixture.Create<GetEditInformParam>();
-            param.PageIndex = 1;
-            param.PageSize = 10000;
             var controller = GetController();
             informHeadlineService.GetEditInformsAsync(param).Returns(editInforms);
 
@@ -268,7 +266,7 @@
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
             // Act
-            var result = await controller.UpdateEditInforms(command);
+            var result = await controller.EditInforms(command);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -402,7 +400,7 @@
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
             // Act
-            var result = await controller.UpdateInformStatus(command);
+            var result = await controller.EditInformStatus(command);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
