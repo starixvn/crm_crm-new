@@ -153,12 +153,12 @@
                         transaction.TicketEventId, transaction.ProductId, transaction.EventDate,
                         transaction.SubmitDate.ToString("yyyy-MM-dd H:mm:ss.fffffff"), transaction.EventType,
                         HttpUtility.HtmlEncode(transaction.ActualResult), HttpUtility.HtmlEncode(transaction.WrongResult),
-                        transaction.MessageId, sportNameEN, sportNameSC, sportNameTH, sportNameYN, 
+                        transaction.MessageId, sportNameEN, sportNameSC, sportNameTH, sportNameYN,
                         homeNameEN, homeNameSC, homeNameTH, homeNameYN,
                         awayNameEN, awayNameSC, awayNameTH, awayNameYN,
                         leagueNameEN, leagueNameSC, leagueNameTH, leagueNameYN, transaction.MatchCode,
                         matchInfoEN, matchInfoSC, matchInfoTH, matchInfoYN, transaction.Type
-               );
+                );
             }
             stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
 
@@ -169,10 +169,10 @@
                 stringBuilderMessage.AppendFormat(
                     xmlTemplateMessage,
                     message.MessageId,
-                    message.Content_en?.Trim().Replace("@@", string.Empty),
-                    message.Content_cs?.Trim().Replace("@@", string.Empty),
-                    message.Content_th?.Trim().Replace("@@", string.Empty),
-                    message.Content_vn?.Trim().Replace("@@", string.Empty)
+                    HttpUtility.HtmlEncode(message.Content_en?.Trim().Replace("@@", string.Empty)),
+                    HttpUtility.HtmlEncode(message.Content_cs?.Trim().Replace("@@", string.Empty)),
+                    HttpUtility.HtmlEncode(message.Content_th?.Trim().Replace("@@", string.Empty)),
+                    HttpUtility.HtmlEncode(message.Content_vn?.Trim().Replace("@@", string.Empty))
                 );
             }
 
