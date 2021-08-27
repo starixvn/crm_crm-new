@@ -834,7 +834,7 @@ export class EditMultipleLogs extends Component {
                     {
                         this.state.editResult &&
                         <ResponseMessage isSuccessful={this.state.editResult.isSuccessful}
-                            message={this.state.editResult.message || LangHelper.getResource('UpdateFeedbackSuccessfully')}
+                            message={this.state.editResult.message || LangHelper.getResource('UpdateMultipleLogsSuccessfully')}
                         />
                     }
                     {

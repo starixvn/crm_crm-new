@@ -13,12 +13,10 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 
 export default class EditMultipleReviewAndStatus extends Component {
     static propTypes = {
-        feedbackIds: PropTypes.array.isRequired,
         onClose: PropTypes.func.isRequired
     };
 
     static defaultProps = {
-        feedbackId: [],
         onClose: function () {
             // nothing
         }
