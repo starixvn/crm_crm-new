@@ -39,12 +39,12 @@ export class AppContainer extends Component {
     }
 
     handleCloseEditContactInformDialog = () => {
-        this.props.getInforms();
+        this.props.resultEditContactInforms && this.props.getInforms();
         this.props.setEditContactInformDialog({show: false});
     };
 
     handleCloseEditInformDialog = () => {
-        this.props.getInforms();
+        this.props.resultEditInforms && this.props.getInforms();
         this.props.setEditInformDialog({show: false});
     };
 
@@ -111,9 +111,12 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog, optionDialog } = state;
+        editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
+        newInformDialog, optionDialog, resultEditContactInforms, resultEditInforms
+    } = state;
     return {
-        editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog, optionDialog
+        editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
+        newInformDialog, optionDialog, resultEditContactInforms, resultEditInforms
     };
 };
 

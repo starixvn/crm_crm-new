@@ -174,6 +174,8 @@ export const ActionCreators = {
     getEditInforms,
     setEditInformDialog,
     editInforms,
+    setResultEditContactInforms,
+    setResultEditInforms,
     exportContactInforms,
     exportEditInforms,
     getRemovedAccountLogs,

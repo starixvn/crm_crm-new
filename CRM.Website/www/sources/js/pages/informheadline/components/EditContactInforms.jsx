@@ -37,6 +37,7 @@ export class EditContactInforms extends Component {
             statusId: selectedStatuses,
             pageIndex: 1, pageSize: -1
         });
+        this.props.setResultEditContactInforms(null);
         this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.setState({
             totalContactInform: this.props.contactInforms.length,

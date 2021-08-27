@@ -44,7 +44,7 @@ export class EditInforms extends Component {
             isVip: titleDetail.isVip,
             excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts
         });
-
+        this.props.setResultEditInforms(null);
         this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.setState({
             totalEditInform: this.props.editDataInforms.length,
