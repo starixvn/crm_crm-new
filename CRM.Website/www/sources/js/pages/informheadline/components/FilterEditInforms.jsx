@@ -1,15 +1,55 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import RenderExportExcel from '@jsroot/components/RenderExportExcel';
 
 export class FilterEditInforms extends PureComponent {
+
     renderOptions = (name, id, key) => <option key={key} value={id}>{name}</option>;
 
     render() {
         const { values, touched, errors, handleChange, setFieldValue, handleSubmit,
-            titleDetail, filterCurrencies, filterLevels, filterSites, allIsVip, renderExportExcelText
+            titleDetail, allSettings, gridParams, exportEditInforms, changeIsSubmit
         } = this.props;
+
+        const allPositions = [
+            { id: 4, name: 'Super' }, { id: 3, name: 'Master' },
+            { id: 2, name: 'Agent' },{ id: 1, name: 'Member' },
+            { id: 0, name: 'Guest' }
+        ];
+
+        const allIsVip = [
+            { id: 2, name: 'All' }, { id: 1, name: 'Yes' },
+            { id: 0, name: 'No' }
+        ];
+
+        const filterCurrencies = allSettings.currencies.map(item => {
+            return {
+                id: item.id,
+                name: item.name,
+                checked: values.currencyId.split(',').includes(item.id.toString())
+            };
+        });
+
+        const filterLevels = allPositions.map(item => {
+            return {
+                id: item.id,
+                name: item.name,
+                checked: values.levelId.split(',').includes(item.id.toString())
+            };
+        });
+
+        const filterSites = allSettings.sites[0].childSites.map(item => {
+            return {
+                id: item.id,
+                name: item.name,
+                checked: values.siteId.split(',').includes(item.id.toString())
+            };
+        });
 
         return (
             <>
@@ -24,7 +64,10 @@ export class FilterEditInforms extends PureComponent {
                                     setFieldValue('title', event.target.value);
                                 }}
                             />
-                            {renderExportExcelText()}
+                        <RenderExportExcel
+                            gridParams={gridParams}
+                            exportExcel={exportEditInforms}
+                        />
                         </Col>
                     </Form.Group>
 
@@ -103,10 +146,7 @@ export class FilterEditInforms extends PureComponent {
                         <Col sm="1" md="1" >
                             <Button variant="primary" size="sm" style={{width: '65px'}}
                                 type="submit"
-                                onClick={() => {
-                                    setFieldValue('submit',false);
-                                    handleSubmit;
-                                }}
+                                onClick={() => setFieldValue('submit',false)}
                             >
                                 {LangHelper.getResource('Search')}
                             </Button>
@@ -152,4 +192,11 @@ export class FilterEditInforms extends PureComponent {
     }
 }
 
-export default FilterEditInforms;
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { titleDetail, allSettings, editDataInforms, gridParams, resultEditInforms } = state;
+    return { titleDetail, allSettings, editDataInforms, gridParams, resultEditInforms };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterEditInforms);

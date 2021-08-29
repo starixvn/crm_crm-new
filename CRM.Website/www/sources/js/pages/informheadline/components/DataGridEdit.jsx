@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import { Button, Form } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
@@ -21,12 +24,17 @@ export class DataGridEdit extends PureComponent {
     };
 
     buildBody = () => {
-        const { InformSettings, onChange } = this.props;
-        const productStatuses = [...InformSettings.productStatuses];
+        const { informSettings, informData, gridParams, gridData } = this.props;
+        const { pageIndex, pageSize } = gridParams;
+        const skip = pageSize * (pageIndex - 1);
+        const result = informData && informData.map(element => gridData.find(item => item.headlineId === element.headlineId) || element);
+        const data = result.slice(skip, pageSize * pageIndex);
+
+        const productStatuses = [...informSettings.productStatuses];
         productStatuses.unshift({statusId: 0, name: 'N/A'});
 
-        if (this.props.Informs.length > 0) {
-            return this.props.Informs.map((item, index) => this.renderRow(item, index, productStatuses, InformSettings, onChange));
+        if (data.length > 0) {
+            return data.map((item, index) => this.renderRow(item, index, productStatuses, informSettings));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -37,7 +45,7 @@ export class DataGridEdit extends PureComponent {
 
     renderOptions = (name, id, key) => <option key={key} value={id}>{name}</option>;
 
-    renderRow = (item, index, productStatuses, informSettings, onChange) => {
+    renderRow = (item, index, productStatuses, informSettings) => {
         return (
             <Row key={index} className={item.groupId > 0 ? 'free-grid-headline' : 'free-grid-direct'}>
                 <Cell>{item.username}</Cell>
@@ -46,7 +54,7 @@ export class DataGridEdit extends PureComponent {
                         name="informHeadlineStatusId"
                         defaultValue={item.informHeadlineStatusId}
                         key={item.informHeadlineStatusId}
-                        onChange={event => onChange(event,item.headlineId)}
+                        onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
                     >
                         {
                             informSettings.statuses.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
@@ -60,7 +68,7 @@ export class DataGridEdit extends PureComponent {
                         defaultValue={item.remark}
                         key={item.remark}
                         rows={2}
-                        onBlur={event => onChange(event,item.headlineId)}
+                        onBlur={event => this.handleChangeDataGrid(event,item.headlineId)}
                     />
                 </Cell>
                 <Cell>{item.handler}</Cell>
@@ -70,7 +78,7 @@ export class DataGridEdit extends PureComponent {
                         name="extension"
                         defaultValue={item.extension}
                         key={item.extension}
-                        onChange={event => onChange(event,item.headlineId)}
+                        onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
                     >
                         {
                             informSettings.stations.map((value, key) => this.renderOptions(value.name, value.stationId, key))
@@ -83,7 +91,7 @@ export class DataGridEdit extends PureComponent {
                         name="productStatus"
                         defaultValue={item.productStatus}
                         key={item.productStatus}
-                        onChange={event => onChange(event,item.headlineId)}
+                        onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
                     >
                         {
                             productStatuses.map((value, key) => this.renderOptions(value.name, value.statusId, key))
@@ -94,9 +102,71 @@ export class DataGridEdit extends PureComponent {
         );
     };
 
+    handleChangeDataGrid = (event, headlineId) => {
+        const name = event.target.name;
+        const value = event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value;
+
+        const item = {...this.props.informData.find(element => element.headlineId === headlineId), [name]: value};
+
+        const newGridData = this.props.gridData;
+        const element  = newGridData.find(value => value.headlineId === item.headlineId);
+
+        if (element) {
+            const replaceElement = {...element, [name]: value};
+            const replaceGridData = newGridData.map(item => {
+                if (item.headlineId === replaceElement.headlineId){
+                    return replaceElement;
+                }
+                return item;
+            });
+            this.props.setGridData(replaceGridData);
+        } else {
+            this.props.setGridData([...newGridData, item]);
+        }
+    };
+
+    htmlDecode = value => {
+        const remark = value.replace(/&/g, '&amp;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+        return remark;
+    };
+
+    setAlert = () => {
+        setTimeout(() => {
+            this.props.setResultEdit(null);
+        }, 3000);
+    };
+
+    handleSubmit = async () => {
+        const gridData = this.props.filterData.map(item => {
+            if (item.remark) {
+                return {...item, remark: this.htmlDecode(item.remark)};
+            }
+            return item;
+        });
+
+        if ( !this.props.dataEdit ) {
+            if ( JSON.stringify(this.props.getDataEdit().errors) === '{}' ){
+                await this.props.edit({...this.props.getDataEdit(), informs: gridData});
+            }
+        }else {
+            await this.props.edit({...this.props.dataEdit, informs: gridData});
+        }
+        this.setAlert();
+    };
+
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params['pageSize'] = pageSize;
+        params['pageIndex'] = pageIndex;
+        this.props.setGridParams(params);
+    };
 
     render() {
-        const { gridParams, onPaging, handleSubmit, totalItem } = this.props;
+        const { gridParams, totalItem } = this.props;
         const { pageIndex, pageSize } = gridParams;
 
         const pagingOption = {
@@ -115,7 +185,7 @@ export class DataGridEdit extends PureComponent {
                     body={this.buildBody()}
                     isPaging
                     pageOption={pagingOption}
-                    onPaging={onPaging}
+                    onPaging={this.onPaging}
                     containerPadding={0}
                     adjustedHeight={10}
                 />
@@ -123,7 +193,7 @@ export class DataGridEdit extends PureComponent {
                     (
                         <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}}
                             type="submit"
-                            onClick={handleSubmit}
+                            onClick={this.handleSubmit}
                         >
                             {LangHelper.getResource('Save')}
                         </Button>
@@ -134,4 +204,11 @@ export class DataGridEdit extends PureComponent {
     }
 }
 
-export default DataGridEdit;
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { gridParams, gridData, titleDetail } = state;
+    return { gridParams, gridData, titleDetail };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataGridEdit);

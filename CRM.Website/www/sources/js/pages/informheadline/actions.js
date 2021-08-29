@@ -21,7 +21,8 @@ import{
     setNewInforms,
     setNewInformDialog,
     setInsertInforms,
-    setOptionDialog
+    setOptionDialog,
+    setGridData
 } from './informHeadlineSlice';
 
 const getInforms = () => async dispatch => {
@@ -189,5 +190,6 @@ export const ActionCreators = {
     insertInforms,
     editInformStatus,
     exportNewInforms,
-    setOptionDialog
+    setOptionDialog,
+    setGridData
 };

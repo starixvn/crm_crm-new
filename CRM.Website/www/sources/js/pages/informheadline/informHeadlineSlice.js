@@ -3,15 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const informHeadlineSlice = createSlice({
     name: 'informHeadline',
     initialState: {
-        gridData: null,
+        informs: null,
         titleDetail: null,
         contactInformSettings: null,
         contactInforms: null,
         editContactInformDialog: {show: false},
-        gridParams: {
-            pageIndex: 1,
-            pageSize: 100
-        },
         allSettings: null,
         editDataInforms: null,
         editInformDialog: {show: false},
@@ -21,22 +17,18 @@ const informHeadlineSlice = createSlice({
         removedAccountLogDetails: null,
         removedLogDialog: {show: false},
         removedLogDetailDialog: {show: false},
-        gridParamRemovedLogs: {
-            pageIndex: 1,
-            pageSize: 100
-        },
-        gridRemovedLogDetails: {
-            pageIndex: 1,
-            pageSize: 100
-        },
         newInforms: null,
         newInformDialog: {show: false},
         resultInsertInforms: null,
-        optionDialog: {show: false}
+        optionDialog: {show: false},
+        gridData: [],
+        gridParams: { pageIndex: 1, pageSize: 100 },
+        gridParamRemovedLogs: { pageIndex: 1, pageSize: 100 },
+        gridRemovedLogDetails: { pageIndex: 1, pageSize: 100 }
     },
     reducers: {
         setInforms: (state, action) => {
-            state.gridData = action.payload;
+            state.informs = action.payload;
         },
         setTitleDetail: (state, action) => {
             state.titleDetail = action.payload;
@@ -97,6 +89,9 @@ const informHeadlineSlice = createSlice({
         },
         setOptionDialog: (state, action) => {
             state.optionDialog = action.payload;
+        },
+        setGridData: (state, action) => {
+            state.gridData = action.payload;
         }
     }
 });
@@ -124,7 +119,8 @@ export const {
     setNewInforms,
     setNewInformDialog,
     setInsertInforms,
-    setOptionDialog
+    setOptionDialog,
+    setGridData
 } = actions;
 
 export default reducer;

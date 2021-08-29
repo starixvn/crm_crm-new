@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { ActionCreators } from '../actions';
 import { Button } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import Tooltip from 'react-bootstrap/Tooltip';
+import RenderExportExcel from '@jsroot/components/RenderExportExcel';
 
 export class DataGrid extends Component {
 
@@ -31,9 +30,9 @@ export class DataGrid extends Component {
     };
 
     buildBody = () => {
-        const { gridData } = this.props;
-        if (gridData.length > 0) {
-            return gridData.map((item, index) => this.renderRow(item, index));
+        const { informs } = this.props;
+        if (informs.length > 0) {
+            return informs.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -96,28 +95,9 @@ export class DataGrid extends Component {
         );
     };
 
-    handleExportExcel = () => {
-        this.props.exportInforms();
-    };
-
-    renderExportExcelText = () => {
-        return (
-            <OverlayTrigger
-                placement="auto"
-                overlay={
-                    <Tooltip>
-                        <span>Export to Excel</span>
-                    </Tooltip>
-                }
-            >
-                <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcel}/>
-            </OverlayTrigger>
-        );
-    };
-
     render() {
-        const { gridData } = this.props;
-        if(!gridData || window.searchPolicy === 'None' || window.contactPolicy === 'None'){
+        const { informs } = this.props;
+        if(!informs || window.searchPolicy === 'None' || window.contactPolicy === 'None'){
             return null;
         }
 
@@ -126,13 +106,18 @@ export class DataGrid extends Component {
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>Inform Headlines Cases</span>
                     {
-                        gridData.length > 0 && this.renderExportExcelText()
+                        informs.length > 0 &&
+                        <RenderExportExcel
+                            gridParams={null}
+                            exportExcel={this.props.exportInforms}
+                        />
                     }
                 </div>
 
                 <Table
-                    maxWidth={1600}
-                    autoWidth={true}
+                    width={1336}
+                    maxWidth={1336}
+                    autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     containerPadding={0}
@@ -153,8 +138,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridData } = state;
-    return { gridData };
+    const { informs } = state;
+    return { informs };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);
