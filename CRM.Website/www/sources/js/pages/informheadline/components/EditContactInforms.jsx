@@ -10,6 +10,12 @@ import DataGridEdit from './DataGridEdit';
 import FilterContactInforms from './FilterContactInforms';
 
 export class EditContactInforms extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            saveResult: null
+        };
+    }
 
     async componentDidMount() {
         await this.props.getTitleDetail({
@@ -31,56 +37,64 @@ export class EditContactInforms extends Component {
         await this.props.getContactInforms(params);
     }
 
+    setAlert = () => {
+        this.setState({
+            saveResult: this.props.resultEditContactInforms
+        });
+        setTimeout(() => {
+            this.setState({
+                saveResult: null
+            });
+        }, 3000);
+    };
+
     renderForm = () => {
         const { contactInforms, contactInformSettings, titleDetail, gridData, setResultEditContactInforms } = this.props;
-        const dataEdit = {titleId: titleDetail.titleId};
+        const dataEdit = { titleId: titleDetail.titleId };
         return(
-            <>
-                <Modal.Body>
-                    {
-                        this.props.resultEditContactInforms &&
-                        <ResponseMessage isSuccessful={this.props.resultEditContactInforms.isSuccessful}
-                            message={this.props.resultEditContactInforms.message || LangHelper.getResource('SaveInformHeadlinesSuccessfully')}
-                        />
-                    }
-                    <FilterContactInforms/>
-
-                    <DataGridEdit
-                        informData={contactInforms}
-                        informSettings={contactInformSettings}
-                        totalItem={contactInforms.length}
-                        setResultEdit={setResultEditContactInforms}
-                        filterData={gridData}
-                        dataEdit={dataEdit}
-                        edit={this.props.editContactInforms}
+            <Modal.Body>
+                {
+                    this.state.saveResult &&
+                    <ResponseMessage isSuccessful={this.state.saveResult.isSuccessful}
+                        message={this.state.saveResult.message || LangHelper.getResource('SaveInformHeadlinesSuccessfully')}
                     />
-                </Modal.Body>
-            </>
+                }
+
+                <FilterContactInforms/>
+
+                <DataGridEdit
+                    informData={contactInforms}
+                    informSettings={contactInformSettings}
+                    totalItem={contactInforms.length}
+                    setAlert={this.setAlert}
+                    gridDataEdit={gridData}
+                    dataEdit={dataEdit}
+                    edit={this.props.editContactInforms}
+                />
+            </Modal.Body>
         );
     };
 
     render() {
-        const {titleDetail, contactInformSettings, contactInforms} = this.props;
-        if (!titleDetail || !contactInformSettings || !contactInforms) {
+        const { titleDetail, contactInformSettings, contactInforms, gridParams } = this.props;
+        if (!titleDetail || !contactInformSettings || !contactInforms || !gridParams.statusId) {
             return null;
         }
 
         return (
-            <>
-                <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
-                    backdrop="static" keyboard={false} size="xl"
-                    className="modal-edit"
-                    onHide={this.props.onClose}
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('UpdateInformHeadlines')}</Modal.Title>
-                    </Modal.Header>
+            <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
+                backdrop="static" keyboard={false} size="xl"
+                className="modal-edit"
+                onHide={this.props.onClose}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title as="div">{LangHelper.getResource('UpdateInformHeadlines')}</Modal.Title>
+                </Modal.Header>
 
-                    {
-                        this.renderForm()
-                    }
-                </Modal>
-            </>
+                {
+                    this.renderForm()
+                }
+            </Modal>
         );
     }
 }
@@ -88,8 +102,8 @@ export class EditContactInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInformSettings, contactInforms, gridData, resultEditContactInforms } = state;
-    return { titleDetail, contactInformSettings, contactInforms, gridData, resultEditContactInforms };
+    const { titleDetail, contactInformSettings, contactInforms, gridData, gridParams, resultEditContactInforms } = state;
+    return { titleDetail, contactInformSettings, contactInforms, gridData, gridParams, resultEditContactInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditContactInforms);

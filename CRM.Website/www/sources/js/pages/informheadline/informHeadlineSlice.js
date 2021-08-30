@@ -22,6 +22,7 @@ const informHeadlineSlice = createSlice({
         resultInsertInforms: null,
         optionDialog: {show: false},
         gridData: [],
+        filterData: { values: {}, errors: {} },
         gridParams: { pageIndex: 1, pageSize: 100 },
         gridParamRemovedLogs: { pageIndex: 1, pageSize: 100 },
         gridRemovedLogDetails: { pageIndex: 1, pageSize: 100 }
@@ -92,6 +93,9 @@ const informHeadlineSlice = createSlice({
         },
         setGridData: (state, action) => {
             state.gridData = action.payload;
+        },
+        setFilterData: (state, action) => {
+            state.filterData = action.payload;
         }
     }
 });
@@ -120,7 +124,8 @@ export const {
     setNewInformDialog,
     setInsertInforms,
     setOptionDialog,
-    setGridData
+    setGridData,
+    setFilterData
 } = actions;
 
 export default reducer;

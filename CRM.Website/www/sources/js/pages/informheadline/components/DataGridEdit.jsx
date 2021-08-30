@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
@@ -134,14 +134,8 @@ export class DataGridEdit extends PureComponent {
         return remark;
     };
 
-    setAlert = () => {
-        setTimeout(() => {
-            this.props.setResultEdit(null);
-        }, 3000);
-    };
-
     handleSubmit = async () => {
-        const gridData = this.props.filterData.map(item => {
+        const gridData = this.props.gridDataEdit.map(item => {
             if (item.remark) {
                 return {...item, remark: this.htmlDecode(item.remark)};
             }
@@ -149,13 +143,13 @@ export class DataGridEdit extends PureComponent {
         });
 
         if ( !this.props.dataEdit ) {
-            if ( JSON.stringify(this.props.getDataEdit().errors) === '{}' ){
-                await this.props.edit({...this.props.getDataEdit(), informs: gridData});
+            if ( Object.keys(this.props.filterData.errors).length === 0 ){
+                await this.props.edit({...this.props.filterData.values, informs: gridData});
             }
         }else {
             await this.props.edit({...this.props.dataEdit, informs: gridData});
         }
-        this.setAlert();
+        this.props.setAlert();
     };
 
     onPaging = (pageIndex, pageSize) => {
@@ -177,7 +171,7 @@ export class DataGridEdit extends PureComponent {
         };
 
         return (
-            <>
+            <Fragment>
                 <Table
                     width={1170}
                     autoWidth={false}
@@ -190,7 +184,7 @@ export class DataGridEdit extends PureComponent {
                     adjustedHeight={10}
                 />
                 {
-                    (
+                    Object.keys(this.props.filterData.errors).length === 0 && (
                         <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}}
                             type="submit"
                             onClick={this.handleSubmit}
@@ -199,7 +193,7 @@ export class DataGridEdit extends PureComponent {
                         </Button>
                     )
                 }
-            </>
+            </Fragment>
         );
     }
 }
@@ -207,8 +201,8 @@ export class DataGridEdit extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData, titleDetail } = state;
-    return { gridParams, gridData, titleDetail };
+    const { gridParams, gridData, filterData } = state;
+    return { gridParams, gridData, filterData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGridEdit);

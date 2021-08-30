@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
@@ -29,14 +29,14 @@ export class FilterContactInforms extends PureComponent {
         });
     };
 
-    handleSearch = async () => {
+    handleSearch = () => {
         const params = {
             ...this.props.gridParams, pageIndex: 1, pageSize: -1,
             username: this.state.username, statusId: this.state.selectedStatusId
         };
         this.props.setGridParams({...params, pageIndex: 1, pageSize: 100});
-        await this.props.getContactInforms(params);
         this.props.setGridData([]);
+        this.props.getContactInforms(params);
     };
 
     render() {
@@ -51,7 +51,7 @@ export class FilterContactInforms extends PureComponent {
         });
 
         return (
-            <>
+            <Fragment>
                 <div className="table-title d-flex justify-content-between align-items-center">
                     {titleDetail.title}
                     <RenderExportExcel
@@ -98,7 +98,7 @@ export class FilterContactInforms extends PureComponent {
                         </Col>
                     </Form.Group>
                 </Form>
-            </>
+            </Fragment>
         );
     }
 }
