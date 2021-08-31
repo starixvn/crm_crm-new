@@ -20,6 +20,7 @@ export class InsertPersonalMappingPopup extends Component {
                 botId: this.props.settings.bots ? this.props.settings.bots[0].id : '',
                 displayName: '',
                 recipientType: '',
+                recipientName: '',
                 groupHeadlines: '',
                 recipient: '',
                 letstalkId: '',
@@ -65,9 +66,12 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('groupHeadlines', selectedItemsKey);
     };
 
-    handleRecipientTypeChange = value => {
-        this.handleChange('recipientType', value);
-        this.props.getRecipientByRecipientType(value);
+    handleRecipientTypeChange = e => {
+        const index = e.nativeEvent.target.selectedIndex;
+        const label = e.nativeEvent.target[index].text;
+        this.handleChange('recipientType', e.target.value);
+        this.handleChange('recipientName', label);
+        this.props.getRecipientByRecipientType(e.target.value);
         this.handleChange('letstalkId', '');
         this.handleChange('displayName', '');
         this.setState({
@@ -151,7 +155,7 @@ export class InsertPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LetstalkIdRequired'));
         }
 
-        if (!data.groupHeadlines && parseInt(data.recipientType, 10) !== 9) {
+        if (!data.groupHeadlines && data.recipientName !== 'Accounting PIC') {
             isValid = false;
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
         }
@@ -229,7 +233,7 @@ export class InsertPersonalMappingPopup extends Component {
                 letstalkIds: item.letstalkIds
             };
         });
-        const groupHeadlinesOption = parseInt(this.state.form.recipientType, 10) === 9 ? this.state.groupHeadlineDefault : this.props.groupHeadline;
+        const groupHeadlinesOption = this.state.form.recipientName === 'Accounting PIC' ? this.state.groupHeadlineDefault : this.props.groupHeadline;
 
         return (
             <Form onSubmit={this.handleSubmit}>
@@ -295,7 +299,7 @@ export class InsertPersonalMappingPopup extends Component {
                         <Col sm="9" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="recipientTypeId"
-                                onChange={e => this.handleRecipientTypeChange(e.target.value)}
+                                onChange={e => this.handleRecipientTypeChange(e)}
                                 value={this.state.form.recipientType}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
@@ -333,7 +337,7 @@ export class InsertPersonalMappingPopup extends Component {
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
                         </Form.Label>
-                        <Col sm="9" md="10" className={`${parseInt(this.state.form.recipientType, 10) === 9 ? 'disabled-select' : ''}`}>
+                        <Col sm="9" md="10" className={`${this.state.form.recipientName === 'Accounting PIC' ? 'disabled-select' : ''}`}>
                             <MultipleSelect
                                 width={'100%'}
                                 name="headlineIds"
@@ -344,7 +348,7 @@ export class InsertPersonalMappingPopup extends Component {
                                 isSummited={false}
                                 onChange={this.handleGroupHeadlineChange}
                                 hasSearchBox
-                                isDisable={parseInt(this.state.form.recipientType, 10) === 9}
+                                isDisable={this.state.form.recipientName === 'Accounting PIC'}
                             />
                         </Col>
                     </Form.Group>

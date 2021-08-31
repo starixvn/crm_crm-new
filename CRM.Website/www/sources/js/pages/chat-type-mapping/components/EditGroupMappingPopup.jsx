@@ -25,6 +25,7 @@ export class EditGroupMappingPopup extends Component {
                 conversationId: this.props.updateGroupMappingData.data.conversationId,
                 recipientTypeId: this.props.updateGroupMappingData.data.recipients.length > 0 ? this.props.updateGroupMappingData.data.recipients[0].recipientTypeId : '',
                 recipientIds: this.props.updateGroupMappingData.data.recipients.map(r => r.recipientId).toString(),
+                recipientName: this.props.updateGroupMappingData.data.recipients.length > 0 ? this.props.updateGroupMappingData.data.recipients[0].recipientTypeName : '',
                 groupHeadlines: this.props.updateGroupMappingData.data.headlines.map(v => v.headlineId).toString(),
                 mappingStatus: {
                     id: this.props.updateGroupMappingData.data.mappingStatusId,
@@ -101,13 +102,16 @@ export class EditGroupMappingPopup extends Component {
         }));
     };
 
-    handleRecipientTypeChange = value => {
-        this.handleChange('recipientTypeId', value);
+    handleRecipientTypeChange = e => {
+        const index = e.nativeEvent.target.selectedIndex;
+        const label = e.nativeEvent.target[index].text;
+        this.handleChange('recipientTypeId',  e.target.value);
+        this.handleChange('recipientName', label);
         this.handleChange('recipientIds', '');
         this.handleChange('groupHeadlines', '');
         this.props.getGroupHeadlineByRecipient('');
         this.verifyLetstalk([]);
-        this.props.getRecipientByRecipientType(value);
+        this.props.getRecipientByRecipientType(e.target.value);
     };
 
     handleRecipientChange = (currentItem, selectedItemsKey) => {
@@ -194,7 +198,7 @@ export class EditGroupMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LanguageRequired'));
         }
 
-        if (!data.groupHeadlines && parseInt(data.recipientTypeId, 10) !== 9) {
+        if (!data.groupHeadlines && data.recipientName !== 'Accounting PIC') {
             isValid = false;
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
         }
@@ -238,7 +242,7 @@ export class EditGroupMappingPopup extends Component {
             name: this.state.form.name,
             recipientTypeId: this.state.form.recipientTypeId,
             letstalkId: this.state.form.conversationId,
-            groupHeadlineIds: parseInt(this.state.form.recipientTypeId, 10) === 9 ? '' : this.state.form.groupHeadlines,
+            groupHeadlineIds: this.state.form.recipientName === 'Accounting PIC' ? '' : this.state.form.groupHeadlines,
             recipientIds: this.state.form.recipientIds,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark
@@ -265,7 +269,7 @@ export class EditGroupMappingPopup extends Component {
     };
 
     renderForm = () => {
-        const groupHeadlinesOption = parseInt(this.state.form.recipientTypeId, 10) === 9 ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
+        const groupHeadlinesOption = this.state.form.recipientName === 'Accounting PIC' ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
         return (
             <Form onSubmit={this.handleSubmitForm}>
                 <Modal.Body>
@@ -317,7 +321,7 @@ export class EditGroupMappingPopup extends Component {
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="recipientTypeId"
                                 value={this.state.form.recipientTypeId}
-                                onChange={e => this.handleRecipientTypeChange(e.target.value)}
+                                onChange={e => this.handleRecipientTypeChange(e)}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                 {this.props.settings.recipientTypes.map(this.renderEditGroupMappingOptions)}
@@ -362,18 +366,18 @@ export class EditGroupMappingPopup extends Component {
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
                         </Form.Label>
-                        <Col sm="9" md="10" className={`${parseInt(this.state.form.recipientTypeId, 10) === 9 ? 'disabled-select' : ''}`}>
+                        <Col sm="9" md="10" className={`${this.state.form.recipientName === 'Accounting PIC' ? 'disabled-select' : ''}`}>
                             <MultipleSelect
                                 valueField='name'
                                 statusField='checked'
-                                isSummited={false}
+                                isSummited={false} 
                                 onChange={this.handleGroupHeadlineChange}
                                 hasSearchBox
                                 width={'100%'}
                                 name="headlineIds"
                                 dataSource={groupHeadlinesOption}
                                 keyField='id'
-                                isDisable={parseInt(this.state.form.recipientTypeId, 10) === 9}
+                                isDisable={this.state.form.recipientName === 'Accounting PIC'}
                             />
                         </Col>
                     </Form.Group>
