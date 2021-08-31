@@ -49,7 +49,7 @@ export class EditContactInforms extends Component {
     };
 
     renderForm = () => {
-        const { contactInforms, contactInformSettings, titleDetail, gridData, setResultEditContactInforms } = this.props;
+        const { contactInforms, contactInformSettings, titleDetail, gridData } = this.props;
         const dataEdit = { titleId: titleDetail.titleId };
         return(
             <Modal.Body>
@@ -76,8 +76,8 @@ export class EditContactInforms extends Component {
     };
 
     render() {
-        const { titleDetail, contactInformSettings, contactInforms, gridParams } = this.props;
-        if (!titleDetail || !contactInformSettings || !contactInforms || !gridParams.statusId) {
+        const { titleDetail, contactInformSettings, contactInforms } = this.props;
+        if ( !titleDetail || !contactInformSettings || !contactInforms ) {
             return null;
         }
 
@@ -102,8 +102,8 @@ export class EditContactInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInformSettings, contactInforms, gridData, gridParams, resultEditContactInforms } = state;
-    return { titleDetail, contactInformSettings, contactInforms, gridData, gridParams, resultEditContactInforms };
+    const { titleDetail, contactInformSettings, contactInforms, gridData, resultEditContactInforms } = state;
+    return { titleDetail, contactInformSettings, contactInforms, gridData, resultEditContactInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditContactInforms);

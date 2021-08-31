@@ -31,7 +31,7 @@ export class FilterContactInforms extends PureComponent {
 
     handleSearch = () => {
         const params = {
-            ...this.props.gridParams, pageIndex: 1, pageSize: -1,
+            titleId: this.props.titleDetail.titleId, pageIndex: 1, pageSize: -1,
             username: this.state.username, statusId: this.state.selectedStatusId
         };
         this.props.setGridParams({...params, pageIndex: 1, pageSize: 100});
@@ -40,7 +40,7 @@ export class FilterContactInforms extends PureComponent {
     };
 
     render() {
-        const { titleDetail, contactInformSettings, gridParams, exportContactInforms } = this.props;
+        const { titleDetail, contactInforms, contactInformSettings, gridParams, exportContactInforms } = this.props;
         const gridParamExcel = {...gridParams, pageIndex: 1, pageSize: -1}
         const filterStatuses = contactInformSettings.filterStatuses.map(item => {
             return {
@@ -54,10 +54,14 @@ export class FilterContactInforms extends PureComponent {
             <Fragment>
                 <div className="table-title d-flex justify-content-between align-items-center">
                     {titleDetail.title}
-                    <RenderExportExcel
-                        gridParams={gridParamExcel}
-                        exportExcel={exportContactInforms}
-                    />
+                    {
+                        contactInforms.length > 0 && (
+                            <RenderExportExcel
+                                gridParams={gridParamExcel}
+                                exportExcel={exportContactInforms}
+                            />
+                        )
+                    }
                 </div>
 
                 <Form onSubmit={this.handleSearch} className="form-filter">
@@ -106,8 +110,8 @@ export class FilterContactInforms extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInformSettings, gridParams } = state;
-    return { titleDetail, contactInformSettings, gridParams };
+    const { titleDetail, contactInforms, contactInformSettings, gridParams } = state;
+    return { titleDetail, contactInforms, contactInformSettings, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterContactInforms);

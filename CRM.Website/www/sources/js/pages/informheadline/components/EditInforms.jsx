@@ -64,8 +64,8 @@ export class EditInforms extends Component {
     };
 
     render() {
-        const { titleDetail, allSettings, editDataInforms, gridData, gridParams } = this.props;
-        if ( !titleDetail || !allSettings || !editDataInforms || !gridParams.currencies ) {
+        const { titleDetail, allSettings, editDataInforms, gridData, exportEditInforms } = this.props;
+        if ( !titleDetail || !allSettings || !editDataInforms ) {
             return null;
         }
         const gridDataEdit = editDataInforms.map(element => gridData.find(item => item.headlineId === element.headlineId) || element);
@@ -88,7 +88,12 @@ export class EditInforms extends Component {
                         />
                     }
 
-                    <FilterEditInforms/>
+                    <FilterEditInforms
+                        detail={titleDetail}
+                        informData={editDataInforms}
+                        exportExcel={exportEditInforms}
+                        isNewInform={false}
+                    />
 
                     <DataGridEdit
                         informData={editDataInforms}
@@ -108,8 +113,8 @@ export class EditInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, allSettings, editDataInforms, resultEditInforms, gridData, gridParams, filterData } = state;
-    return { titleDetail, allSettings, editDataInforms, resultEditInforms, gridData, gridParams, filterData };
+    const { titleDetail, allSettings, editDataInforms, resultEditInforms, gridData, filterData } = state;
+    return { titleDetail, allSettings, editDataInforms, resultEditInforms, gridData, filterData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditInforms);

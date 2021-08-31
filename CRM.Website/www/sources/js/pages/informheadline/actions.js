@@ -109,11 +109,12 @@ const exportContactInforms = params => async () => {
 };
 
 const exportEditInforms = params => async () => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/ExportEditInforms');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
-    });
+    }).then(() => Site.unblockUI());
 };
 
 const getRemovedAccountLogs = params => async dispatch => {
@@ -169,11 +170,13 @@ export const ActionCreators = {
     getTitleDetail,
     getContactInformSettings,
     getContactInforms,
+    setContactInforms,
     setEditContactInformDialog,
     editContactInforms,
     setGridParams,
     getAllSettings,
     getEditInforms,
+    setEditInforms,
     setEditInformDialog,
     editInforms,
     setResultEditContactInforms,
@@ -187,6 +190,7 @@ export const ActionCreators = {
     setGridParamRemovedLogs,
     setGridParamRemovedLogDetails,
     getNewInforms,
+    setNewInforms,
     setNewInformDialog,
     insertInforms,
     editInformStatus,

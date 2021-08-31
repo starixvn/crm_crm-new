@@ -2,171 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Form, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import DataGridEdit from './DataGridEdit';
-import { Formik } from 'formik';
-import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import FilterEditInforms from './FilterEditInforms';
 
 export class NewInforms extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            informs: [],
-            saveResult: null,
-            totalNewItem: 0
+            saveResult: null
         };
-
-        this.filterData = this.initFormData();
     }
-
-
-    renderFilterForm = ({
-        values,
-        errors,
-        touched,
-        handleSubmit,
-        handleChange,
-        setFieldValue
-    }) => {
-
-        const { allSettings , newInforms, gridParams } = this.props;
-        const allPositions = [
-            { id: 4, name: 'Super' },
-            { id: 3, name: 'Master' },
-            { id: 2, name: 'Agent' },
-            { id: 1, name: 'Member' },
-            { id: 0, name: 'Guest' }
-        ];
-
-        const allIsVip = [
-            { id: 2, name: 'All' },
-            { id: 1, name: 'Yes' },
-            { id: 0, name: 'No' }
-        ];
-
-        const filterCurrencies = allSettings.currencies.map(item => {
-            return {
-                id: item.id,
-                name: item.name,
-                checked: values.currencyId.split(',').includes(item.id.toString())
-            };
-        });
-
-        const filterLevels = allPositions.map(item => {
-            return {
-                id: item.id,
-                name: item.name,
-                checked: values.levelId.split(',').includes(item.id.toString())
-            };
-        });
-
-        const filterSites = allSettings.sites[0].childSites.map(item => {
-            return {
-                id: item.id,
-                name: item.name,
-                checked: values.siteId.split(',').includes(item.id.toString())
-            };
-        });
-
-        const { pageIndex, pageSize } = gridParams;
-        const skip = pageSize * (pageIndex - 1);
-        const result = newInforms && newInforms.map(element => this.state.informs.find(item => item.headlineId === element.headlineId) || element);
-        const data = result && result.slice(skip, pageSize * pageIndex);
-
-        return(
-            <Form noValidate onSubmit={handleSubmit}>
-                <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
-                {
-                    this.state.saveResult &&
-                    <ResponseMessage isSuccessful={this.state.saveResult.isSuccessful}
-                        message={this.state.saveResult.message || LangHelper.getResource('AddNewCaseSuccessfully')}
-                    />
-                }
-                <FilterEditInforms
-                    titleDetail={values.title}
-                    filterCurrencies={filterCurrencies}
-                    filterLevels={filterLevels}
-                    filterSites={filterSites}
-                    allIsVip={allIsVip}
-                    renderExportExcelText={() => this.renderExportExcelText(values)}
-
-                    values={values}
-                    touched={touched} errors={errors}
-                    handleChange={handleChange}
-                    handleSubmit={handleSubmit}
-                    setFieldValue={setFieldValue}
-                />
-
-                {
-                    newInforms &&
-                    <DataGridEdit
-                        Informs={data}
-                        InformSettings={allSettings}
-                        totalItem={this.state.totalNewItem}
-                        gridParams={gridParams}
-                        onPaging={this.onPaging}
-                        onChange={this.handleChangeDataGrid}
-
-                        handleSubmit={handleSubmit}
-                    />
-                }
-            </Form>
-        );
-    };
-
-    initFormData = () => {
-        return {
-            title: '',
-            currencyId: '',
-            levelId: '',
-            siteId: '',
-            vipId: 2,
-            typeAccount: 3,
-            isHeadline: true,
-            isNoGroup: true,
-            isExcludeIgnoredAccounts: true,
-            submit: true
-        };
-    };
-
-    validateFormik = values => {
-        const errors = {};
-
-        if (values.title === '' && values.submit) {
-            errors.title = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title'));
-        }
-        if (values.currencyId === '') {
-            errors.currencyId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'));
-        }
-        if (values.levelId === '') {
-            errors.levelId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Position'));
-        }
-        if (values.siteId === '') {
-            errors.siteId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site'));
-        }
-        if (!values.isHeadline && !values.isNoGroup) {
-            errors.isHeadline = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('DirectAccount'));
-        }
-
-        return errors;
-    };
-
-    getTypeAccount = values => {
-        let accountType = 0;
-        if (values.isHeadline) {
-            accountType = accountType + 1;
-        }
-        if (values.isNoGroup) {
-            accountType = accountType + 2;
-        }
-        values.typeAccount = accountType;
-    };
 
     setAlert = () => {
         this.setState({
@@ -181,145 +30,52 @@ export class NewInforms extends Component {
         }, 3000);
     };
 
-    handleSubmit = async (values, { setSubmitting }) => {
-        setSubmitting(true);
-        if (!values.submit) {
-            this.getTypeAccount(values);
-
-            const params = {
-                title: values.title,
-                typeAccount: values.typeAccount,
-                currencies: values.currencyId,
-                levels: values.levelId,
-                sites: values.siteId,
-                isVip: parseInt(values.vipId, 10),
-                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
-                pageIndex: 1,
-                pageSize: -1
-            };
-            await this.props.getNewInforms(params);
-            this.props.setGridParams({pageIndex: 1,pageSize: 100});
-            this.setState({
-                totalNewItem: this.props.newInforms.length
-            });
-            values.submit = true;
-            return;
-
-        }else{
-            this.getTypeAccount(values);
-
-            const informs = this.state.informs.map(item => {
-                if(item.remark){
-                    return {...item, remark: this.htmlDecode(item.remark)};
-                }
-                return item;
-            });
-            const params = {
-                title: values.title,
-                currencies: values.currencyId,
-                levels: values.levelId,
-                sites: values.siteId,
-                isVip: parseInt(values.vipId, 10),
-                typeAccount: values.typeAccount,
-                excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
-                informs: informs
-            };
-            await this.props.insertInforms(params);
-            this.setAlert();
-        }
-    };
-
-    handleExportExcel = values => {
-        this.getTypeAccount(values);
-        const params = {
-            title: values.title,
-            typeAccount: values.typeAccount,
-            currencies: values.currencyId,
-            levels: values.levelId,
-            sites: values.siteId,
-            isVip: parseInt(values.vipId, 10),
-            excludeIgnoredAccounts: values.isExcludeIgnoredAccounts,
-            pageIndex: 1,
-            pageSize: -1
-        };
-        this.props.exportNewInforms(params);
-    };
-
-    renderExportExcelText = values => {
-        return (
-            <OverlayTrigger
-                placement="auto"
-                overlay={
-                    <Tooltip>
-                        <span>Export to Excel</span>
-                    </Tooltip>
-                }
-            >
-                <span className="fa fa-file-excel-o icon-excel" onClick={() => this.handleExportExcel(values)}/>
-            </OverlayTrigger>
-        );
-    };
-
-    onPaging = (pageIndex, pageSize) => {
-        this.props.setGridParams({pageIndex: pageIndex, pageSize: pageSize});
-    };
-
-    htmlDecode = value => {
-        const remark = value.replace(/&/g, '&amp;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#39;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;');
-        return remark;
-    };
-
-    handleChangeDataGrid = (event, headlineId) => {
-        const name = event.target.name;
-        const value = event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value;
-
-        const item = {...this.props.newInforms.find(element => element.headlineId === headlineId), [name]: value};
-
-        this.setState(prevState =>{
-            const oldInforms = prevState.informs;
-            const element  = oldInforms.find(value => value.headlineId === item.headlineId);
-
-            if (element) {
-                element[name] = value;
-                return({informs: oldInforms});
-            }else{
-                return({informs: [...oldInforms, item]});
-            }
-        });
-    };
-
     render() {
-        const { allSettings } = this.props;
+        const { allSettings, newInforms, exportNewInforms, gridData } = this.props;
         if (!allSettings) {
             return null;
         }
 
         return (
-            <>
-                <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
-                    backdrop="static" keyboard={false} size="xl"
-                    className="modal-edit"
-                    onHide={this.props.onClose}
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('NewInformHeadlines')}</Modal.Title>
-                    </Modal.Header>
+            <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
+                backdrop="static" keyboard={false} size="xl"
+                className="modal-edit"
+                onHide={this.props.onClose}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title as="div">{LangHelper.getResource('NewInformHeadlines')}</Modal.Title>
+                </Modal.Header>
 
-                    <Modal.Body>
-                        <Formik
-                            initialValues={this.filterData}
-                            validate={this.validateFormik}
-                            onSubmit={this.handleSubmit}
-                        >
-                            { this.renderFilterForm }
-                        </Formik>
-                    </Modal.Body>
-                </Modal>
-            </>
+                <Modal.Body>
+                    {
+                        this.state.saveResult &&
+                        <ResponseMessage isSuccessful={this.state.saveResult.isSuccessful}
+                            message={this.state.saveResult.message || LangHelper.getResource('AddNewCaseSuccessfully')}
+                        />
+                    }
+
+                    <FilterEditInforms
+                        detail=''
+                        informData={newInforms}
+                        exportExcel={exportNewInforms}
+                        isNewInform={true}
+                    />
+
+                    {
+                        newInforms && (
+                            <DataGridEdit
+                                informData={newInforms}
+                                informSettings={allSettings}
+                                totalItem={newInforms.length}
+                                setAlert={this.setAlert}
+                                gridDataEdit={gridData}
+                                dataEdit={null}
+                                edit={this.props.insertInforms}
+                            />
+                        )
+                    }
+                </Modal.Body>
+            </Modal>
         );
     }
 }
@@ -327,8 +83,8 @@ export class NewInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, newInforms, gridParams, resultInsertInforms } = state;
-    return { allSettings, newInforms, gridParams, resultInsertInforms };
+    const { allSettings, newInforms, gridParams, gridData, resultInsertInforms } = state;
+    return { allSettings, newInforms, gridParams, gridData, resultInsertInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewInforms);

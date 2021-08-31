@@ -39,11 +39,13 @@ export class AppContainer extends Component {
     }
 
     handleCloseEditContactInformDialog = () => {
+        this.props.setContactInforms(null);
         this.props.resultEditContactInforms && this.props.getInforms();
         this.props.setEditContactInformDialog({show: false});
     };
 
     handleCloseEditInformDialog = () => {
+        this.props.setEditInforms(null);
         this.props.resultEditInforms && this.props.getInforms();
         this.props.setEditInformDialog({show: false});
     };
@@ -57,6 +59,7 @@ export class AppContainer extends Component {
     };
 
     handleCloseNewInformDialog = () => {
+        this.props.setNewInforms(null);
         this.props.setNewInformDialog({show: false});
     };
 
