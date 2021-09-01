@@ -10,9 +10,9 @@ import{
     setContactInformSettings,
     setContactInforms,
     setAllSettings,
-    setSearchInforms,
-    setUpdateContactInforms,
-    setUpdateSearchInforms,
+    setEditInforms,
+    setResultEditContactInforms,
+    setResultEditInforms,
     setRemovedAccountLogs,
     setRemovedAccountLogDetails,
     setNewInforms,
@@ -91,13 +91,13 @@ describe('actionCreators', () => {
             const expectedActions = [{ type: setTitleDetail.type, payload: response.data }];
             const store = mockStore({ titleDetail: null });
             const promise = Promise.resolve(response);
-            DataService.postDataAsync = jest.fn(() => promise);
+            DataService.getDataAsync = jest.fn(() => promise);
 
             // Act
             await store.dispatch(ActionCreators.getTitleDetail(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('InformHeadline/GetTitleDetail', expectedParams);
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('InformHeadline/GetTitleDetail', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -145,8 +145,8 @@ describe('actionCreators', () => {
         });
     });
 
-    describe('updateContactInforms', () => {
-        it('should handle updateContactInforms when fetching data have been done', async () => {
+    describe('editContactInforms', () => {
+        it('should handle editContactInforms when fetching data have been done', async () => {
             // Arrange
             const expectedParams = {
                 titleId: 720, informs: []
@@ -154,16 +154,16 @@ describe('actionCreators', () => {
             const response = [
                 { code: 0, isSuccessful: true, message: ""}
             ]
-            const expectedActions = [{ type: setUpdateContactInforms.type, payload: response.data }];
-            const store = mockStore({ resultUpdateContactInforms: null });
+            const expectedActions = [{ type: setResultEditContactInforms.type, payload: response.data }];
+            const store = mockStore({ resultEditContactInforms: null });
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
 
             // Act
-            await store.dispatch(ActionCreators.updateContactInforms(expectedParams));
+            await store.dispatch(ActionCreators.editContactInforms(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('InformHeadline/UpdateContactInforms', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('InformHeadline/EditContactInforms', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -188,8 +188,8 @@ describe('actionCreators', () => {
         });
     });
 
-    describe('getSearchInforms', () => {
-        it('should handle getSearchInforms when fetching data have been done', async () => {
+    describe('getEditInforms', () => {
+        it('should handle getEditInforms when fetching data have been done', async () => {
             // Arrange
             const expectedParams = {
                 titleId: 720, currencies: "2,3,5", isVip: 2
@@ -197,22 +197,22 @@ describe('actionCreators', () => {
             const response = [
                 { headlineId: 527906, groupId: 136, username: "S6EU" }
             ]
-            const expectedActions = [{ type: setSearchInforms.type, payload: response.data }];
+            const expectedActions = [{ type: setEditInforms.type, payload: response.data }];
             const store = mockStore({ searchInforms: null });
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
 
             // Act
-            await store.dispatch(ActionCreators.getSearchInforms(expectedParams));
+            await store.dispatch(ActionCreators.getEditInforms(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('InformHeadline/GetSearchInforms', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('InformHeadline/GetEditInforms', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
 
-    describe('updateSearchInforms', () => {
-        it('should handle updateSearchInforms when fetching data have been done', async () => {
+    describe('editInforms', () => {
+        it('should handle editInforms when fetching data have been done', async () => {
             // Arrange
             const expectedParams = {
                 titleId: 720, informs: []
@@ -220,16 +220,16 @@ describe('actionCreators', () => {
             const response = [
                 { code: 0, isSuccessful: true, message: "" }
             ]
-            const expectedActions = [{ type: setUpdateSearchInforms.type, payload: response.data }];
-            const store = mockStore({ resultUpdateSearchInforms: null });
+            const expectedActions = [{ type: setResultEditInforms.type, payload: response.data }];
+            const store = mockStore({ resultEditInforms: null });
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
 
             // Act
-            await store.dispatch(ActionCreators.updateSearchInforms(expectedParams));
+            await store.dispatch(ActionCreators.editInforms(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('InformHeadline/UpdateSearchInforms', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('InformHeadline/EditInforms', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -259,7 +259,7 @@ describe('actionCreators', () => {
         });
     });
 
-    describe('exportSearchInforms', () => {
+    describe('exportEditInforms', () => {
         it('should call exactly functions', async () => {
             // Arrange
             const expectedParams = {};
@@ -276,10 +276,10 @@ describe('actionCreators', () => {
             DataService.getFileAsync = jest.fn(() => promise);
             const store = mockStore();
             // Act
-            await store.dispatch(ActionCreators.exportSearchInforms(expectedParams));
+            await store.dispatch(ActionCreators.exportEditInforms(expectedParams));
 
             // Assert
-            expect(DataService.getFileAsync).toHaveBeenCalledWith('InformHeadline/ExportSearchInforms', expectedParams);
+            expect(DataService.getFileAsync).toHaveBeenCalledWith('InformHeadline/ExportEditInforms', expectedParams);
             expect(Site.downloadFile).toHaveBeenCalledWith(response.data, filename);
         });
     });
@@ -376,8 +376,8 @@ describe('actionCreators', () => {
         });
     });
 
-    describe('updateInformStatus', () => {
-        it('should handle updateInformStatus when fetching data have been done', async () => {
+    describe('editInformStatus', () => {
+        it('should handle editInformStatus when fetching data have been done', async () => {
             // Arrange
             const expectedParams = {
                 statusType: true, titleId: 720
@@ -390,10 +390,10 @@ describe('actionCreators', () => {
             DataService.postDataAsync = jest.fn(() => promise);
 
             // Act
-            await store.dispatch(ActionCreators.updateInformStatus(expectedParams));
+            await store.dispatch(ActionCreators.editInformStatus(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('InformHeadline/UpdateInformStatus', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('InformHeadline/EditInformStatus', expectedParams);
         });
     });
 

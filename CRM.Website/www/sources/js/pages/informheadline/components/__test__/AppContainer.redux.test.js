@@ -29,7 +29,9 @@ describe('connect ', () => {
             removedLogDialog: { show: false },
             removedLogDetailDialog: { show: false },
             newInformDialog: { show: false },
-            optionDialog: { show: false }
+            optionDialog: { show: false },
+            resultEditContactInforms: { isSuccessful: true},
+            resultEditInforms: { isSuccessful: true}
         };
         const state = {
             editContactInformDialog: { show: false },
@@ -37,7 +39,9 @@ describe('connect ', () => {
             removedLogDialog: { show: false },
             removedLogDetailDialog: { show: false },
             newInformDialog: { show: false },
-            optionDialog: { show: false }
+            optionDialog: { show: false },
+            resultEditContactInforms: { isSuccessful: true},
+            resultEditInforms: { isSuccessful: true}
         };
 
         // Act

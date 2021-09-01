@@ -37,7 +37,9 @@ describe('AppContainer', () => {
             const props = {
                 ...initProps,
                 editContactInformDialog: { show: true },
-                setEditContactInformDialog: jest.fn()
+                resultEditContactInforms: { isSuccessful: true },
+                setEditContactInformDialog: jest.fn(),
+                setContactInforms: jest.fn()
             };
 
             // Act
@@ -46,6 +48,7 @@ describe('AppContainer', () => {
            
             // Assert
             expect(props.setEditContactInformDialog).toHaveBeenCalledWith({ show: false });
+            expect(props.setContactInforms).toHaveBeenCalledWith(null);
             expect(props.getInforms).toHaveBeenCalled();
         });
     });
@@ -56,7 +59,8 @@ describe('AppContainer', () => {
             const props = {
                 ...initProps,
                 editInformDialog: { show: true },
-                setEditInformDialog: jest.fn()
+                setEditInformDialog: jest.fn(),
+                setEditInforms: jest.fn()
             };
 
             // Act
@@ -65,6 +69,7 @@ describe('AppContainer', () => {
            
             // Assert
             expect(props.setEditInformDialog).toHaveBeenCalledWith({ show: false });
+            expect(props.setEditInforms).toHaveBeenCalledWith(null);
             expect(props.getInforms).toHaveBeenCalled();
         });
     });
@@ -113,7 +118,8 @@ describe('AppContainer', () => {
             const props = {
                 ...initProps,
                 newInformDialog: { show: true },
-                setNewInformDialog: jest.fn()
+                setNewInformDialog: jest.fn(),
+                setNewInforms: jest.fn()
             };
 
             // Act
@@ -122,6 +128,7 @@ describe('AppContainer', () => {
            
             // Assert
             expect(props.setNewInformDialog).toHaveBeenCalledWith({ show: false });
+            expect(props.setNewInforms).toHaveBeenCalledWith(null);
             expect(props.getInforms).toHaveBeenCalled();
         });
     });

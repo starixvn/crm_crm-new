@@ -24,10 +24,10 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            gridData: { totalItems: 1, data: [] }
+            informs: { totalItems: 1, data: [] }
         };
         const state = {
-            gridData: { totalItems: 1, data: [] }
+            informs: { totalItems: 1, data: [] }
         };
 
         // Act

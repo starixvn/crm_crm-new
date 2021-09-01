@@ -22,11 +22,11 @@ describe('DataGrid', () => {
     });
 
     describe('buildBody', () => {
-        it('should render no data when gridData is empty', () => {
+        it('should render no data when informs is empty', () => {
             // Arrange
             const props = {
                 ...initProps,
-                gridData: { totalItems: 1, data: [] }             
+                informs: { totalItems: 1, data: [] }             
             };
             const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={13}>ThereIsNoData</Cell></Row>];
             const container = shallow(<DataGrid {...props} />).instance();
@@ -38,12 +38,12 @@ describe('DataGrid', () => {
             expect(actual).toEqual(expectedBody);
         });
 
-        it('should render expected rows when gridData has data', () => {
+        it('should render expected rows when informs has data', () => {
             // Arrange
 
             const props = {
                 ...initProps,
-                gridData: [
+                informs: [
                     { titleId: 720, title:'test'}
                 ]
             };
@@ -121,7 +121,7 @@ describe('DataGrid', () => {
 
             const props = {
                 ...initProps,
-                gridData: [
+                informs: [
                     { titleId: 720, title:'test'}
                 ]
             };
@@ -148,7 +148,7 @@ describe('DataGrid', () => {
 
             const props = {
                 ...initProps,
-                gridData: [
+                informs: [
                     { titleId: 720, title:'test'}
                 ]
             };
@@ -168,22 +168,6 @@ describe('DataGrid', () => {
 
             // Assert
             expect(container.handleEditContact).toHaveBeenCalledWith(720);
-        });
-    });
-
-    describe('handleExportExcel', () => {
-        it('should call exactly functions when handle export excel', () => {
-            // Arrange
-            const props = {
-                exportInforms: jest.fn()
-            };
-
-            // Act
-            const container = shallow(<DataGrid {...props}/>);
-            container.instance().handleExportExcel();
-           
-            // Assert
-            expect(props.exportInforms).toHaveBeenCalledTimes(1);
         });
     });
 });
