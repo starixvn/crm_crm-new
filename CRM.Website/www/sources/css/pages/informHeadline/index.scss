@@ -66,6 +66,11 @@
 
 .modal-edit .modal-xl {
     max-width: 1200px;
+    height: 700px;
+}
+
+.modal-edit .modal-content{
+    height: 700px;
 }
 
 .modal-removeDetail .modal-content{
@@ -78,3 +83,27 @@
     margin: auto;
 }
 
+a.dropdown-item {
+    line-height: 1.8;
+    border-bottom: 1px solid #e5e5e5;
+    color: #333333;
+
+    .icon{
+        margin-right: 5px;
+        font-size: 13px;
+
+        &-default{
+            color: #0789d1;
+        }
+        &-closed{
+            color: #de5144;
+        }
+        &-open{
+            color: #cabc04;
+        }
+    }
+}
+
+.option{
+    overflow: visible !important;
+}

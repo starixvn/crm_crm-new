@@ -7,9 +7,5 @@
         public string Username { get; set; }
 
         public string StatusId { get; set; }
-
-        public int PageIndex { get; set; }
-
-        public int PageSize { get; set; }
     }
 }

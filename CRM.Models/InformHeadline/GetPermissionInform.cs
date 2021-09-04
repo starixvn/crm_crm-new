@@ -2,8 +2,8 @@
 {
     public class GetPermissionInform
     {
-        public string ContactPolicy { get; set; }
+        public int ContactPolicy { get; set; }
 
-        public string SearchPolicy { get; set; }
+        public int SearchPolicy { get; set; }
     }
 }

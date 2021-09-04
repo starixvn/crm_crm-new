@@ -48,8 +48,8 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             var permission = (GetPermissionInform)viewResult.Model;
-            Assert.Equal("Host", permission.ContactPolicy);
-            Assert.Equal("Host", permission.SearchPolicy);
+            Assert.Equal(2, permission.ContactPolicy);
+            Assert.Equal(2, permission.SearchPolicy);
         }
 
         [Fact]
@@ -184,11 +184,11 @@
             var fileName = $"ContactInformHeadlines.xlsx";
             var contactInforms = fixture.Create<IEnumerable<EditInform>>();
             var param = fixture.Create<GetContactInformParam>();
-            var titles = fixture.Create<InformTitleDetail>();
+            var title = fixture.Create<InformTitleDetail>();
             var controller = GetController();
             informHeadlineService.GetContactInformsAsync(param).Returns(contactInforms);
-            baseService.GetDataEntityAsync<InformTitleDetail>(Arg.Any<GetInformTitleDetailCriteria>()).Returns(titles);
-            
+            informHeadlineService.GetTitleDetailAsync(param.TitleId).Returns(title);
+
             // Act
             var result = await controller.ExportContactInforms(param);
 
@@ -283,10 +283,10 @@
             var fileName = $"UpdateInformHeadlines.xlsx";
             var editInforms = fixture.Create<IEnumerable<EditInform>>();
             var param = fixture.Create<GetEditInformParam>();
-            var titles = fixture.Create<InformTitleDetail>();
+            var title = fixture.Create<InformTitleDetail>();
             var controller = GetController();
             informHeadlineService.GetEditInformsAsync(param).Returns(editInforms);
-            baseService.GetDataEntityAsync<InformTitleDetail>(Arg.Any<GetInformTitleDetailCriteria>()).Returns(titles);
+            informHeadlineService.GetTitleDetailAsync(param.TitleId).Returns(title);
 
             // Act
             var result = await controller.ExportEditInforms(param);

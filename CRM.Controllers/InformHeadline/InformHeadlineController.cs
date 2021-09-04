@@ -54,8 +54,8 @@
         {
             var permission = new GetPermissionInform
             {
-                ContactPolicy = ((Policy)userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact)).ToString(),
-                SearchPolicy = ((Policy)userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch)).ToString()
+                ContactPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact),
+                SearchPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch)
             };
             return View(permission);
         }
@@ -78,8 +78,8 @@
         [HttpGet]
         public async Task<IActionResult> GetTitleDetail(int titleId)
         {
-            InformTitleDetail titles = await informHeadlineService.GetTitleDetailAsync(titleId);
-            return Json(titles);
+            InformTitleDetail title = await informHeadlineService.GetTitleDetailAsync(titleId);
+            return Json(title);
         }
 
         public async Task<IActionResult> GetContactInformSettings()
@@ -119,11 +119,8 @@
             var informStatuses = await informHeadlineService.GetInformStatusesAsync();
             var informStations = await settingService.GetStations();
             var informProductStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline);
-            InformTitleDetail titles = await baseService.GetDataEntityAsync<InformTitleDetail>(new GetInformTitleDetailCriteria
-            {
-                TitleId = param.TitleId
-            });
-            var bytes = excelService.ExportEditInformHeadline(contactInforms, informStatuses, informStations, informProductStatuses, titles.Title);
+            var title = await informHeadlineService.GetTitleDetailAsync(param.TitleId);
+            var bytes = excelService.ExportEditInformHeadline(contactInforms, informStatuses, informStations, informProductStatuses, title.Title);
             string reportName = ViewResources.ContactInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
@@ -167,11 +164,8 @@
             var informStatuses = await informHeadlineService.GetInformStatusesAsync();
             var informStations = await settingService.GetStations();
             var informProductStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline);
-            InformTitleDetail titles = await baseService.GetDataEntityAsync<InformTitleDetail>(new GetInformTitleDetailCriteria
-            {
-                TitleId = param.TitleId
-            });
-            var bytes = excelService.ExportEditInformHeadline(editInforms, informStatuses, informStations, informProductStatuses, titles.Title);
+            var title = await informHeadlineService.GetTitleDetailAsync(param.TitleId);
+            var bytes = excelService.ExportEditInformHeadline(editInforms, informStatuses, informStations, informProductStatuses, title.Title);
             string reportName = ViewResources.UpdateInformHeadlines;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
@@ -180,14 +174,16 @@
         public async Task<IActionResult> GetRemovedAccountLogs([FromBody] GetRemovedAccountLogParam param)
         {
             var result = await informHeadlineService.GetRemovedAccountLogAsync(param);
-            return Json(new { item = result.listRemoveAccount, totalItems = result.totalRows });
+            var (listRemoveAccounts, totalRows) = result;
+            return Json(new { item = listRemoveAccounts, totalItems = totalRows });
         }
 
         [HttpPost]
         public async Task<IActionResult> GetRemovedAccountLogDetails([FromBody] GetRemovedAccountLogDetailParam param)
         {
             var result = await informHeadlineService.GetRemovedAccountLogDetailAsync(param);
-            return Json(new { item = result.listRemoveAccountDetail, totalItems = result.totalRows });
+            var (listRemoveAccountDetails, totalRows) = result;
+            return Json(new { item = listRemoveAccountDetails, totalItems = totalRows });
         }
 
         [HttpPost]

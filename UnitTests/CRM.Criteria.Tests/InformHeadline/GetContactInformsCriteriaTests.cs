@@ -27,9 +27,7 @@
             {
                 TitleId = 0,
                 Username = "sa",
-                StatusId = "2000",
-                PageIndex = 1,
-                PageSize = 100
+                StatusId = "2000"
             };
 
             // Act
@@ -47,9 +45,7 @@
             {
                 TitleId = 100,
                 Username = "sa",
-                StatusId = "2000",
-                PageIndex = 1,
-                PageSize = 100
+                StatusId = "2000"
             };
 
             // Act

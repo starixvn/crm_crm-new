@@ -131,22 +131,23 @@
         public async Task GetRemovedAccountLogAsync_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
-            var removeAccountLogs = fixture.Create<(IEnumerable<RemovedAccountLog> listRemoveAccount, int totalRows)>();
-            var totalRows = fixture.Create<int>();
+            var removeAccountLogs = fixture.Create<IEnumerable<RemovedAccountLog>>();
+            var totals = fixture.Create<int>();
             var criteria = fixture.Create<GetRemovedAccountLogsCriteria>();
             var param = fixture.Create<GetRemovedAccountLogParam>();
             var service = GetService();
-            baseService.GetDataAsync<RemovedAccountLog>(Arg.Do<GetRemovedAccountLogsCriteria>(x => criteria = x)).Returns(removeAccountLogs.listRemoveAccount);
+            baseService.GetDataAsync<RemovedAccountLog>(Arg.Do<GetRemovedAccountLogsCriteria>(x => criteria = x)).Returns(removeAccountLogs);
             baseService.When(x => x.GetDataAsync<RemovedAccountLog>(Arg.Do<GetRemovedAccountLogsCriteria>(y => criteria = y)))
-                .Do(x => criteria.TotalRows = totalRows);
+                .Do(x => criteria.TotalRows = totals);
             
             // Act
             var actual = await service.GetRemovedAccountLogAsync(param);
+            var (listRemoveAccounts, totalRows) = actual;
 
             // Assert
-            Assert.Equal(removeAccountLogs.listRemoveAccount, actual.listRemoveAccount);
-            Assert.Equal(criteria.TotalRows, actual.totalRows);
-            Assert.All(actual.listRemoveAccount, item =>
+            Assert.Equal(removeAccountLogs, listRemoveAccounts);
+            Assert.Equal(criteria.TotalRows, totalRows);
+            Assert.All(listRemoveAccounts, item =>
             {
                 Assert.Equal("Jan 01, 0001 12:00:00 AM", item.ClientLogDate);
             });
@@ -156,22 +157,23 @@
         public async Task GetRemovedAccountLogDetailAsync_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
-            var removeAccountLogs = fixture.Create<(IEnumerable<RemovedAccountLogDetail> listRemoveAccountDetail, int totalRows)>();
-            var totalRows = fixture.Create<int>();
+            var removeAccountLogs = fixture.Create<IEnumerable<RemovedAccountLogDetail>>();
+            var totals = fixture.Create<int>();
             var criteria = fixture.Create<GetRemovedAccountLogDetailsCriteria>();
             var param = fixture.Create<GetRemovedAccountLogDetailParam>();
             var service = GetService();
-            baseService.GetDataAsync<RemovedAccountLogDetail>(Arg.Do<GetRemovedAccountLogDetailsCriteria>(x => criteria = x)).Returns(removeAccountLogs.listRemoveAccountDetail);
+            baseService.GetDataAsync<RemovedAccountLogDetail>(Arg.Do<GetRemovedAccountLogDetailsCriteria>(x => criteria = x)).Returns(removeAccountLogs);
             baseService.When(x => x.GetDataAsync<RemovedAccountLogDetail>(Arg.Do<GetRemovedAccountLogDetailsCriteria>(y => criteria = y)))
-                .Do(x => criteria.TotalRows = totalRows);
+                .Do(x => criteria.TotalRows = totals);
 
             // Act
             var actual = await service.GetRemovedAccountLogDetailAsync(param);
+            var (listRemoveAccountDetails, totalRows) = actual;
 
             // Assert
-            Assert.Equal(removeAccountLogs.listRemoveAccountDetail, actual.listRemoveAccountDetail);
-            Assert.Equal(criteria.TotalRows, actual.totalRows);
-            Assert.All(actual.listRemoveAccountDetail, item =>
+            Assert.Equal(removeAccountLogs, listRemoveAccountDetails);
+            Assert.Equal(criteria.TotalRows, totalRows);
+            Assert.All(listRemoveAccountDetails, item =>
             {
                 Assert.Equal("Jan 01, 0001 12:00:00 AM", item.ClientUpdatedTime);
             });
@@ -182,13 +184,10 @@
         {
             // Arrange
             var newInforms = fixture.Create<IEnumerable<NewInform>>();
-            var title = fixture.Create<string>();
             var criteria = fixture.Create<GetNewInformsCriteria>();
             var param = fixture.Create<GetNewInformParam>();
             var service = GetService();
             baseService.GetDataAsync<NewInform>(Arg.Do<GetNewInformsCriteria>(x => criteria = x)).Returns(newInforms);
-            baseService.When(x => x.GetDataAsync<NewInform>(Arg.Do<GetNewInformsCriteria>(y => criteria = y)))
-                .Do(x => criteria.Title = title);
 
             // Act
             var actual = await service.GetNewInformsAsync(param);

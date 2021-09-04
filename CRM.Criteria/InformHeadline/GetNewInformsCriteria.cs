@@ -5,9 +5,6 @@
 
     public class GetNewInformsCriteria : CriteriaBase
     {
-        [SpParam(Ignored = true)]
-        public string Title { get; set; }
-
         public int TypeAccount { get; set; }
 
         [SpParam(SqlParamName = "Currency")]
@@ -24,10 +21,8 @@
 
         public byte IsVip { get; set; }
 
-        public int PageIndex { get; set; }
-
         [SpParam(SqlParamName = "ItemsPerPage")]
-        public int PageSize { get; set; }
+        public int PageSize { get; } = -1;
 
         public override string GetSettingKey() => "Acc_CRM_InformHeadlineSel";
 

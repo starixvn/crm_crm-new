@@ -25,15 +25,12 @@
             // Arrange
             var criteria = new GetNewInformsCriteria()
             {
-                Title = "test",
                 TypeAccount = 3,
                 Currencies = "1,2,3",
                 Levels = "1,2",
                 Sites = "1,2,30",
                 ExcludeIgnoredAccounts = true,
-                IsVip = 2,
-                PageIndex = 1,
-                PageSize = 100
+                IsVip = 2
             };
 
             // Act

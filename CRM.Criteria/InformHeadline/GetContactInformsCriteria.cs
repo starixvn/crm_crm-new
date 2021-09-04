@@ -11,10 +11,8 @@
 
         public string StatusId { get; set; }
 
-        public int PageIndex { get; set; }
-
         [SpParam(SqlParamName = "ItemsPerPage")]
-        public int PageSize { get; set; }
+        public int PageSize { get; } = -1;
 
         public override string GetSettingKey() => "Acc_CRM_InformHeadlineDetail";
 

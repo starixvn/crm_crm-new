@@ -15,8 +15,8 @@
         Task<IEnumerable<InformStatus>> GetInformStatusesAsync(bool isIncludeKeptForRefence = false);
         Task<IEnumerable<EditInform>> GetContactInformsAsync(GetContactInformParam param);
         Task<IEnumerable<EditInform>> GetEditInformsAsync(GetEditInformParam param);
-        Task<(IEnumerable<RemovedAccountLog> listRemoveAccount, int totalRows)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param);
-        Task<(IEnumerable<RemovedAccountLogDetail> listRemoveAccountDetail, int totalRows)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param);
+        Task<(IEnumerable<RemovedAccountLog>, int)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param);
+        Task<(IEnumerable<RemovedAccountLogDetail>, int)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param);
         Task<IEnumerable<NewInform>> GetNewInformsAsync(GetNewInformParam param);
     }
 
@@ -41,7 +41,7 @@
             foreach (var inform in informs)
             {
                 inform.Title = HttpUtility.HtmlDecode(inform.Title);
-                inform.ClientCreatedDate = DateTimeExtensions.ToShortDateFormat(commonService.ConvertToClientDateTime(inform.CreatedDate));
+                inform.ClientCreatedDate = commonService.ConvertToClientDateTime(inform.CreatedDate).ToShortDateFormat();
             }
             return informs;
         }
@@ -70,16 +70,14 @@
             {
                 TitleId = param.TitleId,
                 Username = param.Username,
-                StatusId = param.StatusId,
-                PageIndex = param.PageIndex,
-                PageSize = param.PageSize
+                StatusId = param.StatusId
             };
             IEnumerable<EditInform> contactInforms = await baseService.GetDataAsync<EditInform>(criteria);
             foreach (var contactInform in contactInforms)
             {
                 if (contactInform.UpdatedTime.HasValue)
                 {
-                    contactInform.ClientUpdatedTime = DateTimeExtensions.ToLongDateTimeFormat(commonService.ConvertToClientDateTime(contactInform.UpdatedTime.Value));
+                    contactInform.ClientUpdatedTime = commonService.ConvertToClientDateTime(contactInform.UpdatedTime.Value).ToLongDateTimeFormat();
                 }
                 contactInform.Remark = HttpUtility.HtmlDecode(contactInform.Remark);
             }
@@ -103,14 +101,14 @@
             {
                 if (updateInform.UpdatedTime.HasValue)
                 {
-                    updateInform.ClientUpdatedTime = DateTimeExtensions.ToLongDateTimeFormat(commonService.ConvertToClientDateTime(updateInform.UpdatedTime.Value));
+                    updateInform.ClientUpdatedTime = commonService.ConvertToClientDateTime(updateInform.UpdatedTime.Value).ToLongDateTimeFormat();
                 }
                 updateInform.Remark = HttpUtility.HtmlDecode(updateInform.Remark);
             }
             return updateInforms;
         }
 
-        public async Task<(IEnumerable<RemovedAccountLog> listRemoveAccount, int totalRows)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param)
+        public async Task<(IEnumerable<RemovedAccountLog>, int)> GetRemovedAccountLogAsync(GetRemovedAccountLogParam param)
         {
             var criteria = new GetRemovedAccountLogsCriteria
             {
@@ -121,13 +119,13 @@
             var result = await baseService.GetDataAsync<RemovedAccountLog>(criteria);
             foreach (var item in result)
             {
-                item.ClientLogDate = DateTimeExtensions.ToLongDateTimeFormat(commonService.ConvertToClientDateTime(item.LogDate));
+                item.ClientLogDate = commonService.ConvertToClientDateTime(item.LogDate).ToLongDateTimeFormat();
             }
 
             return (result, criteria.TotalRows);
         }
 
-        public async Task<(IEnumerable<RemovedAccountLogDetail> listRemoveAccountDetail, int totalRows)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param)
+        public async Task<(IEnumerable<RemovedAccountLogDetail>, int)> GetRemovedAccountLogDetailAsync(GetRemovedAccountLogDetailParam param)
         {
             var criteria = new GetRemovedAccountLogDetailsCriteria
             {
@@ -138,7 +136,7 @@
             var result = await baseService.GetDataAsync<RemovedAccountLogDetail>(criteria);
             foreach (var item in result)
             {
-                item.ClientUpdatedTime = DateTimeExtensions.ToLongDateTimeFormat(commonService.ConvertToClientDateTime(item.UpdatedTime));
+                item.ClientUpdatedTime = commonService.ConvertToClientDateTime(item.UpdatedTime).ToLongDateTimeFormat();
                 item.Remark = HttpUtility.HtmlDecode(item.Remark);
             }
 
@@ -154,9 +152,7 @@
                 Levels = param.Levels,
                 Sites = param.Sites,
                 IsVip = param.IsVip,
-                ExcludeIgnoredAccounts = param.ExcludeIgnoredAccounts,
-                PageIndex = param.PageIndex,
-                PageSize = param.PageSize
+                ExcludeIgnoredAccounts = param.ExcludeIgnoredAccounts
             };
             IEnumerable<NewInform> newInforms = await baseService.GetDataAsync<NewInform>(criteria);
             return newInforms;
