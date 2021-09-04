@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
+import { renderButtonClose } from '../common.functions';
 
 export class RemovedAccountLogDetails extends Component {
 
@@ -99,9 +100,7 @@ export class RemovedAccountLogDetails extends Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="primary" size="sm" style={{width: '65px'}} onClick={this.props.onClose}>
-                            {LangHelper.getResource('Close')}
-                        </Button>
+                        {renderButtonClose(this.props.onClose)}
                     </Modal.Footer>
                 </Modal>
             </>

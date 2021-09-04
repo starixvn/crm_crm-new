@@ -9,7 +9,7 @@ const informHeadlineSlice = createSlice({
         contactInforms: null,
         editContactInformDialog: {show: false},
         allSettings: null,
-        editDataInforms: null,
+        dataEditInforms: null,
         editInformDialog: {show: false},
         resultEditContactInforms: null,
         resultEditInforms: null,
@@ -20,8 +20,7 @@ const informHeadlineSlice = createSlice({
         newInforms: null,
         newInformDialog: {show: false},
         resultInsertInforms: null,
-        optionDialog: {show: false},
-        gridData: [],
+        editedInforms: [],
         filterData: { values: {}, errors: {} },
         gridParams: { pageIndex: 1, pageSize: 100 },
         gridParamRemovedLogs: { pageIndex: 1, pageSize: 100 },
@@ -50,7 +49,7 @@ const informHeadlineSlice = createSlice({
             state.allSettings = action.payload;
         },
         setEditInforms: (state, action) => {
-            state.editDataInforms = action.payload
+            state.dataEditInforms = action.payload
         },
         setEditInformDialog: (state, action) => {
             state.editInformDialog = action.payload;
@@ -85,14 +84,11 @@ const informHeadlineSlice = createSlice({
         setNewInformDialog: (state, action) => {
             state.newInformDialog = action.payload;
         },
-        setInsertInforms: (state, action) => {
+        setResultInsertInforms: (state, action) => {
             state.resultInsertInforms = action.payload;
         },
-        setOptionDialog: (state, action) => {
-            state.optionDialog = action.payload;
-        },
-        setGridData: (state, action) => {
-            state.gridData = action.payload;
+        setEditedInforms: (state, action) => {
+            state.editedInforms = action.payload;
         },
         setFilterData: (state, action) => {
             state.filterData = action.payload;
@@ -122,9 +118,8 @@ export const {
     setGridParamRemovedLogDetails,
     setNewInforms,
     setNewInformDialog,
-    setInsertInforms,
-    setOptionDialog,
-    setGridData,
+    setResultInsertInforms,
+    setEditedInforms,
     setFilterData
 } = actions;
 

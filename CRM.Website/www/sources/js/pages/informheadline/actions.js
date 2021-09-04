@@ -20,9 +20,8 @@ import{
     setGridParamRemovedLogDetails,
     setNewInforms,
     setNewInformDialog,
-    setInsertInforms,
-    setOptionDialog,
-    setGridData,
+    setResultInsertInforms,
+    setEditedInforms,
     setFilterData
 } from './informHeadlineSlice';
 
@@ -145,7 +144,7 @@ const insertInforms = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/InsertInforms');
     await DataService.postDataAsync(url, params).then(response => {
-        dispatch(setInsertInforms(response.data));
+        dispatch(setResultInsertInforms(response.data));
     }).then(() => Site.unblockUI());
 };
 
@@ -195,7 +194,6 @@ export const ActionCreators = {
     insertInforms,
     editInformStatus,
     exportNewInforms,
-    setOptionDialog,
-    setGridData,
+    setEditedInforms,
     setFilterData
 };

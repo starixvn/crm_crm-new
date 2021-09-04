@@ -5,6 +5,8 @@ import { ActionCreators } from '../actions';
 import { Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
+import { remarkDecode } from '../common.functions';
+import { renderButtonSave } from '../common.functions';
 import DataGridEdit from './DataGridEdit';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import FilterEditInforms from './FilterEditInforms';
@@ -30,8 +32,16 @@ export class NewInforms extends Component {
         }, 3000);
     };
 
+    handleSubmit = async () => {
+        const { editedInforms } = this.props;
+        const newData = remarkDecode(editedInforms);
+
+        await this.props.insertInforms({...this.props.filterData.values, informs: newData});
+        this.setAlert();
+    };
+
     render() {
-        const { allSettings, newInforms, exportNewInforms, gridData } = this.props;
+        const { allSettings, newInforms, exportNewInforms, filterData } = this.props;
         if (!allSettings) {
             return null;
         }
@@ -68,13 +78,15 @@ export class NewInforms extends Component {
                                 informSettings={allSettings}
                                 totalItem={newInforms.length}
                                 setAlert={this.setAlert}
-                                gridDataEdit={gridData}
-                                dataEdit={null}
-                                edit={this.props.insertInforms}
+                                handleSubmit={this.handleSubmit}
                             />
                         )
                     }
                 </Modal.Body>
+
+                <Modal.Footer>
+                    {filterData.values.title && renderButtonSave(filterData.errors,this.handleSubmit)}
+                </Modal.Footer>
             </Modal>
         );
     }
@@ -83,8 +95,8 @@ export class NewInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, newInforms, gridParams, gridData, resultInsertInforms } = state;
-    return { allSettings, newInforms, gridParams, gridData, resultInsertInforms };
+    const { allSettings, newInforms, editedInforms, filterData, resultInsertInforms } = state;
+    return { allSettings, newInforms, editedInforms, filterData, resultInsertInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewInforms);
