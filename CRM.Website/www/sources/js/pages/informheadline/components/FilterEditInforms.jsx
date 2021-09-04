@@ -7,15 +7,15 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import RenderExportExcel from '@jsroot/components/RenderExportExcel';
+import ExcelIcon from '@jsroot/components/ExcelIcon';
 
 export class FilterEditInforms extends PureComponent {
 
     constructor(props) {
         super(props);
         this.initData = props.isNewInform ?
-                            this.initNewFormData()
-                            : this.initFormData(props.gridParams.currencies, props.gridParams.sites);
+                        this.initNewFormData()
+                        : this.initFormData(props.includeCurrencies, props.includeSites);
     }
 
     renderFilterForm = ({
@@ -26,7 +26,7 @@ export class FilterEditInforms extends PureComponent {
         handleChange,
         setFieldValue
     }) => {
-        const { detail, allSettings, gridParams, exportExcel, informData } = this.props;
+        const { detail, allSettings, informData } = this.props;
 
         const allPositions = [
             { id: 4, name: 'Super' }, { id: 3, name: 'Master' },
@@ -35,8 +35,7 @@ export class FilterEditInforms extends PureComponent {
         ];
 
         const allIsVip = [
-            { id: 2, name: 'All' }, { id: 1, name: 'Yes' },
-            { id: 0, name: 'No' }
+            { id: 2, name: 'All' }, { id: 1, name: 'Yes' }, { id: 0, name: 'No' }
         ];
 
         const filterCurrencies = allSettings.currencies.map(item => {
@@ -63,8 +62,6 @@ export class FilterEditInforms extends PureComponent {
             };
         });
 
-        const gridParamExcel = {...gridParams, pageIndex: 1, pageSize: -1};
-
         return(
             <Form noValidate onSubmit={handleSubmit} className="form-filter">
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
@@ -73,17 +70,18 @@ export class FilterEditInforms extends PureComponent {
                     <Col sm="12" md="12" className="group-input-excel">
                         <Form.Control type="text" size="sm" className="shadow-none input-excel"
                             autoComplete="off"
-                            name="username"
+                            name="title"
+                            placeholder="Title"
+                            isInvalid={touched.title && errors.title}
                             defaultValue={detail.title}
                             onChange={event => {
                                 setFieldValue('title', event.target.value);
                             }}
                         />
                     {
-                        ( informData && informData.length > 0 ) && (
-                            <RenderExportExcel
-                                gridParams={gridParamExcel}
-                                exportExcel={exportExcel}
+                        (informData && informData.length > 0) && (
+                            <ExcelIcon
+                                handleExportExcel={() => this.handleExportExcel(values)}
                             />
                         )
                     }
@@ -214,14 +212,11 @@ export class FilterEditInforms extends PureComponent {
     initFormData = (includeCurrencies,includeSites) => {
         const { title, positions, isVip, excludeIgnoredAccounts, typeAccount } = this.props.detail;
         return {
-            title: title,
-            currencies: includeCurrencies,
-            levels: positions,
-            sites: includeSites,
-            isVip: isVip,
-            typeAccount: typeAccount,
-            isHeadline: (typeAccount === 1 || typeAccount === 3) ? true : false,
-            isNoGroup: (typeAccount === 2 || typeAccount === 3) ? true : false,
+            title: title, currencies: includeCurrencies,
+            levels: positions, sites: includeSites,
+            isVip: isVip, typeAccount: typeAccount,
+            isHeadline: typeAccount === 1 || typeAccount === 3,
+            isNoGroup: typeAccount === 2 || typeAccount === 3,
             excludeIgnoredAccounts: excludeIgnoredAccounts
         };
     };
@@ -239,25 +234,29 @@ export class FilterEditInforms extends PureComponent {
     validateFormik = values => {
         const errors = {};
 
-        if ( values.title === '' ) {
-            errors.title = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title'));
-        }
-        if ( values.currencies === '' ) {
+        if (values.currencies === '') {
             errors.currencies = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'));
         }
-        if ( values.levels === '' ) {
+        if (values.levels === '') {
             errors.levels = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Position'));
         }
-        if ( values.sites === '' ) {
+        if (values.sites === '') {
             errors.sites = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site'));
         }
-        if ( !values.isHeadline && !values.isNoGroup ) {
+        if (!values.isHeadline && !values.isNoGroup) {
             errors.isHeadline = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('DirectAccount'));
         }
 
         this.getTypeAccount(values);
-        !this.props.isNewInform ? this.props.setFilterData({...this.props.filterData, values: {...values, titleId: this.props.detail.titleId, changeFilter: this.getChangeFilter(values)}, errors: errors})
-                    : this.props.setFilterData({...this.props.filterData, values: {...values}, errors: errors})
+        if (this.props.isNewInform) {
+            this.props.setFilterData({...this.props.filterData, values: {...values}, errors: values.title === '' ? {title: 'err'} : errors});
+        } else {
+            this.props.setFilterData({
+                ...this.props.filterData,
+                values: {...values, titleId: this.props.detail.titleId, changeFilter: this.getChangeFilter(values)},
+                errors: values.title === '' ? {title: 'err'} : errors
+            });
+        }
         return errors;
     };
 
@@ -274,19 +273,16 @@ export class FilterEditInforms extends PureComponent {
 
     getChangeFilter = values => {
         const initData = this.initData;
-        if (values.currencies !== initData.currencies ||
+        return (values.currencies !== initData.currencies ||
             values.levels !== initData.levels ||
             values.sites !== initData.sites ||
             parseInt(values.isVip, 10) !== initData.isVip ||
             values.typeAccount !== initData.typeAccount ||
             values.excludeIgnoredAccounts !== initData.excludeIgnoredAccounts
-        ) {
-            return true;
-        }
-        return false;
+        );
     };
 
-    commonParams = values => {
+    filterParams = values => {
         const params = {
             typeAccount: values.typeAccount,
             currencies: values.currencies,
@@ -298,30 +294,31 @@ export class FilterEditInforms extends PureComponent {
         return params;
     };
 
+    handleExportExcel = values => {
+        const filterParams = this.filterParams(values);
+        this.props.exportExcel({...filterParams, titleId: this.props.detail.titleId, title: values.title});
+    };
+
     handleSearchEdit = (values, { setSubmitting }) => {
         setSubmitting(true);
         this.getTypeAccount(values);
         const params = {
-            ...this.commonParams(values),
+            ...this.filterParams(values),
             titleId: this.props.detail.titleId
         };
-        this.props.setGridParams({...params, pageIndex: 1, pageSize: 100});
+        this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.props.setFilterData({...this.props.filterData, values: {...params, title: values.title, changeFilter: this.getChangeFilter(values)}});
-        this.props.setGridData([]);
+        this.props.setEditedInforms([]);
         this.props.getEditInforms(params);
     };
 
     handleSearchNew = (values, { setSubmitting }) => {
         setSubmitting(true);
         this.getTypeAccount(values);
-        const params = {
-            ...this.commonParams(values),
-            title: values.title,
-            pageIndex: 1, pageSize: -1
-        };
-        this.props.setGridParams({...params, pageIndex: 1, pageSize: 100});
+        const params = {...this.filterParams(values)};
+        this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.props.setFilterData({...this.props.filterData, values: {...params, title: values.title}});
-        this.props.setGridData([]);
+        this.props.setEditedInforms([]);
         this.props.getNewInforms(params);
     };
 
@@ -345,8 +342,8 @@ export class FilterEditInforms extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const {  allSettings, editDataInforms, gridParams, filterData } = state;
-    return {  allSettings, editDataInforms, gridParams, filterData };
+    const {  allSettings, filterData } = state;
+    return {  allSettings, filterData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterEditInforms);

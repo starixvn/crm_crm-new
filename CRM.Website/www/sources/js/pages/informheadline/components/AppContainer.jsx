@@ -9,7 +9,6 @@ import EditInforms from './EditInforms';
 import RemovedAccountLogs from './RemovedAccountLogs';
 import RemovedAccountLogDetails from './RemovedAccountLogDetails';
 import NewInforms from './NewInforms';
-import OptionsEdit from './OptionsEdit';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -18,8 +17,7 @@ export class AppContainer extends Component {
         editInformDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         removedLogDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         removedLogDetailDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        newInformDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        optionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        newInformDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
@@ -30,24 +28,32 @@ export class AppContainer extends Component {
         editInformDialog: { show: false },
         removedLogDialog: { show: false },
         removedLogDetailDialog: { show: false },
-        newInformDialog: { show: false },
-        optionDialog: { show: false }
+        newInformDialog: { show: false }
     };
 
     componentDidMount() {
         this.props.getInforms();
+        this.props.getAllSettings();
+        this.props.getContactInformSettings();
     }
 
     handleCloseEditContactInformDialog = () => {
+        this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.props.setContactInforms(null);
+        this.props.setEditedInforms([]);
         this.props.resultEditContactInforms && this.props.getInforms();
+        this.props.setResultEditContactInforms(null);
         this.props.setEditContactInformDialog({show: false});
     };
 
     handleCloseEditInformDialog = () => {
+        this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.props.setEditInforms(null);
+        this.props.setEditedInforms([]);
         this.props.resultEditInforms && this.props.getInforms();
+        this.props.setResultEditInforms(null);
         this.props.setEditInformDialog({show: false});
+        this.props.setFilterData({ values: {}, errors: {} });
     };
 
     handleCloseRemovedLogDialog = () => {
@@ -59,20 +65,19 @@ export class AppContainer extends Component {
     };
 
     handleCloseNewInformDialog = () => {
+        this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.props.setNewInforms(null);
+        this.props.setEditedInforms([]);
         this.props.setNewInformDialog({show: false});
+        this.props.setFilterData({ values: {}, errors: {} });
     };
 
     render() {
-        const { editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog, optionDialog } = this.props;
+        const { editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog } = this.props;
 
         return (
             <>
                 <DataGrid/>
-                {
-                    optionDialog.show &&
-                    <OptionsEdit/>
-                }
                 {
                     editContactInformDialog.show &&
                     <EditContactInforms
@@ -115,11 +120,11 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, optionDialog, resultEditContactInforms, resultEditInforms
+        newInformDialog, resultEditContactInforms, resultEditInforms
     } = state;
     return {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, optionDialog, resultEditContactInforms, resultEditInforms
+        newInformDialog, resultEditContactInforms, resultEditInforms
     };
 };
 

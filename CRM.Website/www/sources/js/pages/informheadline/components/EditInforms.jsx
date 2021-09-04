@@ -6,6 +6,8 @@ import { Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
+import { remarkDecode } from '../common.functions';
+import { renderButtonSave } from '../common.functions';
 import DataGridEdit from './DataGridEdit';
 import FilterEditInforms from './FilterEditInforms';
 
@@ -15,29 +17,24 @@ export class EditInforms extends Component {
         this.state = {
             saveResult: null
         };
+        this.includeCurrencies = null,
+        this.includeSites = null
     }
 
     async componentDidMount() {
-        await this.props.getTitleDetail({
-            titleId: this.props.titleId
-        });
-        await this.props.getAllSettings();
+        await this.props.getTitleDetail({titleId: this.props.titleId});
 
         const { titleDetail, allSettings } = this.props;
         const includeCurrencies = this.getIncludeInSetting(titleDetail.currencies, allSettings.currencies);
         const includeSites = this.getIncludeInSetting(titleDetail.sites, allSettings.sites[0].childSites);
         const params = {
-            titleId: this.props.titleId,
-            typeAccount: titleDetail.typeAccount,
-            currencies: includeCurrencies,
-            levels: titleDetail.positions,
-            sites: includeSites,
-            isVip: titleDetail.isVip,
+            titleId: this.props.titleId, typeAccount: titleDetail.typeAccount,
+            currencies: includeCurrencies, levels: titleDetail.positions,
+            sites: includeSites, isVip: titleDetail.isVip,
             excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts
         };
-        this.props.setGridParams({...params, pageIndex: 1, pageSize: 100});
-        this.props.setResultEditInforms(null);
-        this.props.setGridData([]);
+        this.includeCurrencies = includeCurrencies;
+        this.includeSites = includeSites;
         this.props.setFilterData({...this.props.filterData, values: {...params, title: titleDetail.title, changeFilter: false}});
         await this.props.getEditInforms(params);
     }
@@ -63,12 +60,20 @@ export class EditInforms extends Component {
         }, 3000);
     };
 
+    handleSubmit = async () => {
+        const { dataEditInforms, editedInforms } = this.props;
+        const replaceDataEdit = dataEditInforms.map(element => editedInforms.find(item => item.headlineId === element.headlineId) || element);
+        const editedData = remarkDecode(replaceDataEdit);
+        
+        await this.props.editInforms({...this.props.filterData.values, informs: editedData});
+        this.setAlert();
+    };
+
     render() {
-        const { titleDetail, allSettings, editDataInforms, gridData, exportEditInforms } = this.props;
-        if ( !titleDetail || !allSettings || !editDataInforms ) {
+        const { titleDetail, allSettings, dataEditInforms, exportEditInforms, filterData } = this.props;
+        if (!titleDetail || !allSettings || !dataEditInforms) {
             return null;
         }
-        const gridDataEdit = editDataInforms.map(element => gridData.find(item => item.headlineId === element.headlineId) || element);
 
         return (
             <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
@@ -90,21 +95,25 @@ export class EditInforms extends Component {
 
                     <FilterEditInforms
                         detail={titleDetail}
-                        informData={editDataInforms}
+                        includeCurrencies={this.includeCurrencies}
+                        includeSites={this.includeSites}
+                        informData={dataEditInforms}
                         exportExcel={exportEditInforms}
                         isNewInform={false}
                     />
 
                     <DataGridEdit
-                        informData={editDataInforms}
+                        informData={dataEditInforms}
                         informSettings={allSettings}
-                        totalItem={editDataInforms.length}
+                        totalItem={dataEditInforms.length}
                         setAlert={this.setAlert}
-                        gridDataEdit={gridDataEdit}
-                        dataEdit={null}
-                        edit={this.props.editInforms}
+                        handleSubmit={this.handleSubmit}
                     />
                 </Modal.Body>
+
+                <Modal.Footer>
+                    {renderButtonSave(filterData.errors,this.handleSubmit)}
+                </Modal.Footer>
             </Modal>
         );
     }
@@ -113,8 +122,8 @@ export class EditInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, allSettings, editDataInforms, resultEditInforms, gridData, filterData } = state;
-    return { titleDetail, allSettings, editDataInforms, resultEditInforms, gridData, filterData };
+    const { titleDetail, allSettings, dataEditInforms, resultEditInforms, editedInforms, filterData } = state;
+    return { titleDetail, allSettings, dataEditInforms, resultEditInforms, editedInforms, filterData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditInforms);

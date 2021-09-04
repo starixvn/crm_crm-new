@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button } from 'react-bootstrap';
+import { Button, Dropdown } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import RenderExportExcel from '@jsroot/components/RenderExportExcel';
+import { Policy } from '@jsroot/common/constants';
+import ExcelIcon from '@jsroot/components/ExcelIcon';
 
 export class DataGrid extends Component {
 
@@ -45,20 +46,77 @@ export class DataGrid extends Component {
         this.props.setEditContactInformDialog({show: true, titleId: titleId});
     };
 
-    getPositionEdit = (event, titleId, status) => {
-        const position = event.target.getClientRects()[0];
-        this.props.setOptionDialog({
-            show: true,
-            showOption: 'block',
-            status: status,
-            top: position.top,
-            left: position.left,
-            titleIdSearch: titleId
-        });
+    handleEdit = titleId => {
+        this.props.setEditInformDialog({show: true, titleId: titleId});
+    };
+
+    handleRemovedAccountLogs = titleId => {
+        const params = {
+            titleId: titleId,
+            pageIndex: 1,
+            pageSize: 100
+        };
+        this.props.setGridParamRemovedLogs(params);
+        this.props.getRemovedAccountLogs(params);
+        this.props.setRemovedLogDialog({show: true});
+    };
+
+    handleCloseCase = titleId => {
+        this.props.editInformStatus({titleId: titleId, statusType: true});
+        this.props.getInforms();
+    };
+
+    handleOpenCase = titleId => {
+        this.props.editInformStatus({titleId: titleId, statusType: false});
+        this.props.getInforms();
+    };
+
+    handleOption = (titleId, status) => {
+        const customOption = React.forwardRef(({ onClick }, ref) => (
+            <span ref={ref} onClick={(e) => onClick(e)} className="cursor-pointer fa fa-list"></span>
+        ));
+        return (
+            <Dropdown drop='down'>
+                <Dropdown.Toggle as={customOption} id="dropdown-basic"/>
+                {
+                    status === 'Open' &&
+                    (
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => this.handleEdit(titleId)}>
+                                <i className="fa fa-pencil-square-o icon icon-default"></i>
+                                {LangHelper.getResource('EditNumberOfAccounts')}
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => this.handleRemovedAccountLogs(titleId)}>
+                                <i className="fa fa-list-alt icon icon-default"></i>
+                                {LangHelper.getResource('RemovedEditedAccountsLogs')}
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => this.handleCloseCase(titleId)}>
+                                <i className="fa fa-times icon icon-closed"></i>
+                                {LangHelper.getResource('CloseCase')}
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    )
+                }
+                {
+                    status === 'Closed' &&
+                    (
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => this.handleOpenCase(titleId)}>
+                                <i className="fa fa-folder-open icon icon-open"></i>
+                                {LangHelper.getResource('OpenCase')}
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => this.handleRemovedAccountLogs(titleId)}>
+                                <i className="fa fa-list-alt icon icon-default"></i>
+                                {LangHelper.getResource('RemovedEditedAccountsLogs')}
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    )
+                }
+            </Dropdown>
+        );
     };
 
     handleNewInforms = () => {
-        this.props.getAllSettings();
         this.props.setNewInformDialog({show: true});
     };
 
@@ -66,20 +124,16 @@ export class DataGrid extends Component {
         const cssClass = item.status ? item.status.toLowerCase() : '';
         return (
             <Row key={index} className={cssClass}>
-                <Cell className='text-center'>
-                    <span className="cursor-pointer fa fa-list" onClick={event => this.getPositionEdit(event, item.titleId, item.status)}></span>
+                <Cell className='text-center option'>
+                    {this.handleOption(item.titleId, item.status)}
                 </Cell>
-                {
-                    window.contactPolicy !== 'None' ?
-                    (
-                        <Cell>
-                            <span className='link-click' onClick={() => this.handleEditContact(item.titleId)}>{item.title}</span>
-                        </Cell>                   
-                    ) :
-                    (
-                        <Cell>{item.title}</Cell>
-                    )
-                }
+                <Cell>
+                    {
+                        window.contactPolicy !== Policy.None ?
+                        <span className='link-click' onClick={() => this.handleEditContact(item.titleId)}>{item.title}</span>
+                        : item.title
+                    }
+                </Cell>
                 <Cell>{item.clientCreatedDate}</Cell>
                 <Cell className='text-center'>{item.total}</Cell>
                 <Cell className='text-center'>{item.status}</Cell>
@@ -97,17 +151,17 @@ export class DataGrid extends Component {
 
     render() {
         const { informs } = this.props;
-        if(!informs || window.searchPolicy === 'None' || window.contactPolicy === 'None'){
+        if(!informs || window.searchPolicy === Policy.None || window.contactPolicy === Policy.None){
             return null;
         }
 
         return (
-            <>
+            <Fragment>
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>Inform Headlines Cases</span>
                     {
                         informs.length > 0 &&
-                        <RenderExportExcel
+                        <ExcelIcon
                             gridParams={null}
                             exportExcel={this.props.exportInforms}
                         />
@@ -115,8 +169,7 @@ export class DataGrid extends Component {
                 </div>
 
                 <Table
-                    width={1336}
-                    maxWidth={1336}
+                    width={1600}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
@@ -125,12 +178,12 @@ export class DataGrid extends Component {
                 />
 
                 {
-                    window.searchPolicy === 'Host' &&
-                    <Button variant="primary" size="sm" style={{width: '80px','marginTop': '10px'}} onClick={this.handleNewInforms}>
+                    window.searchPolicy === Policy.Host &&
+                    <Button variant="primary" size="sm" className="mt-3" onClick={this.handleNewInforms}>
                         {LangHelper.getResource('NewCase')}
                     </Button>
                 }
-            </>
+            </Fragment>
         );
     }
 }

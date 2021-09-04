@@ -5,14 +5,14 @@ import { ActionCreators } from '../actions';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import RenderExportExcel from '@jsroot/components/RenderExportExcel';
+import ExcelIcon from '@jsroot/components/ExcelIcon';
 
 export class FilterContactInforms extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             username:'',
-            selectedStatusId: this.props.gridParams.statusId
+            selectedStatusId: this.props.selectedStatuses
         };
     }
 
@@ -29,19 +29,29 @@ export class FilterContactInforms extends PureComponent {
         });
     };
 
-    handleSearch = () => {
+    contactParams = () => {
         const params = {
-            titleId: this.props.titleDetail.titleId, pageIndex: 1, pageSize: -1,
-            username: this.state.username, statusId: this.state.selectedStatusId
+            titleId: this.props.titleDetail.titleId,
+            username: this.state.username,
+            statusId: this.state.selectedStatusId
         };
-        this.props.setGridParams({...params, pageIndex: 1, pageSize: 100});
-        this.props.setGridData([]);
-        this.props.getContactInforms(params);
+        return params;
+    };
+
+    handleSearch = () => {
+        const contactParams = this.contactParams();
+        this.props.setGridParams({pageIndex: 1, pageSize: 100});
+        this.props.setEditedInforms([]);
+        this.props.getContactInforms(contactParams);
+    };
+
+    handleExportExcel = () => {
+        const contactParams = this.contactParams();
+        this.props.exportContactInforms(contactParams);
     };
 
     render() {
-        const { titleDetail, contactInforms, contactInformSettings, gridParams, exportContactInforms } = this.props;
-        const gridParamExcel = {...gridParams, pageIndex: 1, pageSize: -1}
+        const { titleDetail, contactInforms, contactInformSettings } = this.props;
         const filterStatuses = contactInformSettings.filterStatuses.map(item => {
             return {
                 settingId: item.settingId,
@@ -56,9 +66,8 @@ export class FilterContactInforms extends PureComponent {
                     {titleDetail.title}
                     {
                         contactInforms.length > 0 && (
-                            <RenderExportExcel
-                                gridParams={gridParamExcel}
-                                exportExcel={exportContactInforms}
+                            <ExcelIcon
+                                handleExportExcel={this.handleExportExcel}
                             />
                         )
                     }
@@ -110,8 +119,8 @@ export class FilterContactInforms extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInforms, contactInformSettings, gridParams } = state;
-    return { titleDetail, contactInforms, contactInformSettings, gridParams };
+    const { titleDetail, contactInforms, contactInformSettings } = state;
+    return { titleDetail, contactInforms, contactInformSettings };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterContactInforms);

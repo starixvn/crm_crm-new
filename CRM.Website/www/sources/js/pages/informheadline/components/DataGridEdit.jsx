@@ -1,8 +1,8 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
@@ -24,10 +24,10 @@ export class DataGridEdit extends PureComponent {
     };
 
     buildBody = () => {
-        const { informSettings, informData, gridParams, gridData } = this.props;
+        const { informSettings, informData, gridParams, editedInforms } = this.props;
         const { pageIndex, pageSize } = gridParams;
         const skip = pageSize * (pageIndex - 1);
-        const result = informData && informData.map(element => gridData.find(item => item.headlineId === element.headlineId) || element);
+        const result = informData && informData.map(element => editedInforms.find(item => item.headlineId === element.headlineId) || element);
         const data = result.slice(skip, pageSize * pageIndex);
 
         const productStatuses = [...informSettings.productStatuses];
@@ -108,55 +108,25 @@ export class DataGridEdit extends PureComponent {
 
         const item = {...this.props.informData.find(element => element.headlineId === headlineId), [name]: value};
 
-        const newGridData = this.props.gridData;
-        const element  = newGridData.find(value => value.headlineId === item.headlineId);
+        const newEdited = this.props.editedInforms;
+        const element  = newEdited.find(value => value.headlineId === item.headlineId);
 
         if (element) {
             const replaceElement = {...element, [name]: value};
-            const replaceGridData = newGridData.map(item => {
+            const replaceGridData = newEdited.map(item => {
                 if (item.headlineId === replaceElement.headlineId){
                     return replaceElement;
                 }
                 return item;
             });
-            this.props.setGridData(replaceGridData);
+            this.props.setEditedInforms(replaceGridData);
         } else {
-            this.props.setGridData([...newGridData, item]);
+            this.props.setEditedInforms([...newEdited, item]);
         }
-    };
-
-    htmlDecode = value => {
-        const remark = value.replace(/&/g, '&amp;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#39;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;');
-        return remark;
-    };
-
-    handleSubmit = async () => {
-        const gridData = this.props.gridDataEdit.map(item => {
-            if (item.remark) {
-                return {...item, remark: this.htmlDecode(item.remark)};
-            }
-            return item;
-        });
-
-        if ( !this.props.dataEdit ) {
-            if ( Object.keys(this.props.filterData.errors).length === 0 ){
-                await this.props.edit({...this.props.filterData.values, informs: gridData});
-            }
-        }else {
-            await this.props.edit({...this.props.dataEdit, informs: gridData});
-        }
-        this.props.setAlert();
     };
 
     onPaging = (pageIndex, pageSize) => {
-        const params = { ...this.props.gridParams };
-        params['pageSize'] = pageSize;
-        params['pageIndex'] = pageIndex;
-        this.props.setGridParams(params);
+        this.props.setGridParams({pageIndex: pageIndex, pageSize: pageSize});
     };
 
     render() {
@@ -171,29 +141,20 @@ export class DataGridEdit extends PureComponent {
         };
 
         return (
-            <Fragment>
-                <Table
-                    width={1170}
-                    autoWidth={false}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
-                    isPaging
-                    pageOption={pagingOption}
-                    onPaging={this.onPaging}
-                    containerPadding={0}
-                    adjustedHeight={10}
-                />
-                {
-                    Object.keys(this.props.filterData.errors).length === 0 && (
-                        <Button variant="primary" size="sm" style={{width: '65px','marginTop': '10px'}}
-                            type="submit"
-                            onClick={this.handleSubmit}
-                        >
-                            {LangHelper.getResource('Save')}
-                        </Button>
-                    )
-                }
-            </Fragment>
+            <Table
+                width={1170}
+                autoWidth={false}
+                autoHeight={false}
+                bodyHeight={320}
+                header={this.buildHeader()}
+                body={this.buildBody()}
+                isPaging
+                pageOption={pagingOption}
+                onPaging={this.onPaging}
+                containerPadding={0}
+                adjustedHeight={10}
+                shouldResetScrollPosition={false}
+            />
         );
     }
 }
@@ -201,8 +162,8 @@ export class DataGridEdit extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData, filterData } = state;
-    return { gridParams, gridData, filterData };
+    const { gridParams, editedInforms } = state;
+    return { gridParams, editedInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGridEdit);

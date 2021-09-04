@@ -6,6 +6,8 @@ import { Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
+import { remarkDecode } from '../common.functions';
+import { renderButtonSave } from '../common.functions';
 import DataGridEdit from './DataGridEdit';
 import FilterContactInforms from './FilterContactInforms';
 
@@ -15,25 +17,16 @@ export class EditContactInforms extends Component {
         this.state = {
             saveResult: null
         };
+        this.selectedStatuses = null
     }
 
     async componentDidMount() {
-        await this.props.getTitleDetail({
-            titleId: this.props.titleId
-        });
-        await this.props.getContactInformSettings();
+        await this.props.getTitleDetail({titleId: this.props.titleId});
         const selectedStatuses = this.props.contactInformSettings.filterStatuses.map(item =>
             item.settingId
         ).join();
-        const params = {
-            titleId: this.props.titleId,
-            username: '',
-            statusId: selectedStatuses,
-            pageIndex: 1, pageSize: -1
-        };
-        this.props.setGridParams({...params, pageIndex: 1, pageSize: 100});
-        this.props.setResultEditContactInforms(null);
-        this.props.setGridData([]);
+        const params = {titleId: this.props.titleId, username: '', statusId: selectedStatuses};
+        this.selectedStatuses = selectedStatuses;
         await this.props.getContactInforms(params);
     }
 
@@ -48,9 +41,18 @@ export class EditContactInforms extends Component {
         }, 3000);
     };
 
+    handleSubmit = async () => {
+        const { editedInforms, titleDetail } = this.props;
+        const editedContactInforms = remarkDecode(editedInforms);
+        if (editedContactInforms.length > 0) {
+            await this.props.editContactInforms({ titleId: titleDetail.titleId, informs: editedContactInforms });
+            this.setAlert();
+        }
+    };
+
     renderForm = () => {
-        const { contactInforms, contactInformSettings, titleDetail, gridData } = this.props;
-        const dataEdit = { titleId: titleDetail.titleId };
+        const { contactInforms, contactInformSettings } = this.props;
+
         return(
             <Modal.Body>
                 {
@@ -60,16 +62,16 @@ export class EditContactInforms extends Component {
                     />
                 }
 
-                <FilterContactInforms/>
+                <FilterContactInforms
+                    selectedStatuses={this.selectedStatuses}
+                />
 
                 <DataGridEdit
                     informData={contactInforms}
                     informSettings={contactInformSettings}
                     totalItem={contactInforms.length}
                     setAlert={this.setAlert}
-                    gridDataEdit={gridData}
-                    dataEdit={dataEdit}
-                    edit={this.props.editContactInforms}
+                    handleSubmit={this.handleSubmit}
                 />
             </Modal.Body>
         );
@@ -77,7 +79,7 @@ export class EditContactInforms extends Component {
 
     render() {
         const { titleDetail, contactInformSettings, contactInforms } = this.props;
-        if ( !titleDetail || !contactInformSettings || !contactInforms ) {
+        if (!titleDetail || !contactInformSettings || !contactInforms) {
             return null;
         }
 
@@ -90,10 +92,12 @@ export class EditContactInforms extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('UpdateInformHeadlines')}</Modal.Title>
                 </Modal.Header>
-
                 {
                     this.renderForm()
                 }
+                <Modal.Footer>
+                    {renderButtonSave({},this.handleSubmit)}
+                </Modal.Footer>
             </Modal>
         );
     }
@@ -102,8 +106,8 @@ export class EditContactInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInformSettings, contactInforms, gridData, resultEditContactInforms } = state;
-    return { titleDetail, contactInformSettings, contactInforms, gridData, resultEditContactInforms };
+    const { titleDetail, contactInformSettings, contactInforms, editedInforms, resultEditContactInforms } = state;
+    return { titleDetail, contactInformSettings, contactInforms, editedInforms, resultEditContactInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditContactInforms);
