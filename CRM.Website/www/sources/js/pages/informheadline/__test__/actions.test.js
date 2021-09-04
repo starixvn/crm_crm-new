@@ -16,7 +16,7 @@ import{
     setRemovedAccountLogs,
     setRemovedAccountLogDetails,
     setNewInforms,
-    setInsertInforms
+    setResultInsertInforms
 } from '../informHeadlineSlice';
 
 const middlewares = [thunk];
@@ -362,7 +362,7 @@ describe('actionCreators', () => {
             const response = [
                 { code: 0, isSuccessful: true, message: "" }
             ]
-            const expectedActions = [{ type: setInsertInforms.type, payload: response.data }];
+            const expectedActions = [{ type: setResultInsertInforms.type, payload: response.data }];
             const store = mockStore({ resultInsertInforms: null });
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);

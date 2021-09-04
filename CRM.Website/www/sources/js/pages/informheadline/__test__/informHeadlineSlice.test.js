@@ -18,9 +18,8 @@ import informHeadline, {
     setGridParamRemovedLogDetails,
     setNewInforms,
     setNewInformDialog,
-    setInsertInforms,
-    setOptionDialog,
-    setGridData,
+    setResultInsertInforms,
+    setEditedInforms,
     setFilterData
 } from '../informHeadlineSlice';
 
@@ -33,7 +32,7 @@ describe('informHeadlineSlice reducer', () => {
             contactInforms: null,
             editContactInformDialog: {show: false},
             allSettings: null,
-            editDataInforms: null,
+            dataEditInforms: null,
             editInformDialog: {show: false},
             resultEditContactInforms: null,
             resultEditInforms: null,
@@ -44,8 +43,7 @@ describe('informHeadlineSlice reducer', () => {
             newInforms: null,
             newInformDialog: {show: false},
             resultInsertInforms: null,
-            optionDialog: {show: false},
-            gridData: [],
+            editedInforms: [],
             filterData: { values: {}, errors: {} },
             gridParams: { pageIndex: 1, pageSize: 100 },
             gridParamRemovedLogs: { pageIndex: 1, pageSize: 100 },
@@ -137,7 +135,7 @@ describe('informHeadlineSlice reducer', () => {
                 payload: { headlineId: 527906, groupId: 136, username: "S6EU" }
             })
         ).toEqual({
-            editDataInforms: { headlineId: 527906, groupId: 136, username: "S6EU" }
+            dataEditInforms: { headlineId: 527906, groupId: 136, username: "S6EU" }
         });
     });
 
@@ -262,10 +260,10 @@ describe('informHeadlineSlice reducer', () => {
         });
     });
 
-    it('should handle setInsertInforms', () => {
+    it('should handle setResultInsertInforms', () => {
         expect(
             informHeadline({}, {
-                type: setInsertInforms.type,
+                type: setResultInsertInforms.type,
                 payload: { code: 0, isSuccessful: true, message: "" }
             })
         ).toEqual({
@@ -273,25 +271,14 @@ describe('informHeadlineSlice reducer', () => {
         });
     });
 
-    it('should handle setOptionDialog', () => {
+    it('should handle setEditedInforms', () => {
         expect(
             informHeadline({}, {
-                type: setOptionDialog.type,
-                payload: { show: false }
-            })
-        ).toEqual({
-            optionDialog: { show: false }
-        });
-    });
-
-    it('should handle setGridData', () => {
-        expect(
-            informHeadline({}, {
-                type: setGridData.type,
+                type: setEditedInforms.type,
                 payload: { id: 1, headlineId: 2464, username: "BYRON", groupId: 0 }
             })
         ).toEqual({
-            gridData: { id: 1, headlineId: 2464, username: "BYRON", groupId: 0 }
+            editedInforms: { id: 1, headlineId: 2464, username: "BYRON", groupId: 0 }
         });
     });
 
