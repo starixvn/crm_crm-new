@@ -31,8 +31,8 @@ export class AppContainer extends Component {
         newInformDialog: { show: false }
     };
 
-    componentDidMount() {
-        this.props.getInforms();
+    async componentDidMount() {
+        await this.props.getInforms();
         this.props.getAllSettings();
         this.props.getContactInformSettings();
     }

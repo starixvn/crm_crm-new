@@ -1,7 +1,6 @@
 import React from 'react';
 import { NewInforms } from '../NewInforms';
 import { shallow } from 'enzyme';
-import { Formik } from 'formik';
 import FilterEditInforms from '../FilterEditInforms';
 import DataGridEdit from '../DataGridEdit';
 
@@ -17,7 +16,6 @@ describe('NewInforms', () => {
         },
         getAllSettings: jest.fn(),
         getNewInforms: jest.fn(),
-        setGridParams: jest.fn(),
         newInforms: [{headlineId: 720, groupId: 12, username: 'test'}],
         gridParams: { pageIndex: 1, pageSize: 100 }
     };
@@ -206,14 +204,6 @@ describe('NewInforms', () => {
                 ...initProps,
                 insertInforms: jest.fn()
             };
-            const values = {
-                submit: true,
-                title: 'test', isHeadline: true,
-                isNoGroup: true, typeAccount: 0,
-                currencyId: '1,2,3', levelId: '4,5,6',
-                siteId: '1,2', vipId: '2',
-                isExcludeIgnoredAccounts: true
-            };
 
             // Act
             const container = shallow(<NewInforms {...props} />);
@@ -383,7 +373,6 @@ describe('NewInforms', () => {
         it('should render null when allSettings null', () => {
             // Arrange
             const props = {
-                ...initProps,
                 allSettings: null
             };
 

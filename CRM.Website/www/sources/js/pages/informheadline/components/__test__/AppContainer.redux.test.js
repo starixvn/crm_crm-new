@@ -29,7 +29,6 @@ describe('connect ', () => {
             removedLogDialog: { show: false },
             removedLogDetailDialog: { show: false },
             newInformDialog: { show: false },
-            optionDialog: { show: false },
             resultEditContactInforms: { isSuccessful: true},
             resultEditInforms: { isSuccessful: true}
         };
@@ -39,7 +38,6 @@ describe('connect ', () => {
             removedLogDialog: { show: false },
             removedLogDetailDialog: { show: false },
             newInformDialog: { show: false },
-            optionDialog: { show: false },
             resultEditContactInforms: { isSuccessful: true},
             resultEditInforms: { isSuccessful: true}
         };

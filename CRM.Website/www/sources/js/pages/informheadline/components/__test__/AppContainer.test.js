@@ -7,7 +7,6 @@ import EditInforms from '../EditInforms';
 import RemovedAccountLogs from '../RemovedAccountLogs';
 import RemovedAccountLogDetails from '../RemovedAccountLogDetails';
 import NewInforms from '../NewInforms';
-import OptionsEdit from '../OptionsEdit';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -15,7 +14,9 @@ describe('AppContainer', () => {
     });
 
     const initProps = {
-        getInforms: jest.fn()
+        getInforms: jest.fn(),
+        getAllSettings: jest.fn(),
+        getContactInformSettings: jest.fn()
     };
 
     describe('componentDidMount', () => {
@@ -39,7 +40,10 @@ describe('AppContainer', () => {
                 editContactInformDialog: { show: true },
                 resultEditContactInforms: { isSuccessful: true },
                 setEditContactInformDialog: jest.fn(),
-                setContactInforms: jest.fn()
+                setContactInforms: jest.fn(),
+                setGridParams: jest.fn(),
+                setEditedInforms: jest.fn(),
+                setResultEditContactInforms: jest.fn()
             };
 
             // Act
@@ -50,17 +54,24 @@ describe('AppContainer', () => {
             expect(props.setEditContactInformDialog).toHaveBeenCalledWith({ show: false });
             expect(props.setContactInforms).toHaveBeenCalledWith(null);
             expect(props.getInforms).toHaveBeenCalled();
+            expect(props.setGridParams).toHaveBeenCalledWith({pageIndex: 1, pageSize: 100});
+            expect(props.setEditedInforms).toHaveBeenCalledWith([]);
+            expect(props.setResultEditContactInforms).toHaveBeenCalledWith(null);
         });
     });
 
     describe('handleCloseEditInformDialog', () => {
-        it('should call exactly functions when close edit search', () => {
+        it('should call exactly functions when close edit inform', () => {
             // Arrange
             const props = {
                 ...initProps,
                 editInformDialog: { show: true },
                 setEditInformDialog: jest.fn(),
-                setEditInforms: jest.fn()
+                setEditInforms: jest.fn(),
+                setGridParams: jest.fn(),
+                setEditedInforms: jest.fn(),
+                setResultEditInforms: jest.fn(),
+                setFilterData: jest.fn()
             };
 
             // Act
@@ -71,6 +82,10 @@ describe('AppContainer', () => {
             expect(props.setEditInformDialog).toHaveBeenCalledWith({ show: false });
             expect(props.setEditInforms).toHaveBeenCalledWith(null);
             expect(props.getInforms).toHaveBeenCalled();
+            expect(props.setGridParams).toHaveBeenCalledWith({pageIndex: 1, pageSize: 100});
+            expect(props.setEditedInforms).toHaveBeenCalledWith([]);
+            expect(props.setResultEditInforms).toHaveBeenCalledWith(null);
+            expect(props.setFilterData).toHaveBeenCalledWith({ values: {}, errors: {} });
         });
     });
 
@@ -119,7 +134,10 @@ describe('AppContainer', () => {
                 ...initProps,
                 newInformDialog: { show: true },
                 setNewInformDialog: jest.fn(),
-                setNewInforms: jest.fn()
+                setNewInforms: jest.fn(),
+                setGridParams: jest.fn(),
+                setEditedInforms: jest.fn(),
+                setFilterData: jest.fn()
             };
 
             // Act
@@ -130,6 +148,9 @@ describe('AppContainer', () => {
             expect(props.setNewInformDialog).toHaveBeenCalledWith({ show: false });
             expect(props.setNewInforms).toHaveBeenCalledWith(null);
             expect(props.getInforms).toHaveBeenCalled();
+            expect(props.setGridParams).toHaveBeenCalledWith({pageIndex: 1, pageSize: 100});
+            expect(props.setEditedInforms).toHaveBeenCalledWith([]);
+            expect(props.setFilterData).toHaveBeenCalledWith({ values: {}, errors: {} });
         });
     });
 
@@ -142,8 +163,7 @@ describe('AppContainer', () => {
                 editInformDialog: { show: true },
                 removedLogDialog: { show: true },
                 removedLogDetailDialog: { show: true },
-                newInformDialog: { show: true },
-                optionDialog: { show: true }
+                newInformDialog: { show: true }
             };
 
             // Act
@@ -157,7 +177,6 @@ describe('AppContainer', () => {
             expect(container.find(RemovedAccountLogs).length).toBe(1);
             expect(container.find(RemovedAccountLogDetails).length).toBe(1);
             expect(container.find(NewInforms).length).toBe(1);
-            expect(container.find(OptionsEdit).length).toBe(1);
         });
     });
 });

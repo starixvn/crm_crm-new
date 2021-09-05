@@ -3,6 +3,7 @@ import { EditContactInforms } from '../EditContactInforms';
 import { shallow } from 'enzyme';
 import FilterContactInforms from '../FilterContactInforms';
 import DataGridEdit from '../DataGridEdit';
+import ResponseMessage from '@jsroot/components/ResponseMessage';
 
 describe('EditContactInforms', () => {
     afterAll(() => {
@@ -12,13 +13,13 @@ describe('EditContactInforms', () => {
     const initProps = {
         titleId: 720,
         getTitleDetail: jest.fn(),
-        getContactInformSettings: jest.fn(),
         contactInformSettings:{
             filterStatuses: [{ settingId: 1, settingValue: 'test'}]
         },
         contactInforms: [{headlineId: 720, groupId: 12, username: 'test'}],
         getContactInforms: jest.fn(),
-        setGridParams: jest.fn()
+        setGridParams: jest.fn(),
+        editedInforms: [{ headlineId: 1234, groupId: 122, remark: '&test'}]
     };
 
     describe('componentDidMount', () => {
@@ -31,75 +32,9 @@ describe('EditContactInforms', () => {
 
             // Assert
             expect(await props.getTitleDetail).toHaveBeenCalledWith({titleId: 720});
-            expect(await props.getContactInformSettings).toHaveBeenCalled();
             expect(await props.getContactInforms).toHaveBeenCalledWith({
                 titleId: 720,
-                username: '', statusId: '1',
-                pageIndex: 1, pageSize: 10000
-            });
-            expect(props.setGridParams).toHaveBeenCalledWith({ pageIndex: 1,pageSize: 100 });
-            expect(container.state().totalContactInform).toBe(1);
-        });
-    });
-
-    describe('handleChangeStatus', () => {
-        it('should call setState exactly when handle change status', () => {
-            // Act
-            const container = shallow(<EditContactInforms />);
-            container.instance().handleChangeStatus(123);
-           
-            // Assert
-            expect(container.state().selectedStatusId).toBe(123);
-        });
-    });
-
-    describe('handleChangeFilter', () => {
-        it('should call setState exactly when handle change filter', () => {
-            // Act
-            const container = shallow(<EditContactInforms />);
-            const mockEvent = { target: { name: 'stateName', value: 720}}
-            container.instance().handleChangeFilter(mockEvent);
-           
-            // Assert
-            expect(container.state().stateName).toBe(720);
-        });
-    });
-
-    describe('handleSearch', () => {
-        it('should call exactly functions when handle search', async () => {
-            // Arrange
-            const props = {...initProps};
-
-            // Act
-            const container = shallow(<EditContactInforms {...props}/>);
-            container.instance().handleSearch();
-           
-            // Assert
-            expect(await props.getContactInforms).toHaveBeenCalledWith({ 
-                titleId: 720,
-                username: '', statusId: '',
-                pageIndex: 1, pageSize: 10000
-            });
-            expect(props.setGridParams).toHaveBeenCalledWith({ pageIndex: 1, pageSize: 100 });
-            expect(container.state().totalContactInform).toBe(1);
-        });
-    });
-
-    describe('onPaging', () => {
-        it('should call exactly functions when onPaging', () => {
-            // Arrange
-            const props = {...initProps};
-
-            // Act
-            const container = shallow(<EditContactInforms {...props}/>);
-            container.instance().onPaging(1,100);
-           
-            // Assert
-            expect(props.setGridParams).toHaveBeenCalledWith({ pageIndex: 1, pageSize: 100 });
-            expect(props.getContactInforms).toHaveBeenCalledWith({
-                titleId: 720,
-                username: '', statusId: '',
-                pageIndex: 1, pageSize: 100
+                username: '', statusId: '1'
             });
         });
     });
@@ -127,103 +62,16 @@ describe('EditContactInforms', () => {
             // Arrange
             const props = {
                 ...initProps,
+                titleDetail: {titleId: 123},
                 editContactInforms: jest.fn()
             };
 
             // Act
             const container = shallow(<EditContactInforms {...props}/>);
             container.instance().handleSubmit();
-           
+
             // Assert
-            expect(props.editContactInforms).toHaveBeenCalledWith({ titleId: 720, informs: [] });
-        });
-
-        it('should call exactly functions with state', async () => {
-            // Arrange
-            const props = {
-                ...initProps,
-                editContactInforms: jest.fn()
-            };
-            const expected = [{headlineId: 720, groupId: 12, username: 'test', remark: '&amp;t'}];
-
-            // Act
-            const container = shallow(<EditContactInforms {...props}/>);
-            container.setState({informs: [{headlineId: 720, groupId: 12, username: 'test', remark: '&t'}]})
-            container.instance().handleSubmit();
-           
-            // Assert
-            expect(props.editContactInforms).toHaveBeenCalledWith({ titleId: 720, informs: expected });
-        });
-    });
-
-    describe('htmlDecode', () => {
-        it('should call exactly functions when submit with remark', () => {
-            // Arrange
-            const props = {...initProps};
-
-            // Act
-            const container = shallow(<EditContactInforms {...props}/>);
-            const remark = container.instance().htmlDecode("&test");
-           
-            // Assert
-            expect(remark).toBe("&amp;test");
-        });
-    });
-
-    describe('handleChangeDataGrid', () => {
-        it('should call setState replace exits exactly when handle change', () => {
-            // Arrange
-            const props = {
-                ...initProps,
-                updateContactInforms: jest.fn()
-            };
-
-            // Act
-            const container = shallow(<EditContactInforms {...props}/>);
-            const mockEvent = { target: { name: 'statuses', value: 'Done'}}
-            container.instance().handleChangeDataGrid(mockEvent, 720);
-           
-            // Assert
-            expect(container.state().informs).toEqual([
-                { groupId: 12, headlineId: 720, statuses: "Done", username: "test" }
-            ]);
-        });
-
-        it('should call setState replace exits exactly when handle change', () => {
-            // Arrange
-            const props = { ...initProps };
-
-            // Act
-            const container = shallow(<EditContactInforms {...props}/>);
-            const mockEvent = { target: { name: 'statuses', value: 'Done'}}
-            container.setState({informs: [{ groupId: 12, headlineId: 720, username: "test" }]})
-            container.instance().handleChangeDataGrid(mockEvent, 720);
-           
-            // Assert
-            expect(container.state().informs).toEqual([
-                { groupId: 12, headlineId: 720, statuses: "Done", username: "test" }
-            ]);
-        });
-    });
-
-    describe('handleExportExcel', () => {
-        it('should call exactly functions when handle export excel', () => {
-            // Arrange
-            const props = {
-                ...initProps, 
-                exportContactInforms: jest.fn()
-            };
-
-            // Act
-            const container = shallow(<EditContactInforms {...props}/>);
-            container.instance().handleExportExcel();
-           
-            // Assert
-            expect(props.exportContactInforms).toHaveBeenCalledWith({ 
-                titleId: 720,
-                username: '', statusId: '',
-                pageIndex: 1, pageSize: 10000 
-            });
+            expect(await props.editContactInforms).toHaveBeenCalledWith({ titleId: 123, informs: [{ headlineId: 1234, groupId: 122, remark: '&amp;test'}] });
         });
     });
 
@@ -237,24 +85,29 @@ describe('EditContactInforms', () => {
 
             // Act
             const container = shallow(<EditContactInforms {...props} />);
-
+            container.setState({saveResult: {isSuccessful: true}})
+            
             // Assert
             expect(container).toMatchSnapshot();
+            expect(container.find(ResponseMessage).length).toBe(1);
             expect(container.find(FilterContactInforms).length).toBe(1);
             expect(container.find(DataGridEdit).length).toBe(1);
         });
-    });
 
-    describe('renderExportExcelText', () => {
-        it('should call exactly function', () => {
+        it('should render null', () => {
+            // Arrange
+            const props = {
+                titleDetail: null,
+                contactInformSettings: null,
+                contactInforms: null
+            };
+
             // Act
-            const props = {...initProps};
-            const container = shallow(<EditContactInforms {...props}/>).instance();
-            container.handleExportExcel = jest.fn();
-            const actual = shallow(container.renderExportExcelText());
-
+            const container = shallow(<EditContactInforms {...props} />);
+            
             // Assert
-            expect(actual.find('span').length).toBe(2);
+            expect(container).toMatchSnapshot();
+            expect(container.type()).toEqual(null);
         });
     });
 });

@@ -73,7 +73,7 @@ export class DataGrid extends Component {
 
     handleOption = (titleId, status) => {
         const customOption = React.forwardRef(({ onClick }, ref) => (
-            <span ref={ref} onClick={(e) => onClick(e)} className="cursor-pointer fa fa-list"></span>
+            <span ref={ref} onClick={(event) => onClick(event)} className="cursor-pointer fa fa-list"></span>
         ));
         return (
             <Dropdown drop='down'>

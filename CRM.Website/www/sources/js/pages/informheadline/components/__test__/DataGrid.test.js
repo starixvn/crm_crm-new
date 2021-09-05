@@ -1,5 +1,6 @@
 import React from 'react';
 import { DataGrid } from '../DataGrid';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { shallow } from 'enzyme';
 
@@ -59,7 +60,7 @@ describe('DataGrid', () => {
     });
 
     describe('handleEditContact', () => {
-        it('should call exactly functions when handle edit', () => {
+        it('should call exactly functions when handle edit contact', () => {
             // Arrange
             const props = {
                 editContactInformDialog: { show: false },
@@ -75,25 +76,88 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('getPositionEdit', () => {
-        it('should call exactly functions when get position', () => {
+    describe('handleEdit', () => {
+        it('should call exactly functions when handle edit', () => {
             // Arrange
             const props = {
-                initProps,
-                setOptionDialog: jest.fn()
+                setEditInformDialog: jest.fn()
             };
 
             // Act
             const container = shallow(<DataGrid {...props}/>);
-            const mockEvent = { target: { getClientRects: jest.fn(() => [{left: 10, top: 20}])} };
-            container.instance().getPositionEdit(mockEvent, 147258, 'Open');
+            container.instance().handleEdit(147258);
            
             // Assert
-            expect(props.setOptionDialog).toHaveBeenCalledWith({ 
-                left: 10, top: 20,
-                show: true, showOption: 'block',
-                status: 'Open', titleIdSearch: 147258,
-            });
+            expect(props.setEditInformDialog).toHaveBeenCalledWith({ show: true, titleId: 147258 });
+        });
+    });
+
+    describe('handleRemovedAccountLogs', () => {
+        it('should call exactly functions when handle removedAccountLogs', () => {
+            // Arrange
+            const props = {
+                setGridParamRemovedLogs: jest.fn(),
+                getRemovedAccountLogs: jest.fn(),
+                setRemovedLogDialog: jest.fn()
+            };
+
+            // Act
+            const container = shallow(<DataGrid {...props}/>);
+            container.instance().handleRemovedAccountLogs(147258);
+           
+            // Assert
+            expect(props.setGridParamRemovedLogs).toHaveBeenCalledWith({titleId: 147258, pageIndex: 1, pageSize: 100});
+            expect(props.getRemovedAccountLogs).toHaveBeenCalledWith({titleId: 147258, pageIndex: 1, pageSize: 100});
+            expect(props.setRemovedLogDialog).toHaveBeenCalledWith({show: true});
+        });
+    });
+
+    describe('handleCloseCase', () => {
+        it('should call exactly functions when handle close case', () => {
+            // Arrange
+            const props = {
+                editInformStatus: jest.fn(),
+                getInforms: jest.fn()
+            };
+
+            // Act
+            const container = shallow(<DataGrid {...props}/>);
+            container.instance().handleCloseCase(147258);
+           
+            // Assert
+            expect(props.editInformStatus).toHaveBeenCalledWith({titleId: 147258, statusType: true});
+            expect(props.getInforms).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleOpenCase', () => {
+        it('should call exactly functions when handle open case', () => {
+            // Arrange
+            const props = {
+                editInformStatus: jest.fn(),
+                getInforms: jest.fn()
+            };
+
+            // Act
+            const container = shallow(<DataGrid {...props}/>);
+            container.instance().handleOpenCase(147258);
+           
+            // Assert
+            expect(props.editInformStatus).toHaveBeenCalledWith({titleId: 147258, statusType: false});
+            expect(props.getInforms).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleOption', () => {
+        it('should call exactly functions when handle option with status Open', () => {
+            // Act
+            const container = shallow(<DataGrid />);
+            const actual = shallow(container.instance().handleOption(123,'Open'));
+            container.handleEdit = jest.fn();
+
+            actual.find(Dropdown.Item).at(0).simulate('change');
+            // Assert
+            //expect(container.handleEdit).toHaveBeenCalledWith(123);
         });
     });
 
@@ -101,7 +165,6 @@ describe('DataGrid', () => {
         it('should call exactly functions when handle new informs', () => {
             // Arrange
             const props = {
-                getAllSettings: jest.fn(),
                 setNewInformDialog: jest.fn()
             };
 
@@ -111,11 +174,17 @@ describe('DataGrid', () => {
            
             // Assert
             expect(props.setNewInformDialog).toHaveBeenCalledWith({ show: true });
-            expect(props.getAllSettings).toHaveBeenCalledTimes(1);
         });
     });
 
     describe('renderRow', () => {
+        const item = {
+            clientCreatedDate: "Aug 17, 2021", createdDate: "Aug 17, 2021 05:58:54 AM",
+            done: 4, internalAccount: 0, keptForReference: 0, neverTouch: 23,
+            noNeedToCall: 0, noReply: 0,requestToCallBack: 0, status: "Open",
+            title: "test", titleId: 720, total: 27, uncontactable: 0,
+        };
+        
         it('should call getPositionEdit when click edit', () => {
             // Arrange
 
@@ -125,22 +194,13 @@ describe('DataGrid', () => {
                     { titleId: 720, title:'test'}
                 ]
             };
-            const item = {
-                clientCreatedDate: "Aug 17, 2021", createdDate: "Aug 17, 2021 05:58:54 AM",
-                done: 4, internalAccount: 0, keptForReference: 0, neverTouch: 23,
-                noNeedToCall: 0, noReply: 0,requestToCallBack: 0, status: "Open",
-                title: "test", titleId: 720, total: 27, uncontactable: 0,
-            };
             const container = shallow(<DataGrid {...props}/>).instance();
-            container.getPositionEdit = jest.fn();
+            container.handleOption = jest.fn();
 
-            const row = shallow(container.renderRow(item, 1, document.getElementById('ContactPolicy')));
-
-            // Act
-            row.find(Cell).at(0).find('span').at(0).props().onClick();
+            const row = shallow(container.renderRow(item, 1));
 
             // Assert
-            expect(container.getPositionEdit).toHaveBeenCalledWith(undefined, 720, 'Open');
+            expect(container.handleOption).toHaveBeenCalledWith(720, 'Open');
         });
 
         it('should call handleEditContact when click titleId', () => {
@@ -151,12 +211,6 @@ describe('DataGrid', () => {
                 informs: [
                     { titleId: 720, title:'test'}
                 ]
-            };
-            const item = {
-                clientCreatedDate: "Aug 17, 2021", createdDate: "Aug 17, 2021 05:58:54 AM",
-                done: 4, internalAccount: 0, keptForReference: 0, neverTouch: 23,
-                noNeedToCall: 0, noReply: 0,requestToCallBack: 0, status: "Open",
-                title: "test", titleId: 720, total: 27, uncontactable: 0,
             };
             const container = shallow(<DataGrid {...props}/>).instance();
             container.handleEditContact = jest.fn();

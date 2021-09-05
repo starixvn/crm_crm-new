@@ -83,7 +83,7 @@ export class FilterContactInforms extends PureComponent {
                             <Form.Control type="text" size="sm" className="shadow-none"
                                 autoComplete="off"
                                 name="username"
-                                onChange={this.handleChangeFilter}
+                                onChange={event => this.handleChangeFilter(event)}
                             />
                         </Col>
 
