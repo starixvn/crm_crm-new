@@ -14,7 +14,7 @@ describe('connect ', () => {
             mapDispatchToProps = mapDispatchToPropsFunc;
             return connectMock;
         });
-        require('../EditInforms').default;
+        require('../FilterEditInforms').default;
     });
 
     afterAll(() => {
@@ -24,18 +24,18 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            titleDetail: { title: 'test', currencies: '1,2,3' },
-            allSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] },
-            editDataInforms: { headlineId: 720, groupId: 12, username: 'test' },
-            gridParams: { pageIndex: 1, pageSize: 100 },
-            resultEditInforms: 'Successfully!'
+            allSettings: {
+                currencies: [{id: 1, name: 'test'},{id: 2, name: 'test'},{id: 3, name: 'test'},{id: 4, name: 'test'}],
+                sites: [{childSites: [{id: 1, name: '123'},{id: 2, name: '123'},{id: 3, name: '123'},{id: 4, name: '123'}]}]
+            },
+            filterData: {values: {currencies: '1,2'}, errors: {}}
         };
         const state = {
-            titleDetail: { title: 'test', currencies: '1,2,3' },
-            allSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] },
-            editDataInforms: { headlineId: 720, groupId: 12, username: 'test' },
-            gridParams: { pageIndex: 1, pageSize: 100 },
-            resultEditInforms: 'Successfully!'
+            allSettings: {
+                currencies: [{id: 1, name: 'test'},{id: 2, name: 'test'},{id: 3, name: 'test'},{id: 4, name: 'test'}],
+                sites: [{childSites: [{id: 1, name: '123'},{id: 2, name: '123'},{id: 3, name: '123'},{id: 4, name: '123'}]}]
+            },
+            filterData: {values: {currencies: '1,2'}, errors: {}}
         };
 
         // Act

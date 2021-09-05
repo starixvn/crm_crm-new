@@ -23,17 +23,19 @@ describe('connect ', () => {
 
     it('props should be mapped correctly', () => {
         // Arrange
-        const expected = {
+        const expected = { 
             newInforms: { headlineId: 720, groupId: 12, username: 'test' },
             allSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] },
-            gridParams: { pageIndex: 1, pageSize: 100 },
-            resultInsertInforms: 'Successfully!'
+            resultInsertInforms: 'Successfully!',
+            editedInforms: [],
+            filterData: { values: {}, errors: {}}
         };
         const state = {
             newInforms: { headlineId: 720, groupId: 12, username: 'test' },
             allSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] },
-            gridParams: { pageIndex: 1, pageSize: 100 },
-            resultInsertInforms: 'Successfully!'
+            resultInsertInforms: 'Successfully!',
+            editedInforms: [],
+            filterData: { values: {}, errors: {}}
         };
 
         // Act

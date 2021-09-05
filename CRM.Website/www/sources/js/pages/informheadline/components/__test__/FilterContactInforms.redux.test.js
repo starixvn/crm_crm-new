@@ -14,7 +14,7 @@ describe('connect ', () => {
             mapDispatchToProps = mapDispatchToPropsFunc;
             return connectMock;
         });
-        require('../OptionsEdit').default;
+        require('../FilterContactInforms').default;
     });
 
     afterAll(() => {
@@ -24,10 +24,14 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            optionDialog: { show: false }
+            titleDetail: { title: 'test', currencies: '1,2,3' },
+            contactInformSettings: {filterStatuses: [{ settingId: 1, settingValue: 'test'}]},
+            contactInforms: {headlineId: 720, groupId: 12, username: 'test'}
         };
         const state = {
-            optionDialog: { show: false }
+            titleDetail: { title: 'test', currencies: '1,2,3' },
+            contactInformSettings: {filterStatuses: [{ settingId: 1, settingValue: 'test'}]},
+            contactInforms: {headlineId: 720, groupId: 12, username: 'test'}
         };
 
         // Act
