@@ -29,7 +29,8 @@ export class EditPersonalMappingPopup extends Component {
                 },
                 letstalkId: this.props.updatePersonalMappingData.data.conversationId,
                 languageId: this.props.updatePersonalMappingData.data.languageId,
-                remark: this.props.updatePersonalMappingData.data.remark
+                remark: this.props.updatePersonalMappingData.data.remark,
+                isTest: this.props.updatePersonalMappingData.data.testingGroupType === 1 ? true : false
             },
             groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
@@ -113,6 +114,9 @@ export class EditPersonalMappingPopup extends Component {
         this.handleChange('conversationId', '');
         this.handleChange('name', '');
         this.props.getRecipientByRecipientType(e.target.value);
+        if(label !== 'Accounting PIC'){
+            this.handleChange('isTest', false);
+        }
     };
 
     handleRecipientChange = option => {
@@ -235,7 +239,8 @@ export class EditPersonalMappingPopup extends Component {
             groupHeadlineIds: this.state.form.recipientName === 'Accounting PIC' ? '' : this.state.form.groupHeadlines,
             recipientIds: this.state.form.recipient.value,
             languageId: this.state.form.languageId,
-            remark: this.state.form.remark
+            remark: this.state.form.remark,
+            testingGroupType: this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
         };
     };
 
@@ -406,6 +411,17 @@ export class EditPersonalMappingPopup extends Component {
                                 onChange={e => this.handleChange('remark', e.target.value)}
 
                             />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column md="2" sm="3"/>
+                        <Col sm="9" md="10" name="checkbox-isTest">
+                        <Form.Group controlId="isTest-edit-personal" className={this.state.form.recipientName !== 'Accounting PIC' ? 'hidden-isTest' : ''}>
+                            <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
+                                onChange={event => this.handleChange('isTest', event.target.checked)}
+                                checked={this.state.form.isTest}
+                            />
+                        </Form.Group>
                         </Col>
                     </Form.Group>
                 </Modal.Body>

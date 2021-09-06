@@ -10,6 +10,8 @@
 
         public int ChatTypeId { get; set; }
 
+        public byte TestingGroupType { get; set; }
+
         public int RecipientTypeId { get; set; }
 
         public string HeadlineIds { get; set; }

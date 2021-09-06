@@ -32,7 +32,8 @@ export class EditGroupMappingPopup extends Component {
                     name: this.props.updateGroupMappingData.data.mappingStatus
                 },
                 languageId: this.props.updateGroupMappingData.data.languageId || '',
-                remark: this.props.updateGroupMappingData.data.remark || ''
+                remark: this.props.updateGroupMappingData.data.remark || '',
+                isTest: this.props.updateGroupMappingData.data.testingGroupType === 1 ? true : false
             },
             groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
@@ -112,6 +113,9 @@ export class EditGroupMappingPopup extends Component {
         this.props.getGroupHeadlineByRecipient('');
         this.verifyLetstalk([]);
         this.props.getRecipientByRecipientType(e.target.value);
+        if(label !== 'Accounting PIC'){
+            this.handleChange('isTest', false);
+        }
     };
 
     handleRecipientChange = (currentItem, selectedItemsKey) => {
@@ -245,7 +249,8 @@ export class EditGroupMappingPopup extends Component {
             groupHeadlineIds: this.state.form.recipientName === 'Accounting PIC' ? '' : this.state.form.groupHeadlines,
             recipientIds: this.state.form.recipientIds,
             languageId: this.state.form.languageId,
-            remark: this.state.form.remark
+            remark: this.state.form.remark,
+            testingGroupType: this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
         };
     };
 
@@ -415,6 +420,17 @@ export class EditGroupMappingPopup extends Component {
                                 value={this.state.form.remark}
                                 onChange={e => this.handleChange('remark', e.target.value)}
                             />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column md="2" sm="3"/>
+                        <Col sm="9" md="10" name="checkbox-isTest">
+                        <Form.Group controlId="isTest-edit-group" className={this.state.form.recipientName !== 'Accounting PIC' ? 'hidden-isTest' : ''}>
+                            <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
+                                onChange={event => this.handleChange('isTest', event.target.checked)}
+                                checked={this.state.form.isTest}
+                            />
+                        </Form.Group>
                         </Col>
                     </Form.Group>
                 </Modal.Body>

@@ -137,7 +137,8 @@
                     LetstalkId = data.LetstalkId,
                     LanguageId = data.LanguageId,
                     Remark = data.Remark,
-                    UserId = napSession.UserId
+                    UserId = napSession.UserId,
+                    TestingGroupType = data.TestingGroupType
                 };
                 result = await chatTypeMappingService.CreatePersonalMappingAsync(criteria);
             }
@@ -168,7 +169,8 @@
                     LetstalkId = data.LetstalkId,
                     LanguageId = data.LanguageId,
                     Remark = data.Remark,
-                    UserId = napSession.UserId
+                    UserId = napSession.UserId,
+                    TestingGroupType = data.TestingGroupType
                 };
                 result = await chatTypeMappingService.EditChatTypeMappingAsync(criteria);
             }
@@ -206,7 +208,8 @@
                 LetstalkId = data.LetstalkId,
                 LanguageId = data.LanguageId,
                 Remark = data.Remark,
-                UserId = napSession.UserId
+                UserId = napSession.UserId,
+                TestingGroupType = data.TestingGroupType
             };
             var result = await chatTypeMappingService.EditChatTypeMappingAsync(criteria);
 

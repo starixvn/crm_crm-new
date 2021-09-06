@@ -25,7 +25,8 @@ export class InsertPersonalMappingPopup extends Component {
                 recipient: '',
                 letstalkId: '',
                 languageId: '',
-                remark: ''
+                remark: '',
+                isTest: false
             },
             groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
@@ -78,6 +79,9 @@ export class InsertPersonalMappingPopup extends Component {
             letstalkIds: ''
         });
         this.handleChange('recipient', '');
+        if(label !== 'Accounting PIC'){
+            this.handleChange('isTest', false);
+        }
     };
 
     handleRecipientChange = option => {
@@ -183,7 +187,8 @@ export class InsertPersonalMappingPopup extends Component {
             groupHeadlineIds: this.state.form.groupHeadlines,
             recipientIds: this.state.form.recipient.value,
             languageId: this.state.form.languageId,
-            remark: this.state.form.remark
+            remark: this.state.form.remark,
+            testingGroupType: this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
         };
     };
 
@@ -380,6 +385,18 @@ export class InsertPersonalMappingPopup extends Component {
                             />
                         </Col>
                     </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2" />
+                        <Col sm="9" md="10" name="checkbox-isTest">
+                        <Form.Group controlId="isTest-insert" className={this.state.form.recipientName !== 'Accounting PIC' ? 'hidden-isTest' : ''}>
+                            <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
+                                checked={this.state.form.isTest}
+                                onChange={event => this.handleChange('isTest', event.target.checked)}
+                            />
+                        </Form.Group>
+                        </Col>
+                    </Form.Group>
+                   
                 </Modal.Body>
 
                 <Modal.Footer>

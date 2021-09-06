@@ -12,6 +12,8 @@
 
         public int RecipientTypeId { get; set; }
 
+        public byte TestingGroupType { get; set; }
+
         public string HeadlineIds { get; set; }
 
         public string RecipientIds { get; set; }

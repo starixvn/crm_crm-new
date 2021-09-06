@@ -88,6 +88,7 @@
     InsertPICSuccess: 'Insert PIC successfully!',
     Invalid: 'Invalid',
     InvalidUsernames: 'Invalid usernames: {0}',
+    IsTest: 'Is Test',
     KeepAssign: 'Keep Assign',
     Language: 'Language',
     LanguageRequired: 'Language is required!',

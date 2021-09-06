@@ -44,6 +44,8 @@ namespace CRM.Models.ChatTypeMapping
 
         public string Remark { get; set; }
 
+        public byte TestingGroupType { get; set; }
+
         public IEnumerable<ConversationRecipient> Recipients { get; set; }
 
         public IEnumerable<ConversationHeadlineModel> Headlines { get; set; }

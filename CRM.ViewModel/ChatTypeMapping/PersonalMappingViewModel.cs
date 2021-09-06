@@ -19,5 +19,7 @@
         public int LanguageId { get; set; }
 
         public string Remark { get; set; }
+
+        public byte TestingGroupType { get; set; }
     }
 }
