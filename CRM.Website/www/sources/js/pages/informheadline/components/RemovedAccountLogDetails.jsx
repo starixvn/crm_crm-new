@@ -32,7 +32,7 @@ export class RemovedAccountLogDetails extends Component {
         }
         return [
             <Row key={`body${1}`} className="no-data" >
-                <Cell className='text-center' colSpan={3}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+                <Cell className='text-center' colSpan={7}>{LangHelper.getResource('ThereIsNoData')}</Cell>
             </Row>
         ];
     };
