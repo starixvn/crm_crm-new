@@ -1,5 +1,6 @@
 ﻿namespace CRM.Criteria.InformHeadline
 {
+    using CRM.Core.Helpers;
     using CRM.Core.Models;
     using CRM.Models.InformHeadline;
     using Fanex.Data;
@@ -30,9 +31,9 @@
                     foreach (EditInform inform in Informs)
                     {
                         xml.AppendFormat("<Headline HeadlineID='{0}' StatusID='{1}' Remark='{2}' Extension='{3}' ProductStatus='{4}'/>", 
-                            inform.HeadlineId, 
+                            inform.HeadlineId,
                             inform.InformHeadlineStatusId,
-                            ReplaceBreaklineXml(inform.Remark), 
+                            HtmlHelper.ReplaceBreaklineXml(inform.Remark), 
                             inform.Extension, 
                             inform.ProductStatus);
                     }
@@ -41,20 +42,6 @@
 
                 return xml.ToString();
             }
-        }
-
-        public static string ReplaceBreaklineXml(string xml)
-        {
-            if (string.IsNullOrWhiteSpace(xml))
-            {
-                return xml;
-            }
-            string[] newLine = new[] { "\n", "\r", "\n\r", "\r\n" };
-            for (int index = 0; index < newLine.Length; index++)
-            {
-                xml = xml.Replace(newLine[index], "&#13;");
-            }
-            return xml;
         }
 
         public override string GetSettingKey() => "Acc_CRM_InformHeadlineUpd";

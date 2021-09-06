@@ -6,8 +6,7 @@ import { Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
-import { remarkDecode } from '../common.functions';
-import { renderButtonSave } from '../common.functions';
+import { remarkEncode, renderButtonSave } from '../common.functions';
 import DataGridEdit from './DataGridEdit';
 import FilterEditInforms from './FilterEditInforms';
 
@@ -63,7 +62,7 @@ export class EditInforms extends Component {
     handleSubmit = async () => {
         const { dataEditInforms, editedInforms } = this.props;
         const replaceDataEdit = dataEditInforms.map(element => editedInforms.find(item => item.headlineId === element.headlineId) || element);
-        const editedData = remarkDecode(replaceDataEdit);
+        const editedData = remarkEncode(replaceDataEdit);
         
         await this.props.editInforms({...this.props.filterData.values, informs: editedData});
         this.setAlert();

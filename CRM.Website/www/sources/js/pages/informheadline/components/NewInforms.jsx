@@ -5,8 +5,7 @@ import { ActionCreators } from '../actions';
 import { Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
-import { remarkDecode } from '../common.functions';
-import { renderButtonSave } from '../common.functions';
+import { remarkEncode, renderButtonSave } from '../common.functions';
 import DataGridEdit from './DataGridEdit';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import FilterEditInforms from './FilterEditInforms';
@@ -34,7 +33,7 @@ export class NewInforms extends Component {
 
     handleSubmit = async () => {
         const { editedInforms } = this.props;
-        const newData = remarkDecode(editedInforms);
+        const newData = remarkEncode(editedInforms);
 
         await this.props.insertInforms({...this.props.filterData.values, informs: newData});
         this.setAlert();

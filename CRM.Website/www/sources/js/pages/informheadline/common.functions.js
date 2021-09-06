@@ -23,7 +23,7 @@ export const renderButtonClose = onClose => {
     );
 };
 
-const htmlDecode = value => {
+const htmlEncode = value => {
     const item = value.replace(/&/g, '&amp;')
                     .replace(/"/g, '&quot;')
                     .replace(/'/g, '&#39;')
@@ -32,10 +32,10 @@ const htmlDecode = value => {
     return item;
 };
 
-export const remarkDecode = value => {
+export const remarkEncode = value => {
     const dataEdit = value.map(item => {
         if (item.remark) {
-            return {...item, remark: htmlDecode(item.remark)};
+            return {...item, remark: htmlEncode(item.remark)};
         }
         return item;
     });

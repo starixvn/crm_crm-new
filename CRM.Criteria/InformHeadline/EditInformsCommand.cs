@@ -1,5 +1,6 @@
 ﻿namespace CRM.Criteria.InformHeadline
 {
+    using CRM.Core.Helpers;
     using CRM.Core.Models;
     using CRM.Models.InformHeadline;
     using Fanex.Data;
@@ -54,7 +55,7 @@
                             inform.HeadlineId,
                             inform.GroupId,
                             inform.InformHeadlineStatusId,
-                            ReplaceBreaklineXml(inform.Remark),
+                            HtmlHelper.ReplaceBreaklineXml(inform.Remark),
                             inform.Extension,
                             inform.ProductStatus);
                     }
@@ -63,20 +64,6 @@
 
                 return xml.ToString();
             }
-        }
-
-        public static string ReplaceBreaklineXml(string xml)
-        {
-            if (string.IsNullOrWhiteSpace(xml))
-            {
-                return xml;
-            }
-            string[] newLine = new[] { "\n", "\r", "\n\r", "\r\n" };
-            for (int index = 0; index < newLine.Length; index++)
-            {
-                xml = xml.Replace(newLine[index], "&#13;");
-            }
-            return xml;
         }
 
         public override string GetSettingKey() => "Acc_CRM_InformHeadlineSearchUpd";
