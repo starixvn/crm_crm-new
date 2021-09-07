@@ -12,7 +12,7 @@
 
         public int RecipientTypeId { get; set; }
 
-        public byte TestingGroupType { get; set; }
+        public byte IsTest { get; set; }
 
         public string HeadlineIds { get; set; }
 

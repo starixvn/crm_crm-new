@@ -188,7 +188,7 @@ export class InsertPersonalMappingPopup extends Component {
             recipientIds: this.state.form.recipient.value,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
-            testingGroupType: this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
+            isTest : this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
         };
     };
 

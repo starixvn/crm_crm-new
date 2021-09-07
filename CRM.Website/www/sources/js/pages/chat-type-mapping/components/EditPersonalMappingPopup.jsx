@@ -30,7 +30,7 @@ export class EditPersonalMappingPopup extends Component {
                 letstalkId: this.props.updatePersonalMappingData.data.conversationId,
                 languageId: this.props.updatePersonalMappingData.data.languageId,
                 remark: this.props.updatePersonalMappingData.data.remark,
-                isTest: this.props.updatePersonalMappingData.data.testingGroupType === 1 ? true : false
+                isTest: this.props.updatePersonalMappingData.data.isTest  === 1 ? true : false
             },
             groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
@@ -240,7 +240,7 @@ export class EditPersonalMappingPopup extends Component {
             recipientIds: this.state.form.recipient.value,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
-            testingGroupType: this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
+            isTest : this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
         };
     };
 

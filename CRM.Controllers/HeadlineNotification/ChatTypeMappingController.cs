@@ -138,7 +138,7 @@
                     LanguageId = data.LanguageId,
                     Remark = data.Remark,
                     UserId = napSession.UserId,
-                    TestingGroupType = data.TestingGroupType
+                    IsTest = data.IsTest
                 };
                 result = await chatTypeMappingService.CreatePersonalMappingAsync(criteria);
             }
@@ -170,7 +170,7 @@
                     LanguageId = data.LanguageId,
                     Remark = data.Remark,
                     UserId = napSession.UserId,
-                    TestingGroupType = data.TestingGroupType
+                    IsTest = data.IsTest
                 };
                 result = await chatTypeMappingService.EditChatTypeMappingAsync(criteria);
             }
@@ -209,7 +209,7 @@
                 LanguageId = data.LanguageId,
                 Remark = data.Remark,
                 UserId = napSession.UserId,
-                TestingGroupType = data.TestingGroupType
+                IsTest = data.IsTest
             };
             var result = await chatTypeMappingService.EditChatTypeMappingAsync(criteria);
 

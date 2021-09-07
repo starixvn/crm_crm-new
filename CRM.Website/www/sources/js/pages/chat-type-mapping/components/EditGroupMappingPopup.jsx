@@ -33,7 +33,7 @@ export class EditGroupMappingPopup extends Component {
                 },
                 languageId: this.props.updateGroupMappingData.data.languageId || '',
                 remark: this.props.updateGroupMappingData.data.remark || '',
-                isTest: this.props.updateGroupMappingData.data.testingGroupType === 1 ? true : false
+                isTest: this.props.updateGroupMappingData.data.isTest  === 1 ? true : false
             },
             groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
@@ -250,7 +250,7 @@ export class EditGroupMappingPopup extends Component {
             recipientIds: this.state.form.recipientIds,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
-            testingGroupType: this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
+            isTest : this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
         };
     };
 
