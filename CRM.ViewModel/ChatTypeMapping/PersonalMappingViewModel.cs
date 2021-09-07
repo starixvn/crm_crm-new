@@ -20,6 +20,6 @@
 
         public string Remark { get; set; }
 
-        public byte IsTest { get; set; }
+        public byte? IsTest { get; set; }
     }
 }

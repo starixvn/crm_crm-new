@@ -250,7 +250,7 @@ export class EditGroupMappingPopup extends Component {
             recipientIds: this.state.form.recipientIds,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
-            isTest : this.state.form.recipientName !== 'Accounting PIC' ? 2 : this.state.form.isTest ? 1 : 0
+            isTest : this.state.form.recipientName !== 'Accounting PIC' ? null : this.state.form.isTest ? 1 : 0
         };
     };
 

@@ -10,7 +10,7 @@
 
         public int ChatTypeId { get; set; }
 
-        public byte IsTest { get; set; }
+        public byte? IsTest { get; set; }
 
         public int RecipientTypeId { get; set; }
 
