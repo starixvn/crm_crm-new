@@ -114,7 +114,7 @@
             {
                 sendResult.Status = SendNotificationStatus.Retrying;
                 sendResult.ErrMsg = SendNotificationErrMsg.BotServiceErrorMsg;
-                await WriteLogMessage(notification, new BaseResult { Status = 0, Message = exception.Message });
+                await WriteLogMessage(notification, new BaseResult { Status = 0, Message = exception.Message }, sendResult.Status);
                 await logService.ErrorAsync(exception);
             }
 
@@ -143,7 +143,7 @@
                 sendResult.ErrMsg = string.Empty;
             }
 
-            await WriteLogMessage(notification, result, result.BlockList.Any());
+            await WriteLogMessage(notification, result, sendResult.Status, result.BlockList.Any());
         }
 
         private async Task SendToGroup(NotificationMessage notification, SendNotificationResult sendResult)
@@ -151,7 +151,7 @@
             var result = await letstalkService(notification.BotId).PushRoomAsync(notification.ConversationId, notification.Content);
             sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
             sendResult.ErrMsg = result.IsSuccess ? string.Empty : SendNotificationErrMsg.BotServiceErrorMsg;
-            await WriteLogMessage(notification, result);
+            await WriteLogMessage(notification, result, sendResult.Status);
         }
 
         private async Task UpdateRecipientStatus(IEnumerable<SendNotificationResult> sentResults)
@@ -181,8 +181,9 @@
             return await baseService.GetDataAsync<NotificationMessage>(new GetNotificationToSendCriteria());
         }
 
-        private async Task WriteLogMessage(NotificationMessage notification, BaseResult result, bool isBlocked = false)
+        private async Task WriteLogMessage(NotificationMessage notification, BaseResult result, string status, bool isBlocked = false)
         {
+            var errMsg = "Message= " + result.Message + "Status= " + status;
             var command = new WriteLogMessageCommand
             {
                 NotificationId = notification.NotificationId,
@@ -191,7 +192,7 @@
                 ConversationId = notification.ConversationId,
                 IsSuccess = result.IsSuccess,
                 IsBotBlocked = isBlocked,
-                ErrMsg = result.Message,
+                ErrMsg = errMsg,
             };
 
             await baseService.ExecuteNonQueryAsync(command);
