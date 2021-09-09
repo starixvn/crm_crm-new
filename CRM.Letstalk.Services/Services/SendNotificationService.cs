@@ -183,7 +183,7 @@
 
         private async Task WriteLogMessage(NotificationMessage notification, BaseResult result, string status, bool isBlocked = false)
         {
-            var errMsg = "Message= " + result.Message + "Status= " + status;
+            var errMsg = "Message= " + result.Message + "; " + "Status= " + status;
             var command = new WriteLogMessageCommand
             {
                 NotificationId = notification.NotificationId,
