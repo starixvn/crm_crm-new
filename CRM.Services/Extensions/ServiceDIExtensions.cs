@@ -35,6 +35,7 @@
             services.AddTransient<IFeedbackService, FeedbackService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddTransient<IInformHeadlineService, InformHeadlineService>();
+            services.AddTransient<ICustomerDetailService, CustomerDetailService>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)

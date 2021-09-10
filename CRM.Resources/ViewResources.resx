@@ -288,4 +288,7 @@
   <data name="Feedback" xml:space="preserve">
     <value>Feedback</value>
   </data>
+  <data name="CustomerInfoDetail" xml:space="preserve">
+    <value>Customer Infomation Detail</value>
+  </data>
 </root>
