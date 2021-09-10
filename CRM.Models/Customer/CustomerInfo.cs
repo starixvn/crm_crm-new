@@ -41,7 +41,21 @@
 
         public string BankAccountNumber { get; set; }
 
-        public string BankAddress { get; set; }
+        public string BankAddressLine1 { get; set; }
+
+        public string BankAddressLine2 { get; set; }
+
+        public string BankAddressLine3 { get; set; }
+
+        public string BankAddressCity { get; set; }
+
+        public string BankAddressState { get; set; }
+
+        public string BankAddressPostCode { get; set; }
+
+        public int BankAddressCountryId { get; set; }
+
+        public string BankHolderName { get; set; }
         /* --- bank info---*/
 
         public string CreatorName { get; set; }
@@ -77,6 +91,8 @@
         public string BBM { get; set; }
 
         public string Checker { get; set; }
+
+        public string IntroducedBy { get; set; }
 
         public bool Ignored { get; set; }
 
@@ -171,7 +187,46 @@
             Name = BankName,
             SwiftCode = BankSwiftCode,
             AccountName = BankAccountName,
-            AccountNumber = BankAccountNumber
+            AccountNumber = BankAccountNumber,
+            HolderName = BankHolderName,
+            AddressInfo = new Address
+            {
+                LineList = new List<string>
+                {
+                    BankAddressLine1, BankAddressLine2, BankAddressLine3
+                },
+                City = BankAddressCity,
+                State = BankAddressState,
+                PostCode = BankAddressPostCode,
+                Country = new Country
+                {
+                    Id = BankAddressCountryId
+                }
+            }
+        };
+
+        public string Line1 { get; set; }
+
+        public string Line2 { get; set; }
+
+        public string Line3 { get; set; }
+
+        public string City { get; set; }
+
+        public string State { get; set; }
+
+        public string PostCode { get; set; }
+
+        public Address AddressInfo => new Address
+        {
+            LineList = new List<string>
+            {
+                Line1, Line2, Line3
+            },
+            City = City,
+            State = State,
+            PostCode = PostCode,
+            Country = new Country { Id = CountryId }
         };
 
         public UserInfo Creator { get; set; }

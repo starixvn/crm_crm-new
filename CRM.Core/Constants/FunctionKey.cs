@@ -18,6 +18,7 @@
         public const string ReviewFeedback = "ReviewFeedback";
         public const string CreateUpdateFeedbackAndCustomerInfo = "CreateUpdateFeedback_CustomerInfo";
         public const string CustomerInfo = "CreateUpdateFeedback_CustomerInfo";
+        public const string Updateheadlineinfo = "Updateheadlineinfo";
 
         public const string InformHeadline = "InformHeadline";
         public const string InformHeadlineSearch = "InformHeadlineSearch";
