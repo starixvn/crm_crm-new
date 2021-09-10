@@ -33,6 +33,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/feedback/deleted-feedback/index`]: pathConfig.scriptPaths.deleted_feedback,
             [`${jsPath}/pages/feedback/manage-feedback/index`]: pathConfig.scriptPaths.manage_feedback,
             [`${jsPath}/pages/informHeadline/index`]: pathConfig.scriptPaths.inform_headline,
+            [`${jsPath}/pages/customer/customerinfodetail/index`]: pathConfig.scriptPaths.customer_info_detail,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -52,7 +53,8 @@ function generateConfig(environment) {
             [`${cssPath}/pages/feedback/multiple-logs/create`]: pathConfig.cssPaths.create_multiple_logs,
             [`${cssPath}/pages/feedback/deleted-feedback/index`]: pathConfig.cssPaths.deleted_feedback,
             [`${cssPath}/pages/feedback/manage-feedback/index`]: pathConfig.cssPaths.manage_feedback,
-            [`${cssPath}/pages/informHeadline/index`]: pathConfig.cssPaths.inform_headline
+            [`${cssPath}/pages/informHeadline/index`]: pathConfig.cssPaths.inform_headline,
+            [`${cssPath}/pages/customer/customerinfodetail/index`]: pathConfig.cssPaths.customer_info_detail,
         },
         output: {
             path: pathConfig.projectRoot,
