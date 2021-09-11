@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
@@ -14,7 +14,6 @@ export class EditForm extends Component {
 
     constructor(props) {
         super(props);
-        const now = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
             collapse: {
                 personalInfo: false,
@@ -23,11 +22,12 @@ export class EditForm extends Component {
                 homeAddress: false,
                 bankInfo: false
             },
+            isSubmitting: false,
             titleId: 0,
             firstName: '',
             lastName: '',
-            maxDate: now,
-            birthDay: new Date('Sep 01, 2021'),
+            maxDate: new Date(DateTimeService.toShortDateFormat(new Date(window.currentClientTime))),
+            birthDay: '',
             passport: '',
             refCode2: '',
             languages: [],
@@ -70,33 +70,33 @@ export class EditForm extends Component {
             letstalk: '',
             qq: '',
             zalo: '',
-            line1HomeAddress: '',
-            line2HomeAddress: '',
-            line3HomeAddress: '',
-            cityHomeAddress: '',
-            countryIdHomeAddress: 0,
-            stateHomeAddress: '',
-            postCodeHomeAddress: '',
+            homeAddressLine1: '',
+            homeAddressLine2: '',
+            homeAddressLine3: '',
+            homeAddressCity: '',
+            homeAddressCountryId: 0,
+            homeAddressState: '',
+            homeAddressPostCode: '',
             bankInfoHolderName: '',
             bankInfoName: '',
             bankInfoAccNo: '',
             bankInfoSwiftCode: '',
-            line1BankAddress: '',
-            line2BankAddress: '',
-            line3BankAddress: '',
-            cityBankAddress: '',
-            countryIdBankAddress: '',
-            stateBankAddress: '',
-            postCodeBankAddress: ''
+            bankAddressLine1: '',
+            bankAddressLine2: '',
+            bankAddressLine3: '',
+            bankAddressCity: '',
+            bankAddressCountryId: 0,
+            bankAddressState: '',
+            bankAddressPostCode: ''
         };
     }
 
     async componentDidMount() {
         await this.props.getAllSettings();
-        await this.props.getCustomerInfo({customerId: 1754});
+        await this.props.getCustomerInfoDetail({ customerId: 1754 });
         const { data } = this.props.gridData;
         this.setState({
-            titleId: data.titleId || '',
+            titleId: data.titleId,
             firstName: data.firstName || '',
             lastName: data.lastName || '',
             birthDay: data.birthday ? new Date(data.birthday) : '',
@@ -105,9 +105,9 @@ export class EditForm extends Component {
             languages: data.languages,
             siteId: data.siteId,
             refCode1: data.refCode1 || '',
-            licenseeTypeId: data.licenseeType || '',
+            licenseeTypeId: data.licenseeType,
             isVip: data.isVIP,
-            isIgnored: data.isIgnored,
+            isIgnored: data.ignored,
             phoneCountryCode: data.phoneInfo[0].countryCode || '',
             phoneAreaCode: data.phoneInfo[0].areaCode || '',
             phone: data.phoneInfo[0].phoneNumber || '',
@@ -142,24 +142,24 @@ export class EditForm extends Component {
             letstalk: data.yahoo || '',
             qq: data.qq || '',
             zalo: data.bbm || '',
-            line1HomeAddress: data.addressInfo.lineList[0] || '',
-            line2HomeAddress: data.addressInfo.lineList[1] || '',
-            line3HomeAddress: data.addressInfo.lineList[2] || '',
-            cityHomeAddress: data.addressInfo.city || '',
-            countryIdHomeAddress: data.addressInfo.country.id || 0,
-            stateHomeAddress: data.addressInfo.state || '',
-            postCodeHomeAddress: data.addressInfo.postCode || '',
+            homeAddressLine1: data.addressInfo.lineList[0] || '',
+            homeAddressLine2: data.addressInfo.lineList[1] || '',
+            homeAddressLine3: data.addressInfo.lineList[2] || '',
+            homeAddressCity: data.addressInfo.city || '',
+            homeAddressCountryId: data.addressInfo.country.id,
+            homeAddressState: data.addressInfo.state || '',
+            homeAddressPostCode: data.addressInfo.postCode || '',
             bankInfoHolderName: data.bankInfo.holderName || '',
             bankInfoName: data.bankInfo.name || '',
             bankInfoAccNo: data.bankInfo.accountNumber || '',
             bankInfoSwiftCode: data.bankInfo.swiftCode || '',
-            line1BankAddress: data.bankInfo.addressInfo.lineList[0] || '',
-            line2BankAddress: data.bankInfo.addressInfo.lineList[1] || '',
-            line3BankAddress: data.bankInfo.addressInfo.lineList[2] || '',
-            cityBankAddress: data.bankInfo.addressInfo.city || '',
-            countryIdBankAddress: data.bankInfo.addressInfo.country.id || 0,
-            stateBankAddress: data.bankInfo.addressInfo.state || '',
-            postCodeBankAddress: data.bankInfo.addressInfo.postCode || '',
+            bankAddressLine1: data.bankInfo.addressInfo.lineList[0] || '',
+            bankAddressLine2: data.bankInfo.addressInfo.lineList[1] || '',
+            bankAddressLine3: data.bankInfo.addressInfo.lineList[2] || '',
+            bankAddressCity: data.bankInfo.addressInfo.city || '',
+            bankAddressCountryId: data.bankInfo.addressInfo.country.id,
+            bankAddressState: data.bankInfo.addressInfo.state || '',
+            bankAddressPostCode: data.bankInfo.addressInfo.postCode || '',
         });
     }
 
@@ -190,7 +190,85 @@ export class EditForm extends Component {
     };
 
     handleSubmit = event => {
+        this.setState({ isSubmitting: true });
         event.preventDefault();
+        const values = this.state;
+        const params = {
+            customerId: this.props.gridData.data.custId,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            titleId: values.titleId,
+            birthDay: values.birthDay ? DateTimeService.toShortDateFormat(values.birthDay) : '',
+            languageId: values.languages.toString(),
+            phone: values.phone,
+            phoneCountryCode: values.phoneCountryCode,
+            phoneAreaCode: values.phoneAreaCode,
+            phone2: values.phone2,
+            phone2CountryCode: values.phone2CountryCode,
+            phone2AreaCode: values.phone2AreaCode,
+            phone3: values.phone3,
+            phone3CountryCode: values.phone3CountryCode,
+            phone3AreaCode: values.phone3AreaCode,
+            passport: values.passport,
+            mobilePhone: values.mobilePhoneNumber,
+            mobilePhoneCountryCode: values.mobileCountryCode,
+            mobilePhoneAreaCode: values.mobileAreaCode,
+            fax: values.faxNumber,
+            faxCountryCode: values.faxCountryCode,
+            faxAreaCode: values.faxAreaCode,
+            email: values.email,
+            skype: values.skype,
+            msn: values.telegram,
+            pic1: values.pic1PhoneNumber,
+            pic2: values.pic2PhoneNumber,
+            pic3: values.pic3PhoneNumber,
+            pic4: values.pic4PhoneNumber,
+            pic1Name: values.pic1Name,
+            pic2Name: values.pic2Name,
+            pic3Name: values.pic3Name,
+            pic4Name: values.pic4Name,
+            siteId: values.siteId,
+            bettingCode: values.refCode1,
+            refCode2: values.refCode2,
+            line1: values.homeAddressLine1,
+            line2: values.homeAddressLine2,
+            line3: values.homeAddressLine3,
+            city: values.homeAddressCity,
+            countryId: values.homeAddressCountryId,
+            postCode: values.homeAddressPostCode,
+            state: values.homeAddressState,
+            isVip: values.isVip,
+            ignored: values.isIgnored,
+            introducedBy: values.introducedBy,
+            bankHolderName: values.bankInfoHolderName,
+            bankName: values.bankInfoName,
+            bankAccountNumber: values.bankInfoAccNo,
+            bankSwiftCode: values.bankInfoSwiftCode,
+            bankLine1: values.bankAddressLine1,
+            bankLine2: values.bankAddressLine2,
+            bankLine3: values.bankAddressLine3,
+            bankCity: values.bankAddressCity,
+            bankCode: values.bankAddressPostCode,
+            bankState: values.bankAddressState,
+            bankCountryId: values.bankAddressCountryId,
+            licenseeType: values.licenseeTypeId,
+            whatsApp: values.whatsApp,
+            line: values.line,
+            weChat: values.weChat,
+            yahoo: values.letstalk,
+            qq: values.qq,
+            bbm: values.zalo
+        };
+
+        this.props.editCustomerInfoDetail(params).then(() => {
+            if (this.props.editCustomerInfoDetailResult.isSuccessful) {
+                this.props.onSuccess({ customerId: 1754 });
+                this.props.setEditCustomerInfoDetailDialog({ show: true });
+                this.setState({ isSubmitting: false });
+            } else {
+                this.setState({ isSubmitting: false });
+            }
+        });
     };
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
@@ -226,7 +304,7 @@ export class EditForm extends Component {
                                         <Form.Control as="select" size="sm" className="shadow-none"
                                             name="titleId" id="titleId" value={titleId} onChange={this.handleChange}
                                         >
-                                            <option value="Mr" hidden disabled />
+                                            <option value="0"></option>
                                             {this.props.allSettings.titles.map(item => this.renderOptions(item.value, item.id))}
                                         </Form.Control>
                                     </Col>
@@ -261,7 +339,7 @@ export class EditForm extends Component {
                         <Form.Group as={Row} className="pt-2">
                             <Col sm="4" md="4">
                                 <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="birthday">
+                                    <Form.Label column sm="4" md="4">
                                         {LangHelper.getResource('Birthday')}
                                     </Form.Label>
                                     <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
@@ -369,7 +447,7 @@ export class EditForm extends Component {
                             {
                                 (!data.isHeadline && (data.isSuper || data.isDirectAccount || data.isGuest)) &&
                                 (
-                                    <>
+                                    <Fragment>
                                         <Col sm="1" md="1">      
                                             <Form.Check type="checkbox"
                                                 label={LangHelper.getResource('VIP')}
@@ -386,14 +464,14 @@ export class EditForm extends Component {
                                                 onChange={event => this.handleChangeCheck(event)}
                                             />
                                         </Col>
-                                    </>
+                                    </Fragment>
                                 )
                             }
                         </Form.Group>
                     </div>
                 </Collapse>
             </div>
-        )
+        );
     };
 
     renderHeadlineInfo = canEditHeadline => {
@@ -455,7 +533,7 @@ export class EditForm extends Component {
                     </div>
                 </Collapse>
             </div>
-        )
+        );
     };
 
     renderCommunicationInfo = () => {
@@ -799,13 +877,13 @@ export class EditForm extends Component {
                     </div>
                 </Collapse>
             </div>
-        )
+        );
     };
 
     renderHomeAddress = () => {
-        const { line1HomeAddress, line2HomeAddress, line3HomeAddress,
-            cityHomeAddress, countryIdHomeAddress, stateHomeAddress,
-            postCodeHomeAddress } = this.state;
+        const { homeAddressLine1, homeAddressLine2, homeAddressLine3,
+            homeAddressCity, homeAddressCountryId, homeAddressState,
+            homeAddressPostCode } = this.state;
         return(
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('homeAddress')}
@@ -824,7 +902,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="10" md="10">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="line1HomeAddress" id="line1HomeAddress" value={line1HomeAddress} onChange={this.handleChange}
+                                            name="homeAddressLine1" id="homeAddressLine1" value={homeAddressLine1} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -839,7 +917,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="10" md="10">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="line2HomeAddress" id="line2HomeAddress" value={line2HomeAddress} onChange={this.handleChange}
+                                            name="homeAddressLine2" id="homeAddressLine2" value={homeAddressLine2} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -854,7 +932,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="10" md="10">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="line3HomeAddress" id="line3HomeAddress" value={line3HomeAddress} onChange={this.handleChange}
+                                            name="homeAddressLine3" id="homeAddressLine3" value={homeAddressLine3} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -869,7 +947,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="cityHomeAddress" id="cityHomeAddress" value={cityHomeAddress} onChange={this.handleChange}
+                                            name="homeAddressCity" id="homeAddressCity" value={homeAddressCity} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -881,7 +959,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="stateHomeAddress" id="stateHomeAddress" value={stateHomeAddress} onChange={this.handleChange}
+                                            name="homeAddressState" id="homeAddressState" value={homeAddressState} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -896,7 +974,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control as="select" size="sm" className="shadow-none" autoComplete="off"
-                                            name="countryIdHomeAddress" id="countryIdHomeAddress" value={countryIdHomeAddress} onChange={this.handleChange}
+                                            name="homeAddressCountryId" id="homeAddressCountryId" value={homeAddressCountryId} onChange={this.handleChange}
                                         >
                                             {this.props.allSettings.countries.map(item => this.renderOptions(item.name, item.id))}
                                         </Form.Control>
@@ -910,7 +988,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="postCodeHomeAddress" id="postCodeHomeAddress" value={postCodeHomeAddress} onChange={this.handleChange}
+                                            name="homeAddressPostCode" id="homeAddressPostCode" value={homeAddressPostCode} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -919,13 +997,13 @@ export class EditForm extends Component {
                     </div>
                 </Collapse>
             </div>
-        )
+        );
     };
 
     renderBankInfo = () => {
         const { bankInfoHolderName, bankInfoName, bankInfoAccNo,
-            bankInfoSwiftCode, line1BankAddress, line2BankAddress, line3BankAddress,
-            cityBankAddress, countryIdBankAddress, stateBankAddress, postCodeBankAddress } = this.state;
+            bankInfoSwiftCode, bankAddressLine1, bankAddressLine2, bankAddressLine3,
+            bankAddressCity, bankAddressCountryId, bankAddressState, bankAddressPostCode } = this.state;
         return(
             <div className="panel-group">
                 <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('bankInfo')}
@@ -998,7 +1076,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="10" md="10">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="line1BankAddress" id="line1BankAddress" value={line1BankAddress} onChange={this.handleChange}
+                                            name="bankAddressLine1" id="bankAddressLine1" value={bankAddressLine1} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -1013,7 +1091,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="10" md="10">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="line2BankAddress" id="line2BankAddress" value={line2BankAddress} onChange={this.handleChange}
+                                            name="bankAddressLine2" id="bankAddressLine2" value={bankAddressLine2} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -1028,7 +1106,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="10" md="10">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="line3BankAddress" id="line3BankAddress" value={line3BankAddress} onChange={this.handleChange}
+                                            name="bankAddressLine3" id="bankAddressLine3" value={bankAddressLine3} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -1043,7 +1121,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="cityBankAddress" id="cityBankAddress" value={cityBankAddress} onChange={this.handleChange}
+                                            name="bankAddressCity" id="bankAddressCity" value={bankAddressCity} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -1055,7 +1133,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="stateBankAddress" id="stateBankAddress" value={stateBankAddress} onChange={this.handleChange}
+                                            name="bankAddressState" id="bankAddressState" value={bankAddressState} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -1070,7 +1148,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control as="select" size="sm" className="shadow-none" autoComplete="off"
-                                            name="countryIdBankAddress" id="countryIdBankAddress" value={countryIdBankAddress} onChange={this.handleChange}
+                                            name="bankAddressCountryId" id="bankAddressCountryId" value={bankAddressCountryId} onChange={this.handleChange}
                                         >
                                             {this.props.allSettings.countries.map(item => this.renderOptions(item.name, item.id))}
                                         </Form.Control>
@@ -1084,7 +1162,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="postCodeBankAddress" id="postCodeBankAddress" value={postCodeBankAddress} onChange={this.handleChange}
+                                            name="bankAddressPostCode" id="bankAddressPostCode" value={bankAddressPostCode} onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -1093,12 +1171,13 @@ export class EditForm extends Component {
                     </div>
                 </Collapse>
             </div>
-        )
+        );
     };
 
     render() {
         const { allSettings, gridData } = this.props;
         const updatePolicy = window.updateHeadlineInfoPolicy;
+        const customerPolicy = window.customerInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
         if (!allSettings || !gridData) {
             return null;
@@ -1118,16 +1197,25 @@ export class EditForm extends Component {
                 {this.renderHomeAddress()}
 
                 {this.renderBankInfo()}
+
+                {
+                    customerPolicy === Policy.Host &&
+                    (
+                        <Button type="submit" variant="primary" size="sm" className="mt-3" disabled={this.state.isSubmitting}>
+                            {LangHelper.getResource('Save')}
+                        </Button>
+                    ) 
+                }
             </Form>
-        )
+        );
     }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, gridData } = state;
-    return { allSettings, gridData };
+    const { allSettings, gridData, editCustomerInfoDetailResult } = state;
+    return { allSettings, gridData, editCustomerInfoDetailResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditForm);

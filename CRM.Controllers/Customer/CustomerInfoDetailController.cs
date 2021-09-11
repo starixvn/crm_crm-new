@@ -70,5 +70,16 @@
             };
             return Json(allSettings);
         }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        public async Task<IActionResult> EditCustomerDetailInfo([FromBody] UpdateCustomerInfoDetailCommand command)
+        {
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            command.IsUpdateHeadlineInfo = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo, Policy.Host);
+            var result = await baseService.ExecuteNonQueryAsync(command);
+            return Json(result);
+        }
     }
 }

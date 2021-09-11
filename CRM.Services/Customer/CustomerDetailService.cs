@@ -1,14 +1,10 @@
 ﻿namespace CRM.Services.Customer
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using CRM.Core.Constants;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
-    using CRM.Models;
     using CRM.Models.Common;
     using CRM.Models.Customer;
 
