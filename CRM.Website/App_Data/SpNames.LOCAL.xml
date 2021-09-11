@@ -163,6 +163,22 @@
         <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdateBasicInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_RelatedCustomerVerify" SpName="Acc_CRM_RelatedCustomerVerify" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerSelUserSearch" SpName="Acc_CRM_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CheckDirectAccount" SpName="Acc_CRM_CheckDirectAccount" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerSel_New" SpName="Acc_CRM_CustomerSel_New" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
+            <Mapping DataField="Wire_SwiftCode" ObjectProperty="BankSwiftCode" />
+            <Mapping DataField="Wire_AccountName" ObjectProperty="BankAccountName" />
+            <Mapping DataField="Wire_AccountNo" ObjectProperty="BankAccountNumber" />
+            <Mapping DataField="BankLine1" ObjectProperty="BankAddressLine1" />
+            <Mapping DataField="BankLine2" ObjectProperty="BankAddressLine2" />
+            <Mapping DataField="BankLine3" ObjectProperty="BankAddressLine3" />
+            <Mapping DataField="BankCity" ObjectProperty="BankAddressCity" />
+            <Mapping DataField="BankCode" ObjectProperty="BankAddressPostCode" />
+            <Mapping DataField="BankState" ObjectProperty="BankAddressState" />
+            <Mapping DataField="BankCountryId" ObjectProperty="BankAddressCountryId" />
+            <Mapping DataField="AccountHolderName" ObjectProperty="BankHolderName" />
+        </Setting>
+        <Setting Key="Acc_CRM_CustomerUpd_New" SpName="Acc_CRM_CustomerUpd_New" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Funtcion>
     <Function Name="Multiple Logs">
         <Setting Key="CRM_MultipleLogs_VerifyCustomer" SpName="CRM_MultipleLogs_VerifyCustomer" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
