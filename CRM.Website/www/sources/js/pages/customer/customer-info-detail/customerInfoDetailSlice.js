@@ -6,7 +6,7 @@ const customerInfoDetailSlice = createSlice({
         gridData: null,
         allSettings: null,
         editCustomerInfoDetailResult: '',
-        editCustomerInfoDetailDialog: {show: false}
+        editCustomerInfoDetailDialog: { show: false }
     },
     reducers: {
         setCustomerInfoDetail: (state, action) => {

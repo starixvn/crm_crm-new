@@ -16,10 +16,10 @@ const getCustomerInfoDetail = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getAllSettings = params => async dispatch => {
+const getAllSettings = () => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('CustomerInfoDetail/GetAllSettings');
-    await DataService.getDataAsync(url,params).then(response => {
+    await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
     }).then(() => Site.unblockUI());
 };
