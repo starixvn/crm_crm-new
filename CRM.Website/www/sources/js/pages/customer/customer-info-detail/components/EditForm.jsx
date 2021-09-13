@@ -159,7 +159,7 @@ export class EditForm extends Component {
             bankAddressCity: data.bankInfo.addressInfo.city || '',
             bankAddressCountryId: data.bankInfo.addressInfo.country.id,
             bankAddressState: data.bankInfo.addressInfo.state || '',
-            bankAddressPostCode: data.bankInfo.addressInfo.postCode || '',
+            bankAddressPostCode: data.bankInfo.addressInfo.postCode || ''
         });
     }
 
@@ -183,7 +183,7 @@ export class EditForm extends Component {
     };
 
     handleChangeCheck = event => {
-        const name = event.target.name
+        const name = event.target.name;
         this.setState({
             [name]: event.target.checked
         });
@@ -272,6 +272,32 @@ export class EditForm extends Component {
     };
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
+
+    renderCheckVipIgnore = (data, values) => {
+        if (!data.isHeadline && (data.isSuper || data.isDirectAccount || data.isGuest)) {
+            return (
+                <Fragment>
+                    <Col sm="1" md="1">
+                        <Form.Check type="checkbox"
+                            label={LangHelper.getResource('VIP')}
+                            checked={values.isVip}
+                            name='isVip' id="isVip"
+                            onChange={event => this.handleChangeCheck(event)}
+                        />
+                    </Col>
+                    <Col sm="1" md="1">
+                        <Form.Check type="checkbox"
+                            label={LangHelper.getResource('Ignore')}
+                            checked={values.isIgnored}
+                            name='isIgnored' id="isIgnored"
+                            onChange={event => this.handleChangeCheck(event)}
+                        />
+                    </Col>
+                </Fragment>
+            );
+        }
+        return null;
+    };
 
     renderPersonalInfo = values => {
         const { data } = this.props.gridData;
@@ -442,29 +468,8 @@ export class EditForm extends Component {
                                     </Col>
                                 </Form.Group>
                             </Col>
-                            {
-                                (!data.isHeadline && (data.isSuper || data.isDirectAccount || data.isGuest)) &&
-                                (
-                                    <Fragment>
-                                        <Col sm="1" md="1">      
-                                            <Form.Check type="checkbox"
-                                                label={LangHelper.getResource('VIP')}
-                                                checked={values.isVip}
-                                                name='isVip' id="isVip"
-                                                onChange={event => this.handleChangeCheck(event)}
-                                            />
-                                        </Col>
-                                        <Col sm="1" md="1">                
-                                            <Form.Check type="checkbox"
-                                                label={LangHelper.getResource('Ignore')}
-                                                checked={values.isIgnored}
-                                                name='isIgnored' id="isIgnored"
-                                                onChange={event => this.handleChangeCheck(event)}
-                                            />
-                                        </Col>
-                                    </Fragment>
-                                )
-                            }
+
+                            { this.renderCheckVipIgnore(data, values) }
                         </Form.Group>
                     </div>
                 </Collapse>
@@ -508,7 +513,7 @@ export class EditForm extends Component {
                                     </Col>
                                 </Form.Group>
                             </Col>
-                            <Col sm="1" md="1">      
+                            <Col sm="1" md="1">
                                 <Form.Check type="checkbox"
                                     label={LangHelper.getResource('VIP')}
                                     checked={values.isVip}
@@ -517,7 +522,7 @@ export class EditForm extends Component {
                                     onChange={event => this.handleChangeCheck(event)}
                                 />
                             </Col>
-                            <Col sm="1" md="1">                
+                            <Col sm="1" md="1">           
                                 <Form.Check type="checkbox"
                                     label={LangHelper.getResource('Ignore')}
                                     checked={values.isIgnored}
@@ -530,6 +535,265 @@ export class EditForm extends Component {
                     </div>
                 </Collapse>
             </div>
+        );
+    };
+
+    renderCommunicationTool = values => {
+        return(
+            <Fragment>
+                <Form.Group as={Row} className="pt-2">
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">
+                                {LangHelper.getResource('Skype')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="skype" id="skype" value={values.skype} onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">
+                                {LangHelper.getResource('Email')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="email" id="email" value={values.email} onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">
+                                {LangHelper.getResource('Telegram')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="telegram" id="telegram" value={values.telegram} onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} className="pt-2">
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">
+                                {LangHelper.getResource('WeChat')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="weChat" id="weChat" value={values.weChat} onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">
+                                {LangHelper.getResource('WhatApp')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="whatsApp" id="whatsApp" value={values.whatsApp} onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">
+                                {LangHelper.getResource('Line')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="line" id="line" value={values.line} onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} className="pt-2">
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">
+                                {LangHelper.getResource('Letstalk')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="letstalk" id="letstalk" value={values.letstalk} onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">
+                                {LangHelper.getResource('QQ')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="qq" id="qq" value={values.qq} onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">
+                                {LangHelper.getResource('Zalo')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="zalo" id="zalo" value={values.zalo} onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+            </Fragment>
+        );
+    };
+
+    renderCustomerInformation = values => {
+        return(
+            <Fragment>
+                <Form.Group as={Row} className="pt-2">
+                    <Col md="4" sm="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">{LangHelper.getResource('Fax')}</Form.Label>
+                            <Col md="8" sm="8">
+                                <div className="d-flex">
+                                    <div className="code-country">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="faxCountryCode" id="faxCountryCode" value={values.faxCountryCode} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div className="code-area">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="faxAreaCode" id="faxAreaCode" value={values.faxAreaCode} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div className="phone">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="faxNumber" id="faxNumber" value={values.faxNumber} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                </div>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">{LangHelper.getResource('Mobile')}</Form.Label>
+                            <Col sm="8" md="8">
+                                <div className="d-flex">
+                                    <div className="code-country">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="mobileCountryCode" id="mobileCountryCode" value={values.mobileCountryCode} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div className="code-area">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="mobileAreaCode" id="mobileAreaCode" value={values.mobileAreaCode} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div className="phone">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="mobilePhoneNumber" id="mobilePhoneNumber" value={values.mobilePhoneNumber} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                </div>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">{LangHelper.getResource('PIC1')}</Form.Label>
+                            <Col sm="8" md="8">
+                                <div className="d-flex">
+                                    <div className="picName">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="pic1Name" id="pic1Name" value={values.pic1Name} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div className="phone">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="pic1PhoneNumber" id="pic1PhoneNumber" value={values.pic1PhoneNumber} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                </div>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} className="pt-2">
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">{LangHelper.getResource('PIC2')}</Form.Label>
+                            <Col sm="8" md="8">
+                                <div className="d-flex">
+                                    <div className="picName">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="pic2Name" id="pic2Name" value={values.pic2Name} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div className="phone">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="pic2PhoneNumber" id="pic2PhoneNumber" value={values.pic2PhoneNumber} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                </div>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">{LangHelper.getResource('PIC3')}</Form.Label>
+                            <Col sm="8" md="8">
+                                <div className="d-flex">
+                                    <div className="picName">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="pic3Name" id="pic3Name" value={values.pic3Name} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div className="phone">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="pic3PhoneNumber" id="pic3PhoneNumber" value={values.pic3PhoneNumber} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                </div>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4">{LangHelper.getResource('PIC4')}</Form.Label>
+                            <Col sm="8" md="8">
+                                <div className="d-flex">
+                                    <div className="picName">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="pic4Name" id="pic4Name" value={values.pic4Name} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                    <div className="phone">
+                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                            name="pic4PhoneNumber" id="pic4PhoneNumber" value={values.pic4PhoneNumber} onChange={this.handleChange}
+                                        />
+                                    </div>
+                                </div>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+            </Fragment>
         );
     };
 
@@ -619,252 +883,9 @@ export class EditForm extends Component {
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="pt-2">
-                            <Col md="4" sm="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">{LangHelper.getResource('Fax')}</Form.Label>
-                                    <Col md="8" sm="8">
-                                        <div className="d-flex">
-                                            <div className="code-country">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="faxCountryCode" id="faxCountryCode" value={values.faxCountryCode} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                            <div className="code-area">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="faxAreaCode" id="faxAreaCode" value={values.faxAreaCode} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                            <div className="phone">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="faxNumber" id="faxNumber" value={values.faxNumber} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">{LangHelper.getResource('Mobile')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <div className="d-flex">
-                                            <div className="code-country">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="mobileCountryCode" id="mobileCountryCode" value={values.mobileCountryCode} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                            <div className="code-area">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="mobileAreaCode" id="mobileAreaCode" value={values.mobileAreaCode} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                            <div className="phone">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="mobilePhoneNumber" id="mobilePhoneNumber" value={values.mobilePhoneNumber} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">{LangHelper.getResource('PIC1')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <div className="d-flex">
-                                            <div className="picName">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="pic1Name" id="pic1Name" value={values.pic1Name} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                            <div className="phone">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="pic1PhoneNumber" id="pic1PhoneNumber" value={values.pic1PhoneNumber} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
+                        { this.renderCustomerInformation(values) }
 
-                        <Form.Group as={Row} className="pt-2">
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">{LangHelper.getResource('PIC2')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <div className="d-flex">
-                                            <div className="picName">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="pic2Name" id="pic2Name" value={values.pic2Name} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                            <div className="phone">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="pic2PhoneNumber" id="pic2PhoneNumber" value={values.pic2PhoneNumber} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">{LangHelper.getResource('PIC3')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <div className="d-flex">
-                                            <div className="picName">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="pic3Name" id="pic3Name" value={values.pic3Name} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                            <div className="phone">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="pic3PhoneNumber" id="pic3PhoneNumber" value={values.pic3PhoneNumber} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">{LangHelper.getResource('PIC4')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <div className="d-flex">
-                                            <div className="picName">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="pic4Name" id="pic4Name" value={values.pic4Name} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                            <div className="phone">
-                                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                    name="pic4PhoneNumber" id="pic4PhoneNumber" value={values.pic4PhoneNumber} onChange={this.handleChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="pt-2">
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">
-                                        {LangHelper.getResource('Skype')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="skype" id="skype" value={values.skype} onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">
-                                        {LangHelper.getResource('Email')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="email" id="email" value={values.email} onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">
-                                        {LangHelper.getResource('Telegram')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="telegram" id="telegram" value={values.telegram} onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="pt-2">
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">
-                                        {LangHelper.getResource('WeChat')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="weChat" id="weChat" value={values.weChat} onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">
-                                        {LangHelper.getResource('WhatApp')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="whatsApp" id="whatsApp" value={values.whatsApp} onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">
-                                        {LangHelper.getResource('Line')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="line" id="line" value={values.line} onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="pt-2">
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">
-                                        {LangHelper.getResource('Letstalk')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="letstalk" id="letstalk" value={values.letstalk} onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">
-                                        {LangHelper.getResource('QQ')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="qq" id="qq" value={values.qq} onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4">
-                                        {LangHelper.getResource('Zalo')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="zalo" id="zalo" value={values.zalo} onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
+                        { this.renderCommunicationTool(values) }
                     </div>
                 </Collapse>
             </div>
@@ -1190,7 +1211,7 @@ export class EditForm extends Component {
                         <Button type="submit" variant="primary" size="sm" className="mt-3" disabled={this.state.isSubmitting}>
                             {LangHelper.getResource('Save')}
                         </Button>
-                    ) 
+                    )
                 }
             </Form>
         );

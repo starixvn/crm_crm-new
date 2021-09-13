@@ -9,7 +9,7 @@ import { Button } from 'react-bootstrap';
 import EditForm from './EditForm';
 
 export class AppContainer extends Component {
-    
+
     static propTypes = {
         editCustomerInfoDetailDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         getCustomerInfoDetail: PropTypes.func
