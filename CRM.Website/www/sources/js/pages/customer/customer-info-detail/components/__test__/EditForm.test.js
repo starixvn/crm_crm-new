@@ -61,6 +61,24 @@ describe('EditForm', () => {
                 bankInfo: false
             });
         });
+        it('should not update state correct', () => {
+            // Arrange
+            const props = {...initProps};
+            const container = shallow(<EditForm {...props} />).instance();
+
+            // Act
+            container.handleCollapseExpand();
+
+            // Assert
+            expect(container.state.collapse).toEqual({
+                "": true,
+                personalInfo: false,
+                communicationInfo: false,
+                headlineInfo: false,
+                homeAddress: false,
+                bankInfo: false
+            });
+        });
     });
 
     describe('handleChange', () => {
@@ -413,6 +431,19 @@ describe('EditForm', () => {
             //Assert
             expect(container).toMatchSnapshot();
             expect(container.find(Form).length).toBe(1);
+        });
+        it('should render EditForm not correctly', () => {
+            //Act
+            const props = {
+                ...initProps,
+                allSettings: null,
+                gridData: null
+            };
+            const container = shallow(<EditForm {...props} />);
+
+            //Assert
+            expect(container.find(Form).length).toBe(0);
+            expect(container.type()).toEqual(null);
         });
     });
 });
