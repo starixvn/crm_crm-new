@@ -522,7 +522,7 @@ export class EditForm extends Component {
                                     onChange={event => this.handleChangeCheck(event)}
                                 />
                             </Col>
-                            <Col sm="1" md="1">           
+                            <Col sm="1" md="1">    
                                 <Form.Check type="checkbox"
                                     label={LangHelper.getResource('Ignore')}
                                     checked={values.isIgnored}
