@@ -16,8 +16,8 @@ export class EditInforms extends Component {
         this.state = {
             saveResult: null
         };
-        this.includeCurrencies = null,
-        this.includeSites = null
+        this.includeCurrencies = null;
+        this.includeSites = null;
     }
 
     async componentDidMount() {
@@ -63,7 +63,7 @@ export class EditInforms extends Component {
         const { dataEditInforms, editedInforms } = this.props;
         const replaceDataEdit = dataEditInforms.map(element => editedInforms.find(item => item.headlineId === element.headlineId) || element);
         const editedData = remarkEncode(replaceDataEdit);
-        
+
         await this.props.editInforms({...this.props.filterData.values, informs: editedData});
         this.setAlert();
     };

@@ -15,7 +15,7 @@ export class ExcelIcon extends Component {
             >
                 <span className="fa fa-file-excel-o icon-excel cursor-pointer" onClick={this.props.handleExportExcel} />
             </OverlayTrigger>
-        )
+        );
     }
 }
 

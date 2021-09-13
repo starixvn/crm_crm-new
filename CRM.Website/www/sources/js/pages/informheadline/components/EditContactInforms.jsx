@@ -16,7 +16,7 @@ export class EditContactInforms extends Component {
         this.state = {
             saveResult: null
         };
-        this.selectedStatuses = null
+        this.selectedStatuses = null;
     }
 
     async componentDidMount() {
