@@ -1088,7 +1088,7 @@ export class EditForm extends Component {
                                 <Form.Group as={Row}>
                                     <Form.Label column sm="4" md="4" htmlFor="bankPostCode">{LangHelper.getResource('PostCode')}</Form.Label>
                                     <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankAddressPostCode} 
+                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankAddressPostCode}
                                             name="bankAddressPostCode" id="bankAddressPostCode" autoComplete="off" onChange={this.handleChange}
                                         />
                                     </Col>

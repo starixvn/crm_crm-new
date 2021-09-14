@@ -9,6 +9,14 @@
     {
         public IList<FeedbackSettingRelation> Settings { get; set; } = new List<FeedbackSettingRelation>();
 
+        public IList<CommunicationSettingRelation> CommunicationSettings { get; set; } = new List<CommunicationSettingRelation>();
+
+        public int FeedbackId { get; set; }
+
+        public string Duration { get; set; }
+
+        public string Status { get; set; }
+
         public DateTime FeedbackDate { get; set; }
 
         public int CustId { get; set; }
