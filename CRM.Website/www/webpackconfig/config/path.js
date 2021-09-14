@@ -24,6 +24,7 @@ const cssPaths = {
     manage_feedback: ['./www/sources/css/pages/feedback/manage-feedback/index.scss'],
     inform_headline: ['./www/sources/css/pages/informHeadline/index.scss'],
     customer_info_detail: ['./www/sources/css/pages/customer/customer-info-detail/index.scss'],
+    communication_log: ['./www/sources/css/pages/communication-log/index.scss'],
 };
 
 const scriptPaths = {
@@ -48,7 +49,8 @@ const scriptPaths = {
     deleted_feedback: ['./www/sources/js/pages/feedback/deleted-feedback/index.js'],
     manage_feedback: ['./www/sources/js/pages/feedback/manage-feedback/index.js'],
     inform_headline: ['./www/sources/js/pages/informHeadline/index.js'],
-    customer_info_detail: ['./www/sources/js/pages/customer/customer-info-detail/index.js']
+    customer_info_detail: ['./www/sources/js/pages/customer/customer-info-detail/index.js'],
+    communication_log: ['./www/sources/js/pages/communication-log/index.js']
 };
 
 module.exports = {

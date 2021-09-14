@@ -115,6 +115,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Communication Log.
+        /// </summary>
+        public static string CommunicationLog {
+            get {
+                return ResourceManager.GetString("CommunicationLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Communication Tool.
         /// </summary>
         public static string CommunicationTool {

@@ -291,4 +291,7 @@
   <data name="CustomerInfoDetail" xml:space="preserve">
     <value>Customer Infomation Detail</value>
   </data>
+  <data name="CommunicationLog" xml:space="preserve">
+    <value>Communication Log</value>
+  </data>
 </root>
