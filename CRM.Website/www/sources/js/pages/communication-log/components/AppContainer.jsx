@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import Filter from './Filter';
+import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
 
@@ -11,6 +12,7 @@ export class AppContainer extends Component {
         return (
             <div className="col-md-10">
                 <Filter/>
+                <DataGrid/>
             </div>
         );
     }

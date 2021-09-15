@@ -1,7 +1,16 @@
 @import "../../components/form-filter";
 @import '../../components/forms';
 @import '../../components/react-grid/react-grid';
+@import '../../components/icons';
 @import '../../components/messages';
 @import '../../components/modal';
 @import '../../components/tables';
 @import '../../components/date-picker/style';
+
+.pending{
+    background-color: #f0edc4;
+}
+
+.closed{
+    background-color: #ddd;
+}
