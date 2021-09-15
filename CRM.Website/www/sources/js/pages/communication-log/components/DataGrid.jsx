@@ -60,6 +60,10 @@ export class DataGrid extends Component {
         return groupCategory;
     };
 
+    handleEditNoOfInquiry = id => {
+        this.props.setEditNoOfInquiryDialog({ show: true, feedbackId: id });
+    };
+
     renderCategoryColumn = item => {
         const { mainCategories } = this.props.gridData;
         const groupCategory = this.handleGroupCategory(item.communicationSettings);
@@ -90,7 +94,7 @@ export class DataGrid extends Component {
                 </Cell>
                 <Cell className="text-center">
                     <span className="rounded-circle fa fa-pencil icon-edit"
-        
+                        onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}
                     />
                 </Cell>
                 <Cell className="text-center">{DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</Cell>

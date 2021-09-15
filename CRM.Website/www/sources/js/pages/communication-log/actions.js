@@ -4,7 +4,8 @@ import Site from '@jsroot/common/site';
 import {
     setLogsByCustomerId,
     setAllStatus,
-    setGridParams
+    setGridParams,
+    setEditNoOfInquiryDialog
 } from './communicationLogSlice';
 
 const getLogsByCustomerId = params => async dispatch => {
@@ -26,5 +27,6 @@ const getAllStatus = () => async dispatch => {
 export const ActionCreators = {
     getLogsByCustomerId,
     getAllStatus,
-    setGridParams
+    setGridParams,
+    setEditNoOfInquiryDialog
 };

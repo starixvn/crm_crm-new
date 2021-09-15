@@ -5,7 +5,8 @@ const communicationLogSlice = createSlice({
     initialState: {
         gridData: null,
         allStatus: null,
-        gridParams: { pageIndex: 1, pageSize: 100 }
+        gridParams: { pageIndex: 1, pageSize: 100 },
+        editNoOfInquiryDialog: { show: false }
     },
     reducers: {
         setLogsByCustomerId: (state, action) => {
@@ -16,6 +17,9 @@ const communicationLogSlice = createSlice({
         },
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
+        },
+        setEditNoOfInquiryDialog: (state, action) => {
+            state.editNoOfInquiryDialog = action.payload;
         }
     }
 });
@@ -25,7 +29,8 @@ const { actions, reducer } = communicationLogSlice;
 export const {
     setLogsByCustomerId,
     setAllStatus,
-    setGridParams
+    setGridParams,
+    setEditNoOfInquiryDialog
 } = actions;
 
 export default reducer;
