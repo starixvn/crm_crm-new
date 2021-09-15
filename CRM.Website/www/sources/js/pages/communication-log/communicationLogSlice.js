@@ -3,11 +3,15 @@ import { createSlice } from '@reduxjs/toolkit';
 const communicationLogSlice = createSlice({
     name: 'communicationLog',
     initialState: {
-        gridData: null
+        gridData: null,
+        allStatus: null
     },
     reducers: {
         setLogsByCustomerId: (state, action) => {
             state.gridData = action.payload;
+        },
+        setAllStatus: (state, action) => {
+            state.allStatus = action.payload;
         }
     }
 });
@@ -15,7 +19,8 @@ const communicationLogSlice = createSlice({
 const { actions, reducer } = communicationLogSlice;
 
 export const {
-    setLogsByCustomerId
+    setLogsByCustomerId,
+    setAllStatus
 } = actions;
 
 export default reducer;

@@ -3,25 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
+import Filter from './Filter';
 
 export class AppContainer extends Component {
-    
-    componentDidMount() {
-        this.props.getLogsByCustomerId({
-            customerId: 1754,
-            fromDate: 'Sep 01, 2021',
-            handler: '',
-            statusId: 0,
-            toDate: 'Sep 14, 2021'
-        });
-    }
 
     render() {
         return (
-            <div>
-                
+            <div className="col-md-10">
+                <Filter/>
             </div>
-        )
+        );
     }
 }
 

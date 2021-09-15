@@ -1,5 +1,7 @@
 ﻿namespace CRM.Controllers.Communication
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
@@ -56,6 +58,13 @@
             var logs = await communicationService.GetLogsByCustomerIdAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
             return Json(new { data = logs, mainCategories });
+        }
+
+        public async Task<IActionResult> GetAllStatus()
+        {
+            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            statuses = statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted);
+            return Json(statuses);
         }
     }
 }

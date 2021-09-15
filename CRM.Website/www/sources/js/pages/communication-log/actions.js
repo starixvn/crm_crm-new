@@ -2,7 +2,8 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 import {
-    setLogsByCustomerId
+    setLogsByCustomerId,
+    setAllStatus
 } from './communicationLogSlice';
 
 const getLogsByCustomerId = params => async dispatch => {
@@ -13,6 +14,15 @@ const getLogsByCustomerId = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const getAllStatus = () => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('CommunicationLog/GetAllStatus');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setAllStatus(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
-    getLogsByCustomerId
+    getLogsByCustomerId,
+    getAllStatus
 };

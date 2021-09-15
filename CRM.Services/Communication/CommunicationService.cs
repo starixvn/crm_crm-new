@@ -16,11 +16,13 @@
     {
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
+        private readonly ICommonService commonService;
 
-        public CommunicationService(IBaseService baseService, ISettingService settingService)
+        public CommunicationService(IBaseService baseService, ISettingService settingService, ICommonService commonService)
         {
             this.baseService = baseService;
             this.settingService = settingService;
+            this.commonService = commonService;
         }
 
         public async Task<IEnumerable<CommunicationLog>> GetLogsByCustomerIdAsync(GetLogsByCustomerIdCriteria criteria)
@@ -31,6 +33,7 @@
                 foreach (var communicationLog in communicationLogInfos)
                 {
                     communicationLog.CommunicationSettings = settingItems.Where(x => x.FeedbackId == communicationLog.FeedbackId).ToList();
+                    communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
                 }
             }
             return communicationLogInfos;
