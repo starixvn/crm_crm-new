@@ -1,5 +1,5 @@
 ﻿
-namespace CRM.BackgroundJob.Criteria.ProblemAccount
+namespace CRM.BackgroundJob.Criteria.ChatbotProblemAccount
 {
     using Fanex.Data.Repository;
     public class GetProblemsAccountByLogId : CriteriaBase

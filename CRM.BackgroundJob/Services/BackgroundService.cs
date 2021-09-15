@@ -36,6 +36,8 @@
 
         Task SynchronizeNewLicenseeOICToSiteSetting();
 
+        Task CreateFeedbackForVoidingSettledTickets();
+
     }
 
     public class BackgroundService : IBackgroundService
@@ -44,7 +46,7 @@
         private readonly IChatBotJobService chatBotJobService;
         private readonly ICRMLogService logService;
         private readonly ISendNotificationService sendNotificationService;
-        private readonly IAutoFeedbackService winLossService;
+        private readonly IAutoFeedbackService autoFeedbackService;
         private readonly IMonitorService monitorService;
 
         private const string umTime = "UM time.";
@@ -54,14 +56,14 @@
             IChatBotJobService chatBotJobService,
             ICRMLogService logService,
             ISendNotificationService sendNotificationService,
-            IAutoFeedbackService winLossService,
+            IAutoFeedbackService autoFeedbackService,
             IMonitorService monitorService)
         {
             this.maintenanceService = maintenanceService;
             this.chatBotJobService = chatBotJobService;
             this.logService = logService;
             this.sendNotificationService = sendNotificationService;
-            this.winLossService = winLossService;
+            this.autoFeedbackService = autoFeedbackService;
             this.monitorService = monitorService;
         }
 
@@ -78,7 +80,7 @@
                     return;
                 }
 
-                await winLossService.ExecuteJobAsync();
+                await autoFeedbackService.ExecuteJobAsync();
             }
             catch (Exception ex)
             {
@@ -239,7 +241,7 @@
                     return;
                 }
 
-                await winLossService.WinLossExecuteJobAsync();
+                await autoFeedbackService.WinLossExecuteJobAsync();
             }
             catch (Exception ex)
             {
@@ -260,7 +262,7 @@
                     return;
                 }
 
-                await winLossService.TurnoverControlExecuteJobAsync();
+                await autoFeedbackService.TurnoverControlExecuteJobAsync();
             }
             catch (Exception ex)
             {
@@ -281,7 +283,7 @@
                     return;
                 }
 
-                await winLossService.ProblemsAcccountExecuteJobAsync();
+                await autoFeedbackService.ProblemsAcccountExecuteJobAsync();
             }
             catch (Exception ex)
             {
@@ -302,7 +304,7 @@
                     return;
                 }
 
-                await winLossService.ResultAmendmentExecuteJobAsync();
+                await autoFeedbackService.ResultAmendmentExecuteJobAsync();
             }
             catch (Exception ex)
             {
@@ -324,7 +326,28 @@
                     return;
                 }
 
-                await winLossService.SynchronizeNewLicenseeOICExecuteJobAsync();
+                await autoFeedbackService.SynchronizeNewLicenseeOICExecuteJobAsync();
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        [Queue(QueuePriority.Critical)]
+        public async Task CreateFeedbackForVoidingSettledTickets()
+        {
+            try
+            {
+                bool isUM = await CheckUM();
+                if (isUM)
+                {
+                    logService.LogInformation(umTime);
+                    return;
+                }
+
+                await autoFeedbackService.VoidingSettledTicketsExecuteJobAsync();
             }
             catch (Exception ex)
             {

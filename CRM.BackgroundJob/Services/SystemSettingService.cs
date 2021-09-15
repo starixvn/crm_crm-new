@@ -9,6 +9,7 @@
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
     using global::CRM.BackgroundJob.Criteria.ResultAmendment;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
+    using global::CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
     using global::CRM.BackgroundJob.Models.ResultAmendment;
@@ -36,7 +37,10 @@
         Task<WinLossSystemSetting> GetTurnoverSettingAsync();
 
         Task<ProblemsAccountSetting> GetProblemsAccountSettingAsync();
+
         Task<ResultAmendmentSetting> GetResultAmendmentSettingAsync();
+
+        Task<ResultAmendmentSetting> GetVoidingSettledTicketsSettingAsync();
     }
 
     public class SystemSettingService : ISystemSettingService
@@ -108,6 +112,12 @@
         public async Task<ResultAmendmentSetting> GetResultAmendmentSettingAsync()
         {
             var criteria = new GetResultAmendmentSystemSettingCriteria();
+            return await baseService.GetDataEntityAsync<ResultAmendmentSetting>(criteria);
+        }
+
+        public async Task<ResultAmendmentSetting> GetVoidingSettledTicketsSettingAsync()
+        {
+            var criteria = new GetVoidingSettledTicketsSettingCriteria();
             return await baseService.GetDataEntityAsync<ResultAmendmentSetting>(criteria);
         }
 

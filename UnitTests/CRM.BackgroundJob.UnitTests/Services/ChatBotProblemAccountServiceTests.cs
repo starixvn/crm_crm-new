@@ -1,7 +1,7 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
     using AutoFixture;
-    using CRM.BackgroundJob.Criteria.ProblemAccount;
+    using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
     using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Models;

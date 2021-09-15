@@ -34,6 +34,7 @@
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForTurnoverControl);
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForProblemsAccount);
             jobRunningChecker.ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            jobRunningChecker.ClearRunning(JobName.CreateFeedbackForVoidingSettledTickets);
 
             RemoveRecurringJobs();
             RunHangfireJobs();
@@ -164,6 +165,14 @@
             {
                 recurringJob.AddOrUpdate<IBackgroundService>("Synchronize New Licensee OIC To Site Setting",
                    job => job.SynchronizeNewLicenseeOICToSiteSetting(),
+                   Cron.Minutely,
+                   TimeZoneInfo.Local, QueuePriority.Critical);
+            }
+
+            if (IsEnabledJob(HangfireJobName.CreateFeedbackForVoidingSettledTickets))
+            {
+                recurringJob.AddOrUpdate<IBackgroundService>("Create Feedback For Voiding Settled Tickets",
+                   job => job.CreateFeedbackForVoidingSettledTickets(),
                    Cron.Minutely,
                    TimeZoneInfo.Local, QueuePriority.Critical);
             }

@@ -1,6 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
-    using CRM.BackgroundJob.Criteria.ProblemAccount;
+    using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
     using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
     using CRM.Core.Models;
     using CRM.Core.Services;

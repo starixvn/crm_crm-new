@@ -343,7 +343,7 @@
             var test = new CommandResult { Code = 1 };
             chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
                     resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
-                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, resultAmendmentInfo.Item2, Constants.DefaultEnvironment
+                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, Constants.DefaultEnvironment, resultAmendmentInfo.Item2
                    ).Returns(test);
             // Act
             await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
@@ -377,7 +377,7 @@
             var test = new CommandResult { Code = 0 };
             chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
                     resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
-                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, resultAmendmentInfo.Item2, Constants.DefaultEnvironment
+                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, Constants.DefaultEnvironment, resultAmendmentInfo.Item2
                    ).Returns(test);
             // Act
             await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();

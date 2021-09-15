@@ -22,6 +22,7 @@
         Task ProblemsAcccountExecuteJobAsync();
         Task ResultAmendmentExecuteJobAsync();
         Task SynchronizeNewLicenseeOICExecuteJobAsync();
+        Task VoidingSettledTicketsExecuteJobAsync();
     }
 
     public class AutoFeedbackService : IAutoFeedbackService
@@ -224,8 +225,6 @@
         {
             try
             {
-                logService.LogInformation("Start Service Result Amendment!");
-
                 ResultAmendmentSetting resultAmendmentSetting = await systemSettingService.GetResultAmendmentSettingAsync();
                 if (!resultAmendmentSetting.ServiceFlag)
                 {
@@ -370,6 +369,70 @@
             catch (Exception ex)
             {
                 await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task VoidingSettledTicketsExecuteJobAsync()
+        {
+            try
+            {
+                var voidingSettledTicketSetting = await systemSettingService.GetVoidingSettledTicketsSettingAsync();
+                if (!voidingSettledTicketSetting.ServiceFlag)
+                {
+                    logService.LogInformation("Service Voiding Settled Tickets is shutdown.");
+                    return;
+                }
+
+                var isRunningLive = voidingSettledTicketSetting.JobStatus.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
+                var isRunningUAT = voidingSettledTicketSetting.JobStatusUAT.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
+
+                if (Environment == DefaultEnvironment)
+                {
+                    await VoidingSettledTicketsRunJobByEnviromentAsync(false, isRunningUAT, isRunningLive, voidingSettledTicketSetting, Environment);
+                }
+                else
+                {
+                    await VoidingSettledTicketsRunJobByEnviromentAsync(true, isRunningUAT, isRunningLive, voidingSettledTicketSetting, Environment);
+                }
+            }
+            catch (Exception ex)
+            {
+                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForVoidingSettledTickets);
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        protected internal virtual async Task VoidingSettledTicketsRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
+            bool isRunningLive, ResultAmendmentSetting voidingSettledTicketSetting, string Environment)
+        {
+            var LastRuntimeEnv = isUAT ? voidingSettledTicketSetting.LastRuntimeUAT : voidingSettledTicketSetting.LastRuntime;
+            var LastRuntimeNameEnv = isUAT ? SystemSettingName.LastRuntimeUAT : SystemSettingName.LastRuntime;
+            var JobStatusNameEnv = isUAT ? SystemSettingName.JobStatusUAT : SystemSettingName.JobStatus;
+            var isRunning = isUAT ? isRunningUAT : isRunningLive;
+
+            if (!isRunning)
+            {
+                await Task.WhenAll(
+                         jobRunningChecker.MarkRunning(JobName.CreateFeedbackForVoidingSettledTickets),
+                         resultAmendmentService.CreateFeedbackForResultAmendmentAsync(voidingSettledTicketSetting, isUAT, LastRuntimeEnv, LastRuntimeNameEnv,
+                            JobStatusNameEnv, Environment)
+                     );
+                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForVoidingSettledTickets);
+            }
+            else
+            {
+                logService.LogInformation("Voidding settled tickets service is running.");
+                isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingSettledTickets);
+                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                {
+                    logService.LogInformation("Update  status and return serive voidding settled tickets.");
+                    var settingJobStatus = new List<SystemSettingItem>
+                        {
+                           new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") },
+                        };
+                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_AutoVoidFB);
+                }
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBotProblemsAcc
 {
-    using CRM.BackgroundJob.Criteria.ProblemAccount;
+    using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
     using Xunit;
     public class GetProblemsAccountByLogIdTests
     {
