@@ -28,6 +28,8 @@
         <None Remove="Format_Templates\AutoCreateFeedback\TODesctiptionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\TOSolutionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\ProblemsSolutionTemplate.xml" />
+        <None Remove="Format_Templates\AutoCreateFeedback\VoidingSettledTicketDescriptionTemplate.xml" />
+        <None Remove="Format_Templates\AutoCreateFeedback\VoidingSettledTicketSolutionTemplate.xml" />
         <None Remove="logs\log.txt" />
     </ItemGroup>
 
@@ -71,6 +73,12 @@
         </Content>
         <Content Include="Format_Templates\AutoCreateFeedback\TOSolutionTemplate.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Format_Templates\AutoCreateFeedback\VoidingSettledTicketDescriptionTemplate.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Format_Templates\AutoCreateFeedback\VoidingSettledTicketSolutionTemplate.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="logs\log.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

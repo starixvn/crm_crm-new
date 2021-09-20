@@ -24,6 +24,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             IProblemsAccountFeedbackService problemsAccountFeedbackService,
             IFeedbackService feedbackService,
             ISynchronizeLicenseeService licenseeService,
+            IVoidingSettledTicketsFeedbackService voidingSettledTicketsService,
             IConfiguration configuration
             )
             : base(appSettings,
@@ -36,6 +37,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
                 problemsAccountFeedbackService,
                 feedbackService,
                 licenseeService,
+                voidingSettledTicketsService,
                 configuration)
         {
 
@@ -52,6 +54,13 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             bool isRunningLive, ResultAmendmentSetting resultAmendmentSetting, string Environment)
         {
             await base.ResultAmendmentRunJobByEnviromentAsync(isUAT, isRunningUAT,
+                isRunningLive, resultAmendmentSetting, Environment);
+        }
+
+        public async Task Public_VoidingSettledTicketsRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
+            bool isRunningLive, ResultAmendmentSetting resultAmendmentSetting, string Environment)
+        {
+            await base.VoidingSettledTicketsRunJobByEnviromentAsync(isUAT, isRunningUAT,
                 isRunningLive, resultAmendmentSetting, Environment);
         }
 

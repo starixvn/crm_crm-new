@@ -390,7 +390,7 @@
             var kO_time = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
             var startTimeOutright = amendment.KO_time.Add(timeSpan).ToString(DefaultValue.Fortmatddmmmyyyyhhmmtt);
             var race_time = amendment.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
-            var matchCodeReplace = commonFeedback.GetMatchCoddFormat(amendment.MatchCode, Language.en_US);
+            var matchCodeReplace = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.en_US);
 
             var virtualSports = GetAmendmentDescriptionVirtualSports(
                 amendment, amendmentDescTemplate, sportName,
@@ -582,7 +582,7 @@
             var awayName = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US);
             var matchCode = commonFeedback.GetMatchCode(amendment.MatchCode, Language.en_US);
             var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formatddmm);
-            var matchCodeReplace = commonFeedback.GetMatchCoddFormat(amendment.MatchCode, Language.en_US);
+            var matchCodeReplace = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.en_US);
             var outRightMessageEn = messageContent?.FirstOrDefault()?.Content_en;
             var numberGameEnGame = amendment.Sporttype == SportType161 ? leagueName : sportName;
             switch (productName)
@@ -662,12 +662,12 @@
             var leagueNameYN = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN);
             var homeNameYN = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.vi_VN);
             var awayNameYN = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.vi_VN);
-            var matchCodeReplaceYN = commonFeedback.GetMatchCoddFormat(amendment.MatchCode, Language.vi_VN);
+            var matchCodeReplaceYN = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.vi_VN);
             var sportNameSC = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN);
             var leagueNameSC = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN);
             var homeNameSC = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.zh_CN);
             var awayNameSC = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.zh_CN);
-            var matchCodeReplaceSC = commonFeedback.GetMatchCoddFormat(amendment.MatchCode, Language.zh_CN);
+            var matchCodeReplaceSC = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.zh_CN);
             var numberGameNameYn = amendment.Sporttype == SportType161 ? leagueNameYN : sportNameYN;
             var numberGameNameSc = amendment.Sporttype == SportType161 ? leagueNameSC : sportNameSC;
             var sportBook = GetAmendmentSolutionTemplateYnSportBook(

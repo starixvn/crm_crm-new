@@ -211,6 +211,8 @@
             services.AddScoped<IChatBotProblemAccountService, ChatBotProblemAccountService>();
             services.AddScoped<IChatBotResultAmendmentService, ChatBotResultAmendmentService>();
             services.AddScoped<ISynchronizeLicenseeService, SynchronizeLicenseeService>();
+            services.AddScoped<IVoidingSettledTicketsFeedbackService, VoidingSettledTicketsFeedbackService>();
+            services.AddScoped<IVoidingSettledTicketsService, VoidingSettledTicketsService>();
         }
 
         private static void RegisterHangfire(IServiceCollection services, ConnectionMultiplexer redis, IConfiguration configuration)

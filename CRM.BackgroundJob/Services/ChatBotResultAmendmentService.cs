@@ -144,10 +144,10 @@
                 var awayNameTH = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.th_TH));
                 var awayNameYN = HttpUtility.HtmlEncode(commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.vi_VN));
 
-                var matchInfoEN = HttpUtility.HtmlEncode(commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.en_US));
-                var matchInfoSC = HttpUtility.HtmlEncode(commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.zh_CN));
-                var matchInfoTH = HttpUtility.HtmlEncode(commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.th_TH));
-                var matchInfoYN = HttpUtility.HtmlEncode(commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.vi_VN));
+                var matchInfoEN = HttpUtility.HtmlEncode(commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.en_US));
+                var matchInfoSC = HttpUtility.HtmlEncode(commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.zh_CN));
+                var matchInfoTH = HttpUtility.HtmlEncode(commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.th_TH));
+                var matchInfoYN = HttpUtility.HtmlEncode(commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.vi_VN));
 
                 stringBuilderEventData.AppendFormat(XmlTemplate,
                         transaction.TicketEventId, transaction.ProductId, transaction.EventDate,

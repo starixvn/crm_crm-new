@@ -37,6 +37,7 @@
         private readonly IProblemsAccountFeedbackService problemsAccountFeedbackService;
         private readonly IFeedbackService feedbackService;
         private readonly ISynchronizeLicenseeService licenseeService;
+        private readonly IVoidingSettledTicketsFeedbackService voidingSettledTicketsService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -54,6 +55,7 @@
             IProblemsAccountFeedbackService problemsAccountFeedbackService,
             IFeedbackService feedbackService,
             ISynchronizeLicenseeService licenseeService,
+            IVoidingSettledTicketsFeedbackService voidingSettledTicketsService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -67,6 +69,7 @@
             this.problemsAccountFeedbackService = problemsAccountFeedbackService;
             this.feedbackService = feedbackService;
             this.licenseeService = licenseeService;
+            this.voidingSettledTicketsService = voidingSettledTicketsService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -414,7 +417,7 @@
             {
                 await Task.WhenAll(
                          jobRunningChecker.MarkRunning(JobName.CreateFeedbackForVoidingSettledTickets),
-                         resultAmendmentService.CreateFeedbackForResultAmendmentAsync(voidingSettledTicketSetting, isUAT, LastRuntimeEnv, LastRuntimeNameEnv,
+                         voidingSettledTicketsService.CreateFeedbackForVoidingSettledTickets(voidingSettledTicketSetting, isUAT, LastRuntimeEnv, LastRuntimeNameEnv,
                             JobStatusNameEnv, Environment)
                      );
                 await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForVoidingSettledTickets);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CRM.BackgroundJob.Criteria.ResultAmendment
+﻿namespace CRM.BackgroundJob.Criteria.ResultAmendment
 {
     using Fanex.Data.Repository;
     public class EditAmendmentAutoFeedbackInfoUpdCommand : NonQueryCommand

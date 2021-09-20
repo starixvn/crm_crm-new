@@ -34,6 +34,7 @@
             jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForTurnoverControl);
             jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForProblemsAccount);
             jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingSettledTickets);
             service.Received().Protected("RemoveRecurringJobs");
             service.Received().Protected("RunHangfireJobs");
         }
@@ -313,7 +314,26 @@
                 Arg.Any<RecurringJobOptions>());
         }
 
+        [Fact]
+        public void CheckEnabledJobAutoFeedback_EnabledCreateFeedbackForVoidingSettledTickets_ExpectedAddRecurringJob()
+        {
+            // Arrange
+            var jobSettings = new List<HangfireJobSetting>
+            {
+                new HangfireJobSetting { JobName = "CreateFeedbackForVoidingSettledTickets", IsEnabled = true }
+            };
+            var service = MockService(jobSettings);
+            service.Protected("IsEnabledJob", "CreateFeedbackForVoidingSettledTickets").Returns(true);
 
+            // Act
+            service.Public_CheckEnabledJobAutoFeedback();
+
+            // Assert
+            recurringJob.Received().AddOrUpdate("Create Feedback For Voiding Settled Tickets",
+                Arg.Is<Job>(job => job.Method.Name == "CreateFeedbackForVoidingSettledTickets"),
+                "* * * * *",
+                Arg.Any<RecurringJobOptions>());
+        }
 
         [Fact]
         public void CheckEnabledJobAutoFeedback_SynchronizeNewLicenseeOICToSiteSetting_ExpectedAddRecurringJob()

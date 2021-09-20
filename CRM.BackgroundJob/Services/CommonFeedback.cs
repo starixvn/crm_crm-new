@@ -44,6 +44,9 @@
         Task<CommandResult> EditSystemSettingAsyncByEnv(string JobStatusNameEnv,
             string LastRuntimeNameEnv, string JobStatusValue, string serviceName);
 
+        Task<CommandResult> EditSystemSettingAsyncByEnvFormatDate(string JobStatusNameEnv,
+            string LastRuntimeNameEnv, string JobStatusValue, string serviceName);
+
         Task<CommandResult> EditSystemSettingUpdateLastLogIdAsyncByEnv(string JobStatusNameEnv, string LastRuntimeNameEnv,
             string lastLogIdName, int maxLastLogId, string serviceName);
         Task<CommandResult> EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync(
@@ -54,7 +57,7 @@
            string maxLastSubmitTime,
            string serviceName);
 
-        string GetMatchCoddFormat(string matchCode, string language);
+        string GetMatchCodeFormat(string matchCode, string language);
     }
     public class CommonFeedback : ICommonFeedback
     {
@@ -185,6 +188,17 @@
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
         }
 
+        public async Task<CommandResult> EditSystemSettingAsyncByEnvFormatDate(string JobStatusNameEnv,
+            string LastRuntimeNameEnv, string JobStatusValue, string serviceName)
+        {
+            var settingJobStatus = new List<SystemSettingItem>
+            {
+                new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatusValue},
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") },
+            };
+            return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
+        }
+
         public async Task<CommandResult> EditSystemSettingUpdateLastLogIdAsyncByEnv(string JobStatusNameEnv, string LastRuntimeNameEnv,
             string lastLogIdName, int maxLastLogId, string serviceName)
         {
@@ -214,7 +228,7 @@
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
         }
 
-        public string GetMatchCoddFormat(string matchCode, string language)
+        public string GetMatchCodeFormat(string matchCode, string language)
         {
             var MatchCodeReplace = matchCode;
             if (!string.IsNullOrEmpty(matchCode))

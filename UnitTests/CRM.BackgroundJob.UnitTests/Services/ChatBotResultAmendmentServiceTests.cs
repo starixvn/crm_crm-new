@@ -182,10 +182,10 @@
             commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.th_TH).Returns("awayNameTH");
             commonFeedback.GetTeamName(transaction.AwayId.ToString(), Language.vi_VN).Returns("awayNameYN");
 
-            commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.en_US).Returns("matchInfoEN");
-            commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.zh_CN).Returns("matchInfoSC");
-            commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.th_TH).Returns("matchInfoTH");
-            commonFeedback.GetMatchCoddFormat(transaction.MatchCode, Language.vi_VN).Returns("matchInfoYN");
+            commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.en_US).Returns("matchInfoEN");
+            commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.zh_CN).Returns("matchInfoSC");
+            commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.th_TH).Returns("matchInfoTH");
+            commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.vi_VN).Returns("matchInfoYN");
 
             stringBuilderEventData.AppendFormat(XmlTemplate,
                         transaction.TicketEventId, transaction.ProductId, transaction.EventDate,

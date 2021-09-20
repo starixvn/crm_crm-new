@@ -33,6 +33,7 @@
         private IConfiguration configuration;
         private IResultAmendmentService resultAmendmentService;
         private IFeedbackService feedbackService;
+        private IVoidingSettledTicketsFeedbackService voidingSettledTicketsService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -428,38 +429,38 @@
 
         #region ResultAmendmentExecuteJobAsync
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
+        public async Task VoidingSettledTicketsExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
         {
             // Arrange
             var exception = fixture.Create<Exception>();
             var service = GetService();
-            systemSettingService.When(x => x.GetResultAmendmentSettingAsync()).Throw(exception);
+            systemSettingService.When(x => x.GetVoidingSettledTicketsSettingAsync()).Throw(exception);
 
             // Assert
-            await service.ResultAmendmentExecuteJobAsync();
+            await service.VoidingSettledTicketsExecuteJobAsync();
 
             // Act
             await logService.Received().ErrorAsync(exception);
-            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingSettledTickets);
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        public async Task VoidingSettledTicketsExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
         {
             // Arrange
             var setting = new ResultAmendmentSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            systemSettingService.GetVoidingSettledTicketsSettingAsync().Returns(setting);
 
             // Act
-            await service.ResultAmendmentExecuteJobAsync();
+            await service.VoidingSettledTicketsExecuteJobAsync();
 
             // Assert
-            logService.Received().LogInformation("Service Result Amendment is shutdown.");
+            logService.Received().LogInformation("Service Voiding Settled Tickets is shutdown.");
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_LIVEEnvironment_ExpectedCallExactFunction()
+        public async Task VoidingSettledTicketsExecuteJobAsync_LIVEEnvironment_ExpectedCallExactFunction()
         {
             // Arrange
             var setting = new ResultAmendmentSetting
@@ -470,20 +471,20 @@
             };
             var service = GetService();
             var env = Constants.DefaultEnvironment;
-            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            systemSettingService.GetVoidingSettledTicketsSettingAsync().Returns(setting);
             configuration.GetValue<string>("SiteEnvironment").Returns(env);
 
             // Act
-            await service.ResultAmendmentExecuteJobAsync();
+            await service.VoidingSettledTicketsExecuteJobAsync();
 
             // Assert
-            service.Received().Protected("ResultAmendmentRunJobByEnviromentAsync",
+            service.Received().Protected("VoidingSettledTicketsRunJobByEnviromentAsync",
                 false, false, true, setting, Constants.DefaultEnvironment
                 );
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
         {
             // Arrange
             var setting = new ResultAmendmentSetting
@@ -494,18 +495,18 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+            systemSettingService.GetVoidingSettledTicketsSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingSettledTickets).Returns(false);
 
             // Act
-            await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, true, false, setting, "LIVE");
+            await service.Public_VoidingSettledTicketsRunJobByEnviromentAsync(false, true, false, setting, "LIVE");
 
             // Assert
             await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
         {
             // Arrange
             var setting = new ResultAmendmentSetting
@@ -516,17 +517,17 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingSettledTickets).Returns(false);
 
             // Act
-            await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, true, false, setting, "UAT");
+            await service.Public_VoidingSettledTicketsRunJobByEnviromentAsync(true, true, false, setting, "UAT");
 
             // Assert
-            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_ResultAmendment);
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_AutoVoidFB);
         }
 
         [Fact]
-        public async Task ResultAmendmentRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
         {
             // Arrange
             var setting = new ResultAmendmentSetting
@@ -537,18 +538,18 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+            systemSettingService.GetVoidingSettledTicketsSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingSettledTickets).Returns(false);
 
             // Act
-            await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, true, false, setting, "UAT");
+            await service.Public_VoidingSettledTicketsRunJobByEnviromentAsync(true, true, false, setting, "UAT");
 
             // Assert
             await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
         }
 
         [Fact]
-        public async Task ResultAmendmentRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
         {
             // Arrange
             var setting = new ResultAmendmentSetting
@@ -559,19 +560,19 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+            systemSettingService.GetVoidingSettledTicketsSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingSettledTickets).Returns(false);
 
             // Act
-            await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, true, true, setting, "LIVE");
+            await service.Public_VoidingSettledTicketsRunJobByEnviromentAsync(false, true, true, setting, "LIVE");
 
             // Assert
-            logService.Received().LogInformation("Update  status and return serive result amendment.");
-            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_ResultAmendment);
+            logService.Received().LogInformation("Update  status and return serive voidding settled tickets.");
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_AutoVoidFB);
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsLIVEAndJobIsNotRunning_CallExactFunction()
+        public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsNotRunning_CallExactFunction()
         {
             // Arrange
             var setting = new ResultAmendmentSetting
@@ -582,20 +583,20 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
-            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+            systemSettingService.GetVoidingSettledTicketsSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingSettledTickets).Returns(false);
 
             // Act
-            await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, false, false, setting, "LIVE");
+            await service.Public_VoidingSettledTicketsRunJobByEnviromentAsync(false, false, false, setting, "LIVE");
 
             // Assert
-            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForResultAmendment);
-            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting, false, setting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
-            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForVoidingSettledTickets);
+            await voidingSettledTicketsService.Received().CreateFeedbackForVoidingSettledTickets(setting, false, setting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingSettledTickets);
         }
 
         [Fact]
-        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsUATAndJobIsNotRunning_CallExactFunction()
+        public async Task VoidingSettledTicketsRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsNotRunning_CallExactFunction()
         {
             // Arrange
             var setting = new ResultAmendmentSetting
@@ -606,16 +607,16 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            systemSettingService.GetVoidingSettledTicketsSettingAsync().Returns(setting);
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
 
             // Act
-            await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, false, false, setting, "UAT");
+            await service.Public_VoidingSettledTicketsRunJobByEnviromentAsync(true, false, false, setting, "UAT");
 
             // Assert
-            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForResultAmendment);
-            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting, true, setting.LastRuntimeUAT, SystemSettingName.LastRuntimeUAT, SystemSettingName.JobStatusUAT, "UAT");
-            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForVoidingSettledTickets);
+            await voidingSettledTicketsService.Received().CreateFeedbackForVoidingSettledTickets(setting, true, setting.LastRuntimeUAT, SystemSettingName.LastRuntimeUAT, SystemSettingName.JobStatusUAT, "UAT");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForVoidingSettledTickets);
         }
 
         #endregion ResultAmendmentExecuteJobAsync
@@ -882,6 +883,200 @@
         }
         #endregion SynchronizeNewLicenseeOICExecuteJobAsync
 
+        #region VoidingSettledTicketsExecuteJobAsync
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_Exception_ExpectedWriteLogAndClearJob()
+        {
+            // Arrange
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            systemSettingService.When(x => x.GetResultAmendmentSettingAsync()).Throw(exception);
+
+            // Assert
+            await service.ResultAmendmentExecuteJobAsync();
+
+            // Act
+            await logService.Received().ErrorAsync(exception);
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+
+            // Act
+            await service.ResultAmendmentExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service Result Amendment is shutdown.");
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_LIVEEnvironment_ExpectedCallExactFunction()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                JobStatus = "running",
+                JobStatusUAT = "completed"
+            };
+            var service = GetService();
+            var env = Constants.DefaultEnvironment;
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            configuration.GetValue<string>("SiteEnvironment").Returns(env);
+
+            // Act
+            await service.ResultAmendmentExecuteJobAsync();
+
+            // Assert
+            service.Received().Protected("ResultAmendmentRunJobByEnviromentAsync",
+                false, false, true, setting, Constants.DefaultEnvironment
+                );
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, true, false, setting, "LIVE");
+
+            // Assert
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now.AddMinutes(-6),
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+
+            // Act
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, true, false, setting, "UAT");
+
+            // Assert
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_ResultAmendment);
+        }
+
+        [Fact]
+        public async Task ResultAmendmentRunJobByEnviromentAsync_EnvironmentIsUATAndJobIsRunningAndLastRuntimeIsLowerThanNow_DoNothing()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, true, false, setting, "UAT");
+
+            // Assert
+            await systemSettingService.DidNotReceive().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>());
+        }
+
+        [Fact]
+        public async Task ResultAmendmentRunJobByEnviromentAsync_EnvironmentIsLIVEAndJobIsRunningAndLastRuntimeIsGreaterThanNow_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now.AddMinutes(-6),
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+
+            // Act
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, true, true, setting, "LIVE");
+
+            // Assert
+            logService.Received().LogInformation("Update  status and return serive result amendment.");
+            await systemSettingService.Received().EditSystemSettingAsync(Arg.Any<IEnumerable<SystemSettingItem>>(), Constants.ServiceName_ResultAmendment);
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsLIVEAndJobIsNotRunning_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntime = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount).Returns(false);
+
+            // Act
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(false, false, false, setting, "LIVE");
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForResultAmendment);
+            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting, false, setting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+        }
+
+        [Fact]
+        public async Task ResultAmendmentExecuteJobAsync_EnvironmentIsUATAndJobIsNotRunning_CallExactFunction()
+        {
+            // Arrange
+            var setting = new ResultAmendmentSetting
+            {
+                ServiceFlag = true,
+                LastRuntimeUAT = DateTime.Now,
+                JobStatus = JobStatus.Running,
+                JobStatusUAT = JobStatus.Running
+            };
+            var service = GetService();
+            systemSettingService.GetResultAmendmentSettingAsync().Returns(setting);
+            jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment).Returns(false);
+
+            // Act
+            await service.Public_ResultAmendmentRunJobByEnviromentAsync(true, false, false, setting, "UAT");
+
+            // Assert
+            await jobRunningChecker.Received().MarkRunning(JobName.CreateFeedbackForResultAmendment);
+            await resultAmendmentService.Received().CreateFeedbackForResultAmendmentAsync(setting, true, setting.LastRuntimeUAT, SystemSettingName.LastRuntimeUAT, SystemSettingName.JobStatusUAT, "UAT");
+            await jobRunningChecker.Received().ClearRunning(JobName.CreateFeedbackForResultAmendment);
+        }
+
+        #endregion VoidingSettledTicketsExecuteJobAsync
+
         #region Helpers
 
         private AutoFeedbackServiceTestable GetService()
@@ -902,6 +1097,7 @@
             feedbackService = Substitute.For<IFeedbackService>();
             licenseeService = Substitute.For<ISynchronizeLicenseeService>(); 
             configuration = Substitute.For<IConfiguration>();
+            voidingSettledTicketsService = Substitute.For<IVoidingSettledTicketsFeedbackService>();
             return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
@@ -913,6 +1109,7 @@
                 problemsAccountFeedbackService,
                 feedbackService,
                 licenseeService,
+                voidingSettledTicketsService,
                 configuration);
         }
 

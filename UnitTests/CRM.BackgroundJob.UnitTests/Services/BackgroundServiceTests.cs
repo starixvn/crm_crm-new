@@ -321,6 +321,56 @@
 
         #endregion SynchronizeNewLicenseeOICToSiteSetting
 
+        #region CreateFeedbackForVoidingSettledTickets
+
+        [Fact]
+        public async Task CreateFeedbackForVoidingSettledTickets_Exception_ExpectedWriteLog()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var exception = fixture.Create<Exception>();
+            var service = GetService();
+            maintenanceService.When(x => x.GetUnderMaintenanceTimeAsync()).Throw(exception);
+
+            // Act
+            await service.CreateFeedbackForVoidingSettledTickets();
+
+            // Assert
+            await logService.Received().ErrorAsync(exception);
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForVoidingSettledTickets_IsUnderMaintenance_ExpectedWriteLog()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = true };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForVoidingSettledTickets();
+
+            // Assert
+            logService.Received().LogInformation("UM time.");
+        }
+
+        [Fact]
+        public async Task CreateFeedbackForVoidingSettledTickets_WhenCalled_ExpectedCreateFeedbackForResultAmendment()
+        {
+            // Arrange
+            var underMaintenanceTime = new UnderMaintenanceTime { IsUnderMaintenanceTime = false };
+            var service = GetService();
+            maintenanceService.GetUnderMaintenanceTimeAsync().Returns(underMaintenanceTime);
+
+            // Act
+            await service.CreateFeedbackForVoidingSettledTickets();
+
+            // Assert
+            await autoFeedbackService.Received().VoidingSettledTicketsExecuteJobAsync();
+        }
+
+        #endregion CreateFeedbackForVoidingSettledTickets
+
         #region PullMessageForChatBotAsync
 
         [Fact]
