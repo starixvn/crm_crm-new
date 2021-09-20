@@ -316,8 +316,18 @@
         protected internal virtual string GetRelatedCustomerXml(VoidingAutoFeedbackInfo feedbackInfo)
         {
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
+
+            if (string.IsNullOrEmpty(feedbackInfo.AffectedId))
+            {
+                return stringBuilder.Append(Constants.EndRootTag).ToString();
+            }
+            var relateCustIds = feedbackInfo.AffectedId.Split(",");
+            var userNames = feedbackInfo.AffectedName.Split(",");
             const string XmlTemplate = DefaultValue.RelatedCustomerXml;
-            stringBuilder.AppendFormat(XmlTemplate, feedbackInfo.HeadlineId, feedbackInfo.AffectedId, feedbackInfo.AffectedName);
+            for (int i = 0; i < relateCustIds.Count(); i++)
+            {
+                stringBuilder.AppendFormat(XmlTemplate, feedbackInfo.HeadlineId, relateCustIds[i], userNames[i]);
+            }
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
