@@ -2,7 +2,6 @@
 {
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Services;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;

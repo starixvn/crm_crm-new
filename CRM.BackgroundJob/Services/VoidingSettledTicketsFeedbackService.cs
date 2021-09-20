@@ -43,7 +43,7 @@
 
 #pragma warning disable S107 // Methods should not have too many parameters
         public VoidingSettledTicketsFeedbackService(
-           IOptionsSnapshot<AppJobSettings> appSettings,
+            IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             ICRMLogService logService,
