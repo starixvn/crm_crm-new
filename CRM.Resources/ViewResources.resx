@@ -294,4 +294,10 @@
   <data name="CommunicationLog" xml:space="preserve">
     <value>Communication Log</value>
   </data>
+  <data name="DoNotDeleteCommunicationLogPermission" xml:space="preserve">
+    <value>You don't have permission to delete.</value>
+  </data>
+  <data name="DoNotEditCommunicationLogPermission" xml:space="preserve">
+    <value>You don't have permission to update.</value>
+  </data>
 </root>

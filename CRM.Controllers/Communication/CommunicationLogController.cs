@@ -4,9 +4,11 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Communication;
     using CRM.Models.Customer;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Communication;
     using Fanex.NAP.Client.Configuration;
@@ -59,11 +61,67 @@
             return Json(new { data = logs, mainCategories });
         }
 
-        public async Task<IActionResult> GetAllStatus()
+        public async Task<IActionResult> GetAllStatus(bool isEdit)
         {
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            statuses = statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted);
+            if (!isEdit || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
+            {
+                statuses = statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted);
+            }
             return Json(statuses);
         }
-    }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        public async Task<IActionResult> EditCommunicationLog([FromBody] EditCommunicationLogCommand command)
+        {
+            CommandResult commandResult = CheckEditCustomerFeedbackPermission(command);
+            if (commandResult.IsSuccessful)
+            {
+                command.UserId = napSession.UserId;
+                command.IP = ClientIP;
+                if (command.IsReviewed)
+                {
+                    command.ReviewerId = napSession.UserId;
+                }
+                else
+                {
+                    command.Review = string.Empty;
+                }
+
+                commandResult = await baseService.ExecuteNonQueryAsync(command);
+            }
+
+            return Json(commandResult);
+        }
+
+        private CommandResult CheckEditCustomerFeedbackPermission(EditCommunicationLogCommand command)
+        {
+            var commandResult = new CommandResult { Code = 0 };
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+                || (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host) &&
+                    command.UpdateReviewedMode != EditReviewedModeConstants.NotChange))
+            {
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.DoNotEditCommunicationLogPermission
+                };
+            }
+
+            var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted;
+            var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusId == (int)Core.Enumerables.FeedbackStatus.Deleted;
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+                && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
+            {
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.DoNotDeleteCommunicationLogPermission
+                };
+            }
+
+            return commandResult;
+        }
+    } 
 }

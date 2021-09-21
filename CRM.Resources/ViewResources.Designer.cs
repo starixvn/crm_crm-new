@@ -223,11 +223,29 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to delete..
+        /// </summary>
+        public static string DoNotDeleteCommunicationLogPermission {
+            get {
+                return ResourceManager.GetString("DoNotDeleteCommunicationLogPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have permission to delete feedback..
         /// </summary>
         public static string DoNotDeleteFeedbackPermission {
             get {
                 return ResourceManager.GetString("DoNotDeleteFeedbackPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to update..
+        /// </summary>
+        public static string DoNotEditCommunicationLogPermission {
+            get {
+                return ResourceManager.GetString("DoNotEditCommunicationLogPermission", resourceCulture);
             }
         }
         
