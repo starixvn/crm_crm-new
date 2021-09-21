@@ -143,6 +143,7 @@
         <Setting Key="Acc_CRM_FeedbackSelByID" SpName="Acc_CRM_FeedbackSelByID" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackGetDeleted" SpName="Acc_CRM_FeedbackGetDeleted" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_UpdMultipleReviewAndStatus" SpName="Acc_CRM_UpdMultipleReviewAndStatus" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_FeedbackDoubleCheck" SpName="Acc_CRM_FeedbackDoubleCheck" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Funtcion name="Customer">
         <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet">
@@ -184,6 +185,7 @@
         <Mapping DataField="ReviewBy" ObjectProperty="Reviewer" />
       </Setting>
       <Setting Key="Acc_CRM_CommunicationLogUpd" SpName="Acc_CRM_CommunicationLogUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+      <Setting Key="Acc_CRM_CommunicationLogIns" SpName="Acc_CRM_CommunicationLogIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Funtcion>
     <Function Name="Multiple Logs">
         <Setting Key="CRM_MultipleLogs_VerifyCustomer" SpName="CRM_MultipleLogs_VerifyCustomer" DbName="DBCRM.bodb_CRM.bodbAdminNet" />

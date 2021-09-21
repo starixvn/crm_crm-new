@@ -35,6 +35,8 @@
         Task<IEnumerable<DeletedFeedback>> GetManageFeedbackAsync(ManageFeedbackCriteria criteria);
 
         Task<CommunicationLog> GetLogByFeedbackIdAsync(int feedbackId);
+
+        Task<bool> CheckFeedbackDuplicationAsync(CheckFeedbackDuplicationCriteria criteria);
     }
 
     public class FeedbackService : IFeedbackService
@@ -189,6 +191,11 @@
             }
 
             return communicationLog;
+        }
+
+        public async Task<bool> CheckFeedbackDuplicationAsync(CheckFeedbackDuplicationCriteria criteria)
+        {
+            return await baseService.GetDataEntityAsync<bool>(criteria);
         }
     }
 }
