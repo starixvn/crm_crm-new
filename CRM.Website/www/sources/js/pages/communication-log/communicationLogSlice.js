@@ -5,8 +5,12 @@ const communicationLogSlice = createSlice({
     initialState: {
         gridData: null,
         allStatus: null,
-        gridParams: { pageIndex: 1, pageSize: 100 },
-        editNoOfInquiryDialog: { show: false }
+        gridParams: null,
+        gridPages: { pageIndex: 1, pageSize: 100 },
+        editNoOfInquiryDialog: { show: false },
+        editCommunicationDialog: { show: false },
+        customerFeedback: null,
+        feedbackSubjectTemplates: []
     },
     reducers: {
         setLogsByCustomerId: (state, action) => {
@@ -18,8 +22,20 @@ const communicationLogSlice = createSlice({
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
+        setGridPages: (state, action) => {
+            state.gridPages = action.payload;
+        },
         setEditNoOfInquiryDialog: (state, action) => {
             state.editNoOfInquiryDialog = action.payload;
+        },
+        setEditCommunicationDialog: (state, action) => {
+            state.editCommunicationDialog = action.payload;
+        },
+        setCustomerFeedbackById: (state, action) => {
+            state.customerFeedback = action.payload;
+        },
+        setFeedbackSubjectTemplates: (state, action) => {
+            state.feedbackSubjectTemplates = action.payload;
         }
     }
 });
@@ -30,7 +46,11 @@ export const {
     setLogsByCustomerId,
     setAllStatus,
     setGridParams,
-    setEditNoOfInquiryDialog
+    setGridPages,
+    setEditNoOfInquiryDialog,
+    setEditCommunicationDialog,
+    setCustomerFeedbackById,
+    setFeedbackSubjectTemplates
 } = actions;
 
 export default reducer;

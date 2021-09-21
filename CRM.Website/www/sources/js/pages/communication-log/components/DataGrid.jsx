@@ -30,8 +30,8 @@ export class DataGrid extends Component {
     };
 
     buildBody = () => {
-        const { gridData, gridParams } = this.props;
-        const { pageIndex, pageSize } = gridParams;
+        const { gridData, gridPages } = this.props;
+        const { pageIndex, pageSize } = gridPages;
         const skip = pageSize * (pageIndex - 1);
         const data = gridData.data.slice(skip, pageSize * pageIndex);
 
@@ -64,6 +64,10 @@ export class DataGrid extends Component {
         this.props.setEditNoOfInquiryDialog({ show: true, feedbackId: id });
     };
 
+    handleEditCommunicationLog = id => {
+        this.props.setEditCommunicationDialog({ show: true, feedbackId: id });
+    };
+
     renderCategoryColumn = item => {
         const { mainCategories } = this.props.gridData;
         const groupCategory = this.handleGroupCategory(item.communicationSettings);
@@ -90,7 +94,9 @@ export class DataGrid extends Component {
         return (
             <Row key={index} className={item.status === 'Pending' ? 'pending' : item.status === 'Closed' ? 'closed' : ''}>
                 <Cell className="text-center">
-                    {item.feedbackId}
+                {
+                    <span className='link-click' onClick={() => this.handleEditCommunicationLog(item.feedbackId)}>{item.feedbackId}</span>
+                }
                 </Cell>
                 <Cell className="text-center">
                     <span className="rounded-circle fa fa-pencil icon-edit"
@@ -109,15 +115,15 @@ export class DataGrid extends Component {
     };
 
     onPaging = (pageIndex, pageSize) => {
-        this.props.setGridParams({pageIndex: pageIndex, pageSize: pageSize});
+        this.props.setGridPages({pageIndex: pageIndex, pageSize: pageSize});
     };
 
     render() {
-        const { gridData, gridParams } = this.props;
+        const { gridData, gridPages } = this.props;
         if (!gridData) {
             return null;
         }
-        const { pageIndex, pageSize } = gridParams;
+        const { pageIndex, pageSize } = gridPages;
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
@@ -149,8 +155,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData } = state;
-    return { gridParams, gridData };
+    const { gridPages, gridData } = state;
+    return { gridPages, gridData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

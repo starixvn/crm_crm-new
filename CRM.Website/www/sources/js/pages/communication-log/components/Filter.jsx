@@ -29,14 +29,16 @@ export class Filter extends Component {
 
     componentDidMount() {
         const { fromDate, toDate } = this.state;
-        this.props.getLogsByCustomerId({
+        const params = {
             customerId: 1754,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             handler: '',
             statusId: 0,
             toDate: DateTimeService.toShortDateFormat(toDate)
-        });
-        this.props.getAllStatus();
+        };
+        this.props.getLogsByCustomerId(params);
+        this.props.setGridParams(params);
+        this.props.getAllStatus({ isEdit: false });
     }
 
     handleChange = event => {
@@ -51,19 +53,13 @@ export class Filter extends Component {
     };
 
     handleChangeFromDate = fromDate => {
-        this.setState({ fromDate: fromDate,minToDate: fromDate });
+        this.setState({ fromDate: fromDate, minToDate: fromDate });
     };
 
     handleSubmit = event => {
         event.preventDefault();
-        const { fromDate, toDate, statusId, handler } = this.state;
-        const params = {
-            customerId: 1754,
-            fromDate: DateTimeService.toShortDateTimeFormat(fromDate),
-            toDate: DateTimeService.toShortDateTimeFormat(toDate),
-            statusId: statusId,
-            handler: handler
-        }
+        const { statusId, handler } = this.state;
+        const params = { ...this.props.gridParams, statusId: statusId, handler: handler };
         this.props.getLogsByCustomerId(params);
     };
 
@@ -148,8 +144,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allStatus } = state;
-    return { allStatus };
+    const { gridParams, allStatus } = state;
+    return { gridParams, allStatus };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);
