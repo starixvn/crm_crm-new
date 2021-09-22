@@ -66,48 +66,39 @@
             DateTime lastRuntimeEnv, string lastRuntimeNameEnv,
             string jobStatusNameEnv, string environment)
         {
+            await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoVoidFB);
 
-            try
+            var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
+            IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
+            IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
+
+            var messageVoidSettled = await voidingSettledTicketsService.GetMessageVoidSettledAsync();
+            await voidingSettledTicketsService.ImportMessageVoidSettledAsync(messageVoidSettled);
+            var voidingMessages = await voidingSettledTicketsService.GetAutoVoidingMessageAsync(voidingSettledTicketSetting, environment);
+            var failVoidingMessages = await voidingSettledTicketsService.GetFailVoidingMessageAsync();
+            var voidingMessageDistinct = voidingMessages.Concat(failVoidingMessages).Distinct().ToList();
+            var voidingTickets = await voidingSettledTicketsService.GetAutoVoidingTicketAsync(voidingSettledTicketSetting, voidingMessageDistinct, environment);
+            if (voidingTickets.Item2.Any())
             {
-                await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ResultAmendment);
-
-                var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
-                IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
-                IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
-
-                var messageVoidSettled = await voidingSettledTicketsService.GetMessageVoidSettledAsync();
-                await voidingSettledTicketsService.ImportMessageVoidSettledAsync(messageVoidSettled);
-               var voidingMessages = await voidingSettledTicketsService.GetAutoVoidingMessageAsync(voidingSettledTicketSetting, environment);
-                var failVoidingMessages = await voidingSettledTicketsService.GetFailVoidingMessageAsync();
-                var voidingMessageDistinct = voidingMessages.Concat(failVoidingMessages).Distinct().ToList();
-                var voidingTickets = await voidingSettledTicketsService.GetAutoVoidingTicketAsync(voidingSettledTicketSetting, voidingMessageDistinct, environment);
-                if (voidingTickets.Item2.Any())
-                {
-                    await voidingSettledTicketsService.UpdateAutoVoidingMessageAsync(voidingTickets.Item2, environment);
-                }
-                if (!voidingTickets.Item1.Any())
-                {
-                    await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
-                    logService.LogInformation("Do not have any data set1, return voiding settled tickets!!!");
-                    return;
-                }
-                await voidingSettledTicketsService.ImportVoidingAutoFeedbackInfoAsync(voidingTickets.Item1, environment);
-                var feedbackInfos = await voidingSettledTicketsService.GetVoidingAutoFeedbackInfoAsync(voidingSettledTicketSetting.BatchSize);
-                var groupFeedbackByMsgId = feedbackInfos.Item1.GroupBy(x => x.MessageId).Select(y => y.FirstOrDefault());
-                foreach (var feedbackInfo in groupFeedbackByMsgId)
-                {
-                    var eventDetails = feedbackInfos.Item2.Where(x => x.LogVoidingID == feedbackInfo.LogVoidingID);
-                    var messages = await feedbackTransaction.GetMessageContentInfoAsync(feedbackInfo.MessageId);
-                    await CreateVoidingSettledTicketsAsync(feedbackInfo, eventDetails, messages, settings, settingMappings, environment);
-                }
-
-                await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ResultAmendment);
+                await voidingSettledTicketsService.UpdateAutoVoidingMessageAsync(voidingTickets.Item2, environment);
             }
-            catch (Exception e)
+            if (!voidingTickets.Item1.Any())
             {
-
-                throw;
+                await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoVoidFB);
+                logService.LogInformation("Do not have any data set1, return voiding settled tickets!!!");
+                return;
             }
+            await voidingSettledTicketsService.ImportVoidingAutoFeedbackInfoAsync(voidingTickets.Item1, environment);
+            var feedbackInfos = await voidingSettledTicketsService.GetVoidingAutoFeedbackInfoAsync(voidingSettledTicketSetting.BatchSize);
+            var groupFeedbackByMsgId = feedbackInfos.Item1.GroupBy(x => x.MessageId).Select(y => y.FirstOrDefault());
+            foreach (var feedbackInfo in groupFeedbackByMsgId)
+            {
+                var eventDetails = feedbackInfos.Item2.Where(x => x.LogVoidingID == feedbackInfo.LogVoidingID);
+                var messages = await feedbackTransaction.GetMessageContentInfoAsync(feedbackInfo.MessageId);
+                await CreateVoidingSettledTicketsAsync(feedbackInfo, eventDetails, messages, settings, settingMappings, environment);
+            }
+
+            await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoVoidFB);
         }
 
         protected internal virtual async Task CreateVoidingSettledTicketsAsync(
@@ -276,12 +267,12 @@
                 };
         }
 
-        protected internal virtual IList<SystemSettingMapping> GetVoidingSettledTicketsBettype(
+        protected internal virtual List<SystemSettingMapping> GetVoidingSettledTicketsBettype(
             string[] listBetTypes,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             logService.LogInformation("Begin mapping betType.");
-            IList<SystemSettingMapping> bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+            var bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && listBetTypes.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
             logService.LogInformation("End mapping betType.");
@@ -338,7 +329,7 @@
             var content_en = messages?.FirstOrDefault()?.Content_en;
             var content_cs = messages?.FirstOrDefault()?.Content_cs;
             var content_yn = messages?.FirstOrDefault()?.Content_vn;
-            if (feedbackInfo.IsVip)
+            if (!feedbackInfo.IsVip)
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENSC,
                     content_en, content_cs, feedbackInfo.AffectedName, Constants.LineBreak
@@ -346,7 +337,7 @@
             }
             else
             {
-                stringBuilder.AppendFormat(ticketSolTemplate.SolutionENSC,
+                stringBuilder.AppendFormat(ticketSolTemplate.SolutionENYN,
                    content_en, content_yn, feedbackInfo.AffectedName, Constants.LineBreak
                );
             }
@@ -425,7 +416,7 @@
                 if (productName == "Virtual Sports" && (eventDetail.Sporttype > SportType180 && eventDetail.Sporttype < SportType186))
                 {
                     stringBuilder.AppendFormat(line, Constants.Break);
-                    stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports, EventdateGMT4Format, sportName, race_time, Constants.Break);
+                    stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports181185, EventdateGMT4Format, sportName, race_time, Constants.Break);
                 }
 
                 if (productName == "Number Game")

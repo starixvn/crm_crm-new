@@ -17,7 +17,7 @@
         Task<IEnumerable<MessageVoidSettled>> GetMessageVoidSettledAsync();
         Task<IEnumerable<MessageVoidSettled>> GetAutoVoidingMessageAsync(ResultAmendmentSetting voidingSettledTicketSetting, string environment);
         Task<ValueTuple<IEnumerable<VoidingTicketEventInfo>, IEnumerable<MsgTarget>>> GetAutoVoidingTicketAsync(
-            ResultAmendmentSetting voidingSettledTicketSetting, IEnumerable<MessageVoidSettled> voidSettleds, string environment
+            ResultAmendmentSetting voidingSettledTicketSetting, List<MessageVoidSettled> voidSettleds, string environment
             );
         Task<IEnumerable<MessageVoidSettled>> GetFailVoidingMessageAsync();
         Task<ValueTuple<IEnumerable<VoidingAutoFeedbackInfo>, IEnumerable<AutoVoidingEventDetails>>> GetVoidingAutoFeedbackInfoAsync(int batchSize);
@@ -55,7 +55,7 @@
         }
 
         public async Task<ValueTuple<IEnumerable<VoidingTicketEventInfo>, IEnumerable<MsgTarget>>> GetAutoVoidingTicketAsync(
-            ResultAmendmentSetting voidingSettledTicketSetting, IEnumerable<MessageVoidSettled> voidSettleds, string environment
+            ResultAmendmentSetting voidingSettledTicketSetting, List<MessageVoidSettled> voidSettleds, string environment
             )
         {
             var criteria = new GetAutoVoidingTicketCriteria

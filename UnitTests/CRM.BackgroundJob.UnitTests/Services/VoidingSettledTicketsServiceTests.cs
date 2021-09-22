@@ -59,7 +59,7 @@
             // Arrange
             var fixture = new Fixture();
             var voidingSettledTicketSetting = fixture.Create<ResultAmendmentSetting>();
-            var voidSettleds = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var voidSettleds = fixture.Create<List<MessageVoidSettled>>();
             var expected = fixture.Create<ValueTuple<IEnumerable<VoidingTicketEventInfo>, IEnumerable<MsgTarget>>>();
             var service = GetVoidingSettledService();
             baseService.FetchMultipleAsync<VoidingTicketEventInfo, MsgTarget>(Arg.Any<GetAutoVoidingTicketCriteria>()).Returns(expected);
