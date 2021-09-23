@@ -8,7 +8,10 @@ import {
     setEditNoOfInquiryDialog,
     setCustomerFeedbackById,
     setEditCommunicationDialog,
-    setFeedbackSubjectTemplates
+    setFeedbackSubjectTemplates,
+    setDuplicateFeedback,
+    setInsertCommunicationDialog,
+    setInsertSettings
 } from './communicationLogSlice';
 
 const getLogsByCustomerId = params => async dispatch => {
@@ -52,6 +55,27 @@ const editCommunicationLog = params => async () => {
     return await DataService.postDataAsync(url, params).then(response => response);
 };
 
+const checkFeedbackDuplication = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('Feedback/CheckFeedbackDuplication');
+    await DataService.postDataAsync(url,params).then(response => {
+        dispatch(setDuplicateFeedback(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const getInsertSettings = () => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('CommunicationLog/GetInsertSettings');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setInsertSettings(response.data));
+    }).then(() => Site.unblockUI());
+}; 
+
+const insertCommunicationLog = params => async () => {
+    const url = Site.resolveClientUrl('CommunicationLog/InsertCommunicationLog');
+    return await DataService.postDataAsync(url, params).then(response => response);
+};
+
 export const ActionCreators = {
     getLogsByCustomerId,
     getAllStatus,
@@ -62,5 +86,9 @@ export const ActionCreators = {
     setFeedbackSubjectTemplates,
     getFeedbackSubjectTemplates,
     verifyCustomers,
-    editCommunicationLog
+    editCommunicationLog,
+    checkFeedbackDuplication,
+    setInsertCommunicationDialog,
+    getInsertSettings,
+    insertCommunicationLog
 };

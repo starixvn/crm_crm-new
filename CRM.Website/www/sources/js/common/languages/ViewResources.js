@@ -132,6 +132,7 @@
     IntroducedBy: 'Introduced By',
     InformHeadlines: 'Inform Headlines',
     Insert: 'Insert',
+    InsertCommunicationLog: 'Insert Communication Log',
     InsertCommunicationSettingSuccessfully: 'Insert Communication Setting successfully!',
     InsertFeedbackSubjectTemplate: 'Feedback Subject Template',
     InsertFeedbackSubjectTemplateSuccessfully: 'Insert Feedback Subject Template successfully!',

@@ -10,7 +10,10 @@ const communicationLogSlice = createSlice({
         editNoOfInquiryDialog: { show: false },
         editCommunicationDialog: { show: false },
         customerFeedback: null,
-        feedbackSubjectTemplates: []
+        feedbackSubjectTemplates: [],
+        duplicateFeedbackId: 0,
+        insertCommunicationDialog: { show: false },
+        insertSettings: null
     },
     reducers: {
         setLogsByCustomerId: (state, action) => {
@@ -36,7 +39,16 @@ const communicationLogSlice = createSlice({
         },
         setFeedbackSubjectTemplates: (state, action) => {
             state.feedbackSubjectTemplates = action.payload;
-        }
+        },
+        setDuplicateFeedback: (state, action) => {
+            state.duplicateFeedbackId = action.payload;
+        },
+        setInsertCommunicationDialog: (state, action) => {
+            state.insertCommunicationDialog = action.payload;
+        },
+        setInsertSettings: (state, action) => {
+            state.insertSettings = action.payload;
+        },
     }
 });
 
@@ -50,7 +62,10 @@ export const {
     setEditNoOfInquiryDialog,
     setEditCommunicationDialog,
     setCustomerFeedbackById,
-    setFeedbackSubjectTemplates
+    setFeedbackSubjectTemplates,
+    setDuplicateFeedback,
+    setInsertCommunicationDialog,
+    setInsertSettings
 } = actions;
 
 export default reducer;

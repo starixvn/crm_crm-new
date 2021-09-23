@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -11,6 +12,7 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Communication;
+    using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -48,7 +50,7 @@
             var permission = new GetPermissionCustomer
             {
                 CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
-                UpdateHeadlineInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo)
+                CreateUpdateFeedbackPermission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
             };
 
             return View(permission);
@@ -123,5 +125,46 @@
 
             return commandResult;
         }
-    } 
+
+        public async Task<IActionResult> GetInsertSettings()
+        {
+            var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var products = await settingService.GetProductAsync(SettingConstants.Active);
+            var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
+            var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
+            var settings = new CreateFeedbackViewModel
+            {
+                Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
+                ExtensionNA = extentions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA),
+                Statuses = statuses.Where(s => s.StatusId != (int)FeedbackStatus.Deleted),
+                CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
+                Languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
+                Responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
+                Roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role),
+                Sites = await settingService.GetAllSitesWithGroupAsync(),
+                Countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
+                MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
+                SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
+                LicenseeTypes = await settingService.GetLicenseeTypeAsync(),
+                Bettypes = bettypes.Where(x => x.Id != NAConstants.BettypeNA),
+                BettypeNA = bettypes.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
+                Products = products.Where(x => x.Id != NAConstants.ProductNA),
+                ProductNA = products.FirstOrDefault(x => x.Id == NAConstants.ProductNA),
+                SubProducts = subproducts.Where(x => x.Id != NAConstants.SubProductNA),
+                SubProductNA = subproducts.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
+            };
+            return Json(settings);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        public async Task<IActionResult> InsertCommunicationLog([FromBody] InsertCommunicationLogCommand command)
+        {
+            command.IP = ClientIP;
+            command.UserId = napSession.UserId;
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+        }
+    }
 }

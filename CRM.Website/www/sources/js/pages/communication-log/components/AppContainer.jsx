@@ -7,16 +7,19 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from './EditCommunicationLog';
+import InsertCommunicationLog from './InsertCommunicationLog';
 
 export class AppContainer extends Component {
     static propTypes = {
         editNoOfInquiryDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        editCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        editCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        insertCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
         editNoOfInquiryDialog: { show: false },
-        editCommunicationDialog: { show: false }
+        editCommunicationDialog: { show: false },
+        insertCommunicationDialog: { show: false }
     };
 
     handleCloseEditNoInquiryDialog = () => {
@@ -31,8 +34,12 @@ export class AppContainer extends Component {
         }
     };
 
+    handleCloseInsertCommunicationDiaLog = () => {
+        this.props.setInsertCommunicationDialog({ show: false });
+    };
+
     render() {
-        const { editNoOfInquiryDialog, editCommunicationDialog } = this.props;
+        const { editNoOfInquiryDialog, editCommunicationDialog, insertCommunicationDialog } = this.props;
         return (
             <div className="col-md-10">
                 <Filter/>
@@ -49,6 +56,12 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditCommunicationDialog}
                     />
                 }
+                {
+                    insertCommunicationDialog.show &&
+                    <InsertCommunicationLog
+                        onClose={this.handleCloseInsertCommunicationDiaLog}
+                    />
+                }
             </div>
         );
     }
@@ -57,8 +70,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, editNoOfInquiryDialog, editCommunicationDialog } = state;
-    return { gridParams, editNoOfInquiryDialog, editCommunicationDialog };
+    const { gridParams, editNoOfInquiryDialog, editCommunicationDialog, insertCommunicationDialog } = state;
+    return { gridParams, editNoOfInquiryDialog, editCommunicationDialog, insertCommunicationDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
