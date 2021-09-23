@@ -11,6 +11,8 @@ import Site from '@jsroot/common/site';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
 
+const AccountingPIC = 'Accounting PIC';
+
 export class EditGroupMappingPopup extends Component {
     constructor(props) {
         super(props);
@@ -33,9 +35,9 @@ export class EditGroupMappingPopup extends Component {
                 },
                 languageId: this.props.updateGroupMappingData.data.languageId || '',
                 remark: this.props.updateGroupMappingData.data.remark || '',
-                isTest: this.props.updateGroupMappingData.data.isTest  === 1 ? true : false
+                isTest: this.props.updateGroupMappingData.data.isTest === 1 ? true : false
             },
-            groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
+            groupHeadlineDefault: [{ id: '', name: LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
             settings: {
                 displayLetstalkIds: [],
@@ -106,14 +108,14 @@ export class EditGroupMappingPopup extends Component {
     handleRecipientTypeChange = e => {
         const index = e.nativeEvent.target.selectedIndex;
         const label = e.nativeEvent.target[index].text;
-        this.handleChange('recipientTypeId',  e.target.value);
+        this.handleChange('recipientTypeId', e.target.value);
         this.handleChange('recipientName', label);
         this.handleChange('recipientIds', '');
         this.handleChange('groupHeadlines', '');
         this.props.getGroupHeadlineByRecipient('');
         this.verifyLetstalk([]);
         this.props.getRecipientByRecipientType(e.target.value);
-        if(label !== 'Accounting PIC'){
+        if (label !== AccountingPIC) {
             this.handleChange('isTest', false);
         }
     };
@@ -202,7 +204,7 @@ export class EditGroupMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LanguageRequired'));
         }
 
-        if (!data.groupHeadlines && data.recipientName !== 'Accounting PIC') {
+        if (!data.groupHeadlines && data.recipientName !== AccountingPIC) {
             isValid = false;
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
         }
@@ -240,17 +242,18 @@ export class EditGroupMappingPopup extends Component {
     };
 
     getParams = () => {
+        const isTest =  this.state.form.isTest  ? 1 : 0;
         return {
             conversationGroupId: this.conversationGroupId,
             botId: this.state.form.bot.id,
             name: this.state.form.name,
             recipientTypeId: this.state.form.recipientTypeId,
             letstalkId: this.state.form.conversationId,
-            groupHeadlineIds: this.state.form.recipientName === 'Accounting PIC' ? '' : this.state.form.groupHeadlines,
+            groupHeadlineIds: this.state.form.recipientName === AccountingPIC ? '' : this.state.form.groupHeadlines,
             recipientIds: this.state.form.recipientIds,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
-            isTest : this.state.form.recipientName !== 'Accounting PIC' ? null : this.state.form.isTest ? 1 : 0
+            isTest: this.state.form.recipientName !== AccountingPIC ? null : isTest
         };
     };
 
@@ -273,8 +276,8 @@ export class EditGroupMappingPopup extends Component {
         }
     };
 
-    renderForm = () => {
-        const groupHeadlinesOption = this.state.form.recipientName === 'Accounting PIC' ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
+    renderForm = isHiddenIsTest => {
+        const groupHeadlinesOption = this.state.form.recipientName === AccountingPIC ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
         return (
             <Form onSubmit={this.handleSubmitForm}>
                 <Modal.Body>
@@ -371,18 +374,18 @@ export class EditGroupMappingPopup extends Component {
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
                         </Form.Label>
-                        <Col sm="9" md="10" className={`${this.state.form.recipientName === 'Accounting PIC' ? 'disabled-select' : ''}`}>
+                        <Col sm="9" md="10" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
                             <MultipleSelect
                                 valueField='name'
                                 statusField='checked'
-                                isSummited={false} 
+                                isSummited={false}
                                 onChange={this.handleGroupHeadlineChange}
                                 hasSearchBox
                                 width={'100%'}
                                 name="headlineIds"
                                 dataSource={groupHeadlinesOption}
                                 keyField='id'
-                                isDisable={this.state.form.recipientName === 'Accounting PIC'}
+                                isDisable={this.state.form.recipientName === AccountingPIC}
                             />
                         </Col>
                     </Form.Group>
@@ -423,14 +426,14 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column md="2" sm="3"/>
+                        <Form.Label column md="2" sm="3" />
                         <Col sm="9" md="10" name="checkbox-isTest">
-                        <Form.Group controlId="isTest-edit-group" className={this.state.form.recipientName !== 'Accounting PIC' ? 'hidden-isTest' : ''}>
-                            <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
-                                onChange={event => this.handleChange('isTest', event.target.checked)}
-                                checked={this.state.form.isTest}
-                            />
-                        </Form.Group>
+                            <Form.Group controlId="isTest-edit-group" className={isHiddenIsTest}>
+                                <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
+                                    onChange={event => this.handleChange('isTest', event.target.checked)}
+                                    checked={this.state.form.isTest}
+                                />
+                            </Form.Group>
                         </Col>
                     </Form.Group>
                 </Modal.Body>
@@ -447,6 +450,7 @@ export class EditGroupMappingPopup extends Component {
     };
 
     render() {
+        const isHiddenIsTest = this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : '';
         return (
             <Fragment>
                 <Modal show className="chat-type-mapping-modal update-group-mapping" dialogAs={DraggableModalDialog}
@@ -457,7 +461,7 @@ export class EditGroupMappingPopup extends Component {
                         <Modal.Title as="div">{LangHelper.getResource('EditGroupMapping')}</Modal.Title>
                     </Modal.Header>
                     {
-                        this.renderForm()
+                        this.renderForm(isHiddenIsTest)
                     }
                 </Modal>
                 {

@@ -10,6 +10,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import CustomReactSelect from '@jsroot/components/CustomReactSelect';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
+const AccountingPIC = 'Accounting PIC';
 
 export class InsertPersonalMappingPopup extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export class InsertPersonalMappingPopup extends Component {
                 remark: '',
                 isTest: false
             },
-            groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
+            groupHeadlineDefault: [{ id: '', name: LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
             letstalkIds: '',
             validate: {
@@ -79,7 +80,7 @@ export class InsertPersonalMappingPopup extends Component {
             letstalkIds: ''
         });
         this.handleChange('recipient', '');
-        if(label !== 'Accounting PIC'){
+        if (label !== AccountingPIC) {
             this.handleChange('isTest', false);
         }
     };
@@ -159,7 +160,7 @@ export class InsertPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LetstalkIdRequired'));
         }
 
-        if (!data.groupHeadlines && data.recipientName !== 'Accounting PIC') {
+        if (!data.groupHeadlines && data.recipientName !== AccountingPIC) {
             isValid = false;
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
         }
@@ -180,6 +181,7 @@ export class InsertPersonalMappingPopup extends Component {
     };
 
     getParams = () => {
+        const isTest =  this.state.form.isTest  ? 1 : 0;
         return {
             botId: this.state.form.botId,
             recipientTypeId: this.state.form.recipientType,
@@ -188,7 +190,7 @@ export class InsertPersonalMappingPopup extends Component {
             recipientIds: this.state.form.recipient.value,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
-            isTest : this.state.form.recipientName !== 'Accounting PIC' ? null : this.state.form.isTest ? 1 : 0
+            isTest: this.state.form.recipientName !== AccountingPIC ? null : isTest
         };
     };
 
@@ -238,7 +240,7 @@ export class InsertPersonalMappingPopup extends Component {
                 letstalkIds: item.letstalkIds
             };
         });
-        const groupHeadlinesOption = this.state.form.recipientName === 'Accounting PIC' ? this.state.groupHeadlineDefault : this.props.groupHeadline;
+        const groupHeadlinesOption = this.state.form.recipientName === AccountingPIC ? this.state.groupHeadlineDefault : this.props.groupHeadline;
 
         return (
             <Form onSubmit={this.handleSubmit}>
@@ -342,7 +344,7 @@ export class InsertPersonalMappingPopup extends Component {
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
                         </Form.Label>
-                        <Col sm="9" md="10" className={`${this.state.form.recipientName === 'Accounting PIC' ? 'disabled-select' : ''}`}>
+                        <Col sm="9" md="10" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
                             <MultipleSelect
                                 width={'100%'}
                                 name="headlineIds"
@@ -353,7 +355,7 @@ export class InsertPersonalMappingPopup extends Component {
                                 isSummited={false}
                                 onChange={this.handleGroupHeadlineChange}
                                 hasSearchBox
-                                isDisable={this.state.form.recipientName === 'Accounting PIC'}
+                                isDisable={this.state.form.recipientName === AccountingPIC}
                             />
                         </Col>
                     </Form.Group>
@@ -388,15 +390,15 @@ export class InsertPersonalMappingPopup extends Component {
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2" />
                         <Col sm="9" md="10" name="checkbox-isTest">
-                        <Form.Group controlId="isTest-insert" className={this.state.form.recipientName !== 'Accounting PIC' ? 'hidden-isTest' : ''}>
-                            <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
-                                checked={this.state.form.isTest}
-                                onChange={event => this.handleChange('isTest', event.target.checked)}
-                            />
-                        </Form.Group>
+                            <Form.Group controlId="isTest-insert" className={this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : ''}>
+                                <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
+                                    checked={this.state.form.isTest}
+                                    onChange={event => this.handleChange('isTest', event.target.checked)}
+                                />
+                            </Form.Group>
                         </Col>
                     </Form.Group>
-                   
+
                 </Modal.Body>
 
                 <Modal.Footer>

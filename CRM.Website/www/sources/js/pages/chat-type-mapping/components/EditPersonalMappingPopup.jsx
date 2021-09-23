@@ -10,6 +10,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import CustomReactSelect from '@jsroot/components/CustomReactSelect';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
+const AccountingPIC = 'Accounting PIC';
+
 
 export class EditPersonalMappingPopup extends Component {
     constructor(props) {
@@ -30,9 +32,9 @@ export class EditPersonalMappingPopup extends Component {
                 letstalkId: this.props.updatePersonalMappingData.data.conversationId,
                 languageId: this.props.updatePersonalMappingData.data.languageId,
                 remark: this.props.updatePersonalMappingData.data.remark,
-                isTest: this.props.updatePersonalMappingData.data.isTest  === 1 ? true : false
+                isTest: this.props.updatePersonalMappingData.data.isTest === 1 ? true : false
             },
-            groupHeadlineDefault: [{id: '', name:LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
+            groupHeadlineDefault: [{ id: '', name: LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
             settings: {
                 letstalkIds: '',
@@ -114,7 +116,7 @@ export class EditPersonalMappingPopup extends Component {
         this.handleChange('conversationId', '');
         this.handleChange('name', '');
         this.props.getRecipientByRecipientType(e.target.value);
-        if(label !== 'Accounting PIC'){
+        if (label !== AccountingPIC) {
             this.handleChange('isTest', false);
         }
     };
@@ -193,7 +195,7 @@ export class EditPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LetstalkIdRequired'));
         }
 
-        if (!validateData.groupHeadlines && validateData.recipientName !== 'Accounting PIC') {
+        if (!validateData.groupHeadlines && validateData.recipientName !== AccountingPIC) {
             isValid = false;
             errMsg.push(LangHelper.getResource('GroupHeadlineRequired'));
         }
@@ -231,16 +233,17 @@ export class EditPersonalMappingPopup extends Component {
     };
 
     getParams = () => {
+        const isTest =  this.state.form.isTest  ? 1 : 0;
         return {
             conversationGroupId: this.conversationGroupId,
             botId: this.state.form.botId,
             recipientTypeId: this.state.form.recipientType,
             letstalkId: this.state.form.conversationId,
-            groupHeadlineIds: this.state.form.recipientName === 'Accounting PIC' ? '' : this.state.form.groupHeadlines,
+            groupHeadlineIds: this.state.form.recipientName === AccountingPIC ? '' : this.state.form.groupHeadlines,
             recipientIds: this.state.form.recipient.value,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
-            isTest : this.state.form.recipientName !== 'Accounting PIC' ? null : this.state.form.isTest ? 1 : 0
+            isTest: this.state.form.recipientName !== AccountingPIC ? null : isTest
         };
     };
 
@@ -265,7 +268,7 @@ export class EditPersonalMappingPopup extends Component {
     };
 
     renderForm = () => {
-        const groupHeadlinesOption = this.state.form.recipientName === 'Accounting PIC' ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
+        const groupHeadlinesOption = this.state.form.recipientName === AccountingPIC ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
 
         return (
             <Form onSubmit={this.handleEditPersonalSubmitForm}>
@@ -369,7 +372,7 @@ export class EditPersonalMappingPopup extends Component {
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
                         </Form.Label>
-                        <Col sm="9" md="10" className={`${this.state.form.recipientName === 'Accounting PIC' ? 'disabled-select' : ''}`}>
+                        <Col sm="9" md="10" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
                             <MultipleSelect
                                 width={'100%'}
                                 name="headlineIds"
@@ -380,7 +383,7 @@ export class EditPersonalMappingPopup extends Component {
                                 onChange={this.handleGroupHeadlineChange}
                                 isSummited={false}
                                 hasSearchBox
-                                isDisable={this.state.form.recipientName === 'Accounting PIC'}
+                                isDisable={this.state.form.recipientName === AccountingPIC}
                             />
                         </Col>
                     </Form.Group>
@@ -414,14 +417,15 @@ export class EditPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column md="2" sm="3"/>
+                        <Form.Label column md="2" sm="3" />
                         <Col sm="9" md="10" name="checkbox-isTest">
-                        <Form.Group controlId="isTest-edit-personal" className={this.state.form.recipientName !== 'Accounting PIC' ? 'hidden-isTest' : ''}>
-                            <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
-                                onChange={event => this.handleChange('isTest', event.target.checked)}
-                                checked={this.state.form.isTest}
-                            />
-                        </Form.Group>
+                            <Form.Group className={this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : ''} controlId="isTest-edit-personal">
+                                <Form.Check type="checkbox" 
+                                    label={LangHelper.getResource('IsTest')}
+                                    onChange={event => this.handleChange('isTest', event.target.checked)}
+                                    checked={this.state.form.isTest}
+                                />
+                            </Form.Group>
                         </Col>
                     </Form.Group>
                 </Modal.Body>
