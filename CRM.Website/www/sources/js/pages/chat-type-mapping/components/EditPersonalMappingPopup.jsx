@@ -12,7 +12,6 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
 const AccountingPIC = 'Accounting PIC';
 
-
 export class EditPersonalMappingPopup extends Component {
     constructor(props) {
         super(props);
@@ -233,7 +232,7 @@ export class EditPersonalMappingPopup extends Component {
     };
 
     getParams = () => {
-        const isTest =  this.state.form.isTest  ? 1 : 0;
+        const isTest = this.state.form.isTest ? 1 : 0;
         return {
             conversationGroupId: this.conversationGroupId,
             botId: this.state.form.botId,
@@ -420,7 +419,7 @@ export class EditPersonalMappingPopup extends Component {
                         <Form.Label column md="2" sm="3" />
                         <Col sm="9" md="10" name="checkbox-isTest">
                             <Form.Group className={this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : ''} controlId="isTest-edit-personal">
-                                <Form.Check type="checkbox" 
+                                <Form.Check type="checkbox"
                                     label={LangHelper.getResource('IsTest')}
                                     onChange={event => this.handleChange('isTest', event.target.checked)}
                                     checked={this.state.form.isTest}
