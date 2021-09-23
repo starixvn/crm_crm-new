@@ -2,11 +2,11 @@ import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
+import { Button } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { Policy } from '@jsroot/common/constants';
-import { PAGING_SIZES } from '@jsroot/common/constants';
+import { Policy, PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
 
@@ -15,7 +15,7 @@ export class DataGrid extends Component {
             <HeaderRow>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 {
-                    window.customerInfoPolicy === Policy.Host &&
+                    window.createUpdateFeedbackPermission === Policy.Host &&
                     <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
                 <HeaderCell colWidth={25}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
@@ -40,7 +40,7 @@ export class DataGrid extends Component {
         }
         return [
             <Row key={`body${1}`} className="no-data" >
-                <Cell className='text-center' colSpan={window.customerInfoPolicy === Policy.Host ? 9 : 8}>
+                <Cell className='text-center' colSpan={window.createUpdateFeedbackPermission === Policy.Host ? 9 : 8}>
                     {LangHelper.getResource('ThereIsNoData')}
                 </Cell>
             </Row>
@@ -66,6 +66,10 @@ export class DataGrid extends Component {
 
     handleEditCommunicationLog = id => {
         this.props.setEditCommunicationDialog({ show: true, feedbackId: id });
+    };
+
+    handleInsert = () => {
+        this.props.setInsertCommunicationDialog({ show: true });
     };
 
     renderCategoryColumn = item => {
@@ -94,15 +98,17 @@ export class DataGrid extends Component {
         return (
             <Row key={index} className={item.status === 'Pending' ? 'pending' : item.status === 'Closed' ? 'closed' : ''}>
                 <Cell className="text-center">
-                {
                     <span className='link-click' onClick={() => this.handleEditCommunicationLog(item.feedbackId)}>{item.feedbackId}</span>
+                </Cell>
+                {
+                    window.createUpdateFeedbackPermission === Policy.Host && (
+                        <Cell className="text-center">
+                            <span className="rounded-circle fa fa-pencil icon-edit"
+                                onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}
+                            />
+                        </Cell>
+                    )
                 }
-                </Cell>
-                <Cell className="text-center">
-                    <span className="rounded-circle fa fa-pencil icon-edit"
-                        onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}
-                    />
-                </Cell>
                 <Cell className="text-center">{DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</Cell>
                 <Cell>{this.renderCategoryColumn(item)}</Cell>
                 <Cell>{item.subject}</Cell>
@@ -147,6 +153,12 @@ export class DataGrid extends Component {
                     containerPadding={0}
                     adjustedHeight={10}
                 />
+                {
+                    window.customerInfoPolicy === Policy.Host &&
+                    <Button variant="primary" size="sm" className="mt-3" onClick={this.handleInsert}>
+                        {LangHelper.getResource('Insert')}
+                    </Button>
+                }
             </Fragment>
         );
     }
