@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using CRM.Core.Constants;
     using CRM.Core.Extensions.XML;
     using CRM.Models.Feedback;
     using Fanex.Data;
@@ -22,7 +21,7 @@
         [SpParam(SqlParamName = "Category")]
         public string CategoryXml => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
 
-        public int TimeSpan { get; set; }
+        public int TimeSpan { get; } = 12;
 
         public int FeedbackId { get; set; }
 

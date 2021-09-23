@@ -228,5 +228,11 @@
             return betTypes.Where(x => (x.IsActive || feedbackSettings.Any(y => y.SubSettingIdLevel3 == x.Id))
                 && x.Id != NAConstants.BettypeNA).ToList();
         }
+
+        public async Task<int> CheckFeedbackDuplication([FromBody] CheckFeedbackDuplicationCriteria criteria)
+        {
+            await feedbackService.CheckFeedbackDuplicationAsync(criteria);
+            return criteria.FeedbackId;
+        }
     }
 }

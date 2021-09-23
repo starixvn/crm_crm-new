@@ -36,7 +36,7 @@
 
         Task<CommunicationLog> GetLogByFeedbackIdAsync(int feedbackId);
 
-        Task<bool> CheckFeedbackDuplicationAsync(CheckFeedbackDuplicationCriteria criteria);
+        Task<int> CheckFeedbackDuplicationAsync(CheckFeedbackDuplicationCriteria criteria);
     }
 
     public class FeedbackService : IFeedbackService
@@ -193,9 +193,9 @@
             return communicationLog;
         }
 
-        public async Task<bool> CheckFeedbackDuplicationAsync(CheckFeedbackDuplicationCriteria criteria)
+        public async Task<int> CheckFeedbackDuplicationAsync(CheckFeedbackDuplicationCriteria criteria)
         {
-            return await baseService.GetDataEntityAsync<bool>(criteria);
+            return await baseService.GetDataEntityAsync<int>(criteria);
         }
     }
 }
