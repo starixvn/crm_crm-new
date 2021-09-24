@@ -68,7 +68,7 @@
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             if (!isEdit || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
             {
-                statuses = statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted);
+                statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
             }
             return Json(statuses);
         }
@@ -111,8 +111,8 @@
                 };
             }
 
-            var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted;
-            var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusId == (int)Core.Enumerables.FeedbackStatus.Deleted;
+            var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusId != (int)FeedbackStatus.Deleted;
+            var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusId == (int)FeedbackStatus.Deleted;
             if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
                 && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
             {

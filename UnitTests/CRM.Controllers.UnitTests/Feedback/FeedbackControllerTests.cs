@@ -325,6 +325,19 @@
 
         #endregion EditCustomerFeedback
 
+        [Fact]
+        public async Task CheckFeedbackDuplication_WhenCalled_ReturnExpectedResult()
+        {
+            // Arrange
+            var param = new CheckFeedbackDuplicationCriteria { CustomerId = 0 };
+            var controller = GetController();
+            // Act
+            var result = await controller.CheckFeedbackDuplication(param);
+
+            // Assert
+            Assert.Equal(0, result);
+        }
+
         #region Helpers
 
         private FeedbackController GetController()

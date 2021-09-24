@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models.Customer;
@@ -19,7 +18,7 @@
         private ISettingService settingService;
 
         [Fact]
-        public async Task GetCustomerInfoDetailByIdAsync_WhenCalledWithIsNotGuest_ReturnExpectedCustomerInfo()
+        public async Task GetCustomerInfoDetailByIdAsync_WhenCalled_ReturnExpectedCustomerInfo()
         {
             //Arrange
             var fixture = new Fixture();
