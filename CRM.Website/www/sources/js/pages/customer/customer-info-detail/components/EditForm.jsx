@@ -353,7 +353,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="4" md="4">
                                 <Form.Group as={Row}>
@@ -388,7 +387,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="4" md="4">
                                 <Form.Group as={Row}>
@@ -548,7 +546,6 @@ export class EditForm extends Component {
                         </Form.Group>
                     </Col>
                 </Form.Group>
-
                 <Form.Group as={Row}>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
@@ -581,7 +578,6 @@ export class EditForm extends Component {
                         </Form.Group>
                     </Col>
                 </Form.Group>
-
                 <Form.Group as={Row}>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
@@ -690,7 +686,6 @@ export class EditForm extends Component {
                         </Form.Group>
                     </Col>
                 </Form.Group>
-
                 <Form.Group as={Row}>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
@@ -839,9 +834,7 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         { this.renderCustomerInformation(values) }
-
                         { this.renderCommunicationTool(values) }
                     </div>
                 </Collapse>
@@ -872,7 +865,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="12" md="12">
                                 <Form.Group as={Row}>
@@ -885,7 +877,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="12" md="12">
                                 <Form.Group as={Row}>
@@ -898,7 +889,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="6" md="6">
                                 <Form.Group as={Row}>
@@ -921,7 +911,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="6" md="6">
                                 <Form.Group as={Row}>
@@ -985,7 +974,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="6" md="6">
                                 <Form.Group as={Row}>
@@ -1008,7 +996,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="12" md="12">
                                 <Form.Group as={Row}>
@@ -1021,7 +1008,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="12" md="12">
                                 <Form.Group as={Row}>
@@ -1047,7 +1033,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="6" md="6">
                                 <Form.Group as={Row}>
@@ -1070,7 +1055,6 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="6" md="6">
                                 <Form.Group as={Row}>
@@ -1114,18 +1098,13 @@ export class EditForm extends Component {
         return (
             <Form onSubmit={this.handleSubmit}>
                 {this.renderPersonalInfo(values)}
-
                 {
                     (gridData.data.isHeadLine && (updatePolicy === Policy.Read || canEditHeadline))
                     && this.renderHeadlineInfo(values, canEditHeadline)
                 }
-
                 {this.renderCommunicationInfo(values)}
-
                 {this.renderHomeAddress(values)}
-
                 {this.renderBankInfo(values)}
-
                 {
                     customerPolicy === Policy.Host &&
                     (

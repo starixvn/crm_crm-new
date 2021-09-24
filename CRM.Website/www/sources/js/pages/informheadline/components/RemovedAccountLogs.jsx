@@ -89,7 +89,6 @@ export class RemovedAccountLogs extends Component {
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{`${LangHelper.getResource('InformHeadlines')} - ${LangHelper.getResource('RemovedEditedAccountsLogs')}`}</Modal.Title>
                     </Modal.Header>
-
                     <Modal.Body>
                         <Table
                             width={570}
@@ -103,7 +102,6 @@ export class RemovedAccountLogs extends Component {
                             adjustedHeight={10}
                         />
                     </Modal.Body>
-
                     <Modal.Footer>
                         {renderButtonClose(this.props.onClose)}
                     </Modal.Footer>

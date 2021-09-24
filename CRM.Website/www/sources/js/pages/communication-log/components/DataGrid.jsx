@@ -95,8 +95,10 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index) => {
+        const cssStatus = item.status ? item.status.toLowerCase() : '',
+            cssClass = (cssStatus !== 'pending' && cssStatus !== 'closed') ? '' : cssStatus;
         return (
-            <Row key={index} className={item.status === 'Pending' ? 'pending' : item.status === 'Closed' ? 'closed' : ''}>
+            <Row key={index} className={cssClass}>
                 <Cell className="text-center">
                     <span className='link-click' onClick={() => this.handleEditCommunicationLog(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
