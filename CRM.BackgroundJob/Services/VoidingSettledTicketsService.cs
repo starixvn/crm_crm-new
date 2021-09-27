@@ -99,7 +99,7 @@
         {
             var criteria = new AutoVoidingMessageUpdCommand
             {
-                MessageIds = messages.ToXML("root").ToString(),
+                MessageIds = messages.ToXML("ROOT").ToString(),
                 Environment = environment
             };
             return await baseService.ExecuteNonQueryAsync(criteria);
