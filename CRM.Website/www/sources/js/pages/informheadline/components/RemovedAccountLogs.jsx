@@ -80,33 +80,29 @@ export class RemovedAccountLogs extends Component {
         };
 
         return (
-            <>
-                <Modal show
-                    backdrop="static" keyboard={false} size="lg"
-                    onHide={this.props.onClose}
-                    className="modal-remove"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title as="div">{`${LangHelper.getResource('InformHeadlines')} - ${LangHelper.getResource('RemovedEditedAccountsLogs')}`}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Table
-                            width={570}
-                            autoWidth={false}
-                            header={this.buildHeader()}
-                            body={this.buildBody()}
-                            isPaging
-                            pageOption={pagingOption}
-                            onPaging={this.onPaging}
-                            containerPadding={0}
-                            adjustedHeight={10}
-                        />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        {renderButtonClose(this.props.onClose)}
-                    </Modal.Footer>
-                </Modal>
-            </>
+            <Modal show size="lg"
+                backdrop="static" keyboard={false}
+                onHide={this.props.onClose}
+                className="modal-remove"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title as="div">{`${LangHelper.getResource('InformHeadlines')} - ${LangHelper.getResource('RemovedEditedAccountsLogs')}`}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Table
+                        width={570}
+                        autoWidth={false}
+                        isPaging
+                        pageOption={pagingOption}
+                        onPaging={this.onPaging}
+                        header={this.buildHeader()}
+                        body={this.buildBody()}
+                        containerPadding={0}
+                        adjustedHeight={10}
+                    />
+                </Modal.Body>
+                <Modal.Footer>{renderButtonClose(this.props.onClose)}</Modal.Footer>
+            </Modal>
         );
     }
 }

@@ -342,7 +342,7 @@ export class InsertCommunicationLog extends Component {
                                                 id="responseId" name="responseId"
                                                 value={values.responseId} onChange={handleChange}
                                             >
-                                                {responses.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
+                                                {responses.map(element => <option key={element.id} value={element.id}>{element.value}</option>)}
                                             </Form.Control>
                                         </Col>
                                     </Form.Group>
@@ -351,7 +351,7 @@ export class InsertCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="communicationToolId" className="required">{LangHelper.getResource('Communication')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="communicationTools" className="required">{LangHelper.getResource('Communication')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 isInvalid={touched.communicationToolIds && errors.communicationToolIds}
@@ -375,7 +375,7 @@ export class InsertCommunicationLog extends Component {
                                                 className="shadow-none" id="languageId" name="languageId"
                                                 value={values.languageId} onChange={handleChange}
                                             >
-                                                {languages.map(item => <option key={item.languageId} value={item.languageId}>{item.name}</option>)}
+                                                {languages.map(element => <option key={element.languageId} value={item.languageId}>{element.name}</option>)}
                                             </Form.Control>
                                         </Col>
                                     </Form.Group>
@@ -409,14 +409,14 @@ export class InsertCommunicationLog extends Component {
                                             <MultipleSelect
                                                 isInvalid={touched.subCategoryIds && errors.subCategoryIds}
                                                 dataSource={subCategories}
+                                                maxDisplayItemCount={1}
                                                 keyField='subCategoryId' valueField='name'
                                                 hasAllOption={subCategories.length > 0}
                                                 isAllTextShown={subCategories.length > 0}
-                                                hasSearchBox isNAOption
-                                                maxDisplayItemCount={1}
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     setFieldValue('subCategoryIds', selectedItemsKey);
                                                 }}
+                                                hasSearchBox isNAOption
                                             />
                                         </Col>
                                     </Form.Group>
@@ -425,7 +425,7 @@ export class InsertCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="product">{LangHelper.getResource('Product')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="products">{LangHelper.getResource('Product')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 dataSource={products}
@@ -448,7 +448,6 @@ export class InsertCommunicationLog extends Component {
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 dataSource={subProducts}
-                                                keyField='id' valueField='value'
                                                 hasAllOption={subProducts.length > 0}
                                                 isAllTextShown={subProducts.length > 0}
                                                 hasSearchBox isNAOption
@@ -457,6 +456,7 @@ export class InsertCommunicationLog extends Component {
                                                     handleChangeSubProduct(setFieldValue, selectedItemsKey,
                                                         values.betTypeIds, insertSettings, this.setStateBetType);
                                                 }}
+                                                keyField='id' valueField='value'
                                             />
                                         </Col>
                                     </Form.Group>
@@ -465,13 +465,13 @@ export class InsertCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="statuses">{LangHelper.getResource('Status')}</Form.Label>
                                         <Col sm="6" md="6">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
+                                            <Form.Control as="select" className="shadow-none" size="sm"
                                                 name="statusId" id="statusId"
                                                 value={values.statusId} onChange={handleChange}
                                             >
-                                                {statuses.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
+                                                {statuses.map(element => <option key={element.statusId} value={element.statusId}>{element.name}</option>)}
                                             </Form.Control>
                                         </Col>
                                     </Form.Group>
@@ -483,13 +483,13 @@ export class InsertCommunicationLog extends Component {
                                             <MultipleSelect
                                                 dataSource={betTypes}
                                                 keyField='id' valueField='value'
+                                                hasSearchBox isNAOption
                                                 hasAllOption={betTypes.length > 0}
                                                 isAllTextShown={betTypes.length > 0}
-                                                hasSearchBox isNAOption
-                                                maxDisplayItemCount={1}
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     setFieldValue('betTypeIds', selectedItemsKey);
                                                 }}
+                                                maxDisplayItemCount={1}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -498,13 +498,14 @@ export class InsertCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="role">{LangHelper.getResource('Role')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="roles">{LangHelper.getResource('Role')}</Form.Label>
                                         <Col sm="6" md="6">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
-                                                id='roleId' name='roleId'
-                                                value={values.roleId} onChange={handleChange}
+                                            <Form.Control as="select" className="shadow-none"
+                                                id='roleId' name='roleId' size="sm"
+                                                value={values.roleId}
+                                                onChange={handleChange}
                                             >
-                                                {roles.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
+                                                {roles.map(element => <option key={element.id} value={element.id}>{element.value}</option>)}
                                             </Form.Control>
                                         </Col>
                                     </Form.Group>
@@ -516,8 +517,8 @@ export class InsertCommunicationLog extends Component {
                                             <SelectWithSearch className='basic-single'
                                                 OnChangeValue={value => setFieldValue('siteId', value.id)}
                                                 options={sites}
-                                                value={values.siteId}
                                                 isHideNA={false}
+                                                value={values.siteId}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -526,25 +527,25 @@ export class InsertCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="country">{LangHelper.getResource('Country')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="countries">{LangHelper.getResource('Country')}</Form.Label>
                                         <Col sm="6" md="6">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
-                                                id="countryId" name="countryId"
+                                            <Form.Control as="select" className="shadow-none"
+                                                id="countryId" name="countryId" size="sm"
                                                 value={values.countryId} onChange={handleChange}
                                             >
-                                                {countries.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                                                {countries.map(element => <option key={element.id} value={element.id}>{element.name}</option>)}
                                             </Form.Control>
                                         </Col>
                                     </Form.Group>
                                 </Col>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="licenseeType">{LangHelper.getResource('LicenseeType')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="licenseeTypes">{LangHelper.getResource('LicenseeType')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <Form.Control as="select" size="sm" className="shadow-none" value={values.licenseeTypeId}
                                                 id="licenseeTypeId" name="licenseeTypeId" onChange={handleChange}
                                             >
-                                                {licenseeTypes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                                                {licenseeTypes.map(element => <option key={element.id} value={element.id}>{element.name}</option>)}
                                             </Form.Control>
                                         </Col>
                                     </Form.Group>
@@ -553,7 +554,7 @@ export class InsertCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="noOfInquiries">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="noOfInquiry">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <Form.Control size="sm" type="number" id="noInquiries" name="noInquiries"
                                                 value={values.noInquiries} min={1} max={3200} className="shadow-none" autoComplete="off"

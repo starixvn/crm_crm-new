@@ -173,7 +173,7 @@ export class EditCommunicationLog extends Component {
         };
     };
 
-    getLogSettings = (feedback, settings) => {
+    getLogSettings = feedback => {
         const logSettings = feedback.settings;
         const extensions = logSettings.filter(item => item.settingType === 'Station');
         const communicationTools = logSettings.filter(item => item.settingType === 'Communication');
@@ -345,7 +345,7 @@ export class EditCommunicationLog extends Component {
                                 </Col>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="ext">Ext</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="extId">Ext</Form.Label>
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 keyField='id' valueField='value'
@@ -354,7 +354,8 @@ export class EditCommunicationLog extends Component {
                                                 hasAllOption={extensionOptions.length > 0}
                                                 isAllTextShown={extensionOptions.length > 0}
                                                 onChange={(currentItem, selectedItemsKey) => {
-                                                    setFieldValue('extensionIds', selectedItemsKey);}}
+                                                    setFieldValue('extensionIds', selectedItemsKey);
+                                                }}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -374,10 +375,10 @@ export class EditCommunicationLog extends Component {
                                 </Col>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label sm="4" md="4" column htmlFor="response">{LangHelper.getResource('Response')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="responseId">{LangHelper.getResource('Response')}</Form.Label>
                                         <Col sm="6" md="6">
-                                            <Form.Control as="select" className="shadow-none" size="sm"
-                                                name="responseId" id="responseId"
+                                            <Form.Control as="select" className="shadow-none"
+                                                name="responseId" id="responseId" size="sm"
                                                 value={values.responseId} onChange={handleChange}
                                             >
                                                 { responses.map(item => <option key={item.id} value={item.id}>{item.value}</option>) }
@@ -389,7 +390,7 @@ export class EditCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label sm="4" md="4" column htmlFor="communicationToolId" className="required">{LangHelper.getResource('Communication')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="communicationToolId" className="required">{LangHelper.getResource('Communication')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 isInvalid={touched.communicationToolIds && errors.communicationToolIds}
@@ -407,7 +408,7 @@ export class EditCommunicationLog extends Component {
                                 </Col>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label sm="4" md="4" column htmlFor="language" className="required">{LangHelper.getResource('Language')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="languageId" className="required">{LangHelper.getResource('Language')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <Form.Control as="select" size="sm" isInvalid={touched.languageId && errors.languageId}
                                                 id="languageId" name="languageId" className="shadow-none"
@@ -423,7 +424,7 @@ export class EditCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label sm="4" md="4" column htmlFor="mainCategory" className="required">{LangHelper.getResource('Category')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="mainCategoryId" className="required">{LangHelper.getResource('Category')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 dataSource={mainCategoryOptions}
@@ -443,19 +444,19 @@ export class EditCommunicationLog extends Component {
                                 </Col>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="subCategory" className="required">{LangHelper.getResource('SubCategory')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="subCategoryId" className="required">{LangHelper.getResource('SubCategory')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 dataSource={subCategoryOptions}
                                                 isInvalid={touched.subCategoryIds && errors.subCategoryIds}
                                                 hasSearchBox isNAOption
-                                                maxDisplayItemCount={1}
                                                 keyField='subCategoryId' valueField='name'
                                                 hasAllOption={subCategoryOptions.length > 0}
                                                 isAllTextShown={subCategoryOptions.length > 0}
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     setFieldValue('subCategoryIds', selectedItemsKey);
                                                 }}
+                                                maxDisplayItemCount={1}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -464,7 +465,7 @@ export class EditCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="product">{LangHelper.getResource('Product')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="productId">{LangHelper.getResource('Product')}</Form.Label >
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 dataSource={productOptions}
@@ -483,7 +484,7 @@ export class EditCommunicationLog extends Component {
                                 </Col>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="subProduct">{LangHelper.getResource('SubProduct')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="subProductId">{LangHelper.getResource('SubProduct')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 dataSource={subProductOptions}
@@ -504,7 +505,7 @@ export class EditCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label sm="4" column md="4" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="statusId">{LangHelper.getResource('Status')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <Form.Control as="select" size="sm" className="shadow-none"
                                                 name="statusId" id="statusId"
@@ -518,18 +519,18 @@ export class EditCommunicationLog extends Component {
                                 </Col>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label sm="4" md="4" column htmlFor="betType">{LangHelper.getResource('BetType')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="betTypeId">{LangHelper.getResource('BetType')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <MultipleSelect
                                                 dataSource={betTypeOptions}
                                                 keyField='id' valueField='value'
                                                 hasSearchBox isNAOption
-                                                maxDisplayItemCount={1}
                                                 hasAllOption={betTypeOptions.length > 0}
                                                 isAllTextShown={betTypeOptions.length > 0}
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     setFieldValue('betTypeIds', selectedItemsKey);
                                                 }}
+                                                maxDisplayItemCount={1}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -538,9 +539,9 @@ export class EditCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="role">{LangHelper.getResource('Role')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="roleId">{LangHelper.getResource('Role')}</Form.Label>
                                         <Col sm="6" md="6">
-                                            <Form.Control as="select" size="sm" className="shadow-none" id='roleId' 
+                                            <Form.Control as="select" size="sm" className="shadow-none" id='roleId'
                                                 name='roleId'
                                                 value={values.roleId}
                                                 onChange={handleChange}
@@ -552,7 +553,7 @@ export class EditCommunicationLog extends Component {
                                 </Col>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label sm="4" md="4" column htmlFor="site">{LangHelper.getResource('Site')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="siteId">{LangHelper.getResource('Site')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <SelectWithSearch className='basic-single'
                                                 OnChangeValue={value => setFieldValue('siteId', value.id)}
@@ -566,7 +567,7 @@ export class EditCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="country">{LangHelper.getResource('Country')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="countryId">{LangHelper.getResource('Country')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <Form.Control as="select" size="sm"
                                                 id="countryId" name="countryId" className="shadow-none"
@@ -580,7 +581,7 @@ export class EditCommunicationLog extends Component {
                                 </Col>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="licenseeType">{LangHelper.getResource('LicenseeType')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="licenseeTypeId">{LangHelper.getResource('LicenseeType')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <Form.Control as="select" size="sm" className="shadow-none"
                                                 value={values.licenseeTypeId}
@@ -596,7 +597,7 @@ export class EditCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="6" md="6">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="noOfInquiries">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
+                                        <Form.Label column sm="4" md="4" htmlFor="noOfInquiryId">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <Form.Control size="sm" type="number" name="noInquiries" id="noInquiries" autoComplete="off"
                                                 value={values.noInquiries} min={1} max={3200} className="shadow-none"
@@ -610,7 +611,7 @@ export class EditCommunicationLog extends Component {
                             <Form.Group as={Row}>
                                 <Col sm="12" md="12">
                                     <Form.Group as={Row}>
-                                        <Form.Label sm="2" md="2" column htmlFor="relatedTo">{LangHelper.getResource('RelatedTo')}</Form.Label>
+                                        <Form.Label column sm="2" md="2" htmlFor="relatedToId">{LangHelper.getResource('RelatedTo')}</Form.Label>
                                         <Col sm="8" md="8">
                                             <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
                                                 name="customerNameInput" value={values.customerNameInput}

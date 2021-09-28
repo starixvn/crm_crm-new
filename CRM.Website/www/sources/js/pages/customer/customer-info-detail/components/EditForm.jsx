@@ -426,16 +426,15 @@ export class EditForm extends Component {
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" value={values.refCode1}
                                             name="refCode1" id="refCode1" autoComplete="off" onChange={this.handleChange}
-                                        />
+                                        ></Form.Control>
                                     </Col>
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-
                         <Form.Group as={Row}>
                             <Col sm="4" md="4">
                                 <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="licenseeType">{LangHelper.getResource('LicenseeType')}</Form.Label>
+                                    <Form.Label column sm="4" md="4" htmlFor="licenseeTypes">{LangHelper.getResource('LicenseeType')}</Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control as="select" size="sm" className="shadow-none" value={values.licenseeTypeId}
                                             id="licenseeTypeId" name="licenseeTypeId" onChange={this.handleChange}
@@ -540,7 +539,8 @@ export class EditForm extends Component {
                             <Form.Label column sm="4" md="4" htmlFor="telegram">{LangHelper.getResource('Telegram')}</Form.Label>
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.telegram}
-                                    name="telegram" id="telegram" autoComplete="off" onChange={this.handleChange}
+                                    name="telegram" id="telegram" autoComplete="off"
+                                    onChange={this.handleChange}
                                 />
                             </Col>
                         </Form.Group>
@@ -549,7 +549,7 @@ export class EditForm extends Component {
                 <Form.Group as={Row}>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="weChat">{LangHelper.getResource('WeChat')}</Form.Label>
+                            <Form.Label column sm="4" md="4" htmlFor="weChats">{LangHelper.getResource('WeChat')}</Form.Label>
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.weChat}
                                     name="weChat" id="weChat" autoComplete="off" onChange={this.handleChange}
@@ -573,7 +573,8 @@ export class EditForm extends Component {
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.line}
                                     name="line" id="line" autoComplete="off" onChange={this.handleChange}
-                                />
+                                >
+                                </Form.Control>
                             </Col>
                         </Form.Group>
                     </Col>
@@ -581,7 +582,7 @@ export class EditForm extends Component {
                 <Form.Group as={Row}>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="letstalk">{LangHelper.getResource('Letstalk')}</Form.Label>
+                            <Form.Label column sm="4" md="4" htmlFor="letstalks">{LangHelper.getResource('Letstalk')}</Form.Label>
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.letstalk}
                                     name="letstalk" id="letstalk" autoComplete="off" onChange={this.handleChange}
@@ -636,7 +637,7 @@ export class EditForm extends Component {
                                     <div className="phone">
                                         <Form.Control type="text" size="sm" className="shadow-none" value={values.faxNumber}
                                             name="faxNumber" id="faxNumber" autoComplete="off" onChange={this.handleChange}
-                                        />
+                                        ></Form.Control>
                                     </div>
                                 </div>
                             </Col>
@@ -644,7 +645,7 @@ export class EditForm extends Component {
                     </Col>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="mobile">{LangHelper.getResource('Mobile')}</Form.Label>
+                            <Form.Label column sm="4" md="4" htmlFor="mobiles">{LangHelper.getResource('Mobile')}</Form.Label>
                             <Col sm="8" md="8">
                                 <div className="d-flex">
                                     <div className="code-country">
@@ -708,7 +709,7 @@ export class EditForm extends Component {
                     </Col>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="pic3">{LangHelper.getResource('PIC3')}</Form.Label>
+                            <Form.Label sm="4" md="4" column htmlFor="pic3">{LangHelper.getResource('PIC3')}</Form.Label>
                             <Col sm="8" md="8">
                                 <div className="d-flex">
                                     <div className="picName">
@@ -727,7 +728,7 @@ export class EditForm extends Component {
                     </Col>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="pic4">{LangHelper.getResource('PIC4')}</Form.Label>
+                            <Form.Label sm="4" md="4" column htmlFor="pic4">{LangHelper.getResource('PIC4')}</Form.Label>
                             <Col sm="8" md="8">
                                 <div className="d-flex">
                                     <div className="picName">
@@ -768,17 +769,17 @@ export class EditForm extends Component {
                                         <div className="d-flex">
                                             <div className="code-country">
                                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.phoneCountryCode}
-                                                    name="phoneCountryCode" autoComplete="off" onChange={this.handleChange}
+                                                    name="phoneCountryCode" id="phoneCountryCode" autoComplete="off" onChange={this.handleChange}
                                                 />
                                             </div>
                                             <div className="code-area">
                                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.phoneAreaCode}
-                                                    name="phoneAreaCode" autoComplete="off" onChange={this.handleChange}
+                                                    name="phoneAreaCode" id="phoneAreaCode" autoComplete="off" onChange={this.handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.phone}
-                                                    name="phone" autoComplete="off" onChange={this.handleChange}
+                                                    name="phone" id="phone" autoComplete="off" onChange={this.handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -792,17 +793,17 @@ export class EditForm extends Component {
                                         <div className="d-flex">
                                             <div className="code-country">
                                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.phone2CountryCode}
-                                                    name="phone2CountryCode" autoComplete="off" onChange={this.handleChange}
+                                                    name="phone2CountryCode" id="phone2CountryCode" autoComplete="off" onChange={this.handleChange}
                                                 />
                                             </div>
                                             <div className="code-area">
                                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.phone2AreaCode}
-                                                    name="phone2AreaCode" autoComplete="off" onChange={this.handleChange}
+                                                    name="phone2AreaCode" id="phone2AreaCode" autoComplete="off" onChange={this.handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.phone2}
-                                                    name="phone2" autoComplete="off" onChange={this.handleChange}
+                                                    name="phone2" id="phone2" autoComplete="off" onChange={this.handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -816,17 +817,17 @@ export class EditForm extends Component {
                                         <div className="d-flex">
                                             <div className="code-country">
                                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.phone3CountryCode}
-                                                    name="phone3CountryCode" autoComplete="off" onChange={this.handleChange}
+                                                    name="phone3CountryCode" id="phone3CountryCode" autoComplete="off" onChange={this.handleChange}
                                                 />
                                             </div>
                                             <div className="code-area">
                                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.phone3AreaCode}
-                                                    name="phone3AreaCode" autoComplete="off" onChange={this.handleChange}
+                                                    name="phone3AreaCode" id="phone3AreaCode" autoComplete="off" onChange={this.handleChange}
                                                 />
                                             </div>
                                             <div className="phone">
                                                 <Form.Control type="text" size="sm" className="shadow-none" value={values.phone3}
-                                                    name="phone3" autoComplete="off" onChange={this.handleChange}
+                                                    name="phone3" id="phone3" autoComplete="off" onChange={this.handleChange}
                                                 />
                                             </div>
                                         </div>
@@ -1063,7 +1064,7 @@ export class EditForm extends Component {
                                         <Form.Control as="select" size="sm" className="shadow-none" value={values.bankAddressCountryId}
                                             name="bankAddressCountryId" id="bankAddressCountryId" autoComplete="off" onChange={this.handleChange}
                                         >
-                                            {this.props.allSettings.countries.map(item => this.renderOptions(item.name, item.id))}
+                                            {this.props.allSettings.countries.map(element => this.renderOptions(element.name, element.id))}
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>

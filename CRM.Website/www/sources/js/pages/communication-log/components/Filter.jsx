@@ -58,8 +58,14 @@ export class Filter extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        const { statusId, handler } = this.state;
-        const params = { ...this.props.gridParams, statusId: statusId, handler: handler };
+        const { statusId, handler, fromDate, toDate } = this.state;
+        const params = { 
+            ...this.props.gridParams,
+            statusId: statusId,
+            handler: handler,
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate)
+        };
         this.props.getLogsByCustomerId(params);
     };
 
