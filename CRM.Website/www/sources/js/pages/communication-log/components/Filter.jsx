@@ -86,8 +86,8 @@ export class Filter extends Component {
                     </Col>
                     <Col sm="3" md="3">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
-                            <Col sm="8" md="8" className="react-datepicker-wrapper-container form-control-wrapper">
+                            <Form.Label column sm="5" md="5" htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
+                            <Col sm="7" md="7" className="react-datepicker-wrapper-container form-control-wrapper">
                                 <DatePicker
                                     selected={this.state.fromDate}
                                     maxDate={this.state.maxFromDate}
@@ -99,8 +99,8 @@ export class Filter extends Component {
                     </Col>
                     <Col sm="3" md="3">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="toDate">{LangHelper.getResource('ToDate')}</Form.Label>
-                            <Col sm="8" md="8" className="react-datepicker-wrapper-container form-control-wrapper">
+                            <Form.Label column sm="5" md="5" htmlFor="toDate">{LangHelper.getResource('ToDate')}</Form.Label>
+                            <Col sm="7" md="7" className="react-datepicker-wrapper-container form-control-wrapper">
                                 <DatePicker
                                     selected={this.state.toDate}
                                     maxDate={this.state.maxToDate}

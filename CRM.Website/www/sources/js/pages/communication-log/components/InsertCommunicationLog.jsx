@@ -1,11 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Formik } from 'formik';
 import moment from 'moment';
-import { Button, Form, Modal, Row, Col, Collapse } from 'react-bootstrap';
-import CkEditor from '@jsroot/components/ckeditor/index';
+import { Button, Form, Modal, Row, Col } from 'react-bootstrap';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
 import AutoComplete from '@jsroot/components/AutoComplete';
@@ -24,7 +23,7 @@ import {
 } from '@jsroot/common/shareScripts';
 import {
     handleChangeMainCategory, handleChangeProduct, handleChangeSubProduct, validateFormik,
-    handlePasteCustomer, handleGetFeedbackSubjectTemplates, isValidCustomer
+    handlePasteCustomer, handleGetFeedbackSubjectTemplates, isValidCustomer, renderCollapse
 } from '../common.functions';
 
 export class InsertCommunicationLog extends Component {
@@ -53,7 +52,7 @@ export class InsertCommunicationLog extends Component {
         await this.props.getInsertSettings();
     }
 
-    initFormData = () => {
+    initFormikData = () => {
         const insertSettings = this.props.insertSettings;
         const startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
@@ -85,24 +84,21 @@ export class InsertCommunicationLog extends Component {
         };
     };
 
-    handleChangeStartTime = (setFieldValue, startTime, endTime) => {
-        setFieldValue('startTime', startTime);
-        if (moment(startTime).isAfter(moment(endTime))) {
-            endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(startTime)));
+    onChangeStartTime = (setFieldValue, selectedTime, endTime) => {
+        setFieldValue('startTime', selectedTime);
+        if (moment(selectedTime).isAfter(moment(endTime))) {
+            endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(selectedTime)));
             endTime.setMinutes(endTime.getMinutes() + 1);
-
             setFieldValue('endTime', endTime);
         }
         setTimeout(() => this.updateTimeAndToolPrefix(), 100);
     };
 
-    handleChangeEndTime = (setFieldValue, startTime, endTime) => {
-        setFieldValue('endTime', endTime);
-
-        if (moment(startTime).isAfter(moment(endTime))) {
-            startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(endTime)));
+    onChangeEndTime = (setFieldValue, startTime, selectedTime) => {
+        setFieldValue('endTime', selectedTime);
+        if (moment(startTime).isAfter(moment(selectedTime))) {
+            startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(selectedTime)));
             startTime.setMinutes(startTime.getMinutes() - 1);
-
             setFieldValue('startTime', startTime);
         }
     };
@@ -122,19 +118,19 @@ export class InsertCommunicationLog extends Component {
         setFieldValue('communicationToolIds', selectedItemsKey);
 
         const communicationTools = this.props.insertSettings.communicationTools;
-        let latestCommunicationTool = '';
-        if (currentItem !== null && selectedItemsKey !== '') {
-            latestCommunicationTool = currentItem.name;
-        } else if (currentItem === null && selectedItemsKey !== '') {
-            latestCommunicationTool = communicationTools[0].name;
+        let latestTool = '';
+        if (selectedItemsKey !== '' && currentItem !== null && currentItem.checked) {
+            latestTool = currentItem.name;
+        } else if (selectedItemsKey !== '' && currentItem === null) {
+            latestTool = communicationTools[0].name;
         } else {
             if (selectedItemsKey !== '') {
                 const communicationToolId = parseInt(selectedItemsKey.split(',')[0], 10);
-                latestCommunicationTool = communicationTools.filter(x => x.id === communicationToolId)[0].name;
+                latestTool = communicationTools.filter(x => x.id === communicationToolId)[0].name;
             }
         }
 
-        this.setState({ latestCommunicationTool }, () => {
+        this.setState({ latestCommunicationTool: latestTool }, () => {
             setTimeout(() => this.updateTimeAndToolPrefix(), 100);
         });
     };
@@ -151,23 +147,22 @@ export class InsertCommunicationLog extends Component {
         this.setState({ betTypes: betTypes });
     };
 
-    handleVerifyInsertRelatedCustomer = () => {
-        const formikValues = this.formik.values;
-        const customersInput = formikValues.customerNameInput.trim()
+    handleVerifyInsertRelatedCustomer = (values, errors, setFieldValue) => {
+        const customersInput = values.customerNameInput.trim()
                                 .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
         if (isValidCustomer(customersInput)) {
-            this.formik.errors.customerNameInput = '';
+            errors.customerNameInput = '';
             this.props.verifyCustomers({ username: customersInput }).then(response => {
                 let insertCustomers = [...this.state.relatedCustomers, ...response.data];
                 insertCustomers = insertCustomers.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
                 this.setState({ relatedCustomers: insertCustomers });
 
-                const updateAutoGenerated = updateAutoGeneratedCustomerPrefix(true, insertCustomers, formikValues.autoGenerated);
-                this.formik.setFieldValue('autoGenerated', updateAutoGenerated);
-                this.formik.setFieldValue('customerNameInput', '');
+                const updateAutoGenerated = updateAutoGeneratedCustomerPrefix(true, insertCustomers, values.autoGenerated);
+                setFieldValue('autoGenerated', updateAutoGenerated);
+                setFieldValue('customerNameInput', '');
             });
         } else {
-            this.formik.errors.customerNameInput = 'Customer Name must not over 50 characters long!';
+            errors.customerNameInput = 'Customer Name must not over 50 characters long!';
         }
     };
 
@@ -302,7 +297,7 @@ export class InsertCommunicationLog extends Component {
                                                 timeInputLabel="Time:"
                                                 showTimeInput
                                                 selected={values.startTime}
-                                                onChange={value => this.handleChangeStartTime(setFieldValue, value, values.endTime)}
+                                                onChange={value => this.onChangeStartTime(setFieldValue, value, values.endTime)}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -334,7 +329,7 @@ export class InsertCommunicationLog extends Component {
                                                 timeInputLabel="Time:"
                                                 showTimeInput
                                                 selected={values.endTime}
-                                                onChange={value => this.handleChangeEndTime(setFieldValue, values.startTime, value)}
+                                                onChange={value => this.onChangeEndTime(setFieldValue, values.startTime, value)}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -400,7 +395,8 @@ export class InsertCommunicationLog extends Component {
                                                 hasSearchBox isNAOption
                                                 maxDisplayItemCount={1}
                                                 onChange={(currentItem, selectedItemsKey) => {
-                                                    handleChangeMainCategory(setFieldValue, selectedItemsKey, values.subCategoryIds, values.subject, insertSettings, this.setStateSubcategory);
+                                                    handleChangeMainCategory(setFieldValue, selectedItemsKey, values.subCategoryIds,
+                                                        values.subject, insertSettings, this.setStateSubcategory);
                                                 }}
                                             />
                                         </Col>
@@ -472,7 +468,7 @@ export class InsertCommunicationLog extends Component {
                                         <Form.Label column sm="4" md="4" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
                                         <Col sm="6" md="6">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                name="statusId" id="statusId" 
+                                                name="statusId" id="statusId"
                                                 value={values.statusId} onChange={handleChange}
                                             >
                                                 {statuses.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
@@ -583,7 +579,7 @@ export class InsertCommunicationLog extends Component {
                                         <Col sm="2" md="2">
                                             <Button type="button" variant="primary" size="sm"
                                                 disabled={!values.customerNameInput}
-                                                onClick={this.handleVerifyInsertRelatedCustomer}
+                                                onClick={() => this.handleVerifyInsertRelatedCustomer(values, errors, setFieldValue)}
                                             >
                                                 {LangHelper.getResource('Verify')}
                                             </Button>
@@ -618,53 +614,7 @@ export class InsertCommunicationLog extends Component {
                             </Form.Group>
                         </div>
                     </div>
-                    <div className="panel-group border-bottom-0">
-                        <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('autoGenerated')}
-                            aria-controls="collapse-expand-autoGenerated"
-                            aria-expanded={!collapse.autoGenerated}
-                        >
-                            <Form.Label>{LangHelper.getResource('AutoGenerated')}</Form.Label>
-                        </Form.Group>
-                        <Collapse in={!collapse.autoGenerated}>
-                            <div className="panel-content">
-                                <Form.Control as="textarea" rows={3} className="shadow-none" name="autoGenerated"
-                                    value={values.autoGenerated} onChange={handleChange}
-                                />
-                            </div>
-                        </Collapse>
-                    </div>
-                    <div className="panel-group border-bottom-0">
-                        <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('remark')}
-                            aria-controls="collapse-expand-remark"
-                            aria-expanded={!collapse.remark}
-                        >
-                            <Form.Label className="required">{LangHelper.getResource('Remark')}</Form.Label>
-                        </Form.Group>
-                        <Collapse in={!collapse.remark}>
-                            <div id="collapse-expand-remark" className="panel-content">
-                                <CkEditor isInvalid={touched.remark && errors.remark}
-                                    data={values.remark} username={window.currentUsername}
-                                    onChange={value => setFieldValue('remark', value)}
-                                />
-                            </div>
-                        </Collapse>
-                    </div>
-                    <div className="panel-group border-bottom-0">
-                        <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('solution')}
-                            aria-controls="collapse-expand-solution"
-                            aria-expanded={!collapse.solution}
-                        >
-                            <Form.Label className="required">{LangHelper.getResource('Solution')}</Form.Label>
-                        </Form.Group>
-                        <Collapse in={!collapse.solution}>
-                            <div id="collapse-expand-solution" className="panel-content">
-                                <CkEditor isInvalid={touched.solution && errors.solution}
-                                    data={values.solution} username={window.currentUsername}
-                                    onChange={value => setFieldValue('solution', value)}
-                                />
-                            </div>
-                        </Collapse>
-                    </div>
+                    { renderCollapse(values, errors, touched, collapse, setFieldValue, handleChange, this.handleCollapseExpand) }
                 </Modal.Body>
                 <Modal.Footer>
                     <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
@@ -682,7 +632,7 @@ export class InsertCommunicationLog extends Component {
         }
 
         return (
-            <Fragment>
+            <div>
                 <Modal show className="communication-modal-dialog" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl" centered
                     onHide={this.props.onClose}
@@ -692,7 +642,7 @@ export class InsertCommunicationLog extends Component {
                     </Modal.Header>
                     <Formik
                         innerRef={el => this.formik = el}
-                        initialValues={this.initFormData()}
+                        initialValues={this.initFormikData()}
                         validate={values => validateFormik(values, insertSettings)}
                         onSubmit={this.handleSubmit}
                     >
@@ -731,7 +681,7 @@ export class InsertCommunicationLog extends Component {
                         onClose={this.handleCloseCheckDuplicateDialog}
                     />
                 }
-            </Fragment>
+            </div>
         );
     }
 }

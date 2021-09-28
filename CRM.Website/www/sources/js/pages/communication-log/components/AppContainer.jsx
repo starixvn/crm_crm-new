@@ -34,8 +34,11 @@ export class AppContainer extends Component {
         }
     };
 
-    handleCloseInsertCommunicationDiaLog = () => {
+    handleCloseInsertCommunicationDiaLog = isSuccessful => {
         this.props.setInsertCommunicationDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getLogsByCustomerId(this.props.gridParams);
+        }
     };
 
     render() {
