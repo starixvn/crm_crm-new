@@ -34,7 +34,7 @@ describe('EditCommunicationLog', () => {
             countryId: 0,
             review: 'test',
             isReviewed: true,
-            relatedCustomers: [],
+            relatedCustomers: [{ custId: 1, username: 'sa' }],
             resolutionDate: 'Aug 16, 2021 03:12:00 PM',
             responseId: 1,
             siteId: 1,
@@ -123,6 +123,7 @@ describe('EditCommunicationLog', () => {
             //Arrange
             expect(await props.getCustomerFeedbackById).toHaveBeenCalledWith(73300);
             expect(await props.getAllStatus).toHaveBeenCalledWith({ isEdit: true });
+            expect(container.state.relatedCustomers).toEqual([{ custId: 1, val: 'sa' }]);
             expect(container.state.communicationLog).toEqual([]);
             expect(container.state.settings).toEqual(initData.settings);
             expect(container.state.hasReviewFeedbackPermission).toEqual(true);

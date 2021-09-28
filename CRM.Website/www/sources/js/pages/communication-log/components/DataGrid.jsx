@@ -13,7 +13,7 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 {
                     window.createUpdateFeedbackPermission === Policy.Host &&
                     <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
@@ -145,7 +145,7 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('CustomerCommunicationLogs')}</span>
                 </div>
                 <Table
-                    width={1150}
+                    width={1155}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}

@@ -31,10 +31,10 @@ export class Filter extends Component {
         const { fromDate, toDate } = this.state;
         const params = {
             customerId: 1754,
-            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            fromDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(fromDate)),
             handler: '',
             statusId: 0,
-            toDate: DateTimeService.toShortDateFormat(toDate)
+            toDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(toDate))
         };
         this.props.getLogsByCustomerId(params);
         this.props.setGridParams(params);
@@ -63,8 +63,8 @@ export class Filter extends Component {
             ...this.props.gridParams,
             statusId: statusId,
             handler: handler,
-            fromDate: DateTimeService.toShortDateFormat(fromDate),
-            toDate: DateTimeService.toShortDateFormat(toDate)
+            fromDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(fromDate)),
+            toDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(toDate))
         };
         this.props.getLogsByCustomerId(params);
     };
