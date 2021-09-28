@@ -156,6 +156,62 @@ describe('EditCommunicationLog', () => {
         });
     });
 
+    describe('getUpdateReviewMode', () => {
+        it('should return 0 exactly when update review mode', () => {
+            // Arrange
+            const props = {
+                customerFeedback: initData
+            };
+            const values = {
+                review: 'test',
+                isReviewed: true
+            };
+
+            // Act
+            const container = shallow(<EditCommunicationLog {...props} />).instance();
+            const actual = container.getUpdateReviewMode(values,'test',true);
+
+            //Arrange
+            expect(actual).toBe(0);
+        });
+
+        it('should return 2 exactly when update review mode', () => {
+            // Arrange
+            const props = {
+                customerFeedback: initData
+            };
+            const values = {
+                review: 'test',
+                isReviewed: false
+            };
+
+            // Act
+            const container = shallow(<EditCommunicationLog {...props} />).instance();
+            const actual = container.getUpdateReviewMode(values,'sa',true);
+
+            //Arrange
+            expect(actual).toBe(2);
+        });
+
+        it('should return 1 exactly when update review mode', () => {
+            // Arrange
+            const props = {
+                customerFeedback: initData
+            };
+            const values = {
+                review: 'test',
+                isReviewed: true
+            };
+
+            // Act
+            const container = shallow(<EditCommunicationLog {...props} />).instance();
+            const actual = container.getUpdateReviewMode(values,'sa',true);
+
+            //Arrange
+            expect(actual).toBe(1);
+        });
+    });
+
     describe('getLogSettings', () => {
         it('should return exactly when get log settings', () => {
             // Arrange

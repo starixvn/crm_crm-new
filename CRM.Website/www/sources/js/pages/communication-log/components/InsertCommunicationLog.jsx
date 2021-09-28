@@ -488,10 +488,10 @@ export class InsertCommunicationLog extends Component {
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="roles">{LangHelper.getResource('Role')}</Form.Label>
+                            <Form.Label sm="4" md="4" column htmlFor="role">{LangHelper.getResource('Role')}</Form.Label>
                             <Col sm="6" md="6">
-                                <Form.Control as="select" className="shadow-none"
-                                    id='roleId' name='roleId' size="sm"
+                                <Form.Control as="select" className="shadow-none" size="sm"
+                                    id='roleId' name='roleId'
                                     value={values.roleId}
                                     onChange={handleChange}
                                 >
@@ -517,10 +517,10 @@ export class InsertCommunicationLog extends Component {
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="countries">{LangHelper.getResource('Country')}</Form.Label>
+                            <Form.Label sm="4" column md="4" htmlFor="countries">{LangHelper.getResource('Country')}</Form.Label>
                             <Col sm="6" md="6">
-                                <Form.Control as="select" className="shadow-none"
-                                    id="countryId" name="countryId" size="sm"
+                                <Form.Control as="select" className="shadow-none" size="sm"
+                                    id="countryId" name="countryId"
                                     value={values.countryId} onChange={handleChange}
                                 >
                                     {countries.map(element => <option key={element.id} value={element.id}>{element.name}</option>)}
@@ -564,9 +564,9 @@ export class InsertCommunicationLog extends Component {
                 <Form.Group as={Row}>
                     <Col sm="12" md="12">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" htmlFor="relatedTo">{LangHelper.getResource('RelatedTo')}</Form.Label>
+                            <Form.Label sm="2" md="2" column htmlFor="relatedTo">{LangHelper.getResource('RelatedTo')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                <Form.Control type="text" className="shadow-none" size="sm" autoComplete="off"
                                     name="customerNameInput"
                                     value={values.customerNameInput}
                                     isInvalid={touched.customerNameInput && errors.customerNameInput}

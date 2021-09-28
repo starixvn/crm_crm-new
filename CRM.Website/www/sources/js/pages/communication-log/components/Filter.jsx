@@ -59,7 +59,7 @@ export class Filter extends Component {
     handleSubmit = event => {
         event.preventDefault();
         const { statusId, handler, fromDate, toDate } = this.state;
-        const params = { 
+        const params = {
             ...this.props.gridParams,
             statusId: statusId,
             handler: handler,

@@ -223,12 +223,18 @@ export class EditCommunicationLog extends Component {
             solution: values.solution,
             isReviewed: hasReviewFeedbackPermission && values.isReviewed,
             review: hasReviewFeedbackPermission ? values.review : '',
-            updateReviewedMode: (review === values.review && isReviewed === values.isReviewed)
-                ? 0 : (!values.isReviewed ? 2 : 1),
+            updateReviewedMode: this.getUpdateReviewMode(values, review, isReviewed),
             isDeletedFeedbackView: false
         };
 
         this.confirmEditFeedback(params);
+    };
+
+    getUpdateReviewMode = (values, review, isReviewed) => {
+        if (review === values.review && isReviewed === values.isReviewed) {
+            return 0;
+        }
+        return !values.isReviewed ? 2 : 1;
     };
 
     setStateSubcategory = subCategories => {
@@ -369,13 +375,11 @@ export class EditCommunicationLog extends Component {
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="communicationToolId" className="required">
-                                {LangHelper.getResource('Communication')}
-                            </Form.Label>
+                            <Form.Label sm="4" column md="4" htmlFor="communicationToolId" className="required">{LangHelper.getResource('Communication')}</Form.Label>
                             <Col sm="6" md="6">
                                 <MultipleSelect
-                                    isInvalid={touched.communicationToolIds && errors.communicationToolIds}
                                     keyField='id' valueField='name'
+                                    isInvalid={touched.communicationToolIds && errors.communicationToolIds}
                                     hasSearchBox isNAOption
                                     dataSource={communicationToolOptions}
                                     hasAllOption={communicationToolOptions.length > 0}
@@ -496,9 +500,9 @@ export class EditCommunicationLog extends Component {
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="statusId">{LangHelper.getResource('Status')}</Form.Label>
+                            <Form.Label sm="4" column md="4" htmlFor="allStatus">{LangHelper.getResource('Status')}</Form.Label>
                             <Col sm="6" md="6">
-                                <Form.Control as="select" size="sm" className="shadow-none"
+                                <Form.Control as="select" className="shadow-none" size="sm"
                                     name="statusId" id="statusId"
                                     value={values.statusId}
                                     onChange={handleChange}
@@ -609,9 +613,9 @@ export class EditCommunicationLog extends Component {
                 <Form.Group as={Row}>
                     <Col sm="12" md="12">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" htmlFor="relatedToId">{LangHelper.getResource('RelatedTo')}</Form.Label>
+                            <Form.Label sm="2" column md="2" htmlFor="relatedTo">{LangHelper.getResource('RelatedTo')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                <Form.Control type="text" size="sm" autoComplete="off" className="shadow-none"
                                     name="customerNameInput" value={values.customerNameInput}
                                     isInvalid={touched.customerNameInput && errors.customerNameInput}
                                     onPaste={event => handlePasteCustomer(setFieldValue, event, values.customerNameInput)}
