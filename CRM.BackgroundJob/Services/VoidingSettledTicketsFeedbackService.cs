@@ -338,7 +338,7 @@
             else
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENYN,
-                   content_en, feedbackInfo.AffectedName, Constants.LineBreak
+                   content_en, feedbackInfo.AffectedName,Constants.Break, Constants.LineBreak
                );
             }
 
