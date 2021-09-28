@@ -329,17 +329,16 @@
             var stringBuilder = new StringBuilder();
             var content_en = messages?.FirstOrDefault()?.Content_en;
             var content_cs = messages?.FirstOrDefault()?.Content_cs;
-            var content_yn = messages?.FirstOrDefault()?.Content_vn;
             if (!feedbackInfo.IsVip)
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENSC,
-                    content_en, content_cs, feedbackInfo.AffectedName, Constants.LineBreak
+                    content_en, content_cs, feedbackInfo.AffectedName, Constants.Break, Constants.LineBreak
                 );
             }
             else
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENYN,
-                   content_en, content_yn, feedbackInfo.AffectedName, Constants.LineBreak
+                   content_en, feedbackInfo.AffectedName, Constants.LineBreak
                );
             }
 
