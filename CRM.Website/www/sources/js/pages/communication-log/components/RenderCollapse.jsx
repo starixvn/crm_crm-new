@@ -35,7 +35,7 @@ export class RenderCollapse extends Component {
                         <Form.Label className="required">{LangHelper.getResource('Remark')}</Form.Label>
                     </Form.Group>
                     <Collapse in={!collapse.remark}>
-                        <div className="panel-content" id="collapse-expand-remark"> 
+                        <div className="panel-content" id="collapse-expand-remark">
                             <CkEditor data={values.remark} username={window.currentUsername}
                                 isInvalid={touched.remark && errors.remark}
                                 onChange={value => setFieldValue('remark', value)}
