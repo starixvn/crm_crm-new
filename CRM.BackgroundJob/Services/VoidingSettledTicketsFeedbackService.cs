@@ -332,7 +332,7 @@
             if (!feedbackInfo.IsVip)
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENSC,
-                    content_en, content_cs, feedbackInfo.AffectedName, Constants.Break, Constants.LineBreak
+                    content_en, content_cs, feedbackInfo.AffectedName, Constants.LineBreak, Constants.Break
                 );
             }
             else
@@ -435,11 +435,12 @@
             var stringBuilder = new StringBuilder();
             const string line = "-------------------------------------------------------- {0}";
             var ticketDescTemplate = commonFeedback.GetFeedbackTemplates<VoidingSettledTicketDescriptionTemplate>(descTemplateXml);
+            var leagueNameTc = commonFeedback.GetLeagueName(eventDetail.Leaguenametc.ToString(), Language.en_US);
             var EventdateGMT4Format = eventDetail.Eventdate.ToString(DefaultValue.FortmatddmmmyyyyDash);
             if (productName == "Sportsbook" && eventDetail.EventType == EventType2)
             {
                 stringBuilder.AppendFormat(line, Constants.Break);
-                stringBuilder.AppendFormat(ticketDescTemplate.Outright, sportName, kO_time, leagueName, homeName, Constants.Break);
+                stringBuilder.AppendFormat(ticketDescTemplate.Outright, leagueNameTc, kO_time, leagueName, homeName, Constants.Break);
             }
 
             if ((productName == "Sportsbook" && eventDetail.EventType != EventType2) || productName == "Virtual Sports 2")
