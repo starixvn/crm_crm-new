@@ -565,6 +565,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Special Remark.
+        /// </summary>
+        public static string SpecialRemark {
+            get {
+                return ResourceManager.GetString("SpecialRemark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string Status {

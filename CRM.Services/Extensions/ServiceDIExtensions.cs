@@ -13,6 +13,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using CRM.Services.InformHeadline;
     using CRM.Services.Communication;
+    using CRM.Services.Remark;
 
     public static class ServiceDIExtensions
     {
@@ -38,6 +39,7 @@
             services.AddTransient<IInformHeadlineService, InformHeadlineService>();
             services.AddTransient<ICustomerDetailService, CustomerDetailService>();
             services.AddTransient<ICommunicationService, CommunicationService>();
+            services.AddTransient<IRemarkService, RemarkService>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)

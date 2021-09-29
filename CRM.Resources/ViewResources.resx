@@ -300,4 +300,7 @@
   <data name="DoNotEditCommunicationLogPermission" xml:space="preserve">
     <value>You don't have permission to update.</value>
   </data>
+  <data name="SpecialRemark" xml:space="preserve">
+    <value>Special Remark</value>
+  </data>
 </root>
