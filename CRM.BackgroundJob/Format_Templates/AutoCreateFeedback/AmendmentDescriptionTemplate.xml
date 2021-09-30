@@ -40,4 +40,11 @@
         Event Start Time: {1} {3}
         League: {2} {3}
     </SportsbookOutrightEventType9>
+    <NoResult>
+        Date: {0}{6}
+        Sport: {1}{6}
+        Event Start Time: {2}{6}
+        League: {3}{6}
+        Match: {4} - vs - {5}
+    </NoResult>
 </ROOT>

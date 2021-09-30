@@ -24,5 +24,8 @@
         public string OutrightEN { get; set; }
         public string OutrightSC { get; set; }
         public string OutrightYN { get; set; }
+
+        public string NoResultENSC { get; set; }
+        public string NoResultENYN { get; set; }
     }
 }

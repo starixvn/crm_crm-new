@@ -79,4 +79,17 @@
         {0} {2}
         Affected user/Tài khoản bị ảnh hưởng: {1} {2}
     </OutrightYN>
+    <NoResultENSC>
+        Dear Sir, Customer Support would like to inform the below announcement:{3}
+        您好，客服部在此通知以下的通告：{4}
+        {0}{4}
+        {1}{4}
+        Affected user/受影响会员: {2}
+    </NoResultENSC>
+    <NoResultENYN>
+        Dear Sir, Customer Support would like to inform the below announcement:{2}
+        Xin chào quý khách, Bộ phận chăm sóc khách hàng xin thông báo thông báo dưới đây:{3}
+        {0}{3}
+        Affected user / Tài khoản bị ảnh hưởng: {1}
+    </NoResultENYN>
 </ROOT>

@@ -12,5 +12,6 @@
         public string NumberGame { get; set; }
         public string SportsbookOutrightEventType2 { get; set; }
         public string SportsbookOutrightEventType9 { get; set; }
+        public string NoResult { get; set; }
     }
 }

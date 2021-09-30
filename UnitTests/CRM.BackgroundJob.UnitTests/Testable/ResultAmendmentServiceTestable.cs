@@ -46,9 +46,10 @@
         public async Task Public_CreateResultAmendmentFeedbackCreditAsync(
            AmendmentAutoFeedbackInfor amendment,
             IEnumerable<SettingItem> settings,
-            IEnumerable<SystemSettingMapping> settingMappings)
+            IEnumerable<SystemSettingMapping> settingMappings,
+            bool isNoResultTemplate)
         {
-            await base.CreateResultAmendmentFeedbackCreditAsync(amendment, settings, settingMappings);
+            await base.CreateResultAmendmentFeedbackCreditAsync(amendment, settings, settingMappings, isNoResultTemplate);
         }
 
         public async Task Public_CheckValidAmendmentParamsAndInsertFeedbackAsync(
@@ -104,9 +105,9 @@
             return base.GetAmendmentRelatedCustomerXml(amendment);
         }
 
-        public string Public_GetAmendmentDescription(AmendmentAutoFeedbackInfor amendment)
+        public string Public_GetAmendmentDescription(AmendmentAutoFeedbackInfor amendment, bool isNoResultTemplate)
         {
-            return base.GetAmendmentDescription(amendment);
+            return base.GetAmendmentDescription(amendment, isNoResultTemplate);
         }
 
         public StringBuilder Public_GetAmendmentDescriptionVirtualSports(
@@ -161,9 +162,9 @@
         }
 
         public string Public_GetAmenmendSolution(AmendmentAutoFeedbackInfor amendment,
-            IEnumerable<Message> messageContent)
+            IEnumerable<Message> messageContent, bool isNoResultTemplate)
         {
-            return base.GetAmenmendSolution(amendment, messageContent);
+            return base.GetAmenmendSolution(amendment, messageContent, isNoResultTemplate);
         }
 
         public StringBuilder Public_GetAmendmentSolutionTemplateEN(
