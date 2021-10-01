@@ -47,5 +47,15 @@
             var remarks = await remarkService.GetRemarkAsync(criteria);
             return Json(remarks);
         }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        public async Task<IActionResult> EditRemarks([FromBody] EditRemarkCommand command)
+        {
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            var result = await remarkService.EditRemarkAsync(command);
+            return Json(result);
+        }
     }
 }
