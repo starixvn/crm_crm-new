@@ -485,14 +485,15 @@
             // Arrange
             var settingMappings = new List<SystemSettingMapping>
                 {
-                    new SystemSettingMapping { SettingName = "Bettype", SettingValue = "1", SettingSource = "2", SettingId = 1}
+                    new SystemSettingMapping { SettingName = "Bettype", SettingValue = "1", SettingSource = "BettypeName", SettingId = 1}
                 };
 
-            var betTypeMappings = new string[] { "2", "3" };
+            var listBetTypes = new string[] { "2", "3" };
             var service = MockService();
+            commonFeedback.GetBettypeName(Arg.Any<string>(), Language.en_US).Returns("BettypeName");
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsBettype(betTypeMappings, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsBettype(listBetTypes, settingMappings);
 
             // Assert
             Assert.Single(actual);
@@ -739,7 +740,7 @@
             const string settledTicketsText = "<span style =\"font-weight:bold;\">Following events have voided settled tickets: </span>";
             stringBuilder.Append(settledTicketsText);
             stringBuilder.Append(Constants.Break);
-            service.Protected("GetVoidingSettledTicketDescriptionByProduct", Arg.Any<AutoVoidingEventDetails>(), Arg.Any<string[]>(), ticketDescTemplate).Returns("test");
+            service.Protected("GetVoidingSettledTicketDescriptionByProduct", Arg.Any<AutoVoidingEventDetails>(), ticketDescTemplate).Returns("test");
             stringBuilder.Append("test");
 
             // Act
@@ -756,14 +757,14 @@
         {
             // Arrange
             var service = MockService();
-            var products = new string[] { "1"};
             var stringBuilder = new StringBuilder();
             var eventDetail = new AutoVoidingEventDetails
             {
                 Sporttype = 180,
                 LeagueId = 1,
                 HomeId = 1,
-                AwayId = 1
+                AwayId = 1,
+                ProductId = 1
             };
             var ticketDescTemplate = fixture.Create<VoidingSettledTicketDescriptionTemplate>();
             const string line = "-------------------------------------------------------- {0}";
@@ -778,7 +779,7 @@
             stringBuilder.Append(ticketDescTemplate.VirtualSports);
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, products, ticketDescTemplate);
+            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate);
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
@@ -789,14 +790,14 @@
         {
             // Arrange
             var service = MockService();
-            var products = new string[] { "1" };
             var stringBuilder = new StringBuilder();
             var eventDetail = new AutoVoidingEventDetails
             {
                 Sporttype = 181,
                 LeagueId = 1,
                 HomeId = 1,
-                AwayId = 1
+                AwayId = 1,
+                ProductId = 1
             };
             var ticketDescTemplate = fixture.Create<VoidingSettledTicketDescriptionTemplate>();
             const string line = "-------------------------------------------------------- {0}";
@@ -811,7 +812,7 @@
             stringBuilder.Append(ticketDescTemplate.VirtualSports181185);
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, products, ticketDescTemplate);
+            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate);
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
@@ -822,14 +823,14 @@
         {
             // Arrange
             var service = MockService();
-            var products = new string[] { "1" };
             var stringBuilder = new StringBuilder();
             var eventDetail = new AutoVoidingEventDetails
             {
                 Sporttype = 181,
                 LeagueId = 1,
                 HomeId = 1,
-                AwayId = 1
+                AwayId = 1,
+                ProductId = 1
             };
             var ticketDescTemplate = fixture.Create<VoidingSettledTicketDescriptionTemplate>();
             const string line = "-------------------------------------------------------- {0}";
@@ -844,7 +845,7 @@
             stringBuilder.Append(ticketDescTemplate.NumberGames);
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, products, ticketDescTemplate);
+            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate);
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);

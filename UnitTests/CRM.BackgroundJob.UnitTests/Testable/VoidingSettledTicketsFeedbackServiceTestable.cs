@@ -107,10 +107,9 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             return base.GetVoidingSettledTicketDescription(feedbackInfo, eventDetails);
         }
 
-        public string Public_GetVoidingSettledTicketDescriptionByProduct(AutoVoidingEventDetails eventDetail,
-          string[] products, VoidingSettledTicketDescriptionTemplate ticketDescTemplate)
+        public string Public_GetVoidingSettledTicketDescriptionByProduct(AutoVoidingEventDetails eventDetail, VoidingSettledTicketDescriptionTemplate ticketDescTemplate)
         {
-            return base.GetVoidingSettledTicketDescriptionByProduct(eventDetail, products, ticketDescTemplate);
+            return base.GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate);
         }
 
         public string Public_GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,

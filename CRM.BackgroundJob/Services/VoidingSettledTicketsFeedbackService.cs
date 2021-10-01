@@ -378,9 +378,8 @@
                     {
                         stringBuilder.Append(settledTicketsText);
                     }
-                    var products = feedbackInfo.ProductId.Split(",");
                     stringBuilder.Append(Constants.Break);
-                    stringBuilder.Append(GetVoidingSettledTicketDescriptionByProduct(eventDetail, products, ticketDescTemplate));
+                    stringBuilder.Append(GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate));
                     countAppendTicket++;
                 }
                 else
@@ -400,7 +399,7 @@
         }
 
         protected internal virtual string GetVoidingSettledTicketDescriptionByProduct(AutoVoidingEventDetails eventDetail,
-          string[] products, VoidingSettledTicketDescriptionTemplate ticketDescTemplate)
+            VoidingSettledTicketDescriptionTemplate ticketDescTemplate)
         {
             var stringBuilder = new StringBuilder();
             const string line = "-------------------------------------------------------- {0}";
@@ -415,29 +414,26 @@
             var race_time = eventDetail.Race_time.Add(timeSpan).ToString(DefaultValue.Formathhmmtt);
             var matchCode = commonFeedback.GetMatchCode(eventDetail.MatchCode, Language.en_US);
             var numberGameEnGame = eventDetail.Sporttype == SportType161 ? leagueName : sportName;
-            foreach (var product in products)
+            var productName = commonFeedback.GetProductName(eventDetail.ProductId.ToString(), Language.en_US);
+            stringBuilder.Append(GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName));
+            if (productName == "Virtual Sports" && (eventDetail.Sporttype == SportType180 || eventDetail.Sporttype == SportType186))
             {
-                var productName = commonFeedback.GetProductName(product, Language.en_US);
-                stringBuilder.Append(GetDescriptionSportBook(eventDetail, productName, kO_time, leagueName, homeName, sportName, awayName));
-                if (productName == "Virtual Sports" && (eventDetail.Sporttype == SportType180 || eventDetail.Sporttype == SportType186))
-                {
-                    stringBuilder.AppendFormat(line, Constants.Break);
-                    stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports, EventdateGMT4Format, sportName, homeName, awayName, Constants.Break);
-                }
-
-                if (productName == "Virtual Sports" && (eventDetail.Sporttype > SportType180 && eventDetail.Sporttype < SportType186))
-                {
-                    stringBuilder.AppendFormat(line, Constants.Break);
-                    stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports181185, EventdateGMT4Format, sportName, race_time, Constants.Break);
-                }
-
-                if (productName == "Number Game")
-                {
-                    stringBuilder.AppendFormat(line, Constants.Break);
-                    stringBuilder.AppendFormat(ticketDescTemplate.NumberGames, EventdateGMT4Format, numberGameEnGame, matchCode, Constants.Break);
-                }
-
+                stringBuilder.AppendFormat(line, Constants.Break);
+                stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports, EventdateGMT4Format, sportName, homeName, awayName, Constants.Break);
             }
+
+            if (productName == "Virtual Sports" && (eventDetail.Sporttype > SportType180 && eventDetail.Sporttype < SportType186))
+            {
+                stringBuilder.AppendFormat(line, Constants.Break);
+                stringBuilder.AppendFormat(ticketDescTemplate.VirtualSports181185, EventdateGMT4Format, sportName, race_time, Constants.Break);
+            }
+
+            if (productName == "Number Game")
+            {
+                stringBuilder.AppendFormat(line, Constants.Break);
+                stringBuilder.AppendFormat(ticketDescTemplate.NumberGames, EventdateGMT4Format, numberGameEnGame, matchCode, Constants.Break);
+            }
+
             return stringBuilder.ToString();
         }
 

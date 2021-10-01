@@ -17,5 +17,6 @@ namespace CRM.BackgroundJob.Models.VoidingSettledTickets
         public DateTime KO_time { get; set; }
         public DateTime Eventdate { get; set; }
         public DateTime Race_time { get; set; }
+        public int ProductId { get; set; }
     }
 }
