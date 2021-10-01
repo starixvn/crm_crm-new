@@ -287,7 +287,7 @@
             }
             var bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && listBetTypes.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
+                && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
             logService.LogInformation("End mapping betType.");
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
