@@ -344,6 +344,7 @@
     UpdateInformHeadlines : 'Update Inform Headlines',
     UpdatePersonalMappingSuccess: 'Update personal chat mapping successfully!',
     UpdateRelatedCustomers: 'Update Related Customers',
+    UpdateRemarkSuccessfully: 'Update Remark Successfully!',
     UpdateSetting: 'Update Setting',
     UpdatedTime: 'Updated Time',
     UpdateMultipleLogsSuccessfully: 'Update multiple logs successfully!',

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { Form, Row, Collapse } from 'react-bootstrap';
+import { Form, Row, Collapse, Button } from 'react-bootstrap';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import LangHelper from '@jsroot/common/langHelper';
+import ResponseMessage from '@jsroot/components/ResponseMessage';
+import { Policy } from '@jsroot/common/constants';
 
 export class Remark extends Component {
     constructor(props) {
@@ -14,6 +16,8 @@ export class Remark extends Component {
                 specialRemark: false,
                 normalRemark: false
             },
+            isSubmitting: false,
+            editRemarkResult: null,
             specialRemarks: [],
             dataSpecialRemarks: [],
             normalRemarks: [],
@@ -83,15 +87,47 @@ export class Remark extends Component {
         }
     };
 
+    handleSubmit = () => {
+        this.setState({ isSubmitting: true });
+        const params = {
+            customerId: 1754,
+            specialRemarks: this.state.dataSpecialRemarks,
+            normalRemarks: this.state.dataNormalRemarks
+        };
+        this.props.editRemarks(params).then(response => {
+            this.setState({ editRemarkResult: response.data });
+            if (response.data.isSuccessful) {
+                setTimeout(async () => {
+                    this.setState({ editRemarkResult: null });
+                    await this.props.getRemarks({ customerId: 1754 });
+                    this.setState({
+                        isSubmitting: false,
+                        specialRemarks: [...this.props.gridData.specialRemarks,''],
+                        normalRemarks: [...this.props.gridData.normalRemarks,'']
+                    });
+                }, 3000);
+            } else {
+                this.setState({ isSubmitting: false });
+            }
+        });
+    };
+
     render() {
-        const { collapse, specialRemarks, dataSpecialRemarks, normalRemarks, dataNormalRemarks } = this.state;
-        const { gridData } = this.props;
-        if (gridData === null){
+        const { collapse, specialRemarks, dataSpecialRemarks, normalRemarks, dataNormalRemarks, editRemarkResult
+        } = this.state;
+        const canEditRemark = window.customerInfoPolicy === Policy.Host;
+        if (this.props.gridData === null){
             return null;
         }
 
         return (
             <div>
+                {
+                    editRemarkResult &&
+                    <ResponseMessage isSuccessful={editRemarkResult.isSuccessful}
+                        message={editRemarkResult.message || LangHelper.getResource('UpdateRemarkSuccessfully')}
+                    />
+                }
                 <div className="panel-group mb-3">
                     <Form.Group as={Row} className="panel-title"
                         aria-expanded={!collapse.specialRemark}
@@ -105,14 +141,16 @@ export class Remark extends Component {
                             {
                                 specialRemarks.map((item, index) => (                                   
                                     <div className="generate-remark" key={`${item}-${index}`}>
-                                        <span>{index + 1}.</span>
+                                        <span className={index + 1 === specialRemarks.length ? 'opacity' : ''}>{index + 1}.</span>
                                         <CkEditor data={dataSpecialRemarks[index]} username={window.currentUsername}
                                             onChange={value => this.handleChange(value, index, 'dataSpecialRemarks', dataSpecialRemarks)}
                                         />
                                         {
-                                            (index + 1)  === specialRemarks.length ?
-                                            <span className="plus-icon fa fa-plus" onClick={() => this.addSpecialRemarkItem(index+item)}/>
-                                            : <span className="cross-icon fa fa-times" onClick={() => this.removeSpecialRemarkItem(index)} />
+                                            canEditRemark && (
+                                                (index + 1)  === specialRemarks.length ?
+                                                <span className="plus-icon fa fa-plus" onClick={() => this.addSpecialRemarkItem(index+item)}/>
+                                                : <span className="cross-icon fa fa-times" onClick={() => this.removeSpecialRemarkItem(index)} />
+                                            )
                                         }
                                     </div>
                                 ))
@@ -120,7 +158,6 @@ export class Remark extends Component {
                         </div>
                     </Collapse>
                 </div>
-
                 <div className="panel-group">
                     <Form.Group as={Row} className="panel-title"
                         aria-expanded={!collapse.normalRemark}
@@ -134,14 +171,16 @@ export class Remark extends Component {
                             {
                                 normalRemarks.map((item, index) => (                                   
                                     <div className="generate-remark" key={`${item}-${index}`}>
-                                        <span>{index + 1}.</span>
+                                        <span className={index + 1 === normalRemarks.length ? 'opacity' : ''}>{index + 1}.</span>
                                         <CkEditor data={dataNormalRemarks[index]} username={window.currentUsername}
                                             onChange={value => this.handleChange(value, index, 'dataNormalRemarks', dataNormalRemarks)}
                                         />
                                         {
-                                            (index + 1)  === normalRemarks.length ?
-                                            <span className="plus-icon fa fa-plus" onClick={() => this.addNormalRemarkItem(index+item)}/>
-                                            : <span className="cross-icon fa fa-times" onClick={() => this.removeNormalRemarkItem(index)} />
+                                            canEditRemark && (
+                                                (index + 1)  === normalRemarks.length ?
+                                                <span className="plus-icon fa fa-plus" onClick={() => this.addNormalRemarkItem(index+item)}/>
+                                                : <span className="cross-icon fa fa-times" onClick={() => this.removeNormalRemarkItem(index)} />
+                                            )
                                         }
                                     </div>
                                 ))
@@ -149,6 +188,13 @@ export class Remark extends Component {
                         </div>
                     </Collapse>
                 </div>
+                {
+                    canEditRemark && (
+                        <Button type="submit" className="mt-3" variant="primary" size="sm" onClick={this.handleSubmit} disabled={this.state.isSubmitting}>
+                            {LangHelper.getResource('Save')}
+                        </Button>
+                    )
+                }
             </div>
         );
     }

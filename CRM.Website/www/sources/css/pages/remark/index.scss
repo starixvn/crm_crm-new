@@ -8,12 +8,15 @@
     .plus-icon {
         cursor: pointer;
         font-size: 15px;
-        color: $sent-color;
+        color: #1eca6b;
     }
     .cross-icon {
         cursor: pointer;
         font-size: 15px;
         color: $planned-color;
+    }
+    .opacity{
+        opacity: 0.5;
     }
     .ckeditor-container {
         padding: 0px 13px;

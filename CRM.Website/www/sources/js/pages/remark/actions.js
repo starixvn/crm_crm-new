@@ -12,6 +12,12 @@ const getRemarks = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const editRemarks = params => async () => {
+    const url = Site.resolveClientUrl('Remark/EditRemarks');
+    return await DataService.postDataAsync(url,params).then(response => response);
+};
+
 export const ActionCreators = {
-    getRemarks
+    getRemarks,
+    editRemarks
 };
