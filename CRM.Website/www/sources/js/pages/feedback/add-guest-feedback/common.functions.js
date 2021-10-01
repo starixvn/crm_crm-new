@@ -4,12 +4,8 @@ import { getInvalidCategoryParams } from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import  { getProductParams, getCategoryParams }from '@jsroot/common/shareScripts';
 
-export const validateFormik = (values, settings, inactiveCustomers) => {
+export const validateFormik = (values, settings) => {
     const errors = {};
-    if(inactiveCustomers.length > 0){
-        const inactiveUserName = inactiveCustomers.map(x=>x.val).join(',');
-        errors.relatedCustomer = LangHelper.formatString(LangHelper.getResource('ErrorMessageInactiveSiteRelate', inactiveUserName));
-    }
     if (!values.identityInformation) {
         errors.identityInformation = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Identity'));
     }

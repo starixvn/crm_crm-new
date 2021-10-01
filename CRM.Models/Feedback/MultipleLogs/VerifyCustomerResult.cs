@@ -8,5 +8,7 @@
         public string Username { get; set; }
         public bool IsHeadline { get; set; }
         public bool IsDirectAccount { get; set; }
+        public bool IsSiteActive { get; set; }
+        public bool IsLicensee { get; set; }
     }
 }

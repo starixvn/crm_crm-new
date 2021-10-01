@@ -4,16 +4,18 @@ import LangHelper from '@jsroot/common/langHelper';
 
 export default class VerifyCustomer extends PureComponent {
     renderClassNameCustomer = item => {
+        let className = '';
         const isInActive = !item.isSiteActive && item.isLicensee;
         if (isInActive && item.custId !== 0) {
-            return 'inactive';
+            className = 'inactive';
         }
         else{
             if (item.custId === 0){
-                return 'invalid';
+                className = 'invalid';
             }
-            return item.custId > 0 ? 'customer' : 'guest';
+            className = item.custId > 0 ? 'customer' : 'guest';
         }
+        return className;
     };
 
     render() {

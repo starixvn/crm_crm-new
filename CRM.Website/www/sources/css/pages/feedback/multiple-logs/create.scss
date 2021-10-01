@@ -53,6 +53,10 @@
     .invalid {
         border-left: 17px solid red;
     }
+
+    .inactive{
+        border-left: 17px solid #AAAA00;
+    }
 }
 
 .verify-customer-result {
@@ -97,6 +101,10 @@
 
             .invalid {
                 color: red;
+            }
+
+            .inactive{
+                color:#AAAA00;
             }
         }
     }

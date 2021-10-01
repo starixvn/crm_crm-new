@@ -34,10 +34,15 @@ export class VerifyCustomerResult extends Component {
 
     renderCustomerItem = (customer, index) => {
         let className = '';
-        if (customer.custId > 0) {
-            className = 'customer';
-        } else {
-            className = customer.custId < 0 ? 'guest' : 'invalid';
+        const isInActive = !customer.isSiteActive && customer.isLicensee;
+        if (isInActive && customer.custId !== 0) {
+            className = 'inactive';
+        }
+        else{
+            if (customer.custId === 0){
+                className = 'invalid';
+            }
+            className = customer.custId > 0 ? 'customer' : 'guest';
         }
 
         return (
@@ -58,6 +63,7 @@ export class VerifyCustomerResult extends Component {
                     <Col sm="2" md="2"><span className="customer mr-3" />{LangHelper.getResource('Customer')}</Col>
                     <Col sm="2" md="2"><span className="guest mr-3" />{LangHelper.getResource('Guest')}</Col>
                     <Col sm="2" md="2"><span className="invalid mr-3" />{LangHelper.getResource('Invalid')}</Col>
+                    <Col sm="2" md="2"><span className="inactive mr-3" />{LangHelper.getResource('Invalid')}</Col>
                 </Row>
                 <Row className="mt-2 mb-2">
                     <Col>
