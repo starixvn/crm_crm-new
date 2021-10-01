@@ -54,7 +54,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
         }
         public string Public_GetVoidingSettledTicketsProductXml(
             string productId,
-            short sportTypeId,
+            IEnumerable<short> sportTypeId,
             string bettypes,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
@@ -72,7 +72,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
 
         public IList<SettingItem> Public_GetVoidingSettledTicketsSubProduct(
             int productId,
-            short sportTypeId,
+            IEnumerable<short> sportTypeId,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {

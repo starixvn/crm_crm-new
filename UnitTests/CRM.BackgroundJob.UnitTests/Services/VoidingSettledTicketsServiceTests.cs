@@ -130,7 +130,7 @@
             var fixture = new Fixture();
             var messages = fixture.Create<IEnumerable<MsgTarget>>();
             var expected = fixture.Create<CommandResult>();
-            var xml = messages.ToXML("root").ToString();
+            var xml = messages.ToXML("ROOT").ToString();
             var criteria = new AutoVoidingMessageUpdCommand();
             var service = GetVoidingSettledService();
             baseService.ExecuteNonQueryAsync(Arg.Do<AutoVoidingMessageUpdCommand>(x => criteria = x)).Returns(expected);

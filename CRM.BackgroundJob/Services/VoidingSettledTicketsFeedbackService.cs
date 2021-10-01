@@ -119,7 +119,7 @@
                 && x.SettingId == Constants.ExtentionNA);
            
             var category = GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended);
-            var sportTypeId = eventDetails.FirstOrDefault(x => x.LogVoidingID == feedbackInfo.LogVoidingID).Sporttype;
+            var sportTypeIds = eventDetails.Select(x=>x.Sporttype);
             var criteria = new CreateMutipleFeedbackCommand
             {
                 FeedbackDate = feedbackDate.Subtract(timeSpan),
@@ -140,7 +140,7 @@
                 AutoField1 = string.Empty,
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 CustomerXml = string.Format(DefaultValue.CustomerXml, feedbackInfo.HeadlineId, feedbackInfo.HeadlineName),
-                ProductXml = GetVoidingSettledTicketsProductXml(feedbackInfo.ProductId, sportTypeId, feedbackInfo.Listbettype, settings, settingMappings),
+                ProductXml = GetVoidingSettledTicketsProductXml(feedbackInfo.ProductId, sportTypeIds, feedbackInfo.Listbettype, settings, settingMappings),
                 Solution = GetVoidingSettledTicketSolution(feedbackInfo, messages),
                 RelatedCustomerXml = GetRelatedCustomerXml(feedbackInfo),
                 MessageId = feedbackInfo.MessageId,
@@ -192,14 +192,14 @@
 
         protected internal virtual string GetVoidingSettledTicketsProductXml(
             string productId,
-            short sportTypeId,
+            IEnumerable<short> sportTypeIds,
             string bettypes,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             var listBetTypes = bettypes.Split(",");
             SettingItem product = GetVoidingSettledTicketsProduct(settings, settingMappings, productId);
-            IList<SettingItem> subProducts = GetVoidingSettledTicketsSubProduct(product.SettingId, sportTypeId, settings, settingMappings);
+            IList<SettingItem> subProducts = GetVoidingSettledTicketsSubProduct(product.SettingId, sportTypeIds, settings, settingMappings);
             IList<SystemSettingMapping> bettypesMapping = GetVoidingSettledTicketsBettype(listBetTypes, settingMappings);
             logService.LogInformation("Begin mapping product, sub-product, bet type voiding settled tickets.");
 
@@ -245,15 +245,21 @@
 
         protected internal virtual IList<SettingItem> GetVoidingSettledTicketsSubProduct(
             int productId,
-            short sportTypeId,
+            IEnumerable<short> sportTypeIds,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             logService.LogInformation("Begin mapping subproduct.");
-            var sportName = commonFeedback.GetSportName(sportTypeId.ToString(), Language.en_US);
+            var sportNames = new List<string>();
+            foreach (var sportTypeId in sportTypeIds)
+            {
+                var sportName = commonFeedback.GetSportName(sportTypeId.ToString(), Language.en_US);
+                sportNames.Add(sportName);
+            }
             List<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase)).ToList();
+                && sportNames.Any(sportName => mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase))).ToList();
+
             List<SettingItem> subProducts = settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => parent == productId)
                 && mappings != null
