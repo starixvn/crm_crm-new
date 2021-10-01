@@ -20,6 +20,7 @@
         public static void ResolveServiceDI(this IServiceCollection services)
         {
             services.AddTransient<IFeedbackRepository, FeedbackRepository>();
+            services.AddTransient<IRemarkRepository, RemarkRepository>();
 
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<ISettingService, SettingService>();

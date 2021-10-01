@@ -1,7 +1,9 @@
 ﻿namespace CRM.Controllers.Remark
 {
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Criteria.Remark;
     using CRM.Models.Customer;
     using CRM.Services.Remark;
     using Fanex.NAP.Client.Configuration;
@@ -38,6 +40,12 @@
                 CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
             };
             return View(permission);
+        }
+
+        public async Task<IActionResult> GetRemarks([FromBody] GetRemarkCriteria criteria)
+        {
+            var remarks = await remarkService.GetRemarkAsync(criteria);
+            return Json(remarks);
         }
     }
 }
