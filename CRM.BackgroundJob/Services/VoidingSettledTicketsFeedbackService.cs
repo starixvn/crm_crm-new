@@ -279,6 +279,12 @@
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             logService.LogInformation("Begin mapping betType.");
+            var betTypeMappings = new List<string>();
+            foreach (var betType in listBetTypes)
+            {
+                var betTypeName = commonFeedback.GetBettypeName(betType, Language.en_US);
+                betTypeMappings.Add(betTypeName);
+            }
             var bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && listBetTypes.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
