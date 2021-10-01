@@ -310,6 +310,7 @@
     SubjectRequired: 'Subject is required!',
     Solution: 'Solution',
     SelectAll: 'Select all',
+    SpecialRemark: 'Special Remark',
     TemplateContent: 'Template Content',
     TemplateId: 'Template Id',
     TemplateName: 'Template Name',
