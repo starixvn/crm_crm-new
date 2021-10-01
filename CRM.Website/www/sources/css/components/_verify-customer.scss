@@ -10,11 +10,15 @@
     border-left: 18px solid #FF0000;
 }
 
+.inActiveShow{
+    border-left: 18px solid #AAAA00;
+}
+
 .customersList {
     border: 1px solid #ced4da;
 }
 
-.txt-customer, .txt-guest, .txt-invalid {
+.txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
     display: flex;
     align-items: center;
 
@@ -28,7 +32,7 @@
     }
 }
 
-.txt-customer, .txt-guest, .txt-invalid {
+.txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
     font-size: 12px;
     width: 33.33333333333333%;
     word-break: break-all;
@@ -45,4 +49,8 @@
 
 .txt-invalid {
     color: #FF0000;
+}
+
+.txt-inactive{
+    color: #AAAA00;
 }
