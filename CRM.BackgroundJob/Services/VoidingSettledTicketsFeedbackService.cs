@@ -378,27 +378,27 @@
                 {
                     if (countAppendTicket == 0)
                     {
-                        stringBuilderMainParlay.Append(settledTicketsText);
+                        stringBuilderTicket.Append(settledTicketsText);
                     }
-                    stringBuilderMainParlay.Append(Constants.Break);
-                    stringBuilderMainParlay.Append(GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate));
+                    stringBuilderTicket.Append(Constants.Break);
+                    stringBuilderTicket.Append(GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate));
                     countAppendTicket++;
                 }
                 else
                 {
                     if (countAppendMainParlay == 0)
                     {
-                        stringBuilderTicket.Append(Constants.Break);
-                        stringBuilderTicket.Append(mainParlayticketsText);
+                        stringBuilderMainParlay.Append(Constants.Break);
+                        stringBuilderMainParlay.Append(mainParlayticketsText);
                     }
-                    stringBuilderTicket.Append(Constants.Break);
+                    stringBuilderMainParlay.Append(Constants.Break);
                     const string templateMainParlaytickets = "- {0}";
-                    stringBuilderTicket.AppendFormat(templateMainParlaytickets, eventDetail.MatchCode);
+                    stringBuilderMainParlay.AppendFormat(templateMainParlaytickets, eventDetail.MatchCode);
                     countAppendMainParlay++;
                 }
             }
-            stringBuilder.Append(stringBuilderMainParlay);
             stringBuilder.Append(stringBuilderTicket);
+            stringBuilder.Append(stringBuilderMainParlay);
 
             return stringBuilder.ToString();
         }
