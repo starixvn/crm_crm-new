@@ -1,8 +1,12 @@
 ﻿namespace CRM.Controllers.Redemption
 {
+    using System.Linq;
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Services;
+    using CRM.Criteria.Redemption;
     using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Redemption;
@@ -48,6 +52,22 @@
             };
 
             return View(permission);
+        }
+
+        public async Task<IActionResult> GetLogsByCustomerId([FromBody] GetLogsByCustomerIdCriteria criteria)
+        {
+            var logs = await redemptionService.GetLogsByCustomerIdAsync(criteria);
+            return Json(logs);
+        }
+
+        public async Task<IActionResult> GetAllStatus(bool isEdit)
+        {
+            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.Redemption);
+            if (!isEdit)
+            {
+                statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
+            }
+            return Json(statuses);
         }
     }
 }

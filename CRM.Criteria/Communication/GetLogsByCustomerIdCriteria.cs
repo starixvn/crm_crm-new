@@ -10,16 +10,12 @@
         [SpParam(SqlParamName = "CustId")]
         public int CustomerId { get; set; }
 
-        [SpParam(SqlParamName = "FromDate")]
         public DateTime FromDate { get; set; }
 
-        [SpParam(SqlParamName = "ToDate")]
         public DateTime ToDate { get; set; }
 
-        [SpParam(SqlParamName = "StatusId")]
         public int StatusId { get; set; }
 
-        [SpParam(SqlParamName = "Handler")]
         public string Handler { get; set; }
 
         public short UserRole { get; } = Constants.UserRole;
