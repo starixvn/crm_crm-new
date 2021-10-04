@@ -303,4 +303,7 @@
   <data name="SpecialRemark" xml:space="preserve">
     <value>Special Remark</value>
   </data>
+  <data name="Redemption" xml:space="preserve">
+    <value>Redemption</value>
+  </data>
 </root>

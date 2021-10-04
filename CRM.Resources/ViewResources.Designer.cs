@@ -502,6 +502,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redemption.
+        /// </summary>
+        public static string Redemption {
+            get {
+                return ResourceManager.GetString("Redemption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remark.
         /// </summary>
         public static string Remark {
