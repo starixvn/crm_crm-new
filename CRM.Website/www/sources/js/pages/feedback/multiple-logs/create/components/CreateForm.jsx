@@ -155,11 +155,33 @@ export class CreateForm extends Component {
             return;
         }
 
+        this.setState({createMultipleLogsResult: null});
         Site.blockUI();
         this.props.verifyCustomers({ username }).then(response => {
             this.props.setVerifyCustomerResults(response.data);
             setFieldValue('customerNameInput', '');
 
+            Site.unblockUI();
+        });
+    };
+
+    reVerifyInactiveSiteAndConfirm = (username, params, setSubmitting, values) => {
+        Site.blockUI();
+        this.props.verifyCustomers({ username }).then(response => {
+            const inactiveCustomers = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
+            if(inactiveCustomers.length > 0){
+                this.props.setVerifyCustomerResults(response.data);
+                const inactiveUserName = inactiveCustomers.map(x=>x.username).join(',');
+                const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
+                this.setState({ createMultipleLogsResult: {isSuccessful: false, message}});
+                setSubmitting(false);
+            }
+            else if (values.isUseDefaultCommunicationTool) {
+                this.checkNotExistCommunicationToolSetting(params);
+            }
+            else{
+                this.confirmCreateMultipleLogs(params, 'Are you sure you want to Add or Update the Feedback/Log?');
+            }
             Site.unblockUI();
         });
     };
@@ -424,9 +446,11 @@ export class CreateForm extends Component {
         });
     };
 
+
+
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-
+        const usernames = this.props.verifyCustomerResults.map(x=>x.username).join(',');
         const { extensionNA, subCategories } = this.props.settings;
         const autoFields = this.splitAutoFieldWhenUseDefaultCommunicationTool(values);
         const params = {
@@ -460,11 +484,9 @@ export class CreateForm extends Component {
             isManualMultiple: true
         };
 
-        if (values.isUseDefaultCommunicationTool) {
-            this.checkNotExistCommunicationToolSetting(params);
-        } else {
-            this.confirmCreateMultipleLogs(params, 'Are you sure you want to Add or Update the Feedback/Log?');
-        }
+        this.reVerifyInactiveSiteAndConfirm(usernames, params, setSubmitting, values);
+
+        
     };
 
     renderForm = ({

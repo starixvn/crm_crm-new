@@ -56,6 +56,7 @@ export default class AppContainer extends Component {
             confirmEditFeedbackDialog: { show: false },
             confirmOverwriteCustomerInfoDialog: { show: false },
             feedback: null,
+            oldReLatedCust: [],
             settings: null,
             hasReviewFeedbackPermission: false,
             editResult: null
@@ -129,6 +130,7 @@ export default class AppContainer extends Component {
 
             this.setState({
                 feedback: this.initFormikData(data.feedback, data.settings),
+                oldReLatedCust: relatedCustomers,
                 settings: data.settings,
                 hasReviewFeedbackPermission: data.hasReviewFeedbackPermission,
                 extensionOptions,
@@ -375,6 +377,7 @@ export default class AppContainer extends Component {
         if (this.isValidCustomer(customersInput)) {
             this.formik.errors.customerNameInput = '';
 
+            this.setState({editResult:null});
             const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
             await DataService.postDataAsync(url, { username: customersInput }).then(response => {
                 let customers = [...this.state.relatedCustomers, ...response.data];
@@ -603,8 +606,32 @@ export default class AppContainer extends Component {
                 ? 0 : (!values.isReviewed ? 2 : (this.formikValues.review === values.review ? 0 : 1)),
             isDeletedFeedbackView: this.props.isDeletedFeedbackView
         };
-        this.confirmEditFeedback(params);
+
+        this.handleReVerifyInactiveAndConfirm(params);
     };
+
+    handleReVerifyInactiveAndConfirm = async params =>{
+        const {relatedCustomers, oldReLatedCust} = this.state;
+        const newRelatedCust= relatedCustomers.filter(x=> oldReLatedCust.some(y=>y.custId === x.custId));
+        const newRelatedCustName = newRelatedCust.join(x=>x.val);
+        const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
+        await DataService.postDataAsync(url, { username: newRelatedCustName }).then(response => {
+            // let customers = [...this.state.relatedCustomers, ...response.data];
+            // customers = customers.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
+            // this.setState({
+            //     relatedCustomers: customers
+            // });
+            const inactiveCustomers = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
+            if(inactiveCustomers.length > 0){
+                const inactiveUserName = inactiveCustomers.map(x=>x.val).join(',');
+                const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
+                this.setState({editResult: {isSuccessful: false, message}});
+            }
+            else{
+                this.confirmEditFeedback(params);
+            }
+        });
+    }
 
     renderForm = ({
         errors,

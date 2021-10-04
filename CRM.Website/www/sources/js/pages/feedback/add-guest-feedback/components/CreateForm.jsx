@@ -57,8 +57,7 @@ export class CreateForm extends Component {
             subProductOptions: [],
             betTypeOptions: [],
             listOfCustomerValid: [],
-            listOfCustomer: [],
-            inactiveCustomers: []
+            listOfCustomer: []
         };
     }
 
@@ -192,6 +191,7 @@ export class CreateForm extends Component {
         const isValid = customersInput.split(',').filter(value => value.length > 50).length === 0;
 
         if (isValid) {
+            this.props.setAddFeedback(null);
             this.props.verifyUserName({ Username: customersInput }).then(data => {
                 let customers = [...this.state.listOfCustomer, ...data];
                 customers = customers.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
@@ -210,23 +210,16 @@ export class CreateForm extends Component {
 
     handleReVerifyInactiveAndConfirm = (values, userNames) => {
         this.props.verifyUserName({ Username: userNames }).then(data => {
-            let customers = [...this.state.listOfCustomer, ...data];
-            customers = customers.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
-            const inactiveCustomers = customers.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
-            this.setState({
-                listOfCustomer: customers,
-                listOfCustomerValid: customers.filter(item => item.custId !== 0),
-                inactiveCustomers
-            },() =>{
-                if(this.state.inactiveCustomers.length > 0){
-                    const inactiveUserName = inactiveCustomers.map(x=>x.val).join(',');
-                    const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
-                    this.props.setAddFeedback({isSuccessful: false, message});
-                }
-                else{
-                    this.handleConfirm(values);
-                }
-            });
+            const inactiveCustomers = data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
+            if(inactiveCustomers.length > 0){
+                this.setState({listOfCustomer: data});
+                const inactiveUserName = inactiveCustomers.map(x=>x.val).join(',');
+                const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
+                this.props.setAddFeedback({isSuccessful: false, message});
+            }
+            else{
+                this.handleConfirm(values);
+            }
         });
     };
 

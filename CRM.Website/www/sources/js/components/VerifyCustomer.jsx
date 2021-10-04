@@ -13,7 +13,9 @@ export default class VerifyCustomer extends PureComponent {
             if (item.custId === 0){
                 className = 'invalid';
             }
-            className = item.custId > 0 ? 'customer' : 'guest';
+            else{
+                className = item.custId > 0 ? 'customer' : 'guest';
+            }
         }
         return className;
     };

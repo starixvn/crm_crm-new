@@ -42,7 +42,9 @@ export class VerifyCustomerResult extends Component {
             if (customer.custId === 0){
                 className = 'invalid';
             }
-            className = customer.custId > 0 ? 'customer' : 'guest';
+            else{
+                className = customer.custId > 0 ? 'customer' : 'guest';
+            }
         }
 
         return (
