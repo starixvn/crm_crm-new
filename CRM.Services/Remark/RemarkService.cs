@@ -54,7 +54,7 @@
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
-        private static void BuildRemarksXml(StringBuilder xmlContent, IEnumerable<string> remarks, bool isSpecial)
+        public static void BuildRemarksXml(StringBuilder xmlContent, IEnumerable<string> remarks, bool isSpecial)
         {
             var isSpecialText = isSpecial ? " IsSpecial=\"1\" />" : " IsSpecial=\"0\" />";
             foreach (var remark in remarks)
