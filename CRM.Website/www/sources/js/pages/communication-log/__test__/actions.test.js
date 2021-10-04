@@ -6,15 +6,11 @@ import { ActionCreators } from '../actions';
 import {
     setLogsByCustomerId,
     setAllStatus,
-    setGridParams,
-    setEditNoOfInquiryDialog,
     setCustomerFeedbackById,
-    setEditCommunicationDialog,
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
-    setInsertCommunicationDialog,
     setInsertSettings
-} from '../communicationLogSlice'
+} from '../communicationLogSlice';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

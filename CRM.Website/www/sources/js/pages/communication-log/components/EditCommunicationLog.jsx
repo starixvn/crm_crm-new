@@ -500,9 +500,9 @@ export class EditCommunicationLog extends Component {
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">
                         <Form.Group as={Row}>
-                            <Form.Label sm="4" md="4" column htmlFor="allStatus">{LangHelper.getResource('Status')}</Form.Label>
+                            <Form.Label column sm="4" md="4" htmlFor="allStatus">{LangHelper.getResource('Status')}</Form.Label>
                             <Col sm="6" md="6">
-                                <Form.Control as="select" className="shadow-none" size="sm"
+                                <Form.Control size="sm" as="select" className="shadow-none"
                                     name="statusId" id="statusId"
                                     value={values.statusId}
                                     onChange={handleChange}

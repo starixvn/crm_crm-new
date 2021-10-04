@@ -15,8 +15,7 @@ const remarkSlice = createSlice({
 const { actions, reducer } = remarkSlice;
 
 export const {
-    setRemarks,
-    setEditRemarks
+    setRemarks
 } = actions;
 
 export default reducer;

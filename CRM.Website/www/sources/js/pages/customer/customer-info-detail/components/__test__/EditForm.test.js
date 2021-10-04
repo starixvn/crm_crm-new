@@ -1,12 +1,9 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { Button, Col, Form, Row, Collapse } from 'react-bootstrap';
+import { shallow } from 'enzyme';
+import { Form } from 'react-bootstrap';
 import DatePicker from '@jsroot/components/date-picker/index';
-import DateTimeService from '@jsroot/common/dateTimeService';
-import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '../../../../../components/multiple-select/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-import { Policy } from '@jsroot/common/constants';
 import { EditForm } from '../EditForm';
 
 describe('EditForm', () => {

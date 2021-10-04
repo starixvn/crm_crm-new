@@ -1,8 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import LangHelper from '@jsroot/common/langHelper';
 import Filter from '../Filter';
 import DataGrid from '../DataGrid';
 import EditNoOfInquiry from '../../../feedback/edit-no-of-inquiry/AppContainer';

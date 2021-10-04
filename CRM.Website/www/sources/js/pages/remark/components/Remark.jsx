@@ -22,7 +22,7 @@ export class Remark extends Component {
             dataSpecialRemarks: [],
             normalRemarks: [],
             dataNormalRemarks: []
-        }
+        };
     }
 
     async componentDidMount() {
@@ -139,7 +139,7 @@ export class Remark extends Component {
                     <Collapse in={!collapse.specialRemark}>
                         <div className="panel-content" id="collapse-expand-specialRemark">
                             {
-                                specialRemarks.map((item, index) => (                                   
+                                specialRemarks.map((item, index) => (
                                     <div className="generate-remark" key={`${item}-${index}`}>
                                         <span className={index + 1 === specialRemarks.length ? 'opacity' : ''}>{index + 1}.</span>
                                         <CkEditor data={dataSpecialRemarks[index]} username={window.currentUsername}
@@ -169,7 +169,7 @@ export class Remark extends Component {
                     <Collapse in={!collapse.normalRemark}>
                         <div className="panel-content" id="collapse-expand-normalRemark">
                             {
-                                normalRemarks.map((item, index) => (                                   
+                                normalRemarks.map((item, index) => (
                                     <div className="generate-remark" key={`${item}-${index}`}>
                                         <span className={index + 1 === normalRemarks.length ? 'opacity' : ''}>{index + 1}.</span>
                                         <CkEditor data={dataNormalRemarks[index]} username={window.currentUsername}
