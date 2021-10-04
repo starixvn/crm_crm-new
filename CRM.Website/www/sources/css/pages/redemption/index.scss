@@ -5,3 +5,14 @@
 @import '../../components/modal';
 @import '../../components/tables';
 @import '../../components/date-picker/style';
+
+.react-datepicker-wrapper input{
+    width: 100% !important;
+}
+.form-group-button {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}

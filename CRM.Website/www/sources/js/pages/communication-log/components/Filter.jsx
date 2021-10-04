@@ -13,7 +13,7 @@ export class Filter extends Component {
         super(props);
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const date = new Date();
-        const fromDate = new Date(date.getFullYear(), date.getMonth(), 1);
+        const fromDate = new Date(DateTimeService.firstDayOfMonth(date));
 
         this.state = {
             fromDate: fromDate,
