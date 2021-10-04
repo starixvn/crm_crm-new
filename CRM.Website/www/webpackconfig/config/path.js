@@ -25,7 +25,8 @@ const cssPaths = {
     inform_headline: ['./www/sources/css/pages/informHeadline/index.scss'],
     customer_info_detail: ['./www/sources/css/pages/customer/customer-info-detail/index.scss'],
     communication_log: ['./www/sources/css/pages/communication-log/index.scss'],
-    remark: ['./www/sources/css/pages/remark/index.scss']
+    remark: ['./www/sources/css/pages/remark/index.scss'],
+    redemption: ['./www/sources/css/pages/redemption/index.scss']
 };
 
 const scriptPaths = {
@@ -52,7 +53,8 @@ const scriptPaths = {
     inform_headline: ['./www/sources/js/pages/informHeadline/index.js'],
     customer_info_detail: ['./www/sources/js/pages/customer/customer-info-detail/index.js'],
     communication_log: ['./www/sources/js/pages/communication-log/index.js'],
-    remark: ['./www/sources/js/pages/remark/index.js']
+    remark: ['./www/sources/js/pages/remark/index.js'],
+    redemption: ['./www/sources/js/pages/redemption/index.js']
 };
 
 module.exports = {
