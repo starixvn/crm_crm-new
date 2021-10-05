@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import DataGrid from './DataGrid';
 import Filter from './Filter';
 
 export class AppContainer extends Component {
@@ -6,8 +7,9 @@ export class AppContainer extends Component {
         return (
             <div className="col-md-10">
                 <Filter />
+                <DataGrid />
             </div>
-        )
+        );
     }
 }
 

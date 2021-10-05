@@ -30,8 +30,8 @@ export class Filter extends Component {
         const { fromDate, toDate } = this.state;
         const params = {
             customerId: 1754,
-            fromDate: DateTimeService.toShortDateTimeFormat(fromDate),
-            toDate: DateTimeService.toShortDateTimeFormat(toDate),
+            fromDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(fromDate)),
+            toDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(toDate)),
             statusId: 0
         };
         this.props.getLogsByCustomerId(params);
@@ -66,8 +66,8 @@ export class Filter extends Component {
     };
 
     render() {
-        const { gridData, allStatus } = this.props;
-        if (!gridData || !allStatus) {
+        const { allStatus } = this.props;
+        if (!allStatus) {
             return null;
         }
 
@@ -120,15 +120,15 @@ export class Filter extends Component {
                     </div>
                 </Form.Row>
             </Form>
-        )
+        );
     }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridData, allStatus } = state;
-    return { gridData, allStatus };
+    const { allStatus } = state;
+    return { allStatus };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

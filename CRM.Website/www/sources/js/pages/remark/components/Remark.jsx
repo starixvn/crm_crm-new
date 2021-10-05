@@ -54,36 +54,34 @@ export class Remark extends Component {
     };
 
     removeSpecialRemarkItem = index => {
-        const { specialRemarks, dataSpecialRemarks } = this.state;
-        this.setState({
-            specialRemarks: [...specialRemarks].filter((item,i) => i !== index),
-            dataSpecialRemarks: [...dataSpecialRemarks].filter((item,i) => i !== index)
-        });
+        this.setState(prevState => ({
+            specialRemarks: [...prevState.specialRemarks.filter((item,i) => i !== index)],
+            dataSpecialRemarks: [...prevState.dataSpecialRemarks.filter((item,i) => i !== index)],
+        }));
     };
 
     removeNormalRemarkItem = index => {
-        const { normalRemarks, dataNormalRemarks } = this.state;
-        this.setState({
-            normalRemarks: [...normalRemarks].filter((item,i) => i !== index),
-            dataNormalRemarks: [...dataNormalRemarks].filter((item,i) => i !== index)
-        });
+        this.setState(prevState => ({
+            normalRemarks: [...prevState.normalRemarks.filter((item,i) => i !== index)],
+            dataNormalRemarks: [...prevState.dataNormalRemarks.filter((item,i) => i !== index)],
+        }));
     };
 
     addSpecialRemarkItem = item => {
-        const { specialRemarks, dataSpecialRemarks } = this.state;
+        const { dataSpecialRemarks } = this.state;
         if (dataSpecialRemarks[dataSpecialRemarks.length - 1] !== '') {
-            this.setState({
-                specialRemarks: [...specialRemarks, item]
-            });
+            this.setState(prevState => ({
+                specialRemarks: [...prevState.specialRemarks, item]
+            }));
         }
     };
 
     addNormalRemarkItem = item => {
-        const { normalRemarks, dataNormalRemarks } = this.state;
+        const { dataNormalRemarks } = this.state;
         if (dataNormalRemarks[dataNormalRemarks.length - 1] !== '') {
-            this.setState({
-                normalRemarks: [...normalRemarks, item]
-            });
+            this.setState(prevState => ({
+                normalRemarks: [...prevState.normalRemarks, item]
+            }));
         }
     };
 
@@ -119,7 +117,8 @@ export class Remark extends Component {
         if (this.props.gridData === null){
             return null;
         }
-
+        console.log(specialRemarks);
+        console.log(dataSpecialRemarks);
         return (
             <div>
                 {

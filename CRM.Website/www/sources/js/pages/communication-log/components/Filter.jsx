@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { Col, Form, Row, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
@@ -79,69 +79,50 @@ export class Filter extends Component {
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter">
-                <Form.Group as={Row}>
-                    <Col sm="3" md="3">
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="3" md="3" htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
-                            <Col sm="9" md="9">
-                                <Form.Control as="input" size="sm" value={this.state.handler}
-                                    name="handler" id="handler" className="shadow-none" autoComplete="off" onChange={this.handleChange}
-                                />
-                            </Col>
-                        </Form.Group>
-                    </Col>
-                    <Col sm="3" md="3">
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="5" md="5" htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
-                            <Col sm="7" md="7" className="react-datepicker-wrapper-container form-control-wrapper">
-                                <DatePicker
-                                    selected={this.state.fromDate}
-                                    maxDate={this.state.maxFromDate}
-                                    minDate={this.state.minFromDate}
-                                    onChange={value => this.handleChangeFromDate(value)}
-                                />
-                            </Col>
-                        </Form.Group>
-                    </Col>
-                    <Col sm="3" md="3">
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="5" md="5" htmlFor="toDate">{LangHelper.getResource('ToDate')}</Form.Label>
-                            <Col sm="7" md="7" className="react-datepicker-wrapper-container form-control-wrapper">
-                                <DatePicker
-                                    selected={this.state.toDate}
-                                    maxDate={this.state.maxToDate}
-                                    minDate={this.state.minToDate}
-                                    onChange={value => this.handleChangeToDate(value)}
-                                />
-                            </Col>
-                        </Form.Group>
-                    </Col>
-                    <Col sm="2" md="2">
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
-                            <Col sm="8" md="8" className="react-datepicker-wrapper-container form-control-wrapper">
-                                <Form.Control as="select" size="sm" className="shadow-none"
-                                    name="statusId"
-                                    onChange={this.handleChange}
-                                >
-                                    <option value="0">All</option>
-                                    {
-                                        allStatus.map((value,key) => this.renderOptions(value.name,value.statusId,key))
-                                    }
-                                </Form.Control>
-                            </Col>
-                        </Form.Group>
-                    </Col>
-                    <Col sm="1" md="1">
-                        <Form.Group as={Row}>
-                            <Col sm="12" md="12">
-                                <Button type="submit" variant="primary" size="sm">
-                                    {LangHelper.getResource('Submit')}
-                                </Button>
-                            </Col>
-                        </Form.Group>
-                    </Col>
-                </Form.Group>
+                <Form.Row bsPrefix="form-row">
+                    <Form.Group>
+                        <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Handler')}</Form.Label>
+                        <Form.Control as="input" size="sm" value={this.state.handler}
+                            name="handler" id="handler" className="shadow-none" autoComplete="off" onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('FromDate')}</Form.Label>
+                        <div className="react-datepicker-wrapper-container">
+                            <DatePicker
+                                maxDate={this.state.maxFromDate}
+                                minDate={this.state.minFromDate}
+                                selected={this.state.fromDate}
+                                onChange={value => this.handleChangeFromDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('ToDate')}</Form.Label>
+                        <div className="react-datepicker-wrapper-container">
+                            <DatePicker
+                                maxDate={this.state.maxToDate}
+                                minDate={this.state.minToDate}
+                                selected={this.state.toDate}
+                                onChange={value => this.handleChangeToDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Status')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none" name="statusId"
+                            onChange={this.handleChange}
+                        >
+                            <option value="0">All</option>
+                            {
+                                allStatus.map((value,key) => this.renderOptions(value.name,value.statusId,key))
+                            }
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group>
+                    <Button type="submit" variant="primary" size="sm">{LangHelper.getResource('Submit')}</Button>
+                    </Form.Group>
+                </Form.Row>
             </Form>
         );
     }
