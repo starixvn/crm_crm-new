@@ -3,6 +3,7 @@ import DataService from '@jsroot/common/dataService';
 import {
     setSettings,
     setVerifyCustomerResults,
+    setReVerifyCustomerResults,
     removeCustomer,
     setRelatedCustomerResults,
     setFeedbackSubjectTemplates,
@@ -48,6 +49,7 @@ const createMultipleLogs = params => async () => {
 
 export const ActionCreators = {
     setVerifyCustomerResults,
+    setReVerifyCustomerResults,
     setAddRelatedCustomerDialog,
     setRelatedCustomerResults,
     setFeedbackSubjectTemplates,

@@ -114,9 +114,9 @@ describe('VerifyCustomerResult', () => {
             // Arrange
             const props = {
                 verifyCustomerResults: [
-                    { custId: 1, username: 'sa', isHeadline: true, isDirectAccount: false },
-                    { custId: -1, username: 'test', isHeadline: false, isDirectAccount: false },
-                    { custId: 0, username: 'test 1', isHeadline: false, isDirectAccount: false }
+                    { custId: 1, username: 'sa', isHeadline: true, isDirectAccount: false, isSiteActive: false, isLicensee: true },
+                    { custId: -1, username: 'test', isHeadline: false, isDirectAccount: false, isSiteActive: false, isLicensee: true },
+                    { custId: 0, username: 'test 1', isHeadline: false, isDirectAccount: false, isSiteActive: false, isLicensee: true }
                 ],
                 relatedCustomerResults: []
             };

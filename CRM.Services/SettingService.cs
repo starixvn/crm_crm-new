@@ -255,6 +255,12 @@
             return allSites;
         }
 
+        public async Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive()
+        {
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
+            return sites.Where(x => !x.IsActive && x.IsLicensee);
+        }
+
         public IEnumerable<Setting> GetPositions(bool isExcludeGuest)
         {
             var positions = new List<Setting>

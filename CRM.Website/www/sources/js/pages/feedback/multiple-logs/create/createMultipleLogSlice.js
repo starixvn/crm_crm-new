@@ -25,6 +25,9 @@ const createMultipleLogSlice = createSlice({
                 }
             }
         },
+        setReVerifyCustomerResults: (state, action) => {
+            state.verifyCustomerResults = action.payload;
+        },
         removeCustomer: (state, action) => {
             const customer = action.payload;
             if (customer.custId === 0) {
@@ -57,6 +60,7 @@ const { actions, reducer } = createMultipleLogSlice;
 export const {
     setSettings,
     setVerifyCustomerResults,
+    setReVerifyCustomerResults,
     removeCustomer,
     setRelatedCustomerResults,
     setAddRelatedCustomerDialog,

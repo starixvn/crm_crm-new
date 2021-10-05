@@ -61,6 +61,7 @@
     CustomerRedemptionLogs: 'Customer Redemption Logs',
     ConfirmRemoveDirectAccounts: 'Are you sure you want to remove all selected direct accounts?',
     CustomerResponse: 'Customer Response',
+    CannotCreateInactiveSite: 'Cannot create feedback for Inactive Site member.',
     Danger: 'Danger',
     DangerOriginal: 'Original',
     DangerNonLive: 'None-Live',

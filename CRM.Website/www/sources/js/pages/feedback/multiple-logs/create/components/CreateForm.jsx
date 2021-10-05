@@ -169,8 +169,10 @@ export class CreateForm extends Component {
         Site.blockUI();
         this.props.verifyCustomers({ username }).then(response => {
             const inactiveCustomers = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
+            this.setState({createMultipleLogsResult: null});
+            this.props.setReVerifyCustomerResults(response.data);
+            console.log(inactiveCustomers);
             if(inactiveCustomers.length > 0){
-                this.props.setVerifyCustomerResults(response.data);
                 const inactiveUserName = inactiveCustomers.map(x=>x.username).join(',');
                 const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
                 this.setState({ createMultipleLogsResult: {isSuccessful: false, message}});
@@ -485,8 +487,6 @@ export class CreateForm extends Component {
         };
 
         this.reVerifyInactiveSiteAndConfirm(usernames, params, setSubmitting, values);
-
-        
     };
 
     renderForm = ({

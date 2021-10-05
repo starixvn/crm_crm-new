@@ -16,6 +16,8 @@
 
         Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync();
 
+        Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive();
+
         Task<IEnumerable<Setting>> GetCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 
         Task<IEnumerable<Setting>> GetMainCategoryAsync(byte active = SettingConstants.ActiveAndInactive);

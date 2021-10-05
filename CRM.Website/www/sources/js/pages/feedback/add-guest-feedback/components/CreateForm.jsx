@@ -211,13 +211,14 @@ export class CreateForm extends Component {
     handleReVerifyInactiveAndConfirm = (values, userNames) => {
         this.props.verifyUserName({ Username: userNames }).then(data => {
             const inactiveCustomers = data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
+            this.setState({listOfCustomer: data});
             if(inactiveCustomers.length > 0){
-                this.setState({listOfCustomer: data});
                 const inactiveUserName = inactiveCustomers.map(x=>x.val).join(',');
                 const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
                 this.props.setAddFeedback({isSuccessful: false, message});
             }
             else{
+                this.props.setAddFeedback(null);
                 this.handleConfirm(values);
             }
         });
@@ -867,7 +868,7 @@ export class CreateForm extends Component {
                                     <Col sm="2" md="2">
                                         <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
                                             disabled={!this.state.collapse.isVerifyCustomer}
-                                            size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput, false)}
+                                            size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
                                         >
                                             {LangHelper.getResource('Verify')}
                                         </Button>

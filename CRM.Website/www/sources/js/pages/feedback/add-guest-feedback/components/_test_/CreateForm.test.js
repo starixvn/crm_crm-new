@@ -1244,7 +1244,8 @@ describe('CreateForm', () => {
             }];
             const promise = Promise.resolve(response);
             const props = {
-                verifyUserName: jest.fn(() => promise)
+                verifyUserName: jest.fn(() => promise),
+                setAddFeedback: jest.fn()
             };
             const setFieldValue = jest.fn();
             const event = {
@@ -1261,6 +1262,7 @@ describe('CreateForm', () => {
             // Assert
             expect(event.preventDefault).toHaveBeenCalled();
             expect(props.verifyUserName).toHaveBeenCalledWith({ Username: 'test' });
+            expect(props.setAddFeedback).toHaveBeenCalledWith(null);
             expect(createForm.state.listOfCustomer).toEqual(expected);
             expect(createForm.state.listOfCustomerValid).toEqual(expected);
             expect(setFieldValue).toHaveBeenCalledTimes(3);
@@ -1275,7 +1277,8 @@ describe('CreateForm', () => {
             }];
             const promise = Promise.resolve(response);
             const props = {
-                verifyUserName: jest.fn(() => promise)
+                verifyUserName: jest.fn(() => promise),
+                setAddFeedback: jest.fn()
             };
             const setFieldValue = jest.fn();
             const event = {
@@ -1300,7 +1303,8 @@ describe('CreateForm', () => {
             ];
             const promise = Promise.resolve(response);
             const props = {
-                verifyUserName: jest.fn(() => promise)
+                verifyUserName: jest.fn(() => promise),
+                setAddFeedback: jest.fn()
             };
             const event = {
                 preventDefault: jest.fn()
@@ -1705,6 +1709,106 @@ describe('CreateForm', () => {
     });
 
     describe('handleSubmit', () => {
+        it('should call exact function', () => {
+        // Arrange
+        const state = {
+            listOfCustomerValid: [{val: 1}]
+        };
+        const values = ["test"];
+        const createForm = shallow(<CreateForm />).instance();
+        createForm.handleReVerifyInactiveAndConfirm = jest.fn();
+        createForm.setState(state);
+
+        // Act
+        createForm.handleSubmit(values);
+
+
+        // Assert
+        expect(createForm.handleReVerifyInactiveAndConfirm).toHaveBeenCalledWith(values, "1");
+        });
+
+        it('should call exact function if do not have any valid customer', () => {
+            // Arrange
+            const state = {
+                listOfCustomerValid: []
+            };
+            const values = ["test"];
+            const createForm = shallow(<CreateForm />).instance();
+            createForm.handleConfirm = jest.fn();
+            createForm.setState(state);
+    
+            // Act
+            createForm.handleSubmit(values);
+    
+    
+            // Assert
+            expect(createForm.handleConfirm).toHaveBeenCalled();
+            });
+    });
+
+    describe('handleReVerifyInactiveAndConfirm', () => {
+        it('should call exact function if have any inactive site member', async () => {
+        // Arrange
+        const response = [{
+            id: 1,
+            val: 'test',
+            isSiteActive: false,
+            isLicensee: true
+        }];
+        const promise = Promise.resolve(response);
+        const state = {
+            listOfCustomer: []
+        };
+        const props = {
+            verifyUserName: jest.fn(() => promise),
+            setAddFeedback: jest.fn()
+        };
+        const values = ["test"];
+        const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
+        const createForm = shallow(<CreateForm {...props}/>).instance();
+        createForm.setState(state);
+
+        // Act
+        createForm.handleReVerifyInactiveAndConfirm(values, 'userNames');
+        await promise;
+        jest.runAllTimers();
+
+        // Assert
+        expect(props.setAddFeedback).toHaveBeenCalledWith({isSuccessful: false, message});
+        expect(createForm.state.listOfCustomer).toEqual(response);
+        });
+    });
+
+    describe('handleReVerifyInactiveAndConfirm', () => {
+        it('should call exact function if do not have any inactive site member', async () => {
+        // Arrange
+        const response = [{
+            id: 1,
+            val: 'test',
+            isSiteActive: true,
+            isLicensee: true
+        }];
+        const promise = Promise.resolve(response);
+        const props = {
+            verifyUserName: jest.fn(() => promise),
+            setAddFeedback: jest.fn()
+        };
+        const values = ["test"];
+        const createForm = shallow(<CreateForm {...props}/>).instance();
+        createForm.handleConfirm = jest.fn();
+
+        // Act
+        createForm.handleReVerifyInactiveAndConfirm(values, 'userNames');
+        await promise;
+        jest.runAllTimers();
+
+        // Assert
+        expect(props.setAddFeedback).toHaveBeenCalledWith(null);
+        expect(createForm.handleConfirm).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleConfirm', () => {
         it('should remove special characters', () => {
         // Arrange
         const params= {UserName: 'test#'};
@@ -1716,7 +1820,7 @@ describe('CreateForm', () => {
         createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
 
         // Act
-        createForm.handleSubmit([{username: 'test'}]);
+        createForm.handleConfirm([{username: 'test'}]);
 
 
         // Assert
@@ -1735,7 +1839,7 @@ describe('CreateForm', () => {
             createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
 
             // Act
-            createForm.handleSubmit([{userName: 'test'}]);
+            createForm.handleConfirm([{userName: 'test'}]);
 
 
             // Assert

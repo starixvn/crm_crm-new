@@ -17,7 +17,8 @@ export class DataGrid extends Component {
         settings: {
             sites: [],
             countries: [],
-            languages: []
+            languages: [],
+            sitesLicenseeInactive: []
         },
         editCustomerInfoResult: {},
         getSettings: {}
@@ -44,11 +45,22 @@ export class DataGrid extends Component {
                     checked: data !== null ? data.languages.some(y => y === x.languageId) : false
                 };
             });
+
             this.setState({
                 languages
             });
         }
     }
+
+    checkInactiveSite = (siteLicensee, siteSettingId) => {
+        for(let index = 0; index < siteLicensee.length; index++) {
+            var site = siteLicensee[index];
+            if (site.id === siteSettingId) {
+                return true;
+            }
+        }
+        return false;
+    };
 
     renderForm = ({
         errors,
@@ -59,6 +71,9 @@ export class DataGrid extends Component {
         isSubmitting,
         setFieldValue
     }) => {
+        const {settings, gridData}= this.props;
+        const isShowInactiveMsg = this.checkInactiveSite(settings.sitesLicenseeInactive, gridData.data.siteId);
+
         return (
             <Form className="form-customer" noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
@@ -164,6 +179,15 @@ export class DataGrid extends Component {
                         />
                     </Col>
                 </Form.Group>
+                {
+                    isShowInactiveMsg &&
+                    <Form.Group className="row item no-border-bg inactive-site">
+                        <Form.Label column md="3" />
+                        <Col md="9">
+                            {LangHelper.getResource('CannotCreateInactiveSite')}
+                        </Col>
+                    </Form.Group>
+                }
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('Country')}
