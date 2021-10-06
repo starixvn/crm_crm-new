@@ -6,6 +6,7 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import { Button } from 'react-bootstrap';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import { Policy } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
 
@@ -39,6 +40,10 @@ export class DataGrid extends Component {
 
     handleEditRedemptionLog = id => {
         this.props.setEditRedemptionDialog({ show: true, logId: id });
+    };
+
+    handleInsertRedemptionLog = () => {
+        this.props.setInsertRedemptionDialog({ show: true });
     };
 
     renderRow = (item, index) => {
@@ -76,9 +81,11 @@ export class DataGrid extends Component {
                     adjustedHeight={10}
                 />
                 {
-                    <Button variant="primary" size="sm" className="mt-3">
-                        {LangHelper.getResource('Insert')}
-                    </Button>
+                    window.customerInfoPolicy === Policy.Host && (
+                        <Button variant="primary" size="sm" className="mt-3" onClick={() => this.handleInsertRedemptionLog()}>
+                            {LangHelper.getResource('Insert')}
+                        </Button>
+                    )
                 }
             </div>
         );

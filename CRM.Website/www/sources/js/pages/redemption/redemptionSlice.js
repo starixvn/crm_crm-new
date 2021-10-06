@@ -7,7 +7,9 @@ const redemptionSlice = createSlice({
         allStatus: null,
         logDetail: null,
         gridParams: null,
-        editRedemptionDialog: { show: false }
+        editRedemptionDialog: { show: false },
+        statusForInsert: null,
+        insertRedemptionDialog: { show: false }
     },
     reducers: {
         setLogsByCustomerId: (state, action) => {
@@ -24,6 +26,12 @@ const redemptionSlice = createSlice({
         },
         setEditRedemptionDialog: (state, action) => {
             state.editRedemptionDialog = action.payload;
+        },
+        setStatusForInsert: (state, action) => {
+            state.statusForInsert = action.payload;
+        },
+        setInsertRedemptionDialog: (state, action) => {
+            state.insertRedemptionDialog = action.payload;
         }
     }
 });
@@ -35,7 +43,9 @@ export const {
     setAllStatus,
     setLogById,
     setGridParams,
-    setEditRedemptionDialog
+    setEditRedemptionDialog,
+    setStatusForInsert,
+    setInsertRedemptionDialog
 } = actions;
 
 export default reducer;

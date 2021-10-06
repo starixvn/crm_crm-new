@@ -6,14 +6,17 @@ import { bindActionCreators } from 'redux';
 import DataGrid from './DataGrid';
 import Filter from './Filter';
 import EditRedemptionLog from './EditRedemptionLog';
+import InsertRedemptionLog from './InsertRedemptionLog';
 
 export class AppContainer extends Component {
     static propTypes = {
-        editRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        editRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        insertRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
-        editRedemptionDialog: { show: false }
+        editRedemptionDialog: { show: false },
+        insertRedemptionDialog: { show: false }
     };
 
     handleCloseEditRedemptionDialog = isSuccessful => {
@@ -23,8 +26,15 @@ export class AppContainer extends Component {
         }
     };
 
+    handleCloseInsertRedemptionDialog = isSuccessful => {
+        this.props.setInsertRedemptionDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getLogsByCustomerId(this.props.gridParams);
+        }
+    };
+
     render() {
-        const { editRedemptionDialog } = this.props;
+        const { editRedemptionDialog, insertRedemptionDialog } = this.props;
         return (
             <div className="col-md-10">
                 <Filter />
@@ -35,6 +45,12 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditRedemptionDialog}
                     />
                 }
+                {
+                    insertRedemptionDialog.show &&
+                    <InsertRedemptionLog logId={insertRedemptionDialog.logId}
+                        onClose={this.handleCloseInsertRedemptionDialog}
+                    />
+                }
             </div>
         );
     }
@@ -43,8 +59,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, editRedemptionDialog } = state;
-    return { gridParams, editRedemptionDialog };
+    const { gridParams, editRedemptionDialog, insertRedemptionDialog } = state;
+    return { gridParams, editRedemptionDialog, insertRedemptionDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

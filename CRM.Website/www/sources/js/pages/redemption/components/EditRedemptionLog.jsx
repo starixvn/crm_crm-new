@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { Button, Col, Form, Row, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { Formik } from 'formik';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
@@ -11,6 +11,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { Policy } from '@jsroot/common/constants';
+import { validateFormik } from '../common.functions';
+import RenderFormEditInsert from './RenderFormEditInsert';
 
 export class EditRedemptionLog extends Component {
 
@@ -25,7 +27,7 @@ export class EditRedemptionLog extends Component {
 
     async componentDidMount() {
         await this.props.getLogById({ id: this.props.logId });
-        await this.props.getAllStatus({ isEdit: true });
+        await this.props.getAllStatus();
         this.setState({
             redemptionLog: this.initFormikData(this.props.logDetail)
         });
@@ -91,104 +93,10 @@ export class EditRedemptionLog extends Component {
                             message={editRedemptionResult.message || LangHelper.getResource('UpdateRedemptionLogSuccessfully')}
                         />
                     }
-                    <div className="panel-group border-bottom-0">
-                        <div className="panel-content">
-                            <Form.Group as={Row}>
-                                <Col sm="6" md="6">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="ClaimedTime">{LangHelper.getResource('ClaimedTime')}</Form.Label>
-                                        <Col md="7" sm="7" className="react-datepicker-wrapper-container form-control-wrapper">
-                                            <DatePicker
-                                                selected={values.claimTime}
-                                                onChange={value => setFieldValue('claimTime', value)}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="6" md="6">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="currencyId">{LangHelper.getResource('Currency')}</Form.Label>
-                                        <Col sm="7" md="7">
-                                            <Form.Control as="select" className="shadow-none"
-                                                name="currencyId" id="currencyId" size="sm"
-                                                value={values.currencyId} onChange={handleChange}
-                                            >
-                                                {
-                                                    allStatus.currencies.map((value,key) => <option key={key} value={value.id}>{value.name}</option>)
-                                                }
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row}>
-                                <Col sm="6" md="6">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="doneBy" className="required">{LangHelper.getResource('DoneBy')}</Form.Label>
-                                        <Col md="7" sm="7">
-                                            <Form.Control type="text" className="shadow-none"
-                                                name="doneBy" id="doneBy" size="sm"
-                                                value={values.doneBy}
-                                                onChange={handleChange}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="6" md="6">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="amount">{LangHelper.getResource('Amount')}</Form.Label>
-                                        <Col sm="7" md="7">
-                                            <Form.Control type="text" className="shadow-none"
-                                                name="amount" id="amount" size="sm"
-                                                value={values.amount}
-                                                onChange={handleChange}
-                                            />
-                                            </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row}>
-                                <Col sm="6" md="6">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="subject" className="required">{LangHelper.getResource('Subject')}</Form.Label>
-                                        <Col md="7" sm="7">
-                                            <Form.Control type="text" className="shadow-none"
-                                                name="subject" id="subject" size="sm"
-                                                value={values.subject}
-                                                onChange={handleChange}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="6" md="6">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="statusId">{LangHelper.getResource('Status')}</Form.Label>
-                                        <Col sm="7" md="7">
-                                            <Form.Control as="select" className="shadow-none"
-                                                name="statusId" id="statusId" size="sm"
-                                                value={values.statusId} onChange={handleChange}
-                                            >
-                                                {
-                                                    allStatus.statuses.map((value,key) => <option key={key} value={value.statusId}>{value.name}</option>)
-                                                }
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
-                        </div>
-                        <div className="panel-remark">
-                            <Form.Group className="panel-title">
-                                <Form.Label className="required">{LangHelper.getResource('Remark')}</Form.Label>
-                            </Form.Group>
-                            <div className="panel-content">
-                                <CkEditor isInvalid={touched.remark && errors.remark}
-                                    data={values.remark} username={window.currentUsername}
-                                    onChange={value => setFieldValue('remark', value)}
-                                />
-                            </div>
-                        </div>
-                    </div>
+                    <RenderFormEditInsert
+                        {...{ values, errors, touched, setFieldValue, handleChange }}
+                        statuses={allStatus}
+                    />
                 </Modal.Body >
                 <Modal.Footer>
                     {
@@ -205,7 +113,8 @@ export class EditRedemptionLog extends Component {
 
     render() {
         const { redemptionLog } = this.state;
-        if ( redemptionLog === null ) {
+        const { allStatus } = this.props;
+        if ( redemptionLog === null || allStatus === null ) {
             return null;
         }
 
@@ -216,12 +125,12 @@ export class EditRedemptionLog extends Component {
                     onHide={() => this.props.onClose(false)}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('EditMultipleLogs')}</Modal.Title>
+                        <Modal.Title as="div">{LangHelper.getResource('EditRedemptionLog')}</Modal.Title>
                     </Modal.Header>
                     <Formik
                         innerRef={el => this.formik = el}
                         initialValues={redemptionLog}
-                        validate={values => this.validateFormik(values)}
+                        validate={values => validateFormik(values)}
                         onSubmit={this.handleSubmit}
                     >
                         {this.renderForm}
