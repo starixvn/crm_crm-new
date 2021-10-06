@@ -37,11 +37,15 @@ export class DataGrid extends Component {
         ];
     };
 
+    handleEditRedemptionLog = id => {
+        this.props.setEditRedemptionDialog({ show: true, logId: id });
+    };
+
     renderRow = (item, index) => {
         return (
             <Row key={index}>
                 <Cell className="text-center">
-                    <span className='link-click'>{item.subject}</span>
+                    <span className='link-click' onClick={() => this.handleEditRedemptionLog(item.id)}>{item.subject}</span>
                 </Cell>
                 <Cell className="text-center">{DateTimeService.toShortDateFormat(item.claimTime)}</Cell>
                 <Cell className='text-center'>{item.currency}</Cell>

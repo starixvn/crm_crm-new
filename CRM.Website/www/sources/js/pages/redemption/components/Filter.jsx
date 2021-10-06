@@ -20,7 +20,7 @@ export class Filter extends Component {
             maxFromDate: currentDate,
             minFromDate: '',
             toDate: currentDate,
-            maxToDate: currentDate,
+            maxToDate: '',
             minToDate: fromDate,
             statusId: 0
         };
@@ -30,10 +30,11 @@ export class Filter extends Component {
         const { fromDate, toDate } = this.state;
         const params = {
             customerId: 1754,
-            fromDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(fromDate)),
-            toDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(toDate)),
+            fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
+            toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate)),
             statusId: 0
         };
+        this.props.setGridParams(params);
         this.props.getLogsByCustomerId(params);
         this.props.getAllStatus({ isEdit: true });
     }
@@ -58,8 +59,8 @@ export class Filter extends Component {
         const { statusId, fromDate, toDate } = this.state;
         const params = {
             customerId: 1754,
-            fromDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(fromDate)),
-            toDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toServerDateTime(toDate)),
+            fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
+            toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate)),
             statusId: statusId
         };
         this.props.getLogsByCustomerId(params);
@@ -109,7 +110,7 @@ export class Filter extends Component {
                         >
                             <option value="0">All</option>
                             {
-                                allStatus.map((value,key) => <option key={key} value={value.statusId}>{value.name}</option>)
+                                allStatus.statuses.map((value,key) => <option key={key} value={value.statusId}>{value.name}</option>)
                             }
                         </Form.Control>
                     </Form.Group>

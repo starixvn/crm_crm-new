@@ -6,6 +6,7 @@ import { Form, Row, Collapse, Button } from 'react-bootstrap';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
+import Site from '@jsroot/common/site';
 import { Policy } from '@jsroot/common/constants';
 
 export class Remark extends Component {
@@ -56,14 +57,14 @@ export class Remark extends Component {
     removeSpecialRemarkItem = index => {
         this.setState(prevState => ({
             specialRemarks: [...prevState.specialRemarks.filter((item,i) => i !== index)],
-            dataSpecialRemarks: [...prevState.dataSpecialRemarks.filter((item,i) => i !== index)],
+            dataSpecialRemarks: [...prevState.dataSpecialRemarks.filter((item,i) => i !== index)]
         }));
     };
 
     removeNormalRemarkItem = index => {
         this.setState(prevState => ({
             normalRemarks: [...prevState.normalRemarks.filter((item,i) => i !== index)],
-            dataNormalRemarks: [...prevState.dataNormalRemarks.filter((item,i) => i !== index)],
+            dataNormalRemarks: [...prevState.dataNormalRemarks.filter((item,i) => i !== index)]
         }));
     };
 
@@ -92,7 +93,9 @@ export class Remark extends Component {
             specialRemarks: this.state.dataSpecialRemarks,
             normalRemarks: this.state.dataNormalRemarks
         };
+        Site.blockUI();
         this.props.editRemarks(params).then(response => {
+            Site.unblockUI();
             this.setState({ editRemarkResult: response.data });
             if (response.data.isSuccessful) {
                 setTimeout(async () => {
@@ -117,8 +120,7 @@ export class Remark extends Component {
         if (this.props.gridData === null){
             return null;
         }
-        console.log(specialRemarks);
-        console.log(dataSpecialRemarks);
+
         return (
             <div>
                 {

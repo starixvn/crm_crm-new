@@ -349,6 +349,7 @@
     UpdatePersonalMappingSuccess: 'Update personal chat mapping successfully!',
     UpdateRelatedCustomers: 'Update Related Customers',
     UpdateRemarkSuccessfully: 'Update Remark Successfully!',
+    UpdateRedemptionLogSuccessfully: 'Update redemption log successfully!',
     UpdateSetting: 'Update Setting',
     UpdatedTime: 'Updated Time',
     UpdateMultipleLogsSuccessfully: 'Update multiple logs successfully!',
