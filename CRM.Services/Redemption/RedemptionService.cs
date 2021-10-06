@@ -1,6 +1,7 @@
 ﻿namespace CRM.Services.Redemption
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Services;
     using CRM.Criteria.Redemption;
@@ -9,6 +10,7 @@
     public interface IRedemptionService
     {
         Task<IEnumerable<CustomerLogInfo>> GetLogsByCustomerIdAsync(GetLogsByCustomerIdCriteria criteria);
+        Task<LogInfo> GetLogByIdAsync(int id);
     }
 
     public class RedemptionService : IRedemptionService
@@ -31,6 +33,16 @@
             }
            
             return customerInfos;
+        }
+
+        public async Task<LogInfo> GetLogByIdAsync(int id)
+        {
+            var criteria = new GetLogByIdCriteria { Id = id };
+            var customer = await baseService.GetDataAsync<LogInfo>(criteria);
+            var customerInfo = customer.FirstOrDefault();
+            customerInfo.ClaimTime = commonService.ConvertToClientDateTime(customerInfo.ClaimTime);
+
+            return customerInfo;
         }
     }
 }

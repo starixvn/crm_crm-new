@@ -63,11 +63,28 @@
         public async Task<IActionResult> GetAllStatus(bool isEdit)
         {
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.Redemption);
+            var currencies = await settingService.GetCurrencyRedemptionAsync();
             if (!isEdit)
             {
                 statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
             }
-            return Json(statuses);
+            return Json(new { statuses, currencies });
+        }
+
+        public async Task<IActionResult> GetLogById(int id)
+        {
+            var log = await redemptionService.GetLogByIdAsync(id);
+            return Json(log);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        public async Task<IActionResult> EditRedemptionLog([FromBody] EditRedemptionLogCommand command)
+        {
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
         }
     }
 }

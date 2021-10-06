@@ -1,7 +1,6 @@
 ﻿namespace CRM.Controllers.InformHeadline
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Web;
     using CRM.Core.Constants;

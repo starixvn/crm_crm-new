@@ -112,8 +112,13 @@
     </Function>
 
     <Function Name="Redemption">
-        <Setting Key="Acc_CRM_CurrencyList_Redemption" SpName="Acc_CRM_CurrencyList_Redemption" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CurrencyList_Redemption" SpName="Acc_CRM_CurrencyList_Redemption" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="CurrencyID" ObjectProperty="Id" />
+            <Mapping DataField="Currency" ObjectProperty="Name" />
+        </Setting>
         <Setting Key="Acc_CRM_RedemptionList" SpName="Acc_CRM_RedemptionList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_RedemptionSel" SpName="Acc_CRM_RedemptionSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_RedemptionUpd" SpName="Acc_CRM_RedemptionUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Pic and Headline">
         <Setting Key="Acc_CRM_PicIns" SpName="Acc_CRM_PicIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
