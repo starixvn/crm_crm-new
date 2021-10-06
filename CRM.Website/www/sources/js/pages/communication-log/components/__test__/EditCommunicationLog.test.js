@@ -122,7 +122,7 @@ describe('EditCommunicationLog', () => {
 
             //Arrange
             expect(await props.getCustomerFeedbackById).toHaveBeenCalledWith(73300);
-            expect(await props.getAllStatus).toHaveBeenCalledWith({ isEdit: true });
+            expect(await props.getAllStatus).toHaveBeenCalled();
             expect(container.state.relatedCustomers).toEqual([{ custId: 1, val: 'sa' }]);
             expect(container.state.communicationLog).toEqual([]);
             expect(container.state.settings).toEqual(initData.settings);
@@ -560,7 +560,7 @@ describe('EditCommunicationLog', () => {
     
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(true);
-            expect(renderEdit.find(ResponseMessage).props().message).toEqual('UpdateFeedbackSuccessfully');
+            expect(renderEdit.find(ResponseMessage).props().message).toEqual('UpdateCommunicationLogSuccessfully');
         });
     });
 

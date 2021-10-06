@@ -55,17 +55,16 @@ describe('actionCreators', () => {
         it('should handle setAllStatus when fetching data have been done', async () => {
             // Arrange
             const response = { countries: [] };
-            const expectedParams = { isEdit: false };
             const expectedActions = [{ type: setAllStatus.type, payload: response.data }];
             const store = mockStore({ allStatus: null });
             const promise = Promise.resolve(response);
             DataService.getDataAsync = jest.fn(() => promise);
 
             // Act
-            await store.dispatch(ActionCreators.getAllStatus(expectedParams));
+            await store.dispatch(ActionCreators.getAllStatus());
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('CommunicationLog/GetAllStatus', expectedParams);
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('CommunicationLog/GetAllStatus');
             expect(store.getActions()).toEqual(expectedActions);
         });
     });

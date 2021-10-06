@@ -43,7 +43,6 @@ describe('AppContainer', () => {
             container.handleCloseEditCommunicationDialog(true);
 
             //Assert
-            expect(props.getAllStatus).toHaveBeenCalledWith({ isEdit: false });
             expect(props.setEditCommunicationDialog).toHaveBeenCalledWith({ show: false });
             expect(props.getLogsByCustomerId).toHaveBeenCalledWith(props.gridParams);
         });

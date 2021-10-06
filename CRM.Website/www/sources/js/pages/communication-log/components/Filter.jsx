@@ -38,7 +38,7 @@ export class Filter extends Component {
         };
         this.props.getLogsByCustomerId(params);
         this.props.setGridParams(params);
-        this.props.getAllStatus({ isEdit: false });
+        this.props.getAllStatus();
     }
 
     handleChange = event => {

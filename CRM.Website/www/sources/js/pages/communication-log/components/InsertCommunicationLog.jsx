@@ -631,7 +631,7 @@ export class InsertCommunicationLog extends Component {
                     {
                         insertResult &&
                         <ResponseMessage isSuccessful={insertResult.isSuccessful}
-                            message={insertResult.message || LangHelper.getResource('CreateMultipleLogsSuccessfully')}
+                            message={insertResult.message || LangHelper.getResource('InsertCommunicationLogSuccessfully')}
                         />
                     }
                     <div className="panel-group border-bottom-0">

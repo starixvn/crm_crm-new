@@ -17,7 +17,6 @@ export class AppContainer extends Component {
     };
 
     handleCloseEditRedemptionDialog = isSuccessful => {
-        this.props.getAllStatus({ isEdit: true });
         this.props.setEditRedemptionDialog({ show: false });
         if (isSuccessful) {
             this.props.getLogsByCustomerId(this.props.gridParams);

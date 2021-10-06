@@ -63,10 +63,10 @@
             return Json(new { data = logs, mainCategories });
         }
 
-        public async Task<IActionResult> GetAllStatus(bool isEdit)
+        public async Task<IActionResult> GetAllStatus()
         {
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            if (!isEdit || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
             {
                 statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
             }

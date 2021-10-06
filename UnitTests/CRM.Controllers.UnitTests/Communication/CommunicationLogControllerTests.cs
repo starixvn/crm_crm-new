@@ -87,7 +87,7 @@
             settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
 
             // Act
-            var result = await controller.GetAllStatus(false);
+            var result = await controller.GetAllStatus();
             var jsonResult = Assert.IsType<JsonResult>(result);
             var statusResult = jsonResult.Value;
             Assert.Equal(statusResult, statuses);

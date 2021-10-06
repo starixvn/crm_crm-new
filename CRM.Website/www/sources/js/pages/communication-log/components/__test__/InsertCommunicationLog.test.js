@@ -663,7 +663,7 @@ describe('InsertCommunicationLog', () => {
             const state = {
                 insertResult: {
                     isSuccessful: true,
-                    message: 'CreateMultipleLogsSuccessfully'
+                    message: 'InsertCommunicationLogSuccessfully'
                 }
             };
            
@@ -674,7 +674,7 @@ describe('InsertCommunicationLog', () => {
     
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(true);
-            expect(renderEdit.find(ResponseMessage).props().message).toEqual('CreateMultipleLogsSuccessfully');
+            expect(renderEdit.find(ResponseMessage).props().message).toEqual('InsertCommunicationLogSuccessfully');
         });
 
         it('handle default message responses if successful', () => {
@@ -692,7 +692,7 @@ describe('InsertCommunicationLog', () => {
     
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(true);
-            expect(renderEdit.find(ResponseMessage).props().message).toEqual('CreateMultipleLogsSuccessfully');
+            expect(renderEdit.find(ResponseMessage).props().message).toEqual('InsertCommunicationLogSuccessfully');
         });
     });
 

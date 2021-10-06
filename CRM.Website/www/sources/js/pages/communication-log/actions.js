@@ -22,10 +22,10 @@ const getLogsByCustomerId = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getAllStatus = params => async dispatch => {
+const getAllStatus = () => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl(`CommunicationLog/GetAllStatus`);
-    await DataService.getDataAsync(url,params).then(response => {
+    await DataService.getDataAsync(url).then(response => {
         dispatch(setAllStatus(response.data));
     }).then(() => Site.unblockUI());
 };

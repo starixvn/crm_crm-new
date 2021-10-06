@@ -7,8 +7,6 @@ import { Formik } from 'formik';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
-import CkEditor from '@jsroot/components/ckeditor/index';
-import DatePicker from '@jsroot/components/date-picker/index';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -44,21 +42,6 @@ export class EditRedemptionLog extends Component {
             amount: data.amount,
             doneBy: data.doneBy
         };
-    };
-
-    validateFormik = values => {
-        const errors = {};
-        if (values.doneBy === '') {
-            errors.doneBy = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('DoneBy'));
-        }
-        if (values.subject === '') {
-            errors.subject = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject'));
-        }
-        if (values.remark === '') {
-            errors.remark = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Remark'));
-        }
-
-        return errors;
     };
 
     handleSubmit = (values, { setSubmitting }) => {

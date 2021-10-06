@@ -27,7 +27,6 @@ export class AppContainer extends Component {
     };
 
     handleCloseEditCommunicationDialog = isSuccessful => {
-        this.props.getAllStatus({ isEdit: false });
         this.props.setEditCommunicationDialog({ show: false });
         if (isSuccessful) {
             this.props.getLogsByCustomerId(this.props.gridParams);

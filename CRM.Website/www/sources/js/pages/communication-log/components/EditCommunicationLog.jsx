@@ -58,7 +58,7 @@ export class EditCommunicationLog extends Component {
 
     async componentDidMount() {
         await this.props.getCustomerFeedbackById(this.props.feedbackId);
-        await this.props.getAllStatus({ isEdit: true });
+        await this.props.getAllStatus();
         const { customerFeedback } = this.props;
         const logSettings = this.getLogSettings(customerFeedback.feedback, customerFeedback.settings);
 
@@ -679,7 +679,7 @@ export class EditCommunicationLog extends Component {
                     {
                         editResult &&
                         <ResponseMessage isSuccessful={editResult.isSuccessful}
-                            message={editResult.message || LangHelper.getResource('UpdateFeedbackSuccessfully')}
+                            message={editResult.message || LangHelper.getResource('UpdateCommunicationLogSuccessfully')}
                         />
                     }
                     <div className="panel-group border-bottom-0">
