@@ -86,5 +86,15 @@
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        public async Task<IActionResult> InsertRedemptionLog([FromBody] InsertRedemptionLogCommand command)
+        {
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+        }
     }
 }
