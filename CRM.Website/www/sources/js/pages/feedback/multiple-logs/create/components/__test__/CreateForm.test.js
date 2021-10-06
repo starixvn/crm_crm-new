@@ -795,12 +795,81 @@ describe('CreateForm', () => {
             const expected = {isSuccessful: false, message: message};
 
             // Act
-            container.reVerifyInactiveSiteAndConfirm('username', [],setSubmitting, [{isUseDefaultCommunicationTool: true}] );
+            container.reVerifyInactiveSiteAndConfirm('username', [],setSubmitting, {isUseDefaultCommunicationTool: true} );
             await promise;
             jest.runAllTimers();
 
             // Assert
             expect(container.state.createMultipleLogsResult).toEqual(expected);
+        });
+
+        it('should call correct function if do not have any inactive customer and is default tool', async () => {
+            // Arrange
+            const response = { data: [{ custId: 1, username: 'sa', isSiteActive: true, isLicensee: true }] };
+            const promise = Promise.resolve(response);
+            const props = {
+                ...defaultProps,
+                verifyCustomers: jest.fn(() => promise),
+                setReVerifyCustomerResults: jest.fn()
+            };
+            const setSubmitting = jest.fn();
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.confirmCreateMultipleLogs = jest.fn();
+            // Act
+            container.reVerifyInactiveSiteAndConfirm('username',[], setSubmitting, {isUseDefaultCommunicationTool: false});
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(container.confirmCreateMultipleLogs).toHaveBeenCalledWith([], 'Are you sure you want to Add or Update the Feedback/Log?');
+        });
+
+        it('should call correct function if do not have any inactive customer and is not default tool', async () => {
+            // Arrange
+            const response = { data: [{ custId: 1, username: 'sa', isSiteActive: true, isLicensee: true }] };
+            const promise = Promise.resolve(response);
+            const props = {
+                ...defaultProps,
+                verifyCustomers: jest.fn(() => promise),
+                setReVerifyCustomerResults: jest.fn()
+            };
+            const state = {createMultipleLogsResult: null};
+            const setSubmitting = jest.fn();
+            const container = shallow(<CreateForm {...props} />).instance();
+            container.checkNotExistCommunicationToolSetting = jest.fn();
+            container.setState(state);
+            const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'sa';
+
+            const expected = {isSuccessful: false, message: message};
+
+            // Act
+            container.reVerifyInactiveSiteAndConfirm('username',[], setSubmitting, {isUseDefaultCommunicationTool: true});
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(container.checkNotExistCommunicationToolSetting).toHaveBeenCalledWith([]);
+        });
+    });
+
+
+    describe('matchTimeAndToolPrefix', () => {
+        it('should render exact pattern if isUseDefaultCommunicationTool = true', async () => {
+            // Arrange
+            const props = {
+                ...defaultProps,
+                settings: {
+                    ...defaultProps.settings,
+                    communicationTools: [{ id: 1, name: 'email' }, { id: 2, name: 'skype' }]
+                }
+            };
+            const container = shallow(<CreateForm {...props} />).instance();
+
+            // Act
+            const result = container.matchTimeAndToolPrefix ('', true);
+
+            // Assert
+            expect(result).toEqual('');
         });
     });
 

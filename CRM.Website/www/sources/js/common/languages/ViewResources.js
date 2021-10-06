@@ -125,6 +125,7 @@
     FirstName : 'First Name',
     FeedbackDate : 'Feedback Date',
     Fax: 'Fax',
+    FillEventDetails: 'Fill Event Details',
     GroupHeadline: 'Group Headline',
     GroupHeadlineRequired: 'Group Headline is required!',
     Guest: 'Guest',
@@ -336,6 +337,9 @@
     ToDate: 'To Date',
     ToDateIsEarlierThanFromDate: 'ToDate is earlier than FromDate',
     Total: 'Total',
+    TicketRefNo: 'Ticket Ref. No',
+    TooltipRefTicket: "Automatically fill in Description with Event Details from ticket. Support tickets of Sportsbook, "
+    + "Virtual Sports, Virtual Sports 2, Number Game, NG2, Keno, Lottery, Virtual Game, Table Game, Indo 4D with Win Loss Date from ",
     ThisInformationRequired: 'This information is required!',
     UnContactable: 'Uncontactable',
     Update: 'Update',

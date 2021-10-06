@@ -37,6 +37,7 @@
             services.AddTransient<IPicManagementService, PicManagementService>();
             services.AddScoped<IExportExcelService, ExportExcelService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
+            services.AddTransient<ITicketRefService, TicketRefService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddTransient<IInformHeadlineService, InformHeadlineService>();
             services.AddTransient<ICustomerDetailService, CustomerDetailService>();

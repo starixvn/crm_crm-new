@@ -171,7 +171,6 @@ export class CreateForm extends Component {
             const inactiveCustomers = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
             this.setState({createMultipleLogsResult: null});
             this.props.setReVerifyCustomerResults(response.data);
-            console.log(inactiveCustomers);
             if(inactiveCustomers.length > 0){
                 const inactiveUserName = inactiveCustomers.map(x=>x.username).join(',');
                 const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;

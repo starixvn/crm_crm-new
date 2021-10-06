@@ -7,11 +7,15 @@ import CreateForm from './CreateForm';
 
 export class AppContainer extends Component {
     static propTypes = {
-        getAllSettings: PropTypes.func
+        getAllSettings: PropTypes.func,
+        getBalanceUpday: PropTypes.func
     };
 
     static defaultProps = {
         getAllSettings: function () {
+            // nothing
+        },
+        getBalanceUpday: function () {
             // nothing
         }
     };
@@ -22,10 +26,11 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getAllSettings();
+        this.props.getBalanceUpday();
     }
 
     render() {
-        if (this.props.settings === null) {
+        if (this.props.settings === null || this.props.balanceUpday === null) {
             return null;
         }
         return (
@@ -37,9 +42,9 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings } = state;
+    const { settings, balanceUpday } = state;
     return {
-        settings
+        settings, balanceUpday
     };
 };
 

@@ -4,6 +4,7 @@ const addGuestFeedbackSlice = createSlice({
     name: 'addGuestFeedback',
     initialState: {
         settings: null,
+        balanceUpday: null,
         addFeedbackResult: null,
         feedbackSubjectTemplates: [],
         confirmCreateGuestDialog: { show: false }
@@ -11,6 +12,9 @@ const addGuestFeedbackSlice = createSlice({
     reducers: {
         setAllSettings: (state, action) => {
             state.settings = action.payload;
+        },
+        setBalanceUpday: (state, action) => {
+            state.balanceUpday = action.payload;
         },
         setFeedbackSubjectTemplates: (state, action) => {
             state.feedbackSubjectTemplates = action.payload;
@@ -28,6 +32,7 @@ const { actions, reducer } = addGuestFeedbackSlice;
 
 export const {
     setAllSettings,
+    setBalanceUpday,
     setFeedbackSubjectTemplates,
     setAddFeedback,
     setConfirmCreateGuestDialog

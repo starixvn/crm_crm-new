@@ -2,6 +2,7 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
     setAllSettings,
+    setBalanceUpday,
     setFeedbackSubjectTemplates,
     setAddFeedback,
     setConfirmCreateGuestDialog
@@ -14,6 +15,14 @@ const getAllSettings = () => async dispatch => {
         dispatch(setAllSettings(response.data));
     }).then(() => Site.unblockUI());
 };
+
+const getBalanceUpday = () => async dispatch => {
+    const url = Site.resolveClientUrl('Feedback/GetBalanceUpday');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setBalanceUpday(response.data));
+    });
+};
+
 
 const getFeedbackSubjectTemplates = subject => async dispatch => {
     const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
@@ -35,13 +44,21 @@ const verifyUserName = data => async () => {
     return await DataService.postDataAsync(url, data).then(response => response.data);
 };
 
+const getTicketInfoByRef = Refno => async () => {
+    const url = Site.resolveClientUrl('Feedback/GetTicketInfoByRefNoAsync');
+    return await DataService.getDataAsync(url, Refno).then(response => response.data);
+};
+
 export const ActionCreators = {
     setAllSettings,
     getAllSettings,
+    getBalanceUpday,
+    setBalanceUpday,
     getFeedbackSubjectTemplates,
     setFeedbackSubjectTemplates,
     addFeedback,
     setAddFeedback,
     verifyUserName,
-    setConfirmCreateGuestDialog
+    setConfirmCreateGuestDialog,
+    getTicketInfoByRef
 };
