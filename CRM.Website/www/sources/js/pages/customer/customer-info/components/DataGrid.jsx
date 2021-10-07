@@ -52,16 +52,6 @@ export class DataGrid extends Component {
         }
     }
 
-    checkInactiveSite = (siteLicensee, siteSettingId) => {
-        for(let index = 0; index < siteLicensee.length; index++) {
-            var site = siteLicensee[index];
-            if (site.id === siteSettingId) {
-                return true;
-            }
-        }
-        return false;
-    };
-
     renderForm = ({
         errors,
         values,
@@ -72,7 +62,7 @@ export class DataGrid extends Component {
         setFieldValue
     }) => {
         const {settings, gridData}= this.props;
-        const isShowInactiveMsg = this.checkInactiveSite(settings.sitesLicenseeInactive, gridData.data.siteId);
+        const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x=> x.id === gridData.data.siteId).length > 0;
 
         return (
             <Form className="form-customer" noValidate onSubmit={handleSubmit}>

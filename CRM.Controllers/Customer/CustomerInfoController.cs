@@ -53,7 +53,8 @@
             {
                 sites = await settingService.GetAllSitesWithGroupAsync(),
                 countries = await settingService.GetCountryAsync(SettingConstants.Active),
-                languages = await settingService.GetLanguageAsync(SettingConstants.Active)
+                languages = await settingService.GetLanguageAsync(SettingConstants.Active),
+                sitesLicenseeInactive = await settingService.GetAllSitesLicenseeInactive()
             };
             return Json(settings);
         }

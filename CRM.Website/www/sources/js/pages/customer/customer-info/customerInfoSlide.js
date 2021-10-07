@@ -12,7 +12,8 @@ const customerInfoSlide = createSlice({
         settings: {
             sites: [],
             countries: [],
-            languages: []
+            languages: [],
+            sitesLicenseeInactive: []
         },
         editCustomerInfoResult: '',
         editCustomerInfoPopup: { show: false },
