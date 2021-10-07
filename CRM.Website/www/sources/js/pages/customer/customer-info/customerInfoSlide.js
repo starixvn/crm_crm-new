@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const customerInfoSlide = createSlice({
     name: 'customerInfo',
     initialState: {
-        gridData: null,
-        CustomerSuggestion: [],
+        customerInfo: null,
+        customerSuggestions: [],
         gridParams: {
             username: null,
             isGuest: false
@@ -15,7 +15,7 @@ const customerInfoSlide = createSlice({
             languages: [],
             sitesLicenseeInactive: []
         },
-        editCustomerInfoResult: '',
+        editCustomerInfoResult: null,
         editCustomerInfoPopup: { show: false },
         emptyCustomerInfoPopup: { show: false }
     },
@@ -24,7 +24,7 @@ const customerInfoSlide = createSlice({
             state.gridParams = action.payload;
         },
         setCustomerInfo: (state, action) => {
-            state.gridData = action.payload;
+            state.customerInfo = action.payload;
         },
         setSettings: (state, action) => {
             state.settings = action.payload;
@@ -38,8 +38,8 @@ const customerInfoSlide = createSlice({
         setEmptyCustomerInfoPopup: (state, action) => {
             state.emptyCustomerInfoPopup = action.payload;
         },
-        setCustomerSuggestion: (state, action) => {
-            state.CustomerSuggestion = action.payload;
+        setCustomerSuggestions: (state, action) => {
+            state.customerSuggestions = action.payload;
         }
     }
 });
@@ -53,7 +53,7 @@ export const {
     setEditCustomerInfo,
     setEditCustomerInfoPopup,
     setEmptyCustomerInfoPopup,
-    setCustomerSuggestion
+    setCustomerSuggestions
 } = actions;
 
 export default reducer;

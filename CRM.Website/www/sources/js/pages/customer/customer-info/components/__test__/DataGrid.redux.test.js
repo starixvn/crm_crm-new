@@ -25,14 +25,14 @@ describe('connect ', () => {
         // Arrange
         const expected = {
             gridParams: {},
-            gridData: {},
+            customerInfo: {},
             settings: {},
             editCustomerInfoResult: null,
             editCustomerInfoPopup: null
         };
         const state = {
             gridParams: {},
-            gridData: {},
+            customerInfo: {},
             settings: {},
             editCustomerInfoResult: null,
             editCustomerInfoPopup: null

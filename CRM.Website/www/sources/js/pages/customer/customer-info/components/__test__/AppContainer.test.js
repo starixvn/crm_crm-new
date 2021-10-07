@@ -53,19 +53,5 @@ describe('AppContainer', () => {
             //Assert
             expect(props.setEditCustomerInfoPopup).toHaveBeenCalledWith( { show: false });
         });
-
-        it('should call exactly functions when edit customer info succesful', () => {
-            //Arrange
-            const props = {
-                getCustomerInfo: jest.fn()
-            };
-            const container = shallow(<AppContainer {...props} />).instance();
-            
-            //Act
-            container.handleEditSuccess();
-
-            //Assert
-            expect(props.getCustomerInfo).toHaveBeenCalled();
-        });
     });
 });

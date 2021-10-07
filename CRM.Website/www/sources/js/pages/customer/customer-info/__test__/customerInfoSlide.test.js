@@ -5,14 +5,14 @@ import customerInfo, {
     setEditCustomerInfo,
     setEditCustomerInfoPopup,
     setEmptyCustomerInfoPopup,
-    setCustomerSuggestion
+    setCustomerSuggestions
 } from '../customerInfoSlide';
 
 describe('customerInfo reducer', () => {
     it('show handle initial state', () => {
         expect(customerInfo(undefined, {})).toEqual({
-            gridData: null,
-            CustomerSuggestion: [],
+            customerInfo: null,
+            customerSuggestions: [],
             gridParams: {
                 username: null,
                 isGuest: false
@@ -22,7 +22,7 @@ describe('customerInfo reducer', () => {
                 countries: [],
                 languages: []
             },
-            editCustomerInfoResult: '',
+            editCustomerInfoResult: null,
             editCustomerInfoPopup: { show: false },
             emptyCustomerInfoPopup: { show: false }
         });
@@ -49,10 +49,10 @@ describe('customerInfo reducer', () => {
         expect(
             customerInfo({}, {
                 type: setCustomerInfo.type,
-                payload: { data: {} }
+                payload: { custId: 1 }
             })
         ).toEqual({
-            gridData: { data: {} }
+            customerInfo: { custId: 1 }
         });
     });
 
@@ -109,14 +109,14 @@ describe('customerInfo reducer', () => {
     });
 
     
-    it('should handle setCustomerSuggestion', () => {
+    it('should handle setCustomerSuggestions', () => {
         expect(
             customerInfo({}, {
-                type: setCustomerSuggestion.type,
+                type: setCustomerSuggestions.type,
                 payload: { }
             })
         ).toEqual({
-            CustomerSuggestion: { }
+            customerSuggestions: { }
         });
     });
 });

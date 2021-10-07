@@ -4,6 +4,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Criteria.Customer;
+    using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Customer;
     using Fanex.NAP.Client.Configuration;
@@ -43,8 +44,8 @@
 
         public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
         {
-            var customerInfo = await customerService.GetCustomerInfoAsync(criteria);
-            return Json(new { data = customerInfo });
+            CustomerInfo customerInfo = await customerService.GetCustomerInfoAsync(criteria);
+            return Json(customerInfo);
         }
 
         public async Task<IActionResult> GetSettings()

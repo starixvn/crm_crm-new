@@ -47,11 +47,11 @@ export class Filter extends Component {
         const params = this.getParams();
         this.props.setGridParams(params);
         this.props.getCustomerInfo(params).then(() => {
-            if (this.props.gridData.data === null && !this.state.isGuest) {
+            if (this.props.customerInfo === null && !this.state.isGuest) {
                 this.setState({
                     showEmptyConfirmPopup: true
                 });
-            } else if (this.props.gridData.data === null) {
+            } else if (this.props.customerInfo === null) {
                 this.setState({
                     showEmptyCustomerInfoPopup: true
                 });
@@ -92,9 +92,9 @@ export class Filter extends Component {
         }, () => {
             if (searchText.length >= 2) {
                 const params = this.getParams();
-                this.props.getCustomerSuggestion(params);
+                this.props.getCustomerSuggestions(params);
             } else {
-                this.props.setCustomerSuggestion([]);
+                this.props.setCustomerSuggestions([]);
             }
         });
     });
@@ -106,12 +106,13 @@ export class Filter extends Component {
                     <Form.Row bsPrefix='form-row'>
                         <Form.Group className="col-md-9 text-search">
                             <AutoComplete
-                                options={this.props.CustomerSuggestion}
+                                options={this.props.customerSuggestions}
                                 onChange={value => this.handleChangeSuggestion(value)}
                                 onInputChange={searchText => this.debounceUserNameInputChange(searchText)}
                             />
-                            <Button onClick={this.handleSubmit} className="buttonSearch" variant="primary" size="sm"><span className="fa fa-search icon-edit"></span></Button>
-
+                            <Button onClick={this.handleSubmit} className="buttonSearch" variant="primary" size="sm">
+                                <span className="fa fa-search icon-edit"></span>
+                            </Button>
                         </Form.Group>
                         <Form.Group className="col-md-3 check-guest">
                             <input type="checkbox" checked={this.state.isGuest} className="margin-top-10"
@@ -161,11 +162,11 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData, CustomerSuggestion } = state;
+    const { gridParams, customerInfo, customerSuggestions } = state;
     return {
         gridParams,
-        gridData,
-        CustomerSuggestion
+        customerInfo,
+        customerSuggestions
     };
 };
 

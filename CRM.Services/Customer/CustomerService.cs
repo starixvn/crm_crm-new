@@ -10,7 +10,6 @@
     using CRM.Models;
     using CRM.Models.Common;
     using CRM.Models.Customer;
-    using CRM.Resources;
 
     public interface ICustomerService
     {

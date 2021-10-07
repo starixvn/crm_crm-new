@@ -84,8 +84,8 @@ describe('actionCreators', () => {
         });
     });
 
-    describe('getCustomerSuggestion', () => {
-        it('should handle setCustomerSuggestion when request have been done', async () => {
+    describe('getCustomerSuggestions', () => {
+        it('should handle setCustomerSuggestions when request have been done', async () => {
             // Arrange
             const expectParams = { 
                 username: 'test',
@@ -94,11 +94,11 @@ describe('actionCreators', () => {
             const response = { data: { isSuccessful: true, messmessageage: '' } };
             const promise = Promise.resolve(response);
             DataService.getDataAsync = jest.fn(() => promise);
-            const expectedActions = [{ type: ActionCreators.setCustomerSuggestion.type, payload: response.data }];
-            const store = mockStore({ CustomerSuggestion: [] });
+            const expectedActions = [{ type: ActionCreators.setCustomerSuggestions.type, payload: response.data }];
+            const store = mockStore({ customerSuggestions: [] });
             
             // Act
-            await store.dispatch(ActionCreators.getCustomerSuggestion(expectParams));
+            await store.dispatch(ActionCreators.getCustomerSuggestions(expectParams));
 
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfo/GetCustomerAutoSuggestion', expectParams);

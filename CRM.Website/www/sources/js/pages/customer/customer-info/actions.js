@@ -9,7 +9,7 @@ import {
     setEditCustomerInfo,
     setEditCustomerInfoPopup,
     setEmptyCustomerInfoPopup,
-    setCustomerSuggestion
+    setCustomerSuggestions
 } from './customerInfoSlide';
 
 const getCustomerInfo = params => async dispatch => {
@@ -20,10 +20,10 @@ const getCustomerInfo = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getCustomerSuggestion = params => async dispatch => {
+const getCustomerSuggestions = params => async dispatch => {
     const url = Site.resolveClientUrl('CustomerInfo/GetCustomerAutoSuggestion');
     await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setCustomerSuggestion(response.data));
+        dispatch(setCustomerSuggestions(response.data));
     });
 };
 
@@ -50,9 +50,9 @@ export const ActionCreators = {
     setEditCustomerInfo,
     setEditCustomerInfoPopup,
     setEmptyCustomerInfoPopup,
-    setCustomerSuggestion,
+    setCustomerSuggestions,
     getCustomerInfo,
     getSettings,
     editCustomerInfo,
-    getCustomerSuggestion
+    getCustomerSuggestions
 };

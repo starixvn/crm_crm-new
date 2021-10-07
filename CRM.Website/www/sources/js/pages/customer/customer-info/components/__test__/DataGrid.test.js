@@ -2,7 +2,7 @@ import React from 'react';
 import { DataGrid } from '../DataGrid';
 import { shallow, mount } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
-import {  Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Formik } from 'formik';
 import MultipleSelect from '../../../../../components/multiple-select';
@@ -19,7 +19,7 @@ describe('DataGridCustomerInfo', () => {
     });
 
     it('should render correctly', () => {
-        //Arrange 
+        //Arrange
         const props = {
             getSettings: jest.fn(() => Promise.resolve({}))
         };
@@ -27,24 +27,22 @@ describe('DataGridCustomerInfo', () => {
         // Act
         const container = shallow(<DataGrid {...props} />);
 
-        // Assert 
+        // Assert
         expect(container).toMatchSnapshot();
     });
-    
+
     it('render Formik component', () => {
-        //Arrange 
+        //Arrange
         const props = {
             settings: {
-                languages: [{ settingId: 1, settingName: 'language'}],
+                languages: [{ settingId: 1, settingName: 'language' }],
                 sites: [],
                 countries: []
             },
-            gridData: {
-                data: {
-                    languages: [1, 2],
-                    uplineInfo: [],
-                    role: {name: 'test'}
-                }
+            customerInfo: {
+                languages: [1, 2],
+                uplineInfo: [],
+                role: { name: 'test' }
             },
             getSettings: jest.fn(() => Promise.resolve({}))
         };
@@ -57,9 +55,9 @@ describe('DataGridCustomerInfo', () => {
     });
 
     describe('methods', () => {
-        describe('ComponentDidMount', () =>{
+        describe('ComponentDidMount', () => {
             it('ComponentDidMount run correctly', () => {
-                //Arrange 
+                //Arrange
                 const props = {
                     getSettings: jest.fn(() => Promise.resolve({}))
                 };
@@ -71,38 +69,36 @@ describe('DataGridCustomerInfo', () => {
             });
         });
 
-        describe('ComponentDidUpdate', () =>{
+        describe('ComponentDidUpdate', () => {
             it('ComponentDidUpdate run correctly', () => {
-                //Arrange 
+                //Arrange
                 const props = {
                     settings: {
-                        languages: [{settingId: 1, settingName: 'name'}],
+                        languages: [{ settingId: 1, settingName: 'name' }],
                         sites: [],
                         countries: []
                     },
-                    gridData: {
-                        data: {
-                            languages: [1,2],
-                            uplineInfo: [],
-                            role: { name: 'test' }
-                        }
+                    customerInfo: {
+                        languages: [1, 2],
+                        uplineInfo: [],
+                        role: { name: 'test' }
                     },
                     getSettings: jest.fn(() => Promise.resolve({}))
                 };
                 const newProps = {
-                    gridData: null
+                    customerInfo: null
                 };
-               
+
                 const expected = {
-                    langagues: [{id: 1, name: 'name', checked: true}],
+                    langagues: [{ id: 1, name: 'name', checked: true }],
                     siteId: 0
                 };
-                
+
                 const container = shallow(<DataGrid {...props} />);
 
                 // Act
                 container.instance().componentDidUpdate(newProps);
-                
+
                 // Assert
                 expect(container.state().languages).toEqual(expected.langagues);
             });
@@ -116,15 +112,12 @@ describe('DataGridCustomerInfo', () => {
                         isSuccessful: false,
                         message: 'unsuccessful'
                     },
-                    gridData: {
-                        data: {
-                            languages: [1,2],
-                            uplineInfo: [],
-                            role: { name: 'test' }
-                        }
+                    customerInfo: {
+                        languages: [1, 2],
+                        uplineInfo: [],
+                        role: { name: 'test' }
                     },
                     getSettings: jest.fn()
-                    
                 };
                 const formikProps = {
                     values: {
@@ -137,11 +130,11 @@ describe('DataGridCustomerInfo', () => {
                     touched: {}
                 };
                 const container = shallow(<DataGrid {...props} />).instance();
-        
+
                 // Act
                 const form = shallow(container.renderForm(formikProps));
-        
-                // Assert 
+
+                // Assert
                 expect(form).toMatchSnapshot();
             });
 
@@ -151,21 +144,18 @@ describe('DataGridCustomerInfo', () => {
                         isSuccessful: false,
                         message: 'unsuccessful'
                     },
-                    gridData: {
-                        data: {
-                            languages: [1,2],
-                            uplineInfo: [],
-                            role: { name: 'test' }
-                        }
+                    customerInfo: {
+                        languages: [1, 2],
+                        uplineInfo: [],
+                        role: { name: 'test' }
                     },
-                    
+
                     getSettings: jest.fn()
-                    
                 };
                 const formikProps = {
                     values: {
                         languages: [1, 2],
-                        uplineInfo: [{username:"tesla", role:{name: 'test'}}],
+                        uplineInfo: [{ username: "tesla", role: { name: 'test' } }],
                         role: { name: 'test' },
                         site: {}
                     },
@@ -178,15 +168,14 @@ describe('DataGridCustomerInfo', () => {
                 };
                 const container = shallow(<DataGrid {...props} />);
                 container.instance().handleSearchUplineInfo = jest.fn();
-        
+
                 // Act
                 const form = shallow(container.instance().renderForm(formikProps));
                 form.find('form').find(Row).find(Col).at(1).find('a').simulate('click', 'tesla');
-        
-                // Assert 
+
+                // Assert
                 expect(container.instance().handleSearchUplineInfo).toHaveBeenCalledWith('tesla');
             });
-
         });
 
         describe('handle onChange MultipleSelect', () => {
@@ -220,19 +209,16 @@ describe('DataGridCustomerInfo', () => {
                 //Assert
                 expect(param.setFieldValue).toHaveBeenCalled();
             });
-            
         });
 
         describe('validate', () => {
             it('should call correct functions when validate', () => {
                 // Arrange
                 const props = {
-                    gridData: {
-                        data: {
-                            languages: [1,2],
-                            uplineInfo: [],
-                            role: { name: 'test' }
-                        }
+                    customerInfo: {
+                        languages: [1, 2],
+                        uplineInfo: [],
+                        role: { name: 'test' }
                     },
                     getSettings: jest.fn()
                 };
@@ -241,10 +227,10 @@ describe('DataGridCustomerInfo', () => {
                 };
                 const container = shallow(<DataGrid {...props} />);
                 commonFunction.validateFormik = jest.fn();
-    
+
                 // Act
                 container.find(Formik).props().validate(values);
-    
+
                 // Assert
                 expect(container.find(Formik).length).toBe(1);
                 expect(commonFunction.validateFormik).toHaveBeenCalledTimes(1);
@@ -255,53 +241,51 @@ describe('DataGridCustomerInfo', () => {
             it('initialValues correctly', () => {
                 //Arrange
                 const props = {
-                    gridData: {
-                        data: {
-                            custId: 0,
-                            username: '',
-                            siteId: 0,
-                            countryId: 0,
-                            lastName: '',
-                            firstName: '',
-                            languages: [1, 2],
-                            phoneInfo: null,
-                            phoneCountryCode: '',
-                            phoneAreaCode: '',
-                            phone: '',
-                            phone2CountryCode: '',
-                            phone2AreaCode: '',
-                            phone2: '',
-                            phone3CountryCode: '',
-                            phone3AreaCode: '',
-                            phone3: '',
-                            mobilePhoneCountryCode: '',
-                            mobilePhoneAreaCode: '',
-                            mobilePhone: '',
-                            email: '',
-                            telegram: '',
-                            msn: '',
-                            skype: '',
-                            pic1Name: '',
-                            pic1: '',
-                            pic2Name: '',
-                            pic2: '',
-                            pic3Name: '',
-                            pic3: '',
-                            pic4Name: '',
-                            pic4: '',
-                            personalInfoContacts: [],
-                            uplineInfo: [],
-                            role: { name: 'test' },
-                            status: '',
-                            originalDangerLevel: 0,
-                            abtDangerLevel: 0,
-                            otherSportsDangerLevel: 0,
-                            site: ''
-                        }
+                    customerInfo: {
+                        custId: 0,
+                        username: '',
+                        siteId: 0,
+                        countryId: 0,
+                        lastName: '',
+                        firstName: '',
+                        languages: [1, 2],
+                        phoneInfo: null,
+                        phoneCountryCode: '',
+                        phoneAreaCode: '',
+                        phone: '',
+                        phone2CountryCode: '',
+                        phone2AreaCode: '',
+                        phone2: '',
+                        phone3CountryCode: '',
+                        phone3AreaCode: '',
+                        phone3: '',
+                        mobilePhoneCountryCode: '',
+                        mobilePhoneAreaCode: '',
+                        mobilePhone: '',
+                        email: '',
+                        telegram: '',
+                        msn: '',
+                        skype: '',
+                        pic1Name: '',
+                        pic1: '',
+                        pic2Name: '',
+                        pic2: '',
+                        pic3Name: '',
+                        pic3: '',
+                        pic4Name: '',
+                        pic4: '',
+                        personalInfoContacts: [],
+                        uplineInfo: [],
+                        role: { name: 'test' },
+                        status: '',
+                        originalDangerLevel: 0,
+                        abtDangerLevel: 0,
+                        otherSportsDangerLevel: 0,
+                        site: ''
                     },
                     getSettings: jest.fn()
                 };
-                const customerInfo = props.gridData.data;
+                const customerInfo = props.customerInfo;
                 const values = {
                     custId: customerInfo.custId,
                     username: customerInfo.username || '',
@@ -309,7 +293,7 @@ describe('DataGridCustomerInfo', () => {
                     countryId: customerInfo.countryId || 0,
                     firstName: customerInfo.firstName || '',
                     lastName: customerInfo.lastName || '',
-                    nickname: customerInfo.nickname || '', 
+                    nickname: customerInfo.nickname || '',
                     languageId: customerInfo.languages.map(x => x).toString(),
                     phoneInfo: customerInfo.phoneInfo || '',
                     phoneCountryCode: customerInfo.phoneCountryCode || '',
@@ -377,7 +361,7 @@ describe('DataGridCustomerInfo', () => {
                     isInvalid: jest.fn()
                 };
 
-                const props =  {
+                const props = {
                     getSettings: jest.fn()
                 };
 
@@ -398,7 +382,7 @@ describe('DataGridCustomerInfo', () => {
                     languages: [],
                     siteId: 1
                 };
-                const props =  {
+                const props = {
                     getSettings: jest.fn()
                 };
                 const container = shallow(<DataGrid {...props} />);
@@ -422,7 +406,7 @@ describe('DataGridCustomerInfo', () => {
                     countryId: 0,
                     firstName: '',
                     lastName: '',
-                    nickname: '', 
+                    nickname: '',
                     mobilePhone: '',
                     mobilePhoneAreaCode: '',
                     mobilePhoneCountryCode: '',
@@ -459,7 +443,7 @@ describe('DataGridCustomerInfo', () => {
                     lastName: '',
                     language: '',
                     phone: '',
-                    phoneCountryCode:'',
+                    phoneCountryCode: '',
                     phoneAreaCode: '',
                     phone2CountryCode: '',
                     phone2AreaCode: '',
@@ -489,17 +473,14 @@ describe('DataGridCustomerInfo', () => {
                         sites: [],
                         countries: []
                     },
-                    editCustomerInfoResult: { isSuccessful: true, message: ''},
-                    gridData: {
-                        data: {
-                            id: 0,
-                            provinceId: 0,
-                            languages: [1, 2],
-                            uplineInfo: [],
-                            role: { name: 'test' }
-                        }
+                    editCustomerInfoResult: { isSuccessful: true, message: '' },
+                    customerInfo: {
+                        id: 0,
+                        provinceId: 0,
+                        languages: [1, 2],
+                        uplineInfo: [],
+                        role: { name: 'test' }
                     },
-                    onSuccess: jest.fn(),
                     setEditCustomerInfoPopup: jest.fn(),
                     editCustomerInfo: jest.fn(() => promise),
                     getSettings: jest.fn()
@@ -508,18 +489,17 @@ describe('DataGridCustomerInfo', () => {
                     setSubmitting: jest.fn()
                 };
                 const container = shallow(<DataGrid {...props} />).instance();
-    
+
                 // Act
                 container.handleSubmit(values, formikBag);
                 await promise;
                 jest.runAllTimers();
-    
+
                 // Assert
                 expect(formikBag.setSubmitting.mock.calls.length).toBe(2);
                 expect(formikBag.setSubmitting.mock.calls[0][0]).toBe(true);
                 expect(props.editCustomerInfo).toHaveBeenCalledWith(params);
                 expect(props.setEditCustomerInfoPopup).toHaveBeenCalled();
-                expect(props.onSuccess).toHaveBeenCalled();
             });
 
             it('handleSubmit run correctly when submit unsuccess', async () => {
@@ -530,14 +510,11 @@ describe('DataGridCustomerInfo', () => {
                 };
                 const props = {
                     editCustomerInfoResult: { isSuccessful: false, message: '' },
-                    gridData:{
-                        data: {
-                            provinceId: 0,
-                            id: 0,
-                            languages: []
-                        }
+                    customerInfo: {
+                        provinceId: 0,
+                        id: 0,
+                        languages: []
                     },
-                    onSuccess: jest.fn(),
                     setEditCustomerInfoPopup: jest.fn(),
                     editCustomerInfo: jest.fn(() => promise),
                     getSettings: jest.fn()
@@ -548,12 +525,12 @@ describe('DataGridCustomerInfo', () => {
                     languageId: ''
                 };
                 const container = shallow(<DataGrid {...props} />).instance();
-    
+
                 // Act
                 container.handleSubmit(values, secondParam);
                 await promise;
                 jest.runAllTimers();
-    
+
                 // Assert
                 expect(secondParam.setSubmitting).toHaveBeenCalledTimes(2);
                 expect(props.editCustomerInfo).toHaveBeenCalledTimes(1);
@@ -563,7 +540,7 @@ describe('DataGridCustomerInfo', () => {
         });
         describe('handleSearchUplineInfo', () => {
             it('handleSearchUplineInfo run correctly', () => {
-                //Arrange 
+                //Arrange
                 const props = {
                     setGridParams: jest.fn(),
                     getCustomerInfo: jest.fn(),
@@ -582,7 +559,7 @@ describe('DataGridCustomerInfo', () => {
 
                 // Act
                 container.handleSearchUplineInfo(username);
-                 
+
                 //Assert
                 expect(props.setGridParams).toHaveBeenCalledWith(expected);
                 expect(props.getCustomerInfo).toHaveBeenCalledWith(expected);

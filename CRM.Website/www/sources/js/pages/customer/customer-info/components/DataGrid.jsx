@@ -13,7 +13,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 
 export class DataGrid extends Component {
     static defaultProps = {
-        gridData: [],
+        customerInfo: null,
         settings: {
             sites: [],
             countries: [],
@@ -36,8 +36,8 @@ export class DataGrid extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.gridData !== prevProps.gridData) {
-            const data = this.props.gridData.data;
+        if (this.props.customerInfo !== prevProps.customerInfo) {
+            const data = this.props.customerInfo;
             const languages = this.props.settings.languages.map(x => {
                 return {
                     languageId: x.languageId,
@@ -61,7 +61,7 @@ export class DataGrid extends Component {
         isSubmitting,
         setFieldValue
     }) => {
-        const {settings, gridData}= this.props;
+        const { settings, customerInfo } = this.props;
         const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x=> x.id === gridData.data.siteId).length > 0;
 
         return (
@@ -427,7 +427,7 @@ export class DataGrid extends Component {
             custId: values.custId,
             site: this.state.siteId || values.siteId,
             countryId: values.countryId,
-            provinceId: this.props.gridData.data.provinceId,
+            provinceId: this.props.customerInfo.provinceId,
             firstName: values.firstName,
             lastName: values.lastName,
             language: values.languageId,
@@ -458,14 +458,9 @@ export class DataGrid extends Component {
 
         setSubmitting(true);
         this.props.editCustomerInfo(data).then(() => {
+            setSubmitting(false);
             if (this.props.editCustomerInfoResult.isSuccessful) {
-                setTimeout(() => {
-                    this.props.onSuccess();
-                    this.props.setEditCustomerInfoPopup({ show: true });
-                    setSubmitting(false);
-                }, 3000);
-            } else {
-                setSubmitting(false);
+                this.props.setEditCustomerInfoPopup({ show: true });
             }
         });
     };
@@ -480,11 +475,11 @@ export class DataGrid extends Component {
     };
 
     render() {
-        if (!this.props.gridData || !this.props.gridData.data) {
+        if (!this.props.customerInfo) {
             return null;
         }
 
-        const customerInfo = this.props.gridData.data;
+        const customerInfo = this.props.customerInfo;
         const initialValues = {
             custId: customerInfo.custId,
             username: customerInfo.username || '',
@@ -547,7 +542,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const {
         gridParams,
-        gridData,
+        customerInfo,
         settings,
         editCustomerInfoResult,
         editCustomerInfoPopup,
@@ -555,7 +550,7 @@ const mapStateToProps = state => {
     } = state;
     return {
         gridParams,
-        gridData,
+        customerInfo,
         settings,
         editCustomerInfoResult,
         editCustomerInfoPopup,

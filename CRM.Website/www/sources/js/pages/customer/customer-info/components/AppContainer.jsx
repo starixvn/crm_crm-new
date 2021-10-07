@@ -16,20 +16,12 @@ export class AppContainer extends Component {
 
     static propTypes = {
         isHost: PropTypes.bool.isRequired,
-        editCustomerInfoPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        getCustomerInfo: PropTypes.func
+        editCustomerInfoPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
         isHost: false,
-        editCustomerInfoPopup: { show: false },
-        getCustomerInfo: function () {
-            //nothing
-        }
-    };
-
-    handleEditSuccess = () => {
-        this.props.getCustomerInfo(this.props.gridParams);
+        editCustomerInfoPopup: { show: false }
     };
 
     handleCloseEditCustomerInfoPopup = () => {
@@ -37,17 +29,13 @@ export class AppContainer extends Component {
     };
 
     render() {
+        const { isHost, editCustomerInfoPopup } = this.props;
         return (
             <div className="col-md-3">
-                <Filter
-                    isHost={this.props.isHost}
-                />
-                <DataGrid
-                    isHost={this.props.isHost}
-                    onSuccess={this.handleEditSuccess}
-                />
+                <Filter isHost={isHost} />
+                <DataGrid isHost={isHost} />
                 {
-                    this.props.editCustomerInfoPopup.show &&
+                    editCustomerInfoPopup.show &&
                     <SweetModalDialog size="lg"
                         title={LangHelper.getResource('Confirmation')}
                         contents={
@@ -69,8 +57,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData, editCustomerInfoPopup } = state;
-    return { gridParams, gridData, editCustomerInfoPopup };
+    const { editCustomerInfoPopup } = state;
+    return { editCustomerInfoPopup };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

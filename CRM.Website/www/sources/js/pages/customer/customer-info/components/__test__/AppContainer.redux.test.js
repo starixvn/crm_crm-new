@@ -25,13 +25,9 @@ describe('connect', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            gridParams: {},
-            gridData: {},
             editCustomerInfoPopup: { show: false }
         };
         const state = {
-            gridParams: {},
-            gridData: {},
             editCustomerInfoPopup: { show: false }
         };
 

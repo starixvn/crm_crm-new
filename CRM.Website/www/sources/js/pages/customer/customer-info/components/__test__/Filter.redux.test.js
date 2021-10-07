@@ -25,13 +25,13 @@ describe('filter', () => {
         // Arrange
         const expected = {
             gridParams: {},
-            gridData: {},
-            CustomerSuggestion: {}
+            customerInfo: {},
+            customerSuggestions: []
         };
         const state = {
             gridParams: {},
-            gridData: {},
-            CustomerSuggestion: {}
+            customerInfo: {},
+            customerSuggestions: []
         };
 
         // Act
