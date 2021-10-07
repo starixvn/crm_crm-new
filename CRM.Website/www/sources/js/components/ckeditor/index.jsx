@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { CKEditor } from 'ckeditor4-react';
+import CKEditor from 'ckeditor4-react';
 import moment from 'moment';
 import { TOOLBAR, EXTRA_TOOLBAR, REMOVE_PLUGINS, EDIT_BLOCK_TEMPLATE } from './constants';
 import LangHelper from '@jsroot/common/langHelper';
@@ -38,8 +38,6 @@ export default class CkEditor extends PureComponent {
         this.props.onChange(data);
     };
 
-    elementsToHtml = () => <div dangerouslySetInnerHTML={{ __html: this.state.data }} />;
-
     onLoadPlugin = CKEDITOR => {
         let editText = '';
         let textTemplateEditBlock = EDIT_BLOCK_TEMPLATE;
@@ -74,13 +72,12 @@ export default class CkEditor extends PureComponent {
     };
 
     render() {
-        const initData = this.elementsToHtml();
         const { className, isInvalid, ...rest } = this.props;
         return (
             <div className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor
                     {...rest}
-                    initData={initData}
+                    data={this.state.data}
                     onChange={this.onEditorChange}
                     config={{
                         removeButtons: '',
