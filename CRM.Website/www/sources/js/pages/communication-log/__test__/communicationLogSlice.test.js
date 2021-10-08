@@ -9,7 +9,8 @@ import communicationLog, {
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
     setInsertCommunicationDialog,
-    setInsertSettings
+    setInsertSettings,
+    setBalanceUpday
 } from '../communicationLogSlice';
 
 describe('communicationLog reducer', () => {
@@ -25,7 +26,8 @@ describe('communicationLog reducer', () => {
             feedbackSubjectTemplates: [],
             duplicateFeedbackId: 0,
             insertCommunicationDialog: { show: false },
-            insertSettings: null
+            insertSettings: null,
+            balanceUpday: null
         });
     });
 
@@ -51,6 +53,21 @@ describe('communicationLog reducer', () => {
         ).toEqual({
             allStatus: {
                 countries: [{ id: 1, name: 'country' }]
+            }
+        });
+    });
+
+    it('should handle setBalanceUpday', () => {
+        expect(
+            communicationLog({}, {
+                type: setBalanceUpday.type,
+                payload: {
+                    test: new Date('2020-01-01')
+                }
+            })
+        ).toEqual({
+            balanceUpday: {
+                test: new Date('2020-01-01')
             }
         });
     });

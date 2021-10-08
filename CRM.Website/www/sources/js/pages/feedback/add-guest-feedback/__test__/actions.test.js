@@ -83,6 +83,30 @@ describe('actionCreators', () => {
         });
     });
 
+    describe('getBalanceUpday', () => {
+        it('should handle setAllSettings when fetching getAllSettings have been done', async () => {
+            // Arrange
+            const response = {
+                data: {
+                    test: new Date()
+                }
+            };
+            const promise = Promise.resolve(response);
+            Site.blockUI = jest.fn();
+            Site.unblockUI = jest.fn();
+            DataService.getDataAsync = jest.fn(() => promise);
+            const expectedActions = [{ type: ActionCreators.setBalanceUpday.type, payload: response.data }];
+            const store = mockStore({ settings: null });
+
+            // Act
+            await store.dispatch(ActionCreators.getBalanceUpday());
+
+            // Assert
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('Feedback/GetBalanceUpday');
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
     describe('addFeedback', () => {
         it('should handle setAddFeedback when request has been done', async () => {
             const expectedParams = {
@@ -131,6 +155,27 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerSetting/VerifyUsername', expectedParams);
+            expect(actual).toEqual(response.data);
+        });
+    });
+
+    describe('getTicketInfoByRef', () => {
+        it('should handle response when request has been done', async () => {
+            // Arrange
+            const store = mockStore({});
+            const response = {
+                data: [{
+                    description : 'description'
+                }]
+            };
+            const promise = Promise.resolve(response);
+            DataService.getDataAsync = jest.fn(() => promise);
+
+            // Act
+            const actual = await store.dispatch(ActionCreators.getTicketInfoByRef({Refno: 1}));
+
+            // Assert
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('Feedback/GetTicketInfoByRefNoAsync', {Refno: 1});
             expect(actual).toEqual(response.data);
         });
     });

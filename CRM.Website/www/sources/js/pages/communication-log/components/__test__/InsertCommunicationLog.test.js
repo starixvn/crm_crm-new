@@ -103,7 +103,8 @@ describe('InsertCommunicationLog', () => {
         it('should calls exactly function when componentDidMount', async () => {
             // Arrange
             const props = {
-                getInsertSettings: jest.fn()
+                getInsertSettings: jest.fn(),
+                getBalanceUpday: jest.fn()
             };
 
             // Act
@@ -111,6 +112,7 @@ describe('InsertCommunicationLog', () => {
             await container.componentDidMount();
 
             expect(props.getInsertSettings).toHaveBeenCalled();
+            expect(props.getBalanceUpday).toHaveBeenCalled();
         });
     });
 
@@ -456,19 +458,6 @@ describe('InsertCommunicationLog', () => {
         });
     });
 
-    describe('confirmInsert', () => {
-        it('should setState when confirm insert dialog', () => {
-            // Arrange
-            const container = shallow(<InsertCommunicationLog />).instance();
-            const params = { name: 'test'};
-            // Act
-            container.confirmInsert(params);
-
-            // Assert
-            expect(container.state.confirmInsertDialog).toEqual({ show: true, params });
-        });
-    });
-
     describe('handleSubmit', () => {
         it('should call exact function when submit', () => {
             // Arrange
@@ -486,13 +475,218 @@ describe('InsertCommunicationLog', () => {
                 productIds: '3,4'
             };
             const container = shallow(<InsertCommunicationLog {...props}/>).instance();
-            container.confirmInsert = jest.fn();
+            container.recheckInactiveSiteAndConfirmInsert = jest.fn();
             // Act
             container.handleSubmit(values, {setSubmitting});
 
             // Assert
             expect(setSubmitting).toHaveBeenCalledWith(true);
-            expect(container.confirmInsert).toHaveBeenCalled();
+            expect(container.recheckInactiveSiteAndConfirmInsert).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleChangeRefTicket', () => {
+        it('should call exact function when value greater than 15 characters', () => {
+            // Arrange
+            const event = {
+                target: {value : 'testtttttttttttt'}
+            };    
+            const setFieldValue = jest.fn();       
+            const container = shallow(<InsertCommunicationLog />).instance();
+
+            // Act
+            container.handleChangeRefTicket(event, setFieldValue);
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', 'testtttttttttttt');
+        });
+
+        it('should call exact function when value smaller than 15 characters', () => {
+            // Arrange
+            const event = {
+                target: {value : 'test'}
+            };    
+            const setFieldValue = jest.fn();       
+            const container = shallow(<InsertCommunicationLog />).instance();
+
+            // Act
+            container.handleChangeRefTicket(event, setFieldValue);
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', 'test');
+        });
+    });
+
+    describe('onPasteRefTicketHandler ', () => {
+        it('should do as expected if copy string', () => {
+            // Arrange
+            const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('event') }, preventDefault: jest.fn() };
+            const container = shallow(<InsertCommunicationLog />).instance();
+
+            // Act
+            container.onPasteRefTicketHandler(event);
+            // Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+        });
+    });
+
+    describe('recheckInactiveSiteAndConfirmInsert', () => {
+        it('should call exact function if have any inactive site member', async () => {
+            // Arrange
+            const response = {
+                data: [{
+                    custId: 1,
+                    val: 'test',
+                    isSiteActive: false,
+                    isLicensee: true
+                }]
+            };
+            const promise = Promise.resolve(response);
+            const state = {
+                insertResult: [],
+                relatedCustomers: []
+            };
+            const setSubmitting = jest.fn();
+            const props = {
+                verifyCustomers: jest.fn(() => promise)
+            };
+            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            container.setState(state);
+            const params = { name: 'test'};
+            const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
+            // Act
+            container.recheckInactiveSiteAndConfirmInsert('username', params, setSubmitting);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(container.state.insertResult).toEqual({isSuccessful: false, message});
+        });
+
+        it('should call exact function if do not have any inactive site member', async () => {
+            // Arrange
+            const response = {
+                data: [{
+                    custId: 1,
+                    val: 'test',
+                    isSiteActive: true,
+                    isLicensee: true
+                }]
+            };
+            const promise = Promise.resolve(response);
+            const setSubmitting = jest.fn();
+            const props = {
+                verifyCustomers: jest.fn(() => promise)
+            };
+            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            const params = { name: 'test'};
+            // Act
+            container.recheckInactiveSiteAndConfirmInsert('username', params, setSubmitting);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(container.state.confirmInsertDialog).toEqual({ show: true, params });
+        });
+    });
+
+    describe('handleClickFillEvent ', () => {
+        it('should do as expected if response errorCode !== 0', async () => {
+            // Arrange
+            const response = {
+                errorCode : '001', description: 'no information'
+            };
+            const promise = Promise.resolve(response);
+            const props = {
+                getTicketInfoByRef: jest.fn(() => promise),
+            };
+            const values = {ticketRefInput: '123', remark: ''};
+            const setFieldValue = jest.fn();
+            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+
+            // Act
+            container.handleClickFillEvent(values, setFieldValue);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
+            // expect(props.setAddFeedback).toHaveBeenCalledWith({isSuccessful: false, message: response.description});
+        });
+
+        it('should do as expected if response errorCode === 0 and first request data and already has data', async () => {
+            // Arrange
+            const response = {
+                errorCode : '0', description: 'test'
+            };
+            const state = {
+                countClickRefTicket: 0
+            };
+            const promise = Promise.resolve(response);
+            const props = {
+                getTicketInfoByRef: jest.fn(() => promise)
+            };
+            const values = {ticketRefInput: '123', remark: '123'};
+            const setFieldValue = jest.fn();
+            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            container.setState(state);
+            // Act
+            container.handleClickFillEvent(values, setFieldValue);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('remark', 'test<br>123');
+        });
+
+        it('should do as expected if response errorCode === 0 and first request data', async () => {
+            // Arrange
+            const response = {
+                errorCode : '0', description: 'test'
+            };
+            const state = {
+                countClickRefTicket: 0
+            };
+            const promise = Promise.resolve(response);
+            const props = {
+                getTicketInfoByRef: jest.fn(() => promise)
+            };
+            const values = {ticketRefInput: '123', remark: ''};
+            const setFieldValue = jest.fn();
+            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            container.setState(state);
+            // Act
+            container.handleClickFillEvent(values, setFieldValue);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('remark', 'test');
+        });
+
+        it('should do as expected if response errorCode !== 0 and do not include generated color', async () => {
+            // Arrange
+            const response = {
+                errorCode : '0', description: '<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>'
+            };
+            const state = {
+                countClickRefTicket: 1
+            };
+            const promise = Promise.resolve(response);
+            const props = {
+                getTicketInfoByRef: jest.fn(() => promise)
+            };
+            const values = {ticketRefInput: '123', remark: 'color: rgb(255, 0, 0)'};
+            const setFieldValue = jest.fn();
+            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            container.setState(state);
+            // Act
+            container.handleClickFillEvent(values, setFieldValue);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('remark', 'color: rgb(255, 0, 0)');
         });
     });
 
@@ -509,6 +703,7 @@ describe('InsertCommunicationLog', () => {
             expect(container.formik.setSubmitting).toHaveBeenCalledWith(false);
         });
     });
+    
 
     describe('handleInsertLog', () => {
         it('should setState when handle insert log successful', async () => {

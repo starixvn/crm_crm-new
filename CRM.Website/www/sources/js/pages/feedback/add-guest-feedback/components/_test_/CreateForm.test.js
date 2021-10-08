@@ -1910,4 +1910,127 @@ describe('CreateForm', () => {
             expect(Site.resolveClientUrl).not.toHaveBeenCalled();
         });
     });
+
+    describe('handleChangeRefTicket', () => {
+        it('should call exact function when value greater than 15 characters', () => {
+            // Arrange
+            const event = {
+                target: {value : 'testtttttttttttt'}
+            };    
+            const setFieldValue = jest.fn();       
+            const createForm = shallow(<CreateForm />).instance();
+
+            // Act
+            createForm.handleChangeRefTicket(event, setFieldValue);
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', 'testtttttttttttt');
+        });
+
+        it('should call exact function when value smaller than 15 characters', () => {
+            // Arrange
+            const event = {
+                target: {value : 'test'}
+            };    
+            const setFieldValue = jest.fn();       
+            const createForm = shallow(<CreateForm />).instance();
+
+            // Act
+            createForm.handleChangeRefTicket(event, setFieldValue);
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', 'test');
+        });
+    });
+
+    describe('onPasteRefTicketHandler ', () => {
+        it('should do as expected if copy string', () => {
+            // Arrange
+            const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('event') }, preventDefault: jest.fn() };
+            const createForm = shallow(<CreateForm />).instance();
+
+            // Act
+            createForm.onPasteRefTicketHandler (event);
+            // Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleClickFillEvent ', () => {
+        it('should do as expected if response errorCode !== 0', async () => {
+            // Arrange
+            const response = {
+                errorCode : '001', description: 'no information'
+            };
+            const promise = Promise.resolve(response);
+            const props = {
+                getTicketInfoByRef: jest.fn(() => promise),
+                setAddFeedback: jest.fn()
+            };
+            const values = {ticketRefInput: '123', description: ''};
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm {...props}/>).instance();
+
+            // Act
+            createForm.handleClickFillEvent(values, setFieldValue);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
+            expect(props.setAddFeedback).toHaveBeenCalledWith({isSuccessful: false, message: response.description});
+        });
+
+        it('should do as expected if response errorCode === 0 and first request data and already has data', async () => {
+            // Arrange
+            const response = {
+                errorCode : '0', description: 'test'
+            };
+            const state = {
+                countClickRefTicket: 0
+            };
+            const promise = Promise.resolve(response);
+            const props = {
+                getTicketInfoByRef: jest.fn(() => promise),
+                setAddFeedback: jest.fn()
+            };
+            const values = {ticketRefInput: '123', description: '123'};
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm {...props}/>).instance();
+            createForm.setState(state);
+            // Act
+            createForm.handleClickFillEvent(values, setFieldValue);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('description', 'test<br>123');
+        });
+
+        it('should do as expected if response errorCode === 0 and first request data', async () => {
+            // Arrange
+            const response = {
+                errorCode : '0', description: 'test'
+            };
+            const state = {
+                countClickRefTicket: 0
+            };
+            const promise = Promise.resolve(response);
+            const props = {
+                getTicketInfoByRef: jest.fn(() => promise),
+                setAddFeedback: jest.fn()
+            };
+            const values = {ticketRefInput: '123', description: null};
+            const setFieldValue = jest.fn();
+            const createForm = shallow(<CreateForm {...props}/>).instance();
+            createForm.setState(state);
+            // Act
+            createForm.handleClickFillEvent(values, setFieldValue);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalledWith('description', 'test');
+        });
+    });
 });

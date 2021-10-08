@@ -281,7 +281,7 @@ export class CreateForm extends Component {
             } else{
                 let descriptionText = '';
                 this.props.setAddFeedback(null);
-                const isFirstInputAndHasData = (values.description !== null || values.description !== '') && this.state.countClickRefTicket === 0;
+                const isFirstInputAndHasData = values.description.length > 0 && this.state.countClickRefTicket === 0;
                 const isNotFirstInputAndRemoveData = this.state.countClickRefTicket !== 0 && !values.description.includes(colorGenerated);
                 if (isFirstInputAndHasData || isNotFirstInputAndRemoveData) {
                     descriptionText = data.description + '<br>' + values.description;

@@ -1,6 +1,7 @@
 import addGuestFeedback, {
     setAllSettings,
     setFeedbackSubjectTemplates,
+    setBalanceUpday,
     setAddFeedback,
     setConfirmCreateGuestDialog
 } from '../addGuestFeedbackSlice';
@@ -10,6 +11,7 @@ describe('addGuestFeedback reducer', () => {
         expect(addGuestFeedback(undefined, {})).toEqual({
             settings: null,
             addFeedbackResult: null,
+            balanceUpday: null,
             feedbackSubjectTemplates: [],
             confirmCreateGuestDialog: { show: false }
         });
@@ -20,7 +22,7 @@ describe('addGuestFeedback reducer', () => {
             addGuestFeedback({}, {
                 type: setAllSettings.type,
                 payload: {
-                   bettypeNA: {},
+                    bettypeNA: {},
                     bettypes: [],
                     communicationTools: [],
                     countries: [],
@@ -84,6 +86,21 @@ describe('addGuestFeedback reducer', () => {
                     subject : 'subject',
                     isActive : true
             }]
+        });
+    });
+
+    it('should handle setBalanceUpday', () => {
+        expect(
+            addGuestFeedback({}, {
+                type: setBalanceUpday.type,
+                payload: {
+                    test: new Date('2021-01-01')
+                }
+            })
+        ).toEqual({
+            balanceUpday: {
+                test: new Date('2021-01-01')
+            }
         });
     });
 

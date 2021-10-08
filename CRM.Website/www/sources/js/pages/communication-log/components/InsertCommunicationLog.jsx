@@ -192,6 +192,7 @@ export class InsertCommunicationLog extends Component {
             if(inactiveCustomers.length > 0){
                 const inactiveUserName = inactiveCustomers.map(x=>x.val).join(',');
                 const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
+                console.log(message);
                 this.setState({ insertResult: {isSuccessful: false, message}});
                 setSubmitting(false);
             }
@@ -297,7 +298,7 @@ export class InsertCommunicationLog extends Component {
             } else{
                 let remarkText = '';
                 this.setState({insertResult: null});
-                const isFirstInputAndHasData = (values.remark !== null || values.remark !== '') && this.state.countClickRefTicket === 0;
+                const isFirstInputAndHasData = values.remark.length > 0 && this.state.countClickRefTicket === 0;
                 const isNotFirstInputAndRemoveData = this.state.countClickRefTicket !== 0 && !values.remark.includes(colorGenerated);
                 if (isFirstInputAndHasData || isNotFirstInputAndRemoveData) {
                     remarkText = data.description + '<br>' + values.remark;
