@@ -11,7 +11,8 @@ import {
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
     setInsertCommunicationDialog,
-    setInsertSettings
+    setInsertSettings,
+    setBalanceUpday
 } from './communicationLogSlice';
 
 const getLogsByCustomerId = params => async dispatch => {
@@ -76,6 +77,18 @@ const insertCommunicationLog = params => async () => {
     return await DataService.postDataAsync(url, params).then(response => response);
 };
 
+const getBalanceUpday = () => async dispatch => {
+    const url = Site.resolveClientUrl('Feedback/GetBalanceUpday');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setBalanceUpday(response.data));
+    });
+};
+
+const getTicketInfoByRef = Refno => async () => {
+    const url = Site.resolveClientUrl('Feedback/GetTicketInfoByRefNoAsync');
+    return await DataService.getDataAsync(url, Refno).then(response => response.data);
+};
+
 export const ActionCreators = {
     getLogsByCustomerId,
     getAllStatus,
@@ -90,5 +103,8 @@ export const ActionCreators = {
     checkFeedbackDuplication,
     setInsertCommunicationDialog,
     getInsertSettings,
-    insertCommunicationLog
+    insertCommunicationLog,
+    getBalanceUpday,
+    setBalanceUpday,
+    getTicketInfoByRef
 };

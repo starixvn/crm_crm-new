@@ -13,7 +13,8 @@ const communicationLogSlice = createSlice({
         feedbackSubjectTemplates: [],
         duplicateFeedbackId: 0,
         insertCommunicationDialog: { show: false },
-        insertSettings: null
+        insertSettings: null,
+        balanceUpday: null
     },
     reducers: {
         setLogsByCustomerId: (state, action) => {
@@ -49,6 +50,9 @@ const communicationLogSlice = createSlice({
         setInsertSettings: (state, action) => {
             state.insertSettings = action.payload;
         },
+        setBalanceUpday: (state, action) => {
+            state.balanceUpday = action.payload;
+        }
     }
 });
 
@@ -65,7 +69,8 @@ export const {
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
     setInsertCommunicationDialog,
-    setInsertSettings
+    setInsertSettings,
+    setBalanceUpday
 } = actions;
 
 export default reducer;

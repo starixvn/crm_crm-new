@@ -295,7 +295,9 @@ export class CreateForm extends Component {
                 }
                 setFieldValue('description', descriptionText);
             }
-            this.setState(prevState => ({countClickRefTicket: prevState.countClickRefTicket++}));
+            this.setState(prevState =>({
+                countClickRefTicket: prevState.countClickRefTicket.sec + 1
+            }));
         });
     }
 

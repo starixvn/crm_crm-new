@@ -21,12 +21,14 @@ export default class VerifyCustomer extends PureComponent {
     };
 
     render() {
-        const { listOfCustomers } = this.props;
+        const { listOfCustomers, isCommunicationLog } = this.props;
+        const labelSize = isCommunicationLog ? 2 : 3;
+        const columnSize = isCommunicationLog ? 10 : 9;
         return listOfCustomers && listOfCustomers.length > 0 ?
             <Fragment>
                 <Form.Group as={Row} className="pt-2 pb-2">
-                    <Form.Label column sm="3" md="3" />
-                    <Col sm="9" md="9" className="d-flex">
+                    <Form.Label column sm={labelSize} md={labelSize} />
+                    <Col sm={columnSize} md={columnSize} className="d-flex">
                         <Col sm="2" md="2" className="customerShow">
                             {LangHelper.getResource('Customer')}
                         </Col>
@@ -42,8 +44,8 @@ export default class VerifyCustomer extends PureComponent {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="pt-2 pb-2">
-                    <Form.Label column sm="3" md="3" />
-                    <Col sm="9" md="9">
+                    <Form.Label column sm={labelSize} md={labelSize} />
+                    <Col sm={columnSize} md={columnSize}>
                         <div className="customersList d-flex flex-wrap">
                             {
                                 listOfCustomers.map((item, index) => {
