@@ -445,6 +445,77 @@ describe('EditCommunicationLog', () => {
         });
     });
 
+    describe('handleReVerifyInactiveAndConfirm', () => {
+        it('should call exact function if have any inactive site member', async () => {
+            // Arrange
+            const response = {
+                data: [{
+                    custId: 1,
+                    val: 'test',
+                    isSiteActive: false,
+                    isLicensee: true
+                }]
+            };
+            const promise = Promise.resolve(response);
+            const state = {
+                editResult: [],
+                relatedCustomers: [{custId: 1,val: 'test1'}],
+                oldReLatedCust: [{custId: 2,val: 'test2'}]
+            };
+            const setSubmitting = jest.fn();
+            const props = {
+                verifyCustomers: jest.fn(() => promise)
+            };
+            const container = shallow(<EditCommunicationLog {...props}/>).instance();
+            container.setState(state);
+            const params = { name: 'test'};
+            const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
+            // Act
+            container.handleReVerifyInactiveAndConfirm(params, setSubmitting);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(container.state.editResult).toEqual({isSuccessful: false, message});
+            expect(setSubmitting) .toHaveBeenCalledWith(false);
+        });
+
+        it('should call exact function if do not have any inactive site member', async () => {
+            // Arrange
+            const response = {
+                data: [{
+                    custId: 1,
+                    val: 'test',
+                    isSiteActive: true,
+                    isLicensee: true
+                }]
+            };
+            const promise = Promise.resolve(response);
+            const state = {
+                editResult: [],
+                relatedCustomers: [{custId: 1,val: 'test1'}],
+                oldReLatedCust: [{custId: 2,val: 'test2'}]
+            };
+            const setSubmitting = jest.fn();
+            const props = {
+                verifyCustomers: jest.fn(() => promise)
+            };
+            const container = shallow(<EditCommunicationLog {...props}/>).instance();
+            container.confirmEditFeedback = jest.fn();
+            container.setState(state);
+            const params = { name: 'test'};
+
+            // Act
+            container.handleReVerifyInactiveAndConfirm(params, setSubmitting);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(container.state.editResult).toEqual(null);
+            expect(container.confirmEditFeedback) .toHaveBeenCalledWith(params);
+        });
+    });
+
     describe('handleEditLog', () => {
         it('should setState when handle edit log successful', async () => {
             // Arrange
