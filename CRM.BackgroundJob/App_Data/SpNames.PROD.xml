@@ -92,4 +92,14 @@
         <Setting Key="Acc_CRM_OICLicenseeIns" SpName="Acc_CRM_OICLicenseeIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_OICLicenseeSel" SpName="Acc_CRM_OICLicenseeSel" DbName="DBOIC.bodb_OIC.bodbAdminNet" />
     </Function>
+    <Function Name="Voiding Settled Tickets">
+        <Setting Key="Acc_CRM_FailVoidingMessageSel" SpName="Acc_CRM_FailVoidingMessageSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" SpName="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Ins" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Sel" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Voiding_SystemSettingSel" SpName="Acc_CRM_Voiding_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AutoVoidingMessageSel" SpName="Acc_CRM_AutoVoidingMessageSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AutoVoidingMessageUpd" SpName="Acc_CRM_AutoVoidingMessageUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AutoVoidingTicketSel" SpName="Acc_CRM_AutoVoidingTicketSel" DbName="DBACC.bodb02.bodbAdminNet" />
+    </Function>
 </Functions>
