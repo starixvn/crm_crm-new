@@ -14,10 +14,10 @@
 
     public class PullMessageFromSiteMessage : BaseWorker
     {
-        private readonly IAutoFeedbackService autoFeedbackService;
+        private readonly ISiteMessageService autoFeedbackService;
 
         public PullMessageFromSiteMessage(
-            IAutoFeedbackService autoFeedbackService,
+            ISiteMessageService autoFeedbackService,
             IMaintenanceService maintenanceService,
             IOptions<List<JobSetting>> jobSettings,
             ICRMLogService logService)
@@ -29,7 +29,7 @@
 
         public override async Task ExecuteJobAsync()
         {
-            await autoFeedbackService.ResultAmendmentExecuteJobAsync();
+            await autoFeedbackService.PullMessageFromSiteMessage();
         }
     }
 }

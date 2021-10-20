@@ -16,13 +16,17 @@ namespace CRM.BackgroundJob.Services.Test
     public class SiteMessageService : ISiteMessageService
     {
         private readonly ICommonFeedback commonFeedback;
-        public SiteMessageService(ICommonFeedback commonFeedback)
+        private readonly ICRMLogService logService;
+
+        public SiteMessageService(ICommonFeedback commonFeedback, ICRMLogService logService)
         {
             this.commonFeedback = commonFeedback;
+            this.logService = logService;
         }
         public async Task PullMessageFromSiteMessage()
         {
             var amendmentDescTemplate = commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>("AmendmentDescriptionTemplate.xml");
+            logService.LogInformation(amendmentDescTemplate.NumberGame);
         }
     }
 }

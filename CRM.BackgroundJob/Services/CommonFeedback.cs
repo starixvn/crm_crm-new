@@ -63,7 +63,6 @@
     {
         private readonly IRemotingRefService remotingRefService;
         private readonly ISystemSettingService systemSetting;
-        private readonly ICRMLogService logService;
 
         private const string path = "Format_Templates\\AutoCreateFeedback";
 
@@ -75,7 +74,6 @@
         {
             this.remotingRefService = remotingRefService;
             this.systemSetting = systemSetting;
-            this.logService = logService;
         }
 
         public string GetProductName(string productId, string languageCode)
@@ -123,11 +121,8 @@
         public T GetFeedbackTemplates<T>(string fileXml)
         {
             var currentDirectory = Directory.GetCurrentDirectory();
-            logService.LogInformation(currentDirectory);
             var templatePath = Path.Combine(currentDirectory, path, fileXml);
-            logService.LogInformation(templatePath);
             var template = XMLIO.DeserializeXMLFileToObject<T>(templatePath);
-            logService.LogInformation(template.ToString());
             return (T)Convert.ChangeType(template, typeof(T));
         }
 
