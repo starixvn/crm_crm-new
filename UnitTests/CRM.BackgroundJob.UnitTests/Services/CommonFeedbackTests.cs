@@ -17,7 +17,6 @@
 
     public class CommonFeedbackTests
     {
-        private IHostingEnvironment hostingEnvironment;
         private IRemotingRefService remotingRefService;
         private ISystemSettingService systemSetting;
 
@@ -372,7 +371,6 @@
             };
             var enviroment = System.Environment.CurrentDirectory;
             string projectDirectory = Directory.GetParent(enviroment).Parent.FullName;
-            hostingEnvironment.ContentRootPath.Returns(projectDirectory.Replace("\\bin",""));
             // Act
             var actual = service.GetFeedbackTemplates<TODescriptionTemplate>("TestTemplate.xml");
 
@@ -454,11 +452,9 @@
         #region Helpers
         private CommonFeedback GetService()
         {
-            hostingEnvironment = Substitute.For<IHostingEnvironment>();
             remotingRefService = Substitute.For<IRemotingRefService>();
             systemSetting = Substitute.For<ISystemSettingService>();
             return new CommonFeedback(
-                hostingEnvironment,
                 remotingRefService,
                 systemSetting
                 );

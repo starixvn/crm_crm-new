@@ -123,9 +123,10 @@
         public T GetFeedbackTemplates<T>(string fileXml)
         {
             var currentDirectory = Directory.GetCurrentDirectory();
+            logService.LogInformation(currentDirectory);
             var templatePath = Path.Combine(currentDirectory, path, fileXml);
-            var template = XMLIO.DeserializeXMLFileToObject<T>(templatePath);
             logService.LogInformation(templatePath);
+            var template = XMLIO.DeserializeXMLFileToObject<T>(templatePath);
             logService.LogInformation(template.ToString());
             return (T)Convert.ChangeType(template, typeof(T));
         }
