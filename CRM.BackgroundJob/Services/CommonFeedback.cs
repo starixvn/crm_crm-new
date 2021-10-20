@@ -9,12 +9,12 @@
     using System.Threading.Tasks;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Fanex.RemotingRef;
-    using Microsoft.AspNetCore.Hosting;
 
     public interface ICommonFeedback
     {
@@ -61,21 +61,21 @@
     }
     public class CommonFeedback : ICommonFeedback
     {
-        private readonly IHostingEnvironment hostingEnvironment;
         private readonly IRemotingRefService remotingRefService;
         private readonly ISystemSettingService systemSetting;
+        private readonly ICRMLogService logService;
 
         private const string path = "Format_Templates\\AutoCreateFeedback";
 
         public CommonFeedback(
-            IHostingEnvironment hostingEnvironment,
             IRemotingRefService remotingRefService,
-            ISystemSettingService systemSetting
+            ISystemSettingService systemSetting,
+            ICRMLogService logService
             )
         {
-            this.hostingEnvironment = hostingEnvironment;
             this.remotingRefService = remotingRefService;
             this.systemSetting = systemSetting;
+            this.logService = logService;
         }
 
         public string GetProductName(string productId, string languageCode)
@@ -122,8 +122,11 @@
      
         public T GetFeedbackTemplates<T>(string fileXml)
         {
-            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, path, fileXml);
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var templatePath = Path.Combine(currentDirectory, path, fileXml);
             var template = XMLIO.DeserializeXMLFileToObject<T>(templatePath);
+            logService.LogInformation(templatePath);
+            logService.LogInformation(template.ToString());
             return (T)Convert.ChangeType(template, typeof(T));
         }
 

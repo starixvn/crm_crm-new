@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CRM.Core.Services;
+using Fanex.CRM.BackgroundJob.Services;
 
 namespace CRM.BackgroundJob.Services.Test
 {
@@ -13,14 +14,14 @@ namespace CRM.BackgroundJob.Services.Test
 
     public class SiteMessageService : ISiteMessageService
     {
-        private readonly ICRMLogService logService;
-        public SiteMessageService(ICRMLogService logService)
+        private readonly IAutoFeedbackService autoFeedbackService;
+        public SiteMessageService(IAutoFeedbackService autoFeedbackService)
         {
-            this.logService = logService;
+            this.autoFeedbackService = autoFeedbackService;
         }
         public async Task PullMessageFromSiteMessage()
         {
-            logService.LogInformation("test base woker");
+            await autoFeedbackService.ResultAmendmentExecuteJobAsync();
         }
     }
 }

@@ -60,8 +60,10 @@
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
 
+
             Host.CreateDefaultBuilder(args)
                .UseWindowsService()
+               .ConfigureAppConfiguration(builder => builder.AddConfiguration(configuration))
                .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration))
                .ConfigureServices((hostContext, services) =>
                {
@@ -103,7 +105,6 @@
             .FromApplication("CRM.BackgroundJob");
 
             services.AddMvc();
-            services.AddSingleton<Microsoft.AspNetCore.Hosting.IHostingEnvironment, HostingEnvironment>();
             services.Configure<IConfiguration>(configuration);
             services.AddSingleton<IRemotingRefService, RemotingRefService>();
 
@@ -138,10 +139,9 @@
             services.AddSingleton<IMaintenanceService, MaintenanceService>();
 
             #endregion ONEbookUM
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICommonFeedback, CommonFeedback>();
             services.AddTransient<ICacheService, CacheService>();
+            services.AddScoped<ICommonFeedback, CommonFeedback>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ISettingService, SettingService>();
             services.AddTransient<IJobRunningChecker, JobRunningChecker>();
