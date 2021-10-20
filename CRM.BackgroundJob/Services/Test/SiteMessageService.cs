@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CRM.BackgroundJob.Models.ResultAmendment;
 using CRM.Core.Services;
 using Fanex.CRM.BackgroundJob.Services;
 
@@ -14,14 +15,14 @@ namespace CRM.BackgroundJob.Services.Test
 
     public class SiteMessageService : ISiteMessageService
     {
-        private readonly IAutoFeedbackService autoFeedbackService;
-        public SiteMessageService(IAutoFeedbackService autoFeedbackService)
+        private readonly ICommonFeedback commonFeedback;
+        public SiteMessageService(ICommonFeedback commonFeedback)
         {
-            this.autoFeedbackService = autoFeedbackService;
+            this.commonFeedback = commonFeedback;
         }
         public async Task PullMessageFromSiteMessage()
         {
-            await autoFeedbackService.ResultAmendmentExecuteJobAsync();
+            var amendmentDescTemplate = commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>("AmendmentDescriptionTemplate.xml");
         }
     }
 }
