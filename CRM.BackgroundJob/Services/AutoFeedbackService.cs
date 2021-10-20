@@ -262,30 +262,30 @@
             var JobStatusNameEnv = isUAT ? SystemSettingName.JobStatusUAT : SystemSettingName.JobStatus;
             var isRunning = isUAT ? isRunningUAT : isRunningLive;
 
-            //if (!isRunning)
-            //{
+            if (!isRunning)
+            {
                 await Task.WhenAll(
                          jobRunningChecker.MarkRunning(JobName.CreateFeedbackForResultAmendment),
                          resultAmendmentService.CreateFeedbackForResultAmendmentAsync(resultAmendmentSetting, isUAT, LastRuntimeEnv, LastRuntimeNameEnv,
                             JobStatusNameEnv, Environment)
                      );
-            //    await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForResultAmendment);
-            //}
-            //else
-            //{
-            //    logService.LogInformation("Result amendment service is running.");
-            //    isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment);
-            //    if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
-            //    {
-            //        logService.LogInformation("Update  status and return serive result amendment.");
-            //        var settingJobStatus = new List<SystemSettingItem>
-            //            {
-            //               new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-            //               new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(dateTimeParse) },
-            //            };
-            //        await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
-            //    }
-            //}
+                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForResultAmendment);
+            }
+            else
+            {
+                logService.LogInformation("Result amendment service is running.");
+                isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment);
+                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                {
+                    logService.LogInformation("Update  status and return serive result amendment.");
+                    var settingJobStatus = new List<SystemSettingItem>
+                        {
+                           new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(dateTimeParse) },
+                        };
+                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
+                }
+            }
         }
 
         public async Task ProblemsAcccountExecuteJobAsync()

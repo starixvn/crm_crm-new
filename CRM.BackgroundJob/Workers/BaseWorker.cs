@@ -1,4 +1,4 @@
-﻿namespace CRM.BackgroundJob.Services.Test
+﻿namespace CRM.BackgroundJob.Wokers
 {
     using System;
     using System.Threading;

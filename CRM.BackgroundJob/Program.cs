@@ -20,7 +20,8 @@
     using Fanex.RemotingRef;
     using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Services;
-    using global::CRM.BackgroundJob.Services.Test;
+    using global::CRM.BackgroundJob.Wokers;
+    using global::CRM.BackgroundJob.Workers;
     using global::CRM.Core.Extensions;
     using global::CRM.Letstalk.Services.Extentions;
     using global::CRM.Letstalk.Services.Services;
@@ -132,6 +133,7 @@
         private static void AddDependencyInjection(IServiceCollection services, IConfiguration configuration)
         {
             #region ONEbookUM
+
             services.AddSingleton(new UMClientConfiguration().Initialize(configuration));
             services.AddSingleton<IHttpContextHelper, HttpContextHelper>();
             services.AddSingleton<IUMCacheService, UMCacheService>();
@@ -141,10 +143,10 @@
             #endregion ONEbookUM
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<ICacheService, CacheService>();
+            services.AddTransient<IJobRunningChecker, JobRunningChecker>();
             services.AddScoped<ICommonFeedback, CommonFeedback>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ISettingService, SettingService>();
-            services.AddTransient<IJobRunningChecker, JobRunningChecker>();
             services.AddScoped<ISystemSettingService, SystemSettingService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<ICustomerService, CustomerService>();
@@ -155,7 +157,6 @@
             services.AddScoped<IChatBotTicketVoidingService, ChatBotTicketVoidingService>();
             services.AddScoped<IChatBotCWLService, ChatBotCWLService>();
             services.AddScoped<IChatBotJobService, ChatBotJobService>();
-            services.AddScoped<ISiteMessageService, SiteMessageService>();
             services.AddScoped<ISendNotificationService, SendNotificationService>();
             services.AddScoped<IMonitorService, MonitorService>();
             services.AddScoped<IFeedbackTransactionService, FeedbackTransactionService>();
@@ -173,7 +174,22 @@
 
         private static void AddWorker(IServiceCollection services)
         {
-            services.AddHostedService<PullMessageFromSiteMessage>();
+            services.AddHostedService<AutoFbResultAmendmentWoker>();
+            services.AddHostedService<AutoFbProblemAccountWoker>();
+            services.AddHostedService<AutoFbVoidingAbnormalBetWorker>();
+            services.AddHostedService<AutoFbWinLossLimitWorker>();
+            services.AddHostedService<AutoFbTurnoverControlWorker>();
+
+            services.AddHostedService<AutoChatbotWorker>();
+            services.AddHostedService<AutoChatbotCWLWoker>();
+            services.AddHostedService<AutoChatbotCTOWoker>();
+            services.AddHostedService<AutoChatbotProblemAccountWorker>();
+            services.AddHostedService<AutoChatbotResultAmendmentWoker>();
+            services.AddHostedService<ScanAndSendLetstalkNotificationWorker>();
+            services.AddHostedService<SynchronizeNewLicenseeWorker>();
+            services.AddHostedService<VoidingSettledTicketsWorker>();
+
+            services.AddHostedService<MonitorLetstalkWorker>();
         }
     }
 }

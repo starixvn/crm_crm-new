@@ -9,7 +9,6 @@
     using System.Threading.Tasks;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
-    using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -68,8 +67,7 @@
 
         public CommonFeedback(
             IRemotingRefService remotingRefService,
-            ISystemSettingService systemSetting,
-            ICRMLogService logService
+            ISystemSettingService systemSetting
             )
         {
             this.remotingRefService = remotingRefService;

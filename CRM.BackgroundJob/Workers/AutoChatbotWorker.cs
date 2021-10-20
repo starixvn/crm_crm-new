@@ -1,35 +1,34 @@
-﻿namespace CRM.BackgroundJob.Services.Test
+﻿namespace CRM.BackgroundJob.Workers
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Extensions;
     using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Wokers;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
     using ONEbook.UM.Services;
 
-    public class PullMessageFromSiteMessage : BaseWorker
+    public class AutoChatbotWorker : BaseWorker
     {
-        private readonly ISiteMessageService autoFeedbackService;
+        private readonly IChatBotJobService chatBotJobService;
 
-        public PullMessageFromSiteMessage(
-            ISiteMessageService autoFeedbackService,
+        public AutoChatbotWorker(
+            IChatBotJobService chatBotJobService,
             IMaintenanceService maintenanceService,
             IOptions<List<JobSetting>> jobSettings,
             ICRMLogService logService)
                 : base(maintenanceService, logService)
         {
-            this.autoFeedbackService = autoFeedbackService;
-            jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.CreateFeedbackForResultAmendment);
+            this.chatBotJobService = chatBotJobService;
+            jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.PullMessageForChatBot);
         }
 
         public override async Task ExecuteJobAsync()
         {
-            await autoFeedbackService.PullMessageFromSiteMessage();
+            await chatBotJobService.PullMessageAndSendNotificationAsync();
         }
     }
 }
