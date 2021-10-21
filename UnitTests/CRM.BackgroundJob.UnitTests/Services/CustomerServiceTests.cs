@@ -109,7 +109,6 @@
             Assert.Equal(setting.LastLogId, criteria.LastLogID);
             Assert.Equal(setting.IsCredit, criteria.IsCredit);
             Assert.Equal(setting.IsDeposit, criteria.IsDeposit);
-            Assert.Equal(configuration.GetValue<string>("SiteEnvironment"), criteria.Environment);
         }
 
 

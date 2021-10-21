@@ -30,7 +30,6 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting.Internal;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -105,7 +104,6 @@
             .ConnectTo(new Uri(configuration.GetSection("RemotingRefService:Fanex.RemotingRef.Service.Url").Value))
             .FromApplication("CRM.BackgroundJob");
 
-            services.AddMvc();
             services.Configure<IConfiguration>(configuration);
             services.AddSingleton<IRemotingRefService, RemotingRefService>();
 
@@ -126,8 +124,6 @@
             services.AddRedisCache(configuration.GetSection("RedisConfig"));
             services.ResolveCoreDI();
             services.ResolveLetstalkServiceDI(configuration);
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         private static void AddDependencyInjection(IServiceCollection services, IConfiguration configuration)
