@@ -1,4 +1,4 @@
-﻿namespace CRM.BackgroundJob.Wokers
+﻿namespace CRM.BackgroundJob.Workers
 {
     using System;
     using System.Threading;

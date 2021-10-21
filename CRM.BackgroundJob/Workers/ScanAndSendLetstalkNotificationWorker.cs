@@ -5,7 +5,7 @@ namespace CRM.BackgroundJob.Workers
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Extensions;
     using CRM.BackgroundJob.Models;
-    using CRM.BackgroundJob.Wokers;
+    using CRM.BackgroundJob.Workers;
     using CRM.Core.Services;
     using CRM.Letstalk.Services.Services.Interfaces;
     using Fanex.CRM.BackgroundJob.Constants;

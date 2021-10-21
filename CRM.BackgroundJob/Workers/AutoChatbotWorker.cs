@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Extensions;
     using CRM.BackgroundJob.Models;
-    using CRM.BackgroundJob.Wokers;
+    using CRM.BackgroundJob.Workers;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Services;
