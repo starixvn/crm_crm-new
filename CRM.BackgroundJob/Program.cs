@@ -40,10 +40,10 @@
     using ONEbook.UM.Transport;
     using Sentry;
     using Serilog;
+    using StackExchange.Redis;
 
     public static class Program
     {
-
         public static void Main(string[] args)
         {
 
@@ -121,7 +121,6 @@
             services.Configure<AppJobSettings>(options => configuration.GetSection("AppSettings").Bind(options));
             services.Configure<List<JobSetting>>(configuration.GetSection("JobSettings"));
 
-            services.AddRedisCache(configuration.GetSection("RedisConfig"));
             services.ResolveCoreDI();
             services.ResolveLetstalkServiceDI(configuration);
         }
