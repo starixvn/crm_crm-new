@@ -204,7 +204,7 @@
                 );
 
             // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
+            logService.Received(1).LogInformation(Arg.Any<string>());
         }
 
         [Fact]
@@ -235,7 +235,7 @@
                 );
 
             // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
+            logService.Received(1).LogInformation(Arg.Any<string>());
             await transactionService.EditFeedbackWinLossInfoAsync(winLimit.LogID, CreateFeedbackJobStatus.Fail, commandResult.Message);
             await logService.ErrorAsync(commandResult, criteria);
         }
@@ -300,7 +300,7 @@
                 );
 
             // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
+            logService.Received(1).LogInformation(Arg.Any<string>());
             await transactionService.EditFeedbackWinLossInfoAsync(winLimit.LogID, CreateFeedbackJobStatus.Fail, exception.Message);
             await logService.ErrorAsync(exception);
         }

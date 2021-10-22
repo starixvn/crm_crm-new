@@ -47,10 +47,9 @@
         {
             try
             {
-                var isUM = IsUM();
                 if (!isRunning
                     && jobSetting.IsEnabled
-                    && (!jobSetting.HasCheckUM || !isUM))
+                    && (!jobSetting.HasCheckUM || !IsUM()))
                 {
                     isRunning = true;
                     logService.LogInformation($"{jobSetting.JobName}: Doing...");

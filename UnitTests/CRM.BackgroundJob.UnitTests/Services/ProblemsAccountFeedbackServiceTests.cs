@@ -48,7 +48,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             await commonFeedback.EditSystemSettingAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-            logService.Received(2).LogInformation(Arg.Any<string>());
+            logService.Received(1).LogInformation(Arg.Any<string>());
             service.DidNotReceive().Protected(
                 "CreateProblemsAccountFeedbackCreditAsync",
                 Arg.Any<IEnumerable<ProblemsAccountAutoFeedbackInfor>> (),
@@ -86,7 +86,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             await commonFeedback.EditSystemSettingUpdateLastLogIdAsyncByEnv(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<string>());
-            logService.Received().LogInformation(Arg.Any<string>());
             service.Received().Protected(
                 "CreateProblemsAccountFeedbackCreditAsync",
                 Arg.Any<IEnumerable<ProblemsAccountAutoFeedbackInfor>>(),
@@ -335,7 +334,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 );
 
             // Assert
-            logService.Received(1).LogInformation(Arg.Any<string>());
             await transactionService.EditTOControlFeedbackInfoAsync(Arg.Any<string>(), CreateFeedbackJobStatus.Fail, Arg.Any<string>());
         }
 

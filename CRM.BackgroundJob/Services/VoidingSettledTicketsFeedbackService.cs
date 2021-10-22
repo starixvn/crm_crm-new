@@ -217,7 +217,6 @@
             var productSettingIds = products.Select(x => x.SettingId);
             IList<SettingItem> subProducts = GetVoidingSettledTicketsSubProduct(productSettingIds, sportTypeIds, settings, settingMappings);
             IList<SystemSettingMapping> bettypesMapping = GetVoidingSettledTicketsBettype(listBetTypes, settingMappings);
-            logService.LogInformation("Begin mapping product, sub-product, bet type voiding settled tickets.");
             if (products.Any())
             {
                 foreach (SettingItem product in products)
@@ -233,7 +232,6 @@
             logService.LogInformation("end mapping product, sub-product, bet type voiding settled tickets.");
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
-
         protected internal virtual string GetProductSubXml(
             SettingItem product,
             IList<SettingItem> subProducts,

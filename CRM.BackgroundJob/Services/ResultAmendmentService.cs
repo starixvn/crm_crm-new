@@ -197,7 +197,6 @@
                 AmendmentLogID = amendment.LogId,
                 Description = GetAmendmentDescription(amendment, isNoResultTemplate)
             };
-            logService.LogInformation("end create result amendment criteria!!!");
             await CheckValidAmendmentParamsAndInsertFeedbackAsync(amendment, criteria);
         }
 
@@ -205,8 +204,6 @@
             AmendmentAutoFeedbackInfor amendment,
             CreateMutipleFeedbackCommand criteria)
         {
-            logService.LogInformation("Begin CheckValidAmendmentParamsAndInsertFeedbackAsync!!!");
-
             var checkValidParamBeforeInsert = commonFeedback.CheckFeedbackValidParams(criteria);
             if (!checkValidParamBeforeInsert.Item1)
             {
@@ -241,7 +238,6 @@
                 await transactionService.EditAmendmentNotiAutoFeedback(amendment.LogId, CreateFeedbackJobStatus.Fail, ex.Message);
                 await logService.ErrorAsync(ex);
             }
-            logService.LogInformation("End CheckValidAmendmentParamsAndInsertFeedbackAsync!!!");
         }
 
         protected internal virtual string GetAmendmentProductXml(
@@ -254,8 +250,6 @@
             SettingItem product = GetAmenmentProduct(settings, settingMappings, productId);
             IList<SettingItem> subProducts = GetAmendmentSubProduct(product.SettingId, sportTypeId, settings, settingMappings);
             IList<SystemSettingMapping> tempBettypes = GetAmendmentBettype(betTypeMappings, settingMappings);
-            logService.LogInformation("Begin mapping product, sub-product, bet type Result Amendment.");
-
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (SettingItem subProduct in subProducts)
             {
@@ -271,7 +265,6 @@
                     stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, subProduct.SettingId, Constants.BettypeNA);
                 }
             }
-            logService.LogInformation("end mapping product, sub-product, bet type Result Amendment.");
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
 
@@ -280,8 +273,6 @@
             IEnumerable<SystemSettingMapping> settingMappings,
             int productId)
         {
-            logService.LogInformation(string.Format("Begin mapping amenment product with productId:{0}.", productId));
-
             var productName = commonFeedback.GetProductName(productId.ToString(), Language.en_US);
             SystemSettingMapping productMapping = settingMappings.FirstOrDefault(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(p.SettingSource)
@@ -290,8 +281,6 @@
             var product = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && productMapping != null
                 && x.SettingId == productMapping.SettingId);
-
-            logService.LogInformation("End mapping amenment product.");
 
             return product ?? new SettingItem { SettingId = Constants.ProductNA };
         }
@@ -302,7 +291,6 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Begin mapping amenment subproduct with productId:{0}, sportTypeId: {1}.", productId, sportTypeId));
             var sportName = commonFeedback.GetSportName(sportTypeId.ToString(), Language.en_US);
             List<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
@@ -311,7 +299,6 @@
                 && sub.ParentIds.Any(parent => parent == productId)
                 && mappings != null
                 && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
-            logService.LogInformation("End mapping amenment subproduct.");
 
             return subProducts.Any()
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
@@ -325,11 +312,9 @@
             List<string> betTypeMappings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Begin mapping amenment betType.");
             IList<SystemSettingMapping> bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
-            logService.LogInformation("End mapping amenment betType.");
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SystemSettingMapping>
@@ -378,7 +363,6 @@
 
         protected internal virtual string GetAmendmentDescription(AmendmentAutoFeedbackInfor amendment, bool isNoResultTemplate)
         {
-            logService.LogInformation("Begin create template desctiption Result Amendment.");
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
             stringBuilder.Append(Constants.Break);
             var amendmentDescTemplate = commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>(descTemplateXml);
@@ -459,7 +443,6 @@
                 }
             }
             stringBuilder.Append(Constants.Break);
-            logService.LogInformation("End create template desctiption Result Amendment");
             return stringBuilder.ToString();
         }
 
@@ -473,8 +456,6 @@
             string EventdateGMT4
             )
         {
-            logService.LogInformation("Begin create template desctiption virtual sport.");
-
             var stringBuilder = new StringBuilder();
             if (amendment.Sporttype == SportType180 || amendment.Sporttype == SportType186)
             {
@@ -498,8 +479,6 @@
                );
             }
 
-            logService.LogInformation("End create template desctiption virtual sport.");
-
             return stringBuilder;
         }
 
@@ -511,7 +490,6 @@
             string EventdateGMT4
             )
         {
-            logService.LogInformation("Begin create template desctiption number game.");
             var game = amendment.Sporttype == SportType161 ? leagueName : sportName;
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendFormat(
@@ -521,8 +499,6 @@
                   amendment.MatchCode,
                   Constants.Break
                );
-            logService.LogInformation("End create template desctiption number game.");
-
             return stringBuilder;
         }
 
@@ -534,8 +510,6 @@
             string homeName
             )
         {
-            logService.LogInformation("Begin create template desctiption number game.");
-
             var stringBuilder = new StringBuilder();
             if (amendment.EventType == EventType2)
             {
@@ -558,15 +532,11 @@
                Constants.Break
               );
             }
-            logService.LogInformation("End create template desctiption number game.");
-
             return stringBuilder;
         }
 
         protected internal virtual string GetAmenmendSolution(AmendmentAutoFeedbackInfor amendment, IEnumerable<Message> messageContent, bool isNoResultTemplate)
         {
-            logService.LogInformation("Begin create template solution.");
-
             var amendmentSolTemplate = commonFeedback.GetFeedbackTemplates<AmendmentSolutionTemplate>(solTemplateXml);
             var isVipCust = amendment.Site == "789y" && amendment.IsVip;
             var stringBuilder = new StringBuilder();
@@ -591,7 +561,6 @@
                 stringBuilder.Append(solutionTemplateYNSC);
             }
            
-            logService.LogInformation("End create template solution.");
             return stringBuilder.ToString();
         }
 
@@ -600,7 +569,6 @@
            AmendmentSolutionTemplate amendmentSolTemplate,
            IEnumerable<Message> messageContent)
         {
-            logService.LogInformation("begin create template desctiption EN");
             var stringBuilder = new StringBuilder();
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var sportName = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US);
@@ -667,9 +635,6 @@
                     stringBuilder.Append("");
                     break;
             }
-
-            logService.LogInformation("end create template desctiption EN");
-
             return stringBuilder;
         }
 
@@ -681,7 +646,6 @@
             IEnumerable<Message> messageContent,
             bool isVipCust)
         {
-            logService.LogInformation("begin create template desctiption SCYN");
             var stringBuilder = new StringBuilder();
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formatddmm);
@@ -738,7 +702,6 @@
                     stringBuilder.Append("");
                     break;
             }
-            logService.LogInformation("End create template desctiption YNSC");
             return stringBuilder;
         }
 

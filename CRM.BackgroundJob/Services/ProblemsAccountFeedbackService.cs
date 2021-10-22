@@ -56,8 +56,6 @@ namespace CRM.BackgroundJob.Services
             DateTime LastRuntimeEnv,  string LastRuntimeNameEnv, 
             string JobStatusNameEnv, string Environment)
         {
-            logService.LogInformation(string.Format("Start run problems account serivce with last LastLogID: {0} isUAT: {1}!", problemsAccountSetting.LastLogId, isUAT));
-
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ProblemsAccount);
             var custCategory = await customerService.GetCustCategoryInfor(problemsAccountSetting, isUAT);
             var custIds = custCategory.Select(x => x.CustID).Distinct();
@@ -104,7 +102,6 @@ namespace CRM.BackgroundJob.Services
                 return;
             }
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ProblemsAccount);
-            logService.LogInformation("end service problems account serivce!");
         }
 
         protected internal virtual async Task CreateProblemsAccountFeedbackByBatchAsync(
@@ -148,7 +145,6 @@ namespace CRM.BackgroundJob.Services
            IEnumerable<SettingItem> settings,
            IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Start create problems account feedback");
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
@@ -197,8 +193,6 @@ namespace CRM.BackgroundJob.Services
             if (!checkValidParamBeforeInsert.Item1)
             {
                 var messageInvalid = "Invalid Params: " + checkValidParamBeforeInsert.Item2;
-                logService.LogInformation(string.Format("Invalid Params. @Categorystr: {0} @Category: {1} @Product: {2} @StatusID: {3} @SubCategorystr:{4} @ResponseID:{5} @StationID:{6}",
-                        criteria.CategoryIds, criteria.CategoryXml, criteria.ProductXml, criteria.StatusId, criteria.SubCategoryIds, criteria.ResponseId, criteria.StationId));
                 await transactionService.EditProblemsAccountFeedbackInfoAsync(string.Join(",", problemsAccounts.Select(x=>x.LogID)), CreateFeedbackJobStatus.Fail, messageInvalid);
                 return;
             }

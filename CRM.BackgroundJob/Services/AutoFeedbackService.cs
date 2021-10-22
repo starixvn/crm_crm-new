@@ -182,8 +182,6 @@
         {
             try
             {
-                logService.LogInformation("Start Service Turnover Controll!");
-
                 WinLossSystemSetting turnOverSetting = await systemSettingService.GetTurnoverSettingAsync();
                 if (!turnOverSetting.ServiceFlag)
                 {
@@ -203,7 +201,6 @@
                 }
                 else
                 {
-                    logService.LogInformation("Controll service is running.");
                     isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForTurnoverControl);
                     if (!isRunning && turnOverSetting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
                     {
@@ -292,8 +289,6 @@
         {
             try
             {
-                logService.LogInformation("Start Service Problems Account!");
-
                 ProblemsAccountSetting problemsAccountSetting = await systemSettingService.GetProblemsAccountSettingAsync();
                 if (!problemsAccountSetting.ServiceFlag)
                 {

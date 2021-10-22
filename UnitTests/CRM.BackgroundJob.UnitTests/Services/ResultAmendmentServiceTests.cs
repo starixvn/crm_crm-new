@@ -257,7 +257,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 );
 
             // Assert
-            logService.Received(3).LogInformation(Arg.Any<string>());
             service.Received().Protected("CheckValidAmendmentParamsAndInsertFeedbackAsync", Arg.Any<AmendmentAutoFeedbackInfor>()
                 , Arg.Any<CreateMutipleFeedbackCommand>());
         }
@@ -296,7 +295,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 );
 
             // Assert
-            logService.Received(4).LogInformation(Arg.Any<string>());
+            logService.Received(2).LogInformation(Arg.Any<string>());
         }
 
         [Fact]
@@ -328,7 +327,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 );
 
             // Assert
-            logService.Received(4).LogInformation(Arg.Any<string>());
+            logService.Received(2).LogInformation(Arg.Any<string>());
             await transactionService.EditAmendmentNotiAutoFeedback(1, CreateFeedbackJobStatus.Fail, commandResult.Message);
             await logService.ErrorAsync(commandResult, criteria);
         }
@@ -363,7 +362,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 );
 
             // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
+            logService.Received(1).LogInformation(Arg.Any<string>());
             await transactionService.EditAmendmentNotiAutoFeedback(1, CreateFeedbackJobStatus.Fail, Arg.Any<string>());
         }
 
@@ -397,7 +396,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 );
 
             // Assert
-            logService.Received(3).LogInformation(Arg.Any<string>());
+            logService.Received(1).LogInformation(Arg.Any<string>());
             await transactionService.EditAmendmentNotiAutoFeedback(1, CreateFeedbackJobStatus.Fail, exception.Message);
             await logService.ErrorAsync(exception);
         }
@@ -1294,7 +1293,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
-            logService.Received(2).LogInformation(Arg.Any<string>());
         }
         #endregion GetAmendmentDescriptionVirtualSports
 
@@ -1324,7 +1322,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
-            logService.Received(2).LogInformation(Arg.Any<string>());
         }
         #endregion GetAmendmentDescriptionNumberGame
 
@@ -1353,7 +1350,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
-            logService.Received(2).LogInformation(Arg.Any<string>());
         }
         #endregion GetAmendmentDescriptionSportOutRight
 
@@ -1380,7 +1376,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
-            logService.Received(2).LogInformation(Arg.Any<string>());
         }
 
         [Theory]
@@ -1472,7 +1467,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
-            logService.Received(2).LogInformation(Arg.Any<string>());
         }
 
         [Theory]
@@ -1612,7 +1606,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
-            logService.Received(2).LogInformation(Arg.Any<string>());
         }
 
         [Theory]

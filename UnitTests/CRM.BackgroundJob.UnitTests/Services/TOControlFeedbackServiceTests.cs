@@ -141,7 +141,6 @@
                 );
 
             // Assert
-            logService.Received(8).LogInformation(Arg.Any<string>());
             service.Received().Protected("CheckValidTOParamsAndInsertFeedbackAsync", Arg.Any<TOControlFeedbackInfor>()
                 , Arg.Any<CreateMutipleFeedbackCommand>());
         }
@@ -177,7 +176,7 @@
                 );
 
             // Assert
-            logService.Received(4).LogInformation(Arg.Any<string>());
+            logService.Received(1).LogInformation(Arg.Any<string>());
         }
 
         [Fact]
@@ -207,7 +206,7 @@
                 );
 
             // Assert
-            logService.Received(4).LogInformation(Arg.Any<string>());
+            logService.Received(1).LogInformation(Arg.Any<string>());
             await transactionService.EditTOControlFeedbackInfoAsync("1", CreateFeedbackJobStatus.Fail, commandResult.Message);
             await logService.ErrorAsync(commandResult, criteria);
         }
@@ -239,7 +238,7 @@
                 );
 
             // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
+            logService.Received(1).LogInformation(Arg.Any<string>());
             await transactionService.EditTOControlFeedbackInfoAsync("1", CreateFeedbackJobStatus.Fail, Arg.Any<string>());
         }
 
@@ -270,7 +269,6 @@
                 );
 
             // Assert
-            logService.Received(3).LogInformation(Arg.Any<string>());
             await transactionService.EditTOControlFeedbackInfoAsync("1", CreateFeedbackJobStatus.Fail, exception.Message);
             await logService.ErrorAsync(exception);
         }

@@ -97,8 +97,6 @@
                         settingMappings);
             }
             var maxLastLogID = winlossInfo.Item1.Max(x => x.LogID);
-            logService.LogInformation(string.Format("Finished create TO feedback update last log ID : {0}", maxLastLogID));
-
             await commonFeedback.EditFeedbackSystemSettingAsync(maxLastLogID, Constants.ServiceName_WinLimitFB);
         }
 
@@ -110,8 +108,6 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation(string.Format("Start create win loss feedback custID: {0} , custName : {1} headlineName: {2} productName: {3} productGroup: {4}!"
-                , winLimit.CustId, winLimit.UserName, winLimit.HeadlineName, winLimit.ProductName , winLimit.ProductGroup));
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
@@ -178,9 +174,6 @@
             }
             try
             {
-                logService.LogInformation(string.Format("Begin create win loss feedback : HeadlineId {0} logID:{1}",
-                    winLimit.HeadlineId, winLimit.LogID));
-
                 CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
                 if (commandResult.IsSuccessful)
                 {
