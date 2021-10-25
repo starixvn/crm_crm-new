@@ -101,11 +101,11 @@
                 var messages = await feedbackTransaction.GetMessageContentInfoAsync(feedbackInfo.MessageId);
                 logService.LogInformation("end get message content!!!");
 
-
                 await CreateVoidingSettledTicketsAsync(feedbackInfo, eventDetails, messages, settings, settingMappings, environment);
             }
 
             await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoVoidFB);
+            logService.LogInformation("end service voiding settled!!!");
         }
 
         protected internal virtual async Task CreateVoidingSettledTicketsAsync(
