@@ -66,6 +66,7 @@
             DateTime lastRuntimeEnv, string lastRuntimeNameEnv,
             string jobStatusNameEnv, string environment)
         {
+            logService.LogInformation("start service voiding settled!!!");
             await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoVoidFB);
 
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
@@ -91,6 +92,8 @@
             await voidingSettledTicketsService.ImportVoidingAutoFeedbackInfoAsync(voidingTickets.Item1, environment);
             var feedbackInfos = await voidingSettledTicketsService.GetVoidingAutoFeedbackInfoAsync(voidingSettledTicketSetting.BatchSize);
             var groupFeedbackByMsgId = feedbackInfos.Item1.GroupBy(x => x.MessageId).Select(y => y.FirstOrDefault());
+            logService.LogInformation("groupFeedbackByMsgIds!!!" + groupFeedbackByMsgId.Count());
+
             foreach (var feedbackInfo in groupFeedbackByMsgId)
             {
                 var eventDetails = feedbackInfos.Item2.Where(x => x.LogVoidingID == feedbackInfo.LogVoidingID);
@@ -109,6 +112,7 @@
            IEnumerable<SystemSettingMapping> settingMappings,
            string environment)
         {
+            logService.LogInformation("begin CreateVoidingSettledTicketsAsync!!!");
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
@@ -148,7 +152,10 @@
                 VoidingSettledID = feedbackInfo.LogVoidingID,
                 Description = GetVoidingSettledTicketDescription(feedbackInfo, eventDetails)
             };
+
+            logService.LogInformation("begin CheckValidVoidingSettledParamsAndInsertFeedbackAsync!!!");
             await CheckValidVoidingSettledParamsAndInsertFeedbackAsync(feedbackInfo, criteria, environment);
+            logService.LogInformation("end CreateVoidingSettledTicketsAsync!!!");
         }
 
         protected internal virtual async Task CheckValidVoidingSettledParamsAndInsertFeedbackAsync(
@@ -167,6 +174,8 @@
             }
             try
             {
+                logService.LogInformation("begin insert voiding settled tickets!!!");
+
                 CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
                 if (commandResult.IsSuccessful)
                 {
@@ -182,6 +191,9 @@
 
                     await logService.ErrorAsync(commandResult, criteria);
                 }
+
+                logService.LogInformation("end insert voiding settled tickets!!!");
+
             }
             catch (Exception ex)
             {
