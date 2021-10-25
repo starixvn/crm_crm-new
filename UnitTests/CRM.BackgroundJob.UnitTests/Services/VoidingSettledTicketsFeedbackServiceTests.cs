@@ -116,7 +116,7 @@
             await service.Public_CheckValidVoidingSettledParamsAndInsertFeedbackAsync(feedbackInfo, criteria, "LIVE");
 
             // Assert
-            logService.Received(1).LogInformation(Arg.Any<string>());
+            logService.Received(3).LogInformation(Arg.Any<string>());
         }
 
         [Fact]
@@ -134,7 +134,7 @@
             await service.Public_CheckValidVoidingSettledParamsAndInsertFeedbackAsync(feedbackInfo, criteria, "LIVE");
 
             // Assert
-            logService.Received(1).LogInformation(Arg.Any<string>());
+            logService.Received(3).LogInformation(Arg.Any<string>());
             await voidingSettledTicketsService.UpdateVoidingAutoFeedbackInfoBatchAsync(1, CreateFeedbackJobStatus.Fail, commandResult.Message, "LIVE");
             await logService.ErrorAsync(commandResult, criteria);
         }

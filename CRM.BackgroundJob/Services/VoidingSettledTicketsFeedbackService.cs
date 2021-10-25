@@ -92,16 +92,12 @@
             await voidingSettledTicketsService.ImportVoidingAutoFeedbackInfoAsync(voidingTickets.Item1, environment);
             var feedbackInfos = await voidingSettledTicketsService.GetVoidingAutoFeedbackInfoAsync(voidingSettledTicketSetting.BatchSize);
             var groupFeedbackByMsgId = feedbackInfos.Item1.GroupBy(x => new { x.HeadlineId, x.MessageId}).Select(y=>y.ToList());
-            logService.LogInformation(string.Format("groupFeedbackByMsgIds: {0}!!!", groupFeedbackByMsgId.Count()));
 
             foreach (var feedbackInfo in groupFeedbackByMsgId)
             {
                 var feedbackInfoFirst = feedbackInfo.FirstOrDefault();
                 var eventDetails = feedbackInfos.Item2.Where(x => x.LogVoidingID == feedbackInfoFirst.LogVoidingID);
-                logService.LogInformation("begin get message content!!!");
                 var messages = await feedbackTransaction.GetMessageContentInfoAsync(feedbackInfoFirst.MessageId);
-                logService.LogInformation("end get message content!!!");
-
                 await CreateVoidingSettledTicketsAsync(feedbackInfoFirst, eventDetails, messages, settings, settingMappings, environment);
             }
 
