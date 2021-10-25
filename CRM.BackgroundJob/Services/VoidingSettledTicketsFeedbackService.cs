@@ -91,17 +91,18 @@
             }
             await voidingSettledTicketsService.ImportVoidingAutoFeedbackInfoAsync(voidingTickets.Item1, environment);
             var feedbackInfos = await voidingSettledTicketsService.GetVoidingAutoFeedbackInfoAsync(voidingSettledTicketSetting.BatchSize);
-            var groupFeedbackByMsgId = feedbackInfos.Item1.GroupBy(x => x.MessageId).Select(y => y.FirstOrDefault());
+            var groupFeedbackByMsgId = feedbackInfos.Item1.GroupBy(x => new { x.HeadlineId, x.MessageId}).Select(y=>y.ToList());
             logService.LogInformation(string.Format("groupFeedbackByMsgIds: {0}!!!", groupFeedbackByMsgId.Count()));
 
             foreach (var feedbackInfo in groupFeedbackByMsgId)
             {
-                var eventDetails = feedbackInfos.Item2.Where(x => x.LogVoidingID == feedbackInfo.LogVoidingID);
+                var feedbackInfoFirst = feedbackInfo.FirstOrDefault();
+                var eventDetails = feedbackInfos.Item2.Where(x => x.LogVoidingID == feedbackInfoFirst.LogVoidingID);
                 logService.LogInformation("begin get message content!!!");
-                var messages = await feedbackTransaction.GetMessageContentInfoAsync(feedbackInfo.MessageId);
+                var messages = await feedbackTransaction.GetMessageContentInfoAsync(feedbackInfoFirst.MessageId);
                 logService.LogInformation("end get message content!!!");
 
-                await CreateVoidingSettledTicketsAsync(feedbackInfo, eventDetails, messages, settings, settingMappings, environment);
+                await CreateVoidingSettledTicketsAsync(feedbackInfoFirst, eventDetails, messages, settings, settingMappings, environment);
             }
 
             await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoVoidFB);
