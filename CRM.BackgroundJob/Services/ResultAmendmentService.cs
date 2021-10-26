@@ -406,7 +406,7 @@
             {
                 const string messageIdColor = "<span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}{1}</span>";
                 stringBuilder.AppendFormat(messageIdColor, amendment.MessageId, Constants.LineBreak);
-                stringBuilder.AppendFormat(amendmentDescTemplate.NoResult, EventdateGMT4Format, kO_time, sportName, leagueName, homeName, awayName, Constants.Break);
+                stringBuilder.AppendFormat(amendmentDescTemplate.NoResult, EventdateGMT4Format, sportName, kO_time, leagueName, homeName, awayName, Constants.Break);
             }
             else
             {
