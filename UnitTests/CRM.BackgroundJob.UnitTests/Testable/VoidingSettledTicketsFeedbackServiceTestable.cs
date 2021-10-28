@@ -53,30 +53,38 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             await base.CheckValidVoidingSettledParamsAndInsertFeedbackAsync(feedbackInfo, criteria, environment);
         }
         public string Public_GetVoidingSettledTicketsProductXml(
-            string productId,
+            IEnumerable<int> productIds,
             IEnumerable<short> sportTypeId,
             string bettypes,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetVoidingSettledTicketsProductXml(productId, sportTypeId, bettypes, settings, settingMappings);
+            return base.GetVoidingSettledTicketsProductXml(productIds, sportTypeId, bettypes, settings, settingMappings);
         }
 
-        public SettingItem Public_GetVoidingSettledTicketsProduct(
+        public string Public_GetProductSubXml(
+           SettingItem product,
+            IList<SettingItem> subProducts,
+            IList<SystemSettingMapping> bettypesMapping)
+        {
+            return base.GetProductSubXml(product, subProducts, bettypesMapping);
+        }
+
+        public IList<SettingItem> Public_GetVoidingSettledTicketsProduct(
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings,
-            string productId)
+            IEnumerable<int> productIds)
         {
-            return base.GetVoidingSettledTicketsProduct(settings, settingMappings, productId);
+            return base.GetVoidingSettledTicketsProduct(settings, settingMappings, productIds);
         }
 
         public IList<SettingItem> Public_GetVoidingSettledTicketsSubProduct(
-            int productId,
+            IEnumerable<int> productIds,
             IEnumerable<short> sportTypeId,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetVoidingSettledTicketsSubProduct(productId, sportTypeId, settings, settingMappings);
+            return base.GetVoidingSettledTicketsSubProduct(productIds, sportTypeId, settings, settingMappings);
         }
 
         public IList<SystemSettingMapping> Public_GetVoidingSettledTicketsBettype(
