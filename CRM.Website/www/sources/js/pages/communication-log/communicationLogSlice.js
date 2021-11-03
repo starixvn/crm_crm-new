@@ -4,30 +4,30 @@ const communicationLogSlice = createSlice({
     name: 'communicationLog',
     initialState: {
         gridData: null,
-        allStatus: null,
-        gridParams: null,
-        gridPages: { pageIndex: 1, pageSize: 100 },
+        statusEdit: null,
+        statusFilter: null,
+        gridParams: { pageIndex: 1, pageSize: 100 },
         editNoOfInquiryDialog: { show: false },
         editCommunicationDialog: { show: false },
-        customerFeedback: null,
+        logFeedback: null,
         feedbackSubjectTemplates: [],
         duplicateFeedbackId: 0,
-        insertCommunicationDialog: { show: false },
-        insertSettings: null,
+        createCommunicationDialog: { show: false },
+        allSettings: null
         balanceUpday: null
     },
     reducers: {
         setLogsByCustomerId: (state, action) => {
             state.gridData = action.payload;
         },
-        setAllStatus: (state, action) => {
-            state.allStatus = action.payload;
+        setStatusForEdit: (state, action) => {
+            state.statusEdit = action.payload;
+        },
+        setStatusForFilter: (state, action) => {
+            state.statusFilter = action.payload;
         },
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
-        },
-        setGridPages: (state, action) => {
-            state.gridPages = action.payload;
         },
         setEditNoOfInquiryDialog: (state, action) => {
             state.editNoOfInquiryDialog = action.payload;
@@ -35,8 +35,8 @@ const communicationLogSlice = createSlice({
         setEditCommunicationDialog: (state, action) => {
             state.editCommunicationDialog = action.payload;
         },
-        setCustomerFeedbackById: (state, action) => {
-            state.customerFeedback = action.payload;
+        setLogByFeedbackId: (state, action) => {
+            state.logFeedback = action.payload;
         },
         setFeedbackSubjectTemplates: (state, action) => {
             state.feedbackSubjectTemplates = action.payload;
@@ -44,11 +44,11 @@ const communicationLogSlice = createSlice({
         setDuplicateFeedback: (state, action) => {
             state.duplicateFeedbackId = action.payload;
         },
-        setInsertCommunicationDialog: (state, action) => {
-            state.insertCommunicationDialog = action.payload;
+        setCreateCommunicationDialog: (state, action) => {
+            state.createCommunicationDialog = action.payload;
         },
-        setInsertSettings: (state, action) => {
-            state.insertSettings = action.payload;
+        setAllSettings: (state, action) => {
+            state.allSettings = action.payload;
         },
         setBalanceUpday: (state, action) => {
             state.balanceUpday = action.payload;
@@ -60,16 +60,16 @@ const { actions, reducer } = communicationLogSlice;
 
 export const {
     setLogsByCustomerId,
-    setAllStatus,
+    setStatusForEdit,
+    setStatusForFilter,
     setGridParams,
-    setGridPages,
     setEditNoOfInquiryDialog,
     setEditCommunicationDialog,
-    setCustomerFeedbackById,
+    setLogByFeedbackId,
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
-    setInsertCommunicationDialog,
-    setInsertSettings,
+    setCreateCommunicationDialog,
+    setAllSettings
     setBalanceUpday
 } = actions;
 

@@ -12,18 +12,14 @@ export class AppContainer extends Component {
 
     static propTypes = {
         editCustomerInfoDetailDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        getCustomerInfoDetail: PropTypes.func
+        getCustomerById: PropTypes.func
     };
 
     static defaultProps = {
         editCustomerInfoDetailDialog: { show: false },
-        getCustomerInfoDetail: function () {
+        getCustomerById: function () {
             //nothing
         }
-    };
-
-    handleEditSuccess = params => {
-        this.props.getCustomerInfoDetail(params);
     };
 
     handleCloseEditDetailDialog = () => {
@@ -32,11 +28,11 @@ export class AppContainer extends Component {
 
     render() {
         return (
-            <div className="col-md-10">
-                <EditForm onSuccess={this.handleEditSuccess}/>
+            <div>
+                <EditForm/>
                 {
                     this.props.editCustomerInfoDetailDialog.show &&
-                    <SweetModalDialog size="lg"
+                    <SweetModalDialog size="sm"
                         title={LangHelper.getResource('Confirmation')}
                         contents={
                             <div>{LangHelper.getResource('EditCustomerInfoSuccessfully')}</div>

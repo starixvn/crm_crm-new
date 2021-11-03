@@ -24,13 +24,13 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            allStatus: [ { id: 1, name: 'Closed' } ],
-            customerFeedback: { feedback: {} },
+            statusEdit: [ { id: 1, name: 'Closed' } ],
+            logFeedback: { feedback: {} },
             feedbackSubjectTemplates: 'test'
         };
         const state = {
-            allStatus: [ { id: 1, name: 'Closed' } ],
-            customerFeedback: { feedback: {} },
+            statusEdit: [ { id: 1, name: 'Closed' } ],
+            logFeedback: { feedback: {} },
             feedbackSubjectTemplates: 'test'
         };
 

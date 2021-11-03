@@ -5,7 +5,7 @@ import Filter from '../Filter';
 import DataGrid from '../DataGrid';
 import EditNoOfInquiry from '../../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from '../EditCommunicationLog';
-import InsertCommunicationLog from '../InsertCommunicationLog';
+import CreateCommunicationLog from '../CreateCommunicationLog';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -32,7 +32,6 @@ describe('AppContainer', () => {
         it('should call exactly functions when close dialog', () => {
             //Arrange
             const props = {
-                getAllStatus: jest.fn(),
                 setEditCommunicationDialog: jest.fn(),
                 getLogsByCustomerId: jest.fn(),
                 gridParams: { customerId: 1754 }
@@ -48,22 +47,24 @@ describe('AppContainer', () => {
         });
     });
 
-    describe('handleCloseInsertCommunicationDiaLog', () => {
+    describe('handleCloseCreateCommunicationDiaLog', () => {
         it('should call exactly functions when close dialog', () => {
             //Arrange
             const props = {
                 getLogsByCustomerId: jest.fn(),
-                setInsertCommunicationDialog: jest.fn(),
-                gridParams: { customerId: 1754 }
+                setCreateCommunicationDialog: jest.fn(),
+                setGridParams: jest.fn(),
+                gridParams: { customerId: 1754 },
             };
             const container = shallow(<AppContainer {...props} />).instance();
 
             //Act
-            container.handleCloseInsertCommunicationDiaLog(true);
+            container.handleCloseCreateCommunicationDiaLog(true);
 
             //Assert
-            expect(props.setInsertCommunicationDialog).toHaveBeenCalledWith({ show: false });
+            expect(props.setCreateCommunicationDialog).toHaveBeenCalledWith({ show: false });
             expect(props.getLogsByCustomerId).toHaveBeenCalledWith(props.gridParams);
+            expect(props.setGridParams).toHaveBeenCalled();
         });
     });
 
@@ -91,7 +92,7 @@ describe('AppContainer', () => {
             const props = {
                 editNoOfInquiryDialog: { show: true },
                 editCommunicationDialog: { show: true },
-                insertCommunicationDialog: { show: true }
+                createCommunicationDialog: { show: true }
             };
 
             //Act
@@ -101,7 +102,7 @@ describe('AppContainer', () => {
             expect(container).toMatchSnapshot();
             expect(container.find(EditNoOfInquiry).length).toBe(1);
             expect(container.find(EditCommunicationLog).length).toBe(1);
-            expect(container.find(InsertCommunicationLog).length).toBe(1);
+            expect(container.find(CreateCommunicationLog).length).toBe(1);
         });
     });
 });

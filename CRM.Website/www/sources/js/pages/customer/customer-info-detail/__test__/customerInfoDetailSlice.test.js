@@ -1,5 +1,5 @@
 import customerInfoDetail, {
-    setCustomerInfoDetail,
+    setCustomerById,
     setAllSettings,
     setEditCustomerInfoDetail,
     setEditCustomerInfoDetailDialog
@@ -8,21 +8,21 @@ import customerInfoDetail, {
 describe('customerInfoDetail reducer', () => {
     it('show handle initial state', () => {
         expect(customerInfoDetail(undefined, {})).toEqual({
-            gridData: null,
+            customerInfo: null,
             allSettings: null,
             editCustomerInfoDetailResult: '',
             editCustomerInfoDetailDialog: { show: false }
         });
     });
 
-    it('should handle setCustomerInfoDetail', () => {
+    it('should handle setCustomerById', () => {
         expect(
             customerInfoDetail({}, {
-                type: setCustomerInfoDetail.type,
+                type: setCustomerById.type,
                 payload: { data: {} }
             })
         ).toEqual({
-            gridData: { data: {} }
+            customerInfo: { data: {} }
         });
     });
 

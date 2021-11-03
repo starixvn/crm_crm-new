@@ -27,12 +27,12 @@ describe('connect', () => {
         const expected = {
             editNoOfInquiryDialog: { show: false },
             editCommunicationDialog: { show: false },
-            insertCommunicationDialog: { show: false }
+            createCommunicationDialog: { show: false }
         };
         const state = {
             editNoOfInquiryDialog: { show: false },
             editCommunicationDialog: { show: false },
-            insertCommunicationDialog: { show: false }
+            createCommunicationDialog: { show: false }
         };
 
         // Act

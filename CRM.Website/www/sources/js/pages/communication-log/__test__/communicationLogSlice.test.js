@@ -1,15 +1,15 @@
 import communicationLog, {
     setLogsByCustomerId,
-    setAllStatus,
+    setStatusForEdit,
+    setStatusForFilter,
     setGridParams,
-    setGridPages,
     setEditNoOfInquiryDialog,
     setEditCommunicationDialog,
-    setCustomerFeedbackById,
+    setLogByFeedbackId,
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
-    setInsertCommunicationDialog,
-    setInsertSettings,
+    setCreateCommunicationDialog,
+    setAllSettings
     setBalanceUpday
 } from '../communicationLogSlice';
 
@@ -17,16 +17,17 @@ describe('communicationLog reducer', () => {
     it('show handle initial state', () => {
         expect(communicationLog(undefined, {})).toEqual({
             gridData: null,
-            allStatus: null,
+            statusEdit: null,
+            statusFilter: null,
             gridParams: null,
             gridPages: { pageIndex: 1, pageSize: 100 },
             editNoOfInquiryDialog: { show: false },
             editCommunicationDialog: { show: false },
-            customerFeedback: null,
+            logFeedback: null,
             feedbackSubjectTemplates: [],
             duplicateFeedbackId: 0,
-            insertCommunicationDialog: { show: false },
-            insertSettings: null,
+            createCommunicationDialog: { show: false },
+            allSettings: null
             balanceUpday: null
         });
     });
@@ -42,16 +43,16 @@ describe('communicationLog reducer', () => {
         });
     });
 
-    it('should handle setAllStatus', () => {
+    it('should handle setStatusForEdit', () => {
         expect(
             communicationLog({}, {
-                type: setAllStatus.type,
+                type: setStatusForEdit.type,
                 payload: {
                     countries: [{ id: 1, name: 'country' }]
                 }
             })
         ).toEqual({
-            allStatus: {
+            statusForEdit: {
                 countries: [{ id: 1, name: 'country' }]
             }
         });
@@ -72,6 +73,21 @@ describe('communicationLog reducer', () => {
         });
     });
 
+    it('should handle setStatusForFilter', () => {
+        expect(
+            communicationLog({}, {
+                type: setStatusForFilter.type,
+                payload: {
+                    countries: [{ id: 1, name: 'country' }]
+                }
+            })
+        ).toEqual({
+            statusForFilter: {
+                countries: [{ id: 1, name: 'country' }]
+            }
+        });
+    });
+
     it('should handle setGridParams', () => {
         expect(
             communicationLog({}, {
@@ -80,17 +96,6 @@ describe('communicationLog reducer', () => {
             })
         ).toEqual({
             gridParams: { customerId: 1234 }
-        });
-    });
-
-    it('should handle setGridPages', () => {
-        expect(
-            communicationLog({}, {
-                type: setGridPages.type,
-                payload: { pageIndex: 1, pageSize: 100 }
-            })
-        ).toEqual({
-            gridPages: { pageIndex: 1, pageSize: 100 }
         });
     });
 
@@ -116,14 +121,14 @@ describe('communicationLog reducer', () => {
         });
     });
 
-    it('should handle setCustomerFeedbackById', () => {
+    it('should handle setLogByFeedbackId', () => {
         expect(
             communicationLog({}, {
-                type: setCustomerFeedbackById.type,
+                type: setLogByFeedbackId.type,
                 payload: { feedback: [] }
             })
         ).toEqual({
-            customerFeedback: { feedback: [] }
+            logFeedback: { feedback: [] }
         });
     });
 
@@ -149,27 +154,27 @@ describe('communicationLog reducer', () => {
         });
     });
 
-    it('should handle setInsertCommunicationDialog', () => {
+    it('should handle setCreateCommunicationDialog', () => {
         expect(
             communicationLog({}, {
-                type: setInsertCommunicationDialog.type,
+                type: setCreateCommunicationDialog.type,
                 payload: { show: false }
             })
         ).toEqual({
-            insertCommunicationDialog: { show: false }
+            createCommunicationDialog: { show: false }
         });
     });
 
-    it('should handle setInsertSettings', () => {
+    it('should handle setAllSettings', () => {
         expect(
             communicationLog({}, {
-                type: setInsertSettings.type,
+                type: setAllSettings.type,
                 payload: {
                     countries: [{ id: 1, name: 'country' }]
                 }
             })
         ).toEqual({
-            insertSettings: {
+            allSettings: {
                 countries: [{ id: 1, name: 'country' }]
             }
         });

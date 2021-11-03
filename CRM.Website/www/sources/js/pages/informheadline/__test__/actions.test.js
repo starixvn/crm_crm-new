@@ -71,10 +71,10 @@ describe('actionCreators', () => {
             DataService.getFileAsync = jest.fn(() => promise);
             const store = mockStore();
             // Act
-            await store.dispatch(ActionCreators.exportInforms(expectedParams));
+            await store.dispatch(ActionCreators.exportInforms());
 
             // Assert
-            expect(DataService.getFileAsync).toHaveBeenCalledWith('InformHeadline/ExportInforms', expectedParams);
+            expect(DataService.getFileAsync).toHaveBeenCalledWith('InformHeadline/ExportInforms');
             expect(Site.downloadFile).toHaveBeenCalledWith(response.data, filename);
         });
     });

@@ -11,10 +11,10 @@
     using CRM.Criteria.Communication;
     using CRM.Models;
     using CRM.Models.CommunicationLogs;
-    using CRM.Models.Customer;
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Communication;
+    using CRM.ViewModels.Customer;
     using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -48,7 +48,7 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var permission = (GetPermissionCustomer)viewResult.Model;
+            var permission = (CustomerPermissionViewModel)viewResult.Model;
             Assert.Equal(2, permission.CustomerInfoPolicy);
             Assert.Equal(2, permission.CreateUpdateFeedbackPermission);
         }
@@ -87,10 +87,25 @@
             settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
 
             // Act
-            var result = await controller.GetAllStatus();
+            var result = await controller.GetAllStatus(true);
             var jsonResult = Assert.IsType<JsonResult>(result);
             var statusResult = jsonResult.Value;
             Assert.Equal(statusResult, statuses);
+        }
+
+        [Fact]
+        public async Task GetLogByFeedbackId_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var log = fixture.Create<CommunicationLog>();
+            var controller = GetController();
+            communicationService.GetLogByFeedbackIdAsync(1).Returns(log);
+
+            // Act
+            var result = await controller.GetLogByFeedbackId(1);
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var communicationLog = (CommunicationLog)jsonResult.Value.GetType().GetProperty("log").GetValue(jsonResult.Value);
+            Assert.Equal(log, communicationLog);
         }
 
         #region EditCommunicationLog
@@ -214,7 +229,7 @@
         #endregion EditCommunicationLog
 
         [Fact]
-        public async Task GetInsertSettings_WhenCalled_ReturnAsExpectedResult()
+        public async Task GetAllSettings_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
             var extentions = fixture.Create<IEnumerable<SettingRelation>>();
@@ -249,7 +264,7 @@
             settingService.GetSubProductAsync(active: SettingConstants.Active).Returns(subProducts);
 
             // Act
-            var result = await controller.GetInsertSettings();
+            var result = await controller.GetAllSettings();
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -271,10 +286,10 @@
         }
 
         [Fact]
-        public async Task InsertCommunicationLog_WhenCalled_ReturnAsExpectedResult()
+        public async Task CreateCommunicationLog_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
-            var command = fixture.Create<InsertCommunicationLogCommand>();
+            var command = fixture.Create<CreateCommunicationLogCommand>();
             var commandResult = fixture.Create<CommandResult>();
             var clientIP = new DefaultHttpContext
             {
@@ -288,7 +303,7 @@
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
             // Act
-            var result = await controller.InsertCommunicationLog(command);
+            var result = await controller.CreateCommunicationLog(command);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);

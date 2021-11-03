@@ -24,12 +24,12 @@ describe('connect', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            gridData: null,
+            customerInfo: null,
             allSettings: null,
             editCustomerInfoDetailResult: ''
         };
         const state = {
-            gridData: null,
+            customerInfo: null,
             allSettings: null,
             editCustomerInfoDetailResult: ''
         };

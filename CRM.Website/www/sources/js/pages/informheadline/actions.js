@@ -33,10 +33,10 @@ const getInforms = () => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const exportInforms = params => async () => {
+const exportInforms = () => async () => {
     Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/ExportInforms');
-    await DataService.getFileAsync(url, params).then(response => {
+    await DataService.getFileAsync(url).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
     }).then(() => Site.unblockUI());

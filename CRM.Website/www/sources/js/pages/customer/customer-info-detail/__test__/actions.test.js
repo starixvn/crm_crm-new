@@ -4,7 +4,7 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import { ActionCreators } from '../actions';
 import {
-    setCustomerInfoDetail,
+    setCustomerById,
     setAllSettings,
     setEditCustomerInfoDetail
 } from '../customerInfoDetailSlice'
@@ -23,21 +23,21 @@ describe('actionCreators', () => {
         jest.clearAllMocks();
     });
 
-    describe('getCustomerInfoDetail', () => {
-        it('should handle setCustomerInfoDetail when fetching data have been done', async () => {
+    describe('getCustomerById', () => {
+        it('should handle setCustomerById when fetching data have been done', async () => {
             // Arrange
             const response = { data: { firstName: 'test' } };
             const expectedParams = { customerId: 1754 };
-            const expectedActions = [{ type: setCustomerInfoDetail.type, payload: response.data }];
-            const store = mockStore({ gridData: null });
+            const expectedActions = [{ type: setCustomerById.type, payload: response.data }];
+            const store = mockStore({ customerInfo: null });
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
 
             // Act
-            await store.dispatch(ActionCreators.getCustomerInfoDetail(expectedParams));
+            await store.dispatch(ActionCreators.getCustomerById(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfoDetail/GetCustomerInfoDetailById', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfoDetail/getCustomerById', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -74,7 +74,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.editCustomerInfoDetail(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfoDetail/EditCustomerDetailInfo', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfoDetail/EditCustomerInfoDetail', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });

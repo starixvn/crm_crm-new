@@ -8,6 +8,14 @@
 @import '../../components/react-select';
 @import '../../components/icons';
 
+#app-container {
+    width: 1200px;
+}
+
+.body-content {
+    overflow-x: hidden !important;
+}
+
 .link-click {
     cursor: pointer;
     color: $link-color !important;

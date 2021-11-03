@@ -11,6 +11,26 @@ describe('DataGrid', () => {
 
     const initProps = {};
 
+    describe('ComponentDidMount', () => {
+        it('should call exactly props function', async () => {
+            // Arrange
+            const props = {
+                getInforms: jest.fn(),
+                getAllSettings: jest.fn(),
+                getContactInformSettings: jest.fn()
+            }
+
+            // Act
+            const container = shallow(<DataGrid {...props}/>).instance();
+            await container.componentDidMount();
+
+            // Assert
+            expect(props.getInforms).toHaveBeenCalledWith();
+            expect(props.getAllSettings).toHaveBeenCalledWith();
+            expect(props.getContactInformSettings).toHaveBeenCalledWith();
+        })
+    });
+
     describe('buildHeader', () => {
         it('should render expected header', () => {
             // Act
@@ -145,19 +165,6 @@ describe('DataGrid', () => {
             // Assert
             expect(props.editInformStatus).toHaveBeenCalledWith({titleId: 147258, statusType: false});
             expect(props.getInforms).toHaveBeenCalled();
-        });
-    });
-
-    describe('handleOption', () => {
-        it('should call exactly functions when handle option with status Open', () => {
-            // Act
-            const container = shallow(<DataGrid />);
-            const actual = shallow(container.instance().handleOption(123,'Open'));
-            container.handleEdit = jest.fn();
-
-            actual.find(Dropdown.Item).at(0).simulate('change');
-            // Assert
-            //expect(container.handleEdit).toHaveBeenCalledWith(123);
         });
     });
 

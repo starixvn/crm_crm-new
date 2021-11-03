@@ -31,14 +31,14 @@ export class Filter extends Component {
         const { fromDate, toDate } = this.state;
         const params = {
             customerId: 1754,
+            pageIndex: 1, pageSize: 100,
             fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
-            handler: '',
-            statusId: 0,
+            handler: '', statusId: 0,
             toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate))
         };
         this.props.getLogsByCustomerId(params);
         this.props.setGridParams(params);
-        this.props.getAllStatus();
+        this.props.getStatusForFilter();
     }
 
     handleChange = event => {
@@ -60,20 +60,22 @@ export class Filter extends Component {
         event.preventDefault();
         const { statusId, handler, fromDate, toDate } = this.state;
         const params = {
-            ...this.props.gridParams,
+            customerId: 1754,
+            pageIndex: 1, pageSize: 100,
             statusId: statusId,
             handler: handler,
             fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
             toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate))
         };
+        this.props.setGridParams(params);
         this.props.getLogsByCustomerId(params);
     };
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     render() {
-        const { allStatus } = this.props;
-        if (!allStatus) {
+        const { statusFilter } = this.props;
+        if (!statusFilter) {
             return null;
         }
 
@@ -115,13 +117,13 @@ export class Filter extends Component {
                         >
                             <option value="0">All</option>
                             {
-                                allStatus.map((value,key) => this.renderOptions(value.name,value.statusId,key))
+                                statusFilter.map((value,key) => this.renderOptions(value.name,value.statusId,key))
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group>
-                    <Button type="submit" variant="primary" size="sm">{LangHelper.getResource('Submit')}</Button>
-                    </Form.Group>
+                    <div className="form-group-button">
+                        <Button type="submit" variant="primary" size="sm">{LangHelper.getResource('Submit')}</Button>
+                    </div>
                 </Form.Row>
             </Form>
         );
@@ -131,8 +133,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, allStatus } = state;
-    return { gridParams, allStatus };
+    const { gridParams, statusFilter } = state;
+    return { gridParams, statusFilter };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

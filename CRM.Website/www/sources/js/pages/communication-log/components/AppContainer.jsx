@@ -7,19 +7,19 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from './EditCommunicationLog';
-import InsertCommunicationLog from './InsertCommunicationLog';
+import InsertCommunicationLog from './CreateCommunicationLog';
 
 export class AppContainer extends Component {
     static propTypes = {
         editNoOfInquiryDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        insertCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        createCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
         editNoOfInquiryDialog: { show: false },
         editCommunicationDialog: { show: false },
-        insertCommunicationDialog: { show: false }
+        createCommunicationDialog: { show: false }
     };
 
     handleCloseEditNoInquiryDialog = () => {
@@ -33,17 +33,18 @@ export class AppContainer extends Component {
         }
     };
 
-    handleCloseInsertCommunicationDiaLog = isSuccessful => {
-        this.props.setInsertCommunicationDialog({ show: false });
+    handleCloseCreateCommunicationDiaLog = isSuccessful => {
+        this.props.setCreateCommunicationDialog({ show: false });
         if (isSuccessful) {
+            this.props.setGridParams({ ...this.props.gridParams, pageIndex: 1, pageSize: 100 });
             this.props.getLogsByCustomerId(this.props.gridParams);
         }
     };
 
     render() {
-        const { editNoOfInquiryDialog, editCommunicationDialog, insertCommunicationDialog } = this.props;
+        const { editNoOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = this.props;
         return (
-            <div className="col-md-10">
+            <div>
                 <Filter/>
                 <DataGrid/>
                 {
@@ -59,9 +60,9 @@ export class AppContainer extends Component {
                     />
                 }
                 {
-                    insertCommunicationDialog.show &&
+                    createCommunicationDialog.show &&
                     <InsertCommunicationLog
-                        onClose={this.handleCloseInsertCommunicationDiaLog}
+                        onClose={this.handleCloseCreateCommunicationDiaLog}
                     />
                 }
             </div>
@@ -72,8 +73,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, editNoOfInquiryDialog, editCommunicationDialog, insertCommunicationDialog } = state;
-    return { gridParams, editNoOfInquiryDialog, editCommunicationDialog, insertCommunicationDialog };
+    const { gridParams, editNoOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = state;
+    return { gridParams, editNoOfInquiryDialog, editCommunicationDialog, createCommunicationDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

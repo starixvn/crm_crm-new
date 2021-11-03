@@ -7,9 +7,9 @@
     using CRM.Core.Filters;
     using CRM.Core.Services;
     using CRM.Criteria.Redemption;
-    using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Redemption;
+    using CRM.ViewModels.Customer;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -45,7 +45,7 @@
 
         public IActionResult Index()
         {
-            var permission = new GetPermissionCustomer
+            var permission = new CustomerPermissionViewModel
             {
                 CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
                 CreateUpdateFeedbackPermission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)

@@ -100,6 +100,30 @@
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public async Task GetCustomerByIdAsync_WhenCalled_ReturnExpectedCustomerInfo()
+        {
+            //Arrange
+            var fixture = new Fixture();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            var param = fixture.Create<GetCustomerInfoDetailByIdCriteria>();
+            var customerInfoDetail = fixture.Create<IEnumerable<CustomerInfo>>();
+            var customerLanguageInfo = fixture.Create<IEnumerable<CustomerLanguageInfo>>();
+
+            var site = fixture.Create<SiteSetting>();
+            var tuple = (customerInfoDetail, customerLanguageInfo);
+            var service = GetCustomerService();
+            baseService.FetchMultipleAsync<CustomerInfo, CustomerLanguageInfo>(Arg.Do<GetCustomerInfoDetailByIdCriteria>(x => param = x)).Returns(tuple);
+            settingService.GetSiteByIdAsync(Arg.Any<int>()).Returns(site);
+            var expected = customerInfoDetail.First();
+
+            //Act
+            var actual = await service.GetCustomerByIdAsync(param);
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
         #region Helpers
 
         private CustomerService GetCustomerService()

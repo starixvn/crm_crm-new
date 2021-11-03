@@ -114,19 +114,19 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('handleInsert', () => {
-        it('should call exactly function when handle insert', () => {
+    describe('handleCreate', () => {
+        it('should call exactly function when handle create', () => {
             // Arrange
             const props = {
-                setInsertCommunicationDialog: jest.fn()
+                setCreateCommunicationDialog: jest.fn()
             };
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
-            container.handleInsert();
+            container.handleCreate();
 
             // Assert
-            expect(props.setInsertCommunicationDialog).toHaveBeenCalledWith({ show: true });
+            expect(props.setCreateCommunicationDialog).toHaveBeenCalledWith({ show: true });
         });
     });
 
@@ -135,7 +135,7 @@ describe('DataGrid', () => {
         it('should call exactly function when onPaging', () => {
             // Arrange
             const props = {
-                setGridPages: jest.fn()
+                setGridParams: jest.fn()
             };
             const container = shallow(<DataGrid {...props} />).instance();
 
@@ -143,7 +143,7 @@ describe('DataGrid', () => {
             container.onPaging(1,200);
 
             // Assert
-            expect(props.setGridPages).toHaveBeenCalledWith({"pageIndex": 1, "pageSize": 200});
+            expect(props.setGridParams).toHaveBeenCalled();
         });
     });
 

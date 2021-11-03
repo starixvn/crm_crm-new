@@ -18,6 +18,8 @@
         Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command);
 
         Task<IEnumerable<string>> GetCustomerAutoSuggestionAsync(CustomerSuggestionCriteria criteria);
+
+        Task<CustomerInfo> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria);
     }
 
     public class CustomerService : ICustomerService
@@ -112,6 +114,38 @@
                     Name = RoleSettingService.GetRoleName(RoleIdConstants.Headline)
                 }
             };
+        }
+
+        public async Task<CustomerInfo> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria)
+        {
+            var (customers, languages) = await baseService.FetchMultipleAsync<CustomerInfo, CustomerLanguageInfo>(criteria);
+            var listLanguages = new List<int>();
+            var customerInfo = customers.FirstOrDefault();
+            var site = await settingService.GetSiteByIdAsync(customerInfo.SiteId);
+            foreach (var item in languages)
+            {
+                listLanguages.Add(item.LanguageId);
+            }
+            customerInfo.Languages = listLanguages;
+            customerInfo.LanguageIds = string.Join(",", listLanguages);
+            customerInfo.SiteSetting = new Site
+            {
+                Id = site.Id,
+                Name = site.Name
+            };
+            customerInfo.IsDirectAccount = await CheckDirectAccount(customerInfo.CustId);
+
+            return customerInfo;
+        }
+
+        private async Task<bool> CheckDirectAccount(int customerId)
+        {
+            var criteria = new CheckDirectAccountCriteria
+            {
+                CustomerId = customerId
+            };
+
+            return await baseService.GetDataEntityAsync<bool>(criteria);
         }
     }
 }

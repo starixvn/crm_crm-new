@@ -11,16 +11,20 @@
 @import '../../components/verify-customer';
 @import '../../components/date-picker/style';
 
+#app-container {
+    width: 1319px;
+}
+
+.body-content {
+    overflow-x: hidden !important;
+}
+
 .pending{
     background-color: #f0edc4;
 }
 
 .closed{
     background-color: #ddd;
-}
-
-.fa-pencil:before {
-    color: #D3B35D;
 }
 
 .link-click {
@@ -30,6 +34,14 @@
     &:hover {
         color: $draft-color !important;
     }
+}
+
+.form-group-button {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
 }
 
 .react-datepicker-wrapper input{

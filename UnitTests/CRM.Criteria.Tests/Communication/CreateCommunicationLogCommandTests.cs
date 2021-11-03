@@ -7,7 +7,7 @@
     using CRM.Models.Feedback;
     using Xunit;
 
-    public class InsertCommunicationLogCommandTests
+    public class CreateCommunicationLogCommandTests
     {
         private readonly IFixture fixture = new Fixture();
 
@@ -15,7 +15,7 @@
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             //Arrange
-            var criteria = new InsertCommunicationLogCommand();
+            var criteria = new CreateCommunicationLogCommand();
             var expected = "Acc_CRM_CommunicationLogIns";
 
             //Act
@@ -29,7 +29,7 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             //Arrange
-            var criteria = new InsertCommunicationLogCommand();
+            var criteria = new CreateCommunicationLogCommand();
 
             //Act
             var actual = criteria.IsValid();
@@ -44,7 +44,7 @@
             // Arrange
 
             // Act
-            var command = new InsertCommunicationLogCommand();
+            var command = new CreateCommunicationLogCommand();
 
             // Assert
             Assert.Empty(command.CategoryXml);
@@ -57,7 +57,7 @@
             var categories = fixture.Create<IEnumerable<CategorySubCategorySetting>>();
 
             // Act
-            var command = new InsertCommunicationLogCommand
+            var command = new CreateCommunicationLogCommand
             {
                 Categories = categories
             };
@@ -72,7 +72,7 @@
             // Arrange
 
             // Act
-            var command = new InsertCommunicationLogCommand();
+            var command = new CreateCommunicationLogCommand();
 
             // Assert
             Assert.Empty(command.ProductXml);
@@ -85,7 +85,7 @@
             var products = fixture.Create<IEnumerable<ProductSubProductBettypeSetting>>();
 
             // Act
-            var command = new InsertCommunicationLogCommand
+            var command = new CreateCommunicationLogCommand
             {
                 Products = products
             };

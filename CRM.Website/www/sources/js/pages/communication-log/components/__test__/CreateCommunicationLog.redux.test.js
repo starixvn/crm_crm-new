@@ -14,7 +14,7 @@ describe('connect ', () => {
             mapDispatchToProps = mapDispatchToPropsFunc;
             return connectMock;
         });
-        require('../InsertCommunicationLog').default;
+        require('../CreateCommunicationLog').default;
     });
 
     afterAll(() => {
@@ -25,12 +25,12 @@ describe('connect ', () => {
         // Arrange
         const expected = {
             feedbackSubjectTemplates: 'sa',
-            insertSettings: [{ countries: { id: 1 }}],
+            allSettings: [{ countries: { id: 1 }}],
             duplicateFeedbackId: 1234
         };
         const state = {
             feedbackSubjectTemplates: 'sa',
-            insertSettings: [{ countries: { id: 1 }}],
+            allSettings: [{ countries: { id: 1 }}],
             duplicateFeedbackId: 1234
         };
 

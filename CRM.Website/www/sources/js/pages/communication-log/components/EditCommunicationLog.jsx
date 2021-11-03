@@ -59,12 +59,12 @@ export class EditCommunicationLog extends Component {
     }
 
     async componentDidMount() {
-        await this.props.getCustomerFeedbackById(this.props.feedbackId);
-        await this.props.getAllStatus();
-        const { customerFeedback } = this.props;
-        const logSettings = this.getLogSettings(customerFeedback.feedback, customerFeedback.settings);
+        await this.props.getLogByFeedbackId(this.props.feedbackId);
+        await this.props.getStatusForEdit();
+        const { logFeedback } = this.props;
+        const logSettings = this.getLogSettings(logFeedback.log, logFeedback.settings);
 
-        const relatedCustomers = customerFeedback.feedback.relatedCustomers.map(customer => {
+        const relatedCustomers = logFeedback.log.relatedCustomers.map(customer => {
             return {
                 custId: customer.custId,
                 val: customer.username,
@@ -72,28 +72,28 @@ export class EditCommunicationLog extends Component {
                 isLicensee: customer.isLicensee
             };
         });
-        const extensionOptions = customerFeedback.settings.extensions.map(item => {
+        const extensionOptions = logFeedback.settings.extensions.map(item => {
             return {
                 id: item.id,
                 value: item.value,
                 checked: logSettings.extensionIds.includes(item.id)
             };
         });
-        const communicationToolOptions = customerFeedback.settings.communicationTools.map(item => {
+        const communicationToolOptions = logFeedback.settings.communicationTools.map(item => {
             return {
                 id: item.id,
                 name: item.name,
                 checked: logSettings.communicationToolIds.includes(item.id)
             };
         });
-        const mainCategoryOptions = customerFeedback.settings.mainCategories.map(item => {
+        const mainCategoryOptions = logFeedback.settings.mainCategories.map(item => {
             return {
                 mainCategoryID: item.mainCategoryID,
                 name: item.name,
                 checked: logSettings.mainCategoryIds.includes(item.mainCategoryID)
             };
         });
-        const subCategories = customerFeedback.settings.subCategories.filter(item => logSettings.mainCategoryIds.includes(item.mainCategoryID));
+        const subCategories = logFeedback.settings.subCategories.filter(item => logSettings.mainCategoryIds.includes(item.mainCategoryID));
         const subCategoryOptions = subCategories.map(item => {
             return {
                 subCategoryId: item.subCategoryId,
@@ -101,14 +101,14 @@ export class EditCommunicationLog extends Component {
                 checked: logSettings.subCategoryIds.includes(item.subCategoryId)
             };
         });
-        const productOptions = customerFeedback.settings.products.map(item => {
+        const productOptions = logFeedback.settings.products.map(item => {
             return {
                 id: item.id,
                 value: item.value,
                 checked: logSettings.productIds.includes(item.id)
             };
         });
-        const subProducts = customerFeedback.settings.subProducts.filter(item => logSettings.productIds.includes(item.parentId) && item.parentId !== 0);
+        const subProducts = logFeedback.settings.subProducts.filter(item => logSettings.productIds.includes(item.parentId) && item.parentId !== 0);
         const subProductOptions = subProducts.map(item => {
             return {
                 id: item.id,
@@ -116,7 +116,7 @@ export class EditCommunicationLog extends Component {
                 checked: logSettings.subProductIds.includes(item.id)
             };
         });
-        const bettypes = customerFeedback.settings.bettypes.filter(item => logSettings.subProductIds.includes(item.parentId) && item.parentId !== 0);
+        const bettypes = logFeedback.settings.bettypes.filter(item => logSettings.subProductIds.includes(item.parentId) && item.parentId !== 0);
         const betTypeOptions = bettypes.map(item => {
             return {
                 id: item.id,
@@ -126,11 +126,11 @@ export class EditCommunicationLog extends Component {
         });
 
         this.setState({
-            communicationLog: this.initFormikData(customerFeedback.feedback, customerFeedback.settings),
-            settings: customerFeedback.settings,
-            hasReviewFeedbackPermission: customerFeedback.hasReviewFeedbackPermission,
-            review: customerFeedback.feedback.review,
-            isReviewed: customerFeedback.feedback.isReviewed,
+            communicationLog: this.initFormikData(logFeedback.log, logFeedback.settings),
+            settings: logFeedback.settings,
+            hasReviewFeedbackPermission: logFeedback.hasReviewFeedbackPermission,
+            review: logFeedback.log.review,
+            isReviewed: logFeedback.log.isReviewed,
             extensionOptions,
             communicationToolOptions,
             mainCategoryOptions,
@@ -143,15 +143,15 @@ export class EditCommunicationLog extends Component {
         });
     }
 
-    initFormikData = (feedback, settings) => {
-        const logSettings = this.getLogSettings(feedback, settings);
+    initFormikData = (log, settings) => {
+        const logSettings = this.getLogSettings(log, settings);
 
         return {
-            feedbackId: feedback.feedbackId,
-            customerId: feedback.custId,
+            feedbackId: log.feedbackId,
+            customerId: log.custId,
             customerNameInput: '',
-            startTime: new Date(feedback.feedbackDate),
-            endTime: new Date(feedback.resolutionDate),
+            startTime: new Date(log.feedbackDate),
+            endTime: new Date(log.resolutionDate),
             extensionIds: logSettings.extensionIds.join(','),
             communicationToolIds: logSettings.communicationToolIds.join(','),
             mainCategoryIds: logSettings.mainCategoryIds.join(','),
@@ -159,28 +159,28 @@ export class EditCommunicationLog extends Component {
             productIds: logSettings.productIds.join(','),
             subProductIds: logSettings.subProductIds.join(','),
             betTypeIds: logSettings.betTypeIds.join(','),
-            roleId: feedback.roleId,
-            siteId: feedback.siteId,
-            siteName: feedback.siteSetting.name,
-            statusId: feedback.statusId,
-            responseId: feedback.responseId,
-            licenseeTypeId: feedback.licenseeType,
-            countryId: feedback.countryId,
-            languageId: feedback.languageId,
-            noInquiries: feedback.noInquiries > 0 ? feedback.noInquiries : '',
-            subject: feedback.subject,
-            autoGenerated: feedback.autoField,
-            remark: feedback.description,
-            solution: feedback.solution,
-            solveDate: DateTimeService.toShortDateTimeFormat(feedback.solveDate),
-            isReviewed: feedback.isReviewed,
-            review: feedback.review,
-            reviewerName: feedback.reviewerName
+            roleId: log.roleId,
+            siteId: log.siteId,
+            siteName: log.siteSetting.name,
+            statusId: log.statusId,
+            responseId: log.responseId,
+            licenseeTypeId: log.licenseeType,
+            countryId: log.countryId,
+            languageId: log.languageId,
+            noInquiries: log.noInquiries > 0 ? log.noInquiries : '',
+            subject: log.subject,
+            autoGenerated: log.autoField,
+            remark: log.description,
+            solution: log.solution,
+            solveDate: DateTimeService.toShortDateTimeFormat(log.solveDate),
+            isReviewed: log.isReviewed,
+            review: log.review,
+            reviewer: log.reviewer
         };
     };
 
-    getLogSettings = feedback => {
-        const logSettings = feedback.settings;
+    getLogSettings = log => {
+        const logSettings = log.settings;
         const extensions = logSettings.filter(item => item.settingType === 'Station');
         const communicationTools = logSettings.filter(item => item.settingType === 'Communication');
         const categories = logSettings.filter(item => item.settingType === 'Category');
@@ -450,7 +450,7 @@ export class EditCommunicationLog extends Component {
     renderEditDropDown = (values, touched, errors, handleChange, setFieldValue) => {
         const { settings, mainCategoryOptions, subCategoryOptions, productOptions, subProductOptions, betTypeOptions } = this.state;
         const { roles, countries, sites, licenseeTypes } = settings;
-        const { allStatus } = this.props;
+        const { statusEdit } = this.props;
         return (
             <div>
                 <Form.Group as={Row}>
@@ -537,14 +537,14 @@ export class EditCommunicationLog extends Component {
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">
                         <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="allStatus">{LangHelper.getResource('Status')}</Form.Label>
+                            <Form.Label column sm="4" md="4" htmlFor="statusEdit">{LangHelper.getResource('Status')}</Form.Label>
                             <Col sm="6" md="6">
                                 <Form.Control size="sm" as="select" className="shadow-none"
                                     name="statusId" id="statusId"
                                     value={values.statusId}
                                     onChange={handleChange}
                                 >
-                                    {allStatus.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
+                                    {statusEdit.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
                                 </Form.Control>
                             </Col>
                         </Form.Group>
@@ -725,6 +725,7 @@ export class EditCommunicationLog extends Component {
                     <RenderCollapse
                         {...{ values, errors, touched, collapse, setFieldValue, handleChange }}
                         handleCollapseExpand={this.handleCollapseExpand}
+                        isEdit={true}
                     />
                 </Modal.Body >
                 <Modal.Footer>
@@ -787,8 +788,8 @@ export class EditCommunicationLog extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allStatus, customerFeedback, feedbackSubjectTemplates } = state;
-    return { allStatus, customerFeedback, feedbackSubjectTemplates };
+    const { statusEdit, logFeedback, feedbackSubjectTemplates } = state;
+    return { statusEdit, logFeedback, feedbackSubjectTemplates };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditCommunicationLog);

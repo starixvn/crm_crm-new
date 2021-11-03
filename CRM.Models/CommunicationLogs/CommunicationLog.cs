@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using CRM.Models.Common;
     using CRM.Models.Customer;
     using CRM.Models.Feedback;
 
@@ -64,6 +65,8 @@
         public string Description { get; set; }
 
         public int NoInquiries { get; set; }
+
+        public Site SiteSetting { get; set; } = new Site();
 
         public string DurationTime => ResolutionDate != DateTime.MinValue ? GetResolvingTime() : string.Empty;
 

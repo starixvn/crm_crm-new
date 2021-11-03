@@ -7,9 +7,9 @@
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Criteria.Remark;
-    using CRM.Models.Customer;
     using CRM.Models.Remark;
     using CRM.Services.Remark;
+    using CRM.ViewModels.Customer;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -38,7 +38,7 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
-            var permission = (GetPermissionCustomer)viewResult.Model;
+            var permission = (CustomerPermissionViewModel)viewResult.Model;
             Assert.Equal(2, permission.CustomerInfoPolicy);
         }
 

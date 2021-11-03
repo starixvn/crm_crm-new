@@ -18,7 +18,7 @@ export class DataGrid extends Component {
                     window.createUpdateFeedbackPermission === Policy.Host &&
                     <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
-                <HeaderCell colWidth={25}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
                 <HeaderCell colWidth={55}>{LangHelper.getResource('Category')}</HeaderCell>
                 <HeaderCell colWidth={40}>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
@@ -30,8 +30,8 @@ export class DataGrid extends Component {
     };
 
     buildBody = () => {
-        const { gridData, gridPages } = this.props;
-        const { pageIndex, pageSize } = gridPages;
+        const { gridData, gridParams } = this.props;
+        const { pageIndex, pageSize } = gridParams;
         const skip = pageSize * (pageIndex - 1);
         const data = gridData.data.slice(skip, pageSize * pageIndex);
 
@@ -69,7 +69,7 @@ export class DataGrid extends Component {
     };
 
     handleInsert = () => {
-        this.props.setInsertCommunicationDialog({ show: true });
+        this.props.setCreateCommunicationDialog({ show: true });
     };
 
     renderCategoryColumn = item => {
@@ -123,15 +123,15 @@ export class DataGrid extends Component {
     };
 
     onPaging = (pageIndex, pageSize) => {
-        this.props.setGridPages({pageIndex: pageIndex, pageSize: pageSize});
+        this.props.setGridParams({ ...this.props.gridParams, pageIndex: pageIndex, pageSize: pageSize });
     };
 
     render() {
-        const { gridData, gridPages } = this.props;
+        const { gridData, gridParams } = this.props;
         if (!gridData) {
             return null;
         }
-        const { pageIndex, pageSize } = gridPages;
+        const { pageIndex, pageSize } = gridParams;
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
@@ -145,7 +145,7 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('CustomerCommunicationLogs')}</span>
                 </div>
                 <Table
-                    width={1155}
+                    width={1400}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
@@ -158,7 +158,7 @@ export class DataGrid extends Component {
                 {
                     window.customerInfoPolicy === Policy.Host &&
                     <Button variant="primary" size="sm" className="mt-3" onClick={this.handleInsert}>
-                        {LangHelper.getResource('Insert')}
+                        {LangHelper.getResource('InsertCase')}
                     </Button>
                 }
             </Fragment>
@@ -169,8 +169,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridPages, gridData } = state;
-    return { gridPages, gridData };
+    const { gridParams, gridData } = state;
+    return { gridParams, gridData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

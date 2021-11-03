@@ -93,73 +93,73 @@ export class EditForm extends Component {
 
     async componentDidMount() {
         await this.props.getAllSettings();
-        await this.props.getCustomerInfoDetail({ customerId: 1754 });
-        const { data } = this.props.gridData;
+        await this.props.getCustomerById({ customerId: 1754 });
+        const { customerInfo } = this.props;
         this.setState({
-            titleId: data.titleId,
-            firstName: data.firstName || '',
-            lastName: data.lastName || '',
-            birthDay: data.birthday ? new Date(data.birthday) : '',
-            passport: data.passport || '',
-            refCode2: data.refCode2 || '',
-            languages: data.languages,
-            siteId: data.siteId,
-            refCode1: data.refCode1 || '',
-            licenseeTypeId: data.licenseeType,
-            isVip: data.isVIP,
-            isIgnored: data.ignored,
-            phoneCountryCode: data.phoneInfo[0].countryCode || '',
-            phoneAreaCode: data.phoneInfo[0].areaCode || '',
-            phone: data.phoneInfo[0].phoneNumber || '',
-            phone2CountryCode: data.phoneInfo[1].countryCode || '',
-            phone2AreaCode: data.phoneInfo[1].areaCode || '',
-            phone2: data.phoneInfo[1].phoneNumber || '',
-            phone3CountryCode: data.phoneInfo[2].countryCode || '',
-            phone3AreaCode: data.phoneInfo[2].areaCode || '',
-            phone3: data.phoneInfo[2].phoneNumber || '',
-            checker: data.checker || '',
-            introducedBy: data.introducedBy || '',
-            faxCountryCode: data.faxInfo.countryCode || '',
-            faxAreaCode: data.faxInfo.areaCode || '',
-            faxNumber: data.faxInfo.faxNumber || '',
-            mobileCountryCode: data.mobile.countryCode || '',
-            mobileAreaCode: data.mobile.areaCode || '',
-            mobilePhoneNumber: data.mobile.phoneNumber || '',
-            pic1Name: data.personalInfoContacts[0].name || '',
-            pic1PhoneNumber: data.personalInfoContacts[0].phone || '',
-            pic2Name: data.personalInfoContacts[1].name || '',
-            pic2PhoneNumber: data.personalInfoContacts[1].phone || '',
-            pic3Name: data.personalInfoContacts[2].name || '',
-            pic3PhoneNumber: data.personalInfoContacts[2].phone || '',
-            pic4Name: data.personalInfoContacts[3].name || '',
-            pic4PhoneNumber: data.personalInfoContacts[3].phone || '',
-            skype: data.skype || '',
-            email: data.email || '',
-            telegram: data.msn || '',
-            weChat: data.weChat || '',
-            whatsApp: data.whatsApp || '',
-            line: data.line || '',
-            letstalk: data.yahoo || '',
-            qq: data.qq || '',
-            zalo: data.bbm || '',
-            homeAddressLine1: data.addressInfo.lineList[0] || '',
-            homeAddressLine2: data.addressInfo.lineList[1] || '',
-            homeAddressLine3: data.addressInfo.lineList[2] || '',
-            homeAddressCity: data.addressInfo.city || '',
-            homeAddressCountryId: data.addressInfo.country.id,
-            homeAddressState: data.addressInfo.state || '',
-            homeAddressPostCode: data.addressInfo.postCode || '',
-            bankInfoHolderName: data.bankInfo.holderName || '',
-            bankInfoName: data.bankInfo.name || '',
-            bankInfoAccNo: data.bankInfo.accountNumber || '',
-            bankInfoSwiftCode: data.bankInfo.swiftCode || '',
-            bankAddressLine1: data.bankInfo.addressInfo.lineList[0] || '',
-            bankAddressLine2: data.bankInfo.addressInfo.lineList[1] || '',
-            bankAddressLine3: data.bankInfo.addressInfo.lineList[2] || '',
-            bankAddressCity: data.bankInfo.addressInfo.city || '',
-            bankAddressCountryId: data.bankInfo.addressInfo.country.id,
-            bankAddressState: data.bankInfo.addressInfo.state || '',
-            bankAddressPostCode: data.bankInfo.addressInfo.postCode || ''
+            titleId: customerInfo.titleId,
+            firstName: customerInfo.firstName || '',
+            lastName: customerInfo.lastName || '',
+            birthDay: customerInfo.birthday ? new Date(customerInfo.birthday) : '',
+            passport: customerInfo.passport || '',
+            refCode2: customerInfo.refCode2 || '',
+            languages: customerInfo.languages,
+            siteId: customerInfo.siteId,
+            refCode1: customerInfo.refCode1 || '',
+            licenseeTypeId: customerInfo.licenseeType,
+            isVip: customerInfo.isVIP,
+            isIgnored: customerInfo.ignored,
+            phoneCountryCode: customerInfo.phoneInfo[0].countryCode || '',
+            phoneAreaCode: customerInfo.phoneInfo[0].areaCode || '',
+            phone: customerInfo.phoneInfo[0].phoneNumber || '',
+            phone2CountryCode: customerInfo.phoneInfo[1].countryCode || '',
+            phone2AreaCode: customerInfo.phoneInfo[1].areaCode || '',
+            phone2: customerInfo.phoneInfo[1].phoneNumber || '',
+            phone3CountryCode: customerInfo.phoneInfo[2].countryCode || '',
+            phone3AreaCode: customerInfo.phoneInfo[2].areaCode || '',
+            phone3: customerInfo.phoneInfo[2].phoneNumber || '',
+            checker: customerInfo.checker || '',
+            introducedBy: customerInfo.introducedBy || '',
+            faxCountryCode: customerInfo.faxInfo.countryCode || '',
+            faxAreaCode: customerInfo.faxInfo.areaCode || '',
+            faxNumber: customerInfo.faxInfo.faxNumber || '',
+            mobileCountryCode: customerInfo.mobile.countryCode || '',
+            mobileAreaCode: customerInfo.mobile.areaCode || '',
+            mobilePhoneNumber: customerInfo.mobile.phoneNumber || '',
+            pic1Name: customerInfo.personalInfoContacts[0].name || '',
+            pic1PhoneNumber: customerInfo.personalInfoContacts[0].phone || '',
+            pic2Name: customerInfo.personalInfoContacts[1].name || '',
+            pic2PhoneNumber: customerInfo.personalInfoContacts[1].phone || '',
+            pic3Name: customerInfo.personalInfoContacts[2].name || '',
+            pic3PhoneNumber: customerInfo.personalInfoContacts[2].phone || '',
+            pic4Name: customerInfo.personalInfoContacts[3].name || '',
+            pic4PhoneNumber: customerInfo.personalInfoContacts[3].phone || '',
+            skype: customerInfo.skype || '',
+            email: customerInfo.email || '',
+            telegram: customerInfo.msn || '',
+            weChat: customerInfo.weChat || '',
+            whatsApp: customerInfo.whatsApp || '',
+            line: customerInfo.line || '',
+            letstalk: customerInfo.yahoo || '',
+            qq: customerInfo.qq || '',
+            zalo: customerInfo.bbm || '',
+            homeAddressLine1: customerInfo.addressInfo.lineList[0] || '',
+            homeAddressLine2: customerInfo.addressInfo.lineList[1] || '',
+            homeAddressLine3: customerInfo.addressInfo.lineList[2] || '',
+            homeAddressCity: customerInfo.addressInfo.city || '',
+            homeAddressCountryId: customerInfo.addressInfo.country.id,
+            homeAddressState: customerInfo.addressInfo.state || '',
+            homeAddressPostCode: customerInfo.addressInfo.postCode || '',
+            bankInfoHolderName: customerInfo.bankInfo.holderName || '',
+            bankInfoName: customerInfo.bankInfo.name || '',
+            bankInfoAccNo: customerInfo.bankInfo.accountNumber || '',
+            bankInfoSwiftCode: customerInfo.bankInfo.swiftCode || '',
+            bankAddressLine1: customerInfo.bankInfo.addressInfo.lineList[0] || '',
+            bankAddressLine2: customerInfo.bankInfo.addressInfo.lineList[1] || '',
+            bankAddressLine3: customerInfo.bankInfo.addressInfo.lineList[2] || '',
+            bankAddressCity: customerInfo.bankInfo.addressInfo.city || '',
+            bankAddressCountryId: customerInfo.bankInfo.addressInfo.country.id,
+            bankAddressState: customerInfo.bankInfo.addressInfo.state || '',
+            bankAddressPostCode: customerInfo.bankInfo.addressInfo.postCode || ''
         });
     }
 
@@ -194,7 +194,7 @@ export class EditForm extends Component {
         event.preventDefault();
         const values = this.state;
         const params = {
-            customerId: this.props.gridData.data.custId,
+            customerId: this.props.customerInfo.custId,
             firstName: values.firstName,
             lastName: values.lastName,
             titleId: values.titleId,
@@ -262,7 +262,6 @@ export class EditForm extends Component {
 
         this.props.editCustomerInfoDetail(params).then(() => {
             if (this.props.editCustomerInfoDetailResult.isSuccessful) {
-                this.props.onSuccess({ customerId: 1754 });
                 this.props.setEditCustomerInfoDetailDialog({ show: true });
                 this.setState({ isSubmitting: false });
             } else {
@@ -300,7 +299,7 @@ export class EditForm extends Component {
     };
 
     renderPersonalInfo = values => {
-        const { data } = this.props.gridData;
+        const { customerInfo } = this.props;
         const languageSelected = this.props.allSettings.languages.map(item => {
             return {
                 languageId: item.languageId,
@@ -413,7 +412,7 @@ export class EditForm extends Component {
                                             className='basic-single'
                                             options={this.props.allSettings.sites}
                                             value={values.siteId}
-                                            name={data.siteSetting.name}
+                                            name={customerInfo.siteSetting.name}
                                             isHideNA={false}
                                             OnChangeValue={item => this.handleChangeValue('siteId',item.id)}
                                         />
@@ -445,7 +444,7 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
 
-                            { this.renderCheckVipIgnore(data, values) }
+                            { this.renderCheckVipIgnore(customerInfo, values) }
                         </Form.Group>
                     </div>
                 </Collapse>
@@ -1087,12 +1086,12 @@ export class EditForm extends Component {
     };
 
     render() {
-        const { allSettings, gridData } = this.props;
+        const { allSettings, customerInfo } = this.props;
         const values = this.state;
         const updatePolicy = window.updateHeadlineInfoPolicy;
         const customerPolicy = window.customerInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
-        if (!allSettings || !gridData) {
+        if (!allSettings || !customerInfo) {
             return null;
         }
 
@@ -1100,7 +1099,7 @@ export class EditForm extends Component {
             <Form onSubmit={this.handleSubmit}>
                 {this.renderPersonalInfo(values)}
                 {
-                    (gridData.data.isHeadLine && (updatePolicy === Policy.Read || canEditHeadline))
+                    (customerInfo.isHeadLine && (updatePolicy === Policy.Read || canEditHeadline))
                     && this.renderHeadlineInfo(values, canEditHeadline)
                 }
                 {this.renderCommunicationInfo(values)}
@@ -1122,8 +1121,8 @@ export class EditForm extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, gridData, editCustomerInfoDetailResult } = state;
-    return { allSettings, gridData, editCustomerInfoDetailResult };
+    const { allSettings, customerInfo, editCustomerInfoDetailResult } = state;
+    return { allSettings, customerInfo, editCustomerInfoDetailResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditForm);

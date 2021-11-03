@@ -139,6 +139,7 @@
     IntroducedBy: 'Introduced By',
     InformHeadlines: 'Inform Headlines',
     Insert: 'Insert',
+    InsertCase: 'Insert Case',
     InsertCommunicationLog: 'Insert Communication Log',
     InsertCommunicationLogSuccessfully: 'Insert communication log successfully!',
     InsertCommunicationSettingSuccessfully: 'Insert Communication Setting successfully!',

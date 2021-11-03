@@ -2,17 +2,17 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 import {
-    setCustomerInfoDetail,
+    setCustomerById,
     setAllSettings,
     setEditCustomerInfoDetail,
     setEditCustomerInfoDetailDialog
 } from './customerInfoDetailSlice';
 
-const getCustomerInfoDetail = params => async dispatch => {
+const getCustomerById = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('CustomerInfoDetail/GetCustomerInfoDetailById');
+    const url = Site.resolveClientUrl('CustomerInfoDetail/GetCustomerById');
     await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setCustomerInfoDetail(response.data));
+        dispatch(setCustomerById(response.data));
     }).then(() => Site.unblockUI());
 };
 
@@ -26,14 +26,14 @@ const getAllSettings = () => async dispatch => {
 
 const editCustomerInfoDetail = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('CustomerInfoDetail/EditCustomerDetailInfo');
+    const url = Site.resolveClientUrl('CustomerInfoDetail/EditCustomerInfoDetail');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setEditCustomerInfoDetail(response.data));
     }).then(() => Site.unblockUI());
 };
 
 export const ActionCreators = {
-    getCustomerInfoDetail,
+    getCustomerById,
     getAllSettings,
     editCustomerInfoDetail,
     setEditCustomerInfoDetailDialog

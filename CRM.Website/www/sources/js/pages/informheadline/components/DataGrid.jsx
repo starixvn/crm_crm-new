@@ -10,6 +10,12 @@ import ExcelIcon from '@jsroot/components/ExcelIcon';
 
 export class DataGrid extends Component {
 
+    async componentDidMount() {
+        await this.props.getInforms();
+        this.props.getAllSettings();
+        this.props.getContactInformSettings();
+    }
+
     buildHeader = () => {
         return(
             <HeaderRow>
@@ -162,8 +168,7 @@ export class DataGrid extends Component {
                     {
                         informs.length > 0 &&
                         <ExcelIcon
-                            gridParams={null}
-                            exportExcel={this.props.exportInforms}
+                            handleExportExcel={this.props.exportInforms}
                         />
                     }
                 </div>

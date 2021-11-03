@@ -3,14 +3,14 @@ import { createSlice } from '@reduxjs/toolkit';
 const customerInfoDetailSlice = createSlice({
     name: 'customerInfoDetail',
     initialState: {
-        gridData: null,
+        customerInfo: null,
         allSettings: null,
         editCustomerInfoDetailResult: '',
         editCustomerInfoDetailDialog: { show: false }
     },
     reducers: {
-        setCustomerInfoDetail: (state, action) => {
-            state.gridData = action.payload;
+        setCustomerById: (state, action) => {
+            state.customerInfo = action.payload;
         },
         setAllSettings: (state, action) => {
             state.allSettings = action.payload;
@@ -27,7 +27,7 @@ const customerInfoDetailSlice = createSlice({
 const { actions, reducer } = customerInfoDetailSlice;
 
 export const {
-    setCustomerInfoDetail,
+    setCustomerById,
     setAllSettings,
     setEditCustomerInfoDetail,
     setEditCustomerInfoDetailDialog

@@ -10,23 +10,6 @@ describe('AppContainer', () => {
         jest.clearAllMocks();
     });
 
-    describe('handleEditSuccess', () => {
-        it('should call exactly functions when edit customer info detail successful', () => {
-            //Arrange
-            const props = {
-                getCustomerInfoDetail: jest.fn()
-            };
-            const expectedParams = { customerId: 1754 };
-            const container = shallow(<AppContainer {...props} />).instance();
-            
-            //Act
-            container.handleEditSuccess(expectedParams);
-
-            //Assert
-            expect(props.getCustomerInfoDetail).toHaveBeenCalledWith(expectedParams);
-        });
-    });
-
     describe('handleCloseEditDetailDialog', () => {
         it('should call exactly functions when close dialog', () => {
             //Arrange

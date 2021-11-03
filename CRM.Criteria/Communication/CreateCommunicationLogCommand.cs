@@ -8,7 +8,7 @@
     using CRM.Models.Feedback;
     using Fanex.Data;
 
-    public class InsertCommunicationLogCommand : BaseNonQueryCommand
+    public class CreateCommunicationLogCommand : BaseNonQueryCommand
     {
         [SpParam(SqlParamName = "CustId")]
         public int CustomerId { get; set; }

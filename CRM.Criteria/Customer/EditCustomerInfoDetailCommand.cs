@@ -3,7 +3,7 @@
     using CRM.Core.Models;
     using Fanex.Data;
 
-    public class UpdateCustomerInfoDetailCommand : BaseNonQueryCommand
+    public class EditCustomerInfoDetailCommand : BaseNonQueryCommand
     {
         [SpParam(SqlParamName = "CustId")]
         public int CustomerId { get; set; }

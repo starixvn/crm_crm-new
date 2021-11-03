@@ -19,7 +19,7 @@ describe('EditForm', () => {
             licenseeTypes: [{ id: 1, name: 'Betting'}],
             sites: [{ id: 1, name: '22225'}]
         },
-        gridData: { data: { firstName: 'test', siteSetting: { id: 1, name: '22223'}, titleId: 2 } }
+        customerInfo: { data: { firstName: 'test', siteSetting: { id: 1, name: '22223'}, titleId: 2 } }
     };
 
     describe('componentDidMount', () => {
@@ -28,7 +28,7 @@ describe('EditForm', () => {
             const props = {
                 ...initProps,
                 getAllSettings: jest.fn(),
-                getCustomerInfoDetail: jest.fn(),
+                getCustomerById: jest.fn(),
             };
 
             //Act
@@ -36,7 +36,7 @@ describe('EditForm', () => {
 
             // Assert
             expect(await props.getAllSettings).toHaveBeenCalled();
-            expect(await props.getCustomerInfoDetail).toHaveBeenCalledWith({ customerId: 1754 });
+            expect(await props.getCustomerById).toHaveBeenCalledWith({ customerId: 1754 });
         });
     });
 
@@ -129,7 +129,6 @@ describe('EditForm', () => {
             const props = {
                 ...initProps,
                 editCustomerInfoDetailResult: { isSuccessful: true },
-                onSuccess: jest.fn(),
                 setEditCustomerInfoDetailDialog: jest.fn(),
                 editCustomerInfoDetail: jest.fn(() => promise)
             };
@@ -142,7 +141,6 @@ describe('EditForm', () => {
 
             // Assert
             expect(props.editCustomerInfoDetail).toHaveBeenCalled();
-            expect(props.onSuccess).toHaveBeenCalledWith({ customerId: 1754 });
             expect(props.setEditCustomerInfoDetailDialog).toHaveBeenCalledWith({ show: true });
             expect(container.state.isSubmitting).toEqual(false);
         });
@@ -153,7 +151,6 @@ describe('EditForm', () => {
             const props = {
                 ...initProps,
                 editCustomerInfoDetailResult: { isSuccessful: false },
-                onSuccess: jest.fn(),
                 setEditCustomerInfoDetailDialog: jest.fn(),
                 editCustomerInfoDetail: jest.fn(() => promise)
             };
@@ -233,7 +230,7 @@ describe('EditForm', () => {
             // Arrange
             const propsData = {
                 ...initProps,
-                gridData: { data: { firstName: 'test', isHeadline: false, isDirectAccount: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 } }
+                customerInfo: { data: { firstName: 'test', isHeadline: false, isDirectAccount: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 } }
             }
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
             const container = shallow(<EditForm {...propsData} />).instance();
@@ -280,7 +277,7 @@ describe('EditForm', () => {
     describe('renderHeadlineInfo', () => {
         const props = {
             ...initProps,
-            gridData: { data: { firstName: 'test', isHeadline: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 } }
+            customerInfo: { data: { firstName: 'test', isHeadline: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 } }
         };
 
         it('onClick call exact function', () => {
@@ -434,7 +431,7 @@ describe('EditForm', () => {
             const props = {
                 ...initProps,
                 allSettings: null,
-                gridData: null
+                customerInfo: null
             };
             const container = shallow(<EditForm {...props} />);
 

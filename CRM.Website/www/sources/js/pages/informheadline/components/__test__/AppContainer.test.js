@@ -19,19 +19,6 @@ describe('AppContainer', () => {
         getContactInformSettings: jest.fn()
     };
 
-    describe('componentDidMount', () => {
-        it('should call getInforms', () => {
-            // Arrange
-            const props = {...initProps};
-
-            //Act
-            shallow(<AppContainer {...props} />);
-
-            // Assert
-            expect(props.getInforms).toHaveBeenCalled();
-        });
-    });
-
     describe('handleCloseEditContactInformDialog', () => {
         it('should call exactly functions when close edit contact', () => {
             // Arrange

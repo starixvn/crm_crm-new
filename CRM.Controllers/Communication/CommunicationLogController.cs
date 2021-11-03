@@ -8,10 +8,11 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Communication;
-    using CRM.Models.Customer;
+    using CRM.Models.Common;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Communication;
+    using CRM.ViewModels.Customer;
     using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -47,7 +48,7 @@
 
         public IActionResult Index()
         {
-            var permission = new GetPermissionCustomer
+            var permission = new CustomerPermissionViewModel
             {
                 CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
                 CreateUpdateFeedbackPermission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
@@ -56,6 +57,7 @@
             return View(permission);
         }
 
+        [HttpPost]
         public async Task<IActionResult> GetLogsByCustomerId([FromBody] GetLogsByCustomerIdCriteria criteria)
         {
             var logs = await communicationService.GetLogsByCustomerIdAsync(criteria);
@@ -63,14 +65,23 @@
             return Json(new { data = logs, mainCategories });
         }
 
-        public async Task<IActionResult> GetAllStatus()
+        public async Task<IActionResult> GetAllStatus(bool isEdit)
         {
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
+            if (!isEdit || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
             {
                 statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
             }
             return Json(statuses);
+        }
+
+        public async Task<IActionResult> GetLogByFeedbackId(int id)
+        {
+            var log = await communicationService.GetLogByFeedbackIdAsync(id);
+            var settings = await GetAllSettings();
+            var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
+
+            return Json(new { log, settings, hasReviewFeedbackPermission });
         }
 
         [HttpPost]
@@ -126,13 +137,14 @@
             return commandResult;
         }
 
-        public async Task<IActionResult> GetInsertSettings()
+        public async Task<CreateFeedbackViewModel> GetAllSettings()
         {
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var products = await settingService.GetProductAsync(SettingConstants.Active);
             var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
+            var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
             var settings = new CreateFeedbackViewModel
             {
                 Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
@@ -141,7 +153,7 @@
                 CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
                 Languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
                 Responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
-                Roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role),
+                Roles = roles.Where(x => x.IsActive),
                 Sites = await settingService.GetAllSitesWithGroupAsync(),
                 Countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
                 MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
@@ -154,12 +166,12 @@
                 SubProducts = subproducts.Where(x => x.Id != NAConstants.SubProductNA),
                 SubProductNA = subproducts.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
             };
-            return Json(settings);
+            return settings;
         }
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
-        public async Task<IActionResult> InsertCommunicationLog([FromBody] InsertCommunicationLogCommand command)
+        public async Task<IActionResult> CreateCommunicationLog([FromBody] CreateCommunicationLogCommand command)
         {
             command.IP = ClientIP;
             command.UserId = napSession.UserId;

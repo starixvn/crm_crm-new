@@ -40,7 +40,6 @@
             services.AddTransient<ITicketRefService, TicketRefService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddTransient<IInformHeadlineService, InformHeadlineService>();
-            services.AddTransient<ICustomerDetailService, CustomerDetailService>();
             services.AddTransient<ICommunicationService, CommunicationService>();
             services.AddTransient<IRemarkService, RemarkService>();
             services.AddTransient<IRedemptionService, RedemptionService>();

@@ -25,11 +25,11 @@ describe('connect ', () => {
         // Arrange
         const expected = {
             gridParams: { customerId: 1234 },
-            allStatus: [{ countries: { id: 1 }}]
+            statusForCreate: [{ countries: { id: 1 }}]
         };
         const state = {
             gridParams: { customerId: 1234 },
-            allStatus: [{ countries: { id: 1 }}]
+            statusForCreate: [{ countries: { id: 1 }}]
         };
 
         // Act

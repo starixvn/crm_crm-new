@@ -3,15 +3,16 @@ import Site from '@jsroot/common/site';
 
 import {
     setLogsByCustomerId,
-    setAllStatus,
+    setStatusForEdit,
+    setStatusForFilter,
     setGridParams,
     setEditNoOfInquiryDialog,
-    setCustomerFeedbackById,
+    setLogByFeedbackId,
     setEditCommunicationDialog,
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
-    setInsertCommunicationDialog,
-    setInsertSettings,
+    setCreateCommunicationDialog,
+    setAllSettings
     setBalanceUpday
 } from './communicationLogSlice';
 
@@ -23,19 +24,27 @@ const getLogsByCustomerId = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getAllStatus = () => async dispatch => {
+const getStatusForEdit = () => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl(`CommunicationLog/GetAllStatus`);
+    const url = Site.resolveClientUrl(`CommunicationLog/GetAllStatus?isEdit=true`);
     await DataService.getDataAsync(url).then(response => {
-        dispatch(setAllStatus(response.data));
+        dispatch(setStatusForEdit(response.data));
     }).then(() => Site.unblockUI());
 };
 
-const getCustomerFeedbackById = params => async dispatch => {
+const getStatusForFilter = () => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl(`Feedback/GetCustomerFeedbackById/${params}`);
+    const url = Site.resolveClientUrl(`CommunicationLog/GetAllStatus?isEdit=false`);
     await DataService.getDataAsync(url).then(response => {
-        dispatch(setCustomerFeedbackById(response.data));
+        dispatch(setStatusForFilter(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const getLogByFeedbackId = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl(`CommunicationLog/GetLogByFeedbackId/${params}`);
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setLogByFeedbackId(response.data));
     }).then(() => Site.unblockUI());
 };
 
@@ -64,16 +73,16 @@ const checkFeedbackDuplication = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getInsertSettings = () => async dispatch => {
+const getAllSettings = () => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('CommunicationLog/GetInsertSettings');
+    const url = Site.resolveClientUrl('CommunicationLog/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
-        dispatch(setInsertSettings(response.data));
+        dispatch(setAllSettings(response.data));
     }).then(() => Site.unblockUI());
 }; 
 
-const insertCommunicationLog = params => async () => {
-    const url = Site.resolveClientUrl('CommunicationLog/InsertCommunicationLog');
+const createCommunicationLog = params => async () => {
+    const url = Site.resolveClientUrl('CommunicationLog/CreateCommunicationLog');
     return await DataService.postDataAsync(url, params).then(response => response);
 };
 
@@ -91,19 +100,20 @@ const getTicketInfoByRef = Refno => async () => {
 
 export const ActionCreators = {
     getLogsByCustomerId,
-    getAllStatus,
+    getStatusForEdit,
+    getStatusForFilter,
     setGridParams,
     setEditNoOfInquiryDialog,
     setEditCommunicationDialog,
-    getCustomerFeedbackById,
+    getLogByFeedbackId,
     setFeedbackSubjectTemplates,
     getFeedbackSubjectTemplates,
     verifyCustomers,
     editCommunicationLog,
     checkFeedbackDuplication,
-    setInsertCommunicationDialog,
-    getInsertSettings,
-    insertCommunicationLog,
+    setCreateCommunicationDialog,
+    getAllSettings,
+    createCommunicationLog
     getBalanceUpday,
     setBalanceUpday,
     getTicketInfoByRef

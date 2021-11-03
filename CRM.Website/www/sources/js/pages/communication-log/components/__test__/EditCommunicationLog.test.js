@@ -98,11 +98,11 @@ describe('EditCommunicationLog', () => {
         it('should calls setState', async () => {
             // Arrange
             const props = {
-                getCustomerFeedbackById: jest.fn(),
-                getAllStatus: jest.fn(),
+                getLogByFeedbackId: jest.fn(),
+                getStatusForEdit: jest.fn(),
                 getLogSettings: jest.fn(),
                 feedbackId: 73300,
-                customerFeedback: initData
+                logFeedback: initData
             };
             const logSettings = {
                 extensionIds: [0],
@@ -121,8 +121,8 @@ describe('EditCommunicationLog', () => {
             await container.componentDidMount();
 
             //Arrange
-            expect(await props.getCustomerFeedbackById).toHaveBeenCalledWith(73300);
-            expect(await props.getAllStatus).toHaveBeenCalled();
+            expect(await props.getLogByFeedbackId).toHaveBeenCalledWith(73300);
+            expect(await props.getStatusForEdit).toHaveBeenCalled();
             expect(container.state.relatedCustomers).toEqual([{ custId: 1, val: 'sa' }]);
             expect(container.state.communicationLog).toEqual([]);
             expect(container.state.settings).toEqual(initData.settings);
@@ -143,7 +143,7 @@ describe('EditCommunicationLog', () => {
         it('should return exactly when init formik data', () => {
             // Arrange
             const props = {
-                customerFeedback: initData
+                logFeedback: initData
             };
 
             // Act
@@ -160,7 +160,7 @@ describe('EditCommunicationLog', () => {
         it('should return 0 exactly when update review mode', () => {
             // Arrange
             const props = {
-                customerFeedback: initData
+                logFeedback: initData
             };
             const values = {
                 review: 'test',
@@ -178,7 +178,7 @@ describe('EditCommunicationLog', () => {
         it('should return 2 exactly when update review mode', () => {
             // Arrange
             const props = {
-                customerFeedback: initData
+                logFeedback: initData
             };
             const values = {
                 review: 'test',
@@ -196,7 +196,7 @@ describe('EditCommunicationLog', () => {
         it('should return 1 exactly when update review mode', () => {
             // Arrange
             const props = {
-                customerFeedback: initData
+                logFeedback: initData
             };
             const values = {
                 review: 'test',
@@ -216,7 +216,7 @@ describe('EditCommunicationLog', () => {
         it('should return exactly when get log settings', () => {
             // Arrange
             const props = {
-                customerFeedback: initData
+                logFeedback: initData
             };
 
             // Act
@@ -564,7 +564,7 @@ describe('EditCommunicationLog', () => {
 
     describe('renderForm', () => {
         const props = {
-            allStatus: [{ statusId: 1, name: 'Closed'}],
+            statusForEdit: [{ statusId: 1, name: 'Closed'}],
             onClose: jest.fn()
         }
         const formikProps = {
@@ -637,7 +637,7 @@ describe('EditCommunicationLog', () => {
 
     describe('renderFormUI', () => {
         const props = {
-            allStatus: [{ statusId: 1, name: 'Closed'}],
+            statusEdit: [{ statusId: 1, name: 'Closed'}],
             onClose: jest.fn(),
             feedbackSubjectTemplates: ['sa']
         }

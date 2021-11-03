@@ -5,7 +5,7 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 
 export class RenderCollapse extends Component {
     render() {
-        const { values, errors, touched, collapse, setFieldValue, handleChange, handleCollapseExpand } = this.props;
+        const { values, errors, touched, collapse, setFieldValue, handleChange, handleCollapseExpand, isEdit } = this.props;
         return (
             <div>
                 <div className="panel-group border-bottom-0">
@@ -60,27 +60,31 @@ export class RenderCollapse extends Component {
                         </div>
                     </Collapse>
                 </div>
-                <div className="panel-group">
-                    <Form.Group as={Row} className="panel-title">
-                        <Form.Label className={values.isReviewed ? 'required' : ''}>
-                            {LangHelper.getResource('Review')}
-                        </Form.Label>
-                        <input className="ml-2" type='checkbox' checked={values.isReviewed}
-                            onChange={event => setFieldValue('isReviewed', event.target.checked)}
-                        />
-                        <span className="font-italic ml-2">
-                            {values.reviewerName ? LangHelper.formatString(LangHelper.getResource('ReviewerBy'), values.reviewerName, values.solveDate) : ''}
-                        </span>
-                    </Form.Group>
-                    <Collapse in={values.isReviewed}>
-                        <div className="panel-content">
-                            <CkEditor data={values.review} username={window.currentUsername}
-                                isInvalid={touched.review && errors.review}
-                                onChange={value => setFieldValue('review', value)}
-                            />
+                {
+                    isEdit && (
+                        <div className="panel-group">
+                            <Form.Group as={Row} className="panel-title">
+                                <Form.Label className={values.isReviewed ? 'required' : ''}>
+                                    {LangHelper.getResource('Review')}
+                                </Form.Label>
+                                <input className="ml-2" type='checkbox' checked={values.isReviewed}
+                                    onChange={event => setFieldValue('isReviewed', event.target.checked)}
+                                />
+                                <span className="font-italic ml-2">
+                                    {values.reviewer ? LangHelper.formatString(LangHelper.getResource('ReviewerBy'), values.reviewer, values.solveDate) : ''}
+                                </span>
+                            </Form.Group>
+                            <Collapse in={values.isReviewed}>
+                                <div className="panel-content">
+                                    <CkEditor data={values.review} username={window.currentUsername}
+                                        isInvalid={touched.review && errors.review}
+                                        onChange={value => setFieldValue('review', value)}
+                                    />
+                                </div>
+                            </Collapse>
                         </div>
-                    </Collapse>
-                </div>
+                    )
+                }
             </div>
         );
     }

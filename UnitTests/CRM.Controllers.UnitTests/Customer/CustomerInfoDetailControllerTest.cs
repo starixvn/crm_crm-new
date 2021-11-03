@@ -29,7 +29,7 @@
         private INapSession napSession;
         private INapSettings napSettings;
         private IUserService userService;
-        private ICustomerDetailService customerDetailService;
+        private ICustomerService customerService;
         private ISettingService settingService;
         private IBaseService baseService;
 
@@ -46,23 +46,23 @@
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var permission = (GetPermissionCustomer)viewResult.Model;
+            var permission = (CustomerPermissionViewModel)viewResult.Model;
             Assert.Equal(2, permission.CustomerInfoPolicy);
             Assert.Equal(2, permission.UpdateHeadlineInfoPolicy);
         }
 
         [Fact]
-        public async Task GetCustomerInfoDetailById_WhenCalled_ReturnAsExpectedResult()
+        public async Task GetCustomerById_WhenCalled_ReturnAsExpectedResult()
         {
             //Arrange
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var customer = fixture.Create<CustomerInfo>();
             var param = fixture.Create<GetCustomerInfoDetailByIdCriteria>();
             var controller = GetController();
-            customerDetailService.GetCustomerInfoDetailByIdAsync(param).Returns(customer);
+            customerService.GetCustomerByIdAsync(param).Returns(customer);
 
             //Act
-            var result = await controller.GetCustomerInfoDetailById(param);
+            var result = await controller.GetCustomerById(param);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -102,10 +102,10 @@
         }
 
         [Fact]
-        public async Task EditCustomerDetailInfo_WhenCalled_ReturnExpectedData()
+        public async Task EditCustomerInfoDetail_WhenCalled_ReturnExpectedData()
         {
             //Arrange
-            var command = fixture.Create<UpdateCustomerInfoDetailCommand>();
+            var command = fixture.Create<EditCustomerInfoDetailCommand>();
             var commandResult = fixture.Create<CommandResult>();
             var clientIP = new DefaultHttpContext
             {
@@ -119,7 +119,7 @@
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
             //Act
-            var result = await controller.EditCustomerDetailInfo(command);
+            var result = await controller.EditCustomerInfoDetail(command);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -133,13 +133,13 @@
 
         private CustomerInfoDetailController GetController()
         {
-            customerDetailService = Substitute.For<ICustomerDetailService>();
+            customerService = Substitute.For<ICustomerService>();
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
             napSettings = Substitute.For<INapSettings>();
             userService = Substitute.For<IUserService>();
             baseService = Substitute.For<IBaseService>();
-            return new CustomerInfoDetailController(napSession, napSettings, userService, customerDetailService, settingService, baseService);
+            return new CustomerInfoDetailController(napSession, napSettings, userService, customerService, settingService, baseService);
         }
 
         #endregion Helpers

@@ -9,7 +9,7 @@
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             //Arrange
-            var criteria = new UpdateCustomerInfoDetailCommand();
+            var criteria = new EditCustomerInfoDetailCommand();
             var expected = "Acc_CRM_CustomerUpd_New";
 
             //Act
@@ -23,7 +23,7 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             //Arrange
-            var criteria = new UpdateCustomerInfoDetailCommand();
+            var criteria = new EditCustomerInfoDetailCommand();
 
             //Act
             var actual = criteria.IsValid();

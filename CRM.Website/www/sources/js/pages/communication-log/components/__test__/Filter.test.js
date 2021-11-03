@@ -10,10 +10,10 @@ describe('Filter', () => {
     });
 
     const initProps = {
-        allStatus: [{ sites: {id: 1}}],
+        statusForFilter: [{ sites: {id: 1}}],
         getLogsByCustomerId: jest.fn(),
         setGridParams: jest.fn(),
-        getAllStatus: jest.fn(),
+        getStatusForFilter: jest.fn(),
     }
 
     describe('componentDidMount', () => {
@@ -33,7 +33,7 @@ describe('Filter', () => {
             // Assert
             expect(props.getLogsByCustomerId).toHaveBeenCalled();
             expect(props.setGridParams).toHaveBeenCalled();
-            expect(props.getAllStatus).toHaveBeenCalled();
+            expect(props.getStatusForFilter).toHaveBeenCalled();
         });
     });
 
@@ -138,7 +138,7 @@ describe('Filter', () => {
             //Act
             const props = {
                 ...initProps,
-                allStatus: null
+                statusForFilter: null
             };
             const container = shallow(<Filter {...props} />);
 

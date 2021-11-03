@@ -4,8 +4,8 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Criteria.Remark;
-    using CRM.Models.Customer;
     using CRM.Services.Remark;
+    using CRM.ViewModels.Customer;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -35,13 +35,14 @@
 
         public IActionResult Index()
         {
-            var permission = new GetPermissionCustomer
+            var permission = new CustomerPermissionViewModel
             {
                 CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
             };
             return View(permission);
         }
 
+        [HttpPost]
         public async Task<IActionResult> GetRemarks([FromBody] GetRemarkCriteria criteria)
         {
             var remarks = await remarkService.GetRemarkAsync(criteria);

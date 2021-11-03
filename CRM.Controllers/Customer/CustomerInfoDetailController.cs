@@ -21,7 +21,7 @@
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
-        private readonly ICustomerDetailService customerDetailService;
+        private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
 
@@ -29,21 +29,21 @@
             INapSession napSession,
             INapSettings napSettings,
             IUserService userService,
-            ICustomerDetailService customerDetailService,
+            ICustomerService customerService,
             ISettingService settingService,
             IBaseService baseService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
             this.userService = userService;
-            this.customerDetailService = customerDetailService;
+            this.customerService = customerService;
             this.settingService = settingService;
             this.baseService = baseService;
         }
 
         public IActionResult Index()
         {
-            var permission = new GetPermissionCustomer
+            var permission = new CustomerPermissionViewModel
             {
                 CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
                 UpdateHeadlineInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo)
@@ -52,10 +52,11 @@
             return View(permission);
         }
 
-        public async Task<IActionResult> GetCustomerInfoDetailById([FromBody] GetCustomerInfoDetailByIdCriteria criteria)
+        [HttpPost]
+        public async Task<IActionResult> GetCustomerById([FromBody] GetCustomerInfoDetailByIdCriteria criteria)
         {
-            var customerInfo = await customerDetailService.GetCustomerInfoDetailByIdAsync(criteria);
-            return Json(new { data = customerInfo });
+            var customerInfo = await customerService.GetCustomerByIdAsync(criteria);
+            return Json(customerInfo);
         }
 
         public async Task<IActionResult> GetAllSettings()
@@ -73,7 +74,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
-        public async Task<IActionResult> EditCustomerDetailInfo([FromBody] UpdateCustomerInfoDetailCommand command)
+        public async Task<IActionResult> EditCustomerInfoDetail([FromBody] EditCustomerInfoDetailCommand command)
         {
             command.UserId = napSession.UserId;
             command.IP = ClientIP;

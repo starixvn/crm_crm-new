@@ -83,7 +83,7 @@ export class DataGrid extends Component {
                 {
                     window.customerInfoPolicy === Policy.Host && (
                         <Button variant="primary" size="sm" className="mt-3" onClick={() => this.handleInsertRedemptionLog()}>
-                            {LangHelper.getResource('Insert')}
+                            {LangHelper.getResource('InsertCase')}
                         </Button>
                     )
                 }
