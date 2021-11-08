@@ -17,6 +17,8 @@
     public interface IChatBotResultAmendmentService
     {
         Task<IEnumerable<MessageVoidSettled>> GetChatBotMessageVoidSettledAsync();
+        Task<IEnumerable<MessageVoidSettled>> GetVoidingMessasgeCheckAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds);
+        Task<IEnumerable<MessageVoidSettled>> VoidingMessageGetSettledTicketAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds);
         Task<CommandResult> ImportMessageVoidSettledAsync(IEnumerable<MessageVoidSettled> messages);
         Task<ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>>
              GetChatbotMessageVoidSettledInfoAsync(int BatchSizeGetMsg);
@@ -50,6 +52,24 @@
         public async Task<IEnumerable<MessageVoidSettled>> GetChatBotMessageVoidSettledAsync()
         {
             var criteria = new GetMesssagesVoidSettledCriteria();
+            return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
+        }
+
+        public async Task<IEnumerable<MessageVoidSettled>> GetVoidingMessasgeCheckAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds)
+        {
+            var criteria = new GetChatbotVoidingMessageCheck
+            {
+                Message = messageVoidSettleds.ToXML("root").ToString()
+            };
+            return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
+        }
+
+        public async Task<IEnumerable<MessageVoidSettled>> VoidingMessageGetSettledTicketAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds)
+        {
+            var criteria = new VoidingMessageGetSettledTicket
+            {
+                Message = messageVoidSettleds.ToXML("root").ToString()
+            };
             return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
         }
 

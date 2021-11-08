@@ -180,11 +180,16 @@
             }
 
             var voidingMesssageSettled = await chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync();
-            var commandMessage = await chatBotResultAmendmentService.ImportMessageVoidSettledAsync(voidingMesssageSettled);
-            if (!commandMessage.IsSuccessful)
+            var voidingMessageCheck = await chatBotResultAmendmentService.GetVoidingMessasgeCheckAsync(voidingMesssageSettled);
+            if (voidingMessageCheck.Any())
             {
-                logService.LogInformation("Import Messages Settled Fail!!!");
-                return;
+                var settledTicket = await chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck);
+                var commandMessage = await chatBotResultAmendmentService.ImportMessageVoidSettledAsync(settledTicket);
+                if (!commandMessage.IsSuccessful)
+                {
+                    logService.LogInformation("Import Messages Settled Fail!!!");
+                    return;
+                }
             }
             var voidingMessageInfo = await chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(settingResultAmendment.BatchSizeGetMsg);
             var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
