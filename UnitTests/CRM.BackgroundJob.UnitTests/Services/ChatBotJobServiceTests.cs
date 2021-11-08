@@ -305,11 +305,16 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
             var voidingMesssageSettled = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var voidingMessageCheck = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var settledTicket = fixture.Create<IEnumerable<MessageVoidSettled>>();
             var commandMessage = new CommandResult { Code = 1};
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
             chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync().Returns(voidingMesssageSettled);
-            chatBotResultAmendmentService.ImportMessageVoidSettledAsync(voidingMesssageSettled).Returns(commandMessage);
+            chatBotResultAmendmentService.GetVoidingMessasgeCheckAsync(voidingMesssageSettled).Returns(voidingMessageCheck);
+            chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck).Returns(settledTicket);
+
+            chatBotResultAmendmentService.ImportMessageVoidSettledAsync(settledTicket).Returns(commandMessage);
 
             // Act
             await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();

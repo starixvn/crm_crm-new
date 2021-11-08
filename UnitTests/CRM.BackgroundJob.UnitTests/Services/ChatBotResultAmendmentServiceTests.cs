@@ -39,6 +39,40 @@
         }
 
         [Fact]
+        public async Task VoidingMessageGetSettledTicketAsync_WhenCalled_ReturnExpectedMessages()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var messageVoidSettleds = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var service = GetService();
+            baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<VoidingMessageGetSettledTicket>()).Returns(expected);
+
+            // Act
+            var actual = await service.VoidingMessageGetSettledTicketAsync(messageVoidSettleds);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GetVoidingMessasgeCheckAsync_WhenCalled_ReturnExpectedMessages()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var messageVoidSettleds = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var service = GetService();
+            baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<GetChatbotVoidingMessageCheck>()).Returns(expected);
+
+            // Act
+            var actual = await service.GetVoidingMessasgeCheckAsync(messageVoidSettleds);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public async Task ImportMessageVoidSettledAsync_WhenCalled_ReturnExpectedCommandResult()
         {
             // Arrange
