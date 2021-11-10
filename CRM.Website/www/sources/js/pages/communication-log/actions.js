@@ -12,7 +12,7 @@ import {
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
     setCreateCommunicationDialog,
-    setAllSettings
+    setAllSettings,
     setBalanceUpday
 } from './communicationLogSlice';
 
@@ -113,7 +113,7 @@ export const ActionCreators = {
     checkFeedbackDuplication,
     setCreateCommunicationDialog,
     getAllSettings,
-    createCommunicationLog
+    createCommunicationLog,
     getBalanceUpday,
     setBalanceUpday,
     getTicketInfoByRef

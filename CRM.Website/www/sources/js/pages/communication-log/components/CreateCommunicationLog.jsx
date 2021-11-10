@@ -45,7 +45,7 @@ export class CreateCommunicationLog extends Component {
             relatedCustomers: [],
             confirmCreateDialog: { show: false },
             checkDuplicateDialog: { show: false },
-            createResult: null
+            createResult: null,
             countClickRefTicket: 0
         };
     }
@@ -155,7 +155,7 @@ export class CreateCommunicationLog extends Component {
                                 .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
         if (isValidCustomer(customersInput)) {
             errors.customerNameInput = '';
-            this.setState({insertResult: null});
+            this.setState({createResult: null});
             this.props.verifyCustomers({ username: customersInput }).then(response => {
                 let createCustomers = [...this.state.relatedCustomers, ...response.data];
                 createCustomers = createCustomers.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
@@ -182,23 +182,23 @@ export class CreateCommunicationLog extends Component {
         this.setState(prevState => ({ collapse: { ...prevState.collapse, [section]: !prevState.collapse[section] } }));
     };
 
-    recheckInactiveSiteAndConfirmInsert = (username, params, setSubmitting) => {
+    recheckInactiveSiteAndConfirmCreate = (username, params, setSubmitting) => {
         Site.blockUI();
         this.props.verifyCustomers({ username }).then(response => {
             Site.unblockUI();
             const inactiveCustomers = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
             this.setState({ relatedCustomers: response.data });
-            this.setState({insertResult: null});
+            this.setState({createResult: null});
             if(inactiveCustomers.length > 0){
                 const inactiveUserName = inactiveCustomers.map(x=>x.val).join(',');
                 const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
                 console.log(message);
-                this.setState({ insertResult: {isSuccessful: false, message}});
+                this.setState({ createResult: {isSuccessful: false, message}});
                 setSubmitting(false);
             }
             else{
                 this.setState({
-            confirmCreateDialog: { show: true, params }
+                    confirmCreateDialog: { show: true, params }
                 });
             }
         });
@@ -237,7 +237,7 @@ export class CreateCommunicationLog extends Component {
             solution: values.solution
         };
 
-        this.recheckInactiveSiteAndConfirmInsert(userName, params, setSubmitting);
+        this.recheckInactiveSiteAndConfirmCreate(userName, params, setSubmitting);
     };
 
     handleCloseConfirmCreateDialog = () => {
@@ -294,10 +294,10 @@ export class CreateCommunicationLog extends Component {
 
             if(data.errorCode !== '0')
             {
-                this.setState({insertResult: {isSuccessful: false, message: data.description}});
+                this.setState({createResult: {isSuccessful: false, message: data.description}});
             } else{
                 let remarkText = '';
-                this.setState({insertResult: null});
+                this.setState({createResult: null});
                 const isFirstInputAndHasData = values.remark.length > 0 && this.state.countClickRefTicket === 0;
                 const isNotFirstInputAndRemoveData = this.state.countClickRefTicket !== 0 && !values.remark.includes(colorGenerated);
                 if (isFirstInputAndHasData || isNotFirstInputAndRemoveData) {
@@ -316,19 +316,21 @@ export class CreateCommunicationLog extends Component {
                 countClickRefTicket: prevState.countClickRefTicket.sec + 1
             }));
         });
-    }
+    };
 
     onPasteRefTicketHandler = event =>{
         if (event.clipboardData.getData('Text').match(/[^\d]/)) {
             event.preventDefault();
         }
-    }
+    };
 
     handleChangeRefTicket = (e, setFieldValue) => {
         const value = e.target.value > 15 ? e.target.value.slice(0, 15) : e.target.value;
         setFieldValue('ticketRefInput', value);
-    }
+    };
 
+    renderCreateCommunication = (values, touched, errors, handleChange, setFieldValue) => {
+        const { extensions, communicationTools, languages, responses } = this.props.allSettings;
         return(
             <div>
                 <Form.Group as={Row}>
@@ -651,7 +653,7 @@ export class CreateCommunicationLog extends Component {
                 {
                     this.state.relatedCustomers.length > 0 &&
                     <div className="verify-customer">
-                        <VerifyCustomer listOfCustomers={this.state.relatedCustomers} onClick={this.deleteVerifyInsertCustomer} isCommunicationLog />
+                        <VerifyCustomer listOfCustomers={this.state.relatedCustomers} onClick={this.deleteVerifyCreateCustomer} isCommunicationLog />
                     </div>
                 }
                 <Form.Group as={Row}>
@@ -723,7 +725,7 @@ export class CreateCommunicationLog extends Component {
                     {
                         createResult &&
                         <ResponseMessage isSuccessful={createResult.isSuccessful}
-                            message={createResult.message || LangHelper.getResource('CreateCommunicationLogSuccessfully')}
+                            message={createResult.message || LangHelper.getResource('InsertCommunicationLogSuccessfully')}
                         />
                     }
                     <div className="panel-group border-bottom-0">

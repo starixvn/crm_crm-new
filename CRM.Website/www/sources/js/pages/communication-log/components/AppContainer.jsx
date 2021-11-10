@@ -7,7 +7,7 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from './EditCommunicationLog';
-import InsertCommunicationLog from './CreateCommunicationLog';
+import CreateCommunicationLog from './CreateCommunicationLog';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -61,7 +61,7 @@ export class AppContainer extends Component {
                 }
                 {
                     createCommunicationDialog.show &&
-                    <InsertCommunicationLog
+                    <CreateCommunicationLog
                         onClose={this.handleCloseCreateCommunicationDiaLog}
                     />
                 }

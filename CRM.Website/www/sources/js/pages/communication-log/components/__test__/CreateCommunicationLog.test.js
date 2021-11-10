@@ -103,7 +103,7 @@ describe('CreateCommunicationLog', () => {
         it('should calls exactly function when componentDidMount', async () => {
             // Arrange
             const props = {
-                getAllSettings: jest.fn()
+                getAllSettings: jest.fn(),
                 getBalanceUpday: jest.fn()
             };
 
@@ -458,11 +458,7 @@ describe('CreateCommunicationLog', () => {
         });
     });
 
-    describe('confirmCreate', () => {
-        it('should setState when confirm create dialog', () => {
-            const container = shallow(<CreateCommunicationLog />).instance();
-            container.confirmCreate(params);
-            expect(container.state.confirmCreateDialog).toEqual({ show: true, params });
+
     describe('handleSubmit', () => {
         it('should call exact function when submit', () => {
             // Arrange
@@ -480,13 +476,13 @@ describe('CreateCommunicationLog', () => {
                 productIds: '3,4'
             };
             const container = shallow(<CreateCommunicationLog {...props}/>).instance();
-            container.recheckInactiveSiteAndConfirmInsert = jest.fn();
+            container.recheckInactiveSiteAndConfirmCreate = jest.fn();
             // Act
             container.handleSubmit(values, {setSubmitting});
 
             // Assert
             expect(setSubmitting).toHaveBeenCalledWith(true);
-            expect(container.recheckInactiveSiteAndConfirmInsert).toHaveBeenCalled();
+            expect(container.recheckInactiveSiteAndConfirmCreate).toHaveBeenCalled();
         });
     });
 
@@ -497,7 +493,7 @@ describe('CreateCommunicationLog', () => {
                 target: {value : 'testtttttttttttt'}
             };    
             const setFieldValue = jest.fn();       
-            const container = shallow(<InsertCommunicationLog />).instance();
+            const container = shallow(<CreateCommunicationLog />).instance();
 
             // Act
             container.handleChangeRefTicket(event, setFieldValue);
@@ -512,7 +508,7 @@ describe('CreateCommunicationLog', () => {
                 target: {value : 'test'}
             };    
             const setFieldValue = jest.fn();       
-            const container = shallow(<InsertCommunicationLog />).instance();
+            const container = shallow(<CreateCommunicationLog />).instance();
 
             // Act
             container.handleChangeRefTicket(event, setFieldValue);
@@ -526,7 +522,7 @@ describe('CreateCommunicationLog', () => {
         it('should do as expected if copy string', () => {
             // Arrange
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('event') }, preventDefault: jest.fn() };
-            const container = shallow(<InsertCommunicationLog />).instance();
+            const container = shallow(<CreateCommunicationLog />).instance();
 
             // Act
             container.onPasteRefTicketHandler(event);
@@ -535,7 +531,7 @@ describe('CreateCommunicationLog', () => {
         });
     });
 
-    describe('recheckInactiveSiteAndConfirmInsert', () => {
+    describe('recheckInactiveSiteAndConfirmCreate', () => {
         it('should call exact function if have any inactive site member', async () => {
             // Arrange
             const response = {
@@ -548,24 +544,24 @@ describe('CreateCommunicationLog', () => {
             };
             const promise = Promise.resolve(response);
             const state = {
-                insertResult: [],
+                createResult: [],
                 relatedCustomers: []
             };
             const setSubmitting = jest.fn();
             const props = {
                 verifyCustomers: jest.fn(() => promise)
             };
-            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
             container.setState(state);
             const params = { name: 'test'};
             const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
             // Act
-            container.recheckInactiveSiteAndConfirmInsert('username', params, setSubmitting);
+            container.recheckInactiveSiteAndConfirmCreate('username', params, setSubmitting);
             await promise;
             jest.runAllTimers();
 
             // Assert
-            expect(container.state.insertResult).toEqual({isSuccessful: false, message});
+            expect(container.state.createResult).toEqual({isSuccessful: false, message});
         });
 
         it('should call exact function if do not have any inactive site member', async () => {
@@ -583,15 +579,15 @@ describe('CreateCommunicationLog', () => {
             const props = {
                 verifyCustomers: jest.fn(() => promise)
             };
-            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
             const params = { name: 'test'};
             // Act
-            container.recheckInactiveSiteAndConfirmInsert('username', params, setSubmitting);
+            container.recheckInactiveSiteAndConfirmCreate('username', params, setSubmitting);
             await promise;
             jest.runAllTimers();
 
             // Assert
-            expect(container.state.confirmInsertDialog).toEqual({ show: true, params });
+            expect(container.state.confirmCreateDialog).toEqual({ show: true, params });
         });
     });
 
@@ -607,7 +603,7 @@ describe('CreateCommunicationLog', () => {
             };
             const values = {ticketRefInput: '123', remark: ''};
             const setFieldValue = jest.fn();
-            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
 
             // Act
             container.handleClickFillEvent(values, setFieldValue);
@@ -633,7 +629,7 @@ describe('CreateCommunicationLog', () => {
             };
             const values = {ticketRefInput: '123', remark: '123'};
             const setFieldValue = jest.fn();
-            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
             container.setState(state);
             // Act
             container.handleClickFillEvent(values, setFieldValue);
@@ -658,7 +654,7 @@ describe('CreateCommunicationLog', () => {
             };
             const values = {ticketRefInput: '123', remark: ''};
             const setFieldValue = jest.fn();
-            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
             container.setState(state);
             // Act
             container.handleClickFillEvent(values, setFieldValue);
@@ -683,7 +679,7 @@ describe('CreateCommunicationLog', () => {
             };
             const values = {ticketRefInput: '123', remark: 'color: rgb(255, 0, 0)'};
             const setFieldValue = jest.fn();
-            const container = shallow(<InsertCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
             container.setState(state);
             // Act
             container.handleClickFillEvent(values, setFieldValue);

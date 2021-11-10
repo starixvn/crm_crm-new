@@ -68,7 +68,7 @@ export class DataGrid extends Component {
         this.props.setEditCommunicationDialog({ show: true, feedbackId: id });
     };
 
-    handleInsert = () => {
+    handleCreate = () => {
         this.props.setCreateCommunicationDialog({ show: true });
     };
 
@@ -157,7 +157,7 @@ export class DataGrid extends Component {
                 />
                 {
                     window.customerInfoPolicy === Policy.Host &&
-                    <Button variant="primary" size="sm" className="mt-3" onClick={this.handleInsert}>
+                    <Button variant="primary" size="sm" className="mt-3" onClick={this.handleCreate}>
                         {LangHelper.getResource('InsertCase')}
                     </Button>
                 }

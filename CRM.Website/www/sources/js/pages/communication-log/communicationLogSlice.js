@@ -13,7 +13,7 @@ const communicationLogSlice = createSlice({
         feedbackSubjectTemplates: [],
         duplicateFeedbackId: 0,
         createCommunicationDialog: { show: false },
-        allSettings: null
+        allSettings: null,
         balanceUpday: null
     },
     reducers: {
@@ -69,7 +69,7 @@ export const {
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
     setCreateCommunicationDialog,
-    setAllSettings
+    setAllSettings,
     setBalanceUpday
 } = actions;
 
