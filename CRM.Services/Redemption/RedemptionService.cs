@@ -26,23 +26,27 @@
 
         public async Task<IEnumerable<CustomerLogInfo>> GetLogsByCustomerIdAsync(GetLogsByCustomerIdCriteria criteria)
         {
-            var customerInfos = await baseService.GetDataAsync<CustomerLogInfo>(criteria);
-            foreach (var customerInfo in customerInfos)
+            var customerLogInfo = await baseService.GetDataAsync<CustomerLogInfo>(criteria);
+            foreach (var customerLog in customerLogInfo)
             {
-                customerInfo.ClaimTime = commonService.ConvertToClientDateTime(customerInfo.ClaimTime);
+                customerLog.ClaimTime = commonService.ConvertToClientDateTime(customerLog.ClaimTime);
             }
            
-            return customerInfos;
+            return customerLogInfo;
         }
 
         public async Task<LogInfo> GetLogByIdAsync(int id)
         {
+            LogInfo redemptionLogInfo = null;
             var criteria = new GetLogByIdCriteria { Id = id };
-            var customer = await baseService.GetDataAsync<LogInfo>(criteria);
-            var customerInfo = customer.FirstOrDefault();
-            customerInfo.ClaimTime = commonService.ConvertToClientDateTime(customerInfo.ClaimTime);
+            var redemptionLog = await baseService.GetDataAsync<LogInfo>(criteria);
+            if (redemptionLog.Any())
+            {
+                redemptionLogInfo = redemptionLog.FirstOrDefault();
+                redemptionLogInfo.ClaimTime = commonService.ConvertToClientDateTime(redemptionLogInfo.ClaimTime);
+            }
 
-            return customerInfo;
+            return redemptionLogInfo;
         }
     }
 }

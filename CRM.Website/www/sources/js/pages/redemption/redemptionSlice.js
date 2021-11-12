@@ -3,23 +3,23 @@ import { createSlice } from '@reduxjs/toolkit';
 const redemptionSlice = createSlice({
     name: 'redemption',
     initialState: {
-        gridData: null,
+        redemptionLogs: null,
         allStatus: null,
-        logDetail: null,
+        redemptionLog: null,
         gridParams: null,
         editRedemptionDialog: { show: false },
-        statusForInsert: null,
-        insertRedemptionDialog: { show: false }
+        settings: null,
+        createRedemptionDialog: { show: false }
     },
     reducers: {
         setLogsByCustomerId: (state, action) => {
-            state.gridData = action.payload;
+            state.redemptionLogs = action.payload;
         },
         setAllStatus: (state, action) => {
             state.allStatus = action.payload;
         },
         setLogById: (state, action) => {
-            state.logDetail = action.payload;
+            state.redemptionLog = action.payload;
         },
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
@@ -27,11 +27,11 @@ const redemptionSlice = createSlice({
         setEditRedemptionDialog: (state, action) => {
             state.editRedemptionDialog = action.payload;
         },
-        setStatusForInsert: (state, action) => {
-            state.statusForInsert = action.payload;
+        setSettings: (state, action) => {
+            state.settings = action.payload;
         },
-        setInsertRedemptionDialog: (state, action) => {
-            state.insertRedemptionDialog = action.payload;
+        setCreateRedemptionDialog: (state, action) => {
+            state.createRedemptionDialog = action.payload;
         }
     }
 });
@@ -44,8 +44,8 @@ export const {
     setLogById,
     setGridParams,
     setEditRedemptionDialog,
-    setStatusForInsert,
-    setInsertRedemptionDialog
+    setSettings,
+    setCreateRedemptionDialog
 } = actions;
 
 export default reducer;

@@ -11,20 +11,20 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { validateFormik } from '../common.functions';
-import RenderFormEditInsert from './RenderFormEditInsert';
+import CreateEditForm from './CreateEditForm';
 
-export class InsertRedemptionLog extends Component {
+export class CreateRedemptionLog extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            insertRedemptionResult: ''
+            createRedemptionResult: ''
         };
     }
 
     async componentDidMount() {
-        this.props.getStatusForInsert();
+        this.props.getSettings();
     }
 
     initFormikData = () => {
@@ -32,7 +32,7 @@ export class InsertRedemptionLog extends Component {
             subject: '',
             claimTime: new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime))),
             remark: '',
-            statusId: this.props.statusForInsert.statuses[0].statusId,
+            statusId: this.props.settings.statuses[0].statusId,
             currencyId: 0,
             amount: 0,
             doneBy: ''
@@ -52,15 +52,15 @@ export class InsertRedemptionLog extends Component {
             statusId: parseInt(values.statusId, 10),
             currencyId: parseInt(values.currencyId, 10),
         };
-        this.props.insertRedemptionLog(params).then(response => {
+        this.props.createRedemptionLog(params).then(response => {
             Site.unblockUI();
-            this.setState({ insertRedemptionResult: response.data });
+            this.setState({ createRedemptionResult: response.data });
             if (response.data.isSuccessful) {
                 setTimeout(() => {
                     this.props.onClose(true);
                 }, 3000);
             } else {
-                this.formik.setSubmitting(false);
+                setSubmitting(false);
             }
         });
     };
@@ -74,20 +74,20 @@ export class InsertRedemptionLog extends Component {
         handleSubmit,
         isSubmitting
     }) => {
-        const { insertRedemptionResult } = this.state;
-        const { statusForInsert } = this.props;
+        const { createRedemptionResult } = this.state;
+        const { settings } = this.props;
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
-                        insertRedemptionResult &&
-                        <ResponseMessage isSuccessful={insertRedemptionResult.isSuccessful}
-                            message={insertRedemptionResult.message || LangHelper.getResource('InsertRedemptionLogSuccessfully')}
+                        createRedemptionResult &&
+                        <ResponseMessage isSuccessful={createRedemptionResult.isSuccessful}
+                            message={createRedemptionResult.message || LangHelper.getResource('CreateRedemptionLogSuccessfully')}
                         />
                     }
-                    <RenderFormEditInsert
-                        statuses={statusForInsert}
+                    <CreateEditForm
+                        statuses={settings}
                         {...{ values, errors, touched, setFieldValue, handleChange }}
                     />
                 </Modal.Body >
@@ -101,8 +101,8 @@ export class InsertRedemptionLog extends Component {
     };
 
     render() {
-        const { statusForInsert } = this.props;
-        if ( statusForInsert === null ) {
+        const { settings } = this.props;
+        if ( settings === null ) {
             return null;
         }
 
@@ -113,7 +113,7 @@ export class InsertRedemptionLog extends Component {
                     onHide={() => this.props.onClose(false)}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('InsertRedemptionLog')}</Modal.Title>
+                        <Modal.Title as="div">{LangHelper.getResource('CreateRedemptionLog')}</Modal.Title>
                     </Modal.Header>
                     <Formik
                         innerRef={el => this.formik = el}
@@ -132,8 +132,8 @@ export class InsertRedemptionLog extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { statusForInsert } = state;
-    return { statusForInsert };
+    const { settings } = state;
+    return { settings };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(InsertRedemptionLog);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateRedemptionLog);

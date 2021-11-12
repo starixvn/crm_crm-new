@@ -7,6 +7,10 @@
 @import '../../components/ckeditor';
 @import '../../components/date-picker/style';
 
+#app-container {
+    width: 1319px;
+}
+
 .react-datepicker-wrapper input{
     width: 100% !important;
 }
@@ -26,6 +30,11 @@
     &:hover {
         color: $draft-color !important;
     }
+}
+
+.sort-header{
+    float: right;
+    cursor: pointer;
 }
 
 .modal-edit-redemption {

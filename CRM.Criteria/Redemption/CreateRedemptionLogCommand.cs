@@ -4,7 +4,7 @@
     using CRM.Core.Models;
     using Fanex.Data;
 
-    public class InsertRedemptionLogCommand : BaseNonQueryCommand
+    public class CreateRedemptionLogCommand : BaseNonQueryCommand
     {
         [SpParam(SqlParamName = "CustId")]
         public int CustomerId { get; set; }

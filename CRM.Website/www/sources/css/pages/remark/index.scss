@@ -1,6 +1,10 @@
 @import '../../components/ckeditor';
 @import '../../abstracts/variables';
 
+#app-container {
+    width: 1319px;
+}
+
 .generate-remark{
     display: flex;
     margin-bottom: 10px;

@@ -7,8 +7,8 @@ import {
     setLogById,
     setGridParams,
     setEditRedemptionDialog,
-    setStatusForInsert,
-    setInsertRedemptionDialog
+    setSettings,
+    setCreateRedemptionDialog
 } from './redemptionSlice';
 
 const getLogsByCustomerId = params => async dispatch => {
@@ -40,27 +40,28 @@ const editRedemptionLog = params => async () => {
     return await DataService.postDataAsync(url,params).then(response => response);
 };
 
-const getStatusForInsert = () => async dispatch => {
+const getSettings = () => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl(`Redemption/GetAllStatus?isEdit=false`);
     await DataService.getDataAsync(url).then(response => {
-        dispatch(setStatusForInsert(response.data));
+        dispatch(setSettings(response.data));
     }).then(() => Site.unblockUI());
 };
 
-const insertRedemptionLog = params => async () => {
-    const url = Site.resolveClientUrl('Redemption/InsertRedemptionLog');
+const createRedemptionLog = params => async () => {
+    const url = Site.resolveClientUrl('Redemption/CreateRedemptionLog');
     return await DataService.postDataAsync(url,params).then(response => response);
 };
 
 export const ActionCreators = {
     getLogsByCustomerId,
+    setLogsByCustomerId,
     getAllStatus,
     getLogById,
     setGridParams,
     setEditRedemptionDialog,
     editRedemptionLog,
-    getStatusForInsert,
-    setInsertRedemptionDialog,
-    insertRedemptionLog
+    getSettings,
+    setCreateRedemptionDialog,
+    createRedemptionLog
 };

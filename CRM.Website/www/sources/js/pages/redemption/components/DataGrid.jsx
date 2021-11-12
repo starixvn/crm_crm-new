@@ -10,24 +10,41 @@ import { Policy } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
 
+    constructor(props) {
+        super(props);
+        this.sortDesc = true;
+    }
+
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={50}>{LangHelper.getResource('Subject')}</HeaderCell>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('ClaimedTime')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Currency')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Amount')}</HeaderCell>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('DoneBy')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={50}>{LangHelper.getResource('Subject')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('subject')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('ClaimedTime')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('claimTime')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Currency')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('currency')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Amount')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('amount')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('DoneBy')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('doneBy')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('status')}/>
+                </HeaderCell>
             </HeaderRow>
         );
     };
 
     buildBody = () => {
-        const { gridData } = this.props;
+        const { redemptionLogs } = this.props;
 
-        if (gridData.length > 0) {
-            return gridData.map((item, index) => this.renderRow(item, index));
+        if (redemptionLogs.length > 0) {
+            return redemptionLogs.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -38,32 +55,51 @@ export class DataGrid extends Component {
         ];
     };
 
+    isSortEqual = (itemX, itemY) => {
+        if ( itemX === itemY )
+            return 0;
+        else return -1;
+    };
+
+    handleSort = item => {
+        const { redemptionLogs } = this.props;
+        const data = [ ...redemptionLogs ];
+        let sortData = [];
+        if (this.sortDesc) {
+            sortData = data.sort((a, b) => a[item] > b[item] ? 1 : this.isSortEqual(a[item], b[item]));
+        } else {
+            sortData = data.sort((a, b) => a[item] < b[item] ? 1 : this.isSortEqual(a[item], b[item]));
+        }
+        this.sortDesc = !this.sortDesc;
+        this.props.setLogsByCustomerId(sortData);
+    };
+
     handleEditRedemptionLog = id => {
         this.props.setEditRedemptionDialog({ show: true, logId: id });
     };
 
-    handleInsertRedemptionLog = () => {
-        this.props.setInsertRedemptionDialog({ show: true });
+    handleCreateRedemptionLog = () => {
+        this.props.setCreateRedemptionDialog({ show: true });
     };
 
     renderRow = (item, index) => {
         return (
             <Row key={index}>
-                <Cell className="text-center">
+                <Cell className="text-left">
                     <span className='link-click' onClick={() => this.handleEditRedemptionLog(item.id)}>{item.subject}</span>
                 </Cell>
                 <Cell className="text-center">{DateTimeService.toShortDateFormat(item.claimTime)}</Cell>
                 <Cell className='text-center'>{item.currency}</Cell>
-                <Cell className='text-center'>{`${item.amount}.00`}</Cell>
-                <Cell className='text-center'>{item.doneBy}</Cell>
+                <Cell className='text-right'>{`${item.amount}.00`}</Cell>
+                <Cell className='text-left'>{item.doneBy}</Cell>
                 <Cell className='text-center'>{item.status}</Cell>
             </Row>
         );
     };
 
     render() {
-        const { gridData } = this.props;
-        if (!gridData) {
+        const { redemptionLogs } = this.props;
+        if (!redemptionLogs) {
             return null;
         }
 
@@ -73,7 +109,7 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('CustomerRedemptionLogs')}</span>
                 </div>
                 <Table
-                    width={1083}
+                    width={1400}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
@@ -82,7 +118,7 @@ export class DataGrid extends Component {
                 />
                 {
                     window.customerInfoPolicy === Policy.Host && (
-                        <Button variant="primary" size="sm" className="mt-3" onClick={() => this.handleInsertRedemptionLog()}>
+                        <Button variant="primary" size="sm" className="mt-3" onClick={() => this.handleCreateRedemptionLog()}>
                             {LangHelper.getResource('InsertCase')}
                         </Button>
                     )
@@ -95,8 +131,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridData } = state;
-    return { gridData };
+    const { redemptionLogs } = state;
+    return { redemptionLogs };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

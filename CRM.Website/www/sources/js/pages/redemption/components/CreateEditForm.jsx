@@ -4,7 +4,7 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 import DatePicker from '@jsroot/components/date-picker/index';
 import LangHelper from '@jsroot/common/langHelper';
 
-export class RenderFormEditInsert extends Component {
+export class CreateEditForm extends Component {
     render() {
         const { values, errors, touched, setFieldValue, handleChange, statuses } = this.props;
         return (
@@ -57,7 +57,7 @@ export class RenderFormEditInsert extends Component {
                             <Form.Group as={Row}>
                                 <Form.Label column sm="4" md="4" htmlFor="amount">{LangHelper.getResource('Amount')}</Form.Label>
                                 <Col sm="7" md="7">
-                                    <Form.Control size="sm" type="text" className="shadow-none"
+                                    <Form.Control size="sm" type="number" className="shadow-none"
                                         name="amount" id="amount"
                                         value={values.amount}
                                         onChange={handleChange}
@@ -113,4 +113,4 @@ export class RenderFormEditInsert extends Component {
     }
 }
 
-export default RenderFormEditInsert;
+export default CreateEditForm;

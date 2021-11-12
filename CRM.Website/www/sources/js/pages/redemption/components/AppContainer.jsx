@@ -6,17 +6,17 @@ import { bindActionCreators } from 'redux';
 import DataGrid from './DataGrid';
 import Filter from './Filter';
 import EditRedemptionLog from './EditRedemptionLog';
-import InsertRedemptionLog from './InsertRedemptionLog';
+import CreateRedemptionLog from './CreateRedemptionLog';
 
 export class AppContainer extends Component {
     static propTypes = {
         editRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        insertRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        createRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
         editRedemptionDialog: { show: false },
-        insertRedemptionDialog: { show: false }
+        createRedemptionDialog: { show: false }
     };
 
     handleCloseEditRedemptionDialog = isSuccessful => {
@@ -26,17 +26,17 @@ export class AppContainer extends Component {
         }
     };
 
-    handleCloseInsertRedemptionDialog = isSuccessful => {
-        this.props.setInsertRedemptionDialog({ show: false });
+    handleCloseCreateRedemptionDialog = isSuccessful => {
+        this.props.setCreateRedemptionDialog({ show: false });
         if (isSuccessful) {
             this.props.getLogsByCustomerId(this.props.gridParams);
         }
     };
 
     render() {
-        const { editRedemptionDialog, insertRedemptionDialog } = this.props;
+        const { editRedemptionDialog, createRedemptionDialog } = this.props;
         return (
-            <div className="col-md-10">
+            <div>
                 <Filter />
                 <DataGrid />
                 {
@@ -46,9 +46,9 @@ export class AppContainer extends Component {
                     />
                 }
                 {
-                    insertRedemptionDialog.show &&
-                    <InsertRedemptionLog logId={insertRedemptionDialog.logId}
-                        onClose={this.handleCloseInsertRedemptionDialog}
+                    createRedemptionDialog.show &&
+                    <CreateRedemptionLog logId={createRedemptionDialog.logId}
+                        onClose={this.handleCloseCreateRedemptionDialog}
                     />
                 }
             </div>
@@ -59,8 +59,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, editRedemptionDialog, insertRedemptionDialog } = state;
-    return { gridParams, editRedemptionDialog, insertRedemptionDialog };
+    const { gridParams, editRedemptionDialog, createRedemptionDialog } = state;
+    return { gridParams, editRedemptionDialog, createRedemptionDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

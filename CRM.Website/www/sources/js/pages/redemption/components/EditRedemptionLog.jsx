@@ -12,7 +12,7 @@ import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { Policy } from '@jsroot/common/constants';
 import { validateFormik } from '../common.functions';
-import RenderFormEditInsert from './RenderFormEditInsert';
+import CreateEditForm from './CreateEditForm';
 
 export class EditRedemptionLog extends Component {
 
@@ -29,7 +29,7 @@ export class EditRedemptionLog extends Component {
         await this.props.getLogById({ id: this.props.logId });
         await this.props.getAllStatus();
         this.setState({
-            redemptionLog: this.initFormikData(this.props.logDetail)
+            redemptionLog: this.initFormikData(this.props.redemptionLog)
         });
     }
 
@@ -67,7 +67,7 @@ export class EditRedemptionLog extends Component {
                     this.props.onClose(true);
                 }, 3000);
             } else {
-                this.formik.setSubmitting(false);
+                setSubmitting(false);
             }
         });
     };
@@ -93,7 +93,7 @@ export class EditRedemptionLog extends Component {
                             message={editRedemptionResult.message || LangHelper.getResource('UpdateRedemptionLogSuccessfully')}
                         />
                     }
-                    <RenderFormEditInsert
+                    <CreateEditForm
                         {...{ values, errors, touched, setFieldValue, handleChange }}
                         statuses={allStatus}
                     />
@@ -144,8 +144,8 @@ export class EditRedemptionLog extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allStatus, logDetail } = state;
-    return { allStatus, logDetail };
+    const { allStatus, redemptionLog } = state;
+    return { allStatus, redemptionLog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditRedemptionLog);

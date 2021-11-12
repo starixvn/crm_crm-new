@@ -89,7 +89,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
-        public async Task<IActionResult> InsertRedemptionLog([FromBody] InsertRedemptionLogCommand command)
+        public async Task<IActionResult> CreateRedemptionLog([FromBody] CreateRedemptionLogCommand command)
         {
             command.UserId = napSession.UserId;
             command.IP = ClientIP;

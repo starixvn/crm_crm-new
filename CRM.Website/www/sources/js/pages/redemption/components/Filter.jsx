@@ -30,8 +30,8 @@ export class Filter extends Component {
         const { fromDate, toDate } = this.state;
         const params = {
             customerId: 1754,
-            fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
-            toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate)),
+            fromDate: DateTimeService.toLongDateTimeFormat(fromDate),
+            toDate: DateTimeService.toLongDateTimeFormat(toDate),
             statusId: 0
         };
         this.props.setGridParams(params);
@@ -59,8 +59,8 @@ export class Filter extends Component {
         const { statusId, fromDate, toDate } = this.state;
         const params = {
             customerId: 1754,
-            fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
-            toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate)),
+            fromDate: DateTimeService.toLongDateTimeFormat(fromDate),
+            toDate: DateTimeService.toLongDateTimeFormat(toDate),
             statusId: statusId
         };
         this.props.getLogsByCustomerId(params);

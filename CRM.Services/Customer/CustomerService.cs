@@ -118,22 +118,28 @@
 
         public async Task<CustomerInfo> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria)
         {
-            var (customers, languages) = await baseService.FetchMultipleAsync<CustomerInfo, CustomerLanguageInfo>(criteria);
+            var (customer, languages) = await baseService.FetchMultipleAsync<CustomerInfo, CustomerLanguageInfo>(criteria);
             var listLanguages = new List<int>();
-            var customerInfo = customers.FirstOrDefault();
-            var site = await settingService.GetSiteByIdAsync(customerInfo.SiteId);
-            foreach (var item in languages)
+            CustomerInfo customerInfo = null;
+            if (customer.Any())
             {
-                listLanguages.Add(item.LanguageId);
+                customerInfo = customer.FirstOrDefault();
+
+                var site = await settingService.GetSiteByIdAsync(customerInfo.SiteId);
+                foreach (var item in languages)
+                {
+                    listLanguages.Add(item.LanguageId);
+                }
+                customerInfo.Languages = listLanguages;
+                customerInfo.LanguageIds = string.Join(",", listLanguages);
+                customerInfo.SiteSetting = new Site
+                {
+                    Id = site.Id,
+                    Name = site.Name
+                };
+                customerInfo.IsDirectAccount = await CheckDirectAccount(customerInfo.CustId);
             }
-            customerInfo.Languages = listLanguages;
-            customerInfo.LanguageIds = string.Join(",", listLanguages);
-            customerInfo.SiteSetting = new Site
-            {
-                Id = site.Id,
-                Name = site.Name
-            };
-            customerInfo.IsDirectAccount = await CheckDirectAccount(customerInfo.CustId);
+            
 
             return customerInfo;
         }
