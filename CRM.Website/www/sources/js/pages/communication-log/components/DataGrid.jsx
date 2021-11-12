@@ -10,21 +10,42 @@ import { Policy, PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
 
+    constructor(props) {
+        super(props);
+        this.sortDesc = true;
+    }
+
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('feedbackId')}/>
+                </HeaderCell>
                 {
                     window.createUpdateFeedbackPermission === Policy.Host &&
                     <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
-                <HeaderCell colWidth={20}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
-                <HeaderCell colWidth={55}>{LangHelper.getResource('Category')}</HeaderCell>
-                <HeaderCell colWidth={40}>{LangHelper.getResource('Subject')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Duration')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Handler')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Reviewer')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('FeedbackDate')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('feedbackDate')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={55}>{LangHelper.getResource('Category')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('subject')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Subject')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('subject')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('status')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Duration')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('duration')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Handler')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('handler')}/>
+                </HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Reviewer')}
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('reviewer')}/>
+                </HeaderCell>
             </HeaderRow>
         );
     };
@@ -45,6 +66,25 @@ export class DataGrid extends Component {
                 </Cell>
             </Row>
         ];
+    };
+
+    isSortEqual = (itemA, itemB) => {
+        if ( itemA === itemB )
+            return 0;
+        else return -1;
+    };
+
+    handleSort = item => {
+        const { gridData } = this.props;
+        const data = [ ...gridData.data ];
+        let sortData = [];
+        if (this.sortDesc) {
+            sortData = data.sort((a, b) => a[item] > b[item] ? 1 : this.isSortEqual(a[item], b[item]));
+        } else {
+            sortData = data.sort((a, b) => a[item] < b[item] ? 1 : this.isSortEqual(a[item], b[item]));
+        }
+        this.sortDesc = !this.sortDesc;
+        this.props.setLogsByCustomerId({data: sortData, mainCategories: gridData.mainCategories});
     };
 
     handleGroupCategory = category => {

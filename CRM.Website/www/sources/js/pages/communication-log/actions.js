@@ -99,6 +99,7 @@ const getTicketInfoByRef = Refno => async () => {
 };
 
 export const ActionCreators = {
+    setLogsByCustomerId,
     getLogsByCustomerId,
     getStatusForEdit,
     getStatusForFilter,
