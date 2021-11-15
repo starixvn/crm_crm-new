@@ -61,6 +61,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ActionLog.
+        /// </summary>
+        public static string ActionLog {
+            get {
+                return ResourceManager.GetString("ActionLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
         public static string Active {

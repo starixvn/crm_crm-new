@@ -306,4 +306,7 @@
   <data name="Redemption" xml:space="preserve">
     <value>Redemption</value>
   </data>
+  <data name="ActionLog" xml:space="preserve">
+    <value>ActionLog</value>
+  </data>
 </root>
