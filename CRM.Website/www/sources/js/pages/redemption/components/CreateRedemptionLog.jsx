@@ -23,7 +23,7 @@ export class CreateRedemptionLog extends Component {
         };
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.props.getSettings();
     }
 

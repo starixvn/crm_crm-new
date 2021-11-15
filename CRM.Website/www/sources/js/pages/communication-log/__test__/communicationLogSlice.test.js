@@ -9,7 +9,7 @@ import communicationLog, {
     setFeedbackSubjectTemplates,
     setDuplicateFeedback,
     setCreateCommunicationDialog,
-    setAllSettings
+    setAllSettings,
     setBalanceUpday
 } from '../communicationLogSlice';
 
@@ -27,7 +27,7 @@ describe('communicationLog reducer', () => {
             feedbackSubjectTemplates: [],
             duplicateFeedbackId: 0,
             createCommunicationDialog: { show: false },
-            allSettings: null
+            allSettings: null,
             balanceUpday: null
         });
     });
