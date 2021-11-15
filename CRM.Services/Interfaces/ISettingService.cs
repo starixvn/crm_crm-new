@@ -57,5 +57,7 @@
         Task<IEnumerable<Setting>> GetMainCategoryWithSubCategoryAsync();
 
         Task<IEnumerable<Station>> GetStations();
+
+        Task<IEnumerable<BaseModel>> GetAllLogActionAsync(int actionType);
     }
 }

@@ -329,5 +329,14 @@
             var criteria = new GetAllStationCriteria();
             return await baseService.GetDataAsync<Station>(criteria);
         }
+
+        public async Task<IEnumerable<BaseModel>> GetAllLogActionAsync(int actionType)
+        {
+            var criteria = new GetAllActionCriteria
+            {
+                ActionType = actionType
+            };
+            return await baseService.GetDataAsync<BaseModel>(criteria);
+        }
     }
 }
