@@ -371,5 +371,10 @@
     WithoutAnyGroup: 'Without any group',
     WeChat: 'WeChat',
     WhatApp: "What's App",
-    Zalo: 'Zalo'
+    Zalo: 'Zalo',
+    LogTime: 'Log Time',
+    FieldName: 'Field Name',
+    OldValue: 'Old Value',
+    NewValue: 'New Value',
+    CustomerActivityLogs: 'Customer Activity Logs'
 };
