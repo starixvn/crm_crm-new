@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { Policy, PAGING_SIZES } from '@jsroot/common/constants';
+import { PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
 
@@ -26,8 +26,8 @@ export class DataGrid extends Component {
     buildBody = () => {
         const { activityLogs } = this.props;
 
-        if ( activityLogs && activityLogs.length > 0) {
-            return activityLogs.map((item, index) => this.renderRow(item, index));
+        if ( activityLogs.data.length > 0) {
+            return activityLogs.data.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -39,24 +39,25 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index) => {
-        const color = index%2 === 0 ? 'grid-blue' : 'grid-white'
+        const color = index%2 === 0 ? 'grid-blue' : 'grid-white';
+        const rowSpan = item.fieldNames.length > 0 ? item.fieldNames.length : null;
         return (
             <Fragment>
                 <Row key={index}>
-                    <Cell className={`text-center ${color}`} rowSpan={item.fieldNames.length}>{item.logDate}</Cell>
-                    <Cell className={color} rowSpan={item.fieldNames.length}>{item.username}</Cell>
-                    <Cell className={color} rowSpan={item.fieldNames.length}>{item.actionName}</Cell>
+                    <Cell className={`text-center ${color}`} rowSpan={rowSpan}>{item.logDate}</Cell>
+                    <Cell className={color} rowSpan={rowSpan}>{item.username}</Cell>
+                    <Cell className={color} rowSpan={rowSpan}>{item.actionName}</Cell>
                     <Cell className={color}>{item.fieldNames[0]}</Cell>
-                    <Cell className={color}>{item.oldValuesList[0]}</Cell>
-                    <Cell className={color}>{item.newValuesList[0]}</Cell>
+                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[0],item.oldValuesList[0]) }}></Cell>
+                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[0],item.newValuesList[0]) }}></Cell>
                 </Row>
                 {
                     item.fieldNames.length > 1 &&
                     item.fieldNames.slice(1).map((element, key) => (
                         <Row key={key}>
                             <Cell className={color}>{item.fieldNames[key+1]}</Cell>
-                            <Cell className={color}>{item.oldValuesList[key+1]}</Cell>
-                            <Cell className={color}>{item.newValuesList[key+1]}</Cell>
+                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[key+1],item.oldValuesList[key+1]) }}></Cell>
+                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[key+1],item.newValuesList[key+1]) }}></Cell>
                         </Row>
                     ))
                 }
@@ -64,7 +65,56 @@ export class DataGrid extends Component {
         );
     };
 
+    isEncode = fieldName => {
+        return fieldName !== 'Remark' &&
+            fieldName !== 'Solution' &&
+            fieldName !== 'Review' &&
+            fieldName !== 'SpecialRemark';
+    };
+
+    replaceText = text => {
+        return text ? text.replace('\\n', '<br />').replace('\\r', '<br />') : '';
+    };
+
+    encodeHtml = value => {
+        const item = value.replace(/&/g, '&amp;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+        return item;
+    };
+
+    renderValue = (fieldName, value) => {
+        value = this.replaceText(value);
+        if (this.isEncode(fieldName)) {
+            value = this.encodeHtml(value);
+        }
+        return value;
+    };
+
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params['pageSize'] = pageSize;
+        params['pageIndex'] = pageIndex;
+        this.props.setGridParams(params);
+        this.props.getActivityLog(params);
+    };
+
     render() {
+        const { activityLogs } = this.props;
+        if(!activityLogs || !activityLogs.data){
+            return null;
+        }
+
+        const { pageIndex, pageSize } = this.props.gridParams;
+        const pagingOption = {
+            PageIndex: pageIndex,
+            PageSize: pageSize,
+            TotalItem: activityLogs.totalItems,
+            PageList: PAGING_SIZES
+        };
+
         return (
             <Fragment>
                 <div className='table-title d-flex justify-content-between align-items-center'>
@@ -75,6 +125,9 @@ export class DataGrid extends Component {
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
+                    isPaging
+                    pageOption={pagingOption}
+                    onPaging={this.onPaging}
                     containerPadding={0}
                     adjustedHeight={10}
                 />
@@ -86,8 +139,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { activityLogs } = state;
-    return { activityLogs }
+    const { activityLogs, gridParams } = state;
+    return { activityLogs, gridParams }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

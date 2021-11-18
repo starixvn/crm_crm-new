@@ -3,7 +3,8 @@ import Site from '@jsroot/common/site';
 
 import {
     setAllLogAction,
-    setActivityLog
+    setActivityLog,
+    setGridParams
 } from './actionLogSlice';
 
 const getAllLogAction = params => async dispatch => {
@@ -24,5 +25,6 @@ const getActivityLog = params => async dispatch => {
 
 export const ActionCreators = {
     getAllLogAction,
-    getActivityLog
+    getActivityLog,
+    setGridParams
 };

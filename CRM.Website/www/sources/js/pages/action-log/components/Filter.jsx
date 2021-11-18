@@ -52,9 +52,12 @@ export class Filter extends Component {
             actionId: 0,
             customerId: 1754,
             handler: handler,
-            fromDate: DateTimeService.toShortDateFormat(fromDate),
-            toDate: DateTimeService.toShortDateFormat(toDate)
+            fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(fromDate)),
+            toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(toDate)),
+            pageIndex: 1,
+            pageSize: 100
         };
+        this.props.setGridParams(params);
         this.props.getActivityLog(params);
     };
 
