@@ -15,10 +15,10 @@
 
         public string NewValues { get; set; }
 
-        public IList<string> FieldNames { get; set; }
+        public IList<string> FieldNames { get; set; } = new List<string>();
 
-        public IList<string> OldValuesList { get; set; }
+        public IList<string> OldValuesList { get; set; } = new List<string>();
 
-        public IList<string> NewValuesList { get; set; }
+        public IList<string> NewValuesList { get; set; } = new List<string>();
     }
 }

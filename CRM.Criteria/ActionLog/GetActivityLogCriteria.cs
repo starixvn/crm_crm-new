@@ -20,6 +20,12 @@
         [SpParam(SqlParamName = "CustId")]
         public int CustomerId { get; set; }
 
+        [SpParam(Ignored = true)]
+        public int PageIndex { get; set; }
+
+        [SpParam(Ignored = true)]
+        public int PageSize { get; set; }
+
         public override string GetSettingKey() => "Acc_CRM_LogActionActivityList";
 
         public override bool IsValid() => true;

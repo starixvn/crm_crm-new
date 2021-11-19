@@ -8,7 +8,6 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Communication;
-    using CRM.Models.Common;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Communication;
