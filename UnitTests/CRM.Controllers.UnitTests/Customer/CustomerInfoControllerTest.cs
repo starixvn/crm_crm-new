@@ -61,7 +61,7 @@
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var customerInfo = (CustomerInfo)jsonResult.Value.GetType().GetProperty("data").GetValue(jsonResult.Value);
+            var customerInfo = (CustomerInfo)jsonResult.Value;
             Assert.Equal(customer, customerInfo);
         }
 

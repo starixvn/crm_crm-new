@@ -174,7 +174,7 @@
             return GetSettingValue(value, fieldName);
         }
 
-        private string GetSettingValue(string key, string settingType)
+        public string GetSettingValue(string key, string settingType)
         {
             if (string.Equals(key, "0", StringComparison.OrdinalIgnoreCase))
             {
@@ -189,7 +189,7 @@
             return settingValue;
         }
 
-        private string GetMultipleSettingValue(string value, string settingType)
+        public string GetMultipleSettingValue(string value, string settingType)
         {
             var valueList = value.Split(',');
 
