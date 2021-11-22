@@ -637,7 +637,7 @@ describe('CreateCommunicationLog', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('remark', 'test<br>123');
+            expect(setFieldValue).toHaveBeenCalled();
         });
 
         it('should do as expected if response errorCode === 0 and first request data', async () => {
@@ -859,7 +859,7 @@ describe('CreateCommunicationLog', () => {
             const state = {
                 createResult: {
                     isSuccessful: true,
-                    message: 'CreateCommunicationLogSuccessfully'
+                    message: 'InsertCommunicationLogSuccessfully'
                 }
             };
            
@@ -870,7 +870,7 @@ describe('CreateCommunicationLog', () => {
     
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(true);
-            expect(renderEdit.find(ResponseMessage).props().message).toEqual('CreateCommunicationLogSuccessfully');
+            expect(renderEdit.find(ResponseMessage).props().message).toEqual('InsertCommunicationLogSuccessfully');
         });
 
         it('handle default message responses if successful', () => {
@@ -888,7 +888,7 @@ describe('CreateCommunicationLog', () => {
     
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(true);
-            expect(renderEdit.find(ResponseMessage).props().message).toEqual('CreateCommunicationLogSuccessfully');
+            expect(renderEdit.find(ResponseMessage).props().message).toEqual('InsertCommunicationLogSuccessfully');
         });
     });
 

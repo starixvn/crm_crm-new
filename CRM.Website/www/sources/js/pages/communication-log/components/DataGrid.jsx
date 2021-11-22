@@ -72,8 +72,8 @@ export class DataGrid extends Component {
         if ( itemA === itemB ) {
             return 0;
         } else {
-            return -1
-        };
+            return -1;
+        }
     };
 
     handleSort = item => {

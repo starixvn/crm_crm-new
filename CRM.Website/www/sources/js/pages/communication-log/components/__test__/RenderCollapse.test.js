@@ -17,7 +17,8 @@ describe('commonFunctions', () => {
             collapse: {},
             handleChange: jest.fn(),
             setFieldValue: jest.fn(),
-            handleCollapseExpand: jest.fn()
+            handleCollapseExpand: jest.fn(),
+            isEdit: true
         };
 
         it('handleChange should call exact function when handleCollapse', () => {

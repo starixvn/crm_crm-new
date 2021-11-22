@@ -65,7 +65,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getStatusForEdit());
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('CommunicationLog/getStatusForEdit');
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('CommunicationLog/GetAllStatus?isEdit=true');
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -83,7 +83,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getStatusForFilter());
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('CommunicationLog/getStatusForFilter');
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('CommunicationLog/GetAllStatus?isEdit=false');
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -102,7 +102,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getLogByFeedbackId(expectedParams));
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith(`Feedback/GetLogByFeedbackId/${expectedParams}`);
+            expect(DataService.getDataAsync).toHaveBeenCalledWith(`CommunicationLog/GetLogByFeedbackId/${expectedParams}`);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });

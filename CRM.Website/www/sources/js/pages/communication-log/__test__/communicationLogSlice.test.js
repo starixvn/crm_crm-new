@@ -19,8 +19,7 @@ describe('communicationLog reducer', () => {
             gridData: null,
             statusEdit: null,
             statusFilter: null,
-            gridParams: null,
-            gridPages: { pageIndex: 1, pageSize: 100 },
+            gridParams: { pageIndex: 1, pageSize: 100 },
             editNoOfInquiryDialog: { show: false },
             editCommunicationDialog: { show: false },
             logFeedback: null,
@@ -52,7 +51,7 @@ describe('communicationLog reducer', () => {
                 }
             })
         ).toEqual({
-            statusForEdit: {
+            statusEdit: {
                 countries: [{ id: 1, name: 'country' }]
             }
         });
@@ -82,7 +81,7 @@ describe('communicationLog reducer', () => {
                 }
             })
         ).toEqual({
-            statusForFilter: {
+            statusFilter: {
                 countries: [{ id: 1, name: 'country' }]
             }
         });

@@ -10,7 +10,7 @@ describe('Filter', () => {
     });
 
     const initProps = {
-        statusForFilter: [{ sites: {id: 1}}],
+        statusFilter: [{ sites: {id: 1}}],
         getLogsByCustomerId: jest.fn(),
         setGridParams: jest.fn(),
         getStatusForFilter: jest.fn(),
@@ -138,7 +138,7 @@ describe('Filter', () => {
             //Act
             const props = {
                 ...initProps,
-                statusForFilter: null
+                statusFilter: null
             };
             const container = shallow(<Filter {...props} />);
 

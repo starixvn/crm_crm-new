@@ -91,7 +91,12 @@ describe('EditCommunicationLog', () => {
             subProductNA: {id: 0, value: 'N/A'},
             subProducts: [{id: 2, value: 'N/A', parentId: 1}]
         },
-        hasReviewFeedbackPermission: true
+        hasReviewFeedbackPermission: true,
+        log: {
+            relatedCustomers: [],
+            review: 'test',
+            isReviewed: true
+        }
     };
     
     describe('componentDidMount', () => {
@@ -123,7 +128,7 @@ describe('EditCommunicationLog', () => {
             //Arrange
             expect(await props.getLogByFeedbackId).toHaveBeenCalledWith(73300);
             expect(await props.getStatusForEdit).toHaveBeenCalled();
-            expect(container.state.relatedCustomers).toEqual([{ custId: 1, val: 'sa' }]);
+            expect(container.state.relatedCustomers).toEqual([]);
             expect(container.state.communicationLog).toEqual([]);
             expect(container.state.settings).toEqual(initData.settings);
             expect(container.state.hasReviewFeedbackPermission).toEqual(true);
@@ -564,7 +569,7 @@ describe('EditCommunicationLog', () => {
 
     describe('renderForm', () => {
         const props = {
-            statusForEdit: [{ statusId: 1, name: 'Closed'}],
+            statusEdit: [{ statusId: 1, name: 'Closed'}],
             onClose: jest.fn()
         }
         const formikProps = {
