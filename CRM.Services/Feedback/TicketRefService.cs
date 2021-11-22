@@ -33,7 +33,8 @@
             var apiKey = configuration.GetSection("NapSettings:APIKey").Value;
             CustomDelegatingHandler customDelegatingHandler = new CustomDelegatingHandler(apiKey);
             HttpClient client = HttpClientFactory.Create(customDelegatingHandler);
-            var response = await client.GetAsync(napUrl + "BetListApi/GetBetListByRefNo?refno=" + refno);
+            var url = new Uri(napUrl + "BetListApi/GetBetListByRefNo?refno=" + refno);
+            var response = await client.GetAsync(url);
             var jsonString = await response.Content.ReadAsStringAsync();
             return jsonString != null ? JsonConvert.DeserializeObject<TicketInfo>(jsonString) : await Task.FromResult<TicketInfo>(null);
         }

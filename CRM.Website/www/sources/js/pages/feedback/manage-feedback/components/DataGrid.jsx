@@ -140,7 +140,7 @@ export class DataGrid extends Component {
         const createDateFormat = DateTimeService.toShortDateTimeFormat(item.createDate);
         const solveDateFormat = DateTimeService.toShortDateTimeFormat(item.solveDate);
         return (
-            <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${item.status === 'Pending' ? 'pending' : item.status === 'Closed' ? 'closed' : ''}`}>
+            <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${this.renderStatus(item.status)}`}>
                 <Cell className='text-center'>
                     <input type='checkbox'
                         name={item.feedbackId} key={item.feedbackId}
@@ -174,6 +174,14 @@ export class DataGrid extends Component {
                 <Cell>{this.renderRelatedCustomer(item.relatedCustomer.split(','))}</Cell>
             </Row>
         );
+    };
+
+    renderStatus = status =>{
+        if(status === 'Pending')
+        {
+            return 'pending';
+        }
+        return status === 'Closed' ? 'closed' : '';
     };
 
     handleExportExcel = () => {

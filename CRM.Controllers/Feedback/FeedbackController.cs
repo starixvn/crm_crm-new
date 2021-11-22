@@ -22,7 +22,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    public class FeedbackController : Controller
+    public class FeedbackController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
@@ -60,7 +60,7 @@
         public async Task<IActionResult> EditNoOfInquiry([FromBody] EditNoOfInquiryCommand command)
         {
             command.UserId = napSession.UserId;
-           //command.IP = ClientIP;
+           command.IP = ClientIP;
             CommandResult commandResult = await feedbackService.EditNoOfInquiryAsync(command);
             return Json(commandResult);
         }
@@ -80,7 +80,7 @@
             if (commandResult.IsSuccessful)
             {
                 command.UserId = napSession.UserId;
-               // command.IP = ClientIP;
+                command.IP = ClientIP;
                 if (command.IsReviewed)
                 {
                     command.ReviewerId = napSession.UserId;

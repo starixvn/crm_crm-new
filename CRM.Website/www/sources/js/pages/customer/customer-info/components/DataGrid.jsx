@@ -62,7 +62,8 @@ export class DataGrid extends Component {
         setFieldValue
     }) => {
         const { settings, customerInfo } = this.props;
-        const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x=> x.id === gridData.data.siteId).length > 0;
+        const siteId = gridData.data.siteIdl
+        const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x=> x.id === siteId).length > 0;
 
         return (
             <Form className="form-customer" noValidate onSubmit={handleSubmit}>

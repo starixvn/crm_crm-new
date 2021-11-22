@@ -54,7 +54,7 @@ export class EditCommunicationLog extends Component {
             isReviewed: null,
             editResult: null,
             oldReLatedCust: [],
-            deleteRelatedCust: [],
+            deleteRelatedCust: []
         };
     }
 
@@ -243,7 +243,7 @@ export class EditCommunicationLog extends Component {
         if(newRelatedCustName.length > 0){
             this.props.verifyCustomers({ username: newRelatedCustName }).then(response => {
                 const customerRemains = oldReLatedCust.filter(x=> !deleteRelatedCust.some(y=>y.custId === x.custId));
-                let customers = [...response.data, ...customerRemains];
+                const customers = [...response.data, ...customerRemains];
                 this.setState({relatedCustomers: customers});
                 const inactiveCustomers = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
                 if(inactiveCustomers.length > 0){
@@ -251,19 +251,16 @@ export class EditCommunicationLog extends Component {
                     const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
                     this.setState({editResult: {isSuccessful: false, message}});
                     setSubmitting(false);
-                }
-                else{
+                } else{
                     this.setState({editResult: null});
                     this.confirmEditFeedback(params);
                 }
             });
-        }
-        else{
+        } else{
             this.setState({editResult: null});
             this.confirmEditFeedback(params);
         }
-    }
-    
+    };
 
     getUpdateReviewMode = (values, review, isReviewed) => {
         if (review === values.review && isReviewed === values.isReviewed) {

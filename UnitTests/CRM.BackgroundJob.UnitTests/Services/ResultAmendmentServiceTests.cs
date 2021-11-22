@@ -1637,6 +1637,7 @@
         [InlineData("Sportsbook", "789y", false, 3, "test Sportsbook Sc")]
         [InlineData("Virtual Sports 2", "789y", true, 0, "test VirtualSports2 Yn")]
         [InlineData("Virtual Sports 2", "789y", false, 0, "test VirtualSports2 Sc")]
+
         public void GetAmendmentSolutionTemplateYNSC_DependProductNameAndIsVip_ReturnExactTemplate(string productName, string site, bool isVip, byte EventType, string expected)
         {
             // Arrange
@@ -1685,6 +1686,7 @@
             var sportBook = new StringBuilder(expected);
             var sportBookOrOutright = new StringBuilder(expected);
 
+
             var messageContent = fixture.Create<IEnumerable<Message>>();
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
             commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN).Returns("leagueNameYN");
@@ -1712,6 +1714,7 @@
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual.ToString());
         }
+
 
         #endregion GetAmendmentSolutionTemplateYNSC
 

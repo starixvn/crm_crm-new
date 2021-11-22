@@ -15,8 +15,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
-    public class AddGuestFeedbackController : Controller
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+    public class AddGuestFeedbackController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
@@ -91,7 +91,7 @@
         {
             command.CreatorId = napSession.UserId;
             command.UserId = napSession.UserId;
-            //command.IP = ClientIP;
+            command.IP = ClientIP;
             var result = await baseService.ExecuteNonQueryAsync(command);
             return Json(result);
         }

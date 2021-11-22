@@ -64,7 +64,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getDeletedFeedback(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('DeletedFeedback/SearchDeletedFeedback', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('DeletedFeedback/GetDeletedFeedback', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });    
     });
@@ -91,7 +91,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.exportExcel(expectedParams));
 
             // Assert
-            expect(DataService.getFileAsync).toHaveBeenCalledWith('DeletedFeedback/ExportDeletedFeedbackReport', expectedParams);
+            expect(DataService.getFileAsync).toHaveBeenCalledWith('DeletedFeedback/ExportExcel', expectedParams);
             expect(Site.downloadFile).toHaveBeenCalledWith(response.data, filename);
         });
     });

@@ -8,12 +8,10 @@ export default class VerifyCustomer extends PureComponent {
         const isInActive = !item.isSiteActive && item.isLicensee;
         if (isInActive && item.custId !== 0) {
             className = 'inactive';
-        }
-        else{
+        } else{
             if (item.custId === 0){
                 className = 'invalid';
-            }
-            else{
+            } else{
                 className = item.custId > 0 ? 'customer' : 'guest';
             }
         }

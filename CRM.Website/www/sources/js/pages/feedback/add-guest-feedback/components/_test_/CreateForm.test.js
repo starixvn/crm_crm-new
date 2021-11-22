@@ -2004,7 +2004,8 @@ describe('CreateForm', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('description', 'test<br>123');
+            expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
+            expect(setFieldValue).toHaveBeenCalledWith('description', 'test <br> 123');
         });
 
         it('should do as expected if response errorCode === 0 and first request data', async () => {
@@ -2030,7 +2031,7 @@ describe('CreateForm', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('description', 'test');
+            expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
         });
     });
 });

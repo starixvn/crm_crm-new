@@ -624,7 +624,7 @@ export default class AppContainer extends Component {
             const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
             await DataService.postDataAsync(url, { username: newRelatedCustName }).then(response => {
                 const customerRemains = oldReLatedCust.filter(x=> !deleteRelatedCust.some(y=>y.custId === x.custId));
-                let customers = [...response.data, ...customerRemains];
+                const customers = [...response.data, ...customerRemains];
                 this.setState({relatedCustomers: customers});
                 const inactiveCustomers = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
                 if(inactiveCustomers.length > 0){
@@ -638,12 +638,11 @@ export default class AppContainer extends Component {
                     this.confirmEditFeedback(params);
                 }
             });
-        }
-        else{
+        } else{
             this.setState({editResult: null});
             this.confirmEditFeedback(params);
         }
-    }
+    };
 
     renderForm = ({
         errors,

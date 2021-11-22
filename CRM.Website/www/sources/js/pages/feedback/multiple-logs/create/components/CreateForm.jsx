@@ -176,11 +176,9 @@ export class CreateForm extends Component {
                 const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
                 this.setState({ createMultipleLogsResult: {isSuccessful: false, message}});
                 setSubmitting(false);
-            }
-            else if (values.isUseDefaultCommunicationTool) {
+            } else if (values.isUseDefaultCommunicationTool) {
                 this.checkNotExistCommunicationToolSetting(params);
-            }
-            else{
+            } else{
                 this.confirmCreateMultipleLogs(params, 'Are you sure you want to Add or Update the Feedback/Log?');
             }
             Site.unblockUI();

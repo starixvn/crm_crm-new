@@ -37,12 +37,10 @@ export class VerifyCustomerResult extends Component {
         const isInActive = !customer.isSiteActive && customer.isLicensee;
         if (isInActive && customer.custId !== 0) {
             className = 'inactive';
-        }
-        else{
+        } else{
             if (customer.custId === 0){
                 className = 'invalid';
-            }
-            else{
+            } else{
                 className = customer.custId > 0 ? 'customer' : 'guest';
             }
         }
