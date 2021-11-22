@@ -274,10 +274,9 @@ export class CreateForm extends Component {
             Site.unblockUI();
             setFieldValue('ticketRefInput', '');
 
-            if(data.errorCode !== '0')
-            {
+            if(data.errorCode !== '0') {
                 this.props.setAddFeedback({isSuccessful: false, message: data.description});
-            } else{
+            } else {
                 let descriptionText = '';
                 this.props.setAddFeedback(null);
                 const isFirstInputAndHasData = values.description.length > 0 && this.state.countClickRefTicket === 0;
@@ -892,9 +891,7 @@ export class CreateForm extends Component {
                             <Col sm="1" md="1">
                                 <Form.Label>
                                     <OverlayTrigger placement="bottom-start" overlay={
-                                        <Tooltip id="tooltip-customers">
-                                            {LangHelper.getResource('MultipleCustomersTooltip')}
-                                        </Tooltip>}
+                                        <Tooltip id="tooltip-customers">{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
                                     >
                                         <span className="fa fa-question-circle-o" />
                                     </OverlayTrigger>
@@ -921,43 +918,7 @@ export class CreateForm extends Component {
                             </Col>
                         </Form.Group>
                         <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomerVerify} />
-                        <Form.Group as={Row}>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="3" md="3" htmlFor="ticketRefNo">{LangHelper.getResource('TicketRefNo')}</Form.Label>
-                                    <Col sm="1" md="1">
-                                    <Form.Label>
-                                        <OverlayTrigger placement="bottom-start" overlay={
-                                            <Tooltip id="tooltip-ref-ticket">
-                                                {LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}
-                                            </Tooltip>}
-                                        >
-                                            <span className="fa fa-question-circle-o" />
-                                        </OverlayTrigger>
-                                    </Form.Label>
-                                    </Col>
-                                    <Col sm="8" md="8" className="ref-ticket-input">
-                                        <Form.Control type="number" size="sm" value={values.ticketRefInput}
-                                            id="refNo" name="refNo" className="shadow-none" autoComplete="off"
-                                            onPaste={event => this.onPasteRefTicketHandler(event)}
-                                            onChange={e =>this.handleChangeRefTicket(e, setFieldValue)}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Col>
-                                        <Button
-                                            disabled={values.ticketRefInput === ''}
-                                            onClick={() =>this.handleClickFillEvent(values, setFieldValue)}
-                                        >
-                                            {LangHelper.getResource('FillEventDetails')}
-                                        </Button>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
+                        {this.renderRefTicket(values, setFieldValue)}
                         <Form.Group as={Row} className="pt-1 pb-1">
                             <Form.Label className="required col-subject-width form-label col-form-label">
                                 {LangHelper.getResource('Subject')}
@@ -978,6 +939,42 @@ export class CreateForm extends Component {
             </div>
         );
     };
+
+    renderRefTicket = (values, setFieldValue) => (
+        <Form.Group as={Row}>
+            <Col sm="4" md="4">
+                <Form.Group as={Row}>
+                    <Form.Label column md="3" sm="3" htmlFor="ticketRefNo">{LangHelper.getResource('TicketRefNo')}</Form.Label>
+                    <Col sm="1" md="1">
+                    <Form.Label>
+                        <OverlayTrigger placement="bottom-start" overlay={
+                            <Tooltip id="tooltip-ref-ticket">{LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}</Tooltip>}
+                        >
+                            <span className="fa fa-question-circle-o" />
+                        </OverlayTrigger>
+                    </Form.Label>
+                    </Col>
+                    <Col sm="8" md="8" className="ref-ticket-input">
+                        <Form.Control type="number" size="sm"
+                            value={values.ticketRefInput}
+                            onPaste={event => this.onPasteRefTicketHandler(event)}
+                            id="refNo" name="refNo" className="shadow-none" autoComplete="off"
+                            onChange={e =>this.handleChangeRefTicket(e, setFieldValue)}
+                        />
+                    </Col>
+                </Form.Group>
+            </Col>
+            <Col sm="4" md="4">
+                <Form.Group as={Row}>
+                    <Col>
+                        <Button disabled={values.ticketRefInput === ''} onClick={() =>this.handleClickFillEvent(values, setFieldValue)}>
+                            {LangHelper.getResource('FillEventDetails')}
+                        </Button>
+                    </Col>
+                </Form.Group>
+            </Col>
+        </Form.Group>
+    );
 
     renderDetailDropdown = (values, errors, touched, handleChange, setFieldValue) => {
         const { subCategoriesOptions, subProductOptions, betTypeOptions } = this.state;

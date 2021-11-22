@@ -177,8 +177,7 @@ export class DataGrid extends Component {
     };
 
     renderStatus = status =>{
-        if(status === 'Pending')
-        {
+        if(status === 'Pending') {
             return 'pending';
         }
         return status === 'Closed' ? 'closed' : '';

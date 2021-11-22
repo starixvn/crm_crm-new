@@ -632,8 +632,7 @@ export default class AppContainer extends Component {
                     const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
                     this.setState({editResult: {isSuccessful: false, message}});
                     setSubmitting(false);
-                }
-                else{
+                } else{
                     this.setState({editResult: null});
                     this.confirmEditFeedback(params);
                 }

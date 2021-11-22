@@ -292,7 +292,7 @@ export class CreateCommunicationLog extends Component {
 
             if(data.errorCode !== '0') {
                 this.setState({createResult: {isSuccessful: false, message: data.description}});
-            } else{
+            } else {
                 let remarkText = '';
                 this.setState({createResult: null});
                 const isFirstInputAndHasData = values.remark.length > 0 && this.state.countClickRefTicket === 0;
