@@ -254,14 +254,14 @@ export default class FeedbackInfo extends Component {
                                             {LangHelper.getResource('SubCategory')}
                                         </Form.Label>
                                         <Col sm="8" md="8">
-                                            <MultipleSelect
-                                                isInvalid={touched.subCategoryIds && errors.subCategoryIds}
-                                                dataSource={subCategoryOptions}
-                                                keyField='subCategoryId' valueField='name'
+                                            <MultipleSelect 
                                                 hasAllOption={subCategoryOptions.length > 0}
                                                 isAllTextShown={subCategoryOptions.length > 0}
+                                                isInvalid={touched.subCategoryIds && errors.subCategoryIds}
+                                                dataSource={subCategoryOptions}
                                                 hasSearchBox isNAOption
                                                 maxDisplayItemCount={1}
+                                                keyField='subCategoryId' valueField='name'
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     setFieldValue('subCategoryIds', selectedItemsKey);
                                                 }}
@@ -318,12 +318,12 @@ export default class FeedbackInfo extends Component {
                                         </Form.Label>
                                         <Col sm="8" md="8">
                                             <MultipleSelect
-                                                dataSource={betTypeOptions}
+                                                hasSearchBox isNAOption
                                                 keyField='id' valueField='value'
                                                 hasAllOption={betTypeOptions.length > 0}
-                                                isAllTextShown={betTypeOptions.length > 0}
-                                                hasSearchBox isNAOption
                                                 maxDisplayItemCount={1}
+                                                dataSource={betTypeOptions}
+                                                isAllTextShown={betTypeOptions.length > 0}
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     setFieldValue('betTypeIds', selectedItemsKey);
                                                 }}
@@ -386,11 +386,8 @@ export default class FeedbackInfo extends Component {
                                         <Form.Label column sm="4" md="4" htmlFor="roleId">
                                             {LangHelper.getResource('Role')}
                                         </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
-                                                id='roleId' name='roleId'
-                                                value={values.roleId} onChange={handleChange}
-                                            >
+                                        <Col md="8" sm="8">
+                                            <Form.Control as="select" size="sm" className="shadow-none" id='roleId' name='roleId' value={values.roleId} onChange={handleChange}>
                                                 {roles.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
                                             </Form.Control>
                                         </Col>

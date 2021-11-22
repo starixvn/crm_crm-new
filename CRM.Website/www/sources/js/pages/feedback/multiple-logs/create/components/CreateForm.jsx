@@ -137,10 +137,7 @@ export class CreateForm extends Component {
     handlePasteCustomer = (setFieldValue, event, customerNameInput) => {
         const customer = customerNameInput.trim();
         const items = (event.clipboardData || window.clipboardData).getData('text')
-            .replace(/ /g, ',')
-            .replace(/\r\n/g, ',')
-            .replace(/\n/g, ',')
-            .replace(/\t/g, ',')
+            .replace(/\t/g, ',').replace(/ /g, ',').replace(/\r\n/g, ',').replace(/\n/g, ',')
             .split(',').filter(item => item !== '');
 
         setTimeout(() => {
@@ -344,16 +341,16 @@ export class CreateForm extends Component {
     };
 
     getExtensionParams = (selectedExtensionIds, extensionNA) => {
-        let extensionIds = [];
+        let extensions = [];
         if (selectedExtensionIds.length > 0) {
-            extensionIds = selectedExtensionIds.split(',');
+            extensions = selectedExtensionIds.split(',');
         }
 
-        if (extensionIds.length === 0 && extensionNA !== null && extensionNA.id !== undefined) {
-            extensionIds.push(extensionNA.id);
+        if (extensions.length === 0 && extensionNA !== null && extensionNA.id !== undefined) {
+            extensions.push(extensionNA.id);
         }
 
-        return extensionIds.join(',');
+        return extensions.join(',');
     };
 
     splitAutoFieldWhenUseDefaultCommunicationTool = values => {
@@ -771,14 +768,13 @@ export class CreateForm extends Component {
                             </Col>
                             <Col sm="1" md="1" />
                             <Form.Label column sm="2" md="2">{LangHelper.getResource('Site')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <Form.Control as="select" size="sm" className="shadow-none" disabled>
-                                    <option value="">{LangHelper.getResource('NotApply')}</option>
+                            <Col  md="3" sm="3">
+                                <Form.Control as="select" size="sm"  disabled className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
                                 </Form.Control>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('Response')}</Form.Label>
+                            <Form.Label column md="2" sm="2">{LangHelper.getResource('Response')}</Form.Label>
                             <Col sm="3" md="3">
                                 <Form.Control as="select" size="sm" className="shadow-none"
                                 >
@@ -795,13 +791,12 @@ export class CreateForm extends Component {
                             <Col sm="1" md="1" />
                             <Form.Label column sm="2" md="2">{LangHelper.getResource('LicenseeType')}</Form.Label>
                             <Col sm="3" md="3">
-                                <Form.Control as="select" size="sm" className="shadow-none" disabled>
-                                    <option value="">{LangHelper.getResource('NotApply')}</option>
+                                <Form.Control as="select" disabled size="sm" className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
                                 </Form.Control>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
+                            <Form.Label column md="2" sm="2">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
                             <Col sm="3" md="3">
                                 <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries"
                                     min={1} max={3200} value={values.noOfInquiries}
