@@ -1,6 +1,7 @@
 ﻿namespace CRM.Controllers.UnitTests.Communication
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
     using AutoFixture;
@@ -267,22 +268,20 @@
             var result = await controller.GetAllSettings();
 
             // Assert
-            var jsonResult = Assert.IsType<JsonResult>(result);
-            var insertSettings = (CreateFeedbackViewModel)jsonResult.Value;
-            Assert.Equal(extentions, insertSettings.Extensions);
-            Assert.Equal(statuses, insertSettings.Statuses);
-            Assert.Equal(communicationTools, insertSettings.CommunicationTools);
-            Assert.Equal(languages, insertSettings.Languages);
-            Assert.Equal(responses, insertSettings.Responses);
-            Assert.Equal(roles, insertSettings.Roles);
-            Assert.Equal(sites, insertSettings.Sites);
-            Assert.Equal(countries, insertSettings.Countries);
-            Assert.Equal(mainCategories, insertSettings.MainCategories);
-            Assert.Equal(subCategories, insertSettings.SubCategories);
-            Assert.Equal(licenseeTypes, insertSettings.LicenseeTypes);
-            Assert.Equal(bettypes, insertSettings.Bettypes);
-            Assert.Equal(products, insertSettings.Products);
-            Assert.Equal(subProducts, insertSettings.SubProducts);
+            Assert.Equal(extentions, result.Extensions);
+            Assert.Equal(statuses, result.Statuses);
+            Assert.Equal(communicationTools, result.CommunicationTools);
+            Assert.Equal(languages, result.Languages);
+            Assert.Equal(responses, result.Responses);
+            Assert.Equal(roles.Where(x => x.IsActive), result.Roles);
+            Assert.Equal(sites, result.Sites);
+            Assert.Equal(countries, result.Countries);
+            Assert.Equal(mainCategories, result.MainCategories);
+            Assert.Equal(subCategories, result.SubCategories);
+            Assert.Equal(licenseeTypes, result.LicenseeTypes);
+            Assert.Equal(bettypes, result.Bettypes);
+            Assert.Equal(products, result.Products);
+            Assert.Equal(subProducts, result.SubProducts);
         }
 
         [Fact]

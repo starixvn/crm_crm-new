@@ -24,7 +24,7 @@
         private readonly IBaseService baseService;
         private readonly ICommonService commonService;
         private readonly ISettingService settingService;
-        private readonly IDictionary<string,string> allSetting;
+        private IDictionary<string,string> allSetting;
         private readonly AppSettings appSettings;
         private IDictionary<string, bool> actionLogKeyHash = null;
         private IDictionary<string, string[]> actionLogBoolValueHash = null;
@@ -40,13 +40,13 @@
             this.commonService = commonService;
             this.settingService = settingService;
             this.appSettings = appSettings.Value;
-            allSetting = GetAllSettings().Result;
         }
 
         public async Task<IEnumerable<ActionLogInfo>> GetActivityLogAsync(GetActivityLogCriteria criteria)
         {
             var actionLogs = await baseService.GetDataAsync<ActionLogInfo>(criteria);
             actionLogs = actionLogs.Where(x => !string.Equals(x.OldValues, x.NewValues, StringComparison.OrdinalIgnoreCase));
+            allSetting = await GetAllSettings();
 
             foreach (var actionLog in actionLogs)
             {
