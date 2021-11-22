@@ -271,11 +271,9 @@ export default class FeedbackInfo extends Component {
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row}>
-                                <Col sm="4" md="4">
+                                <Col md="4" sm="4">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="product">
-                                            {LangHelper.getResource('Product')}
-                                        </Form.Label>
+                                        <Form.Label htmlFor="product" column sm="4" md="4">{LangHelper.getResource('Product')}</Form.Label>
                                         <Col sm="8" md="8">
                                             <MultipleSelect
                                                 dataSource={productOptions}
@@ -293,17 +291,15 @@ export default class FeedbackInfo extends Component {
                                 </Col>
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="subProductIds">
-                                            {LangHelper.getResource('SubProduct')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
+                                        <Form.Label column sm="4" md="4" htmlFor="subProductIds">{LangHelper.getResource('SubProduct')}</Form.Label>
+                                        <Col md="8" sm="8">
                                             <MultipleSelect
-                                                dataSource={subProductOptions}
-                                                keyField='id' valueField='value'
-                                                hasAllOption={subProductOptions.length > 0}
                                                 isAllTextShown={subProductOptions.length > 0}
                                                 hasSearchBox isNAOption
                                                 maxDisplayItemCount={1}
+                                                dataSource={subProductOptions}
+                                                keyField='id' valueField='value'
+                                                hasAllOption={subProductOptions.length > 0}
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     onChangeSubProduct(setFieldValue, selectedItemsKey, values.betTypeIds);
                                                 }}

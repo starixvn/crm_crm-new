@@ -617,22 +617,22 @@ export default class AppContainer extends Component {
     };
 
     handleReVerifyInactiveAndConfirm = async (params, setSubmitting) =>{
-        const {relatedCustomers, oldReLatedCust, deleteRelatedCust} = this.state;
+        const {oldReLatedCust, relatedCustomers, deleteRelatedCust} = this.state;
         const newRelatedCust= relatedCustomers.filter(x=> !oldReLatedCust.some(y=>y.custId === x.custId));
-        const newRelatedCustName = newRelatedCust.map(x=>x.val).join(',');
-        if(newRelatedCustName.length > 0){
+        const newRelatedCustJoin = newRelatedCust.map(x=>x.val).join(',');
+        if(newRelatedCustJoin.length > 0){
             const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
             await DataService.postDataAsync(url, { username: newRelatedCustName }).then(response => {
                 const customerRemains = oldReLatedCust.filter(x=> !deleteRelatedCust.some(y=>y.custId === x.custId));
-                const customers = [...response.data, ...customerRemains];
-                this.setState({relatedCustomers: customers});
-                const inactiveCustomers = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
-                if(inactiveCustomers.length > 0){
-                    const inactiveUserName = inactiveCustomers.map(x=>x.val).join(',');
+                const customersCombine = [...response.data, ...customerRemains];
+                this.setState({relatedCustomers: customersCombine});
+                const inactiveCust = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
+                if(inactiveCust.length > 0){
+                    const inactiveUserName = inactiveCust.map(x=>x.val).join(',');
                     const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
                     this.setState({editResult: {isSuccessful: false, message}});
                     setSubmitting(false);
-                } else{
+                } else {
                     this.setState({editResult: null});
                     this.confirmEditFeedback(params);
                 }

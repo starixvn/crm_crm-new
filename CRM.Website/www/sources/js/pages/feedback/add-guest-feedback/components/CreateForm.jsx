@@ -507,7 +507,6 @@ export class CreateForm extends Component {
         );
     };
 
-
     renderCommunicationToolCustomer = (values, handleChange) => {
         return (
             <div>
@@ -940,41 +939,43 @@ export class CreateForm extends Component {
         );
     };
 
-    renderRefTicket = (values, setFieldValue) => (
-        <Form.Group as={Row}>
-            <Col sm="4" md="4">
-                <Form.Group as={Row}>
-                    <Form.Label column md="3" sm="3" htmlFor="ticketRefNo">{LangHelper.getResource('TicketRefNo')}</Form.Label>
-                    <Col sm="1" md="1">
-                    <Form.Label>
-                        <OverlayTrigger placement="bottom-start" overlay={
-                            <Tooltip id="tooltip-ref-ticket">{LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}</Tooltip>}
-                        >
-                            <span className="fa fa-question-circle-o" />
-                        </OverlayTrigger>
-                    </Form.Label>
-                    </Col>
-                    <Col sm="8" md="8" className="ref-ticket-input">
-                        <Form.Control type="number" size="sm"
-                            value={values.ticketRefInput}
-                            onPaste={event => this.onPasteRefTicketHandler(event)}
-                            id="refNo" name="refNo" className="shadow-none" autoComplete="off"
-                            onChange={e =>this.handleChangeRefTicket(e, setFieldValue)}
-                        />
-                    </Col>
-                </Form.Group>
-            </Col>
-            <Col sm="4" md="4">
-                <Form.Group as={Row}>
-                    <Col>
-                        <Button disabled={values.ticketRefInput === ''} onClick={() =>this.handleClickFillEvent(values, setFieldValue)}>
-                            {LangHelper.getResource('FillEventDetails')}
-                        </Button>
-                    </Col>
-                </Form.Group>
-            </Col>
-        </Form.Group>
-    );
+    renderRefTicket = (values, setFieldValue) => {
+        return (
+            <Form.Group as={Row}>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column md="3" sm="3" htmlFor="ticketRefNo">{LangHelper.getResource('TicketRefNo')}</Form.Label>
+                        <Col sm="1" md="1">
+                        <Form.Label>
+                            <OverlayTrigger placement="bottom-start" overlay={
+                                <Tooltip id="tooltip-ref-ticket">{LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}</Tooltip>}
+                            >
+                                <span className="fa fa-question-circle-o" />
+                            </OverlayTrigger>
+                        </Form.Label>
+                        </Col>
+                        <Col sm="8" md="8" className="ref-ticket-input">
+                            <Form.Control type="number" size="sm"
+                                value={values.ticketRefInput}
+                                onPaste={event => this.onPasteRefTicketHandler(event)}
+                                id="refNo" name="refNo" className="shadow-none" autoComplete="off"
+                                onChange={e =>this.handleChangeRefTicket(e, setFieldValue)}
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Col>
+                            <Button disabled={values.ticketRefInput === ''} onClick={() =>this.handleClickFillEvent(values, setFieldValue)}>
+                                {LangHelper.getResource('FillEventDetails')}
+                            </Button>
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Form.Group>
+        );
+    };
 
     renderDetailDropdown = (values, errors, touched, handleChange, setFieldValue) => {
         const { subCategoriesOptions, subProductOptions, betTypeOptions } = this.state;
@@ -1344,16 +1345,9 @@ export class CreateForm extends Component {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
-
 const mapStateToProps = state => {
     const { settings,balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult } = state;
-    return {
-        settings,
-        balanceUpday,
-        feedbackSubjectTemplates,
-        confirmCreateGuestDialog,
-        addFeedbackResult
-    };
+    return { settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateForm);
