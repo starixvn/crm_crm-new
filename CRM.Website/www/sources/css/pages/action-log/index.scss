@@ -4,6 +4,10 @@
 @import '../../components/tables';
 @import '../../components/date-picker/style';
 
+#app-container {
+    width: 1319px;
+}
+
 .react-datepicker-wrapper input{
     width: 100% !important;
 }

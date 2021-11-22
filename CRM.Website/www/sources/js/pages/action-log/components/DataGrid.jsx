@@ -2,10 +2,8 @@ import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { Button } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import DateTimeService from '@jsroot/common/dateTimeService';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
@@ -78,10 +76,10 @@ export class DataGrid extends Component {
 
     encodeHtml = value => {
         const item = value.replace(/&/g, '&amp;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#39;')
                         .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;');
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;');
         return item;
     };
 
