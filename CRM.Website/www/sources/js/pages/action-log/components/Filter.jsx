@@ -30,12 +30,8 @@ export class Filter extends Component {
         this.props.getAllLogAction({ actionType: 1 });
     }
 
-    handleChangeToDate = toDate => {
-        this.setState({ toDate: toDate, maxFromDate: toDate });
-    };
-
-    handleChangeFromDate = fromDate => {
-        this.setState({ fromDate: fromDate, minToDate: fromDate });
+    handleChangeToDate = date => {
+        this.setState({ toDate: date, maxFromDate: date });
     };
 
     handleChange = event => {
@@ -43,6 +39,10 @@ export class Filter extends Component {
         this.setState({
             [name]: event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value
         });
+    };
+
+    handleChangeFromDate = date => {
+        this.setState({ fromDate: date, minToDate: date });
     };
 
     handleSubmit = event => {
@@ -78,7 +78,9 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className='col-form-label col-auto'>{LangHelper.getResource('FromDate')}</Form.Label>
+                        <Form.Label className='col-form-label col-auto'>
+                            {LangHelper.getResource('FromDate')}
+                        </Form.Label>
                         <div className="react-datepicker-wrapper-container">
                             <DatePicker
                                 maxDate={this.state.maxFromDate}
@@ -89,7 +91,9 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className='col-form-label col-auto'>{LangHelper.getResource('ToDate')}</Form.Label>
+                        <Form.Label className='col-form-label col-auto'>
+                            {LangHelper.getResource('ToDate')}
+                        </Form.Label>
                         <div className="react-datepicker-wrapper-container">
                             <DatePicker
                                 maxDate={this.state.maxToDate}
@@ -101,12 +105,13 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className='col-form-label col-auto'>{LangHelper.getResource('Action')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none" name="actionLogId"
+                        <Form.Control as="select" size="sm" className="shadow-none"
+                            name="actionLogId"
                             onChange={this.handleChange}
                         >
                             <option value="0">All</option>
                             {
-                                allLogActions.map((value,key) => this.renderOptions(value.name,value.id,key))
+                                allLogActions.map((value, key) => this.renderOptions(value.name, value.id, key))
                             }
                         </Form.Control>
                     </Form.Group>

@@ -70,9 +70,7 @@ export class DataGrid extends Component {
             fieldName !== 'SpecialRemark';
     };
 
-    replaceText = text => {
-        return text ? text.replace('\\n', '<br />').replace('\\r', '<br />') : '';
-    };
+    replaceText = text => text ? text.replace('\\n', '<br />').replace('\\r', '<br />') : '';
 
     encodeHtml = value => {
         const item = value.replace(/&/g, '&amp;')
@@ -138,7 +136,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const { activityLogs, gridParams } = state;
-    return { activityLogs, gridParams }
+    return { activityLogs, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

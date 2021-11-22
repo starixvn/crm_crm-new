@@ -69,19 +69,20 @@ export class DataGrid extends Component {
     };
 
     isSortEqual = (itemA, itemB) => {
-        if ( itemA === itemB )
+        if ( itemA === itemB ) {
             return 0;
-        else return -1;
+        } else {
+            return -1
+        };
     };
 
     handleSort = item => {
         const { gridData } = this.props;
-        const data = [ ...gridData.data ];
         let sortData = [];
         if (this.sortDesc) {
-            sortData = data.sort((a, b) => a[item] > b[item] ? 1 : this.isSortEqual(a[item], b[item]));
+            sortData = [...gridData.data].sort((a, b) => a[item] > b[item] ? 1 : this.isSortEqual(a[item], b[item]));
         } else {
-            sortData = data.sort((a, b) => a[item] < b[item] ? 1 : this.isSortEqual(a[item], b[item]));
+            sortData = [...gridData.data].sort((a, b) => a[item] < b[item] ? 1 : this.isSortEqual(a[item], b[item]));
         }
         this.sortDesc = !this.sortDesc;
         this.props.setLogsByCustomerId({data: sortData, mainCategories: gridData.mainCategories});

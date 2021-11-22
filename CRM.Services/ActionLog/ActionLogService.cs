@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using System.Xml;
     using CRM.Core.Constants;
@@ -26,8 +27,9 @@
         private readonly ISettingService settingService;
         private IDictionary<string,string> allSetting;
         private readonly AppSettings appSettings;
-        private IDictionary<string, bool> actionLogKeyHash = null;
-        private IDictionary<string, string[]> actionLogBoolValueHash = null;
+        private IDictionary<string, bool> actionLogKeyHash;
+        private IDictionary<string, string[]> actionLogBoolValueHash;
+        private const int NUMBER_OF_INDEX = 2;
 
         public ActionLogService(
             IBaseService baseService,
@@ -111,9 +113,10 @@
             }
         }
 
-        public IDictionary<string, string> ParseXMLString(string xml)
+        public static IDictionary<string, string> ParseXMLString(string xml)
         {
             var results = new Dictionary<string, string>();
+            StringBuilder bld = new StringBuilder();
 
             if (string.IsNullOrWhiteSpace(xml))
             {
@@ -136,24 +139,22 @@
                 }
                 else
                 {
-                    results[node.Name] += "<br/>" + node.InnerText;
+                    bld.Append("<br/>" + node.InnerText);
+                    results[node.Name] = bld.ToString();
                 }
             }
 
             return results;
         }
 
-        public string GetSettingValue(string key, string value, ref string fieldName)
+        private string GetSettingValue(string key, string value, ref string fieldName)
         {
             string keyUpper = key.ToUpperInvariant();
 
             //// Convert bit value (1/0) to Yes/No.
-            if (ActionLogBoolValue.TryGetValue(keyUpper, out string[] boolValues))
+            if (ActionLogBoolValue.TryGetValue(keyUpper, out string[] boolValues) && int.TryParse(value, out int index) && index < NUMBER_OF_INDEX)
             {
-                if (int.TryParse(value, out int index) && index < 2)
-                {
-                    return boolValues[index];
-                }
+               return boolValues[index];
             }
 
             // Value isn't in Setting hash.
@@ -173,7 +174,7 @@
             return GetSettingValue(value, fieldName);
         }
 
-        public string GetSettingValue(string key, string settingType)
+        private string GetSettingValue(string key, string settingType)
         {
             if (string.Equals(key, "0", StringComparison.OrdinalIgnoreCase))
             {
@@ -188,7 +189,7 @@
             return settingValue;
         }
 
-        public string GetMultipleSettingValue(string value, string settingType)
+        private string GetMultipleSettingValue(string value, string settingType)
         {
             var valueList = value.Split(',');
 

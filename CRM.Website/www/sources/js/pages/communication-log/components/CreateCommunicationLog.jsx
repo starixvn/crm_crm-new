@@ -209,7 +209,7 @@ export class CreateCommunicationLog extends Component {
         const userName = relatedCustomers.filter(x=>x.custId !== 0).map(item => item.val).join(', ');
         const mainCategoryIds = [...new Set(values.mainCategoryIds.split(','))];
         const productIds = values.productIds ? [...new Set(values.productIds.split(','))] : [allSettings.productNA.id];
-        
+
         const params = {
             customerId: 1754,
             startTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.startTime)),

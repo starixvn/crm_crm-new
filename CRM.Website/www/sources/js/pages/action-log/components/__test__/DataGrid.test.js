@@ -164,7 +164,7 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('renderRow', () => {
+    describe('render', () => {
         it('should render not correctly', () => {
             //Act
             const props = { activityLogs: null };

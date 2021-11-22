@@ -50,7 +50,7 @@ export class CreateRedemptionLog extends Component {
             amount: parseInt(values.amount, 10),
             doneBy: values.doneBy,
             statusId: parseInt(values.statusId, 10),
-            currencyId: parseInt(values.currencyId, 10),
+            currencyId: parseInt(values.currencyId, 10)
         };
         this.props.createRedemptionLog(params).then(response => {
             Site.unblockUI();

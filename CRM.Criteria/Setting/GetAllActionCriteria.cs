@@ -21,8 +21,8 @@
                 case SettingConstants.SettingLog:
                     settingKey = "Acc_CRM_SettingLogList";
                     break;
-
                 default:
+                    // nothing
                     break;
             }
 
