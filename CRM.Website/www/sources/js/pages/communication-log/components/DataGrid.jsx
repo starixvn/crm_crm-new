@@ -29,23 +29,21 @@ export class DataGrid extends Component {
                     <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('feedbackDate')}/>
                 </HeaderCell>
                 <HeaderCell colWidth={55}>{LangHelper.getResource('Category')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('subject')}/>
+                    <i aria-hidden="true" className="fa fa-sort sort-header" onClick={() => this.handleSort('subject')}/>
                 </HeaderCell>
                 <HeaderCell colWidth={40}>{LangHelper.getResource('Subject')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('subject')}/>
+                    <i className="sort-header fa fa-sort" aria-hidden="true" onClick={() => this.handleSort('subject')}/>
                 </HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('status')}/>
+                    <i aria-hidden="true" className="sort-header fa fa-sort" onClick={() => this.handleSort('status')}/>
                 </HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Duration')}
                     <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('duration')}/>
                 </HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Handler')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('handler')}/>
-                </HeaderCell>
+                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('handler')}/></HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Reviewer')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('reviewer')}/>
-                </HeaderCell>
+                    <i aria-hidden="true" className="fa fa-sort sort-header" onClick={() => this.handleSort('reviewer')}/></HeaderCell>
             </HeaderRow>
         );
     };

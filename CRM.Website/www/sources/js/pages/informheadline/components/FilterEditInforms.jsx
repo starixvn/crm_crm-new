@@ -275,10 +275,16 @@ export class FilterEditInforms extends PureComponent {
         const initData = this.initData;
         return (values.currencies !== initData.currencies ||
             values.levels !== initData.levels ||
-            values.sites !== initData.sites ||
-            parseInt(values.isVip, 10) !== initData.isVip ||
-            values.typeAccount !== initData.typeAccount ||
-            values.excludeIgnoredAccounts !== initData.excludeIgnoredAccounts
+            values.sites !== initData.sites || this.changeFilter(values)
+        );
+    };
+
+    changeFilter = values => {
+        const data = this.initData;
+        return (
+            parseInt(values.isVip, 10) !== data.isVip ||
+            values.typeAccount !== data.typeAccount ||
+            values.excludeIgnoredAccounts !== data.excludeIgnoredAccounts
         );
     };
 

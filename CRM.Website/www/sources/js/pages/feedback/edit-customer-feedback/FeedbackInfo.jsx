@@ -37,7 +37,9 @@ export default class FeedbackInfo extends Component {
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title justify-content-between"
                     onClick={() => {
-                        if (!values.isPreviewDescription) { onCollapseExpand('description'); }
+                        if (!values.isPreviewDescription) {
+                            onCollapseExpand('description');
+                        }
                     }}
                     aria-controls="collapse-expand-description" aria-expanded={!collapse.description}
                 >
@@ -76,7 +78,9 @@ export default class FeedbackInfo extends Component {
         return (
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title justify-content-between"
-                    onClick={() => { if (!values.isPreviewSolution) { onCollapseExpand('solution'); } }}
+                    onClick={() => { if (!values.isPreviewSolution) {
+                        onCollapseExpand('solution');
+                    } }}
                     aria-controls="collapse-expand-solution" aria-expanded={!collapse.solution}
                 >
                     <Form.Label className="required">{LangHelper.getResource('Solution')}</Form.Label>
@@ -254,7 +258,7 @@ export default class FeedbackInfo extends Component {
                                             {LangHelper.getResource('SubCategory')}
                                         </Form.Label>
                                         <Col sm="8" md="8">
-                                            <MultipleSelect 
+                                            <MultipleSelect
                                                 hasAllOption={subCategoryOptions.length > 0}
                                                 isAllTextShown={subCategoryOptions.length > 0}
                                                 isInvalid={touched.subCategoryIds && errors.subCategoryIds}
