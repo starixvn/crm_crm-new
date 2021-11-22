@@ -240,10 +240,10 @@ export default class FeedbackInfo extends Component {
                                                 hasAllOption={mainCategoryOptions.length > 0}
                                                 isAllTextShown={mainCategoryOptions.length > 0}
                                                 hasSearchBox isNAOption
-                                                maxDisplayItemCount={1}
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     onChangeMainCategory(setFieldValue, selectedItemsKey, values.subCategoryIds, values.subject);
                                                 }}
+                                                maxDisplayItemCount={1}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -261,10 +261,10 @@ export default class FeedbackInfo extends Component {
                                                 dataSource={subCategoryOptions}
                                                 hasSearchBox isNAOption
                                                 maxDisplayItemCount={1}
-                                                keyField='subCategoryId' valueField='name'
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     setFieldValue('subCategoryIds', selectedItemsKey);
                                                 }}
+                                                keyField='subCategoryId' valueField='name'
                                             />
                                         </Col>
                                     </Form.Group>
@@ -299,18 +299,17 @@ export default class FeedbackInfo extends Component {
                                                 maxDisplayItemCount={1}
                                                 dataSource={subProductOptions}
                                                 keyField='id' valueField='value'
-                                                hasAllOption={subProductOptions.length > 0}
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     onChangeSubProduct(setFieldValue, selectedItemsKey, values.betTypeIds);
                                                 }}
+                                                hasAllOption={subProductOptions.length > 0}
                                             />
                                         </Col>
                                     </Form.Group>
                                 </Col>
-                                <Col sm="4" md="4">
+                                <Col md="4" sm="4">
                                     <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="betTypeIds">
-                                            {LangHelper.getResource('BetType')}
+                                        <Form.Label column md="4" sm="4" htmlFor="betTypeIds">{LangHelper.getResource('BetType')}
                                         </Form.Label>
                                         <Col sm="8" md="8">
                                             <MultipleSelect
