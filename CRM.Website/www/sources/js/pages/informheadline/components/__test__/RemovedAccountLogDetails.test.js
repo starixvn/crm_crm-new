@@ -38,7 +38,7 @@ describe('RemovedAccountLogDetails', () => {
                     item: []
                 }
             };
-            const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={3}>ThereIsNoData</Cell></Row>];
+            const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={7}>ThereIsNoData</Cell></Row>];
             const container = shallow(<RemovedAccountLogDetails {...props} />).instance();
 
             // Act

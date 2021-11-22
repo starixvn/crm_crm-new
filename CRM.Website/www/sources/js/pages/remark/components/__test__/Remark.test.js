@@ -1,6 +1,7 @@
 import React from 'react';
 import { Remark } from '../Remark';
 import { Button, Form } from 'react-bootstrap';
+import Site from '@jsroot/common/site';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { shallow } from 'enzyme';
@@ -9,6 +10,8 @@ describe('Remark', () => {
     beforeAll(() => {
         window.customerInfoPolicy = 2;
         jest.useFakeTimers();
+        Site.blockUI = jest.fn();
+        Site.unblockUI = jest.fn();
     });
 
     afterAll(() => {
@@ -144,6 +147,7 @@ describe('Remark', () => {
             // Arrange
             const promise = Promise.resolve({ data: { code: 0, isSuccessful: true }});
             const props = {
+                gridData: { specialRemarks: ['test'], normalRemarks: ['testing'] },
                 editRemarks: jest.fn(() => promise),
                 getRemarks: jest.fn()
             };
@@ -166,6 +170,7 @@ describe('Remark', () => {
             // Arrange
             const promise = Promise.resolve({ data: { code: 1 }});
             const props = {
+                gridData: { specialRemarks: ['test'], normalRemarks: ['testing'] },
                 editRemarks: jest.fn(() => promise)
             };
             const container = shallow(<Remark {...props} />).instance();

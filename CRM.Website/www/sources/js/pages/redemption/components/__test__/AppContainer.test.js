@@ -103,7 +103,7 @@ describe('AppContainer', () => {
                 expect(container.find(EditRedemptionLog).length).toBe(1);
                 expect(container.find(CreateRedemptionLog).length).toBe(1);
                 expect(container.find(EditRedemptionLog).props().logId).toBe(123);
-                expect(container.find(EditRedemptionLog).props().logId).toBe(456);
+                expect(container.find(CreateRedemptionLog).props().logId).toBe(456);
             });
         });
     });

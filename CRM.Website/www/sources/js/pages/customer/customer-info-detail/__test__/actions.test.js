@@ -37,7 +37,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getCustomerById(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalled();
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerInfoDetail/GetCustomerById', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
