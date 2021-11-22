@@ -2,7 +2,8 @@ import deletedFeedback, {
     setGridParams,
     setAllSettings,
     setDeletedFeedback,
-    setEditFeedbackDialog
+    setEditFeedbackDialog,
+    setViewRelatedCustomerDialog
 } from '../deletedFeedbackSlice';
 
 describe('deletedFeedbackSlice reducer', () => {
@@ -60,6 +61,16 @@ describe('deletedFeedbackSlice reducer', () => {
             })
         ).toEqual({
             editFeedbackDialog: { show: false ,FeedbackId: 123 }
+        });
+    });
+    it('should handle setViewRelatedCustomerDialog', () => {
+        expect(
+            deletedFeedback({}, {
+                type: setViewRelatedCustomerDialog.type,
+                payload: { show: false}
+            })
+        ).toEqual({
+            viewRelatedCustomerDialog : { show: false}
         });
     });
 });

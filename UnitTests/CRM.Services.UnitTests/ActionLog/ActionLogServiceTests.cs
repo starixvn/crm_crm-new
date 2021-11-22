@@ -115,19 +115,6 @@
             Assert.Equal("test", actionLog.OldValuesList[0]);
         }
 
-        [Fact]
-        public void GetSettingValue_WhenCalled_ReturnNA()
-        {
-            //Arrange
-            var service = GetService();
-
-            //Act
-            var actual = service.GetSettingValue("0","Remark");
-
-            //Assert
-            Assert.Equal("N/A", actual);
-        }
-
         #region Helpers
         private ActionLogService GetService()
         {
