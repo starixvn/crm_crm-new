@@ -298,7 +298,7 @@ export class CreateCommunicationLog extends Component {
                 const isFirstInputAndHasData = values.remark.length > 0 && this.state.countClickRefTicket === 0;
                 const isNotFirstInputAndRemoveData = this.state.countClickRefTicket !== 0 && !values.remark.includes(colorGenerated);
                 if (isFirstInputAndHasData || isNotFirstInputAndRemoveData) {
-                    remarkText = `${data.description} '<br>' ${values.remark}`;
+                    remarkText = `${data.description} <br> ${values.remark}`;
                 } else if (this.state.countClickRefTicket === 0) {
                     remarkText = data.description;
                 } else {

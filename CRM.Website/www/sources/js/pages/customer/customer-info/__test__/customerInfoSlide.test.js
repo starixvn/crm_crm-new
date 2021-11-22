@@ -20,7 +20,8 @@ describe('customerInfo reducer', () => {
             settings: {
                 sites: [],
                 countries: [],
-                languages: []
+                languages: [],
+                sitesLicenseeInactive: []
             },
             editCustomerInfoResult: null,
             editCustomerInfoPopup: { show: false },

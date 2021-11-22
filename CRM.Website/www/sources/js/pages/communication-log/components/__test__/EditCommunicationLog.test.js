@@ -32,8 +32,6 @@ describe('EditCommunicationLog', () => {
             licenseeType: 0,
             provinceId: 0,
             countryId: 0,
-            review: 'test',
-            isReviewed: true,
             relatedCustomers: [{ custId: 1, username: 'sa' }],
             resolutionDate: 'Aug 16, 2021 03:12:00 PM',
             responseId: 1,
@@ -93,9 +91,14 @@ describe('EditCommunicationLog', () => {
         },
         hasReviewFeedbackPermission: true,
         log: {
-            relatedCustomers: [],
+            isReviewed: true,
             review: 'test',
-            isReviewed: true
+            relatedCustomers: [{
+                custId: 1,
+                username: 'test',
+                isSiteActive: true,
+                isLicensee: true
+            }]
         }
     };
     
@@ -116,7 +119,7 @@ describe('EditCommunicationLog', () => {
                 subCategoryIds: [2],
                 productIds: [1],
                 subProductIds: [2],
-                betTypeIds: [3]
+                betTypeIds: [3] 
             };
 
             // Act
@@ -128,7 +131,7 @@ describe('EditCommunicationLog', () => {
             //Arrange
             expect(await props.getLogByFeedbackId).toHaveBeenCalledWith(73300);
             expect(await props.getStatusForEdit).toHaveBeenCalled();
-            expect(container.state.relatedCustomers).toEqual([]);
+            expect(container.state.relatedCustomers).toEqual([{ custId: 1, isLicensee: true, isSiteActive: true, val: "test" }]);
             expect(container.state.communicationLog).toEqual([]);
             expect(container.state.settings).toEqual(initData.settings);
             expect(container.state.hasReviewFeedbackPermission).toEqual(true);
@@ -571,7 +574,7 @@ describe('EditCommunicationLog', () => {
         const props = {
             statusEdit: [{ statusId: 1, name: 'Closed'}],
             onClose: jest.fn()
-        }
+        };
         const formikProps = {
             values: {},
             errors: {},

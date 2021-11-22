@@ -11,6 +11,7 @@ describe('commonFunctions', () => {
 
     describe('renderCollapse', () => {
         const props = {
+            isEdit: true,
             values: {},
             errors: {},
             touched: {},
@@ -62,9 +63,8 @@ describe('commonFunctions', () => {
                 target: {checked: true}
             }; 
             // Act
-            const container = shallow(<RenderCollapse {...props} />).instance();
-            const renderEdit = shallow(container.render());
-            renderEdit.find('input').at(0).simulate('change', event);
+            const container = shallow(<RenderCollapse {...props} />);
+            container.find('input').at(0).simulate('change', event);
             
             // Assert
             expect(props.setFieldValue).toHaveBeenCalledWith('isReviewed', true);
@@ -72,8 +72,7 @@ describe('commonFunctions', () => {
 
         it('handleChange should call exact function when review render', () => {
             // Act
-            const container = shallow(<RenderCollapse {...props} />).instance();
-            const renderEdit = shallow(container.render());
+            const renderEdit = shallow(<RenderCollapse {...props} />);
             renderEdit.find(CkEditor).at(2).simulate('change', 'value');
             
             // Assert

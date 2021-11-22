@@ -24,11 +24,11 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            gridPages: { pageIndex: 1, pageSize: 100 },
+            gridParams: { test: 1 },
             gridData: { username: "" }
         };
         const state = {
-            gridPages: { pageIndex: 1, pageSize: 100 },
+            gridParams: { test: 1},
             gridData: { username: "" }
         };
 

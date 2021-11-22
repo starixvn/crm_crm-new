@@ -19,7 +19,7 @@ describe('EditForm', () => {
             licenseeTypes: [{ id: 1, name: 'Betting'}],
             sites: [{ id: 1, name: '22225'}]
         },
-        customerInfo: { data: { firstName: 'test', siteSetting: { id: 1, name: '22223'}, titleId: 2 } }
+        customerInfo: { firstName: 'test', siteSetting: { id: 1, name: '22223'}, titleId: 2 }
     };
 
     describe('componentDidMount', () => {
@@ -28,7 +28,7 @@ describe('EditForm', () => {
             const props = {
                 ...initProps,
                 getAllSettings: jest.fn(),
-                getCustomerById: jest.fn(),
+                getCustomerById: jest.fn()
             };
 
             //Act
@@ -98,6 +98,7 @@ describe('EditForm', () => {
             // Arrange
             const props = {...initProps};
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
+
             const container = shallow(<EditForm {...props} />).instance();
 
             // Act
@@ -230,7 +231,7 @@ describe('EditForm', () => {
             // Arrange
             const propsData = {
                 ...initProps,
-                customerInfo: { data: { firstName: 'test', isHeadline: false, isDirectAccount: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 } }
+                customerInfo: { firstName: 'test', isHeadline: false, isDirectAccount: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 }
             }
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
             const container = shallow(<EditForm {...propsData} />).instance();
@@ -277,7 +278,7 @@ describe('EditForm', () => {
     describe('renderHeadlineInfo', () => {
         const props = {
             ...initProps,
-            customerInfo: { data: { firstName: 'test', isHeadline: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 } }
+            customerInfo: { firstName: 'test', isHeadline: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 }
         };
 
         it('onClick call exact function', () => {

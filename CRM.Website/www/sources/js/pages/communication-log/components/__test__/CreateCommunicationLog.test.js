@@ -637,7 +637,8 @@ describe('CreateCommunicationLog', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalled();
+            expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
+            expect(setFieldValue).toHaveBeenCalledWith('remark', 'test <br> 123');
         });
 
         it('should do as expected if response errorCode === 0 and first request data', async () => {

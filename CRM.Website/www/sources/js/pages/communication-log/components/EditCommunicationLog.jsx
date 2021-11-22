@@ -63,7 +63,6 @@ export class EditCommunicationLog extends Component {
         await this.props.getStatusForEdit();
         const { logFeedback } = this.props;
         const logSettings = this.getLogSettings(logFeedback.log, logFeedback.settings);
-
         const relatedCustomers = logFeedback.log.relatedCustomers.map(customer => {
             return {
                 custId: customer.custId,

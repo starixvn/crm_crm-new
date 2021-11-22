@@ -13,8 +13,8 @@ describe('Filter', () => {
         statusFilter: [{ sites: {id: 1}}],
         getLogsByCustomerId: jest.fn(),
         setGridParams: jest.fn(),
-        getStatusForFilter: jest.fn(),
-    }
+        getStatusForFilter: jest.fn()
+    };
 
     describe('componentDidMount', () => {
         it('should call exactly function when did mount',() => {
@@ -45,7 +45,7 @@ describe('Filter', () => {
             };
             // Act
             const container = shallow(<Filter {...props}/>);
-            const mockEvent = { target: { name: 'stateName', value: 720}}
+            const mockEvent = { target: { name: 'stateName', value: 720}};
             container.instance().handleChange(mockEvent);
            
             // Assert
@@ -59,7 +59,7 @@ describe('Filter', () => {
             };
             // Act
             const container = shallow(<Filter {...props}/>);
-            const mockEvent = { target: { name: 'stateName', value: 20, type: 'select-one'}}
+            const mockEvent = { target: { name: 'stateName', value: 20, type: 'select-one'}};
             container.instance().handleChange(mockEvent);
            
             // Assert
@@ -150,46 +150,44 @@ describe('Filter', () => {
         it('onChange call exact function', () => {
             // Arrange
             const props = { ...initProps };
-            const container = shallow(<Filter {...props} />).instance();
-            container.handleChange = jest.fn();
-            const formRender = shallow(container.render());
+            const event = {target: {name: "test", value: "test"}};
+            const container = shallow(<Filter {...props} />);
+            container.instance().handleChange = jest.fn();
 
             // Action
-            formRender.find(Form.Control).at(0).simulate('change');
-            formRender.find(Form.Control).at(1).simulate('change');
+            container.find(Form.Control).at(0).simulate('change', event);
+            container.find(Form.Control).at(1).simulate('change', event);
 
             // Assert
-            expect(container.handleChange).toHaveBeenCalled();
+            expect(container.instance().handleChange).toHaveBeenCalled();
         });
 
         it('handleChange fromDate call exact function', () => {
             // Arrange
             const props = { ...initProps };
             const value = 'value';
-            const container = shallow(<Filter {...props} />).instance();
-            container.handleChangeFromDate = jest.fn();
-            const formRender = shallow(container.render());
+            const container = shallow(<Filter {...props} />);
+            container.instance().handleChangeFromDate = jest.fn();
 
             // Action
-            formRender.find(DatePicker).at(0).simulate('change', value);
+            container.find(DatePicker).at(0).simulate('change', value);
 
             // Assert
-            expect(container.handleChangeFromDate).toHaveBeenCalled();
+            expect(container.instance().handleChangeFromDate).toHaveBeenCalled();
         });
 
         it('handleChange toDate call exact function', () => {
             // Arrange
             const props = { ...initProps };
             const value = 'value';
-            const container = shallow(<Filter {...props} />).instance();
-            container.handleChangeToDate = jest.fn();
-            const formRender = shallow(container.render());
+            const container = shallow(<Filter {...props} />);
+            container.instance().handleChangeToDate = jest.fn();
 
             // Action
-            formRender.find(DatePicker).at(1).simulate('change', value);
+            container.find(DatePicker).at(1).simulate('change', value);
 
             // Assert
-            expect(container.handleChangeToDate).toHaveBeenCalled();
+            expect(container.instance().handleChangeToDate).toHaveBeenCalled();
         });
     });
 });
