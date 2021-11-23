@@ -610,213 +610,253 @@ export class CreateForm extends Component {
                                 </OverlayTrigger>
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" className={values.isUseDefaultCommunicationTool ? '' : 'required'}>
-                                {LangHelper.getResource('CommunicationTool')}
-                            </Form.Label>
-                            <Col sm="3" md="3">
-                                <MultipleSelect
-                                    isInvalid={touched.communicationToolIds && errors.communicationToolIds}
-                                    dataSource={communicationTools}
-                                    keyField='id' valueField='name'
-                                    hasAllOption={communicationTools.length > 0}
-                                    isAllTextShown={communicationTools.length > 0}
-                                    hasSearchBox isDisable={values.isUseDefaultCommunicationTool} isNAOption
-                                    onChange={(currentItem, selectedItemsKey) => {
-                                        this.handleChangeCommunicationTool(setFieldValue, currentItem, selectedItemsKey);
-                                    }}
-                                />
-                            </Col>
-                            <Col sm="1" md="1">
-                                <OverlayTrigger
-                                    placement="left-start"
-                                    overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultCommunicationTool')}</Tooltip>}
-                                >
-                                    <Form.Check type="checkbox" checked={values.isUseDefaultCommunicationTool}
-                                        onChange={this.handleChangeCheckboxDefaultCommunicationTool}
-                                    />
-                                </OverlayTrigger>
-                            </Col>
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('Language')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <Form.Control as="select" size="sm" className="shadow-none"
-                                    value={values.languageId} onChange={handleChange}
-                                    disabled={values.isUseDefaultLanguage}
-                                >
-                                    <option value="" hidden disabled />
-                                    {
-                                        languages.map(item =>
-                                            <option key={item.languageId} value={item.languageId}>
-                                                {item.name}
-                                            </option>
-                                        )
-                                    }
-                                </Form.Control>
-                            </Col>
-                            <Col sm="1" md="1">
-                                <OverlayTrigger
-                                    placement="left-start"
-                                    overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultLanguage')}</Tooltip>}
-                                >
-                                    <Form.Check type="checkbox" checked={values.isUseDefaultLanguage}
-                                        onChange={event => setFieldValue('isUseDefaultLanguage', event.target.checked)}
-                                    />
-                                </OverlayTrigger>
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Category')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <MultipleSelect
-                                    isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
-                                    dataSource={mainCategories}
-                                    keyField='mainCategoryID' valueField='name'
-                                    hasAllOption={mainCategories.length > 0}
-                                    isAllTextShown={mainCategories.length > 0}
-                                    hasSearchBox isNAOption
-                                    maxDisplayItemCount={1}
-                                    onChange={(currentItem, selectedItemsKey) => {
-                                        this.handleChangeMainCategory(setFieldValue, selectedItemsKey, values.subCategoryIds, values.subject);
-                                    }}
-                                />
-                            </Col>
-                            <Col sm="1" md="1" />
-                            <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('SubCategory')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <MultipleSelect
-                                    isInvalid={touched.subCategoryIds && errors.subCategoryIds}
-                                    dataSource={subCategoryOptions}
-                                    keyField='subCategoryId' valueField='name'
-                                    hasAllOption={subCategoryOptions.length > 0}
-                                    isAllTextShown={subCategoryOptions.length > 0}
-                                    hasSearchBox isNAOption
-                                    maxDisplayItemCount={1}
-                                    onChange={(currentItem, selectedItemsKey) => {
-                                        setFieldValue('subCategoryIds', selectedItemsKey);
-                                    }}
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('Product')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <MultipleSelect
-                                    dataSource={products}
-                                    keyField='id' valueField='value'
-                                    hasAllOption={products.length > 0}
-                                    isAllTextShown={products.length > 0}
-                                    hasSearchBox isNAOption
-                                    maxDisplayItemCount={1}
-                                    onChange={(currentItem, selectedItemsKey) => {
-                                        this.handleChangeProduct(setFieldValue, selectedItemsKey, values.subProductIds);
-                                    }}
-                                />
-                            </Col>
-                            <Col sm="1" md="1" />
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('SubProduct')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <MultipleSelect
-                                    dataSource={subProductOptions}
-                                    keyField='id' valueField='value'
-                                    hasAllOption={subProductOptions.length > 0}
-                                    isAllTextShown={subProductOptions.length > 0}
-                                    hasSearchBox isNAOption
-                                    maxDisplayItemCount={1}
-                                    onChange={(currentItem, selectedItemsKey) => {
-                                        this.handleChangeSubProduct(setFieldValue, selectedItemsKey, values.betTypeIds);
-                                    }}
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('Status')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <Form.Control as="select" size="sm" className="shadow-none"
-                                >
-                                    <option value="" hidden disabled />
-                                    {
-                                        statuses.map(item =>
-                                            <option key={item.statusId} value={item.statusId}>
-                                                {item.name}
-                                            </option>
-                                        )
-                                    }
-                                </Form.Control>
-                            </Col>
-                            <Col sm="1" md="1" />
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('BetType')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <MultipleSelect
-                                    dataSource={betTypeOptions}
-                                    keyField='id' valueField='value'
-                                    hasAllOption={betTypeOptions.length > 0}
-                                    isAllTextShown={betTypeOptions.length > 0}
-                                    hasSearchBox isNAOption
-                                    maxDisplayItemCount={1}
-                                    onChange={(currentItem, selectedItemsKey) => {
-                                        setFieldValue('betTypeIds', selectedItemsKey);
-                                    }}
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('Role')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <Form.Control as="select" size="sm" className="shadow-none" disabled>
-                                    <option value="">{LangHelper.getResource('NotApply')}</option>
-                                </Form.Control>
-                            </Col>
-                            <Col sm="1" md="1" />
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('Site')}</Form.Label>
-                            <Col  md="3" sm="3">
-                                <Form.Control as="select" size="sm"  disabled className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
-                                </Form.Control>
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column md="2" sm="2">{LangHelper.getResource('Response')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <Form.Control as="select" size="sm" className="shadow-none"
-                                >
-                                    <option value="" hidden disabled />
-                                    {
-                                        responses.map(item =>
-                                            <option key={item.id} value={item.id}>
-                                                {item.value}
-                                            </option>
-                                        )
-                                    }
-                                </Form.Control>
-                            </Col>
-                            <Col sm="1" md="1" />
-                            <Form.Label column sm="2" md="2">{LangHelper.getResource('LicenseeType')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <Form.Control as="select" disabled size="sm" className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
-                                </Form.Control>
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column md="2" sm="2">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
-                            <Col sm="3" md="3">
-                                <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries"
-                                    min={1} max={3200} value={values.noOfInquiries}
-                                    onInput={validateNoOfInquiry} onChange={handleChange}
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Subject')}</Form.Label>
-                            <Col sm="9" md="9">
-                                <AutoComplete isInvalid={touched.subject && errors.subject}
-                                    value={values.subject}
-                                    options={feedbackSubjectTemplates} displayField="subject"
-                                    onChange={value => setFieldValue('subject', value)}
-                                    onInputChange={this.handleGetFeedbackSubjectTemplates}
-                                />
-                            </Col>
-                        </Form.Group>
+                        
+                        { this.renderCommunicationToolSection(values, touched, errors, setFieldValue, handleChange) }
+                        { this.renderProductSection(values, touched, errors, setFieldValue, handleChange) }
                     </div>
                 </div>
+                
+                { this.renderCollapseSection(values, touched, errors, setFieldValue, handleChange) }
+                <Form.Group as={Row} className="mt-3">
+                    <Col>
+                        <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
+                            {LangHelper.getResource('Save')}
+                        </Button>
+                    </Col>
+                </Form.Group>
+            </Form>
+        );
+    };
+
+    renderCommunicationToolSection = (values, touched, errors, setFieldValue, handleChange) => {
+        const { subCategoryOptions } = this.state;
+        const { settings } = this.props;
+        const { communicationTools, languages, mainCategories } = settings;
+        return (
+            <div>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2" md="2" className={values.isUseDefaultCommunicationTool ? '' : 'required'}>
+                        {LangHelper.getResource('CommunicationTool')}
+                    </Form.Label>
+                    <Col sm="3" md="3">
+                        <MultipleSelect
+                            isInvalid={touched.communicationToolIds && errors.communicationToolIds}
+                            dataSource={communicationTools}
+                            keyField='id' valueField='name'
+                            hasAllOption={communicationTools.length > 0}
+                            isAllTextShown={communicationTools.length > 0}
+                            hasSearchBox isDisable={values.isUseDefaultCommunicationTool} isNAOption
+                            onChange={(currentItem, selectedItemsKey) => {
+                                this.handleChangeCommunicationTool(setFieldValue, currentItem, selectedItemsKey);
+                            }}
+                        />
+                    </Col>
+                    <Col sm="1" md="1">
+                        <OverlayTrigger
+                            placement="left-start"
+                            overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultCommunicationTool')}</Tooltip>}
+                        >
+                            <Form.Check type="checkbox" checked={values.isUseDefaultCommunicationTool}
+                                onChange={this.handleChangeCheckboxDefaultCommunicationTool}
+                            />
+                        </OverlayTrigger>
+                    </Col>
+                    <Form.Label column sm="2" md="2">{LangHelper.getResource('Language')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <Form.Control as="select" size="sm" className="shadow-none"
+                            value={values.languageId} onChange={handleChange}
+                            disabled={values.isUseDefaultLanguage}
+                        >
+                            <option value="" hidden disabled />
+                            {
+                                languages.map(item =>
+                                    <option key={item.languageId} value={item.languageId}>
+                                        {item.name}
+                                    </option>
+                                )
+                            }
+                        </Form.Control>
+                    </Col>
+                    <Col sm="1" md="1">
+                        <OverlayTrigger
+                            placement="left-start"
+                            overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultLanguage')}</Tooltip>}
+                        >
+                            <Form.Check type="checkbox" checked={values.isUseDefaultLanguage}
+                                onChange={event => setFieldValue('isUseDefaultLanguage', event.target.checked)}
+                            />
+                        </OverlayTrigger>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Category')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <MultipleSelect
+                            isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
+                            dataSource={mainCategories}
+                            keyField='mainCategoryID' valueField='name'
+                            hasAllOption={mainCategories.length > 0}
+                            isAllTextShown={mainCategories.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                this.handleChangeMainCategory(setFieldValue, selectedItemsKey, values.subCategoryIds, values.subject);
+                            }}
+                        />
+                    </Col>
+                    <Col sm="1" md="1" />
+                    <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('SubCategory')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <MultipleSelect
+                            isInvalid={touched.subCategoryIds && errors.subCategoryIds}
+                            dataSource={subCategoryOptions}
+                            keyField='subCategoryId' valueField='name'
+                            hasAllOption={subCategoryOptions.length > 0}
+                            isAllTextShown={subCategoryOptions.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                setFieldValue('subCategoryIds', selectedItemsKey);
+                            }}
+                        />
+                    </Col>
+                </Form.Group>
+            </div>
+        );
+    };
+
+    renderProductSection = (values, touched, errors, setFieldValue, handleChange) => {
+        const { subProductOptions, betTypeOptions } = this.state;
+        const { settings, feedbackSubjectTemplates } = this.props;
+        const { products, statuses, responses } = settings;
+        return (
+            <div>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2" md="2">{LangHelper.getResource('Product')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <MultipleSelect
+                            dataSource={products}
+                            keyField='id' valueField='value'
+                            hasAllOption={products.length > 0}
+                            isAllTextShown={products.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                this.handleChangeProduct(setFieldValue, selectedItemsKey, values.subProductIds);
+                            }}
+                        />
+                    </Col>
+                    <Col sm="1" md="1" />
+                    <Form.Label column sm="2" md="2">{LangHelper.getResource('SubProduct')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <MultipleSelect
+                            dataSource={subProductOptions}
+                            keyField='id' valueField='value'
+                            hasAllOption={subProductOptions.length > 0}
+                            isAllTextShown={subProductOptions.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                this.handleChangeSubProduct(setFieldValue, selectedItemsKey, values.betTypeIds);
+                            }}
+                        />
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2" md="2">{LangHelper.getResource('Status')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <Form.Control as="select" size="sm" className="shadow-none"
+                        >
+                            <option value="" hidden disabled />
+                            {
+                                statuses.map(item =>
+                                    <option key={item.statusId} value={item.statusId}>
+                                        {item.name}
+                                    </option>
+                                )
+                            }
+                        </Form.Control>
+                    </Col>
+                    <Col sm="1" md="1" />
+                    <Form.Label column sm="2" md="2">{LangHelper.getResource('BetType')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <MultipleSelect
+                            dataSource={betTypeOptions}
+                            keyField='id' valueField='value'
+                            hasAllOption={betTypeOptions.length > 0}
+                            isAllTextShown={betTypeOptions.length > 0}
+                            hasSearchBox isNAOption
+                            maxDisplayItemCount={1}
+                            onChange={(currentItem, selectedItemsKey) => {
+                                setFieldValue('betTypeIds', selectedItemsKey);
+                            }}
+                        />
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2" md="2">{LangHelper.getResource('Role')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <Form.Control as="select" size="sm" className="shadow-none" disabled>
+                            <option value="">{LangHelper.getResource('NotApply')}</option>
+                        </Form.Control>
+                    </Col>
+                    <Col sm="1" md="1" />
+                    <Form.Label column sm="2" md="2">{LangHelper.getResource('Site')}</Form.Label>
+                    <Col  md="3" sm="3">
+                        <Form.Control as="select" size="sm"  disabled className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
+                        </Form.Control>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column md="2" sm="2">{LangHelper.getResource('Response')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <Form.Control as="select" size="sm" className="shadow-none"
+                        >
+                            <option value="" hidden disabled />
+                            {
+                                responses.map(item =>
+                                    <option key={item.id} value={item.id}>
+                                        {item.value}
+                                    </option>
+                                )
+                            }
+                        </Form.Control>
+                    </Col>
+                    <Col sm="1" md="1" />
+                    <Form.Label column sm="2" md="2">{LangHelper.getResource('LicenseeType')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <Form.Control as="select" disabled size="sm" className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
+                        </Form.Control>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column md="2" sm="2">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
+                    <Col sm="3" md="3">
+                        <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries"
+                            min={1} max={3200} value={values.noOfInquiries}
+                            onInput={validateNoOfInquiry} onChange={handleChange}
+                        />
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Subject')}</Form.Label>
+                    <Col sm="9" md="9">
+                        <AutoComplete isInvalid={touched.subject && errors.subject}
+                            value={values.subject}
+                            options={feedbackSubjectTemplates} displayField="subject"
+                            onChange={value => setFieldValue('subject', value)}
+                            onInputChange={this.handleGetFeedbackSubjectTemplates}
+                        />
+                    </Col>
+                </Form.Group>
+            </div>
+        );
+    };
+
+    renderCollapseSection = (values, touched, errors, setFieldValue, handleChange) => {
+        const { collapse } = this.state;
+        return (
+            <div>
                 <div className="panel-group border-bottom-0">
                     <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('autoGenerated')}
                         aria-controls="collapse-expand-autoGenerated"
@@ -864,14 +904,7 @@ export class CreateForm extends Component {
                         </div>
                     </Collapse>
                 </div>
-                <Form.Group as={Row} className="mt-3">
-                    <Col>
-                        <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                            {LangHelper.getResource('Save')}
-                        </Button>
-                    </Col>
-                </Form.Group>
-            </Form>
+            </div>
         );
     };
 

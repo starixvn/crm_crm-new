@@ -138,17 +138,258 @@ export default class FeedbackInfo extends Component {
         );
     };
 
-    render() {
-        const { collapse, values, touched, errors, settings,
-            extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
-            productOptions, subProductOptions, betTypeOptions,
-            relatedCustomers, feedbackSubjectTemplates,
-            handleChange, setFieldValue, onCollapseExpand,
-            onChangeMainCategory, onChangeProduct, onChangeSubProduct,
-            onChangeCheckboxHasRelatedCustomer, onPasteCustomer, onVerifyRelatedCustomer, onDeleteCustomer,
-            onGetFeedbackSubjectTemplates
+    renderRoleSection = () => {
+        const { values, touched, errors, setFieldValue, handleChange, settings, relatedCustomers, feedbackSubjectTemplates,
+            onChangeCheckboxHasRelatedCustomer, onPasteCustomer, onVerifyRelatedCustomer, onDeleteCustomer, onGetFeedbackSubjectTemplates
         } = this.props;
-        const { responses, languages, statuses, roles, countries } = settings;
+        const { roles, countries } = settings;
+        return (
+            <div>
+                <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="roleId">
+                                {LangHelper.getResource('Role')}
+                            </Form.Label>
+                            <Col md="8" sm="8">
+                                <Form.Control as="select" size="sm" className="shadow-none" id='roleId' name='roleId' value={values.roleId} onChange={handleChange}>
+                                    {roles.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="countryId">
+                                {LangHelper.getResource('Country')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    id="countryId" name="countryId"
+                                    value={values.countryId} onChange={handleChange}
+                                >
+                                    {countries.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="noInquiries">
+                                {LangHelper.getResource('NoOfInquiries')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control size="sm" type="number" min={1} max={3200}
+                                    value={values.noInquiries} id="noInquiries" name="noInquiries"
+                                    className="shadow-none" autoComplete="off"
+                                    onInput={validateNoOfInquiry} onChange={handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm="3" md="3">
+                        <Form.Group as={Row}>
+                            <Col>
+                                <div className="d-flex">
+                                    <Form.Check type="checkbox" id="checkbox-related-customer" htmlFor="checkbox-related-customer"
+                                        label={LangHelper.getResource('IsRelatedToCustomer')}
+                                        checked={values.hasRelated}
+                                        onChange={onChangeCheckboxHasRelatedCustomer}
+                                    />
+                                    <OverlayTrigger
+                                        placement="auto"
+                                        overlay={
+                                            <Tooltip id="tooltip-customers">
+                                                {LangHelper.getResource('MultipleCustomersTooltip')}
+                                            </Tooltip>
+                                        }
+                                    >
+                                        <span className="fa fa-question-circle-o" />
+                                    </OverlayTrigger>
+                                </div>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="7" md="7">
+                        <Form.Group as={Row}>
+                            <Col>
+                                <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
+                                    name="customerNameInput"
+                                    disabled={!values.hasRelated} value={values.customerNameInput}
+                                    isInvalid={touched.customerNameInput && errors.customerNameInput}
+                                    onPaste={event => onPasteCustomer(setFieldValue, event, values.customerNameInput)}
+                                    onChange={handleChange}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="2" md="2">
+                        <Form.Group as={Row}>
+                            <Col>
+                                <Button type="button" variant="primary" size="sm"
+                                    disabled={!values.customerNameInput}
+                                    onClick={onVerifyRelatedCustomer}
+                                >
+                                    {LangHelper.getResource('Verify')}
+                                </Button>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+                {
+                    values.hasRelated && relatedCustomers.length > 0 &&
+                    <div className="verify-customer">
+                        <VerifyCustomer listOfCustomers={relatedCustomers} onClick={onDeleteCustomer} />
+                    </div>
+                }
+                <Form.Group as={Row}>
+                    <Col sm="3" md="3">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="subject" className="required">
+                                {LangHelper.getResource('Subject')}
+                            </Form.Label>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="9" md="9">
+                        <Form.Group as={Row}>
+                            <Col>
+                                <AutoComplete isInvalid={touched.subject && errors.subject}
+                                    value={values.subject}
+                                    options={feedbackSubjectTemplates} displayField="subject"
+                                    onChange={value => setFieldValue('subject', value)}
+                                    onInputChange={onGetFeedbackSubjectTemplates}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+            </div>
+        );
+    };
+
+    renderProductSection = () => {
+        const { values, touched, errors, setFieldValue, handleChange, settings, productOptions, subProductOptions,
+            betTypeOptions,onChangeProduct, onChangeSubProduct
+        } = this.props;
+        const { responses, languages, statuses } = settings;
+        return (
+            <div>
+                <Form.Group as={Row}>
+                    <Col md="4" sm="4">
+                        <Form.Group as={Row}>
+                            <Form.Label htmlFor="product" column sm="4" md="4">{LangHelper.getResource('Product')}</Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    dataSource={productOptions}
+                                    keyField='id' valueField='value'
+                                    hasAllOption={productOptions.length > 0}
+                                    isAllTextShown={productOptions.length > 0}
+                                    hasSearchBox isNAOption
+                                    maxDisplayItemCount={1}
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        onChangeProduct(setFieldValue, selectedItemsKey, values.subProductIds);
+                                    }}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="subProductIds">{LangHelper.getResource('SubProduct')}</Form.Label>
+                            <Col md="8" sm="8">
+                                <MultipleSelect
+                                    isAllTextShown={subProductOptions.length > 0}
+                                    hasSearchBox isNAOption
+                                    maxDisplayItemCount={1}
+                                    dataSource={subProductOptions}
+                                    keyField='id' valueField='value'
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        onChangeSubProduct(setFieldValue, selectedItemsKey, values.betTypeIds);
+                                    }}
+                                    hasAllOption={subProductOptions.length > 0}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col md="4" sm="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column md="4" sm="4" htmlFor="betTypeIds">{LangHelper.getResource('BetType')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <MultipleSelect
+                                    hasSearchBox isNAOption
+                                    keyField='id' valueField='value'
+                                    hasAllOption={betTypeOptions.length > 0}
+                                    maxDisplayItemCount={1}
+                                    dataSource={betTypeOptions}
+                                    isAllTextShown={betTypeOptions.length > 0}
+                                    onChange={(currentItem, selectedItemsKey) => {
+                                        setFieldValue('betTypeIds', selectedItemsKey);
+                                    }}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="responseId">
+                                {LangHelper.getResource('Response')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    id="responseId" name="responseId"
+                                    value={values.responseId} onChange={handleChange}
+                                >
+                                    {responses.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="languageId" className="required">
+                                {LangHelper.getResource('Language')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    isInvalid={touched.languageId && errors.languageId}
+                                    id="languageId" name="languageId"
+                                    value={values.languageId} onChange={handleChange}
+                                >
+                                    {languages.map(item => <option key={item.languageId} value={item.languageId}>{item.name}</option>)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col sm="4" md="4">
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="4" htmlFor="statusId">
+                                {LangHelper.getResource('Status')}
+                            </Form.Label>
+                            <Col sm="8" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    id="statusId" name="statusId"
+                                    value={values.statusId} onChange={handleChange}
+                                >
+                                    {statuses.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Form.Group>
+            </div>
+        );
+    };
+
+    render() {
+        const { collapse, values, touched, errors,
+            extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
+            setFieldValue, onCollapseExpand, onChangeMainCategory
+        } = this.props;
 
         return (
             <>
@@ -276,231 +517,8 @@ export default class FeedbackInfo extends Component {
                                     </Form.Group>
                                 </Col>
                             </Form.Group>
-                            <Form.Group as={Row}>
-                                <Col md="4" sm="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label htmlFor="product" column sm="4" md="4">{LangHelper.getResource('Product')}</Form.Label>
-                                        <Col sm="8" md="8">
-                                            <MultipleSelect
-                                                dataSource={productOptions}
-                                                keyField='id' valueField='value'
-                                                hasAllOption={productOptions.length > 0}
-                                                isAllTextShown={productOptions.length > 0}
-                                                hasSearchBox isNAOption
-                                                maxDisplayItemCount={1}
-                                                onChange={(currentItem, selectedItemsKey) => {
-                                                    onChangeProduct(setFieldValue, selectedItemsKey, values.subProductIds);
-                                                }}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="subProductIds">{LangHelper.getResource('SubProduct')}</Form.Label>
-                                        <Col md="8" sm="8">
-                                            <MultipleSelect
-                                                isAllTextShown={subProductOptions.length > 0}
-                                                hasSearchBox isNAOption
-                                                maxDisplayItemCount={1}
-                                                dataSource={subProductOptions}
-                                                keyField='id' valueField='value'
-                                                onChange={(currentItem, selectedItemsKey) => {
-                                                    onChangeSubProduct(setFieldValue, selectedItemsKey, values.betTypeIds);
-                                                }}
-                                                hasAllOption={subProductOptions.length > 0}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col md="4" sm="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column md="4" sm="4" htmlFor="betTypeIds">{LangHelper.getResource('BetType')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <MultipleSelect
-                                                hasSearchBox isNAOption
-                                                keyField='id' valueField='value'
-                                                hasAllOption={betTypeOptions.length > 0}
-                                                maxDisplayItemCount={1}
-                                                dataSource={betTypeOptions}
-                                                isAllTextShown={betTypeOptions.length > 0}
-                                                onChange={(currentItem, selectedItemsKey) => {
-                                                    setFieldValue('betTypeIds', selectedItemsKey);
-                                                }}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row}>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="responseId">
-                                            {LangHelper.getResource('Response')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
-                                                id="responseId" name="responseId"
-                                                value={values.responseId} onChange={handleChange}
-                                            >
-                                                {responses.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="languageId" className="required">
-                                            {LangHelper.getResource('Language')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
-                                                isInvalid={touched.languageId && errors.languageId}
-                                                id="languageId" name="languageId"
-                                                value={values.languageId} onChange={handleChange}
-                                            >
-                                                {languages.map(item => <option key={item.languageId} value={item.languageId}>{item.name}</option>)}
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="statusId">
-                                            {LangHelper.getResource('Status')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
-                                                id="statusId" name="statusId"
-                                                value={values.statusId} onChange={handleChange}
-                                            >
-                                                {statuses.map(item => <option key={item.statusId} value={item.statusId}>{item.name}</option>)}
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row}>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="roleId">
-                                            {LangHelper.getResource('Role')}
-                                        </Form.Label>
-                                        <Col md="8" sm="8">
-                                            <Form.Control as="select" size="sm" className="shadow-none" id='roleId' name='roleId' value={values.roleId} onChange={handleChange}>
-                                                {roles.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="countryId">
-                                            {LangHelper.getResource('Country')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control as="select" size="sm" className="shadow-none"
-                                                id="countryId" name="countryId"
-                                                value={values.countryId} onChange={handleChange}
-                                            >
-                                                {countries.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="4" md="4">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="noInquiries">
-                                            {LangHelper.getResource('NoOfInquiries')}
-                                        </Form.Label>
-                                        <Col sm="8" md="8">
-                                            <Form.Control size="sm" type="number" min={1} max={3200}
-                                                value={values.noInquiries} id="noInquiries" name="noInquiries"
-                                                className="shadow-none" autoComplete="off"
-                                                onInput={validateNoOfInquiry} onChange={handleChange}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row}>
-                                <Col sm="3" md="3">
-                                    <Form.Group as={Row}>
-                                        <Col>
-                                            <div className="d-flex">
-                                                <Form.Check type="checkbox" id="checkbox-related-customer" htmlFor="checkbox-related-customer"
-                                                    label={LangHelper.getResource('IsRelatedToCustomer')}
-                                                    checked={values.hasRelated}
-                                                    onChange={onChangeCheckboxHasRelatedCustomer}
-                                                />
-                                                <OverlayTrigger
-                                                    placement="auto"
-                                                    overlay={
-                                                        <Tooltip id="tooltip-customers">
-                                                            {LangHelper.getResource('MultipleCustomersTooltip')}
-                                                        </Tooltip>
-                                                    }
-                                                >
-                                                    <span className="fa fa-question-circle-o" />
-                                                </OverlayTrigger>
-                                            </div>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="7" md="7">
-                                    <Form.Group as={Row}>
-                                        <Col>
-                                            <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                                name="customerNameInput"
-                                                disabled={!values.hasRelated} value={values.customerNameInput}
-                                                isInvalid={touched.customerNameInput && errors.customerNameInput}
-                                                onPaste={event => onPasteCustomer(setFieldValue, event, values.customerNameInput)}
-                                                onChange={handleChange}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="2" md="2">
-                                    <Form.Group as={Row}>
-                                        <Col>
-                                            <Button type="button" variant="primary" size="sm"
-                                                disabled={!values.customerNameInput}
-                                                onClick={onVerifyRelatedCustomer}
-                                            >
-                                                {LangHelper.getResource('Verify')}
-                                            </Button>
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
-                            {
-                                values.hasRelated && relatedCustomers.length > 0 &&
-                                <div className="verify-customer">
-                                    <VerifyCustomer listOfCustomers={relatedCustomers} onClick={onDeleteCustomer} />
-                                </div>
-                            }
-                            <Form.Group as={Row}>
-                                <Col sm="3" md="3">
-                                    <Form.Group as={Row}>
-                                        <Form.Label column sm="4" md="4" htmlFor="subject" className="required">
-                                            {LangHelper.getResource('Subject')}
-                                        </Form.Label>
-                                    </Form.Group>
-                                </Col>
-                                <Col sm="9" md="9">
-                                    <Form.Group as={Row}>
-                                        <Col>
-                                            <AutoComplete isInvalid={touched.subject && errors.subject}
-                                                value={values.subject}
-                                                options={feedbackSubjectTemplates} displayField="subject"
-                                                onChange={value => setFieldValue('subject', value)}
-                                                onInputChange={onGetFeedbackSubjectTemplates}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Col>
-                            </Form.Group>
+                            { this.renderProductSection() }
+                            { this. renderRoleSection() }
                         </div>
                     </Collapse>
                 </div>
