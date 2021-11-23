@@ -78,9 +78,11 @@ export default class FeedbackInfo extends Component {
         return (
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title justify-content-between"
-                    onClick={() => { if (!values.isPreviewSolution) {
-                        onCollapseExpand('solution');
-                    } }}
+                    onClick={() => {
+                        if (!values.isPreviewSolution) {
+                            onCollapseExpand('solution');
+                        }
+                    }}
                     aria-controls="collapse-expand-solution" aria-expanded={!collapse.solution}
                 >
                     <Form.Label className="required">{LangHelper.getResource('Solution')}</Form.Label>

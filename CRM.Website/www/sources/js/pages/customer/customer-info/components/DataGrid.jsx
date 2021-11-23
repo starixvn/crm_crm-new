@@ -243,6 +243,14 @@ export class DataGrid extends Component {
                     </Col>
                 </Form.Group>
 
+                { this.renderCommunicationTool(values, handleChange, isSubmitting) }
+            </Form>
+        );
+    };
+
+    renderCommunicationTool = (values, handleChange, isSubmitting) => {
+        return (
+            <div>
                 <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
 
                 <Form.Group className="row item no-border-bg">
@@ -411,8 +419,7 @@ export class DataGrid extends Component {
                         </Button>
                     </Col>
                 </Form.Group>
-
-            </Form>
+            </div>
         );
     };
 
@@ -490,32 +497,32 @@ export class DataGrid extends Component {
             lastName: customerInfo.lastName || '',
             nickname: customerInfo.nickname || '',
             languageId: customerInfo.languages.map(x => x).toString(),
-            phoneInfo: customerInfo.phoneInfo || '',
-            phoneCountryCode: customerInfo.phoneCountryCode || '',
-            phoneAreaCode: customerInfo.phoneAreaCode || '',
-            phone: customerInfo.phone || '',
-            phone2CountryCode: customerInfo.phone2CountryCode || '',
-            phone2AreaCode: customerInfo.phone2AreaCode || '',
-            phone2: customerInfo.phone2 || '',
-            phone3CountryCode: customerInfo.phone3CountryCode || '',
-            phone3AreaCode: customerInfo.phone3AreaCode || '',
-            phone3: customerInfo.phone3 || '',
-            mobilePhoneCountryCode: customerInfo.mobilePhoneCountryCode || '',
-            mobilePhoneAreaCode: customerInfo.mobilePhoneAreaCode || '',
-            mobilePhone: customerInfo.mobilePhone || '',
-            email: customerInfo.email || '',
-            telegram: customerInfo.telegram || '',
-            msn: customerInfo.msn || '',
-            skype: customerInfo.skype || '',
-            pic1Name: customerInfo.pic1Name || '',
-            pic1: customerInfo.pic1 || '',
-            pic2Name: customerInfo.pic2Name || '',
-            pic2: customerInfo.pic2 || '',
-            pic3Name: customerInfo.pic3Name || '',
-            pic3: customerInfo.pic3 || '',
-            pic4Name: customerInfo.pic4Name || '',
-            pic4: customerInfo.pic4 || '',
-            pics: customerInfo.personalInfoContacts || '',
+            phoneInfo: customerInfo.phoneInfo,
+            phoneCountryCode: customerInfo.phoneCountryCode,
+            phoneAreaCode: customerInfo.phoneAreaCode,
+            phone: customerInfo.phone,
+            phone2CountryCode: customerInfo.phone2CountryCode,
+            phone2AreaCode: customerInfo.phone2AreaCode,
+            phone2: customerInfo.phone2,
+            phone3CountryCode: customerInfo.phone3CountryCode,
+            phone3AreaCode: customerInfo.phone3AreaCode,
+            phone3: customerInfo.phone3,
+            mobilePhoneCountryCode: customerInfo.mobilePhoneCountryCode,
+            mobilePhoneAreaCode: customerInfo.mobilePhoneAreaCode,
+            mobilePhone: customerInfo.mobilePhone,
+            email: customerInfo.email,
+            telegram: customerInfo.telegram,
+            msn: customerInfo.msn,
+            skype: customerInfo.skype,
+            pic1Name: customerInfo.pic1Name,
+            pic1: customerInfo.pic1,
+            pic2Name: customerInfo.pic2Name,
+            pic2: customerInfo.pic2,
+            pic3Name: customerInfo.pic3Name,
+            pic3: customerInfo.pic3,
+            pic4Name: customerInfo.pic4Name,
+            pic4: customerInfo.pic4,
+            pics: customerInfo.personalInfoContacts,
             role: customerInfo.role,
             uplineInfo: customerInfo.uplineInfo,
             status: customerInfo.status,
