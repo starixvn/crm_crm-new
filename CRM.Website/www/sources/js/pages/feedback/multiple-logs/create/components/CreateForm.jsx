@@ -492,9 +492,9 @@ export class CreateForm extends Component {
         setFieldValue,
         isSubmitting
     }) => {
-        const { collapse, subCategoryOptions, subProductOptions, betTypeOptions, createMultipleLogsResult } = this.state;
-        const { settings, verifyCustomerResults, feedbackSubjectTemplates } = this.props;
-        const { extensions, countries, communicationTools, languages, mainCategories, products, statuses, responses } = settings;
+        const { createMultipleLogsResult } = this.state;
+        const { settings, verifyCustomerResults} = this.props;
+        const { extensions, countries } = settings;
 
         return (
             <Form noValidate onSubmit={handleSubmit}>
