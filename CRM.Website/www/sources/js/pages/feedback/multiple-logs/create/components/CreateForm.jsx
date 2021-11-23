@@ -610,12 +610,12 @@ export class CreateForm extends Component {
                                 </OverlayTrigger>
                             </Col>
                         </Form.Group>
-                        
+
                         { this.renderCommunicationToolSection(values, touched, errors, setFieldValue, handleChange) }
                         { this.renderProductSection(values, touched, errors, setFieldValue, handleChange) }
                     </div>
                 </div>
-                
+
                 { this.renderCollapseSection(values, touched, errors, setFieldValue, handleChange) }
                 <Form.Group as={Row} className="mt-3">
                     <Col>
