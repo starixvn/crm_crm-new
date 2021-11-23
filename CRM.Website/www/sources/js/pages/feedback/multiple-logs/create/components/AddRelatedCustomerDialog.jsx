@@ -162,6 +162,39 @@ export class AddRelatedCustomerDialog extends Component {
         this.props.setAddRelatedCustomerDialog({ show: false });
     };
 
+    getErrMsgs = (errMsgs, data) => {
+        let invalidRelatedCustomers = data.filter(item => item.resultTypeId === 1);
+        if (invalidRelatedCustomers.length > 0) {
+            errMsgs.push('Invalid usernames: ' + invalidRelatedCustomers.map(x => x.username).join(', '));
+        }
+
+        invalidRelatedCustomers = data.filter(item => item.resultTypeId === 2 || item.resultTypeId === 3);
+        if (invalidRelatedCustomers.length > 0) {
+            errMsgs.push('The system does not support to add related customer for deposit and guest customer. Please check usernames: '
+                + invalidRelatedCustomers.map(x => x.username).join(', '));
+        }
+
+        invalidRelatedCustomers = data.filter(item => item.resultTypeId === 4);
+        if (invalidRelatedCustomers.length > 0) {
+            errMsgs.push('These usernames do not belong to any headline or direct accounts without group headline: '
+                + invalidRelatedCustomers.map(x => x.username).join(', '));
+        }
+
+        invalidRelatedCustomers = data.filter(item => item.resultTypeId === 5);
+        if (invalidRelatedCustomers.length > 0) {
+            errMsgs.push('You are not allowed to add related customers for itself. Please check usernames: '
+                + invalidRelatedCustomers.map(x => x.username).join(', '));
+        }
+
+        invalidRelatedCustomers = data.filter(item => item.resultTypeId === 6);
+        if (invalidRelatedCustomers.length > 0) {
+            errMsgs.push('The system does not support to add related customer for internal accounts. Please check usernames: '
+                + invalidRelatedCustomers.map(x => x.username).join(', '));
+        }
+
+        return errMsgs;
+    };
+
     verifyRelatedCustomers = () => {
         const errMsgs = [];
         this.setState({ verified: true });
@@ -192,34 +225,7 @@ export class AddRelatedCustomerDialog extends Component {
                 };
             });
 
-            let invalidRelatedCustomers = response.data.filter(item => item.resultTypeId === 1);
-            if (invalidRelatedCustomers.length > 0) {
-                errMsgs.push('Invalid usernames: ' + invalidRelatedCustomers.map(x => x.username).join(', '));
-            }
-
-            invalidRelatedCustomers = response.data.filter(item => item.resultTypeId === 2 || item.resultTypeId === 3);
-            if (invalidRelatedCustomers.length > 0) {
-                errMsgs.push('The system does not support to add related customer for deposit and guest customer. Please check usernames: '
-                    + invalidRelatedCustomers.map(x => x.username).join(', '));
-            }
-
-            invalidRelatedCustomers = response.data.filter(item => item.resultTypeId === 4);
-            if (invalidRelatedCustomers.length > 0) {
-                errMsgs.push('These usernames do not belong to any headline or direct accounts without group headline: '
-                    + invalidRelatedCustomers.map(x => x.username).join(', '));
-            }
-
-            invalidRelatedCustomers = response.data.filter(item => item.resultTypeId === 5);
-            if (invalidRelatedCustomers.length > 0) {
-                errMsgs.push('You are not allowed to add related customers for itself. Please check usernames: '
-                    + invalidRelatedCustomers.map(x => x.username).join(', '));
-            }
-
-            invalidRelatedCustomers = response.data.filter(item => item.resultTypeId === 6);
-            if (invalidRelatedCustomers.length > 0) {
-                errMsgs.push('The system does not support to add related customer for internal accounts. Please check usernames: '
-                    + invalidRelatedCustomers.map(x => x.username).join(', '));
-            }
+            errMsgs.push(this.getErrMsgs(errMsgs, response.data));
 
             if (errMsgs.length > 0) {
                 relatedCustomerResults = [];

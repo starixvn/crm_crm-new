@@ -119,7 +119,7 @@ export default class AppContainer extends Component {
                 return {
                     id: item.id,
                     value: item.value,
-                    checked: feedbackSettings.productIds.includes(item.id)
+                    checked: feedbackSettings.subProductIds.includes(item.id)
                 };
             });
             const bettypes = data.settings.bettypes.filter(item => feedbackSettings.subProductIds.includes(item.parentId) && item.parentId !== 0);
@@ -609,11 +609,18 @@ export default class AppContainer extends Component {
             review: values.review,
              // 0: do nothing, 1: update, 2: remove
             updateReviewMode: !this.state.hasReviewFeedbackPermission
-                ? 0 : (!values.isReviewed ? 2 : (this.formikValues.review === values.review ? 0 : 1)),
+                ? 0 : this.isReviewed(),
             isDeletedFeedbackView: this.props.isDeletedFeedbackView
         };
 
         this.handleReVerifyInactiveAndConfirm(params, setSubmitting);
+    };
+
+    isReviewed = values => {
+        if (!values.isReviewed) {
+            return 2;
+        }
+        return this.formikValues.review === values.review ? 0 : 1;
     };
 
     handleReVerifyInactiveAndConfirm = async (params, setSubmitting) =>{
