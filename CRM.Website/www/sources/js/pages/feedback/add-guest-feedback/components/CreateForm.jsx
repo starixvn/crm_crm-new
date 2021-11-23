@@ -337,8 +337,8 @@ export class CreateForm extends Component {
                 <Collapse in={!this.state.collapse.isShowCustomerDetailOption}>
                     <div id="collapse-expand-show-identity">
                         {
-                            <CustomerInfo 
-                                values={values} 
+                            <CustomerInfo
+                                values={values}
                                 handleChange={handleChange}
                                 setFieldValue={setFieldValue}
                                 settings={this.props.settings}
