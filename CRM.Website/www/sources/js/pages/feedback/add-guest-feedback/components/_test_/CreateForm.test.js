@@ -144,7 +144,6 @@ describe('CreateForm', () => {
         it('renderForm call exact function', () => {
             //Arrange
             const createForm = shallow(<CreateForm  {...props} />);
-            createForm.instance().renderIdentityInformation = jest.fn();
             createForm.instance().renderDetails = jest.fn();
             createForm.instance().renderDescriptionsAndSolution = jest.fn();
 
@@ -161,7 +160,6 @@ describe('CreateForm', () => {
             //Arrange
             props.confirmCreateGuestDialog = {show: true, confirmMessage: 'confirmMessage'};
             const createForm = shallow(<CreateForm  {...props} />);
-            createForm.instance().renderIdentityInformation = jest.fn();
             createForm.instance().renderDetails = jest.fn();
             createForm.instance().renderDescriptionsAndSolution = jest.fn();
 
@@ -178,7 +176,6 @@ describe('CreateForm', () => {
             //Arrange
             props.addFeedbackResult = {isSuccessful: true, message: 'AddFeedbackSuccessfully' };
             const createForm = shallow(<CreateForm  {...props} />);
-            createForm.instance().renderIdentityInformation = jest.fn();
             createForm.instance().renderDetails = jest.fn();
             createForm.instance().renderDescriptionsAndSolution = jest.fn();
 
@@ -194,7 +191,6 @@ describe('CreateForm', () => {
             //Arrange
             props.addFeedbackResult = {isSuccessful: true, message: '' };
             const createForm = shallow(<CreateForm  {...props} />);
-            createForm.instance().renderIdentityInformation = jest.fn();
             createForm.instance().renderDetails = jest.fn();
             createForm.instance().renderDescriptionsAndSolution = jest.fn();
 
@@ -285,37 +281,7 @@ describe('CreateForm', () => {
             const formRender = shallow(createForm.instance().renderIdentityInformation(values, errors, touched, handleChange, setFieldValue));
 
             // Assert
-            expect(formRender.find(Form.Control)).toHaveLength(38);
-        });
-
-        it('handleChange correctly', () => {
-            // Arrange
-            const value = 'value';
-            const {values, errors, touched, handleChange, setFieldValue} = params;
-            const createForm = shallow(<CreateForm {...props} />);
-            createForm.instance().setState(state);
-            const formRender = shallow(createForm.instance().renderIdentityInformation(values, errors, touched, handleChange, setFieldValue));
-
-            // Action
-            formRender.find(Form.Control).at(2).simulate('change', value);
-
-            // Assert
-            expect(params.handleChange).toHaveBeenCalled();
-        });
-
-        it('setFieldValue birthday correctly', () => {
-            // Arrange
-            const value = 'value';
-            const {values, errors, touched, handleChange, setFieldValue} = params;
-            const createForm = shallow(<CreateForm {...props} />);
-            createForm.instance().setState(state);
-            const formRender = shallow(createForm.instance().renderIdentityInformation(values, errors, touched, handleChange, setFieldValue));
-
-            // Action
-            formRender.find(DatePicker).at(0).simulate('change', value);
-
-            // Assert
-            expect(params.setFieldValue).toHaveBeenCalled();
+            expect(formRender.find(Form.Control)).toHaveLength(1);
         });
     });
 
