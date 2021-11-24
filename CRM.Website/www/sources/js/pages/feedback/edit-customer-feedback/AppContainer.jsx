@@ -629,7 +629,7 @@ export default class AppContainer extends Component {
         const newRelatedCustJoin = newRelatedCust.map(x=>x.val).join(',');
         if(newRelatedCustJoin.length > 0){
             const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
-            await DataService.postDataAsync(url, { username: newRelatedCustName }).then(response => {
+            await DataService.postDataAsync(url, { username: newRelatedCustJoin }).then(response => {
                 const customerRemains = oldReLatedCust.filter(x=> !deleteRelatedCust.some(y=>y.custId === x.custId));
                 const customersCombine = [...response.data, ...customerRemains];
                 this.setState({relatedCustomers: customersCombine});
