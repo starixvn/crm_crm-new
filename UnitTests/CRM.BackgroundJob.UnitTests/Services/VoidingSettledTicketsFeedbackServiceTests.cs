@@ -69,6 +69,35 @@
                 Arg.Any<string>());
             await commonFeedback.Received(2).EditSystemSettingAsyncByEnvFormatDate(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
+
+        [Fact]
+        public async Task CreateFeedbackForVoidingSettledTickets_MessageCheckHaveData_CallExactFunction()
+        {
+            // Arrange
+            var service = MockService();
+            var commandResult = new CommandResult { Code = 1 };
+            var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
+            var voidingSettledTicketSetting = fixture.Create<ResultAmendmentSetting>();
+            var settings = fixture.Create<IEnumerable<SettingItem>>();
+            var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
+            var messageVoidSettled = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var voidingMessageCheck = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var settledTicket = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            settingService.GetAllSettingAsync().Returns(settings);
+            settingService.GetSystemSettingMappingAsync(settingNames).Returns(settingMappings);
+            voidingSettledTicketsService.GetMessageVoidSettledAsync().Returns(messageVoidSettled);
+            voidingSettledTicketsService.GetVoidingMessasgeCheckAsync(messageVoidSettled).Returns(voidingMessageCheck);
+            voidingSettledTicketsService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck).Returns(settledTicket);
+            voidingSettledTicketsService.ImportMessageVoidSettledAsync(settledTicket).Returns(commandResult);
+            
+
+            // Act
+            await service.CreateFeedbackForVoidingSettledTickets(voidingSettledTicketSetting, true, voidingSettledTicketSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
+
+            // Assert
+
+            logService.Received(2).LogInformation(Arg.Any<string>());
+        }
         #endregion CreateFeedbackForVoidingSettledTickets
 
         #region CreateVoidingSettledTicketsAsync

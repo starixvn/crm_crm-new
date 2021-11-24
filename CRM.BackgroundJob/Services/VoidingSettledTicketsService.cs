@@ -20,6 +20,8 @@
             ResultAmendmentSetting voidingSettledTicketSetting, List<MessageVoidSettled> voidSettleds, string environment
             );
         Task<IEnumerable<MessageVoidSettled>> GetFailVoidingMessageAsync();
+        Task<IEnumerable<MessageVoidSettled>> GetVoidingMessasgeCheckAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds);
+        Task<IEnumerable<MessageVoidSettled>> VoidingMessageGetSettledTicketAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds);
         Task<ValueTuple<IEnumerable<VoidingAutoFeedbackInfo>, IEnumerable<AutoVoidingEventDetails>>> GetVoidingAutoFeedbackInfoAsync(int batchSize);
         Task<CommandResult> ImportMessageVoidSettledAsync(IEnumerable<MessageVoidSettled> messages);
         Task<CommandResult> UpdateVoidingAutoFeedbackInfoBatchAsync(int logVoidingID, string status, string description, string environment);
@@ -73,6 +75,24 @@
         {
             var criteria = new GetFailVoidingMessageCriteria();
 
+            return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
+        }
+
+        public async Task<IEnumerable<MessageVoidSettled>> GetVoidingMessasgeCheckAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds)
+        {
+            var criteria = new GetChatbotVoidingMessageCheck
+            {
+                Message = messageVoidSettleds.ToXML("root").ToString()
+            };
+            return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
+        }
+
+        public async Task<IEnumerable<MessageVoidSettled>> VoidingMessageGetSettledTicketAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds)
+        {
+            var criteria = new VoidingMessageGetSettledTicket
+            {
+                Message = messageVoidSettleds.ToXML("root").ToString()
+            };
             return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
         }
 

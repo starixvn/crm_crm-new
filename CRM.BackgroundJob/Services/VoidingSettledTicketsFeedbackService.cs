@@ -74,7 +74,17 @@
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
 
             var messageVoidSettled = await voidingSettledTicketsService.GetMessageVoidSettledAsync();
-            await voidingSettledTicketsService.ImportMessageVoidSettledAsync(messageVoidSettled);
+            var voidingMessageCheck = await voidingSettledTicketsService.GetVoidingMessasgeCheckAsync(messageVoidSettled);
+            if (voidingMessageCheck.Any())
+            {
+                var settledTicket = await voidingSettledTicketsService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck);
+                var commandMessage = await voidingSettledTicketsService.ImportMessageVoidSettledAsync(settledTicket);
+                if (!commandMessage.IsSuccessful)
+                {
+                    logService.LogInformation("Import Messages Settled Fail!!!");
+                    return;
+                }
+            }
             var voidingMessages = await voidingSettledTicketsService.GetAutoVoidingMessageAsync(voidingSettledTicketSetting, environment);
             var failVoidingMessages = await voidingSettledTicketsService.GetFailVoidingMessageAsync();
             var voidingMessageDistinct = voidingMessages.Concat(failVoidingMessages).Distinct().ToList();
@@ -398,17 +408,17 @@
             var stringBuilder = new StringBuilder();
             var content_en = messages?.FirstOrDefault()?.Content_en;
             var content_cs = messages?.FirstOrDefault()?.Content_cs;
-            if (!feedbackInfo.IsVip)
+            if (feedbackInfo.Site == "789y" && feedbackInfo.IsVip  )
+            {
+                stringBuilder.AppendFormat(ticketSolTemplate.SolutionENYN,
+                   content_en, feedbackInfo.AffectedName, Constants.Break, Constants.LineBreak
+               );
+            }
+            else
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENSC,
                     content_en, content_cs, feedbackInfo.AffectedName, Constants.LineBreak, Constants.Break
                 );
-            }
-            else
-            {
-                stringBuilder.AppendFormat(ticketSolTemplate.SolutionENYN,
-                   content_en, feedbackInfo.AffectedName,Constants.Break, Constants.LineBreak
-               );
             }
 
             return stringBuilder.ToString();

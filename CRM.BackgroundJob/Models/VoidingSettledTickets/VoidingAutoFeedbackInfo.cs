@@ -13,6 +13,7 @@
         public string AffectedId { get; set; }
         public string AffectedName { get; set; }
         public bool IsVip { get; set; }
+        public string Site { get; set; }
         public string ListMsgTargetId { get; set; }
         public string Listbettype { get; set; }
         public DateTime CreatedDate { get; set; }
