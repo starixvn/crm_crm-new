@@ -137,7 +137,7 @@ describe('AppContainer', () => {
             expect(container.state.extensionOptions).toEqual([{id: 0, value: 'N/A', checked: true}]);
             expect(container.state.communicationToolOptions).toEqual([{id: 0, name: 'N/A', checked: false}]);
             expect(container.state.productOptions).toEqual([{id: 0, value: 'N/A', checked: false}]);
-            expect(container.state.subProductOptions).toEqual([{id: 2, value: 'N/A', checked: false}]);
+            expect(container.state.subProductOptions).toEqual([{id: 2, value: 'N/A', checked: true}]);
             expect(container.state.subCategoryOptions).toEqual([{subCategoryId: 2, name: 'N/A', checked: true}]);
             expect(container.state.mainCategoryOptions).toEqual([{mainCategoryID: 0, name: 'N/A', checked: false}]);
             expect(container.state.betTypeOptions).toEqual([{id: 3, value: 'N/A', checked: true}]);
@@ -243,7 +243,6 @@ describe('AppContainer', () => {
             // Act
             container.handleEditFeedback();
             await promise;
-            jest.runAllTimers();
 
             // Assert
             expect(container.formik.setSubmitting).toHaveBeenCalledWith(false);
@@ -597,5 +596,248 @@ describe('AppContainer', () => {
             expect(container.state.confirmEditFeedbackDialog).toEqual({ show: false });
             expect(container.handleEditFeedback ).toHaveBeenCalled();
         });
+    });
+
+    describe('handleReVerifyInactiveAndConfirm ', () => {
+        it('should call exact function if have any inactive site member', async () => {
+            // Arrange
+            const response = {
+                data: [{
+                    custId: 1,
+                    val: 'test',
+                    isSiteActive: false,
+                    isLicensee: true
+                }]
+            };
+            const setSubmitting = jest.fn();
+
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+            const state = {
+                relatedCustomers: [{custId: 1,val: 'test1'}],
+                oldReLatedCust: [{custId: 2,val: 'test2'}],
+                deleteRelatedCust: []
+            };
+
+            const container = shallow(<AppContainer />).instance();
+            container.setState(state);
+
+            // Act
+            container.handleReVerifyInactiveAndConfirm(setSubmitting, 'params');
+            await promise;
+
+            // Assert
+            expect(container.state.editResult).toEqual({isSuccessful: false, message:'ErrorMessageInactiveSiteRelatetest'});
+        });
+
+        it('should call exact function if do not have any inactive site member', async () => {
+            // Arrange
+            const response = {
+                data: [{
+                    custId: 1,
+                    val: 'test',
+                    isSiteActive: true,
+                    isLicensee: true
+                }]
+            };
+            const setSubmitting = jest.fn();
+
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+            const state = {
+                relatedCustomers: [{custId: 1,val: 'test1'}],
+                oldReLatedCust: [{custId: 2,val: 'test2'}],
+                deleteRelatedCust: []
+            };
+
+            const container = shallow(<AppContainer />).instance();
+            container.confirmEditFeedback = jest.fn();
+            container.setState(state);
+
+            // Act
+            container.handleReVerifyInactiveAndConfirm(setSubmitting, 'params');
+            await promise;
+
+            // Assert
+            expect(container.state.editResult).toEqual(null);
+            expect(container.confirmEditFeedback).toHaveBeenCalled();
+        });
+    });
+
+    describe('isReviewed', () => {
+        it('should return exact value when isReviewed is false', () => {
+            // Arrange
+            const container = shallow(<AppContainer />).instance();
+
+            // Act
+            var actual = container.isReviewed({isReviewed: false});
+
+            // Assert
+            expect(actual).toEqual(2);
+        });
+
+        it('should return exact value when isReviewed is true', () => {
+            // Arrange
+            const container = shallow(<AppContainer />).instance();
+            container.formik = {values: {review: 'review'}};
+
+            // Act
+            var actual = container.isReviewed({isReviewed: true, review: 'review'});
+
+            // Assert
+            expect(actual).toEqual(0);
+        });
+    });
+
+    describe('handleCloseConfirmEditFeedbackDialog', () => {
+        it('should call setState', () => {
+            // Arrange
+            const container = shallow(<AppContainer />).instance();
+            container.formik = { setSubmitting: jest.fn()};
+            // Act
+            container.handleCloseConfirmEditFeedbackDialog();
+
+            // Assert
+            expect(container.formik.setSubmitting).toHaveBeenCalledWith(false);
+            expect(container.state.confirmEditFeedbackDialog).toEqual({ show: false });
+        });
+    });
+
+    describe('confirmEditFeedback', () => {
+        it('should call setState', () => {
+            // Arrange
+            const container = shallow(<AppContainer />).instance();
+            // Act
+            container.confirmEditFeedback('params');
+
+            // Assert
+            expect(container.state.confirmEditFeedbackDialog).toEqual({ show: true, params:'params' });
+        });
+    });
+
+    describe('getRelatedCustomerIds', () => {
+        it('should return the related customer', () => {
+            // Arrange
+            const state = {
+                relatedCustomers: [{custId:1},{custId:2}]
+            };
+            const container = shallow(<AppContainer />).instance();
+            container.setState(state);
+            // Act
+            const actual = container.getRelatedCustomerIds(true);
+
+            // Assert
+            expect(actual).toEqual("1,2");
+        });
+    });
+
+    describe('getExtensionParams', () => {
+        it('should return exact value if selectedExtensionIds have length greater than 0', () => {
+            // Arrange
+            const container = shallow(<AppContainer />).instance();
+            // Act
+            const actual = container.getExtensionParams('1,2');
+
+            // Assert
+            expect(actual).toEqual('1,2');
+        });
+
+        it('should return exact value if selectedExtensionIds have length equal 0 and extensionNA  not null', () => {
+            // Arrange
+            const container = shallow(<AppContainer />).instance();
+            // Act
+            const actual = container.getExtensionParams('', {id:1});
+
+            // Assert
+            expect(actual).toEqual('1');
+        });
+    });
+
+    describe('validateFormik', () => {
+        it('should return exact errors', () => {
+            // Arrange
+            const values = {
+                hasRelated: true,
+                customerNameInput: 'customerName',
+                feedbackDate: '2021-01-02',
+                resolutionDate: '2021-01-01',
+                communicationToolIds: [],
+                languageId: 0,
+                subject: '',
+                description : '',
+                solution: ''
+            };
+            const state = {
+                settings:{
+                    mainCategories: [],
+                    subCategories: []
+                }
+            };
+            const expected = {
+                communicationToolIds: "FieldRequired",
+                customerNameInput: "You must verify the username before saving this feedback.",
+                description: "FieldRequired",
+                languageId: "FieldRequired",
+                mainCategoryIds: "FieldRequired",
+                solution: "FieldRequired",
+                startTime: "FieldLessThanOrEqualTo",
+                subCategoryIds: "FieldRequired",
+                subject: "FieldRequired"
+            };
+            const container = shallow(<AppContainer />).instance();
+            container.setState(state);
+
+            // Act
+            const actual = container.validateFormik(values);
+
+            // Assert
+            expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('handleVerifyRelatedCustomer', () => {
+        it('should call setFieldValue when have inactive member site', async () => {
+            // Arrange
+            const response = {data: [{custId: 1, val: 'test1'}]};
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+            const event = {preventDefault: jest.fn()};
+            const state = {
+                relatedCustomers: [{custId: 2, val: 'test2'}]
+            };
+
+            const container = shallow(<AppContainer />).instance();
+            container.formik = { values: {customerNameInput: 'test', hasRelated: true, autoGenerated: 'autoGenerated'}, setFieldValue: jest.fn(), errors: {customerNameInput: ''}};
+            container.setState(state);
+            container.isValidCustomer = jest.fn(() => true);
+            container.updateAutoGeneratedCustomerPrefix = jest.fn(() => 'autoGenerated');
+            
+            // Act
+            container.handleVerifyRelatedCustomer(event);
+            await promise;
+
+            // Assert
+            expect(container.formik.setFieldValue).toHaveBeenCalledTimes(2);
+            expect(container.state.relatedCustomers).toEqual([{"custId": 2, "val": "test2"}, {"custId": 1, "val": "test1"}]);
+        });
+    });
+
+    it('should return errors when have invalid customer name input', () => {
+        // Arrange
+        const event = {preventDefault: jest.fn()};
+        const state = {
+            relatedCustomers: [{custId: 2, val: 'test2'}]
+        };
+
+        const container = shallow(<AppContainer />).instance();
+        container.formik = { values: {customerNameInput: 'test', hasRelated: true, autoGenerated: 'autoGenerated'}, setFieldValue: jest.fn(), errors: {customerNameInput: ''}};
+        container.setState(state);
+        container.isValidCustomer = jest.fn(() => false);
+        
+        // Act
+        container.handleVerifyRelatedCustomer(event);
+
+        // Assert
+        expect(container.formik.errors.customerNameInput).toEqual('Customer Name must not over 50 characters long!');
     });
 });
