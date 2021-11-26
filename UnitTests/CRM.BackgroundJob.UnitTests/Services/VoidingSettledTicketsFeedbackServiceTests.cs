@@ -735,7 +735,7 @@
         {
             // Arrange
             var service = MockService();
-            var feedbackInfo = new VoidingAutoFeedbackInfo { IsVip = true};
+            var feedbackInfo = new VoidingAutoFeedbackInfo { IsVip = true, Site = "789y"};
             var ticketSolTemplate = new VoidingSettledTicketSolutionTemplate
             {
                 SolutionENSC = "SolutionENSC",
@@ -759,7 +759,7 @@
         {
             // Arrange
             var service = MockService();
-            fixture.Customize<VoidingAutoFeedbackInfo>(x => x.With(b => b.IsVip, true));
+            fixture.Customize<VoidingAutoFeedbackInfo>(x => x.With(b => b.IsVip, false));
             var feedbackInfo = fixture.Create<VoidingAutoFeedbackInfo>();
             var ticketSolTemplate = new VoidingSettledTicketSolutionTemplate
             {
@@ -769,7 +769,7 @@
             var messages = fixture.Create<IEnumerable<Message>>();
 
             commonFeedback.GetFeedbackTemplates<VoidingSettledTicketSolutionTemplate>("VoidingSettledTicketSolutionTemplate.xml").Returns(ticketSolTemplate);
-            var expect = "SolutionENYN";
+            var expect = "SolutionENSC";
 
             // Act
             var actual = service.Public_GetVoidingSettledTicketSolution(feedbackInfo, messages);
