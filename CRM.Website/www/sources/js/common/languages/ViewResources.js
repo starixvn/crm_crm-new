@@ -169,6 +169,7 @@
     InactiveSite: 'Inactive Site',
     KeepAssign: 'Keep Assign',
     KeptForReference: 'Kept for reference',
+    LastFiveSpecialRemark: 'Last 5 Special Remark',
     Lv1: 'Lv1',
     Language: 'Language',
     LanguageRequired: 'Language is required!',

@@ -38,6 +38,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/remark/index`]: pathConfig.scriptPaths.remark,
             [`${jsPath}/pages/redemption/index`]: pathConfig.scriptPaths.redemption,
             [`${jsPath}/pages/actionlog/index`]: pathConfig.scriptPaths.action_log,
+            [`${jsPath}/pages/dashboard/index`]: pathConfig.scriptPaths.dashboard,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -62,7 +63,8 @@ function generateConfig(environment) {
             [`${cssPath}/pages/communicationlog/index`]: pathConfig.cssPaths.communication_log,
             [`${cssPath}/pages/remark/index`]: pathConfig.cssPaths.remark,
             [`${cssPath}/pages/redemption/index`]: pathConfig.cssPaths.redemption,
-            [`${cssPath}/pages/actionlog/index`]: pathConfig.cssPaths.action_log
+            [`${cssPath}/pages/actionlog/index`]: pathConfig.cssPaths.action_log,
+            [`${cssPath}/pages/dashboard/index`]: pathConfig.cssPaths.dashboard
         },
         output: {
             path: pathConfig.projectRoot,

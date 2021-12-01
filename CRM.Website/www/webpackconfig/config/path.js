@@ -27,7 +27,8 @@ const cssPaths = {
     communication_log: ['./www/sources/css/pages/communication-log/index.scss'],
     remark: ['./www/sources/css/pages/remark/index.scss'],
     redemption: ['./www/sources/css/pages/redemption/index.scss'],
-    action_log: ['./www/sources/css/pages/action-log/index.scss']
+    action_log: ['./www/sources/css/pages/action-log/index.scss'],
+    dashboard: ['./www/sources/css/pages/dashboard/index.scss']
 };
 
 const scriptPaths = {
@@ -56,7 +57,8 @@ const scriptPaths = {
     communication_log: ['./www/sources/js/pages/communication-log/index.js'],
     remark: ['./www/sources/js/pages/remark/index.js'],
     redemption: ['./www/sources/js/pages/redemption/index.js'],
-    action_log: ['./www/sources/js/pages/action-log/index.js']
+    action_log: ['./www/sources/js/pages/action-log/index.js'],
+    dashboard: ['./www/sources/js/pages/dashboard/index.js']
 };
 
 module.exports = {

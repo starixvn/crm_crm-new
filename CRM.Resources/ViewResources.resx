@@ -309,4 +309,7 @@
   <data name="ActionLog" xml:space="preserve">
     <value>ActionLog</value>
   </data>
+  <data name="Main" xml:space="preserve">
+    <value>Main</value>
+  </data>
 </root>
