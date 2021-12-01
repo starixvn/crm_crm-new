@@ -1,0 +1,79 @@
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { ActionCreators } from '../actions';
+import { bindActionCreators } from 'redux';
+import { HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import { Table } from 'react-bootstrap';
+import LangHelper from '@jsroot/common/langHelper';
+
+export class DataGridRemark extends Component {
+
+    componentDidMount() {
+        this.props.getCustomerRemarks({ customerId: 1754 });
+    }
+
+    buildHeader = () => {
+        return (
+            <HeaderRow>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('LogTime')}</HeaderCell>
+            </HeaderRow>
+        );
+    };
+
+    buildBody = () => {
+        const { customerRemarks } = this.props;
+
+        if ( customerRemarks.length > 0) {
+            return customerRemarks.map((item, index) => this.renderRow(item, index));
+        }
+        return [
+            <Row key={`body${1}`} className="no-data" >
+                <Cell className='text-center' colSpan={1}>
+                    {LangHelper.getResource('ThereIsNoData')}
+                </Cell>
+            </Row>
+        ];
+    };
+
+    renderRow = (item, index) => {
+        return (
+            <Row key={index}>
+                <Cell>
+                    <div className="pb-2">{index+1}.</div>
+                    <div dangerouslySetInnerHTML={{ __html: item}}></div>
+                </Cell>
+            </Row>
+        );
+    };
+
+    render() {
+        const { customerRemarks } = this.props;
+        if(!customerRemarks){
+            return null;
+        }
+
+        return (
+            <Fragment>
+                <div className='table-title d-flex justify-content-between align-items-center'>
+                    <span>{LangHelper.getResource('LastFiveSpecialRemark')}</span>
+                </div>
+
+                <Table>
+                    <tbody>
+                        { this.buildBody() }
+                    </tbody>
+                </Table>
+
+            </Fragment>
+        );
+    }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { customerRemarks } = state;
+    return { customerRemarks };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataGridRemark);
