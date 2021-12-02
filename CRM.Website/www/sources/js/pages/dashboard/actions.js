@@ -6,7 +6,9 @@ import {
     setRedemptionLogs,
     setEditRedemptionDialog,
     setRedemptionById,
-    setStatus
+    setStatus,
+    setCommunicationLogs,
+    setNoOfInquiryDialog
 } from './dashboardSlice';
 
 const getCustomerRemarks = params => async dispatch => {
@@ -46,11 +48,21 @@ const editRedemption = params => async () => {
     return await DataService.postDataAsync(url,params).then(response => response);
 };
 
+const getCommunicationLogs = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('Dashboard/GetCommunicationLogs');
+    await DataService.getDataAsync(url,params).then(response => {
+        dispatch(setCommunicationLogs(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     getCustomerRemarks,
     getRedemptionLogs,
     setEditRedemptionDialog,
     getRedemptionById,
     getStatus,
-    editRedemption
+    editRedemption,
+    getCommunicationLogs,
+    setNoOfInquiryDialog
 };

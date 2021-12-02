@@ -79,6 +79,7 @@
     DirectAccountRequired: 'Direct account is required',
     DisableCatSubCatfilters: 'Disable Cat/Sub-Cat filters',
     Disabled: 'Disabled',
+    Duplicate: 'Duplicate',
     Duplicated: 'Duplicated',
     Duration: 'Duration',
     Details: 'Details',

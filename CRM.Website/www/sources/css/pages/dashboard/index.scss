@@ -1,5 +1,6 @@
 @import "../../components/form-filter";
 @import '../../components/forms';
+@import '../../components/icons';
 @import '../../components/react-grid/react-grid';
 @import '../../components/messages';
 @import '../../components/modal';
@@ -18,6 +19,14 @@
     &:hover {
         color: $draft-color !important;
     }
+}
+
+.pending{
+    background-color: #f0edc4;
+}
+
+.closed{
+    background-color: #ddd;
 }
 
 .modal-edit-redemption {
