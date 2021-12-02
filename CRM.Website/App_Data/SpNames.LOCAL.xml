@@ -193,6 +193,10 @@
         <Setting Key="Acc_CRM_MainInformationRedemptionSel" SpName="Acc_CRM_MainInformationRedemptionSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
             <Mapping DataField="RedemptionID" ObjectProperty="Id" />
         </Setting>
+        <Setting Key="Acc_CRM_MainInformationCommunicationLogSel" SpName="Acc_CRM_MainInformationCommunicationLogSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="HandleBy" ObjectProperty="Handler" />
+            <Mapping DataField="ReviewBy" ObjectProperty="Reviewer" />
+        </Setting>
     </Funtcion>
     <Funtcion name="Communication">
       <Setting Key="Acc_CRM_CommunicationLogList" SpName="Acc_CRM_CommunicationLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >

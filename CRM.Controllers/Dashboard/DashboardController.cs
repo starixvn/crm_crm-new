@@ -57,5 +57,12 @@
             var redemptionLogs = await dashboardService.GetRedemptionLogsAsync(criteria);
             return Json(redemptionLogs);
         }
+
+        public async Task<IActionResult> GetCommunicationLogs(GetCommunicationLogsCriteria criteria)
+        {
+            var communicationLogs = await dashboardService.GetCommunicationLogsAsync(criteria);
+            var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            return Json(new { data = communicationLogs, mainCategories});
+        }
     }
 }
