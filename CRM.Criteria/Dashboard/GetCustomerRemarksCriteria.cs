@@ -1,4 +1,4 @@
-﻿namespace CRM.Criteria.DashBoard
+﻿namespace CRM.Criteria.Dashboard
 {
     using CRM.Core.Constants;
     using Fanex.Data;

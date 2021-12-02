@@ -182,6 +182,9 @@
         </Setting>
         <Setting Key="Acc_CRM_CustomerUpd_New" SpName="Acc_CRM_CustomerUpd_New" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_MainInformationSpecialRemarkSel" SpName="Acc_CRM_MainInformationSpecialRemarkSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_MainInformationRedemptionSel" SpName="Acc_CRM_MainInformationRedemptionSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="RedemptionID" ObjectProperty="Id" />
+        </Setting>
     </Funtcion>
     <Funtcion name="Communication">
       <Setting Key="Acc_CRM_CommunicationLogList" SpName="Acc_CRM_CommunicationLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >

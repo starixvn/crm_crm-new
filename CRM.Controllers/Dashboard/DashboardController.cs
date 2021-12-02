@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
-    using CRM.Criteria.DashBoard;
+    using CRM.Criteria.Dashboard;
     using CRM.Services;
     using CRM.Services.Dashboard;
     using CRM.ViewModels.Customer;
@@ -50,6 +50,12 @@
         {
             var customerRemarks = await dashboardService.GetCustomerRemarksAsync(criteria);
             return Json(customerRemarks);
+        }
+
+        public async Task<IActionResult> GetRedemptionLogs(GetRedemptionLogsCriteria criteria)
+        {
+            var redemptionLogs = await dashboardService.GetRedemptionLogsAsync(criteria);
+            return Json(redemptionLogs);
         }
     }
 }
