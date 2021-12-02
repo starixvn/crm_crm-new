@@ -170,6 +170,8 @@
     KeepAssign: 'Keep Assign',
     KeptForReference: 'Kept for reference',
     LastFiveSpecialRemark: 'Last 5 Special Remark',
+    LastFiveRedemptionLog: 'Last 5 Redemption Log',
+    LastTenCommunicationLog: 'Last 10 Communication Log',
     Lv1: 'Lv1',
     Language: 'Language',
     LanguageRequired: 'Language is required!',

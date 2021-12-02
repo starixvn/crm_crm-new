@@ -34,7 +34,7 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { editRedemptionDialog, createRedemptionDialog } = this.props;
+        const { editRedemptionDialog, createRedemptionDialog, redemptionLog, allStatus } = this.props;
         return (
             <div>
                 <Filter />
@@ -43,6 +43,11 @@ export class AppContainer extends Component {
                     editRedemptionDialog.show &&
                     <EditRedemptionLog logId={editRedemptionDialog.logId}
                         onClose={this.handleCloseEditRedemptionDialog}
+                        redemptionLog={redemptionLog}
+                        allStatus={allStatus}
+                        getLogById={this.props.getLogById}
+                        getAllStatus={this.props.getAllStatus}
+                        editRedemptionLog={this.props.editRedemptionLog}
                     />
                 }
                 {
@@ -59,8 +64,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, editRedemptionDialog, createRedemptionDialog } = state;
-    return { gridParams, editRedemptionDialog, createRedemptionDialog };
+    const { gridParams, editRedemptionDialog, createRedemptionDialog, redemptionLog, allStatus } = state;
+    return { gridParams, editRedemptionDialog, createRedemptionDialog, redemptionLog, allStatus };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

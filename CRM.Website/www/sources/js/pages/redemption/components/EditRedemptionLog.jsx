@@ -138,11 +138,4 @@ export class EditRedemptionLog extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
-
-const mapStateToProps = state => {
-    const { allStatus, redemptionLog } = state;
-    return { allStatus, redemptionLog };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditRedemptionLog);
+export default EditRedemptionLog;
