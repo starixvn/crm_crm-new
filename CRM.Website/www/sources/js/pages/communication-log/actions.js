@@ -24,12 +24,9 @@ const getLogsByCustomerId = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getStatusForEdit = () => async dispatch => {
-    Site.blockUI();
+const getStatusForEdit = () => async () => {
     const url = Site.resolveClientUrl(`CommunicationLog/GetAllStatus?isEdit=true`);
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setStatusForEdit(response.data));
-    }).then(() => Site.unblockUI());
+    return await DataService.getDataAsync(url).then(response => response);
 };
 
 const getStatusForFilter = () => async dispatch => {
@@ -40,12 +37,9 @@ const getStatusForFilter = () => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getLogByFeedbackId = params => async dispatch => {
-    Site.blockUI();
+const getLogByFeedbackId = params => async () => {
     const url = Site.resolveClientUrl(`CommunicationLog/GetLogByFeedbackId/${params}`);
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setLogByFeedbackId(response.data));
-    }).then(() => Site.unblockUI());
+    return await DataService.getDataAsync(url).then(response => response);
 };
 
 const getFeedbackSubjectTemplates = subject => async dispatch => {

@@ -8,16 +8,19 @@ import DataGridRedemption from './DataGridRedemption';
 import EditRedemptionLog from '../../redemption/components/EditRedemptionLog';
 import DataGridCommunication from './DataGridCommunication';
 import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
+import EditCommunicationLog from '../../communication-log/components/EditCommunicationLog';
 
 export class AppContainer extends Component {
     static propTypes = {
         editRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        noOfInquiryDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        noOfInquiryDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
         editRedemptionDialog: { show: false },
         noOfInquiryDialog: { show: false },
+        editCommunicationDialog: { show: false }
     };
 
     handleCloseEditRedemptionDialog = isSuccessful => {
@@ -31,8 +34,15 @@ export class AppContainer extends Component {
         this.props.setNoOfInquiryDialog({ show: false });
     };
 
+    handleCloseEditCommunicationDialog = isSuccessful => {
+        this.props.setEditCommunicationDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getCommunicationLogs({ customerId: 1754 });
+        }
+    };
+
     render() {
-        const { editRedemptionDialog, status, redemption, noOfInquiryDialog } = this.props;
+        const { editRedemptionDialog, status, redemption, noOfInquiryDialog, editCommunicationDialog } = this.props;
 
         return (
             <div>
@@ -56,6 +66,12 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseNoInquiryDialog}
                     />
                 }
+                {
+                    editCommunicationDialog.show &&
+                    <EditCommunicationLog feedbackId={editCommunicationDialog.id}
+                        onClose={this.handleCloseEditCommunicationDialog}
+                    />
+                }
             </div>
         );
     }
@@ -64,8 +80,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { editRedemptionDialog, status, redemption, noOfInquiryDialog } = state;
-    return { editRedemptionDialog, status, redemption, noOfInquiryDialog };
+    const { editRedemptionDialog, status, redemption, noOfInquiryDialog, editCommunicationDialog } = state;
+    return { editRedemptionDialog, status, redemption, noOfInquiryDialog, editCommunicationDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

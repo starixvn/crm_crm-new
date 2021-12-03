@@ -8,7 +8,8 @@ import {
     setRedemptionById,
     setStatus,
     setCommunicationLogs,
-    setNoOfInquiryDialog
+    setNoOfInquiryDialog,
+    setEditCommunicationDialog
 } from './dashboardSlice';
 
 const getCustomerRemarks = params => async dispatch => {
@@ -64,5 +65,6 @@ export const ActionCreators = {
     getStatus,
     editRedemption,
     getCommunicationLogs,
-    setNoOfInquiryDialog
+    setNoOfInquiryDialog,
+    setEditCommunicationDialog
 };

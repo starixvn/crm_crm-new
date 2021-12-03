@@ -54,14 +54,21 @@ export class EditCommunicationLog extends Component {
             isReviewed: null,
             editResult: null,
             oldReLatedCust: [],
-            deleteRelatedCust: []
+            deleteRelatedCust: [],
+            logFeedback: null,
+            statusEdit: null
         };
     }
 
     async componentDidMount() {
-        await this.props.getLogByFeedbackId(this.props.feedbackId);
-        await this.props.getStatusForEdit();
-        const { logFeedback } = this.props;
+        await this.props.getLogByFeedbackId(this.props.feedbackId).then(response => {
+            Site.blockUI();
+            this.setState({ logFeedback: response.data });
+        }).then(() => Site.unblockUI());
+        await this.props.getStatusForEdit().then(response => {
+            this.setState({ statusEdit: response.data });
+        });
+        const { logFeedback } = this.state;
         const logSettings = this.getLogSettings(logFeedback.log, logFeedback.settings);
         const relatedCustomers = logFeedback.log.relatedCustomers.map(customer => {
             return {
@@ -446,7 +453,7 @@ export class EditCommunicationLog extends Component {
     renderEditDropDown = (values, touched, errors, handleChange, setFieldValue) => {
         const { settings, mainCategoryOptions, subCategoryOptions, productOptions, subProductOptions, betTypeOptions } = this.state;
         const { roles, countries, sites, licenseeTypes } = settings;
-        const { statusEdit } = this.props;
+        const { statusEdit } = this.state;
         return (
             <div>
                 <Form.Group as={Row}>
@@ -783,9 +790,4 @@ export class EditCommunicationLog extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-const mapStateToProps = state => {
-    const { statusEdit, logFeedback, feedbackSubjectTemplates } = state;
-    return { statusEdit, logFeedback, feedbackSubjectTemplates };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditCommunicationLog);
+export default connect(null, mapDispatchToProps)(EditCommunicationLog);

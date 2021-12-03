@@ -17,9 +17,9 @@ export class DataGridCommunication extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={18}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
+                <HeaderCell colWidth={18}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('Category')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Status')}</HeaderCell>
@@ -46,11 +46,11 @@ export class DataGridCommunication extends Component {
         ];
     };
 
-    handleEditCommunicationLog = id => {
-        this.props.setEditCommunicationDialog({ show: true, feedbackId: id });
+    handleShowEditCommunication = id => {
+        this.props.setEditCommunicationDialog({ show: true, id: id });
     };
 
-    handleNoOfInquiry = id => {
+    handleShowNoOfInquiry = id => {
         this.props.setNoOfInquiryDialog({ show: true, feedbackId: id });
     };
 
@@ -95,22 +95,26 @@ export class DataGridCommunication extends Component {
         return (
             <Row key={index} className={cssColor}>
                 <Cell className="text-center">
-                    <span className='link-detail' onClick={() => this.handleEditCommunicationLog(item.feedbackId)}>{item.feedbackId}</span>
+                    <span className='link-detail' onClick={() => this.handleShowEditCommunication(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
                 {
                     window.createUpdateFeedbackPermission === Policy.Host && (
                         <Cell className="text-center">
-                            <span className="rounded-circle fa fa-pencil icon-edit"
-                                onClick={() => this.handleNoOfInquiry(item.feedbackId)}
-                            />
+                            <span className="fa fa-pencil rounded-circle icon-edit"
+                                onClick={() => this.handleShowNoOfInquiry(item.feedbackId)}
+                            ></span>
                         </Cell>
                     )
                 }
-                <Cell className="text-center">{DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</Cell>
+                <Cell className="text-center">
+                    {DateTimeService.toShortDateTimeFormat(item.feedbackDate)}
+                </Cell>
                 <Cell>{this.renderCategory(item)}</Cell>
                 <Cell>{item.subject}</Cell>
                 <Cell className='text-center'>{item.status}</Cell>
-                <Cell className='text-center'>{item.duration.replace(/\s+/g, '')}</Cell>
+                <Cell className='text-center'>
+                    {item.duration.replace(/\s+/g, '')}
+                </Cell>
                 <Cell className='text-center'>{item.handler}</Cell>
                 <Cell className='text-center'>{item.reviewer}</Cell>
                 <Cell className='text-center'>
