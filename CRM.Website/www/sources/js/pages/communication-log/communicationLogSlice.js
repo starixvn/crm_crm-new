@@ -11,10 +11,7 @@ const communicationLogSlice = createSlice({
         editCommunicationDialog: { show: false },
         logFeedback: null,
         feedbackSubjectTemplates: [],
-        duplicateFeedbackId: 0,
-        createCommunicationDialog: { show: false },
-        allSettings: null,
-        balanceUpday: null
+        createCommunicationDialog: { show: false }
     },
     reducers: {
         setLogsByCustomerId: (state, action) => {
@@ -41,17 +38,8 @@ const communicationLogSlice = createSlice({
         setFeedbackSubjectTemplates: (state, action) => {
             state.feedbackSubjectTemplates = action.payload;
         },
-        setDuplicateFeedback: (state, action) => {
-            state.duplicateFeedbackId = action.payload;
-        },
         setCreateCommunicationDialog: (state, action) => {
             state.createCommunicationDialog = action.payload;
-        },
-        setAllSettings: (state, action) => {
-            state.allSettings = action.payload;
-        },
-        setBalanceUpday: (state, action) => {
-            state.balanceUpday = action.payload;
         }
     }
 });
@@ -67,10 +55,7 @@ export const {
     setEditCommunicationDialog,
     setLogByFeedbackId,
     setFeedbackSubjectTemplates,
-    setDuplicateFeedback,
-    setCreateCommunicationDialog,
-    setAllSettings,
-    setBalanceUpday
+    setCreateCommunicationDialog
 } = actions;
 
 export default reducer;

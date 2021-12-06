@@ -5,11 +5,10 @@ import {
     setCustomerRemarks,
     setRedemptionLogs,
     setEditRedemptionDialog,
-    setRedemptionById,
-    setStatus,
     setCommunicationLogs,
     setNoOfInquiryDialog,
-    setEditCommunicationDialog
+    setEditCommunicationDialog,
+    setCreateCommunicationDialog
 } from './dashboardSlice';
 
 const getCustomerRemarks = params => async dispatch => {
@@ -28,27 +27,6 @@ const getRedemptionLogs = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getRedemptionById = params => async dispatch => {
-    Site.blockUI();
-    const url = Site.resolveClientUrl('Redemption/getLogById');
-    await DataService.getDataAsync(url,params).then(response => {
-        dispatch(setRedemptionById(response.data));
-    }).then(() => Site.unblockUI());
-};
-
-const getStatus = () => async dispatch => {
-    Site.blockUI();
-    const url = Site.resolveClientUrl(`Redemption/GetAllStatus?isEdit=true`);
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setStatus(response.data));
-    }).then(() => Site.unblockUI());
-};
-
-const editRedemption = params => async () => {
-    const url = Site.resolveClientUrl('Redemption/EditRedemptionLog');
-    return await DataService.postDataAsync(url,params).then(response => response);
-};
-
 const getCommunicationLogs = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('Dashboard/GetCommunicationLogs');
@@ -61,10 +39,8 @@ export const ActionCreators = {
     getCustomerRemarks,
     getRedemptionLogs,
     setEditRedemptionDialog,
-    getRedemptionById,
-    getStatus,
-    editRedemption,
     getCommunicationLogs,
     setNoOfInquiryDialog,
-    setEditCommunicationDialog
+    setEditCommunicationDialog,
+    setCreateCommunicationDialog
 };

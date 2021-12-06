@@ -9,18 +9,21 @@ import EditRedemptionLog from '../../redemption/components/EditRedemptionLog';
 import DataGridCommunication from './DataGridCommunication';
 import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from '../../communication-log/components/EditCommunicationLog';
+import CreateCommunicationLog from '../../communication-log/components/CreateCommunicationLog';
 
 export class AppContainer extends Component {
     static propTypes = {
         editRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         noOfInquiryDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        editCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        editCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        createCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
         editRedemptionDialog: { show: false },
         noOfInquiryDialog: { show: false },
-        editCommunicationDialog: { show: false }
+        editCommunicationDialog: { show: false },
+        createCommunicationDialog: { show: false },
     };
 
     handleCloseEditRedemptionDialog = isSuccessful => {
@@ -41,8 +44,15 @@ export class AppContainer extends Component {
         }
     };
 
+    handleCloseCreateCmnDiaLog =  isSuccessful => {
+        this.props.setCreateCommunicationDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getCommunicationLogs({ customerId: 1754 });
+        }
+    };
+
     render() {
-        const { editRedemptionDialog, status, redemption, noOfInquiryDialog, editCommunicationDialog } = this.props;
+        const { editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = this.props;
 
         return (
             <div>
@@ -53,11 +63,6 @@ export class AppContainer extends Component {
                     editRedemptionDialog.show &&
                     <EditRedemptionLog logId={editRedemptionDialog.redemptionId}
                         onClose={this.handleCloseEditRedemptionDialog}
-                        allStatus={status}
-                        redemptionLog={redemption}
-                        editRedemptionLog={this.props.editRedemption}
-                        getLogById={this.props.getRedemptionById}
-                        getAllStatus={this.props.getStatus}
                     />
                 }
                 {
@@ -72,6 +77,14 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditCommunicationDialog}
                     />
                 }
+                {
+                    createCommunicationDialog.show &&
+                    <CreateCommunicationLog 
+                        onClose={this.handleCloseCreateCmnDiaLog}
+                        item={createCommunicationDialog.item}
+                        options={createCommunicationDialog.options}
+                    />
+                }
             </div>
         );
     }
@@ -80,8 +93,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { editRedemptionDialog, status, redemption, noOfInquiryDialog, editCommunicationDialog } = state;
-    return { editRedemptionDialog, status, redemption, noOfInquiryDialog, editCommunicationDialog };
+    const { editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = state;
+    return { editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog, createCommunicationDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

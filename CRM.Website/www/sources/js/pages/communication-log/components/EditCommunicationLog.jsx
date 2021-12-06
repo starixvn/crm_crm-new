@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { ActionCreators } from '../actions';
-import { bindActionCreators } from 'redux';
 import { Button, Form, Modal, Row, Col } from 'react-bootstrap';
 import { Formik } from 'formik';
 import DatePicker from '@jsroot/components/date-picker/index';
@@ -16,6 +13,7 @@ import VerifyCustomer from '@jsroot/components/verifyCustomer';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 import { Policy } from '@jsroot/common/constants';
 import { validateNoOfInquiry } from '../../feedback/common.functions';
 import RenderCollapse from './RenderCollapse';
@@ -61,11 +59,14 @@ export class EditCommunicationLog extends Component {
     }
 
     async componentDidMount() {
-        await this.props.getLogByFeedbackId(this.props.feedbackId).then(response => {
-            Site.blockUI();
+        Site.blockUI();
+        const urlLogByFeedbackId = `CommunicationLog/GetLogByFeedbackId`;
+        const urlStatusForEdit = 'CommunicationLog/GetAllStatus?isEdit=true';
+
+        await DataService.getDataAsync(`${urlLogByFeedbackId}/${this.props.feedbackId}`).then(response => {
             this.setState({ logFeedback: response.data });
         }).then(() => Site.unblockUI());
-        await this.props.getStatusForEdit().then(response => {
+        await DataService.getDataAsync(urlStatusForEdit).then(response => {
             this.setState({ statusEdit: response.data });
         });
         const { logFeedback } = this.state;
@@ -242,12 +243,13 @@ export class EditCommunicationLog extends Component {
 
     };
 
-    handleReVerifyInactiveAndConfirm = (params, setSubmitting) =>{
+    handleReVerifyInactiveAndConfirm = async (params, setSubmitting) =>{
         const {relatedCustomers, oldReLatedCust, deleteRelatedCust} = this.state;
+        const url = 'CustomerSetting/VerifyUsername';
         const newRelatedCust= relatedCustomers.filter(x=> !oldReLatedCust.some(y=>y.custId === x.custId));
         const newRelatedCustName = newRelatedCust.map(x=>x.val).join(',');
         if(newRelatedCustName.length > 0){
-            this.props.verifyCustomers({ username: newRelatedCustName }).then(response => {
+            await DataService.postDataAsync(url, { username: newRelatedCustName }).then(response => {
                 const customerRemains = oldReLatedCust.filter(x=> !deleteRelatedCust.some(y=>y.custId === x.custId));
                 const customers = [...response.data, ...customerRemains];
                 this.setState({relatedCustomers: customers});
@@ -287,12 +289,13 @@ export class EditCommunicationLog extends Component {
         this.setState({ betTypeOptions: betTypes });
     };
 
-    handleVerifyEditRelatedCustomer = (values, errors, setFieldValue) => {
+    handleVerifyEditRelatedCustomer = async (values, errors, setFieldValue) => {
+        const url = 'CustomerSetting/VerifyUsername';
         const customersInput = values.customerNameInput.trim()
                                 .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
         if (isValidCustomer(customersInput)) {
             errors.customerNameInput = '';
-            this.props.verifyCustomers({ username: customersInput }).then(response => {
+            await DataService.postDataAsync(url, { username: customersInput }).then(response => {
                 let editCustomers = [...this.state.relatedCustomers, ...response.data];
                 editCustomers = editCustomers.filter((x, y, z) => z.findIndex(t => t.custId === x.custId && t.val === x.val) === y);
                 this.setState({ relatedCustomers: editCustomers });
@@ -335,10 +338,11 @@ export class EditCommunicationLog extends Component {
         this.formik.setSubmitting(false);
     };
 
-    handleEditLog = () => {
+    handleEditLog = async () => {
         Site.blockUI();
+        const url = 'CommunicationLog/EditCommunicationLog';
         const { params } = this.state.confirmEditDialog;
-        this.props.editCommunicationLog(params).then(response => {
+        await DataService.postDataAsync(url, params).then(response => {
             Site.unblockUI();
             this.setState({ editResult: response.data, confirmEditDialog: { show: false } });
             if (response.data.isSuccessful) {
@@ -788,6 +792,4 @@ export class EditCommunicationLog extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
-
-export default connect(null, mapDispatchToProps)(EditCommunicationLog);
+export default EditCommunicationLog;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { EditCommunicationLog } from '../EditCommunicationLog';
 import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
 import { Button, Form, Modal } from 'react-bootstrap';
@@ -122,15 +123,19 @@ describe('EditCommunicationLog', () => {
                 betTypeIds: [3] 
             };
 
+            const response = { data: initData};
+            const promise = Promise.resolve(response);
+            DataService.getDataAsync = jest.fn(() => promise); 
+
             // Act
             const container = shallow(<EditCommunicationLog {...props} />).instance();
             container.getLogSettings = jest.fn(() => logSettings);
             container.initFormikData = jest.fn(() => []);
             await container.componentDidMount();
+            await promise;
+            jest.runAllTimers();
 
             //Arrange
-            expect(await props.getLogByFeedbackId).toHaveBeenCalledWith(73300);
-            expect(await props.getStatusForEdit).toHaveBeenCalled();
             expect(container.state.relatedCustomers).toEqual([{ custId: 1, isLicensee: true, isSiteActive: true, val: "test" }]);
             expect(container.state.communicationLog).toEqual([]);
             expect(container.state.settings).toEqual(initData.settings);
@@ -309,21 +314,19 @@ describe('EditCommunicationLog', () => {
                 data: [{ id: 1, val: 'test' }]
             }
             const promise = Promise.resolve(response);
-            const props = {
-                verifyCustomers: jest.fn(() => promise)
-            };
+            DataService.postDataAsync = jest.fn(() => promise); 
             const values = { customerNameInput: 'testing'};
             const errors = { customerNameInput: '' };
             const setFieldValue = jest.fn();
             const expected = [{ 'id': 1, 'val': 'test' }];
-            const container = shallow(<EditCommunicationLog {...props} />).instance();
+            const container = shallow(<EditCommunicationLog />).instance();
             // Act
             container.handleVerifyEditRelatedCustomer(values, errors, setFieldValue);
             await promise;
             jest.runAllTimers();
 
             // Assert
-            expect(props.verifyCustomers).toHaveBeenCalledWith({ username: 'testing' });
+
             expect(container.state.relatedCustomers).toEqual(expected);
             expect(errors.customerNameInput).toBe('');
         });
@@ -347,7 +350,7 @@ describe('EditCommunicationLog', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(props.verifyCustomers).toHaveBeenCalledWith({ username: 'testing' });
+
             expect(container.state.relatedCustomers).toEqual(expected);
             expect(errors.customerNameInput).toBe('');
         });
@@ -357,13 +360,11 @@ describe('EditCommunicationLog', () => {
                 data: [{ id: 1, val: 'test' }]
             }
             const promise = Promise.resolve(response);
-            const props = {
-                verifyCustomers: jest.fn(() => promise)
-            };
+            DataService.postDataAsync = jest.fn(() => promise); 
             const values = { customerNameInput: 'testing1234567891234657891234567891234657981324657981324654978654651613121111322'};
             const errors = { customerNameInput: '' };
             const setFieldValue = jest.fn();
-            const container = shallow(<EditCommunicationLog {...props} />).instance();
+            const container = shallow(<EditCommunicationLog />).instance();
             // Act
             container.handleVerifyEditRelatedCustomer(values, errors, setFieldValue);
             await promise;
@@ -471,10 +472,8 @@ describe('EditCommunicationLog', () => {
                 oldReLatedCust: [{custId: 2,val: 'test2'}]
             };
             const setSubmitting = jest.fn();
-            const props = {
-                verifyCustomers: jest.fn(() => promise)
-            };
-            const container = shallow(<EditCommunicationLog {...props}/>).instance();
+            DataService.postDataAsync = jest.fn(() => promise); 
+            const container = shallow(<EditCommunicationLog />).instance();
             container.setState(state);
             const params = { name: 'test'};
             const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
@@ -505,10 +504,8 @@ describe('EditCommunicationLog', () => {
                 oldReLatedCust: [{custId: 2,val: 'test2'}]
             };
             const setSubmitting = jest.fn();
-            const props = {
-                verifyCustomers: jest.fn(() => promise)
-            };
-            const container = shallow(<EditCommunicationLog {...props}/>).instance();
+            DataService.postDataAsync = jest.fn(() => promise); 
+            const container = shallow(<EditCommunicationLog />).instance();
             container.confirmEditFeedback = jest.fn();
             container.setState(state);
             const params = { name: 'test'};
@@ -528,12 +525,11 @@ describe('EditCommunicationLog', () => {
         it('should setState when handle edit log successful', async () => {
             // Arrange
             const props = {
-                editCommunicationLog: jest.fn(),
                 onClose: jest.fn()
             }
             const response = {data: {isSuccessful: true}};
             const promise = Promise.resolve(response);
-            props.editCommunicationLog = jest.fn(() => promise);
+            DataService.postDataAsync = jest.fn(() => promise); 
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
             container.formik = { setSubmitting: jest.fn() };
@@ -550,12 +546,11 @@ describe('EditCommunicationLog', () => {
         it('should setState when handle edit log unsuccessful', async () => {
             // Arrange
             const props = {
-                editCommunicationLog: jest.fn(),
                 onClose: jest.fn()
             }
             const response = {data: {isSuccessful: false}};
             const promise = Promise.resolve(response);
-            props.editCommunicationLog = jest.fn(() => promise);
+            DataService.postDataAsync = jest.fn(() => promise); 
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
             container.formik = { setSubmitting: jest.fn() };
@@ -572,7 +567,6 @@ describe('EditCommunicationLog', () => {
 
     describe('renderForm', () => {
         const props = {
-            statusEdit: [{ statusId: 1, name: 'Closed'}],
             onClose: jest.fn()
         };
         const formikProps = {
@@ -590,7 +584,8 @@ describe('EditCommunicationLog', () => {
                     isSuccessful: false,
                     message: 'unsuccessful'
                 },
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
             
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -610,7 +605,8 @@ describe('EditCommunicationLog', () => {
                     isSuccessful: true,
                     message: 'UpdateMultipleLogsSuccessfully'
                 },
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
            
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -629,7 +625,8 @@ describe('EditCommunicationLog', () => {
                 editResult: {
                     isSuccessful: true
                 },
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
            
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -645,7 +642,6 @@ describe('EditCommunicationLog', () => {
 
     describe('renderFormUI', () => {
         const props = {
-            statusEdit: [{ statusId: 1, name: 'Closed'}],
             onClose: jest.fn(),
             feedbackSubjectTemplates: ['sa']
         }
@@ -664,7 +660,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange startTime call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -680,7 +677,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange endTime call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -696,7 +694,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange extension call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -712,7 +711,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -734,7 +734,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange communicationTool call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -750,7 +751,8 @@ describe('EditCommunicationLog', () => {
         it('invalid communication correctly', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
             const errors = {
                 communicationToolIds: 'errors'
@@ -772,7 +774,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange mainCategory call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -789,7 +792,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange subCategory call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -805,7 +809,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange product call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -822,7 +827,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange subProduct call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -839,7 +845,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange betType call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -855,7 +862,8 @@ describe('EditCommunicationLog', () => {
         it('should handle onChange site call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
             const values = { id: 1 }
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -872,7 +880,8 @@ describe('EditCommunicationLog', () => {
         it('onPaste verify customer call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
             const container = shallow(<EditCommunicationLog {...props} />).instance();
             container.setState(state);
@@ -890,7 +899,8 @@ describe('EditCommunicationLog', () => {
         it('onClick verify customer call exact function', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
             const container = shallow(<EditCommunicationLog {...props} />).instance();
             container.setState(state);
@@ -908,7 +918,8 @@ describe('EditCommunicationLog', () => {
             // Arrange
             const state = {
                 relatedCustomers: ['sa'],
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
             container.deleteVerifyEditCustomer = jest.fn();
@@ -926,7 +937,8 @@ describe('EditCommunicationLog', () => {
         it('subject autoComplete change correctly', () => {
             // Arrange
             const state = {
-                settings: initData.settings
+                settings: initData.settings,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
             const value = 'value';
             const container = shallow(<EditCommunicationLog {...props} />).instance();
@@ -950,7 +962,8 @@ describe('EditCommunicationLog', () => {
             // Arrange
             const state = {
                 settings: initData.settings,
-                communicationLog: initData.feedback
+                communicationLog: initData.feedback,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
 
             const container = shallow(<EditCommunicationLog {...props}/>).instance();
@@ -967,7 +980,8 @@ describe('EditCommunicationLog', () => {
             // Arrange
             const state = {
                 settings: initData.settings,
-                communicationLog: initData.feedback
+                communicationLog: initData.feedback,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
            
             const container = shallow(<EditCommunicationLog />).instance();
@@ -986,7 +1000,8 @@ describe('EditCommunicationLog', () => {
             // Arrange
             const state = {
                 settings: initData.settings,
-                communicationLog: initData.feedback
+                communicationLog: initData.feedback,
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
             const values = {
                 languageId: 0
@@ -1010,7 +1025,8 @@ describe('EditCommunicationLog', () => {
             const state = {
                 settings: initData.settings,
                 communicationLog: initData.feedback,
-                confirmEditDialog: { show: true }
+                confirmEditDialog: { show: true },
+                statusEdit: [{ statusId: 1, name: 'Closed'}]
             };
            
             const container = shallow(<EditCommunicationLog />).instance();

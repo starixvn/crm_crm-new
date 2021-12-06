@@ -6,11 +6,10 @@ const dashboardSlice = createSlice({
         customerRemarks: null,
         redemptions: null,
         editRedemptionDialog: { show: false },
-        redemption: null,
-        status: null,
         communicationLogs: null,
         noOfInquiryDialog: { show: false },
-        editCommunicationDialog: { show: false }
+        editCommunicationDialog: { show: false },
+        createCommunicationDialog: { show: false }
     },
     reducers: {
         setCustomerRemarks: (state, action) => {
@@ -22,12 +21,6 @@ const dashboardSlice = createSlice({
         setEditRedemptionDialog: (state, action) => {
             state.editRedemptionDialog = action.payload;
         },
-        setRedemptionById: (state, action) => {
-            state.redemption = action.payload;
-        },
-        setStatus: (state, action) => {
-            state.status = action.payload;
-        },
         setCommunicationLogs: (state, action) => {
             state.communicationLogs = action.payload;
         },
@@ -36,6 +29,9 @@ const dashboardSlice = createSlice({
         },
         setEditCommunicationDialog: (state, action) => {
             state.editCommunicationDialog = action.payload;
+        },
+        setCreateCommunicationDialog: (state, action) => {
+            state.createCommunicationDialog = action.payload;
         }
     }
 });
@@ -46,11 +42,10 @@ export const {
     setCustomerRemarks,
     setRedemptionLogs,
     setEditRedemptionDialog,
-    setRedemptionById,
-    setStatus,
     setCommunicationLogs,
     setNoOfInquiryDialog,
-    setEditCommunicationDialog
+    setEditCommunicationDialog,
+    setCreateCommunicationDialog
 } = actions;
 
 export default reducer;

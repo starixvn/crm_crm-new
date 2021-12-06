@@ -6,6 +6,7 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { Policy } from '@jsroot/common/constants';
 import { validateFormik } from '../common.functions';
@@ -18,15 +19,23 @@ export class EditRedemptionLog extends Component {
 
         this.state = {
             redemptionLog: null,
-            editRedemptionResult: ''
+            editRedemptionResult: '',
+            allStatus: null
         };
     }
 
     async componentDidMount() {
-        await this.props.getLogById({ id: this.props.logId });
-        await this.props.getAllStatus();
-        this.setState({
-            redemptionLog: this.initFormikData(this.props.redemptionLog)
+        Site.blockUI();
+        const urlGetLogById = 'Redemption/GetLogById';
+        const urlGetAllStatus = 'Redemption/GetAllStatus?isEdit=true';
+        await DataService.getDataAsync(urlGetLogById, { id: this.props.logId }).then(response => {
+            this.setState({ 
+                redemptionLog: this.initFormikData(response.data)
+            });
+        }).then(() => Site.unblockUI());
+
+        await DataService.getDataAsync(urlGetAllStatus).then(response => {
+            this.setState({ allStatus: response.data });
         });
     }
 
@@ -43,9 +52,10 @@ export class EditRedemptionLog extends Component {
         };
     };
 
-    handleSubmit = (values, { setSubmitting }) => {
+    handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
         Site.blockUI();
+        const url = 'Redemption/EditRedemptionLog';
         const params = {
             id: values.id,
             subject: values.subject,
@@ -56,7 +66,7 @@ export class EditRedemptionLog extends Component {
             amount: parseInt(values.amount, 10),
             doneBy: values.doneBy
         };
-        this.props.editRedemptionLog(params).then(response => {
+        await DataService.postDataAsync(url, params).then(response => {
             Site.unblockUI();
             this.setState({ editRedemptionResult: response.data });
             if (response.data.isSuccessful) {
@@ -78,8 +88,8 @@ export class EditRedemptionLog extends Component {
         handleSubmit,
         isSubmitting
     }) => {
-        const { editRedemptionResult } = this.state;
-        const { allStatus } = this.props;
+        const { editRedemptionResult, allStatus } = this.state;
+
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -109,8 +119,7 @@ export class EditRedemptionLog extends Component {
     };
 
     render() {
-        const { redemptionLog } = this.state;
-        const { allStatus } = this.props;
+        const { redemptionLog, allStatus } = this.state;
         if ( redemptionLog === null || allStatus === null ) {
             return null;
         }

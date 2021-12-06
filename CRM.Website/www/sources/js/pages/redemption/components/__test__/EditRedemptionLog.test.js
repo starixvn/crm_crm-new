@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import { EditRedemptionLog } from '../EditRedemptionLog';
 import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import CreateEditForm from '../CreateEditForm';
@@ -34,16 +35,39 @@ describe('EditRedemptionLog', () => {
         it('should call exactly prop function', async () => {
             // Arrange
             const props = { ...initProps };
+            const expectedRedemptionLog = {
+                amount: 1,
+                claimTime: new Date('10/11/2021 10:05:20 AM'),
+                currencyId: 2,
+                doneBy: 'sa', id: 1,
+                remark: 'test', statusId: 123,
+                subject: 'test'
+            }
+            const response = {
+                data: {
+                    amount: 1,
+                    claimTime: '10/11/2021 10:05:20 AM',
+                    currencyId: 2,
+                    doneBy: 'sa',
+                    id: 1,
+                    remark: 'test',
+                    statusId: 123,
+                    subject: 'test'
+                }
+            }
+            const promise = Promise.resolve(response);
+            DataService.getDataAsync = jest.fn(() => promise);
 
             // Act
             const container = shallow(<EditRedemptionLog {...props}/>);
             container.setState({ redemptionLog: null})
             container.instance().componentDidMount();
+            await promise;
+            jest.runAllTimers();
 
             // Assert
-            expect(await props.getLogById).toHaveBeenCalledWith({ id: 123 });
-            expect(await props.getAllStatus).toHaveBeenCalled();
-            expect(container.state().redemptionLog).toEqual(null);
+            expect(container.state().redemptionLog).toEqual(expectedRedemptionLog);
+            expect(container.state().allStatus).toEqual(null);
         });
     });
 
@@ -78,6 +102,7 @@ describe('EditRedemptionLog', () => {
         it('should call exactly functions when submit successful',async () => {
             // Arrange
             const promise = Promise.resolve({ data: { code: 0, isSuccessful: true }});
+            DataService.postDataAsync = jest.fn(() => promise);
             const setSubmitting = jest.fn();
             const props = {
                 ...initProps,
@@ -92,7 +117,6 @@ describe('EditRedemptionLog', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(props.editRedemptionLog).toHaveBeenCalled();
             expect(props.onClose).toHaveBeenCalled();
             expect(container.state().editRedemptionResult).toEqual({ code: 0, isSuccessful: true });
         });
@@ -100,6 +124,7 @@ describe('EditRedemptionLog', () => {
         it('should call exactly functions when submit unSuccessful',async () => {
             // Arrange
             const promise = Promise.resolve({ data: { code: 1, isSuccessful: false }});
+            DataService.postDataAsync = jest.fn(() => promise);
             const setSubmitting = jest.fn();
             const props = {
                 ...initProps,
@@ -114,7 +139,6 @@ describe('EditRedemptionLog', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(props.editRedemptionLog).toHaveBeenCalled();
             expect(container.state().editRedemptionResult).toEqual({ code: 1, isSuccessful: false });
             expect(setSubmitting).toHaveBeenCalledWith(false);
         });
@@ -168,7 +192,7 @@ describe('EditRedemptionLog', () => {
             const props = { ...initProps };
             const expected = { subject: '' };
             const container = shallow(<EditRedemptionLog {...props}/>).instance();
-            container.setState({ redemptionLog: { subject: '' }});
+            container.setState({ redemptionLog: { subject: '' }, allStatus: [{ open: 'Open' }]});
             container.initFormikData = jest.fn(() => expected);
             
             // Act
@@ -188,7 +212,7 @@ describe('EditRedemptionLog', () => {
             };
            
             const container = shallow(<EditRedemptionLog {...props}/>).instance();
-            container.setState({ redemptionLog: { subject: '' }});
+            container.setState({ redemptionLog: { subject: '' }, allStatus: [{ open: 'Open' }]});
             commonFunc.validateFormik = jest.fn();
 
             // Act
@@ -207,7 +231,7 @@ describe('EditRedemptionLog', () => {
                 onClose: jest.fn()
              };
             const container = shallow(<EditRedemptionLog {...props}/>).instance();
-            container.setState({ redemptionLog: { subject: '' }});
+            container.setState({ redemptionLog: { subject: '' }, allStatus: [{ open: 'Open' }]});
             
             // Act
             const renderEdit = shallow(container.render());
