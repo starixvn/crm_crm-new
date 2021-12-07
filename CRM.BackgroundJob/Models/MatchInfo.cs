@@ -18,5 +18,6 @@
         public string VoidBy { get; set; }
         public DateTime MinWinlostdate { get; set; }
         public DateTime MaxWinlostdate { get; set; }
+        public byte FilterBy { get; set; }
     }
 }

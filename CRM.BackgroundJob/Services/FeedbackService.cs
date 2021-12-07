@@ -4,6 +4,7 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models.MixParlay;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
@@ -33,6 +34,8 @@
         private readonly ICommonFeedback commonFeedback;
 
         private const int abnormalAccount = 13;
+        private const int mixParlay = 11;
+        private const string solTemplateXml = "MixParlaySolution.xml";
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -259,8 +262,11 @@
                     string.Join(",", batch)));
 
                 IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.CustId));
-                criteria.ProductXml = GetProductXml(matchInfo, transactions, settings, settingMappings);
-                criteria.Solution = GetSolutionForCreditSite(message, transactions, matchInfo.IssueTypeId);
+                var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
+                criteria.ProductXml = GetProductXml(isMixParlay, matchInfo, transactions, settings, settingMappings);
+                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactionInfos, true) : 
+                                             GetSolutionForCreditSite(message, transactions, matchInfo.IssueTypeId);
+                criteria.Solution = solution;
                 criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, transactions, matchInfo.IssueTypeId);
                 criteria.MessageId = message.MessageId;
                 criteria.ListOrigCustIds = string.Join(",", batch);
@@ -271,7 +277,9 @@
                     string.Join(",", batch)));
                 IEnumerable<int> requestIds = transactions.Select(x => x.RequestId).Distinct().ToList();
                 criteria.RequestIds = string.Join(",", requestIds);
-                criteria.Description = GetDescriptionForCreditSite(message.MessageId, criteria.RequestIds, matchInfo, transactions);
+                var description = isMixParlay ? GetDescriptionMixParlayForCreditSite(message.MessageId, criteria.RequestIds, matchInfo) 
+                                                : GetDescriptionForCreditSite(message.MessageId, criteria.RequestIds, matchInfo, transactions);
+                criteria.Description = description;
                 try
                 {
                     logService.LogInformation(string.Format("Abnormal Bet - Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
@@ -329,6 +337,7 @@
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
             var category = GetCategorySubCategory(settings, matchInfo.IssueTypeId);
+            var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
 
             var criteria = new CreateFeedbackCommand
             {
@@ -341,7 +350,7 @@
                 StationId = station != null ? station.SettingId.ToString() : string.Empty,
                 CommunicationId = communicationTool.SettingId.ToString(),
                 CategoryXml = category != null ? category.Item3 : string.Empty,
-                ProductXml = GetProductXml(matchInfo, transactionInfos, settings, settingMappings),
+                ProductXml = GetProductXml(isMixParlay, matchInfo, transactionInfos, settings, settingMappings),
                 StatusId = status != null ? status.SettingId : 0,
                 LanguageId = licenseeInfo.LanguageId,
                 ResponseId = response != null ? response.SettingId : 0,
@@ -458,6 +467,7 @@
         }
 
         protected internal virtual string GetProductXml(
+            bool isMixParlay,
             MatchInfo matchInfo,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SettingItem> settings,
@@ -466,8 +476,8 @@
             logService.LogInformation("Abnormal Bet - Begin mapping product, sub-product, bet type.");
             const string XmlTemplate = "<Product ProductID='{0}' SubProductID='{1}' BetTypeID='{2}' />";
             SettingItem sportsbook = GetSportsbookProduct(settings);
-            IList<SettingItem> subProducts = GetSubProduct(sportsbook.SettingId, matchInfo, settings, settingMappings);
-            IList<SettingItem> bettypes = GetBettype(subProducts.Select(x => x.SettingId), transactionInfos, settings, settingMappings);
+            var subProducts = GetSubProduct(isMixParlay, sportsbook.SettingId, matchInfo, settings, settingMappings);
+            var bettypes = GetBettype(isMixParlay, subProducts.Select(x => x.SettingId), transactionInfos, settings, settingMappings);
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
 
             foreach (SettingItem subProduct in subProducts)
@@ -499,12 +509,13 @@
         }
 
         protected internal virtual IList<SettingItem> GetSubProduct(
+            bool isMixParlay,
             int productId,
             MatchInfo matchInfo,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            var sport = matchInfo.SportName;
+            var sport = isMixParlay ? "Multiple Sports" : matchInfo.SportName;
             IList<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && mapping.SettingSource.Equals(sport, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -522,19 +533,30 @@
         }
 
         protected internal virtual IList<SettingItem> GetBettype(
+            bool isMixParlay,
             IEnumerable<int> subProducts,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             var transactionAbnormalAccount = transactionInfos.Where(x => x.Bettype != null);
-            IList<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+            var bettypes = new List<SettingItem>();
+            if (isMixParlay)
+            {
+                bettypes = GetBettypeParlay(isMixParlay, subProducts, settings, settingMappings);
+            }
+            else
+            {
+                IList<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && transactionAbnormalAccount.Any(tran => tran.Bettype.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
-            IList<SettingItem> bettypes = settings.Where(bettype => bettype.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+
+                bettypes = settings.Where(bettype => bettype.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && subProducts.Any(sub => bettype.ParentIds.Any(parent => parent == sub))
                 && mappings != null
                 && mappings.Any(mapping => mapping.SettingId == bettype.SettingId)).ToList();
+            }
+            
 
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
@@ -542,6 +564,24 @@
                 {
                     new SettingItem { SettingId = Constants.BettypeNA, ParentIds = new List<int> { Constants.SubProductNA } }
                 };
+        }
+
+        protected internal virtual List<SettingItem> GetBettypeParlay(
+            bool isMixParlay,
+            IEnumerable<int> subProducts,
+            IEnumerable<SettingItem> settings,
+            IEnumerable<SystemSettingMapping> settingMappings)
+        {
+            IList<SystemSettingMapping> mappingsParlay = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrWhiteSpace(mapping.SettingSource)
+                && mapping.SettingSource.Equals("Mix Parlay", StringComparison.OrdinalIgnoreCase)).ToList();
+
+            var bettypes = settings.Where(bettype => bettype.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+            && subProducts.Any(sub => bettype.ParentIds.Any(parent => parent == sub))
+            && mappingsParlay != null
+            && mappingsParlay.Any(mapping => mapping.SettingId == bettype.SettingId)).ToList();
+
+            return bettypes;
         }
 
         protected internal virtual Tuple<int, int, string> GetCategorySubCategory(IEnumerable<SettingItem> settings, int IssueTypeId)
@@ -633,6 +673,16 @@
             }
         }
 
+        protected internal virtual string GetDescriptionMixParlayForCreditSite(int messageId, string requestIds, MatchInfo matchInfo)
+        {
+            var template = commonFeedback.GetFeedbackTemplates<MixParlaySolutionTemplate>(solTemplateXml);
+            var stringBuilder = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
+            stringBuilder.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
+            stringBuilder.Append(Constants.LineBreak);
+            stringBuilder.AppendFormat(template.DescriptionCredit, matchInfo.DecidedBy, matchInfo.Requestby, matchInfo.VoidBy, Constants.Break);
+            return stringBuilder.ToString();
+        }
+
         protected internal virtual string GetSolution(Message message)
         {
             var stringBuilder = new StringBuilder(message.Content_en);
@@ -652,6 +702,27 @@
                     stringBuilder.AppendFormat("<br />{0} {1}", transaction.Username, transaction.TransId);
                 }
 
+            }
+            return stringBuilder.ToString();
+        }
+
+        protected internal virtual string GetSolutionMixParlayForCreditSite(Message message, IEnumerable<TransactionInfo> transactionInfos, bool isVip)
+        {
+            var stringBuilder = new StringBuilder();
+            var stringBuilderAffected = new StringBuilder();
+            const string templateAffected = "- {0} {1} {2}";
+            var solutionTempate = commonFeedback.GetFeedbackTemplates<MixParlaySolutionTemplate>(solTemplateXml);
+            foreach(var tran in transactionInfos)
+            {
+                stringBuilderAffected.AppendFormat(templateAffected, tran.Username, tran.TransId, Constants.Break);
+            }
+            if (isVip)
+            {
+                stringBuilder.AppendFormat(solutionTempate.SolutionCreditENYN, message.Content_en, stringBuilderAffected, Constants.LineBreak, Constants.Break);
+            }
+            else
+            {
+                stringBuilder.AppendFormat(solutionTempate.SolutionCreditENSC, message.Content_en, message.Content_cs, stringBuilderAffected, Constants.LineBreak, Constants.Break);
             }
             return stringBuilder.ToString();
         }
