@@ -10,13 +10,16 @@ import DataGridCommunication from './DataGridCommunication';
 import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from '../../communication-log/components/EditCommunicationLog';
 import CreateCommunicationLog from '../../communication-log/components/CreateCommunicationLog';
+import CustomerInfoVerify from './CustomerInfoVerify';
+import EditCustomerInfoVerify from './EditCustomerInfoVerify';
 
 export class AppContainer extends Component {
     static propTypes = {
         editRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         noOfInquiryDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        createCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        createCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editCustomerVerifyDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
@@ -24,6 +27,7 @@ export class AppContainer extends Component {
         noOfInquiryDialog: { show: false },
         editCommunicationDialog: { show: false },
         createCommunicationDialog: { show: false },
+        editCustomerVerifyDialog: { show: false }
     };
 
     handleCloseEditRedemptionDialog = isSuccessful => {
@@ -44,19 +48,32 @@ export class AppContainer extends Component {
         }
     };
 
-    handleCloseCreateCmnDiaLog =  isSuccessful => {
+    handleCloseCreateCmnDiaLog = isSuccessful => {
         this.props.setCreateCommunicationDialog({ show: false });
         if (isSuccessful) {
             this.props.getCommunicationLogs({ customerId: 1754 });
         }
     };
 
+    handleCloseEditCustomerVerify = isSuccessful => {
+        this.props.setEditCustomerVerifyDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getCustomerInfoVerify({ customerId: 1754 });
+        }
+    }
+
     render() {
-        const { editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = this.props;
+        const {
+            editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
+            createCommunicationDialog, editCustomerVerifyDialog
+        } = this.props;
 
         return (
             <div>
-                <DataGridRemark />
+                <div className="d-flex justify-content-between">
+                    <div className="dataGrid-remark"><DataGridRemark /></div>
+                    <div className="information"><CustomerInfoVerify /></div>
+                </div>
                 <DataGridRedemption />
                 <DataGridCommunication />
                 {
@@ -85,6 +102,12 @@ export class AppContainer extends Component {
                         options={createCommunicationDialog.options}
                     />
                 }
+                {
+                    editCustomerVerifyDialog.show &&
+                    <EditCustomerInfoVerify
+                        onClose={this.handleCloseEditCustomerVerify}
+                    />
+                }
             </div>
         );
     }
@@ -93,8 +116,14 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = state;
-    return { editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog, createCommunicationDialog };
+    const {
+        editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
+        createCommunicationDialog, editCustomerVerifyDialog
+    } = state;
+    return {
+        editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
+        createCommunicationDialog, editCustomerVerifyDialog
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

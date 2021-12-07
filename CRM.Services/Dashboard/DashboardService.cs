@@ -3,9 +3,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Dashboard;
     using CRM.Models.CommunicationLogs;
+    using CRM.Models.Dashboard;
     using CRM.Models.Feedback;
     using CRM.Models.Redemption;
 
@@ -14,6 +16,8 @@
         Task<IEnumerable<string>> GetCustomerRemarksAsync(GetCustomerRemarksCriteria criteria);
         Task<IEnumerable<CustomerLogInfo>> GetRedemptionLogsAsync(GetRedemptionLogsCriteria criteria);
         Task<IEnumerable<CommunicationLog>> GetCommunicationLogsAsync(GetCommunicationLogsCriteria criteria);
+        Task<CustomerInfoVerify> GetCustomerInfoVerifyAsync(GetCustomerInfoVerifyCriteria criteria);
+        Task<CommandResult> EditCustomerVerifyAsync(EditCustomerVerifyCommand command);
     }
 
     public class DashboardService : IDashboardService
@@ -55,6 +59,16 @@
             }
             communicationLogs = communicationLogs.Where(x => x.Settings.Count() > 0);
             return communicationLogs;
+        }
+
+        public async Task<CustomerInfoVerify> GetCustomerInfoVerifyAsync(GetCustomerInfoVerifyCriteria criteria)
+        {
+            return await baseService.GetDataEntityAsync<CustomerInfoVerify>(criteria);
+        }
+
+        public async Task<CommandResult> EditCustomerVerifyAsync(EditCustomerVerifyCommand command)
+        {
+            return await baseService.ExecuteNonQueryAsync(command);
         }
     }
 }

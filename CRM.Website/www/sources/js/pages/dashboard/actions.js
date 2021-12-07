@@ -8,7 +8,9 @@ import {
     setCommunicationLogs,
     setNoOfInquiryDialog,
     setEditCommunicationDialog,
-    setCreateCommunicationDialog
+    setCreateCommunicationDialog,
+    setCustomerInfoVerify,
+    setEditCustomerVerifyDialog
 } from './dashboardSlice';
 
 const getCustomerRemarks = params => async dispatch => {
@@ -35,6 +37,20 @@ const getCommunicationLogs = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const getCustomerInfoVerify = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('Dashboard/GetCustomerInfoVerify');
+    await DataService.getDataAsync(url,params).then(response => {
+        dispatch(setCustomerInfoVerify(response.data));
+    }).then(() => Site.unblockUI());
+};
+
+const editCustomerVerify = params => async () => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('Dashboard/EditCustomerVerify');
+    return await DataService.postDataAsync(url,params).then(response => response);
+};
+
 export const ActionCreators = {
     getCustomerRemarks,
     getRedemptionLogs,
@@ -42,5 +58,8 @@ export const ActionCreators = {
     getCommunicationLogs,
     setNoOfInquiryDialog,
     setEditCommunicationDialog,
-    setCreateCommunicationDialog
+    setCreateCommunicationDialog,
+    getCustomerInfoVerify,
+    setEditCustomerVerifyDialog,
+    editCustomerVerify
 };

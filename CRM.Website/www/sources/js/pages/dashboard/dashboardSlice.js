@@ -9,7 +9,9 @@ const dashboardSlice = createSlice({
         communicationLogs: null,
         noOfInquiryDialog: { show: false },
         editCommunicationDialog: { show: false },
-        createCommunicationDialog: { show: false }
+        createCommunicationDialog: { show: false },
+        customerInfoVerify: null,
+        editCustomerVerifyDialog: { show: false }
     },
     reducers: {
         setCustomerRemarks: (state, action) => {
@@ -32,6 +34,12 @@ const dashboardSlice = createSlice({
         },
         setCreateCommunicationDialog: (state, action) => {
             state.createCommunicationDialog = action.payload;
+        },
+        setCustomerInfoVerify: (state, action) => {
+            state.customerInfoVerify = action.payload;
+        },
+        setEditCustomerVerifyDialog: (state, action) => {
+            state.editCustomerVerifyDialog = action.payload;
         }
     }
 });
@@ -45,7 +53,9 @@ export const {
     setCommunicationLogs,
     setNoOfInquiryDialog,
     setEditCommunicationDialog,
-    setCreateCommunicationDialog
+    setCreateCommunicationDialog,
+    setCustomerInfoVerify,
+    setEditCustomerVerifyDialog
 } = actions;
 
 export default reducer;

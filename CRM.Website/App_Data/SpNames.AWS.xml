@@ -189,6 +189,8 @@
             <Mapping DataField="HandleBy" ObjectProperty="Handler" />
             <Mapping DataField="ReviewBy" ObjectProperty="Reviewer" />
         </Setting>
+        <Setting Key="Acc_CRM_MainInformationVerifySel" SpName="Acc_CRM_MainInformationVerifySel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerInformationVerify" SpName="Acc_CRM_CustomerInformationVerify" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Funtcion>
     <Funtcion name="Communication">
       <Setting Key="Acc_CRM_CommunicationLogList" SpName="Acc_CRM_CommunicationLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >

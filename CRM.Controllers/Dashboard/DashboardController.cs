@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Core.Models;
     using CRM.Criteria.Dashboard;
     using CRM.Services;
     using CRM.Services.Dashboard;
@@ -63,6 +64,22 @@
             var communicationLogs = await dashboardService.GetCommunicationLogsAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
             return Json(new { data = communicationLogs, mainCategories});
+        }
+
+        public async Task<IActionResult> GetCustomerInfoVerify(GetCustomerInfoVerifyCriteria criteria)
+        {
+            var customerInfoVerify = await dashboardService.GetCustomerInfoVerifyAsync(criteria);
+            return Json(customerInfoVerify);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        public async Task<IActionResult> EditCustomerVerify([FromBody] EditCustomerVerifyCommand command)
+        {
+            command.IP = ClientIP;
+            command.UserId = napSession.UserId;
+            CommandResult commandResult = await dashboardService.EditCustomerVerifyAsync(command);
+            return Json(commandResult);
         }
     }
 }

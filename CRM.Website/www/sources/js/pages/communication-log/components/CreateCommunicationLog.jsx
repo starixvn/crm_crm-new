@@ -796,7 +796,7 @@ export class CreateCommunicationLog extends Component {
                     onHide={this.props.onClose}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('CreateCommunicationLog')}</Modal.Title>
+                        <Modal.Title as="div">{LangHelper.getResource('InsertCommunicationLog')}</Modal.Title>
                     </Modal.Header>
                     <Formik
                         innerRef={el => this.formik = el}
