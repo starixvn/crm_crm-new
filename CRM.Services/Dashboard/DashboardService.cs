@@ -57,7 +57,7 @@
                 communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
                 communicationLog.Settings = settings.Where(x => x.FeedbackId == communicationLog.FeedbackId).ToList();
             }
-            communicationLogs = communicationLogs.Where(x => x.Settings.Count() > 0);
+            communicationLogs = communicationLogs.Where(x => x.Settings.Any());
             return communicationLogs;
         }
 

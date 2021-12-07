@@ -154,7 +154,7 @@ export class DataGridCommunication extends Component {
             productIds: createLogSettings.productIds.join(','),
             subProductIds: createLogSettings.subProductIds.join(','),
             betTypeIds: createLogSettings.betTypeIds.join(',')
-        }
+        };
     };
 
     getCreateLogSettings = log => {
@@ -253,8 +253,8 @@ export class DataGridCommunication extends Component {
         }
 
         return (
-            <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center mt-3'>
+            <div>
+                <div className='d-flex table-title align-items-center justify-content-between mt-3'>
                     <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
                 </div>
                 <Table
@@ -265,7 +265,7 @@ export class DataGridCommunication extends Component {
                     containerPadding={0}
                     adjustedHeight={10}
                 />
-            </Fragment>
+            </div>
         );
     }
 }

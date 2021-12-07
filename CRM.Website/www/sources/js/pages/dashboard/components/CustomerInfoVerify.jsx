@@ -20,7 +20,7 @@ export class CustomerInfoVerify extends Component {
         this.props.getCustomerInfoVerify({ customerId: 1754 });
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         const { customerInfoVerify } = this.props;
         const listVerify = [];
         let countVerified = 0;
@@ -32,7 +32,11 @@ export class CustomerInfoVerify extends Component {
             listVerify.push(customerInfoVerify.isVerifyBetCredit);
             listVerify.push(customerInfoVerify.isVerifyGivenCredit);
 
-            listVerify.map(item => { item === true && ++countVerified });
+            listVerify.forEach(item => {
+                if (item === true) {
+                    ++countVerified;
+                }
+            });
             this.setState({
                 numberVerified: countVerified,
                 energy: Math.round(16.6667*countVerified)

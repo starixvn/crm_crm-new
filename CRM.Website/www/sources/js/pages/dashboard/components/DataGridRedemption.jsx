@@ -70,20 +70,20 @@ export class DataGridRedemption extends Component {
         }
 
         return (
-            <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center'>
+            <div>
+                <div className='table-title d-flex align-items-center justify-content-between'>
                     <span>{LangHelper.getResource('LastFiveRedemptionLog')}</span>
                 </div>
 
                 <Table
                     width={1319}
                     autoWidth={false}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
                     containerPadding={0}
                     adjustedHeight={10}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
                 />
-            </Fragment>
+            </div>
         );
     }
 }

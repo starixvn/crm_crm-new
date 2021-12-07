@@ -29,7 +29,7 @@ export class EditRedemptionLog extends Component {
         const urlGetLogById = 'Redemption/GetLogById';
         const urlGetAllStatus = 'Redemption/GetAllStatus?isEdit=true';
         await DataService.getDataAsync(urlGetLogById, { id: this.props.logId }).then(response => {
-            this.setState({ 
+            this.setState({
                 redemptionLog: this.initFormikData(response.data)
             });
         }).then(() => Site.unblockUI());

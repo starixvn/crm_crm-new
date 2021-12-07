@@ -88,20 +88,13 @@ export class CreateCommunicationLog extends Component {
         const startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         endTime.setMinutes(endTime.getMinutes() + 1);
+        const initTools = this.getInitDataTool(options, allSettings);
 
         return {
+            ...initTools,
             customerNameInput: '',
             startTime,
             endTime,
-            extensionIds: options ? options.extensionIds : allSettings.extensions[0].id.toString(),
-            languageId: options ? options.languageId : allSettings.languages[1].languageId,
-            countryId: options ? options.countryId : allSettings.countries[0].id,
-            communicationToolIds: options ? options.communicationToolIds : '',
-            mainCategoryIds: options ? options.mainCategoryIds : '',
-            subCategoryIds: options ? options.subCategoryIds : '',
-            productIds: options ? options.productIds : '',
-            subProductIds: options ? options.subProductIds : '',
-            betTypeIds: options ? options.betTypeIds : '',
             statusId: options ? options.statusId : allSettings.statuses[0].statusId,
             roleId: options ? options.roleId : allSettings.roles[4].id,
             siteId: options ? options.siteId : 0,
@@ -114,6 +107,20 @@ export class CreateCommunicationLog extends Component {
             remark: options ? `${remarkDuplicated}${options.remark}` : '',
             solution: options ? options.solution : ''
         };
+    };
+
+    getInitDataTool = (options, allSettings) => {
+        return {
+            extensionIds: options ? options.extensionIds : allSettings.extensions[0].id.toString(),
+            languageId: options ? options.languageId : allSettings.languages[1].languageId,
+            countryId: options ? options.countryId : allSettings.countries[0].id,
+            communicationToolIds: options ? options.communicationToolIds : '',
+            mainCategoryIds: options ? options.mainCategoryIds : '',
+            subCategoryIds: options ? options.subCategoryIds : '',
+            productIds: options ? options.productIds : '',
+            subProductIds: options ? options.subProductIds : '',
+            betTypeIds: options ? options.betTypeIds : '',
+        }
     };
 
     onChangeStartTime = (setFieldValue, selectedTime, endTime) => {

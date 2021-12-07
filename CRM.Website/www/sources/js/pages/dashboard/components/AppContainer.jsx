@@ -60,7 +60,7 @@ export class AppContainer extends Component {
         if (isSuccessful) {
             this.props.getCustomerInfoVerify({ customerId: 1754 });
         }
-    }
+    };
 
     render() {
         const {
@@ -96,7 +96,7 @@ export class AppContainer extends Component {
                 }
                 {
                     createCommunicationDialog.show &&
-                    <CreateCommunicationLog 
+                    <CreateCommunicationLog
                         onClose={this.handleCloseCreateCmnDiaLog}
                         item={createCommunicationDialog.item}
                         options={createCommunicationDialog.options}

@@ -53,7 +53,7 @@ export class DataGridRemark extends Component {
         }
 
         return (
-            <Fragment>
+            <div>
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{LangHelper.getResource('LastFiveSpecialRemark')}</span>
                 </div>
@@ -64,7 +64,7 @@ export class DataGridRemark extends Component {
                     </tbody>
                 </Table>
 
-            </Fragment>
+            </div>
         );
     }
 }
