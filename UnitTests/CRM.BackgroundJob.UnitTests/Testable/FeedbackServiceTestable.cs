@@ -109,12 +109,13 @@
         }
 
         public string Public_GetProductXml(
+            bool isMixParlay,
             MatchInfo matchInfo,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetProductXml(matchInfo, transactionInfos, settings, settingMappings);
+            return base.GetProductXml(isMixParlay, matchInfo, transactionInfos, settings, settingMappings);
         }
 
         public SettingItem Public_GetSportsbookProduct(IEnumerable<SettingItem> settings)
@@ -123,21 +124,31 @@
         }
 
         public IList<SettingItem> Public_GetSubProduct(
+            bool isMixParlay,
             int productId,
             MatchInfo matchInfo,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetSubProduct(productId, matchInfo, settings, settingMappings);
+            return base.GetSubProduct(isMixParlay, productId, matchInfo, settings, settingMappings);
         }
 
         public IList<SettingItem> Public_GetBettype(
+            bool isMixParlay,
             IEnumerable<int> subProducts,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetBettype(subProducts, transactionInfos, settings, settingMappings);
+            return base.GetBettype(isMixParlay, subProducts, transactionInfos, settings, settingMappings);
+        }
+
+        public IList<SettingItem> Public_GetBettypeParlay(
+            IEnumerable<int> subProducts,
+            IEnumerable<SettingItem> settings,
+            IEnumerable<SystemSettingMapping> settingMappings)
+        {
+            return base.GetBettypeParlay(subProducts, settings, settingMappings);
         }
 
         public Tuple<int, int, string> Public_GetCategorySubCategory(IEnumerable<SettingItem> settings, int IssueTypeId)
@@ -168,6 +179,11 @@
             return base.GetDescriptionForCreditSite(messageId, requestIds, matchInfo, transactionInfos);
         }
 
+        public string Public_GetDescriptionMixParlayForCreditSite(int messageId, string requestIds, MatchInfo matchInfo)
+        {
+            return base.GetDescriptionMixParlayForCreditSite(messageId, requestIds, matchInfo);
+        }
+
         public string Public_GetSolution(Message message)
         {
             return base.GetSolution(message);
@@ -176,6 +192,11 @@
         public string Public_GetSolutionForCreditSite(Message message, IEnumerable<TransactionInfo> transactionInfos, int issueTypeId)
         {
             return base.GetSolutionForCreditSite(message, transactionInfos, issueTypeId);
+        }
+
+        public string Public_GetSolutionMixParlayForCreditSite(Message message, IEnumerable<TransactionInfo> transactionInfos, bool isVip)
+        {
+            return base.GetSolutionMixParlayForCreditSite(message, transactionInfos, isVip);
         }
     }
 }

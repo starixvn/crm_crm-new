@@ -3,7 +3,7 @@
     using System.Xml.Serialization;
 
     [XmlRoot("ROOT")]
-    public class MixParlaySolutionTemplate
+    public class MixParlayTemplate
     {
         public string SolutionCreditENSC { get; set; }
         public string SolutionCreditENYN { get; set; }

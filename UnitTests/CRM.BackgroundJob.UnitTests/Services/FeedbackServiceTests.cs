@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Models.MixParlay;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
     using CRM.Core.Models;
@@ -279,7 +280,7 @@
             var commandResult = new CommandResult { Code = 0 };
             var service = MockService();
             baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
-            service.Protected("GetProductXml", matchInfo, Arg.Any<IEnumerable<TransactionInfo>>(), settings, settingMappings).Returns("product xml");
+            service.Protected("GetProductXml",false, matchInfo, Arg.Any<IEnumerable<TransactionInfo>>(), settings, settingMappings).Returns("product xml");
             service.Protected("GetSolutionForCreditSite", message, Arg.Any<IEnumerable<TransactionInfo>>(), Arg.Any<int>()).Returns("solution");
             service.Protected("GetRelatedCustomerXml", headline.HeadlineId, Arg.Any<IEnumerable<TransactionInfo>>(), matchInfo.IssueTypeId).Returns("related customer xml");
             service.Protected("GetDescriptionForCreditSite", message.MessageId, "1", matchInfo, Arg.Any<IEnumerable<TransactionInfo>>()).Returns("description");
@@ -411,7 +412,7 @@
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
             service.Received().Protected("GetCategorySubCategory", settings, matchInfo.IssueTypeId);
-            service.Received().Protected("GetProductXml", matchInfo, transactionInfos, settings, settingMappings);
+            service.Received().Protected("GetProductXml",false, matchInfo, transactionInfos, settings, settingMappings);
             service.Received().Protected("CreateFeedbackForDepositByBatchAsync", licenseeInfo, message, transactionInfos, Arg.Any<DateTime>(), Arg.Any<string>(), Arg.Any<CreateFeedbackCommand>());
         }
         #endregion CreateFeedbackForDepositSiteAsync
@@ -510,10 +511,10 @@
             var subProducts = new List<SettingItem>();
             var service = MockService();
             service.Protected("GetSportsbookProduct", settings).Returns(sportsbook);
-            service.Protected("GetSubProduct", sportsbook.SettingId, matchInfo, settings, settingMappings).Returns(subProducts);
+            service.Protected("GetSubProduct",false, sportsbook.SettingId, matchInfo, settings, settingMappings).Returns(subProducts);
 
             // Act
-            var actual = service.Public_GetProductXml(matchInfo, transactionInfos, settings, settingMappings);
+            var actual = service.Public_GetProductXml(false, matchInfo, transactionInfos, settings, settingMappings);
 
             // Assert
             Assert.Equal("<ROOT></ROOT>", actual);
@@ -535,11 +536,11 @@
             var bettypes = new List<SettingItem>();
             var service = MockService();
             service.Protected("GetSportsbookProduct", settings).Returns(sportsbook);
-            service.Protected("GetSubProduct", sportsbook.SettingId, matchInfo, settings, settingMappings).Returns(subProducts);
-            service.Protected("GetBettype", Arg.Any<IEnumerable<int>>(), transactionInfos, settings, settingMappings).Returns(bettypes);
+            service.Protected("GetSubProduct", Arg.Any<bool>(), sportsbook.SettingId, matchInfo, settings, settingMappings).Returns(subProducts);
+            service.Protected("GetBettype", Arg.Any<bool>(), Arg.Any<IEnumerable<int>>(), transactionInfos, settings, settingMappings).Returns(bettypes);
 
             // Act
-            var actual = service.Public_GetProductXml(matchInfo, transactionInfos, settings, settingMappings);
+            var actual = service.Public_GetProductXml(false, matchInfo, transactionInfos, settings, settingMappings);
 
             // Assert
             Assert.Equal("<ROOT><Product ProductID='1' SubProductID='1' BetTypeID='9144' /></ROOT>", actual);
@@ -564,11 +565,11 @@
             };
             var service = MockService();
             service.Protected("GetSportsbookProduct", settings).Returns(sportsbook);
-            service.Protected("GetSubProduct", sportsbook.SettingId, matchInfo, settings, settingMappings).Returns(subProducts);
-            service.Protected("GetBettype", Arg.Any<IEnumerable<int>>(), transactionInfos, settings, settingMappings).Returns(bettypes);
+            service.Protected("GetSubProduct", Arg.Any<bool>(), sportsbook.SettingId, matchInfo, settings, settingMappings).Returns(subProducts);
+            service.Protected("GetBettype", Arg.Any<bool>(), Arg.Any<IEnumerable<int>>(), transactionInfos, settings, settingMappings).Returns(bettypes);
 
             // Act
-            var actual = service.Public_GetProductXml(matchInfo, transactionInfos, settings, settingMappings);
+            var actual = service.Public_GetProductXml(false, matchInfo, transactionInfos, settings, settingMappings);
 
             // Assert
             Assert.Equal("<ROOT><Product ProductID='1' SubProductID='1' BetTypeID='1' /></ROOT>", actual);
@@ -612,7 +613,6 @@
         #endregion GetSportsbookProduct
 
         #region GetSubProduct
-
         [Fact]
         public void GetSubProduct_NotExistedMapping_ReturnDefaultSubProduct()
         {
@@ -624,7 +624,28 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetSubProduct(productId, matchInfo, settings, settingMappings);
+            var actual = service.Public_GetSubProduct(false, productId, matchInfo, settings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
+
+            Assert.Single(actual.First().ParentIds);
+            Assert.Equal(Constants.ProductNA, actual.First().ParentIds.First());
+        }
+
+        [Fact]
+        public void GetSubProduct_MixParlayAndNotExistedMapping_ReturnDefaultSubProduct()
+        {
+            // Arrange
+            var productId = 1;
+            var matchInfo = fixture.Create<MatchInfo>();
+            var settings = fixture.Create<IEnumerable<SettingItem>>();
+            var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetSubProduct(true, productId, matchInfo, settings, settingMappings);
 
             // Assert
             Assert.Single(actual);
@@ -651,7 +672,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetSubProduct(productId, matchInfo, settings, settingMappings);
+            var actual = service.Public_GetSubProduct(false, productId, matchInfo, settings, settingMappings);
 
             // Assert
             Assert.Single(actual);
@@ -661,6 +682,29 @@
         #endregion GetSubProduct
 
         #region GetBettype
+
+        [Fact]
+        public void GetBettype_IsMixParlay_ReturnDefaultBettype()
+        {
+            // Arrange
+            var subProducts = fixture.Create<IEnumerable<int>>();
+            var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
+            var settings = fixture.Create<IEnumerable<SettingItem>>();
+            var bettypeMixparlay = new List<SettingItem>();
+            var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
+            var service = MockService();
+            service.Protected("GetBettypeParlay", true, subProducts, settings, settingMappings).Returns(bettypeMixparlay);
+
+            // Act
+            var actual = service.Public_GetBettype(true, subProducts, transactionInfos, settings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
+
+            Assert.Single(actual.First().ParentIds);
+            Assert.Equal(Constants.SubProductNA, actual.First().ParentIds.First());
+        }
 
         [Fact]
         public void GetBettype_NotExistedMapping_ReturnDefaultBettype()
@@ -673,7 +717,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetBettype(subProducts, transactionInfos, settings, settingMappings);
+            var actual = service.Public_GetBettype(false, subProducts, transactionInfos, settings, settingMappings);
 
             // Assert
             Assert.Single(actual);
@@ -703,7 +747,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetBettype(subProducts, transactionInfos, settings, settingMappings);
+            var actual = service.Public_GetBettype(false, subProducts, transactionInfos, settings, settingMappings);
 
             // Assert
             Assert.Single(actual);
@@ -711,6 +755,33 @@
         }
 
         #endregion GetBettype
+
+        #region GetBettypeParlay
+
+        [Fact]
+        public void GetBettypeParlay_IsMixParlayAndExistMapping_ReturnDefaultBettype()
+        {
+            // Arrange
+            var subProducts = new List<int> { 1 };
+            var settings = new List<SettingItem>
+            {
+                new SettingItem { SettingId = 1, SettingName = "Bettype", ParentIds = new List<int> { 1 } }
+            };
+            var settingMappings = new List<SystemSettingMapping>
+            {
+                new SystemSettingMapping { SettingId = 1, SettingName = "Bettype", SettingSource = "Mix Parlay" }
+            };
+            var service = MockService();
+
+            // Act
+            var actual = service.Public_GetBettypeParlay(subProducts, settings, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(settings.First(), actual.First());
+        }
+
+        #endregion GetBettypeParlay
 
         #region GetCategorySubCategory
 
@@ -937,6 +1008,59 @@
         }
 
         #endregion GetDescription
+
+        #region GetSolutionMixParlayForCreditSite
+        [Fact]
+        public void GetSolutionMixParlayForCreditSite_WhenCalled_ReturnExpectedSolution()
+        {
+            // Arrange
+            var message = fixture.Create<Message>();
+            var testDescTemp = new MixParlayTemplate
+            {
+                SolutionCreditENSC = "SolutionCreditENSC"
+            };
+            var transactionInfo = new List<TransactionInfo>
+            {
+                new TransactionInfo{ TransId = 1, Username = "test"}
+            };
+            var service = MockService();
+            commonFeedback.GetFeedbackTemplates<MixParlayTemplate>("MixParlay.xml").Returns(testDescTemp);
+
+            // Act
+            var actual = service.Public_GetSolutionMixParlayForCreditSite(message, transactionInfo, false);
+
+            // Assert
+            Assert.Equal("SolutionCreditENSC", actual);
+        }
+        #endregion GetSolutionMixParlayForCreditSite
+
+        #region GetDescriptionMixParlayForCreditSite
+        [Fact]
+        public void GetDescriptionMixParlayForCreditSite_WhenCalled_ReturnExpectedSolution()
+        {
+            // Arrange
+            var testDescTemp = new MixParlayTemplate
+            {
+                DescriptionCredit = "DescriptionCredit"
+            };
+            var messageId = fixture.Create<int>();
+            var requestIds = fixture.Create<string>();
+            var matchInfo = fixture.Create<MatchInfo>();
+            
+            var service = MockService();
+            commonFeedback.GetFeedbackTemplates<MixParlayTemplate>("MixParlay.xml").Returns(testDescTemp);
+            var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
+            description.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
+            description.Append(Constants.LineBreak);
+            description.AppendFormat(testDescTemp.DescriptionCredit, matchInfo.DecidedBy, matchInfo.Requestby, matchInfo.VoidBy, Constants.Break);
+
+            // Act
+            var actual = service.Public_GetDescriptionMixParlayForCreditSite(messageId, requestIds, matchInfo);
+
+            // Assert
+            Assert.Equal(description.ToString(), actual);
+        }
+        #endregion GetDescriptionMixParlayForCreditSite
 
         #region GetSolution
 

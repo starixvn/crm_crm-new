@@ -35,7 +35,7 @@
 
         private const int abnormalAccount = 13;
         private const int mixParlay = 11;
-        private const string solTemplateXml = "MixParlaySolution.xml";
+        private const string templateXml = "MixParlay.xml";
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -543,7 +543,7 @@
             var bettypes = new List<SettingItem>();
             if (isMixParlay)
             {
-                bettypes = GetBettypeParlay(isMixParlay, subProducts, settings, settingMappings);
+                bettypes = GetBettypeParlay(subProducts, settings, settingMappings);
             }
             else
             {
@@ -567,7 +567,6 @@
         }
 
         protected internal virtual List<SettingItem> GetBettypeParlay(
-            bool isMixParlay,
             IEnumerable<int> subProducts,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
@@ -675,7 +674,7 @@
 
         protected internal virtual string GetDescriptionMixParlayForCreditSite(int messageId, string requestIds, MatchInfo matchInfo)
         {
-            var template = commonFeedback.GetFeedbackTemplates<MixParlaySolutionTemplate>(solTemplateXml);
+            var template = commonFeedback.GetFeedbackTemplates<MixParlayTemplate>(templateXml);
             var stringBuilder = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
             stringBuilder.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
             stringBuilder.Append(Constants.LineBreak);
@@ -711,7 +710,7 @@
             var stringBuilder = new StringBuilder();
             var stringBuilderAffected = new StringBuilder();
             const string templateAffected = "- {0} {1} {2}";
-            var solutionTempate = commonFeedback.GetFeedbackTemplates<MixParlaySolutionTemplate>(solTemplateXml);
+            var solutionTempate = commonFeedback.GetFeedbackTemplates<MixParlayTemplate>(templateXml);
             foreach(var tran in transactionInfos)
             {
                 stringBuilderAffected.AppendFormat(templateAffected, tran.Username, tran.TransId, Constants.Break);

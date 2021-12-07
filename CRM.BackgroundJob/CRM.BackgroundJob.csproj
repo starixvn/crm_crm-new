@@ -44,7 +44,7 @@
         <None Remove="Format_Templates\AutoCreateFeedback\AmendmentDescriptionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\AmendmentSolutionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\FeedbackTemplate.xml" />
-        <None Remove="Format_Templates\AutoCreateFeedback\MixParlaySolution.xml" />
+        <None Remove="Format_Templates\AutoCreateFeedback\MixParlay.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\TODesctiptionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\TOSolutionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\ProblemsSolutionTemplate.xml" />
@@ -85,7 +85,7 @@
         <Content Include="Format_Templates\AutoCreateFeedback\FeedbackTemplate.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="Format_Templates\AutoCreateFeedback\MixParlaySolution.xml">
+        <Content Include="Format_Templates\AutoCreateFeedback\MixParlay.xml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="Format_Templates\AutoCreateFeedback\ProblemsSolutionTemplate.xml">
