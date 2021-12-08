@@ -177,7 +177,7 @@
             settingService.GetSystemSettingMappingAsync(Arg.Any<string[]>()).Returns(settingMappings);
             settingService.GetSiteSettingMappingAsync().Returns(siteSettingMappings);
             customerService.GetCustomerInfoAsync(appSettings.LicenseeUsername, true).Returns(licenseeInfo);
-            customerService.GetGroupHeadlineAsync(Arg.Any<IEnumerable<int>>()).Returns(headlines);
+            customerService.GetGroupHeadlineVipAsync(Arg.Any<IEnumerable<int>>()).Returns(headlines);
             ticketVoidingService.ImportTicketVoidingInfoAsync(
                     voidingMessageUserName,
                     ticketInfo.Item1,

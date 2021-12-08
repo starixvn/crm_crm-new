@@ -5,5 +5,6 @@
         public int CustId { get; set; }
         public int HeadlineId { get; set; }
         public string HeadlineName { get; set; }
+        public bool IsVip { get; set; }
     }
 }

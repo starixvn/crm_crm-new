@@ -6,6 +6,7 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Repositories;
+    using global::CRM.BackgroundJob.Criteria.AutoFeedback;
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
     using global::CRM.BackgroundJob.Criteria.ResultAmendment;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
@@ -22,6 +23,8 @@
         Task<CustomerInfo> GetCustomerInfoAsync(string username, bool isGuest);
 
         Task<IEnumerable<GroupHeadline>> GetGroupHeadlineAsync(IEnumerable<int> custIds);
+
+        Task<IEnumerable<GroupHeadline>> GetGroupHeadlineVipAsync(IEnumerable<int> custIds);
 
         Task<IEnumerable<CustomerWinLimit>> GetListCustReachLimitAsync(WinLossSystemSetting setting);
 
@@ -65,6 +68,15 @@
         public async Task<IEnumerable<GroupHeadline>> GetGroupHeadlineAsync(IEnumerable<int> custIds)
         {
             var criteria = new GetGroupHeadlineCriteria
+            {
+                CustIds = string.Join(",", custIds)
+            };
+            return await baseService.GetDataAsync<GroupHeadline>(criteria);
+        }
+
+        public async Task<IEnumerable<GroupHeadline>> GetGroupHeadlineVipAsync(IEnumerable<int> custIds)
+        {
+            var criteria = new GetGroupHeadlineVipCriteria
             {
                 CustIds = string.Join(",", custIds)
             };

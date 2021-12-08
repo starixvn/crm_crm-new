@@ -126,14 +126,13 @@
             string LastRuntimeNameEnv
         )
         {
-            logService.LogInformation("begin CreateFeedbackForCreditDepositSiteAsync!!!");
             var settingNames = new[] { SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
             IEnumerable<SiteSettingMapping> siteSettingMappings = await settingService.GetSiteSettingMappingAsync();
             CustomerInfo licenseeInfo = (await customerService.GetCustomerInfoAsync(appSettings.LicenseeUsername, true)) ?? new CustomerInfo();
             var custIds = ticketInfo.Item2.Where(x => !x.IsDeposit).Select(x => x.CustId).Distinct();
-            IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineAsync(custIds);
+            IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineVipAsync(custIds);
 
             ticketInfo = await ticketVoidingService.ImportTicketVoidingInfoAsync(
                 messagesImportCombineDistinct,
@@ -175,6 +174,7 @@
 
             logService.LogInformation("end CreateFeedbackForCreditDepositSiteAsync!!!");
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
+            
         }
 
         protected internal virtual async Task CreateFeedbackForCreditSiteAsync(
@@ -264,7 +264,7 @@
                 IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.CustId));
                 var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
                 criteria.ProductXml = GetProductXml(isMixParlay, matchInfo, transactions, settings, settingMappings);
-                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactionInfos, true) : 
+                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactionInfos, headline.IsVip) : 
                                              GetSolutionForCreditSite(message, transactions, matchInfo.IssueTypeId);
                 criteria.Solution = solution;
                 criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, transactions, matchInfo.IssueTypeId);
@@ -515,14 +515,19 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            var sport = isMixParlay ? "Multiple Sports" : matchInfo.SportName;
+            var sport = matchInfo.SportName;
             IList<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && mapping.SettingSource.Equals(sport, StringComparison.OrdinalIgnoreCase)).ToList();
-            IList<SettingItem> subProducts = settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+            IList<SettingItem> subProduct = settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => parent == productId)
                 && mappings != null
                 && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
+
+            var subProductMixparlay = settings.Where(x => x.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+                && x.SettingValue.Equals("Multiple Sports", StringComparison.OrdinalIgnoreCase));
+
+            var subProducts = isMixParlay ? subProductMixparlay : subProduct;
 
             return subProducts != null && subProducts.Any()
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
