@@ -12,14 +12,6 @@ export class DataGridRemark extends Component {
         this.props.getCustomerRemarks({ customerId: 1754 });
     }
 
-    buildHeader = () => {
-        return (
-            <HeaderRow>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('LogTime')}</HeaderCell>
-            </HeaderRow>
-        );
-    };
-
     buildBody = () => {
         const { customerRemarks } = this.props;
 

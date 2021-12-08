@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import ProgressBar from 'react-bootstrap/ProgressBar';
-import { Button } from 'react-bootstrap';
+import { Button, ProgressBar } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class CustomerInfoVerify extends Component {

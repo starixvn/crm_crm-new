@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppContainer render should render CustomerInfoVerify correctly 1`] = `ShallowWrapper {}`;
+
+exports[`AppContainer render should render DataGridCommunication correctly 1`] = `ShallowWrapper {}`;
+
+exports[`AppContainer render should render DataGridRedemption correctly 1`] = `ShallowWrapper {}`;
+
+exports[`AppContainer render should render DataGridRemark correctly 1`] = `ShallowWrapper {}`;
+
+exports[`AppContainer render should render dialog correctly 1`] = `ShallowWrapper {}`;

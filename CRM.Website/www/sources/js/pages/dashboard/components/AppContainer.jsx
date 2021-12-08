@@ -98,7 +98,6 @@ export class AppContainer extends Component {
                     createCommunicationDialog.show &&
                     <CreateCommunicationLog
                         onClose={this.handleCloseCreateCmnDiaLog}
-                        item={createCommunicationDialog.item}
                         options={createCommunicationDialog.options}
                     />
                 }
