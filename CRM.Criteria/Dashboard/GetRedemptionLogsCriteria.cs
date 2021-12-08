@@ -5,7 +5,7 @@
 
     public class GetRedemptionLogsCriteria : CriteriaBase
     {
-        [SpParam(SqlParamName = "custid")]
+        [SpParam(SqlParamName = "CustId")]
         public int CustomerId { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_MainInformationRedemptionSel";

@@ -6,7 +6,7 @@
 
     public class GetCustomerRemarksCriteria : CriteriaBase
     {
-        [SpParam(SqlParamName = "custid")]
+        [SpParam(SqlParamName = "CustId")]
         public int CustomerId { get; set; }
 
         public short UserRole { get; } = Constants.UserRole;

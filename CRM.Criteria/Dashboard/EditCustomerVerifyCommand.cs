@@ -5,7 +5,7 @@
 
     public class EditCustomerVerifyCommand : BaseNonQueryCommand
     {
-        [SpParam(SqlParamName = "custid")]
+        [SpParam(SqlParamName = "CustId")]
         public int CustomerId { get; set; }
 
         public bool IsVerifyEmail { get; set; }
