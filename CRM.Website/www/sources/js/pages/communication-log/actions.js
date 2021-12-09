@@ -34,14 +34,6 @@ const getFeedbackSubjectTemplates = subject => async dispatch => {
     });
 };
 
-const checkFeedbackDuplication = params => async dispatch => {
-    Site.blockUI();
-    const url = Site.resolveClientUrl('Feedback/CheckFeedbackDuplication');
-    await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setDuplicateFeedback(response.data));
-    }).then(() => Site.unblockUI());
-};
-
 export const ActionCreators = {
     setLogsByCustomerId,
     getLogsByCustomerId,
@@ -51,6 +43,5 @@ export const ActionCreators = {
     setEditCommunicationDialog,
     setFeedbackSubjectTemplates,
     getFeedbackSubjectTemplates,
-    checkFeedbackDuplication,
     setCreateCommunicationDialog
 };

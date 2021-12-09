@@ -74,46 +74,48 @@ export class EditCustomerInfoVerify extends Component {
         }
 
         return (
-            <Modal show className="customer-modal-dialog" dialogAs={DraggableModalDialog}
-                backdrop="static" keyboard={false} size="md" centered
-                onHide={this.props.onClose}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title as="div">{LangHelper.getResource('VerifyCustomerInfo')}</Modal.Title>
-                </Modal.Header>
-                <Form onSubmit={this.handleSubmit}>
-                    {
-                        editResult &&
-                        <ResponseMessage isSuccessful={editResult.isSuccessful}
-                            message={editResult.message || LangHelper.getResource('UpdateVerifyFlagSuccessfully')}
-                        />
-                    }
-                    <Modal.Body>
-                        <Table bordered hover>
-                            <tbody>
-                                {
-                                    data.map((item, key) => (
-                                        <tr key={key}>
-                                            <td>
-                                                <div className="check-customer">
-                                                    <input type="checkbox" checked={item.isChecked} onChange={() => this.handleChange(key)}/>
-                                                    <span className="check-name">{item.name}</span>
-                                                </div>
-                                            </td>
-                                            <td className={item.name === 'Email' ? 'label-email' : ''}>{item.value}</td>
-                                        </tr>
-                                    ))
-                                }
-                            </tbody>
-                        </Table>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit} disabled={isSubmitting}>
-                            {LangHelper.getResource('Save')}
-                        </Button>
-                    </Modal.Footer>
-                </Form>
-            </Modal>
+            <div>
+                <Modal show className="customer-modal-dialog" dialogAs={DraggableModalDialog}
+                    backdrop="static" keyboard={false} size="md" centered
+                    onHide={this.props.onClose}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title as="div">{LangHelper.getResource('VerifyCustomerInfo')}</Modal.Title>
+                    </Modal.Header>
+                    <Form onSubmit={this.handleSubmit}>
+                        {
+                            editResult &&
+                            <ResponseMessage isSuccessful={editResult.isSuccessful}
+                                message={editResult.message || LangHelper.getResource('UpdateVerifyFlagSuccessfully')}
+                            />
+                        }
+                        <Modal.Body>
+                            <Table bordered hover>
+                                <tbody>
+                                    {
+                                        data.map((item, key) => (
+                                            <tr key={key}>
+                                                <td>
+                                                    <div className="check-customer">
+                                                        <input type="checkbox" checked={item.isChecked} onChange={() => this.handleChange(key)}/>
+                                                        <span className="check-name">{item.name}</span>
+                                                    </div>
+                                                </td>
+                                                <td className={item.name === 'Email' ? 'label-email' : ''}>{item.value}</td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </Table>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit} disabled={isSubmitting}>
+                                {LangHelper.getResource('Save')}
+                            </Button>
+                        </Modal.Footer>
+                    </Form>
+                </Modal>
+            </div>
         );
     }
 }

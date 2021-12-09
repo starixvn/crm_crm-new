@@ -5,12 +5,8 @@ import DataService from '@jsroot/common/dataService';
 import { ActionCreators } from '../actions';
 import {
     setLogsByCustomerId,
-    setStatusForEdit,
     setStatusForFilter,
-    setLogByFeedbackId,
-    setFeedbackSubjectTemplates,
-    setDuplicateFeedback,
-    setAllSettings
+    setFeedbackSubjectTemplates
 } from '../communicationLogSlice';
 
 const middlewares = [thunk];
@@ -52,24 +48,6 @@ describe('actionCreators', () => {
         });
     });
 
-    describe('getStatusForEdit', () => {
-        it('should handle setStatusForEdit when fetching data have been done', async () => {
-            // Arrange
-            const response = { countries: [] };
-            const expectedActions = [{ type: setStatusForEdit.type, payload: response.data }];
-            const store = mockStore({ statusEdit: null });
-            const promise = Promise.resolve(response);
-            DataService.getDataAsync = jest.fn(() => promise);
-
-            // Act
-            await store.dispatch(ActionCreators.getStatusForEdit());
-
-            // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('CommunicationLog/GetAllStatus?isEdit=true');
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-    });
-
     describe('getStatusForFilter', () => {
         it('should handle setStatusForFilter when fetching data have been done', async () => {
             // Arrange
@@ -84,25 +62,6 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.getDataAsync).toHaveBeenCalledWith('CommunicationLog/GetAllStatus?isEdit=false');
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-    });
-
-    describe('getLogByFeedbackId', () => {
-        it('should handle setLogByFeedbackId when fetching data have been done', async () => {
-            // Arrange
-            const response = { countries: [] };
-            const expectedParams = 2000;
-            const expectedActions = [{ type: setLogByFeedbackId.type, payload: response.data }];
-            const store = mockStore({ logFeedback: null });
-            const promise = Promise.resolve(response);
-            DataService.getDataAsync = jest.fn(() => promise);
-
-            // Act
-            await store.dispatch(ActionCreators.getLogByFeedbackId(expectedParams));
-
-            // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith(`CommunicationLog/GetLogByFeedbackId/${expectedParams}`);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -123,101 +82,6 @@ describe('actionCreators', () => {
             // Assert
             expect(DataService.getDataAsync).toHaveBeenCalledWith(`Common/GetFeedbackSubjectTemplate`, {subject: expectedParams});
             expect(store.getActions()).toEqual(expectedActions);
-        });
-    });
-
-    describe('verifyCustomers', () => {
-        it('should return response when request has been done', async () => {
-            // Arrange
-            const expectedParams = { username: 'sa,test' };
-            const store = mockStore({});
-            const response = { data: [{ custId: 1, username: 'sa' }, { custId: 0, username: 'test' } ] };
-            const promise = Promise.resolve(response);
-            DataService.postDataAsync = jest.fn(() => promise);
-
-            // Act
-            const actual = await store.dispatch(ActionCreators.verifyCustomers(expectedParams));
-
-            // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('CustomerSetting/VerifyUsername', expectedParams);
-            expect(actual).toEqual(response);
-        });
-    });
-
-    describe('editCommunicationLog', () => {
-        it('should return response when request has been done', async () => {
-            // Arrange
-            const expectedParams = { customerId: 1234 };
-            const store = mockStore({});
-            const response = { code: 0 };
-            const promise = Promise.resolve(response);
-            DataService.postDataAsync = jest.fn(() => promise);
-
-            // Act
-            const actual = await store.dispatch(ActionCreators.editCommunicationLog(expectedParams));
-
-            // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('CommunicationLog/EditCommunicationLog', expectedParams);
-            expect(actual).toEqual(response);
-        });
-    });
-
-    describe('checkFeedbackDuplication', () => {
-        it('should handle setDuplicateFeedback when fetching data have been done', async () => {
-            // Arrange
-            const response = 0;
-            const expectedParams = { 
-                customerId: 1754,
-                fromDate: 'Sep 01, 2021',
-                mainCategories: []   
-            };
-            const expectedActions = [{ type: setDuplicateFeedback.type, payload: response.data }];
-            const store = mockStore({ duplicateFeedbackId: 0 });
-            const promise = Promise.resolve(response);
-            DataService.postDataAsync = jest.fn(() => promise);
-
-            // Act
-            await store.dispatch(ActionCreators.checkFeedbackDuplication(expectedParams));
-
-            // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('Feedback/CheckFeedbackDuplication', expectedParams);
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-    });
-
-    describe('getAllSettings', () => {
-        it('should handle setAllSettings when fetching data have been done', async () => {
-            // Arrange
-            const response = { countries: [] };
-            const expectedActions = [{ type: setAllSettings.type, payload: response.data }];
-            const store = mockStore({ allSettings: null });
-            const promise = Promise.resolve(response);
-            DataService.getDataAsync = jest.fn(() => promise);
-
-            // Act
-            await store.dispatch(ActionCreators.getAllSettings());
-
-            // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith(`CommunicationLog/GetAllSettings`);
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-    });
-
-    describe('createCommunicationLog', () => {
-        it('should return response when request has been done', async () => {
-            // Arrange
-            const expectedParams = { customerId: 1234 };
-            const store = mockStore({});
-            const response = { code: 0 };
-            const promise = Promise.resolve(response);
-            DataService.postDataAsync = jest.fn(() => promise);
-
-            // Act
-            const actual = await store.dispatch(ActionCreators.createCommunicationLog(expectedParams));
-
-            // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('CommunicationLog/CreateCommunicationLog', expectedParams);
-            expect(actual).toEqual(response);
         });
     });
 });

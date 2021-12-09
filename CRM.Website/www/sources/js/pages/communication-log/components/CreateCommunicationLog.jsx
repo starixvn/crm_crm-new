@@ -111,7 +111,7 @@ export class CreateCommunicationLog extends Component {
         return {
             siteId: options ? options.siteId : 0,
             siteName: options ? options.siteName : 'N/A',
-            noInquiries: options ? options.noInquiries : '',
+            noInquiries: '',
             subject: options ? options.subject : '',
         };
     };
