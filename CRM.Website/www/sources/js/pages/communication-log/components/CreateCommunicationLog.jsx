@@ -112,7 +112,7 @@ export class CreateCommunicationLog extends Component {
             siteId: options ? options.siteId : 0,
             siteName: options ? options.siteName : 'N/A',
             noInquiries: '',
-            subject: options ? options.subject : '',
+            subject: options ? options.subject : ''
         };
     };
 
@@ -126,7 +126,7 @@ export class CreateCommunicationLog extends Component {
             subCategoryIds: options ? options.subCategoryIds : '',
             productIds: options ? options.productIds : '',
             subProductIds: options ? options.subProductIds : '',
-            betTypeIds: options ? options.betTypeIds : '',
+            betTypeIds: options ? options.betTypeIds : ''
         };
     };
 

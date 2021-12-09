@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import { Row, Cell } from '@jsroot/components/react-grid/index';
 import { Table } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 
