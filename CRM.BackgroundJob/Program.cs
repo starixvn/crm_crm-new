@@ -21,7 +21,6 @@
     using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.BackgroundJob.Workers;
-    using global::CRM.BackgroundJob.Workers;
     using global::CRM.Core.Extensions;
     using global::CRM.Letstalk.Services.Extentions;
     using global::CRM.Letstalk.Services.Services;

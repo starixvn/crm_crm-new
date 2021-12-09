@@ -257,6 +257,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                 );
 
             // Assert
+            logService.Received(2).LogInformation(Arg.Any<string>());
             service.Received().Protected("CheckValidAmendmentParamsAndInsertFeedbackAsync", Arg.Any<AmendmentAutoFeedbackInfor>()
                 , Arg.Any<CreateMutipleFeedbackCommand>());
         }
@@ -907,7 +908,6 @@ namespace CRM.BackgroundJob.UnitTests.Services
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
-            logService.Received(2).LogInformation(Arg.Any<string>());
         }
 
         [Fact]
@@ -1385,11 +1385,12 @@ namespace CRM.BackgroundJob.UnitTests.Services
         {
             // Arrange
             var service = MockService();
-            var amendmentSolTemplate = new AmendmentSolutionTemplate {
+            var amendmentSolTemplate = new AmendmentSolutionTemplate
+            {
                 NoResultENSC = "NoResultENSC",
                 NoResultENYN = "NoResultENYN"
             };
-            var amendment = new AmendmentAutoFeedbackInfor { Site = site, IsVip = isVip};
+            var amendment = new AmendmentAutoFeedbackInfor { Site = site, IsVip = isVip };
             var messageContent = fixture.Create<IEnumerable<Message>>();
             var stringBuilder = new StringBuilder();
             commonFeedback.GetFeedbackTemplates<AmendmentSolutionTemplate>("AmendmentSolutionTemplate.xml").Returns(amendmentSolTemplate);
