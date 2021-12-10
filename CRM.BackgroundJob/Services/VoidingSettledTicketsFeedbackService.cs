@@ -21,7 +21,7 @@
             DateTime lastRuntimeEnv, string lastRuntimeNameEnv,
             string jobStatusNameEnv, string environment);
     }
-    public class VoidingSettledTicketsFeedbackService: IVoidingSettledTicketsFeedbackService
+    public class VoidingSettledTicketsFeedbackService : IVoidingSettledTicketsFeedbackService
     {
         private readonly AppJobSettings appSettings;
         private readonly IBaseService baseService;
@@ -101,7 +101,7 @@
             }
             await voidingSettledTicketsService.ImportVoidingAutoFeedbackInfoAsync(voidingTickets.Item1, environment);
             var feedbackInfos = await voidingSettledTicketsService.GetVoidingAutoFeedbackInfoAsync(voidingSettledTicketSetting.BatchSize);
-            var groupFeedbackByMsgId = feedbackInfos.Item1.GroupBy(x => new { x.HeadlineId, x.MessageId}).Select(y=>y.ToList());
+            var groupFeedbackByMsgId = feedbackInfos.Item1.GroupBy(x => new { x.HeadlineId, x.MessageId }).Select(y => y.ToList());
 
             foreach (var feedbackInfo in groupFeedbackByMsgId)
             {
@@ -132,9 +132,9 @@
                  && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
-           
+
             var category = GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended);
-            var sportTypeIds = eventDetails.Select(x=>x.Sporttype);
+            var sportTypeIds = eventDetails.Select(x => x.Sporttype);
             var productIds = eventDetails.Select(x => x.ProductId).Distinct();
             var criteria = new CreateMutipleFeedbackCommand
             {
@@ -238,7 +238,7 @@
             else
             {
                 stringBuilder.AppendFormat(DefaultValue.ProductXml, Constants.ProductNA, Constants.SubProductNA, Constants.BettypeNA);
-            }    
+            }
             logService.LogInformation("end mapping product, sub-product, bet type voiding settled tickets.");
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
@@ -297,7 +297,7 @@
             }
             List<SystemSettingMapping> productMappings = settingMappings.Where(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(p.SettingSource)
-                && productNames.Any(productName=> p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase))).ToList();
+                && productNames.Any(productName => p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase))).ToList();
 
             var products = settings.Where(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && productMappings != null
@@ -305,8 +305,8 @@
 
             logService.LogInformation("End mapping amenment product.");
 
-            return products.Any() 
-                ? products.GroupBy(x => x.SettingId).Select(x => x.First()).ToList() 
+            return products.Any()
+                ? products.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem> { new SettingItem { SettingId = Constants.ProductNA } };
         }
 
@@ -408,7 +408,8 @@
             var stringBuilder = new StringBuilder();
             var content_en = messages?.FirstOrDefault()?.Content_en;
             var content_cs = messages?.FirstOrDefault()?.Content_cs;
-            if (feedbackInfo.Site == "789y" && feedbackInfo.IsVip  )
+            logService.LogInformation(string.Format("GetVoidingSettledTicketSolution, Site: {0} IsVip:{1}", feedbackInfo.Site, feedbackInfo.IsVip));
+            if (feedbackInfo.Site == "789y" && feedbackInfo.IsVip)
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENYN,
                    content_en, feedbackInfo.AffectedName, Constants.Break, Constants.LineBreak
@@ -509,7 +510,7 @@
             return stringBuilder.ToString();
         }
 
-        protected internal virtual string GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName, 
+        protected internal virtual string GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,
           string kO_time, string leagueName, string homeName, string sportName, string awayName)
         {
             var stringBuilder = new StringBuilder();
