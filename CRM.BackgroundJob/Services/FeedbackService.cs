@@ -91,7 +91,7 @@
             var messagesImportCombineDistinct = messagesImport.Concat(failMessages).Distinct().ToList();
             if (!messagesImportCombineDistinct.Any())
             {
-                logService.LogInformation("ImportVoidingMessageAsync do not have any data!!!");
+                logService.LogInformation("Abnormal Bet - import do not have any data");
                 await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
                 return;
             }
@@ -101,7 +101,7 @@
             ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(messagesImportCombineDistinct, setting);
             if (!ticketInfo.Item1.Any())
             {
-                logService.LogInformation("GetTicketVoidingInfoAsync do not have item 1!!!");
+                logService.LogInformation("Abnormal Bet - import do not have any ticket");
                 await messageService.EditStatusVoidingMessageAsync(messagesImportCombineDistinct, Environment);
                 await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
                 return;
@@ -171,7 +171,7 @@
                         settingMappings);
                 }
             }
-
+            logService.LogInformation("Abnormal Bet - Update job and time");
             logService.LogInformation("end CreateFeedbackForCreditDepositSiteAsync!!!");
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
             
