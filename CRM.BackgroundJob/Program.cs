@@ -181,7 +181,7 @@
             services.AddHostedService<AutoChatbotResultAmendmentWoker>();
             services.AddHostedService<ScanAndSendLetstalkNotificationWorker>();
             services.AddHostedService<SynchronizeNewLicenseeWorker>();
-            services.AddHostedService<VoidingSettledTicketsWorker>();
+            services.AddHostedService<AutoFbVoidingSettledTicketsWorker>();
 
             services.AddHostedService<MonitorLetstalkWorker>();
         }

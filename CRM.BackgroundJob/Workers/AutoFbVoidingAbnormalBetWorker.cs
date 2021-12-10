@@ -27,7 +27,7 @@
 
         public override async Task ExecuteJobAsync()
         {
-            await autoFeedbackService.ExecuteJobAsync();
+            await autoFeedbackService.AbnormalbetExecuteJobAsync();
         }
     }
 }

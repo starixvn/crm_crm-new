@@ -16,7 +16,7 @@
 
     public interface IAutoFeedbackService
     {
-        Task ExecuteJobAsync();
+        Task AbnormalbetExecuteJobAsync();
         Task WinLossExecuteJobAsync();
         Task TurnoverControlExecuteJobAsync();
         Task ProblemsAcccountExecuteJobAsync();
@@ -73,7 +73,7 @@
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
-        public async Task ExecuteJobAsync()
+        public async Task AbnormalbetExecuteJobAsync()
         {
             try
             {

@@ -31,7 +31,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             // Assert
             await autoFeedbackService.Received().VoidingSettledTicketsExecuteJobAsync();
         }
-        private VoidingSettledTicketsWorker GetService()
+        private AutoFbVoidingSettledTicketsWorker GetService()
         {
             appSettings = new List<JobSetting>
             {
@@ -49,7 +49,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             maintenanceService = Substitute.For<IMaintenanceService>();
             logService = Substitute.For<ICRMLogService>();
 
-            return new VoidingSettledTicketsWorker(autoFeedbackService, maintenanceService, appJobSettings, logService);
+            return new AutoFbVoidingSettledTicketsWorker(autoFeedbackService, maintenanceService, appJobSettings, logService);
         }
     }
 }

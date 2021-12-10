@@ -47,7 +47,7 @@
             systemSettingService.When(x => x.GetAbnormalBetSettingAsync()).Throw(exception);
 
             // Assert
-            await service.ExecuteJobAsync();
+            await service.AbnormalbetExecuteJobAsync();
 
             // Act
             await logService.Received().ErrorAsync(exception);
@@ -63,7 +63,7 @@
             systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
 
             // Act
-            await service.ExecuteJobAsync();
+            await service.AbnormalbetExecuteJobAsync();
 
             // Assert
             logService.Received().LogInformation("Abnormal Bet - Service is shutdown.");
@@ -85,7 +85,7 @@
             configuration.GetValue<string>("SiteEnvironment").Returns(env);
 
             // Act
-            await service.ExecuteJobAsync();
+            await service.AbnormalbetExecuteJobAsync();
 
             // Assert
             service.Received().Protected("AbnormalbetRunJobByEnviromentAsync",

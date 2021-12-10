@@ -693,7 +693,7 @@
             var bettypeMixparlay = new List<SettingItem>();
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var service = MockService();
-            service.Protected("GetBettypeParlay", true, subProducts, settings, settingMappings).Returns(bettypeMixparlay);
+            service.Protected("GetBettypeParlay", subProducts, settings, settingMappings).Returns(bettypeMixparlay);
 
             // Act
             var actual = service.Public_GetBettype(true, subProducts, transactionInfos, settings, settingMappings);

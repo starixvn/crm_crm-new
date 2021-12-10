@@ -29,7 +29,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             await service.ExecuteJobAsync();
 
             // Assert
-            await autoFeedbackService.Received().ExecuteJobAsync();
+            await autoFeedbackService.Received().AbnormalbetExecuteJobAsync();
         }
         private AutoFbVoidingAbnormalBetWorker GetService()
         {

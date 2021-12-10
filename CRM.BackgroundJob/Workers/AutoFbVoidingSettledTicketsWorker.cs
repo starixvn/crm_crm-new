@@ -10,11 +10,11 @@
     using Microsoft.Extensions.Options;
     using ONEbook.UM.Services;
 
-    public class VoidingSettledTicketsWorker : BaseWorker
+    public class AutoFbVoidingSettledTicketsWorker : BaseWorker
     {
         private readonly IAutoFeedbackService autoFeedbackService;
 
-        public VoidingSettledTicketsWorker(
+        public AutoFbVoidingSettledTicketsWorker(
             IAutoFeedbackService autoFeedbackService,
             IMaintenanceService maintenanceService,
             IOptions<List<JobSetting>> jobSettings,
