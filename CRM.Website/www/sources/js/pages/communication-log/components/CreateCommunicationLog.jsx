@@ -15,6 +15,7 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { validateNoOfInquiry } from '../../feedback/common.functions';
 import RenderCollapse from './RenderCollapse';
 import {
@@ -47,7 +48,8 @@ export class CreateCommunicationLog extends Component {
             countClickRefTicket: 0,
             allSettings: null,
             balanceUpday: null,
-            duplicateFeedbackId: 0
+            duplicateFeedbackId: 0,
+            isShowCreatePopup: false
         };
     }
 
@@ -373,6 +375,60 @@ export class CreateCommunicationLog extends Component {
     handleChangeRefTicket = (e, setFieldValue) => {
         const value = e.target.value > 15 ? e.target.value.slice(0, 15) : e.target.value;
         setFieldValue('ticketRefInput', value);
+    };
+
+    isOldEqualNewId = () => {
+        const initDataCreate = this.initFormikData();
+        const { values } = this.formik;
+        if (initDataCreate.responseId !== parseInt(values.responseId, 10) ||
+            initDataCreate.statusId !== parseInt(values.statusId, 10) ||
+            initDataCreate.siteId !== values.siteId ||
+            initDataCreate.languageId !== parseInt(values.languageId, 10) ||
+            initDataCreate.countryId !== parseInt(values.countryId, 10) ||
+            initDataCreate.licenseeTypeId !== parseInt(values.licenseeTypeId, 10)
+        ) {
+            return true;
+        }
+        return false;
+    };
+
+    isOldEqualNewValue = () => {
+        const initDataCreate = this.initFormikData();
+        console.log(initDataCreate.endTime);
+        console.log(initDataCreate.endTime);
+        const { values } = this.formik;
+        if (
+            initDataCreate.startTime.toString() !== values.startTime.toString() ||
+            initDataCreate.endTime.toString() !== values.endTime.toString() ||
+            initDataCreate.subject !== values.subject
+        ) {
+            return true;
+        }
+        return false;
+    };
+
+    isOldEqualNewContent = () => {
+        const initDataCreate = this.initFormikData();
+        const { values } = this.formik;
+        if (initDataCreate.solution !== values.solution ||
+            initDataCreate.review !== values.review ||
+            initDataCreate.remark.trim() !== values.remark.trim()
+        ) {
+            return true;
+        }
+        return false;
+    };
+
+    onCloseCreatePopup = () => {
+        if (this.isOldEqualNewId() || this.isOldEqualNewContent() || this.isOldEqualNewValue()) {
+            this.setState({ isShowCreatePopup: true });
+        } else {
+            this.props.onClose(false);
+        }
+    };
+
+    closeCreateConfirm = () => {
+        this.setState({ isShowCreatePopup: false });
     };
 
     renderCreateCommunication = (values, touched, errors, handleChange, setFieldValue) => {
@@ -798,7 +854,7 @@ export class CreateCommunicationLog extends Component {
     };
 
     render() {
-        const { allSettings, duplicateFeedbackId } = this.state;
+        const { allSettings, duplicateFeedbackId, isShowCreatePopup } = this.state;
         if (!allSettings) {
             return null;
         }
@@ -807,7 +863,7 @@ export class CreateCommunicationLog extends Component {
             <div>
                 <Modal show className="communication-modal-dialog" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl" centered
-                    onHide={this.props.onClose}
+                    onHide={this.onCloseCreatePopup}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('InsertCommunicationLog')}</Modal.Title>
@@ -820,6 +876,21 @@ export class CreateCommunicationLog extends Component {
                     >
                         {this.renderForm}
                     </Formik>
+                    {
+                        isShowCreatePopup &&
+                        <ConfirmPopup
+                            onSubmit={() => this.props.onClose(false)}
+                            title={LangHelper.getResource('ConfirmIgnoreChanges')}
+                            content={
+                                <div>
+                                    <div>{LangHelper.formatString(LangHelper.getResource('ThereAreSomeChangesOnInput'),'communication')}</div>
+                                    <div>{LangHelper.getResource('ConfirmIgnoreTheseChanges')}</div>
+                                </div>
+                            }
+                            size='md'
+                            onClose={this.closeCreateConfirm}
+                        />
+                    }
                 </Modal>
                 {
                     this.state.confirmCreateDialog.show &&

@@ -167,6 +167,7 @@
 
 .information {
     width: 20%;
+    height: 140px;
 }
 
 .customer-verify {
@@ -231,3 +232,6 @@
     }
 }
 
+.modal-backdrop {
+    z-index: 1050 !important;
+}

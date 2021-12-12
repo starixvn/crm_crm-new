@@ -11,6 +11,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import { Policy } from '@jsroot/common/constants';
 import { validateFormik } from '../common.functions';
 import CreateEditForm from './CreateEditForm';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 export class EditRedemptionLog extends Component {
 
@@ -20,7 +21,8 @@ export class EditRedemptionLog extends Component {
         this.state = {
             redemptionLog: null,
             editRedemptionResult: '',
-            allStatus: null
+            allStatus: null,
+            isShowEditConfirm: false
         };
     }
 
@@ -79,6 +81,26 @@ export class EditRedemptionLog extends Component {
         });
     };
 
+    onCloseEditPopup = () => {
+        const { values } = this.formik;
+        const { redemptionLog } = this.state;
+        if (redemptionLog.amount !== values.amount ||
+            redemptionLog.currencyId !== parseInt(values.currencyId, 10) ||
+            redemptionLog.doneBy !== values.doneBy ||
+            redemptionLog.statusId !== parseInt(values.statusId, 10) ||
+            redemptionLog.remark !== values.remark ||
+            redemptionLog.subject !== values.subject
+        ) {
+            this.setState({ isShowEditConfirm: true });
+        } else {
+            this.props.onClose(false);
+        }
+    };
+
+    closeEditConfirm = () => {
+        this.setState({ isShowEditConfirm: false });
+    };
+
     renderForm = ({
         errors,
         values,
@@ -119,7 +141,7 @@ export class EditRedemptionLog extends Component {
     };
 
     render() {
-        const { redemptionLog, allStatus } = this.state;
+        const { redemptionLog, allStatus, isShowEditConfirm } = this.state;
         if ( redemptionLog === null || allStatus === null ) {
             return null;
         }
@@ -128,7 +150,7 @@ export class EditRedemptionLog extends Component {
             <div>
                 <Modal show className="modal-edit-redemption" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl" centered
-                    onHide={() => this.props.onClose(false)}
+                    onHide={this.onCloseEditPopup}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('EditRedemptionLog')}</Modal.Title>
@@ -141,6 +163,21 @@ export class EditRedemptionLog extends Component {
                     >
                         {this.renderForm}
                     </Formik>
+                    {
+                        isShowEditConfirm &&
+                        <ConfirmPopup
+                            size='md'
+                            title={LangHelper.getResource('ConfirmIgnoreChanges')}
+                            content={
+                                <div>
+                                    <div>{LangHelper.formatString(LangHelper.getResource('ThereAreSomeChangesOnInput'),'redemption')}</div>
+                                    <div>{LangHelper.getResource('ConfirmIgnoreTheseChanges')}</div>
+                                </div>
+                            }
+                            onClose={this.closeEditConfirm}
+                            onSubmit={() => this.props.onClose(false)}
+                        />
+                    }
                 </Modal>
             </div>
         );

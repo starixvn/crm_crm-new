@@ -12,6 +12,7 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { validateFormik } from '../common.functions';
 import CreateEditForm from './CreateEditForm';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 export class CreateRedemptionLog extends Component {
 
@@ -19,7 +20,8 @@ export class CreateRedemptionLog extends Component {
         super(props);
 
         this.state = {
-            createRedemptionResult: ''
+            createRedemptionResult: '',
+            isShowCreateConfirm: false
         };
     }
 
@@ -63,6 +65,26 @@ export class CreateRedemptionLog extends Component {
                 setSubmitting(false);
             }
         });
+    };
+
+    onCloseCreatePopup = () => {
+        const initDataCreate = this.initFormikData();
+        const { values } = this.formik;
+        if (initDataCreate.amount !== values.amount ||
+            initDataCreate.currencyId !== parseInt(values.currencyId, 10) ||
+            initDataCreate.doneBy !== values.doneBy ||
+            initDataCreate.statusId !== parseInt(values.statusId, 10) ||
+            initDataCreate.remark !== values.remark ||
+            initDataCreate.subject !== values.subject
+        ) {
+            this.setState({ isShowCreateConfirm: true });
+        } else {
+            this.props.onClose(false);
+        }
+    };
+
+    closeCreateConfirm = () => {
+        this.setState({ isShowCreateConfirm: false });
     };
 
     renderForm = ({
@@ -110,7 +132,7 @@ export class CreateRedemptionLog extends Component {
             <div>
                 <Modal className="modal-edit-redemption" show dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} centered size="xl"
-                    onHide={() => this.props.onClose(false)}
+                    onHide={this.onCloseCreatePopup}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('CreateRedemptionLog')}</Modal.Title>
@@ -123,6 +145,21 @@ export class CreateRedemptionLog extends Component {
                     >
                         {this.renderForm}
                     </Formik>
+                    {
+                        this.state.isShowCreateConfirm &&
+                        <ConfirmPopup
+                            size='md'
+                            onClose={this.closeCreateConfirm}
+                            onSubmit={() => this.props.onClose(false)}
+                            title={LangHelper.getResource('ConfirmIgnoreChanges')}
+                            content={
+                                <div>
+                                    <div>{LangHelper.formatString(LangHelper.getResource('ThereAreSomeChangesOnInput'),'redemption')}</div>
+                                    <div>{LangHelper.getResource('ConfirmIgnoreTheseChanges')}</div>
+                                </div>
+                            }
+                        />
+                    }
                 </Modal>
             </div>
         );
