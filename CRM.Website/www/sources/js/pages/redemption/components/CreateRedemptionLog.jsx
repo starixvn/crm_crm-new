@@ -67,16 +67,34 @@ export class CreateRedemptionLog extends Component {
         });
     };
 
-    onCloseCreatePopup = () => {
+    isNewEqualOldId = () => {
         const initDataCreate = this.initFormikData();
         const { values } = this.formik;
-        if (initDataCreate.amount !== values.amount ||
+        if (
             initDataCreate.currencyId !== parseInt(values.currencyId, 10) ||
+            initDataCreate.statusId !== parseInt(values.statusId, 10)
+        ) {
+            return true;
+        }
+        return false;
+    };
+
+    isNewEqualOldValue = () => {
+        const initDataCreate = this.initFormikData();
+        const { values } = this.formik;
+        if (
+            initDataCreate.amount !== values.amount ||
             initDataCreate.doneBy !== values.doneBy ||
-            initDataCreate.statusId !== parseInt(values.statusId, 10) ||
             initDataCreate.remark !== values.remark ||
             initDataCreate.subject !== values.subject
         ) {
+            return true;
+        }
+        return false;
+    };
+
+    onCloseCreatePopup = () => {
+        if (this.isNewEqualOldId() || this.isNewEqualOldValue()) {
             this.setState({ isShowCreateConfirm: true });
         } else {
             this.props.onClose(false);

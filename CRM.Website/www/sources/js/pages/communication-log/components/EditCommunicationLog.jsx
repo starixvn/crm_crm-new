@@ -357,16 +357,34 @@ export class EditCommunicationLog extends Component {
         });
     };
 
-    isOldEqualNewId = () => {
+    isOldEqualNewIdV1 = () => {
         const { communicationLog } = this.state;
         const { values } = this.formik;
-        if (communicationLog.responseId !== parseInt(values.responseId, 10) ||
+        if (
+            communicationLog.responseId !== parseInt(values.responseId, 10) ||
             communicationLog.statusId !== parseInt(values.statusId, 10) ||
-            communicationLog.siteId !== values.siteId ||
+            communicationLog.siteId !== values.siteId
+        ) {
+            return true;
+        }
+        return false;
+    };
+
+    isOldEqualNewIdV2 = () => {
+        const { communicationLog } = this.state;
+        const { values } = this.formik;
+        if (
             communicationLog.languageId !== parseInt(values.languageId, 10) ||
             communicationLog.countryId !== parseInt(values.countryId, 10) ||
             communicationLog.licenseeTypeId !== parseInt(values.licenseeTypeId, 10)
         ) {
+            return true;
+        }
+        return false;
+    };
+
+    isOldEqualNewId = () => {
+        if (this.isOldEqualNewIdV1() || this.isOldEqualNewIdV2()) {
             return true;
         }
         return false;

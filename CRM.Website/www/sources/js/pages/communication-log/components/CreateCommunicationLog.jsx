@@ -377,12 +377,23 @@ export class CreateCommunicationLog extends Component {
         setFieldValue('ticketRefInput', value);
     };
 
-    isOldEqualNewId = () => {
+    isOldEqualNewIdV1 = () => {
         const initDataCreate = this.initFormikData();
         const { values } = this.formik;
-        if (initDataCreate.responseId !== parseInt(values.responseId, 10) ||
+        if (
+            initDataCreate.responseId !== parseInt(values.responseId, 10) ||
             initDataCreate.statusId !== parseInt(values.statusId, 10) ||
-            initDataCreate.siteId !== values.siteId ||
+            initDataCreate.siteId !== values.siteId
+        ) {
+            return true;
+        }
+        return false;
+    };
+
+    isOldEqualNewIdV2 = () => {
+        const initDataCreate = this.initFormikData();
+        const { values } = this.formik;
+        if (
             initDataCreate.languageId !== parseInt(values.languageId, 10) ||
             initDataCreate.countryId !== parseInt(values.countryId, 10) ||
             initDataCreate.licenseeTypeId !== parseInt(values.licenseeTypeId, 10)
@@ -392,10 +403,15 @@ export class CreateCommunicationLog extends Component {
         return false;
     };
 
+    isOldEqualNewId = () => {
+        if (this.isOldEqualNewIdV1() || this.isOldEqualNewIdV2()) {
+            return true;
+        }
+        return false;
+    };
+
     isOldEqualNewValue = () => {
         const initDataCreate = this.initFormikData();
-        console.log(initDataCreate.endTime);
-        console.log(initDataCreate.endTime);
         const { values } = this.formik;
         if (
             initDataCreate.startTime.toString() !== values.startTime.toString() ||

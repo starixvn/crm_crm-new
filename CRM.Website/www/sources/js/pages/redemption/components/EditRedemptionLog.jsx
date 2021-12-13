@@ -81,16 +81,34 @@ export class EditRedemptionLog extends Component {
         });
     };
 
-    onCloseEditPopup = () => {
+    isNewEqualOldId = () => {
         const { values } = this.formik;
         const { redemptionLog } = this.state;
-        if (redemptionLog.amount !== values.amount ||
+        if (
             redemptionLog.currencyId !== parseInt(values.currencyId, 10) ||
+            redemptionLog.statusId !== parseInt(values.statusId, 10)
+        ) {
+            return true;
+        }
+        return false;
+    };
+
+    isNewEqualOldValue = () => {
+        const { values } = this.formik;
+        const { redemptionLog } = this.state;
+        if (
+            redemptionLog.amount !== values.amount ||
             redemptionLog.doneBy !== values.doneBy ||
-            redemptionLog.statusId !== parseInt(values.statusId, 10) ||
             redemptionLog.remark !== values.remark ||
             redemptionLog.subject !== values.subject
         ) {
+            return true;
+        }
+        return false;
+    };
+
+    onCloseEditPopup = () => {
+        if (this.isNewEqualOldId() || this.isNewEqualOldValue()) {
             this.setState({ isShowEditConfirm: true });
         } else {
             this.props.onClose(false);
