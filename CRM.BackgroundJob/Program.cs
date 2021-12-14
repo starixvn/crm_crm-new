@@ -110,13 +110,6 @@
                 .UseConfig(new LoggingConfiguration())
                 .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
-
-            services.AddLogging((builder) =>
-            {
-                builder.AddSerilog(dispose: true);
-            });
-
-
             services.Configure<AppJobSettings>(options => configuration.GetSection("AppSettings").Bind(options));
             services.Configure<List<JobSetting>>(configuration.GetSection("JobSettings"));
 
