@@ -6,7 +6,6 @@
     using System.IO;
     using System.Linq;
     using Fanex.Caching;
-    using Fanex.Caching.Redis;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Repositories;
     using Fanex.CRM.BackgroundJob.Services;
@@ -32,6 +31,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using ONEbook.UM.AspNetCore;
     using ONEbook.UM.Configurations;
     using ONEbook.UM.Helpers;
@@ -63,13 +63,13 @@
             Host.CreateDefaultBuilder(args)
                .UseWindowsService()
                .ConfigureAppConfiguration(builder => builder.AddConfiguration(configuration))
-               .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration))
                .ConfigureServices((hostContext, services) =>
                {
                    AddConfiguration(services, configuration);
                    AddDependencyInjection(services, configuration);
                    AddWorker(services);
                })
+               .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration))
                .Build().Run();
         }
 
