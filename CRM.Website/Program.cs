@@ -21,7 +21,7 @@
                 .MinimumLevel.Override("Hangfire", LogEventLevel.Warning)
                 .Enrich.With(new ThreadIdEnricher())
                 .Enrich.FromLogContext()
-                .WriteTo.Async(a => a.File(logfile, LogEventLevel.Information, loggerTemplate, rollingInterval: RollingInterval.Day))
+                .WriteTo.Async(a => a.File(logfile, LogEventLevel.Information, loggerTemplate, rollingInterval: RollingInterval.Day, shared:true))
                 .CreateLogger();
 
             try
