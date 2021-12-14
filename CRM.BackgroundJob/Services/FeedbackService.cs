@@ -264,7 +264,7 @@
                 IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.CustId));
                 var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
                 criteria.ProductXml = GetProductXml(isMixParlay, matchInfo, transactions, settings, settingMappings);
-                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactionInfos, headline.IsVip) : 
+                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactions, headline.IsVip) : 
                                              GetSolutionForCreditSite(message, transactions, matchInfo.IssueTypeId);
                 criteria.Solution = solution;
                 criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, transactions, matchInfo.IssueTypeId);
