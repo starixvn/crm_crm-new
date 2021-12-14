@@ -35,7 +35,7 @@
 
         private const int abnormalAccount = 13;
         private const int mixParlay = 11;
-        private const string templateXml = "MixParlay.xml";
+        private const string templateXml = "MixParlayTemplate.xml";
 
 #pragma warning disable S107 // Methods should not have too many parameters
 

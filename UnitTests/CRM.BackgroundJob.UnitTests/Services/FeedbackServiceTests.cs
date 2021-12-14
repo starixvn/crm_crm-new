@@ -1024,7 +1024,7 @@
                 new TransactionInfo{ TransId = 1, Username = "test"}
             };
             var service = MockService();
-            commonFeedback.GetFeedbackTemplates<MixParlayTemplate>("MixParlay.xml").Returns(testDescTemp);
+            commonFeedback.GetFeedbackTemplates<MixParlayTemplate>("MixParlayTemplate.xml").Returns(testDescTemp);
 
             // Act
             var actual = service.Public_GetSolutionMixParlayForCreditSite(message, transactionInfo, false);
@@ -1048,7 +1048,7 @@
             var matchInfo = fixture.Create<MatchInfo>();
             
             var service = MockService();
-            commonFeedback.GetFeedbackTemplates<MixParlayTemplate>("MixParlay.xml").Returns(testDescTemp);
+            commonFeedback.GetFeedbackTemplates<MixParlayTemplate>("MixParlayTemplate.xml").Returns(testDescTemp);
             var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
             description.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
             description.Append(Constants.LineBreak);
