@@ -59,21 +59,39 @@
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
 
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
 
-            Host.CreateDefaultBuilder(args)
+            try
+            {
+                Log.Information("Application start.");
+                Host.CreateDefaultBuilder(args)
                .UseWindowsService()
                .ConfigureAppConfiguration(builder => builder.AddConfiguration(configuration))
+               .ConfigureLogging(logging =>
+               {
+                   logging.AddSerilog();
+               })
                .ConfigureServices((hostContext, services) =>
                {
                    AddConfiguration(services, configuration);
                    AddDependencyInjection(services, configuration);
                    AddWorker(services);
                })
-               .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration))
                .Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application terminated unexpectedly.");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
-            private static void AddConfiguration(IServiceCollection services, IConfiguration configuration)
+        private static void AddConfiguration(IServiceCollection services, IConfiguration configuration)
         {
             var connections = configuration.GetSection("ConnectionStrings")
                 .GetChildren()
