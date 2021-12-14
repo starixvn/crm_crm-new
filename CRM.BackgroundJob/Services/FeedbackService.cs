@@ -262,9 +262,11 @@
                     string.Join(",", batch)));
 
                 IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.CustId));
+                var site = transactions.First().Site;
+                var isVip = headline.IsVip && site == "789y";
                 var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
                 criteria.ProductXml = GetProductXml(isMixParlay, matchInfo, transactions, settings, settingMappings);
-                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactions, headline.IsVip) : 
+                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactions, isVip) : 
                                              GetSolutionForCreditSite(message, transactions, matchInfo.IssueTypeId);
                 criteria.Solution = solution;
                 criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, transactions, matchInfo.IssueTypeId);
