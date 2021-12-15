@@ -262,8 +262,7 @@
                     string.Join(",", batch)));
 
                 IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.CustId));
-                var site = transactions.First().Site;
-                var isVip = headline.IsVip && site == "789y";
+                var isVip = headline.IsVip && headline.Site == "789y";
                 var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
                 criteria.ProductXml = GetProductXml(isMixParlay, matchInfo, transactions, settings, settingMappings);
                 var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactions, isVip) : 
