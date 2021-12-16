@@ -77,6 +77,7 @@
         {
             try
             {
+                logService.LogInformation("Abnormal Bet - Service is Start.");
                 AbnormalBetSystemSetting setting = await systemSettingService.GetAbnormalBetSettingAsync();
                 if (!setting.ServiceFlag)
                 {
@@ -106,6 +107,7 @@
         protected internal virtual async Task AbnormalbetRunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
             bool isRunningLive, AbnormalBetSystemSetting setting, string Environment)
         {
+            logService.LogInformation("AbnormalbetRunJobByEnviromentAsync");
             var LastRuntimeEnv = isUAT ? setting.LastRuntimeUAT : setting.LastRuntime;
             var LastRuntimeNameEnv = isUAT ? SystemSettingName.LastRuntimeUAT : SystemSettingName.LastRuntime;
             var JobStatusNameEnv = isUAT ? SystemSettingName.JobStatusUAT : SystemSettingName.JobStatus;

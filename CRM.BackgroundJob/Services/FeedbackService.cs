@@ -63,6 +63,8 @@
                 DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
                 string JobStatusNameEnv, string Environment)
         {
+            logService.LogInformation("CreateFeedbackForVoidingAbnormalBetAsync start!!!");
+
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoFB);
 
             var voidingMessages = await messageService.GetVoidingMessageAsync();
@@ -79,10 +81,14 @@
                 Environment,
                 setting.LastDateUAT);
 
+            logService.LogInformation("after ImportVoidingMessageAsync!!!");
+
+
             IEnumerable<VoidingMessageUserName> failMessages = await messageService.GetFailMessageAsync();
             var messagesImportCombineDistinct = messagesImport.Concat(failMessages).Distinct().ToList();
             if (!messagesImportCombineDistinct.Any())
             {
+                logService.LogInformation("ImportVoidingMessageAsync do not have any data!!!");
                 await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
                 return;
             }
@@ -92,6 +98,7 @@
             ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(messagesImportCombineDistinct, setting);
             if (!ticketInfo.Item1.Any())
             {
+                logService.LogInformation("GetTicketVoidingInfoAsync do not have item 1!!!");
                 await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
                 return;
             }
@@ -115,7 +122,7 @@
             string LastRuntimeNameEnv
         )
         {
-
+            logService.LogInformation("begin CreateFeedbackForCreditDepositSiteAsync!!!");
             var settingNames = new[] { SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
@@ -162,6 +169,7 @@
                 }
             }
 
+            logService.LogInformation("end CreateFeedbackForCreditDepositSiteAsync!!!");
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
         }
 
