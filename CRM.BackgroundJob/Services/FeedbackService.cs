@@ -99,6 +99,7 @@
             if (!ticketInfo.Item1.Any())
             {
                 logService.LogInformation("GetTicketVoidingInfoAsync do not have item 1!!!");
+                await messageService.EditStatusVoidingMessageAsync(messagesImportCombineDistinct, Environment);
                 await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
                 return;
             }
