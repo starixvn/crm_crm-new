@@ -45,7 +45,7 @@
         <Setting Key="Acc_CRM_Chatbot_ResendNotification" SpName="Acc_CRM_Chatbot_ResendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chat Type Mapping">
-        <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Sel" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Sel" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Ins" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_GetHeadlineByRecipient" SpName="Acc_CRM_GetHeadlineByRecipient" DbName="DBCRM.bodb_CRM.bodbAdminNet">
@@ -97,15 +97,14 @@
         <Setting Key="Acc_CRM_SourceSettingMappingSel" SpName="Acc_CRM_SourceSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_StationList" SpName="Acc_CRM_StationList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
-    <Function Name="Report">
-        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSettlement" SpName="Acc_CRM_Rpt_FeedbackStatisticsSettlement" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-    </Function>
-     <Function Name="Default Communication Setting">
-        <Setting Key="Acc_CRM_DefaultCommToolSearch" SpName="Acc_CRM_DefaultCommToolSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_DefaultCommToolIns" SpName="Acc_CRM_DefaultCommToolIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_DefaultCommToolUpd" SpName="Acc_CRM_DefaultCommToolUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_DefaultCommToolSel" SpName="Acc_CRM_DefaultCommToolSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_DefaultCommToolDel" SpName="Acc_CRM_DefaultCommToolDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+    <Function Name="Default Communication Setting">
+        <Function Name="Default Communication Setting">
+            <Setting Key="Acc_CRM_DefaultCommToolSearch" SpName="Acc_CRM_DefaultCommToolSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+            <Setting Key="Acc_CRM_DefaultCommToolIns" SpName="Acc_CRM_DefaultCommToolIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+            <Setting Key="Acc_CRM_DefaultCommToolUpd" SpName="Acc_CRM_DefaultCommToolUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+            <Setting Key="Acc_CRM_DefaultCommToolSel" SpName="Acc_CRM_DefaultCommToolSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+            <Setting Key="Acc_CRM_DefaultCommToolDel" SpName="Acc_CRM_DefaultCommToolDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        </Function>
     </Function>
     <Function Name="Report">
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSettlement" SpName="Acc_CRM_Rpt_FeedbackStatisticsSettlement" DbName="DBCRM.bodb_CRM.bodbAdminNet">
@@ -132,10 +131,10 @@
         <Setting Key="Acc_CRM_PICAssignmentValidation" SpName="Acc_CRM_PICAssignmentValidation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_SiteSel_Credit" SpName="Acc_SiteSel_Credit" DbName="DBEXT.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicSel" SpName="Acc_CRM_PicSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PICAssignmentSel" SpName="Acc_CRM_PICAssignmentSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PICAssignmentSel" SpName="Acc_CRM_PICAssignmentSel_UAT1" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PICAssignment" SpName="Acc_CRM_PICAssignment" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PICAssignmentDel" SpName="Acc_CRM_PICAssignmentDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PicDefaultDel" SpName="Acc_CRM_PicDefaultDel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PicDefaultDel" SpName="Acc_CRM_PicDefaultDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicDefaultIns" SpName="Acc_CRM_PicDefaultIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicUpdValidation" SpName="Acc_CRM_PicUpdValidation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
@@ -152,6 +151,7 @@
         <Setting Key="Acc_CRM_FeedbackInfoUpd" SpName="Acc_CRM_FeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackSelByID" SpName="Acc_CRM_FeedbackSelByID" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackGetDeleted" SpName="Acc_CRM_FeedbackGetDeleted" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ManageFeedbackList" SpName="Acc_CRM_ManageFeedbackList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_UpdMultipleReviewAndStatus" SpName="Acc_CRM_UpdMultipleReviewAndStatus" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackDoubleCheck" SpName="Acc_CRM_FeedbackDoubleCheck" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Age_SelBalanceUpDay" SpName="Age_SelBalanceUpDay" DbName="DBAGE.bodb02.bodbAdminNet" />
@@ -201,12 +201,12 @@
         <Setting Key="Acc_CRM_CustomerInformationVerify" SpName="Acc_CRM_CustomerInformationVerify" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Funtcion>
     <Funtcion name="Communication">
-      <Setting Key="Acc_CRM_CommunicationLogList" SpName="Acc_CRM_CommunicationLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
-        <Mapping DataField="HandleBy" ObjectProperty="Handler" />
-        <Mapping DataField="ReviewBy" ObjectProperty="Reviewer" />
-      </Setting>
-      <Setting Key="Acc_CRM_CommunicationLogUpd" SpName="Acc_CRM_CommunicationLogUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_CommunicationLogIns" SpName="Acc_CRM_CommunicationLogIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CommunicationLogList" SpName="Acc_CRM_CommunicationLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="HandleBy" ObjectProperty="Handler" />
+            <Mapping DataField="ReviewBy" ObjectProperty="Reviewer" />
+        </Setting>
+        <Setting Key="Acc_CRM_CommunicationLogUpd" SpName="Acc_CRM_CommunicationLogUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CommunicationLogIns" SpName="Acc_CRM_CommunicationLogIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Funtcion>
     <Function Name="Multiple Logs">
         <Setting Key="CRM_MultipleLogs_VerifyCustomer" SpName="CRM_MultipleLogs_VerifyCustomer" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -220,41 +220,41 @@
         <Setting Key="Acc_CRM_GuestFeedbackIns" SpName="Acc_CRM_GuestFeedbackIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Inform Headlines">
-      <Setting Key="Acc_CRM_InformHeadlineList" SpName="Acc_CRM_InformHeadlineList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_InformTitleDetail" SpName="Acc_CRM_InformTitleDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
-        <Mapping DataField="Currency" ObjectProperty="Currencies" />
-        <Mapping DataField="Site" ObjectProperty="Sites" />
-        <Mapping DataField="Position" ObjectProperty="Positions" />
-        <Mapping DataField="ExcludeIgnored" ObjectProperty="ExcludeIgnoredAccounts" />
-      </Setting>
-      <Setting Key="Acc_CRM_InformHeadlineStatusSel" SpName="Acc_CRM_InformHeadlineStatusSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_InformHeadlineDetail" SpName="Acc_CRM_InformHeadlineDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_InformHeadlineUpd" SpName="Acc_CRM_InformHeadlineUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_InformHeadlineSearchSel" SpName="Acc_CRM_InformHeadlineSearchSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_InformHeadlineSearchUpd" SpName="Acc_CRM_InformHeadlineSearchUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_InformHeadlineLogSel" SpName="Acc_CRM_InformHeadlineLogSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
-        <Mapping DataField="NumAcc" ObjectProperty="Totals" />
-      </Setting>
-      <Setting Key="Acc_CRM_InformHeadlineHistorySel" SpName="Acc_CRM_InformHeadlineHistorySel" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
-        <Mapping DataField="DirectAcc" ObjectProperty="DirectAccount" />
-      </Setting>
-      <Setting Key="Acc_CRM_InformHeadlineSel" SpName="Acc_CRM_InformHeadlineSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_InformHeadlineIns" SpName="Acc_CRM_InformHeadlineIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_InformTitleStatusUpd" SpName="Acc_CRM_InformTitleStatusUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformHeadlineList" SpName="Acc_CRM_InformHeadlineList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformTitleDetail" SpName="Acc_CRM_InformTitleDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="Currency" ObjectProperty="Currencies" />
+            <Mapping DataField="Site" ObjectProperty="Sites" />
+            <Mapping DataField="Position" ObjectProperty="Positions" />
+            <Mapping DataField="ExcludeIgnored" ObjectProperty="ExcludeIgnoredAccounts" />
+        </Setting>
+        <Setting Key="Acc_CRM_InformHeadlineStatusSel" SpName="Acc_CRM_InformHeadlineStatusSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformHeadlineDetail" SpName="Acc_CRM_InformHeadlineDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformHeadlineUpd" SpName="Acc_CRM_InformHeadlineUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformHeadlineSearchSel" SpName="Acc_CRM_InformHeadlineSearchSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformHeadlineSearchUpd" SpName="Acc_CRM_InformHeadlineSearchUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformHeadlineLogSel" SpName="Acc_CRM_InformHeadlineLogSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="NumAcc" ObjectProperty="Totals" />
+        </Setting>
+        <Setting Key="Acc_CRM_InformHeadlineHistorySel" SpName="Acc_CRM_InformHeadlineHistorySel" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="DirectAcc" ObjectProperty="DirectAccount" />
+        </Setting>
+        <Setting Key="Acc_CRM_InformHeadlineSel" SpName="Acc_CRM_InformHeadlineSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformHeadlineIns" SpName="Acc_CRM_InformHeadlineIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformTitleStatusUpd" SpName="Acc_CRM_InformTitleStatusUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Remark">
-      <Setting Key="Acc_CRM_CustomerRemarkSel" SpName="Acc_CRM_CustomerRemarkSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-      <Setting Key="Acc_CRM_CustomerRemarkUpd" SpName="Acc_CRM_CustomerRemarkUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerRemarkSel" SpName="Acc_CRM_CustomerRemarkSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerRemarkUpd" SpName="Acc_CRM_CustomerRemarkUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Action Log">
-      <Setting Key="Acc_CRM_ActivityLogList" SpName="Acc_CRM_ActivityLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
-          <Mapping DataField="ActionId" ObjectProperty="Id" />
-          <Mapping DataField="ActionName" ObjectProperty="Name" />
-      </Setting>
-      <Setting Key="Acc_CRM_SettingLogList" SpName="Acc_CRM_SettingLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
-          <Mapping DataField="ActionId" ObjectProperty="Id" />
-          <Mapping DataField="ActionName" ObjectProperty="Name" />
-      </Setting>
-      <Setting Key="Acc_CRM_LogActionActivityList" SpName="Acc_CRM_LogActionActivityList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ActivityLogList" SpName="Acc_CRM_ActivityLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="ActionId" ObjectProperty="Id" />
+            <Mapping DataField="ActionName" ObjectProperty="Name" />
+        </Setting>
+        <Setting Key="Acc_CRM_SettingLogList" SpName="Acc_CRM_SettingLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
+            <Mapping DataField="ActionId" ObjectProperty="Id" />
+            <Mapping DataField="ActionName" ObjectProperty="Name" />
+        </Setting>
+        <Setting Key="Acc_CRM_LogActionActivityList" SpName="Acc_CRM_LogActionActivityList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
 </Functions>
