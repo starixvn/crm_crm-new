@@ -60,7 +60,7 @@ const scriptPaths = {
     redemption: ['./www/sources/js/pages/redemption/index.js'],
     action_log: ['./www/sources/js/pages/action-log/index.js'],
     dashboard: ['./www/sources/js/pages/dashboard/index.js'],
-    setting_log: ['./www/sources/css/pages/admin-tool/setting-log/index.js']
+    setting_log: ['./www/sources/js/pages/admin-tool/setting-log/index.js']
 };
 
 module.exports = {
