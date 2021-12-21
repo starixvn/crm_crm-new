@@ -312,4 +312,7 @@
   <data name="Main" xml:space="preserve">
     <value>Main</value>
   </data>
+  <data name="SettingLog" xml:space="preserve">
+    <value>Setting Log</value>
+  </data>
 </root>

@@ -28,7 +28,8 @@ const cssPaths = {
     remark: ['./www/sources/css/pages/remark/index.scss'],
     redemption: ['./www/sources/css/pages/redemption/index.scss'],
     action_log: ['./www/sources/css/pages/action-log/index.scss'],
-    dashboard: ['./www/sources/css/pages/dashboard/index.scss']
+    dashboard: ['./www/sources/css/pages/dashboard/index.scss'],
+    setting_log: ['./www/sources/css/pages/admin-tool/setting-log/index.scss']
 };
 
 const scriptPaths = {
@@ -58,7 +59,8 @@ const scriptPaths = {
     remark: ['./www/sources/js/pages/remark/index.js'],
     redemption: ['./www/sources/js/pages/redemption/index.js'],
     action_log: ['./www/sources/js/pages/action-log/index.js'],
-    dashboard: ['./www/sources/js/pages/dashboard/index.js']
+    dashboard: ['./www/sources/js/pages/dashboard/index.js'],
+    setting_log: ['./www/sources/css/pages/admin-tool/setting-log/index.js']
 };
 
 module.exports = {

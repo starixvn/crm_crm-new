@@ -565,6 +565,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Setting Log.
+        /// </summary>
+        public static string SettingLog {
+            get {
+                return ResourceManager.GetString("SettingLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settlement Issues Report.
         /// </summary>
         public static string SettlementIssuesReport {
