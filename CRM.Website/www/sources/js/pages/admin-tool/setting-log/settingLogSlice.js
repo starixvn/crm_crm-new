@@ -3,11 +3,22 @@ import { createSlice } from '@reduxjs/toolkit';
 const settingLogSlice = createSlice({
     name: 'settingLog',
     initialState: {
-        settings: null
+        actionLogs: null,
+        gridParams: {
+            pageIndex: 1,
+            pageSize: 100
+        },
+        gridDataActions: null
     },
     reducers: {
-        setAllSettings: (state, action) => {
-            state.settings = action.payload;
+        setActionLog: (state, action) => {
+            state.actionLogs = action.payload;
+        },
+        setGridParams: (state, action) => {
+            state.gridParams = action.payload;
+        },
+        setGridActionLogs: (state, action) => {
+            state.gridDataActions = action.payload;
         }
     }
 });
@@ -15,7 +26,9 @@ const settingLogSlice = createSlice({
 const { actions, reducer } = settingLogSlice;
 
 export const {
-    setAllSettings
+    setActionLog,
+    setGridParams,
+    setGridActionLogs
 } = actions;
 
 export default reducer;

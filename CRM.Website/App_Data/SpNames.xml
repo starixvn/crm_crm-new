@@ -257,4 +257,6 @@
         </Setting>
         <Setting Key="Acc_CRM_LogActionActivityList" SpName="Acc_CRM_LogActionActivityList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
+    <Function Name="Setting Log">
+    </Function>
 </Functions>

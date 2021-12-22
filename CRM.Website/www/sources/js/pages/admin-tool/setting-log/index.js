@@ -11,12 +11,10 @@ const store = configureStore({
     reducer: settingLogReducer
 });
 
-const isHost = document.getElementById('IsHost').checked;
-
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer isHost={isHost} />
+            <AppContainer />
         </Layout>
     </Provider>,
     document.getElementById('app-container'));
