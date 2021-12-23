@@ -371,7 +371,7 @@ describe('ValidateResend', () => {
                     const validateResend = shallow(<ValidateResend {...props} />);
     
                     // Assert
-                    expect(validateResend.find(Modal.Body).html()).toContain('ComfirmResendNotification');
+                    expect(validateResend.find(Modal.Body).html()).toContain('ComfirnResendNotification');
                 });
                 
                 it('has invalid notification ids', () => {
@@ -433,7 +433,7 @@ describe('ValidateResend', () => {
                     const validateResend = shallow(<ValidateResend {...props} />);
     
                     // Assert
-                    expect(validateResend.find(Modal.Body).html()).toContain('ComfirmResendNotification');
+                    expect(validateResend.find(Modal.Body).html()).toContain('ConfirmResendNotification');
                 });
                 
                 it('has both valid and invalid notification ids', () => {
@@ -459,7 +459,7 @@ describe('ValidateResend', () => {
                     expect(validateResend.find(Modal.Body).find('div').at(2).html())
                         .toContain('TheSelectedNotificationsAreAbleToResend');
                     expect(validateResend.find(Modal.Body).find('div').at(3).html())
-                        .toContain('ComfirmResendListAndIgnoreNotification');
+                        .toContain('ConfirmResendListAndIgnoreNotification');
                 });
             });
         });

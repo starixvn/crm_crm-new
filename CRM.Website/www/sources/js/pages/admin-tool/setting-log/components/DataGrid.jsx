@@ -1,0 +1,145 @@
+import React, { Fragment, Component } from 'react';
+import { connect } from 'react-redux';
+import { ActionCreators } from '../actions';
+import { bindActionCreators } from 'redux';
+import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import LangHelper from '@jsroot/common/langHelper';
+import { PAGING_SIZES } from '@jsroot/common/constants';
+
+export class DataGrid extends Component {
+    buildHeader = () => {
+        return (
+            <HeaderRow>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('LogTime')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('EditedBy')}</HeaderCell>
+                <HeaderCell colWidth={17}>{LangHelper.getResource('Action')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('Entity')}</HeaderCell>
+                <HeaderCell colWidth={10}>{LangHelper.getResource('ID')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('FieldName')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('OldValue')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('NewValue')}</HeaderCell>
+            </HeaderRow>
+        );
+    };
+
+    buildBody = () => {
+        const { gridDataSettingLogs } = this.props;
+
+        if ( gridDataSettingLogs.data.length > 0) {
+            return gridDataSettingLogs.data.map((item, index) => this.renderRow(item, index));
+        }
+        return [
+            <Row key={`body${1}`} className="no-data" >
+                <Cell className='text-center' colSpan={8}>
+                    {LangHelper.getResource('ThereIsNoData')}
+                </Cell>
+            </Row>
+        ];
+    };
+
+    renderRow = (item, index) => {
+        const color = index%2 === 0 ? 'grid-blue' : 'grid-white';
+        const rowSpan = item.fieldNames.length > 0 ? item.fieldNames.length : null;
+        return (
+            <Fragment>
+                <Row key={index}>
+                    <Cell className={`text-center ${color}`} rowSpan={rowSpan}>{item.logDate}</Cell>
+                    <Cell className={color} rowSpan={rowSpan}>{item.username}</Cell>
+                    <Cell className={color} rowSpan={rowSpan}>{item.actionName}</Cell>
+                    <Cell className={`text-center ${color}`} rowSpan={rowSpan}>{item.entity}</Cell>
+                    <Cell className={`text-center ${color}`} rowSpan={rowSpan}>{item.id}</Cell>
+                    <Cell className={color}>{item.fieldNames[0]}</Cell>
+                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[0],item.oldValuesList[0]) }}></Cell>
+                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[0],item.newValuesList[0]) }}></Cell>
+                </Row>
+                {
+                    item.fieldNames.length > 1 &&
+                    item.fieldNames.slice(1).map((element, key) => (
+                        <Row key={key}>
+                            <Cell className={color}>{item.fieldNames[key+1]}</Cell>
+                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[key+1],item.oldValuesList[key+1]) }}></Cell>
+                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[key+1],item.newValuesList[key+1]) }}></Cell>
+                        </Row>
+                    ))
+                }
+            </Fragment>
+        );
+    };
+
+    isEncode = fieldName => {
+        return fieldName !== 'Remark' &&
+            fieldName !== 'Solution' &&
+            fieldName !== 'Review' &&
+            fieldName !== 'SpecialRemark';
+    };
+
+    replaceText = text => text ? text.replace('\\n', '<br />').replace('\\r', '<br />') : '';
+
+    encodeHtml = value => {
+        const item = value.replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;');
+        return item;
+    };
+
+    renderValue = (fieldName, value) => {
+        value = this.replaceText(value);
+        if (this.isEncode(fieldName)) {
+            value = this.encodeHtml(value);
+        }
+        return value;
+    };
+
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params['pageSize'] = pageSize;
+        params['pageIndex'] = pageIndex;
+        this.props.setGridParams(params);
+        this.props.getGridSettingLogs(params);
+    };
+
+    render() {
+        const { gridDataSettingLogs } = this.props;
+        if(!gridDataSettingLogs || !gridDataSettingLogs.data){
+            return null;
+        }
+
+        const { pageIndex, pageSize } = this.props.gridParams;
+        const pagingOption = {
+            PageIndex: pageIndex,
+            PageSize: pageSize,
+            TotalItem: gridDataSettingLogs.totalItems,
+            PageList: PAGING_SIZES
+        };
+
+        return (
+            <Fragment>
+                <div className='table-title d-flex justify-content-between align-items-center'>
+                    <span>{LangHelper.getResource('SettingLogs')}</span>
+                </div>
+                <Table
+                    width={1250}
+                    autoWidth={false}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
+                    isPaging
+                    pageOption={pagingOption}
+                    onPaging={this.onPaging}
+                    containerPadding={0}
+                    adjustedHeight={10}
+                />
+            </Fragment>
+        );
+    }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { gridDataSettingLogs, gridParams } = state;
+    return { gridDataSettingLogs, gridParams };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

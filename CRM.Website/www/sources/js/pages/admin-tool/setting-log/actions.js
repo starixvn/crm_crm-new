@@ -3,22 +3,22 @@ import DataService from '@jsroot/common/dataService';
 import {
     setActionLog,
     setGridParams,
-    setGridActionLogs
+    setGridSettingLogs
 } from './settingLogSlice';
 
 const getActionLogs = () => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('SettingLog/GetActionLogAsync');
+    const url = Site.resolveClientUrl('SettingLog/GetActionLog');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setActionLog(response.data));
     }).then(() => Site.unblockUI());
 };
 
-const getGridActionLogs = params => async dispatch => {
+const getGridSettingLogs = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('SettingLog/SearchActionLogsAsync');
+    const url = Site.resolveClientUrl('SettingLog/GetSettingLog');
     DataService.postDataAsync(url, params).then(response => {
-        dispatch(setGridActionLogs(response.data));
+        dispatch(setGridSettingLogs(response.data));
     }).then(() => Site.unblockUI());
 };
 
@@ -27,6 +27,6 @@ export const ActionCreators = {
     setActionLog,
     getActionLogs,
     setGridParams,
-    setGridActionLogs,
-    getGridActionLogs
+    getGridSettingLogs,
+    setGridSettingLogs
 };

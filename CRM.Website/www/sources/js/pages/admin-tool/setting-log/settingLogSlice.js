@@ -8,7 +8,7 @@ const settingLogSlice = createSlice({
             pageIndex: 1,
             pageSize: 100
         },
-        gridDataActions: null
+        gridDataSettingLogs: null
     },
     reducers: {
         setActionLog: (state, action) => {
@@ -17,8 +17,8 @@ const settingLogSlice = createSlice({
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
-        setGridActionLogs: (state, action) => {
-            state.gridDataActions = action.payload;
+        setGridSettingLogs: (state, action) => {
+            state.gridDataSettingLogs = action.payload;
         }
     }
 });
@@ -28,7 +28,7 @@ const { actions, reducer } = settingLogSlice;
 export const {
     setActionLog,
     setGridParams,
-    setGridActionLogs
+    setGridSettingLogs
 } = actions;
 
 export default reducer;

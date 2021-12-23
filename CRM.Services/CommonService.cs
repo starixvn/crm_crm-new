@@ -77,5 +77,17 @@
             var timeSpan = new TimeSpan(appSettings.ServerTimezone, 0, 0);
             return date.ToUniversalTime().Add(timeSpan);
         }
+
+        public DateTime GetEndOfDate(DateTime date)
+        {
+            date = new DateTime(date.Year, date.Month, date.Day).AddDays(1).AddSeconds(-1);
+            return date;
+        }
+
+        public DateTime GetStartOfDate(DateTime date)
+        {
+            date = new DateTime(date.Year, date.Month, date.Day);
+            return date;
+        }
     }
 }

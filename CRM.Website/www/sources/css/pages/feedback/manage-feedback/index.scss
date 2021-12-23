@@ -66,16 +66,17 @@
     }
 }
 
-.table-title, .page-container{
-    max-width: 1340px !important;
+.table-title, .page-container, .table-container{
+    min-width: 1340px !important;
+    width: 1340px !important;
+}
 
-    .disabled-multiple-edit-status{
-        pointer-events: none;
-    }
+.disabled-multiple-edit-status{
+    pointer-events: none;
+}
 
-    .multiple-edit:hover{
-        color: $draft-color !important;
-    }
+.multiple-edit:hover{
+    color: $draft-color !important;
 }
 
 .cursor-pointer{

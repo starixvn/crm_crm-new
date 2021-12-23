@@ -26,5 +26,9 @@
         DateTime ConvertToClientDateTime(DateTime date);
 
         DateTime ConvertToServerDateTime(DateTime date);
+
+        DateTime GetEndOfDate(DateTime date);
+
+        DateTime GetStartOfDate(DateTime date);
     }
 }

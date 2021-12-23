@@ -3,11 +3,21 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
+import PropTypes from 'prop-types';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class Filter extends Component {
+    static propTypes = {
+        getActionLogs: PropTypes.func
+    };
+
+    static defaultProps = {
+        getActionLogs: function () {
+            // nothing
+        }
+    };
     constructor(props) {
         super(props);
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
@@ -23,6 +33,10 @@ export class Filter extends Component {
             toDate: currentDate,
             actionId: 0
         };
+    }
+
+    componentDidMount() {
+        this.props.getActionLogs();
     }
 
     handleChangeFromDate = fromDate => {
@@ -47,9 +61,10 @@ export class Filter extends Component {
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     handleSubmit = () => {
-        const { handler, fromDate, toDate } = this.state;
+        const { handler, fromDate, toDate, actionId } = this.state;
         const params = {
-            feedbackId: handler !== '' ? handler : null,
+            username: handler !== '' ? handler : null,
+            actionId: actionId,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
             pageIndex: 1,
@@ -57,10 +72,14 @@ export class Filter extends Component {
         };
 
         this.props.setGridParams(params);
-        this.props.getGridFeedbacks(params);
+        this.props.getGridSettingLogs(params);
     };
 
     render() {
+        if(this.props.actionLogs === null || !this.props.actionLogs){
+            return null;
+        }
+
         const { handler, fromDate, toDate, actionId } = this.state;
         const all = [
             { name: 'All', id: 0 }
@@ -112,7 +131,7 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="width-60">
                         <Button variant="primary" size="sm" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>

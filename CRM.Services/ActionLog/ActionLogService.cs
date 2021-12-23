@@ -10,7 +10,9 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.ActionLog;
+    using CRM.Criteria.AdminTool.LogSetting;
     using CRM.Models.ActionLog;
+    using CRM.Models.AdminTool.SettingLog;
     using CRM.Models.Setting;
     using CRM.Resources;
     using Microsoft.Extensions.Options;
@@ -18,6 +20,8 @@
     public interface IActionLogService
     {
         Task<IEnumerable<ActionLogInfo>> GetActivityLogAsync(GetActivityLogCriteria criteria);
+
+        Task<IEnumerable<SettingLogInfo>> GetSettingLogsAsync(GetSettingLogCriteria criteria);
     }
 
     public class ActionLogService : IActionLogService
@@ -269,6 +273,26 @@
 
                 return actionLogBoolValueHash;
             }
+        }
+
+        public async Task<IEnumerable<SettingLogInfo>> GetSettingLogsAsync(GetSettingLogCriteria criteria)
+        {
+            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertToServerDateTime(commonService.GetEndOfDate(criteria.ToDate));
+            var settingLogs = await baseService.GetDataAsync<SettingLogInfo>(criteria);
+            var settingLogsFilter = settingLogs.Where(x => !string.Equals(x.OldValues, x.NewValues, StringComparison.OrdinalIgnoreCase));
+            var totalItems = settingLogsFilter.Count();
+            if (totalItems > 0)
+            {
+                settingLogsFilter = settingLogsFilter.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+            };
+
+            foreach (var log in settingLogsFilter)
+            {
+                FilterOldNewResults(log);
+            }
+
+            return settingLogsFilter;
         }
     }
 }
