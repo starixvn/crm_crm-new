@@ -9,6 +9,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import CreateEditForm from '../CreateEditForm';
 import * as commonFunc from '../../common.functions';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 describe('CreateRedemptionLog', () => {
     beforeAll(() => {
@@ -121,6 +122,144 @@ describe('CreateRedemptionLog', () => {
             expect(setSubmitting).toHaveBeenCalledWith(false);
         });
     });
+
+    describe('isNewEqualOldId', () => {
+        it('should return false when call function isNewEqualOldId', () => {
+            // Arrange
+            const values = {
+                currencyId: 0,
+                statusId: 0
+            };
+            const props = {
+                ...initProps,
+                settings: { statuses: [{ statusId: 0 }] }
+            };
+
+            const container = shallow(<CreateRedemptionLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isNewEqualOldId();
+
+            // Assert
+            expect(actual).toEqual(false);
+        });
+
+        it('should return true when call function isNewEqualOldId', () => {
+            // Arrange
+            const values = {
+                currencyId: 1,
+                statusId: 1
+            };
+            const props = {
+                ...initProps,
+                settings: { statuses: [{ statusId: 0 }] }
+            };
+
+            const container = shallow(<CreateRedemptionLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isNewEqualOldId();
+
+            // Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    describe('isNewEqualOldValue', () => {
+        it('should return false when call function isNewEqualOldValue', () => {
+            // Arrange
+            const values = {
+                amount: 0,
+                doneBy: '',
+                subject: '',
+                remark: ''
+            };
+            const props = {...initProps};
+
+            const container = shallow(<CreateRedemptionLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isNewEqualOldValue();
+
+            // Assert
+            expect(actual).toEqual(false);
+        });
+
+        it('should return true when call function isNewEqualOldValue', () => {
+            // Arrange
+            const values = {
+                amount: 0,
+                doneBy: '',
+                subject: '',
+                remark: 'test'
+            };
+            const props = {...initProps};
+
+            const container = shallow(<CreateRedemptionLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isNewEqualOldValue();
+
+            // Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    describe('onCloseCreatePopup', () => {
+        it('should setState when call onCloseCreatePopup', () => {
+            // Arrange
+            const props = {...initProps};
+
+            const container = shallow(<CreateRedemptionLog {...props} />);
+
+            // Act
+            container.instance().isNewEqualOldId = jest.fn(() => true);
+            container.instance().isNewEqualOldValue = jest.fn(() => true);
+
+            container.instance().onCloseCreatePopup();
+
+            // Assert
+            expect(container.state().isShowCreateConfirm).toBe(true);
+        });
+
+        it('should call props function when call onCloseCreatePopup', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                onClose: jest.fn()
+            };
+
+            const container = shallow(<CreateRedemptionLog {...props} />);
+
+            // Act
+            container.instance().isNewEqualOldId = jest.fn(() => false);
+            container.instance().isNewEqualOldValue = jest.fn(() => false);
+
+            container.instance().onCloseCreatePopup();
+
+            // Assert
+            expect(props.onClose).toHaveBeenCalledWith(false);
+        });
+    });
+
+    describe('closeCreateConfirm', () => {
+        it('should setState exactly when call closeCreateConfirm', () => {
+            // Arrange
+            const props = {...initProps};
+
+            const container = shallow(<CreateRedemptionLog {...props} />);
+
+            // Act
+            container.instance().closeCreateConfirm();
+
+            // Assert
+            expect(container.state().isShowCreateConfirm).toBe(false);
+        });
+    });
     
     describe('renderForm', () => {
         const params = {
@@ -203,17 +342,35 @@ describe('CreateRedemptionLog', () => {
         it('modal onHide should call exact function', () => {
             // Arrange
             const props = { 
-                ...initProps,
-                onClose: jest.fn()
+                ...initProps
              };
             const container = shallow(<CreateRedemptionLog {...props}/>).instance();
+            container.onCloseCreatePopup = jest.fn();
 
             // Act
             const renderCreate = shallow(container.render());
             renderCreate.find(Modal).simulate('hide');
 
             // Assert
-            expect(props.onClose).toHaveBeenCalled();
+            expect(container.onCloseCreatePopup).toHaveBeenCalled();
+        });
+
+        it('should call props function when ConfirmPopup submit', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                onClose: jest.fn()
+            };
+            
+            const container = shallow(<CreateRedemptionLog {...props} />);
+            
+            // Act
+            container.setState({ isShowCreateConfirm: true });
+            const renderCreate = shallow(container.instance().render());
+            renderCreate.find(ConfirmPopup).simulate('submit');
+
+            // Assert
+            expect(props.onClose).toHaveBeenCalledWith(false);
         });
     });
 });

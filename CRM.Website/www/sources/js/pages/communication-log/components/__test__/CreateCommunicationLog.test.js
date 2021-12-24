@@ -15,6 +15,8 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import * as commonFunc from '../../common.functions';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { Formik } from 'formik';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import EditCommunicationLog from '../EditCommunicationLog';
 
 describe('CreateCommunicationLog', () => {
     beforeAll(() => {
@@ -823,6 +825,291 @@ describe('CreateCommunicationLog', () => {
         });
     });
 
+    describe('isOldEqualNewIdV1', () => {
+        it('should return false when call function isOldEqualNewIdV1', () => {
+            // Arrange
+            const values = {
+                responseId: 0,
+                statusId: 0,
+                siteId: 0
+            };
+            const props = {
+                options: {
+                    responseId: 0,
+                    statusId: 0,
+                    siteId: 0
+                }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isOldEqualNewIdV1();
+
+            // Assert
+            expect(actual).toEqual(false);
+        });
+
+        it('should return true when call function isOldEqualNewIdV1', () => {
+            // Arrange
+            const values = {
+                responseId: 1,
+                statusId: 1,
+                siteId: 1
+            };
+            const props = {
+                options: {
+                    responseId: 0,
+                    statusId: 0,
+                    siteId: 0
+                }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isOldEqualNewIdV1();
+
+            // Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    describe('isOldEqualNewIdV2', () => {
+        it('should return false when call function isOldEqualNewIdV2', () => {
+            // Arrange
+            const values = {
+                languageId: 0,
+                countryId: 0,
+                licenseeTypeId: 0
+            };
+            const props = {
+                options: {
+                    languageId: 0,
+                    countryId: 0,
+                    licenseeTypeId: 0
+                }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isOldEqualNewIdV2();
+
+            // Assert
+            expect(actual).toEqual(false);
+        });
+
+        it('should return true when call function isOldEqualNewIdV2', () => {
+            // Arrange
+            const values = {
+                languageId: 1,
+                countryId: 1,
+                licenseeTypeId: 1
+            };
+            const props = {
+                options: {
+                    languageId: 0,
+                    countryId: 0,
+                    licenseeTypeId: 0
+                }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isOldEqualNewIdV2();
+
+            // Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    describe('isOldEqualNewId', () => {
+        it('should return true call isOldEqualNewId', () => {
+            // Arrange
+            const container = shallow(<CreateCommunicationLog />);
+
+            // Act
+            container.instance().isOldEqualNewIdV1 = jest.fn(() => true);
+            container.instance().isOldEqualNewIdV2 = jest.fn(() => true);
+
+            const actual = container.instance().isOldEqualNewId();
+
+            // Assert
+            expect(actual).toBe(true);
+        });
+
+        it('should return false call isOldEqualNewId', () => {
+            // Arrange
+            const container = shallow(<CreateCommunicationLog />);
+
+            // Act
+            container.instance().isOldEqualNewIdV1 = jest.fn(() => false);
+            container.instance().isOldEqualNewIdV2 = jest.fn(() => false);
+
+            const actual = container.instance().isOldEqualNewId();
+
+            // Assert
+            expect(actual).toBe(false);
+        });
+    });
+
+    describe('isOldEqualNewValue', () => {
+        it('should return false when call function isOldEqualNewValue', () => {
+            // Arrange
+            const values = {
+                subject: 'test',
+                startTime: 'Fri Dec 24 2021 10:05:20 GMT+0700 (Indochina Time)',
+                endTime: 'Fri Dec 24 2021 10:06:20 GMT+0700 (Indochina Time)'
+            };
+            const props = {
+                options: {
+                    subject: 'test'
+                }
+            };
+            DateTimeService.toShortDateTimeFormat = jest.fn(() => '12/24/2021 10:05:20 AM');
+
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isOldEqualNewValue();
+
+            // Assert
+            expect(actual).toEqual(false);
+        });
+
+        it('should return true when call function isOldEqualNewValue', () => {
+            // Arrange
+            const values = {
+                subject: 'test',
+                startTime: '',
+                endTime: ''
+            };
+            const props = {
+                options: {
+                    subject: 'test'
+                }
+            };
+            DateTimeService.toShortDateTimeFormat = jest.fn(() => '12/24/2021 10:05:20 AM');
+
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isOldEqualNewValue();
+
+            // Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    describe('isOldEqualNewContent', () => {
+        it('should return false when call function isOldEqualNewContent', () => {
+            // Arrange
+            const values = {
+                solution: 'test',
+                remark: '<div><font color=\"#ff0000\">This is a duplicated entry</font></div>\n\ntest'
+            };
+            const props = {
+                options: {
+                    solution: 'test',
+                    remark: 'test'
+                }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isOldEqualNewContent();
+
+            // Assert
+            expect(actual).toEqual(false);
+        });
+
+        it('should return true when call function isOldEqualNewContent', () => {
+            // Arrange
+            const values = {
+                solution: 'test1',
+                remark: 'test3'
+            };
+            const props = {
+                options: {
+                    solution: 'test',
+                    remark: 'test'
+                }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            // Act
+            container['formik'] = { values: values };
+            const actual = container.isOldEqualNewContent();
+
+            // Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    
+    describe('onCloseCreatePopup', () => {
+        it('should setState when call onCloseCreatePopup', () => {
+            // Arrange
+
+            const container = shallow(<CreateCommunicationLog />);
+
+            // Act
+            container.instance().isOldEqualNewId = jest.fn(() => true);
+            container.instance().isOldEqualNewContent = jest.fn(() => true);
+            container.instance().isOldEqualNewValue = jest.fn(() => true);
+
+            container.instance().onCloseCreatePopup();
+
+            // Assert
+            expect(container.state().isShowCreatePopup).toBe(true);
+        });
+
+        it('should call props function when call onCloseCreatePopup', () => {
+            // Arrange
+            const props = {
+                onClose: jest.fn()
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props} />);
+
+            // Act
+            container.instance().isOldEqualNewId = jest.fn(() => false);
+            container.instance().isOldEqualNewContent = jest.fn(() => false);
+            container.instance().isOldEqualNewValue = jest.fn(() => false);
+
+            container.instance().onCloseCreatePopup();
+
+            // Assert
+            expect(props.onClose).toHaveBeenCalledWith(false);
+        });
+    });
+
+    describe('closeCreateConfirm', () => {
+        it('should setState exactly when call closeCreateConfirm', () => {
+            // Arrange
+
+            const container = shallow(<CreateCommunicationLog />);
+
+            // Act
+            container.instance().closeCreateConfirm();
+
+            // Assert
+            expect(container.state().isShowCreatePopup).toBe(false);
+        });
+    });
+    
+
     describe('renderForm', () => {
         const props = {
             onClose: jest.fn()
@@ -1209,6 +1496,7 @@ describe('CreateCommunicationLog', () => {
         it('modal onHide should call exact function', () => {
             // Arrange
             const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            container.onCloseCreatePopup = jest.fn();
             container.setState({
                 allSettings: initData.settings
             });
@@ -1217,7 +1505,7 @@ describe('CreateCommunicationLog', () => {
             const renderEdit = shallow(container.render());
             renderEdit.find(Modal).simulate('hide');
             // Assert 
-            expect(props.onClose).toHaveBeenCalled();
+            expect(container.onCloseCreatePopup).toHaveBeenCalled();
         });
 
         it('component map correct innerRef in formik', () => {
@@ -1323,6 +1611,22 @@ describe('CreateCommunicationLog', () => {
             expect(renderEdit.find(SweetModalDialog)).toHaveLength(1);
             expect(renderEdit.find(SweetModalDialog).props().contents).toEqual(expectedContents);
             expect(renderEdit.find(SweetModalDialog).props().buttons).toEqual(expectedButton);
+        });
+
+        it('should call props function when ConfirmPopup submit', () => {
+            // Arrange
+            const container = shallow(<CreateCommunicationLog {...props} />);
+            container.setState({
+                allSettings: initData.settings
+            });
+            
+            // Act
+            container.setState({ isShowCreatePopup: true });
+            const renderCreate = shallow(container.instance().render());
+            renderCreate.find(ConfirmPopup).simulate('submit');
+
+            // Assert
+            expect(props.onClose).toHaveBeenCalledWith(false);
         });
     });
 });

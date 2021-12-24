@@ -427,7 +427,6 @@ export class CreateCommunicationLog extends Component {
         const initDataCreate = this.initFormikData();
         const { values } = this.formik;
         if (initDataCreate.solution !== values.solution ||
-            initDataCreate.review !== values.review ||
             initDataCreate.remark.trim() !== values.remark.trim()
         ) {
             return true;

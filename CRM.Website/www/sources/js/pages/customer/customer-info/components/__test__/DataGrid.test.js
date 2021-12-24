@@ -74,7 +74,7 @@ describe('DataGridCustomerInfo', () => {
                 //Arrange
                 const props = {
                     settings: {
-                        languages: [{ settingId: 1, settingName: 'name' }],
+                        languages: [{ languageId: 1, name: 'name', checked: true }],
                         sites: [],
                         countries: []
                     },
@@ -90,7 +90,7 @@ describe('DataGridCustomerInfo', () => {
                 };
 
                 const expected = {
-                    langagues: [{ id: 1, name: 'name', checked: true }],
+                    langagues: [{ languageId: 1, name: 'name', checked: true }],
                     siteId: 0
                 };
 
@@ -249,7 +249,7 @@ describe('DataGridCustomerInfo', () => {
                         lastName: '',
                         firstName: '',
                         languages: [1, 2],
-                        phoneInfo: null,
+                        phoneInfo: '',
                         phoneCountryCode: '',
                         phoneAreaCode: '',
                         phone: '',
