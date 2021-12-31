@@ -43,7 +43,9 @@
             return base.StartAsync(cancellationToken);
         }
 
+#pragma warning disable S3168 // "async" methods should not return "void"
         private async void Execute(object state)
+#pragma warning restore S3168 // "async" methods should not return "void"
         {
             try
             {
