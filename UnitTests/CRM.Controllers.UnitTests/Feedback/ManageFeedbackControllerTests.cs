@@ -146,7 +146,6 @@
             settingService = Substitute.For<ISettingService>();
             userService = Substitute.For<IUserService>();
             settingService = Substitute.For<ISettingService>();
-            settingService = Substitute.For<ISettingService>();
             feedbackService = Substitute.For<IFeedbackService>();
             exportExcelService = Substitute.For<IExportExcelService>();
             return new ManageFeedbackController(napSession, napSettings, userService, settingService, feedbackService, exportExcelService);
