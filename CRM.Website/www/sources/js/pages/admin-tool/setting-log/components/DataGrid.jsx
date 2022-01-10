@@ -38,27 +38,27 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index) => {
-        const color = index%2 === 0 ? 'grid-blue' : 'grid-white';
+        const backgroundColor = index % 2 === 0 ? 'grid-blue' : 'grid-white';
         const rowSpan = item.fieldNames.length > 0 ? item.fieldNames.length : null;
         return (
             <Fragment>
                 <Row key={index}>
-                    <Cell className={`text-center ${color}`} rowSpan={rowSpan}>{item.logDate}</Cell>
-                    <Cell className={color} rowSpan={rowSpan}>{item.username}</Cell>
-                    <Cell className={color} rowSpan={rowSpan}>{item.actionName}</Cell>
-                    <Cell className={`text-center ${color}`} rowSpan={rowSpan}>{item.entity}</Cell>
-                    <Cell className={`text-center ${color}`} rowSpan={rowSpan}>{item.id}</Cell>
-                    <Cell className={color}>{item.fieldNames[0]}</Cell>
-                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[0],item.oldValuesList[0]) }}></Cell>
-                    <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[0],item.newValuesList[0]) }}></Cell>
+                    <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.logDate}</Cell>
+                    <Cell className={backgroundColor} rowSpan={rowSpan}>{item.username}</Cell>
+                    <Cell className={backgroundColor} rowSpan={rowSpan}>{item.actionName}</Cell>
+                    <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.entity}</Cell>
+                    <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.id}</Cell>
+                    <Cell className={backgroundColor}>{item.fieldNames[0]}</Cell>
+                    <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.replaceText(item.oldValuesList[0]) }} />
+                    <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.replaceText(item.newValuesList[0]) }} />
                 </Row>
                 {
                     item.fieldNames.length > 1 &&
-                    item.fieldNames.slice(1).map((element, key) => (
+                    item.fieldNames.slice(1).map( (ele ,key) => (
                         <Row key={key}>
-                            <Cell className={color}>{item.fieldNames[key+1]}</Cell>
-                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[key+1],item.oldValuesList[key+1]) }}></Cell>
-                            <Cell className={color} dangerouslySetInnerHTML={{ __html: this.renderValue(item.fieldNames[key+1],item.newValuesList[key+1]) }}></Cell>
+                            <Cell className={backgroundColor}>{item.fieldNames[key+1]}</Cell>
+                            <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.replaceText(item.oldValuesList[key+1]) }} />
+                            <Cell className={`word-wrap ${backgroundColor}`} dangerouslySetInnerHTML={{ __html: this.replaceText(item.newValuesList[key+1]) }} />
                         </Row>
                     ))
                 }
@@ -66,31 +66,7 @@ export class DataGrid extends Component {
         );
     };
 
-    isEncode = fieldName => {
-        return fieldName !== 'Remark' &&
-            fieldName !== 'Solution' &&
-            fieldName !== 'Review' &&
-            fieldName !== 'SpecialRemark';
-    };
-
     replaceText = text => text ? text.replace('\\n', '<br />').replace('\\r', '<br />') : '';
-
-    encodeHtml = value => {
-        const item = value.replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#39;');
-        return item;
-    };
-
-    renderValue = (fieldName, value) => {
-        value = this.replaceText(value);
-        if (this.isEncode(fieldName)) {
-            value = this.encodeHtml(value);
-        }
-        return value;
-    };
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };

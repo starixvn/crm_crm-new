@@ -30,6 +30,11 @@
 
 .table-container {
     overflow-x: hidden !important;
+
+    .word-wrap {
+        max-width: 170px;
+        word-wrap: break-word;
+    }
 }
 
 .table-title, .page-container, .table-container{
