@@ -285,7 +285,7 @@
             if (totalItems > 0)
             {
                 settingLogsFilter = settingLogsFilter.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-            };
+            }
 
             foreach (var log in settingLogsFilter)
             {
