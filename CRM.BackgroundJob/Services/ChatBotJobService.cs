@@ -180,7 +180,7 @@
             }
 
             var voidingMesssageSettled = await chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync();
-            var voidingMessageCheck = await chatBotResultAmendmentService.GetVoidingMessasgeCheckAsync(voidingMesssageSettled);
+            var voidingMessageCheck = await chatBotResultAmendmentService.GetVoidingMessasgeCheckAsync(voidingMesssageSettled, Environment);
             if (voidingMessageCheck.Any())
             {
                 var settledTicket = await chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck);

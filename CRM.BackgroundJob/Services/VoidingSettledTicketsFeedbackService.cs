@@ -74,7 +74,7 @@
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
 
             var messageVoidSettled = await voidingSettledTicketsService.GetMessageVoidSettledAsync();
-            var voidingMessageCheck = await voidingSettledTicketsService.GetVoidingMessasgeCheckAsync(messageVoidSettled);
+            var voidingMessageCheck = await voidingSettledTicketsService.GetVoidingMessasgeCheckAsync(messageVoidSettled, environment);
             if (voidingMessageCheck.Any())
             {
                 var settledTicket = await voidingSettledTicketsService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck);

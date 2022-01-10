@@ -311,7 +311,7 @@
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
             chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync().Returns(voidingMesssageSettled);
-            chatBotResultAmendmentService.GetVoidingMessasgeCheckAsync(voidingMesssageSettled).Returns(voidingMessageCheck);
+            chatBotResultAmendmentService.GetVoidingMessasgeCheckAsync(voidingMesssageSettled, "LIVE").Returns(voidingMessageCheck);
             chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck).Returns(settledTicket);
 
             chatBotResultAmendmentService.ImportMessageVoidSettledAsync(settledTicket).Returns(commandMessage);

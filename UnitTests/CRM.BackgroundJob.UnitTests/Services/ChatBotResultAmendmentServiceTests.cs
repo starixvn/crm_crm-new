@@ -66,7 +66,7 @@
             baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<GetChatbotVoidingMessageCheck>()).Returns(expected);
 
             // Act
-            var actual = await service.GetVoidingMessasgeCheckAsync(messageVoidSettleds);
+            var actual = await service.GetVoidingMessasgeCheckAsync(messageVoidSettleds, "LIVE");
 
             // Assert
             Assert.Equal(expected, actual);

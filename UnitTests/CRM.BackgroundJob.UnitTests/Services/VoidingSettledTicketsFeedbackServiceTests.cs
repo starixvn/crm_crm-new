@@ -86,7 +86,7 @@
             settingService.GetAllSettingAsync().Returns(settings);
             settingService.GetSystemSettingMappingAsync(settingNames).Returns(settingMappings);
             voidingSettledTicketsService.GetMessageVoidSettledAsync().Returns(messageVoidSettled);
-            voidingSettledTicketsService.GetVoidingMessasgeCheckAsync(messageVoidSettled).Returns(voidingMessageCheck);
+            voidingSettledTicketsService.GetVoidingMessasgeCheckAsync(messageVoidSettled, "LIVE").Returns(voidingMessageCheck);
             voidingSettledTicketsService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck).Returns(settledTicket);
             voidingSettledTicketsService.ImportMessageVoidSettledAsync(settledTicket).Returns(commandResult);
             

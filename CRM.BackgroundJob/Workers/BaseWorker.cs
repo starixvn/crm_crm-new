@@ -43,9 +43,7 @@
             return base.StartAsync(cancellationToken);
         }
 
-#pragma warning disable S3168 // "async" methods should not return "void"
-        private async void Execute(object state)
-#pragma warning restore S3168 // "async" methods should not return "void"
+        private void Execute(object state)
         {
             try
             {
@@ -55,13 +53,13 @@
                 {
                     isRunning = true;
                     logService.LogInformation($"{jobSetting.JobName}: Doing...");
-                    await ExecuteJobAsync();
+                    _ = ExecuteJobAsync();
                     logService.LogInformation($"{jobSetting.JobName}: Done.");
                 }
             }
             catch (Exception ex)
             {
-                await logService.ErrorAsync(ex);
+                _ = logService.ErrorAsync(ex);
                 logService.LogInformation($"{jobSetting.JobName}: Error - {ex}");
             }
             finally
