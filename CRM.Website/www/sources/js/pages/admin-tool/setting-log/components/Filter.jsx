@@ -85,7 +85,6 @@ export class Filter extends Component {
             { name: 'All', id: 0 }
         ];
         const actionLogs = [...all, ...this.props.actionLogs];
-
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
