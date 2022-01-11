@@ -29,7 +29,8 @@ const cssPaths = {
     redemption: ['./www/sources/css/pages/redemption/index.scss'],
     action_log: ['./www/sources/css/pages/action-log/index.scss'],
     dashboard: ['./www/sources/css/pages/dashboard/index.scss'],
-    setting_log: ['./www/sources/css/pages/admin-tool/setting-log/index.scss']
+    setting_log: ['./www/sources/css/pages/admin-tool/setting-log/index.scss'],
+    deleted_feedback_statistic: ['./www/sources/css/pages/report/deleted-feedback-statistic/index.scss']
 };
 
 const scriptPaths = {
@@ -60,7 +61,8 @@ const scriptPaths = {
     redemption: ['./www/sources/js/pages/redemption/index.js'],
     action_log: ['./www/sources/js/pages/action-log/index.js'],
     dashboard: ['./www/sources/js/pages/dashboard/index.js'],
-    setting_log: ['./www/sources/js/pages/admin-tool/setting-log/index.js']
+    setting_log: ['./www/sources/js/pages/admin-tool/setting-log/index.js'],
+    deleted_feedback_statistic: ['./www/sources/js/pages/report/deleted-feedback-statistic/index.js']
 };
 
 module.exports = {

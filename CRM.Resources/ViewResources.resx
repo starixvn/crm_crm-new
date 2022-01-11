@@ -315,4 +315,7 @@
   <data name="SettingLog" xml:space="preserve">
     <value>Setting Log</value>
   </data>
+  <data name="DeletedFeedbackStatistic" xml:space="preserve">
+    <value>Deleted Feedback Statistic</value>
+  </data>
 </root>

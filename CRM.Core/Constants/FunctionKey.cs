@@ -25,5 +25,7 @@
         public const string InformHeadlineContact = "InformHeadlineContact";
 
         public const string SettingLog = "ViewSettingLog";
+
+        public const string DeletedFeedbackStatistic = "DeletedFeedbackStatistic";
     }
 }

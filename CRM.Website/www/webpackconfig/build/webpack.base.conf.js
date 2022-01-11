@@ -40,6 +40,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/actionlog/index`]: pathConfig.scriptPaths.action_log,
             [`${jsPath}/pages/dashboard/index`]: pathConfig.scriptPaths.dashboard,
             [`${jsPath}/pages/adminTool/setting-log/index`]: pathConfig.scriptPaths.setting_log,
+            [`${jsPath}/pages/report/deleted-feedback-statistic/index`]: pathConfig.scriptPaths.deleted_feedback_statistic,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -66,7 +67,8 @@ function generateConfig(environment) {
             [`${cssPath}/pages/redemption/index`]: pathConfig.cssPaths.redemption,
             [`${cssPath}/pages/actionlog/index`]: pathConfig.cssPaths.action_log,
             [`${cssPath}/pages/dashboard/index`]: pathConfig.cssPaths.dashboard,
-            [`${cssPath}/pages/adminTool/setting-log/index`]: pathConfig.cssPaths.setting_log
+            [`${cssPath}/pages/adminTool/setting-log/index`]: pathConfig.cssPaths.setting_log,
+            [`${cssPath}/pages/report/deleted-feedback-statistic/index`]: pathConfig.cssPaths.deleted_feedback_statistic
         },
         output: {
             path: pathConfig.projectRoot,

@@ -232,6 +232,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted Feedback Statistic.
+        /// </summary>
+        public static string DeletedFeedbackStatistic {
+            get {
+                return ResourceManager.GetString("DeletedFeedbackStatistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have permission to delete..
         /// </summary>
         public static string DoNotDeleteCommunicationLogPermission {
