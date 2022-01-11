@@ -7,22 +7,27 @@ import LangHelper from '@jsroot/common/langHelper';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
-        const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        const firstDateOfMonth = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDay)));
-        const fromDate = firstDateOfMonth;
+        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const currentDate = this.currentDate;
+        const firstDayLastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1 , 1);
+        const firstDateFirstMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() , 1);
+        const firstDateOfMonthFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDayLastMonth)));
+        const toDate =  firstDateFirstMonth.setDate(firstDateFirstMonth.getDate() - 1);
         this.maxFromDate = currentDate;
         this.maxToDate = currentDate;
-        this.minToDate = fromDate;
+        this.minToDate = null;
         this.state = {
             handler: '',
-            fromDate: fromDate,
-            toDate: currentDate,
+            fromDate: firstDateOfMonthFormat,
+            toDate: toDate,
             actionId: 0
         };
     }
 
     handleChangeFromDate = fromDate => {
+        var maxToDateFromDate = new Date(fromDate.setMonth(new Date(fromDate.getMonth() + 12)));
+        maxToDateFromDate.setDate(new Date(fromDate.getDate() - 1));
+        this.maxToDate = maxToDateFromDate > this.currentDate ? maxToDateFromDate : this.currentDate;
         this.minToDate = fromDate;
         this.setState({
             fromDate: fromDate
@@ -30,7 +35,6 @@ export class Filter extends Component {
     };
 
     handleChangeToDate = toDate => {
-        this.maxFromDate = toDate;
         this.setState({ toDate });
     };
 
@@ -44,14 +48,11 @@ export class Filter extends Component {
     handleSubmit = () => {
         const { handler, fromDate, toDate } = this.state;
         const params = {
-            username: handler !== '' ? handler : null,
+            handler: handler !== '' ? handler : null,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
-            toDate: DateTimeService.toShortDateFormat(toDate),
-            pageIndex: 1,
-            pageSize: 100
+            toDate: DateTimeService.toShortDateFormat(toDate)
         };
 
-        this.props.setGridParams(params);
         this.props.getDeletedFeedbackStatistic(params);
     };
 

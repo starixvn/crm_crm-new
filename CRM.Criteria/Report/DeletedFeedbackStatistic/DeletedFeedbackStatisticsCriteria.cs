@@ -18,7 +18,7 @@
 
         public override string GetSettingKey()
         {
-            return "Report_DeletedFeedbackStatistics";
+            return "Acc_CRM_Rpt_DeletedFeedbackStatistics";
         }
 
         public override bool IsValid()
