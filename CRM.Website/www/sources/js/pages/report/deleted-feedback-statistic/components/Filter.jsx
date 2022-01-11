@@ -60,6 +60,7 @@ export class Filter extends Component {
             toDate: DateTimeService.toShortDateFormat(toDate)
         };
 
+        this.props.setGridParams(params);
         this.props.getDeletedFeedbackStatistic(params);
     };
 
@@ -124,6 +125,9 @@ export class Filter extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-const mapStateToProps = () => {};
+const mapStateToProps = state => {
+    const { } = state;
+    return { };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

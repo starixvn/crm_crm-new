@@ -1,4 +1,4 @@
-﻿namespace CRM.Criteria.Report.SettlementReport
+﻿namespace CRM.Criteria.Report.DeletedFeedbackStatisticsCriteria
 {
     using System;
     using CRM.Core.Constants;

@@ -1,10 +1,12 @@
 ﻿namespace CRM.Controllers.Report.Statistics
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
-    using CRM.Criteria.Report.SettlementReport;
+    using CRM.Criteria.Report.DeletedFeedbackStatisticsCriteria;
     using CRM.Models.Report.DeletedFeedbackStatistic;
+    using CRM.Models.Setting;
     using CRM.Repositories;
     using CRM.Services;
     using Fanex.NAP.Client.AspNetCore.Attributes;
@@ -15,10 +17,14 @@
     {
         private readonly IFeedbackRepository feedbackRepository;
         private readonly ICommonService commonService;
-        public DeletedFeedbackStatisticController(IFeedbackRepository feedbackRepository, ICommonService commonService)
+        private readonly ISettingService settingService;
+        public DeletedFeedbackStatisticController(IFeedbackRepository feedbackRepository,
+            ICommonService commonService,
+            ISettingService settingService)
         {
             this.feedbackRepository = feedbackRepository;
             this.commonService = commonService;
+            this.settingService = settingService;
         }
 
         //[NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
@@ -41,8 +47,9 @@
                          Handler = p.Key,
                          DeletedFeedbacks = p
                      });
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
-            return Json(new { grandTotal = deletedFeedbacks.ToList().Count, data = deletedFeedbackByHandler });
+            return Json(new { grandTotal = deletedFeedbacks.ToList().Count, data = deletedFeedbackByHandler, mainCategories });
            
         }
     }

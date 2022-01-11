@@ -2,6 +2,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 import{
+    setGridParams,
     setGridData
 } from './deletedFeedbackStatisticSlice';
 
@@ -22,6 +23,7 @@ const exportExcel = params => async () => {
 };
 
 export const ActionCreators = {
+    setGridParams,
     getDeletedFeedbackStatistic,
     setGridData,
     exportExcel

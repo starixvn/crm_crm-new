@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import { OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
+    constructor(props) {
+        super(props);
+        const now = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
+        this.state = {
+            isCollapse: false
+        };
+    }
 
     buildHeader = () => {
         return (
@@ -27,8 +33,8 @@ export class DataGrid extends Component {
 
     buildBody = () => {
         const { gridData } = this.props;
-        if (gridData.data.deletedFeedbacks.length > 0) {
-            return gridData.data.deletedFeedbacks.map((item, index) => this.renderRow(item, index));
+        if (gridData.data.length > 0) {
+            return gridData.data.map((item, index) => this.renderCollapseRow(item, index));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -89,6 +95,23 @@ export class DataGrid extends Component {
             return item.join(', ');
         }
     };
+
+    handleCollapseExpend = () => {
+        this.setState(prevState => ({
+            isCollapse: !prevState.isCollapse
+        }));
+    };
+
+    renderCollapseRow = (item, index) => {
+        let rows = [];
+        rows.push(<Row key='handler'>
+            <Cell colspan='7'>{item.handler}</Cell>
+        </Row>);
+        if(item.deletedFeedbacks.length > 0){
+            rows.push(item.deletedFeedbacks.map((item, index) => this.renderRow(item, index)));
+        }
+        return rows;
+    }
 
     renderRow = (item, index) => {
         return (
@@ -155,7 +178,7 @@ export class DataGrid extends Component {
                 <div className='table-title d-flex justify-content-between align-items-center ha'>
                     <span>Deleted Feedback Statistics</span>
                     {
-                        gridData.data.deletedFeedbacks.length > 0 && this.renderExportExcelText()
+                        gridData.data.length > 0 && this.renderExportExcelText()
                     }
                 </div>
 
@@ -176,8 +199,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, settings, gridData } = state;
-    return { gridParams, settings, gridData };
+    const { gridParams, gridData } = state;
+    return { gridParams, gridData };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);
