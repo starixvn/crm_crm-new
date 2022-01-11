@@ -12,14 +12,6 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class EditFeedbackSubject extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.formik = React.createRef();
-        this.state = {
-            showConfirmClose: false
-        };
-    }
-
     static propTypes = {
         feedback: PropTypes.shape({
             templateId: PropTypes.number,
@@ -34,6 +26,14 @@ export class EditFeedbackSubject extends PureComponent {
             isActive: true
         }
     };
+    
+    constructor(props) {
+        super(props);
+        this.formik = React.createRef();
+        this.state = {
+            showConfirmClose: false
+        };
+    }
 
     validateFormik = values => {
         const errors = {};

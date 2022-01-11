@@ -1,0 +1,29 @@
+@import '../../../components/react-grid/react-grid';
+@import '../../../components/form-filter';
+@import '../../../components/forms';
+@import '../../../components/icons';
+@import '../../../components/messages';
+@import '../../../components/modal';
+@import '../../../components/tables';
+
+.form-filter {
+    .form-row {
+        .form-group {
+            .form-control {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.modal-backdrop {
+    z-index: 1050 !important
+}
+
+.modal-dialog {
+    max-width: 600px;
+}
+
+#app-container {
+    width: 920px;
+}

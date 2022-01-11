@@ -11,7 +11,7 @@ import { Formik } from 'formik';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
-import MultipleSelect from '../../../components/multiple-select/index';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 
