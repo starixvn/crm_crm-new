@@ -8,8 +8,6 @@
     {
         public DateTime CreateDate { get; set; }
 
-        public string CreateDateString { get; set; }
-
         public string Handler { get; set; }
 
         public string Deletor { get; set; }

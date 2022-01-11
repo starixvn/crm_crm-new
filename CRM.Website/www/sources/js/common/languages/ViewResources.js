@@ -88,6 +88,7 @@
     Description: 'Description',
     Done: 'Done',
     DoneBy: 'Done By',
+    DeletedBy: 'Deleted By',
     Edit: 'Edit',
     EditedBy: 'Edited By',
     EditCommunicationLog: 'Edit Communication Log',

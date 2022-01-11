@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
+import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
@@ -15,9 +18,10 @@ export class Filter extends Component {
         const toDate =  firstDateFirstMonth.setDate(firstDateFirstMonth.getDate() - 1);
         this.maxFromDate = currentDate;
         this.maxToDate = currentDate;
-        this.minToDate = null;
+        this.minToDate = firstDateOfMonthFormat;
         this.state = {
             handler: '',
+            deletedBy: '',
             fromDate: firstDateOfMonthFormat,
             toDate: toDate,
             actionId: 0
@@ -25,13 +29,15 @@ export class Filter extends Component {
     }
 
     handleChangeFromDate = fromDate => {
-        var maxToDateFromDate = new Date(fromDate.setMonth(new Date(fromDate.getMonth() + 12)));
-        maxToDateFromDate.setDate(new Date(fromDate.getDate() - 1));
-        this.maxToDate = maxToDateFromDate > this.currentDate ? maxToDateFromDate : this.currentDate;
+        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const maxDate = new Date(fromDate.getTime());
+        maxDate.setMonth(fromDate.getMonth() + 12);
+        maxDate.setDate(fromDate.getDate() - 1);
+
         this.minToDate = fromDate;
-        this.setState({
-            fromDate: fromDate
-        });
+        this.maxToDate = maxDate < currentTime ? maxDate : currentTime;
+        const toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
+        this.setState({fromDate, toDate});
     };
 
     handleChangeToDate = toDate => {
@@ -46,9 +52,10 @@ export class Filter extends Component {
     };
 
     handleSubmit = () => {
-        const { handler, fromDate, toDate } = this.state;
+        const { handler, fromDate, toDate, deletedBy } = this.state;
         const params = {
             handler: handler !== '' ? handler : null,
+            deletedBy: deletedBy !== '' ? deletedBy : null,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate)
         };
@@ -58,7 +65,7 @@ export class Filter extends Component {
 
     render() {
 
-        const { handler, fromDate, toDate } = this.state;
+        const { handler, fromDate, toDate, deletedBy } = this.state;
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
@@ -93,7 +100,18 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group className="width-60">
+                </Form.Row>
+                <Form.Row bsPrefix='form-row'>
+                    <Form.Group>
+                        <Form.Label htmlFor="deletedBy">{LangHelper.getResource('DeletedBy')}</Form.Label>
+                        <Form.Control type="text" size="sm"
+                            value={deletedBy}
+                            name="deletedBy" id="deletedBy"
+                            className="shadow-none" autoComplete="off"
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group className="submit">
                         <Button variant="primary" size="sm" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
@@ -104,5 +122,8 @@ export class Filter extends Component {
     }
 }
 
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-export default Filter;
+const mapStateToProps = () => {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
