@@ -3,7 +3,9 @@ import Site from '@jsroot/common/site';
 
 import{
     setGridParams,
-    setGridData
+    setGridData,
+    setEditFeedbackDialog,
+    setViewRelatedCustomerDialog
 } from './deletedFeedbackStatisticSlice';
 
 const getDeletedFeedbackStatistic = params => async dispatch => {
@@ -26,5 +28,7 @@ export const ActionCreators = {
     setGridParams,
     getDeletedFeedbackStatistic,
     setGridData,
-    exportExcel
+    exportExcel,
+    setEditFeedbackDialog,
+    setViewRelatedCustomerDialog
 };

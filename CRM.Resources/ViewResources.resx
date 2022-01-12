@@ -318,4 +318,7 @@
   <data name="DeletedFeedbackStatistic" xml:space="preserve">
     <value>Deleted Feedback Statistic</value>
   </data>
+  <data name="DeletedFeedbacStatistickReport_Title" xml:space="preserve">
+    <value>Deleted_Feedback_Statistics</value>
+  </data>
 </root>

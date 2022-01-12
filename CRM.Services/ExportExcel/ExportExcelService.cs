@@ -7,6 +7,7 @@
     using CRM.Models.Feedback;
     using CRM.Models.InformHeadline;
     using CRM.Models.PicAndHeadline;
+    using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.SettlementReport;
     using CRM.Models.Setting;
     using CRM.Services.ExportExcel;
@@ -42,6 +43,8 @@
         byte[] ExportNewInformHeadline(IEnumerable<NewInform> newInforms, IEnumerable<InformStatus> informStatuses, string title);
 
         byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
+
+        byte[] ExportDeletedFeedbackStatisticReport(IEnumerable<DeletedFeedbackStatistic> deletedFeedbacks, IEnumerable<Setting> mainCategories)
     }
 
     public class ExportExcelService : IExportExcelService
@@ -136,6 +139,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/ManageFeedback.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories);
+            return excel.Export();
+        }
+
+        public byte[] ExportDeletedFeedbackStatisticReport(IEnumerable<DeletedFeedbackStatistic> deletedFeedbacks, IEnumerable<Setting> mainCategories)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/Deleted_Feedback_Statistics.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new DeletedFeedbackExcel(templatePath, deletedFeedbacks, mainCategories);
             return excel.Export();
         }
     }

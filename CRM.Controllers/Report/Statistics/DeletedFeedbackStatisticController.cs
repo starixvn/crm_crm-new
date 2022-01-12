@@ -8,6 +8,7 @@
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Setting;
     using CRM.Repositories;
+    using CRM.Resources;
     using CRM.Services;
     using Fanex.NAP.Client.AspNetCore.Attributes;
     using Fanex.NAP.Core.Business;
@@ -18,13 +19,16 @@
         private readonly IFeedbackRepository feedbackRepository;
         private readonly ICommonService commonService;
         private readonly ISettingService settingService;
+        private readonly IExportExcelService excelService;
         public DeletedFeedbackStatisticController(IFeedbackRepository feedbackRepository,
             ICommonService commonService,
-            ISettingService settingService)
+            ISettingService settingService,
+            IExportExcelService excelService)
         {
             this.feedbackRepository = feedbackRepository;
             this.commonService = commonService;
             this.settingService = settingService;
+            this.excelService = excelService;
         }
 
         //[NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
@@ -50,7 +54,19 @@
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
             return Json(new { data = deletedFeedbackByHandler, mainCategories });
-           
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcel([FromBody] DeletedFeedbackStatisticsCriteria criteria)
+        {
+            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            var deletedFeedbacks = await feedbackRepository.GetDeletedFeedbackStatisticAsync(criteria);
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+
+            var bytes = excelService.ExportDeletedFeedbackStatisticReport(deletedFeedbacks, mainCategories);
+            string reportName = ViewResources.DeletedFeedbacStatistickReport_Title;
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }
 }

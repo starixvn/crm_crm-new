@@ -241,6 +241,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted_Feedback_Statistics.
+        /// </summary>
+        public static string DeletedFeedbacStatistickReport_Title {
+            get {
+                return ResourceManager.GetString("DeletedFeedbacStatistickReport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have permission to delete..
         /// </summary>
         public static string DoNotDeleteCommunicationLogPermission {

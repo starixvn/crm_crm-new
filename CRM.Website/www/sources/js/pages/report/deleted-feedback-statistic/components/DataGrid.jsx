@@ -93,7 +93,7 @@ export class DataGrid extends Component {
                     {totalItems} customers
                 </a>
             );
-        }else{
+        } else{
             return item.join(', ');
         }
     };
@@ -143,7 +143,7 @@ export class DataGrid extends Component {
 
     renderFooter = data => {
         const totalGrands = data.reduce( (accumulator, currentValue) => {
-            return accumulator.deletedFeedbacks.length + currentValue;
+            return accumulator + currentValue.deletedFeedbacks.length;
         }, 0);
         return (
                 <Row key='footer' className='footer-container font-weight-bold'>
@@ -190,7 +190,6 @@ export class DataGrid extends Component {
                         gridData.data.length > 0 && this.renderExportExcelText()
                     }
                 </div>
-
                 <Table
                     width={1200}
                     autoWidth={false}

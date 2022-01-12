@@ -7,12 +7,14 @@
 @import '../../../components/date-picker/style';
 
 .form-filter {
+    min-width: 1120px;
+    
     .react-datepicker__input-container input{
         width: 100% !important;
     }
 
     .submit{
-        margin-left: 60px;
+        margin-left: 98px;
     }
 }
 
