@@ -16,3 +16,46 @@
     }
 }
 
+.parent-level-0{
+    height: 29px;
+
+    td{
+        background-color: #e3e3e3 !important;
+
+        .text-handler{
+            color: #0054a6 !important;
+            cursor: pointer;
+        }
+    }
+}
+
+.footer-container td{
+    background: #c0cae3!important;
+    color: #0054a6 !important;
+}
+
+.table > tbody .child{ 
+    td{
+        background-color: #fff !important;
+    }
+    
+    &:hover td{
+		background-color: #f0edc4 !important;
+    }	
+}
+
+.link-click{
+    outline: none;
+    color: #0255a5;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        color: $draft-color !important;
+    }
+}
+
+.table-title {
+    max-width: 1200px;
+}
+

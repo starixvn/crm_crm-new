@@ -4,7 +4,9 @@ const deletedFeedbackStatisticSlice = createSlice({
     name: 'deletedFeedbackStatistic',
     initialState: {
         gridParams: null,
-        gridData: null
+        gridData: null,
+        ditFeedbackDialog: { show: false },
+        viewRelatedCustomerDialog: { show: false }
     },
     reducers: {
         setGridParams: (state, action) => {
@@ -12,6 +14,12 @@ const deletedFeedbackStatisticSlice = createSlice({
         },
         setGridData: (state, action) => {
             state.gridData = action.payload;
+        },
+        setEditFeedbackDialog: (state, action) => {
+            state.editFeedbackDialog = action.payload;
+        },
+        setViewRelatedCustomerDialog: (state, action) => {
+            state.viewRelatedCustomerDialog = action.payload;
         }
     }
 });

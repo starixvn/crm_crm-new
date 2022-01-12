@@ -11,7 +11,6 @@ import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
 export class DataGrid extends Component {
     constructor(props) {
         super(props);
-        const now = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
             isCollapse: false
         };
@@ -33,8 +32,11 @@ export class DataGrid extends Component {
 
     buildBody = () => {
         const { gridData } = this.props;
+        let rows = [];
         if (gridData.data.length > 0) {
-            return gridData.data.map((item, index) => this.renderCollapseRow(item, index));
+            rows.push(gridData.data.map((item, index) => this.renderCollapseRow(item, index)));
+            rows.push(this.renderFooter(gridData.data));
+            return rows;
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -104,9 +106,14 @@ export class DataGrid extends Component {
 
     renderCollapseRow = (item, index) => {
         let rows = [];
-        rows.push(<Row key='handler'>
-            <Cell colspan='7'>{item.handler}</Cell>
-        </Row>);
+        rows.push(
+            <Row key={`parent ${index}`} className='parent-level-0'>
+                <Cell colSpan='7' onClick={this.handleCollapseExpend}>
+                    <span className={`expand-icon fa pr-2 ${!this.state.isCollapse ? 'fa-caret-down' : 'fa-caret-right'}`} />
+                    <span className='text-handler font-weight-bold'>{item.handler} ({item.deletedFeedbacks.length})</span>
+                </Cell>
+            </Row>
+        );
         if(item.deletedFeedbacks.length > 0){
             rows.push(item.deletedFeedbacks.map((item, index) => this.renderRow(item, index)));
         }
@@ -115,33 +122,35 @@ export class DataGrid extends Component {
 
     renderRow = (item, index) => {
         return (
-            <Row key={index} className="deleted">
-                <Cell>{DateTimeService.toShortDateTimeFormat(item.createDate)}</Cell>
-                <Cell>{item.handler}</Cell>
-                <Cell>{item.deletor}</Cell>
-                <Cell>
-                    <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
-                        <span className="rounded-circle fa fa-pencil-square-o" />
-                        <strong className='link-click'>{item.subject}</strong>
-                    </div>
-                    <div className="feedback-info">
-                        <div className="info">Feedback date <strong> {DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</strong></div>
-                        <div className="info">By<strong> {item.creatorName} </strong>on {DateTimeService.toShortDateTimeFormat(item.createDate)}</div>
-                        {
-                            item.reviewerName &&
-                            <div className="info">
-                                Reviewed by <strong> {item.reviewerName} </strong> on {DateTimeService.toShortDateTimeFormat(item.solveDate)}
-                            </div>
-                        }
-                    </div>
-                </Cell>
-                <Cell>{this.renderCategoryColumn(item)}</Cell>
-                <Cell>{item.customer}</Cell>
-                <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
-            </Row>
+            <Collapse in={!this.state.isCollapse}>
+                <Row key={`child ${index}`} className={`child ${index}`}>
+                    <Cell>{DateTimeService.toShortDateTimeFormat(item.createDate)}</Cell>
+                    <Cell>{item.handler}</Cell>
+                    <Cell>{item.deletor}</Cell>
+                    <Cell>
+                        <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
+                            <strong className='link-click'>{item.subject}</strong>
+                        </div>
+                    </Cell>
+                    <Cell>{this.renderCategoryColumn(item)}</Cell>
+                    <Cell>{item.customer}</Cell>
+                    <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
+                </Row>
+            </Collapse>
+            
         );
     };
 
+    renderFooter = data => {
+        const totalGrands = data.reduce( (accumulator, currentValue) => {
+            return accumulator.deletedFeedbacks.length + currentValue;
+        }, 0);
+        return (
+                <Row key='footer' className='footer-container font-weight-bold'>
+                    <Cell colSpan='7'>Grand Total ({totalGrands})</Cell>
+                </Row>
+        );
+    }
     handleExportExcel = () => {
         const { gridParams } = this.props;
         this.props.exportExcel(gridParams);
@@ -175,7 +184,7 @@ export class DataGrid extends Component {
 
         return (
             <>
-                <div className='table-title d-flex justify-content-between align-items-center ha'>
+                <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>Deleted Feedback Statistics</span>
                     {
                         gridData.data.length > 0 && this.renderExportExcelText()

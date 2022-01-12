@@ -49,7 +49,7 @@
                      });
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
-            return Json(new { grandTotal = deletedFeedbacks.ToList().Count, data = deletedFeedbackByHandler, mainCategories });
+            return Json(new { data = deletedFeedbackByHandler, mainCategories });
            
         }
     }
