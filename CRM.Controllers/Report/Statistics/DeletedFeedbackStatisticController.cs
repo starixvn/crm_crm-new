@@ -62,9 +62,16 @@
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
             var deletedFeedbacks = await feedbackRepository.GetDeletedFeedbackStatisticAsync(criteria);
+            var deletedFeedbackGroup = deletedFeedbacks.GroupBy(p => p.Handler);
+            var deletedFeedbackByHandler = deletedFeedbackGroup.Select(p =>
+                     new DeletedFeedbackByHandler
+                     {
+                         Handler = p.Key,
+                         DeletedFeedbacks = p
+                     });
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
-            var bytes = excelService.ExportDeletedFeedbackStatisticReport(deletedFeedbacks, mainCategories);
+            var bytes = excelService.ExportDeletedFeedbackStatisticReport(deletedFeedbackByHandler, mainCategories);
             string reportName = ViewResources.DeletedFeedbacStatistickReport_Title;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }

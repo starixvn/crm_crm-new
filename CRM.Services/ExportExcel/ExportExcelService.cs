@@ -44,7 +44,7 @@
 
         byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
 
-        byte[] ExportDeletedFeedbackStatisticReport(IEnumerable<DeletedFeedbackStatistic> deletedFeedbacks, IEnumerable<Setting> mainCategories)
+        byte[] ExportDeletedFeedbackStatisticReport(IEnumerable<DeletedFeedbackByHandler> deletedFeedbacks, IEnumerable<Setting> mainCategories);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -142,11 +142,11 @@
             return excel.Export();
         }
 
-        public byte[] ExportDeletedFeedbackStatisticReport(IEnumerable<DeletedFeedbackStatistic> deletedFeedbacks, IEnumerable<Setting> mainCategories)
+        public byte[] ExportDeletedFeedbackStatisticReport(IEnumerable<DeletedFeedbackByHandler> deletedFeedbacks, IEnumerable<Setting> mainCategories)
         {
             const string ExcelTemplatePath = "ExcelTemplates/Deleted_Feedback_Statistics.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new DeletedFeedbackExcel(templatePath, deletedFeedbacks, mainCategories);
+            var excel = new DeletedFeedbackStatisticExcel(templatePath, deletedFeedbacks, mainCategories);
             return excel.Export();
         }
     }

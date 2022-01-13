@@ -5,7 +5,6 @@ import deletedFeedback, {
     setEditFeedbackDialog,
     setEditNoOfInquiryDialog,
     setEditMultipleLogStatusDialog,
-    setEditMultipleLogStatuses,
     setEditMultipleLogDialog
 } from '../manageFeedbackSlice';
 

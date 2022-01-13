@@ -19,8 +19,8 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('Date')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('Handler')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('Date')}</HeaderCell>
+                <HeaderCell colWidth={12}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('DeletedBy')}</HeaderCell>
                 <HeaderCell colWidth={35}>{LangHelper.getResource('Feedback')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Category')}</HeaderCell>
@@ -124,7 +124,7 @@ export class DataGrid extends Component {
         return (
             <Collapse in={!this.state.isCollapse}>
                 <Row key={`child ${index}`} className={`child ${index}`}>
-                    <Cell>{DateTimeService.toShortDateTimeFormat(item.createDate)}</Cell>
+                    <Cell>{DateTimeService.toShortDateFormat(item.createDate)}</Cell>
                     <Cell>{item.handler}</Cell>
                     <Cell>{item.deletor}</Cell>
                     <Cell>

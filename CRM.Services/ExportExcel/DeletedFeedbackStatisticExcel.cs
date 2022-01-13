@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
     using System.Linq;
     using CRM.Core;
     using CRM.Models.Feedback;
@@ -13,17 +14,19 @@
 
     public class DeletedFeedbackStatisticExcel : ExcelBase
     {
-        private readonly IEnumerable<DeletedFeedbackStatistic> deletedFeedbacks;
+        private readonly IEnumerable<DeletedFeedbackByHandler> deletedFeedbacks;
         private readonly IEnumerable<Setting> mainCategories;
 
-        private const byte RowStartBody = 5;
+        private const int RowStartBody = 5;
         private const byte RowStartHeader = 4;
-        private const byte StartComToolsIndex = 7;
+        private const byte TotalColumns = 7;
+
+        protected static readonly Color GroupBackgroundColor = Color.FromArgb(215, 215, 215);
 
         public DeletedFeedbackStatisticExcel(
             string templatePath,
-            IEnumerable<DeletedFeedbackStatistic> deletedFeedbacks,
-            IEnumerable<Setting> mainCategories) : base(templatePath, 0, ViewResources.DeletedFeedback)
+            IEnumerable<DeletedFeedbackByHandler> deletedFeedbacks,
+            IEnumerable<Setting> mainCategories) : base(templatePath, 0, ViewResources.DeletedFeedbackStatistic)
         {
             this.deletedFeedbacks = deletedFeedbacks;
             this.mainCategories = mainCategories;
@@ -31,43 +34,70 @@
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]
-                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
-            worksheet.Cells[1, 1].Value = string.Format(ViewResources.DeletedFeedback);
+            templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalColumns]
+                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalColumns]);
+            worksheet.Cells[1, 1].Value = string.Format(ViewResources.DeletedFeedbackStatistic);
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]
-                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]);
+            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, TotalColumns]
+                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, TotalColumns]);
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            int rowIndex = RowStartBody;
+            var colIndex = 1;
+            var rowIndex = RowStartBody;
+            var countTotalGrant = 0;
+            var countLastItem = 0;
             for (var index = 0; index < deletedFeedbacks.Count(); index++)
             {
-                RenderRow(worksheet, deletedFeedbacks.ToList()[index], index + 1, rowIndex++);
+                var feedbacksDetails = deletedFeedbacks.ToList()[index];
+                rowIndex += index;
+
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalColumns], GroupBackgroundColor);
+                SetColor(worksheet.Cells[rowIndex, 1, rowIndex, TotalColumns]);
+                var handlerFormat = string.Format("{0} ({1})", feedbacksDetails.Handler, feedbacksDetails.DeletedFeedbacks.Count());
+                countTotalGrant += feedbacksDetails.DeletedFeedbacks.Count();
+
+                worksheet.Cells[rowIndex++, 1].Value = handlerFormat;
+                foreach (var feedback in feedbacksDetails.DeletedFeedbacks)
+                {
+                    countLastItem++;
+                    colIndex = 1;
+                    var categoryContents = BuildCategoryContent(feedback, mainCategories);
+                    var categoryCellValue = String.Join("\n\n", categoryContents);
+                    worksheet.Cells[rowIndex, colIndex++].Value = feedback.CreateDate.ToString("MMM dd, yyyy");
+                    worksheet.Cells[rowIndex, colIndex++].Value = feedback.Handler;
+                    worksheet.Cells[rowIndex, colIndex++].Value = feedback.Deletor;
+                    worksheet.Cells[rowIndex, colIndex++].Value = feedback.Subject;
+                    worksheet.Cells[rowIndex, colIndex++].Value = categoryCellValue;
+                    worksheet.Cells[rowIndex, colIndex++].Value = feedback.Customer;
+                    worksheet.Cells[rowIndex, colIndex].Value = feedback.RelatedCustomer.Replace(",", ", ");
+
+                    if(countLastItem != feedbacksDetails.DeletedFeedbacks.Count())
+                    {
+                        rowIndex++;
+                    }
+                }
             }
+
+            SetBackgroundTotalRow(worksheet.Cells[rowIndex, 1, rowIndex, TotalColumns]);
+            worksheet.Cells[rowIndex, 1].Value = string.Format("Grand Total ({0})", countTotalGrant);
         }
 
-        protected internal virtual void RenderRow(ExcelWorksheet worksheet, DeletedFeedbackStatistic feedbackDetail, int index, int rowIndex)
+        protected internal virtual void SetColor(ExcelRange cell)
         {
-            //var colIndex = 1;
-            //var feedbackCellValue = GetFeedbackCellValue(feedbackDetail);
-            //var categoryContents = BuildCategoryContent(feedbackDetail, mainCategories);
-            //var categoryCellValue = String.Join("\n\n", categoryContents);
-            //worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.FeedbackId;
-            //worksheet.Cells[rowIndex, colIndex++].Value = feedbackCellValue;
-            //worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Customer;
-            //worksheet.Cells[rowIndex, colIndex++].Value = categoryCellValue;
-            //worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Status;
-            //worksheet.Cells[rowIndex, colIndex].Value = feedbackDetail.RelatedCustomer.Replace(",", ", ");
+            cell.Style.Font.Color.SetColor(HeaderTitleColor);
+            cell.Style.Font.Bold = true;
+        }
 
-            //if ((index & 1) == 0)
-            //{
-            //    SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
-            //}
+        protected internal virtual void SetBackgroundTotalRow(ExcelRange cell)
+        {
+            SetBackgroundColor(cell, HeaderTitleColor);
+            cell.Style.Font.Color.SetColor(Color.White);
+            cell.Style.Font.Bold = true;
         }
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
@@ -79,33 +109,42 @@
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
-            worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Cells.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
-            const int WidthNormal = 15;
-            const int RowHeight = 60;
+            var rowIndex = RowStartBody - 1;
+            const int RowHeight = 30;
+            const int WidthNormal = 25;
             const int WidthLarge = 35;
-            const int ColumnRunningNo = 1;
-            const int ColumnFeedback = 2;
-            const int ColumnCustomer = 3;
-            const int ColumnCategory = 4;
-            const int ColumnStatus = 5;
-            const int ColumnRelCustomer = 6;
-            const int TotalColumn = ColumnRelCustomer;
+            const int ColumnDate = 1;
+            const int ColumnHandler = 2;
+            const int ColumnDeletedBy = 3;
+            const int ColumnFeedback = 4;
+            const int ColumnCategory = 5;
+            const int Customer = 6;
+            const int ColumnRelCustomer = 7;
             worksheet.DefaultColWidth = WidthLarge;
             worksheet.Cells.AutoFitColumns();
-            worksheet.Column(ColumnRunningNo).Width = WidthNormal;
+            worksheet.Column(ColumnDate).Width = WidthNormal;
+            worksheet.Column(ColumnHandler).Width = WidthNormal;
+            worksheet.Column(ColumnDeletedBy).Width = WidthNormal;
             worksheet.Column(ColumnFeedback).Width = WidthLarge;
-            worksheet.Column(ColumnCustomer).Width = WidthLarge;
             worksheet.Column(ColumnCategory).Width = WidthLarge;
-            worksheet.Column(ColumnStatus).Width = WidthNormal;
-            worksheet.Column(ColumnRelCustomer).Width = WidthLarge;
+            worksheet.Column(Customer).Width = WidthNormal;
+            worksheet.Column(ColumnRelCustomer).Width = WidthNormal;
             for (var index = 0; index < deletedFeedbacks.Count(); index++)
             {
-                worksheet.Row(RowStartBody + index).Height = RowHeight;
-                DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumn]);
+                rowIndex++;
+                var feebackDetails = deletedFeedbacks.ToList()[index].DeletedFeedbacks.ToList();
+                for (var indexFb = 0; indexFb < feebackDetails.Count; indexFb++)
+                {
+                    rowIndex++;
+                    worksheet.Row(rowIndex).Height = RowHeight;
+                    DrawBorderCell(worksheet.Cells[rowIndex, 1, rowIndex, TotalColumns]);
+                }
             }
         }
 
@@ -154,24 +193,6 @@
             var child = mainCategory?.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
             return child == null ? string.Empty : child.Name;
         }
-
-        //protected static string GetFeedbackCellValue(DeletedFeedbackStatistic deletedFeedback)
-        //{
-        //    var cellValue = string.Format(
-        //        "{0}\n{1}\n{2}\n{3}",
-        //        deletedFeedback.Subject,
-        //        "Feedback date " + deletedFeedback.FeedbackDate.ToShortDateTimeFormat(),
-        //        "By " + deletedFeedback.CreatorName + " on " + deletedFeedback.CreateDate.ToShortDateTimeFormat(),
-        //        "Solving Duration: " + deletedFeedback.DurationTime);
-
-        //    if (!string.IsNullOrEmpty(deletedFeedback.ReviewerName))
-        //    {
-        //        var reviewText = string.Format("\nReviewed by {0} on {1}", deletedFeedback.ReviewerName, deletedFeedback.SolveDate.ToShortDateTimeFormat());
-        //        return cellValue + reviewText;
-        //    }
-
-        //    return cellValue;
-        //}
     }
 }
 
