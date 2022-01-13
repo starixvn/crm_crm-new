@@ -8,6 +8,7 @@
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using NSubstitute;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -83,15 +84,15 @@
                     problemsAccount.IsTest);
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var criteria = new ProblemsAccountImportCommand();
-
-            var expected = fixture.Create<CommandResult>();
-            baseService.ExecuteNonQueryAsync(Arg.Do<ProblemsAccountImportCommand>(x => criteria = x)).Returns(expected);
+            var commandResult = fixture.Create<CommandResult>();
+            var valueTupe = new ValueTuple<CommandResult, ProblemsAccountImportCommand>(commandResult, criteria);
+            baseService.ExecuteNonQueryAsync(Arg.Do<ProblemsAccountImportCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
             var actual = await service.ImportProblemsAccountInfoAsync(problemsAccounts, Constants.DefaultEnvironment);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);

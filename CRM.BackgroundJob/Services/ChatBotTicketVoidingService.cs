@@ -23,7 +23,8 @@
 
         Task<IEnumerable<ChatBotUserNameList>> GetChatBotAbnormalAccountGetUsernameList(IEnumerable<ChatBotVoidingHistory> voidingHis);
 
-        Task<CommandResult> ImportVoidingMessageAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages, IEnumerable<ChatBotUserNameList> userNames);
+        Task<ValueTuple<CommandResult, ImportChatBotVoidingMessageCriteria>> ImportVoidingMessageAsync(
+            IEnumerable<ChatBotVoidingMessage> voidingMessages, IEnumerable<ChatBotUserNameList> userNames);
 
         Task<IEnumerable<ChatBotUserNameList>> GetImportMessageByBatchSize(int batchSize);
 
@@ -37,7 +38,7 @@
             bool IncludeUUSCurrency
             );
 
-        Task<CommandResult> ImportTicketVoidingAsync(
+        Task<ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
             IEnumerable<VoidingMessage> voidingMessages,
@@ -82,7 +83,8 @@
         }
 
 
-        public async Task<CommandResult> ImportVoidingMessageAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages, IEnumerable<ChatBotUserNameList> userNames)
+        public async Task<ValueTuple<CommandResult, ImportChatBotVoidingMessageCriteria>> ImportVoidingMessageAsync(
+            IEnumerable<ChatBotVoidingMessage> voidingMessages, IEnumerable<ChatBotUserNameList> userNames)
         {
             const string XmlTemplate = "<r MessageID='{0}' RequestID='{1}' UsernameList='{2}' CustIdList='{3}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
@@ -102,7 +104,8 @@
             {
                 Messages = stringBuilder.ToString(),
             };
-            return await baseService.ExecuteNonQueryAsync(criteria);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
+            return new ValueTuple<CommandResult, ImportChatBotVoidingMessageCriteria>(commandResult, criteria);
         }
 
         public async Task<IEnumerable<ChatBotUserNameList>> GetImportMessageByBatchSize(int batchSize)
@@ -156,7 +159,7 @@
             return await baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(criteria);
         }
 
-        public async Task<CommandResult> ImportTicketVoidingAsync(
+        public async Task<ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
             IEnumerable<VoidingMessage> voidingMessages,
@@ -200,7 +203,9 @@
                 Environment = Environment,
                 Messages = messageStringBuilder.ToString()
             };
-            return await baseService.ExecuteNonQueryAsync(criteria);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
+            var valueTupe = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResult, criteria);
+            return valueTupe;
         }
     }
 }

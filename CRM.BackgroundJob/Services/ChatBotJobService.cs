@@ -81,30 +81,32 @@
             {
                 userNameList = await ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis);
             }
-            CommandResult commandResult = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList);
-            if (commandResult.IsSuccessful)
+            var commandResult = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList);
+            if (commandResult.Item1.IsSuccessful)
             {
                 var messageImport = await ticketVoidingService.GetImportMessageByBatchSize(setting.BatchSize);
                 IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(messageImport);
                 var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(messageImport, Environment, setting.IncludeUUSCurrency);
-                CommandResult commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
+                var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
                     messages,
                     ticketInfos.Item1,
                     ticketInfos.Item2,
                     Environment);
-                if (commandResultImportTicket.IsSuccessful)
+                if (commandResultImportTicket.Item1.IsSuccessful)
                 {
                     logService.LogInformation("Successful!!!");
                     await sendNotificationService.SendNotificationToLetstalk();
                 }
                 else
                 {
-                    logService.LogInformation(commandResultImportTicket.Message);
+                    await logService.ErrorAsync(commandResultImportTicket.Item1, commandResultImportTicket.Item2);
+                    logService.LogInformation(commandResultImportTicket.Item1.Message);
                 }
             }
             else
             {
-                logService.LogInformation(commandResult.Message);
+                logService.LogInformation(commandResult.Item1.Message);
+                await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
             }
         }
 
@@ -117,14 +119,15 @@
                 return;
             }
             IEnumerable<ChatBotCWLInfo> cwlInfors = await chatBotCWLService.GetChatbotCWLLogInfoAsync(setting.LastLogId, setting.BatchSize);
-            CommandResult commandResult = await chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Environment);
-            if (commandResult.IsSuccessful)
+            var result = await chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Environment);
+            if (result.Item1.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();
             }
             else
             {
-                logService.LogInformation(commandResult.Message);
+                logService.LogInformation(result.Item1.Message);
+                await logService.ErrorAsync(result.Item1, result.Item2);
             }
         }
 
@@ -138,14 +141,15 @@
             }
             IEnumerable<TOReachInfor> tOReachInfors = await chatBotCTOService.GetChatbotCTOSettingInfoAsync(settingCTO.LastLogId, settingCTO.BatchSize);
             IEnumerable<TOSMAInfor> tOSMAInfors = await chatBotCTOService.GetChatbotCTOSMAInfoAsync(tOReachInfors);
-            CommandResult commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Environment);
-            if (commandResult.IsSuccessful)
+            var commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Environment);
+            if (commandResult.Item1.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();
             }
             else
             {
-                logService.LogInformation(commandResult.Message);
+                logService.LogInformation(commandResult.Item1.Message);
+                await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
             }
         }
 
@@ -159,14 +163,15 @@
             }
             IEnumerable<ChatBotProblemsAccountInfor> problemsAcountInfors = await chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(
                 settingProblemsAccount.LastLogId, settingProblemsAccount.BatchSize);
-            CommandResult commandResult = await chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Environment);
-            if (commandResult.IsSuccessful)
+            var commandResult = await chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Environment);
+            if (commandResult.Item1.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();
             }
             else
             {
-                logService.LogInformation(commandResult.Message);
+                logService.LogInformation(commandResult.Item1.Message);
+                await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
             }
         }
 
@@ -205,13 +210,14 @@
                 voidingMessageInfo.Item2, voidingMessageInfo.Item3, Environment, resultAmendmentInfo.Item2
                 );
 
-            if (commandResult.IsSuccessful)
+            if (commandResult.Item1.IsSuccessful)
             {
                 await sendNotificationService.SendNotificationToLetstalk();
             }
             else
             {
-                logService.LogInformation(commandResult.Message);
+                logService.LogInformation(commandResult.Item1.Message);
+                await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
             }
         }
     }

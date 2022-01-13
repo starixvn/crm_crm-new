@@ -83,7 +83,6 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var expected = fixture.Create<CommandResult>();
             var voidingMessages = new List<ChatBotVoidingMessage>
             {
                 new ChatBotVoidingMessage
@@ -108,14 +107,16 @@
             stringBuilder.AppendFormat(XmlTemplate, userName.MessageId, userName.RequestId, userName.UsernameList, userName.CustIdList);
             var xml = stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant()).ToString();
             var criteria = new ImportChatBotVoidingMessageCriteria();
+            var commandResult = fixture.Create<CommandResult>();
+            var valueTupe = new ValueTuple<CommandResult, ImportChatBotVoidingMessageCriteria>(commandResult, criteria);
             var service = GetService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotVoidingMessageCriteria>(x => criteria = x)).Returns(expected);
+            baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotVoidingMessageCriteria>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
             var actual = await service.ImportVoidingMessageAsync(voidingMessages, userNames);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(xml, criteria.Messages);
         }
 
@@ -305,16 +306,18 @@
                     HttpUtility.HtmlEncode(message?.Content_vn),
                     ticketInfo.Type);
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
-            var expected = fixture.Create<CommandResult>();
+            var commandResult = fixture.Create<CommandResult>();
             var criteria = new ImportChatBotTicketVoidingInfoCommand();
+            var valueTupe = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResult, criteria);
+
             var service = GetService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(expected);
+            baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
             var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, voidings, Constants.DefaultEnvironment);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
             Assert.Equal(messageStringBuilder.ToString(), criteria.Messages);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
@@ -371,16 +374,18 @@
                     "",
                     ticketInfo.Type);
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
-            var expected = fixture.Create<CommandResult>();
+            var commandResult = fixture.Create<CommandResult>();
             var criteria = new ImportChatBotTicketVoidingInfoCommand();
+            var valueTupe = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResult, criteria);
+
             var service = GetService();
-            baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(expected);
+            baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
             var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, voidings, Constants.DefaultEnvironment);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);

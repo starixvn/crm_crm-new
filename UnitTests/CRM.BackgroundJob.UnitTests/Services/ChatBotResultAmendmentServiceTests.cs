@@ -237,14 +237,15 @@
             var targetMessages = fixture.Create<IEnumerable<TargetMessage>>();
             var targetMessagesInfo = fixture.Create<IEnumerable<TargetMessageInfo>>();
             var criteria = new ImportChatBotResultAmendmentCommand();
-            var expected = fixture.Create<CommandResult>();
-            baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotResultAmendmentCommand>(x => criteria = x)).Returns(expected);
+            var commandResult = fixture.Create<CommandResult>();
+            var valueTupe = new ValueTuple<CommandResult, ImportChatBotResultAmendmentCommand>(commandResult, criteria);
+            baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotResultAmendmentCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
             var actual = await service.ImportChatBotAmendmentResultAsync(ticketEvents, transactions, messages, targetMessages, targetMessagesInfo, Constants.DefaultEnvironment, "Servername");
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(ticketEvents.ToXML("root").ToString(), criteria.TicketData);
             Assert.Equal(stringBuilderEventData.ToString(), criteria.EventData);
             Assert.Equal(xmlTemplateMessage, criteria.MessageData);

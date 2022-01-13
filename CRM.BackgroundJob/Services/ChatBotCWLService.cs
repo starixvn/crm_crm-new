@@ -8,12 +8,14 @@ using Fanex.CRM.BackgroundJob.Constants;
 using CRM.Core.Models;
 using CRM.Core.Services;
 using Fanex.RemotingRef;
+using System;
+
 namespace CRM.BackgroundJob.Services
 {
     public interface IChatBotCWLService
     {
         Task<IEnumerable<ChatBotCWLInfo>> GetChatbotCWLLogInfoAsync(long LastLogId, int BatchSize);
-        Task<CommandResult> ImportCWLLogInfoAsync(
+        Task<ValueTuple<CommandResult, ImportCWLLogInfoCommand>> ImportCWLLogInfoAsync(
             IEnumerable<ChatBotCWLInfo> cwlInfors, 
             string Environment = Constants.DefaultEnvironment);
     }
@@ -38,7 +40,7 @@ namespace CRM.BackgroundJob.Services
             return await baseService.GetDataAsync<ChatBotCWLInfo>(criteria);
         }
 
-        public async Task<CommandResult> ImportCWLLogInfoAsync(
+        public async Task<ValueTuple<CommandResult, ImportCWLLogInfoCommand>> ImportCWLLogInfoAsync(
             IEnumerable<ChatBotCWLInfo> cwlInfors, 
             string Environment = Constants.DefaultEnvironment)
         {
@@ -77,7 +79,9 @@ namespace CRM.BackgroundJob.Services
                 XmlData = stringBuilder.ToString(),
                 Environment = Environment
             };
-            return await baseService.ExecuteNonQueryAsync(criteria);
+
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
+            return new ValueTuple<CommandResult, ImportCWLLogInfoCommand>(commandResult, criteria);
         }
 
         public string GetProductName(string productId, string languageCode)

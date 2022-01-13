@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Models.TurnoverControll;
     using CRM.BackgroundJob.Services;
@@ -11,7 +10,6 @@
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Fanex.RemotingRef;
-    using Microsoft.AspNetCore.Hosting;
     using NSubstitute;
     using Xunit;
 
@@ -369,8 +367,6 @@
             {
                 Desc = "test"
             };
-            var enviroment = System.Environment.CurrentDirectory;
-            string projectDirectory = Directory.GetParent(enviroment).Parent.FullName;
             // Act
             var actual = service.GetFeedbackTemplates<TODescriptionTemplate>("TestTemplate.xml");
 

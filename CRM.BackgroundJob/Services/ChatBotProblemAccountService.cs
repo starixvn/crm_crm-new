@@ -5,6 +5,7 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
+    using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
@@ -13,7 +14,7 @@
     {
         Task<IEnumerable<ChatBotProblemsAccountInfor>> GetChatbotProblemAccountInfoAsync(long LastLogId, int BatchSize);
 
-        Task<CommandResult> ImportProblemsAccountInfoAsync(IEnumerable<ChatBotProblemsAccountInfor> problemsAccounts,
+        Task<ValueTuple<CommandResult, ProblemsAccountImportCommand>> ImportProblemsAccountInfoAsync(IEnumerable<ChatBotProblemsAccountInfor> problemsAccounts,
                                                   string Environment = Constants.DefaultEnvironment);
     }
 
@@ -38,7 +39,7 @@
             return await baseService.GetDataAsync<ChatBotProblemsAccountInfor>(criteria);
         }
 
-        public async Task<CommandResult> ImportProblemsAccountInfoAsync(IEnumerable<ChatBotProblemsAccountInfor> problemsAccounts,
+        public async Task<ValueTuple<CommandResult, ProblemsAccountImportCommand>> ImportProblemsAccountInfoAsync(IEnumerable<ChatBotProblemsAccountInfor> problemsAccounts,
                                                   string Environment = Constants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' Username='{2}' " +
@@ -74,7 +75,8 @@
                 XmlData = stringBuilder.ToString(),
                 Environment = Environment
             };
-            return await baseService.ExecuteNonQueryAsync(criteria);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
+            return new ValueTuple<CommandResult, ProblemsAccountImportCommand>(commandResult, criteria);
         }
     }
 }

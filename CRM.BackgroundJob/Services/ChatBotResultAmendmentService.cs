@@ -28,14 +28,15 @@
 
         Task<IEnumerable<Message>> GetChatBotMessageInfoAsync(IEnumerable<int> messageIds);
 
-        Task<CommandResult> ImportChatBotAmendmentResultAsync(
+        Task<ValueTuple<CommandResult, ImportChatBotResultAmendmentCommand>> ImportChatBotAmendmentResultAsync(
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
             IEnumerable<AmendmentResultTransaction> transactions,
             IEnumerable<Message> messages,
             IEnumerable<TargetMessage> targetMessages,
             IEnumerable<TargetMessageInfo> targetMessagesInfo,
             string Environment,
-            string Servername);
+            string Servername
+            );
     }
 
     public class ChatBotResultAmendmentService : IChatBotResultAmendmentService
@@ -122,7 +123,7 @@
             return await baseService.GetDataAsync<Message>(criteria);
         }
 
-        public async Task<CommandResult> ImportChatBotAmendmentResultAsync(
+        public async Task<ValueTuple<CommandResult, ImportChatBotResultAmendmentCommand>> ImportChatBotAmendmentResultAsync(
             IEnumerable<AmendmentResultTicketEvent> ticketEvents,
             IEnumerable<AmendmentResultTransaction> transactions,
             IEnumerable<Message> messages,
@@ -209,7 +210,8 @@
                 Environment = Environment,
                 Servername = Servername
             };
-            return await baseService.ExecuteNonQueryAsync(criteria);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
+            return new ValueTuple<CommandResult, ImportChatBotResultAmendmentCommand>(commandResult, criteria);
         }
     }
 }

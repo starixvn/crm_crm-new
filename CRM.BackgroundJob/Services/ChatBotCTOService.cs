@@ -1,5 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
@@ -15,8 +16,8 @@
     {
         Task<IEnumerable<TOReachInfor>> GetChatbotCTOSettingInfoAsync(long LastLogId, int BatchSize);
         Task<IEnumerable<TOSMAInfor>> GetChatbotCTOSMAInfoAsync(IEnumerable<TOReachInfor> tOReachInfors);
-        Task<CommandResult> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
-                                                  string Environment = Constants.DefaultEnvironment);
+        Task<ValueTuple<CommandResult, TOControlImportCommand>> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
+                                         string Environment = Constants.DefaultEnvironment);
     }
     public class ChatBotCTOService : IChatBotCTOService
     {
@@ -49,7 +50,7 @@
             return await baseService.GetDataAsync<TOSMAInfor>(criteria);
         }
 
-        public async Task<CommandResult> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
+        public async Task<ValueTuple<CommandResult, TOControlImportCommand>> ImportTOSMAInfoAsync(IEnumerable<TOSMAInfor> tOSMAInfors,
                                          string Environment = Constants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r LogId='{0}' CustId='{1}' Username='{2}' Recommend='{3}'" +
@@ -125,7 +126,8 @@
                 XmlData = stringBuilder.ToString(),
                 Environment = Environment
             };
-            return await baseService.ExecuteNonQueryAsync(criteria);
+            var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
+            return new ValueTuple<CommandResult, TOControlImportCommand>(commandResult, criteria);
         }
 
         protected internal virtual string GetSMALevel(int roleId, string language)

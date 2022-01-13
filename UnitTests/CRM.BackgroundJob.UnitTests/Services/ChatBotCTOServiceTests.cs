@@ -1,5 +1,6 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
@@ -134,16 +135,18 @@
                 );
                    
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
-            var criteria = new TOControlImportCommand();
+            var criteria = fixture.Create<TOControlImportCommand>();
 
-            var expected = fixture.Create<CommandResult>();
-            baseService.ExecuteNonQueryAsync(Arg.Do<TOControlImportCommand>(x => criteria = x)).Returns(expected);
+            var commandResult = fixture.Create<CommandResult>();
+            baseService.ExecuteNonQueryAsync(Arg.Do<TOControlImportCommand>(x => criteria = x)).Returns(commandResult);
+            var valueTupe = new ValueTuple<CommandResult, TOControlImportCommand>(commandResult, criteria);
+
 
             // Act
             var actual = await service.ImportTOSMAInfoAsync(tOSMAInfors, Constants.DefaultEnvironment);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
         }
 

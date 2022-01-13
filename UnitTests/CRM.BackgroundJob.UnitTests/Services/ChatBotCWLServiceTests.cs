@@ -1,5 +1,6 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -76,14 +77,14 @@
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportCWLLogInfoCommand();
 
-            var expected = fixture.Create<CommandResult>();
-            baseService.ExecuteNonQueryAsync(Arg.Do<ImportCWLLogInfoCommand>(x => criteria = x)).Returns(expected);
-
+            var commandResult = fixture.Create<CommandResult>();
+            baseService.ExecuteNonQueryAsync(Arg.Do<ImportCWLLogInfoCommand>(x => criteria = x)).Returns(commandResult);
+            var valueTupe = new ValueTuple<CommandResult, ImportCWLLogInfoCommand>(commandResult, criteria);
             // Act
             var actual = await service.ImportCWLLogInfoAsync(cWLInfos, Constants.DefaultEnvironment);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);
