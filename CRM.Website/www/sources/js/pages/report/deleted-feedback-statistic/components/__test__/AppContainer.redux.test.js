@@ -24,14 +24,10 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            settings: { customerTypes: [{ id: 1, name: 'Text' }] },
-            gridParams: { username: "" },
             editFeedbackDialog: { show: false },
             viewRelatedCustomerDialog: { show: false }
         };
         const state = {
-            settings: { customerTypes: [{ id: 1, name: 'Text' }] },
-            gridParams: { username: "" },
             editFeedbackDialog: { show: false },
             viewRelatedCustomerDialog: { show: false }
         };

@@ -10,10 +10,10 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
-  handleCloseEditFeedbackDialog = isSuccessful => {
+handleCloseEditFeedbackDialog = isSuccessful => {
     this.props.setEditFeedbackDialog({ show: false });
     if (isSuccessful) {
-        this.props.getDeletedFeedback(this.props.gridParams);
+        this.props.getDeletedFeedbackStatistic(this.props.gridParams);
     }
 };
 
@@ -56,8 +56,8 @@ handleCloseViewRelatedCustomerDialog = () => {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { editFeedbackDialog, viewRelatedCustomerDialog } = state;
-    return { editFeedbackDialog, viewRelatedCustomerDialog };
+    const { editFeedbackDialog, viewRelatedCustomerDialog, gridParams } = state;
+    return { editFeedbackDialog, viewRelatedCustomerDialog, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
