@@ -66,158 +66,193 @@
 
         public async Task PullMessageAndSendNotificationAsync()
         {
-            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Environment);
-            if (!setting.ServiceFlag)
+            try
             {
-                logService.LogInformation("Chat Bot Service is shutdown.");
-                return;
-            }
-
-            var voidingInfo = await ticketVoidingService.GetVoidingMessageAsync();
-            IEnumerable<ChatBotVoidingMessage> voidingMessages = voidingInfo.Item1;
-            var voidingHis = await ticketVoidingService.ImportVoidingMessageHistoryCheckAsync(voidingInfo.Item2);
-            var userNameList = Enumerable.Empty<ChatBotUserNameList>();
-            if (voidingHis.Any() && voidingInfo.Item2.Any())
-            {
-                userNameList = await ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis);
-            }
-            var commandResult = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList);
-            if (commandResult.Item1.IsSuccessful)
-            {
-                var messageImport = await ticketVoidingService.GetImportMessageByBatchSize(setting.BatchSize);
-                IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(messageImport);
-                var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(messageImport, Environment, setting.IncludeUUSCurrency);
-                var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
-                    messages,
-                    ticketInfos.Item1,
-                    ticketInfos.Item2,
-                    Environment);
-                if (commandResultImportTicket.Item1.IsSuccessful)
+                AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Environment);
+                if (!setting.ServiceFlag)
                 {
-                    logService.LogInformation("Successful!!!");
-                    await sendNotificationService.SendNotificationToLetstalk();
+                    logService.LogInformation("Chat Bot Service is shutdown.");
+                    return;
+                }
+
+                var voidingInfo = await ticketVoidingService.GetVoidingMessageAsync();
+                IEnumerable<ChatBotVoidingMessage> voidingMessages = voidingInfo.Item1;
+                var voidingHis = await ticketVoidingService.ImportVoidingMessageHistoryCheckAsync(voidingInfo.Item2);
+                var userNameList = Enumerable.Empty<ChatBotUserNameList>();
+                if (voidingHis.Any() && voidingInfo.Item2.Any())
+                {
+                    userNameList = await ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis);
+                }
+                var commandResult = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList);
+                if (commandResult.Item1.IsSuccessful)
+                {
+                    var messageImport = await ticketVoidingService.GetImportMessageByBatchSize(setting.BatchSize);
+                    IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(messageImport);
+                    var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(messageImport, Environment, setting.IncludeUUSCurrency);
+                    var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
+                        messages,
+                        ticketInfos.Item1,
+                        ticketInfos.Item2,
+                        Environment);
+                    if (commandResultImportTicket.Item1.IsSuccessful)
+                    {
+                        logService.LogInformation("Successful!!!");
+                        await sendNotificationService.SendNotificationToLetstalk();
+                    }
+                    else
+                    {
+                        await logService.ErrorAsync(commandResultImportTicket.Item1, commandResultImportTicket.Item2);
+                        logService.LogInformation(commandResultImportTicket.Item1.Message);
+                    }
                 }
                 else
                 {
-                    await logService.ErrorAsync(commandResultImportTicket.Item1, commandResultImportTicket.Item2);
-                    logService.LogInformation(commandResultImportTicket.Item1.Message);
+                    logService.LogInformation(commandResult.Item1.Message);
+                    await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                logService.LogInformation(commandResult.Item1.Message);
-                await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
+                await logService.ErrorAsync(ex);
             }
         }
 
         public async Task PullMessageCWLAndSendNotificationToHeadlineAsync()
         {
-            AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Environment);
-            if (!setting.ServiceFlag)
+            try
             {
-                logService.LogInformation("Chat Bot CWL Service is shutdown.");
-                return;
+                AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_CWL, Environment);
+                if (!setting.ServiceFlag)
+                {
+                    logService.LogInformation("Chat Bot CWL Service is shutdown.");
+                    return;
+                }
+                IEnumerable<ChatBotCWLInfo> cwlInfors = await chatBotCWLService.GetChatbotCWLLogInfoAsync(setting.LastLogId, setting.BatchSize);
+                var result = await chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Environment);
+                if (result.Item1.IsSuccessful)
+                {
+                    await sendNotificationService.SendNotificationToLetstalk();
+                }
+                else
+                {
+                    logService.LogInformation(result.Item1.Message);
+                    await logService.ErrorAsync(result.Item1, result.Item2);
+                }
             }
-            IEnumerable<ChatBotCWLInfo> cwlInfors = await chatBotCWLService.GetChatbotCWLLogInfoAsync(setting.LastLogId, setting.BatchSize);
-            var result = await chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Environment);
-            if (result.Item1.IsSuccessful)
+            catch (Exception ex)
             {
-                await sendNotificationService.SendNotificationToLetstalk();
-            }
-            else
-            {
-                logService.LogInformation(result.Item1.Message);
-                await logService.ErrorAsync(result.Item1, result.Item2);
+                await logService.ErrorAsync(ex);
             }
         }
 
         public async Task PullMessageCTOAndSendNotificationToHeadlineAsync()
         {
-            AbnormalBetSystemSetting settingCTO = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Environment);
-            if (!settingCTO.ServiceFlag)
+            try
             {
-                logService.LogInformation("Chat Bot CTO Service is shutdown.");
-                return;
+                AbnormalBetSystemSetting settingCTO = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_TOControl, Environment);
+                if (!settingCTO.ServiceFlag)
+                {
+                    logService.LogInformation("Chat Bot CTO Service is shutdown.");
+                    return;
+                }
+                IEnumerable<TOReachInfor> tOReachInfors = await chatBotCTOService.GetChatbotCTOSettingInfoAsync(settingCTO.LastLogId, settingCTO.BatchSize);
+                IEnumerable<TOSMAInfor> tOSMAInfors = await chatBotCTOService.GetChatbotCTOSMAInfoAsync(tOReachInfors);
+                var commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Environment);
+                if (commandResult.Item1.IsSuccessful)
+                {
+                    await sendNotificationService.SendNotificationToLetstalk();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Item1.Message);
+                    await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
+                }
             }
-            IEnumerable<TOReachInfor> tOReachInfors = await chatBotCTOService.GetChatbotCTOSettingInfoAsync(settingCTO.LastLogId, settingCTO.BatchSize);
-            IEnumerable<TOSMAInfor> tOSMAInfors = await chatBotCTOService.GetChatbotCTOSMAInfoAsync(tOReachInfors);
-            var commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Environment);
-            if (commandResult.Item1.IsSuccessful)
+            catch (Exception ex)
             {
-                await sendNotificationService.SendNotificationToLetstalk();
-            }
-            else
-            {
-                logService.LogInformation(commandResult.Item1.Message);
-                await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
+                await logService.ErrorAsync(ex);
             }
         }
 
         public async Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync()
         {
-            AbnormalBetSystemSetting settingProblemsAccount = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Environment);
-            if (!settingProblemsAccount.ServiceFlag)
+            try
             {
-                logService.LogInformation("Chat Bot Problems Account Service is shutdown.");
-                return;
+                AbnormalBetSystemSetting settingProblemsAccount = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ProblemAccounts, Environment);
+                if (!settingProblemsAccount.ServiceFlag)
+                {
+                    logService.LogInformation("Chat Bot Problems Account Service is shutdown.");
+                    return;
+                }
+                IEnumerable<ChatBotProblemsAccountInfor> problemsAcountInfors = await chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(
+                    settingProblemsAccount.LastLogId, settingProblemsAccount.BatchSize);
+                var commandResult = await chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Environment);
+                if (commandResult.Item1.IsSuccessful)
+                {
+                    await sendNotificationService.SendNotificationToLetstalk();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Item1.Message);
+                    await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
+                }
             }
-            IEnumerable<ChatBotProblemsAccountInfor> problemsAcountInfors = await chatBotProblemAccountService.GetChatbotProblemAccountInfoAsync(
-                settingProblemsAccount.LastLogId, settingProblemsAccount.BatchSize);
-            var commandResult = await chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Environment);
-            if (commandResult.Item1.IsSuccessful)
+            catch (Exception ex)
             {
-                await sendNotificationService.SendNotificationToLetstalk();
-            }
-            else
-            {
-                logService.LogInformation(commandResult.Item1.Message);
-                await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
+                await logService.ErrorAsync(ex);
             }
         }
 
         public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync()
         {
-            AbnormalBetSystemSetting settingResultAmendment = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Environment);
-            if (!settingResultAmendment.ServiceFlag)
+            try
             {
-                logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
-                return;
-            }
-
-            var voidingMesssageSettled = await chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync();
-            var voidingMessageCheck = await chatBotResultAmendmentService.GetVoidingMessasgeCheckAsync(voidingMesssageSettled, Environment);
-            if (voidingMessageCheck.Any())
-            {
-                var settledTicket = await chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck);
-                var commandMessage = await chatBotResultAmendmentService.ImportMessageVoidSettledAsync(settledTicket);
-                if (!commandMessage.IsSuccessful)
+                AbnormalBetSystemSetting settingResultAmendment = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Environment);
+                if (!settingResultAmendment.ServiceFlag)
                 {
-                    logService.LogInformation("Import Messages Settled Fail!!!");
+                    logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
                     return;
                 }
-            }
-            var voidingMessageInfo = await chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(settingResultAmendment.BatchSizeGetMsg);
-            var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
-            var messagesCombineDistinct = resultAmendmentInfo.Item1.Item3.Concat(voidingMessageInfo.Item1).Distinct().ToList();
-            var messages = Enumerable.Empty<Message>();
-            if (messagesCombineDistinct.Any())
-            {
-                messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(messagesCombineDistinct);
-            }
 
-            var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
-                resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
-                voidingMessageInfo.Item2, voidingMessageInfo.Item3, Environment, resultAmendmentInfo.Item2
-                );
+                var voidingMesssageSettled = await chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync();
+                var voidingMessageCheck = await chatBotResultAmendmentService.GetVoidingMessasgeCheckAsync(voidingMesssageSettled, Environment);
+                if (voidingMessageCheck.Any())
+                {
+                    var settledTicket = await chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck);
+                    var commandMessage = await chatBotResultAmendmentService.ImportMessageVoidSettledAsync(settledTicket);
+                    if (!commandMessage.IsSuccessful)
+                    {
+                        logService.LogInformation("Import Messages Settled Fail!!!");
+                        return;
+                    }
+                }
+                var voidingMessageInfo = await chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(settingResultAmendment.BatchSizeGetMsg);
+                var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
+                var messagesCombineDistinct = resultAmendmentInfo.Item1.Item3.Concat(voidingMessageInfo.Item1).Distinct().ToList();
+                var messages = Enumerable.Empty<Message>();
+                if (messagesCombineDistinct.Any())
+                {
+                    messages = await chatBotResultAmendmentService.GetChatBotMessageInfoAsync(messagesCombineDistinct);
+                }
 
-            if (commandResult.Item1.IsSuccessful)
-            {
-                await sendNotificationService.SendNotificationToLetstalk();
+                var commandResult = await chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
+                    resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
+                    voidingMessageInfo.Item2, voidingMessageInfo.Item3, Environment, resultAmendmentInfo.Item2
+                    );
+
+                if (commandResult.Item1.IsSuccessful)
+                {
+                    await sendNotificationService.SendNotificationToLetstalk();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Item1.Message);
+                    await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                logService.LogInformation(commandResult.Item1.Message);
-                await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
+                await logService.ErrorAsync(ex);
             }
         }
     }
