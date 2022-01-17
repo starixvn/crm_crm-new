@@ -403,6 +403,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log Statistics.
+        /// </summary>
+        public static string LogStatistics {
+            get {
+                return ResourceManager.GetString("LogStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main.
         /// </summary>
         public static string Main {

@@ -27,5 +27,6 @@
         public const string SettingLog = "ViewSettingLog";
 
         public const string DeletedFeedbackStatistic = "DeletedFeedbackStatistic";
+        public const string LogStatistics = "LogStatistics";
     }
 }
