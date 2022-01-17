@@ -150,7 +150,7 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('renderCategoryColumn', () => {
+    describe('renderCategory', () => {
         it('return empty array', () => {
             // Arrange
             const props = {
@@ -163,7 +163,7 @@ describe('DataGrid', () => {
             container.handleGroupCategory = jest.fn(() => []);
 
             // Act
-            const actual = container.renderCategoryColumn(items);
+            const actual = container.renderCategory(items);
 
             // Assert
             expect(actual).toEqual([]);
@@ -181,7 +181,7 @@ describe('DataGrid', () => {
             container.handleGroupCategory = jest.fn(() => [{settingId: 0, subSettingId: [0]}]);
 
             // Act
-            const actual = container.renderCategoryColumn(items);
+            const actual = container.renderCategory(items);
             // Assert
             expect(actual.length).toBe(1);
         });
@@ -211,7 +211,7 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('renderRelatedCustomerColumn', () => {
+    describe('renderRelatedCustomer', () => {
         it('should call handleOpenViewRelatedCustomerDialog when item greater than 20', () => {
             // Arrange
             const relatedCustomer = ["test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test","test"];
@@ -219,7 +219,7 @@ describe('DataGrid', () => {
 
             const expectedRelatedCustomer = "test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test";
             container.handleOpenViewRelatedCustomerDialog = jest.fn();
-            const link = shallow(container.renderRelatedCustomerColumn(relatedCustomer));
+            const link = shallow(container.renderRelatedCustomer(relatedCustomer));
 
             // Act
             link.find('a').at(0).props().onClick();
@@ -234,7 +234,7 @@ describe('DataGrid', () => {
             const container = shallow(<DataGrid />).instance();
 
             // Act
-            var actual = container.renderRelatedCustomerColumn(relatedCustomer);
+            var actual = container.renderRelatedCustomer(relatedCustomer);
 
             // Assert
             expect(actual).toEqual("test, test");

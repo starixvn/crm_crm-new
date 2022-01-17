@@ -32,7 +32,7 @@ export class DataGrid extends Component {
 
     buildBody = () => {
         const { gridData } = this.props;
-        let rows = [];
+        const rows = [];
         if (gridData.data.length > 0) {
             rows.push(gridData.data.map((item, index) => this.renderCollapseRow(item, index)));
             rows.push(this.renderFooter(gridData.data));
@@ -58,18 +58,18 @@ export class DataGrid extends Component {
         return groupCategory;
     };
 
-    renderCategoryColumn = item => {
+    renderCategory = item => {
         const { mainCategories } = this.props.gridData;
-        const filterCategory = item.settings.filter(element => element.settingType === 'Category');
-        const groupCategory = this.handleGroupCategory(filterCategory);
+        const filterCategories = item.settings.filter(element => element.settingType === 'Category');
+        const groupCategories = this.handleGroupCategory(filterCategories);
 
-        return groupCategory.map((value,key) => {
-            const filterMainCategory = mainCategories.find(element => element.settingId === value.settingId);
+        return groupCategories.map((group,key) => {
+            const filterMainCategory = mainCategories.find(element => element.settingId === group.settingId);
             return (
                 <>
                     <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
                     {
-                        value.subSettingId.map((subId,index) => {
+                        group.subSettingId.map((subId,index) => {
                             const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subId);
                             return(
                                 <div key={index} className="font-italic ml-3">{filterSubCategory.name}</div>
@@ -81,21 +81,19 @@ export class DataGrid extends Component {
         });
     };
 
-    handleOpenViewRelatedCustomerDialog = relatedCustomers => {
-        this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
-    };
-
-    renderRelatedCustomerColumn = item => {
+    renderRelatedCustomer = item => {
         const totalItems = item.length;
         if(totalItems > MaximumDisplayRelatedCustomer){
             return(
-                <a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(item.join(', '))}>
-                    {totalItems} customers
-                </a>
+                <a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(item.join(', '))}>{totalItems} customers</a>
             );
         } else{
             return item.join(', ');
         }
+    };
+
+    handleOpenViewRelatedCustomerDialog = relatedCustomers => {
+        this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
     };
 
     handleCollapseExpend = () => {
@@ -105,7 +103,7 @@ export class DataGrid extends Component {
     };
 
     renderCollapseRow = (item, index) => {
-        let rows = [];
+        const rows = [];
         rows.push(
             <Row key={`parent ${index}`} className='parent-level-0'>
                 <Cell colSpan='7' onClick={this.handleCollapseExpend}>
@@ -132,25 +130,23 @@ export class DataGrid extends Component {
                             <strong className='link-click'>{item.subject}</strong>
                         </div>
                     </Cell>
-                    <Cell>{this.renderCategoryColumn(item)}</Cell>
+                    <Cell>{this.renderCategory(item)}</Cell>
                     <Cell>{item.customer}</Cell>
-                    <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
+                    <Cell>{this.renderRelatedCustomer(item.relatedCustomer.split(','))}</Cell>
                 </Row>
             </Collapse>
-            
         );
     };
 
     renderFooter = data => {
-        const totalGrands = data.reduce( (accumulator, currentValue) => {
-            return accumulator + currentValue.deletedFeedbacks.length;
-        }, 0);
+        const totalGrands = data.reduce((accumulator, currentValue) => accumulator + currentValue.deletedFeedbacks.length, 0);
         return (
                 <Row key='footer' className='footer-container font-weight-bold'>
                     <Cell colSpan='7'>Grand Total ({totalGrands})</Cell>
                 </Row>
         );
-    }
+    };
+
     handleExportExcel = () => {
         const { gridParams } = this.props;
         this.props.exportExcel(gridParams);
@@ -174,7 +170,6 @@ export class DataGrid extends Component {
             </OverlayTrigger>
         );
     };
-
 
     render() {
         const {gridData} = this.props;

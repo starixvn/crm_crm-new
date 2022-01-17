@@ -31,14 +31,14 @@
             this.excelService = excelService;
         }
 
-        //[NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
+       // [NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/DeleteFeedbackStatistic/Index");
         }
 
         [HttpPost]
-        //[NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
+       // [NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetDeletedFeedbackStatistics([FromBody] DeletedFeedbackStatisticsCriteria criteria)
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);

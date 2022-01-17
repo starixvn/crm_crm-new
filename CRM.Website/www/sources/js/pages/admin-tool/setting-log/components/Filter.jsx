@@ -89,30 +89,36 @@ export class Filter extends Component {
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
-                        <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
-                        <Form.Control type="text" size="sm"
-                            value={handler}
+                        <Form.Label htmlFor="handler">
+                            {LangHelper.getResource('Handler')}
+                        </Form.Label>
+                        <Form.Control size="sm" type="text"
                             name="handler" id="handler"
+                            value={handler}
                             className="shadow-none" autoComplete="off"
                             onChange={this.handleChange}
                         />
                     </Form.Group>
                     <Form.Group >
-                        <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
+                        <Form.Label htmlFor="fromDate">
+                            {LangHelper.getResource('FromDate')}
+                        </Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
-                                selected={fromDate}
                                 maxDate={new Date(this.maxFromDate)}
+                                selected={fromDate}
                                 onChange={value => this.handleChangeFromDate(value)}
                             />
                         </div>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
+                        <Form.Label>
+                            {LangHelper.getResource('ToDate')}
+                        </Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
-                                selected={toDate}
                                 minDate={new Date(this.minToDate)}
+                                selected={toDate}
                                 maxDate={new Date(this.maxToDate)}
                                 onChange={value => this.handleChangeToDate(value)}
                             />

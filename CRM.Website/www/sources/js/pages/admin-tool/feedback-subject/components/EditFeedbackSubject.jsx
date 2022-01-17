@@ -26,7 +26,6 @@ export class EditFeedbackSubject extends PureComponent {
             isActive: true
         }
     };
-    
     constructor(props) {
         super(props);
         this.formik = React.createRef();

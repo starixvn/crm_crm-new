@@ -21,20 +21,6 @@ describe('connect ', () => {
         jest.clearAllMocks();
     });
 
-    it('props should be mapped correctly', () => {
-        // Arrange
-        const expected = {
-        };
-        const state = {
-        };
-
-        // Act
-        const actual = mapStateToProps(state);
-
-        // Assert
-        expect(actual).toEqual(expected);
-    });
-
     it('bindActionCreators should be called with correct parameter', () => {
         // Arrange
         const mockBindAction = jest.fn();

@@ -30,11 +30,10 @@ handleCloseViewRelatedCustomerDialog = () => {
               viewRelatedCustomerDialog.show &&
               <SweetModalDialog size="lg"
                   title={LangHelper.getResource('RelatedCustomer')}
-                  contents={
-                      <div>{viewRelatedCustomerDialog.relatedCustomers}</div>
-                  }
+                  contents={<div>{viewRelatedCustomerDialog.relatedCustomers}</div>}
                   buttons={[
-                      <Button variant="primary" size="sm" onClick={this.handleCloseViewRelatedCustomerDialog}>
+                      <Button variant="primary" size="sm" 
+                          onClick={this.handleCloseViewRelatedCustomerDialog}>
                           {LangHelper.getResource('Close')}
                       </Button>
                   ]}
@@ -43,7 +42,8 @@ handleCloseViewRelatedCustomerDialog = () => {
            }
            {
               editFeedbackDialog.show &&
-              <EditFeedback feedbackId={editFeedbackDialog.feedbackId}
+              <EditFeedback 
+                  feedbackId={editFeedbackDialog.feedbackId}
                   onClose={this.handleCloseEditFeedbackDialog}
                   isDeletedFeedbackView
               />

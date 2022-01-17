@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
-    using CRM.Core;
     using CRM.Models.Feedback;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Setting;
@@ -76,7 +75,7 @@
                     worksheet.Cells[rowIndex, colIndex++].Value = feedback.Customer;
                     worksheet.Cells[rowIndex, colIndex].Value = feedback.RelatedCustomer.Replace(",", ", ");
 
-                    if(countLastItem != feedbacksDetails.DeletedFeedbacks.Count())
+                    if(countLastItem != feedbacksDetails.DeletedFeedbacks.Count() || countLastItem == 1)
                     {
                         rowIndex++;
                     }

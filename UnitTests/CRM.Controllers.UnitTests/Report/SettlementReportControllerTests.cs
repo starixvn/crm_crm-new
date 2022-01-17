@@ -32,7 +32,6 @@
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Null(viewResult.Model);
-            // ../Report/Settlement/Index
             Assert.Equal("../Report/Settlement/Index", viewResult.ViewName);
         }
 

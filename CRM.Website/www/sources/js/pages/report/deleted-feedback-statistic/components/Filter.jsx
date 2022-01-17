@@ -74,9 +74,9 @@ export class Filter extends Component {
                     <Form.Group>
                         <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
                         <Form.Control type="text" size="sm"
+                            className="shadow-none" autoComplete="off"
                             value={handler}
                             name="handler" id="handler"
-                            className="shadow-none" autoComplete="off"
                             onChange={this.handleChange}
                         />
                     </Form.Group>
@@ -84,8 +84,8 @@ export class Filter extends Component {
                         <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
-                                selected={fromDate}
                                 maxDate={new Date(this.maxFromDate)}
+                                selected={fromDate}
                                 onChange={value => this.handleChangeFromDate(value)}
                             />
                         </div>
@@ -94,9 +94,9 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
-                                selected={toDate}
-                                minDate={new Date(this.minToDate)}
                                 maxDate={new Date(this.maxToDate)}
+                                minDate={new Date(this.minToDate)}
+                                selected={toDate}
                                 onChange={value => this.handleChangeToDate(value)}
                             />
                         </div>
@@ -125,9 +125,4 @@ export class Filter extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-const mapStateToProps = state => {
-    const { } = state;
-    return { };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default connect(null, mapDispatchToProps)(Filter);
