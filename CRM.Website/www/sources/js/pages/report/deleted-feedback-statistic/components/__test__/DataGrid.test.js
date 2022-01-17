@@ -58,7 +58,7 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('handleEditFeedback', () => {
+    describe('handleEditDeletedFeedback', () => {
         it('should call exactly functions when handle edit', () => {
             // Arrange
             const props = {
@@ -68,7 +68,7 @@ describe('DataGrid', () => {
 
             // Act
             const container = shallow(<DataGrid {...props}/>);
-            container.instance().handleEditFeedback(1);
+            container.instance().handleEditDeletedFeedback(1);
            
             // Assert
             expect(props.setEditFeedbackDialog).toHaveBeenCalledWith({ show: true, feedbackId: 1 });

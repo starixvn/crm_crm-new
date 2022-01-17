@@ -46,12 +46,14 @@ export class DataGrid extends Component {
     };
 
     handleGroupCategory = filterCategory => {
-        const groupCategory = filterCategory.reduce( (accumulator, currentValue) => {
-            const itemExist = accumulator.find(item => currentValue.settingId === item.settingId);
+        const groupCategory = filterCategory.reduce( (accumulator, current) => {
+            const itemExist = accumulator.find(item => current.settingId === item.settingId);
             if(itemExist){
-                itemExist.subSettingId = [...itemExist.subSettingId, currentValue.subSettingId];
+                itemExist.subSettingId = [...itemExist.subSettingId, current.subSettingId];
             }else{
-                accumulator.push({settingId: currentValue.settingId, subSettingId: [currentValue.subSettingId]});
+                accumulator.push({
+                    settingId: current.settingId,
+                    subSettingId: [current.subSettingId]});
             }
             return accumulator;
         },[]);
@@ -116,7 +118,7 @@ export class DataGrid extends Component {
             rows.push(item.deletedFeedbacks.map((item, index) => this.renderRow(item, index)));
         }
         return rows;
-    }
+    };
 
     renderRow = (item, index) => {
         return (
@@ -126,7 +128,7 @@ export class DataGrid extends Component {
                     <Cell>{item.handler}</Cell>
                     <Cell>{item.deletor}</Cell>
                     <Cell>
-                        <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
+                        <div onClick={() => this.handleEditDeletedFeedback(item.feedbackId)}>
                             <strong className='link-click'>{item.subject}</strong>
                         </div>
                     </Cell>
@@ -147,24 +149,21 @@ export class DataGrid extends Component {
         );
     };
 
-    handleExportExcel = () => {
-        const { gridParams } = this.props;
-        this.props.exportExcel(gridParams);
-    };
-
-    handleEditFeedback = id => {
+    handleEditDeletedFeedback = id => {
         this.props.setEditFeedbackDialog({ show: true, feedbackId: id });
     };
 
-    renderExportExcelText = () => {
+    handleExportExcel = () => {
+        this.props.exportExcel(this.props.gridParams);
+    };
+
+    renderExportExcel = () => {
         return (
             <OverlayTrigger
-                placement="auto"
                 overlay={
-                    <Tooltip>
-                        <span>Export to Excel</span>
-                    </Tooltip>
+                    <Tooltip><span>Export to Excel</span></Tooltip>
                 }
+                placement="auto"
             >
                 <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcel} />
             </OverlayTrigger>
@@ -182,7 +181,7 @@ export class DataGrid extends Component {
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>Deleted Feedback Statistics</span>
                     {
-                        gridData.data.length > 0 && this.renderExportExcelText()
+                        gridData.data.length > 0 && this.renderExportExcel()
                     }
                 </div>
                 <Table
