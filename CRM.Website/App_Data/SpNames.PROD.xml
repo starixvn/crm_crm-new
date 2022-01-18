@@ -97,6 +97,8 @@
             <Mapping DataField="Currency" ObjectProperty="Name" />
         </Setting>
         <Setting Key="Acc_CRM_Rpt_DeletedFeedbackStatistics" SpName="Acc_CRM_Rpt_DeletedFeedbackStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_DailyStatistics" SpName="Acc_CRM_Rpt_DailyStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Setting SubCatagogy">
         <Setting Key="Acc_CRM_SubCategoryList" SpName="Acc_CRM_SubCategoryList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -255,8 +257,5 @@
           <Mapping DataField="ActionName" ObjectProperty="Name" />
       </Setting>
       <Setting Key="Acc_CRM_LogActionActivityList" SpName="Acc_CRM_LogActionActivityList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-    </Function>
-    <Function Name="Setting Log">
-        <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
 </Functions>

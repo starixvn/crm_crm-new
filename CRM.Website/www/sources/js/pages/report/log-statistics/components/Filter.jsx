@@ -12,20 +12,20 @@ import moment from 'moment';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.currentDate = moment();
-        const firstDayOfWeek = this.currentDate.startOf('week');
+        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const firstDayOfWeek = moment(this.currentDate).startOf('week');
         const firstDayOfWeekFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDayOfWeek)));
-        const fromDate =  firstDayOfWeekFormat.setDate(firstDayOfWeekFormat.getDate() - 1);
         this.maxFromDate = this.currentDate;
         this.maxToDate = this.currentDate;
         this.state = {
-            fromDate: fromDate,
-            toDate: firstDayOfWeekFormat,
+            fromDate: firstDayOfWeekFormat,
+            toDate: this.currentDate,
             productOptions: [],
             mainCategoryOptions: [],
             communicationToolOptions: [],
             productId: 0,
-            mainCategoryId: 0
+            mainCategoryId: 0,
+            communicationId: 0
         };
     }
 
@@ -36,7 +36,7 @@ export class Filter extends Component {
     handleChangeFromDate = fromDate => {
         const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const maxDate = new Date(fromDate.getTime());
-        maxDate.setMonth(fromDate.getMonth() + 12);
+        maxDate.setMonth(fromDate.getMonth() + 3);
         maxDate.setDate(fromDate.getDate() - 1);
 
         this.minToDate = fromDate;
@@ -95,18 +95,22 @@ export class Filter extends Component {
     }
     
     handleSubmit = () => {
-        const { fromDate, toDate} = this.state;
+        const { fromDate, toDate, productId, mainCategoryId, communicationId} = this.state;
         const params = {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
-            toDate: DateTimeService.toShortDateFormat(toDate)
+            toDate: DateTimeService.toShortDateFormat(toDate), 
+            productId: productId,
+            mainCategoryId: mainCategoryId,
+            communicationId: communicationId
         };
 
         this.props.setGridParams(params);
+        this.props.getMainReport(params);
     };
 
     render() {
        
-        const { productId, fromDate, toDate, productOptions, mainCategoryOptions, communicationToolOptions } = this.state;
+        const { fromDate, toDate, productOptions, mainCategoryOptions, communicationToolOptions } = this.state;
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
@@ -164,14 +168,14 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className='label-width' htmlFor="communicationTypeId">{LangHelper.getResource('CommunicationType')}</Form.Label>
+                        <Form.Label className='label-width' htmlFor="communicationId">{LangHelper.getResource('CommunicationType')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <MultipleSelect
                                 valueField='value'
                                 dataSource={communicationToolOptions}
                                 keyField='id'
                                 onChange={(currentItem, selectedItemsKey) => {
-                                    this.handleChangeDropdown('communicationTypeId', selectedItemsKey);
+                                    this.handleChangeDropdown('communicationId', selectedItemsKey);
                                 }}
                                 hasSearchBox
                                 isNAOption
