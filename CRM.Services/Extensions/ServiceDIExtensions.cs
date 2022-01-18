@@ -17,6 +17,7 @@
     using CRM.Services.Redemption;
     using CRM.Services.ActionLog;
     using CRM.Services.Dashboard;
+    using CRM.Services.Report.LogStatistics;
 
     public static class ServiceDIExtensions
     {
@@ -47,6 +48,7 @@
             services.AddTransient<IRedemptionService, RedemptionService>();
             services.AddTransient<IActionLogService, ActionLogService>();
             services.AddTransient<IDashboardService, DashboardService>();
+            services.AddTransient<ILogStatisticsService, LogStatisticsService>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)

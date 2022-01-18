@@ -4,20 +4,25 @@
     using CRM.Core.Constants;
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Services;
+    using CRM.Services.Report.LogStatistics;
     using Fanex.NAP.Client.AspNetCore.Attributes;
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
 
     public class LogStatisticsController : Controller
     {
+        private readonly ILogStatisticsService logStatisticsService;
         private readonly ICommonService commonService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         public LogStatisticsController(
+            ILogStatisticsService logStatisticsService,
             ICommonService commonService,
             ISettingService settingService,
-            IExportExcelService excelService)
+            IExportExcelService excelService
+            )
         {
+            this.logStatisticsService = logStatisticsService;
             this.commonService = commonService;
             this.settingService = settingService;
             this.excelService = excelService;
@@ -43,8 +48,8 @@
         }
 
         [HttpPost]
-        [NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
-        public async Task<IActionResult> GetMainReport(LogStatisticsCriteria criteria)
+        //[NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
+        public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
             var IBCReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
@@ -58,7 +63,7 @@
                 SiteType = LogStatisticConstants.IBC
             });
 
-            var LicenseeReport = await logStatisticsService.GetReportData(new LogStatisticsCriteria
+            var LicenseeReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
                 MainCategoryId = criteria.MainCategoryId,

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Col, Form, Row, OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { ActionCreators } from '../actions';
+import { Formik } from 'formik';
+import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
+import ResponseMessage from '@jsroot/components/ResponseMessage';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
@@ -22,10 +25,7 @@ export class Filter extends Component {
             toDate: this.currentDate,
             productOptions: [],
             mainCategoryOptions: [],
-            communicationToolOptions: [],
-            productId: 0,
-            mainCategoryId: 0,
-            communicationId: 0
+            communicationToolOptions: []
         };
     }
 
@@ -56,16 +56,13 @@ export class Filter extends Component {
         });
     };
 
-    handleChangeDropdown = (name, selectedItemsKey) =>{
-        this.setState({
-            ...this.state,
-            [name]: selectedItemsKey
-        });
-    }
-
     handleSettingOptions = settings =>{
         const { products, mainCategories, communicationTools} = settings;
+        const productIdFilters = [];
+        const mainCategoryIdFilters = [];
+        const communicationIdFilters = [];
         const productOptions = products.map(item =>{
+            productIdFilters.push(item.id);
             return {
                 id: item.id,
                 value: item.value,
@@ -74,6 +71,7 @@ export class Filter extends Component {
         });
 
         const mainCategoryOptions = mainCategories.map(item =>{
+            mainCategoryIdFilters.push(item.mainCategoryID);
             return {
                 id: item.mainCategoryID,
                 value: item.name,
@@ -82,15 +80,22 @@ export class Filter extends Component {
         });
 
         const communicationToolOptions = communicationTools.map(item =>{
+            communicationIdFilters.push(item.id);
             return {
                 id: item.id,
                 value: item.name,
                 checked: true
             };
         });
+        const productIdFiltersJoin = productIdFilters.join(',');
+        const mainCategoryIdFiltersJoin = mainCategoryIdFilters.join(',');
+        const communicationIdFiltersJoin = communicationIdFilters.join(',');
 
         this.setState({
-            productOptions, mainCategoryOptions, communicationToolOptions
+            productOptions, mainCategoryOptions, communicationToolOptions,
+            productIds: productIdFiltersJoin,
+            mainCategoryIds: mainCategoryIdFiltersJoin,
+            communicationIds: communicationIdFiltersJoin
         });
     }
     
@@ -108,21 +113,29 @@ export class Filter extends Component {
         this.props.getMainReport(params);
     };
 
-    render() {
-       
+    renderForm = ({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleSubmit,
+        setFieldValue
+    }) => {
         const { fromDate, toDate, productOptions, mainCategoryOptions, communicationToolOptions } = this.state;
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form noValidate onSubmit={handleSubmit}>
+            <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                 <Form.Row bsPrefix='form-row'>
                 <Form.Group className='form-width'>
-                    <Form.Label htmlFor="productId">{LangHelper.getResource('Product')}</Form.Label>
+                    <Form.Label htmlFor="productIds">{LangHelper.getResource('Product')}</Form.Label>
                     <div className='form-control-wrapper'>
                         <MultipleSelect
                             valueField='value'
                             dataSource={productOptions}
                             keyField='id'
+                            isInvalid={touched.productIds && errors.productIds}
                             onChange={(currentItem, selectedItemsKey) => {
-                                this.handleChangeDropdown('productId', selectedItemsKey);
+                                setFieldValue('productIds', selectedItemsKey);
                             }}
                             hasSearchBox
                             isNAOption
@@ -153,14 +166,15 @@ export class Filter extends Component {
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group className='form-width'>
-                        <Form.Label htmlFor="mainCategoryId">{LangHelper.getResource('MainCategory')}</Form.Label>
+                        <Form.Label htmlFor="mainCategoryIds">{LangHelper.getResource('MainCategory')}</Form.Label>
                         <div className='form-control-wrapper mainCategory-width'>
                             <MultipleSelect
                                 valueField='value'
+                                isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
                                 dataSource={mainCategoryOptions}
                                 keyField='id'
                                 onChange={(currentItem, selectedItemsKey) => {
-                                    this.handleChangeDropdown('mainCategoryId', selectedItemsKey);
+                                    setFieldValue('mainCategoryIds', selectedItemsKey);
                                 }}
                                 hasSearchBox
                                 isNAOption
@@ -174,8 +188,9 @@ export class Filter extends Component {
                                 valueField='value'
                                 dataSource={communicationToolOptions}
                                 keyField='id'
+                                isInvalid={touched.communicationIds && errors.communicationIds}
                                 onChange={(currentItem, selectedItemsKey) => {
-                                    this.handleChangeDropdown('communicationId', selectedItemsKey);
+                                    setFieldValue('communicationIds', selectedItemsKey);
                                 }}
                                 hasSearchBox
                                 isNAOption
@@ -189,6 +204,42 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
             </Form>
+        );
+    }
+    
+    initValues = () =>{
+        const initialValues = {
+            productIds: '',
+            mainCategoryIds: '',
+            communicationIds: ''
+        };
+        return initialValues;
+    }
+
+    validateFormik = values =>{
+        const errors = {};
+        if (values.productIds === '') {
+            errors.productIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Product'));
+        }
+
+        if (values.mainCategoryIds === '') {
+            errors.mainCategoryIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory'));
+        }
+
+        if (values.communicationIds === '') {
+            errors.communicationIds = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory'));
+        }
+    }
+    
+    render() {
+        return (
+            <Formik
+                initialValues={this.initValues}
+                validate={values => this.validateFormik(values)}
+                onSubmit={this.handleSubmit}
+            >
+                {this.renderForm}
+            </Formik>
         );
     }
 }
