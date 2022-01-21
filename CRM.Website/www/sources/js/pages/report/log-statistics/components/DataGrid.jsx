@@ -7,14 +7,12 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import ChildRow from './ChildRow';
-import Site from '@jsroot/common/site';
 
 export class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
             shouldResetScrollPosition: true,
-            isExpand: false,
             toggleRowDaily: [],
             toggleRowLicensee: [],
             widthTotalColumns: 0
@@ -45,26 +43,6 @@ export class DataGrid extends Component {
         const cellHeaderCommunication = this.renderHeaderCellsCommunications(ibcReport.communicationColumns);
         const headerRowsCommunication = <HeaderRow key='header-communication'>{cellHeaderCommunication}</HeaderRow>;
         headers.push(headerRowsCommunication);
-        return headers;
-    };
-
-    buildHeaderExpand = ibcReport => {
-        const headers = [];
-        const headerCells = [];
-        let headerCellCommunications = [];
-        headerCells.push(<HeaderCell className='sticky-header' rowSpan={2} colWidth={30}>{LangHelper.getResource('ComplaintsEnquiries')}</HeaderCell>);
-        ibcReport.productColumns.map(product =>{
-            headerCells.push(<HeaderCell colSpan={ibcReport.communicationColumns.length + 1}>{product.name}</HeaderCell>);
-            const cellHeaderCommunication = this.renderHeaderCellsCommunications(ibcReport.communicationColumns);
-            headerCellCommunications = [...headerCellCommunications, ...cellHeaderCommunication];
-        });
-
-        headers.push(
-            <HeaderRow key='group-header'>
-                {headerCells}
-            </HeaderRow>
-        );
-        headers.push(<HeaderRow key='header-communication'>{headerCellCommunications}</HeaderRow>);
         return headers;
     };
 
@@ -106,22 +84,6 @@ export class DataGrid extends Component {
         ];
     };
 
-    buildBodyExpand = (data, tableName) => {
-        const rows = [];
-        if (data.mainCategories.length > 0) {
-            rows.push(
-                data.mainCategories.map(item => 
-                    this.renderMainCategoryRows(item, data.communicationColumns, tableName, data.productColumns))
-                );
-            return rows;
-        }
-        return [
-            <Row key={`body${1}`} className="no-data" >
-                <Cell className='text-center' colSpan={15}>{LangHelper.getResource('ThereIsNoData')}</Cell>
-            </Row>
-        ];
-    };
-
     toggleRow = tableName => tableName === 'mbc' ? this.state.toggleRowDaily : this.state.toggleRowLicensee;
 
     toggleRowDaily = (id, tableName) => {
@@ -136,7 +98,7 @@ export class DataGrid extends Component {
         this.setState({ toggle });
     };
 
-    renderMainCategoryRows = (item, communicationColumns, tableName, productColumns) => {
+    renderMainCategoryRows = (item, communicationColumns, tableName) => {
         const rows = [];
         const cells = [];
         const toggle = this.toggleRow(tableName);
@@ -146,7 +108,7 @@ export class DataGrid extends Component {
                 <span >{item.name}</span>
             </Cell>
         );
-        cells.push(<ChildRow isParent currentRow={item} communicationColumns={communicationColumns} productColumns={productColumns}/>);
+        cells.push(<ChildRow isParent currentRow={item} communicationColumns={communicationColumns}/>);
         rows.push(
             <Row key={`parent-${item.id}`} className='parent-level-0' onClick={() => this.toggleRowDaily(item.id, tableName)}>
                 {cells}
@@ -154,18 +116,18 @@ export class DataGrid extends Component {
         );
         if(item.subCategories.length > 0){
             rows.push(
-                item.subCategories.map(sub => this.renderSubCategoryRows(item.id, sub, communicationColumns, tableName, productColumns))
+                item.subCategories.map(sub => this.renderSubCategoryRows(item.id, sub, communicationColumns, tableName))
             );
         }
         return rows;
     };
 
-    renderSubCategoryRows = (parentId, sub, communicationColumns, tableName, productColumns) => {
+    renderSubCategoryRows = (parentId, sub, communicationColumns, tableName) => {
         const toggle = this.toggleRow(tableName);
         if(!toggle.includes(parentId)){
             const cells = [];
             cells.push(<Cell className='child'>{sub.name}</Cell>);
-            cells.push(<ChildRow currentRow={sub} communicationColumns={communicationColumns} productColumns={productColumns}/>);
+            cells.push(<ChildRow currentRow={sub} communicationColumns={communicationColumns} />);
             return (
                 <Row key={`child-${sub.id}`}>
                     {cells}
@@ -192,22 +154,6 @@ export class DataGrid extends Component {
         );
     };
 
-    renderFooterExpand = data => {
-        const cells = [];
-        const grandTotal = {
-            listOfCommunicationCount: data.grandTotalOfCommunicationCount,
-            listOfCommunicationSumByProduct: data.grandTotalOfCommunicationSumByProduct
-        };
-        cells.push(<Cell>Grand Total</Cell>);
-        cells.push(<ChildRow currentRow={grandTotal} communicationColumns={data.communicationColumns}/>);
-
-        return (
-            [<Row key='footer' className='footer-container font-weight-bold'>
-                {cells}
-            </Row>]
-        );
-    };
-
     handleEditDeletedFeedback = id => {
         this.props.setEditFeedbackDialog({ show: true, feedbackId: id });
     };
@@ -215,27 +161,11 @@ export class DataGrid extends Component {
     handleExportExcel = () => {
         this.props.exportExcel(this.props.gridParams);
     };
-
-    handleCollapseExpandProduct = () => {
-        this.setState(prevState => ({
-            isExpand: !prevState.isExpand
-        }));
-    }
+    
 
     renderCustomButton = () => {
         return (
             <div>
-                {
-                    this.props.mainReports.ibcReport.productColumns.length > 1 &&
-                    <OverlayTrigger
-                        overlay={
-                            <Tooltip><span>Product Collapse/Expand</span></Tooltip>
-                        }
-                        placement="auto"
-                    >
-                        <span className="fa fa-expand icon-expand" onClick={this.handleCollapseExpandProduct} />
-                    </OverlayTrigger>
-                }
                 <OverlayTrigger
                     overlay={
                         <Tooltip><span>Export to Excel</span></Tooltip>
@@ -294,19 +224,6 @@ export class DataGrid extends Component {
                     }
                 </div>
                 {
-                    this.state.isExpand ?
-                    <Table
-                        width={totalWidth}
-                        autoWidth={false}
-                        header={this.buildHeaderExpand(licenseeReport)}
-                        body={this.buildBodyExpand(licenseeReport, 'licensee')}
-                        footer={this.renderFooterExpand(licenseeReport)}
-                        isPaging={false}
-                        containerPadding={0}
-                        adjustedHeight={10}
-                        shouldResetScrollPosition={this.state.shouldResetScrollPosition}
-                    />
-                    :
                     <Table
                         width={width}
                         autoWidth={false}
