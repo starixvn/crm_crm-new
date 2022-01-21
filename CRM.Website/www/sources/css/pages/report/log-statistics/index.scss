@@ -25,3 +25,74 @@
         width: 245px !important;
     }
 }
+
+.parent-level-0{
+    height: 29px;
+    .complaints-text, td{
+        background-color: #e3e3e3 !important;
+        color: #0054a6 !important;
+    }
+
+    .complaints-text{
+        cursor: pointer;
+    }
+}
+
+.icon-expand{
+    cursor: pointer;
+}
+
+.table-mbc, .table-licensee{
+    .table-container {
+        .header-content{
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            border-bottom: 1px solid #b7b7b7;
+            border-right: 1px solid #b7b7b7;
+        }
+    }
+
+    .body-content{
+        max-height: 250px !important;
+        overflow: scroll;
+        border-bottom: 1px solid #b7b7b7;
+        border-right: 1px solid #b7b7b7;
+        
+        tbody .child{ 
+            background-color: #fff !important;
+        }
+
+        .table tr td:first-child{
+            position: sticky;
+            left: 0;
+            z-index: 3;
+        }
+
+        .total-background {
+            background: #F0EDC4 !important;;
+        }
+    }
+
+    .sticky-header{
+        position: sticky;
+        left: 0;
+        z-index: 4;
+    }
+
+    .footer-container{
+        td{
+            background: #c0cae3!important;
+            color: #0054a6 !important;
+        }
+        
+        td:first-child{
+            position: sticky;
+            left: 0;
+            z-index: 3;
+        }
+    }
+}
+
+
+

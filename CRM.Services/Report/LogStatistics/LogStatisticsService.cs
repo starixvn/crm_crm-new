@@ -27,20 +27,12 @@
 
         public async Task<LogStatisticsViewModel> GetReportDataAsync(LogStatisticsCriteria criteria)
         {
-            var reportTitle = string.Format(
-                    ViewResources.LogStatisticsReport_Title,
-                    GetLogStatisticSiteTypeName(criteria.SiteType),
-                    commonService.ConvertToServerDateTime(criteria.FromDate).ToShortDateString(),
-                    commonService.ConvertToServerDateTime(criteria.ToDate).ToShortDateString()
-                );
-
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
             var logStatisticEntities = await baseService.GetDataAsync<LogStatisticsEntity>(criteria);
 
             var logStatistic = new LogStatisticsViewModel
             {
-                Name = reportTitle,
                 CommunicationColumns = GetCommunicationColumns(logStatisticEntities),
                 ProductColumns = GetProductColumns(logStatisticEntities)
             };
@@ -52,21 +44,6 @@
             SumTotalCommunicationForMainCategory(logStatistic.MainCategories);
 
             return logStatistic;
-        }
-
-        private static string GetLogStatisticSiteTypeName(int siteType)
-        {
-            switch (siteType)
-            {
-                case LogStatisticConstants.IBC:
-                    return "MBC";
-
-                case LogStatisticConstants.Licensee:
-                    return "Licensee";
-
-                default:
-                    return string.Empty;
-            }
         }
 
         private List<BaseModel> GetCommunicationColumns(

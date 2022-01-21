@@ -51,7 +51,7 @@
         //[NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
-            var IBCReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
+            var ibcReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
                 MainCategoryId = criteria.MainCategoryId,
@@ -63,7 +63,7 @@
                 SiteType = LogStatisticConstants.IBC
             });
 
-            var LicenseeReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
+            var licenseeReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
                 MainCategoryId = criteria.MainCategoryId,
@@ -74,7 +74,7 @@
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.Licensee
             });
-            return Json(new { IBCReport, LicenseeReport });
+            return Json(new { ibcReport, licenseeReport });
         }
     }
 }

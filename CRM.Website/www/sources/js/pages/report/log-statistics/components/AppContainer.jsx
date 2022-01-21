@@ -6,7 +6,7 @@ import { ActionCreators } from '../actions';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import Filter from './Filter';
-
+import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
   componentDidMount(){
@@ -20,6 +20,7 @@ export class AppContainer extends Component {
     return (
       <Fragment>
           <Filter />
+          <DataGrid />
       </Fragment>
 );
   }
