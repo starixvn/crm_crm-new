@@ -7,28 +7,39 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
+import Detail from './Detail';
+import Chart from './Chart';
 
 export class AppContainer extends Component {
   componentDidMount(){
     this.props.getAllSettings();
-}
+  }
+  handleCloseChartDialog = () =>{
+    this.props.setChartData({ show: false, title: '', data: null});
+  }
   render() {
-    const settings = this.props.settings;
+    const {settings, details, chart} = this.props;
     if(settings === null || !settings){
       return null;
     }
     return (
       <Fragment>
-          <Filter />
-          <DataGrid />
+        <Filter />
+        {
+          details.show ? <Detail /> : <DataGrid />
+        }
+        {
+          chart.show &&
+          <Chart chart={chart} onClose={this.handleCloseChartDialog} />
+        }
       </Fragment>
-);
+    );
   }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 const mapStateToProps = state => {
-  const { settings } = state;
-  return { settings };
+  const { settings, details, chart } = state;
+  return { settings, details, chart };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

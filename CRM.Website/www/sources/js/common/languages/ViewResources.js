@@ -66,6 +66,9 @@
     CustomerResponse: 'Customer Response',
     CannotCreateInactiveSite: 'Cannot create feedback for Inactive Site member.',
     ComplaintsEnquiries: 'Complaints/Enquiries',
+    CustomerActivityLogs: 'Customer Activity Logs',
+    ContactInfo: 'Contact Info',
+    CreationTime: 'Creation Time',
     Danger: 'Danger',
     DangerOriginal: 'Original',
     DangerNonLive: 'None-Live',
@@ -120,6 +123,7 @@
     EmptyData: 'There is no information',
     EndTime: 'End Time',
     Ext: 'Ext',
+    EXT: 'EXT.#',
     ErrorMessageInactiveSiteRelate: 'Some Usernames belong to Inactive Site: ',
     Entity: 'Entity',
     FeedbackSubjectContentRequired: 'Feedback Subject Content is required!',
@@ -361,6 +365,7 @@
     TooltipRefTicket: "Automatically fill in Description with Event Details from ticket. Support tickets of Sportsbook, "
     + "Virtual Sports, Virtual Sports 2, Number Game, NG2, Keno, Lottery, Virtual Game, Table Game, Indo 4D with Win Loss Date from ",
     ThisInformationRequired: 'This information is required!',
+    TypeOfContact: 'Type Of Contact',	
     UnContactable: 'Uncontactable',
     Update: 'Update',
     UpdateChatTypeMappingSuccessfully: 'Update chat type mapping successfully!',
@@ -393,6 +398,5 @@
     LogTime: 'Log Time',
     FieldName: 'Field Name',
     OldValue: 'Old Value',
-    NewValue: 'New Value',
-    CustomerActivityLogs: 'Customer Activity Logs'
+    NewValue: 'New Value'
 };

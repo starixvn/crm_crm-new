@@ -3,9 +3,12 @@ import Site from '@jsroot/common/site';
 
 import{
     setGridParams,
+    setGridParamDetails,
     setAllSettings,
     setMainReport,
-    setMainReportDetails
+    setReportDetails,
+    setChartData,
+    setDetailsDataGrid
 } from './logStatisticsSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -18,17 +21,17 @@ const getAllSettings = () => async dispatch => {
 
 const getMainReport = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('LogStatistics/getMainReport');
+    const url = Site.resolveClientUrl('LogStatistics/GetMainReport');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setMainReport(response.data));
     }).then(() => Site.unblockUI());
 };
 
-const getMainReportDetails = params => async dispatch => {
+const getReportDetails = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('LogStatistics/getMainReportDetails');
+    const url = Site.resolveClientUrl('LogStatistics/GetReportDetails');
     await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setMainReportDetails(response.data));
+        dispatch(setReportDetails(response.data));
     }).then(() => Site.unblockUI());
 };
 
@@ -43,9 +46,12 @@ const exportExcel = params => async () => {
 export const ActionCreators = {
     getAllSettings,
     setGridParams,
+    setGridParamDetails,
     getMainReport,
     setMainReport,
-    getMainReportDetails,
-    setMainReportDetails,
+    getReportDetails,
+    setReportDetails,
+    setDetailsDataGrid,
+    setChartData,
     exportExcel
 };

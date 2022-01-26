@@ -1,10 +1,12 @@
 ﻿namespace CRM.Repositories
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Models.Feedback;
     using CRM.Models.Report.DeletedFeedbackStatistic;
+    using CRM.Models.Report.LogStatistics;
     using Fanex.Data;
     using Fanex.Data.Repository;
 

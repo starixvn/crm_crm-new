@@ -76,5 +76,22 @@
             });
             return Json(new { ibcReport, licenseeReport });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
+        {
+            var report = await logStatisticsService.GetReportDetailsAsync(criteria);
+            var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
+            var communicationTools = await settingService.GetCommunicationToolAsync();
+            var products = await settingService.GetProductAsync();
+            var subProducts = await settingService.GetSubProductAsync();
+            var extensions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            return Json(new
+            {
+                report, mainCategories, communicationTools,
+                products, subProducts, extensions,
+                totalRows = criteria.TotalRows
+            });
+        }
     }
 }

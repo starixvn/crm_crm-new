@@ -24,6 +24,10 @@
     .mainCategory-width{
         width: 245px !important;
     }
+
+    .react-datepicker-popper{
+        z-index: 9999 !important;
+    }
 }
 
 .parent-level-0{
@@ -38,6 +42,10 @@
     }
 }
 
+.icon{
+    cursor: pointer;
+}
+
 .table-mbc, .table-licensee{
     .body-content{
         max-height: 250px !important;
@@ -47,17 +55,105 @@
         }
 
         .total-background {
-            background: #F0EDC4 !important;;
+            background: #F0EDC4 !important;
         }
     }
     
-    .footer-container{
-        td{
-            background: #c0cae3!important;
-            color: #0054a6 !important;
+    .footer-content{
+        .footer-container{
+            td{
+                background: #c0cae3!important;
+                color: #0054a6 !important;
+            }
+
+            td:last-child{
+                background: #F0EDC4 !important;
+            }
         }
     }
 }
 
+.details{
+    .table-container {
+
+        table tr {
+            th:first-child, td:first-child, th:nth-child(2), td:nth-child(2),
+            th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5){
+                position: sticky;
+
+                border-left: none !important;
+                border-right: none !important;
+                box-shadow: inset -1px 0 1px -1px #1f1d1d,
+                            inset 1px 0 1px -1px #1f1d1d;
+            }
+
+
+            th:first-child, td:first-child{
+                left: 0;
+                z-index: 1;
+            }
+            
+            th:nth-child(2), td:nth-child(2){
+                left: 116px;
+                z-index: 2;
+            }
+
+            th:nth-child(3), td:nth-child(3){
+                left: 213px;
+                z-index: 3;
+            }
+
+            th:nth-child(4), td:nth-child(4){
+                left: 310px;
+                z-index: 4;
+            }
+
+            th:nth-child(5), td:nth-child(5){
+                left: 407px;
+                z-index: 5;
+            }
+        }
+
+        .body-content{
+            overflow: visible !important;
+
+            tbody td{ 
+                background-color: #fff !important;
+            }
+
+            .break-word{
+                word-break: break-word;
+            }
+        }  
+    }
+}
+
+.chart-modal-dialog{
+    .modal-content{
+        width: 1200px !important;
+        height: 800px !important;;
+
+        .recharts-wrapper{
+            height: 750px !important;
+        }
+
+        .recharts-default-legend{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border: 1px solid #b7b7b7;
+            padding-top: 5px !important;
+
+            li{
+                margin-left: 10px;
+                width: 270px;
+
+                .recharts-surface, .recharts-legend-item-text{
+                    float: left;
+                }
+            }
+        }
+    }
+}
 
 

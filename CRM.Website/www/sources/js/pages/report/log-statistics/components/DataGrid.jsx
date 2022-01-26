@@ -15,6 +15,8 @@ export class DataGrid extends Component {
             shouldResetScrollPosition: true,
             toggleRowDaily: [],
             toggleRowLicensee: [],
+            isCollapseDaily: false,
+            isCollapseLicensee: false,
             widthTotalColumns: 0
         };
     }
@@ -84,33 +86,33 @@ export class DataGrid extends Component {
         ];
     };
 
-    toggleRow = tableName => tableName === 'mbc' ? this.state.toggleRowDaily : this.state.toggleRowLicensee;
+    getToggleRows = tableName => tableName === 'mbc' ? this.state.toggleRowDaily : this.state.toggleRowLicensee;
 
-    toggleRowDaily = (id, tableName) => {
-        const toggle = this.toggleRow(tableName);
-        const index = toggle.indexOf(id);
+    handleToggleRow = (id, tableName) => {
+        const toggleName = this.getToggleRows(tableName);
+        const index = toggleName.indexOf(id);
         if (index >= 0) {
-            toggle.splice(index, 1);
+            toggleName.splice(index, 1);
         } else {
-            toggle.push(id);
+            toggleName.push(id);
         }
 
-        this.setState({ toggle });
+        this.setState({ toggleName });
     };
 
     renderMainCategoryRows = (item, communicationColumns, tableName) => {
         const rows = [];
         const cells = [];
-        const toggle = this.toggleRow(tableName);
+        const toggles = this.getToggleRows(tableName);
         cells.push( 
             <Cell className='complaints-text'>
-                <span className={`expand-icon fa pr-2 ${!toggle.includes(item.id) ? 'fa-caret-down' : 'fa-caret-right'}`} />
+                <span className={`expand-icon fa pr-2 ${!toggles.includes(item.id) ? 'fa-caret-down' : 'fa-caret-right'}`} />
                 <span >{item.name}</span>
             </Cell>
         );
         cells.push(<ChildRow isParent currentRow={item} communicationColumns={communicationColumns}/>);
         rows.push(
-            <Row key={`parent-${item.id}`} className='parent-level-0' onClick={() => this.toggleRowDaily(item.id, tableName)}>
+            <Row key={`parent-${item.id}`} className='parent-level-0' onClick={() => this.handleToggleRow(item.id, tableName)}>
                 {cells}
             </Row>
         );
@@ -123,7 +125,7 @@ export class DataGrid extends Component {
     };
 
     renderSubCategoryRows = (parentId, sub, communicationColumns, tableName) => {
-        const toggle = this.toggleRow(tableName);
+        const toggle = this.getToggleRows(tableName);
         if(!toggle.includes(parentId)){
             const cells = [];
             cells.push(<Cell className='child'>{sub.name}</Cell>);
@@ -154,18 +156,143 @@ export class DataGrid extends Component {
         );
     };
 
-    handleEditDeletedFeedback = id => {
-        this.props.setEditFeedbackDialog({ show: true, feedbackId: id });
+    getTitle = tableName =>{
+        const {gridParams} = this.props;
+        const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
+        const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);  
+        const title = tableName === 'mbc' ? 
+            `MBC Daily Customer Complaints/Enquiries From ${fromDateFormat}-${toFormat}` : 
+            `Licensee Daily Customer Complaints/Enquiries From ${fromDateFormat}-${toFormat}`;
+        return title;
+    };
+
+    handleShowDetails = tableName => {
+        const siteType = tableName === 'mbc' ? 0 : 1;
+        const title = this.getTitle();
+        const params = {...this.props.gridParams , siteType: siteType, pageIndex: 1, pageSize: 100};
+        this.props.setDetailsDataGrid({show: true, title: title});
+        this.props.setGridParamDetails(params);
+        this.props.getReportDetails(params);
     };
 
     handleExportExcel = () => {
         this.props.exportExcel(this.props.gridParams);
     };
-    
 
-    renderCustomButton = () => {
+    handleViewChart = tableName =>{
+        const data = tableName === 'mbc' ? this.props.mainReports.ibcReport : this.props.mainReports.licenseeReport;
+        const title = this.getTitle();
+        this.props.setChartData({show: true, title: title, data: data});
+    }
+
+    handleCollapseExpandLicensee = () =>{
+        const {toggleRowLicensee, isCollapseLicensee} = this.state;
+        if(!isCollapseLicensee){
+            this.props.mainReports.ibcReport.mainCategories.forEach(main => {
+                if(toggleRowLicensee.indexOf(main) < 0){
+                    toggleRowLicensee.push(main.id);
+                }
+            });
+            this.setState(prevState => ({
+                toggleRowLicensee,
+                isCollapseLicensee: !prevState.isCollapseLicensee
+            }));
+        }
+        else{
+            this.setState(prevState => ({
+                toggleRowLicensee: [],
+                isCollapseLicensee: !prevState.isCollapseLicensee
+            }));
+        }
+    }
+
+    handleCollapseExpandDaily = () =>{
+        const {toggleRowDaily, isCollapseDaily} = this.state;
+        if(!isCollapseDaily){
+            this.props.mainReports.ibcReport.mainCategories.forEach(main => {
+                if(toggleRowDaily.indexOf(main) < 0){
+                    toggleRowDaily.push(main.id);
+                }
+            });
+            this.setState(prevState => ({
+                toggleRowDaily,
+                isCollapseDaily: !prevState.isCollapseDaily
+            }));
+        }
+        else{
+            this.setState(prevState => ({
+                toggleRowDaily: [],
+                isCollapseDaily: !prevState.isCollapseDaily
+            }));
+        }
+    }
+
+    renderCustomButtonLicensee = () => {
         return (
             <div>
+                <OverlayTrigger
+                    overlay={
+                        <Tooltip><span>View Chart</span></Tooltip>
+                    }
+                    placement="auto"
+                >
+                    <span className="fa fa-bar-chart icon pl-3" onClick={() => this.handleViewChart('licensee')} />
+                </OverlayTrigger>
+                <OverlayTrigger
+                    overlay={
+                        <Tooltip><span>Show Details</span></Tooltip>
+                    }
+                    placement="auto"
+                >
+                    <span className="fa fa-info-circle icon pl-3" onClick={() => this.handleShowDetails('licensee')} />
+                </OverlayTrigger>
+                <OverlayTrigger
+                    overlay={
+                        <Tooltip><span>Collapse/Expand</span></Tooltip>
+                    }
+                    placement="auto"
+                >
+                    <span className="fa fa-expand icon-expand pl-3" onClick={this.handleCollapseExpandLicensee} />
+                </OverlayTrigger>
+                <OverlayTrigger
+                    overlay={
+                        <Tooltip><span>Export to Excel</span></Tooltip>
+                    }
+                    placement="auto"
+                >
+                    <span className="fa fa-file-excel-o icon-excel pl-3" onClick={this.handleExportExcel} />
+                </OverlayTrigger>
+            </div>
+        );
+    };
+
+    renderCustomButtonDailyLog= () => {
+        return (
+            <div>
+                <OverlayTrigger
+                    overlay={
+                        <Tooltip><span>View Chart</span></Tooltip>
+                    }
+                    placement="auto"
+                >
+                    <span className="fa fa-bar-chart icon pl-3" onClick={() => this.handleViewChart('mbc')} />
+                </OverlayTrigger>
+                <OverlayTrigger
+                    overlay={
+                        <Tooltip><span>Show Details</span></Tooltip>
+                    }
+                    placement="auto"
+                >
+                    <span className="fa fa-info-circle icon pl-3" onClick={() => this.handleShowDetails('mbc')} />
+                </OverlayTrigger>
+                <OverlayTrigger
+                    overlay={
+                        <Tooltip><span>Collapse/Expand</span></Tooltip>
+                    }
+                    placement="auto"
+                >
+                    <span className="fa fa-expand icon pl-3" onClick={this.handleCollapseExpandDaily} />
+                </OverlayTrigger>
                 <OverlayTrigger
                     overlay={
                         <Tooltip><span>Export to Excel</span></Tooltip>
@@ -181,13 +308,15 @@ export class DataGrid extends Component {
     renderDailyLogStatistic = (fromDateFormat, toFormat) =>
     {
         const {ibcReport} = this.props.mainReports;
+        const width = this.calculateWidth(ibcReport.communicationColumns);
+
         return (
             <div className='table-mbc'>
-                <div className='table-title d-flex justify-content-between align-items-center'>
+                 <div style={{width: width}} className='table-title d-flex justify-content-between align-items-center'>
                     <span>{`MBC Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
-                    {/*{
-                        mainReports.iBCReport.length > 0 && this.renderExportExcel()
-                    } */}
+                    {
+                        ibcReport.mainCategories.length > 0 && this.renderCustomButtonDailyLog()
+                    }
                 </div>
                 <Table
                     width={document.getElementById('app-container').clientWidth}
@@ -207,20 +336,13 @@ export class DataGrid extends Component {
     renderLicenseeDailyStatistic = (fromDateFormat, toFormat) =>
     {
         const {licenseeReport} = this.props.mainReports;
-        let totalWidth = 0;
         const width = this.calculateWidth(licenseeReport.communicationColumns);
-        if(this.state.isExpand){
-            licenseeReport.productColumns.map(item =>{
-                totalWidth += this.calculateWidth(licenseeReport.communicationColumns);
-            });
-        }
         return (
             <div className='table-licensee'>
-                <div style={{width: this.state.isExpand ? document.getElementById('app-container').clientWidth : width}} 
-                    className='table-title d-flex justify-content-between align-items-center'>
+                <div style={{width: width}} className='table-title d-flex justify-content-between align-items-center'>
                     <span>{`Licensee Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
                     {
-                        licenseeReport.mainCategories.length > 0 && this.renderCustomButton()
+                        licenseeReport.mainCategories.length > 0 && this.renderCustomButtonLicensee()
                     }
                 </div>
                 {
@@ -246,10 +368,10 @@ export class DataGrid extends Component {
             return null;
         }
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
-        const toFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);        
+        const toFormat = DateTimeService.toShortDateFormat(gridParams.fromDate); 
         return (
             <div>
-                {/* {this.renderDailyLogStatistic(fromDateFormat, toFormat)} */}
+                {this.renderDailyLogStatistic(fromDateFormat, toFormat)}
                 {this.renderLicenseeDailyStatistic(fromDateFormat, toFormat)}
             </div>
         );

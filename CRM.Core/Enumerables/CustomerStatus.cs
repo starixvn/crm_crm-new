@@ -6,6 +6,7 @@
         Locked,
         Suspended,
         Closed,
-        Disabled
+        Disabled,
+        Active
     }
 }

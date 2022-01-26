@@ -13,6 +13,7 @@
     public interface ILogStatisticsService
     {
         Task<LogStatisticsViewModel> GetReportDataAsync(LogStatisticsCriteria criteria);
+        Task<IEnumerable<StatisticsDetailbyDateModel>> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria);
     }
     public class LogStatisticsService : ILogStatisticsService
     {
@@ -44,6 +45,20 @@
             SumTotalCommunicationForMainCategory(logStatistic.MainCategories);
 
             return logStatistic;
+        }
+
+        public async Task<IEnumerable<StatisticsDetailbyDateModel>> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria)
+        {
+            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            var reportDetails = await baseService.GetDataAsync<StatisticsDetailbyDateModel>(criteria);
+            foreach(var report in reportDetails)
+            {
+                report.FeedbackDate = commonService.ConvertToClientDateTime(report.FeedbackDate);
+                report.ResolutionDate = commonService.ConvertToClientDateTime(report.ResolutionDate);
+                report.CreateDate = commonService.ConvertToClientDateTime(report.CreateDate);
+            }
+            return reportDetails;
         }
 
         private List<BaseModel> GetCommunicationColumns(

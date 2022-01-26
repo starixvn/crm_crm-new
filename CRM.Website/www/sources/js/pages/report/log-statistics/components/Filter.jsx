@@ -115,7 +115,7 @@ export class Filter extends Component {
             mainCategoryId: mainCategoryIds,
             communicationId: communicationIds
         };
-
+        this.props.setDetailsDataGrid({show: false});
         this.props.setGridParams(params);
         this.props.getMainReport(params);
     };

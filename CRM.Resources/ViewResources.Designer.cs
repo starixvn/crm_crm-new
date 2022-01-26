@@ -115,6 +115,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BBM.
+        /// </summary>
+        public static string BBM {
+            get {
+                return ResourceManager.GetString("BBM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chat Type Mapping.
         /// </summary>
         public static string ChatTypeMapping {
@@ -286,6 +295,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fax.
+        /// </summary>
+        public static string Fax {
+            get {
+                return ResourceManager.GetString("Fax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback.
         /// </summary>
         public static string Feedback {
@@ -403,6 +430,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Line.
+        /// </summary>
+        public static string Line {
+            get {
+                return ResourceManager.GetString("Line", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log Statistics.
         /// </summary>
         public static string LogStatistics {
@@ -453,6 +489,24 @@ namespace CRM.Resources {
         public static string Member {
             get {
                 return ResourceManager.GetString("Member", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mobile.
+        /// </summary>
+        public static string Mobile {
+            get {
+                return ResourceManager.GetString("Mobile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MSN.
+        /// </summary>
+        public static string MSN {
+            get {
+                return ResourceManager.GetString("MSN", resourceCulture);
             }
         }
         
@@ -529,6 +583,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        public static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PIC.
+        /// </summary>
+        public static string PIC {
+            get {
+                return ResourceManager.GetString("PIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PIC Assignment.
         /// </summary>
         public static string PICAssignment {
@@ -552,6 +624,15 @@ namespace CRM.Resources {
         public static string PICName {
             get {
                 return ResourceManager.GetString("PICName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QQ.
+        /// </summary>
+        public static string QQ {
+            get {
+                return ResourceManager.GetString("QQ", resourceCulture);
             }
         }
         
@@ -637,6 +718,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skype.
+        /// </summary>
+        public static string Skype {
+            get {
+                return ResourceManager.GetString("Skype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Special Remark.
         /// </summary>
         public static string SpecialRemark {
@@ -678,6 +768,33 @@ namespace CRM.Resources {
         public static string UpdateInformHeadlines {
             get {
                 return ResourceManager.GetString("UpdateInformHeadlines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WeChat.
+        /// </summary>
+        public static string WeChat {
+            get {
+                return ResourceManager.GetString("WeChat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WhatsApp.
+        /// </summary>
+        public static string WhatsApp {
+            get {
+                return ResourceManager.GetString("WhatsApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yahoo.
+        /// </summary>
+        public static string Yahoo {
+            get {
+                return ResourceManager.GetString("Yahoo", resourceCulture);
             }
         }
         
