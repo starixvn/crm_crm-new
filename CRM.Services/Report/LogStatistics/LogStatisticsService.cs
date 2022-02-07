@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core;
     using CRM.Core.Constants;
     using CRM.Core.Services;
     using CRM.Criteria.Report.LogStatistics;
@@ -30,10 +31,23 @@
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            var reportTitle = string.Format(
+               ViewResources.LogStatistics_ExcelTitle,
+               GetLogStatisticSiteTypeName(criteria.SiteType, false),
+               criteria.FromDate.ToShortDateFormat(),
+               criteria.ToDate.ToShortDateFormat());
+
+            var excelFileName = string.Format(
+               ViewResources.LogStatistics_ExcelFileName,
+               GetLogStatisticSiteTypeName(criteria.SiteType, true),
+               criteria.FromDate.ToShortDateFormat(),
+               criteria.ToDate.ToShortDateFormat());
             var logStatisticEntities = await baseService.GetDataAsync<LogStatisticsEntity>(criteria);
 
             var logStatistic = new LogStatisticsViewModel
             {
+                Name = reportTitle,
+                ExcelFileName = excelFileName,
                 CommunicationColumns = GetCommunicationColumns(logStatisticEntities),
                 ProductColumns = GetProductColumns(logStatisticEntities)
             };
@@ -173,6 +187,38 @@
             }
 
             mainCategory.ListOfCommunicationSumByProduct = listOfCommunicationCount;
+        }
+
+        private string GetLogStatisticSiteTypeName(short siteType, bool isFileName)
+        {
+            if (isFileName)
+            {
+                switch (siteType)
+                {
+                    case LogStatisticConstants.IBC:
+                        return ViewResources.MBCDailyLogStatisticsFileName;
+
+                    case LogStatisticConstants.Licensee:
+                        return ViewResources.LicenseeDailyLogStatisticsFileName;
+
+                    default:
+                        return string.Empty;
+                }
+            }
+            else
+            {
+                switch (siteType)
+                {
+                    case LogStatisticConstants.IBC:
+                        return ViewResources.MBCDailyLogStatistics;
+
+                    case LogStatisticConstants.Licensee:
+                        return ViewResources.LicenseeDailyLogStatistics;
+
+                    default:
+                        return string.Empty;
+                }
+            }
         }
     }
 }

@@ -366,4 +366,22 @@
   <data name="Yahoo" xml:space="preserve">
     <value>Yahoo</value>
   </data>
+  <data name="LogStatistics_ExcelTitle" xml:space="preserve">
+    <value>{0} | {1} - {2}</value>
+  </data>
+  <data name="MBCDailyLogStatistics" xml:space="preserve">
+    <value>MBC Daily Log Statistics</value>
+  </data>
+  <data name="LicenseeDailyLogStatistics" xml:space="preserve">
+    <value>Licensee Daily Log Statistics</value>
+  </data>
+  <data name="LogStatistics_ExcelFileName" xml:space="preserve">
+    <value>{0}_{1}_{2}</value>
+  </data>
+  <data name="LicenseeDailyLogStatisticsFileName" xml:space="preserve">
+    <value>Licensee_Daily_Log_Statistics</value>
+  </data>
+  <data name="MBCDailyLogStatisticsFileName" xml:space="preserve">
+    <value>MBC_Daily_Log_Statistics</value>
+  </data>
 </root>

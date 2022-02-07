@@ -2,16 +2,17 @@
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using CRM.Models;
     using CRM.Models.ChatTypeMapping;
     using CRM.Models.Feedback;
     using CRM.Models.InformHeadline;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report.DeletedFeedbackStatistic;
+    using CRM.Models.Report.LogStatistics;
     using CRM.Models.Report.SettlementReport;
     using CRM.Models.Setting;
     using CRM.Services.ExportExcel;
-    using CRM.Services.InformHeadline;
     using Microsoft.AspNetCore.Hosting;
 
     public interface IExportExcelService
@@ -45,6 +46,8 @@
         byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
 
         byte[] ExportDeletedFeedbackStatisticReport(IEnumerable<DeletedFeedbackByHandler> deletedFeedbacks, IEnumerable<Setting> mainCategories);
+
+        byte[] ExportLogStatisticsReport(LogStatisticsViewModel logStatistics);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -147,6 +150,16 @@
             const string ExcelTemplatePath = "ExcelTemplates/Deleted_Feedback_Statistics.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new DeletedFeedbackStatisticExcel(templatePath, deletedFeedbacks, mainCategories);
+            return excel.Export();
+        }
+
+        public byte[] ExportLogStatisticsReport(LogStatisticsViewModel logStatistics)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/Log_Statistics.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var totalColumns = logStatistics.GrandTotalOfCommunicationCount.ToList().Count + logStatistics.ProductColumns.ToList().Count;
+
+            var excel = new LogStatisticsExcel(templatePath, logStatistics, totalColumns);
             return excel.Export();
         }
     }

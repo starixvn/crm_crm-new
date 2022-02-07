@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Criteria.Report.LogStatistics;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Report.LogStatistics;
     using Fanex.NAP.Client.AspNetCore.Attributes;
@@ -92,6 +93,24 @@
                 products, subProducts, extensions,
                 totalRows = criteria.TotalRows
             });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcel([FromBody] LogStatisticsCriteria criteria)
+        {
+            var logStatistics = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
+            {
+                ProductId = criteria.ProductId,
+                MainCategoryId = criteria.MainCategoryId,
+                CommunicationId = criteria.CommunicationId,
+                FromDate = criteria.FromDate,
+                ToDate = criteria.ToDate,
+                ProductType = LogStatisticConstants.ProductTypeDetails,
+                CategoryType = LogStatisticConstants.SubCategory,
+                SiteType = criteria.SiteType
+            });
+            var bytes = excelService.ExportLogStatisticsReport(logStatistics);
+            return File(bytes, MimeType.XLSX, $"{logStatistics.ExcelFileName}.xlsx");
         }
     }
 }

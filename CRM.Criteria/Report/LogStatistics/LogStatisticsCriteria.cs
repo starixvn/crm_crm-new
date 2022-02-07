@@ -12,7 +12,7 @@
 
         public int CategoryType { get; set; }
 
-        public int SiteType { get; set; }
+        public short SiteType { get; set; }
 
         public string ProductId { get; set; }
 

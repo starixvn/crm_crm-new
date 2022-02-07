@@ -50,5 +50,7 @@ namespace CRM.Models.Report.LogStatistics
                 return sumOfCommunicationsByProduct;
             }
         }
+
+        public string ExcelFileName { get; set; }
     }
 }

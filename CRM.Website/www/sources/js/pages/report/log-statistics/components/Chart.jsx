@@ -14,12 +14,12 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 
 export default class Chart extends PureComponent {
     shadeColor = (color, percent) =>{
-        const colorHexaValue = parseInt(color.slice(1), 16);
+        const colorHexValue = parseInt(color.slice(1), 16);
         const t = percent < 0 ? 0 : 255;
         const p = percent < 0 ? percent * -1 : percent;
-        const redColor = colorHexaValue >> 16;
-        const greenColor = colorHexaValue >> 8 & 0x00FF;
-        const blueColor = colorHexaValue & 0x0000FF;
+        const redColor = colorHexValue >> 16;
+        const greenColor = colorHexValue >> 8 & 0x00FF;
+        const blueColor = colorHexValue & 0x0000FF;
         const backGroundColor = {
             Red: 0x1000000 + (Math.round((t - redColor) * p) + redColor) * 0x10000,
             Green: (Math.round((t - greenColor) * p) + greenColor) * 0x100,
@@ -49,7 +49,8 @@ export default class Chart extends PureComponent {
             backGroundColors[backGroundColorIndex] :
             this.shadeColor(backGroundColors[backGroundColorIndex], - darkenPercent);
         return backGroundColor;
-    }
+    };
+
     renderChart = report =>{ 
         const mainCategories = report.mainCategories.map((item, index) => ({
             index: index,

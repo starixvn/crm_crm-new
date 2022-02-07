@@ -430,6 +430,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Licensee Daily Log Statistics.
+        /// </summary>
+        public static string LicenseeDailyLogStatistics {
+            get {
+                return ResourceManager.GetString("LicenseeDailyLogStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Licensee_Daily_Log_Statistics.
+        /// </summary>
+        public static string LicenseeDailyLogStatisticsFileName {
+            get {
+                return ResourceManager.GetString("LicenseeDailyLogStatisticsFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line.
         /// </summary>
         public static string Line {
@@ -444,6 +462,24 @@ namespace CRM.Resources {
         public static string LogStatistics {
             get {
                 return ResourceManager.GetString("LogStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}_{1}_{2}.
+        /// </summary>
+        public static string LogStatistics_ExcelFileName {
+            get {
+                return ResourceManager.GetString("LogStatistics_ExcelFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} | {1} - {2}.
+        /// </summary>
+        public static string LogStatistics_ExcelTitle {
+            get {
+                return ResourceManager.GetString("LogStatistics_ExcelTitle", resourceCulture);
             }
         }
         
@@ -480,6 +516,24 @@ namespace CRM.Resources {
         public static string Master {
             get {
                 return ResourceManager.GetString("Master", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MBC Daily Log Statistics.
+        /// </summary>
+        public static string MBCDailyLogStatistics {
+            get {
+                return ResourceManager.GetString("MBCDailyLogStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MBC_Daily_Log_Statistics.
+        /// </summary>
+        public static string MBCDailyLogStatisticsFileName {
+            get {
+                return ResourceManager.GetString("MBCDailyLogStatisticsFileName", resourceCulture);
             }
         }
         
