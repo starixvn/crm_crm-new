@@ -92,7 +92,7 @@
             var voidingTickets = await voidingSettledTicketsService.GetAutoVoidingTicketAsync(voidingSettledTicketSetting, voidingMessageDistinct, environment);
             logService.LogInformation("end GetAutoVoidingTicketAsync!!!");
 
-            logService.LogInformation(string.Format("Item1: {0}, {1}", voidingTickets.Item1?.Select(x=>x.MessageId), voidingTickets.Item1?.Select(x => x.TransId)));
+            logService.LogInformation(string.Format("Item1: {0}, {1}", string.Join(",", voidingTickets.Item1?.Select(x=>x.MessageId)), string.Join(",", voidingTickets.Item1?.Select(x => x.TransId))));
             if (voidingTickets.Item2.Any())
             {
                 await voidingSettledTicketsService.UpdateAutoVoidingMessageAsync(voidingTickets.Item2, environment);
