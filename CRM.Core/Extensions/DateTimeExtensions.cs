@@ -6,6 +6,7 @@
     [SuppressMessage("Major Code Smell", "S109:Magic numbers should not be used", Justification = "Pending")]
     public static class DateTimeExtensions
     {
+        public const string ShortDateFormatDash = "MMM_dd_yyyy";
         public const string ShortDateFormat = "MMM dd, yyyy";
         public const string ShortDateTimeFormat = "MMM dd, yyyy hh:mm tt";
         public const string LongDateTimeFormat = "MMM dd, yyyy hh:mm:ss tt";
@@ -27,6 +28,7 @@
         public static DateTime LastDayOfMonth(this DateTime date) => date.FirstDayOfMonth().AddMonths(1).AddDays(-1);
 
         public static string ToShortDateFormat(this DateTime date) => date.ToString(ShortDateFormat);
+        public static string ToShortDateFormatDash(this DateTime date) => date.ToString(ShortDateFormatDash);
 
         public static string ToShortDateTimeFormat(this DateTime date) => date.ToString(ShortDateTimeFormat);
 

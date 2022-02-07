@@ -40,8 +40,8 @@
             var excelFileName = string.Format(
                ViewResources.LogStatistics_ExcelFileName,
                GetLogStatisticSiteTypeName(criteria.SiteType, true),
-               criteria.FromDate.ToShortDateFormat(),
-               criteria.ToDate.ToShortDateFormat());
+               criteria.FromDate.ToShortDateFormatDash(),
+               criteria.ToDate.ToShortDateFormatDash());
             var logStatisticEntities = await baseService.GetDataAsync<LogStatisticsEntity>(criteria);
 
             var logStatistic = new LogStatisticsViewModel
