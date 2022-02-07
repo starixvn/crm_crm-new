@@ -88,7 +88,11 @@
             var voidingMessages = await voidingSettledTicketsService.GetAutoVoidingMessageAsync(voidingSettledTicketSetting, environment);
             var failVoidingMessages = await voidingSettledTicketsService.GetFailVoidingMessageAsync();
             var voidingMessageDistinct = voidingMessages.Concat(failVoidingMessages).Distinct().ToList();
+            logService.LogInformation("before GetAutoVoidingTicketAsync!!!");
             var voidingTickets = await voidingSettledTicketsService.GetAutoVoidingTicketAsync(voidingSettledTicketSetting, voidingMessageDistinct, environment);
+            logService.LogInformation("end GetAutoVoidingTicketAsync!!!");
+
+            logService.LogInformation(string.Format("Item1: {0}, {1}", voidingTickets.Item1?.Select(x=>x.MessageId), voidingTickets.Item1?.Select(x => x.TransId)));
             if (voidingTickets.Item2.Any())
             {
                 await voidingSettledTicketsService.UpdateAutoVoidingMessageAsync(voidingTickets.Item2, environment);

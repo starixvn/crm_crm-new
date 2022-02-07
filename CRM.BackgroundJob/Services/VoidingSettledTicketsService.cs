@@ -31,11 +31,13 @@
     public class VoidingSettledTicketsService : IVoidingSettledTicketsService
     {
         private readonly IBaseService baseService;
+        private readonly ICRMLogService logService;
 
         public VoidingSettledTicketsService(
-            IBaseService baseService)
+            IBaseService baseService, ICRMLogService logService)
         {
             this.baseService = baseService;
+            this.logService = logService;
         }
 
         public async Task<IEnumerable<MessageVoidSettled>> GetMessageVoidSettledAsync()
@@ -67,6 +69,7 @@
                 ConfigUAT = voidingSettledTicketSetting.ConfigUAT,
                 ConfigPRO = voidingSettledTicketSetting.ConfigPRO
             };
+            logService.LogInformation(string.Format("criteria: {0}", criteria.MessageIDs));
 
             return await baseService.FetchMultipleAsync<VoidingTicketEventInfo, MsgTarget>(criteria);
         }
