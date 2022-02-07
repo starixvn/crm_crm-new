@@ -35,22 +35,32 @@
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, 1]
-                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, 1]);
-            var productColumns = logStatistics.ProductColumns.ToList();
-            var communicationColumns = logStatistics.CommunicationColumns.ToList();
-            var currentColumnIndex = 2;
-            var step = communicationColumns.Count + 1;
-            for (int i = 0; i < productColumns.Count; i++)
+            try
             {
-                SetStyleHeaderProduct(worksheet, currentColumnIndex, currentColumnIndex + step - 1);
-
-                for (int j = 0; j < communicationColumns.Count; j++)
+                templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, 1]
+                        .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, 1]);
+                var productColumns = logStatistics.ProductColumns.ToList();
+                var communicationColumns = logStatistics.CommunicationColumns.ToList();
+                var currentColumnIndex = 2;
+                var step = communicationColumns.Count + 1;
+                for (int i = 0; i < productColumns.Count; i++)
                 {
-                    worksheet.Cells[RowStartHeader + 1, currentColumnIndex, RowStartHeader + 1, currentColumnIndex].Value = communicationColumns.ElementAt(j).Name;
+                    SetStyleHeaderProduct(worksheet, currentColumnIndex, currentColumnIndex + step - 1);
+
+                    for (int j = 0; j < communicationColumns.Count; j++)
+                    {
+                        SetStyleHeaderCommunication(worksheet, currentColumnIndex, communicationColumns.ElementAt(j).Name);
+                        currentColumnIndex++;
+                    }
+                    SetStyleHeaderCommunication(worksheet, currentColumnIndex, "Total");
                     currentColumnIndex++;
                 }
-            }    
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }  
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -83,6 +93,13 @@
             worksheet.Cells[1, 1, secondRows, totalColumns + 1].Merge = true;
             worksheet.Cells[1, 1, secondRows, totalColumns + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             SetBackgroundColor(worksheet.Cells[1, 1, secondRows, totalColumns], HeaderTitleColor);
+        }
+
+        protected internal virtual void SetStyleHeaderCommunication(ExcelWorksheet worksheet, int columnIndex, string value)
+        {
+            worksheet.Cells[RowStartHeader + 1, columnIndex, RowStartHeader + 1, columnIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Cells[RowStartHeader + 1, columnIndex, RowStartHeader + 1, columnIndex].Value = value;
+            SetBackgroundColor(worksheet.Cells[RowStartHeader, columnIndex, RowStartHeader, columnIndex], HeaderTitleColor);
         }
 
         protected internal virtual void SetStyleHeaderProduct(ExcelWorksheet worksheet, int fromColumnIndex, int toColumnIndex)
