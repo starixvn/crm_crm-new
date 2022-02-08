@@ -18,6 +18,7 @@
         private const byte RowStartHeader = 4;
 
         protected static readonly Color GroupBackgroundColor = Color.FromArgb(215, 215, 215);
+        protected static readonly Color GroudColor = Color.FromArgb(0, 100, 0);
 
         public LogStatisticsExcel(string templatePath, LogStatisticsViewModel logStatistics, int totalColumns) : base(templatePath, 0, logStatistics.ExcelFileName)
         {
@@ -35,41 +36,72 @@
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            try
+            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, 1]
+                    .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, 1]);
+            var productColumns = logStatistics.ProductColumns.ToList();
+            var communicationColumns = logStatistics.CommunicationColumns.ToList();
+            var currentColumnIndex = 2;
+            var step = communicationColumns.Count + 1;
+            for (int i = 0; i < productColumns.Count; i++)
             {
-                templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, 1]
-                        .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, 1]);
-                var productColumns = logStatistics.ProductColumns.ToList();
-                var communicationColumns = logStatistics.CommunicationColumns.ToList();
-                var currentColumnIndex = 2;
-                var step = communicationColumns.Count + 1;
-                for (int i = 0; i < productColumns.Count; i++)
-                {
-                    SetStyleHeaderProduct(worksheet, currentColumnIndex, currentColumnIndex + step - 1);
+                SetStyleHeaderProduct(worksheet, currentColumnIndex, currentColumnIndex + step - 1, productColumns[i].Name);
 
-                    for (int j = 0; j < communicationColumns.Count; j++)
-                    {
-                        SetStyleHeaderCommunication(worksheet, currentColumnIndex, communicationColumns.ElementAt(j).Name);
-                        currentColumnIndex++;
-                    }
-                    SetStyleHeaderCommunication(worksheet, currentColumnIndex, "Total");
+                for (int j = 0; j < communicationColumns.Count; j++)
+                {
+                    SetStyleHeaderCommunication(worksheet, currentColumnIndex, communicationColumns.ElementAt(j).Name);
                     currentColumnIndex++;
                 }
+                SetStyleHeaderCommunication(worksheet, currentColumnIndex, "Total");
+                currentColumnIndex++;
             }
-            catch (Exception e)
-            {
-
-                throw;
-            }  
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
+            foreach (var mainCategory in logStatistics.MainCategories)
+            {
+                RenderRowValue(templateWorksheet, worksheet, mainCategory);
+
+                foreach (var subCategory in mainCategory.SubCategories)
+                {
+                    RenderRowValue(templateWorksheet, worksheet, subCategory);
+                }
+            }
+        }
+
+        protected internal virtual void RenderRowValue(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, LogStatisticsBaseModel category)
+        {
+            var currentRowIndex = RowStartBody;
+            var currentColumnIndex = 1;
+            SetBackgroundColor(worksheet.Cells[currentRowIndex, totalColumns], GroupBackgroundColor);
+            SetColor(worksheet.Cells[currentRowIndex, totalColumns]);
+            worksheet.Cells[currentRowIndex, currentColumnIndex].Value = category.Name;
+            currentColumnIndex++;
+            var listOfCommunicationSumByProduct = category.ListOfCommunicationSumByProduct;
+            var listOfNumberCommunicationCount = category.ListOfCommunicationCount;
+
+            int communicationColumnsCount = logStatistics.CommunicationColumns.ToList().Count;
+            int currentCommunicationIndex = 0;
+            foreach (var communicationSumByProduct in listOfCommunicationSumByProduct)
+            {
+                for (int i = 0; i < communicationColumnsCount; i++)
+                {
+                    worksheet.Cells[currentRowIndex, currentColumnIndex].Value = listOfNumberCommunicationCount.ElementAt(currentCommunicationIndex);
+                    currentCommunicationIndex++;
+                    currentColumnIndex++;
+                }
+
+                worksheet.Cells[currentRowIndex, currentColumnIndex].Value = communicationSumByProduct;
+
+                currentColumnIndex++;
+            }
+
+            currentRowIndex++;
         }
 
         protected internal virtual void SetColor(ExcelRange cell)
         {
-            cell.Style.Font.Color.SetColor(HeaderTitleColor);
+            cell.Style.Font.Color.SetColor(GroudColor);
             cell.Style.Font.Bold = true;
         }
 
@@ -90,23 +122,38 @@
         {
             StyleDefault(worksheet);
             const byte secondRows = 2;
+            const byte threeRows = 3;
+
             worksheet.Cells[1, 1, secondRows, totalColumns + 1].Merge = true;
             worksheet.Cells[1, 1, secondRows, totalColumns + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             SetBackgroundColor(worksheet.Cells[1, 1, secondRows, totalColumns], HeaderTitleColor);
+            DrawBorderCell(worksheet.Cells[1, 1, secondRows, totalColumns + 1]);
+
+            worksheet.Cells[threeRows, 1, threeRows, totalColumns + 1].Merge = true;
         }
 
-        protected internal virtual void SetStyleHeaderCommunication(ExcelWorksheet worksheet, int columnIndex, string value)
+        protected internal virtual void SetStyleHeaderProduct(ExcelWorksheet worksheet, int fromColumnIndex, int toColumnIndex, string product)
         {
-            worksheet.Cells[RowStartHeader + 1, columnIndex, RowStartHeader + 1, columnIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Cells[RowStartHeader + 1, columnIndex, RowStartHeader + 1, columnIndex].Value = value;
-            SetBackgroundColor(worksheet.Cells[RowStartHeader, columnIndex, RowStartHeader, columnIndex], HeaderTitleColor);
+            var currentCells = worksheet.Cells[RowStartHeader, fromColumnIndex, RowStartHeader, toColumnIndex];
+            currentCells.Merge = true;
+            currentCells.Value = product;
+            SetStyleHeader(currentCells);
         }
 
-        protected internal virtual void SetStyleHeaderProduct(ExcelWorksheet worksheet, int fromColumnIndex, int toColumnIndex)
+        protected internal virtual void SetStyleHeaderCommunication(ExcelWorksheet worksheet, int columnIndex, string communication)
         {
-            worksheet.Cells[RowStartHeader, fromColumnIndex, RowStartHeader, toColumnIndex].Merge = true;
-            worksheet.Cells[RowStartHeader, fromColumnIndex, RowStartHeader, toColumnIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            SetBackgroundColor(worksheet.Cells[RowStartHeader, fromColumnIndex, RowStartHeader, toColumnIndex], HeaderTitleColor);
+            var currentCells = worksheet.Cells[RowStartHeader + 1, columnIndex];
+            currentCells.Value = communication;
+            SetStyleHeader(currentCells);
+        }
+
+        protected internal virtual void SetStyleHeader(ExcelRange cell)
+        {
+            cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            cell.Style.Font.Color.SetColor(Color.White);
+            cell.Style.Font.Bold = true;
+            SetBackgroundColor(cell, HeaderTitleColor);
+            DrawBorderCell(cell);
         }
 
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)

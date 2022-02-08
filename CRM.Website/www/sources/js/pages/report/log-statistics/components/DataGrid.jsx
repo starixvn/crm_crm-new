@@ -175,8 +175,10 @@ export class DataGrid extends Component {
         this.props.getReportDetails(params);
     };
 
-    handleExportExcel = () => {
-        this.props.exportExcel(this.props.gridParams);
+    handleExportExcel = tableName => {
+        const siteType = tableName === 'mbc' ? 0 : 1;
+        const params = {...this.props.gridParams, ...{siteType:siteType}};
+        this.props.exportExcel(params);
     };
 
     handleViewChart = tableName =>{
@@ -260,7 +262,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-file-excel-o icon-excel pl-3" onClick={this.handleExportExcel} />
+                    <span className="fa fa-file-excel-o icon-excel pl-3" onClick={() => this.handleExportExcel('licensee')} />
                 </OverlayTrigger>
             </div>
         );
@@ -299,7 +301,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-file-excel-o icon-excel pl-3" onClick={this.handleExportExcel} />
+                    <span className="fa fa-file-excel-o icon-excel pl-3" onClick={() => this.handleExportExcel('mbc')} />
                 </OverlayTrigger>
             </div>
         );
