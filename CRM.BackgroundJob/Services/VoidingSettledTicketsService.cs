@@ -69,7 +69,7 @@
                 ConfigUAT = voidingSettledTicketSetting.ConfigUAT,
                 ConfigPRO = voidingSettledTicketSetting.ConfigPRO
             };
-            logService.LogInformation(string.Format("criteria: {0}", criteria.MessageIDs));
+            logService.LogInformation(string.Format("Acc_CRM_AutoVoidingTicketSel Criteria: {0}", criteria.MessageIDs));
 
             return await baseService.FetchMultipleAsync<VoidingTicketEventInfo, MsgTarget>(criteria);
         }
