@@ -1,11 +1,8 @@
 ﻿namespace CRM.Services.ExportExcel
 {
-    using System;
-    using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
     using CRM.Models.Report.LogStatistics;
-    using CRM.Resources;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
@@ -18,7 +15,8 @@
         private const byte RowStartHeader = 4;
 
         protected static readonly Color GroupBackgroundColor = Color.FromArgb(215, 215, 215);
-        protected static readonly Color GroudColor = Color.FromArgb(0, 100, 0);
+        protected static readonly Color TotalBackgroundColor = Color.FromArgb(240, 237, 196);
+        protected static readonly Color GroupColor = Color.FromArgb(0, 0, 205);
 
         public LogStatisticsExcel(string templatePath, LogStatisticsViewModel logStatistics, int totalColumns) : base(templatePath, 0, logStatistics.ExcelFileName)
         {
@@ -58,24 +56,36 @@
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
+            var currentRowIndex = RowStartBody;
             foreach (var mainCategory in logStatistics.MainCategories)
             {
-                RenderRowValue(templateWorksheet, worksheet, mainCategory);
-
+                SetStyleBodyMain(worksheet.Cells[currentRowIndex, 1, currentRowIndex, totalColumns + 1]);
+                RenderRowValue(worksheet, mainCategory, currentRowIndex++);
                 foreach (var subCategory in mainCategory.SubCategories)
                 {
-                    RenderRowValue(templateWorksheet, worksheet, subCategory);
+                    RenderRowValue(worksheet, subCategory, currentRowIndex++);
                 }
             }
+            var granTotal = new LogStatisticsBaseModel
+            {
+                Name = "Grand Total",
+                ListOfCommunicationCount = logStatistics.GrandTotalOfCommunicationCount,
+                ListOfCommunicationSumByProduct = logStatistics.GrandTotalOfCommunicationSumByProduct
+            };
+
+            RenderRowValue(worksheet, granTotal, currentRowIndex);
+            SetBackgroundTotalRow(worksheet.Cells[currentRowIndex, 1, currentRowIndex, totalColumns + 1]);
+            DrawBorderCell(worksheet.Cells[RowStartBody, 1, currentRowIndex, totalColumns + 1]);
         }
 
-        protected internal virtual void RenderRowValue(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet, LogStatisticsBaseModel category)
+        protected internal virtual void RenderRowValue(ExcelWorksheet worksheet, 
+            LogStatisticsBaseModel category,int currentRowIndex
+            )
         {
-            var currentRowIndex = RowStartBody;
             var currentColumnIndex = 1;
-            SetBackgroundColor(worksheet.Cells[currentRowIndex, totalColumns], GroupBackgroundColor);
-            SetColor(worksheet.Cells[currentRowIndex, totalColumns]);
             worksheet.Cells[currentRowIndex, currentColumnIndex].Value = category.Name;
+            worksheet.Cells[currentRowIndex, currentColumnIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
             currentColumnIndex++;
             var listOfCommunicationSumByProduct = category.ListOfCommunicationSumByProduct;
             var listOfNumberCommunicationCount = category.ListOfCommunicationCount;
@@ -87,21 +97,26 @@
                 for (int i = 0; i < communicationColumnsCount; i++)
                 {
                     worksheet.Cells[currentRowIndex, currentColumnIndex].Value = listOfNumberCommunicationCount.ElementAt(currentCommunicationIndex);
+                    worksheet.Cells[currentRowIndex, currentColumnIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     currentCommunicationIndex++;
                     currentColumnIndex++;
                 }
-
                 worksheet.Cells[currentRowIndex, currentColumnIndex].Value = communicationSumByProduct;
-
+                worksheet.Cells[currentRowIndex, currentColumnIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                SetBackgroundColor(worksheet.Cells[currentRowIndex, currentColumnIndex], TotalBackgroundColor);
                 currentColumnIndex++;
             }
+        }
 
-            currentRowIndex++;
+        protected internal virtual void SetStyleBodyMain(ExcelRange cell)
+        {
+            SetBackgroundColor(cell, GroupBackgroundColor);
+            SetColor(cell);
         }
 
         protected internal virtual void SetColor(ExcelRange cell)
         {
-            cell.Style.Font.Color.SetColor(GroudColor);
+            cell.Style.Font.Color.SetColor(GroupColor);
             cell.Style.Font.Bold = true;
         }
 
@@ -159,7 +174,7 @@
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthLarge = 35;
-            const byte widthNormal = 15;
+            const byte widthNormal = 12;
             worksheet.DefaultColWidth = widthNormal;
             worksheet.Cells.AutoFitColumns();
             worksheet.Column(1).Width = WidthLarge;

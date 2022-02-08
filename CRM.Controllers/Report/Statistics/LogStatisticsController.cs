@@ -81,7 +81,8 @@
         [HttpPost]
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
-            var report = await logStatisticsService.GetReportDetailsAsync(criteria);
+            var reportDetails = await logStatisticsService.GetReportDetailsAsync(criteria);
+            var report = reportDetails.ChildReports;
             var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
             var communicationTools = await settingService.GetCommunicationToolAsync();
             var products = await settingService.GetProductAsync();
@@ -111,6 +112,20 @@
             });
             var bytes = excelService.ExportLogStatisticsReport(logStatistics);
             return File(bytes, MimeType.XLSX, $"{logStatistics.ExcelFileName}.xlsx");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcelDetails([FromBody] LogStatisticsDetailCriteria criteria)
+        {
+            var logStatisticsDetail = await logStatisticsService.GetReportDetailsAsync(criteria);
+            var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
+            var communicationTools = await settingService.GetCommunicationToolAsync();
+            var products = await settingService.GetProductAsync();
+            var subProducts = await settingService.GetSubProductAsync();
+            var extensions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var bytes = excelService.ExportLogStatisticsReportDetail(logStatisticsDetail, mainCategories, communicationTools
+                , products, subProducts, extensions);
+            return File(bytes, MimeType.XLSX, $"{logStatisticsDetail.ExcelFileName}.xlsx");
         }
     }
 }

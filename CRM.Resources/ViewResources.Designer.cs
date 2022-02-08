@@ -439,6 +439,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Licensee Daily Customer Complaints/Enquiries.
+        /// </summary>
+        public static string LicenseeDailyLogStatisticsDetail {
+            get {
+                return ResourceManager.GetString("LicenseeDailyLogStatisticsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Licensee_Daily_Log_Statistics.
         /// </summary>
         public static string LicenseeDailyLogStatisticsFileName {
@@ -466,6 +475,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}_{1}_To_{2}.
+        /// </summary>
+        public static string LogStatistics_Detail_ExcelFileName {
+            get {
+                return ResourceManager.GetString("LogStatistics_Detail_ExcelFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1} To {2}.
+        /// </summary>
+        public static string LogStatistics_Detail_ExcelTitle {
+            get {
+                return ResourceManager.GetString("LogStatistics_Detail_ExcelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}_{1}_{2}.
         /// </summary>
         public static string LogStatistics_ExcelFileName {
@@ -480,6 +507,24 @@ namespace CRM.Resources {
         public static string LogStatistics_ExcelTitle {
             get {
                 return ResourceManager.GetString("LogStatistics_ExcelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Statistics Detail.
+        /// </summary>
+        public static string LogStatisticsDetail {
+            get {
+                return ResourceManager.GetString("LogStatisticsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Licensee_Daily_Customer_Complaints_Enquiries.
+        /// </summary>
+        public static string LogStatisticsDetail_FileName {
+            get {
+                return ResourceManager.GetString("LogStatisticsDetail_FileName", resourceCulture);
             }
         }
         
@@ -525,6 +570,24 @@ namespace CRM.Resources {
         public static string MBCDailyLogStatistics {
             get {
                 return ResourceManager.GetString("MBCDailyLogStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MBC Daily Customer Complaints/Enquiries.
+        /// </summary>
+        public static string MBCDailyLogStatisticsDetail {
+            get {
+                return ResourceManager.GetString("MBCDailyLogStatisticsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MBC_Daily_Customer_Complaints_Enquiries.
+        /// </summary>
+        public static string MBCDailyLogStatisticsDetail_FileName {
+            get {
+                return ResourceManager.GetString("MBCDailyLogStatisticsDetail_FileName", resourceCulture);
             }
         }
         

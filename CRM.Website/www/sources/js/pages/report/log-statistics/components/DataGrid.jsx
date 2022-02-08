@@ -168,7 +168,7 @@ export class DataGrid extends Component {
 
     handleShowDetails = tableName => {
         const siteType = tableName === 'mbc' ? 0 : 1;
-        const title = this.getTitle();
+        const title = this.getTitle(tableName);
         const params = {...this.props.gridParams , siteType: siteType, pageIndex: 1, pageSize: 100};
         this.props.setDetailsDataGrid({show: true, title: title});
         this.props.setGridParamDetails(params);
@@ -370,7 +370,7 @@ export class DataGrid extends Component {
             return null;
         }
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
-        const toFormat = DateTimeService.toShortDateFormat(gridParams.fromDate); 
+        const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate); 
         return (
             <div>
                 {this.renderDailyLogStatistic(fromDateFormat, toFormat)}

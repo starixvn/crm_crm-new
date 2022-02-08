@@ -48,6 +48,10 @@
         byte[] ExportDeletedFeedbackStatisticReport(IEnumerable<DeletedFeedbackByHandler> deletedFeedbacks, IEnumerable<Setting> mainCategories);
 
         byte[] ExportLogStatisticsReport(LogStatisticsViewModel logStatistics);
+
+        byte[] ExportLogStatisticsReportDetail(StatisticsDetailReportByDateModel logStatisticsDetail,
+            IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools, IEnumerable<Product> products,
+            IEnumerable<Product> subProducts, IEnumerable<SettingRelation> extensions);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -160,6 +164,18 @@
             var totalColumns = logStatistics.GrandTotalOfCommunicationCount.ToList().Count + logStatistics.ProductColumns.ToList().Count;
 
             var excel = new LogStatisticsExcel(templatePath, logStatistics, totalColumns);
+            return excel.Export();
+        }
+
+        public byte[] ExportLogStatisticsReportDetail(StatisticsDetailReportByDateModel logStatisticsDetail,
+            IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools, IEnumerable<Product> products,
+            IEnumerable<Product> subProducts, IEnumerable<SettingRelation> extensions)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/Log_Statistics_Detail.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+
+            var excel = new LogStatisticsDetailExcel(templatePath, logStatisticsDetail, mainCategories,
+                communicationTools, products, subProducts, extensions);
             return excel.Export();
         }
     }

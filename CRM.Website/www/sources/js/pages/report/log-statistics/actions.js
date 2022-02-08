@@ -43,6 +43,14 @@ const exportExcel = params => async () => {
     });
 };
 
+const exportExcelDetails = params => async () => {
+    const url = Site.resolveClientUrl('LogStatistics/ExportExcelDetails');
+    await DataService.getFileAsync(url, params).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
+        Site.downloadFile(response.data, fileName);
+    });
+};
+
 export const ActionCreators = {
     getAllSettings,
     setGridParams,
@@ -53,5 +61,6 @@ export const ActionCreators = {
     setReportDetails,
     setDetailsDataGrid,
     setChartData,
-    exportExcel
+    exportExcel,
+    exportExcelDetails
 };

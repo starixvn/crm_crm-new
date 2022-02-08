@@ -45,7 +45,6 @@ export class Detail extends Component {
     
     buildBody = () => {
         const { reportDetails } = this.props;
-        console.log(reportDetails);
         if (reportDetails.report.length > 0) {
             return reportDetails.report.map((item, index) => this.renderRow(item, index));
         }
@@ -56,16 +55,14 @@ export class Detail extends Component {
         ];
     };
 
-    getActiveSettingsName = (settings, settingId, isHasValue, isMainCategory) =>{
+    getActiveSettingsName = (settings, settingId, isValueProperty, isMainCategory) =>{
         const filterSettingActive = isMainCategory ? 
                                     settings.filter(x=> x.isActive && x.mainCategoryID === settingId) :
                                     settings.filter(x=> x.isActive && x.id === settingId);
-        const settingDistinct = filterSettingActive.map(item => isHasValue ? item.value : item.name).filter((value, index, self) => self.indexOf(value) === index);
+        const settingDistinct = filterSettingActive.map(item => isValueProperty ? item.value : item.name).filter((value, index, self) => self.indexOf(value) === index);
         const nameSetting = settingDistinct.length > 0 ? settingDistinct[0] : 'N/A';
         return nameSetting;
     }
-
-
 
     getSubCategoryValue = (mainCategoryId, subCategoryId, mainCategories) =>{
         const mainCategoriesFilter = mainCategories.filter(x=> x.mainCategoryID === mainCategoryId);
@@ -77,7 +74,6 @@ export class Detail extends Component {
             return 'N/A';
         }
     }
-
 
     renderRow = (item, index) =>{
         const {mainCategories, communicationTools, products, subProducts, extensions} = this.props.reportDetails;
@@ -114,14 +110,12 @@ export class Detail extends Component {
                 <Cell className='text-center'>{item.creatorName}</Cell>
                 <Cell className='text-center'>{DateTimeService.toShortDateFormat(item.createDate)}</Cell>
             </Row>
-
         );
     }
 
-
-
     handleExportExcel = () =>{
-
+        const params = this.props.gridParamDetails;
+        this.props.exportExcelDetails(params);
     }
 
     handleGoBack = () =>{

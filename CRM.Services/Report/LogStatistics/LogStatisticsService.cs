@@ -14,7 +14,7 @@
     public interface ILogStatisticsService
     {
         Task<LogStatisticsViewModel> GetReportDataAsync(LogStatisticsCriteria criteria);
-        Task<IEnumerable<StatisticsDetailbyDateModel>> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria);
+        Task<StatisticsDetailReportByDateModel> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria);
     }
     public class LogStatisticsService : ILogStatisticsService
     {
@@ -29,19 +29,20 @@
 
         public async Task<LogStatisticsViewModel> GetReportDataAsync(LogStatisticsCriteria criteria)
         {
-            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
             var reportTitle = string.Format(
                ViewResources.LogStatistics_ExcelTitle,
                GetLogStatisticSiteTypeName(criteria.SiteType, false),
-               criteria.FromDate.ToShortDateFormat(),
-               criteria.ToDate.ToShortDateFormat());
+               commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormat(),
+               commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormat());
 
             var excelFileName = string.Format(
                ViewResources.LogStatistics_ExcelFileName,
                GetLogStatisticSiteTypeName(criteria.SiteType, true),
-               criteria.FromDate.ToShortDateFormatDash(),
-               criteria.ToDate.ToShortDateFormatDash());
+               commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
+               commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
+
+            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
             var logStatisticEntities = await baseService.GetDataAsync<LogStatisticsEntity>(criteria);
 
             var logStatistic = new LogStatisticsViewModel
@@ -61,10 +62,24 @@
             return logStatistic;
         }
 
-        public async Task<IEnumerable<StatisticsDetailbyDateModel>> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria)
+        public async Task<StatisticsDetailReportByDateModel> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria)
         {
+            var reportTitle = string.Format(
+               ViewResources.LogStatistics_Detail_ExcelTitle,
+               GetLogStatisticDetailSiteTypeName(criteria.SiteType, false),
+               commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormat(),
+               commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormat());
+
+            var excelFileName = string.Format(
+               ViewResources.LogStatistics_Detail_ExcelFileName,
+               GetLogStatisticDetailSiteTypeName(criteria.SiteType, true),
+               commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
+               commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
+
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            criteria.PageIndex = 0;
+            criteria.PageSize = 0;
             var reportDetails = await baseService.GetDataAsync<StatisticsDetailbyDateModel>(criteria);
             foreach(var report in reportDetails)
             {
@@ -72,7 +87,14 @@
                 report.ResolutionDate = commonService.ConvertToClientDateTime(report.ResolutionDate);
                 report.CreateDate = commonService.ConvertToClientDateTime(report.CreateDate);
             }
-            return reportDetails;
+            var result = new StatisticsDetailReportByDateModel
+            {
+                Id = criteria.SiteType,
+                Name = reportTitle,
+                ExcelFileName = excelFileName,
+                ChildReports = reportDetails
+            };
+            return result;
         }
 
         private List<BaseModel> GetCommunicationColumns(
@@ -214,6 +236,38 @@
 
                     case LogStatisticConstants.Licensee:
                         return ViewResources.LicenseeDailyLogStatistics;
+
+                    default:
+                        return string.Empty;
+                }
+            }
+        }
+
+        private string GetLogStatisticDetailSiteTypeName(short siteType, bool isFileName)
+        {
+            if (isFileName)
+            {
+                switch (siteType)
+                {
+                    case LogStatisticConstants.IBC:
+                        return ViewResources.MBCDailyLogStatisticsDetail_FileName;
+
+                    case LogStatisticConstants.Licensee:
+                        return ViewResources.LogStatisticsDetail_FileName;
+
+                    default:
+                        return string.Empty;
+                }
+            }
+            else
+            {
+                switch (siteType)
+                {
+                    case LogStatisticConstants.IBC:
+                        return ViewResources.MBCDailyLogStatisticsDetail;
+
+                    case LogStatisticConstants.Licensee:
+                        return ViewResources.LicenseeDailyLogStatisticsDetail;
 
                     default:
                         return string.Empty;

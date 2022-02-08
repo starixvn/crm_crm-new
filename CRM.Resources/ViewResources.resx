@@ -384,4 +384,25 @@
   <data name="MBCDailyLogStatisticsFileName" xml:space="preserve">
     <value>MBC_Daily_Log_Statistics</value>
   </data>
+  <data name="LogStatisticsDetail" xml:space="preserve">
+    <value>Log Statistics Detail</value>
+  </data>
+  <data name="LogStatistics_Detail_ExcelFileName" xml:space="preserve">
+    <value>{0}_{1}_To_{2}</value>
+  </data>
+  <data name="LogStatistics_Detail_ExcelTitle" xml:space="preserve">
+    <value>{0} {1} To {2}</value>
+  </data>
+  <data name="LicenseeDailyLogStatisticsDetail" xml:space="preserve">
+    <value>Licensee Daily Customer Complaints/Enquiries</value>
+  </data>
+  <data name="LogStatisticsDetail_FileName" xml:space="preserve">
+    <value>Licensee_Daily_Customer_Complaints_Enquiries</value>
+  </data>
+  <data name="MBCDailyLogStatisticsDetail" xml:space="preserve">
+    <value>MBC Daily Customer Complaints/Enquiries</value>
+  </data>
+  <data name="MBCDailyLogStatisticsDetail_FileName" xml:space="preserve">
+    <value>MBC_Daily_Customer_Complaints_Enquiries</value>
+  </data>
 </root>
