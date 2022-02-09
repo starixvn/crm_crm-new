@@ -9,13 +9,11 @@
     using CRM.Criteria.Feedback.AddGuestFeedback;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
     public class AddGuestFeedbackController : BaseController
     {
         private readonly INapSession napSession;

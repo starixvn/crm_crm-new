@@ -3,6 +3,10 @@ import { Col, Form, Row } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 export class CustomerInfo extends Component {
+    constructor(props) {
+        super(props);
+    }
+    
     renderCustomerInformation = (values, handleChange) => {
         return (
             <div>
