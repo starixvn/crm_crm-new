@@ -19,6 +19,7 @@
     public class VoidingSettledTicketsServiceTests
     {
         private IBaseService baseService;
+        private ICRMLogService logService;
 
         [Fact]
         public async Task GetMessageVoidSettledAsync_WhenCalled_ReturnExpectedMessages()
@@ -219,7 +220,8 @@
         private VoidingSettledTicketsService GetVoidingSettledService()
         {
             baseService = Substitute.For<IBaseService>();
-            return new VoidingSettledTicketsService(baseService);
+            logService = Substitute.For<ICRMLogService>();
+            return new VoidingSettledTicketsService(baseService, logService);
         }
 
         #endregion Helpers
