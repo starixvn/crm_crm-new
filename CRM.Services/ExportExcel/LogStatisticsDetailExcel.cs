@@ -71,7 +71,7 @@
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
-            worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
         }
 
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)

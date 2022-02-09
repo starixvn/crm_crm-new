@@ -218,8 +218,7 @@ export class DataGrid extends Component {
                 toggleRowDaily,
                 isCollapseDaily: !prevState.isCollapseDaily
             }));
-        }
-        else{
+        }else{
             this.setState(prevState => ({
                 toggleRowDaily: [],
                 isCollapseDaily: !prevState.isCollapseDaily
@@ -231,36 +230,28 @@ export class DataGrid extends Component {
         return (
             <div>
                 <OverlayTrigger
-                    overlay={
-                        <Tooltip><span>View Chart</span></Tooltip>
-                    }
                     placement="auto"
+                    overlay={<Tooltip><span>View Chart</span></Tooltip>}
                 >
-                    <span className="fa fa-bar-chart icon pl-3" onClick={() => this.handleViewChart('licensee')} />
+                    <span className="pl-3 fa fa-bar-chart icon" onClick={() => this.handleViewChart('licensee')} />
                 </OverlayTrigger>
                 <OverlayTrigger
-                    overlay={
-                        <Tooltip><span>Show Details</span></Tooltip>
-                    }
                     placement="auto"
+                    overlay={<Tooltip><span>Show Details</span></Tooltip>}
                 >
-                    <span className="fa fa-info-circle icon pl-3" onClick={() => this.handleShowDetails('licensee')} />
+                    <span className="pl-3 fa fa-info-circle icon" onClick={() => this.handleShowDetails('licensee')} />
                 </OverlayTrigger>
                 <OverlayTrigger
-                    overlay={
-                        <Tooltip><span>Collapse/Expand</span></Tooltip>
-                    }
                     placement="auto"
+                    overlay={<Tooltip><span>Collapse/Expand</span></Tooltip>}
                 >
-                    <span className="fa fa-expand icon-expand pl-3" onClick={this.handleCollapseExpandLicensee} />
+                    <span className="pl-3 fa fa-expand icon-expand" onClick={this.handleCollapseExpandLicensee} />
                 </OverlayTrigger>
                 <OverlayTrigger
-                    overlay={
-                        <Tooltip><span>Export to Excel</span></Tooltip>
-                    }
                     placement="auto"
+                    overlay={<Tooltip><span>Export to Excel</span></Tooltip>}
                 >
-                    <span className="fa fa-file-excel-o icon-excel pl-3" onClick={() => this.handleExportExcel('licensee')} />
+                    <span className="pl-3 fa fa-file-excel-o icon-excel" onClick={() => this.handleExportExcel('licensee')} />
                 </OverlayTrigger>
             </div>
         );
@@ -366,7 +357,7 @@ export class DataGrid extends Component {
             return null;
         }
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
-        const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate); 
+        const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
         return (
             <div>
                 {this.renderDailyLogStatistic(fromDateFormat, toFormat)}

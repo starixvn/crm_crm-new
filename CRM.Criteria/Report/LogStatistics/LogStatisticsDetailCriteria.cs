@@ -7,6 +7,8 @@
 
     public class LogStatisticsDetailCriteria : CriteriaBase
     {
+        private const int LogStatisticDayValid = 93;
+
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }
@@ -35,7 +37,7 @@
 
         public override bool IsValid()
         {
-            return FromDate <= ToDate && (ToDate - FromDate).Days <= Constants.LogStatisticDayValid;
+            return FromDate <= ToDate && (ToDate - FromDate).Days <= LogStatisticDayValid;
         }
     }
 }

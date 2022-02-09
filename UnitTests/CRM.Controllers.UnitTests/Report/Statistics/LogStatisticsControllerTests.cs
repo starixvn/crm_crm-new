@@ -165,8 +165,15 @@
             // Arrange
             var controller = GetController();
             var criteria = fixture.Create<LogStatisticsDetailCriteria>();
-           
-            var logStatisticsDetail = fixture.Create<StatisticsDetailReportByDateModel>();
+
+            var logStatisticsDetail = new StatisticsDetailReportByDateModel
+            {
+                ChildReports = new List<StatisticsDetailbyDateModel>
+                {
+                        new StatisticsDetailbyDateModel {FeedbackID = 1}
+                },
+                ExcelFileName = "ExcelFileName"
+            };
             var products = new List<Product> { new Product { Id = 1, Name = "product" } };
             var subProducts = new List<Product> { new Product { Id = 1, Name = "subProducts" } };
             var mainCategories = new List<Setting> { new Setting { Id = 1, Name = "mainCategory" } };
@@ -186,7 +193,7 @@
             // Assert
             var excelResult = Assert.IsType<FileContentResult>(result);
             Assert.Equal(MimeType.XLSX, excelResult.ContentType);
-            Assert.Equal(logStatisticsDetail.ExcelFileName, excelResult.FileDownloadName);
+            Assert.Equal($"{logStatisticsDetail.ExcelFileName}.xlsx", excelResult.FileDownloadName);
         }
 
         #region Helpers

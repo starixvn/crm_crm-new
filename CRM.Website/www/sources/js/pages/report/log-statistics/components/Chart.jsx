@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import {
   BarChart,
   XAxis,
@@ -84,7 +84,6 @@ export default class Chart extends PureComponent {
             </Form>
         );
     };
-    
     render() {
         const {title, data} = this.props.chart;
         return (

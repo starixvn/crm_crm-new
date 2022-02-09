@@ -12,7 +12,6 @@ export class Detail extends Component {
     constructor(props) {
         super(props);
     }
-    
     buildHeader = () => {
         return (
             <HeaderRow>
@@ -42,7 +41,7 @@ export class Detail extends Component {
             </HeaderRow>
         );
     };
-    
+
     buildBody = () => {
         const { reportDetails } = this.props;
         if (reportDetails.report.length > 0) {
@@ -56,21 +55,20 @@ export class Detail extends Component {
     };
 
     getActiveSettingsName = (settings, settingId, isValueProperty, isMainCategory) =>{
-        const filterSettingActive = isMainCategory ? 
+        const filterSettingActive = isMainCategory ?
                                     settings.filter(x=> x.isActive && x.mainCategoryID === settingId) :
                                     settings.filter(x=> x.isActive && x.id === settingId);
         const settingDistinct = filterSettingActive.map(item => isValueProperty ? item.value : item.name).filter((value, index, self) => self.indexOf(value) === index);
         const nameSetting = settingDistinct.length > 0 ? settingDistinct[0] : 'N/A';
         return nameSetting;
-    }
+    };
 
     getSubCategoryValue = (mainCategoryId, subCategoryId, mainCategories) =>{
         const mainCategoriesFilter = mainCategories.filter(x=> x.mainCategoryID === mainCategoryId);
         if(mainCategoriesFilter.length > 0){
             const subCategory = mainCategoriesFilter[0].childSettings.filter(x=> x.subCategoryId === subCategoryId)[0].name;
             return subCategory;
-        }
-        else{
+        }else{
             return 'N/A';
         }
     }
@@ -90,7 +88,7 @@ export class Detail extends Component {
                 <Cell className='text-center'>{item.startTime}</Cell>
                 <Cell className='text-center'>{item.endTime}</Cell>
                 <Cell className='text-center'>{item.durationTime}</Cell>
-                <Cell className='text-center'>{item.username}</Cell>
+                <Cell className='text-center'>{item.userName}</Cell>
                 <Cell className='text-center'>{item.siteName}</Cell>
                 <Cell className='text-center'>{communicationValue}</Cell>
                 <Cell className='text-center'>{stationValue}</Cell>
@@ -111,16 +109,16 @@ export class Detail extends Component {
                 <Cell className='text-center'>{DateTimeService.toShortDateFormat(item.createDate)}</Cell>
             </Row>
         );
-    }
+    };
 
     handleExportExcel = () =>{
         const params = this.props.gridParamDetails;
         this.props.exportExcelDetails(params);
-    }
+    };
 
     handleGoBack = () =>{
         this.props.setDetailsDataGrid({show: false, title: ''});
-    }
+    };
     
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParamDetails };

@@ -33,6 +33,10 @@ export class Filter extends Component {
         this.handleSettingOptions(this.props.settings);
     }
 
+    handleChangeToDate = toDate => {
+        this.setState({ toDate });
+    };
+
     handleChangeFromDate = fromDate => {
         const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const maxDate = new Date(fromDate.getTime());
@@ -45,21 +49,17 @@ export class Filter extends Component {
         this.setState({fromDate, toDate});
     };
 
-    handleChangeToDate = toDate => {
-        this.setState({ toDate });
+    handleChangeDropdown = (name, selectedItemsKey) => {
+        this.setState({
+            ...this.state,
+            [name]: selectedItemsKey
+        });
     };
 
     handleChange = evt => {
         this.setState({
             ...this.state,
             [evt.target.name]: evt.target.value
-        });
-    };
-
-    handleChangeDropdown = (name, selectedItemsKey) => {
-        this.setState({
-            ...this.state,
-            [name]: selectedItemsKey
         });
     };
 
@@ -104,7 +104,7 @@ export class Filter extends Component {
             mainCategoryIds: mainCategoryIdFiltersJoin,
             communicationIds: communicationIdFiltersJoin
         });
-    }
+    };
     
     handleSubmit = () => {
         const { fromDate, toDate, productIds, mainCategoryIds, communicationIds} = this.state;

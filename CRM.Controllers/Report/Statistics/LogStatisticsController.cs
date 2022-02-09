@@ -10,7 +10,7 @@
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
 
-    public class LogStatisticsController : Controller
+    public class LogStatisticsController : BaseController
     {
         private readonly ILogStatisticsService logStatisticsService;
         private readonly ISettingService settingService;
@@ -111,7 +111,7 @@
 
             var logStatistics = await logStatisticsService.GetReportDataAsync(param);
             var bytes = excelService.ExportLogStatisticsReport(logStatistics);
-            return File(bytes, MimeType.XLSX, $"{logStatistics.ExcelFileName}.xlsx");
+            return File(bytes, MimeType.XLSX, $"{logStatistics?.ExcelFileName}.xlsx");
         }
 
         [HttpPost]
@@ -125,7 +125,7 @@
             var extensions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var bytes = excelService.ExportLogStatisticsReportDetail(logStatisticsDetail, mainCategories, communicationTools
                 , products, subProducts, extensions);
-            return File(bytes, MimeType.XLSX, $"{logStatisticsDetail.ExcelFileName}.xlsx");
+            return File(bytes, MimeType.XLSX, $"{logStatisticsDetail?.ExcelFileName}.xlsx");
         }
     }
 }

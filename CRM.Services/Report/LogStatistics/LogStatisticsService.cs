@@ -173,7 +173,7 @@
             return numberOfCommunication;
         }
 
-        private void SumTotalCommunicationForMainCategory(IEnumerable<LogStatisticsMainCategory> mainCategories)
+        private static void SumTotalCommunicationForMainCategory(IEnumerable<LogStatisticsMainCategory> mainCategories)
         {
             foreach (var mainCategory in mainCategories)
             {
