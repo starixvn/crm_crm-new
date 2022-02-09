@@ -11,7 +11,6 @@
     using CRM.Criteria.Feedback.AddGuestFeedback;
     using CRM.Models;
     using CRM.Models.Setting;
-    using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Configuration;
@@ -26,8 +25,6 @@
     public class AddGuestFeedbackControllerTests
     {
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ISettingService settingService;
         private IBaseService baseService;
         private readonly Fixture fixture = new Fixture();
@@ -141,11 +138,9 @@
         private AddGuestFeedbackController GetController()
         {
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             settingService = Substitute.For<ISettingService>();
             baseService = Substitute.For<IBaseService>();
-            return new AddGuestFeedbackController(napSession, napSettings, userService, settingService, baseService);
+            return new AddGuestFeedbackController(napSession, settingService, baseService);
         }
 
         #endregion Helpers
