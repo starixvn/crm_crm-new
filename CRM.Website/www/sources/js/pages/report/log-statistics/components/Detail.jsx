@@ -71,7 +71,7 @@ export class Detail extends Component {
         }else{
             return 'N/A';
         }
-    }
+    };
 
     renderRow = (item, index) =>{
         const {mainCategories, communicationTools, products, subProducts, extensions} = this.props.reportDetails;
@@ -119,7 +119,7 @@ export class Detail extends Component {
     handleGoBack = () =>{
         this.props.setDetailsDataGrid({show: false, title: ''});
     };
-    
+
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParamDetails };
         params['pageIndex'] = pageIndex;

@@ -105,12 +105,11 @@ export class Filter extends Component {
             communicationIds: communicationIdFiltersJoin
         });
     };
-    
     handleSubmit = () => {
         const { fromDate, toDate, productIds, mainCategoryIds, communicationIds} = this.state;
         const params = {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
-            toDate: DateTimeService.toShortDateFormat(toDate), 
+            toDate: DateTimeService.toShortDateFormat(toDate),
             productId: productIds,
             mainCategoryId: mainCategoryIds,
             communicationId: communicationIds
@@ -119,7 +118,6 @@ export class Filter extends Component {
         this.props.setGridParams(params);
         this.props.getMainReport(params);
     };
-    
     render() {
         const {fromDate, toDate, productOptions, mainCategoryOptions, communicationToolOptions}= this.state;
         return (

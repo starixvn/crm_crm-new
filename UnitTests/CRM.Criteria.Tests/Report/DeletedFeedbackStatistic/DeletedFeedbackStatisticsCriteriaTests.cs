@@ -55,6 +55,5 @@
             // Assert
             Assert.True(actual);
         }
-
     }
 }
