@@ -1,10 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import LangHelper from '@jsroot/common/langHelper';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import Detail from './Detail';
@@ -14,9 +11,11 @@ export class AppContainer extends Component {
   componentDidMount(){
     this.props.getAllSettings();
   }
+
   handleCloseChartDialog = () =>{
     this.props.setChartData({ show: false, title: '', data: null});
-  }
+  };
+
   render() {
     const {settings, details, chart} = this.props;
     if(settings === null || !settings){

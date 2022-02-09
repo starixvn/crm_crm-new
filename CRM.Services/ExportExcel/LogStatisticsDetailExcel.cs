@@ -77,7 +77,6 @@
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthSmall = 15;
-            const int WidthNormal = 25;
             const int WidthLarge = 35;
             const int WidthExtraLarge = 45;
             const int ColumnCustomer = 5;
@@ -169,13 +168,13 @@
             return child == null ? string.Empty : child.Name;
         }
 
-        private string GetProductValue(IEnumerable<Product> settings, int id)
+        private static string GetProductValue(IEnumerable<Product> settings, int id)
         {
             var activeSetting = settings.Where(x => x.Id == id && x.IsActive);
             return activeSetting.Any() ? activeSetting.FirstOrDefault().Value : "N/A";
         }
 
-        public static string RemoveHtmlTags(string value)
+        private static string RemoveHtmlTags(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
             {

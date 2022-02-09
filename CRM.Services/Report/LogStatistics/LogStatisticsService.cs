@@ -150,7 +150,7 @@
             }).ToList();
         }
 
-        private List<int> GetSumOfCommunicationByProductForSubCategory(
+        private static List<int> GetSumOfCommunicationByProductForSubCategory(
             IGrouping<int, LogStatisticsEntity> subCategoryGroup)
         {
             var communicatonToolGroup = subCategoryGroup.GroupBy(data => data.ProductId).ToList();
@@ -158,7 +158,7 @@
             return communicatonToolGroup.Select(data => data.Sum(p => p.Total)).ToList();
         }
 
-        private List<int> GetNumberOfCommunicationForSubCategory(
+        private static List<int> GetNumberOfCommunicationForSubCategory(
             IGrouping<int, LogStatisticsEntity> subCategoryGroup)
         {
             List<int> numberOfCommunication = new List<int>();
@@ -211,7 +211,7 @@
             mainCategory.ListOfCommunicationSumByProduct = listOfCommunicationCount;
         }
 
-        private string GetLogStatisticSiteTypeName(short siteType, bool isFileName)
+        private static string GetLogStatisticSiteTypeName(short siteType, bool isFileName)
         {
             if (isFileName)
             {
@@ -243,7 +243,7 @@
             }
         }
 
-        private string GetLogStatisticDetailSiteTypeName(short siteType, bool isFileName)
+        private static string GetLogStatisticDetailSiteTypeName(short siteType, bool isFileName)
         {
             if (isFileName)
             {

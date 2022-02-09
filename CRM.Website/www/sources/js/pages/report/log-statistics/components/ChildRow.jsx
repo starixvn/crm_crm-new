@@ -11,7 +11,7 @@ export class ChildRow extends PureComponent {
 
         for (let i = 0; i < communicationColumnCount; i++) {
             listOfCommunicationSum[i] = 0;
-            for (var j = i; j < listOfCommunicationCount.length; j = j + communicationColumnCount) {
+            for (let j = i; j < listOfCommunicationCount.length; j = j + communicationColumnCount) {
                 listOfCommunicationSum[i] += listOfCommunicationCount[j];
             }
             grandTotal += listOfCommunicationSum[i];
@@ -19,7 +19,7 @@ export class ChildRow extends PureComponent {
         }
         cells.push(<Cell className="text-center total-background">{grandTotal}</Cell>);
         return cells;
-    }
+    };
 
     render() {
         return this.renderChildRows();

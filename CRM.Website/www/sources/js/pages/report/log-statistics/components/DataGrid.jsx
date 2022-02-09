@@ -55,7 +55,7 @@ export class DataGrid extends Component {
         });
         headerCells.push(<HeaderCell colWidth={12}>{LangHelper.getResource('Total')}</HeaderCell>);
         return  headerCells;
-    }
+    };
 
     calculateWidth = communicationColumns =>{
         const columnsWidth = [30,12];
@@ -68,13 +68,13 @@ export class DataGrid extends Component {
             sumOfColumnWidth / columnWidthSum * cellWidth);
         const widthTotalColumns = newColumnsWidth.reduce( (accumulator, currentValue) => accumulator + currentValue, 0);
         return widthTotalColumns;
-    }
+    };
 
     buildBody = (data, tableName) => {
         const rows = [];
         if (data.mainCategories.length > 0) {
             rows.push(
-                data.mainCategories.map(item => 
+                data.mainCategories.map(item =>
                     this.renderMainCategoryRows(item, data.communicationColumns, tableName))
                 );
             return rows;
@@ -104,7 +104,7 @@ export class DataGrid extends Component {
         const rows = [];
         const cells = [];
         const toggles = this.getToggleRows(tableName);
-        cells.push( 
+        cells.push(
             <Cell className='complaints-text'>
                 <span className={`expand-icon fa pr-2 ${!toggles.includes(item.id) ? 'fa-caret-down' : 'fa-caret-right'}`} />
                 <span >{item.name}</span>
@@ -133,10 +133,9 @@ export class DataGrid extends Component {
             return (
                 <Row key={`child-${sub.id}`}>
                     {cells}
-                </Row>   
+                </Row>
             );
-        }
-        else {
+        } else {
             return null;
         }
     };
@@ -159,9 +158,9 @@ export class DataGrid extends Component {
     getTitle = tableName =>{
         const {gridParams} = this.props;
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
-        const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);  
-        const title = tableName === 'mbc' ? 
-            `MBC Daily Customer Complaints/Enquiries From ${fromDateFormat}-${toFormat}` : 
+        const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
+        const title = tableName === 'mbc' ?
+            `MBC Daily Customer Complaints/Enquiries From ${fromDateFormat}-${toFormat}` :
             `Licensee Daily Customer Complaints/Enquiries From ${fromDateFormat}-${toFormat}`;
         return title;
     };
@@ -185,7 +184,7 @@ export class DataGrid extends Component {
         const data = tableName === 'mbc' ? this.props.mainReports.ibcReport : this.props.mainReports.licenseeReport;
         const title = this.getTitle();
         this.props.setChartData({show: true, title: title, data: data});
-    }
+    };
 
     handleCollapseExpandLicensee = () =>{
         const {toggleRowLicensee, isCollapseLicensee} = this.state;
@@ -199,14 +198,13 @@ export class DataGrid extends Component {
                 toggleRowLicensee,
                 isCollapseLicensee: !prevState.isCollapseLicensee
             }));
-        }
-        else{
+        } else{
             this.setState(prevState => ({
                 toggleRowLicensee: [],
                 isCollapseLicensee: !prevState.isCollapseLicensee
             }));
         }
-    }
+    };
 
     handleCollapseExpandDaily = () =>{
         const {toggleRowDaily, isCollapseDaily} = this.state;
@@ -227,7 +225,7 @@ export class DataGrid extends Component {
                 isCollapseDaily: !prevState.isCollapseDaily
             }));
         }
-    }
+    };
 
     renderCustomButtonLicensee = () => {
         return (
@@ -307,8 +305,7 @@ export class DataGrid extends Component {
         );
     };
 
-    renderDailyLogStatistic = (fromDateFormat, toFormat) =>
-    {
+    renderDailyLogStatistic = (fromDateFormat, toFormat) => {
         const {ibcReport} = this.props.mainReports;
         const width = this.calculateWidth(ibcReport.communicationColumns);
 
@@ -333,10 +330,9 @@ export class DataGrid extends Component {
                 />
             </div>
         );
-    }
+    };
 
-    renderLicenseeDailyStatistic = (fromDateFormat, toFormat) =>
-    {
+    renderLicenseeDailyStatistic = (fromDateFormat, toFormat) => {
         const {licenseeReport} = this.props.mainReports;
         const width = this.calculateWidth(licenseeReport.communicationColumns);
         return (
@@ -362,7 +358,7 @@ export class DataGrid extends Component {
                 }
             </div>
         );
-    }
+    };
 
     render() {
         const {mainReports, gridParams} = this.props;

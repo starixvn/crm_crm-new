@@ -1,15 +1,13 @@
 import React, { PureComponent } from "react";
 import {
   BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
-  Label,
   Legend
-} from "recharts";
+} from 'recharts';
 
-import {Form, Modal, Row } from 'react-bootstrap';
+import {Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 
 export default class Chart extends PureComponent {
@@ -26,21 +24,21 @@ export default class Chart extends PureComponent {
             Blue: (Math.round((t - blueColor) * p) + blueColor)
         };
 
-        return "#" + (backGroundColor.Red +
+        return '#' + (backGroundColor.Red +
                backGroundColor.Green +
                backGroundColor.Blue).toString(16).slice(1);
     };
 
     getBackGroundColor = index => {
         const backGroundColors= [
-            "#3F5D7D", "#279B61", "#008AB8",
-            "#993333", "#A3E496", "#95CAE4",
-            "#CC3333", "#FFCC33", "#FFFF7A",
-            "#CC6699", "#9370db"
+            '#3F5D7D', '#279B61', '#008AB8',
+            '#993333', '#A3E496', '#95CAE4',
+            '#CC3333', '#FFCC33', '#FFFF7A',
+            '#CC6699', '#9370db'
         ];
         const backGroundColorLength = backGroundColors.length;
         const backGroundColorIndex = index % backGroundColorLength;
-        const darkenPercent = Math.floor(index / backGroundColorLength) / 5;
+        let darkenPercent = Math.floor(index / backGroundColorLength) / 5;
         if (darkenPercent >= 1) {
             darkenPercent = 0;
         }
@@ -51,7 +49,7 @@ export default class Chart extends PureComponent {
         return backGroundColor;
     };
 
-    renderChart = report =>{ 
+    renderChart = report => {
         const mainCategories = report.mainCategories.map((item, index) => ({
             index: index,
             id: item.id,
@@ -76,16 +74,17 @@ export default class Chart extends PureComponent {
                     <Legend
                         payload={mainCategories.map((item, index) => ({
                             id: item.id,
-                            type: "square",
+                            type: 'square',
                             value: item.name,
                             color: this.getBackGroundColor(index)
                         }))}
                     />
                     </BarChart>
-                </Modal.Body> 
+                </Modal.Body>
             </Form>
         );
-    }
+    };
+    
     render() {
         const {title, data} = this.props.chart;
         return (
