@@ -117,6 +117,8 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcelDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
+            criteria.PageIndex = 0;
+            criteria.PageSize = 0;
             var logStatisticsDetail = await logStatisticsService.GetReportDetailsAsync(criteria);
             var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
             var communicationTools = await settingService.GetCommunicationToolAsync();

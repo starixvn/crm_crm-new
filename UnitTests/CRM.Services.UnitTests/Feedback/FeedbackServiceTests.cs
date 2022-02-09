@@ -338,6 +338,6 @@
             return new FeedbackService(baseService, settingService, commonService, feedbackRepository);
         }
 
-    #endregion Helpers
+        #endregion Helpers
     }
 }

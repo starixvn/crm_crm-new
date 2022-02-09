@@ -78,8 +78,6 @@
 
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
-            criteria.PageIndex = 0;
-            criteria.PageSize = 0;
             var reportDetails = await baseService.GetDataAsync<StatisticsDetailbyDateModel>(criteria);
             foreach(var report in reportDetails)
             {
