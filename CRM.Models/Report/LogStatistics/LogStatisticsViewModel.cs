@@ -7,9 +7,9 @@ namespace CRM.Models.Report.LogStatistics
     {
         public IEnumerable<LogStatisticsMainCategory> MainCategories { get; set; } = new List<LogStatisticsMainCategory>();
 
-        public IEnumerable<BaseModel> ProductColumns { get; set; }
+        public IEnumerable<BaseModel> ProductColumns { get; set; } = new List<BaseModel>();
 
-        public IEnumerable<BaseModel> CommunicationColumns { get; set; }
+        public IEnumerable<BaseModel> CommunicationColumns { get; set; } = new List<BaseModel>();
 
         public IEnumerable<int> GrandTotalOfCommunicationCount
         {

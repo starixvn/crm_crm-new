@@ -13,23 +13,20 @@
     public class LogStatisticsController : Controller
     {
         private readonly ILogStatisticsService logStatisticsService;
-        private readonly ICommonService commonService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         public LogStatisticsController(
             ILogStatisticsService logStatisticsService,
-            ICommonService commonService,
             ISettingService settingService,
             IExportExcelService excelService
             )
         {
             this.logStatisticsService = logStatisticsService;
-            this.commonService = commonService;
             this.settingService = settingService;
             this.excelService = excelService;
         }
 
-        //[NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
+        [NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/LogStatistics/Index");
@@ -49,7 +46,7 @@
         }
 
         [HttpPost]
-        //[NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
+        [NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
             var ibcReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
@@ -79,6 +76,7 @@
         }
 
         [HttpPost]
+        [NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
             var reportDetails = await logStatisticsService.GetReportDetailsAsync(criteria);
@@ -99,7 +97,7 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] LogStatisticsCriteria criteria)
         {
-            var logStatistics = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
+            var param = new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
                 MainCategoryId = criteria.MainCategoryId,
@@ -109,7 +107,9 @@
                 ProductType = LogStatisticConstants.ProductTypeDetails,
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = criteria.SiteType
-            });
+            };
+
+            var logStatistics = await logStatisticsService.GetReportDataAsync(param);
             var bytes = excelService.ExportLogStatisticsReport(logStatistics);
             return File(bytes, MimeType.XLSX, $"{logStatistics.ExcelFileName}.xlsx");
         }
