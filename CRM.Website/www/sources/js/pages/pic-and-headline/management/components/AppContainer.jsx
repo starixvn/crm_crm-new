@@ -15,7 +15,6 @@ export class AppContainer extends PureComponent {
     static propTypes = {
         createPicPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editPicPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        confirmPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         isHost: PropTypes.bool.isRequired
     };
 

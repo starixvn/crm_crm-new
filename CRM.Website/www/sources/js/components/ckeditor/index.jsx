@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import CKEditor from 'ckeditor4-react';
+import { CKEditor } from 'ckeditor4-react';
 import moment from 'moment';
 import { TOOLBAR, EXTRA_TOOLBAR, REMOVE_PLUGINS, EDIT_BLOCK_TEMPLATE } from './constants';
 import LangHelper from '@jsroot/common/langHelper';

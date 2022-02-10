@@ -1,4 +1,3 @@
-import React from 'react';
 import LangHelper from '@jsroot/common/langHelper';
 import { getInvalidCategoryParams } from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
