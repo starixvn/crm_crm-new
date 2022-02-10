@@ -6,7 +6,6 @@ export class CustomerInfo extends Component {
     constructor(props) {
         super(props);
     }
-    
     renderCustomerInformation = (values, handleChange) => {
         return (
             <div>
