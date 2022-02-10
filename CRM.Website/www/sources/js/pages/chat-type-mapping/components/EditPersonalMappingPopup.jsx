@@ -289,10 +289,10 @@ export class EditPersonalMappingPopup extends Component {
                         />
                     }
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" className="required">
+                        <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('BotName')}
                         </Form.Label>
-                        <Col sm="9" md="9">
+                        <Col sm="9" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name='botId'
                                 onChange={e => this.handleChange('botId', e.target.value)}
@@ -304,10 +304,10 @@ export class EditPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3">
+                        <Form.Label column sm="3" md="2">
                             {LangHelper.getResource('LetstalkName')}
                         </Form.Label>
-                        <Form.Label column sm="9" md="9">
+                        <Form.Label column sm="9" md="10">
                             {
                                 this.state.isLoading &&
                                 <Loading />
@@ -319,18 +319,18 @@ export class EditPersonalMappingPopup extends Component {
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" name="edit-personal">
+                        <Form.Label column sm="3" md="2" name="edit-personal">
                             {LangHelper.getResource('ChatType')}
                         </Form.Label>
-                        <Form.Label sm="9" md="9" column>
+                        <Form.Label sm="9" md="10" column>
                             {LangHelper.getResource('Personal')}
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column md="3" className="required" sm="3">
+                        <Form.Label column md="2" className="required" sm="3">
                             {LangHelper.getResource('RecipientType')}
                         </Form.Label>
-                        <Col sm="9" md="9">
+                        <Col sm="9" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="recipientTypeId"
                                 onChange={e => this.handleRecipientTypeChange(e)}
@@ -342,10 +342,10 @@ export class EditPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" className="required">
+                        <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('Recipient')}
                         </Form.Label>
-                        <Col sm="9" md="9">
+                        <Col sm="9" md="10">
                             <CustomReactSelect
                                 className='basic-single'
                                 name='recipient'
@@ -358,17 +358,17 @@ export class EditPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" className="required">
+                        <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('LetstalkID')}
                         </Form.Label>
-                        <Col sm="9" md="9" >
+                        <Col sm="9" md="10" >
                             {
                                 this.renderLetstalkIdsRadioButton(this.selectedLetstalkIds)
                             }
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" className="required">
+                        <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
                         </Form.Label>
                         <Col sm="9" md="10" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
@@ -387,10 +387,10 @@ export class EditPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" className="required" name="insert-personal-language-label">
+                        <Form.Label column sm="3" md="2" className="required" name="insert-personal-language-label">
                             {LangHelper.getResource('Language')}
                         </Form.Label>
-                        <Col sm="9" md="9">
+                        <Col sm="9" md="10">
                             <Form.Control size="sm" className="shadow-none" as="select"
                                 name="languageId"
                                 onChange={e => this.handleChange('languageId', e.target.value)}
@@ -402,10 +402,10 @@ export class EditPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" >
+                        <Form.Label column sm="3" md="2" >
                             {LangHelper.getResource('Remark')}
                         </Form.Label>
-                        <Col sm="9" md="9" name="personal-edit">
+                        <Col sm="9" md="10" name="personal-edit">
                             <Form.Control as="textarea" size="sm" className="shadow-none"
                                 name="remark"
                                 value={this.state.form.remark}

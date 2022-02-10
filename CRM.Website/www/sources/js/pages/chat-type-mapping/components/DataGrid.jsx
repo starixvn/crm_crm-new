@@ -254,6 +254,7 @@ export class DataGrid extends Component {
                 {
                     this.props.updateActiveStatusPopup.isShowPopup &&
                     <ConfirmPopup
+                        size='lg'
                         title={LangHelper.getResource('Confirmation')}
                         content={confirmMsg}
                         onSubmit={this.updateActiveStatus}

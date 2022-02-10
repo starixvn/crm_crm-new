@@ -298,34 +298,34 @@ export class EditGroupMappingPopup extends Component {
                         />
                     }
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3">
+                        <Form.Label column sm="3" md="2">
                             {LangHelper.getResource('BotName')}
                         </Form.Label>
-                        <Form.Label column sm="9" md="9">
+                        <Form.Label column sm="9" md="10">
                             {this.state.form.bot.name}
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3">
+                        <Form.Label column sm="3" md="2">
                             {LangHelper.getResource('LetstalkName')}
                         </Form.Label>
-                        <Form.Label column sm="9" md="9">
+                        <Form.Label column sm="9" md="10">
                             {this.state.form.name}
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column md="3" sm="3">
+                        <Form.Label column md="2" sm="3">
                             {LangHelper.getResource('ChatType')}
                         </Form.Label>
-                        <Form.Label column md="9" sm="9">
+                        <Form.Label column md="10" sm="9">
                             {LangHelper.getResource('Group')}
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" className="required" md="3">
+                        <Form.Label column sm="3" className="required" md="2">
                             {LangHelper.getResource('RecipientType')}
                         </Form.Label>
-                        <Col sm="9" md="9">
+                        <Col sm="9" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="recipientTypeId"
                                 value={this.state.form.recipientTypeId}
@@ -337,10 +337,10 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" className="required">
+                        <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('Recipient')}
                         </Form.Label>
-                        <Col sm="9" md="9">
+                        <Col sm="9" md="10">
                             <MultipleSelect
                                 width={'100%'}
                                 name="headlineIds"
@@ -356,10 +356,10 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3">
+                        <Form.Label column sm="3" md="2">
                             {LangHelper.getResource('LetstalkID')}
                         </Form.Label>
-                        <Col sm="9" md="9" className="mrg-top-3">
+                        <Col sm="9" md="10" className="mrg-top-3">
                             {
                                 this.state.isLoading &&
                                 <Loading />
@@ -371,7 +371,7 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" className="required">
+                        <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
                         </Form.Label>
                         <Col sm="9" md="10" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
@@ -390,18 +390,18 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3">
+                        <Form.Label column sm="3" md="2">
                             {LangHelper.getResource('MappingStatus')}
                         </Form.Label>
-                        <Form.Label column sm="9" md="9" className={Site.mappingStatusClass(this.state.form.mappingStatus.id)}>
+                        <Form.Label column sm="9" md="10" className={Site.mappingStatusClass(this.state.form.mappingStatus.id)}>
                             {this.state.form.mappingStatus.name}
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" className="required">
+                        <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('Language')}
                         </Form.Label>
-                        <Col sm="9" md="9">
+                        <Col sm="9" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name="languageId"
                                 value={this.state.form.languageId}
@@ -413,10 +413,10 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="3" htmlFor="groupEditRemark" >
+                        <Form.Label column sm="3" md="2" htmlFor="groupEditRemark" >
                             {LangHelper.getResource('Remark')}
                         </Form.Label>
-                        <Col sm="9" md="9">
+                        <Col sm="9" md="10">
                             <Form.Control as="textarea" className="shadow-none" size="sm"
                                 name="remark"
                                 rows={5}

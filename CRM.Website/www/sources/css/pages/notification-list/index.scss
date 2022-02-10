@@ -130,6 +130,18 @@ input:focus {
     }
 }
 
+.react-datepicker-wrapper-container {
+    height: 28px;
+
+    .react-datepicker__input-container {
+        height: 100%;
+
+        input {
+            height: 100%;
+        }
+    }
+}
+
 .auto-refresh {
     width: 110px;
     margin-right: 10px;
