@@ -281,11 +281,6 @@
             criteria.ToDate = commonService.ConvertToServerDateTime(commonService.GetEndOfDate(criteria.ToDate));
             var settingLogs = await baseService.GetDataAsync<SettingLogInfo>(criteria);
             var settingLogsFilter = settingLogs.Where(x => !string.Equals(x.OldValues, x.NewValues, StringComparison.OrdinalIgnoreCase));
-            var totalItems = settingLogsFilter.Count();
-            if (totalItems > 0)
-            {
-                settingLogsFilter = settingLogsFilter.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-            }
 
             foreach (var log in settingLogsFilter)
             {

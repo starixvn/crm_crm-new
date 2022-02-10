@@ -14,8 +14,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Read)]
-    public class CommunicationSettingController : BaseController
+    //[CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Read)]
+    public class CommunicationSettingController : Controller
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
@@ -47,7 +47,7 @@
         {
             var settings = new
             {
-                CommunicationTools = await settingService.GetCommunicationToolAsync(),
+                CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
                 MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
                 SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active)
             };

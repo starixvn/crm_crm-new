@@ -297,12 +297,17 @@ export class NewCommunitionSetting extends PureComponent {
         if (countSubCatagories === this.state.subCategoryOptionsNew.length) {
             values.subCategoryTypesNew = '0';
         }
-
+        const customers = this.state.listOfCustomerValid.map(item =>{
+            return {
+                id: item.custId,
+                name: item.val
+            };
+        });
         const data = {
             CategoryIds: values.mainCategoryTypesNew,
             SubCategoryIds: values.subCategoryTypesNew,
             CommunicationIds: values.comunicationToolTypesNew,
-            Customers: this.state.listOfCustomerValid
+            Customers: customers
         };
 
         this.props.createCommunication(data).then(() => {

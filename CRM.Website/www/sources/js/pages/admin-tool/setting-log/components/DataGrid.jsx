@@ -44,7 +44,7 @@ export class DataGrid extends Component {
             <Fragment>
                 <Row key={index}>
                     <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.logDate}</Cell>
-                    <Cell className={backgroundColor} rowSpan={rowSpan}>{item.username}</Cell>
+                    <Cell className={`word-wrap ${backgroundColor}`} rowSpan={rowSpan}>{item.username}</Cell>
                     <Cell className={backgroundColor} rowSpan={rowSpan}>{item.actionName}</Cell>
                     <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.entity}</Cell>
                     <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.id}</Cell>

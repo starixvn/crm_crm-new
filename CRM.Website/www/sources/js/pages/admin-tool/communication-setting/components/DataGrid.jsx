@@ -88,7 +88,7 @@ export class DataGrid extends Component {
         <Row key={index} >
             <Cell className='text-center'>{index + this.startIndex}</Cell>
             <Cell className='text-left'><div>{item.username}</div></Cell>
-            <Cell className='text-left'><div>{item.role}</div></Cell>
+            <Cell className='text-center'><div>{item.role}</div></Cell>
             <Cell className='text-left'><div>{this.renderCategoryColumn(index, item.category)}</div></Cell>
             <Cell className='text-left'><div>{this.renderCategoryColumn(index, item.subCategory)}</div></Cell>
             <Cell className='text-left'><div>{item.commTool}</div></Cell>

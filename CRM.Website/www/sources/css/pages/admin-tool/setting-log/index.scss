@@ -35,6 +35,10 @@
         max-width: 170px;
         word-wrap: break-word;
     }
+
+    .word-break{
+        word-break: break-all;
+    }
 }
 
 .table-title, .page-container, .table-container{
