@@ -90,6 +90,7 @@
         </Setting>
         <Setting Key="Acc_CRM_SourceSettingMappingSel" SpName="Acc_CRM_SourceSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_StationList" SpName="Acc_CRM_StationList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PicRoleSel" SpName="Acc_CRM_PicRoleSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Report">
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSettlement" SpName="Acc_CRM_Rpt_FeedbackStatisticsSettlement" DbName="DBCRM.bodb_CRM.bodbAdminNet">

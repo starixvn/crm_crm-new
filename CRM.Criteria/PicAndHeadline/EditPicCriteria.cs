@@ -9,6 +9,7 @@
 
     public class EditPicCriteria : BaseNonQueryCommand
     {
+        public int PicType { get; set; }
         public int PicId { get; set; }
 
         public string PicName { get; set; }
@@ -37,7 +38,7 @@
 
         public override bool IsValid()
         {
-            return PicId > 0 && PicName.Length > 0 && Role > 0 && PicCommunicationTools.Any();
+            return PicType > 0 && PicId > 0 && PicName.Length > 0 && Role > 0 && PicCommunicationTools.Any();
         }
     }
 }

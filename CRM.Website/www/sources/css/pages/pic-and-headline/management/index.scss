@@ -7,26 +7,49 @@
 @import "../../../components/tables";
 @import "../../../components/multiple-select/style";
 
-table.table {
-    tbody {
-        tr {
-            td {
-                &.td-remark {
-                    white-space: pre-line;
-                }
-                .checkbox-cell-style {
-                    width: 13px;
-                    height: 13px;
-                    margin: auto;
-                    cursor: pointer;
-                    &:disabled {
-                        cursor: not-allowed;
+body {
+    overflow: hidden; 
+}
+
+.table-container {
+    overflow-y: auto;
+    border: 1px solid #b7b7b7;
+
+    .body-content {
+        overflow: unset !important; 
+
+        .table td {
+            word-break: break-all;
+        }
+
+        table.table {
+            tbody {
+                tr {
+                    td {
+                        &.td-remark {
+                            white-space: pre-line;
+                        }
+                        .checkbox-cell-style {
+                            width: 13px;
+                            height: 13px;
+                            margin: auto;
+                            cursor: pointer;
+                            &:disabled {
+                                cursor: not-allowed;
+                            }
+                        }
                     }
                 }
             }
         }
     }
 }
+
+.header-content, .body-content, .footer-content {
+    border: none;
+    padding: 0;
+}
+
 .modal-body {
     .form-group {
         .tool-action {

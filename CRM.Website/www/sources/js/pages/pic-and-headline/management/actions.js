@@ -21,6 +21,11 @@ const getAllSetting = () => async dispatch => {
     });
 };
 
+const getRolesByPic = id => async () => {
+    const url = Site.resolveClientUrl(`PicManagement/GetRolesByPic/${id}`);
+    return await DataService.getDataAsync(url, id).then(response => response.data);
+};
+
 const getGridData = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('PicManagement/GetReport');
@@ -67,6 +72,7 @@ const validateEditPic = params => async dispatch => {
 
 export const ActionCreators = {
     setSetting,
+    getRolesByPic,
     setGridParams,
     setGridData,
     setSelectedPic,

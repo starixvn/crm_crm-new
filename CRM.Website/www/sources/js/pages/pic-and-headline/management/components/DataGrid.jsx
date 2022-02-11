@@ -48,12 +48,13 @@ export class DataGrid extends PureComponent {
         return [
             <HeaderRow key={'header1'}>
                 <HeaderCell colWidth={10} rowSpan={2}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
+                <HeaderCell colWidth={20} rowSpan={2}>{LangHelper.getResource('PicType')}</HeaderCell>
                 <HeaderCell colWidth={20} rowSpan={2}>{LangHelper.getResource('Name')}</HeaderCell>
                 <HeaderCell colWidth={15} rowSpan={2}>{LangHelper.getResource('Role')}</HeaderCell>
                 <HeaderCell colWidth={20} rowSpan={2}>{LangHelper.getResource('Language')}</HeaderCell>
                 <HeaderCell colWidth={20} rowSpan={2}>{LangHelper.getResource('Country')}</HeaderCell>
                 <HeaderCell colWidth={30} rowSpan={2}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
-                <HeaderCell colWidth={30} colSpan={communicationTools.length}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
+                <HeaderCell colWidth={50} colSpan={communicationTools.length}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
                 <HeaderCell colWidth={25} rowSpan={2}>{LangHelper.getResource('Remark')}</HeaderCell>
                 {
                     isHost &&
@@ -83,6 +84,7 @@ export class DataGrid extends PureComponent {
     renderRow = (item, index, isHost) => (
         <Row key={item.picId}>
             <Cell className="text-center">{index}</Cell>
+            <Cell>{item.picTypeName}</Cell>
             <Cell>{item.username}</Cell>
             <Cell className="text-center">{item.roleName}</Cell>
             <Cell>{item.languages.map(language => language.settingValue).join(', ')}</Cell>
@@ -157,9 +159,10 @@ export class DataGrid extends PureComponent {
                     }
                 </div>
                 <Table
-                    minWidth={720}
-                    maxWidth={document.getElementById('app-container').clientWidth}
-                    autoWidth
+                    maxWidth={2300}
+                    shouldUseMaxWidth
+                    width={document.getElementById('app-container').clientWidth}
+                    autoWidth={false}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
                     isPaging

@@ -15,5 +15,7 @@
         public static readonly string Extension = "Station";
         public static readonly string Role = "Role";
         public static readonly string Response = "Response";
+        public const string PicType = "PicType";
+
     }
 }

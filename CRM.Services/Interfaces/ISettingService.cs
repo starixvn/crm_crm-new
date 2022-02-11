@@ -9,6 +9,7 @@
     public interface ISettingService
     {
         Task<IEnumerable<Setting>> GetSettingAsync(string settingName, bool? isActive = null);
+        Task<IEnumerable<Setting>> GetRolesByPicAsync(int picType);
 
         Task<IEnumerable<SiteSetting>> GetSiteAsync();
 

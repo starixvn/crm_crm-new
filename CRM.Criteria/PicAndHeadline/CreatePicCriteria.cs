@@ -9,6 +9,8 @@
 
     public class CreatePicCriteria : BaseNonQueryCommand
     {
+        public int PicType { get; set; }
+
         public string PicName { get; set; }
 
         public int Role { get; set; }
@@ -35,7 +37,7 @@
 
         public override bool IsValid()
         {
-            return PicName.Length > 0 && Role > 0 && PicCommunicationTools.Any();
+            return PicType > 0 && PicName.Length > 0 && Role > 0 && PicCommunicationTools.Any();
         }
     }
 }

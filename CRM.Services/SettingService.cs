@@ -43,6 +43,15 @@
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
+        public async Task<IEnumerable<Setting>> GetRolesByPicAsync(int picType)
+        {
+            var criteria = new GetRoleByPicType
+            {
+                PicType = picType
+            };
+            return await baseService.GetDataAsync<Setting>(criteria);
+        }
+
         public async Task<SiteSetting> GetSiteByIdAsync(int siteId)
         {
             var sites = await GetSiteAsync();

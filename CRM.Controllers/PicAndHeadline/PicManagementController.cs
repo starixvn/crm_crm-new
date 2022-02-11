@@ -63,11 +63,18 @@
             {
                 RoleListWithInActive = roles,
                 RoleList = roles.Where(role => role.IsActive),
+                PicTypeList = await settingService.GetSettingAsync(SettingName.PicType, true), 
                 CommunicationTools = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true),
                 Languages = await settingService.GetSettingAsync(SettingName.Language, true),
                 Countries = await settingService.GetCountryAsync(SettingConstants.Active)
             };
             return Json(allSetting);
+        }
+
+        public async Task<IActionResult> GetRolesByPic(int id)
+        {
+            var roles = await settingService.GetRolesByPicAsync(id);
+            return Json(roles);
         }
 
         [HttpPost]

@@ -37,12 +37,31 @@ export class EditPicManagement extends Component {
         this.state = {
             communicationTools,
             languages,
+            roles: [],
             showConfirmClose: false,
             confirmSave: {
                 show: false,
                 message: ''
             }
         };
+    }
+
+    componentDidMount(){
+        this.handleRolesOption(this.props.selectedPic.picType);
+    }
+
+
+    handleRolesOption = picTpe =>{
+        this.props.getRolesByPic(picTpe).then(data =>{
+            this.setState({roles: data});
+        });
+    }
+
+    handleChangePicType = (event, setFieldValue) =>{
+        const value = event.target.value;
+        setFieldValue('picType', value);
+        setFieldValue('roleId', '');
+        this.handleRolesOption(value);
     }
 
     handleConfirmCancelPopup = event => {
@@ -142,6 +161,7 @@ export class EditPicManagement extends Component {
             }
         }
         return {
+            picType: values.picType,
             picId: values.picId,
             picName: values.picName,
             role: values.roleId,
@@ -225,7 +245,7 @@ export class EditPicManagement extends Component {
         setFieldValue,
         isSubmitting
     }) => {
-        const { roleList, countries } = this.props.setting;
+        const { picTypeList, countries } = this.props.setting;
         const { languages } = this.state;
         return (
             <Form noValidate onSubmit={handleSubmit}>
@@ -237,6 +257,22 @@ export class EditPicManagement extends Component {
                             message={this.props.editPicResult.message || LangHelper.getResource('EditPICSuccess')}
                         />
                     }
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="3" className="required" htmlFor="picType">
+                            {LangHelper.getResource('PicType')}
+                        </Form.Label>
+                        <Col sm="8" md="9">
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                isInvalid={touched.picType && errors.picType}
+                                name="picType" id="picType"
+                                onChange={e => this.handleChangePicType(e, setFieldValue)}
+                                value={values.picType}
+                            >
+                                <option value='' disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                {picTypeList.map(item => renderOption(item, 'settingId', 'settingValue'))}
+                            </Form.Control>
+                        </Col>
+                    </Form.Group>
                     <Form.Group as={Row}>
                         <Form.Label column sm="4" md="3" className="required" htmlFor="picName">
                             {LangHelper.getResource('Name')}
@@ -262,7 +298,7 @@ export class EditPicManagement extends Component {
                                 onChange={handleChange}
                             >
                                 <option disabled hidden value="">{LangHelper.getResource('PleaseSelect')}</option>
-                                {roleList.map(item => renderOption(item, 'settingId', 'settingValue'))}
+                                {this.state.roles.map(item => renderOption(item, 'settingId', 'settingValue'))}
                             </Form.Control>
                         </Col>
                     </Form.Group>
@@ -342,6 +378,7 @@ export class EditPicManagement extends Component {
             };
         });
         return {
+            picType: selectedPic.picType,
             picId: selectedPic.picId,
             picName: selectedPic.username,
             roleId: selectedPic.roleId,
