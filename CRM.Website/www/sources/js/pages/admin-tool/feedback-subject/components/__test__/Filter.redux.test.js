@@ -25,11 +25,13 @@ describe('connect ', () => {
         // Arrange
         const expected = {
             gridParams: {},
-            gridData: {}
+            gridData: {},
+            allActiveFeedbackSubject: null
         };
         const state = {
             gridParams: {},
-            gridData: {}
+            gridData: {},
+            allActiveFeedbackSubject: null
         };
 
         // Act

@@ -60,6 +60,24 @@
         }
 
         [Fact]
+        public async Task GetAllActiveFeedbackSubject_WhenCalled_ReturnExpectedData()
+        {
+            //Arrange
+            var fixture = new Fixture();
+            var feedbacks = fixture.Create<IEnumerable<FeedbackSubjectTemplate>>();
+            var controller = GetController();
+            feedbackSubjectService.GetAllActiveFeedbackSubjectTemplateAsync().Returns(feedbacks);
+
+            //Act
+            var result = await controller.GetAllActiveFeedbackSubject();
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var allActiveFeedbackSubjects = (IEnumerable<FeedbackSubjectTemplate>)jsonResult.Value;
+            Assert.Equal(feedbacks, allActiveFeedbackSubjects);
+        }
+
+        [Fact]
         public async Task CreateFeedbackSubject_WhenCalled_ReturnExpectedData()
         {
             //Arrange

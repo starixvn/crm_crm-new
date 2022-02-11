@@ -1,6 +1,7 @@
 import feedbackSubject, {
     setGridParams,
     setFeedBackSubject,
+    setAllActiveFeedbackSubject,
     setSelectFeedbackSubjectId,
     setCreateFeedbackSubjectPopup,
     setCreateFeedbackSubjectResult,
@@ -19,6 +20,7 @@ describe('feedbackSubject reducer', () => {
                 pageSize: 100
             },
             selectFeedbackSubject: null,
+            allActiveFeedbackSubject: null,
             createFeedbackSubjectPopup: { show: false },
             createFeedbackSubjectResult: '',
             editStatusFeedbackSubjectPopup: { show: false },
@@ -54,6 +56,17 @@ describe('feedbackSubject reducer', () => {
             })
         ).toEqual({
             gridData: { totalItems: 0, data: [] }
+        });
+    });
+
+    it('should handle setAllActiveFeedbackSubject', () => {
+        expect(
+            feedbackSubject({}, {
+                type: setAllActiveFeedbackSubject.type,
+                payload: [ { subject: 'test1' }, { subject: 'test2' } ]
+            })
+        ).toEqual({
+            allActiveFeedbackSubject: [ { subject: 'test1' }, { subject: 'test2' } ]
         });
     });
 

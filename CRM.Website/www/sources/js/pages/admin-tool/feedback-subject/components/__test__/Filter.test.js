@@ -2,6 +2,8 @@ import React from 'react';
 import { Filter } from '../Filter';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
+import { parseAsync } from '@babel/core';
+import AutoComplete from '@jsroot/components/AutoComplete';
 
 describe('filter', () => {
     beforeAll(() => {
@@ -9,14 +11,6 @@ describe('filter', () => {
     });
     afterAll(() => {
         jest.clearAllMocks();
-    });
-
-    it('should render correctly', () => {
-        // Act
-        const container = shallow(<Filter />);
-
-        // Assert
-        expect(container).toMatchSnapshot();
     });
 
     describe('methods', () => {
@@ -29,10 +23,40 @@ describe('filter', () => {
                 const container = shallow(<Filter />);
 
                 // Act
-                container.instance().handleChange({ target: { value: 'feedback', name: 'feedbackSubjectSearch' } });
+                container.instance().handleChange('feedback');
 
                 // Assert
-                expect(container.state()).toEqual(expected);
+                expect(container.state().feedbackSubjectSearch).toEqual(expected.feedbackSubjectSearch);
+            });
+        });
+
+        describe('handleInputChange', () => {
+            it('should set state when length of param greater than 0', () => {
+                // Arrange
+                const props = {
+                    allActiveFeedbackSubject: [ { subject: 'test1' }, { subject: 'test2' } ]
+                };
+                const container = shallow(<Filter {...props}/>);
+
+                // Act
+                container.instance().handleInputChange('test');
+
+                // Assert
+                expect(container.state().feedbackSubjectSuggestions).toEqual(['test1', 'test2']);
+            });
+
+            it('should set state when length of param equal 0', () => {
+                // Arrange
+                const props = {
+                    allActiveFeedbackSubject: [ { subject: 'test1' }, { subject: 'test2' } ]
+                };
+                const container = shallow(<Filter {...props}/>);
+
+                // Act
+                container.instance().handleInputChange('');
+
+                // Assert
+                expect(container.state().feedbackSubjectSuggestions).toEqual([]);
             });
         });
 
@@ -95,4 +119,43 @@ describe('filter', () => {
             });
         });
     });
+
+    describe('render', () => {
+        it('should render correctly', () => {
+            // Act
+            const container = shallow(<Filter />);
+    
+            // Assert
+            expect(container).toMatchSnapshot();
+        });
+    
+        it('should render not correctly', () => {
+            //Act
+            const props = {
+                allActiveFeedbackSubject: null
+            };
+            const container = shallow(<Filter {...props} />);
+    
+            //Assert
+            expect(container.type()).toEqual(null);
+        });
+
+        it('should call exactly function', () => {
+            //Arrange
+            const props = {
+                allActiveFeedbackSubject: [ { subject: 'test1' }, { subject: 'test2' } ]
+            };
+            const container = shallow(<Filter {...props}/>);
+            container.instance().handleChange = jest.fn();
+            container.instance().handleInputChange = jest.fn();
+
+            //Act
+            container.find(AutoComplete).first().props().onChange();
+            container.find(AutoComplete).first().props().onInputChange();
+
+            //Assert
+            expect(container.instance().handleChange).toHaveBeenCalled();
+            expect(container.instance().handleInputChange).toHaveBeenCalled();
+        });
+    })
 });

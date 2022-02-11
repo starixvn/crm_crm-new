@@ -59,6 +59,24 @@
         }
 
         [Fact]
+        public async Task GetAllActiveFeedbackSubjectTemplateAsync_WhenCalled_ReturnExpectedResult()
+        {
+            //Arrange
+            var fixture = new Fixture();
+            var feedbackSubjects = fixture.Create<IEnumerable<FeedbackSubjectTemplate>>();
+            var criteria = new GetFeedbackSubjectTemplateCriteria();
+            var service = GetFeedbackSubjectService();
+            baseService.GetDataAsync<FeedbackSubjectTemplate>(Arg.Do<GetFeedbackSubjectTemplateCriteria>(x => criteria = x)).Returns(feedbackSubjects);
+            var allActiveFeedback = feedbackSubjects.Where(item => item.IsActive);
+
+            //Act
+            var actual = await service.GetAllActiveFeedbackSubjectTemplateAsync();
+
+            //Assert
+            Assert.Equal(allActiveFeedback, actual);
+        }
+
+        [Fact]
         public async Task CreateFeedbackSubjectTemplateAsync_WhenCalled_ReturnExpectedCommandResult()
         {
             //Arrange

@@ -37,6 +37,22 @@ describe('actionCreators', () => {
         });
     });
 
+    describe('getAllActiveFeedbackSubject', () => {
+        it('should handle setAllActiveFeedbackSubject when request has been done', async() => {
+            // Arrange
+            const response = [ { templateID: 1, subject: 'sCKQ1', isActive: true } ];
+            const promise = Promise.resolve(response);
+            DataService.getDataAsync = jest.fn(() => promise);
+            const store = mockStore({ allActiveFeedbackSubject: null });
+
+            // Act
+            await store.dispatch(ActionCreators.getAllActiveFeedbackSubject());
+
+            // Assert
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('FeedbackSubject/GetAllActiveFeedbackSubject');
+        });
+    });
+
     describe('createFeedbackSubject', () => {
         it('should handle setCreateFeedbackSubjectResult when request has been done', async() => {
             // Arrange
