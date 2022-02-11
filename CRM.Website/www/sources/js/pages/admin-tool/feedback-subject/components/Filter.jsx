@@ -4,21 +4,16 @@ import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
+import AutoComplete from '@jsroot/components/AutoComplete';
 
 export class Filter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            feedbackSubjectSearch: ''
+            feedbackSubjectSearch: '',
+            feedbackSubjectSuggestions: []
         };
     }
-
-    handleChange = event => {
-        const { name, value } = event.target;
-        this.setState({
-            [name]: value
-        });
-    };
 
     getParams = () => {
         return {
@@ -39,15 +34,37 @@ export class Filter extends Component {
         this.props.setCreateFeedbackSubjectPopup({ show: true });
     };
 
+    handleChange = value => {
+        this.setState({
+            feedbackSubjectSearch: value
+        });
+    };
+
+    handleInputChange = searchText => {
+        let suggestions = [];
+        const value = this.props.allActiveFeedbackSubject.map(item => item.subject);
+        if (searchText.length > 0) {
+            suggestions = value.filter(item => item.substr(0, searchText.length).toLowerCase() == searchText.toLowerCase()).sort();
+        }
+        this.setState({
+            feedbackSubjectSuggestions: suggestions
+        });
+    };
+
     render() {
-        const { isHost } = this.props;
+        const { isHost, allActiveFeedbackSubject } = this.props;
+        if (!allActiveFeedbackSubject) {
+            return null;
+        }
 
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
-                        <Form.Control type="text" size="sm" className="shadow-none"
-                            onChange={this.handleChange} name="feedbackSubjectSearch" autoComplete="off"
+                        <AutoComplete
+                            options={this.state.feedbackSubjectSuggestions}
+                            onChange={value => this.handleChange(value)}
+                            onInputChange={search => this.handleInputChange(search)}
                         />
                     </Form.Group>
                     <Form.Group>
@@ -74,10 +91,11 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData } = state;
+    const { gridParams, gridData, allActiveFeedbackSubject } = state;
     return {
         gridParams,
-        gridData
+        gridData,
+        allActiveFeedbackSubject
     };
 };
 

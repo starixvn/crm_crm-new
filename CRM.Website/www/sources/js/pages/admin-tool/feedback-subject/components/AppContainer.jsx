@@ -22,7 +22,8 @@ export class AppContainer extends Component {
         editStatusFeedbackSubjectPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editFeedbackSubjectPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         isHost: PropTypes.bool.isRequired,
-        getFeedBackSubject: PropTypes.func
+        getFeedBackSubject: PropTypes.func,
+        getAllActiveFeedbackSubject: PropTypes.func
     };
 
     static defaultProps = {
@@ -32,11 +33,15 @@ export class AppContainer extends Component {
         editFeedbackSubjectPopup: { show: false },
         getFeedBackSubject: function() {
             //nothing
+        },
+        getAllActiveFeedbackSubject: function() {
+            //nothing
         }
     };
 
     componentDidMount() {
         this.props.getFeedBackSubject(this.props.gridParams);
+        this.props.getAllActiveFeedbackSubject();
     }
 
     handleCloseCreatePopup = () => {
@@ -73,7 +78,11 @@ export class AppContainer extends Component {
             this.props.getFeedBackSubject(this.props.gridParams);
             this.handleCloseEditStatusPopup();
             if (response.data.isSuccessful) {
-                toast.success(LangHelper.getResource('EditStatusFeedbackSubjectSuccessfully'));
+                if (data.isActive === true) {
+                    toast.success(LangHelper.getResource('ActiveFeedBackSubjectTemplateSuccessfully'));
+                } else {
+                    toast.success(LangHelper.getResource('DeActiveFeedBackSubjectTemplateSuccessfully'));
+                }
             } else {
                 toast.error(response.data.message);
             }

@@ -9,6 +9,7 @@ const feedbackSubjectSlice = createSlice({
            pageIndex: 1,
            pageSize: 100
         },
+        allActiveFeedbackSubject: null,
         selectFeedbackSubject: null,
         createFeedbackSubjectPopup: { show: false },
         createFeedbackSubjectResult: '',
@@ -22,6 +23,9 @@ const feedbackSubjectSlice = createSlice({
         },
         setFeedBackSubject: (state, action) => {
             state.gridData = action.payload;
+        },
+        setAllActiveFeedbackSubject: (state, action) => {
+            state.allActiveFeedbackSubject = action.payload;
         },
         setSelectFeedbackSubjectId: (state, action) => {
             state.selectFeedbackSubject = action.payload;
@@ -49,6 +53,7 @@ const { actions, reducer } = feedbackSubjectSlice;
 export const {
     setGridParams,
     setFeedBackSubject,
+    setAllActiveFeedbackSubject,
     setSelectFeedbackSubjectId,
     setCreateFeedbackSubjectPopup,
     setCreateFeedbackSubjectResult,

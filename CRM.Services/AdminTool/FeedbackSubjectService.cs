@@ -12,6 +12,8 @@
     {
         Task<IEnumerable<FeedbackSubjectTemplate>> GetFeedbackSubjectTemplateAsync(GetFeedbackSubjectParam param);
 
+        Task<IEnumerable<FeedbackSubjectTemplate>> GetAllActiveFeedbackSubjectTemplateAsync();
+
         Task<CommandResult> CreateFeedbackSubjectTemplateAsync(CreateFeedbackSubjectTemplate model);
 
         Task<CommandResult> EditFeedbackSubjectTemplateAsync(EditFeedbackSubjectTemplate model);
@@ -38,6 +40,14 @@
             var feedbacks = templates.Skip(startIndex).Take(param.PageSize).ToList();
             param.TotalRows = templates.Count;
             return feedbacks;
+        }
+
+        public async Task<IEnumerable<FeedbackSubjectTemplate>> GetAllActiveFeedbackSubjectTemplateAsync()
+        {
+            var criteria = new GetFeedbackSubjectTemplateCriteria();
+            var feedbackSubjects = await baseService.GetDataAsync<FeedbackSubjectTemplate>(criteria);
+            var allActiveFeedback = feedbackSubjects.Where(item => IsCorrectTemplate(item, string.Empty, true)).ToList();
+            return allActiveFeedback;
         }
 
         public async Task<CommandResult> CreateFeedbackSubjectTemplateAsync(CreateFeedbackSubjectTemplate model)

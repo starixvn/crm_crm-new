@@ -4,6 +4,7 @@ import Site from '@jsroot/common/site';
 import {
     setGridParams,
     setFeedBackSubject,
+    setAllActiveFeedbackSubject,
     setSelectFeedbackSubjectId,
     setCreateFeedbackSubjectPopup,
     setCreateFeedbackSubjectResult,
@@ -19,6 +20,13 @@ const getFeedBackSubject = params => async dispatch => {
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setFeedBackSubject(response.data));
     }).then(() => Site.unblockUI());
+};
+
+const getAllActiveFeedbackSubject = () => async dispatch => {
+    const url = Site.resolveClientUrl('FeedbackSubject/GetAllActiveFeedbackSubject');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setAllActiveFeedbackSubject(response.data));
+    });
 };
 
 const createFeedbackSubject = data => async dispatch => {
@@ -52,6 +60,7 @@ export const ActionCreators = {
     setEditFeedbackSubjectPopup,
     setEditFeedbackSubjectResult,
     getFeedBackSubject,
+    getAllActiveFeedbackSubject,
     createFeedbackSubject,
     editStatusFeedbackSubject,
     editFeedbackSubject

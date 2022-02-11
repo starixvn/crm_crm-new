@@ -46,6 +46,13 @@
             return Json(new { totalItems = param.TotalRows, data = feedbacks });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllActiveFeedbackSubject()
+        {
+            IEnumerable<FeedbackSubjectTemplate> allActiveFeedbackSubject = await feedbackSubjectService.GetAllActiveFeedbackSubjectTemplateAsync();
+            return Json(allActiveFeedbackSubject);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateFeedbackSubject([FromBody]CreateFeedbackSubjectTemplate model)
         {
