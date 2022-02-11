@@ -192,9 +192,9 @@ export class DataGrid extends Component {
     };
 
     tooltipFeedback = item => {
-        const desctiptionText = !item.description ? '' : `Description: <br>${item.description}<br>`,
+        const descriptionText = !item.description ? '' : `Description: <br>${item.description}<br>`,
             solutionText = !item.solution ? '' : `Solution: <br>${item.solution}<br>`,
-            lastCharacterSlit = desctiptionText.substring(578, 580),
+            lastCharacterSlit = descriptionText.substring(578, 580),
             isEscapseWord = '<br />'.includes(lastCharacterSlit),
             subLength = isEscapseWord ? 592 : 580;
 
@@ -202,21 +202,21 @@ export class DataGrid extends Component {
             isEscapseWordSolution = '<br />'.includes(lastCharacterSlitSolution),
             subLengthSolution = isEscapseWordSolution ? 592 : 580;
 
-        const tooltipDescription = desctiptionText.length > subLength
-            ? desctiptionText.substring(0, subLength) + ' ... <br><br>' : desctiptionText;
+        const tooltipDescription = descriptionText.length > subLength
+            ? descriptionText.substring(0, subLength) + ' ... <br><br>' : descriptionText;
         const tooltipSolution = solutionText.length > subLengthSolution
             ? solutionText.substring(0, subLengthSolution) + ' ... <br><br>' : solutionText;
 
         return (
             <OverlayTrigger
-                placement="auto"
+                placement="bottom"
                 overlay={
                     <Tooltip className="tooltipFeedback">
                         <div dangerouslySetInnerHTML={{ __html: tooltipDescription + tooltipSolution }} />
                     </Tooltip>
                 }
             >
-                <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
+                <div className='pb-1' onClick={() => this.handleEditFeedback(item.feedbackId)}>
                     <span className="rounded-circle fa fa-pencil-square-o" />
                     <strong className='link-click'> {item.subject}</strong>
                 </div>

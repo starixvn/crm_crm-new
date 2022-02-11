@@ -105,9 +105,11 @@ export class Filter extends Component {
                         </Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
+                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                 maxDate={new Date(this.maxFromDate)}
                                 selected={fromDate}
-                                onChange={value => this.handleChangeFromDate(value)}
+                                onChange={value => this.handleChangeFromDate(value)
+                                }
                             />
                         </div>
                     </Form.Group>
@@ -117,6 +119,7 @@ export class Filter extends Component {
                         </Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
+                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                 minDate={new Date(this.minToDate)}
                                 selected={toDate}
                                 maxDate={new Date(this.maxToDate)}
