@@ -77,7 +77,7 @@ export default class CkEditor extends PureComponent {
             <div className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor
                     {...rest}
-                    data={this.state.data}
+                    initData={this.state.data}
                     onChange={this.onEditorChange}
                     config={{
                         removeButtons: '',

@@ -393,7 +393,7 @@ export default class FeedbackInfo extends Component {
 
         return (
             <>
-                <div className="panel-group border-bottom-0 border-top">
+                <div className="panel-group border-bottom-0 border-top-0">
                     <Form.Group as={Row} className="panel-title" onClick={() => onCollapseExpand('details')}
                         aria-controls="collapse-expand-details"
                         aria-expanded={!collapse.details}
