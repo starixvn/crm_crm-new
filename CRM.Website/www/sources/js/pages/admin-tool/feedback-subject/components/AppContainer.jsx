@@ -52,6 +52,7 @@ export class AppContainer extends Component {
     handleCreateSuccess = () => {
         this.handleCloseCreatePopup();
         this.props.getFeedBackSubject(this.props.gridParams);
+        this.props.getAllActiveFeedbackSubject();
     };
 
     handleCloseEditStatusPopup = () => {
@@ -67,6 +68,7 @@ export class AppContainer extends Component {
     handleEditSuccess = () => {
         this.handleCloseEditPopup();
         this.props.getFeedBackSubject(this.props.gridParams);
+        this.props.getAllActiveFeedbackSubject();
     };
 
     handleEditStatus = () => {

@@ -60,7 +60,8 @@ describe('AppContainer', () => {
             // Arrange
             const props = {
                 gridParams: {},
-                getFeedBackSubject: jest.fn()
+                getFeedBackSubject: jest.fn(),
+                getAllActiveFeedbackSubject: jest.fn()
             };
             const container = shallow(<AppContainer {...props} />).instance();
             container.handleCloseCreatePopup = jest.fn();
@@ -71,6 +72,7 @@ describe('AppContainer', () => {
             // Assert
             expect(props.getFeedBackSubject).toHaveBeenCalledWith(props.gridParams);
             expect(container.handleCloseCreatePopup).toHaveBeenCalled();
+            expect(props.getAllActiveFeedbackSubject).toHaveBeenCalled();
         });
     });
 
@@ -111,7 +113,8 @@ describe('AppContainer', () => {
             // Arrange
             const props = {
                 gridParams: {},
-                getFeedBackSubject: jest.fn()
+                getFeedBackSubject: jest.fn(),
+                getAllActiveFeedbackSubject: jest.fn()
             };
             const container = shallow(<AppContainer {...props} />).instance();
             container.handleCloseEditPopup = jest.fn();
@@ -122,6 +125,7 @@ describe('AppContainer', () => {
             // Assert
             expect(props.getFeedBackSubject).toHaveBeenCalledWith(props.gridParams);
             expect(container.handleCloseEditPopup).toHaveBeenCalled();
+            expect(props.getAllActiveFeedbackSubject).toHaveBeenCalled();
         });
     });
 
