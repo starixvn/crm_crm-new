@@ -44,7 +44,7 @@ export class Filter extends Component {
         let suggestions = [];
         const value = this.props.allActiveFeedbackSubject.map(item => item.subject);
         if (searchText.length > 0) {
-            suggestions = value.filter(item => item.substr(0, searchText.length).toLowerCase() == searchText.toLowerCase()).sort();
+            suggestions = value.filter(item => item.substr(0, searchText.length).toLowerCase() === searchText.toLowerCase()).sort();
         }
         this.setState({
             feedbackSubjectSuggestions: suggestions

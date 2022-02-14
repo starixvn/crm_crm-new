@@ -38,7 +38,7 @@
 
         public override bool IsValid()
         {
-            return PicType > 0 && PicId > 0 && PicName.Length > 0 && Role > 0 && PicCommunicationTools.Any();
+            return PicId > 0 && PicName.Length > 0 && Role > 0 && PicCommunicationTools.Any();
         }
     }
 }

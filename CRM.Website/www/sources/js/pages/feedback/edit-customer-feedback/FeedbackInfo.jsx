@@ -193,7 +193,7 @@ export default class FeedbackInfo extends Component {
                                         onChange={onChangeCheckboxHasRelatedCustomer}
                                     />
                                     <OverlayTrigger
-                                        placement="auto"
+                                        placement="bottom"
                                         overlay={
                                             <Tooltip id="tooltip-customers">
                                                 {LangHelper.getResource('MultipleCustomersTooltip')}

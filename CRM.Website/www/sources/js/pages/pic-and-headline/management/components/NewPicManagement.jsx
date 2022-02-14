@@ -35,13 +35,13 @@ export class NewPicManagement extends Component {
         this.props.getRolesByPic(picTpe).then(data =>{
             this.setState({roles: data});
         });
-    }
+    };
 
     handleChangePicType = (event, setFieldValue) =>{
         const value = event.target.value;
         setFieldValue('picType', value);
         this.handleRolesOption(value);
-    }
+    };
 
     handleConfirmCancelPopup = event => {
         const { values } = this.formik;

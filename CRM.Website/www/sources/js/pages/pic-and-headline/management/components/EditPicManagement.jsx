@@ -55,14 +55,14 @@ export class EditPicManagement extends Component {
         this.props.getRolesByPic(picTpe).then(data =>{
             this.setState({roles: data});
         });
-    }
+    };
 
     handleChangePicType = (event, setFieldValue) =>{
         const value = event.target.value;
         setFieldValue('picType', value);
         setFieldValue('roleId', '');
         this.handleRolesOption(value);
-    }
+    };
 
     handleConfirmCancelPopup = event => {
         const { values } = this.formik;
@@ -258,15 +258,15 @@ export class EditPicManagement extends Component {
                         />
                     }
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" className="required" htmlFor="picType">
+                        <Form.Label className="required" column md="3" sm="4" htmlFor="picType">
                             {LangHelper.getResource('PicType')}
                         </Form.Label>
-                        <Col sm="8" md="9">
+                        <Col md="9" sm="8">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 isInvalid={touched.picType && errors.picType}
+                                value={values.picType}
                                 name="picType" id="picType"
                                 onChange={e => this.handleChangePicType(e, setFieldValue)}
-                                value={values.picType}
                             >
                                 <option value='' disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                 {picTypeList.map(item => renderOption(item, 'settingId', 'settingValue'))}
@@ -274,13 +274,13 @@ export class EditPicManagement extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" className="required" htmlFor="picName">
+                        <Form.Label md="3" column sm="4" htmlFor="picName" className="required">
                             {LangHelper.getResource('Name')}
                         </Form.Label>
-                        <Col sm="8" md="9">
+                        <Col md="9" sm="8">
                             <Form.Control type="text" size="sm" name="picName" id="picName"
-                                className="shadow-none" autoComplete="off"
                                 isInvalid={touched.picName && errors.picName}
+                                className="shadow-none" autoComplete="off"
                                 value={values.picName}
                                 onChange={handleChange}
                             />

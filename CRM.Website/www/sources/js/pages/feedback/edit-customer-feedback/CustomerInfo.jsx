@@ -478,7 +478,7 @@ export default class CustomerInfo extends Component {
                                         <SelectWithSearch className='basic-single'
                                             OnChange={value => setFieldValue('siteId', value.id)}
                                             options={settings.sites}
-                                            name={values.siteName} value={values.siteId} isHideNA
+                                            name={values.siteName} value={values.siteId}
                                         />
                                     </Col>
                                 </Form.Group>
