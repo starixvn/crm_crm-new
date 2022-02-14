@@ -72,6 +72,7 @@
             // Arrange
             var criteria = new EditPicCriteria
             {
+                PicType = 1,
                 PicId = 1,
                 PicName = "a",
                 Role = 1,

@@ -35,19 +35,16 @@ export default class FeedbackInfo extends Component {
         const { collapse, values, touched, errors, setFieldValue, onCollapseExpand } = this.props;
         return (
             <div className="panel-group border-bottom-0">
-                <Form.Group as={Row} className="panel-title justify-content-between"
-                    onClick={() => {
-                        if (!values.isPreviewDescription) {
-                            onCollapseExpand('description');
-                        }
-                    }}
+                <Form.Group as={Row} className={`panel-title justify-content-between ${collapse.description ? 'border-bottom-0' : ''}`}
+                    onClick={() => onCollapseExpand('description')}
                     aria-controls="collapse-expand-description" aria-expanded={!collapse.description}
                 >
                     <Form.Label className="required">{LangHelper.getResource('Description')}</Form.Label>
                     <span onClick={event => {
                         event.stopPropagation();
                         setFieldValue('isPreviewDescription', !values.isPreviewDescription);
-                    }}>
+                    }}
+                    >
                         {LangHelper.getResource(values.isPreviewDescription ? 'Edit' : 'Preview')}
                     </span>
                 </Form.Group>
@@ -77,19 +74,16 @@ export default class FeedbackInfo extends Component {
         const { collapse, values, touched, errors, setFieldValue, onCollapseExpand } = this.props;
         return (
             <div className="panel-group border-bottom-0">
-                <Form.Group as={Row} className="panel-title justify-content-between"
-                    onClick={() => {
-                        if (!values.isPreviewSolution) {
-                            onCollapseExpand('solution');
-                        }
-                    }}
+                <Form.Group as={Row} className={`panel-title justify-content-between ${collapse.solution ? 'border-bottom-0' : ''}`}
+                    onClick={() => onCollapseExpand('solution')}
                     aria-controls="collapse-expand-solution" aria-expanded={!collapse.solution}
                 >
                     <Form.Label className="required">{LangHelper.getResource('Solution')}</Form.Label>
                     <span onClick={event => {
                         event.stopPropagation();
                         setFieldValue('isPreviewSolution', !values.isPreviewSolution);
-                    }}>
+                    }}
+                    >
                         {LangHelper.getResource(values.isPreviewSolution ? 'Edit' : 'Preview')}
                     </span>
                 </Form.Group>
@@ -116,7 +110,7 @@ export default class FeedbackInfo extends Component {
         const { values, touched, errors, setFieldValue } = this.props;
         return (
             <div className="panel-group">
-                <Form.Group as={Row} className="panel-title">
+                <Form.Group as={Row} className="panel-title border-bottom-0">
                     <Form.Label className={values.isReviewed ? 'required' : ''}>{LangHelper.getResource('Review')}</Form.Label>
                     <input className="ml-2" type='checkbox'
                         onChange={event => setFieldValue('isReviewed', event.target.checked)}
@@ -287,7 +281,7 @@ export default class FeedbackInfo extends Component {
                                     hasAllOption={productOptions.length > 0}
                                     isAllTextShown={productOptions.length > 0}
                                     hasSearchBox isNAOption
-                                    maxDisplayItemCount={1}
+                                    maxDisplayItemCount={2}
                                     onChange={(currentItem, selectedItemsKey) => {
                                         onChangeProduct(setFieldValue, selectedItemsKey, values.subProductIds);
                                     }}
@@ -302,7 +296,7 @@ export default class FeedbackInfo extends Component {
                                 <MultipleSelect
                                     isAllTextShown={subProductOptions.length > 0}
                                     hasSearchBox isNAOption
-                                    maxDisplayItemCount={1}
+                                    maxDisplayItemCount={3}
                                     dataSource={subProductOptions}
                                     keyField='id' valueField='value'
                                     onChange={(currentItem, selectedItemsKey) => {
@@ -322,7 +316,7 @@ export default class FeedbackInfo extends Component {
                                     hasSearchBox isNAOption
                                     keyField='id' valueField='value'
                                     hasAllOption={betTypeOptions.length > 0}
-                                    maxDisplayItemCount={1}
+                                    maxDisplayItemCount={2}
                                     dataSource={betTypeOptions}
                                     isAllTextShown={betTypeOptions.length > 0}
                                     onChange={(currentItem, selectedItemsKey) => {
@@ -394,14 +388,14 @@ export default class FeedbackInfo extends Component {
         return (
             <>
                 <div className="panel-group border-bottom-0 border-top-0">
-                    <Form.Group as={Row} className="panel-title" onClick={() => onCollapseExpand('details')}
+                    <Form.Group as={Row} className="panel-title border-bottom-0" onClick={() => onCollapseExpand('details')}
                         aria-controls="collapse-expand-details"
                         aria-expanded={!collapse.details}
                     >
                         <Form.Label>{LangHelper.getResource('Details')}</Form.Label>
                     </Form.Group>
                     <Collapse in={!collapse.details}>
-                        <div id="collapse-expand-details" className="panel-content">
+                        <div id="collapse-expand-details" className="panel-content border-bottom-0">
                             <Form.Group as={Row}>
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>

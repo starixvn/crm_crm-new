@@ -123,7 +123,8 @@ export default class AppContainer extends Component {
                 };
             });
             const bettypes = data.settings.bettypes.filter(item => feedbackSettings.subProductIds.includes(item.parentId) && item.parentId !== 0);
-            const betTypeOptions = bettypes.map(item => {
+            const betTypeDistinct = bettypes.filter((v,i,a)=> a.findIndex(t=> t.id === v.id) ===i);
+            const betTypeOptions = betTypeDistinct.map(item => {
                 return {
                     id: item.id,
                     value: item.value,

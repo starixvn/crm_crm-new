@@ -390,8 +390,8 @@ export default class CustomerInfo extends Component {
         } = this.props;
 
         return (
-            <div className="panel-group border-bottom-0">
-                <Form.Group as={Row} className="panel-title" onClick={() => this.props.onCollapseExpand('customerInfo')}
+            <div className="panel-group">
+                <Form.Group as={Row} className="panel-title border-bottom-0" onClick={() => this.props.onCollapseExpand('customerInfo')}
                     aria-controls="collapse-expand-customerInfo"
                     aria-expanded={!collapse.customerInfo}
                 >

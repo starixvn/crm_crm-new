@@ -74,6 +74,7 @@
         {
             // Arrange
             var roleList = new List<Setting>();
+            var picList = new List<Setting>();
             var communicationTools = new List<Setting>();
             var languages = new List<Setting>();
             var countries = new List<Country>();
@@ -82,6 +83,7 @@
             {
                 RoleListWithInActive = roleList,
                 RoleList = roleList.Where(role => role.IsActive),
+                PicTypeList = picList,
                 CommunicationTools = communicationTools,
                 Languages = languages,
                 Countries = countries
@@ -89,6 +91,7 @@
             var controller = GetController();
 
             settingService.GetSettingAsync(SettingName.PicRole).Returns(roleList);
+            settingService.GetSettingAsync(SettingName.PicType, true).Returns(picList);
             settingService.GetSettingAsync(SettingName.PicCommunicationTool, true).Returns(communicationTools);
             settingService.GetSettingAsync(SettingName.Language, true).Returns(languages);
 

@@ -72,6 +72,15 @@
     <None Update="ExcelTemplates\LatestFeedback.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="ExcelTemplates\Log_Statistics.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ExcelTemplates\ManageFeedback.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ExcelTemplates\NewInformHeadlines.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ExcelTemplates\PicAssignment.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

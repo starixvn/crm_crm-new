@@ -70,6 +70,7 @@
             // Arrange
             var criteria = new CreatePicCriteria
             {
+                PicType = 1,
                 PicName = "a",
                 Role = 1,
                 PicCommunicationTools = new List<PicCommunicationTool>

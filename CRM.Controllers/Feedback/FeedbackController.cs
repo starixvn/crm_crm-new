@@ -169,7 +169,7 @@
                 CommunicationTools = GetCommunicationTools(communicationTools, feedbackSettings),
                 Responses = responses.Where(x => x.IsActive || x.Id == feedback.ResponseId).ToList(),
                 Languages = languages.Where(x => x.IsActive || x.LanguageId == feedback.LanguageId).ToList(),
-                Statuses = await GetStatusAsync(feedback, isDeletedFeedbackView),
+                Statuses = await GetStatusAsync(isDeletedFeedbackView),
                 Roles = roles.Where(x => x.IsActive || x.Id == feedback.RoleId).ToList(),
                 Countries = countries.Where(x => x.IsActive || x.Id == feedback.CountryId).ToList(),
                 Titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active),
@@ -209,10 +209,9 @@
                 && x.Id != NAConstants.CommunicationNA).ToList();
         }
 
-        private async Task<IList<Models.Setting.FeedbackStatus>> GetStatusAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)
+        private async Task<IList<Models.Setting.FeedbackStatus>> GetStatusAsync(bool isDeletedFeedbackView = false)
         {
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            statuses = statuses.Where(x => (x.IsActive || x.StatusId == feedback.StatusId)).ToList();
 
             if (!isDeletedFeedbackView
                 || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host))
