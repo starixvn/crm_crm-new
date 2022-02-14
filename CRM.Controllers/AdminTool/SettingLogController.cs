@@ -44,7 +44,12 @@ namespace CRM.Controllers.AdminTool
         public async Task<IActionResult> GetSettingLog([FromBody] GetSettingLogCriteria criteria)
         {
             var settingLogs = await actionLogService.GetSettingLogsAsync(criteria);
-            return Json(new { totalItems = settingLogs.ToList().Count, data = settingLogs });
+            var totalItems = settingLogs.ToList().Count;
+            if (totalItems > 0)
+            {
+                settingLogs = settingLogs.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+            }
+            return Json(new { totalItems , data = settingLogs });
         }
     }
 }
