@@ -2,10 +2,10 @@
 {
     public static class CustomerTypeConstants
     {
-        public const int All = 0;
+        public const int All = -1;
 
-        public const int Customer = 1;
+        public const int Customer = 0;
 
-        public const int Guest = 2;
+        public const int Guest = 1;
     }
 }

@@ -17,7 +17,7 @@
 
         public string Username { get; set; }
 
-        public bool IsGuest { get; set; }
+        public bool? IsGuest { get; set; }
 
         public int? CommunicationId { get; set; }
 

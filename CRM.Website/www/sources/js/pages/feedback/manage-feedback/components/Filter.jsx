@@ -29,7 +29,7 @@ export class Filter extends Component {
             statusId: 0,
             responseId: 0,
             isReviewed: '',
-            isGuest: 0
+            isGuest: -1
         };
     }
 
@@ -66,7 +66,7 @@ export class Filter extends Component {
         const params = {
             feedbackId: runningNumber !== '' ? runningNumber : null,
             userName: username,
-            isGuest: isGuest,
+            isGuest: isGuest === -1 ? null : isGuest,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
             mainCategoryId: mainCategoryId === 0 ? '' : mainCategoryId,
