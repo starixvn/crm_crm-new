@@ -52,8 +52,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, gridData } = state;
-    return { gridParams, gridData };
+    const { gridParams } = state;
+    return { gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

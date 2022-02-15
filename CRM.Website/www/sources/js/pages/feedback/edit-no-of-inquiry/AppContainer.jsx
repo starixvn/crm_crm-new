@@ -9,7 +9,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import { validateNoOfInquiry } from '../common.functions';
 
-export default class AppContainer extends Component {
+export class AppContainer extends Component {
     static propTypes = {
         feedbackId: PropTypes.number.isRequired,
         onClose: PropTypes.func.isRequired
@@ -125,3 +125,5 @@ export default class AppContainer extends Component {
         );
     }
 }
+
+export default AppContainer;
