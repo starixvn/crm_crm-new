@@ -25,32 +25,47 @@ describe('NewPicManagement', () => {
 
     it('renders component correctly', () => {
         // Arrange
+        const response = [{
+            settingId: 1,
+            settingValue: 'test'
+        }];
+        const promise = Promise.resolve(response);
         const props = {
             setting: {
-                languages: []
-            }
+                languages: [],
+                picTypeList: [{ settingId : 1}]
+            },
+            getRolesByPic: jest.fn(() => promise)
         };
 
         // Act
         const container = shallow(<NewPicManagement {...props} />);
-
         // Assert
         expect(container).toMatchSnapshot();
     });
 
     it('component has correct initialState', () => {
         // Arrange
+        const response = [{
+            settingId: 1,
+            settingValue: 'test'
+        }];
+        const promise = Promise.resolve(response);
+
         const initialState = {
             communicationTools: [
                 { type: '', value: '', unique: new Date().getTime() }
             ],
+            roles: [],
             showConfirmClose: false
         };
 
         const props = {
             setting: {
-                languages: []
-            }
+                languages: [],
+                picTypeList: [{ settingId : 1}]
+            },
+            getRolesByPic: jest.fn(() => promise)
         };
 
         // Act
@@ -62,10 +77,17 @@ describe('NewPicManagement', () => {
 
     it('component map correct innerRef in formik', () => {
         // Arrange
+        const response = [{
+            settingId: 1,
+            settingValue: 'test'
+        }];
+        const promise = Promise.resolve(response);
         const props = {
             setting: {
-                languages: []
-            }
+                languages: [],
+                picTypeList: [{ settingId : 1}]
+            },
+            getRolesByPic: jest.fn(() => promise)
         };
         const expected = {};
         const container = shallow(<NewPicManagement {...props} />);
@@ -78,6 +100,11 @@ describe('NewPicManagement', () => {
     });
 
     describe('methods', () => {
+        const response = [{
+            settingId: 1,
+            settingValue: 'test'
+        }];
+        const promise = Promise.resolve(response);
         describe('handleConfirmCancelPopup', () => {
             describe('runs correctly', () => {
                 // Arrange
@@ -91,8 +118,10 @@ describe('NewPicManagement', () => {
                 };
                 const props = {
                     setting: {
-                        languages: []
-                    }
+                        languages: [],
+                        picTypeList: [{ settingId : 1}]
+                    },
+                    getRolesByPic: jest.fn(() => promise)
                 };
                 const container = shallow(<NewPicManagement {...props} />);
 
@@ -129,8 +158,10 @@ describe('NewPicManagement', () => {
             // Arrange
             const props = {
                 setting: {
-                    languages: []
-                }
+                    languages: [],
+                    picTypeList: [{ settingId : 1}]
+                },
+                getRolesByPic: jest.fn(() => promise)
             };
             const container = shallow(<NewPicManagement {...props} />);
 
@@ -146,8 +177,10 @@ describe('NewPicManagement', () => {
                 // Arrange
                 const props = {
                     setting: {
-                        languages: []
+                        languages: [],
+                        picTypeList: [{ settingId : 1}]
                     },
+                    getRolesByPic: jest.fn(() => promise),
                     setCreatePicPopup: jest.fn(),
                     createPicResult: { isSuccessful: 1, message: '' },
                     setCreatePicResult: jest.fn()
@@ -166,8 +199,10 @@ describe('NewPicManagement', () => {
                 // Arrange
                 const props = {
                     setting: {
-                        languages: []
+                        languages: [],
+                        picTypeList: [{ settingId : 1}]
                     },
+                    getRolesByPic: jest.fn(() => promise),
                     setCreatePicPopup: jest.fn(),
                     setCreatePicResult: jest.fn()
                 };
@@ -190,8 +225,10 @@ describe('NewPicManagement', () => {
             ];
             const props = {
                 setting: {
-                    languages: []
-                }
+                    languages: [],
+                    picTypeList: [{ settingId : 1}]
+                },
+                getRolesByPic: jest.fn(() => promise)
             };
             const container = shallow(<NewPicManagement {...props} />);
             container.instance().state.communicationTools = [expected[0]];
@@ -211,8 +248,10 @@ describe('NewPicManagement', () => {
             ];
             const props = {
                 setting: {
-                    languages: []
-                }
+                    languages: [],
+                    picTypeList: [{ settingId : 1}]
+                },
+                getRolesByPic: jest.fn(() => promise)
             };
             const container = shallow(<NewPicManagement {...props} />);
             container.instance().state.communicationTools = communicationTools;
@@ -223,13 +262,16 @@ describe('NewPicManagement', () => {
             // Assert
             expect(container.instance().state.communicationTools).toEqual([communicationTools[0]]);
         });
+        
 
         it('getTemplateCreate return expected', () => {
             // Arrange
             const props = {
                 setting: {
-                    languages: []
-                }
+                    languages: [],
+                    picTypeList: [{ settingId : 1}]
+                },
+                getRolesByPic: jest.fn(() => promise)
             };
             const container = shallow(<NewPicManagement {...props} />);
 
@@ -272,185 +314,212 @@ describe('NewPicManagement', () => {
             expect(result).toEqual(expected);
         });
 
-        describe('handleSubmit run correctly', () => {
-            const values = {
-                picName: 'a',
-                roleId: 1,
-                languageIds: '',
-                countryId: 10,
-                remark: '',
-                communication0: {
-                    type: 1,
-                    value: 'a'
-                }
+    describe('handleSubmit run correctly', () => {
+        const values = {
+            picName: 'a',
+            roleId: 1,
+            languageIds: '',
+            countryId: 10,
+            remark: '',
+            communication0: {
+                type: 1,
+                value: 'a'
+            }
+        };
+
+        const templateCreate = {
+            picName: 'a',
+            role: 1,
+            language: '',
+            country: 10,
+            remark: '',
+            picCommunicationTools: [
+                { type: 1, value: 'a' }
+            ]
+        };
+
+        const response = [{
+            settingId: 1,
+            settingValue: 'test'
+        }];
+        const promise = Promise.resolve(response);
+
+        it('should call exactly functions when create successfully', async () => {
+            // Arrange
+            const promise = Promise.resolve({});
+            const formik = {
+                setSubmitting: jest.fn()
             };
-
-            const templateCreate = {
-                picName: 'a',
-                role: 1,
-                language: '',
-                country: 10,
-                remark: '',
-                picCommunicationTools: [
-                    { type: 1, value: 'a' }
-                ]
+            const props = {
+                setting: {
+                    languages: [],
+                    picTypeList: [{ settingId : 1}]
+                },
+                createPic: jest.fn(() => promise),
+                getGridData: jest.fn(),
+                setCreatePicResult: jest.fn(),
+                gridParams: {},
+                getRolesByPic: jest.fn(() => promise),
+                createPicResult: { isSuccessful: true, message: '' }
             };
+            const container = shallow(<NewPicManagement {...props} />);
+            container.instance().handleClosePopup = jest.fn();
+            container.instance().getTemplateCreate = jest.fn(values => templateCreate);
+            // Act
+            container.instance().handleSubmit(values, formik);
+            await promise;
+            jest.runAllTimers();
 
-            it('should call exactly functions when create successfully', async () => {
-                // Arrange
-                const promise = Promise.resolve({});
-                const formik = {
-                    setSubmitting: jest.fn()
-                };
-                const props = {
-                    setting: {
-                        languages: []
-                    },
-                    createPic: jest.fn(() => promise),
-                    getGridData: jest.fn(),
-                    setCreatePicResult: jest.fn(),
-                    gridParams: {},
-                    createPicResult: { isSuccessful: true, message: '' }
-                };
-                const container = shallow(<NewPicManagement {...props} />);
-                container.instance().handleClosePopup = jest.fn();
-                container.instance().getTemplateCreate = jest.fn(values => templateCreate);
-                // Act
-                container.instance().handleSubmit(values, formik);
-                await promise;
-                jest.runAllTimers();
+            // Assert
+            expect(formik.setSubmitting).toHaveBeenCalledTimes(1);
+            expect(formik.setSubmitting.mock.calls[0][0]).toBeTrue;
 
-                // Assert
-                expect(formik.setSubmitting).toHaveBeenCalledTimes(1);
-                expect(formik.setSubmitting.mock.calls[0][0]).toBeTrue;
-
-                expect(container.instance().handleClosePopup).toHaveBeenCalled();
-                expect(props.createPic).toHaveBeenCalledWith(templateCreate);
-                expect(props.getGridData).toHaveBeenCalledWith(props.gridParams);
-                expect(props.setCreatePicResult).toHaveBeenCalledWith(null);
-            });
-
-            it('should call exactly functions when create unsuccessful', async () => {
-                // Arrange
-                const promise = Promise.resolve({});
-                const formik = {
-                    setSubmitting: jest.fn()
-                };
-                const props = {
-                    setting: {
-                        languages: []
-                    },
-                    createPic: jest.fn(() => promise),
-                    createPicResult: { isSuccessful: false, message: '' }
-                };
-                const container = shallow(<NewPicManagement {...props} />);
-                container.instance().handleClosePopup = jest.fn();
-                container.instance().getTemplateCreate = jest.fn(values => templateCreate);
-
-                // Act
-                container.instance().handleSubmit(values, formik);
-                await promise;
-                jest.runAllTimers();
-
-                // Assert
-                expect(formik.setSubmitting).toHaveBeenCalledTimes(2);
-                expect(formik.setSubmitting.mock.calls[0][0]).toBeTrue;
-                expect(formik.setSubmitting.mock.calls[1][0]).toBeFalse;
-            });
+            expect(container.instance().handleClosePopup).toHaveBeenCalled();
+            expect(props.createPic).toHaveBeenCalledWith(templateCreate);
+            expect(props.getGridData).toHaveBeenCalledWith(props.gridParams);
+            expect(props.setCreatePicResult).toHaveBeenCalledWith(null);
         });
 
-        describe('renderCommunicationTool', () => {
+        it('should call exactly functions when create unsuccessful', async () => {
+            // Arrange
+            const promise = Promise.resolve({});
+            const formik = {
+                setSubmitting: jest.fn()
+            };
+            const props = {
+                setting: {
+                    languages: [],
+                    picTypeList: [{ settingId : 1}]
+                },
+                createPic: jest.fn(() => promise),
+                getRolesByPic: jest.fn(() => promise),
+                createPicResult: { isSuccessful: false, message: '' }
+            };
+            const container = shallow(<NewPicManagement {...props} />);
+            container.instance().handleClosePopup = jest.fn();
+            container.instance().getTemplateCreate = jest.fn(values => templateCreate);
 
-            const communicationTools = [
-                { type: 1, value: 'a', unique: 1 },
-                { type: 2, value: 'b', unique: 2 }
-            ];
+            // Act
+            container.instance().handleSubmit(values, formik);
+            await promise;
+            jest.runAllTimers();
 
-            it('should render expected', () => {
-                // Arrange
-                const props = {
-                    setting: {
-                        languages: [],
-                        communicationTools: [
-                            { settingId: 1, settingValue: 'email' },
-                            { settingId: 2, settingValue: 'phone' }
-                        ]
-                    }
-                };
-                const container = shallow(<NewPicManagement {...props} />);
-                container.instance().state.communicationTools = communicationTools;
-
-                // Act
-                const result = shallow(<div>
-                    {container.instance().renderCommunicationTool({ values: {}, errors: {}, touched: {} })}
-                </div>);
-
-                // Assert
-                expect(result.find(Form.Group).length).toEqual(2);
-                expect(result.find('option').length).toEqual(6);
-            });
-
-            it('should call handleRemoveRowCommunication when click move row', () => {
-                // Arrange
-                const props = {
-                    setting: {
-                        languages: [],
-                        communicationTools: [
-                            { settingId: 1, settingValue: 'email' },
-                            { settingId: 2, settingValue: 'phone' }
-                        ]
-                    }
-                };
-                const container = shallow(<NewPicManagement {...props} />);
-                container.instance().state.communicationTools = communicationTools;
-                container.instance().handleRemoveRowCommunication = jest.fn();
-
-                // Act
-                const result = shallow(<div>
-                    {container.instance().renderCommunicationTool({ values: {}, errors: {}, touched: {} })}
-                </div>);
-                result.find('.fa-times').first().simulate('click');
-
-                // Assert
-                expect(container.instance().handleRemoveRowCommunication).toHaveBeenCalledWith(2);
-            });
-
-            it('should call handleAddRowCommunication when click add row', () => {
-                // Arrange
-                const props = {
-                    setting: {
-                        languages: [],
-                        communicationTools: [
-                            { settingId: 1, settingValue: 'email' },
-                            { settingId: 2, settingValue: 'phone' }
-                        ]
-                    }
-                };
-                const container = shallow(<NewPicManagement {...props} />);
-                container.instance().state.communicationTools = communicationTools;
-                container.instance().handleAddRowCommunication = jest.fn();
-
-                // Act
-                const result = shallow(<div>
-                    {container.instance().renderCommunicationTool({ values: {}, errors: {}, touched: {} })}
-                </div>);
-                result.find('.fa-plus').simulate('click');
-
-                // Assert
-                expect(container.instance().handleAddRowCommunication).toHaveBeenCalled();
-            });
+            // Assert
+            expect(formik.setSubmitting).toHaveBeenCalledTimes(2);
+            expect(formik.setSubmitting.mock.calls[0][0]).toBeTrue;
+            expect(formik.setSubmitting.mock.calls[1][0]).toBeFalse;
         });
+    });
+
+    describe('renderCommunicationTool', () => {
+        const response = [{
+            settingId: 1,
+            settingValue: 'test'
+        }];
+        const promise = Promise.resolve(response);
+        const communicationTools = [
+            { type: 1, value: 'a', unique: 1 },
+            { type: 2, value: 'b', unique: 2 }
+        ];
+
+        it('should render expected', () => {
+            // Arrange
+            const props = {
+                setting: {
+                    languages: [],
+                    picTypeList: [{ settingId : 1}],
+                    communicationTools: [
+                        { settingId: 1, settingValue: 'email' },
+                        { settingId: 2, settingValue: 'phone' }
+                    ]
+                },
+                getRolesByPic: jest.fn(() => promise)
+            };
+            const container = shallow(<NewPicManagement {...props} />);
+            container.instance().state.communicationTools = communicationTools;
+
+            // Act
+            const result = shallow(<div>
+                {container.instance().renderCommunicationTool({ values: {}, errors: {}, touched: {} })}
+            </div>);
+
+            // Assert
+            expect(result.find(Form.Group).length).toEqual(2);
+            expect(result.find('option').length).toEqual(6);
+        });
+
+        it('should call handleRemoveRowCommunication when click move row', () => {
+            // Arrange
+            const props = {
+                setting: {
+                    languages: [],
+                    picTypeList: [{ settingId : 1}],
+                    communicationTools: [
+                        { settingId: 1, settingValue: 'email' },
+                        { settingId: 2, settingValue: 'phone' }
+                    ]
+                },
+                getRolesByPic: jest.fn(() => promise)
+            };
+            const container = shallow(<NewPicManagement {...props} />);
+            container.instance().state.communicationTools = communicationTools;
+            container.instance().handleRemoveRowCommunication = jest.fn();
+
+            // Act
+            const result = shallow(<div>
+                {container.instance().renderCommunicationTool({ values: {}, errors: {}, touched: {} })}
+            </div>);
+            result.find('.fa-times').first().simulate('click');
+
+            // Assert
+            expect(container.instance().handleRemoveRowCommunication).toHaveBeenCalledWith(2);
+        });
+
+        it('should call handleAddRowCommunication when click add row', () => {
+            // Arrange
+            const props = {
+                setting: {
+                    languages: [],
+                    picTypeList: [{ settingId : 1}],
+                    communicationTools: [
+                        { settingId: 1, settingValue: 'email' },
+                        { settingId: 2, settingValue: 'phone' }
+                    ]
+                },
+                getRolesByPic: jest.fn(() => promise)
+            };
+            const container = shallow(<NewPicManagement {...props} />);
+            container.instance().state.communicationTools = communicationTools;
+            container.instance().handleAddRowCommunication = jest.fn();
+
+            // Act
+            const result = shallow(<div>
+                {container.instance().renderCommunicationTool({ values: {}, errors: {}, touched: {} })}
+            </div>);
+            result.find('.fa-plus').simulate('click');
+
+            // Assert
+            expect(container.instance().handleAddRowCommunication).toHaveBeenCalled();
+        });
+    });
 
         describe('renderForm', () => {
+            const response = [{
+                settingId: 1,
+                settingValue: 'test'
+            }];
+            const promise = Promise.resolve(response);
             it('should render expected', () => {
                 // Arrange
                 const props = {
                     setting: {
                         languages: [],
+                        picTypeList: [{ settingId : 1}],
                         communicationTools: [{ settingId: 1, settingValue: 'phone' }],
                         roleList: [{ settingId: 1, settingValue: 'PIC' }],
                         countries: [{ id: 1, name: 'VN' }]
-                    }
+                    },
+                    getRolesByPic: jest.fn(() => promise)
                 };
                 const params = {
                     values: {},
@@ -479,10 +548,12 @@ describe('NewPicManagement', () => {
                 const props = {
                     setting: {
                         languages: [],
+                        picTypeList: [{ settingId : 1}],
                         communicationTools: [],
                         roleList: [],
                         countries: []
                     },
+                    getRolesByPic: jest.fn(() => promise),
                     createPicResult: { isSuccessful: true, message: '' }
                 };
                 const params = {
@@ -506,10 +577,12 @@ describe('NewPicManagement', () => {
                 const props = {
                     setting: {
                         languages: [],
+                        picTypeList: [{ settingId : 1}],
                         communicationTools: [],
                         roleList: [],
                         countries: []
                     },
+                    getRolesByPic: jest.fn(() => promise),
                     createPicResult: { isSuccessful: true, message: '' }
                 };
                 const tempFunc = jest.fn();

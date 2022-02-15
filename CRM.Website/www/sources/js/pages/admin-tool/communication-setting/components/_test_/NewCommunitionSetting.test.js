@@ -3,7 +3,7 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import NewCommunitionSettingWrapper, { NewCommunitionSetting } from '../NewCommunitionSetting';
 import configureMockStore from 'redux-mock-store';
 import { shallow, mount } from 'enzyme';
-import MultipleSelect from '../../../../components/multiple-select/index';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { Formik } from 'formik';
 import ResponseMessage from '@jsroot/components/ResponseMessage';

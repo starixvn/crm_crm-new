@@ -80,8 +80,7 @@ describe('DataGrid', () => {
 
             // Assert
             expect(table.length).toBe(1);
-            expect(table.props().minWidth).toBe(720);
-            expect(table.props().autoWidth).toBeTrue;
+            expect(table.props().autoWidth).toBeFalse;
             expect(table.props().isPaging).toBeTrue;
             expect(table.props().pageOption).toEqual(pagingOption);
             expect(table.props().containerPadding).toBe(0);
@@ -323,7 +322,7 @@ describe('DataGrid', () => {
                 const header = shallow(<div>{container.buildHeader(false)}</div>);
 
                 // Assert
-                expect(header.find(HeaderCell).length).toBe(9);
+                expect(header.find(HeaderCell).length).toBe(10);
                 expect(header.find(HeaderRow).length).toBe(2);
                 expect(container.renderHeaderCommunicationTools).toHaveBeenCalledWith(props.setting.communicationTools);
             });
@@ -349,7 +348,7 @@ describe('DataGrid', () => {
                 const header = shallow(<div>{container.buildHeader(true)}</div>);
 
                 // Assert
-                expect(header.find(HeaderCell).length).toBe(10);
+                expect(header.find(HeaderCell).length).toBe(11);
                 expect(header.find(HeaderRow).length).toBe(2);
                 expect(container.renderHeaderCommunicationTools).toHaveBeenCalledWith(props.setting.communicationTools);
             });
@@ -460,7 +459,7 @@ describe('DataGrid', () => {
                 const row = shallow(container.renderRow(item, 1, false));
 
                 // Assert
-                expect(row.find(Cell).length).toBe(8);
+                expect(row.find(Cell).length).toBe(9);
                 expect(container.renderBodyCommunicationTools).toHaveBeenCalledWith(item.communicationTools);
                 expect(row.find('.checkbox-cell-style').props().disabled).toBeTrue;
             });
@@ -474,7 +473,7 @@ describe('DataGrid', () => {
                 const row = shallow(container.renderRow(item, 1, true));
 
                 // Assert
-                expect(row.find(Cell).length).toBe(9);
+                expect(row.find(Cell).length).toBe(10);
                 expect(container.renderBodyCommunicationTools).toHaveBeenCalledWith(item.communicationTools);
                 expect(row.find('.checkbox-cell-style').props().disabled).toBeFalse;
             });
@@ -487,7 +486,7 @@ describe('DataGrid', () => {
                 const row = shallow(container.renderRow(item, 1, true));
 
                 // Act
-                row.find(Cell).at(7).find('.icon-edit').props().onClick();
+                row.find(Cell).at(8).find('.icon-edit').props().onClick();
 
                 // Assert
                 expect(container.handleEdit).toHaveBeenCalledWith(item);
@@ -502,7 +501,7 @@ describe('DataGrid', () => {
                 const row = shallow(container.renderRow(item, 1, true));
 
                 // Act
-                row.find(Cell).at(8).find('.checkbox-cell-style').props().onChange(event);
+                row.find(Cell).at(9).find('.checkbox-cell-style').props().onChange(event);
 
                 // Assert
                 expect(container.handleActiveStatus).toHaveBeenCalledWith(item.username, item.picId, event.target.checked);

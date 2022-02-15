@@ -9,6 +9,11 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 
 describe('EditPicManagement', () => {
     const mockDate = new Date(1466424490000);
+    const response = [{
+        settingId: 1,
+        settingValue: 'test'
+    }];
+    const promisePicType = Promise.resolve(response);
     const spy = jest
         .spyOn(global, 'Date')
         .mockImplementation(() => mockDate);
@@ -32,7 +37,8 @@ describe('EditPicManagement', () => {
             selectedPic: {
                 languages: [],
                 communicationTools: []
-            }
+            },
+            getRolesByPic: jest.fn(() => promisePicType)
         };
 
         // Act
@@ -57,7 +63,8 @@ describe('EditPicManagement', () => {
                     { settingId: 3, settingValue: 'hk' }
                 ],
                 communicationTools: [{ settingId: 1, value: 'aa' }]
-            }
+            },
+            getRolesByPic: jest.fn(() => promisePicType)
         };
         const communicationTools = props.selectedPic.communicationTools.map((item, index) => ({ type: item.settingId, value: item.value, unique: index }));
         const languages = [
@@ -69,6 +76,7 @@ describe('EditPicManagement', () => {
             communicationTools,
             languages,
             showConfirmClose: false,
+            roles: [],
             confirmSave: {
                 show: false,
                 message: ''
@@ -91,7 +99,8 @@ describe('EditPicManagement', () => {
             selectedPic: {
                 languages: [],
                 communicationTools: []
-            }
+            },
+            getRolesByPic: jest.fn(() => promisePicType)
         };
         const expected = {};
         const container = shallow(<EditPicManagement {...props} />);
@@ -123,7 +132,8 @@ describe('EditPicManagement', () => {
                     selectedPic: {
                         languages: [],
                         communicationTools: []
-                    }
+                    },
+                    getRolesByPic: jest.fn(() => promisePicType)
                 };
                 const container = shallow(<EditPicManagement {...props} />);
                 container.instance().getInitValue = jest.fn(() => initialValues);
@@ -166,7 +176,8 @@ describe('EditPicManagement', () => {
                 selectedPic: {
                     languages: [],
                     communicationTools: []
-                }
+                },
+                getRolesByPic: jest.fn(() => promisePicType)
             };
             const container = shallow(<EditPicManagement {...props} />);
 
@@ -190,7 +201,8 @@ describe('EditPicManagement', () => {
                     },
                     setEditPicPopup: jest.fn(),
                     editPicResult: { isSuccessful: 1, message: '' },
-                    setEditPicResult: jest.fn()
+                    setEditPicResult: jest.fn(),
+                    getRolesByPic: jest.fn(() => promisePicType)
                 };
                 const container = shallow(<EditPicManagement {...props} />);
 
@@ -213,7 +225,8 @@ describe('EditPicManagement', () => {
                         communicationTools: []
                     },
                     setEditPicPopup: jest.fn(),
-                    setEditPicResult: jest.fn()
+                    setEditPicResult: jest.fn(),
+                    getRolesByPic: jest.fn(() => promisePicType)
                 };
                 const container = shallow(<EditPicManagement {...props} />);
 
@@ -239,7 +252,8 @@ describe('EditPicManagement', () => {
                 selectedPic: {
                     languages: [],
                     communicationTools: []
-                }
+                },
+                getRolesByPic: jest.fn(() => promisePicType)
             };
             const container = shallow(<EditPicManagement {...props} />);
             container.instance().state.communicationTools = [expected[0]];
@@ -271,7 +285,8 @@ describe('EditPicManagement', () => {
                 selectedPic: {
                     languages: [],
                     communicationTools: []
-                }
+                },
+                getRolesByPic: jest.fn(() => promisePicType)
             };
             const container = shallow(<EditPicManagement {...props} />);
             container.instance().state.communicationTools = communicationTools;
@@ -300,7 +315,8 @@ describe('EditPicManagement', () => {
                 selectedPic: {
                     languages: [],
                     communicationTools: []
-                }
+                },
+                getRolesByPic: jest.fn(() => promisePicType)
             };
             const container = shallow(<EditPicManagement {...props} />);
 
@@ -384,6 +400,7 @@ describe('EditPicManagement', () => {
                         languages: [],
                         communicationTools: []
                     },
+                    getRolesByPic: jest.fn(() => promisePicType),
                     editPic: jest.fn(() => promise),
                     getGridData: jest.fn(),
                     setEditPicResult: jest.fn(),
@@ -418,6 +435,7 @@ describe('EditPicManagement', () => {
                     setting: {
                         languages: []
                     },
+                    getRolesByPic: jest.fn(() => promisePicType),
                     selectedPic: {
                         languages: [],
                         communicationTools: []
@@ -463,6 +481,7 @@ describe('EditPicManagement', () => {
                             { settingId: 2, settingValue: 'phone' }
                         ]
                     },
+                    getRolesByPic: jest.fn(() => promisePicType),
                     selectedPic: {
                         languages: [],
                         communicationTools: []
@@ -491,6 +510,7 @@ describe('EditPicManagement', () => {
                             { settingId: 2, settingValue: 'phone' }
                         ]
                     },
+                    getRolesByPic: jest.fn(() => promisePicType),
                     selectedPic: {
                         languages: [],
                         communicationTools: []
@@ -523,7 +543,8 @@ describe('EditPicManagement', () => {
                     selectedPic: {
                         languages: [],
                         communicationTools: []
-                    }
+                    },
+                    getRolesByPic: jest.fn(() => promisePicType)
                 };
                 const container = shallow(<EditPicManagement {...props} />);
                 container.instance().state.communicationTools = communicationTools;
@@ -548,12 +569,14 @@ describe('EditPicManagement', () => {
                         languages: [],
                         communicationTools: [{ settingId: 1, settingValue: 'phone' }],
                         roleList: [{ settingId: 1, settingValue: 'PIC' }],
+                        picTypeList: [{ settingId: 1, settingValue: 'PIC' }],
                         countries: [{ id: 1, name: 'VN' }]
                     },
                     selectedPic: {
                         languages: [],
                         communicationTools: []
-                    }
+                    },
+                    getRolesByPic: jest.fn(() => promisePicType)
                 };
                 const params = {
                     values: {},
@@ -584,12 +607,14 @@ describe('EditPicManagement', () => {
                         languages: [],
                         communicationTools: [],
                         roleList: [],
-                        countries: []
+                        countries: [],
+                        picTypeList: [{ settingId: 1, settingValue: 'PIC' }]
                     },
                     selectedPic: {
                         languages: [],
                         communicationTools: []
                     },
+                    getRolesByPic: jest.fn(() => promisePicType),
                     editPicResult: { isSuccessful: true, message: '' }
                 };
                 const params = {
@@ -615,12 +640,14 @@ describe('EditPicManagement', () => {
                         languages: [],
                         communicationTools: [],
                         roleList: [],
-                        countries: []
+                        countries: [],
+                        picTypeList: [{ settingId: 1, settingValue: 'PIC' }]
                     },
                     selectedPic: {
                         languages: [],
                         communicationTools: []
                     },
+                    getRolesByPic: jest.fn(() => promisePicType),
                     createPicResult: { isSuccessful: true, message: '' }
                 };
                 const tempFunc = jest.fn();
@@ -667,6 +694,7 @@ describe('EditPicManagement', () => {
                         languages: [],
                         communicationTools: []
                     },
+                    getRolesByPic: jest.fn(() => promisePicType),
                     validateEditPic: jest.fn(() => promise),
                     validateEditPicResult: 'data',
                     setValidateEditPicResult: jest.fn()
@@ -706,6 +734,7 @@ describe('EditPicManagement', () => {
                         languages: [],
                         communicationTools: []
                     },
+                    getRolesByPic: jest.fn(() => promisePicType),
                     validateEditPic: jest.fn(() => promise),
                     validateEditPicResult: null
                 };
@@ -747,7 +776,8 @@ describe('EditPicManagement', () => {
                     selectedPic: {
                         languages: [],
                         communicationTools: []
-                    }
+                    },
+                    getRolesByPic: jest.fn(() => promisePicType)
                 };
                 const container = shallow(<EditPicManagement {...props} />);
                 container.instance()['formik'] = formik;
@@ -771,7 +801,8 @@ describe('EditPicManagement', () => {
                 selectedPic: {
                     languages: [],
                     communicationTools: []
-                }
+                },
+                getRolesByPic: jest.fn(() => promisePicType)
             };
             const container = shallow(<EditPicManagement {...props} />);
 

@@ -42,6 +42,27 @@ describe('actionCreators', () => {
         });
     });
 
+    describe('getRolesByPic', () => {
+        it('should return exact roles when fetching all roles have been done', async () => {
+            // Arrange
+            const response = {
+                data: [{
+                    roleList: [{ settingId: 1, settingValue: 'PIC' }]
+                }]
+            };
+            const promise = Promise.resolve(response);
+            DataService.getDataAsync = jest.fn(() => promise);
+            const store = mockStore({ setting: {} });
+
+            // Act
+           const actual = await store.dispatch(ActionCreators.getRolesByPic(1));
+
+            // Assert
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('PicManagement/GetRolesByPic/1', 1);
+            expect(actual).toEqual(response.data);
+        });
+    });
+
     describe('getGridData', () => {
         it('should handle setGridData when fetching data have been done', async () => {
             // Arrange
