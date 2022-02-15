@@ -71,10 +71,13 @@ describe('FilterContactInforms', () => {
                 setEditedInforms: jest.fn(),
                 getContactInforms: jest.fn()
             };
+            const mockEvent = {
+                preventDefault: jest.fn()
+            };
 
             // Act
             const container = shallow(<FilterContactInforms {...props}/>);
-            container.instance().handleSearch();
+            container.instance().handleSearch(mockEvent);
            
             // Assert
             expect(props.setGridParams).toHaveBeenCalledWith({pageIndex: 1, pageSize: 100});

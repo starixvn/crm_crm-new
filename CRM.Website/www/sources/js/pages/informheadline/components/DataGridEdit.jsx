@@ -145,7 +145,7 @@ export class DataGridEdit extends PureComponent {
                 width={1170}
                 autoWidth={false}
                 autoHeight={false}
-                bodyHeight={320}
+                bodyHeight={450}
                 header={this.buildHeader()}
                 body={this.buildBody()}
                 isPaging

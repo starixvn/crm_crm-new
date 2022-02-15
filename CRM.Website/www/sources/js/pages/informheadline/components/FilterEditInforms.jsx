@@ -98,6 +98,7 @@ export class FilterEditInforms extends PureComponent {
                             isInvalid={touched.currencies && errors.currencies}
                             dataSource={filterCurrencies}
                             keyField='id' valueField='name'
+                            maxDisplayItemCount={3}
                             hasAllOption={filterCurrencies.length > 0}
                             isAllTextShown={filterCurrencies.length > 0}
                             hasSearchBox
@@ -119,6 +120,7 @@ export class FilterEditInforms extends PureComponent {
                             hasAllOption={filterLevels.length > 0}
                             isAllTextShown={filterLevels.length > 0}
                             hasSearchBox
+                            maxDisplayItemCount={2}
                             onChange={(currentItem, selectedItemsKey) => {
                                 setFieldValue('levels', selectedItemsKey);
                             }}
@@ -136,6 +138,7 @@ export class FilterEditInforms extends PureComponent {
                             keyField='id' valueField='name'
                             hasAllOption={filterSites.length > 0}
                             isAllTextShown={filterSites.length > 0}
+                            maxDisplayItemCount={1}
                             hasSearchBox
                             onChange={(currentItem, selectedItemsKey) => {
                                 setFieldValue('sites', selectedItemsKey);

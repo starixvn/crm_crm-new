@@ -38,7 +38,8 @@ export class FilterContactInforms extends PureComponent {
         return params;
     };
 
-    handleSearch = () => {
+    handleSearch = event => {
+        event.preventDefault();
         const contactParams = this.contactParams();
         this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.props.setEditedInforms([]);
@@ -83,6 +84,7 @@ export class FilterContactInforms extends PureComponent {
                             <Form.Control type="text" size="sm" className="shadow-none"
                                 autoComplete="off"
                                 name="username"
+                                value={this.state.username}
                                 onChange={event => this.handleChangeFilter(event)}
                             />
                         </Col>
@@ -98,6 +100,7 @@ export class FilterContactInforms extends PureComponent {
                                 hasAllOption={filterStatuses.length > 0}
                                 isAllTextShown={filterStatuses.length > 0}
                                 hasSearchBox isNAOption
+                                maxDisplayItemCount={1}
                                 onChange={(currentItem, selectedItemsKey) => {
                                     this.handleChangeStatus(selectedItemsKey);
                                 }}
@@ -105,7 +108,7 @@ export class FilterContactInforms extends PureComponent {
                         </Col>
 
                         <Col>
-                            <Button variant="primary" size="sm" style={{width: '65px'}} onClick={this.handleSearch}>
+                            <Button variant="primary" size="sm" onClick={this.handleSearch}>
                                 {LangHelper.getResource('Search')}
                             </Button>
                         </Col>

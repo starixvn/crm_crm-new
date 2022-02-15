@@ -378,6 +378,40 @@ describe('FilterEditInforms', () => {
         });
     });
 
+    describe('changeFilter', () => {
+        it('should return true', () => {
+            // Arrange
+            const props = { ...initProps };
+            const value = {
+                isVip: 1,
+                typeAccount: 1,
+                excludeIgnoredAccounts: false
+            };
+
+            // Act
+            const container = shallow(<FilterEditInforms {...props}/>);
+            const actual = container.instance().changeFilter(value);
+
+            expect(actual).toBe(true);
+        });
+
+        it('should return false', () => {
+            // Arrange
+            const props = { ...initProps };
+            const value = {
+                isVip: 2,
+                typeAccount: 3,
+                excludeIgnoredAccounts: true
+            };
+
+            // Act
+            const container = shallow(<FilterEditInforms {...props}/>);
+            const actual = container.instance().changeFilter(value);
+
+            expect(actual).toBe(false);
+        });
+    });
+
     describe('render', () => {
         it('should render Formik component', () => {
             // Arrange
