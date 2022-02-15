@@ -617,7 +617,7 @@ describe('NewCommunitionSetting', () => {
                     isSaveAndContinue: true,
                     customerNameInput: 'test'
                 };
-                const state = { listOfCustomerValid: 'test' };
+                const state = { listOfCustomerValid: [{custId: 1, val:'test'}] };
                 const formikBag = {
                     setSubmitting: jest.fn(),
                     resetForm: jest.fn()
@@ -646,7 +646,9 @@ describe('NewCommunitionSetting', () => {
                     CategoryIds: '1',
                     SubCategoryIds: '1',
                     CommunicationIds: '1',
-                    Customers: 'test'
+                    Customers: [
+                        {id: 1, name: 'test'}
+                    ]
                 });
                 expect(values.customerNameInput).toEqual('');
                 expect(container.state.listOfCustomerValid).toEqual('');
@@ -666,7 +668,7 @@ describe('NewCommunitionSetting', () => {
                     comunicationToolTypesNew: '1',
                     isSaveAndContinue: false
                 };
-                const state = { listOfCustomerValid: 'test', subCategoryOptionsNew: [1] };
+                const state = { listOfCustomerValid:[{custId: 1, val:'test'}], subCategoryOptionsNew: [1] };
                 const formikBag = {
                     setSubmitting: jest.fn(),
                     resetForm: jest.fn()
@@ -696,7 +698,9 @@ describe('NewCommunitionSetting', () => {
                     CategoryIds: '0',
                     SubCategoryIds: '0',
                     CommunicationIds: '1',
-                    Customers: 'test'
+                    Customers: [
+                        {id: 1, name: 'test'}
+                    ]
                 });
                 expect(props.onSuccess).toHaveBeenCalled();
             });
@@ -709,7 +713,7 @@ describe('NewCommunitionSetting', () => {
                     comunicationToolTypesNew: '1',
                     isSaveAndContinue: false
                 };
-                const state = { listOfCustomerValid: 'test', subCategoryOptionsNew: [1] };
+                const state = { listOfCustomerValid:[{custId: 1, val:'test'}], subCategoryOptionsNew: [1] };
                 const formikBag = {
                     setSubmitting: jest.fn(),
                     resetForm: jest.fn()
