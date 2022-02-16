@@ -133,6 +133,7 @@ class Details extends PureComponent {
                             <Col sm="8" md="8">
                                 <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                     <DatePicker timeInputLabel="Time:" showTimeInput
+                                        peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                         selected={values.feedbackDate}
                                         onChange={value => setFieldValue('feedbackDate', value)}
                                     />
@@ -148,6 +149,7 @@ class Details extends PureComponent {
                             <Col sm="8" md="8">
                                 <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                     <DatePicker timeInputLabel="Time:" showTimeInput
+                                        peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                         selected={values.resolutionDate}
                                         onChange={value => setFieldValue('resolutionDate', value)}
                                     />

@@ -125,6 +125,7 @@ describe('AppContainer', () => {
             // Act
             const container = shallow(<AppContainer {...props} />).instance();
             container.getFeedbackSettings = jest.fn(() => feedbackSettings);
+            container.initCustomerData = jest.fn(() => []);
             container.initFormikData = jest.fn(() => []);
             await container.componentDidMount();
 

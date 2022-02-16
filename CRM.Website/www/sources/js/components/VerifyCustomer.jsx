@@ -51,8 +51,8 @@ export default class VerifyCustomer extends PureComponent {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="pt-2 pb-2">
-                    <Form.Label column sm={size} md={size} />
-                    <Col sm={customerSize} md={customerSize}>
+                    <Form.Label column sm={labelSize} md={labelSize} />
+                    <Col sm={size} md={size}>
                         <div className="customersList d-flex flex-wrap">
                             {
                                 listOfCustomers.map((item, index) => {
