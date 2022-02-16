@@ -31,12 +31,6 @@ export class AppContainer extends Component {
         newInformDialog: { show: false }
     };
 
-    // async componentDidMount() {
-    //     await this.props.getInforms();
-    //     this.props.getAllSettings();
-    //     this.props.getContactInformSettings();
-    // }
-
     handleCloseEditContactInformDialog = () => {
         this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.props.setContactInforms(null);

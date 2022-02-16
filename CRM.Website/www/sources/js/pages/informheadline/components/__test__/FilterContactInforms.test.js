@@ -133,5 +133,19 @@ describe('FilterContactInforms', () => {
             expect(container.instance().handleChangeFilter).toHaveBeenCalled();
             expect(container.instance().handleChangeStatus).toHaveBeenCalledWith(selectedItemsKey);
         });
+
+        it('should call exactly function when input onKeyPress enter', () => {
+            // Arrange
+            const props = {...initProps};
+
+            // Act
+            const container = shallow(<FilterContactInforms {...props} />);
+            container.instance().handleSearch = jest.fn();
+
+            container.find(Form.Control).at(0).simulate('keypress', { key: 'Enter' });
+
+            // Assert
+            expect(container.instance().handleSearch).toHaveBeenCalled();
+        });
     });
 });

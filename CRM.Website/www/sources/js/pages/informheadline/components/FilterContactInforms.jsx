@@ -81,11 +81,12 @@ export class FilterContactInforms extends PureComponent {
                         </Form.Label>
 
                         <Col sm="2" md="2">
-                            <Form.Control type="text" size="sm" className="shadow-none"
+                            <Form.Control type="input" size="sm" className="shadow-none"
                                 autoComplete="off"
                                 name="username"
                                 value={this.state.username}
                                 onChange={event => this.handleChangeFilter(event)}
+                                onKeyPress={event => event.key === 'Enter' && this.handleSearch(event)}
                             />
                         </Col>
 
