@@ -120,7 +120,6 @@ class Details extends PureComponent {
             </div>
         );
     };
-    
     render() {
         const {values, touched, errors, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions, setFieldValue } = this.props;
         return (

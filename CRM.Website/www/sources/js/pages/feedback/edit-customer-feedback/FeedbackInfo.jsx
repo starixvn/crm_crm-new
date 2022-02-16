@@ -141,7 +141,6 @@ export default class FeedbackInfo extends PureComponent {
             </div>
         );
     };
-    
     render() {
         const { collapse, values, touched, errors,
             extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
@@ -173,7 +172,7 @@ export default class FeedbackInfo extends PureComponent {
                     </Collapse>
                 </div>
                 {
-                    <CommentInfo 
+                    <CommentInfo
                         collapse={collapse} values={values} touched={touched} errors={errors}
                         setFieldValue={setFieldValue} onCollapseExpand={onCollapseExpand}
                     />
