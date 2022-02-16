@@ -18,7 +18,7 @@ export default class VerifyCustomer extends PureComponent {
         return className;
     };
 
-    widthSize = (isCommunicationLog, isSmallWidth) =>{
+    sizeColumn = (isCommunicationLog, isSmallWidth) =>{
         if(isCommunicationLog)
         {
             return 10;
@@ -30,7 +30,7 @@ export default class VerifyCustomer extends PureComponent {
         const { listOfCustomers, isCommunicationLog, isSmallWidth} = this.props;
         const labelSize = isCommunicationLog ? 2 : 3;
         const columnSize = isCommunicationLog ? 10 : 9;
-        const customerSize = widthSize(isCommunicationLog, isSmallWidth);
+        const size = this.sizeColumn(isCommunicationLog, isSmallWidth);
         return listOfCustomers && listOfCustomers.length > 0 ?
             <Fragment>
                 <Form.Group as={Row} className="pt-2 pb-2">
@@ -51,7 +51,7 @@ export default class VerifyCustomer extends PureComponent {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="pt-2 pb-2">
-                    <Form.Label column sm={labelSize} md={labelSize} />
+                    <Form.Label column sm={size} md={size} />
                     <Col sm={customerSize} md={customerSize}>
                         <div className="customersList d-flex flex-wrap">
                             {

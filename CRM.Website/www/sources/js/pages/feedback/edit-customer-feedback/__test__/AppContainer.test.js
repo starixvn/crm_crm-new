@@ -103,7 +103,7 @@ describe('AppContainer', () => {
         it('should calls setState', async () => {
             // Arrange
             const props = {
-                feedbackId: 73300,
+                feedbackId: 73300
             };
             const feedbackSettings  = {
                 extensionIds: [0],
