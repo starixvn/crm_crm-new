@@ -65,9 +65,10 @@
             return Json(commandResult);
         }
 
-        public async Task<IActionResult> GetCustomerFeedbackById(int id, bool isDeletedFeedbackView = false)
+        public async Task<IActionResult> GetCustomerFeedbackById(int id)
         {
             CustomerFeedback feedback = await feedbackService.GetCustomerFeedbackByIdAsync(id);
+            var isDeletedFeedbackView = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Read);
             var settings = await GetEditCustomerFeedbackSettingAsync(feedback, isDeletedFeedbackView);
             var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
             return Json(new { feedback, settings, hasReviewFeedbackPermission });

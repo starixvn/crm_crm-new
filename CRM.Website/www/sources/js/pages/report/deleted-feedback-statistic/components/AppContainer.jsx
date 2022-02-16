@@ -46,7 +46,6 @@ handleCloseViewRelatedCustomerDialog = () => {
               <EditFeedback
                   feedbackId={editFeedbackDialog.feedbackId}
                   onClose={this.handleCloseEditFeedbackDialog}
-                  isDeletedFeedbackView
               />
            }
       </Fragment>

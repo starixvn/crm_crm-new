@@ -104,7 +104,6 @@ describe('AppContainer', () => {
             // Arrange
             const props = {
                 feedbackId: 73300,
-                isDeletedFeedbackView: false
             };
             const feedbackSettings  = {
                 extensionIds: [0],
@@ -130,7 +129,7 @@ describe('AppContainer', () => {
             await container.componentDidMount();
 
             //Arrange
-            expect(Site.resolveClientUrl).toHaveBeenCalledWith('Feedback/GetCustomerFeedbackById/73300?isDeletedFeedbackView=false');
+            expect(Site.resolveClientUrl).toHaveBeenCalledWith('Feedback/GetCustomerFeedbackById/73300');
             expect(container.state.relatedCustomers).toEqual([{ custId: 1, isLicensee: true, isSiteActive: true, val: "test" }]);
             expect(container.state.settings).toEqual(initData.settings);
             expect(container.state.hasReviewFeedbackPermission).toEqual(true);

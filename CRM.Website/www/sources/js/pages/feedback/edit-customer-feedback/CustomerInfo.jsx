@@ -1,12 +1,12 @@
-﻿import React, { Component } from 'react';
+﻿import React, { PureComponent } from 'react';
 import { Col, Form, Row, Collapse } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 
-export default class CustomerInfo extends Component {
+export default class CustomerInfo extends PureComponent {
     renderCommunicationToolSection = () => {
-        const { values, handleChange } = this.props;
+        const { fieldInput, handleChangeInput } = this.props;
         return (
             <div>
                 <Form.Group as={Row}>
@@ -17,7 +17,7 @@ export default class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm"
                                     name="skype" id="Skype" className="shadow-none" autoComplete="off"
-                                    value={values.skype} onChange={handleChange}
+                                    value={fieldInput.skype} onChange={handleChangeInput}
                                 />
                             </Col>
                         </Form.Group>
@@ -30,7 +30,7 @@ export default class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm"
                                     name="email" id="email" className="shadow-none" autoComplete="off"
-                                    value={values.email} onChange={handleChange}
+                                    value={fieldInput.email} onChange={handleChangeInput}
                                 />
                             </Col>
                         </Form.Group>
@@ -43,7 +43,7 @@ export default class CustomerInfo extends Component {
                             <Col md="8" sm="8">
                                 <Form.Control type="text" size="sm"
                                     name="telegram" id="telegram" className="shadow-none" autoComplete="off"
-                                    value={values.telegram} onChange={handleChange}
+                                    value={fieldInput.telegram} onChange={handleChangeInput}
                                 />
                             </Col>
                         </Form.Group>
@@ -56,7 +56,7 @@ export default class CustomerInfo extends Component {
                             </Form.Label>
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm"
-                                    value={values.weChat} onChange={handleChange}
+                                    value={fieldInput.weChat} onChange={handleChangeInput}
                                     name="weChat" id="weChat" className="shadow-none" autoComplete="off"
                                 />
                             </Col>
@@ -70,7 +70,7 @@ export default class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm"
                                     name="whatsApp" id="whatsApp" className="shadow-none" autoComplete="off"
-                                    value={values.whatsApp} onChange={handleChange}
+                                    value={fieldInput.whatsApp} onChange={handleChangeInput}
                                 />
                             </Col>
                         </Form.Group>
@@ -83,7 +83,7 @@ export default class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm"
                                     name="line" id="line" className="shadow-none" autoComplete="off"
-                                    value={values.line} onChange={handleChange}
+                                    value={fieldInput.line} onChange={handleChangeInput}
                                 />
                             </Col>
                         </Form.Group>
@@ -96,7 +96,7 @@ export default class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm" name="letstalk" id="letstalk"
                                     className="shadow-none" autoComplete="off"
-                                    value={values.letstalk} onChange={handleChange}
+                                    value={fieldInput.letstalk} onChange={handleChangeInput}
                                 />
                             </Col>
                         </Form.Group>
@@ -109,7 +109,7 @@ export default class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm"
                                     name="qq" id="qq" className="shadow-none" autoComplete="off"
-                                    value={values.qq} onChange={handleChange}
+                                    value={fieldInput.qq} onChange={handleChangeInput}
                                 />
                             </Col>
                         </Form.Group>
@@ -122,7 +122,7 @@ export default class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <Form.Control type="text" size="sm"
                                     name="zalo" id="zalo" className="shadow-none" autoComplete="off"
-                                    value={values.zalo} onChange={handleChange}
+                                    value={fieldInput.zalo} onChange={handleChangeInput}
                                 />
                             </Col>
                         </Form.Group>
@@ -133,7 +133,7 @@ export default class CustomerInfo extends Component {
     };
 
     renderCustomerInformationSection = () => {
-        const { values, handleChange } = this.props;
+        const { fieldInput, handleChangeInput } = this.props;
         return (
             <div>
                 <Form.Group as={Row}>
@@ -147,19 +147,19 @@ export default class CustomerInfo extends Component {
                                     <div className="country">
                                         <Form.Control type="text" size="sm"
                                             name="faxCountryCode" className="shadow-none" autoComplete="off"
-                                            value={values.faxCountryCode} onChange={handleChange}
+                                            value={fieldInput.faxCountryCode} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="area">
                                         <Form.Control type="text" size="sm"
                                             name="faxAreaCode" className="shadow-none" autoComplete="off"
-                                            value={values.faxAreaCode} onChange={handleChange}
+                                            value={fieldInput.faxAreaCode} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="faxNumber" className="shadow-none" autoComplete="off"
-                                            value={values.faxNumber} onChange={handleChange}
+                                            value={fieldInput.faxNumber} onChange={handleChangeInput}
                                         />
                                     </div>
                                 </div>
@@ -174,19 +174,19 @@ export default class CustomerInfo extends Component {
                                     <div className="country">
                                         <Form.Control type="text" size="sm"
                                             name="mobileCountryCode" className="shadow-none" autoComplete="off"
-                                            value={values.mobileCountryCode} onChange={handleChange}
+                                            value={fieldInput.mobileCountryCode} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="area">
                                         <Form.Control type="text" size="sm"
                                             name="mobileAreaCode" className="shadow-none" autoComplete="off"
-                                            value={values.mobileAreaCode} onChange={handleChange}
+                                            value={fieldInput.mobileAreaCode} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="mobilePhoneNumber" className="shadow-none" autoComplete="off"
-                                            value={values.mobilePhoneNumber} onChange={handleChange}
+                                            value={fieldInput.mobilePhoneNumber} onChange={handleChangeInput}
                                         />
                                     </div>
                                 </div>
@@ -203,13 +203,13 @@ export default class CustomerInfo extends Component {
                                     <div className="pic-name">
                                         <Form.Control type="text" size="sm"
                                             name="name1" className="shadow-none" autoComplete="off"
-                                            value={values.name1} onChange={handleChange}
+                                            value={fieldInput.name1} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="phone1" className="shadow-none" autoComplete="off"
-                                            value={values.phone1} onChange={handleChange}
+                                            value={fieldInput.phone1} onChange={handleChangeInput}
                                         />
                                     </div>
                                 </div>
@@ -226,13 +226,13 @@ export default class CustomerInfo extends Component {
                                     <div className="pic-name">
                                         <Form.Control type="text" size="sm"
                                             name="name2" className="shadow-none" autoComplete="off"
-                                            value={values.name2} onChange={handleChange}
+                                            value={fieldInput.name2} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="phone2" className="shadow-none" autoComplete="off"
-                                            value={values.phone2} onChange={handleChange}
+                                            value={fieldInput.phone2} onChange={handleChangeInput}
                                         />
                                     </div>
                                 </div>
@@ -249,13 +249,13 @@ export default class CustomerInfo extends Component {
                                     <div className="pic-name">
                                         <Form.Control type="text" size="sm"
                                             name="name3" className="shadow-none" autoComplete="off"
-                                            value={values.name3} onChange={handleChange}
+                                            value={fieldInput.name3} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="phone3" className="shadow-none" autoComplete="off"
-                                            value={values.phone3} onChange={handleChange}
+                                            value={fieldInput.phone3} onChange={handleChangeInput}
                                         />
                                     </div>
                                 </div>
@@ -271,13 +271,13 @@ export default class CustomerInfo extends Component {
                                     <div className="pic-name">
                                         <Form.Control type="text" size="sm"
                                             name="name4" className="shadow-none" autoComplete="off"
-                                            value={values.name4} onChange={handleChange}
+                                            value={fieldInput.name4} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="phone4" className="shadow-none" autoComplete="off"
-                                            value={values.phone4} onChange={handleChange}
+                                            value={fieldInput.phone4} onChange={handleChangeInput}
                                         />
                                     </div>
                                 </div>
@@ -290,7 +290,7 @@ export default class CustomerInfo extends Component {
     };
 
     renderPhoneSection = () => {
-        const {  values, handleChange } = this.props;
+        const {  fieldInput, handleChangeInput } = this.props;
         return (
             <div>
                 <Form.Group as={Row}>
@@ -304,19 +304,19 @@ export default class CustomerInfo extends Component {
                                     <div className="country">
                                         <Form.Control type="text" size="sm"
                                             name="countryCode1" className="shadow-none" autoComplete="off"
-                                            value={values.countryCode1} onChange={handleChange}
+                                            value={fieldInput.countryCode1} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="area">
                                         <Form.Control type="text" size="sm"
                                             name="areaCode1" className="shadow-none" autoComplete="off"
-                                            value={values.areaCode1} onChange={handleChange}
+                                            value={fieldInput.areaCode1} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="phoneNumber1" className="shadow-none" autoComplete="off"
-                                            value={values.phoneNumber1} onChange={handleChange}
+                                            value={fieldInput.phoneNumber1} onChange={handleChangeInput}
                                         />
                                     </div>
                                 </div>
@@ -332,20 +332,20 @@ export default class CustomerInfo extends Component {
                                 <div className="phone-container">
                                     <div className="country">
                                         <Form.Control type="text" size="sm"
-                                            value={values.countryCode2} onChange={handleChange}
+                                            value={fieldInput.countryCode2} onChange={handleChangeInput}
                                             name="countryCode2" className="shadow-none" autoComplete="off"
                                         />
                                     </div>
                                     <div className="area">
                                         <Form.Control type="text" size="sm"
                                             name="areaCode2" className="shadow-none" autoComplete="off"
-                                            value={values.areaCode2} onChange={handleChange}
+                                            value={fieldInput.areaCode2} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="phoneNumber2" className="shadow-none" autoComplete="off"
-                                            value={values.phoneNumber2} onChange={handleChange}/>
+                                            value={fieldInput.phoneNumber2} onChange={handleChangeInput}/>
                                     </div>
                                 </div>
                             </Col>
@@ -360,19 +360,19 @@ export default class CustomerInfo extends Component {
                                     <div className="country">
                                         <Form.Control type="text" size="sm"
                                             name="countryCode3" className="shadow-none" autoComplete="off"
-                                            value={values.countryCode3} onChange={handleChange}
+                                            value={fieldInput.countryCode3} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="area">
                                         <Form.Control type="text" size="sm"
                                             name="areaCode3" className="shadow-none" autoComplete="off"
-                                            value={values.areaCode3} onChange={handleChange}
+                                            value={fieldInput.areaCode3} onChange={handleChangeInput}
                                         />
                                     </div>
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="phoneNumber3" className="shadow-none" autoComplete="off"
-                                            value={values.phoneNumber3} onChange={handleChange}
+                                            value={fieldInput.phoneNumber3} onChange={handleChangeInput}
                                         />
                                     </div>
                                 </div>
@@ -385,8 +385,7 @@ export default class CustomerInfo extends Component {
     };
 
     render() {
-        const { collapse, values, settings,
-            handleChange, setFieldValue
+        const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue
         } = this.props;
 
         return (
@@ -395,7 +394,7 @@ export default class CustomerInfo extends Component {
                     aria-controls="collapse-expand-customerInfo"
                     aria-expanded={!collapse.customerInfo}
                 >
-                    <Form.Label className="customer-name font-weight-bold text-danger">{values.username}</Form.Label>
+                    <Form.Label className="customer-name font-weight-bold text-danger">{fieldInput.username}</Form.Label>
                 </Form.Group>
                 <Collapse in={!collapse.customerInfo}>
                     <div id="collapse-expand-customerInfo" className="panel-content">
@@ -407,7 +406,7 @@ export default class CustomerInfo extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control as="select" size="sm" className="shadow-none"
-                                            id="titleId" name="titleId" value={values.titleId} onChange={handleChange}
+                                            id="titleId" name="titleId" value={fieldInput.titleId} onChange={handleChangeInput}
                                         >
                                             {settings.titles.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
                                         </Form.Control>
@@ -421,7 +420,7 @@ export default class CustomerInfo extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="firstName" id="firstName" value={values.firstName} onChange={handleChange}
+                                            name="firstName" id="firstName" value={fieldInput.firstName} onChange={handleChangeInput}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -433,7 +432,7 @@ export default class CustomerInfo extends Component {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="lastName" id="lastName" value={values.lastName} onChange={handleChange}
+                                            name="lastName" id="lastName" value={fieldInput.lastName} onChange={handleChangeInput}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -464,7 +463,7 @@ export default class CustomerInfo extends Component {
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm"
                                             name="passport" id="passport" className="shadow-none" autoComplete="off"
-                                            value={values.passport} onChange={handleChange}
+                                            value={fieldInput.passport} onChange={handleChangeInput}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -490,7 +489,7 @@ export default class CustomerInfo extends Component {
                                     <Form.Label column sm="4" md="4" htmlFor="refCode2">{LangHelper.getResource('RefCodes')}</Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
-                                            name="refCode2" id="refCode2" value={values.refCode2} onChange={handleChange}
+                                            name="refCode2" id="refCode2" value={fieldInput.refCode2} onChange={handleChangeInput}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -503,7 +502,7 @@ export default class CustomerInfo extends Component {
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm"
                                             name="refCode1" id="refCode1" className="shadow-none" autoComplete="off"
-                                            value={values.refCode1} onChange={handleChange}
+                                            value={fieldInput.refCode1} onChange={handleChangeInput}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -516,7 +515,7 @@ export default class CustomerInfo extends Component {
                                     <Col sm="8" md="8">
                                         <Form.Control as="select" size="sm" className="shadow-none"
                                             id="licenseeTypeId" name="licenseeTypeId"
-                                            value={values.licenseeTypeId} onChange={handleChange}
+                                            value={fieldInput.licenseeTypeId} onChange={handleChangeInput}
                                         >
                                             {settings.licenseeTypes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
                                         </Form.Control>

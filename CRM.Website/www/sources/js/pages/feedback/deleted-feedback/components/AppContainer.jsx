@@ -68,7 +68,6 @@ export class AppContainer extends Component {
                     editFeedbackDialog.show &&
                     <EditFeedback feedbackId={editFeedbackDialog.feedbackId}
                         onClose={this.handleCloseEditFeedbackDialog}
-                        isDeletedFeedbackView
                     />
                 }
             </>

@@ -46,7 +46,7 @@ export class NewInforms extends Component {
         }
 
         return (
-            <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
+            <Modal show className="new-inform-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
                 className="modal-edit"
                 onHide={this.props.onClose}
