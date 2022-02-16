@@ -563,7 +563,7 @@ export default class AppContainer extends Component {
         setSubmitting(true);
         const {fieldInput} = this.state;
         const params = {
-            feedbackId: fieldInput.feedbackId,
+            feedbackId: values.feedbackId,
             custId: fieldInput.custId,
             titleId: fieldInput.titleId,
             firstName: fieldInput.firstName,
