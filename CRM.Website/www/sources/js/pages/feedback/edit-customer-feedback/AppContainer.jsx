@@ -548,8 +548,8 @@ export default class AppContainer extends Component {
         const url = Site.resolveClientUrl('Feedback/EditCustomerFeedback');
         await DataService.postDataAsync(url, params).then(response => {
             const data = response.data;
+            this.setState({ editResult: data });
             if (data.isSuccessful) {
-                this.setState({ editResult: data });
                 setTimeout(() => {
                     this.props.onClose(true);
                 }, 3000);
