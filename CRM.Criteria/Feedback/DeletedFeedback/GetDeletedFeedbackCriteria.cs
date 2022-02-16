@@ -1,5 +1,6 @@
 ﻿namespace CRM.Criteria.Feedback.DeletedFeedback
 {
+    using CRM.Core.Constants;
     using Fanex.Data.Repository;
     using System;
 
@@ -22,6 +23,8 @@
         public int? ResponseId { get; set; }
 
         public bool? IsReviewed { get; set; }
+
+        public short UserRole { get; } = Constants.UserRole;
 
         public override string GetSettingKey()
         {

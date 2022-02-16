@@ -8,20 +8,13 @@
 @import "../../../components/tables";
 @import "../../../components/react-grid/react-grid";
 @import '../../../components/autocomplete';
+@import '../../../components/form-filter';
+@import '../../../components/verify-customer';
+@import '../../../components/select-with-search-site';
+
 
 #app-container {
     width: 1200px;
-}
-
-.fa-exclamation-circle {
-    font-size: 16px; 
-}
-
-.form-filter {
-    border: 1px solid #b7b7b7;
-    margin-bottom: 1rem;
-    padding: 1rem 1rem 0;
-    background-color: #e8e8e8;
 }
 
 strong.link-click {
@@ -33,80 +26,26 @@ strong.link-click {
     }
 }
 
-.rounded-circle {
-    padding-right: 5px;
-}
-
-.feedback-info {
-    padding-left: 17px;
-
-    .info{
-        padding: 3px 0px;
-    }
-}
-
 span.fa.fa-file-excel-o.icon-excel {
     color: #28a745;
     font-size: 14px;
     cursor: pointer;
 }
 
-.panel-group {
-    border: 1px solid #b1b1b1;
-    background-color: #e8e8e8;
-
-    .form-group {
-        margin-bottom: 4px;
+.form-filter {
+    .filter-title{
+        width: 9%;
+    }
+    
+    .row{
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .filter-col{
+        padding-left: 0;
     }
 
-    .panel-title {
-        display: flex;
-        align-items: center;
-        height: 28px;
-        margin: 0;
-        padding: 0 15px;
-        color: #2f70b4;
-        background: linear-gradient(#e7e7e7, #e2e2e2);
-        border-bottom: 1px solid #b1b1b1;
-        cursor: pointer;
-
-        .form-label {
-            margin: 0;
-        }
-    }
-
-    .panel-content {
-        padding: 4px 15px;
-    }
-}
-
-.filter-title{
-    width: 9%;
-}
-
-.row{
-    margin-left: 0;
-    margin-right: 0;
-}
-
-.filter-col{
-    padding-left: 0;
-}
-
-.filter-colDate{
-    padding-left: 0;
-    padding-right: 15px;
-}
-
-.filter-coll-all{
-    padding-left: 0;
-}
-
-.filter-res{
-    padding-left: 0;
-}
-
-@media screen and (min-width : 992px){
     .filter-colDate{
         padding-left: 0;
         padding-right: 74px;
@@ -130,4 +69,96 @@ span.fa.fa-file-excel-o.icon-excel {
         padding-left: 0;
         padding-right: 0;
     }
+}
+
+.edit-feedback-modal-dialog {
+    .modal-dialog {
+        min-width: 1140px;
+
+        .modal-content {
+            .panel-group {
+                border: 1px solid #b1b1b1;
+
+                .form-group {
+                    margin-bottom: 4px;
+
+                    .col-form-label {
+                        padding-right: 0;
+                    }
+
+                    .fa-question-circle-o {
+                        color: #0789d1;
+                        margin-left: 10px;
+                    }
+                }
+
+                .panel-title {
+                    display: flex;
+                    align-items: center;
+                    height: 28px;
+                    margin: 0;
+                    padding: 0 15px;
+                    color: #2f70b4;
+                    background: linear-gradient(#e7e7e7, #e2e2e2);
+                    border-bottom: 1px solid #b1b1b1;
+                    cursor: pointer;
+
+                    .form-label {
+                        margin: 0;
+                    }
+                }
+
+                .panel-content {
+                    padding: 4px 9px;
+
+                    .phone-container {
+                        display: flex;
+
+                        .country {
+                            margin-right: 1%;
+                            width: 22%;
+                        }
+
+                        .area {
+                            margin-right: 1%;
+                            width: 23%;
+                        }
+
+                        .phone {
+                            width: 55%;
+                        }
+                    }
+
+                    .pic-container {
+                        display: flex;
+
+                        .pic-name {
+                            margin-right: 1%;
+                            width: 44%;
+                        }
+
+                        .phone {
+                            width: 55%;
+                        }
+                    }
+
+                    .customersList {
+                        padding: 5px;
+
+                        .txt-customer, .txt-guest, .txt-invalid {
+                            width: auto;
+                            border: 1px solid #8e8e8e;
+                            border-radius: 5px;
+                            padding: 1px 4px;
+                            margin: 0 0.5rem 0.5rem 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.sweet-alert-modal-backdrop {
+    z-index: 1050 !important;
 }

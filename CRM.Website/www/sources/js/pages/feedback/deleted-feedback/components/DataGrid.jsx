@@ -14,10 +14,10 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={40}>{LangHelper.getResource('Feedback')}</HeaderCell>
+                <HeaderCell colWidth={45}>{LangHelper.getResource('Feedback')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Customer')}</HeaderCell>
-                <HeaderCell colWidth={30}>{LangHelper.getResource('Category')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={35}>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={10}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('RelatedCustomer')}</HeaderCell>
             </HeaderRow>
         );
