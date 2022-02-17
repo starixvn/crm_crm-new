@@ -4,6 +4,9 @@ import { AppContainer } from '../AppContainer';
 import Filter from '../Filter';
 import DataGrid from '../DataGrid';
 import EditFeedback from '../../../edit-customer-feedback/AppContainer';
+import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import LangHelper from '@jsroot/common/langHelper';
+import { Button } from 'react-bootstrap';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -49,7 +52,7 @@ describe('AppContainer', () => {
         it('should render correctly', () => {
             // Arrange
             const props = {
-                editFeedbackDialog: { show: true }
+                editFeedbackDialog: { show: true, feedbackId: 1234 }
             };
 
             // Act
@@ -60,6 +63,44 @@ describe('AppContainer', () => {
             expect(container.find(EditFeedback).length).toBe(1);
             expect(container.find(Filter).length).toBe(1);
             expect(container.find(DataGrid).length).toBe(1);
+        });
+
+        it('should pass props correctly in EditFeedback', () => {
+            // Arrange
+            const props = {
+                editFeedbackDialog: { show: true, feedbackId: 1234 }
+            };
+
+            // Act
+            const container = shallow(<AppContainer {...props} />);
+
+            // Assert
+            expect(container.find(EditFeedback).props().feedbackId).toBe(1234);
+        });
+
+        it('SweetModalDialog render correctly', () => {
+            // Arrange
+            const props = {
+                viewRelatedCustomerDialog: { show: true, relatedCustomers: 'Are you sure you want to'}
+            }
+
+            const container = shallow(<AppContainer {...props}/>).instance();
+            container.handleCloseViewRelatedCustomerDialog = jest.fn();
+
+            const expectedContents = <div>Are you sure you want to</div>;
+            const expectedButton = [
+                <Button variant="primary" size="sm" onClick={container.handleCloseViewRelatedCustomerDialog}>
+                    {LangHelper.getResource('Close')}
+                </Button>
+            ];
+
+            // Act
+            const render = shallow(container.render());
+
+            // Assert
+            expect(render.find(SweetModalDialog)).toHaveLength(1);
+            expect(render.find(SweetModalDialog).props().contents).toEqual(expectedContents);
+            expect(render.find(SweetModalDialog).props().buttons).toEqual(expectedButton);
         });
     });
 

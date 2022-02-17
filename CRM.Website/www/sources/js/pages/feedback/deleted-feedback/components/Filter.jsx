@@ -143,6 +143,7 @@ export class Filter extends Component {
                     </Form.Label>
                     <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper filter-colDate">
                         <DatePicker
+                            dropdownMode="select"
                             showMonthDropdown
                             showYearDropdown
                             selected={this.state.fromDate}
@@ -162,6 +163,7 @@ export class Filter extends Component {
                             minDate={new Date(this.minToDate)}
                             maxDate={new Date(this.maxToDate)}
                             showMonthDropdown
+                            dropdownMode="select"
                             showYearDropdown
                             onChange={value => this.handleChangeToDate(value)}
                         />
