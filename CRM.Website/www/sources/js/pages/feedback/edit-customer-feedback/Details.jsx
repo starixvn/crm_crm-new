@@ -121,7 +121,9 @@ class Details extends PureComponent {
         );
     };
     render() {
-        const {values, touched, errors, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions, setFieldValue } = this.props;
+        const {values, touched, errors, extensionOptions,
+            communicationToolOptions, mainCategoryOptions, subCategoryOptions,
+            setFieldValue, onChangeMainCategory } = this.props;
         return (
             <Fragment>
                 <Form.Group as={Row}>

@@ -29,6 +29,7 @@ describe('FeedbackInfo', () => {
             solution: true
         },
         values: {hasRelated: true},
+        fieldInput: {customerNameInput: ''},
         touched: {},
         errors: {},
         settings: {
@@ -70,7 +71,7 @@ describe('FeedbackInfo', () => {
             const feedbackInfo = shallow(<FeedbackInfo {...props} />);
 
             // Assert
-            expect(feedbackInfo.find(Form.Control)).toHaveLength(8);
+            expect(feedbackInfo.find(Form.Control)).toHaveLength(4);
         });
 
         it('onClick call exactly function', () => {

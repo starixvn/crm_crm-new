@@ -25,16 +25,59 @@ describe('CustomerInfo', () => {
             customerInfo: true
         },
         values: {},
+        fieldInput: {
+            username: '',
+            titleId: '',
+            firstName:'',
+            lastName: '',
+            passport: '',
+            refCode1: '',
+            refCode2: '',
+            licenseeTypeId: '',
+            countryCode1: '',
+            areaCode1: '',
+            phoneNumber1: '',
+            countryCode2: '',
+            areaCode2: '',
+            phoneNumber2: '',
+            countryCode3: '',
+            areaCode3: '',
+            phoneNumber3: '',
+            faxCountryCode: '',
+            faxAreaCode: '',
+            faxNumber: '',
+            mobileCountryCode: '',
+            mobileAreaCode: '',
+            mobilePhoneNumber: '',
+            name1: '',
+            phone1: '',
+            name2: '',
+            phone2: '',
+            name3: '',
+            phone3: '',
+            name4: '',
+            phone4: '',
+            skype: '',
+            email: '',
+            telegram: '',
+            weChat: '',
+            whatsApp: '',
+            line: '',
+            letstalk: '',
+            qq: '',
+            zalo: ''
+        },
         settings: {
             titles: [{id: 1, value: 'titles'}],
             licenseeTypes: [{id: 1, name: 'licenseeTypes'}],
             statuses: [{statusId: 1, name: 'statuses'}],
             responses: [{id: 1, value: 'responses'}]
         },
-        handleChange: jest.fn(),
+        handleChangeInput: jest.fn(),
         setFieldValue: jest.fn(),
         onCollapseExpand: jest.fn()
     };
+
 
     describe('Render', () => {
         it('render exactly form', () => {
@@ -50,7 +93,6 @@ describe('CustomerInfo', () => {
         it('onClick call exactly function', () => {
             // Arrange
             const customerInfo = shallow(<CustomerInfo {...props} />);
-
             // Action
             customerInfo.find(Form.Group).at(0).simulate('click');
             // Assert
@@ -60,11 +102,10 @@ describe('CustomerInfo', () => {
         it('handleChange title correctly', () => {
             // Arrange
             const customerInfo = shallow(<CustomerInfo {...props} />);
-
             // Action
             customerInfo.find(Form.Control).at(0).simulate('change');
             // Assert
-            expect(props.handleChange).toHaveBeenCalled();
+            expect(props.handleChangeInput).toHaveBeenCalled();
         });
 
         it('setFieldValue birthday correctly', () => {
