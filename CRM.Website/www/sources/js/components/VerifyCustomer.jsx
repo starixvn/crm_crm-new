@@ -19,12 +19,11 @@ export default class VerifyCustomer extends PureComponent {
     };
 
     sizeColumn = (isCommunicationLog, isSmallWidth) =>{
-        if(isCommunicationLog)
-        {
+        if(isCommunicationLog){
             return 10;
         }
         return isSmallWidth ? 7 : 9;
-    }
+    };
 
     render() {
         const { listOfCustomers, isCommunicationLog, isSmallWidth} = this.props;
