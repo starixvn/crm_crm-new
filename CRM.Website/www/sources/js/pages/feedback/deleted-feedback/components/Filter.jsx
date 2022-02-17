@@ -38,7 +38,7 @@ export class Filter extends Component {
                 responseId: this.props.settings.customerResponses[0].id
             });
         }
-    }
+    };
 
     handleChangeFromDate = fromDate => {
         const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
