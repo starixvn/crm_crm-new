@@ -35,7 +35,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('Feedback')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('Customer')}</HeaderCell>
-                <HeaderCell colWidth={40}>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={45}>{LangHelper.getResource('Category')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('RelatedCustomer')}</HeaderCell>
             </HeaderRow>
@@ -171,7 +171,7 @@ export class DataGrid extends Component {
                 <Cell>{item.username}</Cell>
                 <Cell>{this.renderCategory(item)}</Cell>
                 <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
-                <Cell>{this.renderRelatedCustomer(item.relatedCustomer.split(','))}</Cell>
+                <Cell className='break-word'>{this.renderRelatedCustomer(item.relatedCustomer.split(','))}</Cell>
             </Row>
         );
     };
