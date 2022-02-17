@@ -564,7 +564,7 @@ export default class AppContainer extends Component {
         const {fieldInput} = this.state;
         const params = {
             feedbackId: values.feedbackId,
-            custId: fieldInput.custId,
+            custId: values.custId,
             titleId: fieldInput.titleId,
             firstName: fieldInput.firstName,
             lastName: fieldInput.lastName,
