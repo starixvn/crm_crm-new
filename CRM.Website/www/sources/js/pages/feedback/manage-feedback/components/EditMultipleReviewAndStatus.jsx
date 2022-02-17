@@ -114,32 +114,32 @@ export default class EditMultipleReviewAndStatus extends Component {
                                     >
                                         {
                                             this.props.statuses.map(item =>
-                                                <option key={item.statusId} value={item.statusId}>
+                                                (<option key={item.statusId} value={item.statusId}>
                                                     {item.name}
-                                                </option>
+                                                </option>)
                                             )
                                         }
 
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
-                            <Form.Group as={Row} className='title'>
-                                <Form.Label className="mr-2" column sm="1" md="1">{LangHelper.getResource('Reviewed')}</Form.Label>
-                                <input type='checkbox' className='cursor-pointer'
-                                    checked={isReviewed}
-                                    onChange={this.handleChangeCheckBox}
-                                />
-                                {logInfo.isReviewed && <Form.Label column sm="5" md="5">{`(Reviewed by ${logInfo.reviewer} on ${dateFormat})`}</Form.Label>}
-                            </Form.Group>
-                            {
-                                isReviewed && <div className="text-editor">
-                                    <CkEditor isInvalid={touched.review && errors.review}
-                                        data={values.review}
-                                        onChange={value => setFieldValue('review', value)}
-                                    />
-                                </div>
-                            }
                         </div>
+                        <Form.Group as={Row} className='title'>
+                            <Form.Label className="mr-2" column sm="1" md="1">{LangHelper.getResource('Reviewed')}</Form.Label>
+                            <input type='checkbox' className='cursor-pointer'
+                                checked={isReviewed}
+                                onChange={this.handleChangeCheckBox}
+                            />
+                            {logInfo.isReviewed && <Form.Label column sm="5" md="5">{`(Reviewed by ${logInfo.reviewer} on ${dateFormat})`}</Form.Label>}
+                        </Form.Group>
+                        {
+                            isReviewed && <div className="text-editor">
+                                <CkEditor isInvalid={touched.review && errors.review}
+                                    data={values.review}
+                                    onChange={value => setFieldValue('review', value)}
+                                />
+                            </div>
+                        }
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
