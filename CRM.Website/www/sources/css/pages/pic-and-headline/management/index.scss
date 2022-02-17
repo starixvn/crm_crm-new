@@ -85,6 +85,9 @@ body {
 .modal-dialog {
     max-width: 600px;
 }
+.form-filter .role-width{
+    width: 210px !important;
+}
 .form-filter .form-row .form-group {
     &.field-name {
         width: 220px;

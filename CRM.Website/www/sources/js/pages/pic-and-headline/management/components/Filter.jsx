@@ -117,7 +117,7 @@ export class Filter extends PureComponent {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label htmlFor="roleIds">{LangHelper.getResource('Role')}</Form.Label>
-                        <div className='form-control-wrapper'>
+                        <div className='form-control-wrapper role-width'>
                             <MultipleSelect
                                 id="roleIds"
                                 name="roleIds"
