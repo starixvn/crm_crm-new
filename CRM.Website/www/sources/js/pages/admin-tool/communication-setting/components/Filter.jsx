@@ -181,6 +181,7 @@ export class Filter extends Component {
                             <MultipleSelect
                                 dataSource={this.state.mainCategoryOptionsFilter}
                                 keyField='mainCategoryID'
+                                maxDisplayItemCount={1}
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 valueField='name'
                                 hasAllOption={this.state.mainCategoryOptionsFilter.length > 0}
@@ -198,6 +199,7 @@ export class Filter extends Component {
                                 dataSource={this.state.subCategoryOptionsFilter}
                                 keyField='subCategoryId'
                                 valueField='name'
+                                maxDisplayItemCount={1}
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 hasAllOption={this.state.subCategoryOptionsFilter.length > 0}
                                 isAllTextShown={this.state.subCategoryOptionsFilter.length > 0}

@@ -220,6 +220,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 textOptions={{ ...MULTI_SELECT_TEXT_OPTIONS, Texts: 'Any' }}
                                 isAllTextShown={this.state.mainCategoryOptionsNew.length > 0}
                                 hasSearchBox
+                                maxDisplayItemCount={1}
                                 onChange={(currentItem, selectedItemsKey) => {
                                     this.mainCategoriesChangeNew(currentItem, selectedItemsKey, setFieldValue);
                                 }}
@@ -241,6 +242,7 @@ export class NewCommunitionSetting extends PureComponent {
                                 hasAllOption={this.state.subCategoryOptionsNew.length > 0}
                                 hasSearchBox
                                 isDisable={this.state.subCategoryOptionsNew.length === 0}
+                                maxDisplayItemCount={1}
                                 onChange={(currentItem, selectedItemsKey) => {
                                     handleChange('subCategoryTypesNew')(selectedItemsKey);
                                     this.setState({
