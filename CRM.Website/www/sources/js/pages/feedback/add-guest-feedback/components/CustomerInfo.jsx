@@ -295,6 +295,9 @@ export class CustomerInfo extends Component {
                             </Form.Label>
                             <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
                                 <DatePicker
+                                    dropdownMode="select"
+                                    showMonthDropdown
+                                    showYearDropdown
                                     selected={values.birthday}
                                     maxDate={maxDate}
                                     onChange={value => setFieldValue('birthday', value)}

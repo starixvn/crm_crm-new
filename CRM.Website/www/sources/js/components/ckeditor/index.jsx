@@ -22,15 +22,15 @@ export default class CkEditor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            data: this.props.data
+            data: ''
         };
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.data !== this.props.data) {
-            this.setState({ data: this.props.data });
-        }
-    }
+    // componentDidUpdate(prevProps) {
+    //     if (prevProps.data !== this.props.data) {
+    //         this.setState({ data: this.props.data });
+    //     }
+    // }
 
     onEditorChange = event => {
         const data = event.editor.getData();
@@ -77,7 +77,7 @@ export default class CkEditor extends PureComponent {
             <div className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor
                     {...rest}
-                    initData={this.state.data}
+                    initData={this.props.data}
                     onChange={this.onEditorChange}
                     config={{
                         removeButtons: '',

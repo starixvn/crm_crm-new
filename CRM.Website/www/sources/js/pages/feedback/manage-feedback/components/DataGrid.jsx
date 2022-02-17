@@ -37,7 +37,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={25}>{LangHelper.getResource('Customer')}</HeaderCell>
                 <HeaderCell colWidth={45}>{LangHelper.getResource('Category')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('RelatedCustomer')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('RelatedCustomer')}</HeaderCell>
             </HeaderRow>
         );
     };

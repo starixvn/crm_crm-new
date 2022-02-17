@@ -9,128 +9,137 @@
 @import '../../../components/ckeditor';
 @import '../../../components/autocomplete';
 
-.panel-group {
-    padding: 0px 15px;
-    border-style: solid;
-    border-color: rgb(177, 177, 177);
-    border-image: initial;
-    border-width: 1px;
-
-    .hideCustomerDetail, .hideDetails{
-        display: none
-    }
-
-    .form-group {
-        margin-bottom: 2px !important;
-    }
-
-    .title{
-        line-height: 18px;
-        border-bottom: 1px solid rgb(177, 177, 177);
-        padding-top: 4px;
-        color: rgb(47, 112, 180);
-        font-size: 13px;
-        background: linear-gradient(rgb(231, 231, 231), rgb(226, 226, 226));
-
-        Label{
+#app-container {
+    min-width: 1500px;
+    .panel-group {
+        padding: 0px 15px;
+        border-style: solid;
+        border-color: rgb(177, 177, 177);
+        border-image: initial;
+        border-width: 1px;
+    
+        .hideCustomerDetail, .hideDetails{
+            display: none
+        }
+    
+        .form-group {
+            margin-bottom: 0 !important;
+        }
+    
+        .title{
+            line-height: 18px;
+            border-bottom: 1px solid rgb(177, 177, 177);
+            padding-top: 4px;
+            color: rgb(47, 112, 180);
+            font-size: 13px;
+            background: linear-gradient(rgb(231, 231, 231), rgb(226, 226, 226));
+    
+            Label{
+                cursor: pointer;
+            }
+        }
+    
+        .separate {
+            hr {
+                border-top-color: #b1b1b1;
+                height: 1px;
+                margin: 6px -15px;
+            }
+        }
+    
+        .code-country {
+            margin-right: 1%;
+            width: 19%;
+        }
+    
+        .code-area {
+            margin-right: 1%;
+            padding: 0 1px;
+            width: 20%;
+        }
+        
+        .phone {
+            padding: 0 1px;
+            width: 59%;
+        }
+    
+        .picName {
+            margin-right: 1%;
+            width: 40%;
+        }
+    
+        #check-box-verify{
             cursor: pointer;
         }
-    }
-
-    .separate {
-        hr {
-            border-top-color: #b1b1b1;
-            height: 1px;
-            margin: 6px -15px;
+    
+        .form-check-label {
+            padding-left: 10px;
+            cursor: pointer;
         }
-    }
-
-    .code-country {
-        margin-right: 1%;
-        padding: 0 2px;
-        width: 19%;
-    }
-
-    .code-area {
-        margin-right: 1%;
-        padding: 0 1px;
-        width: 20%;
+    
+        .edit_block{
+            margin-right: -15px;
+            margin-left: -15px;
+    
+            span, div{
+                color: #252525;
+                cursor: pointer;
+            }
+        }
     }
     
-    .phone {
-        padding: 0 1px;
-        width: 59%;
+    
+    .fa-question-circle-o {
+        font-size: 20px;
+        color: #0789d1;
+        position: absolute;
+        right: 0;
+        top: 3px
     }
-
-    .picName {
-        margin-right: 1%;
-        padding: 0 2px;
-        width: 40%;
+    
+    .sweet-alert-modal-backdrop {
+        z-index: 1050 !important;
     }
-
-    #check-box-verify{
-        cursor: pointer;
+    
+    .col-subject-width {
+        width: 10.7666666% !important;
+        margin-left: 15px;
+        margin-right: -9px;
     }
-
-    .form-check-label {
-        padding-left: 10px;
-        cursor: pointer;
+    
+    .subject-auto-complete-container {
+        width: 89.233333% !important;
     }
-
-    .edit_block{
-        margin-right: -15px;
-        margin-left: -15px;
-
-        span, div{
-            color: #252525;
-            cursor: pointer;
+    
+    .ref-ticket-input {
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
         }
     }
 }
-
 
 #tooltip-customers [class$="inner"] {
     min-width: 300px;
     text-align: left;
 }
 
+.bs-tooltip-bottom{
+    transform: translate(467px, 549px) !important;
+}
+
+#tooltip-ref-ticket{
+    transform: translate(207px, 584px) !important;
+}
+
 #tooltip-ref-ticket [class$="inner"] {
     white-space: pre-wrap;
-    min-width: 500px;
+    max-width: 400px;
     text-align: left;
-}
-
-.fa-question-circle-o {
-    font-size: 20px;
-    color: #0789d1;
-    position: absolute;
-    right: 0;
-    top: 3px
-}
-
-.sweet-alert-modal-backdrop {
-    z-index: 1050 !important;
-}
-
-.col-subject-width {
-    width: 10.7666666% !important;
-    margin-left: 15px;
-    margin-right: -9px;
-}
-
-.subject-auto-complete-container {
-    width: 89.233333% !important;
-}
-
-.ref-ticket-input {
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    /* Firefox */
-    input[type=number] {
-        -moz-appearance: textfield;
-    }
 }
 
