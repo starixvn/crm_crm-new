@@ -292,6 +292,7 @@ export class CreateForm extends Component {
                 }
                 setFieldValue('description', descriptionText);
             }
+
             this.setState(prevState =>({
                 countClickRefTicket: prevState.countClickRefTicket.sec + 1
             }));
@@ -357,199 +358,195 @@ export class CreateForm extends Component {
         const collapse = this.state.collapse;
         const { statuses, languages, responses, countries, extensions } = this.props.settings;
         return (
-            <div className='panel-group border-bottom-0'>
-                <Form.Group as={Row} className="title"
-                    onClick={() => this.handleCollapseExpend('isShowDetailsOption')}
-                    aria-controls="collapse-expand-identity"
-                    aria-expanded={!collapse.isShowDetailsOption}
-                >
-                    <Form.Label column sm="2" md="2" className="required">
-                        {LangHelper.getResource('Details')}
-                    </Form.Label>
-                </Form.Group>
+            <div>
+                <div className={`panel-group ${!this.state.collapse.isShowDetailsOption ? 'border-bottom-0' : ''}`}>
+                    <Form.Group as={Row} className="title border-bottom-0"
+                        onClick={() => this.handleCollapseExpend('isShowDetailsOption')}
+                        aria-controls="collapse-expand-identity"
+                        aria-expanded={!collapse.isShowDetailsOption}
+                    >
+                        <Form.Label column sm="2" md="2" className="required">
+                            {LangHelper.getResource('Details')}
+                        </Form.Label>
+                    </Form.Group>
+                </div>
                 <Collapse in={!this.state.collapse.isShowDetailsOption}>
-                    <div id="collapse-expand-show-detail">
-                        <Form.Group as={Row} className="pt-2">
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="feedbackDate">{LangHelper.getResource('FeedbackDate')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
-                                        <DatePicker
-                                            dropdownMode="select"
-                                            showMonthDropdown
-                                            showYearDropdown
-                                            isInvalid={touched.feedbackDate && errors.feedbackDate}
-                                            selected={values.feedbackDate}
-                                            timeInputLabel="Time:"
-                                            dateFormat="MMM dd, yyyy hh:mm aa"
-                                            showTimeInput
-                                            onChange={value => this.handleChangeFeedbackTime(setFieldValue, value, values.resolutionTime)}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="resolutionTime">{LangHelper.getResource('ResolutionTime')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
-                                        <DatePicker
-                                            selected={values.resolutionTime}
-                                            timeInputLabel="Time:"
-                                            dateFormat="MMM dd, yyyy hh:mm aa"
-                                            dropdownMode="select"
-                                            showMonthDropdown
-                                            showYearDropdown
-                                            showTimeInput
-                                            onChange={value => this.handleChangeResolutionTime(setFieldValue, values.feedbackDate, value)}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="extension">
-                                        {LangHelper.getResource('Station')}
-                                    </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <MultipleSelect
-                                            isInvalid={touched.extension && errors.extension}
-                                            dataSource={extensions} hasSearchBox isNAOption
-                                            keyField='id' valueField='value' isAllTextShown
-                                            onChange={(currentItem, selectedItemsKey) => {
-                                                setFieldValue('extension', selectedItemsKey);
-                                            }}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
-                        {this.renderDetailDropdown(values, errors, touched, handleChange, setFieldValue)}
-                        <Form.Group as={Row}>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="statusId">{LangHelper.getResource('Status')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control as="select" size="sm" className="shadow-none"
-                                            name="statusId" id="statusId"
-                                            value={values.statusId}
-                                            onChange={handleChange}
+                    <div>
+                        <div className='panel-group border-bottom-0' id="collapse-expand-show-detail">
+                            <Form.Group as={Row} className="pt-2">
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="feedbackDate">{LangHelper.getResource('FeedbackDate')}
+                                        </Form.Label>
+                                        <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
+                                            <DatePicker
+                                                dropdownMode="select" showMonthDropdown
+                                                showYearDropdown showTimeInput
+                                                isInvalid={touched.feedbackDate && errors.feedbackDate}
+                                                selected={values.feedbackDate}
+                                                timeInputLabel="Time:" dateFormat="MMM dd, yyyy hh:mm aa"
+                                                onChange={value => this.handleChangeFeedbackTime(setFieldValue, value, values.resolutionTime)}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="resolutionTime">{LangHelper.getResource('ResolutionTime')}
+                                        </Form.Label>
+                                        <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
+                                            <DatePicker
+                                                selected={values.resolutionTime} timeInputLabel="Time:"
+                                                dateFormat="MMM dd, yyyy hh:mm aa"
+                                                dropdownMode="select" showMonthDropdown
+                                                showYearDropdown showTimeInput
+                                                onChange={value => this.handleChangeResolutionTime(setFieldValue, values.feedbackDate, value)}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="extension">
+                                            {LangHelper.getResource('Station')}
+                                        </Form.Label>
+                                        <Col sm="8" md="8">
+                                            <MultipleSelect
+                                                isInvalid={touched.extension && errors.extension}
+                                                dataSource={extensions} hasSearchBox isNAOption
+                                                keyField='id' valueField='value' isAllTextShown
+                                                onChange={(currentItem, selectedItemsKey) => {
+                                                    setFieldValue('extension', selectedItemsKey);
+                                                }}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                            </Form.Group>
+                            {this.renderDetailDropdown(values, errors, touched, handleChange, setFieldValue)}
+                            <Form.Group as={Row}>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="statusId">{LangHelper.getResource('Status')}</Form.Label>
+                                        <Col sm="8" md="8">
+                                            <Form.Control as="select" size="sm" className="shadow-none"
+                                                name="statusId" id="statusId" value={values.statusId}
+                                                onChange={handleChange}
+                                            >
+                                                <option value="" hidden disabled />
+                                                {statuses.map(item => this.renderOptions(item.name, item.statusId))}
+                                            </Form.Control>
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="languageId" className="required">{LangHelper.getResource('Language')}
+                                        </Form.Label>
+                                        <Col sm="8" md="8">
+                                            <Form.Control as="select" size="sm" className="shadow-none"
+                                                name="languageId" id="languageId" value={values.languageId}
+                                                onChange={handleChange} isInvalid={touched.languageId && errors.languageId}
+                                            >
+                                                <option value="" hidden disabled />
+                                                {languages.map(item => this.renderOptions(item.name, item.languageId))}
+                                            </Form.Control>
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="responseId">{LangHelper.getResource('Response')}</Form.Label>
+                                        <Col sm="8" md="8">
+                                            <Form.Control as="select" size="sm" className="shadow-none"
+                                                name="responseId" id="responseId" value={values.responseId} onChange={handleChange}
+                                            >
+                                                <option value="" hidden disabled />
+                                                {responses.map(item => this.renderOptions(item.value, item.id))}
+                                            </Form.Control>
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row}>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="country">{LangHelper.getResource('Country')}</Form.Label>
+                                        <Col sm="8" md="8">
+                                            <Form.Control as="select" size="sm" className="shadow-none"
+                                                name="country" id="country" value={values.country} onChange={handleChange}
+                                            >
+                                                <option value="" hidden disabled />
+                                                {countries.map(item => this.renderOptions(item.name, item.id))}
+                                            </Form.Control>
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Form.Label column sm="4" md="4" htmlFor="noOfInquiries">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
+                                        <Col sm="8" md="8">
+                                            <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries"
+                                                min={1} max={3200} value={values.noOfInquiries}
+                                                onInput={validateNoOfInquiry} onChange={handleChange}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="pt-1 pb-2">
+                                <Col sm="2" md="2">
+                                    <Form.Check type="checkbox" id="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
+                                        htmlFor="check-box-verify" checked={this.state.collapse.isVerifyCustomer}
+                                        onChange={() => this.handleCollapseExpend('isVerifyCustomer')}
+                                    />
+                                </Col>
+                                <Col sm="1" md="1">
+                                    <Form.Label>
+                                        <OverlayTrigger placement="bottom-start" overlay={
+                                            <Tooltip id="tooltip-customers">{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
                                         >
-                                            <option value="" hidden disabled />
-                                            {statuses.map(item => this.renderOptions(item.name, item.statusId))}
-                                        </Form.Control>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="languageId" className="required">{LangHelper.getResource('Language')}
+                                            <span className="fa fa-question-circle-o" />
+                                        </OverlayTrigger>
                                     </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control as="select" size="sm" className="shadow-none"
-                                            name="languageId" id="languageId" value={values.languageId}
-                                            onChange={handleChange} isInvalid={touched.languageId && errors.languageId}
-                                        >
-                                            <option value="" hidden disabled />
-                                            {languages.map(item => this.renderOptions(item.name, item.languageId))}
-                                        </Form.Control>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="responseId">{LangHelper.getResource('Response')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control as="select" size="sm" className="shadow-none"
-                                            name="responseId" id="responseId" value={values.responseId} onChange={handleChange}
-                                        >
-                                            <option value="" hidden disabled />
-                                            {responses.map(item => this.renderOptions(item.value, item.id))}
-                                        </Form.Control>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="country">{LangHelper.getResource('Country')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control as="select" size="sm" className="shadow-none"
-                                            name="country" id="country" value={values.country} onChange={handleChange}
-                                        >
-                                            <option value="" hidden disabled />
-                                            {countries.map(item => this.renderOptions(item.name, item.id))}
-                                        </Form.Control>
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="noOfInquiries">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries"
-                                            min={1} max={3200} value={values.noOfInquiries}
-                                            onInput={validateNoOfInquiry} onChange={handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className="pt-1 pb-2">
-                            <Col sm="2" md="2">
-                                <Form.Check type="checkbox" id="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
-                                    htmlFor="check-box-verify" checked={this.state.collapse.isVerifyCustomer}
-                                    onChange={() => this.handleCollapseExpend('isVerifyCustomer')}
-                                />
-                            </Col>
-                            <Col sm="1" md="1">
-                                <Form.Label>
-                                    <OverlayTrigger placement="bottom-start" overlay={
-                                        <Tooltip id="tooltip-customers">{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
-                                    >
-                                        <span className="fa fa-question-circle-o" />
-                                    </OverlayTrigger>
+                                </Col>
+                                <Col sm="9" md="9">
+                                    <Row>
+                                        <Col sm="10" md="10">
+                                            <Form.Control type="text" size="sm" value={values.customerNameInput}
+                                                name="customerNameInput" className="shadow-none" autoComplete="off"
+                                                onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
+                                                onChange={handleChange}
+                                            />
+                                        </Col>
+                                        <Col sm="2" md="2">
+                                            <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
+                                                disabled={!this.state.collapse.isVerifyCustomer}
+                                                size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
+                                            >
+                                                {LangHelper.getResource('Verify')}
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Form.Group>
+                            <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomerVerify} />
+                            {this.renderRefTicket(values, setFieldValue)}
+                            <Form.Group as={Row} className="pt-1 pb-2">
+                                <Form.Label className="required col-subject-width form-label col-form-label">
+                                    {LangHelper.getResource('Subject')}
                                 </Form.Label>
-                            </Col>
-                            <Col sm="9" md="9">
-                                <Row>
-                                    <Col sm="10" md="10">
-                                        <Form.Control type="text" size="sm" value={values.customerNameInput}
-                                            name="customerNameInput" className="shadow-none" autoComplete="off"
-                                            onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
-                                            onChange={handleChange}
-                                        />
-                                    </Col>
-                                    <Col sm="2" md="2">
-                                        <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
-                                            disabled={!this.state.collapse.isVerifyCustomer}
-                                            size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
-                                        >
-                                            {LangHelper.getResource('Verify')}
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Form.Group>
-                        <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomerVerify} />
-                        {this.renderRefTicket(values, setFieldValue)}
-                        <Form.Group as={Row} className="pt-1 pb-2">
-                            <Form.Label className="required col-subject-width form-label col-form-label">
-                                {LangHelper.getResource('Subject')}
-                            </Form.Label>
-                            <Col className="subject-auto-complete-container">
-                                <AutoComplete
-                                    options={this.props.feedbackSubjectTemplates} displayField="subject"
-                                    value={values.subject}
-                                    onChange={value => setFieldValue('subject', value)} isInvalid={touched.subject && errors.subject}
-                                    onInputChange={searchText => {
-                                        this.handleGetFeedbackSubjectTemplates(searchText);
-                                    }}
-                                />
-                            </Col>
-                        </Form.Group>
+                                <Col className="subject-auto-complete-container">
+                                    <AutoComplete
+                                        options={this.props.feedbackSubjectTemplates} displayField="subject" value={values.subject}
+                                        onChange={value => setFieldValue('subject', value)} isInvalid={touched.subject && errors.subject}
+                                        onInputChange={searchText => {
+                                            this.handleGetFeedbackSubjectTemplates(searchText);
+                                        }}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </div>
                         {
                             this.renderDescriptionsAndSolution(values, errors, touched, handleChange, setFieldValue)
                         }
@@ -741,7 +738,7 @@ export class CreateForm extends Component {
     renderEditBlockDescription = (values, errors, touched, handleChange, setFieldValue) => {
         return (
             <div>
-                <div className="panel-group border-bottom-0">
+                <div className='panel-group border-bottom-0'>
                     <Form.Group as={Row} className="title">
                         <Form.Label column sm="2" md="2">{LangHelper.getResource('AutoGenerated')}</Form.Label>
                     </Form.Group>
@@ -753,7 +750,7 @@ export class CreateForm extends Component {
                         </div>
                     </Form.Group>
                 </div>
-                <div className="panel-group border-bottom-0">
+                <div className={`panel-group ${this.state.collapse.description ? 'border-bottom-0' : ''}`}>
                     <div className="title edit_block" onClick={() => this.handleCollapseExpend('description')}
                         aria-controls="collapse-expand-remark"
                         aria-expanded={!this.state.collapse.description}
@@ -768,6 +765,7 @@ export class CreateForm extends Component {
                         <div id="collapse-expand-remark" className="pt-1 pb-1">
                             {
                                 <CkEditor
+                                    name='description'
                                     isInvalid={touched.description && errors.description}
                                     data={values.description}
                                     username={window.currentUsername}
@@ -783,7 +781,7 @@ export class CreateForm extends Component {
 
     renderPreviewDescription = values => {
         return (
-            <div className="panel-group border-bottom-0">
+            <div className={`panel-group ${!this.state.collapse.description ? 'border-bottom-0' : ''}`}>
                 <div className="title edit_block" onClick={() => this.handleCollapseExpend('description')}
                     aria-controls="collapse-expand-remark"
                     aria-expanded={!this.state.collapse.description}
@@ -812,7 +810,7 @@ export class CreateForm extends Component {
                         ? this.renderEditBlockDescription(values, errors, touched, handleChange, setFieldValue)
                         : this.renderPreviewDescription(values)
                 }
-                <div className="panel-group border-bottom-0">
+                <div className={`panel-group ${this.state.collapse.solution ? 'border-bottom-0' : ''}`}>
                     <div className="title edit_block" onClick={() => this.handleCollapseExpend('solution')}
                         aria-controls="collapse-expand-remark"
                         aria-expanded={!this.state.collapse.solution}
@@ -840,6 +838,7 @@ export class CreateForm extends Component {
                                 :
                                 <div id="collapse-expand-solution" className="pt-1 pb-1">
                                     <CkEditor
+                                        name='solution'
                                         isInvalid={touched.solution && errors.solution}
                                         data={values.solution} username={window.currentUsername}
                                         onChange={value => setFieldValue('solution', value)}

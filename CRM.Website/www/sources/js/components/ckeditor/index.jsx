@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { CKEditor } from 'ckeditor4-react';
+import {CKEditor} from 'ckeditor4-react';
 import moment from 'moment';
 import { TOOLBAR, EXTRA_TOOLBAR, REMOVE_PLUGINS, EDIT_BLOCK_TEMPLATE } from './constants';
 import LangHelper from '@jsroot/common/langHelper';
@@ -21,28 +21,26 @@ export default class CkEditor extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {
-            data: ''
-        };
     }
 
-    // componentDidUpdate(prevProps) {
-    //     if (prevProps.data !== this.props.data) {
-    //         this.setState({ data: this.props.data });
-    //     }
-    // }
+    componentDidUpdate(prevProps) {
+        if (prevProps.data !== this.props.data && !this.editor.editor.focusManager.hasFocus) {
+            this.editor.editor.setData(this.props.data);
+        }
+    }
 
     onEditorChange = event => {
-        const data = event.editor.getData();
-        this.setState({ data });
-        this.props.onChange(data);
+        if(this.editor.editor.focusManager.hasFocus){
+            const data = event.editor.getData();
+            this.props.onChange(data);
+        }
     };
 
     onLoadPlugin = CKEDITOR => {
         let editText = '';
         let textTemplateEditBlock = EDIT_BLOCK_TEMPLATE;
-        const { username, colorEditBlock } = this.props;
-        if (this.state.data === '') {
+        const { username, colorEditBlock, data } = this.props;
+        if (data === '') {
             editText = '&nbsp;';
         }
 
@@ -71,8 +69,10 @@ export default class CkEditor extends PureComponent {
         });
     };
 
+
     render() {
         const { className, isInvalid, ...rest } = this.props;
+        console.log(this.props.data);
         return (
             <div className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor
@@ -88,6 +88,7 @@ export default class CkEditor extends PureComponent {
                         removePlugins: REMOVE_PLUGINS,
                         language: 'en'
                     }}
+                    onLoaded={editor => this.editor = editor}
                     onNamespaceLoaded={this.onLoadPlugin}
                 />
             </div>
