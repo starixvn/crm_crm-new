@@ -630,7 +630,7 @@ export class CreateForm extends Component {
                                     hasAllOption={mainCategories.length > 0}
                                     isAllTextShown={mainCategories.length > 0}
                                     hasSearchBox
-                                    isNAOption
+                                    isNAOption maxDisplayItemCount={1}
                                     isInvalid={touched.category && errors.category}
                                     dataSource={mainCategories}
                                     keyField='mainCategoryID'
@@ -652,7 +652,7 @@ export class CreateForm extends Component {
                                     hasAllOption={subCategoriesOptions.length > 0}
                                     isAllTextShown={subCategoriesOptions.length > 0}
                                     hasSearchBox
-                                    isNAOption
+                                    isNAOption maxDisplayItemCount={1}
                                     isInvalid={touched.subCategory && errors.subCategory}
                                     dataSource={subCategoriesOptions}
                                     keyField='subCategoryId'
@@ -676,7 +676,7 @@ export class CreateForm extends Component {
                                     isAllTextShown={products.length > 0}
                                     isInvalid={touched.product && errors.product}
                                     dataSource={products}
-                                    keyField='id'
+                                    keyField='id' maxDisplayItemCount={2}
                                     onChange={(currentItem, selectedItemsKey) => {
                                         this.productHandleChange(currentItem, selectedItemsKey, setFieldValue, values.subProduct);
                                     }}
@@ -697,7 +697,7 @@ export class CreateForm extends Component {
                                     valueField='value'
                                     isInvalid={touched.subProduct && errors.subProduct}
                                     dataSource={subProductOptions}
-                                    isNAOption
+                                    isNAOption maxDisplayItemCount={3}
                                     hasAllOption={subProductOptions.length > 0}
                                     isAllTextShown={subProductOptions.length > 0}
                                     hasSearchBox
@@ -721,7 +721,7 @@ export class CreateForm extends Component {
                                     isNAOption
                                     isInvalid={touched.betType && errors.betType}
                                     dataSource={betTypeOptions}
-                                    keyField='id'
+                                    keyField='id' maxDisplayItemCount={2}
                                     valueField='value'
                                     onChange={(currentItem, selectedItemsKey) => {
                                         setFieldValue('betType', selectedItemsKey);
@@ -750,7 +750,7 @@ export class CreateForm extends Component {
                         </div>
                     </Form.Group>
                 </div>
-                <div className={`panel-group ${this.state.collapse.description ? 'border-bottom-0' : ''}`}>
+                <div className={`panel-group ${!this.state.collapse.description ? 'border-bottom-0' : ''}`}>
                     <div className="title edit_block" onClick={() => this.handleCollapseExpend('description')}
                         aria-controls="collapse-expand-remark"
                         aria-expanded={!this.state.collapse.description}
