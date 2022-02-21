@@ -55,4 +55,8 @@ export default class DateTimeService {
     static toStartTimePrefix(date) {
         return moment(date).format(StartTimeRemarkPrefix);
     }
+    
+    static toDiffDays(date1, date2){
+        return moment(date1).diff(moment(date2), 'days');
+    }
 }

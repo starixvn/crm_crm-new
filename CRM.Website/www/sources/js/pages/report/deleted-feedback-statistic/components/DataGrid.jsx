@@ -12,7 +12,7 @@ export class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isCollapse: false
+            toggleHandler: []
         };
     }
 
@@ -21,7 +21,7 @@ export class DataGrid extends Component {
             <HeaderRow>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Date')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Handler')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('DeletedBy')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('DeletedBy')}</HeaderCell>
                 <HeaderCell colWidth={35}>{LangHelper.getResource('Feedback')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Category')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Customer')}</HeaderCell>
@@ -98,31 +98,38 @@ export class DataGrid extends Component {
         this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
     };
 
-    handleCollapseExpend = () => {
-        this.setState(prevState => ({
-            isCollapse: !prevState.isCollapse
-        }));
+    handleCollapseExpend = (event, handler) => {
+        event.preventDefault();
+        const toggleHandler = this.state.toggleHandler;
+        const index = toggleHandler.indexOf(handler);
+        if (index >= 0) {
+            toggleHandler.splice(index, 1);
+        } else {
+            toggleHandler.push(handler);
+        }
+
+        this.setState({ toggleHandler });
     };
 
     renderCollapseRow = (item, index) => {
         const rows = [];
         rows.push(
             <Row key={`parent ${index}`} className='parent-level-0'>
-                <Cell colSpan='7' onClick={this.handleCollapseExpend}>
+                <Cell colSpan='7' onClick={event =>this.handleCollapseExpend(event, item.handler)}>
                     <span className={`expand-icon fa pr-2 ${!this.state.isCollapse ? 'fa-caret-down' : 'fa-caret-right'}`} />
                     <span className='text-handler font-weight-bold'>{item.handler} ({item.deletedFeedbacks.length})</span>
                 </Cell>
             </Row>
         );
         if(item.deletedFeedbacks.length > 0){
-            rows.push(item.deletedFeedbacks.map((item, index) => this.renderRow(item, index)));
+            rows.push(item.deletedFeedbacks.map((item, index) => this.renderRow(item.handler, item, index)));
         }
         return rows;
     };
 
-    renderRow = (item, index) => {
-        return (
-            <Collapse in={!this.state.isCollapse}>
+    renderRow = (handler, item, index) => {
+        if(!this.state.toggleHandler.includes(handler)){
+            return (
                 <Row key={`child ${index}`} className={`child ${index}`}>
                     <Cell>{DateTimeService.toShortDateFormat(item.createDate)}</Cell>
                     <Cell>{item.handler}</Cell>
@@ -136,8 +143,11 @@ export class DataGrid extends Component {
                     <Cell>{item.customer}</Cell>
                     <Cell>{this.renderRelatedCustomer(item.relatedCustomer.split(','))}</Cell>
                 </Row>
-            </Collapse>
-        );
+            );
+        }
+        else{
+            return null;
+        }
     };
 
     renderFooter = data => {

@@ -36,7 +36,12 @@ export class Filter extends Component {
 
         this.minToDate = fromDate;
         this.maxToDate = maxDate < currentTime ? maxDate : currentTime;
-        const toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
+        let toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
+        const isOver1Year = DateTimeService.toDiffDays(currentTime, fromDate) > 365;
+        if(isOver1Year)
+        {
+            toDate = this.maxToDate;
+        }
         this.setState({fromDate, toDate});
     };
 
@@ -86,6 +91,7 @@ export class Filter extends Component {
                             <DatePicker
                                 maxDate={new Date(this.maxFromDate)}
                                 selected={fromDate}
+                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                 onChange={value => this.handleChangeFromDate(value)}
                             />
                         </div>
@@ -96,6 +102,7 @@ export class Filter extends Component {
                             <DatePicker
                                 maxDate={new Date(this.maxToDate)}
                                 minDate={new Date(this.minToDate)}
+                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                 selected={toDate}
                                 onChange={value => this.handleChangeToDate(value)}
                             />
