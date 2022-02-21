@@ -132,7 +132,7 @@ export class DataGrid extends Component {
             return (
                 <Row key={`child ${index}`} className={`child ${index}`}>
                     <Cell>{DateTimeService.toShortDateFormat(item.createDate)}</Cell>
-                    <Cell>{item.handler}</Cell>
+                    <Cell className='word-break'>{item.handler}</Cell>
                     <Cell>{item.deletor}</Cell>
                     <Cell>
                         <div onClick={() => this.handleEditDeletedFeedback(item.feedbackId)}>
@@ -195,7 +195,7 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={1200}
+                    width={1250}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}

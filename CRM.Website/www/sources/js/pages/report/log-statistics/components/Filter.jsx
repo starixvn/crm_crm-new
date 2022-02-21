@@ -8,6 +8,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 export class Filter extends Component {
     constructor(props) {
@@ -45,7 +46,12 @@ export class Filter extends Component {
 
         this.minToDate = fromDate;
         this.maxToDate = maxDate < currentTime ? maxDate : currentTime;
-        const toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
+        let toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
+        const isOver1Year = DateTimeService.toDiffDays(currentTime, fromDate) > 365;
+        if(isOver1Year)
+        { 
+            toDate = this.maxToDate;
+        }
         this.setState({fromDate, toDate});
     };
 
@@ -107,6 +113,18 @@ export class Filter extends Component {
     };
     handleSubmit = () => {
         const { fromDate, toDate, productIds, mainCategoryIds, communicationIds} = this.state;
+        if(productIds === ''){
+            toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Product')));
+            return;
+        }
+        if(mainCategoryIds === ''){
+            toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory')));
+            return;
+        }
+        if(communicationIds === ''){
+            toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Communication')));
+            return;
+        }
         const params = {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
@@ -133,6 +151,7 @@ export class Filter extends Component {
                             onChange={(currentItem, selectedItemsKey) => {
                                 this.handleChangeDropdown('productIds', selectedItemsKey);
                             }}
+                            maxDisplayItemCount={0}
                             hasSearchBox
                             isNAOption
                         />
@@ -144,6 +163,7 @@ export class Filter extends Component {
                         <DatePicker
                             maxDate={new Date(this.maxFromDate)}
                             selected={fromDate}
+                            peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                             onChange={value => this.handleChangeFromDate(value)}
                         />
                     </div>
@@ -154,6 +174,7 @@ export class Filter extends Component {
                         <DatePicker
                             maxDate={new Date(this.maxToDate)}
                             minDate={new Date(this.minToDate)}
+                            peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                             selected={toDate}
                             onChange={value => this.handleChangeToDate(value)}
                         />
@@ -168,6 +189,7 @@ export class Filter extends Component {
                                 valueField='value'
                                 dataSource={mainCategoryOptions}
                                 keyField='id'
+                                maxDisplayItemCount={0}
                                 onChange={(currentItem, selectedItemsKey) => {
                                     this.handleChangeDropdown('mainCategoryIds', selectedItemsKey);
                                 }}

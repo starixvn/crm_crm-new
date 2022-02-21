@@ -5,7 +5,9 @@
 @import "../../../components/icons";
 @import "../../../components/tables";
 @import '../../../components/date-picker/style';
-@import '../../feedback/edit-customer-feedback';
+@import '../../../components/multiple-select/style';
+@import '../../../components/select-with-search-site';
+@import '../../../components/verify-customer';
 
 .form-filter {
     min-width: 1120px;
@@ -59,6 +61,58 @@
 }
 
 .table-title {
-    max-width: 1200px;
+    max-width: 1250px;
+}
+
+.word-break{
+    word-break: break-all;
+}
+
+.feedback-detail {
+    .modal-dialog {
+        max-width: 1600px;
+
+        .modal-content {
+            .panel-group {
+                border: 1px solid #b1b1b1;
+
+                .panel-title {
+                    display: flex;
+                    align-items: center;
+                    height: 28px;
+                    margin: 0;
+                    padding: 0 10px;
+                    color: #2f70b4;
+                    background: linear-gradient(#e7e7e7, #e2e2e2);
+                    border-bottom: 1px solid #b1b1b1;
+                    cursor: pointer;
+
+                    .form-label {
+                        margin: 0;
+                    }
+                }
+
+                .title-username .form-label{
+                    color: red !important;
+                    font-weight: bold !important;
+                }
+
+                .disabled-filed, .selectwithsearchtree{
+                    pointer-events: none;
+                    cursor: not-allowed;
+                    opacity: .7;
+                    background-color: #fff;
+                }
+
+                .panel-content {
+                    padding: 4px 9px;
+
+                    .react-datepicker-wrapper-container {
+                        width: 100% !important;
+                    }
+                }
+            }
+        }
+    }
 }
 

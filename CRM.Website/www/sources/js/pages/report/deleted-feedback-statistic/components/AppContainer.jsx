@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Button } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import EditFeedback from '@jsroot/pages/feedback/edit-customer-feedback/AppContainer';
+import FeedbackDetails from './FeedbackDetails';
 import LangHelper from '@jsroot/common/langHelper';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
@@ -43,7 +43,7 @@ handleCloseViewRelatedCustomerDialog = () => {
            }
            {
               editFeedbackDialog.show &&
-              <EditFeedback
+              <FeedbackDetails
                   feedbackId={editFeedbackDialog.feedbackId}
                   onClose={this.handleCloseEditFeedbackDialog}
               />

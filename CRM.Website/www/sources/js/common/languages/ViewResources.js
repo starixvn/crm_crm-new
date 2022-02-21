@@ -141,6 +141,7 @@
     FeedbackDate : 'Feedback Date',
     Fax: 'Fax',
     FillEventDetails: 'Fill Event Details',
+    FeedbackDetail: 'Feedback Detail',
     GroupHeadline: 'Group Headline',
     GroupHeadlineRequired: 'Group Headline is required!',
     Guest: 'Guest',

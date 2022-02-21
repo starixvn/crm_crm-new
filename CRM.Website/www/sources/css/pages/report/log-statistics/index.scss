@@ -7,6 +7,11 @@
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
 
+
+#app-container{
+    min-width:1200px;
+}
+
 .form-filter {
     min-width: 1120px;
     
@@ -60,6 +65,8 @@
     }
     
     .footer-content{
+        border-bottom: 0;
+
         .footer-container{
             td{
                 background: #c0cae3!important;
