@@ -38,8 +38,7 @@ export class Filter extends Component {
         this.maxToDate = maxDate < currentTime ? maxDate : currentTime;
         let toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
         const isOver1Year = DateTimeService.toDiffDays(currentTime, fromDate) > 365;
-        if(isOver1Year)
-        {
+        if(isOver1Year) {
             toDate = this.maxToDate;
         }
         this.setState({fromDate, toDate});

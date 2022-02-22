@@ -43,3 +43,8 @@ export const Policy = {
     Read: 1,
     Host: 2
 };
+
+export const borderStyle = {
+    bottom: 'border-bottom-0',
+    top: 'border-top-0'
+};

@@ -11,7 +11,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 
 
-export class FeedbackDetails extends Component {
+export default class FeedbackDetails extends Component {
     static propTypes = {
         onClose: PropTypes.func.isRequired
     };
@@ -593,5 +593,3 @@ export class FeedbackDetails extends Component {
         );
     }
 }
-
-export default FeedbackDetails;
