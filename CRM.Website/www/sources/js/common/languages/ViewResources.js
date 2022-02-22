@@ -303,6 +303,7 @@
     ReviewerBy:'(Reviewed by {0} on {1})',
     Reviewer: 'Reviewer',
     ReviewRequired: 'Review is required!',
+    Reviewed: 'Reviewed',
     Role: 'Role',
     RoleRequired: 'Role is required!',
     RunningNo: 'Running No.',

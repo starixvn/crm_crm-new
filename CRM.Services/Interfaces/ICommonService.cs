@@ -27,6 +27,8 @@
 
         DateTime ConvertToServerDateTime(DateTime date);
 
+        DateTime ConvertToTimeToServerDateTime(DateTime date);
+
         DateTime GetEndOfDate(DateTime date);
 
         DateTime GetStartOfDate(DateTime date);

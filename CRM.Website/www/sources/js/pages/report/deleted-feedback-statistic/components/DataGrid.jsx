@@ -35,7 +35,6 @@ export class DataGrid extends Component {
         const rows = [];
         if (gridData.data.length > 0) {
             rows.push(gridData.data.map((item, index) => this.renderCollapseRow(item, index)));
-            rows.push(this.renderFooter(gridData.data));
             return rows;
         }
         return [
@@ -153,7 +152,7 @@ export class DataGrid extends Component {
     renderFooter = data => {
         const totalGrands = data.reduce((accumulator, currentValue) => accumulator + currentValue.deletedFeedbacks.length, 0);
         return (
-                <Row key='footer' className='footer-container font-weight-bold'>
+                <Row key='footer' className='footer-container font-weight-bold border-bottom-0'>
                     <Cell colSpan='7'>Grand Total ({totalGrands})</Cell>
                 </Row>
         );
@@ -199,6 +198,7 @@ export class DataGrid extends Component {
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
+                    footer={this.renderFooter(gridData.data)}
                     isPaging={false}
                     containerPadding={0}
                     adjustedHeight={10}

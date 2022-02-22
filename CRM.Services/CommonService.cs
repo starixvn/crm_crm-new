@@ -78,6 +78,12 @@
             return date.ToUniversalTime().Add(timeSpan);
         }
 
+        public DateTime ConvertToTimeToServerDateTime(DateTime date)
+        {
+            var timeSpan = new TimeSpan(appSettings.ServerTimezone, 0, 0);
+            return GetEndOfDate(date).ToUniversalTime().Add(timeSpan);
+        }
+
         public DateTime GetEndOfDate(DateTime date)
         {
             date = new DateTime(date.Year, date.Month, date.Day).AddDays(1).AddSeconds(-1);
