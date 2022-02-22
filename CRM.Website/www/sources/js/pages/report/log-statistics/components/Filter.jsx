@@ -204,6 +204,7 @@ export class Filter extends Component {
                                 valueField='value'
                                 dataSource={communicationToolOptions}
                                 keyField='id'
+                                maxDisplayItemCount={0}
                                 onChange={(currentItem, selectedItemsKey) => {
                                     this.handleChangeDropdown('communicationIds', selectedItemsKey);
                                 }}

@@ -149,12 +149,17 @@ export class DataGrid extends Component {
     };
 
     renderFooter = data => {
-        const totalGrands = data.reduce((accumulator, currentValue) => accumulator + currentValue.deletedFeedbacks.length, 0);
-        return (
-                <Row key='footer' className='footer-container font-weight-bold border-bottom-0'>
-                    <Cell colSpan='7'>Grand Total ({totalGrands})</Cell>
-                </Row>
-        );
+        if(data.length > 0){
+            const totalGrands = data.reduce((accumulator, currentValue) => accumulator + currentValue.deletedFeedbacks.length, 0);
+            return (
+                    <Row key='footer' className='footer-container font-weight-bold border-bottom-0'>
+                        <Cell colSpan='7'>Grand Total ({totalGrands})</Cell>
+                    </Row>
+            );
+        } else{
+            return null;
+        }
+        
     };
 
     handleEditDeletedFeedback = id => {

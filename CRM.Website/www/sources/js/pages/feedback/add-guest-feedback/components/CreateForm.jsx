@@ -146,6 +146,7 @@ export class CreateForm extends Component {
                 subCategoriesOptions: []
             });
             setFieldValue('subCategory', '');
+            setFieldValue('subject', '');
         }
     };
 

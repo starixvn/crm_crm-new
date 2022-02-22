@@ -309,7 +309,7 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={document.getElementById('app-container').clientWidth}
+                    width={width}
                     autoWidth={false}
                     header={this.buildHeader(ibcReport)}
                     body={this.buildBody(ibcReport, 'mbc')}
