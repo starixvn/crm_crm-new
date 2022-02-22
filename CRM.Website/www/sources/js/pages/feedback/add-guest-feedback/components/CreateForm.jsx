@@ -25,7 +25,7 @@ import Site from '@jsroot/common/site';
 import CustomerInfo from './CustomerInfo';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { validateNoOfInquiry } from '../../common.functions';
-import { borderStyle } from '@jsroot/common/constants';
+import { borderStyle  } from '@jsroot/common/constants';
 
 export class CreateForm extends Component {
     static propTypes = {
@@ -361,7 +361,7 @@ export class CreateForm extends Component {
         return (
             <div>
                 <div className={`panel-group ${!this.state.collapse.isShowDetailsOption ? borderStyle.bottom : ''}`}>
-                    <Form.Group as={Row} className={`title ${borderBottom}`}
+                    <Form.Group as={Row} className={`title ${borderStyle}`}
                         onClick={() => this.handleCollapseExpend('isShowDetailsOption')}
                         aria-controls="collapse-expand-identity"
                         aria-expanded={!collapse.isShowDetailsOption}
@@ -373,7 +373,7 @@ export class CreateForm extends Component {
                 </div>
                 <Collapse in={!this.state.collapse.isShowDetailsOption}>
                     <div>
-                        <div className={`panel-group ${borderBottom}`} id="collapse-expand-show-detail">
+                        <div className={`panel-group ${borderStyle}`} id="collapse-expand-show-detail">
                             <Form.Group as={Row} className="pt-2">
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>
