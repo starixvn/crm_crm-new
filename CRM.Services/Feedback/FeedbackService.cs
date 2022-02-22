@@ -166,8 +166,8 @@
         }
         public async Task<IEnumerable<DeletedFeedback>> GetManageFeedbackAsync(ManageFeedbackCriteria criteria)
         {
-            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertToTimeToServerDateTime(criteria.ToDate);
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
             return feedbacks;
         }
