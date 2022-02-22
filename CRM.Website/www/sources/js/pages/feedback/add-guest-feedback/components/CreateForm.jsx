@@ -361,7 +361,7 @@ export class CreateForm extends Component {
         return (
             <div>
                 <div className={`panel-group ${!this.state.collapse.isShowDetailsOption ? borderStyle.bottom : ''}`}>
-                    <Form.Group as={Row} className={`title ${borderStyle}`}
+                    <Form.Group as={Row} className={`title ${borderStyle.bottom}`}
                         onClick={() => this.handleCollapseExpend('isShowDetailsOption')}
                         aria-controls="collapse-expand-identity"
                         aria-expanded={!collapse.isShowDetailsOption}
@@ -373,7 +373,7 @@ export class CreateForm extends Component {
                 </div>
                 <Collapse in={!this.state.collapse.isShowDetailsOption}>
                     <div>
-                        <div className={`panel-group ${borderStyle}`} id="collapse-expand-show-detail">
+                        <div className={`panel-group ${borderStyle.bottom}`} id="collapse-expand-show-detail">
                             <Form.Group as={Row} className="pt-2">
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>
