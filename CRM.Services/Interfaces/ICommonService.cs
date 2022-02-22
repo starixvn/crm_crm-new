@@ -27,7 +27,8 @@
 
         DateTime ConvertToServerDateTime(DateTime date);
 
-        DateTime ConvertToTimeToServerDateTime(DateTime date);
+        DateTime ConvertClientFromTimeToServerTime(DateTime clientFromTime);
+        DateTime ConvertClientToTimeToServerTime(DateTime clientToTime);
 
         DateTime GetEndOfDate(DateTime date);
 
