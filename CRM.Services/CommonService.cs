@@ -88,7 +88,7 @@
         {
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var endClientDate = GetEndOfDate(clientToTime);
-            return endClientDate.Date.Subtract(timeSpan);
+            return endClientDate.Subtract(timeSpan);
         }
 
         public DateTime GetEndOfDate(DateTime date)
