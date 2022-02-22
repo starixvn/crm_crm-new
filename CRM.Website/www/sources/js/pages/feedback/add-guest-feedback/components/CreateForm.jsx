@@ -357,9 +357,10 @@ export class CreateForm extends Component {
     renderDetails = (values, errors, touched, handleChange, setFieldValue) => {
         const collapse = this.state.collapse;
         const { statuses, languages, responses, countries, extensions } = this.props.settings;
+        const  borderBottom= 'border-bottom-0';
         return (
             <div>
-                <div className={`panel-group ${!this.state.collapse.isShowDetailsOption ? 'border-bottom-0' : ''}`}>
+                <div className={`panel-group ${!this.state.collapse.isShowDetailsOption ? borderBottom : ''}`}>
                     <Form.Group as={Row} className="title border-bottom-0"
                         onClick={() => this.handleCollapseExpend('isShowDetailsOption')}
                         aria-controls="collapse-expand-identity"
@@ -372,7 +373,7 @@ export class CreateForm extends Component {
                 </div>
                 <Collapse in={!this.state.collapse.isShowDetailsOption}>
                     <div>
-                        <div className='panel-group border-bottom-0' id="collapse-expand-show-detail">
+                        <div className={`panel-group ${borderBottom}`} id="collapse-expand-show-detail">
                             <Form.Group as={Row} className="pt-2">
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>
@@ -381,9 +382,8 @@ export class CreateForm extends Component {
                                         <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
                                             <DatePicker
                                                 dropdownMode="select" showMonthDropdown
-                                                showYearDropdown showTimeInput
+                                                showYearDropdown showTimeInput selected={values.feedbackDate}
                                                 isInvalid={touched.feedbackDate && errors.feedbackDate}
-                                                selected={values.feedbackDate}
                                                 timeInputLabel="Time:" dateFormat="MMM dd, yyyy hh:mm aa"
                                                 onChange={value => this.handleChangeFeedbackTime(setFieldValue, value, values.resolutionTime)}
                                             />
@@ -514,9 +514,8 @@ export class CreateForm extends Component {
                                     <Row>
                                         <Col sm="10" md="10">
                                             <Form.Control type="text" size="sm" value={values.customerNameInput}
-                                                name="customerNameInput" className="shadow-none" autoComplete="off"
+                                                name="customerNameInput" className="shadow-none" autoComplete="off" onChange={handleChange}
                                                 onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
-                                                onChange={handleChange}
                                             />
                                         </Col>
                                         <Col sm="2" md="2">

@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { Button } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import FeedbackDetails from './FeedbackDetails';
 import LangHelper from '@jsroot/common/langHelper';
+import FeedbackDetails from './FeedbackDetails';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 

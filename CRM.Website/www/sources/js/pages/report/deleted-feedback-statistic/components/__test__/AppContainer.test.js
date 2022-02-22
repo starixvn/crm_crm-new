@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
 import Filter from '../Filter';
 import DataGrid from '../DataGrid';
-import EditFeedback from '@jsroot/pages/feedback/edit-customer-feedback/AppContainer';
+import FeedbackDetails from '../FeedbackDetails';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -44,7 +44,7 @@ describe('AppContainer', () => {
 
             // Assert
             expect(container).toMatchSnapshot();
-            expect(container.find(EditFeedback).length).toBe(1);
+            expect(container.find(FeedbackDetails).length).toBe(1);
             expect(container.find(Filter).length).toBe(1);
             expect(container.find(DataGrid).length).toBe(1);
         });

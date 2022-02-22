@@ -11,7 +11,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 
 
-export default class FeedbackDetails extends Component {
+export class FeedbackDetails extends Component {
     static propTypes = {
         onClose: PropTypes.func.isRequired
     };
@@ -33,7 +33,6 @@ export default class FeedbackDetails extends Component {
             subProductOptions: [],
             betTypeOptions: [],
             sitesOptions: [],
-            feedbackSubjectTemplates: [],
             settings: null
         };
     }
@@ -205,10 +204,10 @@ export default class FeedbackDetails extends Component {
             reviewer: communicationLog.reviewer,
             solveDate: DateTimeService.toShortDateTimeFormat(communicationLog.solveDate)
         };
-    }
+    };
 
     renderFeedbackDetails = () =>{
-        const { communication, settings, communicationToolOptions, extensionOptions, feedbackSubjectTemplates } = this.state;
+        const { communication, settings, communicationToolOptions, extensionOptions } = this.state;
         const { languages, countries } = settings;
         return (
             <div>
@@ -252,7 +251,6 @@ export default class FeedbackDetails extends Component {
                                         readOnly selected={communication.endTime}
                                     />
                                 </div>
-                                
                             </Col>
                             <Form.Label column sm="2" md="2" htmlFor="countryId">
                                 {LangHelper.getResource('Country')}
@@ -320,7 +318,7 @@ export default class FeedbackDetails extends Component {
                                                     <div key={`${index}-${item.custId}`} className={`txt-${this.renderClassNameCustomer(item)}`}>
                                                         <div className="customer-name">{item.username}</div>
                                                     </div>);
-                                            })  
+                                            })
                                         }
                                     </div>
                                     :
@@ -328,7 +326,6 @@ export default class FeedbackDetails extends Component {
                                         className="shadow-none disabled-filed" autoComplete="off"
                                     />
                                 }
-                                
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
@@ -348,7 +345,7 @@ export default class FeedbackDetails extends Component {
                 {this.renderReview(communication)}
             </div>
         );
-    }
+    };
 
     renderClassNameCustomer = item => {
         let className = '';
@@ -573,7 +570,7 @@ export default class FeedbackDetails extends Component {
                 </Modal.Body >
             </Form>
         );
-    }
+    };
 
     render() {
         const { communication, settings } = this.state;
@@ -596,3 +593,5 @@ export default class FeedbackDetails extends Component {
         );
     }
 }
+
+export default FeedbackDetails;

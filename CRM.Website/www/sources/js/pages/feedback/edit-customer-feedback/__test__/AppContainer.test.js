@@ -3,17 +3,8 @@ import AppContainer from '../AppContainer';
 import Site from '@jsroot/common/site';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
-import { Button, Form, Modal } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
-import VerifyCustomer from '@jsroot/components/verifyCustomer';
-import AutoComplete from '@jsroot/components/AutoComplete';
 import * as shareScripts from '@jsroot/common/shareScripts';
-import MultipleSelect from '@jsroot/components/multiple-select/index';
-import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-import DatePicker from '@jsroot/components/date-picker/index';
-import * as commonFunc from '../../common.functions';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import { Formik } from 'formik';
 import DataService from '@jsroot/common/dataService';
 
 describe('AppContainer', () => {

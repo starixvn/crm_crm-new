@@ -72,7 +72,6 @@ export default class CkEditor extends PureComponent {
 
     render() {
         const { className, isInvalid, ...rest } = this.props;
-        console.log(this.props.data);
         return (
             <div className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
@@ -143,8 +143,7 @@ export class DataGrid extends Component {
                     <Cell>{this.renderRelatedCustomer(item.relatedCustomer.split(','))}</Cell>
                 </Row>
             );
-        }
-        else{
+        } else{
             return null;
         }
     };

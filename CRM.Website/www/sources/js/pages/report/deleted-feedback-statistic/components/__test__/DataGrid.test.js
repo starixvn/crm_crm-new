@@ -48,13 +48,12 @@ describe('DataGrid', () => {
             };
             const container = shallow(<DataGrid {...props} />).instance();
             container.renderCollapseRow = jest.fn(() => <div />);
-            container.renderFooter = jest.fn(() => <div />);
 
             // Act
             const actual = container.buildBody();
 
             // Assert
-            expect(actual).toEqual([[<div />], <div />]);
+            expect(actual).toEqual([[<div />]]);
         });
     });
 
@@ -133,20 +132,32 @@ describe('DataGrid', () => {
     });
 
     describe('handleCollapseExpend', () => {
-        it('should setState', () => {
+        it('should return empty array', () => {
             // Arrange
             const state = {
-                isCollapse: false
-            };     
-
+                toggleHandler: ['sa']
+            };
             // Act
             const container = shallow(<DataGrid />).instance();
             container.setState(state);
-
-            const received = container.handleCollapseExpend();
+            container.handleCollapseExpend({ preventDefault: jest.fn()}, 'sa');
 
             // Assert
-            expect(container.state.isCollapse).toBe(true);
+            expect(container.state.toggleHandler).toEqual([]);
+        });
+
+        it('should add data to array', () => {
+            // Arrange
+            const state = {
+                toggleHandler: ['test1']
+            };
+            // Act
+            const container = shallow(<DataGrid />).instance();
+            container.setState(state);
+            container.handleCollapseExpend({ preventDefault: jest.fn()}, 'test2');
+
+            // Assert
+            expect(container.state.toggleHandler).toEqual(['test1', 'test2']);
         });
     });
 
@@ -238,6 +249,59 @@ describe('DataGrid', () => {
 
             // Assert
             expect(actual).toEqual("test, test");
+        });
+    });
+
+    describe('renderRow', () => {
+        it('should return null', () => {
+            // Arrange
+            const state = {
+                toggleHandler: ['test1']
+            };
+            const props = {
+                gridData: {
+                    mainCategories: [{settingId: 0, settingValue: "test", childSettings: [{subCategoryId: 0, name: "All"}]}]
+                }
+            };
+            const container = shallow(<DataGrid {...props}/>).instance();
+            container.setState(state);
+
+            // Act
+            const actual = container.renderRow('test1', {}, 1);
+
+            // Assert
+            expect(actual).toBeNull();
+        });
+
+        it('should return exact cells', () => {
+            // Arrange
+            const state = {
+                toggleHandler: ['test']
+            };
+            const item = {
+                createDate: new Date(),
+                handler: 'handler',
+                deletor: 'deletor',
+                feedbackId: 1,
+                subject: 'subject',
+                customer: 'customer',
+                relatedCustomer: '1,2,3'
+            };
+            const props = {
+                gridData: {
+                    mainCategories: [{settingId: 0, settingValue: "test", childSettings: [{subCategoryId: 0, name: "All"}]}]
+                }
+            };
+            const container = shallow(<DataGrid {...props}/>).instance();
+            container.setState(state);
+            container.renderCategory = jest.fn(() => "<div></div>" );
+            container.renderRelatedCustomer = jest.fn(() => "<div></div>" );
+
+            // Act
+            const actual = shallow(container.renderRow('test1', item, 1));
+
+            // Assert
+            expect(actual.find(Cell).length).toBe(7);
         });
     });
 });
