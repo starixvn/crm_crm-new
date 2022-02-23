@@ -54,6 +54,7 @@
 .table-mbc, .table-licensee{
     .table-container{
         min-width: 1200px !important;
+        
         .body-content{
             max-height: 250px !important;
     
@@ -85,17 +86,23 @@
 
 .details{
     .table-container {
+        min-width: 1200px !important;
+        .header-content , .body-content{
+            table{
+                width: 3344px !important;
+            } 
+        }
+
         table tr {
             th:first-child, td:first-child, th:nth-child(2), td:nth-child(2),
             th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5){
                 position: sticky;
-
+                overflow-y: auto;
                 border-left: none !important;
                 border-right: none !important;
                 box-shadow: inset -1px 0 1px -1px #1f1d1d,
-                            inset 1px 0 1px -1px #1f1d1d;
+                            inset 1px 0 2px -1px #1f1d1d;
             }
-
 
             th:first-child, td:first-child{
                 left: 0;

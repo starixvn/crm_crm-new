@@ -14,8 +14,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    //[CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Read)]
-    public class CommunicationSettingController : Controller
+    [CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Read)]
+    public class CommunicationSettingController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;

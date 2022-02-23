@@ -163,18 +163,18 @@ export class Detail extends Component {
                     </OverlayTrigger>
                 </div>
             </div>
-            <Table
-                width={3355}
-                autoWidth={false}
-                isPaging
-                pageOption={pagingOption}
-                onPaging={this.onPaging}
-                header={this.buildHeader()}
-                body={this.buildBody()}
-                containerPadding={10}
-                shouldResetScrollPosition={false}
-            />
-        </div>
+                <Table
+                    width={3355}
+                    autoWidth={false}
+                    isPaging
+                    pageOption={pagingOption}
+                    onPaging={this.onPaging}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
+                    containerPadding={10}
+                    shouldResetScrollPosition={false}
+                />
+            </div> 
         );
     }
 }
