@@ -13,7 +13,7 @@
 }
 
 .form-filter {
-    min-width: 1120px;
+    min-width: 1200px;
     
     .react-datepicker__input-container input{
         width: 100% !important;
@@ -52,29 +52,32 @@
 }
 
 .table-mbc, .table-licensee{
-    .body-content{
-        max-height: 250px !important;
-
-        tbody .child{ 
-            background-color: #fff !important;
-        }
-
-        .total-background {
-            background: #F0EDC4 !important;
-        }
-    }
+    .table-container{
+        min-width: 1200px !important;
+        .body-content{
+            max-height: 250px !important;
     
-    .footer-content{
-        border-bottom: 0;
-
-        .footer-container{
-            td{
-                background: #c0cae3!important;
-                color: #0054a6 !important;
+            tbody .child{ 
+                background-color: #fff !important;
             }
-
-            td:last-child{
+    
+            .total-background {
                 background: #F0EDC4 !important;
+            }
+        }
+        
+        .footer-content{
+            border-bottom: 0;
+    
+            .footer-container{
+                td{
+                    background: #c0cae3!important;
+                    color: #0054a6 !important;
+                }
+    
+                td:last-child{
+                    background: #F0EDC4 !important;
+                }
             }
         }
     }
@@ -82,7 +85,6 @@
 
 .details{
     .table-container {
-
         table tr {
             th:first-child, td:first-child, th:nth-child(2), td:nth-child(2),
             th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5){
@@ -122,7 +124,7 @@
         }
 
         .body-content{
-            overflow: visible !important;
+            overflow: visible;
 
             tbody td{ 
                 background-color: #fff !important;

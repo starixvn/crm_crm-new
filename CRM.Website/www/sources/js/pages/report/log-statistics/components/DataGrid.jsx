@@ -302,7 +302,7 @@ export class DataGrid extends Component {
 
         return (
             <div className='table-mbc'>
-                 <div style={{width: width}} className='table-title d-flex justify-content-between align-items-center'>
+                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{`MBC Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
                     {
                         ibcReport.mainCategories.length > 0 && this.renderCustomButtonDailyLog()
@@ -310,6 +310,7 @@ export class DataGrid extends Component {
                 </div>
                 <Table
                     width={width}
+                    minWidth={document.getElementById('app-container').clientWidth}
                     autoWidth={false}
                     header={this.buildHeader(ibcReport)}
                     body={this.buildBody(ibcReport, 'mbc')}
@@ -328,7 +329,7 @@ export class DataGrid extends Component {
         const width = this.calculateWidth(licenseeReport.communicationColumns);
         return (
             <div className='table-licensee'>
-                <div style={{width: width}} className='table-title d-flex justify-content-between align-items-center'>
+                <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{`Licensee Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
                     {
                         licenseeReport.mainCategories.length > 0 && this.renderCustomButtonLicensee()

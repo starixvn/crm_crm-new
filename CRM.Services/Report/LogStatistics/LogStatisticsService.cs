@@ -41,8 +41,8 @@
                commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
                commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
 
-            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientFromTimeToServerTime(criteria.ToDate);
             var logStatisticEntities = await baseService.GetDataAsync<LogStatisticsEntity>(criteria);
 
             var logStatistic = new LogStatisticsViewModel
@@ -76,8 +76,8 @@
                commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
                commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
 
-            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientFromTimeToServerTime(criteria.ToDate);
             var reportDetails = await baseService.GetDataAsync<StatisticsDetailbyDateModel>(criteria);
             foreach(var report in reportDetails)
             {
