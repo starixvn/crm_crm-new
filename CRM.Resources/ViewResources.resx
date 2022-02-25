@@ -405,4 +405,7 @@
   <data name="MBCDailyLogStatisticsDetail_FileName" xml:space="preserve">
     <value>MBC_Daily_Customer_Complaints_Enquiries</value>
   </data>
+  <data name="ChangesLog" xml:space="preserve">
+    <value>Changes Log</value>
+  </data>
 </root>

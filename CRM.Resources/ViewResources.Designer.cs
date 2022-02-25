@@ -124,6 +124,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Changes Log.
+        /// </summary>
+        public static string ChangesLog {
+            get {
+                return ResourceManager.GetString("ChangesLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chat Type Mapping.
         /// </summary>
         public static string ChatTypeMapping {

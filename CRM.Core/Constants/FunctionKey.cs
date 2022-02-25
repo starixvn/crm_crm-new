@@ -12,6 +12,7 @@
         public const string FeedbackSubject = "FBSubjectTemplateManagement";
         public const string PICAssignment = "PICAssignment";
         public const string PICManagement = "PICManagement";
+        public const string ChangesLog = "ChangesLog";
 
         public const string LatestFeedback = "LatestFeedback";
         public const string DeleteFeedback = "DeleteFeedback";

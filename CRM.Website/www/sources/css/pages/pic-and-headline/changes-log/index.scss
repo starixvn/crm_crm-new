@@ -1,0 +1,120 @@
+@import "../../../components/form-filter";
+@import "../../../components/react-grid/react-grid";
+@import "../../../components/forms";
+@import "../../../components/tables";
+@import "../../../components/multiple-select/style";
+@import '../../../components/date-picker/style';
+
+#app-container{
+    .nav-tabs{
+        .active{
+            background-color:#466ab6 !important;
+            border-color:466ab6;
+            color:#fff !important;
+        }
+
+        .nav-link{
+            background-color: #d9d9d9;
+            border-color: #d9d9d9;
+            color: #fff;
+
+            &:hover{
+                background-color:#2d5ab9 !important;
+                border-color:466ab6 !important;
+                color:#fff !important;
+            }
+        }
+    }
+
+    .form-filter {
+        max-width: 1400px;
+    
+        .react-datepicker__input-container input{
+            width: 100% !important;
+        }
+    
+        .form-group-actionType{
+            width: 295px !important;
+        }
+    
+        .multiple-select-container {
+            width: 200px !important;
+        }
+    }
+
+    .table-title, .page-container, .table-container{
+        max-width: 1400px !important;
+        width: 1400px !important;
+    }
+
+    .table-container {
+        .body-content table tbody{
+            tr td{
+                padding: 0 !important;
+                word-break: break-word;
+                background-color: #fff !important;
+            }
+
+            .detail-child-col {
+                text-align: left;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+            }
+            
+            .background-change {
+                background-color: #FFA;
+            }
+            
+            .new-value {
+                color: #FF3A60;
+            }
+            
+            .old-value {
+                color: #4E98B4;
+            }
+        
+            .col-value-larger {
+                width: 80% !important;
+            }
+            
+            .min-height-38px {
+                min-height: 38px;
+            }
+            
+            .width-200px {
+                width: 200px;
+            }
+
+            .pic-container{
+                .container-detail{
+                    display: flex;
+                    border-bottom: 1px solid #b7b7b7;
+
+                    .detail-child-col{
+                        border-right: 1px solid #b7b7b7;
+                    }
+                    .col-title-detail {
+                        width: 20%;
+                        background-color: #EBF1F3;
+                        box-sizing: border-box;
+                    }
+    
+                    .col-value-detail {
+                        width: 30%;
+                        box-sizing: border-box;
+                    }
+                }
+
+                .container-detail:last-child{
+                    border-bottom: 0;
+                }
+
+                .container-detail .col-value-detail:last-child{
+                    border-right: 0;
+                }
+            }
+        }
+    }
+}
+
