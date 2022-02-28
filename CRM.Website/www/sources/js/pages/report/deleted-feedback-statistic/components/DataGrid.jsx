@@ -159,7 +159,6 @@ export class DataGrid extends Component {
         } else{
             return null;
         }
-        
     };
 
     handleEditDeletedFeedback = id => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Form, Tab } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -55,23 +55,22 @@ export class Filter extends Component {
         });
         const actionTypeIds = actionTypeId.join(',');
         this.setState({actionTypeOptions, actionTypeIds});
-    }
+    };
+
+    handleChangeToDate = toDate => {
+        this.setState({ toDate });
+    };
 
     handleChangeFromDate = fromDate => {
         const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const maxDate = new Date(fromDate.getTime());
         maxDate.setMonth(fromDate.getMonth() + 1);
-
-        this.minToDate = fromDate;
         this.maxToDate = (maxDate < currentTime) ? maxDate : currentTime;
+        this.minToDate = fromDate;
         this.setState({
-            fromDate: fromDate,
-            toDate: maxDate < currentTime ? maxDate : currentTime
+            toDate: maxDate < currentTime ? maxDate : currentTime,
+            fromDate: fromDate
         });
-    };
-
-    handleChangeToDate = toDate => {
-        this.setState({ toDate });
     };
 
     handleChange = evt => {

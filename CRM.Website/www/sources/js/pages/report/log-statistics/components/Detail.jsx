@@ -174,7 +174,7 @@ export class Detail extends Component {
                     containerPadding={10}
                     shouldResetScrollPosition={false}
                 />
-            </div> 
+            </div>
         );
     }
 }

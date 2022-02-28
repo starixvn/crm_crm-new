@@ -94,7 +94,7 @@ export class PicDataGrid extends Component {
                 {this.renderHtmlDetail(picTypeName, picTypes, communicationToolsName, newCommunicationToolValue)}
                 {this.renderHtmlDetail(name, item.newPicInfo.name, roleName, item.newPicInfo.role.name)}
                 {this.renderHtmlDetail(languageName, languageValue, countryName, countryValue)}
-                {this.renderHtmlDetail(isActiveName, "Yes", remarkName, remarkValue)}
+                {this.renderHtmlDetail(isActiveName, 'Yes', remarkName, remarkValue)}
             </div>
         );
     };
@@ -117,7 +117,7 @@ export class PicDataGrid extends Component {
         this.recursiveCommunicationTools(item.oldPicInfo.communicationTools, oldCommunicationTool);
         const oldCommunicationToolValue = this.renderCommunicationTools(oldCommunicationTool);
         const oldCommunicationString = oldCommunicationTool.map(tool => this.getStringCommunicationTools(tool)).join('');
-        const communicationToolValue = this.changeValueToHtmlString(oldCommunicationToolValue, newCommunicationToolValue, true, newCommunicationString !== oldCommunicationString);
+        const communicationToolValue = this.changeValueToHtmlString(oldCommunicationToolValue, newCommunicationToolValue, newCommunicationString !== oldCommunicationString, true);
         const remarkValue = this.changeValueToHtmlString(this.getStringValue(item.oldPicInfo.remark), this.getStringValue(item.newPicInfo.remark));
         return (
             <div className='pic-container'>
@@ -170,7 +170,6 @@ export class PicDataGrid extends Component {
         const newHeadlineJoin = this.getStringJoinArray(item.newPicInfo.headlines);
         const isChangeHeadline = oldHeadlineJoin !== newHeadlineJoin;
         const headlineValue = this.changeValueToHtmlString(oldHeadlineJoin, newHeadlineJoin);
-        
         return (
             <div className='pic-container'>
                 {
@@ -191,9 +190,9 @@ export class PicDataGrid extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
-    changeValueToHtmlString = (oldValue, newValue, isCommunication = false, isChangeCommunication) =>{
+    changeValueToHtmlString = (oldValue, newValue, isChangeCommunication, isCommunication = false) =>{
         const isChange = isCommunication ? isChangeCommunication : newValue !== oldValue;
         return (
             isChange ?
@@ -206,7 +205,7 @@ export class PicDataGrid extends Component {
             </div>
             : <div className='pt-1 pb-1'>{newValue}</div>
         );
-    }
+    };
 
     renderHtmlDetail = (title1, value1, title2, value2, isChange1 = false, isChange2 = false) =>{
         return (
@@ -235,7 +234,7 @@ export class PicDataGrid extends Component {
             const moreTools = tools.filter(tool => tool.name !== pivot);
             this.recursiveCommunicationTools(moreTools, newCommunicationTools);
         }
-    }
+    };
 
     getStringCommunicationTools = tools =>{
         if (tools.length > 0) {
@@ -256,7 +255,7 @@ export class PicDataGrid extends Component {
                             const valueJoin = tools.map(tool => tool.value).join(', ');
                             return <div>{name}: {valueJoin}</div>;
                         }
-                        return '-';
+                        return <div>'-'</div>;
                     })
                 }
             </div>
@@ -272,14 +271,12 @@ export class PicDataGrid extends Component {
     convertBoolToDecision = value => {
         if (value === true) {
             return 'Yes';
-        }
-        else if (value === false){
+        } else if (value === false){
             return 'No';
-        }
-        else{
+        } else{
             return '-';
         }
-    }
+    };
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParamsPic };

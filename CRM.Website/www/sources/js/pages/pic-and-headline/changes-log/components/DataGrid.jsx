@@ -116,6 +116,8 @@ export class DataGrid extends Component {
         const oldIsGroupHeadline = this.convertBoolToDecision(item.oldDAInfo.isGroupHeadline);
         const newIsGroupHeadline = this.convertBoolToDecision(item.newDAInfo.isGroupHeadline);
         const isGroupHeadlineValue = this.changeValueToHtmlString(oldIsGroupHeadline, newIsGroupHeadline);
+        const isBackGroundChangeGroupHl = oldIsGroupHeadline !== newIsGroupHeadline;
+        const isBackGroundChangePic = oldPicString !== newPicString;
         return (
             <div className='container-detail border-bottom-none min-height-38px'>
                     <div className='detail-child-col col-title-detail'>
@@ -129,10 +131,10 @@ export class DataGrid extends Component {
                     </div>
                     {
                         isGroupHeadline ?
-                        <div className= {`detail-child-col col-value-detail border-right-none ${oldIsGroupHeadline !== newIsGroupHeadline ? backGroundChange : ''}`}>
+                        <div className= {`detail-child-col col-value-detail border-right-none ${ isBackGroundChangeGroupHl ? backGroundChange : '' }`}>
                             {isGroupHeadlineValue}
-                        </div> : 
-                        <div className= {`detail-child-col col-value-detail border-right-none ${oldPicString !== newPicString ? backGroundChange : ''}`}>
+                        </div> :
+                        <div className= {`detail-child-col col-value-detail border-right-none ${ isBackGroundChangePic ? backGroundChange : '' }`}>
                             {picsValue}
                         </div>
                     }
@@ -159,7 +161,7 @@ export class DataGrid extends Component {
                 <div className={`detail-child-col border-right-none ml-5 ${!isGroupHeadline ? backgroundChange : ''}`}>
                     {!isGroupHeadline ? value : 'Yes'}
                 </div>
-            </div> 
+            </div>
         );
     };
 

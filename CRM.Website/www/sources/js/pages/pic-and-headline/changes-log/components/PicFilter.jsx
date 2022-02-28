@@ -103,15 +103,15 @@ export class PicFilter extends Component {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label htmlFor="editBy">{LangHelper.getResource('EditBy')}</Form.Label>
-                        <Form.Control type="text" size="sm"
-                            value={editBy}
+                        <Form.Control size="sm" type="text"
                             name="editBy" id="editBy"
                             className="shadow-none" autoComplete="off"
+                            value={editBy}
                             onChange={this.handleChange}
                         />
                     </Form.Group>
                     <Form.Group className="submit">
-                        <Button variant="primary" size="sm" onClick={this.handleSubmit}>
+                        <Button  size="sm" variant="primary" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
                     </Form.Group>
