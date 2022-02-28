@@ -4,7 +4,7 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import { PAGING_SIZES, LogActions } from '@jsroot/common/constants';
+import { PAGING_SIZES, LogActions, BackGroundChange } from '@jsroot/common/constants';
 
 export class PicDataGrid extends Component {
     buildHeader = () => {
@@ -63,10 +63,10 @@ export class PicDataGrid extends Component {
                 detailValue = this.getDetailValueInsertNewPic(item);
                 break;
             case LogActions.UpdatePic:
-                detailValue = this.getDetailValueUpdatePic(item, index);
+                detailValue = this.getDetailValueUpdatePic(item);
                 break;
-            case logActions.UpdatePicStatus:
-                LogActions = this.getDetailValueUpdatePicStatus(item);
+            case LogActions.UpdatePicStatus:
+                detailValue = this.getDetailValueUpdatePicStatus(item);
                 break;
         }
         return detailValue;
@@ -155,7 +155,7 @@ export class PicDataGrid extends Component {
                 }
             </div>
         );
-    }
+    };
 
     getDetailValueUpdatePicStatus = item =>{
         const newDirectAccountJoin = this.getStringJoinArray(item.newPicInfo.directAccounts);
@@ -184,7 +184,7 @@ export class PicDataGrid extends Component {
                     <div className='detail-child-col col-title-detail'>
                         <div className='p-1'>{LangHelper.getResource('DefaultPIC')}</div>
                     </div>
-                    <div className={`border-right-0 col-value-larger detail-child-col ${isChangeHeadline ? 'background-change' : ''}`}>
+                    <div className={`border-right-0 col-value-larger detail-child-col ${isChangeHeadline ? BackGroundChange : ''}`}>
                         <div className='p-1'>{headlineValue}</div>
                     </div>
                 </div>
@@ -213,13 +213,13 @@ export class PicDataGrid extends Component {
                 <div className='detail-child-col col-title-detail'>
                     <div className='p-1'>{title1}</div>
                 </div>
-                <div className={`${value2 !== null ? 'detail-child-col' : ''} col-value-detail ${isChange1 ? 'background-change' : ''}`}>
+                <div className={`${value2 !== null ? 'detail-child-col' : ''} col-value-detail ${isChange1 ? BackGroundChange : ''}`}>
                     <div className='p-1'>{value1}</div>
                 </div>
                 <div className={`${title2 !== null ? 'detail-child-col col-title-detail' : ''}`}>
                     <div className='p-1'>{title2}</div>
                 </div>
-                <div className={`${value2 !== null ? 'detail-child-col col-value-detail' : ''} ${isChange2 ? 'background-change' : ''}`}>
+                <div className={`${value2 !== null ? 'detail-child-col col-value-detail' : ''} ${isChange2 ? BackGroundChange : ''}`}>
                     <div className='p-1'>{value2}</div>
                 </div>
             </div>
@@ -243,7 +243,7 @@ export class PicDataGrid extends Component {
             return `${name}: ${value}`;
         }
         return '-';
-    }
+    };
 
     renderCommunicationTools = communicationTools =>{
         return (
@@ -302,19 +302,19 @@ export class PicDataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center'>
+                <div className='table-title justify-content-between d-flex align-items-center'>
                     <span>{LangHelper.getResource('ChangesLog')}</span>
                 </div>
                 <Table
-                    width={1400}
-                    autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
+                    width={1400}
+                    autoWidth={false}
                     isPaging
-                    pageOption={pagingOption}
-                    onPaging={this.onPaging}
-                    containerPadding={0}
                     adjustedHeight={10}
+                    pageOption={pagingOption}
+                    containerPadding={0}
+                    onPaging={this.onPaging}
                 />
             </Fragment>
         );

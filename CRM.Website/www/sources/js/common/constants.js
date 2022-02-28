@@ -10,6 +10,8 @@ export const DateTimeFormat = 'MM/dd/yyyy hh:mm:ss a';
 
 export const TimeFormat = 'hh:mm:ss a';
 
+export const BackGroundChange = 'background-change';
+
 export const RoleIds = {
     'Member': 1,
     'CRMMember': 7000
@@ -64,3 +66,4 @@ export const LogActions = {
     SetCustomerToCreditTermGroup: 912,
     AddTheGeneralInformationForSuperFromExistingSuper: 913
 };
+

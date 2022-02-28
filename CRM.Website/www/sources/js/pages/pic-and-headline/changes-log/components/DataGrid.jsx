@@ -4,7 +4,7 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import { PAGING_SIZES, LogActions } from '@jsroot/common/constants';
+import { PAGING_SIZES, LogActions, BackGroundChange } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
     buildHeader = () => {
@@ -60,12 +60,11 @@ export class DataGrid extends Component {
                                     item.actionId === LogActions.AssignDirectAccountToPic || item.actionId === LogActions.RemoveDefaultPicForAGroupHeadline;
         if(isDetailPicAndGroupHl){
             detailValue = this.getDetailValuePicAndGroupHl(item, false);
-        }
-        else{
+        } else{
             detailValue = this.renderDetailsValuePicAndGroupHlBoth(item);
         }
         return detailValue;
-    }
+    };
 
     renderDetailsValuePicAndGroupHlBoth = item =>{
         let detailValue = '';
@@ -89,7 +88,7 @@ export class DataGrid extends Component {
                 break;
         }
         return detailValue;
-    }
+    };
 
     getDetailValuePicAndGroupHl = (item, isGroupHl) =>{
         const picsValue = this.getStringPics(item.newDAInfo.pics);
@@ -106,7 +105,6 @@ export class DataGrid extends Component {
     };
 
     getDetailValueGroupHeadlineAndPicBoth = (item, isGroupHeadline) =>{
-        const backGroundChange = 'background-change';
         const oldGroupHeadlineString = this.getStringValue(item.oldDAInfo.groupHeadline);
         const newGroupHeadlineString = this.getStringValue(item.newDAInfo.groupHeadline);
         const groupHeadlineValue = this.changeValueToHtmlString(oldGroupHeadlineString, newGroupHeadlineString);
@@ -118,12 +116,14 @@ export class DataGrid extends Component {
         const isGroupHeadlineValue = this.changeValueToHtmlString(oldIsGroupHeadline, newIsGroupHeadline);
         const isBackGroundChangeGroupHl = oldIsGroupHeadline !== newIsGroupHeadline;
         const isBackGroundChangePic = oldPicString !== newPicString;
+        const backGroundChangeGroupHl = isBackGroundChangeGroupHl ? BackGroundChange : '';
+        const backGroundChangePic = isBackGroundChangePic ? BackGroundChange : '';
         return (
             <div className='container-detail border-bottom-none min-height-38px'>
                     <div className='detail-child-col col-title-detail'>
                         <div className='p-2'>{LangHelper.getResource('GroupHeadline')}</div>
                     </div>
-                    <div className= {`detail-child-col col-value-detail ${oldGroupHeadlineString !== newGroupHeadlineString ? backGroundChange : ''}`}>
+                    <div className= {`detail-child-col col-value-detail ${oldGroupHeadlineString !== newGroupHeadlineString ? BackGroundChange : ''}`}>
                         {groupHeadlineValue}
                     </div>
                     <div className='detail-child-col col-title-detail'>
@@ -131,10 +131,10 @@ export class DataGrid extends Component {
                     </div>
                     {
                         isGroupHeadline ?
-                        <div className= {`detail-child-col col-value-detail border-right-none ${ isBackGroundChangeGroupHl ? backGroundChange : '' }`}>
+                        <div className= {`detail-child-col col-value-detail border-right-none ${ backGroundChangeGroupHl }`}>
                             {isGroupHeadlineValue}
                         </div> :
-                        <div className= {`detail-child-col col-value-detail border-right-none ${ isBackGroundChangePic ? backGroundChange : '' }`}>
+                        <div className= {`detail-child-col col-value-detail border-right-none ${ backGroundChangePic }`}>
                             {picsValue}
                         </div>
                     }
@@ -146,7 +146,7 @@ export class DataGrid extends Component {
         const oldPicString = this.getStringPics(item.oldDAInfo.pics);
         const newPicString = this.getStringPics(item.newDAInfo.pics);
         const picsValue = this.changeValueToHtmlString(oldPicString, newPicString);
-        const backgroundChange = oldPicString !== newPicString ? 'background-change' : '';
+        const backgroundChange = oldPicString !== newPicString ? BackGroundChange : '';
         return (
             this.renderHtmlDetailValue(LangHelper.getResource('PIC'), picsValue, backgroundChange, false)
         );
