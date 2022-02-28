@@ -4,7 +4,7 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import { PAGING_SIZES } from '@jsroot/common/constants';
+import { PAGING_SIZES, LogActions } from '@jsroot/common/constants';
 
 export class PicDataGrid extends Component {
     buildHeader = () => {
@@ -57,17 +57,16 @@ export class PicDataGrid extends Component {
     };
 
     renderDetailsValuePic = item =>{
-        const {logActions} = this.props;
         let detailValue = '';
         switch (item.actionId) {
-            case logActions.InsertNewPic:
+            case LogActions.InsertNewPic:
                 detailValue = this.getDetailValueInsertNewPic(item);
                 break;
-            case logActions.UpdatePic:
+            case LogActions.UpdatePic:
                 detailValue = this.getDetailValueUpdatePic(item, index);
                 break;
             case logActions.UpdatePicStatus:
-                detailValue = this.getDetailValueUpdatePicStatus(item);
+                LogActions = this.getDetailValueUpdatePicStatus(item);
                 break;
         }
         return detailValue;
@@ -328,8 +327,8 @@ export class PicDataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { picReport, gridParamsPic, logActions } = state;
-    return { picReport, gridParamsPic, logActions };
+    const { picReport, gridParamsPic } = state;
+    return { picReport, gridParamsPic };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PicDataGrid);

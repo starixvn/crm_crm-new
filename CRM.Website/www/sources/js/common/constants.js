@@ -48,3 +48,19 @@ export const borderStyle = {
     bottom: 'border-bottom-0',
     top: 'border-top-0'
 };
+
+export const LogActions = {
+    InsertNewPic: 901,
+    UpdatePic: 902,
+    UpdatePicStatus: 903,
+    RemoveDirectAccountFromPic: 904,
+    AssignDirectAccountToPic: 905,
+    UpdateThePicOfAHeadline: 906,
+    UpdateDefaultPicForAGroupHeadline: 907,
+    RemoveDefaultPicForAGroupHeadline: 908,
+    AddCustomerToCreditTermGroup: 909,
+    UpdateCreditTerm: 910,
+    RemoveCustomerFromCreditTermGroup: 911,
+    SetCustomerToCreditTermGroup: 912,
+    AddTheGeneralInformationForSuperFromExistingSuper: 913
+};

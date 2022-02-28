@@ -22,8 +22,7 @@ const picManagementSlice = createSlice({
         },
         headlineDA: null,
         picReport: null,
-        actionType: null,
-        logActions: null
+        actionType: null
     },
     reducers: {
         setGridParams: (state, action) => {
@@ -40,9 +39,6 @@ const picManagementSlice = createSlice({
         },
         setActionType: (state, action) => {
             state.actionType = action.payload;
-        },
-        setLogAction: (state, action) => {
-            state.logActions = action.payload;
         }
     }
 });
@@ -54,8 +50,7 @@ export const {
     setGridParamsPic,
     setHeadlineDA,
     setPicReport,
-    setActionType,
-    setLogAction
+    setActionType
 } = actions;
 
 export default reducer;

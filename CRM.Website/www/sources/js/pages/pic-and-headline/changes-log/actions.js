@@ -5,8 +5,7 @@ import {
     setGridParamsPic,
     setHeadlineDA,
     setPicReport,
-    setActionType,
-    setLogAction
+    setActionType
 } from './changesLogSlice';
 
 const getHeadlineDAReport = params => async dispatch => {
@@ -30,23 +29,13 @@ const getActionTypes = () => async () => {
     return await DataService.getDataAsync(url).then(response => response.data);
 };
 
-const getLogActions = () => async dispatch => {
-    const url = Site.resolveClientUrl('ChangesLog/GetLogActions');
-    await DataService.getDataAsync(url).then(response => {
-        const parseData = JSON.parse(response.data);
-        dispatch(setLogAction(parseData));
-    });
-};
-
 export const ActionCreators = {
     setGridParams,
     setGridParamsPic,
     setHeadlineDA,
     setPicReport,
     setActionType,
-    setLogAction,
     getHeadlineDAReport,
     getPicReport,
-    getActionTypes,
-    getLogActions
+    getActionTypes
 };

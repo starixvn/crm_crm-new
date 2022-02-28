@@ -74,13 +74,5 @@
             var actionTypes = await baseService.GetDataAsync<ActionType>(criteria);
             return Json(actionTypes);
         }
-
-        public ActionResult GetLogActions()
-        {
-            var logActions = Enum.GetValues(typeof(LogAction)).Cast<LogAction>().Select(action => $"\"{action.ToString()}\": {(int)action}");
-            var result = $"{{ {string.Join(", ", logActions)} }}";
-            return Json(result);
-        }
-
     }
 }

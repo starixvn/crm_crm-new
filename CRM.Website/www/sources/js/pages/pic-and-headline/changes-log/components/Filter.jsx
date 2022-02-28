@@ -41,7 +41,6 @@ export class Filter extends Component {
         this.props.getActionTypes().then(data => {
             this.handleActionTypes(data);
         });
-        this.props.getLogActions();
     }
 
     handleActionTypes = actionType =>{

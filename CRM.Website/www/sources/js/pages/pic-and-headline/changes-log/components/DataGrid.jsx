@@ -4,7 +4,7 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import { PAGING_SIZES } from '@jsroot/common/constants';
+import { PAGING_SIZES, LogActions } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
     buildHeader = () => {
@@ -55,29 +55,36 @@ export class DataGrid extends Component {
     };
 
     renderDetailsValue = item =>{
-        const {logActions} = this.props;
+        let detailValue = '';
+        const isDetailPicAndGroupHl = item.actionId === LogActions.RemoveDirectAccountFromPic ||
+                                    item.actionId === LogActions.AssignDirectAccountToPic || item.actionId === LogActions.RemoveDefaultPicForAGroupHeadline;
+        if(isDetailPicAndGroupHl){
+            detailValue = this.getDetailValuePicAndGroupHl(item, false);
+        }
+        else{
+            detailValue = this.renderDetailsValuePicAndGroupHlBoth(item);
+        }
+        return detailValue;
+    }
+
+    renderDetailsValuePicAndGroupHlBoth = item =>{
         let detailValue = '';
         switch (item.actionId) {
-            case logActions.RemoveDirectAccountFromPic:
-            case logActions.AssignDirectAccountToPic:
-            case logActions.RemoveDefaultPicForAGroupHeadline:
-                detailValue = this.getDetailValuePicAndGroupHl(item, false);
-                break;
-            case logActions.UpdateThePicOfAHeadline:
+            case LogActions.UpdateThePicOfAHeadline:
                 detailValue = this.getDetailValueGroupHeadlineAndPicBoth(item, false);
                 break;
-            case logActions.UpdateDefaultPicForAGroupHeadline:
+            case LogActions.UpdateDefaultPicForAGroupHeadline:
                 detailValue = this.getDetailValuePicBoth(item);
                 break;
-            case logActions.AddCustomerToCreditTermGroup:
-            case logActions.RemoveCustomerFromCreditTermGroup:
-            case logActions.AddTheGeneralInformationForSuperFromExistingSuper:
+            case LogActions.AddCustomerToCreditTermGroup:
+            case LogActions.RemoveCustomerFromCreditTermGroup:
+            case LogActions.AddTheGeneralInformationForSuperFromExistingSuper:
                 detailValue = this.getDetailValuePicAndGroupHl(item, true);
                 break;
-            case logActions.UpdateCreditTerm:
+            case LogActions.UpdateCreditTerm:
                 detailValue = this.getDetailValueGroupHeadlineAndPicBoth(item, true);
                 break;
-            case logActions.SetCustomerToCreditTermGroup:
+            case LogActions.SetCustomerToCreditTermGroup:
                 detailValue = this.renderHtmlDetailValue(LangHelper.getResource('IsGroupHeadline'), null, '', true);
                 break;
         }
@@ -237,8 +244,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { headlineDA, gridParams, logActions } = state;
-    return { headlineDA, gridParams, logActions };
+    const { headlineDA, gridParams } = state;
+    return { headlineDA, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);
