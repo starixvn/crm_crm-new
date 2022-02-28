@@ -2,6 +2,7 @@
 {
     using System.Drawing;
     using CRM.Models.Report.SettlementReport;
+    using CRM.Resources;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
@@ -17,7 +18,7 @@
         private readonly SettlementReportInfo reportInfo;
 
         public SettlementReportExcel(string templatePath, SettlementReportInfo report)
-            : base(templatePath, 0, report.Name)
+            : base(templatePath, 0, ViewResources.SheetNameSettlementIssuesReport)
         {
             this.reportInfo = report;
         }

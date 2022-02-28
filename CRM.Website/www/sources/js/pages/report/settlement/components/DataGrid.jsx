@@ -65,7 +65,7 @@ export class DataGrid extends PureComponent {
                 );
             } else {
                 return (
-                    <Row key={item.id}>
+                    <Row key={item.name}>
                         <Cell>{item.name}</Cell>
                         <Cell className="text-right">{item.numberOfIssues}</Cell>
                     </Row>

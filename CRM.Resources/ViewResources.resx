@@ -408,4 +408,7 @@
   <data name="ChangesLog" xml:space="preserve">
     <value>Changes Log</value>
   </data>
+  <data name="SheetNameSettlementIssuesReport" xml:space="preserve">
+    <value>Settlement Issues Report</value>
+  </data>
 </root>

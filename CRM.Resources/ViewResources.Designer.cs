@@ -844,6 +844,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settlement Issues Report.
+        /// </summary>
+        public static string SheetNameSettlementIssuesReport {
+            get {
+                return ResourceManager.GetString("SheetNameSettlementIssuesReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skype.
         /// </summary>
         public static string Skype {
