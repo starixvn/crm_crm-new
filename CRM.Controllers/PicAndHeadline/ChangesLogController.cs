@@ -1,41 +1,27 @@
 ﻿namespace CRM.Controllers.PicAndHeadline
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
-    using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Services;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models.PicAndHeadline;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
    [CrmPermission(FunctionKey = FunctionKey.ChangesLog, Policy = Policy.Host)]
     public class ChangesLogController : BaseController
     {
-        private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly IBaseService baseService;
 
         private const int EndHour = 23;
         private const int EndMinuteSecond = 59;
 
         public ChangesLogController(
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             IBaseService baseService
         )
         {
-            this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.baseService = baseService;
         }
 
