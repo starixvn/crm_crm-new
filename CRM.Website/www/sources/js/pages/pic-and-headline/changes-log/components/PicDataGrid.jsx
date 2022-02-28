@@ -49,7 +49,7 @@ export class PicDataGrid extends Component {
                     <Cell className='text-center'>{item.editBy}</Cell>
                     <Cell className='text-center'>{item.picTypeName}</Cell>
                     <Cell className='text-center'>{item.pic}</Cell>
-                    <Cell className='pl-1'>{item.action}</Cell>
+                    <Cell >{item.action}</Cell>
                     <Cell>{detailValuePic}</Cell>
                 </Row>
             </Fragment>
@@ -64,7 +64,7 @@ export class PicDataGrid extends Component {
                 detailValue = this.getDetailValueInsertNewPic(item);
                 break;
             case logActions.UpdatePic:
-                detailValue = this.getDetailValueUpdatePic(item);
+                detailValue = this.getDetailValueUpdatePic(item, index);
                 break;
             case logActions.UpdatePicStatus:
                 detailValue = this.getDetailValueUpdatePicStatus(item);
@@ -79,7 +79,7 @@ export class PicDataGrid extends Component {
         const countryValue = item.newPicInfo.country ? item.newPicInfo.country.name : '-';
         const newCommunicationTools = [];
         this.recursiveCommunicationTools(item.newPicInfo.communicationTools, newCommunicationTools);
-        const newCommunicationToolValue = newCommunicationTools.map(tool => this.getStringCommunicationTools(tool)).join('');
+        const newCommunicationToolValue = this.renderCommunicationTools(newCommunicationTools);
         const remarkValue = this.getStringValue(item.newPicInfo.remark);
         const picTypeName = LangHelper.getResource('PicType');
         const communicationToolsName = LangHelper.getResource('CommunicationTool');
@@ -112,11 +112,13 @@ export class PicDataGrid extends Component {
         const countryValue = this.changeValueToHtmlString(this.getStringObject(item.oldPicInfo.country), this.getStringObject(item.newPicInfo.country));
         const newCommunicationTool = [];
         this.recursiveCommunicationTools(item.newPicInfo.communicationTools, newCommunicationTool);
-        const newCommunicationToolValue = newCommunicationTool.map(tool => this.getStringCommunicationTools(tool)).join('');
+        const newCommunicationToolValue = this.renderCommunicationTools(newCommunicationTool);
+        const newCommunicationString = newCommunicationTool.map(tool => this.getStringCommunicationTools(tool)).join('');
         const oldCommunicationTool = [];
         this.recursiveCommunicationTools(item.oldPicInfo.communicationTools, oldCommunicationTool);
-        const oldCommunicationToolValue = oldCommunicationTool.map(tool => this.getStringCommunicationTools(tool)).join('');
-        const communicationToolValue = this.changeValueToHtmlString(oldCommunicationToolValue, newCommunicationToolValue);
+        const oldCommunicationToolValue = this.renderCommunicationTools(oldCommunicationTool);
+        const oldCommunicationString = oldCommunicationTool.map(tool => this.getStringCommunicationTools(tool)).join('');
+        const communicationToolValue = this.changeValueToHtmlString(oldCommunicationToolValue, newCommunicationToolValue, true, newCommunicationString !== oldCommunicationString);
         const remarkValue = this.changeValueToHtmlString(this.getStringValue(item.oldPicInfo.remark), this.getStringValue(item.newPicInfo.remark));
         return (
             <div className='pic-container'>
@@ -125,7 +127,7 @@ export class PicDataGrid extends Component {
                         LangHelper.getResource('PicType'), picTypeValue,
                         LangHelper.getResource('CommunicationTool'), communicationToolValue,
                         oldPicType !== newPicType,
-                        oldCommunicationToolValue !== newCommunicationToolValue
+                        oldCommunicationString !== newCommunicationString
                     )
                 }
                 {
@@ -182,18 +184,18 @@ export class PicDataGrid extends Component {
                 }
                 <div className='container-detail'>
                     <div className='detail-child-col col-title-detail'>
-                        <div className='pl-1'>{LangHelper.getResource('DefaultPIC')}</div>
+                        <div className='p-1'>{LangHelper.getResource('DefaultPIC')}</div>
                     </div>
                     <div className={`border-right-0 col-value-larger detail-child-col ${isChangeHeadline ? 'background-change' : ''}`}>
-                        <div className='pl-1'>{headlineValue}</div>
+                        <div className='p-1'>{headlineValue}</div>
                     </div>
                 </div>
             </div>
         );
     }
 
-    changeValueToHtmlString = (oldValue, newValue) =>{
-        const isChange = newValue !== oldValue;
+    changeValueToHtmlString = (oldValue, newValue, isCommunication = false, isChangeCommunication) =>{
+        const isChange = isCommunication ? isChangeCommunication : newValue !== oldValue;
         return (
             isChange ?
             <div>
@@ -211,16 +213,16 @@ export class PicDataGrid extends Component {
         return (
             <div className='container-detail'>
                 <div className='detail-child-col col-title-detail'>
-                    <div className='pl-1'>{title1}</div>
+                    <div className='p-1'>{title1}</div>
                 </div>
                 <div className={`${value2 !== null ? 'detail-child-col' : ''} col-value-detail ${isChange1 ? 'background-change' : ''}`}>
-                    <div className='pl-1'>{value1}</div>
+                    <div className='p-1'>{value1}</div>
                 </div>
-                <div className='detail-child-col col-title-detail'>
-                    <div className='pl-1'>{title2}</div>
+                <div className={`${title2 !== null ? 'detail-child-col col-title-detail' : ''}`}>
+                    <div className='p-1'>{title2}</div>
                 </div>
-                <div className={`detail-child-col col-value-detail ${isChange2 ? 'background-change' : ''}`}>
-                    <div className='pl-1'>{value2}</div>
+                <div className={`${value2 !== null ? 'detail-child-col col-value-detail' : ''} ${isChange2 ? 'background-change' : ''}`}>
+                    <div className='p-1'>{value2}</div>
                 </div>
             </div>
         );
@@ -239,11 +241,28 @@ export class PicDataGrid extends Component {
     getStringCommunicationTools = tools =>{
         if (tools.length > 0) {
             const name = tools[0].name;
-            const valueJoin = tools.map(tool => tool.value).join(', ');
-            return `${name}: ${valueJoin}`;
+            const value = tools.map(tool => tool.value).join(', ');
+            return `${name}: ${value}`;
         }
         return '-';
     }
+
+    renderCommunicationTools = communicationTools =>{
+        return (
+            <div>
+                {
+                    communicationTools.map(tools =>{
+                        if (tools.length > 0) {
+                            const name = tools[0].name;
+                            const valueJoin = tools.map(tool => tool.value).join(', ');
+                            return <div>{name}: {valueJoin}</div>;
+                        }
+                        return '-';
+                    })
+                }
+            </div>
+        );
+    };
 
     getStringObject = object => object && object.name ? object.name : '-';
 

@@ -549,7 +549,7 @@ export class CreateForm extends Component {
                             <Col sm="3" md="3" className="react-datepicker-wrapper-container form-control-wrapper">
                                 <DatePicker isInvalid={touched.startTime && errors.startTime}
                                     selected={values.startTime}
-                                    timeInputLabel="Time:" 
+                                    timeInputLabel="Time:"
                                     dateFormat="MMM dd, yyyy hh:mm aa"
                                     showTimeInput peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                     onChange={value => this.handleChangeStartTime(setFieldValue, value, values.endTime)}

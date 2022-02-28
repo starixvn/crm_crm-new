@@ -10,13 +10,13 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('LogID')}</HeaderCell>
-                <HeaderCell colWidth={17}>{LangHelper.getResource('LogDate')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('EditBy')}</HeaderCell>
-                <HeaderCell colWidth={17}>{LangHelper.getResource('HeadlineDA')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Action')}</HeaderCell>
-                <HeaderCell colWidth={45}>{LangHelper.getResource('Detail')}</HeaderCell>
+                <HeaderCell colWidth={5}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
+                <HeaderCell colWidth={7}>{LangHelper.getResource('LogID')}</HeaderCell>
+                <HeaderCell colWidth={12}>{LangHelper.getResource('LogDate')}</HeaderCell>
+                <HeaderCell colWidth={12}>{LangHelper.getResource('EditBy')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('HeadlineDA')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('Action')}</HeaderCell>
+                <HeaderCell colWidth={60}>{LangHelper.getResource('Detail')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -47,7 +47,7 @@ export class DataGrid extends Component {
                     <Cell className='text-center' style={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{ __html: item.logTime}} />
                     <Cell className='text-center'>{item.editBy}</Cell>
                     <Cell className='text-center'>{item.directAccount}</Cell>
-                    <Cell className='text-center'>{item.action}</Cell>
+                    <Cell>{item.action}</Cell>
                     <Cell>{detailValue}</Cell>
                 </Row>
             </Fragment>
@@ -78,7 +78,7 @@ export class DataGrid extends Component {
                 detailValue = this.getDetailValueGroupHeadlineAndPicBoth(item, true);
                 break;
             case logActions.SetCustomerToCreditTermGroup:
-                detailValue = this.renderHtmlDetailValue(LangHelper.getResource("IsGroupHeadline"), null, '', true);
+                detailValue = this.renderHtmlDetailValue(LangHelper.getResource('IsGroupHeadline'), null, '', true);
                 break;
         }
         return detailValue;
@@ -89,82 +89,82 @@ export class DataGrid extends Component {
         return (
             <div className='container-detail border-bottom-0 min-height-38px'>
                     <div className='detail-child-col col-title-detail'>
-                        <div className='p-1'>{isGroupHl ? LangHelper.getResource('GroupHeadline') : LangHelper.getResource('PIC')}</div>
+                        <div className='p-2'>{isGroupHl ? LangHelper.getResource('GroupHeadline') : LangHelper.getResource('PIC')}</div>
                     </div>
-                    <div className='detail-child-col border-right-0 col-value-larger'>
-                        <div className='p-1'>{isGroupHl ? item.newDAInfo.groupHeadline : picsValue}</div>
-                    </div>
-            </div>   
-        );
-    }
-
-    getDetailValueGroupHeadlineAndPicBoth = (item, isGroupHeadline) =>{
-        const groupHeadlineValue = this.changeValueToHtmlString(
-            this.getStringValue(item.oldDAInfo.groupHeadline),
-            this.getStringValue(item.newDAInfo.groupHeadline));
-        
-        const picsValue = this.changeValueToHtmlString(this.getStringPics(item.oldDAInfo.pics), this.getStringPics(item.newDAInfo.pics));
-        const isGroupHeadlineValue = this.changeValueToHtmlString(
-            this.convertBoolToDecision(item.oldDAInfo.isGroupHeadline),
-            this.convertBoolToDecision(item.newDAInfo.isGroupHeadline)
-        );
-
-        return (
-            <div className='container-detail border-bottom-none min-height-38px'>
-                    <div className='detail-child-col col-title-detail'>
-                        <div className='p-1'>{LangHelper.getResource('GroupHeadline')}</div>
-                    </div>
-                    <div className= {`detail-child-col col-value-detail 
-                                        ${item.oldDAInfo.groupHeadline !== item.newDAInfo.groupHeadline ? 'background-change' : ''}`
-                                    }
-                    >
-                        {groupHeadlineValue}
-                    </div>
-                    <div className='detail-child-col col-title-detail'>
-                        <div className='p-1'>{isGroupHeadline ? LangHelper.getResource('IsGroupHeadline') : LangHelper.getResource('PIC')}</div>
-                    </div>
-                    <div className= {`detail-child-col col-value-detail border-right-none
-                                        ${item.oldDAInfo.pics !== item.newDAInfo.pics ? 'background-change' : ''}`
-                                    }
-                    >
-                        {isGroupHeadline ? isGroupHeadlineValue : picsValue}
+                    <div className='detail-child-col border-right-0 ml-5'>
+                        <div className='p-2'>{isGroupHl ? item.newDAInfo.groupHeadline : picsValue}</div>
                     </div>
             </div>
         );
-    }
+    };
+
+    getDetailValueGroupHeadlineAndPicBoth = (item, isGroupHeadline) =>{
+        const backGroundChange = 'background-change';
+        const oldGroupHeadlineString = this.getStringValue(item.oldDAInfo.groupHeadline);
+        const newGroupHeadlineString = this.getStringValue(item.newDAInfo.groupHeadline);
+        const groupHeadlineValue = this.changeValueToHtmlString(oldGroupHeadlineString, newGroupHeadlineString);
+        const oldPicString = this.getStringPics(item.oldDAInfo.pics);
+        const newPicString = this.getStringPics(item.newDAInfo.pics);
+        const picsValue = this.changeValueToHtmlString(oldPicString, newPicString);
+        const oldIsGroupHeadline = this.convertBoolToDecision(item.oldDAInfo.isGroupHeadline);
+        const newIsGroupHeadline = this.convertBoolToDecision(item.newDAInfo.isGroupHeadline);
+        const isGroupHeadlineValue = this.changeValueToHtmlString(oldIsGroupHeadline, newIsGroupHeadline);
+        return (
+            <div className='container-detail border-bottom-none min-height-38px'>
+                    <div className='detail-child-col col-title-detail'>
+                        <div className='p-2'>{LangHelper.getResource('GroupHeadline')}</div>
+                    </div>
+                    <div className= {`detail-child-col col-value-detail ${oldGroupHeadlineString !== newGroupHeadlineString ? backGroundChange : ''}`}>
+                        {groupHeadlineValue}
+                    </div>
+                    <div className='detail-child-col col-title-detail'>
+                        <div className='p-2'>{isGroupHeadline ? LangHelper.getResource('IsGroupHeadline') : LangHelper.getResource('PIC')}</div>
+                    </div>
+                    {
+                        isGroupHeadline ?
+                        <div className= {`detail-child-col col-value-detail border-right-none ${oldIsGroupHeadline !== newIsGroupHeadline ? backGroundChange : ''}`}>
+                            {isGroupHeadlineValue}
+                        </div> : 
+                        <div className= {`detail-child-col col-value-detail border-right-none ${oldPicString !== newPicString ? backGroundChange : ''}`}>
+                            {picsValue}
+                        </div>
+                    }
+            </div>
+        );
+    };
 
     getDetailValuePicBoth = item => {
-        const picsValue = this.changeValueToHtmlString(this.getStringPics(item.oldDAInfo.pics), this.getStringPics(item.newDAInfo.pics));
-        const backgroundChange = item.oldDAInfo.pics !== item.newDAInfo.pics ? 'background-change' : '';
+        const oldPicString = this.getStringPics(item.oldDAInfo.pics);
+        const newPicString = this.getStringPics(item.newDAInfo.pics);
+        const picsValue = this.changeValueToHtmlString(oldPicString, newPicString);
+        const backgroundChange = oldPicString !== newPicString ? 'background-change' : '';
         return (
             this.renderHtmlDetailValue(LangHelper.getResource('PIC'), picsValue, backgroundChange, false)
         );
-    }
+    };
 
     renderHtmlDetailValue = (name, value, backgroundChange, isGroupHeadline) =>{
         return (
             <div className='container-detail border-bottom-none min-height-38px'>
                 <div className='detail-child-col col-title-detail'>
-                    <div className='p-1'>{name}</div>
+                    <div className='p-2'>{name}</div>
                 </div>
-                <div className={`detail-child-col border-right-none col-value-larger ${!isGroupHeadline ? backgroundChange : ''}`}>
+                <div className={`detail-child-col border-right-none ml-5 ${!isGroupHeadline ? backgroundChange : ''}`}>
                     {!isGroupHeadline ? value : 'Yes'}
                 </div>
-            </div>  
+            </div> 
         );
-    }
+    };
 
     convertBoolToDecision = value => {
         if (value === true) {
             return 'Yes';
-        }
-        else if (value === false){
+        }else if (value === false){
             return 'No';
-        }
-        else{
+        }else{
             return '-';
         }
-    }
+    };
 
     changeValueToHtmlString = (oldValue, newValue) =>{
         const isChange = newValue !== oldValue;
@@ -172,12 +172,12 @@ export class DataGrid extends Component {
             isChange ?
             <div>
                 <div className='new-value'>
-                    <div className='p-1'>{newValue}</div>
+                    <div className='p-2'>{newValue}</div>
                 </div><div className='old-value'>
-                    <div className='p-1'>{oldValue}</div>
+                    <div className='p-2'>{oldValue}</div>
                 </div>
             </div>
-            : <div className='p-1'>{newValue}</div>
+            : <div className='p-2'>{newValue}</div>
         );
     };
 
@@ -189,14 +189,14 @@ export class DataGrid extends Component {
             return pics.map(pic => `${pic.picName} (${pic.roleName})`).join(', ');
         }
         return '-';
-    }
+    };
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
         params['pageSize'] = pageSize;
         params['pageIndex'] = pageIndex;
         this.props.setGridParams(params);
-        this.props.getGridSettingLogs(params);
+        this.props.getHeadlineDAReport(params);
     };
 
     render() {

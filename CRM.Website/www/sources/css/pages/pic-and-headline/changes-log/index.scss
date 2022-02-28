@@ -50,9 +50,12 @@
     .table-container {
         .body-content table tbody{
             tr td{
-                padding: 0 !important;
                 word-break: break-word;
                 background-color: #fff !important;
+            }
+
+            tr td:last-child{
+                padding: 0 !important;
             }
 
             .detail-child-col {
@@ -72,10 +75,6 @@
             
             .old-value {
                 color: #4E98B4;
-            }
-        
-            .col-value-larger {
-                width: 80% !important;
             }
             
             .min-height-38px {
@@ -103,6 +102,10 @@
                     .col-value-detail {
                         width: 30%;
                         box-sizing: border-box;
+                    }
+
+                    .col-value-larger{
+                        width: 80%;
                     }
                 }
 
