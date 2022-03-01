@@ -18,8 +18,8 @@
         private List<BaseModel> tools;
         private PicReport picReport;
         private const byte RowStartHeader = 4;
-        private const byte BaseColumnIndex = 9;
-        private const byte StartComToolsIndex = 7;
+        private const byte BaseColumnIndex = 10;
+        private const byte StartComToolsIndex = 8;
 
         [Fact]
         public void RenderTitle_WhenCalled_ExpectedCopyRow()
@@ -105,17 +105,18 @@
 
             // Assert
             Assert.Equal(1, worksheet.Cells[1, 1].Value);
-            Assert.Equal(picInfo.Username, worksheet.Cells[1, 2].Value);
-            Assert.Equal(picInfo.RoleName, worksheet.Cells[1, 3].Value);
-            Assert.Equal(string.Join(", ", picInfo.Languages.Select(lang => lang.SettingValue)), worksheet.Cells[1, 4].Value);
-            Assert.Equal(picInfo.CountryName, worksheet.Cells[1, 5].Value);
-            Assert.Equal(picInfo.GroupHeadline, worksheet.Cells[1, 6].Value);
-            Assert.Equal(picInfo.CommunicationTools[0].Value, worksheet.Cells[1, 7].Value);
-            Assert.Equal(string.Empty, worksheet.Cells[1, 8].Value);
-            Assert.Equal(picInfo.Remark, worksheet.Cells[1, 9].Value);
-            Assert.Equal(ViewResources.Yes, worksheet.Cells[1, 10].Value);
+            Assert.Equal(picInfo.PicTypeName, worksheet.Cells[1, 2].Value);
+            Assert.Equal(picInfo.Username, worksheet.Cells[1, 3].Value);
+            Assert.Equal(picInfo.RoleName, worksheet.Cells[1, 4].Value);
+            Assert.Equal(string.Join(", ", picInfo.Languages.Select(lang => lang.SettingValue)), worksheet.Cells[1, 5].Value);
+            Assert.Equal(picInfo.CountryName, worksheet.Cells[1, 6].Value);
+            Assert.Equal(picInfo.GroupHeadline, worksheet.Cells[1, 7].Value);
+            Assert.Equal(picInfo.CommunicationTools[0].Value, worksheet.Cells[1, 8].Value);
+            Assert.Equal(string.Empty, worksheet.Cells[1, 9].Value);
+            Assert.Equal(picInfo.Remark, worksheet.Cells[1, 10].Value);
+            Assert.Equal(ViewResources.Yes, worksheet.Cells[1, 11].Value);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 1].Style.HorizontalAlignment);
-            Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 10].Style.HorizontalAlignment);
+            Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 11].Style.HorizontalAlignment);
             service.DidNotReceive().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
@@ -131,17 +132,18 @@
 
             // Assert
             Assert.Equal(2, worksheet.Cells[1, 1].Value);
-            Assert.Equal(picInfo.Username, worksheet.Cells[1, 2].Value);
-            Assert.Equal(picInfo.RoleName, worksheet.Cells[1, 3].Value);
-            Assert.Equal(string.Join(", ", picInfo.Languages.Select(lang => lang.SettingValue)), worksheet.Cells[1, 4].Value);
-            Assert.Equal(picInfo.CountryName, worksheet.Cells[1, 5].Value);
-            Assert.Equal(picInfo.GroupHeadline, worksheet.Cells[1, 6].Value);
-            Assert.Equal(picInfo.CommunicationTools[0].Value, worksheet.Cells[1, 7].Value);
-            Assert.Equal(string.Empty, worksheet.Cells[1, 8].Value);
-            Assert.Equal(picInfo.Remark, worksheet.Cells[1, 9].Value);
-            Assert.Equal(ViewResources.Yes, worksheet.Cells[1, 10].Value);
+            Assert.Equal(picInfo.PicTypeName, worksheet.Cells[1, 2].Value);
+            Assert.Equal(picInfo.Username, worksheet.Cells[1, 3].Value);
+            Assert.Equal(picInfo.RoleName, worksheet.Cells[1, 4].Value);
+            Assert.Equal(string.Join(", ", picInfo.Languages.Select(lang => lang.SettingValue)), worksheet.Cells[1, 5].Value);
+            Assert.Equal(picInfo.CountryName, worksheet.Cells[1, 6].Value);
+            Assert.Equal(picInfo.GroupHeadline, worksheet.Cells[1, 7].Value);
+            Assert.Equal(picInfo.CommunicationTools[0].Value, worksheet.Cells[1, 8].Value);
+            Assert.Equal(string.Empty, worksheet.Cells[1, 9].Value);
+            Assert.Equal(picInfo.Remark, worksheet.Cells[1, 10].Value);
+            Assert.Equal(ViewResources.Yes, worksheet.Cells[1, 11].Value);
             Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 1].Style.HorizontalAlignment);
-            Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 10].Style.HorizontalAlignment);
+            Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Cells[1, 11].Style.HorizontalAlignment);
             service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
