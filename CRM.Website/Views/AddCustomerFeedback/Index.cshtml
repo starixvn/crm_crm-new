@@ -1,4 +1,5 @@
-﻿@model bool
+﻿@using CRM.Models;
+@model BaseModel
 @{
     ViewData["Title"] = ViewResources.AddCustomerFeedback;
 }
@@ -19,3 +20,4 @@
     </environment>
 }
 <div id="app-container"></div>
+<input type="hidden" id="custId" name="custId" value="@Model.Id" />
