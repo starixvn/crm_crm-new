@@ -40,7 +40,7 @@ export class DataGrid extends Component {
     renderRow = (item, index) => {
         const detailValue = this.renderDetailsValue(item);
         return (
-            <Fragment>
+            <div>
                 <Row key={index}>
                     <Cell className='text-center'>{index + this.startIndex}</Cell>
                     <Cell className='text-center'>{item.logId}</Cell>
@@ -50,7 +50,7 @@ export class DataGrid extends Component {
                     <Cell>{item.action}</Cell>
                     <Cell>{detailValue}</Cell>
                 </Row>
-            </Fragment>
+            </div>
         );
     };
 
@@ -94,12 +94,12 @@ export class DataGrid extends Component {
         const picsValue = this.getStringPics(item.newDAInfo.pics);
         return (
             <div className='container-detail border-bottom-0 min-height-38px'>
-                    <div className='detail-child-col col-title-detail'>
-                        <div className='p-2'>{isGroupHl ? LangHelper.getResource('GroupHeadline') : LangHelper.getResource('PIC')}</div>
-                    </div>
-                    <div className='detail-child-col border-right-0 ml-5'>
-                        <div className='p-2'>{isGroupHl ? item.newDAInfo.groupHeadline : picsValue}</div>
-                    </div>
+                <div className='detail-child-col col-title-detail'>
+                    <div className='p-2'>{isGroupHl ? LangHelper.getResource('GroupHeadline') : LangHelper.getResource('PIC')}</div>
+                </div>
+                <div className='detail-child-col border-right-0 ml-5'>
+                    <div className='p-2'>{isGroupHl ? item.newDAInfo.groupHeadline : picsValue}</div>
+                </div>
             </div>
         );
     };
