@@ -411,4 +411,7 @@
   <data name="SheetNameSettlementIssuesReport" xml:space="preserve">
     <value>Settlement Issues Report</value>
   </data>
+  <data name="AddCustomerFeedback" xml:space="preserve">
+    <value>Add Feedback</value>
+  </data>
 </root>

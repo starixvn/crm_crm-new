@@ -6,10 +6,12 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Services;
-    using CRM.Criteria.Feedback.AddGuestFeedback;
+    using CRM.Criteria.Feedback.AddFeedback;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -19,15 +21,21 @@
         private readonly INapSession napSession;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
+        private readonly INapSettings napSettings;
+        private readonly IUserService userService;
 
         public AddGuestFeedbackController(
             INapSession napSession,
             ISettingService settingService,
-            IBaseService baseService)
+            IBaseService baseService,
+            INapSettings napSettings,
+            IUserService userService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
             this.baseService = baseService;
+            this.napSettings = napSettings;
+            this.userService = userService;
         }
 
         public IActionResult Index()
@@ -37,6 +45,7 @@
 
         public async Task<ActionResult> AllSetting()
         {
+            var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             var languages = await settingService.GetLanguageAsync(SettingConstants.Active, true);
             var countries = await settingService.GetCountryAsync(SettingConstants.Active, true);
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
@@ -74,6 +83,11 @@
                 MainCategories = mainCategorys,
                 SubCategories = subCategorys
             };
+
+            if (hasCreateFeedbackPermission)
+            {
+                settings.Statuses = settings.Statuses.Where(s => !s.Name.Equals("Deleted", System.StringComparison.OrdinalIgnoreCase));
+            }
 
             return Json(settings);
         }

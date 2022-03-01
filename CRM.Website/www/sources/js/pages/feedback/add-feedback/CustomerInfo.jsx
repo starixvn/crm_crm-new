@@ -241,7 +241,6 @@ export class CustomerInfo extends Component {
         );
     };
 
-
     render() {
         const {values, handleChange, setFieldValue, settings, maxDate, renderOptions} = this.props;
         return (

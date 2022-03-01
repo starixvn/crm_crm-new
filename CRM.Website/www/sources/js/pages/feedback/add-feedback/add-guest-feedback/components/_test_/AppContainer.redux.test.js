@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../../actions';
 
-describe('connect ', () => {
+describe('connect', () => {
     let mapStateToProps, mapDispatchToProps;
     const connectMock = jest.fn();
 
@@ -14,7 +14,7 @@ describe('connect ', () => {
             mapDispatchToProps = mapDispatchToPropsFunc;
             return connectMock;
         });
-        require('../CreateForm').default;
+        require('../AppContainer').default;
     });
 
     afterAll(() => {

@@ -1,10 +1,10 @@
 import React from 'react';
-import { CreateForm } from '../CreateForm';
+import CreateForm from '../CreateForm';
 import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import * as commonFunction from '../../common.functions';
+import * as commonFunction from '../add-feedback/../add-guest-feedback/common.functions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import * as shareScripts from '@jsroot/common/shareScripts';

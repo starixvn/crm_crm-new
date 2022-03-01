@@ -1,7 +1,7 @@
 ﻿
 namespace CRM.Criteria.Tests.Feedback.AddGuestFeedback
 {
-    using CRM.Criteria.Feedback.AddGuestFeedback;
+    using CRM.Criteria.Feedback.AddFeedback;
     using Xunit;
 
     public class AddGuestFeedbackCommandTests

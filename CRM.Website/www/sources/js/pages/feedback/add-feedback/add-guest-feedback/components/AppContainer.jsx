@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import PropTypes from 'prop-types';
-import CreateForm from './CreateForm';
+import CreateForm from '../../CreateForm';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -30,11 +30,15 @@ export class AppContainer extends Component {
     }
 
     render() {
-        if (this.props.settings === null || this.props.balanceUpday === null) {
+        const {settings,balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult } = this.props;
+        if (settings === null || balanceUpday === null) {
             return null;
         }
         return (
-            <CreateForm />
+            <CreateForm
+                settings = {settings} balanceUpday={balanceUpday} feedbackSubjectTemplates = {feedbackSubjectTemplates}
+                confirmCreateGuestDialog = {confirmCreateGuestDialog} addFeedbackResult = {addFeedbackResult}
+            />
         );
     }
 }
@@ -42,9 +46,9 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, balanceUpday } = state;
+    const { settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult } = state;
     return {
-        settings, balanceUpday
+        settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult
     };
 };
 

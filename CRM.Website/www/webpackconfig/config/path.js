@@ -51,7 +51,7 @@ const scriptPaths = {
     report_settlement: ['./www/sources/js/pages/report/settlement/index.js'],
     feedback_subject: ['./www/sources/js/pages/admin-tool/feedback-subject/index.js'],
     latest_feedback: ['./www/sources/js/pages/feedback/latest-feedback/index.js'],
-    add_guest_feedback: ['./www/sources/js/pages/feedback/add-guest-feedback/index.js'],
+    add_guest_feedback: ['./www/sources/js/pages/feedback/add-feedback/add-guest-feedback/index.js'],
     customer_info: ['./www/sources/js/pages/customer/customer-info/index.js'],
     create_multiple_logs: ['./www/sources/js/pages/feedback/multiple-logs/create/index.js'],
     deleted_feedback: ['./www/sources/js/pages/feedback/deleted-feedback/index.js'],

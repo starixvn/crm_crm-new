@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { ActionCreators } from '../actions';
 import moment from 'moment';
 import { Button, Col, Form, Row, OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
 import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import { validateFormik, initValues, getParams } from '../common.functions';
+import { validateFormik, initValues, getParams } from './add-guest-feedback/common.functions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -24,10 +21,10 @@ import AutoComplete from '@jsroot/components/AutoComplete';
 import Site from '@jsroot/common/site';
 import CustomerInfo from './CustomerInfo';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import { validateNoOfInquiry } from '../../common.functions';
+import { validateNoOfInquiry } from '../common.functions';
 import { borderStyle  } from '@jsroot/common/constants';
 
-export class CreateForm extends Component {
+export default class CreateForm extends Component {
     static propTypes = {
         feedbackSubjectTemplates: PropTypes.arrayOf(PropTypes.object)
     };
@@ -959,11 +956,3 @@ export class CreateForm extends Component {
         );
     }
 }
-
-const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
-const mapStateToProps = state => {
-    const { settings,balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult } = state;
-    return { settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateForm);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppContainer } from '../AppContainer';
-import CreateForm from "../CreateForm";
+import CreateForm from "../../../CreateForm";
 import { shallow } from 'enzyme';
 
 describe('AppContainer', () => {

@@ -1,4 +1,4 @@
-﻿namespace CRM.Criteria.Feedback.AddGuestFeedback
+﻿namespace CRM.Criteria.Feedback.AddFeedback
 {
     using CRM.Core.Constants;
     using CRM.Core.Extensions.XML;

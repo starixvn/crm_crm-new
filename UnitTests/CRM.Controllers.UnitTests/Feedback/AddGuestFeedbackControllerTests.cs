@@ -8,23 +8,26 @@
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
-    using CRM.Criteria.Feedback.AddGuestFeedback;
+    using CRM.Criteria.Feedback.AddFeedback;
     using CRM.Models;
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class AddGuestFeedbackControllerTests
     {
         private INapSession napSession;
         private ISettingService settingService;
         private IBaseService baseService;
+        private INapSettings napSettings;
+        private IUserService userService;
         private readonly Fixture fixture = new Fixture();
 
         [Fact]
@@ -138,7 +141,9 @@
             napSession = Substitute.For<INapSession>();
             settingService = Substitute.For<ISettingService>();
             baseService = Substitute.For<IBaseService>();
-            return new AddGuestFeedbackController(napSession, settingService, baseService);
+            napSettings = Substitute.For<INapSettings>();
+            userService = Substitute.For<IUserService>();
+            return new AddGuestFeedbackController(napSession, settingService, baseService, napSettings, userService);
         }
 
         #endregion Helpers

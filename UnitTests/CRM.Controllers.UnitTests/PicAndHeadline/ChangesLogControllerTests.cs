@@ -1,8 +1,6 @@
 ﻿namespace CRM.Controllers.UnitTests.PicAndHeadline
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.PicAndHeadline;
