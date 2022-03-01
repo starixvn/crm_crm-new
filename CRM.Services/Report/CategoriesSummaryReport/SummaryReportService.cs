@@ -1,11 +1,7 @@
-﻿using CRM.Core.Models;
-using CRM.Core.Services;
+﻿using CRM.Core.Services;
 using CRM.Criteria.Report.CategoriesSummaryReport;
 using CRM.Models.Report.CategoriesSummaryReport;
-using CRM.Models.Setting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CRM.Services.Report.CategoriesSummaryReport
 {

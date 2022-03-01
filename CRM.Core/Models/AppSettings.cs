@@ -1,4 +1,7 @@
-﻿namespace CRM.Core.Models
+﻿using System;
+using System.Configuration;
+
+namespace CRM.Core.Models
 {
     public class AppSettings
     {
@@ -8,5 +11,7 @@
         public int SingleSignOnExpiredTime { get; set; }
         public string CRMActionLogKey { get; set; }
         public string CRMActionLogBoolValue { get; set; }
+        public static DateTime MinReportDate => Convert.ToDateTime(ConfigurationManager.AppSettings["minReportDate"]);
+
     }
 }

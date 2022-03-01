@@ -10,10 +10,12 @@ using static Fanex.NAP.Core.Business.Constant;
 
 namespace CRM.Controllers.Report
 {
-    [Route("Report/Summary")]
-    [CrmPermission(FunctionKey = FunctionKey.CategoriesSummaryReport, Policy = Policy.Read)]
-    class SummaryReportController : BaseController
+    //[CrmPermission(FunctionKey = FunctionKey.CategoriesSummaryReport, Policy = Policy.Read)]
+    public class SummaryReportController : Controller
     {
-       
+        public IActionResult Index()
+        {
+            return Ok("OK");
+        }
     }
 }

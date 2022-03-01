@@ -16,8 +16,8 @@
 
         private const byte RowStartBody = 6;
         private const byte RowStartHeader = 4;
-        private const byte BaseColumnIndex = 9;
-        private const byte StartComToolsIndex = 7;
+        private const byte BaseColumnIndex = 10;
+        private const byte StartComToolsIndex = 8;
         private int totalColumn = BaseColumnIndex;
         private const byte WidthExtraSmall = 7;
         private const byte WidthSmall = 10;
@@ -78,6 +78,7 @@
         {
             var colIndex = 1;
             worksheet.Cells[rowIndex, colIndex++].Value = index;
+            worksheet.Cells[rowIndex, colIndex++].Value = picInfo.PicTypeName;
             worksheet.Cells[rowIndex, colIndex++].Value = picInfo.Username;
             worksheet.Cells[rowIndex, colIndex++].Value = picInfo.RoleName;
             worksheet.Cells[rowIndex, colIndex++].Value = string.Join(", ", picInfo.Languages.Select(lang => lang.SettingValue));
