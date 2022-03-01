@@ -41,18 +41,16 @@ export class PicDataGrid extends Component {
     renderRow = (item, index) => {
         const detailValuePic = this.renderDetailsValuePic(item);
         return (
-            <Fragment>
-                <Row key={index}>
-                    <Cell className='text-center'>{index + this.startIndex}</Cell>
-                    <Cell className='text-center'>{item.logId}</Cell>
-                    <Cell className='text-center' style={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{ __html: item.logTime}} />
-                    <Cell className='text-center'>{item.editBy}</Cell>
-                    <Cell className='text-center'>{item.picTypeName}</Cell>
-                    <Cell className='text-center'>{item.pic}</Cell>
-                    <Cell >{item.action}</Cell>
-                    <Cell>{detailValuePic}</Cell>
-                </Row>
-            </Fragment>
+            <Row key={index}>
+                <Cell className='text-center'>{index + this.startIndex}</Cell>
+                <Cell className='text-center'>{item.logId}</Cell>
+                <Cell className='text-center' style={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{ __html: item.logTime}} />
+                <Cell className='text-center'>{item.editBy}</Cell>
+                <Cell className='text-center'>{item.picTypeName}</Cell>
+                <Cell className='text-center'>{item.pic}</Cell>
+                <Cell >{item.action}</Cell>
+                <Cell>{detailValuePic}</Cell>
+            </Row>
         );
     };
 
