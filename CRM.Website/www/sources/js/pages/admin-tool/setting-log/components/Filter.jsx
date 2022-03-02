@@ -62,13 +62,14 @@ export class Filter extends Component {
 
     handleSubmit = () => {
         const { handler, fromDate, toDate, actionId } = this.state;
+
         const params = {
             username: handler !== '' ? handler : null,
             actionId: actionId,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
 
         this.props.setGridParams(params);
@@ -84,6 +85,7 @@ export class Filter extends Component {
         const all = [
             { name: 'All', id: 0 }
         ];
+
         const actionLogs = [...all, ...this.props.actionLogs];
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
@@ -153,8 +155,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { actionLogs } = state;
-    return { actionLogs };
+    const { actionLogs, gridParams } = state;
+    return { actionLogs, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

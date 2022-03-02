@@ -315,7 +315,7 @@ export class FilterEditInforms extends PureComponent {
             ...this.filterParams(values),
             titleId: this.props.detail.titleId
         };
-        this.props.setGridParams({pageIndex: 1, pageSize: 100});
+        this.props.setGridParams({pageIndex: 1, pageSize: this.props.gridParams.pageSize});
         this.props.setFilterData({...this.props.filterData, values: {...params, title: values.title, changeFilter: this.getChangeFilter(values)}});
         this.props.setEditedInforms([]);
         this.props.getEditInforms(params);
@@ -325,7 +325,7 @@ export class FilterEditInforms extends PureComponent {
         setSubmitting(true);
         this.getTypeAccount(values);
         const params = {...this.filterParams(values)};
-        this.props.setGridParams({pageIndex: 1, pageSize: 100});
+        this.props.setGridParams({pageIndex: 1, pageSize: this.props.gridParams.pageSize});
         this.props.setFilterData({...this.props.filterData, values: {...params, title: values.title}});
         this.props.setEditedInforms([]);
         this.props.getNewInforms(params);
@@ -351,8 +351,8 @@ export class FilterEditInforms extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const {  allSettings, filterData } = state;
-    return {  allSettings, filterData };
+    const {  allSettings, filterData, gridParams } = state;
+    return {  allSettings, filterData, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterEditInforms);

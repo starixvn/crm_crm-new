@@ -191,7 +191,7 @@ export class EditCommunitionSetting extends PureComponent {
                             />
                         </Col>
                         <Col sm="2" md="2">
-                            <Form.Label className="required sub-category-left" htmlFor="subCategoryId">
+                            <Form.Label className="required sub-category-left col-form-label" htmlFor="subCategoryId">
                                 {LangHelper.getResource('SubCategory')}
                             </Form.Label>
                         </Col>

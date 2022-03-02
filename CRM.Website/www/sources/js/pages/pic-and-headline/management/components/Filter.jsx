@@ -79,7 +79,7 @@ export class Filter extends PureComponent {
             headlineName: filter.headlineName,
             role: filter.role,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
     };
 
@@ -152,8 +152,8 @@ export class Filter extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { setting } = state;
-    return { setting };
+    const { setting, gridParams } = state;
+    return { setting, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

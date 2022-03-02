@@ -41,7 +41,7 @@ export class FilterContactInforms extends PureComponent {
     handleSearch = event => {
         event.preventDefault();
         const contactParams = this.contactParams();
-        this.props.setGridParams({pageIndex: 1, pageSize: 100});
+        this.props.setGridParams({pageIndex: 1, pageSize: this.props.gridParams.pageSize});
         this.props.setEditedInforms([]);
         this.props.getContactInforms(contactParams);
     };
@@ -123,8 +123,8 @@ export class FilterContactInforms extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInforms, contactInformSettings } = state;
-    return { titleDetail, contactInforms, contactInformSettings };
+    const { titleDetail, contactInforms, contactInformSettings, gridParams } = state;
+    return { titleDetail, contactInforms, contactInformSettings, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterContactInforms);
