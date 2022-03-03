@@ -11,8 +11,8 @@ namespace CRM.Controllers.AdminTool
     using System.Linq;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
-    public class SettingLogController : BaseController
+    //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    public class SettingLogController : Controller
     {
         private readonly ISettingService settingService;
         private readonly IActionLogService actionLogService;
@@ -27,7 +27,7 @@ namespace CRM.Controllers.AdminTool
             this.actionLogService = actionLogService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.SettingLog, Policy = Policy.Read)]
+        //[CrmPermission(FunctionKey = FunctionKey.SettingLog, Policy = Policy.Read)]
         public IActionResult Index()
         {
             return View();
@@ -40,7 +40,7 @@ namespace CRM.Controllers.AdminTool
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.SettingLog, Policy = Policy.Read)]
+        //[CrmPermission(FunctionKey = FunctionKey.SettingLog, Policy = Policy.Read)]
         public async Task<IActionResult> GetSettingLog([FromBody] GetSettingLogCriteria criteria)
         {
             var settingLogs = await actionLogService.GetSettingLogsAsync(criteria);
