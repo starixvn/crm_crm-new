@@ -29,6 +29,10 @@
     cursor: pointer;
 }
 
+.table-container{
+    max-width: none !important;
+}
+
 .body-content{
     tr{
         &.open td{
