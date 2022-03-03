@@ -67,3 +67,10 @@ export const LogActions = {
     AddTheGeneralInformationForSuperFromExistingSuper: 913
 };
 
+export const DefaultLanguages = {
+    NotApply: 0,
+    English: 1200,
+    Mandarin: 1201,
+    Cantonese: 1202
+};
+
