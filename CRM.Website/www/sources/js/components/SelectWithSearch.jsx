@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import LangHelper from '@jsroot/common/langHelper';
 
 export default class SelectWithSearch extends Component {
+    static propTypes = {
+        isSelectOption: PropTypes.bool
+    };
+    static defaultProps = {
+        isSelectOption: false
+    };
+
     constructor(props) {
         super(props);
         this.wrapperRef = React.createRef();
@@ -15,6 +23,7 @@ export default class SelectWithSearch extends Component {
             options: this.props.options,
             filter: '',
             isHideNA: this.props.isHideNA,
+            isSelectOption: this.props.isSelectOption,
             collapsedAll: true
         };
     }
@@ -84,7 +93,7 @@ export default class SelectWithSearch extends Component {
     refreshViewValue = () => {
         const item = {
             id: 0,
-            name: 'N/A'
+            name: this.state.isSelectOption ? '-- Select --' : 'N/A'
         };
         this.setState({
             selectFormStatus: '',
@@ -147,7 +156,14 @@ export default class SelectWithSearch extends Component {
                                         </a>
                                     </li>
                                 }
-
+                                {
+                                    this.state.isSelectOption &&
+                                    <li>
+                                        <a onClick={this.refreshViewValue}>
+                                            <span>-- Select --</span>
+                                        </a>
+                                    </li>
+                                }
                                 {
                                     options.map((item, index) => {
                                         if (item.childSites.length === 0) {

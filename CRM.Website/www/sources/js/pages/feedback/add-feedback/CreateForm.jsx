@@ -341,6 +341,7 @@ export default class CreateForm extends Component {
                     <div id="collapse-expand-show-identity">
                         {
                             <CustomerInfo
+                                customerDetail={customerDetail}
                                 values={values}
                                 handleChange={handleChange}
                                 setFieldValue={setFieldValue}

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
+import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+
 export class CustomerInfo extends Component {
     constructor(props) {
         super(props);
@@ -241,8 +243,86 @@ export class CustomerInfo extends Component {
         );
     };
 
+    renderContact = (values, handleChange) =>{
+        return (
+            <Form.Group as={Row}>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="phone1">{LangHelper.getResource('Phone1')}</Form.Label>
+                        <Col sm="8" md="8">
+                            <div className="d-flex">
+                                <div className="code-country">
+                                    <Form.Control type="text" size="sm" value={values.countryCode}
+                                        name="countryCode" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="code-area">
+                                    <Form.Control type="text" size="sm" value={values.areaCode}
+                                        name="areaCode" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="phone">
+                                    <Form.Control type="text" size="sm" value={values.phoneNumber}
+                                        className="shadow-none" autoComplete="off" onChange={handleChange} name="phoneNumber"
+                                    />
+                                </div>
+                            </div>
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col md="4" sm="4">
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="4" htmlFor="phone2">{LangHelper.getResource('Phone2')}</Form.Label>
+                        <Col md="8" sm="8">
+                            <div className="d-flex">
+                                <div className="code-country">
+                                    <Form.Control type="text" size="sm" value={values.countryCode2}
+                                        name="countryCode2" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="code-area">
+                                    <Form.Control type="text" size="sm" value={values.areaCode2}
+                                        name="areaCode2" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="phone">
+                                    <Form.Control type="text" size="sm" value={values.phoneNumber2}
+                                        name="phoneNumber2" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group as={Row}><Form.Label htmlFor="phone3" column sm="4" md="4" >{LangHelper.getResource('Phone3')}</Form.Label>
+                        <Col sm="8" md="8">
+                            <div className="d-flex">
+                                <div className="code-country">
+                                    <Form.Control type="text" size="sm" value={values.countryCode3}
+                                        name="countryCode3" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="code-area">
+                                    <Form.Control type="text" size="sm" value={values.areaCode3}
+                                        name="areaCode3" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="phone">
+                                    <Form.Control type="text" size="sm" value={values.phoneNumber3}
+                                        name="phoneNumber3" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Form.Group>
+        );
+    };
+
     render() {
-        const {values, handleChange, setFieldValue, settings, maxDate, renderOptions} = this.props;
+        const {values, handleChange, setFieldValue, settings, maxDate, renderOptions, customerDetail} = this.props;
         return (
             <div>
                 <Form.Group as={Row} className="pt-2" >
@@ -316,98 +396,102 @@ export class CustomerInfo extends Component {
                             </Col>
                         </Form.Group>
                     </Col>
-                    <Col sm="4" md="4">
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="4" md="4" htmlFor="licenseeType">
-                                {LangHelper.getResource('LicenseeType')}
-                            </Form.Label>
-                            <Col sm="8" md="8">
-                                <Form.Control as="select" size="sm" className="shadow-none"
-                                    name="licenseeType" id="licenseeType" value={values.licenseeType} onChange={handleChange}
-                                >
-                                    <option value='' hidden disabled />
-                                    {settings.licenseeTypes.map(item => renderOptions(item.name, item.id))}
-                                </Form.Control>
-                            </Col>
-                        </Form.Group>
+                    {
+                        customerDetail === null ?
+                        <Col sm="4" md="4">
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="4" md="4" htmlFor="licenseeType">
+                                    {LangHelper.getResource('LicenseeType')}
+                                </Form.Label>
+                                <Col sm="8" md="8">
+                                    <Form.Control as="select" size="sm" className="shadow-none"
+                                        name="licenseeType" id="licenseeType" value={values.licenseeType} onChange={handleChange}
+                                    >
+                                        <option value='' hidden disabled />
+                                        {settings.licenseeTypes.map(item => renderOptions(item.name, item.id))}
+                                    </Form.Control>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        :
+                        <Col sm="4" md="4">
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="4" md="4" htmlFor="site">
+                                    {LangHelper.getResource('Site')}
+                                </Form.Label>
+                                <Col sm="8" md="8">
+                                    <SelectWithSearch
+                                        className='basic-single'
+                                        options={settings.sites}
+                                        value={values.siteId}
+                                        name={values.siteName}
+                                        isSelectOption
+                                        isHideNA
+                                        OnChangeValue={item => handleChange('siteId',item.id)}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    }
+                </Form.Group>
+                <Form.Group>
+                    <Col sm="2" md="2">
+                        <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentCRMInfo')}
+                            htmlFor="check-box-overwrite" checked={values.isOverwriteInfo}
+                            onChange={this.setFieldValue('isOverwriteInfo', !values.isOverwriteInfo)}
+                        />
                     </Col>
                 </Form.Group>
+                {
+                    customerDetail !== null &&
+                    <Form.Group as={Row}>
+                        <Col sm="4" md="4">
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="4" md="4" htmlFor="birthday">
+                                    {LangHelper.getResource('RefCodes')}
+                                </Form.Label>
+                                <Col sm="8" md="8">
+                                    <Form.Control type="text" size="sm" value={values.refCodes}
+                                        name="refCodes" id="refCodes" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col sm="4" md="4">
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="4" md="4" htmlFor="secretCode">
+                                    {LangHelper.getResource('SecretCode')}
+                                </Form.Label>
+                                <Col sm="8" md="8">
+                                    <Form.Control type="text" size="sm" value={values.secretCode}
+                                        name="secretCode" id="secretCode" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col sm="4" md="4">
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="4" md="4" htmlFor="licenseeType">
+                                    {LangHelper.getResource('LicenseeType')}
+                                </Form.Label>
+                                <Col sm="8" md="8">
+                                    <Form.Control as="select" size="sm" className="shadow-none"
+                                        name="licenseeType" id="licenseeType" value={values.licenseeType} onChange={handleChange}
+                                    >
+                                        <option value='' hidden disabled />
+                                        {settings.licenseeTypes.map(item => renderOptions(item.name, item.id))}
+                                    </Form.Control>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Form.Group>
+                }
                 <div className="separate">
                     <hr />
                 </div>
-                <Form.Group as={Row}>
-                <Col sm="4" md="4">
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="4" htmlFor="phone1">{LangHelper.getResource('Phone1')}</Form.Label>
-                        <Col sm="8" md="8">
-                            <div className="d-flex">
-                                <div className="code-country">
-                                    <Form.Control type="text" size="sm" value={values.countryCode}
-                                        name="countryCode" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                    />
-                                </div>
-                                <div className="code-area">
-                                    <Form.Control type="text" size="sm" value={values.areaCode}
-                                        name="areaCode" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                    />
-                                </div>
-                                <div className="phone">
-                                    <Form.Control type="text" size="sm" value={values.phoneNumber}
-                                        className="shadow-none" autoComplete="off" onChange={handleChange} name="phoneNumber"
-                                    />
-                                </div>
-                            </div>
-                        </Col>
-                    </Form.Group>
-                </Col>
-                <Col md="4" sm="4">
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="4" htmlFor="phone2">{LangHelper.getResource('Phone2')}</Form.Label>
-                        <Col md="8" sm="8">
-                            <div className="d-flex">
-                                <div className="code-country">
-                                    <Form.Control type="text" size="sm" value={values.countryCode2}
-                                        name="countryCode2" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                    />
-                                </div>
-                                <div className="code-area">
-                                    <Form.Control type="text" size="sm" value={values.areaCode2}
-                                        name="areaCode2" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                    />
-                                </div>
-                                <div className="phone">
-                                    <Form.Control type="text" size="sm" value={values.phoneNumber2}
-                                        name="phoneNumber2" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                    />
-                                </div>
-                            </div>
-                        </Col>
-                    </Form.Group>
-                </Col>
-                <Col sm="4" md="4">
-                    <Form.Group as={Row}><Form.Label htmlFor="phone3" column sm="4" md="4" >{LangHelper.getResource('Phone3')}</Form.Label>
-                        <Col sm="8" md="8">
-                            <div className="d-flex">
-                                <div className="code-country">
-                                    <Form.Control type="text" size="sm" value={values.countryCode3}
-                                        name="countryCode3" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                    />
-                                </div>
-                                <div className="code-area">
-                                    <Form.Control type="text" size="sm" value={values.areaCode3}
-                                        name="areaCode3" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                    />
-                                </div>
-                                <div className="phone">
-                                    <Form.Control type="text" size="sm" value={values.phoneNumber3}
-                                        name="phoneNumber3" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                    />
-                                </div>
-                            </div>
-                        </Col>
-                    </Form.Group>
-                </Col>
-                </Form.Group>
+                {
+                    this.renderContact(values, handleChange)
+                }
                 {
                     this.renderCustomerInformation(values, handleChange)
                 }

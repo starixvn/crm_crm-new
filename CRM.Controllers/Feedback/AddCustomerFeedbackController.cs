@@ -71,6 +71,7 @@
             var mainCategorys = await settingService.GetMainCategoryAsync(SettingConstants.Active);
             var subCategorys = await settingService.GetSubCategoryAsync(active: SettingConstants.Active);
             var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
+            var sites = await settingService.GetAllSitesWithGroupAsync();
             var settings = new CreateFeedbackViewModel
             {
                 Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
@@ -81,6 +82,7 @@
                 Statuses = statuses.Where(s => s.StatusId != (int)FeedbackStatus.Deleted),
                 Titles = titles,
                 Roles = roles,
+                Sites = sites,
                 LicenseeTypes = licenseeTypes,
                 ProductNA = productNA,
                 SubProductNA = subproductNA,
