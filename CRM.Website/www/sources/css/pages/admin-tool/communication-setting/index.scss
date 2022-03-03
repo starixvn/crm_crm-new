@@ -38,8 +38,10 @@
 }
 
 .communication-setting-modal {
+    overflow-x: auto !important;
     .modal-content {
         width: 83%;
+        min-width: 950px;
         margin-left: 101px;
         
         .modal-body {
