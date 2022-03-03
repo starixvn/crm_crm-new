@@ -41,12 +41,12 @@
             this.userService = userService;
         }
 
-        public IActionResult Index(int custid, string custName)
+        public IActionResult Index(int custid, string custname)
         {
             var customerInfo = new BaseModel
             {
                 Id = custid,
-                Name = custName
+                Name = custname
             };
             return View(customerInfo);
         }

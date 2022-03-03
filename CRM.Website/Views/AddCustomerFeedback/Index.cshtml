@@ -5,10 +5,10 @@
 }
 @section Styles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/dev/pages/feedback/add-customer-feedback/index.chunk.css" />
+        <link rel="stylesheet" href="~/css/dev/pages/feedback/add-feedback/index.chunk.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/pro/pages/feedback/add-customer-feedback/index.chunk.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/pro/pages/feedback/add-feedback/index.chunk.css" asp-append-version="true" />
     </environment>
 }
 @section Scripts{
@@ -20,4 +20,5 @@
     </environment>
 }
 <div id="app-container"></div>
-<input type="hidden" id="custId" name="custId" value="@Model.Id" />
+<input type="hidden" id="id" name="custId" value="@Model.Id" />
+<input type="hidden" id="name" name="custName" value="@Model.Name" />

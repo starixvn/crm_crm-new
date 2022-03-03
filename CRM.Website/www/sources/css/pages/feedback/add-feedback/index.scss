@@ -18,6 +18,11 @@
         border-image: initial;
         border-width: 1px;
 
+        .username {
+            font-weight: bold;
+            color: red;
+        }
+
         .hideCustomerDetail, .hideDetails{
             display: none
         }

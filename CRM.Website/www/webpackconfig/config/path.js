@@ -17,7 +17,7 @@ const cssPaths = {
     report_settlement: ['./www/sources/css/pages/report/settlement/index.scss'],
     feedback_subject: ['./www/sources/css/pages/admin-tool/feedback-subject/index.scss'],
     latest_feedback: ['./www/sources/css/pages/feedback/latest-feedback.scss'],
-    add_guest_feedback: ['./www/sources/css/pages/feedback/add-guest-feedback/index.scss'],
+    add_feedback: ['./www/sources/css/pages/feedback/add-feedback/index.scss'],
     customer_info: ['./www/sources/css/pages/customer/customer-info/index.scss'],
     create_multiple_logs: ['./www/sources/css/pages/feedback/multiple-logs/create.scss'],
     deleted_feedback: ['./www/sources/css/pages/feedback/deleted-feedback/index.scss'],
@@ -66,7 +66,8 @@ const scriptPaths = {
     setting_log: ['./www/sources/js/pages/admin-tool/setting-log/index.js'],
     deleted_feedback_statistic: ['./www/sources/js/pages/report/deleted-feedback-statistic/index.js'],
     log_statistics: ['./www/sources/js/pages/report/log-statistics/index.js'],
-    change_log: ['./www/sources/js/pages/pic-and-headline/changes-log/index.js']
+    change_log: ['./www/sources/js/pages/pic-and-headline/changes-log/index.js'],
+    add_customer_feedback: ['./www/sources/js/pages/feedback/add-feedback/add-customer-feedback/index.js']
 };
 
 module.exports = {

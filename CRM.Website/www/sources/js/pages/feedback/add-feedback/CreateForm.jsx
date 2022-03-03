@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import { validateFormik, initValues, getParams } from './add-guest-feedback/common.functions';
+import { validateFormik, initValues, initValuesAddCustomerFb, getParams } from './add-guest-feedback/common.functions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -315,24 +315,27 @@ export default class CreateForm extends Component {
     };
 
     renderIdentityInformation = (values, errors, touched, handleChange, setFieldValue) => {
+        const customerDetail = this.props.customerDetail;
         return (
             <div className={`panel-group ${borderStyle.bottom}`}>
                 <Form.Group as={Row} className='title'
                     aria-controls="collapse-expand-identity"
                     aria-expanded={!this.state.collapse.isShowCustomerDetailOption}
                 >
-                    <Form.Label column sm="2" md="2" className="required" onClick={() => this.handleCollapseExpend('isShowCustomerDetailOption')}>
-                        {LangHelper.getResource('IdentityInformation')}
+                    <Form.Label column sm="2" md="2" className={customerDetail === null ? 'required' : 'username'} onClick={() => this.handleCollapseExpend('isShowCustomerDetailOption')}>
+                        {customerDetail === null ?  LangHelper.getResource('IdentityInformation') : customerDetail.username}
                     </Form.Label>
-                    <Col sm="2" md="2">
-                        <Form.Control type="text" size="sm" value={values.identityInformation}
-                            name="identityInformation" id="identityInformation"
-                            className="shadow-none" autoComplete="off"
-                            isInvalid={touched.identityInformation && errors.identityInformation}
-                            onChange={handleChange}
-                        />
-                    </Col>
-                    <Col sm="8" md="8" />
+                    {
+                        customerDetail === null && 
+                            <Col sm="2" md="2">
+                                <Form.Control type="text" size="sm" value={values.identityInformation}
+                                    name="identityInformation" id="identityInformation"
+                                    className="shadow-none" autoComplete="off"
+                                    isInvalid={touched.identityInformation && errors.identityInformation}
+                                    onChange={handleChange} 
+                                />
+                            </Col>
+                    }
                 </Form.Group>
                 <Collapse in={!this.state.collapse.isShowCustomerDetailOption}>
                     <div id="collapse-expand-show-identity">
@@ -355,7 +358,7 @@ export default class CreateForm extends Component {
 
     renderDetails = (values, errors, touched, handleChange, setFieldValue) => {
         const collapse = this.state.collapse;
-        const { statuses, languages, responses, countries, extensions } = this.props.settings;
+        const { statuses, languages, responses, roles, countries, extensions, customerDetail } = this.props.settings;
         return (
             <div>
                 <div className={`panel-group ${!this.state.collapse.isShowDetailsOption ? borderStyle.bottom : ''}`}>
@@ -467,6 +470,22 @@ export default class CreateForm extends Component {
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row}>
+                                {
+                                    customerDetail !== null &&
+                                    <Col sm="4" md="4">
+                                        <Form.Group as={Row}>
+                                            <Form.Label column sm="4" md="4" htmlFor="role">{LangHelper.getResource('Role')}</Form.Label>
+                                            <Col sm="8" md="8">
+                                                <Form.Control as="select" size="sm" className="shadow-none"
+                                                    name="role" id="role" value={values.role} onChange={handleChange}
+                                                >
+                                                    <option value="" hidden disabled />
+                                                    {roles.map(item => this.renderOptions(item.value, item.id))}
+                                                </Form.Control>
+                                            </Col>
+                                        </Form.Group>
+                                    </Col>
+                                }
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>
                                         <Form.Label column sm="4" md="4" htmlFor="country">{LangHelper.getResource('Country')}</Form.Label>
@@ -545,10 +564,13 @@ export default class CreateForm extends Component {
                             </Form.Group>
                         </div>
                         {
-                            this.renderDescriptionsAndSolution(values, errors, touched, handleChange, setFieldValue)
+                            customerDetail === null && this.renderDescriptionsAndSolution(values, errors, touched, handleChange, setFieldValue)
                         }
                     </div>
                 </Collapse >
+                {
+                    customerDetail !== null && this.renderDescriptionsAndSolution(values, errors, touched, handleChange, setFieldValue)
+                }
             </div>
         );
     };
@@ -940,15 +962,18 @@ export default class CreateForm extends Component {
     };
 
     render() {
+        const {settings, customerDetail}= this.props;
         const autoGeneratedInit = this.state.autoGeneratedInit;
         if (autoGeneratedInit === '') {
             return null;
         }
 
+        const initialValues = customerDetail !== null ? initValuesAddCustomerFb(settings, customerDetail, autoGeneratedInit) : initValues(settings, autoGeneratedInit);
+
         return (
             <Formik
-                initialValues={initValues(this.props.settings, autoGeneratedInit)}
-                validate={values => validateFormik(values, this.props.settings)}
+                initialValues={initialValues}
+                validate={values => validateFormik(values, settings)}
                 onSubmit={this.handleSubmit}
             >
                 {this.renderForm}

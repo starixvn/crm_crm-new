@@ -43,6 +43,8 @@ function generateConfig(environment) {
             [`${jsPath}/pages/report/deleted-feedback-statistic/index`]: pathConfig.scriptPaths.deleted_feedback_statistic,
             [`${jsPath}/pages/report/log-statistics/index`]: pathConfig.scriptPaths.log_statistics,
             [`${jsPath}/pages/picandheadline/changesLog/index`]: pathConfig.scriptPaths.change_log,
+            [`${jsPath}/pages/feedback/add-customer-feedback/index`]: pathConfig.scriptPaths.add_customer_feedback,
+
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -57,7 +59,7 @@ function generateConfig(environment) {
             [`${cssPath}/pages/report/settlement/index`]: pathConfig.cssPaths.report_settlement,
             [`${cssPath}/pages/adminTool/feedbacksubject/index`]: pathConfig.cssPaths.feedback_subject,
             [`${cssPath}/pages/customer/customerinfo/index`]: pathConfig.cssPaths.customer_info,
-            [`${cssPath}/pages/feedback/add-guest-feedback/index`]: pathConfig.cssPaths.add_guest_feedback,
+            [`${cssPath}/pages/feedback/add-feedback/index`]: pathConfig.cssPaths.add_feedback,
             [`${cssPath}/pages/feedback/latest-feedback`]: pathConfig.cssPaths.latest_feedback,
             [`${cssPath}/pages/feedback/multiple-logs/create`]: pathConfig.cssPaths.create_multiple_logs,
             [`${cssPath}/pages/feedback/deleted-feedback/index`]: pathConfig.cssPaths.deleted_feedback,
