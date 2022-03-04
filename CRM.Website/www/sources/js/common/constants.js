@@ -46,7 +46,7 @@ export const Policy = {
     Host: 2
 };
 
-export const borderStyle = {
+export const BorderStyle = {
     bottom: 'border-bottom-0',
     top: 'border-top-0'
 };

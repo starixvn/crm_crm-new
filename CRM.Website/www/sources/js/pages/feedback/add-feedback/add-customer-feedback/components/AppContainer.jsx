@@ -31,18 +31,19 @@ export class AppContainer extends Component {
         this.props.getAllSettings();
         this.props.getBalanceUpday();
         this.props.getCustomerDetail({customerId: this.props.id});
-        
     }
 
     render() {
-        const { settings, balanceUpday, customerDetail, feedbackSubjectTemplates, confirmCreateGuestDialog, addCustomerFeedbackResult } = this.props;
+        const { settings, balanceUpday, customerDetail, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult } = this.props;
         if (settings === null || balanceUpday === null || customerDetail === null) {
             return null;
         }
         return (
             <CreateForm
-                settings = {settings} balanceUpday= {balanceUpday} customerDetail={customerDetail} feedbackSubjectTemplates = {feedbackSubjectTemplates}
-                confirmCreateGuestDialog = {confirmCreateGuestDialog} addCustomerFeedbackResult = {addCustomerFeedbackResult}
+                settings={settings} balanceUpday={balanceUpday} customerDetail={customerDetail} feedbackSubjectTemplates={feedbackSubjectTemplates}
+                confirmCreateGuestDialog={confirmCreateGuestDialog} setConfirmCreateGuestDialog={this.props.setConfirmCreateGuestDialog}
+                addFeedbackResult={addFeedbackResult}  verifyUserName={this.props.verifyUserName} getTicketInfoByRef={this.props.getTicketInfoByRef}
+                setAddFeedback={this.props.setAddFeedback} duplicateFeedbackResult={duplicateFeedbackResult} addFeedback={this.props.addFeedback}
             />
         );
     }
@@ -51,8 +52,10 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, balanceUpday, customerDetail, feedbackSubjectTemplates, confirmCreateGuestDialog, addCustomerFeedbackResult } = state;
-    return { settings, balanceUpday, customerDetail, feedbackSubjectTemplates, confirmCreateGuestDialog, addCustomerFeedbackResult };
+    const { settings, balanceUpday, customerDetail, feedbackSubjectTemplates,
+            confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult } = state;
+    return { settings, balanceUpday, customerDetail, feedbackSubjectTemplates,
+            confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

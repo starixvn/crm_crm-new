@@ -35,6 +35,7 @@ export const {
     setBalanceUpday,
     setFeedbackSubjectTemplates,
     setAddFeedback,
+    setDuplicateFeedbackResult,
     setConfirmCreateGuestDialog
 } = actions;
 

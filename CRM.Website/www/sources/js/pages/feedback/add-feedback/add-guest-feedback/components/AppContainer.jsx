@@ -30,15 +30,16 @@ export class AppContainer extends Component {
     }
 
     render() {
-        const {settings,balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addCustomerFeedbackResult } = this.props;
+        const {settings,balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult } = this.props;
         if (settings === null || balanceUpday === null) {
             return null;
         }
         return (
             <CreateForm
-                settings = {settings} balanceUpday={balanceUpday} feedbackSubjectTemplates = {feedbackSubjectTemplates}
-                confirmCreateGuestDialog = {confirmCreateGuestDialog} addFeedbackResult = {addCustomerFeedbackResult}
-                customerDetail = {null}
+                settings={settings} balanceUpday={balanceUpday} customerDetail={null} feedbackSubjectTemplates={feedbackSubjectTemplates}
+                confirmCreateGuestDialog={confirmCreateGuestDialog} addFeedbackResult={addFeedbackResult} verifyUserName={this.props.verifyUserName}
+                getTicketInfoByRef={this.props.getTicketInfoByRef} setAddFeedback={this.props.setAddFeedback} addFeedback={this.props.addFeedback}
+                setConfirmCreateGuestDialog={this.props.setConfirmCreateGuestDialog}
             />
         );
     }

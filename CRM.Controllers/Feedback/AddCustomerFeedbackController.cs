@@ -115,7 +115,7 @@
         private CommandResult CheckAddCustomerFeedbackPermission()
         {
             var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            var commandResult = new CommandResult();
+            var commandResult = new CommandResult { Code = 0 };
             if (!hasCreateFeedbackPermission)
             {
                 commandResult = new CommandResult

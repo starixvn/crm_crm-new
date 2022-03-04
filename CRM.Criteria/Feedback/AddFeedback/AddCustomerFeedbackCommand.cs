@@ -2,10 +2,12 @@
 {
     public class AddCustomerFeedbackCommand : AddGuestFeedbackCommand
     {
-        public bool OverrideCRMInfo { get; set; }
+        public int CustId { get; set; }
+        public bool IsOverWrite { get; set; }
+
         public override string GetSettingKey()
         {
-            return "CustomerFeedbackIns";
+            return "Acc_CRM_CustomerFeedbackIns";
         }
 
         public override bool IsValid() => true;

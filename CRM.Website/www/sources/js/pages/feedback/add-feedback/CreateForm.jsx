@@ -22,7 +22,8 @@ import Site from '@jsroot/common/site';
 import CustomerInfo from './CustomerInfo';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { validateNoOfInquiry } from '../common.functions';
-import { borderStyle  } from '@jsroot/common/constants';
+import { BorderStyle  } from '@jsroot/common/constants';
+import DataService from '@jsroot/common/dataService';
 
 export default class CreateForm extends Component {
     static propTypes = {
@@ -57,7 +58,9 @@ export default class CreateForm extends Component {
             betTypeOptions: [],
             listOfCustomerValid: [],
             listOfCustomer: [],
-            countClickRefTicket: 0
+            countClickRefTicket: 0,
+            checkDuplicateDialog: { show: false },
+            duplicateFeedbackId: 0
         };
     }
 
@@ -315,18 +318,22 @@ export default class CreateForm extends Component {
     };
 
     renderIdentityInformation = (values, errors, touched, handleChange, setFieldValue) => {
-        const customerDetail = this.props.customerDetail;
+        const {customerDetail} = this.props;
+        const {isShowCustomerDetailOption} = this.state.collapse;
+        const isCollapse = customerDetail === null ? !isShowCustomerDetailOption : isShowCustomerDetailOption;
         return (
-            <div className={`panel-group ${borderStyle.bottom}`}>
-                <Form.Group as={Row} className='title'
+            <div className={`panel-group ${BorderStyle.bottom}`}>
+                <Form.Group as={Row} className={`title ${!isCollapse ? BorderStyle.bottom : ''}`}
                     aria-controls="collapse-expand-identity"
-                    aria-expanded={!this.state.collapse.isShowCustomerDetailOption}
+                    aria-expanded={isCollapse}
                 >
-                    <Form.Label column sm="2" md="2" className={customerDetail === null ? 'required' : 'username'} onClick={() => this.handleCollapseExpend('isShowCustomerDetailOption')}>
+                    <Form.Label column sm="2" md="2" className={customerDetail === null ? 'required' : 'username'}
+                        onClick={() => this.handleCollapseExpend('isShowCustomerDetailOption')}
+                    >
                         {customerDetail === null ?  LangHelper.getResource('IdentityInformation') : customerDetail.username}
                     </Form.Label>
                     {
-                        customerDetail === null && 
+                        customerDetail === null &&
                             <Col sm="2" md="2">
                                 <Form.Control type="text" size="sm" value={values.identityInformation}
                                     name="identityInformation" id="identityInformation"
@@ -337,7 +344,7 @@ export default class CreateForm extends Component {
                             </Col>
                     }
                 </Form.Group>
-                <Collapse in={!this.state.collapse.isShowCustomerDetailOption}>
+                <Collapse in={isCollapse}>
                     <div id="collapse-expand-show-identity">
                         {
                             <CustomerInfo
@@ -359,11 +366,12 @@ export default class CreateForm extends Component {
 
     renderDetails = (values, errors, touched, handleChange, setFieldValue) => {
         const collapse = this.state.collapse;
-        const { statuses, languages, responses, roles, countries, extensions, customerDetail } = this.props.settings;
+        const customerDetail = this.props.customerDetail;
+        const { statuses, languages, responses, roles, countries, extensions } = this.props.settings;
         return (
             <div>
-                <div className={`panel-group ${!this.state.collapse.isShowDetailsOption ? borderStyle.bottom : ''}`}>
-                    <Form.Group as={Row} className={`title ${borderStyle.bottom}`}
+                <div className={`panel-group ${!this.state.collapse.isShowDetailsOption ? BorderStyle.bottom : ''}`}>
+                    <Form.Group as={Row} className={`title ${BorderStyle.bottom}`}
                         onClick={() => this.handleCollapseExpend('isShowDetailsOption')}
                         aria-controls="collapse-expand-identity"
                         aria-expanded={!collapse.isShowDetailsOption}
@@ -375,7 +383,7 @@ export default class CreateForm extends Component {
                 </div>
                 <Collapse in={!this.state.collapse.isShowDetailsOption}>
                     <div>
-                        <div className={`panel-group ${borderStyle.bottom}`} id="collapse-expand-show-detail">
+                        <div className={`panel-group ${BorderStyle.bottom}`} id="collapse-expand-show-detail">
                             <Form.Group as={Row} className="pt-2">
                                 <Col sm="4" md="4">
                                     <Form.Group as={Row}>
@@ -512,41 +520,7 @@ export default class CreateForm extends Component {
                                     </Form.Group>
                                 </Col>
                             </Form.Group>
-                            <Form.Group as={Row} className="pt-1 pb-2">
-                                <Col sm="2" md="2">
-                                    <Form.Check type="checkbox" id="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
-                                        htmlFor="check-box-verify" checked={this.state.collapse.isVerifyCustomer}
-                                        onChange={() => this.handleCollapseExpend('isVerifyCustomer')}
-                                    />
-                                </Col>
-                                <Col sm="1" md="1">
-                                    <Form.Label>
-                                        <OverlayTrigger placement="bottom-start" overlay={
-                                            <Tooltip id="tooltip-customers">{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
-                                        >
-                                            <span className="fa fa-question-circle-o" />
-                                        </OverlayTrigger>
-                                    </Form.Label>
-                                </Col>
-                                <Col sm="9" md="9">
-                                    <Row>
-                                        <Col sm="10" md="10">
-                                            <Form.Control type="text" size="sm" value={values.customerNameInput}
-                                                name="customerNameInput" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                                onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
-                                            />
-                                        </Col>
-                                        <Col sm="2" md="2">
-                                            <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
-                                                disabled={!this.state.collapse.isVerifyCustomer}
-                                                size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
-                                            >
-                                                {LangHelper.getResource('Verify')}
-                                            </Button>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Form.Group>
+                            {this.renderVerifyCustomer(values, handleChange, setFieldValue)}
                             <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomerVerify} />
                             {this.renderRefTicket(values, setFieldValue)}
                             <Form.Group as={Row} className="pt-1 pb-2">
@@ -575,6 +549,44 @@ export default class CreateForm extends Component {
             </div>
         );
     };
+
+    renderVerifyCustomer = (values, handleChange, setFieldValue) =>(
+        <Form.Group as={Row} className="pt-1 pb-2">
+            <Col sm="2" md="2">
+                <Form.Check type="checkbox" id="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
+                    htmlFor="check-box-verify" checked={this.state.collapse.isVerifyCustomer}
+                    onChange={() => this.handleCollapseExpend('isVerifyCustomer')}
+                />
+            </Col>
+            <Col sm="1" md="1">
+                <Form.Label>
+                    <OverlayTrigger placement="bottom-start" overlay={
+                        <Tooltip id="tooltip-customers">{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
+                    >
+                        <span className="fa fa-question-circle-o" />
+                    </OverlayTrigger>
+                </Form.Label>
+            </Col>
+            <Col sm="9" md="9">
+                <Row>
+                    <Col sm="10" md="10">
+                        <Form.Control type="text" size="sm" value={values.customerNameInput}
+                            name="customerNameInput" className="shadow-none" autoComplete="off" onChange={handleChange}
+                            onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
+                        />
+                    </Col>
+                    <Col sm="2" md="2">
+                        <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
+                            disabled={!this.state.collapse.isVerifyCustomer}
+                            size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
+                        >
+                            {LangHelper.getResource('Verify')}
+                        </Button>
+                    </Col>
+                </Row>
+            </Col>
+        </Form.Group>
+    );
 
     renderRefTicket = (values, setFieldValue) => {
         return (
@@ -758,7 +770,7 @@ export default class CreateForm extends Component {
     renderEditBlockDescription = (values, errors, touched, handleChange, setFieldValue) => {
         return (
             <div>
-                <div className={`panel-group ${borderStyle.bottom}`}>
+                <div className={`panel-group ${BorderStyle.bottom}`}>
                     <Form.Group as={Row} className="title">
                         <Form.Label column sm="2" md="2">{LangHelper.getResource('AutoGenerated')}</Form.Label>
                     </Form.Group>
@@ -770,14 +782,13 @@ export default class CreateForm extends Component {
                         </div>
                     </Form.Group>
                 </div>
-                <div className={`panel-group ${!this.state.collapse.description ? borderStyle.bottom : ''}`}>
-                    <div className="title edit_block" onClick={() => this.handleCollapseExpend('description')}
+                <div className={`panel-group ${!this.state.collapse.description ? BorderStyle.bottom : ''}`}>
+                    <div className="title edit_block border-bottom-0" onClick={() => this.handleCollapseExpend('description')}
                         aria-controls="collapse-expand-remark"
                         aria-expanded={!this.state.collapse.description}
                     >
                         <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Description')}</Form.Label>
                         <div className="float-right pr-3" onClick={e => this.handleEditBlock(e, 'isEditDescription')}>
-                            <span className="fa fa-eye pr-2" />
                             <span>{LangHelper.getResource('Preview')}</span>
                         </div>
                     </div>
@@ -801,7 +812,7 @@ export default class CreateForm extends Component {
 
     renderPreviewDescription = values => {
         return (
-            <div className={`panel-group ${!this.state.collapse.description ? borderStyle.bottom : ''}`}>
+            <div className={`panel-group ${this.state.collapse.description ? BorderStyle.bottom : ''}`}>
                 <div className="title edit_block" onClick={() => this.handleCollapseExpend('description')}
                     aria-controls="collapse-expand-remark"
                     aria-expanded={!this.state.collapse.description}
@@ -830,7 +841,7 @@ export default class CreateForm extends Component {
                         ? this.renderEditBlockDescription(values, errors, touched, handleChange, setFieldValue)
                         : this.renderPreviewDescription(values)
                 }
-                <div className={`panel-group ${this.state.collapse.solution ? borderStyle.bottom : ''}`}>
+                <div className={`panel-group ${this.state.collapse.solution ? BorderStyle.bottom : ''}`}>
                     <div className="title edit_block" onClick={() => this.handleCollapseExpend('solution')}
                         aria-controls="collapse-expand-remark"
                         aria-expanded={!this.state.collapse.solution}
@@ -842,7 +853,6 @@ export default class CreateForm extends Component {
                                     <span>{LangHelper.getResource('Edit')}</span>
                                     :
                                     <div>
-                                        <span className="fa fa-eye pr-2" />
                                         <span>{LangHelper.getResource('Preview')}</span>
                                     </div>
                             }
@@ -900,7 +910,7 @@ export default class CreateForm extends Component {
                         title={LangHelper.getResource('Confirmation')}
                         contents={<div dangerouslySetInnerHTML={{ __html: this.props.confirmCreateGuestDialog.confirmMessage }} />}
                         buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleCreateGuestFeedback}>
+                            <Button variant="primary" size="sm" onClick={this.handleCreateFeedback}>
                                 {LangHelper.getResource('OK')}
                             </Button>,
                             <Button variant="primary" size="sm" onClick={this.handleCloseConfirmCreateGuestDialog}>
@@ -908,6 +918,22 @@ export default class CreateForm extends Component {
                             </Button>
                         ]}
                         onClose={this.handleCloseConfirmCreateGuestDialog}
+                    />
+                }
+                {
+                    this.state.checkDuplicateDialog.show &&
+                    <SweetModalDialog size="lg"
+                        title={LangHelper.getResource('Warning')}
+                        contents={<div>{`This customer has a similar log with running number ${this.state.duplicateFeedbackId}. Do you want to create this log?`}</div>}
+                        buttons={[
+                            <Button variant="primary" size="sm" onClick={this.createFeedback}>
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                            <Button variant="primary" size="sm" onClick={this.handleCloseCheckDuplicateDialog}>
+                                {LangHelper.getResource('Cancel')}
+                            </Button>
+                        ]}
+                        onClose={this.handleCloseCheckDuplicateDialog}
                     />
                 }
                 <Form.Group as={Row} className="mt-3">
@@ -931,10 +957,10 @@ export default class CreateForm extends Component {
     };
 
     handleConfirm = values => {
-        const params = getParams(values, this.props.settings, this.state.listOfCustomerValid);
+        const params = getParams(values, this.props.customerDetail, this.props.settings, this.state.listOfCustomerValid);
         const specialChars = ['<', '>', '#', '&'];
-        const inValidName = specialChars.filter(x => params.UserName.indexOf(x) >= 0);
-        if (inValidName.length > 0) {
+        const inValidName = this.props.customerDetail === null && specialChars.filter(x => params.UserName.indexOf(x) >= 0).length > 0;
+        if (inValidName) {
             params.UserName = params.UserName.replace(/<|>|#|&/g, '');
             this.confirmCreateAddGuestFeedback(params, LangHelper.getResource('ConfirmAddGuestFeedbackSpecialChar'));
         } else {
@@ -950,7 +976,40 @@ export default class CreateForm extends Component {
         });
     };
 
-    handleCreateGuestFeedback = () => {
+    handleCheckDuplicateFeedback = async (params) => {
+        const url = 'Feedback/CheckFeedbackDuplication';
+        Site.blockUI();
+        await DataService.postDataAsync(url, {
+            customerId: params.CustId,
+            categories: params.Categories,
+            startTime: params.FeedbackDate
+        }).then(response => {
+            this.setState({ duplicateFeedbackId: response.data});
+        }).then(() => Site.unblockUI());
+
+        if (this.state.duplicateFeedbackId === 0) {
+            this.createFeedback();
+        } else {
+            this.setState({ checkDuplicateDialog: {show: true} });
+        }
+    };
+
+    handleCloseCheckDuplicateDialog = () => {
+        this.setState({ checkDuplicateDialog: { show: false } });
+        this.props.setConfirmCreateGuestDialog({ show: false });
+    };
+
+    handleCreateFeedback = () => {
+        const { params } = this.props.confirmCreateGuestDialog;
+        if(this.props.customerDetail !== null){
+            this.handleCheckDuplicateFeedback(params);
+        }
+        else{
+           this.createFeedback();
+        }
+    };
+
+    createFeedback = async () => {
         const { params } = this.props.confirmCreateGuestDialog;
         this.props.addFeedback(params).then(() => {
             this.handleCloseConfirmCreateGuestDialog();
@@ -960,7 +1019,7 @@ export default class CreateForm extends Component {
                 }, 3000);
             }
         });
-    };
+    }
 
     render() {
         const {settings, customerDetail}= this.props;
@@ -974,7 +1033,7 @@ export default class CreateForm extends Component {
         return (
             <Formik
                 initialValues={initialValues}
-                validate={values => validateFormik(values, settings)}
+                validate={values => validateFormik(values, customerDetail, settings)}
                 onSubmit={this.handleSubmit}
             >
                 {this.renderForm}

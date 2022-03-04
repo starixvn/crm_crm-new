@@ -321,6 +321,24 @@ export class CustomerInfo extends Component {
         );
     };
 
+    renderLicenseeType = (values, handleChange) => (
+        <Col sm="4" md="4">
+            <Form.Group as={Row}>
+                <Form.Label column sm="4" md="4" htmlFor="licenseeType">
+                    {LangHelper.getResource('LicenseeType')}
+                </Form.Label>
+                <Col sm="8" md="8">
+                    <Form.Control as="select" size="sm" className="shadow-none"
+                        name="licenseeType" id="licenseeType" value={values.licenseeType} onChange={handleChange}
+                    >
+                        <option value='' hidden disabled />
+                        {this.props.settings.licenseeTypes.map(item => this.props.renderOptions(item.name, item.id))}
+                    </Form.Control>
+                </Col>
+            </Form.Group>
+        </Col>
+    );
+
     render() {
         const {values, handleChange, setFieldValue, settings, maxDate, renderOptions, customerDetail} = this.props;
         return (
@@ -398,21 +416,7 @@ export class CustomerInfo extends Component {
                     </Col>
                     {
                         customerDetail === null ?
-                        <Col sm="4" md="4">
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="licenseeType">
-                                    {LangHelper.getResource('LicenseeType')}
-                                </Form.Label>
-                                <Col sm="8" md="8">
-                                    <Form.Control as="select" size="sm" className="shadow-none"
-                                        name="licenseeType" id="licenseeType" value={values.licenseeType} onChange={handleChange}
-                                    >
-                                        <option value='' hidden disabled />
-                                        {settings.licenseeTypes.map(item => renderOptions(item.name, item.id))}
-                                    </Form.Control>
-                                </Col>
-                            </Form.Group>
-                        </Col>
+                        this.renderLicenseeType(values, handleChange)
                         :
                         <Col sm="4" md="4">
                             <Form.Group as={Row}>
@@ -434,14 +438,17 @@ export class CustomerInfo extends Component {
                         </Col>
                     }
                 </Form.Group>
-                <Form.Group>
-                    <Col sm="2" md="2">
-                        <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentCRMInfo')}
-                            htmlFor="check-box-overwrite" checked={values.isOverwriteInfo}
-                            onChange={this.setFieldValue('isOverwriteInfo', !values.isOverwriteInfo)}
-                        />
-                    </Col>
-                </Form.Group>
+                {
+                    customerDetail !== null &&
+                    <Form.Group as={Row} className="pt-1 pb-2">
+                        <Col sm="2" md="2">
+                            <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentCRMInfo')}
+                                htmlFor="check-box-overwrite" checked={values.isOverwriteInfo}
+                                onChange={() =>setFieldValue('isOverwriteInfo', !values.isOverwriteInfo)}
+                            />
+                        </Col>
+                    </Form.Group>
+                }
                 {
                     customerDetail !== null &&
                     <Form.Group as={Row}>
@@ -469,21 +476,7 @@ export class CustomerInfo extends Component {
                                 </Col>
                             </Form.Group>
                         </Col>
-                        <Col sm="4" md="4">
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="4" md="4" htmlFor="licenseeType">
-                                    {LangHelper.getResource('LicenseeType')}
-                                </Form.Label>
-                                <Col sm="8" md="8">
-                                    <Form.Control as="select" size="sm" className="shadow-none"
-                                        name="licenseeType" id="licenseeType" value={values.licenseeType} onChange={handleChange}
-                                    >
-                                        <option value='' hidden disabled />
-                                        {settings.licenseeTypes.map(item => renderOptions(item.name, item.id))}
-                                    </Form.Control>
-                                </Col>
-                            </Form.Group>
-                        </Col>
+                        {this.renderLicenseeType(values, handleChange)}
                     </Form.Group>
                 }
                 <div className="separate">
