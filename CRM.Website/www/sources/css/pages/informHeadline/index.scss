@@ -9,11 +9,21 @@
 @import '../../components/icons';
 
 #app-container {
-    width: 1600px;
+    max-width: 1620px;
 }
 
-.body-content {
-    overflow-x: hidden !important;
+body {
+    overflow: hidden; 
+}
+
+.table-container {
+    overflow-y: auto;
+    border: 1px solid #b7b7b7;
+    max-width: 1622px !important;
+
+    .body-content {
+        overflow: unset !important; 
+    }
 }
 
 .link-click {
@@ -27,10 +37,6 @@
 
 .cursor-pointer{
     cursor: pointer;
-}
-
-.table-container{
-    max-width: none !important;
 }
 
 .body-content{
