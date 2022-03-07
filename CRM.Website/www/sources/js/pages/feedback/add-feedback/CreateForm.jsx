@@ -276,8 +276,9 @@ export default class CreateForm extends Component {
         this.props.getTicketInfoByRef({ Refno: values.ticketRefInput }).then(data => {
             Site.unblockUI();
             setFieldValue('ticketRefInput', '');
-
-            if(data.errorCode !== '0') {
+            if(!data){
+                return;
+            }else if(data.errorCode !== '0') {
                 this.props.setAddFeedback({isSuccessful: false, message: data.description});
             } else {
                 let descriptionText = '';
