@@ -69,6 +69,7 @@ describe('FilterContactInforms', () => {
                 ...initProps,
                 setGridParams: jest.fn(),
                 setEditedInforms: jest.fn(),
+                gridParams: { pageIndex: 1, pageSize: 100 },
                 getContactInforms: jest.fn()
             };
             const mockEvent = {

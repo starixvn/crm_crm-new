@@ -15,6 +15,10 @@ describe('Filter', () => {
 
     const initProps = {
         actionLogs : [{name: 'test', value: '1'}],
+        gridParams: {
+            pageIndex: 1,
+            pageSize: 100
+        },
         getActionLogs: jest.fn(),
         setGridParams: jest.fn(),
         getGridSettingLogs: jest.fn()

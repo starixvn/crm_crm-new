@@ -121,6 +121,13 @@ describe('Filter', () => {
                 setting: {
                     roleListWithInActive: []
                 },
+                gridParams: {
+                    username: '',
+                    headlineName: '',
+                    role: '',
+                    pageIndex: 1,
+                    pageSize: 100
+                },
                 getAllSetting: jest.fn(() => Promise.resolve({})),
                 setCreatePicPopup: jest.fn()
             };

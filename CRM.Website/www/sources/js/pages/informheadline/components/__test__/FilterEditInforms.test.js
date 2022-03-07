@@ -293,6 +293,7 @@ describe('FilterEditInforms', () => {
             // Arrange
             const props = {
                 ...initProps,
+                gridParams: { pageIndex: 1, pageSize: 100 },
                 setGridParams: jest.fn(),
                 setFilterData: jest.fn(),
                 setEditedInforms: jest.fn(),
@@ -342,6 +343,7 @@ describe('FilterEditInforms', () => {
                 setGridParams: jest.fn(),
                 setFilterData: jest.fn(),
                 setEditedInforms: jest.fn(),
+                gridParams: { pageIndex: 1, pageSize: 100 },
                 getNewInforms: jest.fn()
             };
             const values = {
