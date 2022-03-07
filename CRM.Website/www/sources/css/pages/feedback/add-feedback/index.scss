@@ -130,12 +130,28 @@
     }
 }
 
-#tooltip-customers [class$="inner"] {
+#tooltip-customers{
+    transform: translate(467px, 549px) !important;
+}
+
+#collapse-tooltip-customers{
+    transform: translate(467px, 280px) !important;
+}
+
+#tooltip-ref-ticket{
+    transform: translate(207px, 584px) !important;
+}
+
+#collapse-tooltip-ref-ticket{
+    transform: translate(209px, 312px) !important;
+}
+
+#tooltip-customers [class$="inner"], #collapse-tooltip-customers [class$="inner"]{
     min-width: 300px;
     text-align: left;
 }
 
-#tooltip-ref-ticket [class$="inner"] {
+#tooltip-ref-ticket [class$="inner"], #collapse-tooltip-ref-ticket [class$="inner"]{
     white-space: pre-wrap;
     max-width: 400px;
     text-align: left;

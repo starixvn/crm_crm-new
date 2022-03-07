@@ -550,45 +550,51 @@ export default class CreateForm extends Component {
         );
     };
 
-    renderVerifyCustomer = (values, handleChange, setFieldValue) =>(
-        <Form.Group as={Row} className="pt-1 pb-2">
-            <Col sm="2" md="2">
-                <Form.Check type="checkbox" id="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
-                    htmlFor="check-box-verify" checked={this.state.collapse.isVerifyCustomer}
-                    onChange={() => this.handleCollapseExpend('isVerifyCustomer')}
-                />
-            </Col>
-            <Col sm="1" md="1">
-                <Form.Label>
-                    <OverlayTrigger placement="bottom-start" overlay={
-                        <Tooltip id="tooltip-customers">{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
-                    >
-                        <span className="fa fa-question-circle-o" />
-                    </OverlayTrigger>
-                </Form.Label>
-            </Col>
-            <Col sm="9" md="9">
-                <Row>
-                    <Col sm="10" md="10">
-                        <Form.Control type="text" size="sm" value={values.customerNameInput}
-                            name="customerNameInput" className="shadow-none" autoComplete="off" onChange={handleChange}
-                            onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
-                        />
-                    </Col>
-                    <Col sm="2" md="2">
-                        <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
-                            disabled={!this.state.collapse.isVerifyCustomer}
-                            size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
+    renderVerifyCustomer = (values, handleChange, setFieldValue) =>{
+        const {isShowCustomerDetailOption} = this.state.collapse;
+        const isCollapse = this.props.customerDetail === null ? isShowCustomerDetailOption : !isShowCustomerDetailOption;
+        return (
+            <Form.Group as={Row} className="pt-1 pb-2">
+                <Col sm="2" md="2">
+                    <Form.Check type="checkbox" id="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
+                        htmlFor="check-box-verify" checked={this.state.collapse.isVerifyCustomer}
+                        onChange={() => this.handleCollapseExpend('isVerifyCustomer')}
+                    />
+                </Col>
+                <Col sm="1" md="1">
+                    <Form.Label>
+                        <OverlayTrigger placement="bottom-start" overlay={
+                            <Tooltip id={isCollapse ? 'collapse-tooltip-customers' : 'tooltip-customers'}>{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
                         >
-                            {LangHelper.getResource('Verify')}
-                        </Button>
-                    </Col>
-                </Row>
-            </Col>
-        </Form.Group>
-    );
+                            <span className="fa fa-question-circle-o" />
+                        </OverlayTrigger>
+                    </Form.Label>
+                </Col>
+                <Col sm="9" md="9">
+                    <Row>
+                        <Col sm="10" md="10">
+                            <Form.Control type="text" size="sm" value={values.customerNameInput}
+                                name="customerNameInput" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
+                            />
+                        </Col>
+                        <Col sm="2" md="2">
+                            <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
+                                disabled={!this.state.collapse.isVerifyCustomer}
+                                size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
+                            >
+                                {LangHelper.getResource('Verify')}
+                            </Button>
+                        </Col>
+                    </Row>
+                </Col>
+            </Form.Group>
+        );
+    };
 
     renderRefTicket = (values, setFieldValue) => {
+        const {isShowCustomerDetailOption} = this.state.collapse;
+        const isCollapse = this.props.customerDetail === null ? isShowCustomerDetailOption : !isShowCustomerDetailOption;
         return (
             <Form.Group as={Row}>
                 <Col sm="4" md="4">
@@ -597,7 +603,7 @@ export default class CreateForm extends Component {
                         <Col sm="1" md="1">
                         <Form.Label>
                             <OverlayTrigger placement="bottom-start" overlay={
-                                <Tooltip id="tooltip-ref-ticket">{LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}</Tooltip>}
+                                <Tooltip id={isCollapse ? 'collapse-tooltip-ref-ticket' : 'tooltip-ref-ticket'}>{LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}</Tooltip>}
                             >
                                 <span className="fa fa-question-circle-o" />
                             </OverlayTrigger>
@@ -824,9 +830,8 @@ export default class CreateForm extends Component {
                 </div>
                 <Collapse in={!this.state.collapse.description}>
                     <div id="collapse-expand-remark" className="pt-1 pb-1">
-                        <div disabled className="shadow-none" name="previewDescription" id="previewDescription"
-                            dangerouslySetInnerHTML={{ __html: `${values.autoGenerated} <br><br> ${values.description}` }}
-                        />
+                        <div style={{ whiteSpace: 'pre-line' }}>{values.autoGenerated}</div>
+                        <div dangerouslySetInnerHTML={{ __html: values.description }} />
                     </div>
                 </Collapse>
             </div>
