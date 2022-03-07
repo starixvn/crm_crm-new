@@ -339,7 +339,7 @@ export default class CreateForm extends Component {
                                     name="identityInformation" id="identityInformation"
                                     className="shadow-none" autoComplete="off"
                                     isInvalid={touched.identityInformation && errors.identityInformation}
-                                    onChange={handleChange} 
+                                    onChange={handleChange}
                                 />
                             </Col>
                     }
@@ -362,7 +362,6 @@ export default class CreateForm extends Component {
             </div>
         );
     };
-
 
     renderDetails = (values, errors, touched, handleChange, setFieldValue) => {
         const collapse = this.state.collapse;
@@ -784,11 +783,11 @@ export default class CreateForm extends Component {
                 </div>
                 <div className={`panel-group ${!this.state.collapse.description ? BorderStyle.bottom : ''}`}>
                     <div className="title edit_block border-bottom-0" onClick={() => this.handleCollapseExpend('description')}
-                        aria-controls="collapse-expand-remark"
                         aria-expanded={!this.state.collapse.description}
+                        aria-controls="collapse-expand-remark"
                     >
-                        <Form.Label column sm="2" md="2" className="required">{LangHelper.getResource('Description')}</Form.Label>
-                        <div className="float-right pr-3" onClick={e => this.handleEditBlock(e, 'isEditDescription')}>
+                        <Form.Label className="required" column md="2" sm="2">{LangHelper.getResource('Description')}</Form.Label>
+                        <div className="pr-3 float-right" onClick={e => this.handleEditBlock(e, 'isEditDescription')}>
                             <span>{LangHelper.getResource('Preview')}</span>
                         </div>
                     </div>
@@ -976,7 +975,7 @@ export default class CreateForm extends Component {
         });
     };
 
-    handleCheckDuplicateFeedback = async (params) => {
+    handleCheckDuplicateFeedback = async params => {
         const url = 'Feedback/CheckFeedbackDuplication';
         Site.blockUI();
         await DataService.postDataAsync(url, {
@@ -1003,8 +1002,7 @@ export default class CreateForm extends Component {
         const { params } = this.props.confirmCreateGuestDialog;
         if(this.props.customerDetail !== null){
             this.handleCheckDuplicateFeedback(params);
-        }
-        else{
+        }else{
            this.createFeedback();
         }
     };
@@ -1019,7 +1017,7 @@ export default class CreateForm extends Component {
                 }, 3000);
             }
         });
-    }
+    };
 
     render() {
         const {settings, customerDetail}= this.props;

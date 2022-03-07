@@ -177,7 +177,7 @@ export class DataGrid extends Component {
                     maxWidth={1600}
                     shouldUseMaxWidth
                     width={1600}
-                    autoWidth={false}  
+                    autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     containerPadding={0}

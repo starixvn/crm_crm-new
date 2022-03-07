@@ -7,7 +7,7 @@ import { DefaultLanguages }from '@jsroot/common/constants';
 
 export const validateFormik = (values, customerDetail, settings) => {
     const errors = {};
-    if (customerDetail === null &&!values.identityInformation) {
+    if (customerDetail === null && values.identityInformation ==='') {
         errors.identityInformation = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Identity'));
     }
 
@@ -268,6 +268,7 @@ export const getParams = (values, customerDetail, settings, listOfCustomerValid)
 
 const getDefaultLanguage = languages =>{
     let language = '';
+    console.log(languages);
     languages.forEach(lang => {
         const isDefault = DefaultLanguages.NotApply === lang ||DefaultLanguages.English === lang
                         || DefaultLanguages.Mandarin === lang || DefaultLanguages.Cantonese === lang;
