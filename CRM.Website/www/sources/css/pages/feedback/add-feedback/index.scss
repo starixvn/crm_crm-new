@@ -157,3 +157,21 @@
     text-align: left;
 }
 
+@media only screen and (max-width: 1500px) {
+    #tooltip-customers{
+        transform:translate(362px, 549px) !important;
+    }
+    
+    #collapse-tooltip-customers{
+        transform:translate(362px, 280px) !important;
+    }
+
+    #tooltip-ref-ticket{
+        transform: translate(160px, 584px) !important;
+    }
+    
+    #collapse-tooltip-ref-ticket{
+        transform: translate(160px, 312px) !important;
+    }
+}
+
