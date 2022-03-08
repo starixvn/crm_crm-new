@@ -4,6 +4,8 @@ import { Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { shallow } from 'enzyme';
+import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+
 
 describe('CustomerInfo', () => {
     beforeAll(() => {
@@ -53,6 +55,17 @@ describe('CustomerInfo', () => {
 
             // Assert
             expect(props.setFieldValue).toHaveBeenCalled();
+        });
+    });
+
+    describe('render', () => {
+        it('render renderLicenseeType when customer detail is null', () => {
+            // Arrange
+            const customerInfo = shallow(<CustomerInfo {...props} />);
+            // Action
+            customerInfo.find(Form.Check).at(0).simulate('change');
+            // Assert
+            expect(props.setFieldValue).toHaveBeenCalledWith('isOverwriteInfo', true);
         });
     });
 });

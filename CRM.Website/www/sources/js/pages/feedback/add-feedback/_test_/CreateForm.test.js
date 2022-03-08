@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import * as commonFunction from '../add-feedback/../add-guest-feedback/common.functions';
+import * as commonFunction from '../common.functions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import * as shareScripts from '@jsroot/common/shareScripts';
@@ -1623,6 +1623,20 @@ describe('CreateForm', () => {
         // Assert
         expect(props.setAddFeedback).toHaveBeenCalledWith(null);
         expect(createForm.handleConfirm).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleCloseCheckDuplicateDialog', () => {
+        it('should call exact function ', () => {
+            // Arrange
+            const createForm = shallow(<CreateForm {...props}/>).instance();
+
+            // Act
+            createForm.handleCloseCheckDuplicateDialog();
+
+            // Assert
+            expect(createForm.state.checkDuplicateDialog).toEqual({show: false});
+            expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith({show: false});
         });
     });
 
