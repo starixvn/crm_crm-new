@@ -13,7 +13,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CustomerInfo, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
     public class CustomerInfoController : BaseController
     {
         private readonly INapSession napSession;
@@ -38,7 +38,7 @@
 
         public IActionResult Index()
         {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CustomerInfo, Policy.Host);
+            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             return View(isHost);
         }
 
@@ -60,6 +60,7 @@
             return Json(settings);
         }
 
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         [HttpPost]
         public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
         {

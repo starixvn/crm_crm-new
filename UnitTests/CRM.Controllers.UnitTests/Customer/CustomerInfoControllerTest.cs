@@ -34,7 +34,7 @@
         {
             //Arrange
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
 
             //Act
             var result = controller.Index();
