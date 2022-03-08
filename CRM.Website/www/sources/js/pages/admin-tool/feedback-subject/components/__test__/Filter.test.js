@@ -68,7 +68,16 @@ describe('filter', () => {
                     pageIndex: 1,
                     pageSize: 100
                 };
-                const container = shallow(<Filter />).instance();
+                const props = {
+                    setGridParams: jest.fn(),
+                    gridParams: {
+                        Subject: null,
+                        pageIndex: 1,
+                        pageSize: 100
+                     },
+                    getFeedBackSubject: jest.fn()
+                };
+                const container = shallow(<Filter {...props}/>).instance();
 
                 // Act
                 const actual = container.getParams();
@@ -88,6 +97,11 @@ describe('filter', () => {
                 };
                 const props = {
                     setGridParams: jest.fn(),
+                    gridParams: {
+                        Subject: null,
+                        pageIndex: 1,
+                        pageSize: 100
+                     },
                     getFeedBackSubject: jest.fn()
                 };
                 const container = shallow(<Filter {...props} />).instance();

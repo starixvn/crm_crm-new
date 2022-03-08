@@ -14,6 +14,7 @@ export class Filter extends PureComponent {
         event.preventDefault();
         const { gridParams } = this.props;
         this.props.getGridData({ ...gridParams, pageIndex: 1 });
+        this.props.setGridParams({ ...gridParams, pageIndex: 1 });
     };
 
     handleChangeYear = event => {

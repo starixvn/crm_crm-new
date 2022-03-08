@@ -19,7 +19,7 @@ export class Filter extends Component {
         return {
             Subject: this.state.feedbackSubjectSearch,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
     };
 

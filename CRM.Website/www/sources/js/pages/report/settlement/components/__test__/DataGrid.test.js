@@ -124,7 +124,7 @@ describe('DataGrid', () => {
                 <Cell className="text-right">{2}</Cell>
                 <Cell className="text-center" rowSpan={2} />
             </Row>,
-            <Row key={0}>
+            <Row key={"N/A"}>
                 <Cell>N/A</Cell>
                 <Cell className="text-right">{2}</Cell>
             </Row>

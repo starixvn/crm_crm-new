@@ -53,6 +53,7 @@ describe('Filter', () => {
         };
         const props = {
             getGridData: jest.fn(),
+            setGridParams: jest.fn(),
             gridParams: param
         };
         const container = shallow(<Filter {...props} />);
