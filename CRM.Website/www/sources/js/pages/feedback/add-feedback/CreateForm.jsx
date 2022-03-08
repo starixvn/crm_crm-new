@@ -603,7 +603,9 @@ export default class CreateForm extends Component {
                         <Col sm="1" md="1">
                         <Form.Label>
                             <OverlayTrigger placement="bottom-start" overlay={
-                                <Tooltip id={isCollapse ? 'collapse-tooltip-ref-ticket' : 'tooltip-ref-ticket'}>{LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}</Tooltip>}
+                                <Tooltip id={isCollapse ? 'collapse-tooltip-ref-ticket' : 'tooltip-ref-ticket'}>
+                                    {LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}
+                                </Tooltip>}
                             >
                                 <span className="fa fa-question-circle-o" />
                             </OverlayTrigger>

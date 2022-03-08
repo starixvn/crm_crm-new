@@ -41,7 +41,7 @@ describe('CustomerInfo', () => {
             const customerInfo = shallow(<CustomerInfo {...props} />);
 
             // Assert
-            expect(customerInfo.find(Form.Control)).toHaveLength(37);
+            expect(customerInfo.find(Form.Control)).toHaveLength(39);
         });
 
         it('setFieldValue birthday correctly', () => {

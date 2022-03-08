@@ -268,7 +268,6 @@ export const getParams = (values, customerDetail, settings, listOfCustomerValid)
 
 const getDefaultLanguage = languages =>{
     let language = '';
-    console.log(languages);
     languages.forEach(lang => {
         const isDefault = DefaultLanguages.NotApply === lang ||DefaultLanguages.English === lang
                         || DefaultLanguages.Mandarin === lang || DefaultLanguages.Cantonese === lang;
