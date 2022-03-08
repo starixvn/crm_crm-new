@@ -223,6 +223,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily.
+        /// </summary>
+        public static string Daily {
+            get {
+                return ResourceManager.GetString("Daily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default Communication Setting.
         /// </summary>
         public static string DefaultCommunicationSetting {
@@ -637,6 +646,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monthly.
+        /// </summary>
+        public static string Monthly {
+            get {
+                return ResourceManager.GetString("Monthly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MSN.
         /// </summary>
         public static string MSN {
@@ -876,6 +894,33 @@ namespace CRM.Resources {
         public static string SpecialRemark {
             get {
                 return ResourceManager.GetString("SpecialRemark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} To {1}.
+        /// </summary>
+        public static string StatisticReport_ShortTitle {
+            get {
+                return ResourceManager.GetString("StatisticReport_ShortTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Issue Statistic Report From {1} To {2}.
+        /// </summary>
+        public static string StatisticReport_Title {
+            get {
+                return ResourceManager.GetString("StatisticReport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total for {0}.
+        /// </summary>
+        public static string StatisticReport_TotalTitle {
+            get {
+                return ResourceManager.GetString("StatisticReport_TotalTitle", resourceCulture);
             }
         }
         

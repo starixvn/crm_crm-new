@@ -28,10 +28,15 @@
         DateTime ConvertToServerDateTime(DateTime date);
 
         DateTime ConvertClientFromTimeToServerTime(DateTime clientFromTime);
+
         DateTime ConvertClientToTimeToServerTime(DateTime clientToTime);
 
         DateTime GetEndOfDate(DateTime date);
 
         DateTime GetStartOfDate(DateTime date);
+
+        DateTime FirstDayOfMonth(DateTime dateTime);
+
+        DateTime LastDayOfMonth(DateTime dateTime);
     }
 }

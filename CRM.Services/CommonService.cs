@@ -102,5 +102,16 @@
             date = new DateTime(date.Year, date.Month, date.Day);
             return date;
         }
+
+        public DateTime FirstDayOfMonth(DateTime dateTime)
+        {
+            return new DateTime(dateTime.Year, dateTime.Month, 1);
+        }
+
+        public DateTime LastDayOfMonth(DateTime dateTime)
+        {
+            return FirstDayOfMonth(dateTime).AddMonths(1).AddDays(-1);
+        }
+
     }
 }
