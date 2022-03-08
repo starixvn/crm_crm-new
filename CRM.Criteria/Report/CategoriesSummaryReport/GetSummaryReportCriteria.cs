@@ -16,12 +16,8 @@ namespace CRM.Criteria.Report.CategoriesSummaryReport
 
         public int TimeSpan { get; set; }
 
-
         [SpParam(Ignored = true)]
         public string Categories { get; set; }
-
-        [SpParam(Ignored = true)]
-        public bool IsGetFullReport { get; set; }
 
         public override string GetSettingKey()
         {

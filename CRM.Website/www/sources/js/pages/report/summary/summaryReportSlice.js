@@ -3,23 +3,38 @@ import { createSlice } from '@reduxjs/toolkit';
 const summaryReportSlice = createSlice({
     name: 'summaryReport',
     initialState: {
-        gridParams: {
-            year: new Date().getFullYear(),
+        settings: null,
+        gridParams: null,
+        gridParamDetails: {
             pageIndex: 1,
-            pageSize: 12
+            pageSize: 100
         },
-        gridData: null,
-        contentChartPopup: { show: false }
+        mainReports: null,
+        reportDetails: null,
+        details: { show: false, title: ''},
+        chart: { show: false,title: '', data: null}
     },
     reducers: {
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
-        setGridData: (state, action) => {
-            state.gridData = action.payload;
+        setAllSettings: (state, action) => {
+            state.settings = action.payload;
         },
-        setChartPopup: (state, action) => {
-            state.contentChartPopup = action.payload;
+        setMainReport: (state, action) => {
+            state.mainReports = action.payload;
+        },
+        setGridParamDetails: (state, action) => {
+            state.gridParamDetails = action.payload;
+        },
+        setReportDetails: (state, action) => {
+            state.reportDetails = action.payload;
+        },
+        setDetailsDataGrid: (state, action) => {
+            state.details = action.payload;
+        },
+        setChartData: (state, action) => {
+            state.chart = action.payload;
         }
     }
 });
@@ -28,8 +43,12 @@ const { actions, reducer } = summaryReportSlice;
 
 export const {
     setGridParams,
-    setGridData,
-    setChartPopup
+    setGridParamDetails,
+    setAllSettings,
+    setMainReport,
+    setReportDetails,
+    setDetailsDataGrid,
+    setChartData
 } = actions;
 
 export default reducer;

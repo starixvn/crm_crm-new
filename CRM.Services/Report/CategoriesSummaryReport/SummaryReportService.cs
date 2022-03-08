@@ -1,17 +1,17 @@
 ﻿using CRM.Core.Services;
 using CRM.Criteria.Report.CategoriesSummaryReport;
+using CRM.Models;
 using CRM.Models.Report.CategoriesSummaryReport;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CRM.Services.Report.CategoriesSummaryReport
 {
     public interface ISummaryReportService
     {
-        dynamic AllSettings();
-
-        SummaryReportModel GetSummaryReport(GetSummaryReportCriteria criteria);
-
-        void ExportSummaryReportExcel(GetSummaryReportCriteria criteria);
+        Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria);
+        void GetSummaryReportAsyncdemo(GetSummaryReportCriteria a);
     }
     public class SummaryReportService : ISummaryReportService
     {
@@ -28,17 +28,26 @@ namespace CRM.Services.Report.CategoriesSummaryReport
             _settingServices = settingServices;
         }
 
-        public dynamic AllSettings()
+        public void GetSummaryReportAsyncdemo(GetSummaryReportCriteria criteria)
         {
-            throw new NotImplementedException();
+            var rawData = baseService.GetDataAsync<CategorySummary>(criteria);
+
+            int ab = 0;
+
+            //var settlementReport = MappingDataSettlementReport(rawData, countryDictionary, criteria);
+
+            //settlementReport.TotalChildReports = settlementReport.ChildReports.Count;
+            //settlementReport.ChartInfo = GetChartInfo(settlementReport);
+
+            //return new SummaryReportModel
+            //{
+            //    ReportTitle = "",
+            //    CategorySummaries = rawData,
+
+            //};
         }
 
-        public void ExportSummaryReportExcel(GetSummaryReportCriteria criteria)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SummaryReportModel GetSummaryReport(GetSummaryReportCriteria criteria)
+        Task<SummaryReportModel> ISummaryReportService.GetSummaryReportAsync(GetSummaryReportCriteria criteria)
         {
             throw new NotImplementedException();
         }
