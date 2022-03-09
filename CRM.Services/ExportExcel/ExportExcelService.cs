@@ -26,7 +26,7 @@
         byte[] ExportPICManagement(IEnumerable<BaseModel> communicationTools, PicReport picReport);
 
         byte[] ExportSettlementReport(SettlementReportInfo reportInfo);
-       // byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo);
+        byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo);
 
 
         byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
@@ -182,12 +182,12 @@
             return excel.Export();
         }
 
-        //public byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo)
-        //{
-        //    const string ExcelTemplatePath = "ExcelTemplates/Settlement_Issues_Report.xlsx";
-        //    var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-        //    var excel = new SettlementReportExcel(templatePath, summaryreportInfo);
-        //    return excel.Export();
-        //}
+        public byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/Categories_Summary_Report.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new SummaryReportExcel(templatePath, summaryreportInfo);
+            return excel.Export();
+        }
     }
 }

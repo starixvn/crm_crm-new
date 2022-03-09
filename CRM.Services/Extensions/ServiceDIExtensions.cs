@@ -19,6 +19,7 @@
     using CRM.Services.Dashboard;
     using CRM.Services.Report.LogStatistics;
     using CRM.Services.Report;
+    using CRM.Services.Report.CategoriesSummaryReport;
 
     public static class ServiceDIExtensions
     {
@@ -37,6 +38,7 @@
             services.AddTransient<ICommunicationToolSettingService, CommunicationToolSettingService>();
             services.AddTransient<IPicAssignmentService, PicAssignmentService>();
             services.AddTransient<ISettlementReportService, SettlementReportService>();
+            services.AddTransient<ISummaryReportService, SummaryReportService>();
             services.AddTransient<IFeedbackSubjectService, FeedbackSubjectService>();
             services.AddTransient<IPicManagementService, PicManagementService>();
             services.AddScoped<IExportExcelService, ExportExcelService>();
