@@ -148,6 +148,7 @@
     GroupHeadline: 'Group Headline',
     GroupHeadlineRequired: 'Group Headline is required!',
     Guest: 'Guest',
+    GroupBy: 'Group By',
     Headline: 'Headline',
     HeadlineInfo: 'Headline Info',
     HeadlineType: 'Headline Type',

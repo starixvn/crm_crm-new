@@ -11,17 +11,17 @@
     using CRM.Models.Report;
     using CRM.Resources;
 
-    public interface IIssuesStatisticsService
+    public interface IIssueStatisticsService
     {
         Task<IssuesStatisticsReportInfo> GetIssuesStatisticsReportAsync(GetIssuesStatisticReportCriteria criteria);
     }
 
-    public class IssuesStatisticsService : IIssuesStatisticsService
+    public class IssueStatisticsService : IIssueStatisticsService
     {
         private readonly IBaseService baseService;
         private readonly ICommonService commonService;
 
-        public IssuesStatisticsService(IBaseService baseService, ICommonService commonService)
+        public IssueStatisticsService(IBaseService baseService, ICommonService commonService)
         {
             this.baseService = baseService;
             this.commonService = commonService;

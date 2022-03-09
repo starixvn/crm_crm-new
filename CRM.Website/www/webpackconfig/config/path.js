@@ -32,6 +32,7 @@ const cssPaths = {
     setting_log: ['./www/sources/css/pages/admin-tool/setting-log/index.scss'],
     deleted_feedback_statistic: ['./www/sources/css/pages/report/deleted-feedback-statistic/index.scss'],
     log_statistics: ['./www/sources/css/pages/report/log-statistics/index.scss'],
+    issue_statistics: ['./www/sources/css/pages/report/issue-statistics/index.scss'],
     changes_log: ['./www/sources/css/pages/pic-and-headline/changes-log/index.scss']
 };
 
@@ -66,6 +67,7 @@ const scriptPaths = {
     setting_log: ['./www/sources/js/pages/admin-tool/setting-log/index.js'],
     deleted_feedback_statistic: ['./www/sources/js/pages/report/deleted-feedback-statistic/index.js'],
     log_statistics: ['./www/sources/js/pages/report/log-statistics/index.js'],
+    issue_statistics: ['./www/sources/js/pages/report/issue-statistics/index.js'],
     change_log: ['./www/sources/js/pages/pic-and-headline/changes-log/index.js'],
     add_customer_feedback: ['./www/sources/js/pages/feedback/add-feedback/add-customer-feedback/index.js']
 };

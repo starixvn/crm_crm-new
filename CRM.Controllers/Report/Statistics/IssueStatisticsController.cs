@@ -11,41 +11,42 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRM.Controllers.Report.Statistics
 {
 
-    public class IssueStatisticsController : BaseController
+    public class IssueStatisticsController : Controller
     {
-        private readonly IIssuesStatisticsService issuesStatisticsService;
+        private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
 
         public IssueStatisticsController(
-            IIssuesStatisticsService issuesStatisticsService,
+            IIssueStatisticsService issueStatisticsService,
             ISettingService settingService,
             IExportExcelService excelService
         )
         {
-            this.issuesStatisticsService = issuesStatisticsService;
+            this.issueStatisticsService = issueStatisticsService;
             this.settingService = settingService;
             this.excelService = excelService;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
+        //[NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/IssueStatistics/Index");
         }
 
-        public async Task<ActionResult> GetMainSubCategories()
+        public async Task<ActionResult> GetAllSettings()
         {
-            var categories = await settingService.GetAllMainSubCategoriesAsync();
-            var categoriesActive = categories.Where(x => x.IsActive);
-            return Json(categoriesActive);
+            var mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active);
+            var subCategories = await settingService.GetSubCategoryAsync(null, SettingConstants.Active);
+
+            return Json(new { mainCategories, subCategories });
         }
 
         [HttpPost]
-        [NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
+        //[NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetIssuesStatistics([FromBody] GetIssuesStatisticReportCriteria criteria)
         {
-            var statistics = await issuesStatisticsService.GetIssuesStatisticsReportAsync(criteria);
+            var statistics = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
             return Json(statistics);
         }
     }

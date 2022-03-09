@@ -107,8 +107,7 @@
             }).ToList();
         }
 
-        private List<BaseModel> GetProductColumns(
-            IEnumerable<LogStatisticsEntity> logStatisticEntities)
+        private List<BaseModel> GetProductColumns(IEnumerable<LogStatisticsEntity> logStatisticEntities)
         {
             var productGroup = logStatisticEntities.GroupBy(data => data.ProductId).ToList();
 

@@ -42,9 +42,9 @@ function generateConfig(environment) {
             [`${jsPath}/pages/adminTool/setting-log/index`]: pathConfig.scriptPaths.setting_log,
             [`${jsPath}/pages/report/deleted-feedback-statistic/index`]: pathConfig.scriptPaths.deleted_feedback_statistic,
             [`${jsPath}/pages/report/log-statistics/index`]: pathConfig.scriptPaths.log_statistics,
+            [`${jsPath}/pages/report/issue-statistics/index`]: pathConfig.scriptPaths.issue_statistics,
             [`${jsPath}/pages/picandheadline/changesLog/index`]: pathConfig.scriptPaths.change_log,
             [`${jsPath}/pages/feedback/add-customer-feedback/index`]: pathConfig.scriptPaths.add_customer_feedback,
-
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -74,6 +74,7 @@ function generateConfig(environment) {
             [`${cssPath}/pages/adminTool/setting-log/index`]: pathConfig.cssPaths.setting_log,
             [`${cssPath}/pages/report/deleted-feedback-statistic/index`]: pathConfig.cssPaths.deleted_feedback_statistic,
             [`${cssPath}/pages/report/log-statistics/index`]: pathConfig.cssPaths.log_statistics,
+            [`${cssPath}/pages/report/issue-statistics/index`]: pathConfig.cssPaths.issue_statistics,
             [`${cssPath}/pages/picandheadline/changesLog/index`]: pathConfig.cssPaths.changes_log
         },
         output: {
