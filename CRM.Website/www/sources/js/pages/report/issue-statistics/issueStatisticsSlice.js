@@ -4,7 +4,10 @@ const issueStatisticsSlice = createSlice({
     name: 'issueStatistics',
     initialState: {
         settings: null,
-        gridParams: null,
+        gridParams: {
+            pageIndex: 1,
+            pageSize: 7
+        },
         gridData: null,
         chart: { show: false, title: '', data: null}
     },

@@ -59,4 +59,12 @@ export default class DateTimeService {
     static toDiffDays(date1, date2){
         return moment(date1).diff(moment(date2), 'days');
     }
+
+    static firstMonthOfYear(date) {
+        return moment(date).startOf('year');
+    }
+
+    static endMonthOfYear(date) {
+        return moment(date).endOf('year');
+    }
 }

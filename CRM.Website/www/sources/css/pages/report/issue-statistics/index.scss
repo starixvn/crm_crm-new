@@ -9,6 +9,19 @@
 @import '../../../components/react-select';
 
 .form-filter {
+    min-width:1200px;
+
+    .filter-collapse {
+        margin-top: -10px;
+        .fa {
+            height: 14px;
+            width: 27px;
+            background-color: #464d5d;
+            color: white;
+            cursor: pointer;
+        }
+    }
+    
     .react-datepicker-wrapper-container {
         height: 28px;
     
@@ -22,11 +35,23 @@
         }
     }
 
+    .month-datepicker .react-datepicker-wrapper{
+        width: 189px !important;
+    }
+
+    .form-group-month-picker{
+        width: 265px !important;
+    }
+
     .form-group-main-category{
         width: 373px !important;
     }
 
     .form-group-sub-category{
         width: 351px !important;
+    }
+
+    .ml-1{
+        margin-left: 10px !important;
     }
 }
