@@ -12,8 +12,9 @@
 }
 @section Scripts{
     <script type="text/javascript">
-            window.contactPolicy = @(Model.ContactPolicy);
-            window.searchPolicy = @(Model.SearchPolicy);
+        window.contactPolicy = @(Model.ContactPolicy);
+        window.searchPolicy = @(Model.SearchPolicy);
+        window.hasHostPermission = @Json.Serialize(Model.HasHostPermission);
     </script>
     <environment include="Development">
         <script src="~/js/dev/pages/informheadline/index.chunk.js"></script>

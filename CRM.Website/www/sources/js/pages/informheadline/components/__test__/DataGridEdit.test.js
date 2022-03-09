@@ -68,7 +68,7 @@ describe('DataGridEdit', () => {
             const props = {
                 ...initProps,
                 setEditedInforms: jest.fn(),
-                editedInforms: [{ groupId: 122, headlineId: 555 }]
+                editedInforms: [{ groupId: 122, headlineId: 555 }, { groupId: 123, headlineId: 1234 }]
             };
 
             // Act
@@ -79,7 +79,7 @@ describe('DataGridEdit', () => {
             // Assert
             expect(props.setEditedInforms).toHaveBeenCalledWith([
                 { groupId: 122, headlineId: 555 },
-                { groupId: 122, headlineId: 1234, statuses: 'Done' }
+                { groupId: 123, headlineId: 1234, statuses: 'Done' }
             ]);
         });
 
@@ -87,7 +87,8 @@ describe('DataGridEdit', () => {
             // Arrange
             const props = {
                 ...initProps,
-                setEditedInforms: jest.fn()
+                setEditedInforms: jest.fn(),
+                informData: [{ headlineId: 1 }]
             };
 
             // Act
@@ -97,7 +98,7 @@ describe('DataGridEdit', () => {
            
             // Assert
             expect(props.setEditedInforms).toHaveBeenCalledWith([
-                { groupId: 122, headlineId: 1234, statuses: 'Done' }
+                { groupId: 122, headlineId: 1234 }, { statuses: 'Done' }
             ]);
         });
     });

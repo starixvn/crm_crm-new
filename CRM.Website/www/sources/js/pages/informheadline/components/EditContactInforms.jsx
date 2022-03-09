@@ -66,6 +66,7 @@ export class EditContactInforms extends Component {
                 />
 
                 <DataGridEdit
+                    status={this.props.status}
                     informData={contactInforms}
                     informSettings={contactInformSettings}
                     totalItem={contactInforms.length}
@@ -77,15 +78,15 @@ export class EditContactInforms extends Component {
     };
 
     render() {
-        const { titleDetail, contactInformSettings, contactInforms } = this.props;
+        const { titleDetail, contactInformSettings, contactInforms, status } = this.props;
+        const isClosed = status === 'Closed' ? true : false;
         if (!titleDetail || !contactInformSettings || !contactInforms) {
             return null;
         }
 
         return (
-            <Modal show className="edit-inform-modal-dialog" dialogAs={DraggableModalDialog}
+            <Modal show className="edit-inform-modal-dialog modal-edit" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
-                className="modal-edit"
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
@@ -95,7 +96,7 @@ export class EditContactInforms extends Component {
                     this.renderForm()
                 }
                 <Modal.Footer>
-                    {renderButtonSave({},this.handleSubmit)}
+                    {renderButtonSave({}, isClosed, window.hasHostPermission ,this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );

@@ -75,9 +75,8 @@ export class EditInforms extends Component {
         }
 
         return (
-            <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
+            <Modal show className="modal-edit edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
-                className="modal-edit"
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
@@ -111,7 +110,7 @@ export class EditInforms extends Component {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {renderButtonSave(filterData.errors,this.handleSubmit)}
+                    {renderButtonSave(filterData.errors, null, null,this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );

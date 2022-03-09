@@ -54,7 +54,8 @@
             var permission = new GetPermissionInform
             {
                 ContactPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact),
-                SearchPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch)
+                SearchPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch),
+                HasHostPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact, Policy.Host)
             };
             return View(permission);
         }

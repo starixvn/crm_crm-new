@@ -110,4 +110,21 @@ describe('EditContactInforms', () => {
             expect(container.type()).toEqual(null);
         });
     });
+
+    describe('render', () => {
+        it('should render null when some props is null', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                titleDetail: null,
+                contactInformSettings: null,
+                contactInforms: null
+            };
+
+            const container = shallow(<EditContactInforms {...props}/>);
+
+            // Assert
+            expect(container.type()).toEqual(null);
+        });
+    });
 });

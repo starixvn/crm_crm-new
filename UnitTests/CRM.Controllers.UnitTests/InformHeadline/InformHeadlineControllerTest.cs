@@ -22,6 +22,7 @@
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
+    using static Fanex.NAP.Core.Business.Constant;
 
     public class InformHeadlineControllerTest
     {
@@ -41,6 +42,7 @@
             var controller = GetController();
             userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact).Returns(2);
             userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch).Returns(2);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact, Policy.Host).Returns(true);
 
             // Act
             var result = controller.Index();
@@ -50,6 +52,7 @@
             var permission = (GetPermissionInform)viewResult.Model;
             Assert.Equal(2, permission.ContactPolicy);
             Assert.Equal(2, permission.SearchPolicy);
+            Assert.True(permission.HasHostPermission);
         }
 
         [Fact]

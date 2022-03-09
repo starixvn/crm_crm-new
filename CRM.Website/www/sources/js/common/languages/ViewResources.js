@@ -248,6 +248,7 @@
     NoOfInquiries: 'No. of Inquiries',
     None: 'None',
     Now: 'Now',
+    NoPermission: 'You don\'t have permission on this function!',
     NumberOfRemovedEditedAccounts: 'Number Of Removed Edited Accounts',
     OK: 'OK',
     OnlyShowUnassignedDirectAccounts: 'Only show unassigned direct accounts',

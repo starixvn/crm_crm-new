@@ -48,8 +48,8 @@ export class DataGrid extends Component {
         ];
     };
 
-    handleEditContact = async titleId => {
-        this.props.setEditContactInformDialog({show: true, titleId: titleId});
+    handleEditContact = (titleId, status) => {
+        this.props.setEditContactInformDialog({show: true, titleId: titleId, status: status});
     };
 
     handleEdit = titleId => {
@@ -136,7 +136,7 @@ export class DataGrid extends Component {
                 <Cell>
                     {
                         window.contactPolicy !== Policy.None ?
-                        <span className='link-click' onClick={() => this.handleEditContact(item.titleId)}>{item.title}</span>
+                        <span className='link-click' onClick={() => this.handleEditContact(item.titleId, item.status)}>{item.title}</span>
                         : item.title
                     }
                 </Cell>
@@ -157,41 +157,45 @@ export class DataGrid extends Component {
 
     render() {
         const { informs } = this.props;
-        if(!informs || window.searchPolicy === Policy.None || window.contactPolicy === Policy.None){
+        if (!informs) {
             return null;
         }
 
-        return (
-            <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>Inform Headlines Cases</span>
+        if (window.searchPolicy !== Policy.None || window.contactPolicy !== Policy.None) {
+            return (
+                <Fragment>
+                    <div className='table-title d-flex justify-content-between align-items-center'>
+                        <span>Inform Headlines Cases</span>
+                        {
+                            informs.length > 0 &&
+                            <ExcelIcon
+                                handleExportExcel={this.props.exportInforms}
+                            />
+                        }
+                    </div>
+
+                    <Table
+                        maxWidth={1600}
+                        shouldUseMaxWidth
+                        width={1600}
+                        autoWidth={false}
+                        header={this.buildHeader()}
+                        body={this.buildBody()}
+                        containerPadding={0}
+                        adjustedHeight={10}
+                    />
+
                     {
-                        informs.length > 0 &&
-                        <ExcelIcon
-                            handleExportExcel={this.props.exportInforms}
-                        />
+                        window.searchPolicy === Policy.Host &&
+                        <Button variant="primary" size="sm" className="mt-3" onClick={this.handleNewInforms}>
+                            {LangHelper.getResource('NewCase')}
+                        </Button>
                     }
-                </div>
-
-                <Table
-                    maxWidth={1600}
-                    shouldUseMaxWidth
-                    width={1600}
-                    autoWidth={false}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
-                    containerPadding={0}
-                    adjustedHeight={10}
-                />
-
-                {
-                    window.searchPolicy === Policy.Host &&
-                    <Button variant="primary" size="sm" className="mt-3" onClick={this.handleNewInforms}>
-                        {LangHelper.getResource('NewCase')}
-                    </Button>
-                }
-            </Fragment>
-        );
+                </Fragment>
+            );
+        } else {
+            return <div className="text-center text-danger">{LangHelper.getResource('NoPermission')}</div>
+        }
     }
 }
 

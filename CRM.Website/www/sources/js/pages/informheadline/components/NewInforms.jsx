@@ -46,9 +46,8 @@ export class NewInforms extends Component {
         }
 
         return (
-            <Modal show className="new-inform-modal-dialog" dialogAs={DraggableModalDialog}
+            <Modal show className="new-inform-modal-dialog modal-edit" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
-                className="modal-edit"
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
@@ -84,7 +83,7 @@ export class NewInforms extends Component {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {filterData.values.title && renderButtonSave(filterData.errors,this.handleSubmit)}
+                    {filterData.values.title && renderButtonSave(filterData.errors, null, null, this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );

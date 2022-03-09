@@ -3,6 +3,7 @@ import { DataGrid } from '../DataGrid';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { shallow } from 'enzyme';
+import { Policy } from '@jsroot/common/constants';
 
 describe('DataGrid', () => {
     afterAll(() => {
@@ -89,10 +90,10 @@ describe('DataGrid', () => {
 
             // Act
             const container = shallow(<DataGrid {...props}/>);
-            container.instance().handleEditContact(147258);
+            container.instance().handleEditContact(147258, 'Closed');
            
             // Assert
-            expect(props.setEditContactInformDialog).toHaveBeenCalledWith({ show: true, titleId: 147258 });
+            expect(props.setEditContactInformDialog).toHaveBeenCalledWith({ show: true, titleId: 147258, status: 'Closed' });
         });
     });
 
@@ -207,6 +208,7 @@ describe('DataGrid', () => {
             const row = shallow(container.renderRow(item, 1));
 
             // Assert
+
             expect(container.handleOption).toHaveBeenCalledWith(720, 'Open');
         });
 
@@ -216,7 +218,7 @@ describe('DataGrid', () => {
             const props = {
                 ...initProps,
                 informs: [
-                    { titleId: 720, title:'test'}
+                    { titleId: 720, title:'test', status: 'Closed'}
                 ]
             };
             const container = shallow(<DataGrid {...props}/>).instance();
@@ -228,7 +230,41 @@ describe('DataGrid', () => {
             row.find(Cell).at(1).find('span').at(0).props().onClick();
 
             // Assert
-            expect(container.handleEditContact).toHaveBeenCalledWith(720);
+
+            expect(container.handleEditContact).toHaveBeenCalledWith(720, 'Open');
+        });
+    });
+
+    describe('render', () => {
+        it('should render null when informs is null', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                informs: null
+            };
+
+            const container = shallow(<DataGrid {...props}/>);
+
+            // Assert
+            expect(container.type()).toEqual(null);
+        });
+        
+        it('should render danger when informs is null', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                informs: [
+                    { titleId: 720, title:'test', status: 'Closed'}
+                ]
+            };
+            const expected = <div className="text-center text-danger">NoPermission</div>;
+            window.searchPolicy =  Policy.None;
+            window.contactPolicy = Policy.None;
+
+            const container = shallow(<DataGrid {...props}/>).instance();
+            const actual = container.render();
+            // Assert
+            expect(actual).toEqual(expected);
         });
     });
 });

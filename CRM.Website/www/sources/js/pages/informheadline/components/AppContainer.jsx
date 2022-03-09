@@ -76,6 +76,7 @@ export class AppContainer extends Component {
                     editContactInformDialog.show &&
                     <EditContactInforms
                         titleId={editContactInformDialog.titleId}
+                        status={editContactInformDialog.status}
                         onClose={this.handleCloseEditContactInformDialog}
                     />
                 }

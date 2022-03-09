@@ -2,11 +2,12 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 
-export const renderButtonSave = (errors, handleSubmit) => {
+export const renderButtonSave = (errors, isClosed, hasHostPermission, handleSubmit) => {
     return (
         Object.keys(errors).length === 0 && (
             <Button variant="primary" size="sm" className="mt-3"
                 type="submit"
+                hidden={isClosed && hasHostPermission}
                 onClick={handleSubmit}
             >
                 {LangHelper.getResource('Save')}

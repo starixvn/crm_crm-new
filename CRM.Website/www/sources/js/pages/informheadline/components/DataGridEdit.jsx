@@ -46,6 +46,7 @@ export class DataGridEdit extends PureComponent {
     renderOptions = (name, id, key) => <option key={key} value={id}>{name}</option>;
 
     renderRow = (item, index, productStatuses, informSettings) => {
+        var isClosed = this.props.status === 'Closed' ? true : false;
         return (
             <Row key={index} className={item.groupId > 0 ? 'free-grid-headline' : 'free-grid-direct'}>
                 <Cell>{item.username}</Cell>
@@ -54,6 +55,7 @@ export class DataGridEdit extends PureComponent {
                         name="informHeadlineStatusId"
                         defaultValue={item.informHeadlineStatusId}
                         key={item.informHeadlineStatusId}
+                        disabled={isClosed}
                         onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
                     >
                         {
@@ -68,6 +70,7 @@ export class DataGridEdit extends PureComponent {
                         defaultValue={item.remark}
                         key={item.remark}
                         rows={2}
+                        disabled={!isClosed && window.hasHostPermission === true ? false : true}
                         onBlur={event => this.handleChangeDataGrid(event,item.headlineId)}
                     />
                 </Cell>
@@ -78,6 +81,7 @@ export class DataGridEdit extends PureComponent {
                         name="extension"
                         defaultValue={item.extension}
                         key={item.extension}
+                        disabled={isClosed}
                         onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
                     >
                         {
@@ -89,6 +93,7 @@ export class DataGridEdit extends PureComponent {
                 <Cell className='text-center'>
                     <Form.Control as="select" size="sm" className="shadow-none"
                         name="productStatus"
+                        disabled={isClosed}
                         defaultValue={item.productStatus}
                         key={item.productStatus}
                         onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
