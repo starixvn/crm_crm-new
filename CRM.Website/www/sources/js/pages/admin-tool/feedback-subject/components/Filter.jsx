@@ -71,7 +71,7 @@ export class Filter extends Component {
                         <Button className="mr-4" variant="primary" size="sm"
                             onClick={this.handleSubmit}
                         >
-                            {LangHelper.getResource('Submit')}
+                            {LangHelper.getResource('Search')}
                         </Button>
                         {
                             isHost &&

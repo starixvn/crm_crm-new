@@ -14,7 +14,7 @@ export class DataGridEdit extends PureComponent {
             <HeaderRow>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedTime')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('UpdatedTime')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Remark')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Extension')}</HeaderCell>

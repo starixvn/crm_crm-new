@@ -3,6 +3,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Criteria.Report.CategoriesSummaryReport;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Report.CategoriesSummaryReport;
     using Microsoft.AspNetCore.Mvc;
@@ -14,30 +15,25 @@
     {
         private readonly ISummaryReportService summaryReportService;
         private readonly ISettingService settingService;
-        //private readonly AppSettings appSettings;
+        private readonly IExportExcelService exportExcelService;
+        private readonly AppSettings appSettings;
 
 
 
         public SummaryReportController(
             ISummaryReportService summaryReportService, 
-            ISettingService settingService
-            )
+            ISettingService settingService,
+            IExportExcelService exportExcelService,
+            IOptionsSnapshot<AppSettings> appSettings)
         {
             this.summaryReportService = summaryReportService;
             this.settingService = settingService;
-            //this.appSettings = appSettings.Value;
+            this.exportExcelService = exportExcelService;
+            this.appSettings = appSettings.Value;
         }
 
         public IActionResult Index()
         {
-            GetSummaryReportCriteria a = new GetSummaryReportCriteria()
-            {
-                Year = 2022,
-                SiteType = 0,
-                Categories = "3000,3001,3002,3003,3014,3016,3018,3019,3020,3023,3024,3025,3027,3028,3029,3030,3033,3034,3035,3036,3037,3038,3040,3041,3056,3057,3058,3059,3060,3061,3062,3063,3064,3065"
-            };
-
-            summaryReportService.GetSummaryReportAsyncdemo(a);
 
             return Ok("OK");
         }
@@ -53,12 +49,26 @@
             });
         }
 
+        [HttpPost]
+        [Route("GetSummaryReport")]
+        public async Task<IActionResult> GetSettlementReport([FromBody] GetSummaryReportCriteria criteria)
+        {
+            criteria.TimeSpan = appSettings.TimeSpan * -1;
+            var logs = await summaryReportService.GetSummaryReportAsync(criteria);
+            return Json(logs);
+        }
+
         //[HttpPost]
-        //public async Task<IActionResult> GetSummaryReport([FromBody] GetSummaryReportCriteria criteria)
+        //[Route("ExportSummaryReport")]
+        //public async Task<IActionResult> ExportSettlementReport([FromBody] GetSummaryReportCriteria criteria)
         //{
         //    criteria.TimeSpan = appSettings.TimeSpan * -1;
-        //    var logs = await settlementReportService.GetSettlementReportAsync(criteria);
-        //    return Json(logs);
+        //    criteria.IsGetFullReport = true;
+        //    var reports = await summaryReportService.GetSummaryReportAsync(criteria);
+        //    var bytes = exportExcelService.ExportSummaryReport(reports);
+        //    string reportName = string.Format(ViewResources.SummaryReport_ExcelTitle, criteria.Year);
+        //    return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         //}
+
     }
 }

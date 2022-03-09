@@ -11,44 +11,18 @@ namespace CRM.Services.Report.CategoriesSummaryReport
     public interface ISummaryReportService
     {
         Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria);
-        void GetSummaryReportAsyncdemo(GetSummaryReportCriteria a);
     }
     public class SummaryReportService : ISummaryReportService
     {
         private readonly IBaseService baseService;
-        private readonly ISettingService _settingServices;
-
-        public SummaryReportService()
-            : this(null, null)
-        {
-        }
-        public SummaryReportService(IBaseService baseService, ISettingService settingServices)
+        public SummaryReportService(IBaseService baseService)
         {
             this.baseService = baseService;
-            _settingServices = settingServices;
-        }
-
-        public void GetSummaryReportAsyncdemo(GetSummaryReportCriteria criteria)
-        {
-            var rawData = baseService.GetDataAsync<CategorySummary>(criteria);
-
-            int ab = 0;
-
-            //var settlementReport = MappingDataSettlementReport(rawData, countryDictionary, criteria);
-
-            //settlementReport.TotalChildReports = settlementReport.ChildReports.Count;
-            //settlementReport.ChartInfo = GetChartInfo(settlementReport);
-
-            //return new SummaryReportModel
-            //{
-            //    ReportTitle = "",
-            //    CategorySummaries = rawData,
-
-            //};
-        }
+        }             
 
         Task<SummaryReportModel> ISummaryReportService.GetSummaryReportAsync(GetSummaryReportCriteria criteria)
         {
+            int a = 0;
             throw new NotImplementedException();
         }
     }

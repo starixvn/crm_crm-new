@@ -18,6 +18,7 @@ namespace CRM.Criteria.Report.CategoriesSummaryReport
 
         [SpParam(Ignored = true)]
         public string Categories { get; set; }
+        public bool IsGetFullReport { get; set; }
 
         public override string GetSettingKey()
         {

@@ -8,6 +8,7 @@
     using CRM.Models.Feedback;
     using CRM.Models.InformHeadline;
     using CRM.Models.PicAndHeadline;
+    using CRM.Models.Report.CategoriesSummaryReport;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Report.SettlementReport;
@@ -25,6 +26,8 @@
         byte[] ExportPICManagement(IEnumerable<BaseModel> communicationTools, PicReport picReport);
 
         byte[] ExportSettlementReport(SettlementReportInfo reportInfo);
+       // byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo);
+
 
         byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
 
@@ -178,5 +181,13 @@
                 communicationTools, products, subProducts, extensions);
             return excel.Export();
         }
+
+        //public byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo)
+        //{
+        //    const string ExcelTemplatePath = "ExcelTemplates/Settlement_Issues_Report.xlsx";
+        //    var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+        //    var excel = new SettlementReportExcel(templatePath, summaryreportInfo);
+        //    return excel.Export();
+        //}
     }
 }

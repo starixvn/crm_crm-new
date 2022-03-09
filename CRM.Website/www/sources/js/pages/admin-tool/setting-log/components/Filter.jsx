@@ -130,7 +130,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                        <Form.Label htmlFor="action">{LangHelper.getResource('Action')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="actionId" id="actionId"
                             value={actionId}
