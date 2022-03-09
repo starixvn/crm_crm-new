@@ -95,6 +95,7 @@ export class NewCommunitionSetting extends PureComponent {
                 });
             });
         } else {
+            setFieldValue('subCategoryTypesNew', '');
             this.setState({
                 subCategoryOptionsNew: [],
                 selectedSubCategoryIdsNew: []
@@ -223,9 +224,6 @@ export class NewCommunitionSetting extends PureComponent {
                                 maxDisplayItemCount={1}
                                 onChange={(currentItem, selectedItemsKey) => {
                                     this.mainCategoriesChangeNew(currentItem, selectedItemsKey, setFieldValue);
-
-                                    handleChange('subCategoryTypesNew')(this.state.selectedSubCategoryIdsNew.length === 0 ? '' : this.state.selectedSubCategoryIdsNew);
-
                                 }}
                             />
                         </Col>
