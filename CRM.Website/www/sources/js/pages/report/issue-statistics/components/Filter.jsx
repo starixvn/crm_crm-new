@@ -72,7 +72,7 @@ export class Filter extends Component {
         }
         this.minMonthToDate = fromMonthDate;
         this.setState({fromMonthDate, toMonthDate});
-    } 
+    };
 
     handleChangeMonthFromDate = toMonthDate => {
         let fromMonthDate = this.state.fromMonthDate;
@@ -84,7 +84,7 @@ export class Filter extends Component {
         }
         this.maxMonthFromDate = toMonthDate;
         this.setState({fromMonthDate, toMonthDate});
-    }
+    };
 
     handleChange = evt => {
         this.setState({
@@ -174,7 +174,7 @@ export class Filter extends Component {
                                 </Form.Control>
                             </Form.Group>
                             {
-                                groupBy === 1 && 
+                                groupBy === 1 &&
                                 <Form.Group>
                                     <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
                                     <div className='react-datepicker-wrapper-container'>
@@ -191,7 +191,7 @@ export class Filter extends Component {
                                 </Form.Group>
                             }
                             {
-                                groupBy === 1 && 
+                                groupBy === 1 &&
                                 <Form.Group>
                                     <Form.Label htmlFor="fromDate">{LangHelper.getResource('ToDate')}</Form.Label>
                                     <div className='react-datepicker-wrapper-container'>
@@ -208,7 +208,7 @@ export class Filter extends Component {
                                 </Form.Group>
                             }
                             {
-                                groupBy === 3 && 
+                                groupBy === 3 &&
                                 <Form.Group className='form-group-month-picker'>
                                     <Form.Label htmlFor="fromMonth">{LangHelper.getResource('FromMonth')}</Form.Label>
                                     <div className='react-datepicker-wrapper-container month-datepicker'>
@@ -224,7 +224,7 @@ export class Filter extends Component {
                                 </Form.Group>
                             }
                             {
-                                groupBy === 3 && 
+                                groupBy === 3 &&
                                 <Form.Group className='form-group-month-picker'>
                                     <Form.Label htmlFor="toMonth">{LangHelper.getResource('ToMonth')}</Form.Label>
                                     <div className='react-datepicker-wrapper-container month-datepicker'>

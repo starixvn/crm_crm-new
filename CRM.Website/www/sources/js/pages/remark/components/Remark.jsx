@@ -88,7 +88,7 @@ export class Remark extends Component {
 
     handleSubmit = () => {
         this.setState({ isSubmitting: true });
-        const id = this.props.id; 
+        const id = this.props.id;
         const params = {
             customerId: id,
             specialRemarks: this.state.dataSpecialRemarks,

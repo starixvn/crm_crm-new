@@ -46,7 +46,7 @@ export class DataGridEdit extends PureComponent {
     renderOptions = (name, id, key) => <option key={key} value={id}>{name}</option>;
 
     renderRow = (item, index, productStatuses, informSettings) => {
-        var isClosed = this.props.status === 'Closed' ? true : false;
+        const isClosed = this.props.status === 'Closed' ? true : false;
         return (
             <Row key={index} className={item.groupId > 0 ? 'free-grid-headline' : 'free-grid-direct'}>
                 <Cell>{item.username}</Cell>

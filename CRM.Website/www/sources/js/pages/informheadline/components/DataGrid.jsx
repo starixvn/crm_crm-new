@@ -194,7 +194,7 @@ export class DataGrid extends Component {
                 </Fragment>
             );
         } else {
-            return <div className="text-center text-danger">{LangHelper.getResource('NoPermission')}</div>
+            return <div className="text-center text-danger">{LangHelper.getResource('NoPermission')}</div>;
         }
     }
 }

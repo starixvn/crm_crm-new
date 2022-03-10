@@ -14,7 +14,7 @@ export class AppContainer extends Component {
   };
 
   render() {
-    const {settings, chart} = this.props;
+    const {settings} = this.props;
     if(settings === null || !settings){
       return null;
     }

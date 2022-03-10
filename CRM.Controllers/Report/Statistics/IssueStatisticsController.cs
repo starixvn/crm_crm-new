@@ -13,19 +13,13 @@ namespace CRM.Controllers.Report.Statistics
 
     public class IssueStatisticsController : BaseController
     {
-        private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
-        private readonly IExportExcelService excelService;
 
         public IssueStatisticsController(
-            IIssueStatisticsService issueStatisticsService,
-            ISettingService settingService,
-            IExportExcelService excelService
+            ISettingService settingService
         )
         {
-            this.issueStatisticsService = issueStatisticsService;
             this.settingService = settingService;
-            this.excelService = excelService;
         }
 
         [NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
