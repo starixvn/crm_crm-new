@@ -1,0 +1,138 @@
+﻿using CRM.Core.Services;
+using CRM.Criteria.Report.CategoriesSummaryReport;
+using CRM.Models;
+using CRM.Models.Report.CategoriesSummaryReport;
+using CRM.Resources;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CRM.Services.Report.CategoriesSummaryReport
+{
+    public interface ISummaryReportService
+    {
+        Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria);
+
+    }
+    public class SummaryReportService : ISummaryReportService
+    {
+        private readonly IBaseService baseService;
+        public SummaryReportService(IBaseService baseService)
+        {
+            this.baseService = baseService;
+        }
+
+        public async Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria)
+        {
+            if (string.IsNullOrWhiteSpace(criteria.Categories))
+            {
+                return new SummaryReportModel();
+            }
+
+            IList<CategorySummary> categorySummaries = new List<CategorySummary>();
+            int[] categoryIds = criteria.Categories.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(c => int.Parse(c))
+            .ToArray();
+
+            var rawData = await baseService.GetDataAsync<SummaryRawData>(criteria);
+            IEnumerable<SummaryRawData> dataList = rawData.Where(c => categoryIds.Contains(c.MainCategoryId)).ToList();
+
+            var monthData = dataList.OrderBy(s => s.M).Select(s => s.Month.ToUpper()).Distinct().ToList();
+            IDictionary<string, Summary> grandTotal = InitializeSummaries(monthData);
+            var mainCategoryGroup = dataList.GroupBy(s => (MainCategoryId: s.MainCategoryId, MainCategory: s.MainCategory));
+
+            MappingDataSummaryReport(mainCategoryGroup, monthData, categorySummaries, grandTotal);
+
+            return new SummaryReportModel
+            {
+                CategorySummaries = categorySummaries,
+                GrandTotals = grandTotal.Values.ToList(),
+                Months = monthData
+            };
+        }
+
+        private void MappingDataSummaryReport(
+            IEnumerable<IGrouping<(int MainCategoryId, string MainCategory), 
+            SummaryRawData>> mainCategoryGroup, List<string> monthData, 
+            IList<CategorySummary> categorySummaries, IDictionary<string, 
+            Summary> grandTotal
+            )
+        {
+
+            foreach (var mainKey in mainCategoryGroup)
+            {
+                IDictionary<string, Summary> categoryTotal = InitializeSummaries(monthData);
+                IList<CategorySummary> subCategorySummaries = new List<CategorySummary>();
+                CategorySummary category = new CategorySummary
+                {
+                    Id = mainKey.Key.MainCategoryId,
+                    Name = mainKey.Key.MainCategory,
+                    SubCategories = subCategorySummaries
+                };
+
+                var subCategoryGroup = mainKey.GroupBy(s => (SubCategoryId: s.SubCategoryId, SubCategory: s.SubCategory));
+
+                MappingDataSubcategory(categoryTotal, grandTotal, subCategorySummaries, monthData, subCategoryGroup);
+
+                category.Summaries = categoryTotal.Values.ToList();
+                categorySummaries.Add(category);
+            }
+        }
+
+        private void MappingDataSubcategory(
+            IDictionary<string, Summary> categoryTotal,
+            IDictionary<string, Summary> grandTotal,
+            IList<CategorySummary> subCategorySummaries,
+            List<string> monthData,
+            IEnumerable<IGrouping<(int SubCategoryId, string SubCategory), SummaryRawData>> subCategoryGroup)
+        {
+            foreach (var subKey in subCategoryGroup)
+            {
+                IDictionary<string, Summary> summaryHash = InitializeSummaries(monthData);
+                CategorySummary subCategory = new CategorySummary
+                {
+                    Id = subKey.Key.SubCategoryId,
+                    Name = subKey.Key.SubCategory
+                };
+
+                CalculateDataSubcategory(categoryTotal, grandTotal, subCategorySummaries, subKey, summaryHash, subCategory);
+            }
+        }
+
+        private void CalculateDataSubcategory(
+            IDictionary<string, Summary> categoryTotal,
+            IDictionary<string, Summary> grandTotal,
+            IList<CategorySummary> subCategorySummaries,
+            IGrouping<(int SubCategoryId, string SubCategory),
+            SummaryRawData> subKey, IDictionary<string, Summary> summaryHash,
+            CategorySummary subCategory)
+        {
+            foreach (var summary in subKey)
+            {
+                string month = summary.Month.ToUpper();
+                int numberOfIssues = summary.NoOfIssues;
+                summaryHash[month].Amount = numberOfIssues;
+
+                categoryTotal[month].Amount += numberOfIssues;
+
+                grandTotal[month].Amount += numberOfIssues;
+            }
+
+            subCategory.Summaries = summaryHash.Values.ToList();
+            subCategorySummaries.Add(subCategory);
+        }
+
+        private IDictionary<string, Summary> InitializeSummaries(IList<string> months)
+        {
+            IDictionary<string, Summary> summaries = new Dictionary<string, Summary>();
+            foreach (var item in months)
+            {
+                summaries.Add(item, new Summary { Month = item, Amount = 0 });
+            }
+
+            return summaries;
+        }
+
+    }
+}
