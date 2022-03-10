@@ -9,6 +9,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { remarkEncode, renderButtonSave } from '../common.functions';
 import DataGridEdit from './DataGridEdit';
 import FilterEditInforms from './FilterEditInforms';
+import { Policy } from '@jsroot/common/constants';
 
 export class EditInforms extends Component {
     constructor(props) {
@@ -73,6 +74,7 @@ export class EditInforms extends Component {
         if (!titleDetail || !allSettings || !dataEditInforms) {
             return null;
         }
+        const isReadPermission = window.searchPolicy === Policy.Read;
 
         return (
             <Modal show className="modal-edit edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
@@ -110,7 +112,7 @@ export class EditInforms extends Component {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {renderButtonSave(filterData.errors, null, null,this.handleSubmit)}
+                    {renderButtonSave(filterData.errors, true, isReadPermission, this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );
