@@ -83,7 +83,7 @@ export class NewInforms extends Component {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {filterData.values.title && renderButtonSave(filterData.errors, null, null, this.handleSubmit)}
+                    {filterData.values.title && renderButtonSave(filterData.errors, false, true, this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );
