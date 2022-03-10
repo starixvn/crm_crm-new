@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRM.Controllers.Report.Statistics
 {
 
-    public class IssueStatisticsController : Controller
+    public class IssueStatisticsController : BaseController
     {
         private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
@@ -28,7 +28,7 @@ namespace CRM.Controllers.Report.Statistics
             this.excelService = excelService;
         }
 
-        //[NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
+        [NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/IssueStatistics/Index");
@@ -40,14 +40,6 @@ namespace CRM.Controllers.Report.Statistics
             var subCategories = await settingService.GetSubCategoryAsync(null, SettingConstants.Active);
 
             return Json(new { mainCategories, subCategories });
-        }
-
-        [HttpPost]
-        //[NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
-        public async Task<IActionResult> GetIssuesStatistics([FromBody] GetIssuesStatisticReportCriteria criteria)
-        {
-            var statistics = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
-            return Json(statistics);
         }
     }
 }

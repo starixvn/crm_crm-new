@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
-//import Chart from './Chart';
 
 export class AppContainer extends Component {
   componentDidMount(){
@@ -22,10 +21,6 @@ export class AppContainer extends Component {
     return (
       <Fragment>
         <Filter />
-        {/* {
-          chart.show &&
-          <Chart chart={chart} onClose={this.handleCloseChartDialog} />
-        } */}
       </Fragment>
     );
   }
@@ -33,7 +28,7 @@ export class AppContainer extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 const mapStateToProps = state => {
-    const { settings, chart } = state;
-    return { settings, chart };
+    const { settings } = state;
+    return { settings };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

@@ -112,12 +112,6 @@ export class Filter extends Component {
             mainCategoryId: mainCategoryId,
             subCategoryId: subCategoryId,
             isGetFullReport: groupBy !== 1,
-            // communicationId: communicationId === 0 ? '' : communicationId,
-            // statusId: statusId === 0 ? '' : statusId,
-            // responseId: responseId === 0 ? '' : responseId,
-            // isReviewed: isReviewed,
-            // handledBy: handler,
-            // reviewer: reviewer,
             pageIndex: 1,
             pageSize: 7
         };

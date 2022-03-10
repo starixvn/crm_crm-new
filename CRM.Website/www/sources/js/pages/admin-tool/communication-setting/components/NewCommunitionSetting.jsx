@@ -84,7 +84,6 @@ export class NewCommunitionSetting extends PureComponent {
             const findSubByMain = this.props.settings.subCategories.filter(item => selectedMain.includes(item.mainCategoryID.toString()));
             const resetSelectedSub = selectedSub.length === 0 ? [] : selectedSub.filter(selected => findSubByMain.some(sub => sub.subCategoryId.toString() === selected));
             const resetSelectedSubJoin = resetSelectedSub.length > 1 ? resetSelectedSub.join(',') : resetSelectedSub;
-            
             this.setState({
                 selectedSubCategoryIdsNew: resetSelectedSubJoin
             }, () => {
