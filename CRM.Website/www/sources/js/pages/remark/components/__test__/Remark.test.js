@@ -23,7 +23,8 @@ describe('Remark', () => {
             // Arrange
             const props = {
                 gridData: { specialRemarks: ['test'], normalRemarks: ['testing'] },
-                getRemarks: jest.fn()
+                getRemarks: jest.fn(),
+                id: 1754
             };
 
             // Act

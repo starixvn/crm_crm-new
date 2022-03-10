@@ -28,7 +28,7 @@ export class Remark extends Component {
 
     async componentDidMount() {
         await this.props.getRemarks({
-            customerId: 1754
+            customerId: this.props.id
         });
         const { gridData } = this.props;
         this.setState({
@@ -88,8 +88,9 @@ export class Remark extends Component {
 
     handleSubmit = () => {
         this.setState({ isSubmitting: true });
+        const id = this.props.id; 
         const params = {
-            customerId: 1754,
+            customerId: id,
             specialRemarks: this.state.dataSpecialRemarks,
             normalRemarks: this.state.dataNormalRemarks
         };
@@ -100,7 +101,7 @@ export class Remark extends Component {
             if (response.data.isSuccessful) {
                 setTimeout(async () => {
                     this.setState({ editRemarkResult: null });
-                    await this.props.getRemarks({ customerId: 1754 });
+                    await this.props.getRemarks({ customerId: id });
                     this.setState({
                         isSubmitting: false,
                         specialRemarks: [...this.props.gridData.specialRemarks,''],

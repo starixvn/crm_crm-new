@@ -4,7 +4,7 @@ import Remark from './Remark';
 export class AppContainer extends Component {
     render() {
         return (
-            <Remark/>
+            <Remark id={this.props.id}/>
         );
     }
 }
