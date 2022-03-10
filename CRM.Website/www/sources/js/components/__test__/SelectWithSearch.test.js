@@ -21,6 +21,7 @@ describe('SelectWithSearch', () => {
         options: [],
         filter: '',
         isHideNA: false,
+        isSelectOption: false,
         collapsedAll: true
     };
     const props = {
