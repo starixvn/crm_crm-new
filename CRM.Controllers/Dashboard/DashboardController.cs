@@ -38,11 +38,12 @@
             this.dashboardService = dashboardService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int custid)
         {
             var permission = new CustomerPermissionViewModel
             {
-                CreateUpdateFeedbackPermission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
+                CreateUpdateFeedbackPermission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
+                Id = custid
             };
             return View(permission);
         }

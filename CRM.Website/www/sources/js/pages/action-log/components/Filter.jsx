@@ -50,7 +50,7 @@ export class Filter extends Component {
         const { handler, fromDate, toDate } = this.state;
         const params = {
             actionId: 0,
-            customerId: 1754,
+            customerId: this.props.id,
             handler: handler,
             fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(fromDate)),
             toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(toDate)),

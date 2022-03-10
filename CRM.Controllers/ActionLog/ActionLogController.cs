@@ -25,9 +25,9 @@
             this.actionLogService = actionLogService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int custid)
         {
-            return View();
+            return View(custid);
         }
 
         public async Task<IActionResult> GetAllLogAction(int actionType)

@@ -41,12 +41,13 @@
             this.baseService = baseService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int custid)
         {
             var permission = new CustomerPermissionViewModel
             {
                 CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
-                UpdateHeadlineInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo)
+                UpdateHeadlineInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo),
+                Id = custid
             };
 
             return View(permission);

@@ -29,7 +29,7 @@ export class AppContainer extends Component {
     render() {
         return (
             <div>
-                <EditForm/>
+                <EditForm id={this.props.id}/>
                 {
                     this.props.editCustomerInfoDetailDialog.show &&
                     <SweetModalDialog size="sm"

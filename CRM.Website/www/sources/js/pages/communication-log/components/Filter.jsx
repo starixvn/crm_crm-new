@@ -30,7 +30,7 @@ export class Filter extends Component {
     componentDidMount() {
         const { fromDate, toDate } = this.state;
         const params = {
-            customerId: 1754,
+            customerId: this.props.id,
             pageIndex: 1, pageSize: 100,
             fromDate: DateTimeService.toLongDateTimeFormat(fromDate),
             handler: '', statusId: 0,
@@ -60,7 +60,7 @@ export class Filter extends Component {
         event.preventDefault();
         const { statusId, handler, fromDate, toDate } = this.state;
         const params = {
-            customerId: 1754,
+            customerId: this.props.id,
             pageIndex: 1, pageSize: 100,
             statusId: statusId,
             handler: handler,

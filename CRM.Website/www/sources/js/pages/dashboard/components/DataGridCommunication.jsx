@@ -12,7 +12,7 @@ import { Policy } from '@jsroot/common/constants';
 export class DataGridCommunication extends Component {
 
     componentDidMount() {
-        this.props.getCommunicationLogs({ customerId: 1754 });
+        this.props.getCommunicationLogs({ customerId: this.props.id });
     }
 
     buildHeader = () => {
@@ -214,7 +214,7 @@ export class DataGridCommunication extends Component {
         const cssColor = (cssStatus !== 'closed' && cssStatus !== 'pending') ? '' : cssStatus;
         return (
             <Row key={index} className={cssColor}>
-                <Cell className="text-center">
+                <Cell className="text-left">
                     <span className='link-detail' onClick={() => this.handleShowEditCommunication(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
                 {
@@ -235,8 +235,8 @@ export class DataGridCommunication extends Component {
                 <Cell className='text-center'>
                     {item.duration.replace(/\s+/g, '')}
                 </Cell>
-                <Cell className='text-center'>{item.handler}</Cell>
-                <Cell className='text-center'>{item.reviewer}</Cell>
+                <Cell className='text-left'>{item.handler}</Cell>
+                <Cell className='text-left'>{item.reviewer}</Cell>
                 <Cell className='text-center'>
                     <Button variant="primary" size="sm" onClick={() => this.handleShowCreateCommunication(item.feedbackId)}>
                         {LangHelper.getResource('Duplicate')}

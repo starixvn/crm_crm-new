@@ -163,6 +163,7 @@ describe('EditCustomerInfoVerify', () => {
         it('should call exactly function when click button', () => {
             // Arrange
             const props = {...initProps};
+            window.createUpdateFeedbackPermission = 2;
 
             const container = shallow(<EditCustomerInfoVerify {...props} />).instance();
             container.handleSubmit = jest.fn();

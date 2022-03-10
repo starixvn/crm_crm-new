@@ -33,7 +33,7 @@ export class AppContainer extends Component {
     handleCloseEditRedemptionDialog = isSuccessful => {
         this.props.setEditRedemptionDialog({ show: false });
         if (isSuccessful) {
-            this.props.getRedemptionLogs({ customerId: 1754 });
+            this.props.getRedemptionLogs({ customerId: this.props.id });
         }
     };
 
@@ -44,21 +44,21 @@ export class AppContainer extends Component {
     handleCloseEditCommunicationDialog = isSuccessful => {
         this.props.setEditCommunicationDialog({ show: false });
         if (isSuccessful) {
-            this.props.getCommunicationLogs({ customerId: 1754 });
+            this.props.getCommunicationLogs({ customerId: this.props.id });
         }
     };
 
     handleCloseCreateCmnDiaLog = isSuccessful => {
         this.props.setCreateCommunicationDialog({ show: false });
         if (isSuccessful) {
-            this.props.getCommunicationLogs({ customerId: 1754 });
+            this.props.getCommunicationLogs({ customerId: this.props.id });
         }
     };
 
     handleCloseEditCustomerVerify = isSuccessful => {
         this.props.setEditCustomerVerifyDialog({ show: false });
         if (isSuccessful) {
-            this.props.getCustomerInfoVerify({ customerId: 1754 });
+            this.props.getCustomerInfoVerify({ customerId: this.props.id });
         }
     };
 
@@ -71,11 +71,11 @@ export class AppContainer extends Component {
         return (
             <div>
                 <div className="d-flex justify-content-between">
-                    <div className="dataGrid-remark"><DataGridRemark /></div>
-                    <div className="information"><CustomerInfoVerify /></div>
+                    <div className="dataGrid-remark"><DataGridRemark id={this.props.id} /></div>
+                    <div className="information"><CustomerInfoVerify id={this.props.id}/></div>
                 </div>
-                <DataGridRedemption />
-                <DataGridCommunication />
+                <DataGridRedemption id={this.props.id} />
+                <DataGridCommunication id={this.props.id} />
                 {
                     editRedemptionDialog.show &&
                     <EditRedemptionLog logId={editRedemptionDialog.redemptionId}
@@ -97,6 +97,7 @@ export class AppContainer extends Component {
                 {
                     createCommunicationDialog.show &&
                     <CreateCommunicationLog
+                        id={this.props.id}
                         onClose={this.handleCloseCreateCmnDiaLog}
                         options={createCommunicationDialog.options}
                     />
@@ -104,6 +105,7 @@ export class AppContainer extends Component {
                 {
                     editCustomerVerifyDialog.show &&
                     <EditCustomerInfoVerify
+                        id={this.props.id}
                         onClose={this.handleCloseEditCustomerVerify}
                     />
                 }

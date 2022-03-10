@@ -37,7 +37,7 @@ export class AppContainer extends Component {
         const { editRedemptionDialog, createRedemptionDialog } = this.props;
         return (
             <div>
-                <Filter />
+                <Filter id={this.props.id}/>
                 <DataGrid />
                 {
                     editRedemptionDialog.show &&
@@ -48,6 +48,7 @@ export class AppContainer extends Component {
                 {
                     createRedemptionDialog.show &&
                     <CreateRedemptionLog logId={createRedemptionDialog.logId}
+                        id={this.props.id}
                         onClose={this.handleCloseCreateRedemptionDialog}
                     />
                 }

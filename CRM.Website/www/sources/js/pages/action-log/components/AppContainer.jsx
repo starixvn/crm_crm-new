@@ -6,7 +6,7 @@ export class AppContainer extends Component {
     render() {
         return (
             <div>
-                <Filter/>
+                <Filter id={this.props.id}/>
                 <DataGrid />
             </div>
         );

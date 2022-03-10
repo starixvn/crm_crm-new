@@ -94,7 +94,7 @@ export class EditForm extends Component {
 
     async componentDidMount() {
         await this.props.getAllSettings();
-        await this.props.getCustomerById({ customerId: 1754 });
+        await this.props.getCustomerById({ customerId: this.props.id });
         const { customerInfo } = this.props;
         const params = ParamsCustomerInfo(customerInfo);
         this.setState(params);

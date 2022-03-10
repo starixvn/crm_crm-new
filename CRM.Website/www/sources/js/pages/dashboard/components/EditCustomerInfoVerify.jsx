@@ -8,6 +8,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
+import { Policy } from '@jsroot/common/constants';
 
 export class EditCustomerInfoVerify extends Component {
 
@@ -43,7 +44,7 @@ export class EditCustomerInfoVerify extends Component {
         event.preventDefault();
         const { data } = this.state;
         const params = {
-            customerId: 1754,
+            customerId: this.props.id,
             isVerifyEmail: data[0].isChecked,
             isVerifyPassport: data[1].isChecked,
             isVerifyBirthday: data[2].isChecked,
@@ -108,11 +109,16 @@ export class EditCustomerInfoVerify extends Component {
                                 </tbody>
                             </Table>
                         </Modal.Body>
-                        <Modal.Footer>
-                            <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit} disabled={isSubmitting}>
-                                {LangHelper.getResource('Save')}
-                            </Button>
-                        </Modal.Footer>
+                        {
+                            window.createUpdateFeedbackPermission === Policy.Host &&
+                            (
+                                <Modal.Footer>
+                                    <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit} disabled={isSubmitting}>
+                                        {LangHelper.getResource('Save')}
+                                    </Button>
+                                </Modal.Footer>
+                            )
+                        }
                     </Form>
                 </Modal>
             </div>

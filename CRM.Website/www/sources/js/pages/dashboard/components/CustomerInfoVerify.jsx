@@ -16,7 +16,7 @@ export class CustomerInfoVerify extends Component {
     }
 
     componentDidMount() {
-        this.props.getCustomerInfoVerify({ customerId: 1754 });
+        this.props.getCustomerInfoVerify({ customerId: this.props.id });
     }
 
     componentDidUpdate(prevProps) {

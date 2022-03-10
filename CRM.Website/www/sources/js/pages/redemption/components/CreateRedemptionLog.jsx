@@ -45,7 +45,7 @@ export class CreateRedemptionLog extends Component {
         setSubmitting(true);
         Site.blockUI();
         const params = {
-            customerId: 1754,
+            customerId: this.props.id,
             subject: values.subject,
             remark: values.remark,
             claimTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.claimTime)),

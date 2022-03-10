@@ -33,11 +33,12 @@
             this.remarkService = remarkService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int custId)
         {
             var permission = new CustomerPermissionViewModel
             {
-                CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
+                CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
+                Id = custId
             };
             return View(permission);
         }

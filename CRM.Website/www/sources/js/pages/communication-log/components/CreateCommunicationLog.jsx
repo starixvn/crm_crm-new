@@ -258,7 +258,7 @@ export class CreateCommunicationLog extends Component {
         const productIds = values.productIds ? [...new Set(values.productIds.split(','))] : [allSettings.productNA.id];
 
         const params = {
-            customerId: 1754,
+            customerId: this.props.id,
             startTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.startTime)),
             endTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.endTime)),
             extensionIds: values.extensionIds !== '' ? values.extensionIds : allSettings.extensionNA.id,

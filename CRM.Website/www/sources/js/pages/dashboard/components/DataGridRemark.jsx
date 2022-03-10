@@ -9,7 +9,7 @@ import LangHelper from '@jsroot/common/langHelper';
 export class DataGridRemark extends Component {
 
     componentDidMount() {
-        this.props.getCustomerRemarks({ customerId: 1754 });
+        this.props.getCustomerRemarks({ customerId: this.props.id });
     }
 
     buildBody = () => {

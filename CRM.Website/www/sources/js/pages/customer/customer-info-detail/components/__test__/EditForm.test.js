@@ -28,7 +28,11 @@ describe('EditForm', () => {
             const props = {
                 ...initProps,
                 getAllSettings: jest.fn(),
-                getCustomerById: jest.fn()
+                getCustomerById: jest.fn(),
+                id: 1754,
+                customerInfo: {
+                    siteSetting: { name: 'test123' }
+                }
             };
 
             //Act

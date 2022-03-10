@@ -45,7 +45,7 @@ export class AppContainer extends Component {
         const { editNoOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = this.props;
         return (
             <div>
-                <Filter/>
+                <Filter id={this.props.id}/>
                 <DataGrid/>
                 {
                     editNoOfInquiryDialog.show &&
@@ -62,6 +62,7 @@ export class AppContainer extends Component {
                 {
                     createCommunicationDialog.show &&
                     <CreateCommunicationLog
+                        id={this.props.id}
                         onClose={this.handleCloseCreateCommunicationDiaLog}
                     />
                 }

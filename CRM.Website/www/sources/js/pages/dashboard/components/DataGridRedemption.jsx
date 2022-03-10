@@ -9,7 +9,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 export class DataGridRedemption extends Component {
 
     componentDidMount() {
-        this.props.getRedemptionLogs({ customerId: 1754 });
+        this.props.getRedemptionLogs({ customerId: this.props.id });
     }
 
     buildHeader = () => {

@@ -10,10 +10,12 @@ const store = configureStore({
     reducer: communicationLog
 });
 
+const id = document.getElementById('id').value;
+
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer/>
+            <AppContainer id={id}/>
         </Layout>
     </Provider>,
     document.getElementById('app-container'));
