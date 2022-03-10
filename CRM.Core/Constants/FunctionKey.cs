@@ -9,7 +9,6 @@
         public const string DefaultCommunicationSetting = "DefaultCommunicationSetting";
 
         public const string SettlementIssuesReport = "SettlementIssuesReport";
-        public const string CategoriesSummaryReport = "CategoriesSummaryReport";
         public const string FeedbackSubject = "FBSubjectTemplateManagement";
         public const string PICAssignment = "PICAssignment";
         public const string PICManagement = "PICManagement";

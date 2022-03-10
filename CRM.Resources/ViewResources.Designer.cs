@@ -133,15 +133,6 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Categories Summary Report.
-        /// </summary>
-        public static string CategoriesSummaryReport {
-            get {
-                return ResourceManager.GetString("CategoriesSummaryReport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Changes Log.
         /// </summary>
         public static string ChangesLog {
@@ -889,15 +880,6 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Categories_Summary_{0}.
-        /// </summary>
-        public static string SheetNameSummaryReport {
-            get {
-                return ResourceManager.GetString("SheetNameSummaryReport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Skype.
         /// </summary>
         public static string Skype {
@@ -948,24 +930,6 @@ namespace CRM.Resources {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Categories_Summary_Report_For_Year_{0}.
-        /// </summary>
-        public static string SummaryReport_ExcelTitle {
-            get {
-                return ResourceManager.GetString("SummaryReport_ExcelTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Categories Summary Report For Year {0}.
-        /// </summary>
-        public static string SummaryReport_Title {
-            get {
-                return ResourceManager.GetString("SummaryReport_Title", resourceCulture);
             }
         }
         
