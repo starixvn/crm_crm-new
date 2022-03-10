@@ -55,7 +55,7 @@ export class DataGridEdit extends PureComponent {
                         name="informHeadlineStatusId"
                         defaultValue={item.informHeadlineStatusId}
                         key={item.informHeadlineStatusId}
-                        disabled={isClosed}
+                        disabled={isClosed || !window.hasHostPermission}
                         onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
                     >
                         {
@@ -81,7 +81,7 @@ export class DataGridEdit extends PureComponent {
                         name="extension"
                         defaultValue={item.extension}
                         key={item.extension}
-                        disabled={isClosed}
+                        disabled={isClosed || !window.hasHostPermission}
                         onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
                     >
                         {
@@ -93,7 +93,7 @@ export class DataGridEdit extends PureComponent {
                 <Cell className='text-center'>
                     <Form.Control as="select" size="sm" className="shadow-none"
                         name="productStatus"
-                        disabled={isClosed}
+                        disabled={isClosed || !window.hasHostPermission}
                         defaultValue={item.productStatus}
                         key={item.productStatus}
                         onChange={event => this.handleChangeDataGrid(event,item.headlineId)}

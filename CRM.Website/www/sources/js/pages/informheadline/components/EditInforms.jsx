@@ -74,7 +74,7 @@ export class EditInforms extends Component {
         if (!titleDetail || !allSettings || !dataEditInforms) {
             return null;
         }
-        const isReadPermission = window.searchPolicy === Policy.Read;
+        const isHostPermission = window.searchPolicy === Policy.Host;
 
         return (
             <Modal show className="modal-edit edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
@@ -112,7 +112,7 @@ export class EditInforms extends Component {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {renderButtonSave(filterData.errors, true, isReadPermission, this.handleSubmit)}
+                    {renderButtonSave(filterData.errors, false, isHostPermission, this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );
