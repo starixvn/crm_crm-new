@@ -35,5 +35,12 @@ namespace CRM.Controllers.Report.Statistics
 
             return Json(new { mainCategories, subCategories });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetIssuesStatistics([FromBody] GetIssuesStatisticReportCriteria criteria)
+        {
+            var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
+            return Json(data);
+        }
     }
 }

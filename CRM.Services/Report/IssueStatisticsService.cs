@@ -33,6 +33,10 @@
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var issuesStatistics = await baseService.GetDataAsync<IssuesStatistics>(criteria);
+            foreach(var issue in issuesStatistics)
+            {
+                issue.FeedbackDate = commonService.ConvertToClientDateTime(issue.FeedbackDate);
+            }
             var groupByCountryId = issuesStatistics.GroupBy(x => x.CountryId).Select(group => new Country
             {
                 Id = group.First().CountryId,
@@ -85,9 +89,7 @@
             GetIssuesStatisticReportCriteria criteria,
             IList<IssuesStatisticsReportInfo> statisticReportList)
         {
-            return statisticReportList.Skip(criteria.PageSize * criteria.PageIndex)
-                .Take(criteria.PageSize)
-                .ToList();
+            return statisticReportList.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
         }
 
         private IssuesStatisticsReportInfo GetChartInfo(IssuesStatisticsReportInfo issuesStatisticsReportInfo, IDictionary<int, int> countryDictionary)
@@ -150,8 +152,8 @@
             GetIssuesStatisticReportCriteria criteria)
         {
             var countryLength = countryDictionary.Count;
-            var fromDateClient = commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateString();
-            var toDateClient = commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateString();
+            var fromDateClient = commonService.ConvertToClientDateTime(criteria.FromDate).ToString("MMM dd, yyyy");
+            var toDateClient = commonService.ConvertToClientDateTime(criteria.ToDate).ToString("MMM dd, yyyy");
 
             IssuesStatisticsReportInfo statisticReport = new IssuesStatisticsReportInfo
             {
@@ -170,7 +172,7 @@
                 return statisticReport;
             }
 
-            var dateGroups = issuesStatistics.GroupBy(data => data.FeedbackDate.ToShortDateString());
+            var dateGroups = issuesStatistics.GroupBy(data => data.FeedbackDate.ToString("MMM dd, yyyy"));
             foreach (var dateGroup in dateGroups)
             {
                 var dateReport = new IssuesStatisticsReportInfo
@@ -212,8 +214,8 @@
             GetIssuesStatisticReportCriteria criteria)
         {
             var countryLength = countryDictionary.Count;
-            var fromDateClient = commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateString();
-            var toDateClient = commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateString();
+            var fromDateClient = commonService.ConvertToClientDateTime(criteria.FromDate).ToString("MMM dd, yyyy");
+            var toDateClient = commonService.ConvertToClientDateTime(criteria.ToDate).ToString("MMM dd, yyyy");
 
             IssuesStatisticsReportInfo statisticReport = new IssuesStatisticsReportInfo
             {

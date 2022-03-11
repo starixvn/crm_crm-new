@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
+import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
   componentDidMount(){
@@ -20,7 +21,8 @@ export class AppContainer extends Component {
     }
     return (
       <Fragment>
-        <Filter />
+          <Filter />
+          <DataGrid />
       </Fragment>
     );
   }

@@ -18,14 +18,14 @@ const getAllSettings = () => async dispatch => {
 
 const getGridData = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('LogStatistics/GetIssuesStatistics');
+    const url = Site.resolveClientUrl('IssueStatistics/GetIssuesStatistics');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setGridData(response.data));
     }).then(() => Site.unblockUI());
 };
 
 const exportExcel = params => async () => {
-    const url = Site.resolveClientUrl('LogStatistics/ExportExcel');
+    const url = Site.resolveClientUrl('IssueStatistics/ExportExcel');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);

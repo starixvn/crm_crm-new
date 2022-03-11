@@ -22,7 +22,7 @@ export class Filter extends Component {
         this.minToDate = minDate;
         this.minMonthFromDate = minDate;
         this.minMonthToDate = minDate;
-        this.maxMonthFromDate = firstMonthOfYear;
+        this.maxMonthFromDate = this.currentDate;
         this.maxMonthToDate = this.currentDate;
         this.state = {
             groupBy: 1,
@@ -30,8 +30,8 @@ export class Filter extends Component {
             toDate: this.currentDate,
             fromMonthDate: firstMonthOfYear,
             toMonthDate: this.currentDate,
-            mainCategoryId: 0,
-            subCategoryId: 0,
+            mainCategoryId: -1,
+            subCategoryId: -1,
             showFilter: true
         };
     }
@@ -97,20 +97,23 @@ export class Filter extends Component {
 
     handleSubmit = () => {
         const { mainCategoryId, fromDate, toDate, subCategoryId, groupBy, fromMonthDate, toMonthDate} = this.state;
-        if(mainCategoryId === 0){
+        if(mainCategoryId === -1){
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory')));
             return;
         }
-        if(mainCategoryId !== -1 && subCategoryId === 0){
+        if(mainCategoryId !== 0 && subCategoryId === -1){
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SubCategory')));
             return;
         }
+        const endDateOfMonth = new Date(toMonthDate.getFullYear(), toMonthDate.getMonth() + 1, 0);
+        const endDateOfMonthFormat = DateTimeService.toShortDateFormat(new Date(endDateOfMonth));
+
         const params = {
             reportType : groupBy,
             fromDate: groupBy === 1 ? DateTimeService.toShortDateFormat(fromDate) : DateTimeService.toShortDateFormat(fromMonthDate),
-            toDate: groupBy === 1 ? DateTimeService.toShortDateFormat(toDate) : DateTimeService.toShortDateFormat(toMonthDate),
+            toDate: groupBy === 1 ? DateTimeService.toShortDateFormat(toDate) : endDateOfMonthFormat,
             mainCategoryId: mainCategoryId,
-            subCategoryId: subCategoryId,
+            subCategoryId: subCategoryId === -1 ? 0 : subCategoryId,
             isGetFullReport: groupBy !== 1,
             pageIndex: 1,
             pageSize: 7
@@ -125,16 +128,16 @@ export class Filter extends Component {
         const select = LangHelper.getResource('PleaseSelect');
         mainCategories.map(value => {
             const subFilter = subCategories.filter(item => item.mainCategoryID === value.mainCategoryID);
-            subFilter.unshift({ name: 'All', subCategoryId: -1 });
-            subFilter.unshift({ name: select, subCategoryId: 0 });
+            subFilter.unshift({ name: 'All', subCategoryId: 0 });
+            subFilter.unshift({ name: select, subCategoryId: -1 });
             categoriesArr.push({
                 mainCategoryID: value.mainCategoryID,
                 name: value.name,
                 subCate: subFilter
             });
         });
-        categoriesArr.unshift({ mainCategoryID: -1, name: 'All', subCate: [{ name: 'All', subCategoryId: -1 }] });
-        categoriesArr.unshift({ mainCategoryID: 0, name: select, subCate: [{ name: select, subCategoryId: 0 }] });
+        categoriesArr.unshift({ mainCategoryID: 0, name: 'All', subCate: [{ name: 'All', subCategoryId: 0 }] });
+        categoriesArr.unshift({ mainCategoryID: -1, name: select, subCate: [{ name: select, subCategoryId: -1 }] });
         return categoriesArr;
     };
 
@@ -202,7 +205,7 @@ export class Filter extends Component {
                                             selected={toDate}
                                             minDate={new Date(this.minToDate)}
                                             maxDate={new Date(this.maxToDate)}
-                                            onChange={value => this.handleChangeFromDate(value)}
+                                            onChange={value => this.handleChangeToDate(value)}
                                         />
                                     </div>
                                 </Form.Group>

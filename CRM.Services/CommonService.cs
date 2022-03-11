@@ -68,14 +68,14 @@
 
         public DateTime ConvertToClientDateTime(DateTime date)
         {
-            var timeSpan = new TimeSpan(appSettings.ClientTimezone, 0, 0);
-            return date.ToUniversalTime().Add(timeSpan);
+            var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
+            return date.Add(timeSpan);
         }
 
         public DateTime ConvertToServerDateTime(DateTime date)
         {
-            var timeSpan = new TimeSpan(appSettings.ServerTimezone, 0, 0);
-            return date.ToUniversalTime().Add(timeSpan);
+            var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
+            return date.Subtract(timeSpan);
         }
 
         public DateTime ConvertClientFromTimeToServerTime(DateTime clientFromTime)

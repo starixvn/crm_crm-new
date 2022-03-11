@@ -9,8 +9,6 @@
 @import '../../../components/react-select';
 
 .form-filter {
-    min-width:1200px;
-
     .filter-collapse {
         margin-top: -10px;
         .fa {
@@ -53,5 +51,27 @@
 
     .ml-1{
         margin-left: 10px !important;
+    }
+}
+
+.table-container .body-content{
+    .height-row{
+        height: 37px !important;
+    }
+
+    .total-row td{
+        background-color: rgb(227, 227, 227) !important;
+    }
+
+    tr td{
+        background-color: #fff !important;
+    }
+}
+
+.footer-container{
+    border: 0;
+    td{
+        background: #c0cae3!important;
+        color: #0054a6 !important;
     }
 }

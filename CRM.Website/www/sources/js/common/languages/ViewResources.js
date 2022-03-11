@@ -383,6 +383,7 @@
     ThisInformationRequired: 'This information is required!',
     TypeOfContact: 'Type Of Contact',
     ToMonth: 'To Month',
+    Time: 'Time',
     UnContactable: 'Uncontactable',
     Update: 'Update',
     UpdateChatTypeMappingSuccessfully: 'Update chat type mapping successfully!',
