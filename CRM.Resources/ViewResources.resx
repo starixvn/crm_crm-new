@@ -414,6 +414,18 @@
   <data name="AddCustomerFeedback" xml:space="preserve">
     <value>Add Feedback</value>
   </data>
+  <data name="CategoriesSummaryReport" xml:space="preserve">
+    <value>Categories Summary Report</value>
+  </data>
+  <data name="SheetNameSummaryReport" xml:space="preserve">
+    <value>Categories_Summary_{0}</value>
+  </data>
+  <data name="SummaryReport_ExcelTitle" xml:space="preserve">
+    <value>Categories_Summary_Report_For_Year_{0}</value>
+  </data>
+  <data name="SummaryReport_Title" xml:space="preserve">
+    <value>Categories Summary Report For Year {0}</value>
+  </data>
   <data name="Daily" xml:space="preserve">
     <value>Daily</value>
   </data>
@@ -437,6 +449,15 @@
   </data>
   <data name="IssueStatistics_ExcelTitle" xml:space="preserve">
     <value>{0} Issue Statistic Report From {1} To {2}</value>
+  </data>
+  <data name="Credit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="Licensee" xml:space="preserve">
+    <value>Licensee</value>
+  </data>
+  <data name="MinReportDate" xml:space="preserve">
+    <value>2011</value>
   </data>
   <data name="IssueStatistic_Report" xml:space="preserve">
     <value>Issue Statistic Report</value>

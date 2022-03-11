@@ -31,6 +31,7 @@
         byte[] ExportPICManagement(IEnumerable<BaseModel> communicationTools, PicReport picReport);
 
         byte[] ExportSettlementReport(SettlementReportInfo reportInfo);
+        byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo, int year);
 
         byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
 
@@ -199,6 +200,14 @@
             return excel.Export();
         }
 
+        public byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo, int year)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/Issue_Statistics.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new SummaryReportExcel(templatePath, summaryreportInfo, year);           
+            return excel.Export();
+        }
+        
         public byte[] ExportIssueStatisticsReport(IssuesStatisticsReportInfo issueStatistics, string titleExcel)
         {
             const string ExcelTemplatePath = "ExcelTemplates/Issue_Statistics.xlsx";
@@ -207,7 +216,7 @@
             var excel = new IssueStatisticsExcel(templatePath, issueStatistics, titleExcel);
             return excel.Export();
         }
-
+        
         public byte[] ExportStatisticFeedback(FeedbackStatisticInfo feedbackStatistic)
         {
             const string ExcelTemplatePath = "ExcelTemplates/FeedbackStatistic.xlsx";
