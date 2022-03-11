@@ -41,13 +41,8 @@
 
         public async Task<IActionResult> getAllSettings()
         {
-            var sites = await settingService.GetAllSitesWithGroupAsync();           
-            var mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active);
-            return Json(new
-            {
-                sites,
-                mainCategories                
-            });
+            var allSetting = await summaryReportService.AllSettings();
+            return Json(allSetting);
         }
 
         [HttpGet]
@@ -58,17 +53,15 @@
             return Json(report);            
         }
 
-        //[HttpPost]
-        //[Route("ExportSummaryReport")]
-        //public async Task<IActionResult> ExportSettlementReport([FromBody] GetSummaryReportCriteria criteria)
-        //{
-        //    criteria.TimeSpan = appSettings.TimeSpan * -1;
-        //    //criteria.IsGetFullReport = true;
-        //    var reports = summaryReportService.GetSummaryReportAsync(criteria);
-        //    //var bytes = exportExcelService.ExportSummaryReport(reports);
-        //    string reportName = string.Format(ViewResources.SummaryReport_ExcelTitle, criteria.Year);
-        //    return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
-        //}
+        [HttpGet]
+        public async Task<IActionResult> ExportSummaryReport(GetSummaryReportCriteria criteria)
+        {          
+            criteria.TimeSpan = appSettings.TimeSpan * -1;
+            var reports = await summaryReportService.GetSummaryReportAsync(criteria);
+            var bytes = exportExcelService.ExportSummaryReport(reports, criteria.Year);
+            string reportName = string.Format(ViewResources.SheetNameSummaryReport, criteria.Year);
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
 
     }
 }

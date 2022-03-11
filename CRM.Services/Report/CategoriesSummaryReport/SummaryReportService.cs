@@ -1,6 +1,9 @@
-﻿using CRM.Core.Services;
+﻿using CRM.Core.Constants;
+using CRM.Core.Models;
+using CRM.Core.Services;
 using CRM.Criteria.Report.CategoriesSummaryReport;
 using CRM.Models;
+using CRM.Models.Common;
 using CRM.Models.Report.CategoriesSummaryReport;
 using CRM.Resources;
 using System;
@@ -13,14 +16,19 @@ namespace CRM.Services.Report.CategoriesSummaryReport
     public interface ISummaryReportService
     {
         Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria);
+        Task<dynamic> AllSettings();
+
 
     }
     public class SummaryReportService : ISummaryReportService
     {
         private readonly IBaseService baseService;
-        public SummaryReportService(IBaseService baseService)
+        private readonly ISettingService settingService;
+
+        public SummaryReportService(IBaseService baseService, ISettingService settingService)
         {
             this.baseService = baseService;
+            this.settingService = settingService;
         }
 
         public async Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria)
@@ -46,6 +54,7 @@ namespace CRM.Services.Report.CategoriesSummaryReport
 
             return new SummaryReportModel
             {
+                ReportTitle = string.Format(ViewResources.SummaryReport_Title, criteria.Year),
                 CategorySummaries = categorySummaries,
                 GrandTotals = grandTotal.Values.ToList(),
                 Months = monthData
@@ -130,9 +139,33 @@ namespace CRM.Services.Report.CategoriesSummaryReport
             {
                 summaries.Add(item, new Summary { Month = item, Amount = 0 });
             }
-
             return summaries;
         }
 
+        public async Task<dynamic> AllSettings()
+        {
+            var minReportDate = Convert.ToInt32(ViewResources.MinReportDate);
+            var currentYear = DateTime.Now.Year;
+            var yearRange = new List<Setting>();
+            for (int i = minReportDate; i <= currentYear; i++)
+            {
+                yearRange.Add(new Setting { Id = i, Value = i.ToString() });
+            }
+
+            var siteTypes = new List<Setting>
+            {
+                new Setting { Id = SiteConstants.All, Name = ViewResources.All },
+                new Setting { Id = SiteConstants.NA, Name = ViewResources.Symbol_NotApply },
+                new Setting { Id = SiteConstants.IBCGroup, Name = ViewResources.Credit },
+                new Setting { Id = SiteConstants.LicenseeGroup, Name = ViewResources.Licensee },
+            };
+            var categories = await settingService.GetMainCategoryAsync(SettingConstants.Active);
+            return new
+            {
+                YearRange = yearRange,
+                SiteTypes = siteTypes,
+                Categories = categories
+            };
+        }
     }
 }
