@@ -200,9 +200,14 @@ class Table extends Component {
     }
 
     _getUpdatedColumnLayout() {
-        const { width, autoWidth, containerPadding } = this.props;
+        const { width, autoWidth, containerPadding, isFixColumn } = this.props;
         let sumOfColumnWidth = autoWidth ? this.state.maxWidth : width;
-        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH;
+        if(isFixColumn){
+            sumOfColumnWidth = sumOfColumnWidth - containerPadding;
+        }
+        else{
+            sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH;
+        }
 
         const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth =>
             sumOfColumnWidth / this.columnWidthSum * cellWidth);
@@ -259,6 +264,10 @@ class Table extends Component {
         const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding, shouldUseMaxWidth, isFixColumn } = this.props;
         const maxWidth = this.state.maxWidth - containerPadding;
         const actualWidth = width - containerPadding;
+        let maxHeightContainer = 0;
+        if(isFixColumn && this.headerWrapper !== null){
+            maxHeightContainer = this.headerWrapper.offsetHeight + this.state.contentHeight;
+        }
         const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ?
             this._getUpdatedColumnLayout() :
             this.state.columnsWidth;

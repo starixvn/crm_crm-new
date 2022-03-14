@@ -99,7 +99,7 @@ export class DataGrid extends Component {
     renderFooter = gridData => {
         const cells = [];
         cells.push(<Cell className='fix-column'>Grand Total</Cell>);
-        cells.push(<Cell className='fix-column'/>);
+        cells.push(<Cell />);
         gridData.total.childReports.forEach(item =>{
             cells.push(<Cell className='text-center'>{item.numberOfIssues}</Cell>);
         });
@@ -162,6 +162,7 @@ export class DataGrid extends Component {
                     header={this.buildHeader(countryArr)}
                     body={this.buildBody(gridData, countryArr)}
                     footer={this.renderFooter(gridData)}
+                    isFixColumn
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}

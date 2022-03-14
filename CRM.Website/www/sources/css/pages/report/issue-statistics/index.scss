@@ -75,3 +75,35 @@
         color: #0054a6 !important;
     }
 }
+
+.table-container{
+
+    border-right: 1px solid rgb(183, 183, 183);
+
+    .header-content{
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1;
+    }
+    
+    .header-content table thead th:first-child {
+        position: sticky !important;
+        left: 0 !important;
+        z-index: 2;
+    }
+
+    .body-content{
+        max-height: none !important;
+    }
+    
+    .body-content table tbody .fix-column, .footer-content .footer-container .fix-column {
+        position: sticky !important;
+        left: 0 !important;
+    }
+    
+    .footer-content{
+        position: sticky !important;
+        bottom: 0 !important;
+        clear: both;
+    }
+}
