@@ -95,7 +95,24 @@ describe('EditInforms', () => {
     });
 
     describe('handleSubmit', () => {
+        it('should call exactly functions when not save', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                editInforms: jest.fn(),
+                filterData: { values: { currencies: '1,2' }, errors: { title: 'err' } }
+            };
 
+            // Act
+            const container = shallow(<EditInforms {...props} />).instance();
+            container.saveEdit.current = {
+                handleValidate: jest.fn()
+            };
+            container.handleSubmit();
+
+            // Assert
+            expect(container.saveEdit.current.handleValidate).toHaveBeenCalled();
+        });
 
         it('should call exactly functions when save', async () => {
             // Arrange

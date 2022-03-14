@@ -9,6 +9,7 @@ import { remarkEncode, renderButtonSave } from '../common.functions';
 import DataGridEdit from './DataGridEdit';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import FilterEditInforms from './FilterEditInforms';
+import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 
 export class NewInforms extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ export class NewInforms extends Component {
         this.state = {
             saveResult: null
         };
+        this.saveNew = React.createRef();
     }
 
     setAlert = () => {
@@ -35,12 +37,16 @@ export class NewInforms extends Component {
         const { editedInforms } = this.props;
         const newData = remarkEncode(editedInforms);
 
-        await this.props.insertInforms({...this.props.filterData.values, informs: newData});
-        this.setAlert();
+        if (this.props.filterData.errors.title === 'err') {
+            this.saveNew.current.handleValidate();
+        } else {
+            await this.props.insertInforms({...this.props.filterData.values, informs: newData});
+            this.setAlert();
+        }
     };
 
     render() {
-        const { allSettings, newInforms, exportNewInforms, filterData } = this.props;
+        const { allSettings, newInforms, exportNewInforms } = this.props;
         if (!allSettings) {
             return null;
         }
@@ -63,6 +69,7 @@ export class NewInforms extends Component {
                     }
 
                     <FilterEditInforms
+                        ref={this.saveNew}
                         detail=''
                         informData={newInforms}
                         exportExcel={exportNewInforms}
@@ -83,7 +90,7 @@ export class NewInforms extends Component {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {filterData.values.title && renderButtonSave(filterData.errors, false, true, this.handleSubmit)}
+                    {renderButtonSave(false, true, this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );

@@ -414,7 +414,40 @@ describe('FilterEditInforms', () => {
         });
     });
 
+    describe('handleValidate', () => {
+        it('should setState exactly', () => {
+            // Arrange
+            const props = {...initProps };
+            const container = shallow(<FilterEditInforms {...props}/>).instance();
+
+            container.formik = {
+                handleSubmit: jest.fn()
+            };
+
+            //Act
+            container.handleValidate();
+
+            //Assert
+            expect(container.state.isSave).toBe(true);
+            expect(container.formik.handleSubmit).toHaveBeenCalled();
+        });
+    })
+
     describe('render', () => {
+        it('component map correct innerRef in formik', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                exportSearchInforms: jest.fn(),
+                gridParams: { pageIndex: 1, pageSize: 100}
+            };
+
+            // Act
+            const container = shallow(<FilterEditInforms {...props} />);
+            const render = shallow(container.instance().render());
+            render.find(Formik).props().innerRef({});
+        });
+
         it('should render Formik component', () => {
             // Arrange
             const props = {...initProps };
@@ -465,15 +498,23 @@ describe('FilterEditInforms', () => {
             const props = {
                 ...initProps,
                 exportSearchInforms: jest.fn(),
-                gridParams: { pageIndex: 1, pageSize: 100}
+                gridParams: { pageIndex: 1, pageSize: 100},
+                //exportExcel: jest.fn()
+            };
+            const values = {
+                levels: '',
+                isHeadline: true
             };
 
             // Act
             const container = shallow(<FilterEditInforms {...props} />);
+            container.instance().handleExportExcel = jest.fn();
             const form = shallow(container.instance().renderFilterForm(param));
+            form.find(ExcelIcon).invoke('handleExportExcel')(values);
+
             // Assert
             expect(form.find(ExcelIcon).length).toBe(1);
-
+            expect(container.instance().handleExportExcel).toHaveBeenCalled();
         });
 
         it('should render Form Control correctly', () => {

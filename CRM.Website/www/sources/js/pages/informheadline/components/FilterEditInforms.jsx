@@ -16,6 +16,13 @@ export class FilterEditInforms extends PureComponent {
         this.initData = props.isNewInform ?
                         this.initNewFormData()
                         : this.initFormData(props.includeCurrencies, props.includeSites);
+        this.state = {
+            isSave: false
+        }
+    }
+
+    componentDidMount() {
+        this.props.isNewInform && this.props.setFilterData({ errors: { title: 'err' }});
     }
 
     renderFilterForm = ({
@@ -237,6 +244,9 @@ export class FilterEditInforms extends PureComponent {
     validateFormik = values => {
         const errors = {};
 
+        if (this.state.isSave && values.title === '') {
+            errors.title = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title'));
+        }
         if (values.currencies === '') {
             errors.currencies = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'));
         }
@@ -251,6 +261,7 @@ export class FilterEditInforms extends PureComponent {
         }
 
         this.getTypeAccount(values);
+        this.setState({ isSave: false });
         if (this.props.isNewInform) {
             this.props.setFilterData({...this.props.filterData, values: {...values}, errors: values.title === '' ? {title: 'err'} : errors});
         } else {
@@ -260,6 +271,7 @@ export class FilterEditInforms extends PureComponent {
                 errors: values.title === '' ? {title: 'err'} : errors
             });
         }
+
         return errors;
     };
 
@@ -331,19 +343,26 @@ export class FilterEditInforms extends PureComponent {
         this.props.getNewInforms(params);
     };
 
+    handleValidate = () => {
+        this.setState({ isSave: true }, this.formik.handleSubmit);
+    }
+
     render() {
         const { isNewInform } = this.props;
         return (
-            <Formik
-                initialValues={this.initData}
-                validate={this.validateFormik}
-                onSubmit={
-                    isNewInform ?
-                    this.handleSearchNew : this.handleSearchEdit
-                }
-            >
-                { this.renderFilterForm }
-            </Formik>
+            <div>
+                <Formik
+                    innerRef={el => this.formik = el}
+                    initialValues={this.initData}
+                    validate={this.validateFormik}
+                    onSubmit={
+                        isNewInform ?
+                        this.handleSearchNew : this.handleSearchEdit
+                    }
+                >
+                    { this.renderFilterForm }
+                </Formik>
+            </div>
         );
     }
 }
@@ -355,4 +374,4 @@ const mapStateToProps = state => {
     return {  allSettings, filterData, gridParams };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterEditInforms);
+export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(FilterEditInforms);

@@ -96,7 +96,7 @@ export class EditContactInforms extends Component {
                     this.renderForm()
                 }
                 <Modal.Footer>
-                    {renderButtonSave({}, isClosed, window.hasHostPermission ,this.handleSubmit)}
+                    {renderButtonSave(isClosed, window.hasHostPermission ,this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );

@@ -19,6 +19,7 @@ export class EditInforms extends Component {
         };
         this.includeCurrencies = null;
         this.includeSites = null;
+        this.saveEdit = React.createRef();
     }
 
     async componentDidMount() {
@@ -65,8 +66,12 @@ export class EditInforms extends Component {
         const replaceDataEdit = dataEditInforms.map(element => editedInforms.find(item => item.headlineId === element.headlineId) || element);
         const editedData = remarkEncode(replaceDataEdit);
 
-        await this.props.editInforms({...this.props.filterData.values, informs: editedData});
-        this.setAlert();
+        if (this.props.filterData.errors.title === 'err') {
+            this.saveEdit.current.handleValidate();
+        } else {
+            await this.props.editInforms({...this.props.filterData.values, informs: editedData});
+            this.setAlert();
+        }
     };
 
     render() {
@@ -94,6 +99,7 @@ export class EditInforms extends Component {
                     }
 
                     <FilterEditInforms
+                        ref={this.saveEdit}
                         detail={titleDetail}
                         includeCurrencies={this.includeCurrencies}
                         includeSites={this.includeSites}
@@ -112,7 +118,7 @@ export class EditInforms extends Component {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {renderButtonSave(filterData.errors, false, isHostPermission, this.handleSubmit)}
+                    {renderButtonSave(false, isHostPermission, this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );
