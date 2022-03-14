@@ -13,12 +13,15 @@ namespace CRM.Controllers.Report.Statistics
 
     public class IssueStatisticsController : BaseController
     {
+        private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
 
         public IssueStatisticsController(
+            IIssueStatisticsService issueStatisticsService,
             ISettingService settingService
         )
         {
+            this.issueStatisticsService = issueStatisticsService;
             this.settingService = settingService;
         }
 

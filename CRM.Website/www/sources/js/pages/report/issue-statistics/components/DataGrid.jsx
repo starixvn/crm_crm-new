@@ -49,11 +49,11 @@ export class DataGrid extends Component {
         const total = item.total;
         const cells = [];
         const cellsTotal = [];
-        cells.push(<Cell className='text-center' rowSpan={item.childReports.length}>{item.shortName}</Cell>);
-        cells.push(<Cell className='text-center'>{timeReport[0].shortName}</Cell>);
+        cells.push(<Cell className='text-center fix-column' rowSpan={item.childReports.length}>{item.shortName}</Cell>);
+        cells.push(<Cell className='text-center fix-column'>{timeReport[0].shortName}</Cell>);
 
-        cellsTotal.push(<Cell>{total.shortName}</Cell>);
-        cellsTotal.push(<Cell />);
+        cellsTotal.push(<Cell className='fix-column'>{total.shortName}</Cell>);
+        cellsTotal.push(<Cell className='fix-column'/>);
         countryArr.forEach((item, index) =>{
             cells.push(
                 <Cell className='text-center'>
@@ -98,8 +98,8 @@ export class DataGrid extends Component {
 
     renderFooter = gridData => {
         const cells = [];
-        cells.push(<Cell>Grand Total</Cell>);
-        cells.push(<Cell />);
+        cells.push(<Cell className='fix-column'>Grand Total</Cell>);
+        cells.push(<Cell className='fix-column'/>);
         gridData.total.childReports.forEach(item =>{
             cells.push(<Cell className='text-center'>{item.numberOfIssues}</Cell>);
         });
