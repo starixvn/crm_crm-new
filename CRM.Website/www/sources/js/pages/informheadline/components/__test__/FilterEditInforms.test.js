@@ -86,6 +86,89 @@ describe('FilterEditInforms', () => {
         });
     });
 
+    describe('getErrorValidate', () => {
+        it('should return exactly when error with currencies', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                currencies: '',
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<FilterEditInforms {...props} />);
+            const actual = container.instance().getErrorValidate(values);
+           
+            // Assert
+            expect(actual).toEqual({currencies: "FieldRequired"});
+        });
+
+        it('should return exactly when error with levels', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                levels: '',
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<FilterEditInforms {...props} />);
+            const actual = container.instance().getErrorValidate(values);
+           
+            // Assert
+            expect(actual).toEqual({levels: "FieldRequired"});
+        });
+
+        it('should return exactly when error with sites', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                sites: '',
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<FilterEditInforms {...props} />);
+            const actual = container.instance().getErrorValidate(values);
+           
+            // Assert
+            expect(actual).toEqual({sites: "FieldRequired"});
+        });
+
+        it('should return exactly when error with DirectAccount', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                isHeadline: false,
+                isNoGroup: false
+            };
+
+            // Act
+            const container = shallow(<FilterEditInforms {...props} />);
+            const actual = container.instance().getErrorValidate(values);
+           
+            // Assert
+            expect(actual).toEqual({isHeadline: "FieldRequired"});
+        });
+
+        it('should return exactly when error with Title', () => {
+            // Arrange
+            const props = {...initProps};
+            const values = {
+                title: '',
+                isHeadline: true
+            };
+
+            // Act
+            const container = shallow(<FilterEditInforms {...props} />);
+            container.instance().setState({ isSave: true });
+            const actual = container.instance().getErrorValidate(values);
+           
+            // Assert
+            expect(actual).toEqual({title: "FieldRequired"});
+        });
+    });
+
     describe('validateFormik', () => {
 
         it('should return exactly when error with currencies', () => {

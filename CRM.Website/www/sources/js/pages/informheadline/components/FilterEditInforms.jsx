@@ -18,7 +18,7 @@ export class FilterEditInforms extends PureComponent {
                         : this.initFormData(props.includeCurrencies, props.includeSites);
         this.state = {
             isSave: false
-        }
+        };
     }
 
     componentDidMount() {
@@ -242,6 +242,24 @@ export class FilterEditInforms extends PureComponent {
     };
 
     validateFormik = values => {
+        const errors = this.getErrorValidate(values);
+
+        this.getTypeAccount(values);
+        this.setState({ isSave: false });
+        if (this.props.isNewInform) {
+            this.props.setFilterData({...this.props.filterData, values: {...values}, errors: values.title === '' ? {title: 'err'} : errors});
+        } else {
+            this.props.setFilterData({
+                ...this.props.filterData,
+                values: {...values, titleId: this.props.detail.titleId, changeFilter: this.getChangeFilter(values)},
+                errors: values.title === '' ? {title: 'err'} : errors
+            });
+        }
+
+        return errors;
+    };
+
+    getErrorValidate = values => {
         const errors = {};
 
         if (this.state.isSave && values.title === '') {
@@ -258,18 +276,6 @@ export class FilterEditInforms extends PureComponent {
         }
         if (!values.isHeadline && !values.isNoGroup) {
             errors.isHeadline = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('DirectAccount'));
-        }
-
-        this.getTypeAccount(values);
-        this.setState({ isSave: false });
-        if (this.props.isNewInform) {
-            this.props.setFilterData({...this.props.filterData, values: {...values}, errors: values.title === '' ? {title: 'err'} : errors});
-        } else {
-            this.props.setFilterData({
-                ...this.props.filterData,
-                values: {...values, titleId: this.props.detail.titleId, changeFilter: this.getChangeFilter(values)},
-                errors: values.title === '' ? {title: 'err'} : errors
-            });
         }
 
         return errors;
@@ -345,7 +351,7 @@ export class FilterEditInforms extends PureComponent {
 
     handleValidate = () => {
         this.setState({ isSave: true }, this.formik.handleSubmit);
-    }
+    };
 
     render() {
         const { isNewInform } = this.props;

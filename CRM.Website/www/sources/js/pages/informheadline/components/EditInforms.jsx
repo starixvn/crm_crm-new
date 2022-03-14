@@ -75,7 +75,7 @@ export class EditInforms extends Component {
     };
 
     render() {
-        const { titleDetail, allSettings, dataEditInforms, exportEditInforms, filterData } = this.props;
+        const { titleDetail, allSettings, dataEditInforms, exportEditInforms } = this.props;
         if (!titleDetail || !allSettings || !dataEditInforms) {
             return null;
         }
