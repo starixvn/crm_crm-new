@@ -21,6 +21,7 @@ class Table extends Component {
         header: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]).isRequired,
         body: PropTypes.arrayOf(PropTypes.object),
         footer: PropTypes.arrayOf(PropTypes.object),
+        isFixColumn: PropTypes.bool,
         isPaging: PropTypes.bool,
         onPaging: PropTypes.func,
         pageOption: PropTypes.object,
@@ -35,6 +36,7 @@ class Table extends Component {
         width: clientWidth,
         maxWidth: clientWidth,
         autoWidth: true,
+        isFixColumn: false,
         isPaging: false,
         adjustedHeight: 0,
         bodyHeight: 0,
@@ -46,11 +48,11 @@ class Table extends Component {
 
     constructor(props) {
         super(props);
-
+        this.headerWrapper = null;
         this.bodyWrapper = null;
         this.footerWrapper = null;
 
-        const headerContainerProps = { className: 'header-content', isHeader: true };
+        const headerContainerProps = { className: 'header-content', isHeader: true, getRef: element => this.headerWrapper = element };
         this.Header = createTableSection(headerContainerProps);
 
         const bodyContainerProps = { className: 'body-content', getRef: element => this.bodyWrapper = element };
@@ -197,9 +199,14 @@ class Table extends Component {
     }
 
     _getUpdatedColumnLayout() {
-        const { width, autoWidth, containerPadding } = this.props;
+        const { width, autoWidth, containerPadding, isFixColumn } = this.props;
         let sumOfColumnWidth = autoWidth ? this.state.maxWidth : width;
-        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH;
+        if(isFixColumn){
+            sumOfColumnWidth = sumOfColumnWidth - containerPadding;
+        }
+        else{
+            sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH;
+        }
 
         const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth =>
             sumOfColumnWidth / this.columnWidthSum * cellWidth);
@@ -208,9 +215,13 @@ class Table extends Component {
     }
 
     render() {
-        const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding, shouldUseMaxWidth } = this.props;
+        const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding, shouldUseMaxWidth, isFixColumn } = this.props;
         const maxWidth = this.state.maxWidth - containerPadding;
         const actualWidth = width - containerPadding;
+        let maxHeightContainer = 0;
+        if(isFixColumn && this.headerWrapper !== null){
+            maxHeightContainer = this.headerWrapper.offsetHeight + this.state.contentHeight;
+        }
         const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ?
             this._getUpdatedColumnLayout() :
             this.state.columnsWidth;
@@ -226,7 +237,7 @@ class Table extends Component {
 
         return (
             <div>
-                <div className='table-container' style={{ maxWidth }}>
+                <div className='table-container' style={{ maxWidth, maxHeight: maxHeightContainer}}>
                     <Header {...headerSectionProps}>
                         {rowLayout}
                         {header}

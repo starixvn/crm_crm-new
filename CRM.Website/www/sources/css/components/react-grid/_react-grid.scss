@@ -57,8 +57,8 @@ $paddingRightContainer: 17px;
 }
 
 .body-content {
-    overflow-y: auto;
-    overflow-x: auto;
+    // overflow-y: auto;
+    // overflow-x: auto;
     border-top: none;
 
     &.hasScroll {

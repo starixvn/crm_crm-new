@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRM.Controllers.Report.Statistics
 {
 
-    public class IssueStatisticsController : BaseController
+    public class IssueStatisticsController : Controller
     {
         private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
@@ -25,7 +25,7 @@ namespace CRM.Controllers.Report.Statistics
             this.settingService = settingService;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
+        //[NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/IssueStatistics/Index");
