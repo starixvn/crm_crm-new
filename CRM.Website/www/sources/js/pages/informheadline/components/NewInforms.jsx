@@ -9,7 +9,6 @@ import { remarkEncode, renderButtonSave } from '../common.functions';
 import DataGridEdit from './DataGridEdit';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import FilterEditInforms from './FilterEditInforms';
-import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 
 export class NewInforms extends Component {
     constructor(props) {
