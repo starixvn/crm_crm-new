@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core;
     using CRM.Core.Constants;
     using CRM.Core.Services;
     using CRM.Criteria.Report.IssuesStatistics;
@@ -152,8 +153,8 @@
             GetIssuesStatisticReportCriteria criteria)
         {
             var countryLength = countryDictionary.Count;
-            var fromDateClient = commonService.ConvertToClientDateTime(criteria.FromDate).ToString("MMM dd, yyyy");
-            var toDateClient = commonService.ConvertToClientDateTime(criteria.ToDate).ToString("MMM dd, yyyy");
+            var fromDateClient = commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormat();
+            var toDateClient = commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormat();
 
             IssuesStatisticsReportInfo statisticReport = new IssuesStatisticsReportInfo
             {
@@ -172,7 +173,7 @@
                 return statisticReport;
             }
 
-            var dateGroups = issuesStatistics.GroupBy(data => data.FeedbackDate.ToString("MMM dd, yyyy"));
+            var dateGroups = issuesStatistics.GroupBy(data => data.FeedbackDate.ToShortDateFormat());
             foreach (var dateGroup in dateGroups)
             {
                 var dateReport = new IssuesStatisticsReportInfo
@@ -214,8 +215,8 @@
             GetIssuesStatisticReportCriteria criteria)
         {
             var countryLength = countryDictionary.Count;
-            var fromDateClient = commonService.ConvertToClientDateTime(criteria.FromDate).ToString("MMM dd, yyyy");
-            var toDateClient = commonService.ConvertToClientDateTime(criteria.ToDate).ToString("MMM dd, yyyy");
+            var fromDateClient = commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormat();
+            var toDateClient = commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormat();
 
             IssuesStatisticsReportInfo statisticReport = new IssuesStatisticsReportInfo
             {

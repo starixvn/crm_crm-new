@@ -41,7 +41,7 @@ export class DataGrid extends Component {
             countries.push(item.countryInfo);
         });
         return countries;
-    }
+    };
 
     renderRow = (item, index, countryArr) => {
         const timeReport = item.childReports;
