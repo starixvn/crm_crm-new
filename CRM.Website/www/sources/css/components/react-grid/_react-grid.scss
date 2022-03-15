@@ -4,7 +4,6 @@ $paddingRightContainer: 17px;
 
 .table-container {
     overflow-x: auto;
-    max-height: none !important;
 
     .body-content {
         overflow-y: auto;
@@ -12,25 +11,34 @@ $paddingRightContainer: 17px;
     }
 }
 
-.fix-table-container{
-    overflow: auto;
-    //border-right: 1px solid rgb(183, 183, 183);
+.fix-table-container {
+    border-right: 1px solid rgb(183, 183, 183);
 
-    .header-content{
-        position: sticky;
-        top: 0;
-        z-index: 1;
+    .fix-table{
+        overflow: auto;
+        border-top: 1px solid rgb(183, 183, 183);
+        border-bottom: 1px solid rgb(183, 183, 183);
 
-        table{
-            border-right: 1px solid rgb(183, 183, 183);
+        .header-content, .body-content, .footer-content{
+            border-top: 0;
+            border-bottom: 0;
         }
-    }
 
-    .footer-content{
-        position: sticky;
-        bottom: 0;
-        clear: both;
-        border-right: 1px solid rgb(183, 183, 183);
+        .header-content{
+            position: sticky;
+            top: 0;
+            z-index: 1;
+    
+            table{
+                border-right: 1px solid rgb(183, 183, 183);
+            }
+        }
+    
+        .footer-content{
+            position: sticky;
+            bottom: 0;
+            clear: both;
+        }
     }
 }
 
@@ -41,7 +49,7 @@ $paddingRightContainer: 17px;
 
     .table {
         margin: 0;
-        //border-right: 1px solid $colorBorderTable;
+        border-right: 1px solid $colorBorderTable;
 
         td {
             &:first-child {
@@ -85,8 +93,6 @@ $paddingRightContainer: 17px;
 }
 
 .body-content {
-    // overflow-y: auto;
-    // overflow-x: auto;
     border-top: none;
 
     &.hasScroll {

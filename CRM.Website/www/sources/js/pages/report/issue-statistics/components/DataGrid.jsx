@@ -124,6 +124,20 @@ export class DataGrid extends Component {
         this.props.getGridData(params);
     };
 
+    renderTitle = gridData =>{
+        return (
+            <div className='table-title d-flex justify-content-between align-items-center'>
+                <span>{gridData.name}</span>
+                {
+                    gridData.childReports.length > 0 &&
+                    <div className="tool-box">
+                        <span className="fa fa-file-excel-o btn-export-excel icon-excel" onClick={this.handleExportExcel} />
+                    </div>
+                }
+            </div>
+        );
+    }
+
     render() {
         const { gridData } = this.props;
         if(!gridData){
@@ -145,21 +159,12 @@ export class DataGrid extends Component {
         const width = document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
         return (
             <Fragment>
-
-                <div className='table-title d-flex justify-content-between align-items-center' style={{maxWidth: width + 2}}>
-                    <span>{gridData.name}</span>
-                    {
-                        gridData.childReports.length > 0 &&
-                        <div className="tool-box">
-                            <span className="fa fa-file-excel-o btn-export-excel icon-excel" onClick={this.handleExportExcel} />
-                        </div>
-                    }
-                </div>
                 <Table
                     maxWidth={totalWidth}
                     shouldUseMaxWidth
                     width={width}
                     autoWidth={false}
+                    title={this.renderTitle(gridData)}
                     header={this.buildHeader(countryArr)}
                     body={this.buildBody(gridData, countryArr)}
                     footer={this.renderFooter(gridData)}
