@@ -1,11 +1,11 @@
 import LangHelper from '@jsroot/common/langHelper';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 
-export class Filter extends PureComponent {
+export class Filter extends Component {
     constructor(props) {
         super(props);
     }

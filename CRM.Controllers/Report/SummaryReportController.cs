@@ -36,7 +36,7 @@
 
         public IActionResult Index()
         {
-            return Ok("OK");
+            return View("../Report/Summary/Index");
         }
 
         public async Task<IActionResult> getAllSettings()
@@ -45,15 +45,15 @@
             return Json(allSetting);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetSummaryReport(GetSummaryReportCriteria criteria)
+        [HttpPost]
+        public async Task<IActionResult> GetSummaryReport([FromBody] GetSummaryReportCriteria criteria)
         {
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             var report = await summaryReportService.GetSummaryReportAsync(criteria);
             return Json(report);            
         }
 
-        [HttpGet]
+
         public async Task<IActionResult> ExportSummaryReport(GetSummaryReportCriteria criteria)
         {          
             criteria.TimeSpan = appSettings.TimeSpan * -1;
