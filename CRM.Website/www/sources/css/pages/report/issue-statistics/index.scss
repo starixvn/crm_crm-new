@@ -9,6 +9,7 @@
 @import '../../../components/react-select';
 
 .form-filter {
+    min-width: 1200px;
     .filter-collapse {
         margin-top: -10px;
         .fa {
@@ -68,6 +69,11 @@
 
 .fix-table-container{
     //min-width: 1200px;
+
+    .table-title{
+        border-bottom: 1px solid #b7b7b7;
+        border-top: 0;
+    }
 
     .header-content table thead th:first-child {
         position: sticky !important;
