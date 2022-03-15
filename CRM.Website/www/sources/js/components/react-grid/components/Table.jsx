@@ -230,14 +230,16 @@ class Table extends Component {
             return null;
         }
 
-        const sectionProps = { width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
-        const headerSectionProps = { onSort: this.props.onSort, width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
+        const sectionProps = { width: actualWidth, autoWidth, minWidth, maxWidth: isFixColumn ? maxWidth + 2 : maxWidth, shouldUseMaxWidth };
+        const headerSectionProps = { onSort: this.props.onSort, width: actualWidth, autoWidth, minWidth, maxWidth: isFixColumn ? maxWidth + 1 : maxWidth, shouldUseMaxWidth };
         const rowLayout = <RowLayout columnLayout={newColumnLayout} />;
         const { Header, Body, Footer } = this;
 
         return (
             <div>
-                <div className='table-container' style={{ maxWidth, maxHeight: maxHeightContainer}}>
+                <div className={isFixColumn ? 'fix-table-container' : 'table-container'} 
+                    style={{ maxWidth:  isFixColumn ? maxWidth + SCROLLBAR_WIDTH : maxWidth, maxHeight: maxHeightContainer}}
+                >
                     <Header {...headerSectionProps}>
                         {rowLayout}
                         {header}

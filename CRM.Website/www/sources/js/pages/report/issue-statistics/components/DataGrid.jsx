@@ -146,7 +146,7 @@ export class DataGrid extends Component {
         return (
             <Fragment>
 
-                <div className='table-title d-flex justify-content-between align-items-center' style={{maxWidth: width}}>
+                <div className='table-title d-flex justify-content-between align-items-center' style={{maxWidth: width + 2}}>
                     <span>{gridData.name}</span>
                     {
                         gridData.childReports.length > 0 &&
@@ -156,9 +156,10 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={totalWidth}
-                    autoWidth={false}
                     maxWidth={totalWidth}
+                    shouldUseMaxWidth
+                    width={width}
+                    autoWidth={false}
                     header={this.buildHeader(countryArr)}
                     body={this.buildBody(gridData, countryArr)}
                     footer={this.renderFooter(gridData)}

@@ -4,6 +4,34 @@ $paddingRightContainer: 17px;
 
 .table-container {
     overflow-x: auto;
+    max-height: none !important;
+
+    .body-content {
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+.fix-table-container{
+    overflow: auto;
+    //border-right: 1px solid rgb(183, 183, 183);
+
+    .header-content{
+        position: sticky;
+        top: 0;
+        z-index: 1;
+
+        table{
+            border-right: 1px solid rgb(183, 183, 183);
+        }
+    }
+
+    .footer-content{
+        position: sticky;
+        bottom: 0;
+        clear: both;
+        border-right: 1px solid rgb(183, 183, 183);
+    }
 }
 
 .header-content,
@@ -13,7 +41,7 @@ $paddingRightContainer: 17px;
 
     .table {
         margin: 0;
-        border-right: 1px solid $colorBorderTable;
+        //border-right: 1px solid $colorBorderTable;
 
         td {
             &:first-child {
