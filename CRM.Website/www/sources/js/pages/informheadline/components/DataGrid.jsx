@@ -89,15 +89,15 @@ export class DataGrid extends Component {
                     (
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => this.handleEdit(titleId)}>
-                                <i className="fa fa-pencil-square-o icon icon-default"></i>
+                                <i className="fa fa-pencil-square-o icon icon-default" />
                                 {LangHelper.getResource('EditNumberOfAccounts')}
                             </Dropdown.Item>
                             <Dropdown.Item onClick={() => this.handleRemovedAccountLogs(titleId)}>
-                                <i className="fa fa-list-alt icon icon-default"></i>
+                                <i className="fa fa-list-alt icon icon-default" />
                                 {LangHelper.getResource('RemovedEditedAccountsLogs')}
                             </Dropdown.Item>
                             <Dropdown.Item onClick={() => this.handleCloseCase(titleId)}>
-                                <i className="fa fa-times icon icon-closed"></i>
+                                <i className="fa fa-times icon icon-closed" />
                                 {LangHelper.getResource('CloseCase')}
                             </Dropdown.Item>
                         </Dropdown.Menu>

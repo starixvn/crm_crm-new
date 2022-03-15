@@ -112,7 +112,6 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineContact, Policy = Policy.Read)]
         public async Task<IActionResult> ExportContactInforms([FromBody] GetContactInformParam param)
         {
             IEnumerable<EditInform> contactInforms = await informHeadlineService.GetContactInformsAsync(param);
@@ -157,7 +156,6 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
         public async Task<IActionResult> ExportEditInforms([FromBody] GetEditInformParam param)
         {
             IEnumerable<EditInform> editInforms = await informHeadlineService.GetEditInformsAsync(param);
@@ -222,7 +220,6 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineSearch, Policy = Policy.Host)]
         public async Task<IActionResult> ExportNewInforms([FromBody] GetNewInformParam param)
         {
             var newInforms = await informHeadlineService.GetNewInformsAsync(param);
