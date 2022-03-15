@@ -1,0 +1,49 @@
+@import "../../../components/form-filter";
+@import "../../../components/react-grid/react-grid";
+@import "../../../components/forms";
+@import "../../../components/modal";
+@import "../../../components/icons";
+@import "../../../components/tables";
+@import '../../../components/date-picker/style';
+@import '../../../components/multiple-select/style';
+
+#app-container {
+    width: 700px;
+}
+
+.form-filter {
+    min-width: 880px;
+    
+    .react-datepicker__input-container input{
+        width: 100% !important;
+    }
+
+    .label-width{
+        width: 120px !important;
+    }
+
+    .form-width {
+        width: 350px !important;
+    }
+    .mainCategory-width{
+        width: 245px !important;
+    }
+
+    .react-datepicker-popper{
+        z-index: 9999 !important;
+    }
+
+    .form-row {
+        .form-group {
+            width: 150px;
+
+            .form-label {
+                width: 50px;
+            }
+
+            .form-control {
+                width: calc(100% - 0.5rem - 50px);
+            }
+        }
+    }
+}

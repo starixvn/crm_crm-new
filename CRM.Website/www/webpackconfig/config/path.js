@@ -40,6 +40,7 @@ const cssPaths = {
     dynamic_report: ['./www/sources/css/pages/report/dynamic/index.scss'],
     setting_relation: ['./www/sources/css/pages/admin-tool/setting-relation/index.scss'],
     setting_management: ['./www/sources/css/pages/admin-tool/setting-management/index.scss'],
+    summary:['./www/sources/css/pages/report/summary/index.scss'],
     customer_report: ['./www/sources/css/pages/report/customer/index.scss']
 };
 
@@ -83,6 +84,7 @@ const scriptPaths = {
     dynamic_report: ['./www/sources/js/pages/report/dynamic/index.js'],
     setting_relation: ['./www/sources/js/pages/admin-tool/setting-relation/index.js'],
     setting_management: ['./www/sources/js/pages/admin-tool/setting-management/index.js'],
+    summary:['./www/sources/js/pages/report/summary/index.js'],
     customer_report: ['./www/sources/js/pages/report/customer/index.js']
 };
 

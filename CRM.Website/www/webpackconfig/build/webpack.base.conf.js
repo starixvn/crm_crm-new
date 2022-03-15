@@ -51,7 +51,8 @@ function generateConfig(environment) {
             [`${jsPath}/pages/report/dynamic/index`]: pathConfig.scriptPaths.dynamic_report,
             [`${jsPath}/pages/adminTool/setting-relation/index`]: pathConfig.scriptPaths.setting_relation,
             [`${jsPath}/pages/adminTool/setting-management/index`]: pathConfig.scriptPaths.setting_management,
-            [`${jsPath}/pages/report/customer/index`]: pathConfig.scriptPaths.customer_report,
+            [`${cssPath}/pages/report/customer/index`]: pathConfig.cssPaths.customer_report,
+            [`${jsPath}/pages/report/summary/index`]: pathConfig.scriptPaths.summary
 
 
             /*css*/
@@ -90,7 +91,9 @@ function generateConfig(environment) {
             [`${cssPath}/pages/report/dynamic/index`]: pathConfig.cssPaths.dynamic_report,
             [`${cssPath}/pages/adminTool/setting-relation/index`]: pathConfig.cssPaths.setting_relation,
             [`${cssPath}/pages/adminTool/setting-management/index`]: pathConfig.cssPaths.setting_management,
-            [`${cssPath}/pages/report/customer/index`]: pathConfig.cssPaths.customer_report
+            [`${cssPath}/pages/report/customer/index`]: pathConfig.cssPaths.customer_report,
+            [`${cssPath}/pages/report/summary/index`]: pathConfig.cssPaths.summary
+
         },
         output: {
             path: pathConfig.projectRoot,
