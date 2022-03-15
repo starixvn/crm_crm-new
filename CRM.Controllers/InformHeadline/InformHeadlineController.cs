@@ -112,7 +112,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineContact, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.InformHeadlineContact, Policy = Policy.Read)]
         public async Task<IActionResult> ExportContactInforms([FromBody] GetContactInformParam param)
         {
             IEnumerable<EditInform> contactInforms = await informHeadlineService.GetContactInformsAsync(param);
