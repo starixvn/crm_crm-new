@@ -86,7 +86,7 @@ export class FilterEditInforms extends PureComponent {
                             }}
                         />
                     {
-                        (informData && informData.length > 0 && window.searchPolicy === Policy.Host) && (
+                        (informData && informData.length > 0) && (
                             <ExcelIcon
                                 handleExportExcel={() => this.handleExportExcel(values)}
                             />
