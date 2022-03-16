@@ -53,6 +53,10 @@
                 }
                 else
                 {
+                    context.Result = new JsonResult(commandResult);
+                }
+                else
+                {
                     context.Result = new RedirectToActionResult("405", "error", null);
                 }
             }
