@@ -53,7 +53,7 @@ export class DataGrid extends PureComponent {
                 <HeaderCell colWidth={15} rowSpan={2}>{LangHelper.getResource('Role')}</HeaderCell>
                 <HeaderCell colWidth={20} rowSpan={2}>{LangHelper.getResource('Language')}</HeaderCell>
                 <HeaderCell colWidth={20} rowSpan={2}>{LangHelper.getResource('Country')}</HeaderCell>
-                <HeaderCell colWidth={30} rowSpan={2}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
+                <HeaderCell colWidth={25} rowSpan={2}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
                 <HeaderCell colWidth={50} colSpan={communicationTools.length}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
                 <HeaderCell colWidth={25} rowSpan={2}>{LangHelper.getResource('Remark')}</HeaderCell>
                 {
