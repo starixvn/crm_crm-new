@@ -51,14 +51,6 @@ export default class Site {
         }
     }
 
-    static handleResponseError(response) {
-        if (!response.data.isSuccessful && response.data.code === 405) {
-            const url = 'error/AccessDenied';
-            window.location = _rootUrl + url;
-        }
-        return response;
-    }
-
     static resolveClientUrl(relativeUrl) {
         return _rootUrl + relativeUrl;
     }

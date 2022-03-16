@@ -51,10 +51,7 @@
                     context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
                     await context.HttpContext.Response.WriteAsync(ViewResources.Forbidden_Permission);
                 }
-                else
-                {
-                    context.Result = new JsonResult(commandResult);
-                }
+
                 else
                 {
                     context.Result = new RedirectToActionResult("405", "error", null);
