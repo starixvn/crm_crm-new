@@ -1,6 +1,5 @@
 ﻿import axios from 'axios';
 import Site from './site';
-const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
 
 export default class DataService {
     static async getDataAsync(url, params) {
@@ -18,7 +17,7 @@ export default class DataService {
                     'X-Requested-With': 'XMLHttpRequest',
                     'RequestVerificationToken': Site.getXsrfToken()
                 }
-            }).then(response => Site.handleResponseError(response)).catch(Site.handleAxiosError);
+            }).then(response => response).catch(Site.handleAxiosError);
     }
 
 
