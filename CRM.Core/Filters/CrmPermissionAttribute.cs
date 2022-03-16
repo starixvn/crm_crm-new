@@ -48,12 +48,8 @@
             {
                 if (isAjaxRequest)
                 {
-                    var commandResult = new CommandResult
-                    {
-                        Code = StatusCodes.Status405MethodNotAllowed,
-                        Message = ViewResources.Forbidden_Permission
-                    };
-                    context.Result = new JsonResult(commandResult);
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                    await context.HttpContext.Response.WriteAsync(ViewResources.Forbidden_Permission);
                 }
                 else
                 {
