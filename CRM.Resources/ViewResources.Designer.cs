@@ -367,6 +367,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to access.
+        /// </summary>
+        public static string Forbidden_Permission {
+            get {
+                return ResourceManager.GetString("Forbidden_Permission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grand Total.
         /// </summary>
         public static string Grand_Total {

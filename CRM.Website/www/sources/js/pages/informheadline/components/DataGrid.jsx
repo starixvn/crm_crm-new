@@ -96,10 +96,13 @@ export class DataGrid extends Component {
                                 <i className="fa fa-list-alt icon icon-default" />
                                 {LangHelper.getResource('RemovedEditedAccountsLogs')}
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={() => this.handleCloseCase(titleId)}>
+                            {
+                                window.searchPolicy === Policy.Host &&
+                                <Dropdown.Item onClick={() => this.handleCloseCase(titleId)}>
                                 <i className="fa fa-times icon icon-closed" />
-                                {LangHelper.getResource('CloseCase')}
-                            </Dropdown.Item>
+                                    {LangHelper.getResource('CloseCase')}
+                                </Dropdown.Item>
+                            }
                         </Dropdown.Menu>
                     )
                 }
@@ -107,12 +110,15 @@ export class DataGrid extends Component {
                     status === 'Closed' &&
                     (
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => this.handleOpenCase(titleId)}>
-                                <i className="fa fa-folder-open icon icon-open"></i>
-                                {LangHelper.getResource('OpenCase')}
-                            </Dropdown.Item>
+                            {
+                                window.searchPolicy === Policy.Host &&
+                                <Dropdown.Item onClick={() => this.handleOpenCase(titleId)}>
+                                    <i className="fa fa-folder-open icon icon-open" />
+                                    {LangHelper.getResource('OpenCase')}
+                                </Dropdown.Item>
+                            }
                             <Dropdown.Item onClick={() => this.handleRemovedAccountLogs(titleId)}>
-                                <i className="fa fa-list-alt icon icon-default"></i>
+                                <i className="fa fa-list-alt icon icon-default" />
                                 {LangHelper.getResource('RemovedEditedAccountsLogs')}
                             </Dropdown.Item>
                         </Dropdown.Menu>

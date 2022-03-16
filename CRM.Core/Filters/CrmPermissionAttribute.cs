@@ -2,11 +2,14 @@
 {
     using System;
     using System.Threading.Tasks;
+    using CRM.Core.Models;
+    using CRM.Resources;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Fanex.NAP.Core.Business;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -39,10 +42,28 @@
             }
 
             int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
+            bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
+
             if (policy < (int)Policy)
             {
-                context.Result = new RedirectToActionResult("405", "error", null);
+                if (isAjaxRequest)
+                {
+                    var commandResult = new CommandResult
+                    {
+                        Code = StatusCodes.Status405MethodNotAllowed,
+                        Message = ViewResources.Forbidden_Permission
+                    };
+                    context.Result = new JsonResult(commandResult);
+                }
+                else
+                {
+                    context.Result = new RedirectToActionResult("405", "error", null);
+                }
             }
         }
+
+        private static bool IsAjaxRequest(HttpRequest request)
+           => string.Equals(request.Query["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal) ||
+              string.Equals(request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal);
     }
 }
