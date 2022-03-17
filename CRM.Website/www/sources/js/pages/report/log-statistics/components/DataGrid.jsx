@@ -296,24 +296,34 @@ export class DataGrid extends Component {
         );
     };
 
+    renderTitle = (gridData, fromDateFormat, toFormat) =>{
+        return (
+            <div className='table-title d-flex justify-content-between align-items-center'>
+                <span>{`MBC Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
+                {
+                    gridData.length > 0 && this.renderCustomButtonDailyLog()
+                }
+            </div>
+        );
+    }
+
     renderDailyLogStatistic = (fromDateFormat, toFormat) => {
         const {ibcReport} = this.props.mainReports;
         const width = this.calculateWidth(ibcReport.communicationColumns);
-
+        const maxWidth = document.getElementById('app-container').clientWidth < width ? document.getElementById('app-container').clientWidth : width;
         return (
             <div className='table-mbc'>
-                 <div style={{maxWidth: width}} className='table-title d-flex justify-content-between align-items-center'>
-                    <span>{`MBC Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
-                    {
-                        ibcReport.mainCategories.length > 0 && this.renderCustomButtonDailyLog()
-                    }
-                </div>
+                 
                 <Table
+                    maxWidth={maxWidth}
+                    shouldUseMaxWidth
                     width={width}
                     autoWidth={false}
+                    title={this.renderTitle(ibcReport.mainCategories, fromDateFormat, toFormat)}
                     header={this.buildHeader(ibcReport)}
                     body={this.buildBody(ibcReport, 'mbc')}
                     footer={this.renderFooter(ibcReport)}
+                    isFixColumn
                     isPaging={false}
                     containerPadding={0}
                     adjustedHeight={10}
