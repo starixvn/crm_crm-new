@@ -49,11 +49,11 @@ export class DataGrid extends Component {
         const total = item.total;
         const cells = [];
         const cellsTotal = [];
-        cells.push(<Cell className='text-center fix-column' rowSpan={item.childReports.length}>{item.shortName}</Cell>);
-        cells.push(<Cell className='text-center fix-column'>{timeReport[0].shortName}</Cell>);
+        cells.push(<Cell className='text-center fix-first-column' rowSpan={item.childReports.length}>{item.shortName}</Cell>);
+        cells.push(<Cell className='text-center fix-second-column'>{timeReport[0].shortName}</Cell>);
 
-        cellsTotal.push(<Cell className='fix-column'>{total.shortName}</Cell>);
-        cellsTotal.push(<Cell className='fix-column'/>);
+        cellsTotal.push(<Cell className='fix-first-column'>{total.shortName}</Cell>);
+        cellsTotal.push(<Cell className='fix-second-column'/>);
         countryArr.forEach((item, index) =>{
             cells.push(
                 <Cell className='text-center'>
@@ -79,7 +79,7 @@ export class DataGrid extends Component {
                     item.childReports.length > 1 &&
                     item.childReports.slice(1).map((ele, key) => (
                         <Row key={`country-${key}`} className='height-row'>
-                            <Cell className='text-center'>{ele.shortName}</Cell>
+                            <Cell className='text-center fix-second-column'>{ele.shortName}</Cell>
                             {
                                 ele.childReports.map(child =>(
                                     <Cell className='text-center'>{child.numberOfIssues > 0 ? child.numberOfIssues : ''}</Cell>
@@ -98,8 +98,8 @@ export class DataGrid extends Component {
 
     renderFooter = gridData => {
         const cells = [];
-        cells.push(<Cell className='fix-column'>Grand Total</Cell>);
-        cells.push(<Cell />);
+        cells.push(<Cell className='fix-first-column'>Grand Total</Cell>);
+        cells.push(<Cell className='fix-second-column'/>);
         gridData.total.childReports.forEach(item =>{
             cells.push(<Cell className='text-center'>{item.numberOfIssues}</Cell>);
         });
