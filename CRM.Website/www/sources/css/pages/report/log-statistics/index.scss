@@ -8,12 +8,8 @@
 @import '../../../components/multiple-select/style';
 
 
-#app-container{
-    min-width:1200px;
-}
-
 .form-filter {
-    min-width: 1200px;
+    min-width: 980px;
     
     .react-datepicker__input-container input{
         width: 100% !important;
@@ -53,11 +49,11 @@
 
 .table-mbc, .table-licensee{
     .fix-table-container{
-        min-width: 1200px !important;
-        
+        .fix-table{
+            max-height: 300px !important;
+        }
+
         .body-content{
-            max-height: 200px !important;
-    
             tbody .child{ 
                 background-color: #fff !important;
             }
@@ -82,38 +78,24 @@
             }
         }
 
-        .header-content table thead th:first-child, thead th:nth-child(2), td:first-child, td:nth-child(2){
+        .header-content table thead .sticky-header, td:first-child{
             position: sticky !important;
             border-left: none !important;
             border-right: none !important;
         }
-        .header-content table thead th:first-child, td:first-child{
-            box-shadow: inset 0 0 1px -1px #b7b7b7,
-                        inset 1px 0 1px 0px #b7b7b7;
-        }
-    
-        .header-content table thead th:nth-child(2), .td:nth-child(2){
+        .header-content table thead .sticky-header, td:first-child{
             box-shadow: inset 2px 0 0px -1px #b7b7b7,
-            inset 1px 0 1px 0px #b7b7b7, inset -2px 0 9px -8px #383333;
+                        inset 1px 0 1px 0px #b7b7b7, inset -2px 0 9px -8px #383333;
         }
         
-        .header-content thead th:first-child{
+        .header-content thead .sticky-header{
             z-index: 2;
             left: 0 !important;
         }
     
-        .header-content thead th:nth-child(2){
-            z-index: 2;
-            left: 134px !important;
-        }
-    
         .body-content table tbody, .footer-content .footer-container {
-            .td:first-child{
+            td:first-child{
                 left: 0 !important;
-            }
-    
-            td:nth-child(2){
-                left: 134px !important;
             }
         }
     
@@ -125,8 +107,13 @@
 }
 
 .details{
-    .table-container {
+    .fix-table-container {
         min-width: 1200px !important;
+
+        .table-title{
+            border-right: 0;
+        }
+
         .header-content , .body-content{
             table{
                 width: 3344px !important;
@@ -140,38 +127,38 @@
                 overflow-y: auto;
                 border-left: none !important;
                 border-right: none !important;
-                box-shadow: inset -1px 0 1px -1px #1f1d1d,
-                            inset 1px 0 2px -1px #1f1d1d;
+                box-shadow: inset 0 0 1px -1px #b7b7b7,
+                            inset 1px 0 1px 0px #b7b7b7;
+            }
+
+            th:nth-child(5), td:nth-child(5){
+                box-shadow: inset 2px 0 0px -1px #b7b7b7, inset 1px 0 1px 0px #b7b7b7,
+                            inset -2px 0 6px -5px #383333 !important;
             }
 
             th:first-child, td:first-child{
                 left: 0;
-                z-index: 1;
             }
             
             th:nth-child(2), td:nth-child(2){
-                left: 116px;
-                z-index: 2;
+                left: 118px;
             }
 
             th:nth-child(3), td:nth-child(3){
-                left: 213px;
-                z-index: 3;
+                left: 216px;
             }
 
             th:nth-child(4), td:nth-child(4){
-                left: 310px;
-                z-index: 4;
+                left: 315px;
             }
 
             th:nth-child(5), td:nth-child(5){
-                left: 407px;
-                z-index: 5;
+                left: 412px;
             }
         }
 
         .body-content{
-            overflow: visible;
+            max-height: none !important;
 
             tbody td{ 
                 background-color: #fff !important;

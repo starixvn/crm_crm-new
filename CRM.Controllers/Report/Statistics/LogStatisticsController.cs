@@ -46,7 +46,6 @@
         }
 
         [HttpPost]
-        [NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
             var ibcReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
@@ -76,7 +75,6 @@
         }
 
         [HttpPost]
-        [NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
             var reportDetails = await logStatisticsService.GetReportDetailsAsync(criteria);
