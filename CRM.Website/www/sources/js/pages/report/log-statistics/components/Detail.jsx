@@ -164,7 +164,8 @@ export class Detail extends Component {
                     </div>
                 </div>
                 <Table
-                    width={3355}
+                    maxWidth={3355}
+                    shouldUseMaxWidth
                     autoWidth={false}
                     isFixColumn
                     isPaging

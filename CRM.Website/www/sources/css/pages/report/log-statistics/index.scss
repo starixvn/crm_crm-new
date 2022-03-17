@@ -9,8 +9,7 @@
 
 
 .form-filter {
-    min-width: 980px;
-    
+
     .react-datepicker__input-container input{
         width: 100% !important;
     }
@@ -108,8 +107,6 @@
 
 .details{
     .fix-table-container {
-        min-width: 1200px !important;
-
         .table-title{
             border-right: 0;
         }
@@ -159,7 +156,7 @@
 
         .body-content{
             max-height: none !important;
-
+            border-right: 0;
             tbody td{ 
                 background-color: #fff !important;
             }
