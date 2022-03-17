@@ -217,16 +217,17 @@ class Table extends Component {
             maxHeightContainer = this.headerWrapper.offsetHeight + this.state.contentHeight;
         }
         const increaseMaxWidth = maxWidth + 1;
-        const footerSectionProps = {...sectionProps, maxWidth: increaseMaxWidth};
+        const maxWidthCal = maxWidth + SCROLLBAR_WIDTH + 1;
+        const footerSectionProps = {...sectionProps, maxWidth: maxWidthCal};
         const fixHeaderSectionProps = {...headerSectionProps, maxWidth: increaseMaxWidth};
         const fixSectionProps = {...sectionProps, maxWidth: increaseMaxWidth};
         const {Header, Body, Footer} = this;
         return (
-            <div className='fix-table-container' style={{ maxWidth:  maxWidth + SCROLLBAR_WIDTH + 1 }}>
-               <div className='fix-table'
-                   style={{ maxWidth:  maxWidth + SCROLLBAR_WIDTH + 1 , maxHeight: maxHeightContainer}}
-               >
-                    <div style={{ maxWidth: increaseMaxWidth + 1}}>{this.props.title}</div>
+            <div className='fix-table-container' style={{ maxWidth: maxWidthCal }}>
+                <div style={{ maxWidth: maxWidthCal}}>{this.props.title}</div>
+                <div className='fix-table'
+                    style={{ maxWidth:  maxWidthCal , maxHeight: maxHeightContainer}}
+                >
                     <Header {...fixHeaderSectionProps}>
                         {rowLayout}
                         {header}
@@ -245,11 +246,11 @@ class Table extends Component {
                             {footer}
                         </Footer>
                     }
-                    {
-                        isPaging && pageOption &&
-                        <Pager pageOption={pageOption} onPaging={onPaging} {...footerSectionProps} />
-                    }
                 </div> 
+                {
+                    isPaging && pageOption &&
+                    <Pager pageOption={pageOption} onPaging={onPaging} {...footerSectionProps} />
+                }
             </div>
         );
     };
@@ -270,7 +271,7 @@ class Table extends Component {
         const headerSectionProps = { onSort: this.props.onSort, width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
         const rowLayout = <RowLayout columnLayout={newColumnLayout} />;
         const { Header, Body, Footer } = this;
-        const fixProps = {header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout, pageOption, onPaging};
+        const fixProps = {header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout,isPaging, pageOption, onPaging};
 
         return (
             isFixColumn ?
