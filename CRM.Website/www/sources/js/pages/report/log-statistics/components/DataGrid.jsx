@@ -57,19 +57,6 @@ export class DataGrid extends Component {
         return  headerCells;
     };
 
-    calculateWidth = communicationColumns =>{
-        const columnsWidth = [30,12];
-        communicationColumns.map(() =>{
-            columnsWidth.push(12);
-        });
-        const columnWidthSum = 198;
-        const sumOfColumnWidth = document.getElementById('app-container').clientWidth;
-        const newColumnsWidth = columnsWidth.map(cellWidth =>
-            sumOfColumnWidth / columnWidthSum * cellWidth);
-        const widthTotalColumns = newColumnsWidth.reduce( (accumulator, currentValue) => accumulator + currentValue, 0);
-        return widthTotalColumns;
-    };
-
     buildBody = (data, tableName) => {
         const rows = [];
         if (data.mainCategories.length > 0) {
@@ -245,7 +232,7 @@ export class DataGrid extends Component {
                     placement="auto"
                     overlay={<Tooltip><span>Collapse/Expand</span></Tooltip>}
                 >
-                    <span className="pl-3 fa fa-expand icon-expand" onClick={this.handleCollapseExpandLicensee} />
+                    <span className="pl-3 fa fa-expand icon" onClick={this.handleCollapseExpandLicensee} />
                 </OverlayTrigger>
                 <OverlayTrigger
                     placement="auto"
@@ -307,24 +294,35 @@ export class DataGrid extends Component {
         );
     }
 
+    renderTitleLicensee = (licenseeReport, fromDateFormat, toFormat) =>{
+        return (
+            <div className='table-title d-flex justify-content-between align-items-center'>
+                <span>{`Licensee Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
+                {
+                    licenseeReport.length > 0 && this.renderCustomButtonLicensee()
+                }
+            </div>
+        );
+    }
+
     renderDailyLogStatistic = (fromDateFormat, toFormat) => {
         const {ibcReport} = this.props.mainReports;
-        const width = this.calculateWidth(ibcReport.communicationColumns);
-        const maxWidth = document.getElementById('app-container').clientWidth < width ? document.getElementById('app-container').clientWidth : width;
+        const defaultWidth = 400;
+        const totalWidth = defaultWidth + ibcReport.communicationColumns.length * 115;
+        const maxWidth = document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
         return (
             <div className='table-mbc'>
                  
                 <Table
                     maxWidth={maxWidth}
                     shouldUseMaxWidth
-                    width={width}
+                    width={totalWidth}
                     autoWidth={false}
                     title={this.renderTitle(ibcReport.mainCategories, fromDateFormat, toFormat)}
                     header={this.buildHeader(ibcReport)}
                     body={this.buildBody(ibcReport, 'mbc')}
                     footer={this.renderFooter(ibcReport)}
                     isFixColumn
-                    isPaging={false}
                     containerPadding={0}
                     adjustedHeight={10}
                     shouldResetScrollPosition={this.state.shouldResetScrollPosition}
@@ -335,23 +333,22 @@ export class DataGrid extends Component {
 
     renderLicenseeDailyStatistic = (fromDateFormat, toFormat) => {
         const {licenseeReport} = this.props.mainReports;
-        const width = this.calculateWidth(licenseeReport.communicationColumns);
+        const defaultWidth = 400;
+        const totalWidth = defaultWidth + licenseeReport.communicationColumns.length * 115;
+        const maxWidth = document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
         return (
             <div className='table-licensee'>
-                <div style={{maxWidth: width}} className='table-title d-flex justify-content-between align-items-center'>
-                    <span>{`Licensee Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
-                    {
-                        licenseeReport.mainCategories.length > 0 && this.renderCustomButtonLicensee()
-                    }
-                </div>
                 {
                     <Table
-                        width={width}
+                        maxWidth={maxWidth}
+                        shouldUseMaxWidth
+                        width={totalWidth}
                         autoWidth={false}
+                        title={this.renderTitleLicensee(licenseeReport.mainCategories, fromDateFormat, toFormat)}
                         header={this.buildHeader(licenseeReport)}
                         body={this.buildBody(licenseeReport, 'licensee')}
                         footer={this.renderFooter(licenseeReport)}
-                        isPaging={false}
+                        isFixColumn
                         containerPadding={0}
                         adjustedHeight={10}
                         shouldResetScrollPosition={this.state.shouldResetScrollPosition}

@@ -141,31 +141,32 @@ export class Detail extends Component {
         };
 
         return (
-        <div className='details'>
-            <div className='table-title d-flex justify-content-between align-items-center'>
-                <span>{details.title}</span>
-                <div>
-                    <OverlayTrigger
-                        overlay={
-                            <Tooltip><span>Go Back</span></Tooltip>
-                        }
-                        placement="auto"
-                    >
-                        <span className="fa fa-arrow-circle-left icon pl-3" onClick={() => this.handleGoBack()} />
-                    </OverlayTrigger>
-                    <OverlayTrigger
-                        overlay={
-                            <Tooltip><span>Export to Excel</span></Tooltip>
-                        }
-                        placement="auto"
-                    >
-                        <span className="fa fa-file-excel-o icon-excel pl-3" onClick={this.handleExportExcel} />
-                    </OverlayTrigger>
+                <div className='details'>
+                    <div className='table-title d-flex justify-content-between align-items-center'>
+                    <span>{details.title}</span>
+                    <div>
+                        <OverlayTrigger
+                            overlay={
+                                <Tooltip><span>Go Back</span></Tooltip>
+                            }
+                            placement="auto"
+                        >
+                            <span className="fa fa-arrow-circle-left icon pl-3" onClick={() => this.handleGoBack()} />
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                            overlay={
+                                <Tooltip><span>Export to Excel</span></Tooltip>
+                            }
+                            placement="auto"
+                        >
+                            <span className="fa fa-file-excel-o icon-excel pl-3" onClick={this.handleExportExcel} />
+                        </OverlayTrigger>
+                    </div>
                 </div>
-            </div>
                 <Table
                     width={3355}
                     autoWidth={false}
+                    isFixColumn
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
