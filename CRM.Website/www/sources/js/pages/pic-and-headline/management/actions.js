@@ -17,6 +17,9 @@ import {
 const getAllSetting = () => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/GetAllSetting');
     await DataService.postDataAsync(url).then(response => {
+        if(!response || !response.data){
+            return;
+        }
         dispatch(setSetting(response.data));
     });
 };

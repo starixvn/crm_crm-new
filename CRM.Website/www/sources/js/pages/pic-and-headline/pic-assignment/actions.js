@@ -18,6 +18,9 @@ const getSettings = () => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('PicAssignment/AllSetting');
     await DataService.postDataAsync(url).then(response => {
+        if(!response || !response.data){
+            return;
+        }
         dispatch(setSettings(response.data));
     }).then(() => Site.unblockUI());
 };
