@@ -8,6 +8,7 @@
     using CRM.Models.Feedback;
     using CRM.Models.InformHeadline;
     using CRM.Models.PicAndHeadline;
+    using CRM.Models.Report;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Report.SettlementReport;
@@ -52,6 +53,8 @@
         byte[] ExportLogStatisticsReportDetail(StatisticsDetailReportByDateModel logStatisticsDetail,
             IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools, IEnumerable<Product> products,
             IEnumerable<Product> subProducts, IEnumerable<SettingRelation> extensions);
+
+        byte[] ExportIssueStatisticsReport(IssuesStatisticsReportInfo issueStatistics, string titleExcel);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -177,6 +180,23 @@
             var excel = new LogStatisticsDetailExcel(templatePath, logStatisticsDetail, mainCategories,
                 communicationTools, products, subProducts, extensions);
             return excel.Export();
+        }
+
+        public byte[] ExportIssueStatisticsReport(IssuesStatisticsReportInfo issueStatistics, string titleExcel)
+        {
+            try
+            {
+                const string ExcelTemplatePath = "ExcelTemplates/Issue_Statistics.xlsx";
+                var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+
+                var excel = new IssueStatisticsExcel(templatePath, issueStatistics, titleExcel);
+                return excel.Export();
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
         }
     }
 }
