@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using CRM.Core;
 using CRM.Core.Constants;
 using CRM.Criteria.Report.IssuesStatistics;
+using CRM.Resources;
 using CRM.Services;
 using CRM.Services.Report;
 using Fanex.NAP.Client.AspNetCore.Attributes;
@@ -15,14 +17,17 @@ namespace CRM.Controllers.Report.Statistics
     {
         private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
+        private readonly IExportExcelService excelService;
 
         public IssueStatisticsController(
             IIssueStatisticsService issueStatisticsService,
-            ISettingService settingService
+            ISettingService settingService,
+            IExportExcelService excelService
         )
         {
             this.issueStatisticsService = issueStatisticsService;
             this.settingService = settingService;
+            this.excelService = excelService;
         }
 
         //[NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
@@ -44,6 +49,19 @@ namespace CRM.Controllers.Report.Statistics
         {
             var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
             return Json(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcel([FromBody] GetIssuesStatisticReportCriteria criteria)
+        {
+            var typeName = criteria.ReportType == 1 ? "Daily" : "Month";
+            var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
+            var fileName = string.Format(ViewResources.IssueStatistics_ExcelFile, typeName,
+                                            criteria.FromDate.ToShortDateFormatDash(), criteria.ToDate.ToShortDateFormatDash());
+            var titleExcel = string.Format(ViewResources.IssueStatistics_ExcelTitle, typeName,
+                                            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
+            var bytes = excelService.ExportIssueStatisticsReport(data, titleExcel);
+            return File(bytes, MimeType.XLSX, $"{fileName}.xlsx");
         }
     }
 }

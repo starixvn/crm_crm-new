@@ -439,6 +439,33 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Issue Statistic Report.
+        /// </summary>
+        public static string IssueStatistic_Report {
+            get {
+                return ResourceManager.GetString("IssueStatistic_Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}_Issue_Statistic_Report_From_{1}_{2}.
+        /// </summary>
+        public static string IssueStatistics_ExcelFile {
+            get {
+                return ResourceManager.GetString("IssueStatistics_ExcelFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Issue Statistic Report From {1} To {2}.
+        /// </summary>
+        public static string IssueStatistics_ExcelTitle {
+            get {
+                return ResourceManager.GetString("IssueStatistics_ExcelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
