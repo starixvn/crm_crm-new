@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRM.Controllers.Report.Statistics
 {
 
-    public class IssueStatisticsController : Controller
+    public class IssueStatisticsController : BaseController
     {
         private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
@@ -29,7 +29,7 @@ namespace CRM.Controllers.Report.Statistics
             this.excelService = excelService;
         }
 
-        //[NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
+        [NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/IssueStatistics/Index");
@@ -53,7 +53,7 @@ namespace CRM.Controllers.Report.Statistics
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetIssuesStatisticReportCriteria criteria)
         {
-            var typeName = criteria.ReportType == 1 ? "Daily" : "Month";
+            var typeName = criteria.ReportType == 1 ? ViewResources.Daily : ViewResources.Monthly;
             var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
             var fileName = string.Format(ViewResources.IssueStatistics_ExcelFile, typeName,
                                             criteria.FromDate.ToShortDateFormatDash(), criteria.ToDate.ToShortDateFormatDash());

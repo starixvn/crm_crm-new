@@ -106,6 +106,9 @@
 
     .table-title{
         border-right: 0;
+        .btn-chart{
+            cursor: pointer;
+        }
     }
 
     .body-content{
@@ -120,6 +123,25 @@
         tr td{
             background-color: #fff !important;
         }
+
         max-height: none !important;
+    }
+}
+
+.recharts-default-legend{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 1px solid #b7b7b7;
+    padding-top: 5px !important;
+    width: 1010px !important;
+
+    li{
+        margin-left: 10px;
+        width: 170px;
+
+        .recharts-surface, .recharts-legend-item-text{
+            float: left;
+        }
     }
 }

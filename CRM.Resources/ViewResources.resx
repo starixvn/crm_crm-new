@@ -438,4 +438,7 @@
   <data name="IssueStatistic_Report" xml:space="preserve">
     <value>Issue Statistic Report</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
 </root>

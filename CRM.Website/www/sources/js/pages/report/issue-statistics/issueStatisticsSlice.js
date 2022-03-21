@@ -9,7 +9,7 @@ const issueStatisticsSlice = createSlice({
             pageSize: 7
         },
         gridData: null,
-        chart: { show: false, title: '', data: null}
+        chart: { show: false, data: null}
     },
     reducers: {
         setGridParams: (state, action) => {
