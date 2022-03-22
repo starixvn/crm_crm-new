@@ -17,13 +17,15 @@
         private IBaseService baseService;
         private ICommonService commonService;
 
-        [Fact]
-        public async Task GetAsync_WhenCalled_ReturnExpected()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(3)]
+        public async Task GetIssuesStatisticsReportAsync_WhenCalled_ReturnExpected(int reportType)
         {
             // Arrange
             var service = GetService();
             var serverTime = fixture.Create<DateTime>();
-            fixture.Customize<GetIssuesStatisticReportCriteria>(x => x.With(b => b.ReportType, 1));
+            fixture.Customize<GetIssuesStatisticReportCriteria>(x => x.With(b => b.ReportType, reportType));
             var criteria = fixture.Create<GetIssuesStatisticReportCriteria>();
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(serverTime);
             commonService.ConvertClientToTimeToServerTime(Arg.Any<DateTime>()).Returns(serverTime);

@@ -26,7 +26,10 @@ export class AppContainer extends Component {
           <DataGrid />
           {
             chart.show &&
-            <Chart chartInfo={chart.chartInfo} onClose={this.handleCloseChartDialog}/>
+            <Chart 
+                chartInfo={chart.chartInfo}
+                onClose={this.handleCloseChartDialog}
+            />
           }
       </Fragment>
     );
