@@ -132,14 +132,14 @@ export class DataGrid extends Component {
                     gridData.childReports.length > 0 &&
                     <div className="tool-box">
                         <span className="fa fa-bar-chart mr-3 btn-chart" onClick={
-                            () => this.props.setChartData({show: true, chartInfo: this.props.gridData})} 
+                            () => this.props.setChartData({show: true, chartInfo: this.props.gridData})}
                         />
                         <span className="fa fa-file-excel-o btn-export-excel icon-excel" onClick={this.handleExportExcel} />
                     </div>
                 }
             </div>
         );
-    }
+    };
 
     render() {
         const { gridData } = this.props;

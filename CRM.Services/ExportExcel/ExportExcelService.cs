@@ -184,19 +184,11 @@
 
         public byte[] ExportIssueStatisticsReport(IssuesStatisticsReportInfo issueStatistics, string titleExcel)
         {
-            try
-            {
-                const string ExcelTemplatePath = "ExcelTemplates/Issue_Statistics.xlsx";
-                var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            const string ExcelTemplatePath = "ExcelTemplates/Issue_Statistics.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
 
-                var excel = new IssueStatisticsExcel(templatePath, issueStatistics, titleExcel);
-                return excel.Export();
-            }
-            catch (System.Exception e)
-            {
-
-                throw;
-            }
+            var excel = new IssueStatisticsExcel(templatePath, issueStatistics, titleExcel);
+            return excel.Export();
         }
     }
 }

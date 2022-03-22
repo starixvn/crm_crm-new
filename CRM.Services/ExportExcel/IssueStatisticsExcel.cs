@@ -177,7 +177,7 @@
             DrawBorderCell(worksheet.Cells[startRow, colIndex, endRow, colIndex]);
         }
 
-        private int getTotalColumn(IssuesStatisticsReportInfo issuesStatistics)
+        private static int getTotalColumn(IssuesStatisticsReportInfo issuesStatistics)
         {
             return issuesStatistics.Total.ChildReports.Count() + StartCountryColumnIndex + 1;
         }

@@ -71,7 +71,6 @@
 
             issuesStatisticsReportInfo.ReportTypeId = criteria.ReportType;
             issuesStatisticsReportInfo.TotalChildReports = issuesStatisticsReportInfo.ChildReports.Count;
-            issuesStatisticsReportInfo.ChartInfo = GetChartInfo(issuesStatisticsReportInfo, countryDictionary);
 
             return new IssuesStatisticsReportInfo
             {
@@ -82,7 +81,6 @@
                     GetPagingLogList(criteria, issuesStatisticsReportInfo.ChildReports),
                 Total = issuesStatisticsReportInfo.Total,
                 TotalChildReports = issuesStatisticsReportInfo.TotalChildReports,
-                ChartInfo = issuesStatisticsReportInfo.ChartInfo
             };
         }
 
@@ -91,59 +89,6 @@
             IList<IssuesStatisticsReportInfo> statisticReportList)
         {
             return statisticReportList.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-        }
-
-        private IssuesStatisticsReportInfo GetChartInfo(IssuesStatisticsReportInfo issuesStatisticsReportInfo, IDictionary<int, int> countryDictionary)
-        {
-            var chartInfo = new IssuesStatisticsReportInfo
-            {
-                Name = issuesStatisticsReportInfo.Name,
-                ShortName = issuesStatisticsReportInfo.ShortName,
-                NumberOfIssues = issuesStatisticsReportInfo.Total.NumberOfIssues,
-                ChildReports = new List<IssuesStatisticsReportInfo>()
-            };
-
-            var countryLength = countryDictionary.Count;
-            var dateReportLength = issuesStatisticsReportInfo.ChildReports.Count;
-            for (var dateIndex = 0; dateIndex < dateReportLength; dateIndex++)
-            {
-                var dateReport = issuesStatisticsReportInfo.ChildReports[dateIndex];
-                var dateChart = new IssuesStatisticsReportInfo
-                {
-                    ShortName = dateReport.ShortName,
-                    NumberOfIssues = dateReport.Total.NumberOfIssues,
-                    ChildReports = new List<IssuesStatisticsReportInfo>()
-                };
-
-                var timeReportLength = dateReport.ChildReports.Count;
-                for (var timeIndex = 0; timeIndex < timeReportLength; timeIndex++)
-                {
-                    var timeReport = dateReport.ChildReports[timeIndex];
-                    var timeChart = new IssuesStatisticsReportInfo
-                    {
-                        ShortName = timeReport.ShortName,
-                        NumberOfIssues = timeReport.NumberOfIssues,
-                        ChildReports = new List<IssuesStatisticsReportInfo>()
-                    };
-
-                    for (var i = 0; i < countryLength; i++)
-                    {
-                        var countryReport = timeReport.ChildReports[i];
-                        timeChart.ChildReports.Add(new IssuesStatisticsReportInfo
-                        {
-                            HasData = countryReport.HasData,
-                            NumberOfIssues = countryReport.NumberOfIssues,
-                            CountryInfo = countryReport.CountryInfo
-                        });
-                    }
-
-                    dateChart.ChildReports.Add(timeChart);
-                }
-
-                chartInfo.ChildReports.Add(dateChart);
-            }
-
-            return chartInfo;
         }
 
         private IssuesStatisticsReportInfo GetStatisticReportByDaily(

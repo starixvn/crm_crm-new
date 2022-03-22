@@ -1,4 +1,3 @@
-import colors from '@jsroot/common/colorColumnChart';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import React, { PureComponent } from 'react';
 import { Modal } from 'react-bootstrap';
@@ -18,16 +17,16 @@ export default class Chart extends PureComponent {
         const data = [];
 
         chartInfo.childReports.forEach(dateReport => {
-            dateReport.childReports.forEach((timeReport, index) => {
+            dateReport.childReports.forEach(timeReport => {
                 const objectData = { name: `${dateReport.shortName} - ${timeReport.shortName}` };
-                 const countryInfo = this.getCountriesData(timeReport, countries, objectData);
+                 const countryInfo = this.getCountries(timeReport, countries, objectData);
                  data.push(countryInfo);
             });
         });
         return data;
     };
 
-    getCountriesData = (timeReport, countries, objectData) =>{
+    getCountries = (timeReport, countries, objectData) =>{
         const countryReport = timeReport.childReports;
         countryReport.forEach((country, index) => {
             if(country.numberOfIssues > 0){
@@ -35,7 +34,7 @@ export default class Chart extends PureComponent {
             }
         });
         return objectData;
-    }
+    };
 
     getLabels = reports => {
         const labels = [];

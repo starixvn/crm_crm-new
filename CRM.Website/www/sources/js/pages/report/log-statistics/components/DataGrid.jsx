@@ -292,7 +292,7 @@ export class DataGrid extends Component {
                 }
             </div>
         );
-    }
+    };
 
     renderTitleLicensee = (licenseeReport, fromDateFormat, toFormat) =>{
         return (
@@ -303,16 +303,15 @@ export class DataGrid extends Component {
                 }
             </div>
         );
-    }
+    };
 
     renderDailyLogStatistic = (fromDateFormat, toFormat) => {
         const {ibcReport} = this.props.mainReports;
         const defaultWidth = 400;
         const totalWidth = defaultWidth + ibcReport.communicationColumns.length * 115;
-        const maxWidth = document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
+        const maxWidth = this.getMaxWidth(totalWidth);
         return (
             <div className='table-mbc'>
-                 
                 <Table
                     maxWidth={maxWidth}
                     shouldUseMaxWidth
@@ -331,11 +330,13 @@ export class DataGrid extends Component {
         );
     };
 
+    getMaxWidth = totalWidth => document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
+
     renderLicenseeDailyStatistic = (fromDateFormat, toFormat) => {
         const {licenseeReport} = this.props.mainReports;
         const defaultWidth = 400;
         const totalWidth = defaultWidth + licenseeReport.communicationColumns.length * 115;
-        const maxWidth = document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
+        const maxWidth = this.getMaxWidth(totalWidth);
         return (
             <div className='table-licensee'>
                 {
