@@ -1,4 +1,4 @@
-﻿namespace CRM.Services.UnitTests.Report.LogStatistics
+﻿namespace CRM.Services.UnitTests.Report
 {
     using System;
     using System.Collections.Generic;
