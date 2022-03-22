@@ -8,9 +8,8 @@
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Models;
     using CRM.Models.Report.LogStatistics;
-    using CRM.Services.Report.LogStatistics;
+    using CRM.Services.Report;
     using NSubstitute;
-    using Xunit;
 
     public class LogStatisticsServiceTests
     {

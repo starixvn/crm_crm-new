@@ -1,4 +1,4 @@
-﻿namespace CRM.Criteria.Report.IssuesStatistics
+﻿namespace CRM.Criteria.Report
 {
     using System;
     using CRM.Core.Constants;

@@ -1,4 +1,4 @@
-﻿namespace CRM.Services
+﻿namespace CRM.Services.Report
 {
     using System;
     using System.Collections.Generic;

@@ -6,6 +6,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.Report.SettlementReport;
     using CRM.Models.Report.SettlementReport;
+    using CRM.Services.Report;
     using NSubstitute;
     using Xunit;
 

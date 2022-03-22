@@ -7,6 +7,7 @@
     using CRM.Criteria.Report.SettlementReport;
     using CRM.Resources;
     using CRM.Services;
+    using CRM.Services.Report;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using static Fanex.NAP.Core.Business.Constant;

@@ -1,4 +1,4 @@
-﻿namespace CRM.Services.Report.LogStatistics
+﻿namespace CRM.Services.Report
 {
     using System.Collections.Generic;
     using System.Linq;

@@ -7,7 +7,6 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BackgroundJob.Models;
-    using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;

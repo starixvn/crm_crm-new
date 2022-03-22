@@ -9,7 +9,7 @@
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Setting;
     using CRM.Services;
-    using CRM.Services.Report.LogStatistics;
+    using CRM.Services.Report;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;

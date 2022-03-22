@@ -9,6 +9,7 @@
     using CRM.Criteria.Report.SettlementReport;
     using CRM.Models.Report.SettlementReport;
     using CRM.Services;
+    using CRM.Services.Report;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using NSubstitute;
