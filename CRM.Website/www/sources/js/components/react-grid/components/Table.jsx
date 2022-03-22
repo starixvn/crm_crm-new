@@ -211,7 +211,7 @@ class Table extends Component {
     }
 
     renderFixColumn = fixProps =>{
-        const {header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout, isPaging, pageOption, onPaging} = fixProps;
+        const {header, body, footer, sectionProps, headerSectionProps, maxWidth, rowLayout, isPaging, pageOption, onPaging} = fixProps;
         let maxHeightContainer = 0;
         if(this.headerWrapper !== null){
             maxHeightContainer = this.headerWrapper.offsetHeight + this.state.contentHeight;
@@ -246,7 +246,7 @@ class Table extends Component {
                             {footer}
                         </Footer>
                     }
-                </div> 
+                </div>
                 {
                     isPaging && pageOption &&
                     <Pager pageOption={pageOption} onPaging={onPaging} {...footerSectionProps} />

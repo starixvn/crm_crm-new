@@ -25,7 +25,5 @@ namespace CRM.Models.Report
         public IssuesStatisticsReportInfo Total { get; set; }
 
         public int TotalChildReports { get; set; }
-
-        public IssuesStatisticsReportInfo ChartInfo { get; set; }
     }
 }
