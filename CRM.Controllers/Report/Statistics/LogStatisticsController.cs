@@ -5,7 +5,7 @@
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Resources;
     using CRM.Services;
-    using CRM.Services.Report.LogStatistics;
+    using CRM.Services.Report;
     using Fanex.NAP.Client.AspNetCore.Attributes;
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
