@@ -21,12 +21,10 @@
         private IEnumerable<FeedbackDetail> feedbacks;
         private IEnumerable<Setting> mainCategories;
 
-        private const byte RowStartBody = 5;
         private const byte RowStartHeader = 4;
         private const byte StartComToolsIndex = 7;
 
         private const int WidthNormal = 15;
-        private const int RowHeight = 60;
         private const int WidthLarge = 35;
         private const int ColumnRunningNo = 1;
         private const int ColumnFeedback = 2;
@@ -34,7 +32,6 @@
         private const int ColumnCategory = 4;
         private const int ColumnStatus = 5;
         private const int ColumnRelCustomer = 6;
-        private const int TotalColumn = ColumnRelCustomer;
 
         [Fact]
         public void RenderTitle_WhenCalled_ExpectedCopyRow()

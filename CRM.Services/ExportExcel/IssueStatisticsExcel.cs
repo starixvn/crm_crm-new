@@ -4,7 +4,6 @@
     using System.Drawing;
     using System.Linq;
     using CRM.Models.Report;
-    using CRM.Models.Setting;
     using CRM.Resources;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
@@ -13,6 +12,7 @@
     {
         private readonly IssuesStatisticsReportInfo issuesStatistics;
         private readonly string titleExcel;
+        private readonly int totalColumns;
         private const int RowStartBody = 5;
         private const byte RowStartHeader = 4;
         private const byte StartCountryColumnIndex = 2;
@@ -24,25 +24,25 @@
         {
             this.issuesStatistics = issuesStatistics;
             this.titleExcel = titleExcel;
+            totalColumns = issuesStatistics.Total.ChildReports.Count() + StartCountryColumnIndex + 1;
         }
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            var totalColumns = getTotalColumn(issuesStatistics) - 1;
-            templateWorksheet.Cells[1, 1, RowStartHeader - 1, totalColumns]
-                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, totalColumns]);
+            templateWorksheet.Cells[1, 1, RowStartHeader - 1, totalColumns - 1]
+                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, totalColumns - 1]);
             worksheet.Cells[1, 1].Value = titleExcel;
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            var Countries = issuesStatistics.Total.ChildReports;
+            var countries = issuesStatistics.Total.ChildReports;
             templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartCountryColumnIndex]
                 .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartCountryColumnIndex]);
-            for (var index = 0; index < Countries.Count; index++)
+            for (var index = 0; index < countries.Count; index++)
             {
-                worksheet.Cells[RowStartHeader, StartCountryColumnIndex + index + 1].Value = Countries[index].CountryInfo.Name;
+                worksheet.Cells[RowStartHeader, StartCountryColumnIndex + index + 1].Value = countries[index].CountryInfo.Name;
             }
-            worksheet.Cells[RowStartHeader, StartCountryColumnIndex + Countries.Count + 1].Value = ViewResources.Total;
+            worksheet.Cells[RowStartHeader, StartCountryColumnIndex + countries.Count + 1].Value = ViewResources.Total;
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -51,7 +51,6 @@
             var childData = issuesStatistics.ChildReports;
             var totals = issuesStatistics.Total.ChildReports;
             var rowIndex = RowStartBody;
-            var totalColumns = getTotalColumn(issuesStatistics);
 
             for (var index = 0; index < childData.Count; index++)
             {
@@ -146,7 +145,6 @@
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
-            var totalColumns = getTotalColumn(issuesStatistics);
             const byte firstRow = 1;
             const byte spaceRowTitle = 3;
             worksheet.Cells[firstRow, 1, firstRow + 1, totalColumns].Merge = true;
@@ -175,11 +173,6 @@
         {
             worksheet.Cells[startRow, colIndex, endRow, colIndex].Merge = true;
             DrawBorderCell(worksheet.Cells[startRow, colIndex, endRow, colIndex]);
-        }
-
-        private static int getTotalColumn(IssuesStatisticsReportInfo issuesStatistics)
-        {
-            return issuesStatistics.Total.ChildReports.Count() + StartCountryColumnIndex + 1;
         }
     }
 }
