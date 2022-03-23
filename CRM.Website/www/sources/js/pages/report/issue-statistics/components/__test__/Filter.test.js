@@ -103,16 +103,15 @@ describe('Filter', () => {
                 const toMonthDate = new Date('2/5/2021 5:20:25 PM');
                 const fromMonthDate = new Date('1/5/2020 5:20:25 PM');
 
-                const state = {...stateInit, ...{toMonthDate: toMonthDate}};
-                DateTimeService.endMonthOfYear = jest.fn(() => '12/1/2020 5:20:25 PM');
+                const state = {...stateInit, ...{fromMonthDate: fromMonthDate}};
+                DateTimeService.endMonthOfYear = jest.fn(() => '12/1/2020');
                 const container = shallow(<Filter {...propsInit}/>);
                 container.instance().setState(state);
                 // Act
-                container.instance().handleChangeMonthToDate(fromMonthDate);
+                container.instance().handleChangeMonthToDate(toMonthDate);
 
                 // Assert
-                expect(container.state().fromMonthDate).toEqual(new Date('1/5/2020 5:20:25 PM'));
-                expect(container.state().toMonthDate).toEqual(new Date('12/01/2020 5:20:25 PM'));
+                expect(container.state().toMonthDate).toEqual(new Date('2/5/2021 5:20:25 PM'));
             });
         });
 
@@ -122,16 +121,15 @@ describe('Filter', () => {
                 const toMonthDate = new Date('2/5/2021 5:20:25 PM');
                 const fromMonthDate = new Date('1/5/2020 5:20:25 PM');
     
-                const state = {...stateInit, ...{fromMonthDate: fromMonthDate}};
+                const state = {...stateInit, ...{toMonthDate: toMonthDate}};
                 DateTimeService.firstMonthOfYear = jest.fn(() => '01/1/2020 5:20:25 PM');
                 const container = shallow(<Filter {...propsInit}/>);
                 container.instance().setState(state);
                 // Act
-                container.instance().handleChangeMonthFromDate(toMonthDate);
+                container.instance().handleChangeMonthFromDate(fromMonthDate);
     
                 // Assert
-                expect(container.state().fromMonthDate).toEqual(new Date('01/1/2020 5:20:25 PM'));
-                expect(container.state().toMonthDate).toEqual(new Date('2/5/2021 5:20:25 PM'));
+                expect(container.state().fromMonthDate).toEqual(new Date('1/5/2020 5:20:25 PM'));
             });
         });
 
