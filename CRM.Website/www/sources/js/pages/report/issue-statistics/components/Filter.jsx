@@ -89,7 +89,7 @@ export class Filter extends Component {
     handleChange = evt => {
         this.setState({
             ...this.state,
-            [evt.target.name]: evt.target.type === 'select-one' ? parseInt(evt.target.value, 10) : evt.target.value
+            [evt.target.name]: parseInt(evt.target.value, 10)
         });
     };
 
@@ -107,7 +107,6 @@ export class Filter extends Component {
         }
         const endDateOfMonth = new Date(toMonthDate.getFullYear(), toMonthDate.getMonth() + 1, 0);
         const endDateOfMonthFormat = DateTimeService.toShortDateFormat(new Date(endDateOfMonth));
-
         const params = {
             reportType : groupBy,
             fromDate: groupBy === 1 ? DateTimeService.toShortDateFormat(fromDate) : DateTimeService.toShortDateFormat(fromMonthDate),
@@ -157,7 +156,6 @@ export class Filter extends Component {
             {id: 1, name: 'Daily'},
             {id: 3, name: 'Monthly'}
         ];
-
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 {
@@ -221,7 +219,7 @@ export class Filter extends Component {
                                             selected={fromMonthDate}
                                             minDate={new Date(this.minMonthFromDate)}
                                             maxDate={new Date(this.maxMonthFromDate)}
-                                            onChange={value => this.handleChangeMonthToDate(value)}
+                                            onChange={value => this.handleChangeMonthFromDate(value)}
                                         />
                                     </div>
                                 </Form.Group>
@@ -237,7 +235,7 @@ export class Filter extends Component {
                                             selected={toMonthDate}
                                             minDate={new Date(this.minMonthToDate)}
                                             maxDate={new Date(this.maxMonthToDate)}
-                                            onChange={value => this.handleChangeMonthFromDate(value)}
+                                            onChange={value => this.handleChangeMonthToDate(value)}
                                         />
                                     </div>
                                 </Form.Group>

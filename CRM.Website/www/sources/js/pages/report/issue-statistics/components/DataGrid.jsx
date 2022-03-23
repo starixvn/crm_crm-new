@@ -56,7 +56,7 @@ export class DataGrid extends Component {
         cellsTotal.push(<Cell className='fix-second-column'/>);
         countryArr.forEach((item, index) =>{
             cells.push(
-                <Cell className='text-center'>
+                <Cell key={`${item.name}-${index}`} className='text-center'>
                     {countries[index].numberOfIssues > 0 ? countries[index].numberOfIssues : ''}
                 </Cell>
             );
@@ -81,8 +81,8 @@ export class DataGrid extends Component {
                         <Row key={`country-${key}`} className='height-row'>
                             <Cell className='text-center fix-second-column'>{ele.shortName}</Cell>
                             {
-                                ele.childReports.map(child =>(
-                                    <Cell className='text-center'>{child.numberOfIssues > 0 ? child.numberOfIssues : ''}</Cell>
+                                ele.childReports.map((child, index) =>(
+                                    <Cell key={`${child.name}-${index}`}className='text-center'>{child.numberOfIssues > 0 ? child.numberOfIssues : ''}</Cell>
                                 ))
                             }
                             <Cell className='text-center'>{ele.numberOfIssues}</Cell>
@@ -146,7 +146,6 @@ export class DataGrid extends Component {
         if(!gridData){
             return null;
         }
-
         const { pageIndex, pageSize } = this.props.gridParams;
         const pagingOption = {
             PageIndex: pageIndex,

@@ -13,7 +13,6 @@
 
     public class IssueStatisticsExcelTests
     {
-        private readonly IFixture fixture = new Fixture();
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
         private IssuesStatisticsReportInfo issuesStatistics;
         private string titleExcel;
@@ -88,6 +87,102 @@
             service.Received(2).Protected("DrawBorderCell", Arg.Any<ExcelRange>());
         }
 
+
+        [Fact]
+        public void RendeGrandTotal_WhenCall_CallExpectedMethod()
+        {
+            //Arrange
+            var worksheet = excelPackage.Worksheets.Add("data");
+            var service = CreateExcel();
+            var totals = new List<IssuesStatisticsReportInfo> {
+                new IssuesStatisticsReportInfo {
+                    ShortName = "11:16",
+                    NumberOfIssues = 1,
+                    CountryInfo = new Models.Country{Id = 1, Name = "Afghanistan"}
+                }
+            };
+
+            // Act
+            service.Public_RendeGrandTotal(worksheet, totals, 1, 7, 1);
+
+            // Assert
+            Assert.Equal(ViewResources.Grand_Total, worksheet.Cells[7, 1].Value);
+            Assert.Equal(string.Empty, worksheet.Cells[7, 2].Value);
+            Assert.Equal(1, worksheet.Cells[7, 3].Value);
+            Assert.Equal(1, worksheet.Cells[7, 4].Value);
+
+            service.Received().Protected("SetBackgroundTotalRow", Arg.Any<ExcelRange>());
+        }
+
+        [Fact]
+        public void RenderMergeCountryInfo_WhenCall_CallExpectedMethod()
+        {
+            //Arrange
+            var worksheet = excelPackage.Worksheets.Add("data");
+            var service = CreateExcel();
+            var childReports = new List<IssuesStatisticsReportInfo>
+            {
+                new IssuesStatisticsReportInfo
+                {
+                    ShortName = "2021-01-01",
+                    NumberOfIssues = 1,
+                    ChildReports = new List<IssuesStatisticsReportInfo>
+                    {
+                        new IssuesStatisticsReportInfo
+                        {
+                            ShortName = "11:16",
+                            NumberOfIssues = 1,
+                            ChildReports = new List<IssuesStatisticsReportInfo>
+                            {
+                                new IssuesStatisticsReportInfo
+                                {
+                                    ShortName = "10:16",
+                                    NumberOfIssues = 1
+                                }
+                            }
+                        }
+
+                    },
+                    Total = new IssuesStatisticsReportInfo
+                    {
+                        ShortName = "Total for Mar 01, 2022",
+                        ChildReports = new List<IssuesStatisticsReportInfo>
+                        {
+                            new IssuesStatisticsReportInfo {NumberOfIssues = 1}
+                        }
+                    }
+                },
+                new IssuesStatisticsReportInfo
+                {
+                    ShortName = "2021-01-01",
+                    NumberOfIssues = 1,
+                    ChildReports = new List<IssuesStatisticsReportInfo>
+                    {
+                        new IssuesStatisticsReportInfo
+                        {
+                            ShortName = "12:16",
+                            NumberOfIssues = 1,
+                            ChildReports = new List<IssuesStatisticsReportInfo>
+                            {
+                                new IssuesStatisticsReportInfo
+                                {
+                                    ShortName = "11:16",
+                                    NumberOfIssues = 1
+                                }
+                            }
+                        }
+
+                    }
+                }
+            };
+
+            // Act
+            service.Public_RenderMergeCountryInfo(worksheet, 2, childReports, 1);
+
+            // Assert
+            service.Received().Protected("StyleMergeCell", worksheet, 1, 1, 2);
+        }
+
         [Fact]
         public void ProcessUI_WhenCalled_CallExpectedMethod()
         {
@@ -104,22 +199,71 @@
         }
 
         [Fact]
-        public void SetStyle_WhenCalled_ExpectedStyle()
+        public void SetBackgroundTotalRow_WhenCalled_CallExpectedMethod()
+        {
+            //Arrange
+            var service = CreateExcel();
+            var worksheet = excelPackage.Worksheets.Add("data");
+            var excelRange = worksheet.Cells[1, 1, 1, 1];
+
+            // Act
+            service.Public_SetBackgroundTotalRow(excelRange);
+
+            // Assert
+            service.Received().Protected("SetBackgroundColor", excelRange, HeaderTitleColor);
+        }
+
+        [Fact]
+        public void SetBackgroundChildTotalRow_WhenCalled_CallExpectedMethod()
+        {
+            //Arrange
+            var service = CreateExcel();
+            var worksheet = excelPackage.Worksheets.Add("data");
+            var excelRange = worksheet.Cells[1, 1, 1, 1];
+
+            // Act
+            service.Public_SetBackgroundChildTotalRow(excelRange);
+
+            // Assert
+            service.Received().Protected("SetBackgroundColor", excelRange, GroupBackgroundColor);
+        }
+
+        [Fact]
+        public void SetWidthColumn_WhenCalled_CallExpectedMethod()
         {
             // Arrange
             var worksheet = excelPackage.Worksheets.Add("data");
-            var service = CreateExcel();
+            const int WidthLarge = 35;
+            const int WidthNormal = 25;
+            const int WithSmall = 15;
+            const int timeColumn = 2;
+            var excel = CreateExcel();
 
             // Act
-            service.Public_SetStyle(worksheet);
+            excel.Public_SetWidthColumn(worksheet);
 
             // Assert
-            Assert.True(worksheet.Cells[1, 1, 1 + 1, TotalColumns].Merge);
-            Assert.True(worksheet.Cells[3, 1, 3, TotalColumns].Merge);
-            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), HeaderTitleColor);
-            Assert.Equal(ExcelHorizontalAlignment.Center, 
-            worksheet.Cells[RowStartHeader, StartCountryColumnIndex + 1, RowStartHeader, TotalColumns].Style.HorizontalAlignment);
+            Assert.Equal(WithSmall, worksheet.DefaultColWidth);
+            Assert.Equal(WidthLarge, worksheet.Column(1).Width);
+            Assert.Equal(WidthNormal, worksheet.Column(timeColumn).Width);
+        }
 
+        [Fact]
+        public void StyleMergeCell_WhenCalled_StylesCorrectly()
+        {
+            // Arrange
+            const int startRow = 1;
+            const int colIndex = 10;
+            const int endRow = 1;
+            var worksheet = excelPackage.Worksheets.Add("data");
+            var service = CreateExcel();
+
+            // Action
+            service.Public_StyleMergeCell(worksheet, startRow, colIndex, endRow);
+
+            // Assert
+            Assert.True(worksheet.Cells[startRow, colIndex, endRow, colIndex].Merge);
+            service.Received().Protected("DrawBorderCell", Arg.Any<ExcelRange>());
         }
 
         #region Helpers
@@ -164,6 +308,28 @@
                             {
                                 new IssuesStatisticsReportInfo {NumberOfIssues = 1}
                             }
+                        }
+                    },
+                    new IssuesStatisticsReportInfo
+                    {
+                        ShortName = "2021-01-01",
+                        NumberOfIssues = 1,
+                        ChildReports = new List<IssuesStatisticsReportInfo>
+                        {
+                            new IssuesStatisticsReportInfo
+                            {
+                                ShortName = "12:16",
+                                NumberOfIssues = 1,
+                                ChildReports = new List<IssuesStatisticsReportInfo>
+                                {
+                                    new IssuesStatisticsReportInfo
+                                    {
+                                        ShortName = "11:16",
+                                        NumberOfIssues = 1
+                                    }
+                                }
+                            }
+
                         }
                     }
                 },

@@ -15,7 +15,6 @@ export default class Chart extends PureComponent {
             countries.push(item.countryInfo);
         });
         const data = [];
-
         chartInfo.childReports.forEach(dateReport => {
             dateReport.childReports.forEach(timeReport => {
                 const objectData = { name: `${dateReport.shortName} - ${timeReport.shortName}` };
@@ -36,9 +35,9 @@ export default class Chart extends PureComponent {
         return objectData;
     };
 
-    getLabels = reports => {
+    getLabels = chartInfo => {
         const labels = [];
-        reports.total.childReports.forEach(item =>{
+        chartInfo.total.childReports.forEach(item =>{
             const index = labels.findIndex(label => label === item.countryInfo.name);
             if (index === -1) {
                 labels.push(item.countryInfo.name);
