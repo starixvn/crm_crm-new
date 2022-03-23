@@ -26,14 +26,13 @@ export default class Chart extends PureComponent {
         return (
             <Form>
                 <Modal.Body>
-                <ResponsiveContainer width="100%">
+                <ResponsiveContainer width="100%" height={700}>
                     <BarChart
                         width={1100}
-                        height={500}
                         data={data}
                         margin={{top: 5, bottom: 20}}
-                        barCategoryGap={2}
-                        barGap={2}
+                        barCategoryGap={0}
+                        barGap={0}
                     >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
