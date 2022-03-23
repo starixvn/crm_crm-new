@@ -18,8 +18,8 @@ export default class Chart extends PureComponent {
         chartInfo.childReports.forEach(dateReport => {
             dateReport.childReports.forEach(timeReport => {
                 const objectData = { name: `${dateReport.shortName} - ${timeReport.shortName}` };
-                 const countryInfo = this.getCountries(timeReport, countries, objectData);
-                 data.push(countryInfo);
+                const countryInfo = this.getCountries(timeReport, countries, objectData);
+                data.push(countryInfo);
             });
         });
         return data;

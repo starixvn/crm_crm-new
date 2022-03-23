@@ -49,7 +49,11 @@
 .table-mbc, .table-licensee{
     .fix-table-container{
         .fix-table{
-            max-height: 300px !important;
+            max-height: 350px !important;
+
+            .footer-content{
+                bottom: -2px !important;
+            }
         }
 
         .body-content{
@@ -170,13 +174,6 @@
 
 .chart-modal-dialog{
     .modal-content{
-        width: 1200px !important;
-        height: 800px !important;;
-
-        .recharts-wrapper{
-            height: 750px !important;
-        }
-
         .recharts-default-legend{
             display: flex;
             flex-wrap: wrap;

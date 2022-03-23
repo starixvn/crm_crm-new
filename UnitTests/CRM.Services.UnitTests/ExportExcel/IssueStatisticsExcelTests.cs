@@ -330,6 +330,14 @@
                                 }
                             }
 
+                        },
+                        Total = new IssuesStatisticsReportInfo
+                        {
+                            ShortName = "Total for Mar 01, 2022",
+                            ChildReports = new List<IssuesStatisticsReportInfo>
+                            {
+                                new IssuesStatisticsReportInfo {NumberOfIssues = 1}
+                            }
                         }
                     }
                 },

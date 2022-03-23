@@ -226,7 +226,7 @@ export class DataGrid extends Component {
                     placement="auto"
                     overlay={<Tooltip><span>Show Details</span></Tooltip>}
                 >
-                    <span className="pl-3 fa fa-info-circle icon" onClick={() => this.handleShowDetails('licensee')} />
+                    <span className="pl-3 fa fa-info-circle icon fa-lg" onClick={() => this.handleShowDetails('licensee')} />
                 </OverlayTrigger>
                 <OverlayTrigger
                     placement="auto"
@@ -261,7 +261,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-info-circle icon pl-3" onClick={() => this.handleShowDetails('mbc')} />
+                    <span className="fa fa-info-circle icon pl-3 fa-lg" onClick={() => this.handleShowDetails('mbc')} />
                 </OverlayTrigger>
                 <OverlayTrigger
                     overlay={

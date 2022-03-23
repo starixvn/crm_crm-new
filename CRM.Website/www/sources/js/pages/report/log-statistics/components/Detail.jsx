@@ -151,7 +151,7 @@ export class Detail extends Component {
                             }
                             placement="auto"
                         >
-                            <span className="fa fa-arrow-circle-left icon pl-3" onClick={() => this.handleGoBack()} />
+                            <span className="fa fa-arrow-circle-left icon pl-3 fa-lg" onClick={() => this.handleGoBack()} />
                         </OverlayTrigger>
                         <OverlayTrigger
                             overlay={
