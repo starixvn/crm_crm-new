@@ -62,7 +62,7 @@ export class Filter extends Component {
         this.setState({fromDate, toDate});
     };
 
-    handleChangeMonthToDate = fromMonthDate  => {
+    handleChangeMonthFromDate = fromMonthDate  => {
         let toMonthDate = this.state.toMonthDate;
         const endMonthOfYear = new Date(DateTimeService.endMonthOfYear(fromMonthDate));
         const fromMonthGetYear = fromMonthDate.getFullYear();
@@ -74,7 +74,7 @@ export class Filter extends Component {
         this.setState({fromMonthDate, toMonthDate});
     };
 
-    handleChangeMonthFromDate = toMonthDate => {
+    handleChangeMonthToDate = toMonthDate => {
         let fromMonthDate = this.state.fromMonthDate;
         const firstMonthOfYear = new Date(DateTimeService.firstMonthOfYear(toMonthDate));
         const fromMonthGetYear = fromMonthDate.getFullYear();
