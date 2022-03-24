@@ -358,6 +358,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feedback Statistics v2.
+        /// </summary>
+        public static string FeedbackStatistics {
+            get {
+                return ResourceManager.GetString("FeedbackStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback Statistics Report from {0} to {1}.
+        /// </summary>
+        public static string FeedbackStatisticTitle {
+            get {
+                return ResourceManager.GetString("FeedbackStatisticTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback Subject.
         /// </summary>
         public static string FeedbackSubject {

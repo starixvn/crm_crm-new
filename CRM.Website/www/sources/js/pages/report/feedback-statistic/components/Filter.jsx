@@ -1,0 +1,227 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Button, Form } from 'react-bootstrap';
+import { ActionCreators } from '../actions';
+import DatePicker from '@jsroot/components/date-picker/index';
+import DateTimeService from '@jsroot/common/dateTimeService';
+import LangHelper from '@jsroot/common/langHelper';
+import { FeedbackSelectionType }from '@jsroot/common/constants';
+import { toast } from 'react-toastify';
+
+export class Filter extends Component {
+    constructor(props) {
+        super(props);
+        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const currentDate = this.currentDate;
+        const fromDate = new Date(currentDate);
+        const previousWeek = fromDate.setDate(fromDate.getDate() - 7);
+        this.maxFromDate = currentDate;
+        this.maxToDate = currentDate;
+        this.state = {
+            fromDuration: {
+                day: '', hour: '', minute: '', second: ''
+            },
+            toDuration: {
+                day: '', hour: '', minute: '', second: ''
+            },
+            fromDate: previousWeek,
+            toDate: currentDate,
+            selectionType: 1
+        };
+    }
+
+    handleChangeFromDate = fromDate => {
+        const maxDate = new Date(fromDate.getTime());
+        maxDate.setMonth(fromDate.getMonth() + 12);
+        maxDate.setDate(fromDate.getDate() - 1);
+
+        this.minToDate = fromDate;
+        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
+        this.setState({
+            fromDate: fromDate,
+            toDate: this.state.toDate < fromDate ? fromDate : this.state.toDate
+        });
+    };
+
+    handleChangeToDate = toDate => {
+        this.setState({ toDate });
+    };
+
+    handleChange = evt => {
+        this.setState({
+            ...this.state,
+            [evt.target.name]: evt.target.type === 'select-one' ? parseInt(evt.target.value, 10) : evt.target.value
+        });
+    };
+
+    handleChangeFromDuration = evt => {
+        this.setState({
+            fromDuration:  { ...this.state.fromDuration, [evt.target.name]: evt.target.value }
+        });
+    };
+
+    handleChangeToDuration = evt => {
+        this.setState({
+            toDuration:  { ...this.state.toDuration, [evt.target.name]: evt.target.value }
+        });
+    };
+
+    handleSubmit = () => {
+        const { selectionType, fromDuration, toDuration, fromDate, toDate } = this.state;
+        const params = {
+            type: selectionType,
+            fromDuration: this.getDurationTimeString(fromDuration),
+            toDuration: this.getDurationTimeString(toDuration),
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate),
+            pageIndex: 1,
+            pageSize: 100
+        };
+        if(this.validateDuration(fromDuration, toDuration)){
+            this.props.setGridParams(params);
+            this.props.getGridData(params);
+        }
+    };
+
+    getDurationTimeString = duration => {
+        return (duration.day.length === 0 ? '0' : duration.day) + ':' +
+        (duration.hour.length === 0 ? '0' : duration.hour) + ':' +
+        (duration.minute.length === 0 ? '0' : duration.minute) + ':' +
+        (duration.second.length === 0 ? '0' : duration.second);
+    };
+
+    validateDuration = (fromDuration, toDuration) =>{
+        const timeBegin = (fromDuration.day * 86400) + (fromDuration.hour * 3600) + (fromDuration.minute * 60) + (fromDuration.second);
+        const timeEnd = (toDuration.day * 86400) + (toDuration.hour * 3600) + (toDuration.minute * 60) + toDuration.second;
+        if ((timeBegin !== 0 && timeEnd === 0) || (timeBegin > timeEnd && timeBegin !== 0 && timeEnd !== 0)) {
+            toast.error(LangHelper.getResource('InvalidDuration'));
+            return;
+        }
+        return true;
+    };
+
+    render() {
+
+        const {fromDate, toDate, selectionType, fromDuration, toDuration } = this.state;
+
+        return (
+            <Form className='form-filter' onSubmit={this.handleSubmit}>
+                <Form.Row bsPrefix='form-row'>
+                    <Form.Group className='small-width'>
+                        <Form.Control as="select" size="sm" className="small-width"
+                            name="selectionType" id="selectionType"
+                            value={selectionType}
+                            onChange={this.handleChange}
+                        >
+                            {
+                                FeedbackSelectionType.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
+                            }
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group >
+                        <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                            <DatePicker
+                                maxDate={new Date(this.maxFromDate)} selected={fromDate}
+                                peekNextMonth showYearDropdown showMonthDropdown dropdownMode="select"
+                                onChange={value => this.handleChangeFromDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                            <DatePicker
+                                maxDate={new Date(this.maxToDate)}
+                                minDate={new Date(this.minToDate)}
+                                showYearDropdown peekNextMonth showMonthDropdown dropdownMode="select"
+                                selected={toDate}
+                                onChange={value => this.handleChangeToDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group className="submit">
+                        <Button variant="primary" size="sm" onClick={this.handleSubmit}>
+                            {LangHelper.getResource('Submit')}
+                        </Button>
+                    </Form.Group>
+                </Form.Row>
+                <Form.Row bsPrefix='form-row'>
+                    <Form.Group className='width-90'>
+                        <Form.Label htmlFor="day">{LangHelper.getResource('FromDuration')}</Form.Label>
+                    </Form.Group>
+                    <Form.Group className='width-320 duration'>
+                        <Form.Control type="number"size="sm"
+                            value={fromDuration.day}
+                            name="day" id="day"
+                            className="shadow-none mr-1" autoComplete="off"
+                            onChange={this.handleChangeFromDuration}
+                        />
+                        <Form.Label>{LangHelper.getResource('Day')}</Form.Label>
+                        <Form.Control type="number" size="sm"
+                            value={fromDuration.hour}
+                            name="hour" id="hour"
+                            className="shadow-none  mr-1" autoComplete="off"
+                            onChange={this.handleChangeFromDuration}
+                        />
+                        <Form.Label>{LangHelper.getResource('Hour')}</Form.Label>
+                        <Form.Control type="number" size="sm"
+                            value={fromDuration.minute}
+                            name="minute" id="minute"
+                            className="shadow-none  mr-1" autoComplete="off"
+                            onChange={this.handleChangeFromDuration}
+                        />
+                        <Form.Label>{LangHelper.getResource('Minute')}</Form.Label>
+                        <Form.Control type="number" size="sm"
+                            value={fromDuration.second}
+                            name="second" id="second"
+                            className="shadow-none  mr-1" autoComplete="off"
+                            onChange={this.handleChangeFromDuration}
+                        />
+                        <Form.Label>{LangHelper.getResource('Second')}</Form.Label>
+                    </Form.Group>
+                </Form.Row>
+                <Form.Row bsPrefix='form-row'>
+                    <Form.Group className='width-90'>
+                        <Form.Label htmlFor="day">{LangHelper.getResource('ToDuration')}</Form.Label>
+                    </Form.Group>
+                    <Form.Group className='width-320 duration'>
+                        <Form.Control type="number"size="sm"
+                            value={toDuration.day}
+                            name="day" id="day"
+                            className="shadow-none mr-1" autoComplete="off"
+                            onChange={this.handleChangeToDuration}
+                        />
+                        <Form.Label>{LangHelper.getResource('Day')}</Form.Label>
+                        <Form.Control type="number" size="sm"
+                            value={toDuration.hour}
+                            name="hour" id="hour"
+                            className="shadow-none  mr-1" autoComplete="off"
+                            onChange={this.handleChangeToDuration}
+                        />
+                        <Form.Label>{LangHelper.getResource('Hour')}</Form.Label>
+                        <Form.Control type="number" size="sm"
+                            value={toDuration.minute}
+                            name="minute" id="minute"
+                            className="shadow-none  mr-1" autoComplete="off"
+                            onChange={this.handleChangeToDuration}
+                        />
+                        <Form.Label>{LangHelper.getResource('Minute')}</Form.Label>
+                        <Form.Control type="number" size="sm"
+                            value={toDuration.second}
+                            name="second" id="second"
+                            className="shadow-none  mr-1" autoComplete="off"
+                            onChange={this.handleChangeToDuration}
+                        />
+                        <Form.Label>{LangHelper.getResource('Second')}</Form.Label>
+                    </Form.Group>
+                </Form.Row>
+            </Form>
+        );
+    }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+export default connect(null, mapDispatchToProps)(Filter);
