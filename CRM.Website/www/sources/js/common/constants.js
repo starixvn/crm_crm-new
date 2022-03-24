@@ -76,3 +76,17 @@ export const DefaultLanguages = {
     Cantonese: 1202
 };
 
+export const FeedbackSelectionType = [
+    { name: 'By Creator', id: 1 },
+    { name: 'By Country', id: 2 },
+    { name: 'By Role', id: 3 },
+    { name: 'By Site', id: 4 },
+    { name: 'By Status', id: 5 },
+    { name: 'By Response', id: 6 },
+    { name: 'By Product', id: 7 },
+    { name: 'By Category', id: 8 },
+    { name: 'By Licensees', id: 9 },
+    { name: 'By CommunicationTool', id: 10 },
+    { name: 'By Province', id: 11}
+];
+

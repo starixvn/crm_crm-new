@@ -29,5 +29,6 @@
         public const string DeletedFeedbackStatistic = "DeletedFeedbackStatistic";
         public const string LogStatistics = "LogStatistics";
         public const string IssueStatistics = "IssueStatistics";
+        public const string FeedbackStatistics = "FeedbackStatistics";
     }
 }

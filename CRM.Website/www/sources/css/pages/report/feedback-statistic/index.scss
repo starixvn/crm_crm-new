@@ -1,0 +1,87 @@
+@import "../../../components/form-filter";
+@import "../../../components/react-grid/react-grid";
+@import "../../../components/forms";
+@import "../../../components/modal";
+@import "../../../components/icons";
+@import "../../../components/tables";
+@import '../../../components/date-picker/style';
+@import '../../../components/multiple-select/style';
+
+.form-filter {
+    .react-datepicker__input-container input{
+        width: 100% !important;
+    }
+
+    .small-width{
+        width: 150px !important;
+    }
+
+    .width-90{
+        width: 90px !important;
+    }
+
+    .width-320{
+        width: 320px !important;
+    }
+
+    .duration{
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    }
+}
+
+.form-filter {
+     min-width: 1200px;
+}
+
+.table-container{
+    .parent-level-0{
+        height: 29px;
+        .subcategory, td{
+            background-color: #e3e3e3 !important;
+            color: #0054a6 !important;
+        }
+    
+        .subcategory{
+            font-weight: 600;
+            cursor: pointer;
+        }
+    }
+
+    .body-content{
+        tbody .child{ 
+            background-color: #fff !important;
+        }
+
+        .sub-total{
+            color: rgb(95, 95, 95);
+            font-weight: bold;
+        }
+
+        .link-click {
+            cursor: pointer;
+            font-weight: 600;
+            color: $link-color !important;
+        }
+    }
+    
+    .footer-content{
+        border-bottom: 0;
+
+        .footer-container{
+            td{
+                background: #c0cae3!important;
+                color: #0054a6 !important;
+            }
+        }
+    }
+}
+
+

@@ -45,6 +45,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/report/issue-statistics/index`]: pathConfig.scriptPaths.issue_statistics,
             [`${jsPath}/pages/picandheadline/changesLog/index`]: pathConfig.scriptPaths.change_log,
             [`${jsPath}/pages/feedback/add-customer-feedback/index`]: pathConfig.scriptPaths.add_customer_feedback,
+            [`${jsPath}/pages/report/feedback-statistic/index`]: pathConfig.scriptPaths.feedback_statistic,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -75,7 +76,8 @@ function generateConfig(environment) {
             [`${cssPath}/pages/report/deleted-feedback-statistic/index`]: pathConfig.cssPaths.deleted_feedback_statistic,
             [`${cssPath}/pages/report/log-statistics/index`]: pathConfig.cssPaths.log_statistics,
             [`${cssPath}/pages/report/issue-statistics/index`]: pathConfig.cssPaths.issue_statistics,
-            [`${cssPath}/pages/picandheadline/changesLog/index`]: pathConfig.cssPaths.changes_log
+            [`${cssPath}/pages/picandheadline/changesLog/index`]: pathConfig.cssPaths.changes_log,
+            [`${cssPath}/pages/report/feedback-statistic/index`]: pathConfig.cssPaths.feedback_statistic,
         },
         output: {
             path: pathConfig.projectRoot,
