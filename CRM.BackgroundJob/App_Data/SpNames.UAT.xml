@@ -29,7 +29,7 @@
     <Function Name="Chatbot">
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_GetMessage" SpName="Acc_CRM_Chatbot_AbnormalBets_GetMessage" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_crmMessageImport_Check" SpName="Acc_CRM_crmMessageImport_Check" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_AbnormalAccount_GetUsernameList" DbName="DBTXN.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_AbnormalAccount_GetUsernameList_UAT1" DbName="DBTXN.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Ins" SpName="Acc_CRM_ChatBot_crmMessageImport_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Sel" SpName="Acc_CRM_ChatBot_crmMessageImport_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_Message_Sel" SpName="Acc_CRM_Chatbot_AbnormalBets_Message_Sel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
@@ -39,7 +39,7 @@
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Upd" SpName="Acc_CRM_ChatBot_crmMessageImport_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot CWL">
-        <Setting Key="Acc_CRM_Chatbot_CWL_Log_Sel" SpName="Acc_CRM_Chatbot_CWL_Log_Sel_UAT1" DbName="DBCUST.CustDB.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_CWL_Log_Sel" SpName="Acc_CRM_Chatbot_CWL_Log_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_CWL_Import" SpName="Acc_CRM_Chatbot_CWL_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot CTO">
@@ -59,7 +59,7 @@
         <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Import" SpName="Acc_CRM_Chatbot_ResultAmendment_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_VodingMessage_Sel" SpName="Acc_CRM_Chatbot_VodingMessage_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_VodingMessage_Check" SpName="Acc_CRM_VodingMessage_Check" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_VodingMessage_GetSettledTickets" SpName="Acc_CRM_VodingMessage_GetSettledTickets" DbName="DBTXN.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_VodingMessage_GetSettledTickets" SpName="Acc_CRM_VodingMessage_GetSettledTickets_UAT1" DbName="DBTXN.bodb02.bodbAdminNet" />
     </Function>
     <Function Name="Send Notification">
         <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
