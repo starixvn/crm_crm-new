@@ -153,10 +153,8 @@ export class DataGrid extends Component {
         this.props.exportExcel(params);
     };
 
-    handleViewChart = tableName =>{
-        const data = tableName === 'mbc' ? this.props.mainReports.ibcReport : this.props.mainReports.licenseeReport;
-        const title = this.getTitle();
-        this.props.setChartData({show: true, title: title, data: data});
+    handleViewChart = gridData =>{
+        this.props.setOpenChartPopup({show: true, chartInfo: gridData});
     };
 
     handleCollapseExpand = () =>{
@@ -180,16 +178,20 @@ export class DataGrid extends Component {
     };
 
     renderCustomButton= () => {
+        const {gridData} = this.props;
         return (
             <div>
-                <OverlayTrigger
-                    overlay={
-                        <Tooltip><span>View Chart</span></Tooltip>
-                    }
-                    placement="auto"
-                >
-                    <span className="fa fa-bar-chart icon pl-3 cursor-pointer" onClick={() => this.handleViewChart('mbc')} />
-                </OverlayTrigger>
+                {
+                    gridData.usernames.length > 0 &&
+                    <OverlayTrigger
+                        overlay={
+                            <Tooltip><span>View Chart</span></Tooltip>
+                        }
+                        placement="auto"
+                    >
+                        <span className="fa fa-bar-chart icon pl-3 cursor-pointer" onClick={() => this.handleViewChart(gridData)} />
+                    </OverlayTrigger>
+                }
                 <OverlayTrigger
                     overlay={
                         <Tooltip><span>Show Details</span></Tooltip>
@@ -212,7 +214,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-file-excel-o icon-excel pl-3" onClick={() => this.handleExportExcel('mbc')} />
+                    <span className="fa fa-file-excel-o icon-excel pl-3" onClick={() => this.handleExportExcel()} />
                 </OverlayTrigger>
             </div>
         );

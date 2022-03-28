@@ -8,6 +8,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import Details from './Details';
+import Chart from './Chart';
 
 export class AppContainer extends Component {
   handleCloseDetailDialog = () =>{
@@ -22,8 +23,12 @@ export class AppContainer extends Component {
     this.props.setViewRelatedCustomerDialog({ show: false });
   };
 
+  handleCloseChartDialog = () =>{
+    this.props.setOpenChartPopup({ show: false, chartInfo: null});
+  };
+
   render() {
-    const {detailPopup, viewRelatedCustomerDialog} = this.props;
+    const {detailPopup, viewRelatedCustomerDialog, chart} = this.props;
     return (
         <Fragment>
             <Filter />
@@ -47,6 +52,13 @@ export class AppContainer extends Component {
                     onClose={this.handleCloseViewRelatedCustomerDialog}
                 />
             }
+            {
+              chart.show &&
+              <Chart
+                  chartInfo={chart.chartInfo}
+                  onClose={this.handleCloseChartDialog}
+              />
+            }
         </Fragment>
     );
   }
@@ -54,8 +66,8 @@ export class AppContainer extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 const mapStateToProps = state => {
-    const { detailPopup, viewRelatedCustomerDialog } = state;
-    return { detailPopup, viewRelatedCustomerDialog };
+    const { detailPopup, viewRelatedCustomerDialog, chart } = state;
+    return { detailPopup, viewRelatedCustomerDialog, chart };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
 
