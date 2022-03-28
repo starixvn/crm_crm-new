@@ -161,6 +161,7 @@
     FillEventDetails: 'Fill Event Details',
     FeedbackDetail: 'Feedback Detail',
     FromDuration: 'From Duration',
+    FeedbackDetailTitle: 'Feedback Statistic Detail Report',
     GroupHeadline: 'Group Headline',
     GroupHeadlineRequired: 'Group Headline is required!',
     Guest: 'Guest',

@@ -89,6 +89,9 @@
     <None Update="ExcelTemplates\Log_Statistics_Detail.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="ExcelTemplates\FeedbackStatisticDetail.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ExcelTemplates\ManageFeedback.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

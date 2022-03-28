@@ -140,13 +140,11 @@ export class DataGrid extends Component {
         );
     };
 
-    handleShowDetails = tableName => {
-        const siteType = tableName === 'mbc' ? 0 : 1;
-        const title = this.getTitle(tableName);
-        const params = {...this.props.gridParams , siteType: siteType, pageIndex: 1, pageSize: 100};
-        this.props.setDetailsDataGrid({show: true, title: title});
+    handleShowDetails = () => {
+        const params = {...this.props.gridParams, valueId: -1, mainCategoryId: 0, subCategoryId: 0};
+        this.props.setOpenDetailPopup({show: true});
+        this.props.getDetails(params);
         this.props.setGridParamDetails(params);
-        this.props.getReportDetails(params);
     };
 
     handleExportExcel = tableName => {
@@ -190,7 +188,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-bar-chart icon pl-3" onClick={() => this.handleViewChart('mbc')} />
+                    <span className="fa fa-bar-chart icon pl-3 cursor-pointer" onClick={() => this.handleViewChart('mbc')} />
                 </OverlayTrigger>
                 <OverlayTrigger
                     overlay={
@@ -198,7 +196,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-info-circle icon pl-3 fa-lg" onClick={() => this.handleShowDetails('mbc')} />
+                    <span className="fa fa-info-circle icon pl-3 fa-lg cursor-pointer" onClick={() => this.handleShowDetails()} />
                 </OverlayTrigger>
                 <OverlayTrigger
                     overlay={
@@ -206,7 +204,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-expand icon pl-3" onClick={this.handleCollapseExpand} />
+                    <span className="fa fa-expand icon pl-3 cursor-pointer" onClick={this.handleCollapseExpand} />
                 </OverlayTrigger>
                 <OverlayTrigger
                     overlay={

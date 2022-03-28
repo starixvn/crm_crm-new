@@ -15,10 +15,12 @@
     {
         private readonly IEnumerable<FeedbackDetail> feedbacks;
         private readonly IEnumerable<Setting> mainCategories;
+        private readonly bool isManageFeedback;
+        private readonly string excelTitle;
 
         private const byte RowStartBody = 5;
         private const byte RowStartHeader = 4;
-        private const byte StartComToolsIndex = 7;
+        private const byte TotalColum = 7;
         protected static readonly Color PendingColor = Color.FromArgb(240, 237, 196);
         protected static readonly Color ClosedColor =  Color.FromArgb(221,221,221);
         protected static readonly Color NormalColor = Color.FromArgb(255, 255, 255);
@@ -26,24 +28,29 @@
         public ManageFeedbackExcel(
             string templatePath,
             IEnumerable<FeedbackDetail> feedbacks,
-            IEnumerable<Setting> mainCategories)
-        : base(templatePath, 0, ViewResources.ManageFeedback)
+            IEnumerable<Setting> mainCategories,
+            bool isManageFeedback,
+            string excelTitle)
+        : base(templatePath, 0, isManageFeedback ? ViewResources.ManageFeedback : ViewResources.FeedbackStatistics)
         {
             this.feedbacks = feedbacks;
             this.mainCategories = mainCategories;
+            this.isManageFeedback = isManageFeedback;
+            this.excelTitle = excelTitle;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]
-                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
-            worksheet.Cells[1, 1].Value = string.Format(ViewResources.DeletedFeedback);
+            templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalColum - 1]
+                .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalColum - 1]);
+            worksheet.Cells[1, 1].Value = excelTitle;
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]
-                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, StartComToolsIndex - 1]);
+            var total = isManageFeedback ? TotalColum - 1 : TotalColum - 2;
+            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, total]
+                .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, total]);
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -62,12 +69,15 @@
             var feedbackCellValue = GetFeedbackCellValue(feedbackDetail);
             var categoryContents = CategoryContent(feedbackDetail, mainCategories);
             var categoryCellValue = string.Join("\n\n", categoryContents);
-            worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.FeedbackId;
+            if (isManageFeedback)
+            {
+                worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.FeedbackId;
+            }
             worksheet.Cells[rowIndex, colIndex++].Value = feedbackCellValue;
             worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Username;
             worksheet.Cells[rowIndex, colIndex++].Value = categoryCellValue;
             worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.Status;
-            worksheet.Cells[rowIndex, colIndex].Value = feedbackDetail.RelatedCustomer.Replace(",", ", ");
+            worksheet.Cells[rowIndex, colIndex].Value = feedbackDetail.RelatedCustomer != null ? feedbackDetail.RelatedCustomer.Replace(",", ", ") : string.Empty;
 
             if (feedbackDetail.Status == "Pending")
             {
@@ -106,10 +116,13 @@
             const int ColumnCategory = 4;
             const int ColumnStatus = 5;
             const int ColumnRelCustomer = 6;
-            const int TotalColumn = ColumnRelCustomer;
+            var TotalColumn = isManageFeedback ? ColumnRelCustomer : ColumnRelCustomer - 1;
             worksheet.DefaultColWidth = WidthLarge;
             worksheet.Cells.AutoFitColumns();
-            worksheet.Column(ColumnRunningNo).Width = WidthNormal;
+            if (isManageFeedback)
+            {
+                worksheet.Column(ColumnRunningNo).Width = WidthNormal;
+            }
             worksheet.Column(ColumnFeedback).Width = WidthLarge;
             worksheet.Column(ColumnCustomer).Width = WidthLarge;
             worksheet.Column(ColumnCategory).Width = WidthLarge;

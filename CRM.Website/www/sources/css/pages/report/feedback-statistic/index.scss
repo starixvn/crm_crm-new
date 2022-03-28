@@ -41,6 +41,10 @@
      min-width: 1200px;
 }
 
+.cursor-pointer{
+    cursor: pointer;
+}
+
 .table-container{
     .parent-level-0{
         height: 29px;
@@ -84,4 +88,52 @@
     }
 }
 
+.feedback-detail .modal-content{
+    width: 1200px;
+    height: 875px;
 
+    .table-container{
+        max-height: 875px !important;
+
+        .body-content{
+            max-height: 715px !important;
+        }
+    }
+
+    .manage-feedback-row{
+        .edit-feedback{
+            &:hover {
+                color: $draft-color !important;
+            }
+        }
+    
+        .fa-pencil:before {
+            color: #D3B35D;
+        }
+    
+        strong.link-click {
+            color: $link-color !important;
+        
+            &:hover {
+                color: $draft-color !important;
+            }
+        }
+        
+        .feedback-info {
+            padding-left: 17px;
+        
+            .info{
+                padding: 3px 0px;
+            }
+        }
+    
+        span.fa.fa-file-excel-o.icon-excel {
+            color: #28a745;
+            font-size: 14px;
+        }
+    
+        .break-word{
+            word-break: break-all;
+        }
+    }
+}

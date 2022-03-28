@@ -7,6 +7,7 @@
     using CRM.Criteria.Feedback.DeletedFeedback;
     using CRM.Criteria.Feedback.ManageFeedback;
     using CRM.Criteria.MultipleLogs;
+    using CRM.Criteria.Report.FeedbackStatistic;
     using CRM.Models.CommunicationLogs;
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
@@ -21,6 +22,8 @@
     public interface IFeedbackService
     {
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
+
+        Task<IEnumerable<DeletedFeedback>> GetFeedbackStatisticAsyncDetail(GetFeedbackStatisticDetailCriteria criteria);
 
         Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command);
 
@@ -164,6 +167,28 @@
 
             return feedbacks;
         }
+        public async Task<IEnumerable<DeletedFeedback>> GetFeedbackStatisticAsyncDetail(GetFeedbackStatisticDetailCriteria criteria)
+        {
+            var status = await settingService.GetStatusAsync(ViewTypeConstants.All);
+            var statusHash = status.ToDictionary(k => k.StatusId, v => v.Name);
+            statusHash.Add(1, ViewResources.Symbol_NotApply);
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
+            var feedbackStatistic = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
+
+            foreach (var feedback in feedbackStatistic)
+            {
+                feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
+                feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
+                feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
+                feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
+
+                feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
+            }
+
+            return feedbackStatistic;
+        }
+
         public async Task<IEnumerable<DeletedFeedback>> GetManageFeedbackAsync(ManageFeedbackCriteria criteria)
         {
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
