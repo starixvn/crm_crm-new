@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import { Button } from 'react-bootstrap';
+import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import LangHelper from '@jsroot/common/langHelper';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import EditNoOfInquiry from '../../edit-no-of-inquiry/AppContainer';
@@ -50,8 +53,12 @@ export class AppContainer extends Component {
         }
     };
 
+    handleCloseViewRelatedCustomerDialog = () => {
+        this.props.setViewRelatedCustomerDialog({ show: false });
+    };
+
     render() {
-        const { isHost, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog } = this.props;
+        const { isHost, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog, viewRelatedCustomerDialog } = this.props;
         return (
             <Fragment>
                 <Filter />
@@ -81,6 +88,21 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseMultipleEditLog}
                     />
                 }
+                {
+                    viewRelatedCustomerDialog.show &&
+                    <SweetModalDialog size="lg"
+                        title={LangHelper.getResource('RelatedCustomer')}
+                        contents={
+                            <div>{viewRelatedCustomerDialog.relatedCustomers}</div>
+                        }
+                        buttons={[
+                            <Button variant="primary" size="sm" onClick={this.handleCloseViewRelatedCustomerDialog}>
+                                {LangHelper.getResource('Close')}
+                            </Button>
+                        ]}
+                        onClose={this.handleCloseViewRelatedCustomerDialog}
+                    />
+                }
             </Fragment>
         );
     }
@@ -92,12 +114,12 @@ const mapStateToProps = state => {
     const {
         settings, editNoOfInquiryDialog,
         editFeedbackDialog, editMultipleLogStatusDialog, gridParams,
-        editMultipleLogDialog
+        editMultipleLogDialog, viewRelatedCustomerDialog
     } = state;
     return {
         settings, editNoOfInquiryDialog,
         editFeedbackDialog, editMultipleLogStatusDialog, gridParams,
-        editMultipleLogDialog
+        editMultipleLogDialog, viewRelatedCustomerDialog
     };
 };
 

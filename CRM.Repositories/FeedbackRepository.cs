@@ -16,7 +16,6 @@
     {
         Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(ICriteria criteria);
         Task<IEnumerable<DeletedFeedbackStatistic>> GetDeletedFeedbackStatisticAsync(ICriteria criteria);
-
         Task<FeedbackStatisticInfo> GetFeedbackStatisticAsync(ICriteria criteria);
     }
 

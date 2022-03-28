@@ -9,8 +9,10 @@ const feedbackStatisticSlice = createSlice({
             pageSize: 100
         },
         gridData: null,
-        details: { show: false, title: ''},
-        detailPopup: { show: false, data: null}
+        details: null,
+        detailPopup: { show: false},
+        chartPopup: { show: false},
+        viewRelatedCustomerDialog: { show: false }
     },
     reducers: {
         setGridParams: (state, action) => {
@@ -27,6 +29,12 @@ const feedbackStatisticSlice = createSlice({
         },
         setOpenDetailPopup: (state, action) => {
             state.detailPopup = action.payload;
+        },
+        setOpenChartPopup: (state, action) => {
+            state.chartPopup = action.payload;
+        },
+        setViewRelatedCustomerDialog: (state, action) => {
+            state.viewRelatedCustomerDialog = action.payload;
         }
     }
 });
@@ -38,7 +46,9 @@ export const {
     setGridData,
     setGridParamDetails,
     setDetailsDataGrid,
-    setOpenDetailPopup
+    setOpenDetailPopup,
+    setOpenChartPopup,
+    setViewRelatedCustomerDialog
 } = actions;
 
 export default reducer;

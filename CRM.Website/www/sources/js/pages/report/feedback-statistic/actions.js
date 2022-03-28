@@ -6,7 +6,9 @@ import{
     setGridData,
     setGridParamDetails,
     setDetailsDataGrid,
-    setOpenDetailPopup
+    setOpenDetailPopup,
+    setOpenChartPopup,
+    setViewRelatedCustomerDialog
 } from './feedbackStatisticSlice';
 
 const getGridData = params => async dispatch => {
@@ -19,7 +21,7 @@ const getGridData = params => async dispatch => {
 
 const getDetails = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('FeedbackStatistic/FeedbackStatisticDetails');
+    const url = Site.resolveClientUrl('FeedbackStatistic/GetFeedbackStatisticDetails');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setDetailsDataGrid(response.data));
     }).then(() => Site.unblockUI());
@@ -47,6 +49,8 @@ export const ActionCreators = {
     setGridParamDetails,
     setDetailsDataGrid,
     setOpenDetailPopup,
+    setOpenChartPopup,
+    setViewRelatedCustomerDialog,
     getGridData,
     getDetails,
     exportExcel,

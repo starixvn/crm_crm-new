@@ -846,7 +846,7 @@ export class EditMultipleLogs extends Component {
                     <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button size="sm" type="button" variant="primary" size="sm" onClick={() => this.props.onClose(false)}>
+                    <Button size="sm" type="button" variant="primary" onClick={() => this.props.onClose(false)}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>

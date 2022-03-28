@@ -1,13 +1,17 @@
 ﻿namespace CRM.Services.Report
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Controllers;
     using CRM.Core;
     using CRM.Core.Constants;
     using CRM.Criteria.Report.FeedbackStatistic;
+    using CRM.Models.Feedback;
+    using CRM.Models.Setting;
     using CRM.Repositories;
     using CRM.Resources;
+    using CRM.Services.Feedback;
     using Fanex.NAP.Client.AspNetCore.Attributes;
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
@@ -15,14 +19,19 @@
     public class FeedbackStatisticController : Controller
     {
         private readonly IFeedbackRepository feedbackRepository;
+        private readonly IFeedbackService feedbackService;
         private readonly ICommonService commonService;
+        private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         public FeedbackStatisticController(IFeedbackRepository feedbackRepository,
+            IFeedbackService feedbackService,
             ICommonService commonService,
             ISettingService settingService,
             IExportExcelService excelService)
         {
             this.feedbackRepository = feedbackRepository;
+            this.feedbackService = feedbackService;
+            this.settingService = settingService;
             this.commonService = commonService;
             this.excelService = excelService;
         }
@@ -49,6 +58,37 @@
             }
 
             return Json(feedbackStatistic);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
+        {
+            var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
+            if (feedbackStatistic.ToList().Count > 0)
+            {
+                feedbackStatistic = feedbackStatistic.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+            }
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            var feedbacksOrder = feedbackStatistic.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
+
+            return Json(new { data = feedbacksOrder, mainCategories });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcelDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
+        {
+            criteria.PageIndex = 0;
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
+            var fromDateFormat = criteria.FromDate.ToString("MMddyyyy");
+            var toDateFormat = criteria.ToDate.ToString("MMddyyyy");
+            var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,
+                                        criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
+
+            var bytes = excelService.ExportStatisticFeedbackDetail(feedbacksOrder, mainCategories, title);
+            string reportName = string.Format(ViewResources.FeedbackStatisticDetail_ExcelFile, fromDateFormat, toDateFormat);
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }
 }

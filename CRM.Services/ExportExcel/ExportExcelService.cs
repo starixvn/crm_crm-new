@@ -13,6 +13,7 @@
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Report.SettlementReport;
     using CRM.Models.Setting;
+    using CRM.Resources;
     using CRM.Services.ExportExcel;
     using Microsoft.AspNetCore.Hosting;
 
@@ -55,6 +56,8 @@
             IEnumerable<Product> subProducts, IEnumerable<SettingRelation> extensions);
 
         byte[] ExportIssueStatisticsReport(IssuesStatisticsReportInfo issueStatistics, string titleExcel);
+
+        byte[] ExportStatisticFeedbackDetail(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string titleExcel);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -148,7 +151,7 @@
         {
             const string ExcelTemplatePath = "ExcelTemplates/ManageFeedback.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories);
+            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories, true, ViewResources.ManageFeedback);
             return excel.Export();
         }
 
@@ -188,6 +191,14 @@
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
 
             var excel = new IssueStatisticsExcel(templatePath, issueStatistics, titleExcel);
+            return excel.Export();
+        }
+
+        public byte[] ExportStatisticFeedbackDetail(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string titleExcel)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/FeedbackStatisticDetail.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories, false, titleExcel);
             return excel.Export();
         }
     }

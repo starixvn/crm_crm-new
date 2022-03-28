@@ -110,6 +110,10 @@ export class DataGrid extends Component {
         }
     };
 
+    handleOpenViewRelatedCustomer = relatedCustomers => {
+        this.props.setViewRelatedCustomerDialog({ show: true, relatedCustomers });
+    };
+
     handleChangeCheckbox = event => {
         const item = event.target.name;
         const isChecked = event.target.checked;

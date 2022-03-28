@@ -18,7 +18,7 @@ class Table extends Component {
         autoWidth: PropTypes.bool,
         bodyHeight: PropTypes.number,
         autoHeight: PropTypes.bool,
-        title: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]).isRequired,
+        title: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
         header: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]).isRequired,
         body: PropTypes.arrayOf(PropTypes.object),
         footer: PropTypes.arrayOf(PropTypes.object),
