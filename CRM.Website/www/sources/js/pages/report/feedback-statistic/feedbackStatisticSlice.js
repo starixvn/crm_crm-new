@@ -11,7 +11,7 @@ const feedbackStatisticSlice = createSlice({
         gridData: null,
         details: null,
         detailPopup: { show: false},
-        chartPopup: { show: false},
+        chart: { show: false, chartInfo: null},
         viewRelatedCustomerDialog: { show: false }
     },
     reducers: {
@@ -31,7 +31,7 @@ const feedbackStatisticSlice = createSlice({
             state.detailPopup = action.payload;
         },
         setOpenChartPopup: (state, action) => {
-            state.chartPopup = action.payload;
+            state.chart = action.payload;
         },
         setViewRelatedCustomerDialog: (state, action) => {
             state.viewRelatedCustomerDialog = action.payload;
