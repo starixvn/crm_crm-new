@@ -16,7 +16,7 @@
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
 
-    public class FeedbackStatisticController : Controller
+    public class FeedbackStatisticController : BaseController
     {
         private readonly IFeedbackRepository feedbackRepository;
         private readonly IFeedbackService feedbackService;
@@ -36,7 +36,7 @@
             this.excelService = excelService;
         }
 
-        //[NapAuth(FunctionKey = FunctionKey.FeedbackStatistics, Policy = Constant.Policy.Read)]
+        [NapAuth(FunctionKey = FunctionKey.FeedbackStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/FeedbackStatistic/Index");
