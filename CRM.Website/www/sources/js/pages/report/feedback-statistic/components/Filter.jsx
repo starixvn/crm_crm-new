@@ -85,18 +85,18 @@ export class Filter extends Component {
     };
 
     getDurationTimeString = duration => {
-        return (duration.day.length === 0 ? '0' : duration.day) + ':' +
-        (duration.hour.length === 0 ? '0' : duration.hour) + ':' +
-        (duration.minute.length === 0 ? '0' : duration.minute) + ':' +
-        (duration.second.length === 0 ? '0' : duration.second);
+        const stringDayHour = `${duration.day.length === 0 ? '0' : duration.day}:${duration.hour.length === 0 ? '0' : duration.hour}:`;
+        const stringMinuteSecond = `${duration.minute.length === 0 ? '0' : duration.minute}:${duration.second.length === 0 ? '0' : duration.second}`;
+        return stringDayHour + stringMinuteSecond;
     };
 
     validateDuration = (fromDuration, toDuration) =>{
         const timeBegin = (fromDuration.day * 86400) + (fromDuration.hour * 3600) + (fromDuration.minute * 60) + (fromDuration.second);
         const timeEnd = (toDuration.day * 86400) + (toDuration.hour * 3600) + (toDuration.minute * 60) + toDuration.second;
-        if ((timeBegin !== 0 && timeEnd === 0) || (timeBegin > timeEnd && timeBegin !== 0 && timeEnd !== 0)) {
+        const isInValid = (timeBegin > timeEnd && timeBegin !== 0 && timeEnd !== 0);
+        if ((timeBegin !== 0 && timeEnd === 0) || isInValid) {
             toast.error(LangHelper.getResource('InvalidDuration'));
-            return;
+            return false;
         }
         return true;
     };
@@ -123,8 +123,9 @@ export class Filter extends Component {
                         <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
-                                maxDate={new Date(this.maxFromDate)} selected={fromDate}
-                                peekNextMonth showYearDropdown showMonthDropdown dropdownMode="select"
+                                selected={fromDate} dropdownMode="select"
+                                maxDate={new Date(this.maxFromDate)}
+                                peekNextMonth showYearDropdown showMonthDropdown
                                 onChange={value => this.handleChangeFromDate(value)}
                             />
                         </div>
@@ -133,9 +134,10 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
-                                maxDate={new Date(this.maxToDate)}
+                                dropdownMode="select"
                                 minDate={new Date(this.minToDate)}
-                                showYearDropdown peekNextMonth showMonthDropdown dropdownMode="select"
+                                maxDate={new Date(this.maxToDate)}
+                                showYearDropdown peekNextMonth showMonthDropdown
                                 selected={toDate}
                                 onChange={value => this.handleChangeToDate(value)}
                             />

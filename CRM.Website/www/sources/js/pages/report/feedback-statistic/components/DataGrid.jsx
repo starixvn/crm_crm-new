@@ -89,7 +89,7 @@ export class DataGrid extends Component {
                 );
                 item.subTotal.resolves.forEach((count, index) =>{
                     cellsSubTotal.push(
-                        <Cell key={`sub-total-count-${index}`} 
+                        <Cell key={`sub-total-count-${index}`}
                             className={`child ${count > 0 ? 'link-click cursor-pointer' : 'disable-click' } text-center`}
                             onClick={() => this.handleShowDetails(usernames[index].id, item.id, 0)}
                         >
