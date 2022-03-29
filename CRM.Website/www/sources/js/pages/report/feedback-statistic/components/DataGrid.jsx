@@ -5,7 +5,6 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import DateTimeService from '@jsroot/common/dateTimeService';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
@@ -63,13 +62,14 @@ export class DataGrid extends Component {
         const cells = [];
         const cellsSubTotal = [];
         const {toggleRow} = this.state;
+        const usernames = this.props.gridData.usernames;
         cells.push(
             <Cell className='subcategory'>
                 <span className={`expand-icon fa pr-2 ${!toggleRow.includes(item.id) ? 'fa-caret-down' : 'fa-caret-right'}`} />
                 <span >{`${item.name} - ${item.feedbackSubcategories.length} item(s)`}</span>
             </Cell>
         );
-        this.props.gridData.usernames.forEach(() =>{
+        usernames.forEach(() =>{
             cells.push(
                 <Cell className='subcategory' />
             );
@@ -81,7 +81,7 @@ export class DataGrid extends Component {
         );
         if(item.feedbackSubcategories.length > 0){
             rows.push(
-                item.feedbackSubcategories.map(sub => this.renderSubCategoryRows(item.id, sub))
+                item.feedbackSubcategories.map(sub => this.renderSubCategoryRows(item.id, sub, usernames))
             );
             if(!toggleRow.includes(item.id)){
                 cellsSubTotal.push(
@@ -90,8 +90,8 @@ export class DataGrid extends Component {
                 item.subTotal.resolves.forEach((count, index) =>{
                     cellsSubTotal.push(
                         <Cell key={`sub-total-count-${index}`} 
-                            className='child link-click cursor-pointer text-center'
-                            onClick={() => this.handleOpenFeedbackDetail()}
+                            className={`child ${count > 0 ? 'link-click cursor-pointer' : 'disable-click' } text-center`}
+                            onClick={() => this.handleShowDetails(usernames[index].id, item.id, 0)}
                         >
                             {count}
                         </Cell>
@@ -106,7 +106,7 @@ export class DataGrid extends Component {
         return rows;
     };
 
-    renderSubCategoryRows = (parentId, sub) => {
+    renderSubCategoryRows = (parentId, sub, usernames) => {
         const {toggleRow} = this.state;
         const rows = [];
 
@@ -114,7 +114,11 @@ export class DataGrid extends Component {
             const cells = [];
             cells.push(<Cell key={`sub-${sub.id}`} className='child pl-4'>{sub.name}</Cell>);
             sub.resolves.forEach((count, index) =>{
-                cells.push(<Cell key={`count-${index}`} className='child text-center'>{count}</Cell>);
+                cells.push(
+                    <Cell key={`count-${index}`}
+                        className={`child ${count > 0 ? 'link-click cursor-pointer' : 'disable-click' } text-center`}
+                        onClick={() => this.handleShowDetails(usernames[index].id, parentId, sub.id)}
+                    >{count}</Cell>);
             });
             rows.push(
                 <Row key={`child-${sub.id}`}>
@@ -140,17 +144,15 @@ export class DataGrid extends Component {
         );
     };
 
-    handleShowDetails = () => {
-        const params = {...this.props.gridParams, valueId: -1, mainCategoryId: 0, subCategoryId: 0};
+    handleShowDetails = (valueId = -1, mainCategoryId = 0, subCategoryId = 0) => {
+        const params = {...this.props.gridParams, valueId: valueId, mainCategoryId: mainCategoryId, subCategoryId: subCategoryId};
         this.props.setOpenDetailPopup({show: true});
         this.props.getDetails(params);
         this.props.setGridParamDetails(params);
     };
 
-    handleExportExcel = tableName => {
-        const siteType = tableName === 'mbc' ? 0 : 1;
-        const params = {...this.props.gridParams, ...{siteType:siteType}};
-        this.props.exportExcel(params);
+    handleExportExcel = () => {
+        this.props.exportExcel(this.props.gridParams);
     };
 
     handleViewChart = gridData =>{
@@ -224,7 +226,7 @@ export class DataGrid extends Component {
         const params = { ...this.props.gridParams };
         params['pageIndex'] = pageIndex;
         params['pageSize'] = pageSize;
-        this.props.getGridFeedbacks(params);
+        this.props.getGridData(params);
         this.props.setGridParams(params);
     };
 

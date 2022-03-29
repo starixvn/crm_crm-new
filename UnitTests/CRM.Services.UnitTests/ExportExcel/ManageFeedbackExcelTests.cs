@@ -47,7 +47,7 @@
             // Assert
             Assert.Equal(template.Cells[2, 1, RowStartHeader - 1, StartComToolsIndex - 1],
                 worksheet.Cells[2, 1, RowStartHeader - 1, StartComToolsIndex - 1]);
-            Assert.Equal(string.Format(ViewResources.DeletedFeedback), worksheet.Cells[1, 1].Value);
+            Assert.Equal(string.Format(ViewResources.ManageFeedback), worksheet.Cells[1, 1].Value);
         }
 
         [Fact]
@@ -240,7 +240,7 @@
                     ChildSettings = new List<Setting> { new Setting { SubCategoryId = 1, Name = "Abnormal Bets" } }
                 }
             };
-            return Substitute.For<ManageFeedbackExcelTestable>(string.Empty, feedbacks, mainCategories);
+            return Substitute.For<ManageFeedbackExcelTestable>(string.Empty, feedbacks, mainCategories, true, ViewResources.ManageFeedback);
         }
 
         private FeedbackDetail FakeFeedbackDetail()

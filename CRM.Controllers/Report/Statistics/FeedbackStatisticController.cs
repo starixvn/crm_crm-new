@@ -63,28 +63,43 @@
         [HttpPost]
         public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
-            var feedbackStatistic = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
-            if (feedbackStatistic.ToList().Count > 0)
+            var feedbackDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
+            if (feedbackDetail.ToList().Count > 0)
             {
-                feedbackStatistic = feedbackStatistic.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+                feedbackDetail = feedbackDetail.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
             }
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
-            var feedbacksOrder = feedbackStatistic.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
+            var feedbacksOrder = feedbackDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
             return Json(new { data = feedbacksOrder, mainCategories });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcel([FromBody] GetFeedbackStatisticCriteria criteria)
+        {
+            criteria.PageIndex = 0;
+            var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
+            var fromDateFormat = criteria.FromDate.ToString("MMddyyyy");
+            var toDateFormat = criteria.ToDate.ToString("MMddyyyy");
+            var title = string.Format(ViewResources.FeedbackStatisticTitle,
+                            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
+            feedbackStatistic.Title = title;
+            var bytes = excelService.ExportStatisticFeedback(feedbackStatistic);
+            string reportName = string.Format(ViewResources.FeedbackStatisticDetail_ExcelFile, fromDateFormat, toDateFormat);
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
 
         [HttpPost]
         public async Task<IActionResult> ExportExcelDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
             criteria.PageIndex = 0;
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
+            IEnumerable<DeletedFeedback> feedbacksDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
             var fromDateFormat = criteria.FromDate.ToString("MMddyyyy");
             var toDateFormat = criteria.ToDate.ToString("MMddyyyy");
             var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
-            var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
+            var feedbacksOrder = feedbacksDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
             var bytes = excelService.ExportStatisticFeedbackDetail(feedbacksOrder, mainCategories, title);
             string reportName = string.Format(ViewResources.FeedbackStatisticDetail_ExcelFile, fromDateFormat, toDateFormat);

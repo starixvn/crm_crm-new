@@ -136,14 +136,15 @@
             }
         }
 
-        protected static string[] CategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
+        protected string[] CategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
         {
             return GetCategoryContent(feedback.Settings, mainCategories);
         }
 
-        private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
+        private string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
         {
-            return GetCategoryContentWithoutSettingType(settings.Where(i => i.SettingType == "Category"), mainCategories);
+            var settingsFilter = isManageFeedback ? settings.Where(i => i.SettingType == "Category") : settings;
+            return GetCategoryContentWithoutSettingType(settingsFilter, mainCategories);
         }
 
         public static string[] GetCategoryContentWithoutSettingType(

@@ -2,13 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Drawing;
-    using AutoFixture;
     using CRM.Models.Report;
     using CRM.Resources;
     using CRM.Services.UnitTests.ExportExcel.TestableClasses;
     using NSubstitute;
     using OfficeOpenXml;
-    using OfficeOpenXml.Style;
     using Xunit;
 
     public class IssueStatisticsExcelTests

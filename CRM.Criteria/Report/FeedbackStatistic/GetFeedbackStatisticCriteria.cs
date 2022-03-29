@@ -29,6 +29,6 @@
             return "Acc_CRM_Rpt_FeedbackStatistics";
         }
 
-        public override bool IsValid() => true;
+        public override bool IsValid() => FromDate <= ToDate && (ToDate - FromDate).Days <= Constants.DaysOfYear;
     }
 }

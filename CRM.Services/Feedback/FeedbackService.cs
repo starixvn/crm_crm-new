@@ -178,11 +178,6 @@
 
             foreach (var feedback in feedbackStatistic)
             {
-                feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
-                feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
-                feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
-                feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
-
                 feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
             }
 
