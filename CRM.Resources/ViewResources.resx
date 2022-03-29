@@ -456,4 +456,7 @@
   <data name="FeedbackStatisticDetail_ExcelTitle" xml:space="preserve">
     <value>Feedback Statistic Detail Report From {0} To {1}</value>
   </data>
+  <data name="FeedbackStatistic_ExcelTitle" xml:space="preserve">
+    <value>Feedback Statistic Report From {0} To {1}</value>
+  </data>
 </root>

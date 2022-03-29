@@ -11,7 +11,9 @@
         public ManageFeedbackExcelTestable(
            string templatePath,
            IEnumerable<FeedbackDetail> feedbacks,
-           IEnumerable<Setting> mainCategories) : base(templatePath, feedbacks, mainCategories)
+           IEnumerable<Setting> mainCategories,
+           bool isManageFeedback,
+           string excelTitle) : base(templatePath, feedbacks, mainCategories, isManageFeedback, excelTitle)
         {
         }
 

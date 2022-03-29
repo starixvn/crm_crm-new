@@ -42,25 +42,24 @@ export class Details extends Component {
         ];
     };
 
-    handleGroupCategory = filterCategory => {
-        const groupCategory = filterCategory.reduce((category, currentValue) => {
-            const CategorySetting = category.find(item => currentValue.settingId === item.settingId);
-            if (CategorySetting) {
-                CategorySetting.subSettingId = [...CategorySetting.subSettingId, currentValue.subSettingId];
+    handleGroupCategory = settings => {
+        const categories = settings.reduce((category, currentValue) => {
+            const categorySetting = category.find(item => currentValue.settingId === item.settingId);
+            if (categorySetting) {
+                categorySetting.subSettingId = [...categorySetting.subSettingId, currentValue.subSettingId];
             } else {
                 category.push({ settingId: currentValue.settingId, subSettingId: [currentValue.subSettingId] });
             }
             return category;
         }, []);
-        return groupCategory;
+        return categories;
     };
 
-    renderCategory = item => {
+    renderMainCategory = item => {
         const { mainCategories } = this.props.details;
-        const filterCategories = item.settings.filter(el => el.settingType === 'Category');
-        const groupCategory = this.handleGroupCategory(filterCategories);
+        const categories = this.handleGroupCategory(item.settings);
 
-        return groupCategory.map((value, key) => {
+        return categories.map((value, key) => {
             const filterMainCategory = mainCategories.find(el => el.settingId === value.settingId);
             return (
                 <div>
@@ -79,11 +78,10 @@ export class Details extends Component {
     };
 
     renderRelatedCustomer = item => {
-        const totalItems = item.length;
-        if (totalItems > MaximumDisplayRelatedCustomer) {
+        if (item.length > MaximumDisplayRelatedCustomer) {
             return (
                 <a href="#" onClick={() => this.handleOpenViewRelatedCustomer(item.join(', '))}>
-                    {totalItems} customers
+                    {item.length} customers
                 </a>
             );
         } else {
@@ -103,8 +101,8 @@ export class Details extends Component {
             <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${this.renderStatus(item.status)}`}>
                 <Cell>
                     <div>
-                        <span className="pr-1 fa fa-pencil-square-o" />
-                        <strong className='link-click cursor-pointer'>{item.subject}</strong>
+                        <span className="pr-3"/>
+                        <strong>{item.subject}</strong>
                     </div>
                     <div className="pl-3">
                         <div className="py-1">Feedback date <strong>{feedbackDateFormat}</strong></div>
@@ -118,7 +116,7 @@ export class Details extends Component {
                     </div>
                 </Cell>
                 <Cell>{item.username}</Cell>
-                <Cell>{this.renderCategory(item)}</Cell>
+                <Cell>{this.renderMainCategory(item)}</Cell>
                 <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
                 <Cell className='break-word'>{item.relatedCustomer !== null ? this.renderRelatedCustomer(item.relatedCustomer.split(',')) : ''}</Cell>
             </Row>

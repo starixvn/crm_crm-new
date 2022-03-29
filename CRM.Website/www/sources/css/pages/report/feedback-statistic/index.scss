@@ -74,6 +74,10 @@
             font-weight: 600;
             color: $link-color !important;
         }
+
+        .disable-click{
+            pointer-events: none;
+        }
     }
     
     .footer-content{
