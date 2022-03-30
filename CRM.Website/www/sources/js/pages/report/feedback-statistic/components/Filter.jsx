@@ -51,7 +51,7 @@ export class Filter extends Component {
     handleChange = evt => {
         this.setState({
             ...this.state,
-            [evt.target.name]: evt.target.type === 'select-one' ? parseInt(evt.target.value, 10) : evt.target.value
+            [evt.target.name]: parseInt(evt.target.value, 10)
         });
     };
 

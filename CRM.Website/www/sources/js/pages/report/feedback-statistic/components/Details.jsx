@@ -221,8 +221,8 @@ export class Details extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParamDetails, settings, details } = state;
-    return { gridParamDetails, settings, details };
+    const { gridParamDetails, details } = state;
+    return { gridParamDetails, details };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Details);
