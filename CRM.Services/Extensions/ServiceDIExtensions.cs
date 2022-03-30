@@ -18,7 +18,6 @@
     using CRM.Services.ActionLog;
     using CRM.Services.Dashboard;
     using CRM.Services.Report;
-    using CRM.Services.Report;
 
     public static class ServiceDIExtensions
     {

@@ -1,9 +1,7 @@
 ﻿namespace CRM.Services.ExportExcel
 {
-    using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
-    using CRM.Models.Report;
     using CRM.Models.Report.FeedbackStatistic;
     using CRM.Resources;
     using OfficeOpenXml;
