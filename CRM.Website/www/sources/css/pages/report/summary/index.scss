@@ -8,7 +8,11 @@
 @import '../../../components/multiple-select/style';
 
 #app-container {
-    width: 700px;
+    min-width:1200px;
+}
+
+.table-container {
+    overflow-x: hidden;
 }
 
 .form-filter {

@@ -3,24 +3,30 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
+import DataGrid from './DataGrid';
+
 
 export class AppContainer extends Component {
     componentDidMount(){
       this.props.getAllSetting();
     }
-  
-    handleCloseChartDialog = () =>{
-      this.props.setChartData({ show: false, title: '', data: null});
-    };
-  
+
+    constructor(props) {
+      super(props);
+  }
     render() {
-      const {allSettingData} = this.props;
+      const demo = this.state;
+      const {allSettingData, gridData} = this.props;
       if(allSettingData === null || !allSettingData){
         return null;
       }
       return (
         <Fragment>
           <Filter />
+          {
+            gridData != null ? <DataGrid/> : null
+          }
+
         </Fragment>
       );
     }
@@ -28,7 +34,7 @@ export class AppContainer extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 const mapStateToProps = state => {
-  const { allSettingData} = state;
-  return { allSettingData };
+  const { allSettingData, gridData, contentChartPopup} = state;
+  return { allSettingData, gridData, contentChartPopup };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
