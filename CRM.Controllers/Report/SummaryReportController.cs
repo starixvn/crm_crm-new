@@ -53,8 +53,8 @@
             return Json(report);            
         }
 
-
-        public async Task<IActionResult> ExportSummaryReport(GetSummaryReportCriteria criteria)
+        [HttpPost]
+        public async Task<IActionResult> ExportSummaryReport([FromBody] GetSummaryReportCriteria criteria)
         {          
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             var reports = await summaryReportService.GetSummaryReportAsync(criteria);
