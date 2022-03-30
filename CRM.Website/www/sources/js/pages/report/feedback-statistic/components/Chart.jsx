@@ -2,7 +2,7 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import { getBackGroundColor } from '@jsroot/common/shareScripts';
-import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { Bar, BarChart, Legend, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
 export default class Chart extends Component {
     constructor(props) {
