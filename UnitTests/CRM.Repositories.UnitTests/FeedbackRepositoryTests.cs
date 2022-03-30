@@ -1,9 +1,11 @@
 ﻿namespace CRM.Repositories.UnitTests
 {
     using System.Collections.Generic;
+    using System.Data;
     using System.Threading.Tasks;
     using CRM.Models.Feedback;
     using CRM.Models.Report.DeletedFeedbackStatistic;
+    using CRM.Models.Report.FeedbackStatistic;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using NSubstitute;
@@ -97,6 +99,25 @@
                             Assert.Equal(settings[0], setting);
                         });
                 });
+        }
+
+        [Fact]
+        public async Task GetFeedbackStatisticAsync_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var repository = new FeedbackRepository();
+            var criteria = Substitute.For<ICriteria>();
+            var feedback = new FeedbackStatisticInfo();
+
+
+            var reader = Substitute.For<IDataReader>();
+            objectDb.ExecuteReaderAsync(criteria).Returns(reader);
+
+            // Act
+            var actual = await repository.GetFeedbackStatisticAsync(criteria);
+
+            // Assert
+            Assert.Equal(feedback.FeedbackCategories, actual.FeedbackCategories);
         }
     }
 }

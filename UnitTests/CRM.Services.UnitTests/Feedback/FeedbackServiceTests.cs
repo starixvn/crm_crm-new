@@ -12,6 +12,7 @@
     using CRM.Criteria.Feedback.DeletedFeedback;
     using CRM.Criteria.Feedback.ManageFeedback;
     using CRM.Criteria.MultipleLogs;
+    using CRM.Criteria.Report.FeedbackStatistic;
     using CRM.Models.CommunicationLogs;
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
@@ -249,6 +250,41 @@
                 Assert.Equal(clientdate, item.CreateDate);
                 Assert.Empty(item.Status);
             });
+        }
+
+        [Fact]
+        public async Task GetFeedbackStatisticAsyncDetail_WhenCalled_ReturnAsExpectedResult()
+        {
+            // Arrange
+            var date = fixture.Create<DateTime>();
+            var param = fixture.Create<GetFeedbackStatisticDetailCriteria>();
+            var criteria = new GetFeedbackStatisticDetailCriteria();
+            var statuses = new List<FeedbackStatus>
+            {
+                new FeedbackStatus { StatusId = 100, Name = "Pending" }
+            };
+            var feedbacks = new List<DeletedFeedback>
+            {
+                new DeletedFeedback
+                {
+                    FeedbackId = 1, StatusId = 100, FeedbackDate = date,
+                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                },
+                new DeletedFeedback
+                {
+                    FeedbackId = 2, StatusId = 101, FeedbackDate = date,
+                    ResolutionDate = date, SolveDate = date, CreateDate = date
+                }
+            };
+            var service = GetService();
+            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<GetFeedbackStatisticDetailCriteria>(x => criteria = x)).Returns(feedbacks);
+            settingService.GetStatusAsync(ViewTypeConstants.All).Returns(statuses);
+
+            // Act
+            var actual = await service.GetFeedbackStatisticAsyncDetail(param);
+
+            // Assert
+            Assert.Equal(feedbacks, actual);
         }
 
         #region GetCustomerFeedbackByIdAsync

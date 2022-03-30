@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.AdminTool;
-    using CRM.Core.Constants;
     using CRM.Criteria.AdminTool.LogSetting;
     using CRM.Models;
     using CRM.Models.AdminTool.SettingLog;

@@ -5,11 +5,9 @@
     using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
-    using CRM.Core;
     using CRM.Core.Constants;
     using CRM.Criteria.Report.FeedbackStatistic;
     using CRM.Models.Feedback;
-    using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.FeedbackStatistic;
     using CRM.Models.Setting;
     using CRM.Repositories;
