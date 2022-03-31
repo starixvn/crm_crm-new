@@ -1,0 +1,80 @@
+@import '../../../abstracts/variables';
+@import "../../../components/form-filter";
+@import '../../../components/forms';
+@import '../../../components/react-grid/react-grid';
+@import '../../../components/icons';
+@import '../../../components/tables';
+@import '../../../components/select-with-search-site';
+@import '../../../components/date-picker/style';
+@import '../../../components/multiple-select/style';
+
+#app-container {
+    width: 1800px;
+}
+
+.form-filter {
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .group-field {
+        display: flex;
+        width: 270px;
+
+        label {
+            width: 105px;
+        }
+
+        .select-field {
+            width: 150px;
+        }
+    }
+
+    .group-field-tool {
+        display: flex;
+        width: 300px;
+
+        label {
+            width: 135px;
+        }
+
+        .select-field {
+            width: 150px;
+        }
+    }
+
+    .group-field-mainCate {
+        display: flex;
+        width: 540px;
+
+        label {
+            width: 105px;
+        }
+
+        .select-field {
+            width: 420px;
+        }
+    }
+
+    .group-field-subject {
+        display: flex;
+        width: 810px;
+
+        label {
+            width: 105px;
+        }
+
+        .select-field {
+            width: 690px;
+        }
+    }
+}
+
+.react-datepicker-popper {
+    width: 200px;
+}
+
+.react-datepicker__month-text{
+    width: 6rem !important;
+}
