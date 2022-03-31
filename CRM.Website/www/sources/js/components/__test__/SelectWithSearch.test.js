@@ -111,6 +111,7 @@ describe('SelectWithSearch', () => {
                         name: 'N/A'
                     },
                     options: [],
+                    isSelectOption: false,
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
@@ -133,6 +134,7 @@ describe('SelectWithSearch', () => {
                         name: 'N/A'
                     },
                     options: [],
+                    isSelectOption: false,
                     filter: '',
                     isHideNA: false,
                     collapsedAll: true
@@ -161,6 +163,7 @@ describe('SelectWithSearch', () => {
                     options: [],
                     filter: '',
                     isHideNA: false,
+                    isSelectOption: false,
                     collapsedAll: true
                 };
                 const container = shallow(<SelectWithSearch {...props} />);
@@ -185,6 +188,7 @@ describe('SelectWithSearch', () => {
                         name: 'N/A'
                     },
                     options: [],
+                    isSelectOption: false,
                     filter: 'test',
                     isHideNA: false,
                     collapsedAll: true
@@ -219,6 +223,7 @@ describe('SelectWithSearch', () => {
                     options: [],
                     filter: '',
                     isHideNA: false,
+                    isSelectOption: false,
                     collapsedAll: true
                 };
                 const container = shallow(<SelectWithSearch {...props} />);
@@ -243,6 +248,7 @@ describe('SelectWithSearch', () => {
                     options: [],
                     filter: '',
                     isHideNA: false,
+                    isSelectOption: false,
                     collapsedAll: true
                 };
                 const container = shallow(<SelectWithSearch {...props} />);
@@ -268,6 +274,7 @@ describe('SelectWithSearch', () => {
                     options: [],
                     filter: '',
                     isHideNA: false,
+                    isSelectOption: false,
                     collapsedAll: false
                 };
                 const container = shallow(<SelectWithSearch {...props} />);
@@ -296,6 +303,7 @@ describe('SelectWithSearch', () => {
                     options: [],
                     filter: '',
                     isHideNA: false,
+                    isSelectOption: false,
                     collapsedAll: true
                 };
                 const container = shallow(<SelectWithSearch {...props} />);
@@ -324,6 +332,7 @@ describe('SelectWithSearch', () => {
                     options: [],
                     filter: '',
                     isHideNA: false,
+                    isSelectOption: false,
                     collapsedAll: true
                 };
                 const container = shallow(<SelectWithSearch {...props} />);
@@ -366,6 +375,7 @@ describe('SelectWithSearch', () => {
                     options: [],
                     filter: '',
                     isHideNA: false,
+                    isSelectOption: false,
                     collapsedAll: true
                 };
                 const container = shallow(<SelectWithSearch {...props} />);
@@ -390,6 +400,7 @@ describe('SelectWithSearch', () => {
                     options: [],
                     filter: '',
                     isHideNA: false,
+                    isSelectOption: false,
                     collapsedAll: true
                 };
                 const container = shallow(<SelectWithSearch {...props} />);
@@ -414,6 +425,7 @@ describe('SelectWithSearch', () => {
                     options: [{ name: 'parent1', childSites: [{ name: 'child1' }] }],
                     filter: '',
                     isHideNA: false,
+                    isSelectOption: false,
                     collapsedAll: true
                 };
 
@@ -445,6 +457,7 @@ describe('SelectWithSearch', () => {
                         options: [{ name: 'parent1', childSites: [{ name: 'child1' }] }],
                         filter: '',
                         isHideNA: false,
+                        isSelectOption: false,
                         collapsedAll: true
                     };
 

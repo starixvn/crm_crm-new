@@ -15,10 +15,6 @@ export class AppContainer extends Component {
     this.props.setOpenDetailPopup({ show: false});
   };
 
-  handleCloseChartDialog = () =>{
-    this.props.setOpenDetailPopup({ show: false});
-  };
-
   handleCloseViewRelatedCustomerDialog = () => {
     this.props.setViewRelatedCustomerDialog({ show: false });
   };

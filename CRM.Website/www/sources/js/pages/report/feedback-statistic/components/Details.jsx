@@ -15,8 +15,6 @@ import { MaximumDisplayRelatedCustomer, PAGING_SIZES } from '@jsroot/common/cons
 export class Details extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
     }
     buildHeader = () => {
         return (

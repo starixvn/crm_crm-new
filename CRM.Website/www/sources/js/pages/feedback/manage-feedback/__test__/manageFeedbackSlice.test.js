@@ -20,7 +20,8 @@ describe('manageFeedbackSlice reducer', () => {
             editFeedbackDialog: { show: false },
             editNoOfInquiryDialog: { show: false },
             editMultipleLogStatusDialog: { show: false },
-            editMultipleLogDialog: { show: false }
+            editMultipleLogDialog: { show: false },
+            viewRelatedCustomerDialog: { show: false }
         });
     });
 

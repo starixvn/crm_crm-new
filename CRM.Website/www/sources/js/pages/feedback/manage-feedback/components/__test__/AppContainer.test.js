@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
 import Filter from '../Filter';
 import DataGrid from '../DataGrid';
-import EditFeedback from '../../../edit-customer-feedback/AppContainer';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -18,7 +17,8 @@ describe('AppContainer', () => {
                 editFeedbackDialog: { show: true },
                 editNoOfInquiryDialog: { show: false },
                 editMultipleLogStatusDialog: { show: false },
-                editMultipleLogDialog: { show: false }
+                editMultipleLogDialog: { show: false },
+                viewRelatedCustomerDialog: { show: false }
             };
 
             //Act
@@ -37,6 +37,7 @@ describe('AppContainer', () => {
                 editNoOfInquiryDialog: { show: false },
                 editMultipleLogStatusDialog: { show: false },
                 editMultipleLogDialog: { show: false },
+                viewRelatedCustomerDialog: { show: false },
                 setEditFeedbackDialog: jest.fn(),
                 getGridFeedbacks: jest.fn(),
                 gridParams: {}
@@ -59,6 +60,7 @@ describe('AppContainer', () => {
                 editFeedbackDialog: { show: false },
                 editNoOfInquiryDialog: { show: true },
                 editMultipleLogStatusDialog: { show: false },
+                viewRelatedCustomerDialog: { show: false },
                 editMultipleLogDialog: { show: false },
                 setEditNoOfInquiryDialog: jest.fn(),
                 gridParams: {}
@@ -80,6 +82,7 @@ describe('AppContainer', () => {
                 editFeedbackDialog: { show: false },
                 editNoOfInquiryDialog: { show: false },
                 editMultipleLogStatusDialog: { show: true, feedbackIds: [1,2] },
+                viewRelatedCustomerDialog: { show: false },
                 editMultipleLogDialog: { show: false },
                 setEditMultipleLogStatusDialog: jest.fn(),
                 getGridFeedbacks: jest.fn(),
@@ -104,6 +107,7 @@ describe('AppContainer', () => {
                 editFeedbackDialog: { show: false },
                 editNoOfInquiryDialog: { show: false },
                 editMultipleLogStatusDialog: { show: false },
+                viewRelatedCustomerDialog: { show: false },
                 editMultipleLogDialog: { show: true },
                 handleCloseMultipleEditLog : jest.fn(),
                 setEditMultipleLogDialog: jest.fn(),
@@ -131,6 +135,7 @@ describe('AppContainer', () => {
                 editFeedbackDialog: { show: true },
                 editNoOfInquiryDialog: { show: false },
                 editMultipleLogStatusDialog: { show: false },
+                viewRelatedCustomerDialog: { show: false },
                 editMultipleLogDialog: { show: false },
                 setEditNoOfInquiryDialog: jest.fn(),
                 setEditFeedbackDialog: jest.fn(),
