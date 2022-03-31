@@ -459,4 +459,22 @@
   <data name="FeedbackStatistic_ExcelTitle" xml:space="preserve">
     <value>Feedback Statistic Report From {0} To {1}</value>
   </data>
+  <data name="DynamicReport" xml:space="preserve">
+    <value>Dynamic Report</value>
+  </data>
+  <data name="DynamicReport_Title" xml:space="preserve">
+    <value>{0} Communication Logs From {1} To {2}</value>
+  </data>
+  <data name="DynamicReport_ShortTitle" xml:space="preserve">
+    <value>{0} To {1}</value>
+  </data>
+  <data name="DynamicReport_PeriodReport_Title" xml:space="preserve">
+    <value>{0} Communication Logs for {1}</value>
+  </data>
+  <data name="Weekly" xml:space="preserve">
+    <value>Weekly</value>
+  </data>
+  <data name="Yearly" xml:space="preserve">
+    <value>Yearly</value>
+  </data>
 </root>

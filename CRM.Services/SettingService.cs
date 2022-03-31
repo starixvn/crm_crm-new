@@ -309,6 +309,33 @@
             };
         }
 
+        public IEnumerable<Setting> GetAllPeriodTypes()
+        {
+            return new[]
+            {
+                new Setting
+                {
+                    Id = PeriodTypeConstants.Daily,
+                    Name = ViewResources.Daily
+                },
+                new Setting
+                {
+                    Id = PeriodTypeConstants.Weekly,
+                    Name = ViewResources.Weekly
+                },
+                new Setting
+                {
+                    Id = PeriodTypeConstants.Monthly,
+                    Name = ViewResources.Monthly
+                },
+                new Setting
+                {
+                    Id = PeriodTypeConstants.Yearly,
+                    Name = ViewResources.Yearly
+                }
+            };
+        }
+
         public async Task<IEnumerable<Setting>> GetAllMainSubCategoriesAsync()
         {
             var mainCategories = await GetMainCategoryAsync();

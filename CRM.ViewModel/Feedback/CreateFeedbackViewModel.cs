@@ -21,6 +21,7 @@
         public IEnumerable<SettingRelation> Titles { get; set; } = new List<SettingRelation>();
         public IEnumerable<BaseModel> LicenseeTypes { get; set; } = new List<BaseModel>();
         public IEnumerable<SiteInfo> Sites { get; set; } = new List<SiteInfo>();
+        public IEnumerable<Setting> PeriodTypes { get; set; } = new List<Setting>();
         public Product ProductNA { get; set; }
         public Product SubProductNA { get; set; }
         public Product BettypeNA { get; set; }

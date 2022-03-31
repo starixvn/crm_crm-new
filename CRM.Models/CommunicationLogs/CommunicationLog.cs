@@ -10,7 +10,7 @@
     {
         public IList<FeedbackSettingRelation> Settings { get; set; } = new List<FeedbackSettingRelation>();
 
-        public IList<CommunicationSettingRelation> CommunicationSettings { get; set; } = new List<CommunicationSettingRelation>();
+        public IList<SettingItem> CommunicationSettings { get; set; } = new List<SettingItem>();
 
         public int FeedbackId { get; set; }
 
