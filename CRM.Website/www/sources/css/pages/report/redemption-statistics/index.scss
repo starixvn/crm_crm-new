@@ -1,0 +1,24 @@
+@import "../../../components/form-filter";
+@import "../../../components/react-grid/react-grid";
+@import "../../../components/forms";
+@import "../../../components/modal";
+@import "../../../components/icons";
+@import "../../../components/tables";
+@import '../../../components/date-picker/style';
+@import '../../../components/multiple-select/style';
+
+.form-filter {
+
+    min-width: 1200px;
+    .react-datepicker__input-container input{
+        width: 100% !important;
+    }
+
+    .dropdown-width{
+        width: 177px !important;
+    }
+
+    .subject-width{
+        width: 470px !important;
+    }
+}

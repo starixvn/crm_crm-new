@@ -47,6 +47,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/picandheadline/changesLog/index`]: pathConfig.scriptPaths.change_log,
             [`${jsPath}/pages/feedback/add-customer-feedback/index`]: pathConfig.scriptPaths.add_customer_feedback,
             [`${jsPath}/pages/report/feedback-statistic/index`]: pathConfig.scriptPaths.feedback_statistic,
+            [`${jsPath}/pages/report/redemption-statistics/index`]: pathConfig.scriptPaths.redemption_statistics,
             [`${jsPath}/pages/report/dynamic/index`]: pathConfig.scriptPaths.dynamic_report,
 
 
@@ -82,6 +83,7 @@ function generateConfig(environment) {
             [`${cssPath}/pages/report/issue-statistics/index`]: pathConfig.cssPaths.issue_statistics,
             [`${cssPath}/pages/picandheadline/changesLog/index`]: pathConfig.cssPaths.changes_log,
             [`${cssPath}/pages/report/feedback-statistic/index`]: pathConfig.cssPaths.feedback_statistic,
+            [`${cssPath}/pages/report/redemption-statistics/index`]: pathConfig.cssPaths.redemption_statistics,
             [`${cssPath}/pages/report/dynamic/index`]: pathConfig.cssPaths.dynamic_report
         },
         output: {

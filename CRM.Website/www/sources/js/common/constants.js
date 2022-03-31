@@ -112,3 +112,8 @@ export const FeedbackSelectionType = [
     { name: 'By Province', id: 11}
 ];
 
+export const ReportBy = [
+    { name: 'Month', id: 1 },
+    { name: 'Year', id: 2 }
+];
+

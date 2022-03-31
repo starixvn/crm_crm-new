@@ -351,6 +351,7 @@
     RoleRequired: 'Role is required!',
     RunningNo: 'Running No.',
     RunningNumber: 'Running Number',
+    ReportBy: 'Report By',
     RelatedToPICs: 'Related to PICs',
     Requester: 'Requester',
     RequestedBy: 'Requested By',

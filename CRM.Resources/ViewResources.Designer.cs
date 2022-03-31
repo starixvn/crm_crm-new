@@ -916,6 +916,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redemption Statistics.
+        /// </summary>
+        public static string RedemptionStatistics {
+            get {
+                return ResourceManager.GetString("RedemptionStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redemption Statistics Report from {0} to Jan {1}.
+        /// </summary>
+        public static string RedemptionStatistics_Title {
+            get {
+                return ResourceManager.GetString("RedemptionStatistics_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remark.
         /// </summary>
         public static string Remark {
