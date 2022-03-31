@@ -10,6 +10,7 @@
         public const string ShortDateFormat = "MMM dd, yyyy";
         public const string ShortDateTimeFormat = "MMM dd, yyyy hh:mm tt";
         public const string LongDateTimeFormat = "MMM dd, yyyy hh:mm:ss tt";
+        public const string MonthYear = "MMM yyyy";
 
         public static DateTime ToStartOfDay(this DateTime date) => new DateTime(date.Year, date.Month, date.Day);
 
@@ -33,5 +34,7 @@
         public static string ToShortDateTimeFormat(this DateTime date) => date.ToString(ShortDateTimeFormat);
 
         public static string ToLongDateTimeFormat(this DateTime date) => date.ToString(LongDateTimeFormat);
+
+        public static string ToMonthYear(this DateTime date) => date.ToString(MonthYear);
     }
 }
