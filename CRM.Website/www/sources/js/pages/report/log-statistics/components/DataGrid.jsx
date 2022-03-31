@@ -319,7 +319,7 @@ export class DataGrid extends Component {
                     autoWidth={false}
                     title={this.renderTitle(ibcReport.mainCategories, fromDateFormat, toFormat)}
                     header={this.buildHeader(ibcReport)}
-
+                    body={this.buildBody(ibcReport, 'mbc')}
                     isFixColumn
                     containerPadding={0}
                     adjustedHeight={10}
