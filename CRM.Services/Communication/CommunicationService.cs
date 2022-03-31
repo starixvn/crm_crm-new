@@ -31,7 +31,7 @@
 
         public async Task<IEnumerable<CommunicationLog>> GetLogsByCustomerIdAsync(GetLogsByCustomerIdCriteria criteria)
         {
-            var (communicationLogInfos, settingItems) = await baseService.FetchMultipleAsync<CommunicationLog, CommunicationSettingRelation>(criteria);
+            var (communicationLogInfos, settingItems) = await baseService.FetchMultipleAsync<CommunicationLog, SettingItem>(criteria);
             foreach (var communicationLog in communicationLogInfos)
             {
                 communicationLog.CommunicationSettings = settingItems.Where(x => x.FeedbackId == communicationLog.FeedbackId).ToList();

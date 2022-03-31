@@ -18,6 +18,7 @@
     using CRM.Services.ActionLog;
     using CRM.Services.Dashboard;
     using CRM.Services.Report;
+    using CRM.Services.Report.DynamicReport;
 
     public static class ServiceDIExtensions
     {
@@ -50,6 +51,7 @@
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<ILogStatisticsService, LogStatisticsService>();
             services.AddTransient<IIssueStatisticsService, IssueStatisticsService>();
+            services.AddTransient<IDynamicReportService, DynamicReportService>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)

@@ -322,6 +322,42 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dynamic Report.
+        /// </summary>
+        public static string DynamicReport {
+            get {
+                return ResourceManager.GetString("DynamicReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Communication Logs for {1}.
+        /// </summary>
+        public static string DynamicReport_PeriodReport_Title {
+            get {
+                return ResourceManager.GetString("DynamicReport_PeriodReport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} To {1}.
+        /// </summary>
+        public static string DynamicReport_ShortTitle {
+            get {
+                return ResourceManager.GetString("DynamicReport_ShortTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Communication Logs From {1} To {2}.
+        /// </summary>
+        public static string DynamicReport_Title {
+            get {
+                return ResourceManager.GetString("DynamicReport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {
@@ -1060,6 +1096,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Weekly.
+        /// </summary>
+        public static string Weekly {
+            get {
+                return ResourceManager.GetString("Weekly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WhatsApp.
         /// </summary>
         public static string WhatsApp {
@@ -1074,6 +1119,15 @@ namespace CRM.Resources {
         public static string Yahoo {
             get {
                 return ResourceManager.GetString("Yahoo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yearly.
+        /// </summary>
+        public static string Yearly {
+            get {
+                return ResourceManager.GetString("Yearly", resourceCulture);
             }
         }
         

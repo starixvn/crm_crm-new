@@ -56,6 +56,8 @@
 
         IEnumerable<Setting> GetAllCustomerTypes();
 
+        IEnumerable<Setting> GetAllPeriodTypes();
+
         Task<IEnumerable<Setting>> GetMainCategoryWithSubCategoryAsync();
 
         Task<IEnumerable<Station>> GetStations();
