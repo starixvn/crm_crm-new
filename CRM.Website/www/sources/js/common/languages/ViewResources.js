@@ -325,6 +325,7 @@
     RoleRequired: 'Role is required!',
     RunningNo: 'Running No.',
     RunningNumber: 'Running Number',
+    ReportBy: 'Report By',
     Save: 'Save',
     SaveAndContinue: 'Save & Continue',
     SaveInformHeadlinesSuccessfully: 'Save inform headlines successfully!',

@@ -32,5 +32,6 @@
 
         public const string FeedbackStatistics = "FeedbackStatistics";
         public const string DynamicReport = "DynamicReport";
+        public const string RedemptionStatistics = "RedemptionStatistics";
     }
 }
