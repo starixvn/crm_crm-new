@@ -16,7 +16,6 @@ describe('AutoComplete', () => {
     const initialState = {
         showOptionList: false,
         searchValue: '',
-        currentValue: '',
         selectedItem: -1
     };
 
@@ -107,7 +106,6 @@ describe('AutoComplete', () => {
                 const expected = {
                     showOptionList: false,
                     searchValue: 'value',
-                    currentValue: '',
                     selectedItem: -1
                 };
                 const container = shallow(<AutoComplete {...props} />);
@@ -128,7 +126,6 @@ describe('AutoComplete', () => {
                 const expected = {
                     showOptionList: false,
                     searchValue: '',
-                    currentValue: '',
                     selectedItem: -1
                 };
                 const container = shallow(<AutoComplete {...props} />);
@@ -168,7 +165,6 @@ describe('AutoComplete', () => {
                 const expected = {
                     showOptionList: false,
                     searchValue: 'test',
-                    currentValue: 'test',
                     selectedItem: -1
                 };
 
@@ -207,13 +203,11 @@ describe('AutoComplete', () => {
                     showOptionList: true,
                     selectedItem: 0,
                     searchValue: 'test',
-                    currentValue: 'test'
                 };
                 const expected = {
                     showOptionList: false,
                     selectedItem: -1,
-                    searchValue: 'test',
-                    currentValue: 'test'
+                    searchValue: 'test'
                 };
                 const container = shallow(<AutoComplete {...props} />);
                 container.instance().setState(state);
@@ -231,8 +225,7 @@ describe('AutoComplete', () => {
                 const state = {
                     showOptionList: true,
                     selectedItem: 0,
-                    searchValue: 'test',
-                    currentValue: 'test'
+                    searchValue: 'test'
                 };
                
                 const container = shallow(<AutoComplete {...props} />);
@@ -424,8 +417,7 @@ describe('AutoComplete', () => {
                     const state = {
                         selectedItem: 0,
                         searchValue: 'test1',
-                        showOptionList: true,
-                        currentValue: 'test'
+                        showOptionList: true
                     };
                     const props = {
                         options: ["test1", "test2"]
