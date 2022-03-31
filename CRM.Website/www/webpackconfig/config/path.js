@@ -34,7 +34,8 @@ const cssPaths = {
     log_statistics: ['./www/sources/css/pages/report/log-statistics/index.scss'],
     issue_statistics: ['./www/sources/css/pages/report/issue-statistics/index.scss'],
     changes_log: ['./www/sources/css/pages/pic-and-headline/changes-log/index.scss'],
-    feedback_statistic: ['./www/sources/css/pages/report/feedback-statistic/index.scss']
+    feedback_statistic: ['./www/sources/css/pages/report/feedback-statistic/index.scss'],
+    dynamic_report: ['./www/sources/css/pages/report/dynamic/index.scss']
 };
 
 const scriptPaths = {
@@ -71,7 +72,8 @@ const scriptPaths = {
     issue_statistics: ['./www/sources/js/pages/report/issue-statistics/index.js'],
     change_log: ['./www/sources/js/pages/pic-and-headline/changes-log/index.js'],
     add_customer_feedback: ['./www/sources/js/pages/feedback/add-feedback/add-customer-feedback/index.js'],
-    feedback_statistic: ['./www/sources/js/pages/report/feedback-statistic/index.js']
+    feedback_statistic: ['./www/sources/js/pages/report/feedback-statistic/index.js'],
+    dynamic_report: ['./www/sources/js/pages/report/dynamic/index.js']
 };
 
 module.exports = {
