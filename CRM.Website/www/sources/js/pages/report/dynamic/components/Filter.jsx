@@ -1,0 +1,493 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { ActionCreators } from '../actions';
+import { bindActionCreators } from 'redux';
+import { Form, Button, Row, Col } from 'react-bootstrap';
+import DatePicker from '@jsroot/components/date-picker/index';
+import LangHelper from '@jsroot/common/langHelper';
+import DateTimeService from '@jsroot/common/dateTimeService';
+import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+
+export class Filter extends Component {
+    constructor(props) {
+        super(props);
+        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const firstDateCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+
+        const toDate = currentDate;
+        this.maxFromDate = currentDate;
+        this.maxToDate = currentDate;
+        this.minToDate = firstDateCurrentMonth;
+
+        this.state = {
+            fromDate: firstDateCurrentMonth,
+            toDate: toDate,
+            mainCategoryId: 0,
+            subCategoryId: 0,
+            reportType: 1,
+            statusId: 0,
+            siteId: 0,
+            roleId: 0,
+            communicationToolId: 0,
+            handler: null,
+            productId: 0,
+            subProductId: 0,
+            responseId: 0,
+            extensionId: 0,
+            reviewer: null,
+            subject: null
+        };
+    }
+
+    componentDidMount() {
+        this.props.getAllSettings();
+    }
+
+    handleUpdateFromDate = fromDate => {
+        const maxDate = new Date(fromDate.getTime());
+        maxDate.setMonth(fromDate.getMonth() + 12);
+        maxDate.setDate(fromDate.getDate() - 1);
+
+        this.minToDate = fromDate;
+        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
+        this.setState({
+            fromDate: fromDate,
+            toDate: (maxDate < this.currentDate) ? maxDate : this.currentDate
+        });
+    };
+
+    handleUpdateToDate = toDate => {
+        this.setState({
+            toDate: toDate
+        });
+    };
+
+    handleUpdateFromWeek = fromDate => {
+        const firstDayOfWeek = fromDate.getDate() - fromDate.getDay();
+        fromDate.setDate(firstDayOfWeek);
+
+        var maxDate = new Date(fromDate.getTime());
+        maxDate.setMonth(fromDate.getMonth() + 12);
+        maxDate.setDate(fromDate.getDate() - 1);
+
+        var maxDateEndWeek = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+        maxDateEndWeek.setDate(maxDate.getDate() - maxDate.getDay() + 6);
+        maxDate = maxDateEndWeek;
+
+        var currentToDate = this.state.toDate;
+        if (currentToDate < fromDate) {
+            currentToDate = fromDate;
+        }
+        else if (currentToDate > maxDate) {
+            currentToDate = maxDate;
+        }
+
+        this.minToDate = fromDate;
+        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate
+        this.setState({
+            fromDate: fromDate,
+            toDate: currentToDate
+        });
+    };
+
+    handleUpdateToWeek = toDate => {
+        const firstDayOfWeek = toDate.getDate() - toDate.getDay();
+        const lastDayOfWeek = firstDayOfWeek + 6;
+        toDate.setDate(lastDayOfWeek);
+        this.setState({ toDate: toDate });
+    };
+
+    handleUpdateFromMonth = firstDateMonth => {
+        var maxDate = new Date(firstDateMonth.getTime());
+        maxDate.setMonth(firstDateMonth.getMonth() + 12);
+        maxDate.setDate(firstDateMonth.getDate() - 1);
+
+        var currentToDate = this.state.toDate;
+
+        this.minToDate = firstDateMonth;
+        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate
+        this.setState({
+            fromDate: firstDateMonth,
+            toDate: new Date(currentToDate.setFullYear(firstDateMonth.getFullYear()))
+        });
+    };
+
+    handleUpdateToMonth = lastDateMonth => {
+        this.setState({ toDate: new Date(lastDateMonth.getFullYear(), lastDateMonth.getMonth() + 1, 0) });
+    };
+
+    handleUpdateFromYear = firstDateYear => {
+        this.minToDate = firstDateYear;
+        this.maxToDate = this.currentDate
+        this.setState({
+            fromDate: firstDateYear,
+            toDate: new Date(firstDateYear.getFullYear(), 11, 31)
+        })
+    };
+
+    renderFilterDate = () => {
+        var resFromDate = {}, resToDate = {};
+        var dateFormat = '';
+        switch (this.state.reportType) {
+            case 1:
+                dateFormat = 'MMM dd, yyyy';
+                resFromDate = {
+                    onChange: this.handleUpdateFromDate
+                };
+                resToDate = {
+                    onChange: this.handleUpdateToDate
+                };
+                break;
+            case 2:
+                const propsDate = { showWeekNumbers: true };
+                dateFormat = 'ww (MMM dd, yyyy)';
+                resFromDate = {
+                    ...propsDate,
+                    onChange: this.handleUpdateFromWeek
+                };
+                resToDate = {
+                    ...propsDate,
+                    onChange: this.handleUpdateToWeek
+                };
+                break;
+            case 3:
+                const propsMonth = {
+                    showMonthYearPicker: true,
+                    showFullMonthYearPicker: true,
+                    showTwoColumnMonthYearPicker: true
+                };
+                dateFormat = 'MMM yyyy';
+                resFromDate = {
+                    ...propsMonth,
+                    onChange: this.handleUpdateFromMonth
+                }
+                resToDate = {
+                    ...propsMonth,
+                    onChange: this.handleUpdateToMonth
+                };
+                break;
+            case 4:
+                const propsYear = { showYearPicker: true };
+                dateFormat = 'yyyy';
+                resFromDate = {
+                    ...propsYear,
+                    onChange: this.handleUpdateFromYear
+                }
+                resToDate = {
+                    ...propsYear
+                };
+                break;
+            default:
+                break;
+        }
+
+        return (
+            <React.Fragment>
+                <div className='group-field'>
+                    <Form.Label htmlFor="fromDate" className="col-form-label">{LangHelper.getResource('FromDate')}</Form.Label>
+                    <div className="react-datepicker-wrapper-container form-control-wrapper select-field">
+                        <DatePicker
+                            dropdownMode="select"
+                            showMonthDropdown
+                            showYearDropdown
+                            selected={this.state.fromDate}
+                            dateFormat={dateFormat}
+                            maxDate={new Date(this.maxFromDate)}
+                            {...resFromDate}
+                        />
+                    </div>
+                </div>
+
+                <div className='group-field'>
+                    <Form.Label htmlFor="toDate" className="col-form-label">{LangHelper.getResource('ToDate')}</Form.Label>
+                    <div className="react-datepicker-wrapper-container form-control-wrapper select-field">
+                        <DatePicker
+                            selected={this.state.toDate}
+                            dateFormat={dateFormat}
+                            minDate={new Date(this.minToDate)}
+                            maxDate={new Date(this.maxToDate)}
+                            showMonthDropdown
+                            dropdownMode="select"
+                            showYearDropdown
+                            {...resToDate}
+                        />
+                    </div>
+                </div>
+            </React.Fragment>
+        )
+    };
+
+    renderItems = (name, value, key) => <option key={key} value={value}>{name}</option>;
+
+    handleChangeReportType = event => {
+        const value = parseInt(event.target.value, 10);
+        this.setState({ reportType : value });
+
+        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+
+        if (value === 1) {
+            this.setState({
+                fromDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+                toDate: currentDate
+            })
+        }
+
+        if (value === 2) {
+            const firstDayOfWeek = currentDate.getDate() - currentDate.getDay();
+            const lastDayOfWeek = firstDayOfWeek + 6;
+            this.setState({
+                fromDate: currentDate.setDate(firstDayOfWeek),
+                toDate: currentDate.setDate(lastDayOfWeek)
+            })
+        }
+
+        if (value === 3) {
+            this.setState({
+                fromDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+                toDate: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
+            })
+        }
+
+        if (value === 4) {
+            this.setState({
+                fromDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+                toDate: currentDate
+            })
+        }
+    }
+
+    handleChange = event => {
+        const name = event.target.name;
+        this.setState({
+            [name]: event.target.type === 'select-one' ? parseInt(event.target.value, 10) : event.target.value
+        });
+    };
+
+    handleChangeSite = site => {
+        this.setState({ siteId: site.id });
+    };
+
+    filterSubCategoryOptions = (subCategories, mainCategoryId) =>{
+        if (mainCategoryId === 0) {
+            return [];
+        }
+        const subCategoryOptions = subCategories.filter(item => item.mainCategoryID === mainCategoryId);
+        return subCategoryOptions;
+    };
+
+    filterSubProductOptions = (subProducts, productId) => {
+        if (productId === 0) {
+            return [];
+        }
+        const subProductOptions = subProducts.filter(item => item.parentId === productId);
+        return subProductOptions;
+    };
+
+    handleSubmit = event => {
+        event.preventDefault();
+    };
+
+    render() {
+        const { allSettings } = this.props;
+        if (allSettings === null) {
+            return null;
+        }
+        const subCategoryOptions = this.filterSubCategoryOptions(allSettings.subCategories, this.state.mainCategoryId);
+        const subProductOptions = this.filterSubProductOptions(allSettings.subProducts, this.state.productId);
+
+        return (
+            <Form className='form-filter' onSubmit={this.handleSubmit}>
+                <Form.Group as={Row}>
+                    <div className='group-field'>
+                        <Form.Label htmlFor="groupBy" className="col-form-label">{LangHelper.getResource('GroupBy')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="reportType"
+                            onChange={this.handleChangeReportType}
+                        >
+                            {
+                                allSettings.periodTypes.map((item,key) => this.renderItems(item.name, item.id, key))
+                            }
+                        </Form.Control>
+                    </div>
+
+                    { this.renderFilterDate() }
+
+                    <div className='group-field-tool'>
+                        <Form.Label htmlFor="status" className="col-form-label label-tool">{LangHelper.getResource('Status')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="statusId"
+                            onChange={this.handleChange}
+                        >
+                            <option value={0}>All</option>
+                            {
+                                allSettings.statuses.map((item,key) => this.renderItems(item.name, item.statusId, key))
+                            }
+                        </Form.Control>
+                    </div>
+                </Form.Group>
+
+                <Form.Group as={Row}>
+                    <div className='group-field'>
+                        <Form.Label htmlFor="response" className="col-form-label">{LangHelper.getResource('Response')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="responseId"
+                            onChange={this.handleChange}
+                        >
+                            <option value={0}>All</option>
+                            {
+                                allSettings.responses.map((item,key) => this.renderItems(item.value, item.id, key))
+                            }
+                        </Form.Control>
+                    </div>
+
+                    <div className='group-field'>
+                        <Form.Label htmlFor="product" className="col-form-label">{LangHelper.getResource('Product')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="productId"
+                            onChange={this.handleChange}
+                        >
+                            <option value={0}>All</option>
+                            {
+                                allSettings.products.map((item,key) => this.renderItems(item.value, item.id, key))
+                            }
+                        </Form.Control>
+                    </div>
+
+                    <div className='group-field'>
+                        <Form.Label htmlFor="sub-product" className="col-form-label">{LangHelper.getResource('SubProduct')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="subProductId"
+                            onChange={this.handleChange}
+                        >
+                            <option value={0}>All</option>
+                            {
+                                subProductOptions.map((item,key) => this.renderItems(item.value, item.id, key))
+                            }
+                        </Form.Control>
+                    </div>
+
+                    <div className='group-field-tool'>
+                        <Form.Label htmlFor="site" className="col-form-label label-tool">{LangHelper.getResource('Site')}</Form.Label>
+                        <div className="select-field">
+                            <SelectWithSearch className='basic-single'
+                                OnChangeValue={this.handleChangeSite}
+                                options={allSettings.sites}
+                            />
+                        </div>
+                    </div>
+                </Form.Group>
+
+                <Form.Group as={Row}>
+                    <div className='group-field'>
+                        <Form.Label htmlFor="handler" className="col-form-label">{LangHelper.getResource('Handler')}</Form.Label>
+                        <Form.Control type="text" size="sm" className="shadow-none select-field"
+                            autoComplete="off"
+                            name="handler"
+                            onChange={this.handleChange}
+                        />
+                    </div>
+
+                    <div className='group-field'>
+                        <Form.Label htmlFor="reviewer" className="col-form-label">{LangHelper.getResource('Reviewer')}</Form.Label>
+                        <Form.Control type="text" size="sm" className="shadow-none select-field"
+                            autoComplete="off"
+                            name="reviewer"
+                            onChange={this.handleChange}
+                        />
+                    </div>
+
+                    <div className='group-field'>
+                        <Form.Label htmlFor="role" className="col-form-label">{LangHelper.getResource('Role')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="roleId"
+                            onChange={this.handleChange}
+                        >
+                            <option value={0}>All</option>
+                            {
+                                allSettings.roles.map((item,key) => this.renderItems(item.value, item.id, key))
+                            }
+                        </Form.Control>
+                    </div>
+
+                    <div className='group-field-tool'>
+                        <Form.Label htmlFor="communicationTool" className="col-form-label label-tool">{LangHelper.getResource('CommunicationTool')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="communicationToolId"
+                            onChange={this.handleChange}
+                        >
+                            <option value={0}>All</option>
+                            {
+                                allSettings.communicationTools.map((item,key) => this.renderItems(item.name, item.id, key))
+                            }
+                        </Form.Control>
+                    </div>
+                </Form.Group>
+
+                <Form.Group as={Row}>
+                    <div className='group-field'>
+                        <Form.Label htmlFor="extension" className="col-form-label">{LangHelper.getResource('Extension')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="extensionId"
+                            onChange={this.handleChange}
+                        >
+                            <option value={0}>All</option>
+                            {
+                                allSettings.extensions.map((item,key) => this.renderItems(item.value, item.id, key))
+                            }
+                        </Form.Control>
+                    </div>
+
+                    <div className='group-field-mainCate'>
+                        <Form.Label htmlFor="main-category" className="col-form-label">{LangHelper.getResource('MainCategory')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="mainCategoryId"
+                            onChange={this.handleChange}
+                        >
+                            <option value={0}>All</option>
+                            {
+                                allSettings.mainCategories.map((item,key) => this.renderItems(item.name, item.mainCategoryID, key))
+                            }
+                        </Form.Control>
+                    </div>
+
+                    <div className='group-field-tool'>
+                        <Form.Label htmlFor="sub-category" className="col-form-label">{LangHelper.getResource('SubCategory')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none select-field"
+                            name="subCategoryId"
+                            onChange={this.handleChange}
+                        >
+                            <option value={0}>All</option>
+                            {
+                                subCategoryOptions.map((item,key) => this.renderItems(item.name, item.subCategoryId, key))
+                            }
+                        </Form.Control>
+                    </div>
+                </Form.Group>
+
+                <Form.Group as={Row}>
+                    <div className='group-field-subject'>
+                        <Form.Label htmlFor="subject" className="col-form-label">{LangHelper.getResource('Subject')}</Form.Label>
+                        <Form.Control type="text" size="sm" className="shadow-none select-field"
+                            autoComplete="off"
+                            name="subject"
+                            onChange={this.handleChange}
+                        />
+                    </div>
+
+                    <div>
+                        <Button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
+                    </div>
+                </Form.Group>
+            </Form>
+        );
+    }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { allSettings } = state;
+    return { allSettings };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

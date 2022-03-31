@@ -7,6 +7,7 @@
     using AutoFixture;
     using CRM.Core.Services;
     using CRM.Criteria.Communication;
+    using CRM.Models.Common;
     using CRM.Models.CommunicationLogs;
     using CRM.Models.Customer;
     using CRM.Models.Feedback;
@@ -28,11 +29,11 @@
             //Arrange
             var param = fixture.Create<GetLogsByCustomerIdCriteria>();
             var communicationLogInfos = fixture.Create<IEnumerable<CommunicationLog>>();
-            var settingItems = fixture.Create<IEnumerable<CommunicationSettingRelation>>();
+            var settingItems = fixture.Create<IEnumerable<SettingItem>>();
 
             var tuple = (communicationLogInfos, settingItems);
             var service = GetCommunicationService();
-            baseService.FetchMultipleAsync<CommunicationLog, CommunicationSettingRelation>(Arg.Do<GetLogsByCustomerIdCriteria>(x => param = x)).Returns(tuple);
+            baseService.FetchMultipleAsync<CommunicationLog, SettingItem>(Arg.Do<GetLogsByCustomerIdCriteria>(x => param = x)).Returns(tuple);
 
             //Act
             var actual = await service.GetLogsByCustomerIdAsync(param);
