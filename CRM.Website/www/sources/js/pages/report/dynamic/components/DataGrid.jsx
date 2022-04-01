@@ -205,7 +205,7 @@ export class DataGrid extends Component {
         params['pageSize'] = pageSize;
         params['pageIndex'] = pageIndex;
 
-        this.setState({ toggles: [] });
+        this.setState({ toggles: [], isExpand: true });
         this.props.setGridParams(params);
         this.props.getDynamicReports(params);
     };
