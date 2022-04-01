@@ -9,9 +9,9 @@ const redemptionStatisticsSlice = createSlice({
             pageIndex: 1,
             pageSize: 100
         },
-        redemptionSummary: null,
-        redemptionDetails: null,
-        details: { show: false, title: ''}
+        gridData: null,
+        gridDataDetails: null,
+        detailPopup: { show: false }
     },
     reducers: {
         setGridParams: (state, action) => {
@@ -21,16 +21,16 @@ const redemptionStatisticsSlice = createSlice({
             state.settings = action.payload;
         },
         setRedemptionSummary: (state, action) => {
-            state.redemptionSummary = action.payload;
+            state.gridData = action.payload;
         },
         setGridParamDetails: (state, action) => {
             state.gridParamDetails = action.payload;
         },
         setRedemptionDetails: (state, action) => {
-            state.redemptionDetails = action.payload;
+            state.gridDataDetails = action.payload;
         },
-        setDetailsDataGrid: (state, action) => {
-            state.details = action.payload;
+        setOpenDetails: (state, action) => {
+            state.detailPopup = action.payload;
         }
     }
 });
@@ -42,7 +42,8 @@ export const {
     setGridParamDetails,
     setAllSettings,
     setRedemptionSummary,
-    setRedemptionDetails
+    setRedemptionDetails,
+    setOpenDetails
 } = actions;
 
 export default reducer;

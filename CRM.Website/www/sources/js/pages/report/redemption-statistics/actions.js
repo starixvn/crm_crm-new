@@ -6,7 +6,8 @@ import{
     setGridParamDetails,
     setAllSettings,
     setRedemptionSummary,
-    setRedemptionDetails
+    setRedemptionDetails,
+    setOpenDetails
 } from './redemptionStatisticsSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -19,7 +20,7 @@ const getAllSettings = () => async dispatch => {
 
 const getRedemptionSummary = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('RedemptionStatistics/GetMainReport');
+    const url = Site.resolveClientUrl('RedemptionStatistics/GetRedemptionSummary');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setRedemptionSummary(response.data));
     }).then(() => Site.unblockUI());
@@ -27,7 +28,7 @@ const getRedemptionSummary = params => async dispatch => {
 
 const getRedemptionDetails = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('RedemptionStatistics/GetReportDetails');
+    const url = Site.resolveClientUrl('RedemptionStatistics/GetRedemptionDetails');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setRedemptionDetails(response.data));
     }).then(() => Site.unblockUI());
@@ -57,6 +58,7 @@ export const ActionCreators = {
     setRedemptionSummary,
     getRedemptionDetails,
     setRedemptionDetails,
+    setOpenDetails,
     exportExcel,
     exportExcelDetails
 };

@@ -1,0 +1,22 @@
+﻿namespace CRM.Models.Report.RedemptionStatistics
+{
+    using System;
+    using System.Collections.Generic;
+
+    public class RedemptionStatisticsEntity
+    {
+        public DateTime ClaimTime { get; set; }
+
+        public string Subject { get; set; }
+
+        public int Month { get; set; }
+
+        public int Year { get; set; }
+
+        public string Currency { get; set; }
+
+        public int CurrencyId { get; set; }
+
+        public decimal Amount { get; set; }
+    }
+}
