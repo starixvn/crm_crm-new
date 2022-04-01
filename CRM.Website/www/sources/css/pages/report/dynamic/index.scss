@@ -78,3 +78,26 @@
 .react-datepicker__month-text{
     width: 6rem !important;
 }
+
+td.group-collapse-expand {
+    color: #0054a6 !important;
+    background-color: #eceff1 !important;
+    cursor: pointer;
+}
+
+.pending{
+    background-color: #f0edc4;
+}
+
+.closed{
+    background-color: #ddd;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.table-title, .page-container {
+    min-width: 1200px !important;
+    width: 1200px !important;
+}

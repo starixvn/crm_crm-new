@@ -8,6 +8,7 @@ export class AppContainer extends Component {
         return (
             <div>
                 <Filter />
+                <DataGrid />
             </div>
         );
     }

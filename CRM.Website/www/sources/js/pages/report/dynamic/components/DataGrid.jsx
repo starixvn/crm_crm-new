@@ -2,34 +2,247 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import LangHelper from '@jsroot/common/langHelper';
+import DateTimeService from '@jsroot/common/dateTimeService';
+import { PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
-    componentDidMount() {
-        this.props.getDynamicReport({
-            reportType: 1,
-            fromDate: 'Mar 01, 2021',
-            toDate: 'Feb 28, 2022',
-            productId: 0,
-            subProductId: 0,
-            statusId: 0,
-            roleId: 0,
-            mainCategoryId: 0,
-            handler: null,
-            siteId: 0,
-            responseId: 0,
-            communicationId: 0,
-            subCategoryId: 0,
-            reviewer: null,
-            subject: null,
-            userRole: 2,
-            pageIndex: 0,
-            pageSize: 50
-        });
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+            toggles: [],
+            isExpand: true
+        }
     }
 
-    render() {
+    buildHeader = () => {
         return (
-            <div>DataGrid</div>
+            <HeaderRow>
+                <HeaderCell colWidth={10}>#</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
+                <HeaderCell colWidth={45}>{LangHelper.getResource('MainCategoryAndSubCategory')}</HeaderCell>
+                <HeaderCell colWidth={30}>{LangHelper.getResource('Subject')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('Duration	')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Username')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Handler')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Reviewer')}</HeaderCell>
+            </HeaderRow>
+        );
+    };
+
+    buildBody = () => {
+        const { dynamicReports } = this.props;
+        if (dynamicReports.data.childReports.length > 0) {
+            return dynamicReports.data.childReports.map((item, index) => this.renderGroupRow(item, index));
+        }
+        return [
+            <Row key={`body${1}`} className="no-data" >
+                <Cell className="text-center" colSpan={10}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+            </Row>
+        ];
+    };
+
+    renderGroupRow = (group, keyToggle) => {
+        return (
+            <React.Fragment>
+                <Row key={keyToggle}>
+                    <Cell colSpan={10} className="group-collapse-expand" onClick={() => this.handleToggleEach(keyToggle)}>
+                        <span className={`pr-2 fa ${this.state.toggles.includes(keyToggle) ? 'fa-caret-right' : 'fa-caret-down'}`}/>
+                        <span>{keyToggle + 1}</span>
+                    </Cell>
+                </Row>
+                {
+                    group.childReports.map((item, index) => this.renderRow(item, index, keyToggle))
+                }
+            </React.Fragment>
+        );
+    };
+
+    renderRow = (item, index, keyToggle) => {
+        if (this.state.toggles.includes(keyToggle)) {
+            return null;
+        }
+        const colorRow = item.status ? item.status.toLowerCase() : '';
+        return (
+            <Row key={index} className={colorRow}>
+                <Cell>{index + 1}</Cell>
+                <Cell>{item.feedbackId}</Cell>
+                <Cell className="text-center">{DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</Cell>
+                <Cell>{this.renderCategoryColumn(item)}</Cell>
+                <Cell>{item.subject}</Cell>
+                <Cell className="text-center">{item.status}</Cell>
+                <Cell className="text-center">{item.duration.replace(/\s+/g, '')}</Cell>
+                <Cell>{item.userName}</Cell>
+                <Cell>{item.handler}</Cell>
+                <Cell>{item.reviewer}</Cell>
+            </Row>
+        );
+    };
+
+    handleToggleEach = key => {
+        const { toggles } = this.state;
+        const index = toggles.indexOf(key);
+        if (index >= 0) {
+            toggles.splice(index, 1);
+        } else {
+            toggles.push(key);
+        }
+        this.setState({ toggles });
+    };
+
+    handleToggleAll = () => {
+        const { isExpand } = this.state;
+        const allItem = [];
+        if (!isExpand) {
+            this.setState({ toggles: [], isExpand: true });
+        } else {
+            for(var i = 0; i < this.props.dynamicReports.data.childReports.length; i++) {
+                allItem.push(i);
+            }
+            this.setState({ toggles: allItem, isExpand: false});
+        }
+    };
+
+    handleGroupCategory = filterCategory => {
+        const groupCategory = filterCategory.reduce((accumulator, currentValue) => {
+            const itemExist = accumulator.find(item => currentValue.mainCategoryId === item.mainCategoryId);
+            if(itemExist){
+                itemExist.subCategoryId = [...itemExist.subCategoryId, currentValue.subCategoryId];
+            }else{
+                accumulator.push({mainCategoryId: currentValue.mainCategoryId, subCategoryId: [currentValue.subCategoryId]});
+            }
+            return accumulator;
+        },[]);
+        return groupCategory;
+    };
+
+    renderCategoryColumn = item => {
+        const { mainCategories } = this.props.dynamicReports;
+        const groupCategory = this.handleGroupCategory(item.dynamicSettings);
+
+        return groupCategory.map((value,key) => {
+            const filterMainCategory = mainCategories.find(element => element.settingId === value.mainCategoryId);
+            return (
+                <>
+                    <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
+                    {
+                        value.subCategoryId.map((subId,index) => {
+                            const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subId);
+                            return(
+                                <div key={index} className="font-italic ml-3">{filterSubCategory.name}</div>
+                            );
+                        })
+                    }
+                </>
+            );
+        });
+    };
+
+    renderToolBox = () => {
+        return (
+            <div>
+                <OverlayTrigger
+                    placement="auto"
+                    overlay={
+                        <Tooltip><span>View Chart</span></Tooltip>
+                    }
+                >
+                    <span className="fa fa-bar-chart pl-3 icon" />
+                </OverlayTrigger>
+                <OverlayTrigger
+                    placement="auto"
+                    overlay={
+                        <Tooltip><span>Collapse/Expand</span></Tooltip>
+                    }
+                >
+                    <span className={`${this.state.isExpand ? 'fa fa-compress' : 'fa fa-expand'} pl-3 icon`} onClick={this.handleToggleAll}/>
+                </OverlayTrigger>
+                <OverlayTrigger
+                    placement="auto"
+                    overlay={
+                        <Tooltip><span>Export to Excel</span></Tooltip>
+                    }
+                >
+                    <span className="fa fa-file-excel-o pl-3 icon-excel" />
+                </OverlayTrigger>
+            </div>
+        );
+    };
+
+    renderGenerateTitle = () => {
+        const { reportType, fromDate, toDate } = this.props.gridParams;
+        const { dynamicReports } = this.props;
+        var reportTitle = '';
+
+        switch (reportType) {
+            case 1:
+                reportTitle = 'Daily Communication Logs';
+                break;
+            case 2:
+                reportTitle = 'Weekly Communication Logs';
+                break;
+            case 3:
+                reportTitle = 'Monthly Communication Logs';
+                break;
+            case 4:
+                reportTitle = 'Yearly Communication Logs';
+                break;
+            default:
+                break;
+        }
+
+        return <span>{`${reportTitle} From ${fromDate} To ${toDate} [${dynamicReports.data.totalChildReports}]`}</span>;
+    };
+
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params['pageSize'] = pageSize;
+        params['pageIndex'] = pageIndex;
+
+        this.setState({ toggles: [] });
+        this.props.setGridParams(params);
+        this.props.getDynamicReports(params);
+    };
+
+    render() {
+        const { dynamicReports, gridParams } = this.props;
+        if(!dynamicReports || !dynamicReports.data){
+            return null;
+        }
+
+        const { pageIndex, pageSize } = gridParams;
+        const pagingOption = {
+            PageIndex: pageIndex,
+            PageSize: pageSize,
+            TotalItem: dynamicReports.data.totalChildReports,
+            PageList: PAGING_SIZES
+        };
+
+        return (
+            <div>
+                <div className="table-title d-flex justify-content-between align-items-center">
+                    { this.renderGenerateTitle() }
+                    { this.renderToolBox() }
+                </div>
+                <Table
+                    width={1200}
+                    autoWidth={false}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
+                    containerPadding={0}
+                    adjustedHeight={10}
+                    isPaging
+                    pageOption={pagingOption}
+                    onPaging={this.onPaging}
+                    shouldResetScrollPosition={false}
+                />
+            </div>
         );
     }
 }
@@ -37,8 +250,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { dynamicReport } = state;
-    return { dynamicReport };
+    const { dynamicReports, gridParams } = state;
+    return { dynamicReports, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

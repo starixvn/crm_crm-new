@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row } from 'react-bootstrap';
 import DatePicker from '@jsroot/components/date-picker/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -18,6 +18,7 @@ export class Filter extends Component {
         this.maxFromDate = currentDate;
         this.maxToDate = currentDate;
         this.minToDate = firstDateCurrentMonth;
+        this.currentDate = currentDate;
 
         this.state = {
             fromDate: firstDateCurrentMonth,
@@ -225,36 +226,37 @@ export class Filter extends Component {
 
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
 
-        if (value === 1) {
-            this.setState({
-                fromDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-                toDate: currentDate
-            })
+        switch (value) {
+            case 1:
+                this.setState({
+                    fromDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+                    toDate: currentDate
+                });
+                break;
+            case 2:
+                const firstDayOfWeek = currentDate.getDate() - currentDate.getDay();
+                const lastDayOfWeek = firstDayOfWeek + 6;
+                this.setState({
+                    fromDate: currentDate.setDate(firstDayOfWeek),
+                    toDate: currentDate.setDate(lastDayOfWeek)
+                });
+                break;
+            case 3:
+                this.setState({
+                    fromDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+                    toDate: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
+                });
+                break;
+            case 4:
+                this.setState({
+                    fromDate: new Date(currentDate.getFullYear(), 0, 1),
+                    toDate: currentDate
+                });
+                break;
+            default:
+                break;
         }
-
-        if (value === 2) {
-            const firstDayOfWeek = currentDate.getDate() - currentDate.getDay();
-            const lastDayOfWeek = firstDayOfWeek + 6;
-            this.setState({
-                fromDate: currentDate.setDate(firstDayOfWeek),
-                toDate: currentDate.setDate(lastDayOfWeek)
-            })
-        }
-
-        if (value === 3) {
-            this.setState({
-                fromDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-                toDate: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
-            })
-        }
-
-        if (value === 4) {
-            this.setState({
-                fromDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-                toDate: currentDate
-            })
-        }
-    }
+    };
 
     handleChange = event => {
         const name = event.target.name;
@@ -285,6 +287,37 @@ export class Filter extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
+
+        const {
+            reportType, fromDate, toDate, productId, subProductId, statusId,
+            roleId, mainCategoryId, handler, siteId, responseId, communicationId,
+            subCategoryId, reviewer, subject, extensionId
+        } = this.state;
+
+        const params = {
+            reportType: reportType,
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate),
+            productId: productId,
+            subProductId: subProductId,
+            statusId: statusId,
+            roleId: roleId,
+            mainCategoryId: mainCategoryId,
+            handler: handler,
+            siteId: siteId,
+            responseId: responseId,
+            communicationId: communicationId,
+            extensionId: extensionId,
+            subCategoryId: subCategoryId,
+            reviewer: reviewer,
+            subject: subject,
+            userRole: 2,
+            pageIndex: 0,
+            pageSize: 100
+        };
+
+        this.props.getDynamicReports(params);
+        this.props.setGridParams(params);
     };
 
     render() {
@@ -296,9 +329,9 @@ export class Filter extends Component {
         const subProductOptions = this.filterSubProductOptions(allSettings.subProducts, this.state.productId);
 
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className="form-filter" onSubmit={this.handleSubmit}>
                 <Form.Group as={Row}>
-                    <div className='group-field'>
+                    <div className="group-field">
                         <Form.Label htmlFor="groupBy" className="col-form-label">{LangHelper.getResource('GroupBy')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="reportType"
@@ -312,7 +345,7 @@ export class Filter extends Component {
 
                     { this.renderFilterDate() }
 
-                    <div className='group-field-tool'>
+                    <div className="group-field-tool">
                         <Form.Label htmlFor="status" className="col-form-label label-tool">{LangHelper.getResource('Status')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="statusId"
@@ -327,7 +360,7 @@ export class Filter extends Component {
                 </Form.Group>
 
                 <Form.Group as={Row}>
-                    <div className='group-field'>
+                    <div className="group-field">
                         <Form.Label htmlFor="response" className="col-form-label">{LangHelper.getResource('Response')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="responseId"
@@ -340,7 +373,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </div>
 
-                    <div className='group-field'>
+                    <div className="group-field">
                         <Form.Label htmlFor="product" className="col-form-label">{LangHelper.getResource('Product')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="productId"
@@ -353,7 +386,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </div>
 
-                    <div className='group-field'>
+                    <div className="group-field">
                         <Form.Label htmlFor="sub-product" className="col-form-label">{LangHelper.getResource('SubProduct')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="subProductId"
@@ -366,7 +399,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </div>
 
-                    <div className='group-field-tool'>
+                    <div className="group-field-tool">
                         <Form.Label htmlFor="site" className="col-form-label label-tool">{LangHelper.getResource('Site')}</Form.Label>
                         <div className="select-field">
                             <SelectWithSearch className='basic-single'
@@ -378,7 +411,7 @@ export class Filter extends Component {
                 </Form.Group>
 
                 <Form.Group as={Row}>
-                    <div className='group-field'>
+                    <div className="group-field">
                         <Form.Label htmlFor="handler" className="col-form-label">{LangHelper.getResource('Handler')}</Form.Label>
                         <Form.Control type="text" size="sm" className="shadow-none select-field"
                             autoComplete="off"
@@ -387,7 +420,7 @@ export class Filter extends Component {
                         />
                     </div>
 
-                    <div className='group-field'>
+                    <div className="group-field">
                         <Form.Label htmlFor="reviewer" className="col-form-label">{LangHelper.getResource('Reviewer')}</Form.Label>
                         <Form.Control type="text" size="sm" className="shadow-none select-field"
                             autoComplete="off"
@@ -396,7 +429,7 @@ export class Filter extends Component {
                         />
                     </div>
 
-                    <div className='group-field'>
+                    <div className="group-field">
                         <Form.Label htmlFor="role" className="col-form-label">{LangHelper.getResource('Role')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="roleId"
@@ -409,7 +442,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </div>
 
-                    <div className='group-field-tool'>
+                    <div className="group-field-tool">
                         <Form.Label htmlFor="communicationTool" className="col-form-label label-tool">{LangHelper.getResource('CommunicationTool')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="communicationToolId"
@@ -424,7 +457,7 @@ export class Filter extends Component {
                 </Form.Group>
 
                 <Form.Group as={Row}>
-                    <div className='group-field'>
+                    <div className="group-field">
                         <Form.Label htmlFor="extension" className="col-form-label">{LangHelper.getResource('Extension')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="extensionId"
@@ -437,7 +470,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </div>
 
-                    <div className='group-field-mainCate'>
+                    <div className="group-field-mainCate">
                         <Form.Label htmlFor="main-category" className="col-form-label">{LangHelper.getResource('MainCategory')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="mainCategoryId"
@@ -450,7 +483,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </div>
 
-                    <div className='group-field-tool'>
+                    <div className="group-field-tool">
                         <Form.Label htmlFor="sub-category" className="col-form-label">{LangHelper.getResource('SubCategory')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none select-field"
                             name="subCategoryId"
@@ -465,7 +498,7 @@ export class Filter extends Component {
                 </Form.Group>
 
                 <Form.Group as={Row}>
-                    <div className='group-field-subject'>
+                    <div className="group-field-subject">
                         <Form.Label htmlFor="subject" className="col-form-label">{LangHelper.getResource('Subject')}</Form.Label>
                         <Form.Control type="text" size="sm" className="shadow-none select-field"
                             autoComplete="off"
