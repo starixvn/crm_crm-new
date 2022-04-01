@@ -19,6 +19,40 @@
     }
 
     .subject-width{
-        width: 470px !important;
+        width: 473px !important;
+    }
+
+    .filter-collapse {
+        margin-top: -10px;
+        .fa {
+            height: 14px;
+            width: 27px;
+            background-color: #464d5d;
+            color: white;
+            cursor: pointer;
+        }
+    }
+}
+
+.table-title{
+    max-width: 900px;
+}
+.table-container .body-content{
+    .background-total td{
+        background-color: #c0cbe2 !important;
+        color: black !important;
+    }
+
+    .background-total td:first-child{
+        border-bottom: none !important;
+    }
+
+    .link-click {
+        cursor: pointer;
+        color: $link-color !important;
+    
+        &:hover {
+            color: $draft-color !important;
+        }
     }
 }

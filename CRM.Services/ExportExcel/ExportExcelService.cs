@@ -12,6 +12,7 @@
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.FeedbackStatistic;
     using CRM.Models.Report.LogStatistics;
+    using CRM.Models.Report.RedemptionStatistics;
     using CRM.Models.Report.SettlementReport;
     using CRM.Models.Setting;
     using CRM.Resources;
@@ -61,6 +62,8 @@
         byte[] ExportStatisticFeedback(FeedbackStatisticInfo feedbackStatistic);
 
         byte[] ExportStatisticFeedbackDetail(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string titleExcel);
+
+        byte[] ExportRedemptionStatisticsSumary(IList<RedemptionStatisticsEntity> redemptionStatistics, IDictionary<string, decimal> totals, string titleExcel, int reportBy);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -210,6 +213,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/FeedbackStatisticDetail.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories, false, titleExcel);
+            return excel.Export();
+        }
+
+        public byte[] ExportRedemptionStatisticsSumary(IList<RedemptionStatisticsEntity> redemptionStatistics, IDictionary<string, decimal> totals, string titleExcel, int reportBy)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/RedemptionStatistics.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new RedemptionStatisticsExcel(templatePath, redemptionStatistics, totals, titleExcel, reportBy);
             return excel.Export();
         }
     }
