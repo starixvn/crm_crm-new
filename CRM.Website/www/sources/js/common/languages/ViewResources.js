@@ -53,6 +53,7 @@
     ConfirmEditMultipleLogsContent: 'These changes will be applied to all selected feedbacks. Are you sure you want to save these changes?',
     ConfirmMultipleUpdates: 'Confirm Multiple Updates',
     Communication: 'Communication ',
+    CommunicationLogDetail: 'Communication Log Detail',
     CommunicationInfo: 'Communication Info',
     CommunicationMustHaveValue: 'Communication must have value!',
     CommunicationRequired: 'Communication tool is required!',

@@ -5,7 +5,8 @@ const dynamicReportSlice = createSlice({
     initialState: {
         dynamicReports: null,
         allSettings: null,
-        gridParams: {}
+        gridParams: {},
+        viewCommunicationDialog: { show: false }
     },
     reducers: {
         setDynamicReports: (state, action) => {
@@ -16,6 +17,9 @@ const dynamicReportSlice = createSlice({
         },
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
+        },
+        setViewCommunicationDialog: (state, action) => {
+            state.viewCommunicationDialog = action.payload
         }
     }
 });
@@ -25,7 +29,8 @@ const { actions, reducer } = dynamicReportSlice;
 export const {
     setDynamicReports,
     setAllSettings,
-    setGridParams
+    setGridParams,
+    setViewCommunicationDialog
 } = actions;
 
 export default reducer;

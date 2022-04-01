@@ -72,7 +72,7 @@ export class DataGrid extends Component {
         return (
             <Row key={index} className={colorRow}>
                 <Cell>{index + 1}</Cell>
-                <Cell>{item.feedbackId}</Cell>
+                <Cell className='link-click' onClick={() => this.handleViewCommunication(item.feedbackId)}>{item.feedbackId}</Cell>
                 <Cell className="text-center">{DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</Cell>
                 <Cell>{this.renderCategoryColumn(item)}</Cell>
                 <Cell>{item.subject}</Cell>
@@ -83,6 +83,10 @@ export class DataGrid extends Component {
                 <Cell>{item.reviewer}</Cell>
             </Row>
         );
+    };
+
+    handleViewCommunication = feedbackId => {
+        this.props.setViewCommunicationDialog({ show: true, feedbackId: feedbackId });
     };
 
     handleToggleEach = key => {

@@ -7,6 +7,8 @@
 @import '../../../components/select-with-search-site';
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
+@import '../../../components/verify-customer';
+@import "../../../components/modal";
 
 #app-container {
     width: 1800px;
@@ -69,6 +71,18 @@
             width: 690px;
         }
     }
+
+    .toggle-filter {
+        width: 100%;
+        text-align: center;
+
+        .icon {
+            height: 14px;
+            width: 27px;
+            background-color: #464d5d;
+            color: white;
+        }
+    }
 }
 
 .react-datepicker-popper {
@@ -100,4 +114,61 @@ td.group-collapse-expand {
 .table-title, .page-container {
     min-width: 1200px !important;
     width: 1200px !important;
+}
+
+.link-click {
+    cursor: pointer;
+    color: $link-color !important;
+
+    &:hover {
+        color: $draft-color !important;
+    }
+}
+
+.feedback-detail {
+    .modal-dialog {
+        max-width: 1600px;
+
+        .modal-content {
+            .panel-group {
+                border: 1px solid #b1b1b1;
+
+                .panel-title {
+                    display: flex;
+                    align-items: center;
+                    height: 28px;
+                    margin: 0;
+                    padding: 0 10px;
+                    color: #2f70b4;
+                    background: linear-gradient(#e7e7e7, #e2e2e2);
+                    border-bottom: 1px solid #b1b1b1;
+                    cursor: pointer;
+
+                    .form-label {
+                        margin: 0;
+                    }
+                }
+
+                .title-username .form-label{
+                    color: red !important;
+                    font-weight: bold !important;
+                }
+
+                .disabled-filed, .selectwithsearchtree{
+                    pointer-events: none;
+                    cursor: not-allowed;
+                    opacity: .7;
+                    background-color: #fff;
+                }
+
+                .panel-content {
+                    padding: 4px 9px;
+
+                    .react-datepicker-wrapper-container {
+                        width: 100% !important;
+                    }
+                }
+            }
+        }
+    }
 }

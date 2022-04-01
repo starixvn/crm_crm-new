@@ -3,7 +3,8 @@ import Site from '@jsroot/common/site';
 import {
     setDynamicReports,
     setAllSettings,
-    setGridParams
+    setGridParams,
+    setViewCommunicationDialog
 } from './dynamicReportSlice';
 
 const getDynamicReports = params => async dispatch => {
@@ -25,5 +26,6 @@ const getAllSettings = () => async dispatch => {
 export const ActionCreators = {
     getDynamicReports,
     getAllSettings,
-    setGridParams
+    setGridParams,
+    setViewCommunicationDialog
 };
