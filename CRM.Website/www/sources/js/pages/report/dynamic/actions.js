@@ -1,15 +1,16 @@
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import {
-    setDynamicReport,
-    setAllSettings
+    setDynamicReports,
+    setAllSettings,
+    setGridParams
 } from './dynamicReportSlice';
 
-const getDynamicReport = params => async dispatch => {
+const getDynamicReports = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('DynamicReport/GetDynamicReport');
     await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setDynamicReport(response.data));
+        dispatch(setDynamicReports(response.data));
     }).then(() => Site.unblockUI());
 };
 
@@ -22,6 +23,7 @@ const getAllSettings = () => async dispatch => {
 };
 
 export const ActionCreators = {
-    getDynamicReport,
-    getAllSettings
+    getDynamicReports,
+    getAllSettings,
+    setGridParams
 };

@@ -3,15 +3,19 @@ import { createSlice } from "@reduxjs/toolkit";
 const dynamicReportSlice = createSlice({
     name: 'dynamicReport',
     initialState: {
-        dynamicReport: null,
-        allSettings: null
+        dynamicReports: null,
+        allSettings: null,
+        gridParams: {}
     },
     reducers: {
-        setDynamicReport: (state, action) => {
-            state.dynamicReport = action.payload;
+        setDynamicReports: (state, action) => {
+            state.dynamicReports = action.payload;
         },
         setAllSettings: (state, action) => {
             state.allSettings = action.payload;
+        },
+        setGridParams: (state, action) => {
+            state.gridParams = action.payload;
         }
     }
 });
@@ -19,8 +23,9 @@ const dynamicReportSlice = createSlice({
 const { actions, reducer } = dynamicReportSlice;
 
 export const {
-    setDynamicReport,
-    setAllSettings
+    setDynamicReports,
+    setAllSettings,
+    setGridParams
 } = actions;
 
 export default reducer;

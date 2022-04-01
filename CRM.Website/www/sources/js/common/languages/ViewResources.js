@@ -253,6 +253,7 @@
     Name: 'Name',
     NameRequired: 'Name is required!',
     MainCategory: 'Main Category',
+    MainCategoryAndSubCategory: 'Main Category/Sub Category',
     NeverTouch: 'Never touch',
     NewCase: 'New Case',
     NewInformHeadlines: 'New Inform Headlines',
