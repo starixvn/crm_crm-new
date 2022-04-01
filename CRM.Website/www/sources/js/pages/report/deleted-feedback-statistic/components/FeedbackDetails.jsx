@@ -585,7 +585,7 @@ export default class FeedbackDetails extends Component {
                     onHide={() => this.props.onClose(false)}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('FeedbackDetail')}</Modal.Title>
+                        <Modal.Title as="div">{LangHelper.getResource(this.props.title)}</Modal.Title>
                     </Modal.Header>
                     {this.renderForm()}
                 </Modal>

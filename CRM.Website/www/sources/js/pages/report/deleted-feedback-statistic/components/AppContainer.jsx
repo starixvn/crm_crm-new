@@ -44,6 +44,7 @@ handleCloseViewRelatedCustomerDialog = () => {
            {
               editFeedbackDialog.show &&
               <FeedbackDetails
+                  title='FeedbackDetail'
                   feedbackId={editFeedbackDialog.feedbackId}
                   onClose={this.handleCloseEditFeedbackDialog}
               />
