@@ -36,7 +36,8 @@ export class Filter extends Component {
             responseId: 0,
             extensionId: 0,
             reviewer: null,
-            subject: null
+            subject: null,
+            showFilter: true
         };
     }
 
@@ -285,6 +286,12 @@ export class Filter extends Component {
         return subProductOptions;
     };
 
+    handleToggleFilter = () => {
+        this.setState(previousState => ({
+            showFilter: !previousState.showFilter
+        }));
+    };
+
     handleSubmit = event => {
         event.preventDefault();
 
@@ -322,6 +329,7 @@ export class Filter extends Component {
 
     render() {
         const { allSettings } = this.props;
+        const { showFilter } = this.state;
         if (allSettings === null) {
             return null;
         }
@@ -330,187 +338,196 @@ export class Filter extends Component {
 
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
-                <Form.Group as={Row}>
-                    <div className="group-field">
-                        <Form.Label htmlFor="groupBy" className="col-form-label">{LangHelper.getResource('GroupBy')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="reportType"
-                            onChange={this.handleChangeReportType}
-                        >
-                            {
-                                allSettings.periodTypes.map((item,key) => this.renderItems(item.name, item.id, key))
-                            }
-                        </Form.Control>
-                    </div>
+                {
+                    showFilter &&
+                    <React.Fragment>
+                        <Form.Group as={Row}>
+                            <div className="group-field">
+                                <Form.Label htmlFor="groupBy" className="col-form-label">{LangHelper.getResource('GroupBy')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="reportType"
+                                    onChange={this.handleChangeReportType}
+                                >
+                                    {
+                                        allSettings.periodTypes.map((item,key) => this.renderItems(item.name, item.id, key))
+                                    }
+                                </Form.Control>
+                            </div>
 
-                    { this.renderFilterDate() }
+                            { this.renderFilterDate() }
 
-                    <div className="group-field-tool">
-                        <Form.Label htmlFor="status" className="col-form-label label-tool">{LangHelper.getResource('Status')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="statusId"
-                            onChange={this.handleChange}
-                        >
-                            <option value={0}>All</option>
-                            {
-                                allSettings.statuses.map((item,key) => this.renderItems(item.name, item.statusId, key))
-                            }
-                        </Form.Control>
-                    </div>
-                </Form.Group>
+                            <div className="group-field-tool">
+                                <Form.Label htmlFor="status" className="col-form-label label-tool">{LangHelper.getResource('Status')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="statusId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.statuses.map((item,key) => this.renderItems(item.name, item.statusId, key))
+                                    }
+                                </Form.Control>
+                            </div>
+                        </Form.Group>
 
-                <Form.Group as={Row}>
-                    <div className="group-field">
-                        <Form.Label htmlFor="response" className="col-form-label">{LangHelper.getResource('Response')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="responseId"
-                            onChange={this.handleChange}
-                        >
-                            <option value={0}>All</option>
-                            {
-                                allSettings.responses.map((item,key) => this.renderItems(item.value, item.id, key))
-                            }
-                        </Form.Control>
-                    </div>
+                        <Form.Group as={Row}>
+                            <div className="group-field">
+                                <Form.Label htmlFor="response" className="col-form-label">{LangHelper.getResource('Response')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="responseId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.responses.map((item,key) => this.renderItems(item.value, item.id, key))
+                                    }
+                                </Form.Control>
+                            </div>
 
-                    <div className="group-field">
-                        <Form.Label htmlFor="product" className="col-form-label">{LangHelper.getResource('Product')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="productId"
-                            onChange={this.handleChange}
-                        >
-                            <option value={0}>All</option>
-                            {
-                                allSettings.products.map((item,key) => this.renderItems(item.value, item.id, key))
-                            }
-                        </Form.Control>
-                    </div>
+                            <div className="group-field">
+                                <Form.Label htmlFor="product" className="col-form-label">{LangHelper.getResource('Product')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="productId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.products.map((item,key) => this.renderItems(item.value, item.id, key))
+                                    }
+                                </Form.Control>
+                            </div>
 
-                    <div className="group-field">
-                        <Form.Label htmlFor="sub-product" className="col-form-label">{LangHelper.getResource('SubProduct')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="subProductId"
-                            onChange={this.handleChange}
-                        >
-                            <option value={0}>All</option>
-                            {
-                                subProductOptions.map((item,key) => this.renderItems(item.value, item.id, key))
-                            }
-                        </Form.Control>
-                    </div>
+                            <div className="group-field">
+                                <Form.Label htmlFor="sub-product" className="col-form-label">{LangHelper.getResource('SubProduct')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="subProductId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        subProductOptions.map((item,key) => this.renderItems(item.value, item.id, key))
+                                    }
+                                </Form.Control>
+                            </div>
 
-                    <div className="group-field-tool">
-                        <Form.Label htmlFor="site" className="col-form-label label-tool">{LangHelper.getResource('Site')}</Form.Label>
-                        <div className="select-field">
-                            <SelectWithSearch className='basic-single'
-                                OnChangeValue={this.handleChangeSite}
-                                options={allSettings.sites}
-                            />
-                        </div>
-                    </div>
-                </Form.Group>
+                            <div className="group-field-tool">
+                                <Form.Label htmlFor="site" className="col-form-label label-tool">{LangHelper.getResource('Site')}</Form.Label>
+                                <div className="select-field">
+                                    <SelectWithSearch className='basic-single'
+                                        OnChangeValue={this.handleChangeSite}
+                                        options={allSettings.sites}
+                                    />
+                                </div>
+                            </div>
+                        </Form.Group>
 
-                <Form.Group as={Row}>
-                    <div className="group-field">
-                        <Form.Label htmlFor="handler" className="col-form-label">{LangHelper.getResource('Handler')}</Form.Label>
-                        <Form.Control type="text" size="sm" className="shadow-none select-field"
-                            autoComplete="off"
-                            name="handler"
-                            onChange={this.handleChange}
-                        />
-                    </div>
+                        <Form.Group as={Row}>
+                            <div className="group-field">
+                                <Form.Label htmlFor="handler" className="col-form-label">{LangHelper.getResource('Handler')}</Form.Label>
+                                <Form.Control type="text" size="sm" className="shadow-none select-field"
+                                    autoComplete="off"
+                                    name="handler"
+                                    onChange={this.handleChange}
+                                />
+                            </div>
 
-                    <div className="group-field">
-                        <Form.Label htmlFor="reviewer" className="col-form-label">{LangHelper.getResource('Reviewer')}</Form.Label>
-                        <Form.Control type="text" size="sm" className="shadow-none select-field"
-                            autoComplete="off"
-                            name="reviewer"
-                            onChange={this.handleChange}
-                        />
-                    </div>
+                            <div className="group-field">
+                                <Form.Label htmlFor="reviewer" className="col-form-label">{LangHelper.getResource('Reviewer')}</Form.Label>
+                                <Form.Control type="text" size="sm" className="shadow-none select-field"
+                                    autoComplete="off"
+                                    name="reviewer"
+                                    onChange={this.handleChange}
+                                />
+                            </div>
 
-                    <div className="group-field">
-                        <Form.Label htmlFor="role" className="col-form-label">{LangHelper.getResource('Role')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="roleId"
-                            onChange={this.handleChange}
-                        >
-                            <option value={0}>All</option>
-                            {
-                                allSettings.roles.map((item,key) => this.renderItems(item.value, item.id, key))
-                            }
-                        </Form.Control>
-                    </div>
+                            <div className="group-field">
+                                <Form.Label htmlFor="role" className="col-form-label">{LangHelper.getResource('Role')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="roleId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.roles.map((item,key) => this.renderItems(item.value, item.id, key))
+                                    }
+                                </Form.Control>
+                            </div>
 
-                    <div className="group-field-tool">
-                        <Form.Label htmlFor="communicationTool" className="col-form-label label-tool">{LangHelper.getResource('CommunicationTool')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="communicationToolId"
-                            onChange={this.handleChange}
-                        >
-                            <option value={0}>All</option>
-                            {
-                                allSettings.communicationTools.map((item,key) => this.renderItems(item.name, item.id, key))
-                            }
-                        </Form.Control>
-                    </div>
-                </Form.Group>
+                            <div className="group-field-tool">
+                                <Form.Label htmlFor="communicationTool" className="col-form-label label-tool">{LangHelper.getResource('CommunicationTool')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="communicationToolId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.communicationTools.map((item,key) => this.renderItems(item.name, item.id, key))
+                                    }
+                                </Form.Control>
+                            </div>
+                        </Form.Group>
 
-                <Form.Group as={Row}>
-                    <div className="group-field">
-                        <Form.Label htmlFor="extension" className="col-form-label">{LangHelper.getResource('Extension')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="extensionId"
-                            onChange={this.handleChange}
-                        >
-                            <option value={0}>All</option>
-                            {
-                                allSettings.extensions.map((item,key) => this.renderItems(item.value, item.id, key))
-                            }
-                        </Form.Control>
-                    </div>
+                        <Form.Group as={Row}>
+                            <div className="group-field">
+                                <Form.Label htmlFor="extension" className="col-form-label">{LangHelper.getResource('Extension')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="extensionId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.extensions.map((item,key) => this.renderItems(item.value, item.id, key))
+                                    }
+                                </Form.Control>
+                            </div>
 
-                    <div className="group-field-mainCate">
-                        <Form.Label htmlFor="main-category" className="col-form-label">{LangHelper.getResource('MainCategory')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="mainCategoryId"
-                            onChange={this.handleChange}
-                        >
-                            <option value={0}>All</option>
-                            {
-                                allSettings.mainCategories.map((item,key) => this.renderItems(item.name, item.mainCategoryID, key))
-                            }
-                        </Form.Control>
-                    </div>
+                            <div className="group-field-mainCate">
+                                <Form.Label htmlFor="main-category" className="col-form-label">{LangHelper.getResource('MainCategory')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="mainCategoryId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        allSettings.mainCategories.map((item,key) => this.renderItems(item.name, item.mainCategoryID, key))
+                                    }
+                                </Form.Control>
+                            </div>
 
-                    <div className="group-field-tool">
-                        <Form.Label htmlFor="sub-category" className="col-form-label">{LangHelper.getResource('SubCategory')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none select-field"
-                            name="subCategoryId"
-                            onChange={this.handleChange}
-                        >
-                            <option value={0}>All</option>
-                            {
-                                subCategoryOptions.map((item,key) => this.renderItems(item.name, item.subCategoryId, key))
-                            }
-                        </Form.Control>
-                    </div>
-                </Form.Group>
+                            <div className="group-field-tool">
+                                <Form.Label htmlFor="sub-category" className="col-form-label">{LangHelper.getResource('SubCategory')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none select-field"
+                                    name="subCategoryId"
+                                    onChange={this.handleChange}
+                                >
+                                    <option value={0}>All</option>
+                                    {
+                                        subCategoryOptions.map((item,key) => this.renderItems(item.name, item.subCategoryId, key))
+                                    }
+                                </Form.Control>
+                            </div>
+                        </Form.Group>
 
-                <Form.Group as={Row}>
-                    <div className="group-field-subject">
-                        <Form.Label htmlFor="subject" className="col-form-label">{LangHelper.getResource('Subject')}</Form.Label>
-                        <Form.Control type="text" size="sm" className="shadow-none select-field"
-                            autoComplete="off"
-                            name="subject"
-                            onChange={this.handleChange}
-                        />
-                    </div>
+                        <Form.Group as={Row}>
+                            <div className="group-field-subject">
+                                <Form.Label htmlFor="subject" className="col-form-label">{LangHelper.getResource('Subject')}</Form.Label>
+                                <Form.Control type="text" size="sm" className="shadow-none select-field"
+                                    autoComplete="off"
+                                    name="subject"
+                                    onChange={this.handleChange}
+                                />
+                            </div>
 
-                    <div>
-                        <Button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
-                    </div>
-                </Form.Group>
+                            <div>
+                                <Button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
+                            </div>
+                        </Form.Group>
+                    </React.Fragment>
+                }
+
+                <div className="toggle-filter">
+                    <span className={`${showFilter ? 'fa fa-caret-up' : 'fa fa-caret-down'} icon`} onClick={this.handleToggleFilter}></span>
+                </div>
             </Form>
         );
     }
