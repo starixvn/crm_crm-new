@@ -12,7 +12,7 @@ namespace CRM.Services.ExportExcel
     public class SummaryReportExcel : ExcelBase
     {
         private readonly SummaryReportModel summaryreportInfo;
-        private const int widthColumnLarge = 30;
+        private const int widthColumnLarge = 45;
         private const int heightRowLarge = 30;
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
