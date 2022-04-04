@@ -916,6 +916,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redemption_Statistics_Detail_Report.
+        /// </summary>
+        public static string Redemption_Statistics_Detail_FileName {
+            get {
+                return ResourceManager.GetString("Redemption_Statistics_Detail_FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redemption Statistics Detail Report.
+        /// </summary>
+        public static string Redemption_Statistics_Detail_Title {
+            get {
+                return ResourceManager.GetString("Redemption_Statistics_Detail_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Redemption Statistics.
         /// </summary>
         public static string RedemptionStatistics {
@@ -939,6 +957,15 @@ namespace CRM.Resources {
         public static string RedemptionStatistics_Title {
             get {
                 return ResourceManager.GetString("RedemptionStatistics_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redemption Statistics Detail.
+        /// </summary>
+        public static string RedemptionStatisticsDetail {
+            get {
+                return ResourceManager.GetString("RedemptionStatisticsDetail", resourceCulture);
             }
         }
         

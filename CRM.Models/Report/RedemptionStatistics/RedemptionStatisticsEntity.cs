@@ -1,7 +1,6 @@
 ﻿namespace CRM.Models.Report.RedemptionStatistics
 {
     using System;
-    using System.Collections.Generic;
 
     public class RedemptionStatisticsEntity
     {

@@ -44,11 +44,15 @@ export class DataGrid extends Component {
         const { gridParams } = this.props;
         const isReportByYear = gridParams.reportBy === '2';
         const monthName = moment(item.month, 'M').format('MMMM');
+        const dateFormat = isReportByYear ? item.year : `${monthName} ${item.year}`;
+        const titleYearDetail = LangHelper.getResource('RedemptionStatisticsDetailTitle') + dateFormat;
+        const titleCurrencyDetail = LangHelper.getResource('RedemptionStatisticsDetailTitle') + item.currency;
+
         return (
             <Row key={`redemption-${index}`}>
-                <Cell className='text-center link-click' onClick={() => this.handleYearOpenDetail(item)}>{isReportByYear ? item.year : `${monthName} ${item.year}`}</Cell>
-                <Cell className='text-center link-click' onClick={() => this.handleCurrencyOpenDetail()}>{item.currency}</Cell>
-                <Cell className='text-center'>{item.amount}</Cell>
+                <Cell className='text-center link-click' onClick={() => this.handleOpenDetail(0, item.year, item.month, titleYearDetail)}>{dateFormat}</Cell>
+                <Cell className='text-center link-click' onClick={() => this.handleOpenDetail(item.currencyId, item.year, item.month, titleCurrencyDetail)}>{item.currency}</Cell>
+                <Cell className='text-center'>{Number(item.amount).toFixed(2)}</Cell>
             </Row>
         );
     };
@@ -60,14 +64,14 @@ export class DataGrid extends Component {
                 <Row key='totals-1' className='background-total'>
                     <Cell className='text-center' rowSpan={totalArr.length}>{LangHelper.getResource('Total')}</Cell>
                     <Cell className='text-center'>{totalArr[0][0]}</Cell>
-                    <Cell className='text-center'>{totalArr[0][1]}</Cell>
+                    <Cell className='text-center'>{Number(totalArr[0][1]).toFixed(2)}</Cell>
                 </Row>
                 {
                     totalArr.length > 1 &&
                     totalArr.slice(1).map((element, key) => (
                         <Row key={`amount-${key}`} className='background-total'>
                             <Cell className='text-center'>{element[0]}</Cell>
-                            <Cell className='text-center'>{element[1]}</Cell>
+                            <Cell className='text-center'>{Number(element[1]).toFixed(2)}</Cell>
                         </Row>
                     ))
                 }
@@ -80,30 +84,38 @@ export class DataGrid extends Component {
         this.props.exportExcel(gridParams);
     };
 
-    handleYearOpenDetail = item =>{
-        const dateCombine = `${item.year}-${item.month}-01`;
-        const date = new Date(DateTimeService.toShortDateFormat(new Date(dateCombine)));
-        const {subject, currencyId, statusId, reportBy} = this.props.gridParams;
+    handleOpenDetail = (currency, year, month, title='') =>{
+        const {subject, currencyId, statusId, reportBy, fromDate, toDate} = this.props.gridParams;
+        let fromDateDetail = '';
+        let toDateDetail = '';
+        if(year !== 0 && month !== 0) {
+            fromDateDetail = moment(new Date(year, month - 1, 1));
+            toDateDetail = moment(new Date(year, month, 0));
+        } else if(year !== 0 && month === 0){
+            fromDateDetail = new Date('Jan 01, ' + year);
+            toDateDetail = new Date('Dec 31, ' + year);
+        }
+        else{
+            fromDateDetail = fromDate;
+            toDateDetail = toDate;
+        }
+
+        if(currency === 0){
+            currency = currencyId;
+        }
         const paramDetail = {
-            fromDate: date,
-            toDate: new Date(DateTimeService.toShortDateFormat(DateTimeService.lastDayOfMonth(date))),
+            fromDate: DateTimeService.toShortDateFormat(fromDateDetail),
+            toDate: DateTimeService.toShortDateFormat(toDateDetail),
             subject: subject,
-            currencyId: currencyId,
+            currencyId: currency,
             statusId: statusId,
             reportBy: reportBy,
             pageIndex: 1,
             pageSize: 100
         };
-        this.props.setOpenDetails({show: true});
+        this.props.setOpenDetails({show: true, title: title});
         this.props.setGridParamDetails(paramDetail);
         this.props.getRedemptionDetails(paramDetail);
-    }
-
-    handleCurrencyOpenDetail = () =>{
-        const param = {...this.props.gridParams, pageIndex: 1, pageSize: 100};
-        this.props.setOpenDetails({show: true});
-        this.props.setGridParamDetails(param);
-        this.props.getRedemptionDetails(param);
     }
 
     render() {
@@ -116,7 +128,10 @@ export class DataGrid extends Component {
             <Fragment>
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{gridData.title}</span>
-                    <span className="fa fa-file-excel-o btn-export-excel icon-excel" onClick={this.handleExportExcel} />
+                    {
+                        gridData.data.length > 0 &&
+                        <span className="fa fa-file-excel-o btn-export-excel icon-excel" onClick={this.handleExportExcel} />
+                    }
                 </div>
                 <Table
                     width={900}

@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CRM.Core;
-using CRM.Core.Constants;
-using CRM.Core.Services;
-using CRM.Criteria.Report.RedemptionStatistics;
-using CRM.Models;
-using CRM.Models.Report.RedemptionStatistics;
-using CRM.Resources;
-using CRM.Services;
-using Fanex.NAP.Client.AspNetCore.Attributes;
-using Fanex.NAP.Core.Business;
-using Microsoft.AspNetCore.Mvc;
-
-namespace CRM.Controllers.Report.Statistics
+﻿namespace CRM.Controllers.Report.Statistics
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using CRM.Core;
+    using CRM.Core.Constants;
+    using CRM.Core.Services;
+    using CRM.Criteria.Report.RedemptionStatistics;
+    using CRM.Models;
+    using CRM.Models.Report.RedemptionStatistics;
+    using CRM.Resources;
+    using CRM.Services;
+    using Fanex.NAP.Client.AspNetCore.Attributes;
+    using Fanex.NAP.Core.Business;
+    using Microsoft.AspNetCore.Mvc;
+
     public class RedemptionStatisticsController : Controller
     {
         private readonly ICommonService commonService;
@@ -35,7 +35,7 @@ namespace CRM.Controllers.Report.Statistics
             this.excelService = excelService;
         }
 
-        //[NapAuth(FunctionKey = FunctionKey.RedemptionStatistics, Policy = Constant.Policy.Read)]
+        [NapAuth(FunctionKey = FunctionKey.RedemptionStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/RedemptionStatistics/Index");
@@ -76,7 +76,19 @@ namespace CRM.Controllers.Report.Statistics
         [HttpPost]
         public async Task<IActionResult> GetRedemptionDetails([FromBody] GetRedemptionStatisticsDetailCriteria criteria)
         {
-            return Json(new { });
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
+            var details = await baseService.GetDataAsync<RedemptionStatisticsDetailEntity>(criteria);
+            foreach(var detail in details)
+            {
+                detail.ClaimTime = commonService.ConvertToClientDateTime(detail.ClaimTime);
+            }
+            var totalItems = details.ToList().Count;
+            if (totalItems > 0)
+            {
+                details = details.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+            }
+            return Json(details);
         }
 
         [HttpPost]
@@ -102,6 +114,21 @@ namespace CRM.Controllers.Report.Statistics
             
             var bytes = excelService.ExportRedemptionStatisticsSumary(tuple.Item1, tuple.Item2, title, criteria.ReportBy);
             return File(bytes, MimeType.XLSX, $"{fileName}.xlsx");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcelDetails([FromBody] GetRedemptionStatisticsDetailCriteria criteria)
+        {
+            criteria.PageIndex = 1;
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
+            var details = await baseService.GetDataAsync<RedemptionStatisticsDetailEntity>(criteria);
+            foreach (var detail in details)
+            {
+                detail.ClaimTime = commonService.ConvertToClientDateTime(detail.ClaimTime);
+            }
+            var bytes = excelService.ExportRedemptionStatisticsDetail(details);
+            return File(bytes, MimeType.XLSX, $"{ViewResources.Redemption_Statistics_Detail_FileName}.xlsx");
         }
 
         private Tuple<IList<RedemptionStatisticsEntity>, IDictionary<string, decimal>> GetRedemptionAmount(IList<RedemptionStatisticsEntity> redemptions)
