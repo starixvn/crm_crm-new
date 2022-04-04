@@ -11,7 +11,7 @@ const redemptionStatisticsSlice = createSlice({
         },
         gridData: null,
         gridDataDetails: null,
-        detailPopup: { show: false }
+        detailPopup: { show: false, title: '' }
     },
     reducers: {
         setGridParams: (state, action) => {

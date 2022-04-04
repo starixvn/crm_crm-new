@@ -37,6 +37,7 @@
 .table-title{
     max-width: 900px;
 }
+
 .table-container .body-content{
     .background-total td{
         background-color: #c0cbe2 !important;
@@ -54,5 +55,15 @@
         &:hover {
             color: $draft-color !important;
         }
+    }
+}
+
+.details{
+    .title-detail, .page-container{
+        max-width: 970px !important;
+    }
+
+    .icon{
+        cursor: pointer;
     }
 }

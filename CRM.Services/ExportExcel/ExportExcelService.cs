@@ -64,6 +64,8 @@
         byte[] ExportStatisticFeedbackDetail(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string titleExcel);
 
         byte[] ExportRedemptionStatisticsSumary(IList<RedemptionStatisticsEntity> redemptionStatistics, IDictionary<string, decimal> totals, string titleExcel, int reportBy);
+
+        byte[] ExportRedemptionStatisticsDetail(IEnumerable<RedemptionStatisticsDetailEntity> redemptionStatisticsDetails);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -221,6 +223,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/RedemptionStatistics.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new RedemptionStatisticsExcel(templatePath, redemptionStatistics, totals, titleExcel, reportBy);
+            return excel.Export();
+        }
+
+        public byte[] ExportRedemptionStatisticsDetail(IEnumerable<RedemptionStatisticsDetailEntity> redemptionStatisticsDetails)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/RedemptionStatisticsDetail.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new RedemptionStatisticsDetailExcel(templatePath, redemptionStatisticsDetails.ToList());
             return excel.Export();
         }
     }

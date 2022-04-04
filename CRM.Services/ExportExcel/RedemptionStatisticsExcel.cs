@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
-    using CRM.Models.ChatTypeMapping;
     using CRM.Models.Report.RedemptionStatistics;
     using CRM.Resources;
     using OfficeOpenXml;
@@ -15,7 +14,8 @@
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
         private const byte TotalColumns = 3;
-        private const byte WidthNormal = 15;
+        private const byte StartTotalCount = 2;
+        private const byte WidthNormal = 20;
         private const byte ReportByYear = 2;
 
         private readonly IList<RedemptionStatisticsEntity> redemptionStatistics;
@@ -62,7 +62,7 @@
                 worksheet.Cells[rowIndex, colIndex++].Value = redemption.Currency;
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-                worksheet.Cells[rowIndex, colIndex].Value = redemption.Amount;
+                worksheet.Cells[rowIndex, colIndex].Value = redemption.Amount.ToString();
                 if ((index & 1) == 0)
                 {
                     SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
@@ -82,19 +82,19 @@
             worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.Cells[rowIndex, colIndex++].Value = totals.Keys.First();
             worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Cells[rowIndex, colIndex].Value = totals.Values.First();
+            worksheet.Cells[rowIndex, colIndex].Value = totals.Values.First().ToString();
             for (int index = 1; index < totals.Count; index++)
             {
-                colIndex = 2;
+                colIndex = StartTotalCount;
                 rowIndex++;
                 var item = totals.ElementAt(index);
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = item.Key;
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells[rowIndex, colIndex].Value = item.Value;
+                worksheet.Cells[rowIndex, colIndex].Value = item.Value.ToString();
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             }
-            DrawBorderCell(worksheet.Cells[1, 1, rowIndex - 1, TotalColumns]);
+            DrawBorderCell(worksheet.Cells[1, 1, rowIndex, TotalColumns]);
         } 
 
 
@@ -115,7 +115,7 @@
             StyleDefault(worksheet);
             SetBackgroundColor(worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns], HeaderTitleColor);
             worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.Font.Bold = true;
-            worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.Font.Color.SetColor(System.Drawing.Color.White);
+            worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.Font.Color.SetColor(Color.White);
             worksheet.Cells[RowStartHeader, 1, RowStartHeader, TotalColumns].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
