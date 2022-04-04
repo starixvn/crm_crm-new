@@ -7,10 +7,6 @@
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
 
-#app-container {
-    min-width:1200px;
-}
-
 .table-container {
     overflow-x: hidden;
 }
@@ -82,25 +78,8 @@ table.table {
 }
 
 .form-filter {
-    min-width: 880px;
-    
-    .react-datepicker__input-container input{
-        width: 100% !important;
-    }
-
-    .label-width{
-        width: 120px !important;
-    }
-
     .form-width {
         width: 350px !important;
-    }
-    .mainCategory-width{
-        width: 245px !important;
-    }
-
-    .react-datepicker-popper{
-        z-index: 9999 !important;
     }
 
     .form-row {

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -6,9 +6,29 @@ import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 
-export class DataGrid extends PureComponent {
+export class DataGrid extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            shouldResetScrollPosition: true,
+            toggleRowReport: [],
+            isCollapseReport: false,
+        };
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.gridData !== nextProps.gridData) {
+            nextState.shouldResetScrollPosition = true;
+            nextState.toggleRowReport = [];
+        }
+        if (this.state.toggleRowReport.length > 0) {
+            nextState.shouldResetScrollPosition = false;
+        }
+        return true;
+    }
+
     calculateWidth = monthColumns => {
-        const columnsWidth = [50, 12];
+        const columnsWidth = [12, 12];
         monthColumns.map(() => {
             columnsWidth.push(12);
         });
@@ -37,7 +57,7 @@ export class DataGrid extends PureComponent {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-expand icon pl-3" />
+                    <span className="fa fa-expand icon pl-3" onClick={this.handleCollapseExpandReport} />
                 </OverlayTrigger>
                 <OverlayTrigger
                     overlay={
@@ -51,37 +71,51 @@ export class DataGrid extends PureComponent {
         );
     };
 
+    handleCollapseExpandReport = () => {
+        const { toggleRowReport, isCollapseReport } = this.state;
+        if (!isCollapseReport) {
+            this.props.gridData.categorySummaries.forEach(main => {
+                if (toggleRowReport.indexOf(main) < 0) {
+                    toggleRowReport.push(main.id);
+                }
+            });
+            this.setState(prevState => ({
+                toggleRowReport,
+                isCollapseReport: !prevState.isCollapseReport
+            }));
+        } else {
+            this.setState(prevState => ({
+                toggleRowReport: [],
+                isCollapseReport: !prevState.isCollapseReport
+            }));
+        }
+    };
+
     handleExportExcel = () => {
-        const params = {...this.props.gridParams};
+        const params = { ...this.props.gridParams };
         this.props.exportExcel(params);
     };
 
     buildHeader = months => {
         const headers = [];
+        const cells = [];
+        cells.push(<HeaderCell className='sticky-header' colWidth={60}>{LangHelper.getResource('Categories')}</HeaderCell>);
+        months.map(item => {
+            cells.push(<HeaderCell key={item} colWidth={17}>{item}</HeaderCell>);
+        });
         headers.push(
             <HeaderRow key='group-header'>
-                <HeaderCell className='sticky-header' rowSpan={2} colWidth={50}>{LangHelper.getResource('Categories')}</HeaderCell>
+                {cells}
             </HeaderRow>
         );
-        const cellHeaderMonth = this.renderHeaderCellsMonths(months);
-        const headerRowsMonth = <HeaderRow key='header-month'>{cellHeaderMonth}</HeaderRow>;
-        headers.push(headerRowsMonth);
         return headers;
-    };
-
-    renderHeaderCellsMonths = months => {
-        const headerCells = [];
-        months.map(item => {
-            headerCells.push(<HeaderCell key={item} colWidth={12}>{item}</HeaderCell>);
-        });
-        return headerCells;
     };
 
     renderFooter = data => {
         const cells = [];
         cells.push(<Cell>Grand Total</Cell>);
         data.map(item => {
-            cells.push(<Cell key={item} colWidth={12}>{item.amount}</Cell>);
+            cells.push(<Cell className='right' key={item}>{item.amount}</Cell>);
         });
         return (
             [<Row key='footer' className='footer-container font-weight-bold'>
@@ -106,47 +140,66 @@ export class DataGrid extends PureComponent {
         ];
     };
 
-    renderSubCategoryRows = (sub) => {
-        const cells = [];
-        cells.push(<Cell className='child' style={{width:280,'padding-left':20}}>{sub.name}</Cell>);
-        sub.summaries.map(sumMonth => {
-            cells.push(
-                <Cell key={sumMonth.month} colWidth={12} className='complaints-text '>                    
-                    <span>{sumMonth.amount === 0 ? "" : sumMonth.amount}</span>                
-                </Cell>
+    renderSubCategoryRows = (parentId,sub) => {
+        const toggle = this.state.toggleRowReport
+        if (!toggle.includes(parentId)) {
+            const cells = [];
+            cells.push(<Cell className='child' style={{ width: 280, 'paddingLeft': 20 }}>{sub.name}</Cell>);
+            sub.summaries.map(sumMonth => {
+                cells.push(
+                    <Cell key={sumMonth.month} className='complaints-text right'>
+                        <span>{sumMonth.amount === 0 ? "" : sumMonth.amount}</span>
+                    </Cell>
+                );
+            })
+            return (
+                <Row key={`child-${sub.id}`}>
+                    {cells}
+                </Row>
             );
-        })
-        return (
-            <Row key={`child-${sub.id}`}>
-                {cells}
-            </Row>
-        );
+        } else {
+            return null;
+        }
+    };
+
+    handleToggleRow = (id) => {
+        const toggleName = this.state.toggleRowReport;
+        const index = toggleName.indexOf(id);
+        if (index >= 0) {
+            toggleName.splice(index, 1);
+        } else {
+            toggleName.push(id);
+        }
+
+        this.setState({ toggleName });
     };
 
     renderMainCategoryRows = (item) => {
         const rows = [];
         const cells = [];
+        const toggles = this.state.toggleRowReport;
+
         cells.push(
-            <Cell className='complaints-text'>
-                <span className={`expand-icon fa pr-2 ${'fa-caret-down'} `} />
-                <span >{item.name}</span>                
+            <Cell className='complaints-text' >
+                <span className={`expand-icon fa pr-2 ${!toggles.includes(item.id) ? 'fa-caret-down' : 'fa-caret-right'}`} />
+                <span >{item.name}</span>
             </Cell>
         );
         item.summaries.map(sumMonth => {
             cells.push(
-                <Cell key={sumMonth.month} colWidth={12} className='complaints-text '>                    
-                    <span>{sumMonth.amount === 0 ? "" : sumMonth.amount}</span>                
+                <Cell key={sumMonth.month} className='complaints-text right'>
+                    <span>{sumMonth.amount === 0 ? "" : sumMonth.amount}</span>
                 </Cell>
             );
         })
         rows.push(
-            <Row key={`parent-${item.id}`} className='parent-level-0'>
+            <Row key={`parent-${item.id}`} className='parent-level-0' onClick={() => this.handleToggleRow(item.id)}>
                 {cells}
             </Row>
         );
         if (item.subCategories.length > 0) {
             rows.push(
-                item.subCategories.map(sub => this.renderSubCategoryRows(sub))
+                item.subCategories.map(sub => this.renderSubCategoryRows(item.id,sub))
             );
         }
         return rows;
@@ -158,14 +211,15 @@ export class DataGrid extends PureComponent {
 
         return (
             <div className='table-mbc'>
-                <div style={{ minWidth: 400 }} className='table-title d-flex justify-content-between align-items-center'>
+                <div style={{ maxWidth: width, minWidth:350 }} className='table-title d-flex justify-content-between align-items-center'>
                     <span>{reportTitle}</span>
                     {
                         categorySummaries.length > 0 && this.renderCustomButtonReport()
                     }
                 </div>
                 <Table
-                    width={800}
+                    width={width}
+                    minWidth={350}
                     autoWidth={false}
                     header={this.buildHeader(months)}
                     body={this.buildBody(categorySummaries)}
@@ -173,7 +227,7 @@ export class DataGrid extends PureComponent {
                     isPaging={false}
                     containerPadding={0}
                     adjustedHeight={10}
-                    shouldResetScrollPosition={true}
+                    shouldResetScrollPosition={this.state.shouldResetScrollPosition}
                 />
             </div>
         )
