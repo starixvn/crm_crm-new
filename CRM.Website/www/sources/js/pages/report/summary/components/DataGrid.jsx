@@ -49,7 +49,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-bar-chart icon pl-3" />
+                    <span className="fa fa-bar-chart icon pl-3" onClick={this.handleShowChart}/>
                 </OverlayTrigger>
                 <OverlayTrigger
                     overlay={
@@ -172,6 +172,10 @@ export class DataGrid extends Component {
         }
 
         this.setState({ toggleName });
+    };
+
+    handleShowChart = () => {
+        this.props.setChartPopup({ show: true });
     };
 
     renderMainCategoryRows = (item) => {
