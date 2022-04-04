@@ -8,7 +8,6 @@
     using CRM.Core.Constants;
     using CRM.Core.Services;
     using CRM.Criteria.Report.RedemptionStatistics;
-    using CRM.Models;
     using CRM.Models.Report.RedemptionStatistics;
     using CRM.Resources;
     using CRM.Services;
@@ -16,7 +15,7 @@
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
 
-    public class RedemptionStatisticsController : Controller
+    public class RedemptionStatisticsController : BaseController
     {
         private readonly ICommonService commonService;
         private readonly IBaseService baseService;
@@ -41,7 +40,7 @@
             return View("../Report/RedemptionStatistics/Index");
         }
 
-        public async Task<IActionResult> getAllSettings()
+        public async Task<IActionResult> GetAllSettings()
         {
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.Redemption);
             var currencies = await settingService.GetCurrencyRedemptionAsync();

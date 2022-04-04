@@ -1,30 +1,21 @@
 ﻿namespace CRM.Services.UnitTests.ExportExcel
 {
-    using System;
     using System.Collections.Generic;
     using System.Drawing;
-    using AutoFixture;
-    using CRM.Core;
     using CRM.Models;
-    using CRM.Models.Feedback;
     using CRM.Models.Report.FeedbackStatistic;
-    using CRM.Resources;
     using CRM.Services.UnitTests.ExportExcel.TestableClasses;
     using NSubstitute;
     using OfficeOpenXml;
-    using OfficeOpenXml.Style;
     using Xunit;
 
     public class FeedbackStatisticExcelTests
     {
-        private readonly IFixture fixture = new Fixture();
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
         private FeedbackStatisticInfo feedbackStatistic;
 
-        private const int RowStartBody = 5;
         private const byte RowStartHeader = 4;
         private const byte StartUserNameColumnIndex = 1;
-        private const int totalColumns = 2;
         protected static readonly Color GroupBackgroundColor = Color.FromArgb(215, 215, 215);
         protected static readonly Color HeaderTitleColor = Color.FromArgb(60, 94, 165);
 
