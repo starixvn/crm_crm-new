@@ -8,6 +8,7 @@
     {
         public const string ShortDateFormatDash = "MMM_dd_yyyy";
         public const string ShortDateFormat = "MMM dd, yyyy";
+        public const string ShortDateFormatNoDash = "MMddyyyy";
         public const string ShortDateTimeFormat = "MMM dd, yyyy hh:mm tt";
         public const string LongDateTimeFormat = "MMM dd, yyyy hh:mm:ss tt";
         public const string MonthYear = "MMM yyyy";
@@ -30,6 +31,7 @@
 
         public static string ToShortDateFormat(this DateTime date) => date.ToString(ShortDateFormat);
         public static string ToShortDateFormatDash(this DateTime date) => date.ToString(ShortDateFormatDash);
+        public static string ToShortDateFormatNoDash(this DateTime date) => date.ToString(ShortDateFormatNoDash);
 
         public static string ToShortDateTimeFormat(this DateTime date) => date.ToString(ShortDateTimeFormat);
 

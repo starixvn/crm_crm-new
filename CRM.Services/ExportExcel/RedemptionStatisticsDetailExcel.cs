@@ -1,6 +1,7 @@
 ﻿namespace CRM.Services.ExportExcel
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using CRM.Core;
     using CRM.Models.Report.RedemptionStatistics;
     using CRM.Resources;
@@ -53,7 +54,7 @@
                 worksheet.Cells[rowIndex, colIndex++].Value = detail.UserName;
                 worksheet.Cells[rowIndex, colIndex++].Value = detail.Subject;
                 worksheet.Cells[rowIndex, colIndex++].Value = detail.Currency;
-                worksheet.Cells[rowIndex, colIndex++].Value = detail.Amount.ToString();
+                worksheet.Cells[rowIndex, colIndex++].Value = detail.Amount.ToString(CultureInfo.InvariantCulture);
                 worksheet.Cells[rowIndex, colIndex++].Value = detail.Status;
                 worksheet.Cells[rowIndex, colIndex].Value = detail.DoneBy;
 
@@ -91,7 +92,6 @@
             const byte DoneByColumn = 7;
 
             worksheet.DefaultColWidth = WidthNormal;
-            StyleDefault(worksheet);
             worksheet.Column(1).Width = WidthNormal;
             worksheet.Column(CustomerColumn).Width = WidthBig;
             worksheet.Column(CurrencyColumn).Width = WidthSmall;

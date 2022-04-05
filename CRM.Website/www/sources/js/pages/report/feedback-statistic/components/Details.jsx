@@ -58,15 +58,15 @@ export class Details extends Component {
         const categories = this.handleGroupCategory(item.settings);
 
         return categories.map((value, key) => {
-            const filterMainCategory = mainCategories.find(el => el.settingId === value.settingId);
+            const filterCategory = mainCategories.find(el => el.settingId === value.settingId);
             return (
                 <div>
-                    <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
+                    <div className="font-weight-bold" key={key}>{filterCategory.settingValue}</div>
                     {
                         value.subSettingId.map((subId, index) => {
-                            const filterSubCategory = filterMainCategory.childSettings.find(el => el.subCategoryId === subId);
+                            const filterSub = filterCategory.childSettings.find(el => el.subCategoryId === subId);
                             return (
-                                <div key={index} className="font-italic ml-3 py-1">{filterSubCategory.name}</div>
+                                <div key={index} className="ml-3 py-1 font-italic">{filterSub.name}</div>
                             );
                         })
                     }
@@ -196,7 +196,7 @@ export class Details extends Component {
                     />
             </Modal.Body>
         );
-    }
+    };
 
     render() {
         return (
@@ -210,7 +210,6 @@ export class Details extends Component {
                     </Modal.Header>
                     {this.renderForm()}
                 </Modal>
-                
             </Fragment>
         );
     }

@@ -12,11 +12,7 @@ namespace CRM.Services.UnitTests.ExportExcel
     {
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
         private const byte RowStartHeader = 4;
-        private const byte RowStartBody = 5;
         private const byte TotalColumns = 3;
-        private const byte StartTotalCount = 2;
-        private const byte WidthNormal = 20;
-        private const byte ReportByYear = 2;
 
         [Fact]
         public void RenderTitle_WhenCalled_ExpectedCopyRow()

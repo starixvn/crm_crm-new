@@ -32,15 +32,14 @@ export class Filter extends Component {
     }
 
     handleChangeFromDate = fromDate => {
-        const maxDate = new Date(fromDate.getTime());
-        maxDate.setMonth(fromDate.getMonth() + 12);
-        maxDate.setDate(fromDate.getDate() - 1);
-
+        const fromDateTime = new Date(fromDate.getTime());
+        fromDateTime.setMonth(fromDate.getMonth() + 12);
+        fromDateTime.setDate(fromDate.getDate() - 1);
         this.minToDate = fromDate;
-        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
+        this.maxToDate = (fromDateTime < this.currentDate) ? fromDateTime : this.currentDate;
         this.setState({
-            fromDate: fromDate,
-            toDate: this.state.toDate < fromDate ? fromDate : this.state.toDate
+            toDate: this.state.toDate < fromDate ? fromDate : this.state.toDate,
+            fromDate: fromDate
         });
     };
 

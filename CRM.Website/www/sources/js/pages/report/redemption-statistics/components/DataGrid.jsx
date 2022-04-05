@@ -94,8 +94,7 @@ export class DataGrid extends Component {
         } else if(year !== 0 && month === 0){
             fromDateDetail = new Date('Jan 01, ' + year);
             toDateDetail = new Date('Dec 31, ' + year);
-        }
-        else{
+        } else{
             fromDateDetail = fromDate;
             toDateDetail = toDate;
         }
@@ -116,7 +115,7 @@ export class DataGrid extends Component {
         this.props.setOpenDetails({show: true, title: title});
         this.props.setGridParamDetails(paramDetail);
         this.props.getRedemptionDetails(paramDetail);
-    }
+    };
 
     render() {
         const { gridData } = this.props;
