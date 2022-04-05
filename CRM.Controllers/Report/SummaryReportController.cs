@@ -23,7 +23,7 @@
         private readonly AppSettings appSettings;
 
         public SummaryReportController(
-            ISummaryReportService summaryReportService, 
+            ISummaryReportService summaryReportService,
             ISettingService settingService,
             IExportExcelService exportExcelService,
             IOptionsSnapshot<AppSettings> appSettings)
@@ -50,12 +50,12 @@
         {
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             var report = await summaryReportService.GetSummaryReportAsync(criteria);
-            return Json(report);            
+            return Json(report);
         }
 
         [HttpPost]
         public async Task<IActionResult> ExportSummaryReport([FromBody] GetSummaryReportCriteria criteria)
-        {          
+        {
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             var reports = await summaryReportService.GetSummaryReportAsync(criteria);
             var bytes = exportExcelService.ExportSummaryReport(reports, criteria.Year);

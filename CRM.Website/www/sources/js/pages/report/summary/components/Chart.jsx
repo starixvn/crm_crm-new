@@ -50,8 +50,9 @@ export class Chart extends PureComponent {
         const { categorySummaries, months, reportTitle } = this.props.gridData;
         const data = this.convertDataChart(months, categorySummaries);
         const labels = this.getLabels(categorySummaries);
-        return (
-            <Modal show dialogAs={DraggableModalDialog}
+        const a = 30+ labels.length/6*30;
+        return (            
+            <Modal show className="chart-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
                 onHide={this.onCloseChart}
             >
@@ -61,10 +62,13 @@ export class Chart extends PureComponent {
                 <Modal.Body>
                     <BarChart
                         width={1100}
-                        height={800}
+                        height={900}
                         data={data}
                         margin={{
-                            top: 30, right: 30, left: 30, bottom: 80
+                            top: 30, right: 30, left: 30, bottom: 30 + labels.length/6*35
+                        }}
+                        padding={{
+                            bottom:100
                         }}
                         barCategoryGap={2}
                         barGap={2}
@@ -72,7 +76,7 @@ export class Chart extends PureComponent {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis label={{ value: 'Feedback(s)', position: 'top', dy: -10 }} domain={[0, 'dataMax']} allowDecimals={false} />
-                        <Legend wrapperStyle={{ bottom: 5, left: 75 }} />
+                        <Legend wrapperStyle={{ bottom: 5, left: 90, width: 993 }} />
                         {labels.map((label, index) => ( 
                             <Bar dataKey={label} key={index} label={{ position: 'top' }}
                                 fill={colors[index % 20]}

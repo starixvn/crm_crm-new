@@ -46,7 +46,8 @@ namespace CRM.Services.ExportExcel
                  .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]);
             worksheet.Cells[1, 1, RowStartHeader - 2, summaryreportInfo.Months.Count+1].Merge = true;
             worksheet.Cells[3, 1, RowStartHeader - 1, summaryreportInfo.Months.Count+1].Merge = true;
-            worksheet.Cells[1, 1].Value = summaryreportInfo.ReportTitle;           
+            worksheet.Cells[1, 1].Value = summaryreportInfo.ReportTitle;
+            worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
         protected internal virtual void SetValueMonths(SummaryReportModel report, ExcelWorksheet worksheet)
