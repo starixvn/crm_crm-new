@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const summaryReportSlice = createSlice({
-    name: 'settlementReport',
+    name: 'summaryReport',
     initialState: {     
         allSettingData:null,   
         gridParams: {

@@ -17,7 +17,7 @@ export class Chart extends PureComponent {
             const obj = { name: month };
             categorySummaries.map(categorySummariy => {
                 categorySummariy.summaries.map(report => {
-                    if (report.month == month && report.amount != 0) {
+                    if (report.month === month && report.amount !== 0) {
                         if (obj[categorySummariy.name]) {
                             obj[categorySummariy.name] += report.amount;
                         } else {
@@ -50,8 +50,7 @@ export class Chart extends PureComponent {
         const { categorySummaries, months, reportTitle } = this.props.gridData;
         const data = this.convertDataChart(months, categorySummaries);
         const labels = this.getLabels(categorySummaries);
-        const a = 30+ labels.length/6*30;
-        return (            
+        return (
             <Modal show className="chart-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
                 onHide={this.onCloseChart}
@@ -77,7 +76,7 @@ export class Chart extends PureComponent {
                         <XAxis dataKey="name" />
                         <YAxis label={{ value: 'Feedback(s)', position: 'top', dy: -10 }} domain={[0, 'dataMax']} allowDecimals={false} />
                         <Legend wrapperStyle={{ bottom: 5, left: 90, width: 993 }} />
-                        {labels.map((label, index) => ( 
+                        {labels.map((label, index) => (
                             <Bar dataKey={label} key={index} label={{ position: 'top' }}
                                 fill={colors[index % 20]}
                             />
