@@ -93,8 +93,8 @@ export class Details extends Component {
 
     renderRow = (item, index) => {
         const feedbackDateFormat = DateTimeService.toShortDateTimeFormat(item.feedbackDate);
-        const createDateFormat = DateTimeService.toShortDateTimeFormat(item.createDate);
-        const solveDateFormat = DateTimeService.toShortDateTimeFormat(item.solveDate);
+        const createDateFormatDate = DateTimeService.toShortDateTimeFormat(item.createDate);
+        const solveDateFormatDate = DateTimeService.toShortDateTimeFormat(item.solveDate);
         return (
             <Row key={`${item.feedbackId}-${index}`} className={`manage-feedback-row ${this.renderStatus(item.status)}`}>
                 <Cell>
@@ -104,12 +104,10 @@ export class Details extends Component {
                     </div>
                     <div className="pl-3">
                         <div className="py-1">Feedback date <strong>{feedbackDateFormat}</strong></div>
-                        <div className="py-1">By<strong> {item.creatorName} </strong>on {createDateFormat}</div>
+                        <div className="py-1">By<strong> {item.creatorName} </strong>on {createDateFormatDate}</div>
                         {
                             item.reviewerName &&
-                            <div className="info">
-                                Reviewed by <strong> {item.reviewerName} </strong> on {solveDateFormat}
-                            </div>
+                            <div className="info">Reviewed by <strong> {item.reviewerName} </strong> on {solveDateFormatDate}</div>
                         }
                     </div>
                 </Cell>

@@ -39,15 +39,14 @@ export class Filter extends Component {
 
     handleChangeFromDate = fromDate => {
         const currentTime = this.currentDate;
-        const maxDate = new Date(fromDate.getTime());
-        maxDate.setMonth(fromDate.getMonth() + 12);
-        maxDate.setDate(fromDate.getDate() - 1);
-
+        const fromDateGetTime = new Date(fromDate.getTime());
+        fromDateGetTime.setMonth(fromDate.getMonth() + 12);
+        fromDateGetTime.setDate(fromDate.getDate() - 1);
+        this.maxToDate = fromDateGetTime < currentTime ? fromDateGetTime : currentTime;
         this.minToDate = fromDate;
-        this.maxToDate = maxDate < currentTime ? maxDate : currentTime;
         let toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
-        const isOver1Year = DateTimeService.toDiffDays(currentTime, fromDate) > 365;
-        if(isOver1Year) {
+        const isOverOneYear = DateTimeService.toDiffDays(currentTime, fromDate) > 365;
+        if(isOverOneYear) {
             toDate = this.maxToDate;
         }
         this.setState({fromDate, toDate});
