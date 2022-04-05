@@ -173,7 +173,7 @@ export class DataGrid extends Component {
                         <Tooltip><span>Export to Excel</span></Tooltip>
                     }
                 >
-                    <span className="fa fa-file-excel-o pl-3 icon-excel" />
+                    <span className="fa fa-file-excel-o pl-3 icon-excel" onClick={this.handleExportExcel}/>
                 </OverlayTrigger>
             </div>
         );
@@ -202,6 +202,11 @@ export class DataGrid extends Component {
         }
 
         return <span>{`${reportTitle} From ${fromDate} To ${toDate} [${dynamicReports.data.totalChildReports}]`}</span>;
+    };
+
+    handleExportExcel = () => {
+        const params = this.props.gridParams;
+        this.props.exportExcel(params);
     };
 
     onPaging = (pageIndex, pageSize) => {

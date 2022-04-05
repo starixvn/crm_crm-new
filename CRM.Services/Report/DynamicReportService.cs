@@ -1,4 +1,4 @@
-﻿namespace CRM.Services.Report.DynamicReport
+﻿namespace CRM.Services.Report
 {
     using System;
     using System.Collections.Generic;

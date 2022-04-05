@@ -331,6 +331,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}_Communication_Logs_From_{1}_To_{2}.
+        /// </summary>
+        public static string DynamicReport_ExcelTitle {
+            get {
+                return ResourceManager.GetString("DynamicReport_ExcelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} Communication Logs for {1}.
         /// </summary>
         public static string DynamicReport_PeriodReport_Title {

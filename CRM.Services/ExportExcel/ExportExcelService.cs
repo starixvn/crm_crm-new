@@ -10,6 +10,7 @@
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report;
     using CRM.Models.Report.DeletedFeedbackStatistic;
+    using CRM.Models.Report.DynamicReport;
     using CRM.Models.Report.FeedbackStatistic;
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Report.RedemptionStatistics;
@@ -64,6 +65,8 @@
         byte[] ExportStatisticFeedbackDetail(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string titleExcel);
 
         byte[] ExportRedemptionStatisticsSumary(IList<RedemptionStatisticsEntity> redemptionStatistics, IDictionary<string, decimal> totals, string titleExcel, int reportBy);
+        
+        byte[] ExportDynamicReport(DynamicReportInfo dynamicReportInfos, IEnumerable<Setting> mainCategories, string titleExcel);
 
         byte[] ExportRedemptionStatisticsDetail(IEnumerable<RedemptionStatisticsDetailEntity> redemptionStatisticsDetails);
     }
@@ -223,6 +226,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/RedemptionStatistics.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new RedemptionStatisticsExcel(templatePath, redemptionStatistics, totals, titleExcel, reportBy);
+            return excel.Export();
+        }
+        
+        public byte[] ExportDynamicReport(DynamicReportInfo dynamicReportInfos, IEnumerable<Setting> mainCategories, string titleExcel)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/DynamicReport.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new DynamicReportExcel(templatePath, dynamicReportInfos, mainCategories, titleExcel);
             return excel.Export();
         }
 

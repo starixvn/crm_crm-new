@@ -23,9 +23,18 @@ const getAllSettings = () => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const exportExcel = params => async () => {
+    const url = Site.resolveClientUrl('DynamicReport/ExportExcel');
+    await DataService.getFileAsync(url, params).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
+        Site.downloadFile(response.data, fileName);
+    });
+};
+
 export const ActionCreators = {
     getDynamicReports,
     getAllSettings,
     setGridParams,
-    setViewCommunicationDialog
+    setViewCommunicationDialog,
+    exportExcel
 };

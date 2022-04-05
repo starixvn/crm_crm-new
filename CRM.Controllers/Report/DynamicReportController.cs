@@ -2,12 +2,14 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Criteria.Report.DynamicReport;
+    using CRM.Resources;
     using CRM.Services;
-    using CRM.Services.Report.DynamicReport;
+    using CRM.Services.Report;
     using CRM.ViewModels.Feedback;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
@@ -17,14 +19,17 @@
     {
         private readonly ISettingService settingService;
         private readonly IDynamicReportService dynamicReportService;
+        private readonly IExportExcelService excelService;
 
         public DynamicReportController(
             ISettingService settingService,
-            IDynamicReportService dynamicReportService
+            IDynamicReportService dynamicReportService,
+            IExportExcelService excelService
         )
         {
             this.settingService = settingService;
             this.dynamicReportService = dynamicReportService;
+            this.excelService = excelService;
         }
 
         public IActionResult Index()
@@ -62,6 +67,29 @@
                 PeriodTypes = settingService.GetAllPeriodTypes()
             };
             return Json(allSettings);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcel([FromBody] GetDynamicReportCriteria criteria)
+        {
+            string reportName = string.Format(
+                 ViewResources.DynamicReport_ExcelTitle,
+                 SettingService.GetPeriodTypeName(criteria.ReportType),
+                 criteria.FromDate.ToString("MM_dd_yyyy"),
+                 criteria.ToDate.ToString("MM_dd_yyyy")
+            );
+            var title = string.Format(
+                 ViewResources.DynamicReport_Title,
+                 SettingService.GetPeriodTypeName(criteria.ReportType),
+                 criteria.FromDate.ToShortDateFormat(),
+                 criteria.ToDate.ToShortDateFormat()
+            );
+            criteria.IsGetFullReport = true;
+
+            var logs = await dynamicReportService.GetDynamicReportAsync(criteria);
+            var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            var bytes = excelService.ExportDynamicReport(logs, mainCategories, title);
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }
 }
