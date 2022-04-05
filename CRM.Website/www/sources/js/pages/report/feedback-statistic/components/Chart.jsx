@@ -56,13 +56,13 @@ export default class Chart extends Component {
                         barGap={0}
                     >
                         <XAxis dataKey="name" scaleToFit="true" verticalAnchor= "start"
-                            interval={0} angle= {data.length > 5 ? "-90" : "0"} dy={data.length > 5 ? 120 : 0}
+                            interval={0} angle= {data.length > 5 ? '-90' : '0'} dy={data.length > 5 ? 120 : 0}
                         />
-                        <YAxis label={{ value: 'Feedback(s)', position: 'top', dy: -10 }} />
+                        <YAxis label={{ position: 'top', dy: -10, value: 'Feedback(s)'}} />
                         <Legend wrapperStyle={{ bottom: 5, left: 75 }} />
-                        {labels.map((label, index) => (
-                            <Bar dataKey={label} key={index} label={{ position: 'top'}}
-                                fill={getBackGroundColor(index)} maxBarSize={20}
+                        {labels.map((label, key) => (
+                            <Bar label={{ position: 'top'}} dataKey={label} key={key}
+                                maxBarSize={20} fill={getBackGroundColor(key)}
                             />
                         )
                         )}

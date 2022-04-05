@@ -79,8 +79,8 @@
         {
             criteria.PageIndex = 0;
             var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
-            var fromDateFormat = criteria.FromDate.ToString("MMddyyyy");
-            var toDateFormat = criteria.ToDate.ToString("MMddyyyy");
+            var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
+            var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
             var title = string.Format(ViewResources.FeedbackStatisticTitle,
                             criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             feedbackStatistic.Title = title;
@@ -94,8 +94,8 @@
         {
             criteria.PageIndex = 0;
             IEnumerable<DeletedFeedback> feedbacksDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
-            var fromDateFormat = criteria.FromDate.ToString("MMddyyyy");
-            var toDateFormat = criteria.ToDate.ToString("MMddyyyy");
+            var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
+            var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
             var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();

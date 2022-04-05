@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.Globalization;
     using System.Linq;
     using CRM.Models.Report.RedemptionStatistics;
     using CRM.Resources;
@@ -62,7 +63,7 @@
                 worksheet.Cells[rowIndex, colIndex++].Value = redemption.Currency;
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-                worksheet.Cells[rowIndex, colIndex].Value = redemption.Amount.ToString();
+                worksheet.Cells[rowIndex, colIndex].Value = redemption.Amount.ToString(CultureInfo.InvariantCulture);
                 if ((index & 1) == 0)
                 {
                     SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
@@ -82,7 +83,7 @@
             worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.Cells[rowIndex, colIndex++].Value = totals.Keys.First();
             worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Cells[rowIndex, colIndex].Value = totals.Values.First().ToString();
+            worksheet.Cells[rowIndex, colIndex].Value = totals.Values.First().ToString(CultureInfo.InvariantCulture);
             for (int index = 1; index < totals.Count; index++)
             {
                 colIndex = StartTotalCount;
@@ -132,7 +133,7 @@
             cell.Style.Font.Bold = true;
         }
 
-        private string GetDateString(int year, int month)
+        private static string GetDateString(int year, int month)
         {
             DateTime date = new DateTime(year, month, 1);
             return year.ToString() + " " +  date.ToString("MMM");

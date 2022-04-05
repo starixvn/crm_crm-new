@@ -40,31 +40,30 @@ export class Filter extends Component {
 
     handleChangeFromDate = fromDate => {
         const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
-        const maxDate = new Date(fromDate.getTime());
-        maxDate.setMonth(fromDate.getMonth() + 3);
-        maxDate.setDate(fromDate.getDate() - 1);
-
+        const fromDateTime = new Date(fromDate.getTime());
+        fromDateTime.setMonth(fromDate.getMonth() + 3);
+        fromDateTime.setDate(fromDate.getDate() - 1);
+        this.maxToDate = fromDateTime < currentTime ? fromDateTime : currentTime;
         this.minToDate = fromDate;
-        this.maxToDate = maxDate < currentTime ? maxDate : currentTime;
         let toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
         const isOver1Year = DateTimeService.toDiffDays(currentTime, fromDate) > 365;
         if(isOver1Year) {
             toDate = this.maxToDate;
         }
-        this.setState({fromDate, toDate});
+        this.setState({toDate, fromDate});
     };
 
-    handleChangeDropdown = (name, selectedItemsKey) => {
+    handleChange = event => {
         this.setState({
             ...this.state,
-            [name]: selectedItemsKey
+            [event.target.name]: event.target.value
         });
     };
 
-    handleChange = evt => {
+    handleChangeDropdown = (name, selectedKey) => {
         this.setState({
             ...this.state,
-            [evt.target.name]: evt.target.value
+            [name]: selectedKey
         });
     };
 
