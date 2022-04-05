@@ -336,6 +336,26 @@
             };
         }
 
+        public static string GetPeriodTypeName(int periodType)
+        {
+            switch (periodType)
+            {
+                case PeriodTypeConstants.Daily:
+                    return ViewResources.Daily;
+
+                case PeriodTypeConstants.Weekly:
+                    return ViewResources.Weekly;
+
+                case PeriodTypeConstants.Monthly:
+                    return ViewResources.Monthly;
+
+                case PeriodTypeConstants.Yearly:
+                    return ViewResources.Yearly;
+                default:
+                    return string.Empty;
+            }
+        }
+
         public async Task<IEnumerable<Setting>> GetAllMainSubCategoriesAsync()
         {
             var mainCategories = await GetMainCategoryAsync();

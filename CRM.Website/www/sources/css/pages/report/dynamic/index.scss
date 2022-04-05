@@ -99,12 +99,16 @@ td.group-collapse-expand {
     cursor: pointer;
 }
 
-.pending{
+.pending {
     background-color: #f0edc4;
 }
 
-.closed{
-    background-color: #ddd;
+.closed {
+    background-color: #dddddd;
+}
+
+.checked {
+    background-color: #f2f2f2;
 }
 
 .icon {

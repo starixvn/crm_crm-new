@@ -68,6 +68,9 @@
     <Folder Include="www\sources\js\pages\pic-and-headline\pic-assignment\" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="ExcelTemplates\DynamicReport.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ExcelTemplates\RedemptionStatisticsDetail.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

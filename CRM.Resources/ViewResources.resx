@@ -486,6 +486,9 @@
   <data name="RedemptionStatistics_ExcelFile" xml:space="preserve">
     <value>Redemption_Statistics_{0}_{1}</value>
   </data>
+  <data name="DynamicReport_ExcelTitle" xml:space="preserve">
+    <value>{0}_Communication_Logs_From_{1}_To_{2}</value>
+  </data>
   <data name="RedemptionStatisticsDetail" xml:space="preserve">
     <value>Redemption Statistics Detail</value>
   </data>
