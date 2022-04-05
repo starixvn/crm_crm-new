@@ -72,7 +72,7 @@ export class Filter extends Component {
         maxDate.setMonth(fromDate.getMonth() + 12);
         maxDate.setDate(fromDate.getDate() - 1);
 
-        let maxDateEndWeek = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+        const maxDateEndWeek = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
         maxDateEndWeek.setDate(maxDate.getDate() - maxDate.getDay() + 6);
         maxDate = maxDateEndWeek;
 
@@ -99,11 +99,11 @@ export class Filter extends Component {
     };
 
     handleUpdateFromMonth = firstDateMonth => {
-        let maxDate = new Date(firstDateMonth.getTime());
+        const maxDate = new Date(firstDateMonth.getTime());
         maxDate.setMonth(firstDateMonth.getMonth() + 12);
         maxDate.setDate(firstDateMonth.getDate() - 1);
 
-        let currentToDate = this.state.toDate;
+        const currentToDate = this.state.toDate;
 
         this.minToDate = firstDateMonth;
         this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;

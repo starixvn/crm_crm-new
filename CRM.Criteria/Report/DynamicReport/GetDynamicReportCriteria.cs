@@ -57,6 +57,6 @@
 
         public override string GetSettingKey() => "Acc_CRM_Rpt_DynamicFeedback";
 
-        public override bool IsValid() => FromDate <= ToDate && (ToDate - FromDate).Days <= Constants.DaysOfYear;
+        public override bool IsValid() => FromDate <= ToDate && (ToDate - FromDate).Days <= Constants.DaysOfYear + Constants.DaysOfWeek;
     }
 }
