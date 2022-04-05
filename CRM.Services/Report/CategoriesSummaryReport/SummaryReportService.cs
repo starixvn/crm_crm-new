@@ -8,6 +8,7 @@ using CRM.Models.Report.CategoriesSummaryReport;
 using CRM.Resources;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,7 +47,7 @@ namespace CRM.Services.Report.CategoriesSummaryReport
             var rawData = await baseService.GetDataAsync<SummaryRawData>(criteria);
             IEnumerable<SummaryRawData> dataList = rawData.Where(c => categoryIds.Contains(c.MainCategoryId)).ToList();
 
-            var monthData = dataList.OrderBy(s => s.M).Select(s => s.Month.ToUpper()).Distinct().ToList();
+            var monthData = dataList.OrderBy(s => s.M).Select(s => s.Month.ToUpper(CultureInfo.InvariantCulture)).Distinct().ToList();
             IDictionary<string, Summary> grandTotal = InitializeSummaries(monthData);
             var mainCategoryGroup = dataList.GroupBy(s => (MainCategoryId: s.MainCategoryId, MainCategory: s.MainCategory));
 
@@ -109,7 +110,7 @@ namespace CRM.Services.Report.CategoriesSummaryReport
             }
         }
 
-        private void CalculateDataSubcategory(
+        private static void CalculateDataSubcategory(
             IDictionary<string, Summary> categoryTotal,
             IDictionary<string, Summary> grandTotal,
             IList<CategorySummary> subCategorySummaries,
@@ -119,7 +120,7 @@ namespace CRM.Services.Report.CategoriesSummaryReport
         {
             foreach (var summary in subKey)
             {
-                string month = summary.Month.ToUpper();
+                string month = summary.Month.ToUpper(CultureInfo.InvariantCulture);
                 int numberOfIssues = summary.NoOfIssues;
                 summaryHash[month].Amount = numberOfIssues;
 

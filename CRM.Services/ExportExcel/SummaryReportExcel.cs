@@ -16,7 +16,10 @@ namespace CRM.Services.ExportExcel
         private const int heightRowLarge = 30;
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
-        private readonly byte LastColumns = 1;
+        private const int FromRow = 3;
+        private const int RowMergeHeader = 0b10;
+        private const int GrandTotalRow = 2;
+        private readonly byte LastColumns;
         private int rowIndex = RowStartBody;        
 
         public SummaryReportExcel(string templatePath, SummaryReportModel report, int year)
@@ -44,8 +47,8 @@ namespace CRM.Services.ExportExcel
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]
                  .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]);
-            worksheet.Cells[1, 1, RowStartHeader - 2, summaryreportInfo.Months.Count+1].Merge = true;
-            worksheet.Cells[3, 1, RowStartHeader - 1, summaryreportInfo.Months.Count+1].Merge = true;
+            worksheet.Cells[1, 1, ToRow: RowStartHeader - RowMergeHeader, summaryreportInfo.Months.Count+1].Merge = true;
+            worksheet.Cells[FromRow: FromRow, 1, RowStartHeader - 1, summaryreportInfo.Months.Count+1].Merge = true;
             worksheet.Cells[1, 1].Value = summaryreportInfo.ReportTitle;
             worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
@@ -75,8 +78,8 @@ namespace CRM.Services.ExportExcel
             {
                 if (report.GrandTotals[i].Month == report.Months[j])
                 {
-                    worksheet.Cells[rowIndex, 2 + j].Value = report.GrandTotals[i].Amount;
-                    worksheet.Cells[rowIndex, 2 + j].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells[rowIndex, GrandTotalRow + j].Value = report.GrandTotals[i].Amount;
+                    worksheet.Cells[rowIndex, GrandTotalRow + j].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 }
             }
         }
