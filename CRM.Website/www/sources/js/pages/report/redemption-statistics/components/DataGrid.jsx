@@ -12,7 +12,7 @@ export class DataGrid extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Date')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={15} sortOrder='desc' sortBy='currency'>{LangHelper.getResource('Currency')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Amount')}</HeaderCell>
             </HeaderRow>
         );
@@ -117,6 +117,19 @@ export class DataGrid extends Component {
         this.props.getRedemptionDetails(paramDetail);
     };
 
+    onSort = (sortBy, sortOrder) => {
+        const { gridData } = this.props;
+        const cloneGridData = [...gridData.data];
+        let gridDataSortAsc = null;
+        if(sortOrder === 'asc'){
+            gridDataSortAsc = cloneGridData.sort((first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1);
+            this.props.setRedemptionSummary({...this.props.gridData, data: gridDataSortAsc});
+        }else{
+            gridDataSortAsc = cloneGridData.sort((first, second) => first[`${sortBy}`] < b[`${sortBy}`] ? 1 : -1);
+        }
+        this.props.setRedemptionSummary({...this.props.gridData, data: gridDataSortAsc});
+    };
+
     render() {
         const { gridData } = this.props;
         if(!gridData || !gridData.data){
@@ -137,6 +150,7 @@ export class DataGrid extends Component {
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
+                    onSort={this.onSort}
                     containerPadding={0}
                     adjustedHeight={10}
                 />
