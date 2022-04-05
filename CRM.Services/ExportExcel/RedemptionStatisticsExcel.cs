@@ -92,7 +92,7 @@
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = item.Key;
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells[rowIndex, colIndex].Value = item.Value.ToString();
+                worksheet.Cells[rowIndex, colIndex].Value = item.Value.ToString(CultureInfo.InvariantCulture);
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             }
             DrawBorderCell(worksheet.Cells[1, 1, rowIndex, TotalColumns]);
