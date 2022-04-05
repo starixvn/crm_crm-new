@@ -32,7 +32,7 @@ export class Detail extends Component {
             return gridDataDetails.map((item, index) => this.renderRow(item, index));
         }
         return [
-            <Row key='body-nodata' className="no-data" >
+            <Row className="no-data" >
                 <Cell className='text-center' colSpan={7}>{LangHelper.getResource('ThereIsNoData')}</Cell>
             </Row>
         ];
