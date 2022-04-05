@@ -16,7 +16,7 @@ export class DataGrid extends Component {
         this.state = {
             toggles: [],
             isExpand: true
-        }
+        };
     }
 
     buildHeader = () => {
@@ -28,7 +28,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={45}>{LangHelper.getResource('MainCategoryAndSubCategory')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Duration	')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('Duration')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Username')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Reviewer')}</HeaderCell>
@@ -106,7 +106,7 @@ export class DataGrid extends Component {
         if (!isExpand) {
             this.setState({ toggles: [], isExpand: true });
         } else {
-            for(var i = 0; i < this.props.dynamicReports.data.childReports.length; i++) {
+            for(let i = 0; i < this.props.dynamicReports.data.childReports.length; i++) {
                 allItem.push(i);
             }
             this.setState({ toggles: allItem, isExpand: false});
@@ -157,7 +157,7 @@ export class DataGrid extends Component {
                         <Tooltip><span>View Chart</span></Tooltip>
                     }
                 >
-                    <span className="fa fa-bar-chart pl-3 icon" />
+                    <span className="fa fa-bar-chart pl-3 icon" onClick={this.handleViewChart}/>
                 </OverlayTrigger>
                 <OverlayTrigger
                     placement="auto"
@@ -182,7 +182,7 @@ export class DataGrid extends Component {
     renderGenerateTitle = () => {
         const { reportType, fromDate, toDate } = this.props.gridParams;
         const { dynamicReports } = this.props;
-        var reportTitle = '';
+        let reportTitle = '';
 
         switch (reportType) {
             case 1:
@@ -209,6 +209,11 @@ export class DataGrid extends Component {
         this.props.exportExcel(params);
     };
 
+    handleViewChart = () => {
+        const data = this.props.dynamicReports.data
+        this.props.setViewChartDialog({ show: true, chartInfo: data.chartInfo });
+    };
+
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
         params['pageSize'] = pageSize;
@@ -216,7 +221,7 @@ export class DataGrid extends Component {
 
         this.setState({ toggles: [], isExpand: true });
         this.props.setGridParams(params);
-        this.props.getDynamicReports(params);
+        this.props.getDynamicReports({...params, pageIndex: params.pageIndex - 1});
     };
 
     render() {

@@ -1,6 +1,7 @@
 ﻿namespace CRM.Criteria.Report.DynamicReport
 {
     using System;
+    using CRM.Core.Constants;
     using Fanex.Data;
     using Fanex.Data.Repository;
 
@@ -52,8 +53,10 @@
         [SpParam(Ignored = true)]
         public bool IsGetFullReport { get; set; }
 
+        public short UserRole { get; } = Constants.UserRole;
+
         public override string GetSettingKey() => "Acc_CRM_Rpt_DynamicFeedback";
 
-        public override bool IsValid() => FromDate <= ToDate && (ToDate - FromDate).Days <= 372;
+        public override bool IsValid() => FromDate <= ToDate && (ToDate - FromDate).Days <= Constants.DaysOfYear;
     }
 }

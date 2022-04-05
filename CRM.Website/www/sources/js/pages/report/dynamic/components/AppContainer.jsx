@@ -6,22 +6,29 @@ import { bindActionCreators } from 'redux';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import FeedbackDetails from '../../deleted-feedback-statistic/components/FeedbackDetails';
+import Chart from './Chart';
 
 export class AppContainer extends Component {
     static propTypes = {
-        viewCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
+        viewCommunicationDialog: PropTypes.shape({ show: PropTypes.bool, chartInfo: PropTypes.object }).isRequired,
+        viewChartDialog: PropTypes.shape({ show: PropTypes.bool, chartInfo: {} }).isRequired
     };
 
     static defaultProps = {
-        viewCommunicationDialog: { show: false }
+        viewCommunicationDialog: { show: false },
+        viewChartDialog: { show: false, chartInfo: {} }
     };
 
     handleCloseViewCommunication = () => {
         this.props.setViewCommunicationDialog({ show: false });
-    }
+    };
+
+    handleCloseViewChart = () => {
+        this.props.setViewChartDialog({ show: false });
+    };
 
     render() {
-        const { viewCommunicationDialog } = this.props;
+        const { viewCommunicationDialog, viewChartDialog } = this.props;
         return (
             <div>
                 <Filter />
@@ -34,6 +41,13 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseViewCommunication}
                     />
                 }
+                {
+                    viewChartDialog.show &&
+                    <Chart
+                        onClose={this.handleCloseViewChart}
+                        chartInfo={viewChartDialog.chartInfo}
+                    />
+                }
             </div>
         );
     }
@@ -42,8 +56,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { viewCommunicationDialog } = state;
-    return { viewCommunicationDialog };
+    const { viewCommunicationDialog, viewChartDialog } = state;
+    return { viewCommunicationDialog, viewChartDialog };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
