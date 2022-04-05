@@ -342,6 +342,7 @@
                     startSplittingIndex = 0;
                 }
 
+                #pragma warning disable S3240 // The simplest possible condition syntax should be used
                 if (currentIndex + periodGroup.ChildReports.Count - 1 <= endIndex)
                 {
                     endSplittingIndex = periodGroup.ChildReports.Count - 1;
@@ -349,8 +350,7 @@
                 else
                 {
                     endSplittingIndex = startSplittingIndex + (endIndex - currentIndex) <= periodGroup.ChildReports.Count ?
-                        (endIndex - currentIndex) + startSplittingIndex :
-                        periodGroup.ChildReports.Count - 1;
+                        (endIndex - currentIndex) + startSplittingIndex : periodGroup.ChildReports.Count - 1;
                 }
 
                 pagingLogList.Add(new DynamicReportInfo

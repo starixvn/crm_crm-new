@@ -68,24 +68,23 @@ export class Filter extends Component {
         const firstDayOfWeek = fromDate.getDate() - fromDate.getDay();
         fromDate.setDate(firstDayOfWeek);
 
-        var maxDate = new Date(fromDate.getTime());
+        let maxDate = new Date(fromDate.getTime());
         maxDate.setMonth(fromDate.getMonth() + 12);
         maxDate.setDate(fromDate.getDate() - 1);
 
-        var maxDateEndWeek = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+        let maxDateEndWeek = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
         maxDateEndWeek.setDate(maxDate.getDate() - maxDate.getDay() + 6);
         maxDate = maxDateEndWeek;
 
-        var currentToDate = this.state.toDate;
+        let currentToDate = this.state.toDate;
         if (currentToDate < fromDate) {
             currentToDate = fromDate;
-        }
-        else if (currentToDate > maxDate) {
+        } else if (currentToDate > maxDate) {
             currentToDate = maxDate;
         }
 
         this.minToDate = fromDate;
-        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate
+        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
         this.setState({
             fromDate: fromDate,
             toDate: currentToDate
@@ -100,14 +99,14 @@ export class Filter extends Component {
     };
 
     handleUpdateFromMonth = firstDateMonth => {
-        var maxDate = new Date(firstDateMonth.getTime());
+        let maxDate = new Date(firstDateMonth.getTime());
         maxDate.setMonth(firstDateMonth.getMonth() + 12);
         maxDate.setDate(firstDateMonth.getDate() - 1);
 
-        var currentToDate = this.state.toDate;
+        let currentToDate = this.state.toDate;
 
         this.minToDate = firstDateMonth;
-        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate
+        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
         this.setState({
             fromDate: firstDateMonth,
             toDate: new Date(currentToDate.setFullYear(firstDateMonth.getFullYear()))
@@ -120,16 +119,16 @@ export class Filter extends Component {
 
     handleUpdateFromYear = firstDateYear => {
         this.minToDate = firstDateYear;
-        this.maxToDate = this.currentDate
+        this.maxToDate = this.currentDate;
         this.setState({
             fromDate: firstDateYear,
             toDate: new Date(firstDateYear.getFullYear(), 11, 31)
-        })
+        });
     };
 
     renderFilterDate = () => {
-        var resFromDate = {}, resToDate = {};
-        var dateFormat = '';
+        let resFromDate = {}, resToDate = {};
+        let dateFormat = '';
         switch (this.state.reportType) {
             case 1:
                 dateFormat = 'MMM dd, yyyy';
@@ -162,7 +161,7 @@ export class Filter extends Component {
                 resFromDate = {
                     ...propsMonth,
                     onChange: this.handleUpdateFromMonth
-                }
+                };
                 resToDate = {
                     ...propsMonth,
                     onChange: this.handleUpdateToMonth
@@ -174,7 +173,7 @@ export class Filter extends Component {
                 resFromDate = {
                     ...propsYear,
                     onChange: this.handleUpdateFromYear
-                }
+                };
                 resToDate = {
                     ...propsYear
                 };
@@ -216,7 +215,7 @@ export class Filter extends Component {
                     </div>
                 </div>
             </React.Fragment>
-        )
+        );
     };
 
     renderItems = (name, value, key) => <option key={key} value={value}>{name}</option>;
@@ -318,13 +317,12 @@ export class Filter extends Component {
             subCategoryId: subCategoryId,
             reviewer: reviewer,
             subject: subject,
-            userRole: 2,
             pageIndex: 0,
             pageSize: 100
         };
 
         this.props.getDynamicReports(params);
-        this.props.setGridParams(params);
+        this.props.setGridParams({...params, pageIndex: params.pageIndex + 1 });
     };
 
     render() {

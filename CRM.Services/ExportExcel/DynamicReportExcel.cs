@@ -22,6 +22,17 @@
         private const byte TotalCols = 10;
         private int RowStart = 5;
 
+        private const int ColumnIndexNumber = 1;
+        private const int ColumnRunningNo = 2;
+        private const int ColumnFeedbackDate = 3;
+        private const int ColumnCategory = 4;
+        private const int ColumnSubject = 5;
+        private const int ColumnStatus = 6;
+        private const int ColumnDuration = 7;
+        private const int ColumnUsername = 8;
+        private const int ColumnHandler = 9;
+        private const int ColumnReviewer = 10;
+
         public DynamicReportExcel(
             string templatePath,
             DynamicReportInfo dynamicReportInfos,
@@ -117,10 +128,10 @@
         {
             StyleDefault(worksheet);
             worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Column(2).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-            worksheet.Column(3).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Column(ColumnRunningNo).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Column(ColumnFeedbackDate).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Column(ColumnStatus).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Column(ColumnDuration).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
@@ -130,18 +141,6 @@
             const int RowHeight = 60;
             const int WidthLarge = 25;
             const int WidthLarger = 40;
-
-            const int ColumnIndexNumber = 1;
-            const int ColumnRunningNo = 2;
-            const int ColumnFeedbackDate = 3;
-            const int ColumnCategory = 4;
-            const int ColumnSubject = 5;
-            const int ColumnStatus = 6;
-            const int ColumnDuration = 7;
-            const int ColumnUsername = 8;
-            const int ColumnHandler = 9;
-            const int ColumnReviewer = 10;
-
 
             const int TotalColumn = TotalCols;
             worksheet.DefaultColWidth = WidthNormal;
@@ -158,7 +157,8 @@
             worksheet.Column(ColumnHandler).Width = WidthNormal;
             worksheet.Column(ColumnReviewer).Width = WidthNormal;
 
-            for (var index = 0; index < dynamicReportInfos.TotalChildReports + dynamicReportInfos.ChildReports.Count(); index++)
+            var childReports = dynamicReportInfos.ChildReports.Count;
+            for (var index = 0; index < dynamicReportInfos.TotalChildReports + childReports; index++)
             {
                 worksheet.Row(RowStartBody + index).Height = RowHeight;
                 DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumn]);
