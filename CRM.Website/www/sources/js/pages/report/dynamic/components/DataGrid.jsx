@@ -210,7 +210,7 @@ export class DataGrid extends Component {
     };
 
     handleViewChart = () => {
-        const data = this.props.dynamicReports.data
+        const data = this.props.dynamicReports.data;
         this.props.setViewChartDialog({ show: true, chartInfo: data.chartInfo });
     };
 
