@@ -10,6 +10,7 @@
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report;
     using CRM.Models.Report.CustomerReport;
+    using CRM.Models.Report.CategoriesSummaryReport;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.DynamicReport;
     using CRM.Models.Report.FeedbackStatistic;

@@ -49,7 +49,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <span className="fa fa-bar-chart icon pl-3" onClick={this.handleShowChart}/>
+                    <span className="fa fa-bar-chart icon pl-3" onClick={this.handleShowChart} />
                 </OverlayTrigger>
                 <OverlayTrigger
                     overlay={
@@ -126,21 +126,14 @@ export class DataGrid extends Component {
 
     buildBody = (categorySummaries) => {
         const rows = [];
-        if (categorySummaries.length > 0) {
-            rows.push(
-                categorySummaries.map(item =>
-                    this.renderMainCategoryRows(item))
-            );
-            return rows;
-        }
-        return [
-            <Row key={`body${1}`} className="no-data" >
-                <Cell className='text-center' colSpan={15}>{LangHelper.getResource('ThereIsNoData')}</Cell>
-            </Row>
-        ];
+        rows.push(
+            categorySummaries.map(item =>
+                this.renderMainCategoryRows(item))
+        );
+        return rows;
     };
 
-    renderSubCategoryRows = (parentId,sub) => {
+    renderSubCategoryRows = (parentId, sub) => {
         const toggle = this.state.toggleRowReport
         if (!toggle.includes(parentId)) {
             const cells = [];
@@ -203,7 +196,7 @@ export class DataGrid extends Component {
         );
         if (item.subCategories.length > 0) {
             rows.push(
-                item.subCategories.map(sub => this.renderSubCategoryRows(item.id,sub))
+                item.subCategories.map(sub => this.renderSubCategoryRows(item.id, sub))
             );
         }
         return rows;
@@ -213,9 +206,13 @@ export class DataGrid extends Component {
         const { categorySummaries, grandTotals, months, reportTitle } = this.props.gridData;
         const width = this.calculateWidth(months);
 
+        if (categorySummaries.length === 0) {
+            return null;
+        }
+
         return (
             <div className='table-mbc'>
-                <div style={{ maxWidth: width, minWidth:350 }} className='table-title d-flex justify-content-between align-items-center'>
+                <div style={{ maxWidth: width, minWidth: 350 }} className='table-title d-flex justify-content-between align-items-center'>
                     <span>{reportTitle}</span>
                     {
                         categorySummaries.length > 0 && this.renderCustomButtonReport()

@@ -414,9 +414,6 @@
   <data name="AddCustomerFeedback" xml:space="preserve">
     <value>Add Feedback</value>
   </data>
-  <data name="CategoriesSummaryReport" xml:space="preserve">
-    <value>Categories Summary Report</value>
-  </data>
   <data name="SheetNameSummaryReport" xml:space="preserve">
     <value>Categories_Summary_{0}</value>
   </data>
@@ -518,6 +515,9 @@
   </data>
   <data name="Redemption_Statistics_Detail_Title" xml:space="preserve">
     <value>Redemption Statistics Detail Report</value>
+  </data>
+  <data name="CategoriesSummaryReport" xml:space="preserve">
+    <value>Categories Summary Report</value>
   </data>
   <data name="SettingRelationV2" xml:space="preserve">
     <value>Setting Relation v2</value>

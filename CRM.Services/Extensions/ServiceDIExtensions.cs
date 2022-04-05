@@ -18,6 +18,8 @@
     using CRM.Services.ActionLog;
     using CRM.Services.Dashboard;
     using CRM.Services.Report;
+    using CRM.Services.Report.DynamicReport;
+    using CRM.Services.Report.CategoriesSummaryReport;
 
     public static class ServiceDIExtensions
     {
@@ -49,6 +51,7 @@
             services.AddTransient<IActionLogService, ActionLogService>();
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<ILogStatisticsService, LogStatisticsService>();
+            services.AddTransient<ISummaryReportService, SummaryReportService>();
             services.AddTransient<IIssueStatisticsService, IssueStatisticsService>();
             services.AddTransient<IDynamicReportService, DynamicReportService>();
             services.AddTransient<ICustomerReportService, CustomerReportService>();
