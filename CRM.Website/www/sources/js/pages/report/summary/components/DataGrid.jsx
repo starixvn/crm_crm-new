@@ -20,6 +20,8 @@ export class DataGrid extends Component {
         if (this.props.gridData !== nextProps.gridData) {
             nextState.shouldResetScrollPosition = true;
             nextState.toggleRowReport = [];
+            nextState.isCollapseReport = false;
+
         }
         if (this.state.toggleRowReport.length > 0) {
             nextState.shouldResetScrollPosition = false;
