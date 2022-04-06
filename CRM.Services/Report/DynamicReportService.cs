@@ -21,17 +21,14 @@
     public class DynamicReportService : IDynamicReportService
     {
         private readonly IBaseService baseService;
-        private readonly ISettingService settingService;
         private readonly ICommonService commonService;
 
         public DynamicReportService(
             IBaseService baseService,
-            ISettingService settingService,
             ICommonService commonService
         )
         {
             this.baseService = baseService;
-            this.settingService = settingService;
             this.commonService = commonService;
         }
 
