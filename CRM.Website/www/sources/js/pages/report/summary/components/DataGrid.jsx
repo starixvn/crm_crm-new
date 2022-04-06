@@ -134,8 +134,8 @@ export class DataGrid extends Component {
     };
 
     renderSubCategoryRows = (parentId, sub) => {
-        const toggle = this.state.toggleRowReport
-        var emptyString = '';
+        const toggle = this.state.toggleRowReport;
+        const emptyString = '';
         if (!toggle.includes(parentId)) {
             const cells = [];
             cells.push(<Cell className='child' style={{ width: 280, 'paddingLeft': 20 }}>{sub.name}</Cell>);
@@ -145,7 +145,7 @@ export class DataGrid extends Component {
                         <span>{sumMonth.amount === 0 ? emptyString : sumMonth.amount}</span>
                     </Cell>
                 );
-            })
+            });
             return (
                 <Row key={`child-${sub.id}`}>
                     {cells}
@@ -176,7 +176,7 @@ export class DataGrid extends Component {
         const rows = [];
         const cells = [];
         const toggles = this.state.toggleRowReport;
-        var emptyString = '';
+        const emptyString = '';
 
         cells.push(
             <Cell className='complaints-text' >
@@ -190,7 +190,7 @@ export class DataGrid extends Component {
                     <span>{sumMonth.amount === 0 ? emptyString : sumMonth.amount}</span>
                 </Cell>
             );
-        })
+        });
         rows.push(
             <Row key={`parent-${item.id}`} className='parent-level-0' onClick={() => this.handleToggleRow(item.id)}>
                 {cells}
@@ -234,8 +234,8 @@ export class DataGrid extends Component {
                 />
             </div>
         )
-    }
-}
+    };
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
