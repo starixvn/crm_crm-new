@@ -6,7 +6,6 @@ import summaryReport, {
 } from '../summaryReportSlice';
 
 describe('summaryReport reducer', () => {
-
     it('should handle setAllSettings', () => {
         expect(
             summaryReport({}, {
@@ -57,7 +56,6 @@ describe('summaryReport reducer', () => {
             }
         });
     });
-
 
     it('should handle setGridData', () => {
         expect(
