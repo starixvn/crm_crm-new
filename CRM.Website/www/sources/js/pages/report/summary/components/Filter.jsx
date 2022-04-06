@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 
-
 export class Filter extends PureComponent {
     constructor(props) {
         super(props);
@@ -92,7 +91,6 @@ export class Filter extends PureComponent {
 
     render() {
         const { gridParams } = this.props;
-
         const {categoryOptions, siteOptions} = this.state;
 
         return (

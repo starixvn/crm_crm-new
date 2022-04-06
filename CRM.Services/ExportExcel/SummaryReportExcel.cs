@@ -16,7 +16,7 @@ namespace CRM.Services.ExportExcel
         private const int heightRowLarge = 30;
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
-        private const int FromRow = 3;
+        private const int FromRowMergeTitle = 3;
         private const int RowMergeHeader = 0b10;
         private const int GrandTotalRow = 2;
         private readonly byte LastColumns;
@@ -48,7 +48,7 @@ namespace CRM.Services.ExportExcel
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]
                  .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]);
             worksheet.Cells[1, 1, RowStartHeader - RowMergeHeader, summaryreportInfo.Months.Count+1].Merge = true;
-            worksheet.Cells[FromRow, 1, RowStartHeader - 1, summaryreportInfo.Months.Count+1].Merge = true;
+            worksheet.Cells[FromRowMergeTitle, 1, RowStartHeader - 1, summaryreportInfo.Months.Count+1].Merge = true;
             worksheet.Cells[1, 1].Value = summaryreportInfo.ReportTitle;
             worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
@@ -163,14 +163,10 @@ namespace CRM.Services.ExportExcel
             {
                 worksheet.Cells[rowIndex, colIndex].Value = itemMainCategory.Name;
                 worksheet.Row(rowIndex).Height = heightRowLarge;
-
                 SetBackgroundCategories(worksheet.Cells[rowIndex, colIndex, rowIndex, LastColumns]);
                 SetValueColMonthsMainCategory(itemMainCategory, colIndex, report, worksheet);
-
                 rowIndex++;
-
-                SetValueSubCategory(itemMainCategory, colIndex, report, worksheet);
-                
+                SetValueSubCategory(itemMainCategory, colIndex, report, worksheet);                
             }
         }
 

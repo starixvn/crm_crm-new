@@ -18,8 +18,6 @@ namespace CRM.Services.Report.CategoriesSummaryReport
     {
         Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria);
         Task<dynamic> AllSettings();
-
-
     }
     public class SummaryReportService : ISummaryReportService
     {
@@ -69,7 +67,6 @@ namespace CRM.Services.Report.CategoriesSummaryReport
             Summary> grandTotal
             )
         {
-
             foreach (var mainKey in mainCategoryGroup)
             {
                 IDictionary<string, Summary> categoryTotal = InitializeSummaries(monthData);
