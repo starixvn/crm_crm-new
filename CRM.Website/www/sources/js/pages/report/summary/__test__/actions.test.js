@@ -18,6 +18,32 @@ describe('actionCreators', () => {
         jest.clearAllMocks();
     });
 
+    
+    describe('getAllSetting', () => {
+        it('should handle setAllSettings when fetching getAllSettings have been done', async () => {
+            // Arrange
+            const response = {
+                data: {
+                    categories: [],
+                    siteTypes: [],
+                    yearRange: []                    
+                }
+            };
+            const promise = Promise.resolve(response);
+            Site.blockUI = jest.fn();
+            Site.unblockUI = jest.fn();
+            DataService.postDataAsync = jest.fn(() => promise);
+            const expectedActions = [{ type: ActionCreators.setAllSetting.type, payload: response.data }];
+            const store = mockStore({ allSettingData:null });
+
+            // Act
+            await store.dispatch(ActionCreators.getAllSetting());
+
+            // Assert
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
     describe('getGridData', () => {
         it('should handle setGridData when fetching summary report has been done', async () => {
             const expectedParams = {
