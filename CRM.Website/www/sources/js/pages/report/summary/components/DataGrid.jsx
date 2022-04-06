@@ -233,9 +233,9 @@ export class DataGrid extends Component {
                     shouldResetScrollPosition={this.state.shouldResetScrollPosition}
                 />
             </div>
-        )
-    };
-};
+        );
+    }
+}
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
