@@ -1,16 +1,37 @@
 import summaryReport, {
+    setAllSetting,
     setGridParams,
     setGridData,
     setChartPopup
 } from '../summaryReportSlice';
 
 describe('summaryReport reducer', () => {
+
+    it('should handle setAllSettings', () => {
+        expect(
+            summaryReport({}, {
+                type: setAllSetting.type,
+                payload: {
+                    categories: [],
+                    siteTypes: [],
+                    yearRange: []
+                }
+            })
+        ).toEqual({
+            allSettingData: {
+                categories: [],
+                siteTypes: [],
+                yearRange: []
+            }
+        });
+    });
+
     it('should handle initial state', () => {
         expect(summaryReport(undefined, {})).toEqual({
-            allSettingData:null,   
+            allSettingData: null,
             gridParams: {
                 year: new Date().getFullYear(),
-                categories:'',
+                categories: '',
                 siteType: 0
             },
             gridData: null,
@@ -37,7 +58,7 @@ describe('summaryReport reducer', () => {
         });
     });
 
-    
+
     it('should handle setGridData', () => {
         expect(
             summaryReport({}, {
@@ -84,7 +105,7 @@ describe('summaryReport reducer', () => {
                             ]
                         }
                     ],
-                    grandTotals:[
+                    grandTotals: [
                         {
                             amount: 1,
                             month: "FEB"
@@ -145,7 +166,7 @@ describe('summaryReport reducer', () => {
                         ]
                     }
                 ],
-                grandTotals:[
+                grandTotals: [
                     {
                         amount: 1,
                         month: "FEB"
