@@ -21,15 +21,15 @@ export class Chart extends PureComponent {
                     obj[categorySummariy.name] = report.amount;
                 }
             }
-        })        
+        });
         return obj;
-    }
+    };
 
     convertDataChart = (months, categorySummaries) => {
         const data = months.map(month => {
             const obj = { name: month };
             categorySummaries.map(categorySummariy => {
-                this.AddCategorySummariy(categorySummariy, obj, month);                
+                this.AddCategorySummariy(categorySummariy, obj, month);
             });
             return obj;
         });
