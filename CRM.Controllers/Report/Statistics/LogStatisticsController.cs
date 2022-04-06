@@ -10,7 +10,7 @@
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
 
-    public class LogStatisticsController : Controller
+    public class LogStatisticsController : BaseController
     {
         private readonly ILogStatisticsService logStatisticsService;
         private readonly ISettingService settingService;
