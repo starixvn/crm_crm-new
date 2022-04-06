@@ -12,19 +12,24 @@ export class Chart extends PureComponent {
         super(props);
     }
 
+    AddCategorySummariy = (categorySummariy, obj, month) =>{
+        categorySummariy.summaries.map(report => {
+            if (report.month === month && report.amount !== 0) {
+                if (obj[categorySummariy.name]) {
+                    obj[categorySummariy.name] += report.amount;
+                } else {
+                    obj[categorySummariy.name] = report.amount;
+                }
+            }
+        })        
+        return obj;
+    }
+
     convertDataChart = (months, categorySummaries) => {
         const data = months.map(month => {
             const obj = { name: month };
             categorySummaries.map(categorySummariy => {
-                categorySummariy.summaries.map(report => {
-                    if (report.month === month && report.amount !== 0) {
-                        if (obj[categorySummariy.name]) {
-                            obj[categorySummariy.name] += report.amount;
-                        } else {
-                            obj[categorySummariy.name] = report.amount;
-                        }
-                    }
-                })
+                this.AddCategorySummariy(categorySummariy, obj, month);                
             });
             return obj;
         });
@@ -64,10 +69,10 @@ export class Chart extends PureComponent {
                         height={900}
                         data={data}
                         margin={{
-                            top: 30, right: 30, left: 30, bottom: 30 + labels.length/6*35
+                            top: 30, right: 30, left: 30, bottom: 30 + labels.length / 6 * 35
                         }}
                         padding={{
-                            bottom:100
+                            bottom: 100
                         }}
                         barCategoryGap={2}
                         barGap={2}

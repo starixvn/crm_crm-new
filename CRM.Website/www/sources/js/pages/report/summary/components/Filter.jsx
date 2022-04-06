@@ -24,18 +24,16 @@ export class Filter extends PureComponent {
         const {siteTypes, categories} = allSettingData;
         const { gridParams } = this.props;
         const categoryIdFilters = [];
-        const siteIdFilters = [];
 
         const categoryOptions = categories.map(item =>{
             categoryIdFilters.push(item.mainCategoryID);
             return {
-                ...item,                
+                ...item,
                 checked: true
             };
         });
 
         const siteOptions = siteTypes.map(item =>{
-            siteIdFilters.push(item.mainCategoryID);
             return {
                 ...item
             };
