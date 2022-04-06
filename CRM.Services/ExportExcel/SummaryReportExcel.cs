@@ -47,8 +47,8 @@ namespace CRM.Services.ExportExcel
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]
                  .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]);
-            worksheet.Cells[1, 1, ToRow: RowStartHeader - RowMergeHeader, summaryreportInfo.Months.Count+1].Merge = true;
-            worksheet.Cells[FromRow: FromRow, 1, RowStartHeader - 1, summaryreportInfo.Months.Count+1].Merge = true;
+            worksheet.Cells[1, 1, RowStartHeader - RowMergeHeader, summaryreportInfo.Months.Count+1].Merge = true;
+            worksheet.Cells[FromRow, 1, RowStartHeader - 1, summaryreportInfo.Months.Count+1].Merge = true;
             worksheet.Cells[1, 1].Value = summaryreportInfo.ReportTitle;
             worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
