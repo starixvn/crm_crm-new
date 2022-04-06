@@ -1,26 +1,24 @@
-﻿namespace CRM.Services.Extensions
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using CRM.Letstalk.Client.Configurations;
-    using CRM.Letstalk.Client.Services;
-    using CRM.Letstalk.Client.Services.Interfaces;
-    using CRM.Repositories;
-    using CRM.Services;
-    using CRM.Services.Feedback;
-    using CRM.Services.Customer;
-    using Microsoft.Extensions.DependencyInjection;
-    using CRM.Services.InformHeadline;
-    using CRM.Services.Communication;
-    using CRM.Services.Remark;
-    using CRM.Services.Redemption;
-    using CRM.Services.ActionLog;
-    using CRM.Services.Dashboard;
-    using CRM.Services.Report;
-    using CRM.Services.Report.DynamicReport;
-    using CRM.Services.Report.CategoriesSummaryReport;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CRM.Letstalk.Client.Configurations;
+using CRM.Letstalk.Client.Services;
+using CRM.Letstalk.Client.Services.Interfaces;
+using CRM.Repositories;
+using CRM.Services.Feedback;
+using CRM.Services.Customer;
+using Microsoft.Extensions.DependencyInjection;
+using CRM.Services.InformHeadline;
+using CRM.Services.Communication;
+using CRM.Services.Remark;
+using CRM.Services.Redemption;
+using CRM.Services.ActionLog;
+using CRM.Services.Dashboard;
+using CRM.Services.Report;
+using CRM.Services.Report.CategoriesSummaryReport;
 
+namespace CRM.Services.Extensions
+{
     public static class ServiceDIExtensions
     {
         public static void ResolveServiceDI(this IServiceCollection services)
