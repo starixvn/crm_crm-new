@@ -16,8 +16,6 @@
 
         public PeriodRange PeriodRange { get; set; }
 
-        public string Username { get; set; }
-
         public List<DynamicReportInfo> ChildReports { get; set; }
 
         public int TotalChildReports { get; set; }
