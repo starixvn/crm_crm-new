@@ -41,15 +41,15 @@ export class Filter extends PureComponent {
             };
         });
 
-        const categoryIdFiltersJoin = categoryIdFilters.join(',');        
+        const categoryIdFiltersJoin = categoryIdFilters.join(',');
 
         this.setState({
-            categoryOptions, siteOptions,
+            categoryOptions, siteOptions
         });
         this.props.setGridParams({ ...gridParams, categories: categoryIdFiltersJoin });
     };
 
-    handleChangeCategory = (selectedItemsKey) => {
+    handleChangeCategory = selectedItemsKey => {
         const { gridParams } = this.props;
         this.props.setGridParams({ ...gridParams, categories: selectedItemsKey });
     };
@@ -84,7 +84,7 @@ export class Filter extends PureComponent {
         return options;
     };
 
-    renderOptionsSite = (siteTypes) => {
+    renderOptionsSite = siteTypes => {
         const options = [];
         for (let i = 0; i < siteTypes.length; i++) {
             options.push(<option value={siteTypes[i].id} key={siteTypes[i].id}>{siteTypes[i].name}</option>);
@@ -106,16 +106,16 @@ export class Filter extends PureComponent {
                             id="year" onChange={this.handleChangeYear}
                         >
                             {this.renderOptionsYear()}
-                        </Form.Control>                        
+                        </Form.Control>
                     </Form.Group>
 
                     <Form.Group>
                         <Form.Label htmlFor="site">Site</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none" value={gridParams.siteType}
                             id="year" onChange={this.handleChangeSite}
-                        >              
-                            {this.renderOptionsSite(siteOptions)}              
-                        </Form.Control>                        
+                        >
+                            {this.renderOptionsSite(siteOptions)}
+                        </Form.Control>
                     </Form.Group>
 
                     <Form.Group className='form-width'>

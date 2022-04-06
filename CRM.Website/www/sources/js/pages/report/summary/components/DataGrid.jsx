@@ -12,7 +12,7 @@ export class DataGrid extends Component {
         this.state = {
             shouldResetScrollPosition: true,
             toggleRowReport: [],
-            isCollapseReport: false,
+            isCollapseReport: false
         };
     }
 
@@ -124,7 +124,7 @@ export class DataGrid extends Component {
         );
     };
 
-    buildBody = (categorySummaries) => {
+    buildBody = categorySummaries => {
         const rows = [];
         rows.push(
             categorySummaries.map(item =>
@@ -135,13 +135,14 @@ export class DataGrid extends Component {
 
     renderSubCategoryRows = (parentId, sub) => {
         const toggle = this.state.toggleRowReport
+        var emptyString = '';
         if (!toggle.includes(parentId)) {
             const cells = [];
             cells.push(<Cell className='child' style={{ width: 280, 'paddingLeft': 20 }}>{sub.name}</Cell>);
             sub.summaries.map(sumMonth => {
                 cells.push(
                     <Cell key={sumMonth.month} className='complaints-text right'>
-                        <span>{sumMonth.amount === 0 ? "" : sumMonth.amount}</span>
+                        <span>{sumMonth.amount === 0 ? emptyString : sumMonth.amount}</span>
                     </Cell>
                 );
             })
@@ -155,7 +156,7 @@ export class DataGrid extends Component {
         }
     };
 
-    handleToggleRow = (id) => {
+    handleToggleRow = id => {
         const toggleName = this.state.toggleRowReport;
         const index = toggleName.indexOf(id);
         if (index >= 0) {
@@ -171,10 +172,11 @@ export class DataGrid extends Component {
         this.props.setChartPopup({ show: true });
     };
 
-    renderMainCategoryRows = (item) => {
+    renderMainCategoryRows = item => {
         const rows = [];
         const cells = [];
         const toggles = this.state.toggleRowReport;
+        var emptyString = '';
 
         cells.push(
             <Cell className='complaints-text' >
@@ -185,7 +187,7 @@ export class DataGrid extends Component {
         item.summaries.map(sumMonth => {
             cells.push(
                 <Cell key={sumMonth.month} className='complaints-text right'>
-                    <span>{sumMonth.amount === 0 ? "" : sumMonth.amount}</span>
+                    <span>{sumMonth.amount === 0 ? emptyString : sumMonth.amount}</span>
                 </Cell>
             );
         })
