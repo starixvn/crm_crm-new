@@ -34,7 +34,7 @@ namespace CRM.Services.Report.CategoriesSummaryReport
         {
             if (string.IsNullOrWhiteSpace(criteria.Categories))
             {
-                return new SummaryReportModel();
+                return null;
             }
 
             IList<CategorySummary> categorySummaries = new List<CategorySummary>();
