@@ -13,23 +13,22 @@ export class Update extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            subSettingName: this.props.subSettingOptions[0].settingName
+            subSettingName: this.props.subSettingOptions[0].settingName,
+            isSubmitting: false
         };
     }
 
 
-    handleSubmit = (values, { setSubmitting }) => {
-        setSubmitting(true);
-        const template = this.getTemplateCreate(values);
-        this.props.createPic(template).then(() => {
-            if (this.props.createPicResult.isSuccessful) {
+    handleSubmit = () => {
+        this.props.updateRelation().then(() => {
+            if (this.props.updateResult.isSuccessful) {
                 setTimeout(() => {
-                    this.handleClosePopup();
-                    this.props.getGridData(this.props.gridParams);
-                    this.props.setCreatePicResult(null);
+                    this.props.onClose();
+                    this.props.getSettingTypes(this.props.gridParams);
+                    this.props.setUpdate(null);
                 }, 3000);
             } else {
-                setSubmitting(false);
+                this.setState({isSubmitting: true});
             }
         });
     };
@@ -37,9 +36,9 @@ export class Update extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={45}>{LangHelper.getResource('Setting')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('IsSub')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('Order')}</HeaderCell>
+                <HeaderCell colWidth={50}>{LangHelper.getResource('Setting')}</HeaderCell>
+                <HeaderCell colWidth={10}>{LangHelper.getResource('IsSub')}</HeaderCell>
+                <HeaderCell colWidth={10}>{LangHelper.getResource('Order')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -59,7 +58,7 @@ export class Update extends Component {
 
     renderRow = (item, index) => {
         return (
-            <Row>
+            <Row key={`setting-relation-update-${index}`}>
                 <Cell>{item.value}</Cell>
                 <Cell className='text-center'>
                     <Form.Control className='checkbox-cell-style'
@@ -112,7 +111,7 @@ export class Update extends Component {
                             </Form.Control>
                         </Col>
                         <Col sm="4" md="4">
-                            <Button variant="primary" size="sm" onClick={this.handleSubmit}>
+                            <Button variant="primary" size="sm" onClick={this.handleSearch}>
                             {LangHelper.getResource('Search')}
                         </Button>
                         </Col>
@@ -127,7 +126,7 @@ export class Update extends Component {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.handleSubmit}>
+                    <Button type="submit" variant="primary" size="sm" onClick={this.handleSubmit} disabled={this.state.isSubmitting}>
                         {LangHelper.getResource('Update')}
                     </Button>
                 </Modal.Footer>
@@ -144,7 +143,7 @@ export class Update extends Component {
         return (
             <Modal show className="update-setting-relation" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} centered
-                onHide={() => this.props.onClose(false)}
+                onHide={() => this.props.onClose()}
             >
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('SettingRelationManagement')}</Modal.Title>

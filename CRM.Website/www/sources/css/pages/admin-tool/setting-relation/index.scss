@@ -37,17 +37,30 @@
             padding: 10px;
             background-color: rgb(232, 232, 232);
         }
-    }
 
-    .checkbox-cell-style {
-        width: 13px;
-        height: 13px;
-        margin: auto;
-        cursor: pointer;
-    }
+        .checkbox-cell-style {
+            width: 13px;
+            height: 13px;
+            margin: auto;
+            cursor: pointer;
+        }
+    
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+            text-align: center;
+        }
 
-    input[type="number"] {
-        text-align: center;
-      }
+        .table-container .body-content{
+            td{
+                background-color: #fff !important;
+            }
+        }
+    }
 }
 
