@@ -12,13 +12,13 @@ export class Chart extends PureComponent {
         super(props);
     }
 
-    AddCategorySummariy = (categorySummariy, obj, month) =>{
-        categorySummariy.summaries.map(report => {
+    AddCategorySummary = (categorySummary, obj, month) =>{
+        categorySummary.summaries.map(report => {
             if (report.month === month && report.amount !== 0) {
-                if (obj[categorySummariy.name]) {
-                    obj[categorySummariy.name] += report.amount;
+                if (obj[categorySummary.name]) {
+                    obj[categorySummary.name] += report.amount;
                 } else {
-                    obj[categorySummariy.name] = report.amount;
+                    obj[categorySummary.name] = report.amount;
                 }
             }
         });
@@ -29,7 +29,7 @@ export class Chart extends PureComponent {
         const data = months.map(month => {
             const obj = { name: month };
             categorySummaries.map(categorySummariy => {
-                this.AddCategorySummariy(categorySummariy, obj, month);
+                this.AddCategorySummary(categorySummariy, obj, month);
             });
             return obj;
         });
@@ -66,7 +66,7 @@ export class Chart extends PureComponent {
                 <Modal.Body>
                     <BarChart
                         width={1100}
-                        height={900}
+                        height={750}
                         data={data}
                         margin={{
                             top: 30, right: 30, left: 30, bottom: 30 + labels.length / 6 * 35
@@ -97,10 +97,10 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        gridParams, gridData
+        gridData
     } = state;
     return {
-        gridParams, gridData
+        gridData
     };
 };
 

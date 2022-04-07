@@ -14,22 +14,19 @@
     using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CategoriesSummaryReport, Policy = Policy.Read)]
-    public class SummaryReportController : BaseController
+    //[CrmPermission(FunctionKey = FunctionKey.CategoriesSummaryReport, Policy = Policy.Read)]
+    public class SummaryReportController : Controller
     {
         private readonly ISummaryReportService summaryReportService;
-        private readonly ISettingService settingService;
         private readonly IExportExcelService exportExcelService;
         private readonly AppSettings appSettings;
 
         public SummaryReportController(
             ISummaryReportService summaryReportService,
-            ISettingService settingService,
             IExportExcelService exportExcelService,
             IOptionsSnapshot<AppSettings> appSettings)
         {
             this.summaryReportService = summaryReportService;
-            this.settingService = settingService;
             this.exportExcelService = exportExcelService;
             this.appSettings = appSettings.Value;
         }
@@ -39,7 +36,7 @@
             return View("../Report/Summary/Index");
         }
 
-        public async Task<IActionResult> getAllSettings()
+        public async Task<IActionResult> GetAllSettings()
         {
             var allSetting = await summaryReportService.AllSettings();
             return Json(allSetting);
@@ -62,6 +59,5 @@
             string reportName = string.Format(ViewResources.SheetNameSummaryReport, criteria.Year);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
-
     }
 }

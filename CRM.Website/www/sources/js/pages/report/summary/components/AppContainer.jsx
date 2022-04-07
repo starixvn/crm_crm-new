@@ -8,10 +8,6 @@ import DataGrid from './DataGrid';
 import Chart from './Chart';
 
 export class AppContainer extends Component {
-  componentDidMount() {
-    this.props.getAllSetting();
-  }
-
   static propTypes = {
     contentChartPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired
   };
@@ -23,8 +19,13 @@ export class AppContainer extends Component {
   constructor(props) {
     super(props);
   }
+
+  componentDidMount() {
+    this.props.getAllSetting();
+  }
+
   render() {
-    const { allSettingData, gridData } = this.props;
+    const { allSettingData, gridData, contentChartPopup } = this.props;
     if (allSettingData === null || !allSettingData) {
       return null;
     }
@@ -32,10 +33,10 @@ export class AppContainer extends Component {
       <Fragment>
         <Filter />
         {
-          gridData != null && <DataGrid />
+          gridData === null ? null : <DataGrid />
         }
         {
-          this.props.contentChartPopup.show && <Chart />
+          contentChartPopup.show && <Chart />
         }
       </Fragment>
     );

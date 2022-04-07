@@ -10,7 +10,7 @@ import {
 
 const getAllSetting = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('SummaryReport/getAllSettings');
+    const url = Site.resolveClientUrl('SummaryReport/GetAllSettings');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setAllSetting(response.data));
     }).then(() => Site.unblockUI());

@@ -29,19 +29,6 @@ export class DataGrid extends Component {
         return true;
     }
 
-    calculateWidth = monthColumns => {
-        const columnsWidth = [12, 12];
-        monthColumns.map(() => {
-            columnsWidth.push(12);
-        });
-        const columnWidthSum = 198;
-        const sumOfColumnWidth = document.getElementById('app-container').clientWidth;
-        const newColumnsWidth = columnsWidth.map(cellWidth =>
-            sumOfColumnWidth / columnWidthSum * cellWidth);
-        const widthTotalColumns = newColumnsWidth.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-        return widthTotalColumns;
-    };
-
     renderCustomButtonReport = () => {
         return (
             <div>
@@ -103,7 +90,7 @@ export class DataGrid extends Component {
         const cells = [];
         cells.push(<HeaderCell className='sticky-header' colWidth={60}>{LangHelper.getResource('Categories')}</HeaderCell>);
         months.map(item => {
-            cells.push(<HeaderCell key={item} colWidth={17}>{item}</HeaderCell>);
+            cells.push(<HeaderCell key={item} colWidth={12}>{item}</HeaderCell>);
         });
         headers.push(
             <HeaderRow key='group-header'>
@@ -115,36 +102,45 @@ export class DataGrid extends Component {
 
     renderFooter = data => {
         const cells = [];
-        cells.push(<Cell>Grand Total</Cell>);
-        data.map(item => {
-            cells.push(<Cell className='right' key={item}>{item.amount}</Cell>);
-        });
-        return (
-            [<Row key='footer' className='footer-container font-weight-bold'>
-                {cells}
-            </Row>]
-        );
+        if(data.length > 0){
+            cells.push(<Cell>Grand Total</Cell>);
+            data.map(item => {
+                cells.push(<Cell className='right' key={item}>{item.amount}</Cell>);
+            });
+            return (
+                [<Row key='footer' className='footer-container font-weight-bold'>
+                    {cells}
+                </Row>]
+            );
+        }        
+        return null;
     };
 
     buildBody = categorySummaries => {
         const rows = [];
-        rows.push(
-            categorySummaries.map(item =>
-                this.renderMainCategoryRows(item))
-        );
-        return rows;
+        if (categorySummaries.length > 0) {
+            rows.push(
+                categorySummaries.map(item =>
+                    this.renderMainCategoryRows(item))
+            );
+            return rows;
+        };
+        return [
+            <Row key={`body${1}`} className="no-data" >
+                <Cell className='text-center' colSpan={15}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+            </Row>
+        ];
     };
 
     renderSubCategoryRows = (parentId, sub) => {
         const toggle = this.state.toggleRowReport;
-        const emptyString = '';
         if (!toggle.includes(parentId)) {
             const cells = [];
             cells.push(<Cell className='child' style={{ width: 280, 'paddingLeft': 20 }}>{sub.name}</Cell>);
             sub.summaries.map(sumMonth => {
                 cells.push(
                     <Cell key={sumMonth.month} className='complaints-text right'>
-                        <span>{sumMonth.amount === 0 ? emptyString : sumMonth.amount}</span>
+                        <span>{sumMonth.amount === 0 ? '' : sumMonth.amount}</span>
                     </Cell>
                 );
             });
@@ -159,16 +155,18 @@ export class DataGrid extends Component {
     };
 
     handleToggleRow = id => {
-        const toggleName = this.state.toggleRowReport;
-        const index = toggleName.indexOf(id);
+        const Categories = this.state.toggleRowReport;
+        const index = Categories.indexOf(id);
         if (index >= 0) {
-            toggleName.splice(index, 1);
+            Categories.splice(index, 1);
         } else {
-            toggleName.push(id);
+            Categories.push(id);
         }
 
-        this.setState({ toggleName });
+        this.setState({ Categories });
     };
+
+    getMaxWidth = totalWidth => document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
 
     handleShowChart = () => {
         this.props.setChartPopup({ show: true });
@@ -178,7 +176,6 @@ export class DataGrid extends Component {
         const rows = [];
         const cells = [];
         const toggles = this.state.toggleRowReport;
-        const emptyString = '';
 
         cells.push(
             <Cell className='complaints-text' >
@@ -189,7 +186,7 @@ export class DataGrid extends Component {
         item.summaries.map(sumMonth => {
             cells.push(
                 <Cell key={sumMonth.month} className='complaints-text right'>
-                    <span>{sumMonth.amount === 0 ? emptyString : sumMonth.amount}</span>
+                    <span>{sumMonth.amount === 0 ? '' : sumMonth.amount}</span>
                 </Cell>
             );
         });
@@ -208,23 +205,20 @@ export class DataGrid extends Component {
 
     render() {
         const { categorySummaries, grandTotals, months, reportTitle } = this.props.gridData;
-        const width = this.calculateWidth(months);
 
-        if (categorySummaries.length === 0) {
-            return null;
-        }
+        const defaultWidth = 400;
+        const totalWidth = defaultWidth + months.length * 60;
 
         return (
-            <div className='table-mbc'>
-                <div style={{ maxWidth: width, minWidth: 350 }} className='table-title d-flex justify-content-between align-items-center'>
+            <div className='table'>
+                <div style={{ width:totalWidth }} className='table-title d-flex justify-content-between align-items-center'>
                     <span>{reportTitle}</span>
                     {
                         categorySummaries.length > 0 && this.renderCustomButtonReport()
                     }
                 </div>
                 <Table
-                    width={width}
-                    minWidth={350}
+                    width={totalWidth}
                     autoWidth={false}
                     header={this.buildHeader(months)}
                     body={this.buildBody(categorySummaries)}
