@@ -13,7 +13,7 @@ const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('IssueStatistics/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getGridData = params => async dispatch => {
@@ -21,7 +21,7 @@ const getGridData = params => async dispatch => {
     const url = Site.resolveClientUrl('IssueStatistics/GetIssuesStatistics');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setGridData(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const exportExcel = params => async () => {

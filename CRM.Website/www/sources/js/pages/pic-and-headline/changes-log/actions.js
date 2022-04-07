@@ -13,7 +13,7 @@ const getHeadlineDAReport = params => async dispatch => {
     const url = Site.resolveClientUrl('ChangesLog/GetHeadlineDAReportAsync');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setHeadlineDA(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getPicReport = params => async dispatch => {
@@ -21,7 +21,7 @@ const getPicReport = params => async dispatch => {
     const url = Site.resolveClientUrl('ChangesLog/GetPicReportAsync');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setPicReport(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getActionTypes = () => async () => {

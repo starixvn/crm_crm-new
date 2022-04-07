@@ -11,7 +11,7 @@ const getActionLogs = () => async dispatch => {
     const url = Site.resolveClientUrl('SettingLog/GetActionLog');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setActionLog(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getGridSettingLogs = params => async dispatch => {
@@ -19,7 +19,7 @@ const getGridSettingLogs = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingLog/GetSettingLog');
     DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridSettingLogs(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 

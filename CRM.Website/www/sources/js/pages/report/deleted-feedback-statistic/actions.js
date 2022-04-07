@@ -13,7 +13,7 @@ const getDeletedFeedbackStatistic = params => async dispatch => {
     const url = Site.resolveClientUrl('DeletedFeedbackStatistic/GetDeletedFeedbackStatistics');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setGridData(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const exportExcel = params => async () => {
