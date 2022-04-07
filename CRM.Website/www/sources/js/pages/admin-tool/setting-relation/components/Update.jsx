@@ -14,9 +14,22 @@ export class Update extends Component {
         super(props);
         this.state = {
             subSettingName: this.props.subSettingOptions[0].settingName,
-            isSubmitting: false
+            isSubmitting: false,
+            settingRelation: []
         };
     }
+
+    componentDidUpdate(prevProps) {
+        if (JSON.stringify(prevProps.mainSettingRelation) !== JSON.stringify(this.props.mainSettingRelation)) {
+            this.handleSetState(this.props.mainSettingRelation);
+        }
+    }
+
+    handleSetState = mainSettingRelation =>{
+        const settingRelation = [...mainSettingRelation];
+        this.setState({settingRelation});
+    }
+
 
     buildHeader = () => {
         return (
@@ -28,9 +41,9 @@ export class Update extends Component {
         );
     };
 
-    buildBody = mainSettingRelation => {
-        if ( mainSettingRelation.length > 0) {
-            return mainSettingRelation.map((item, index) => this.renderRow(item, index));
+    buildBody = () => {
+        if (this.state.settingRelation.length > 0) {
+            return this.state.settingRelation.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row className="no-data" >
@@ -65,7 +78,7 @@ export class Update extends Component {
 
 
     renderForm = () =>{
-        const { subSettingOptions, updateResult, updatePopup, mainSettingRelation } = this.props;
+        const { subSettingOptions, updateResult, updatePopup } = this.props;
         return (
             <Form>
                 <Modal.Body>
@@ -105,7 +118,7 @@ export class Update extends Component {
                         width={550}
                         autoWidth={false}
                         header={this.buildHeader()}
-                        body={this.buildBody(mainSettingRelation)}
+                        body={this.buildBody()}
                         containerPadding={0}
                         adjustedHeight={10}
                     />
@@ -145,12 +158,12 @@ export class Update extends Component {
     };
 
     onChangeCheckBox = (value, checked) =>{
-        this.props.setMainSettingRelation()
+        this.props.setMainSettingRelation();
     }
 
     render() {
-        const {mainSettingRelation, subSettingOptions}= this.props;
-        if(mainSettingRelation === null || !mainSettingRelation || subSettingOptions.length === 0){
+        const {subSettingOptions}= this.props;
+        if(this.state.settingRelation.length === 0 || subSettingOptions.length === 0){
             return null;
         }
 
