@@ -9,7 +9,7 @@ const settingRelationSlice = createSlice({
             settingName: ''
         },
         gridDataSettingLogs: null,
-        mainSettingRelation: null,
+        mainSettingRelation: [],
         updateResult: null,
         updatePopup: { show: false, title: '', parentId: null }
     },
@@ -26,7 +26,7 @@ const settingRelationSlice = createSlice({
         setMainSettingRelation: (state, action) => {
             state.mainSettingRelation = action.payload;
         },
-        setUpdate: (state, action) => {
+        setUpdateResult: (state, action) => {
             state.updateResult = action.payload;
         },
         setOpenUpdatePopup: (state, action) => {
@@ -42,7 +42,7 @@ export const {
     setGridParams,
     setSettingTypes,
     setMainSettingRelation,
-    setUpdate,
+    setUpdateResult,
     setOpenUpdatePopup
 } = actions;
 

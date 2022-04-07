@@ -4,7 +4,10 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
+    using CRM.Core.Models;
     using CRM.Core.Services;
+    using CRM.Criteria.AdminTool;
     using CRM.Criteria.Setting;
     using CRM.Models.Setting;
     using CRM.Services;
@@ -15,8 +18,9 @@
     using Fanex.NAP.Client.Services;
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Core.Business.Constant;
 
-    public class SettingRelationController : Controller
+    public class SettingRelationController : BaseController
     {
         private readonly ICommonService commonService;
         private readonly IBaseService baseService;
@@ -43,11 +47,10 @@
             this.userService = userService;
         }
 
-        //[NapAuth(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Constant.Policy.Read)]
+        [NapAuth(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
-            //var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.SettingRelationManagement, Constant.Policy.Host);
-            return View(true);
+            return View();
         }
 
         public async Task<IActionResult> GetMainSettings()
@@ -81,6 +84,16 @@
             criteria.Active = criteria.SettingName == "Site" ? SettingConstants.ActiveAndInactive : SettingConstants.Active;
             var mainRelations = await settingService.GetMainSettingRelationAsync(criteria);
             return Json(mainRelations);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Policy.Host)]
+        public async Task<IActionResult> Update([FromBody] UpdateSettingRelationCommand command)
+        {
+            command.Ip = ClientIP;
+            command.UserId = napSession.UserId;
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
         }
     }
 }
