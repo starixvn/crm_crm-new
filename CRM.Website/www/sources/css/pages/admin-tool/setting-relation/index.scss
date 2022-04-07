@@ -23,8 +23,11 @@
 .update-setting-relation{
     .modal-content{
         width: 650px !important;
-        height: 570px !important;
+        height: 650px !important;
 
+        .table-container .body-content{
+            max-height: 350px !important;
+        }
         .modal-footer{
             justify-content: flex-start !important;
         }

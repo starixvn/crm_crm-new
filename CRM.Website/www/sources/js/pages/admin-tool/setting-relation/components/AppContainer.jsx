@@ -10,10 +10,9 @@ export class AppContainer extends Component {
   componentDidMount() {
       this.props.getMainSettings();
   }
-
   
   handleCloseUpdatePopup = () =>{
-    this.props.setOpenUpdatePopup({ show: false, title: ''});
+    this.props.setOpenUpdatePopup({ show: false, title: '', parentId: null});
   };
   render() {
     const {mainSettings, updatePopup, gridParams} = this.props;
