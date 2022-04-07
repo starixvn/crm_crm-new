@@ -498,4 +498,7 @@
   <data name="Redemption_Statistics_Detail_Title" xml:space="preserve">
     <value>Redemption Statistics Detail Report</value>
   </data>
+  <data name="SettingRelationV2" xml:space="preserve">
+    <value>Setting Relation v2</value>
+  </data>
 </root>

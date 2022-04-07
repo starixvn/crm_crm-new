@@ -1024,6 +1024,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Setting Relation v2.
+        /// </summary>
+        public static string SettingRelationV2 {
+            get {
+                return ResourceManager.GetString("SettingRelationV2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settlement Issues Report.
         /// </summary>
         public static string SettlementIssuesReport {
