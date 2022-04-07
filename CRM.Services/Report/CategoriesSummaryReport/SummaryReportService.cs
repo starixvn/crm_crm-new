@@ -1,23 +1,22 @@
-﻿using CRM.Core.Constants;
-using CRM.Core.Models;
-using CRM.Core.Services;
-using CRM.Criteria.Report.CategoriesSummaryReport;
-using CRM.Models;
-using CRM.Models.Common;
-using CRM.Models.Report.CategoriesSummaryReport;
-using CRM.Resources;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CRM.Services.Report.CategoriesSummaryReport
+﻿namespace CRM.Services.Report.CategoriesSummaryReport
 {
+    using CRM.Core.Constants;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using CRM.Criteria.Report.CategoriesSummaryReport;
+    using CRM.Models;
+    using CRM.Models.Common;
+    using CRM.Models.Report.CategoriesSummaryReport;
+    using CRM.Resources;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Threading.Tasks;
     public interface ISummaryReportService
     {
         Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria);
-        Task<dynamic> AllSettings();
+        Task<AllSetting> AllSettings();
     }
     public class SummaryReportService : ISummaryReportService
     {
@@ -32,9 +31,9 @@ namespace CRM.Services.Report.CategoriesSummaryReport
 
         public async Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria)
         {
-            if (string.IsNullOrWhiteSpace(criteria.Categories))
+            if (!criteria.IsValid())
             {
-                return null;
+                return new SummaryReportModel();
             }
 
             IList<CategorySummary> categorySummaries = new List<CategorySummary>();
@@ -140,7 +139,7 @@ namespace CRM.Services.Report.CategoriesSummaryReport
             return summaries;
         }
 
-        public async Task<dynamic> AllSettings()
+        public async Task<AllSetting> AllSettings()
         {
             var minReportDate = Convert.ToInt32(ViewResources.MinReportDate);
             var currentYear = DateTime.Now.Year;
@@ -158,7 +157,7 @@ namespace CRM.Services.Report.CategoriesSummaryReport
                 new Setting { Id = SiteConstants.LicenseeGroup, Name = ViewResources.Licensee },
             };
             var categories = await settingService.GetMainCategoryAsync(SettingConstants.Active);
-            return new
+            return new AllSetting
             {
                 YearRange = yearRange,
                 SiteTypes = siteTypes,

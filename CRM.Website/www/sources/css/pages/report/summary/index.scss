@@ -7,14 +7,10 @@
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
 
-.table-container .body-content  {
-    overflow-x: hidden;
-}
-
-
 .parent-level-0{
     height: 29px;
     font-weight: bold;
+
     .complaints-text, td{
         background-color: #e3e3e3 !important;
         color: #0054a6 !important;
@@ -30,33 +26,15 @@
     text-align: right;
 }
 
-.table > tbody tr td {
-    border: 0.5px solid #b7b7b7;
-}
-
-.body-content {
-    overflow-y: scroll;
+.table{
     overflow-x: hidden;
-}
-
-.footer-content{
-    border-bottom: 0;
-
-    .footer-container{
-        td{
-            background: #c0cae3!important;
-            color: #0054a6 !important;
-        }
-    }
-}
-
-table.table {
     tbody tr {
         &:hover td {
             background-color: transparent;
         }
 
         td {
+            border: 0.5px solid #b7b7b7;
             background-color: white !important;
             color: #666;
         }
@@ -65,10 +43,22 @@ table.table {
             background-color: #c0cbe2 !important;
             color: #363636;
             font-weight: bold;
+        }
+    }
+}
 
-            &[rowspan] {
-                border-bottom: none;
-            }
+.table-container .body-content{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.footer-content {
+    border-bottom: 0;
+
+    .footer-container {
+        td {
+            background: #c0cae3 !important;
+            color: #0054a6 !important;
         }
     }
 }
@@ -78,6 +68,8 @@ table.table {
 }
 
 .form-filter {
+    min-width: 900px;
+
     .form-width {
         width: 350px !important;
     }
@@ -109,7 +101,6 @@ table.table {
             li{
                 margin-left: 10px;
                 width: 270px;
-
                 .recharts-surface, .recharts-legend-item-text{
                     float: left;
                 }

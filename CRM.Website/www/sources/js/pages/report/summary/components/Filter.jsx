@@ -11,17 +11,24 @@ export class Filter extends PureComponent {
         super(props);
         this.state = {
             categoryOptions: [],
-            siteOptions: []
+            siteOptions: [],
+            gridParams: {
+                year: new Date().getFullYear(),
+                categories:'',
+                siteType: 0
+            },
         };
     }
 
     componentDidMount(){
         this.handleSettingOptions(this.props.allSettingData);
+        setInterval(this.inc, 1000);
     }
 
     handleSettingOptions = allSettingData =>{
         const {siteTypes, categories} = allSettingData;
-        const { gridParams } = this.props;
+        const { gridParams } = this.state;
+
         const categoryIdFilters = [];
 
         const categoryOptions = categories.map(item =>{
@@ -40,35 +47,44 @@ export class Filter extends PureComponent {
 
         const categoryIdFiltersJoin = categoryIdFilters.join(',');
 
+        gridParams.categories = categoryIdFiltersJoin;
+
         this.setState({
-            categoryOptions, siteOptions
+            categoryOptions, siteOptions, gridParams
         });
-        this.props.setGridParams({ ...gridParams, categories: categoryIdFiltersJoin });
     };
 
     handleChangeCategory = selectedItemsKey => {
-        const { gridParams } = this.props;
-        this.props.setGridParams({ ...gridParams, categories: selectedItemsKey });
+        const { gridParams } = this.state;
+        gridParams.categories = selectedItemsKey;
+        this.setState({
+            gridParams
+        });
     };
 
     submitHandler = event => {
         event.preventDefault();
-        const { gridParams } = this.props;
+        const { gridParams } = this.state;
         this.props.getGridData({ ...gridParams});
         this.props.setGridParams({ ...gridParams});
     };
 
     handleChangeYear = event => {
         const value = +event.target.value;
-        const { gridParams } = this.props;
-        this.props.setGridParams({ ...gridParams, year: value });
+        const { gridParams } = this.state;
+        gridParams.year = value;
+        this.setState({
+            gridParams
+        });
     };
 
     handleChangeSite = event => {
         const value = +event.target.value;
-        const { gridParams } = this.props;
-        this.props.setGridParams({ ...gridParams, siteType: value });
-
+        const { gridParams } = this.state;
+        gridParams.siteType = value;
+        this.setState({
+            gridParams
+        });
     };
 
     renderOptionsYear = () => {
@@ -83,14 +99,14 @@ export class Filter extends PureComponent {
 
     renderOptionsSite = siteTypes => {
         const options = [];
-        for (let i = 0; i < siteTypes.length; i++) {
-            options.push(<option value={siteTypes[i].id} key={siteTypes[i].id}>{siteTypes[i].name}</option>);
-        }
+        siteTypes.map(item => {
+            options.push(<option value={item.id} key={item.id}>{item.name}</option>);
+        });
         return options;
     };
 
     render() {
-        const { gridParams } = this.props;
+        const { gridParams } = this.state;
         const {categoryOptions, siteOptions} = this.state;
 
         return (
@@ -98,7 +114,7 @@ export class Filter extends PureComponent {
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
                         <Form.Label htmlFor="year">Year</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none" value={gridParams.year}
+                        <Form.Control as="select" size="sm" className="shadow-none form-control-year" value={gridParams.year}
                             id="year" onChange={this.handleChangeYear}
                         >
                             {this.renderOptionsYear()}
@@ -107,7 +123,7 @@ export class Filter extends PureComponent {
 
                     <Form.Group>
                         <Form.Label htmlFor="site">Site</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none" value={gridParams.siteType}
+                        <Form.Control as="select" size="sm" className="shadow-none form-control-site" value={gridParams.siteType}
                             id="year" onChange={this.handleChangeSite}
                         >
                             {this.renderOptionsSite(siteOptions)}
