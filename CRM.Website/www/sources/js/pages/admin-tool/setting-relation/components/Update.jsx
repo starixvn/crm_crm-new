@@ -69,7 +69,7 @@ export class Update extends Component {
                 <Cell>
                     <Form.Control type="number" size="sm" className="shadow-none"
                         value={item.displayOrder}
-                        onChange={e => this.onChange('name', e.target.value)}
+                        onChange={e => this.onChangeDisplay(item.value, e.target.value)}
                     />
                 </Cell>
             </Row>
@@ -80,7 +80,7 @@ export class Update extends Component {
     renderForm = () =>{
         const { subSettingOptions, updateResult, updatePopup } = this.props;
         return (
-            <Form>
+            <Form noValidate onSubmit={this.handleSubmit}>
                 <Modal.Body>
                     {
                         updateResult &&
@@ -101,7 +101,7 @@ export class Update extends Component {
                             <Form.Control as="select" size="sm" style={{width: 200}}
                                 name="subSettingName" id="subSettingName"
                                 value={this.state.subSettingName}
-                                onChange={evt => this.setState({subSettingName: evt.target.value})}
+                                onChange={this.onChangeSubSetting}
                             >
                                 {
                                     subSettingOptions.map((value, key) => <option key={key} value={value.settingName}>{value.settingName}</option>)
@@ -134,14 +134,29 @@ export class Update extends Component {
         );
     };
 
+    onChangeSubSetting = event =>{
+       this.setState({subSettingName: event.target.value}, () =>{
+            this.handleSearch();
+       });
+    }
+
     
-    handleSubmit = () => {
-        this.props.updateRelation().then(() => {
+    handleSubmit = event => {
+        event.preventDefault();
+        const {subSettingName, settingRelation} = this.state;
+        const {updatePopup, updateRelation, onClose, getSettingTypes, gridParams, setUpdate} = this.props;
+        const params = {
+            parentId: parseInt(updatePopup.parentId, 10),
+            settingName: subSettingName,
+            subSettings: settingRelation
+        };
+
+        updateRelation(params).then(() => {
             if (this.props.updateResult.isSuccessful) {
                 setTimeout(() => {
-                    this.props.onClose();
-                    this.props.getSettingTypes(this.props.gridParams);
-                    this.props.setUpdate(null);
+                    onClose();
+                    getSettingTypes(gridParams);
+                    setUpdate(null);
                 }, 3000);
             } else {
                 this.setState({isSubmitting: true});
@@ -157,8 +172,28 @@ export class Update extends Component {
         this.props.getMainSettingRelation(params);
     };
 
+    onChangeDisplay = (value, displayOrder) =>{
+        const settingRelationFilter = this.state.settingRelation.map(setting =>{
+            return {
+                id: setting.id,
+                value: setting.value,
+                isChild: setting.isChild,
+                displayOrder: setting.value === value ? displayOrder : setting.displayOrder
+            };
+        });
+        this.setState({settingRelation: settingRelationFilter});
+    }
+
     onChangeCheckBox = (value, checked) =>{
-        this.props.setMainSettingRelation();
+        const settingRelationFilter = this.state.settingRelation.map(setting =>{
+            return {
+                id: setting.id,
+                value: setting.value,
+                isChild: setting.value === value ? checked : setting.isChild,
+                displayOrder: setting.displayOrder
+            };
+        });
+        this.setState({settingRelation: settingRelationFilter});
     }
 
     render() {
@@ -170,7 +205,7 @@ export class Update extends Component {
         return (
             <Modal show className="update-setting-relation" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} centered
-                onHide={() => this.props.onClose()}
+                onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('SettingRelationManagement')}</Modal.Title>

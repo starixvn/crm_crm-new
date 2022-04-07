@@ -5,7 +5,7 @@ import {
     setGridParams,
     setSettingTypes,
     setMainSettingRelation,
-    setUpdate,
+    setUpdateResult,
     setOpenUpdatePopup
 } from './settingRelationSlice';
 
@@ -20,7 +20,7 @@ const getMainSettings = () => async dispatch => {
 const getSettingTypes = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('SettingRelation/GetSettingByType');
-    DataService.postDataAsync(url, params).then(response => {
+    await DataService.postDataAsync(url, params).then(response => {
         dispatch(setSettingTypes(response.data));
     }).then(() => Site.unblockUI());
 };
@@ -28,7 +28,7 @@ const getSettingTypes = params => async dispatch => {
 const getMainSettingRelation = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('SettingRelation/GetMainSettingRelation');
-    DataService.postDataAsync(url, params).then(response => {
+    await DataService.postDataAsync(url, params).then(response => {
         dispatch(setMainSettingRelation(response.data));
     }).then(() => Site.unblockUI());
 };
@@ -36,8 +36,8 @@ const getMainSettingRelation = params => async dispatch => {
 const updateRelation = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('SettingRelation/Update');
-    DataService.postDataAsync(url, params).then(response => {
-        dispatch(setUpdate(response.data));
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setUpdateResult(response.data));
     }).then(() => Site.unblockUI());
 };
 
@@ -50,6 +50,6 @@ export const ActionCreators = {
     getMainSettingRelation,
     setMainSettingRelation,
     updateRelation,
-    setUpdate,
+    setUpdateResult,
     setOpenUpdatePopup
 };
