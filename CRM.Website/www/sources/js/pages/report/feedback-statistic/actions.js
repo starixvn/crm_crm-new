@@ -16,7 +16,7 @@ const getGridData = params => async dispatch => {
     const url = Site.resolveClientUrl('FeedbackStatistic/GetFeedbackStatistic');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setGridData(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getDetails = params => async dispatch => {
@@ -24,7 +24,7 @@ const getDetails = params => async dispatch => {
     const url = Site.resolveClientUrl('FeedbackStatistic/GetFeedbackStatisticDetails');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setDetailsDataGrid(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const exportExcel = params => async () => {

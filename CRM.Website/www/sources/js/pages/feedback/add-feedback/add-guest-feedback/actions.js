@@ -36,7 +36,7 @@ const addFeedback =  params => async dispatch => {
     const url = Site.resolveClientUrl('AddGuestFeedback/Create');
     return await DataService.postDataAsync(url, params).then(response => {
         dispatch(setAddFeedback(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const verifyUserName = data => async () => {

@@ -25,7 +25,7 @@ const getGridCommunicationSetting = params => async dispatch => {
     const url = Site.resolveClientUrl('CommunicationSetting/GetCommunicationToolSetting');
     DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridCommunicationSetting(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getCommunicationById = (communicaitonId, callback) => async dispatch => {
