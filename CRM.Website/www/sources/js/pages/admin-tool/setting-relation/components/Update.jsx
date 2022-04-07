@@ -18,21 +18,6 @@ export class Update extends Component {
         };
     }
 
-
-    handleSubmit = () => {
-        this.props.updateRelation().then(() => {
-            if (this.props.updateResult.isSuccessful) {
-                setTimeout(() => {
-                    this.props.onClose();
-                    this.props.getSettingTypes(this.props.gridParams);
-                    this.props.setUpdate(null);
-                }, 3000);
-            } else {
-                this.setState({isSubmitting: true});
-            }
-        });
-    };
-
     buildHeader = () => {
         return (
             <HeaderRow>
@@ -65,7 +50,7 @@ export class Update extends Component {
                         id='relation-checkbox'
                         type='checkbox'
                         checked={item.isChild}
-                        onChange={e => this.onChangeCheckBox(e.target.checked)}
+                        onChange={e => this.onChangeCheckBox(item.value, e.target.checked)}
                     />
                 </Cell>
                 <Cell>
@@ -126,13 +111,42 @@ export class Update extends Component {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.handleSubmit} disabled={this.state.isSubmitting}>
+                    <Button type="submit" variant="primary" size="sm" onClick={this.handleSubmit}
+                        disabled={this.state.isSubmitting}
+                    >
                         {LangHelper.getResource('Update')}
                     </Button>
                 </Modal.Footer>
             </Form>
         );
     };
+
+    
+    handleSubmit = () => {
+        this.props.updateRelation().then(() => {
+            if (this.props.updateResult.isSuccessful) {
+                setTimeout(() => {
+                    this.props.onClose();
+                    this.props.getSettingTypes(this.props.gridParams);
+                    this.props.setUpdate(null);
+                }, 3000);
+            } else {
+                this.setState({isSubmitting: true});
+            }
+        });
+    };
+
+    handleSearch = () => {
+        const params = {
+            settingName : this.state.subSettingName,
+            parentId: parseInt(this.props.updatePopup.parentId, 10)
+        };
+        this.props.getMainSettingRelation(params);
+    };
+
+    onChangeCheckBox = (value, checked) =>{
+        this.props.setMainSettingRelation()
+    }
 
     render() {
         const {mainSettingRelation, subSettingOptions}= this.props;

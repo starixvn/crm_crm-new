@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using CRM.Models.Report.RedemptionStatistics;
-using CRM.Services.UnitTests.ExportExcel.TestableClasses;
-using NSubstitute;
-using OfficeOpenXml;
-using Xunit;
-
-namespace CRM.Services.UnitTests.ExportExcel
+﻿namespace CRM.Services.UnitTests.ExportExcel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using CRM.Core;
+    using CRM.Models.Report.RedemptionStatistics;
+    using CRM.Services.UnitTests.ExportExcel.TestableClasses;
+    using NSubstitute;
+    using OfficeOpenXml;
+    using Xunit;
     public class RedemptionStatisticsDetailExcelTests
     {
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
@@ -58,7 +58,7 @@ namespace CRM.Services.UnitTests.ExportExcel
             service.Public_RenderBody(template, worksheet);
 
             // Assert
-            Assert.Equal("Apr 05, 2022", worksheet.Cells[5, 1].Value);
+            Assert.Equal(DateTime.Now.ToShortDateFormat(), worksheet.Cells[5, 1].Value);
             Assert.Equal("881HK", worksheet.Cells[5, 2].Value);
             Assert.Equal("Testing", worksheet.Cells[5, 3].Value);
             Assert.Equal("Euro", worksheet.Cells[5, 4].Value);

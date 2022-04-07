@@ -102,7 +102,7 @@ export class DataGrid extends Component {
             settingName : this.props.mainSettings.slice(1)[0].settingName,
             parentId: parseInt(value, 10)
         };
-        this.props.setOpenUpdatePopup({ show: true, title: title});
+        this.props.setOpenUpdatePopup({ show: true, title: title, parentId: params.parentId});
         this.props.getMainSettingRelation(params);
     }
 
