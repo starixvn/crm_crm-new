@@ -125,7 +125,7 @@ export class DataGrid extends Component {
             gridDataSortAsc = cloneGridData.sort((first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1);
             this.props.setRedemptionSummary({...this.props.gridData, data: gridDataSortAsc});
         }else{
-            gridDataSortAsc = cloneGridData.sort((first, second) => first[`${sortBy}`] < b[`${sortBy}`] ? 1 : -1);
+            gridDataSortAsc = cloneGridData.sort((first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1);
         }
         this.props.setRedemptionSummary({...this.props.gridData, data: gridDataSortAsc});
     };

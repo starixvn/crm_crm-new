@@ -36,7 +36,8 @@ const cssPaths = {
     changes_log: ['./www/sources/css/pages/pic-and-headline/changes-log/index.scss'],
     feedback_statistic: ['./www/sources/css/pages/report/feedback-statistic/index.scss'],
     redemption_statistics: ['./www/sources/css/pages/report/redemption-statistics/index.scss'],
-    dynamic_report: ['./www/sources/css/pages/report/dynamic/index.scss']
+    dynamic_report: ['./www/sources/css/pages/report/dynamic/index.scss'],
+    setting_relation: ['./www/sources/css/pages/admin-tool/setting-relation/index.scss']
 };
 
 const scriptPaths = {
@@ -75,7 +76,8 @@ const scriptPaths = {
     add_customer_feedback: ['./www/sources/js/pages/feedback/add-feedback/add-customer-feedback/index.js'],
     feedback_statistic: ['./www/sources/js/pages/report/feedback-statistic/index.js'],
     redemption_statistics: ['./www/sources/js/pages/report/redemption-statistics/index.js'],
-    dynamic_report: ['./www/sources/js/pages/report/dynamic/index.js']
+    dynamic_report: ['./www/sources/js/pages/report/dynamic/index.js'],
+    setting_relation: ['./www/sources/js/pages/admin-tool/setting-relation/index.js']
 };
 
 module.exports = {

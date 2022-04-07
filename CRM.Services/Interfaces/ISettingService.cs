@@ -3,15 +3,19 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.Setting;
 
     public interface ISettingService
     {
-        Task<IEnumerable<Setting>> GetSettingAsync(string settingName, bool? isActive = null);
+        Task<IEnumerable<Setting>> GetSettingAsync(string settingName="", bool? isActive = null);
+
         Task<IEnumerable<Setting>> GetRolesByPicAsync(int picType);
 
         Task<IEnumerable<SiteSetting>> GetSiteAsync();
+
+        Task<IEnumerable<Setting>> GetSettingByTypes(string settingName);
 
         Task<SiteSetting> GetSiteByIdAsync(int siteId);
 
@@ -33,6 +37,8 @@
         Task<IEnumerable<Province>> GetProvinceAsync();
 
         Task<IEnumerable<Setting>> GetSettingRelationAsync();
+
+        Task<IEnumerable<SettingRelation>> GetMainSettingRelationAsync(GetSettingRelationByNameCriteria criteria);
 
         Task<IEnumerable<Language>> GetLanguageAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 

@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
-    using CRM.Core.Enumerables;
     using CRM.Core.Services;
     using CRM.Criteria.Setting;
     using CRM.Models;
@@ -33,7 +32,7 @@
                 : tools.Where(t => t.Id != SettingConstants.CommunicationNA).ToList();
         }
 
-        public async Task<IEnumerable<Setting>> GetSettingAsync(string settingName, bool? isActive = null)
+        public async Task<IEnumerable<Setting>> GetSettingAsync(string settingName="", bool? isActive = null)
         {
             var criteria = new GetSettingCriteria
             {
@@ -41,6 +40,33 @@
                 IsActive = isActive
             };
             return await baseService.GetDataAsync<Setting>(criteria);
+        }
+
+        public async Task<IEnumerable<Setting>>GetSettingByTypes(string settingName)
+        {
+                var allSettings = await GetSettingAsync();
+                var test = allSettings.Where(s => s.SettingName == settingName);
+                IEnumerable<Setting> relations = await GetSettingRelationAsync();
+                IEnumerable<Setting> result = allSettings
+                    .Where(s => s.SettingName == settingName)
+                    .GroupBy(s => s.SettingId).Select(x => x.First())
+                    .OrderBy(s => s.DisplayOrder);
+
+                foreach (Setting item in result)
+                {
+                    var settingIds = relations
+                        .Where(r => r.ParentID == item.SettingId)
+                        .Select(s => new { s.SettingId, s.DisplayOrder });
+                    if (settingIds.Any())
+                    {
+                        item.ChildSettings = allSettings.Where(x => settingIds.Any(y => x.SettingId == y.SettingId))
+                            .GroupBy(x => x.SettingId)
+                            .Select(x => x.First())
+                            .OrderBy(s => s.DisplayOrder).ToList();
+                    }
+                }
+
+                return result;
         }
 
         public async Task<IEnumerable<Setting>> GetRolesByPicAsync(int picType)
@@ -103,6 +129,12 @@
             };
             var relations = await baseService.GetDataAsync<SettingRelation>(criteria);
             return relations.OrderBy(setting => setting.DisplayOrder).ToList();
+        }
+
+        public async Task<IEnumerable<SettingRelation>> GetMainSettingRelationAsync(GetSettingRelationByNameCriteria criteria)
+        {
+            var mainRelations = await baseService.GetDataAsync<SettingRelation>(criteria);
+            return mainRelations;
         }
 
         public async Task<IEnumerable<Country>> GetCountryAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false)

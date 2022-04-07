@@ -1,0 +1,53 @@
+@import '../../../components/react-grid/react-grid';
+@import '../../../components/form-filter';
+@import '../../../components/forms';
+@import "../../../components/modal";
+@import '../../../components/icons';
+@import '../../../components/messages';
+@import '../../../components/tables';
+@import '../../../components/react-select';
+
+.table-container{
+    .body-content {
+        .parent-level-0 td{
+            cursor: pointer;
+            background-color: rgb(227, 227, 227) !important;
+        }
+    }
+}
+
+.table-title{
+    max-width: 700px;
+}
+
+.update-setting-relation{
+    .modal-content{
+        width: 650px !important;
+        height: 570px !important;
+
+        .modal-footer{
+            justify-content: flex-start !important;
+        }
+
+        .filter-relation{
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid rgb(183, 183, 183);
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: rgb(232, 232, 232);
+        }
+    }
+
+    .checkbox-cell-style {
+        width: 13px;
+        height: 13px;
+        margin: auto;
+        cursor: pointer;
+    }
+
+    input[type="number"] {
+        text-align: center;
+      }
+}
+
