@@ -14,7 +14,7 @@
     using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
-    //[CrmPermission(FunctionKey = FunctionKey.CategoriesSummaryReport, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.CategoriesSummaryReport, Policy = Policy.Read)]
     public class SummaryReportController : Controller
     {
         private readonly ISummaryReportService summaryReportService;
