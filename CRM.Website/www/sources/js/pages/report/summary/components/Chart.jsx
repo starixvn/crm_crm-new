@@ -1,13 +1,13 @@
 import colors from '@jsroot/common/colorColumnChart';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis } from 'recharts';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 
-export class Chart extends PureComponent {
+export class Chart extends Component {
     constructor(props) {
         super(props);
     }
