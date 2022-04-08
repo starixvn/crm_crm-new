@@ -112,7 +112,7 @@ export class DataGrid extends Component {
                     {cells}
                 </Row>]
             );
-        }        
+        }
         return null;
     };
 
@@ -124,7 +124,7 @@ export class DataGrid extends Component {
                     this.renderMainCategoryRows(item))
             );
             return rows;
-        };
+        }
         return [
             <Row key={`body${1}`} className="no-data" >
                 <Cell className='text-center' colSpan={15}>{LangHelper.getResource('ThereIsNoData')}</Cell>
