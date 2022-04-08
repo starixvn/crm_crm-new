@@ -13,17 +13,32 @@ describe('DataGrid', () => {
     });
 
     const initProps = {
-        settingType:[{id: 55001, value: "test", displayOrder: 0, isChild: false, isActive: true}],
+        settingType:[{id: 55001, value: "test", displayOrder: 0, isChild: false, isActive: true, 
+                      childSettings: [{id: 0, name: null, settingId: 1002, settingName: "test", settingValue: "Zalo"}]}],
         gridParams: { settingName: '' },
-        mainSettings: { 
+        mainSettings: [{ 
             displayOrder: 0,
             parentID: 0,
             settingId: 68001,
             settingName: "test",
             settingSource: null,
             settingValue: "te",
-            childSettings: [{id: 0, name: null, settingId: 1002, settingName: "test", settingValue: "Zalo"}]
-        },
+            childSettings: [
+                {id: 0, name: null, settingId: 1002, settingName: "test", settingValue: "Zalo"}
+            ]
+        }, 
+        { 
+            displayOrder: 0,
+            parentID: 0,
+            settingId: 68001,
+            settingName: "test",
+            settingSource: null,
+            settingValue: "te",
+            childSettings: [
+                {id: 0, name: null, settingId: 1002, settingName: "test", settingValue: "Zalo"}
+            ]
+        }
+        ],
         getMainSettingRelation: jest.fn(),
         setOpenUpdatePopup: jest.fn()
     };
@@ -37,7 +52,7 @@ describe('DataGrid', () => {
             const header = shallow(container.buildHeader(initProps.gridData));
 
             // Assert
-            expect(header.find(HeaderCell).length).toBe(2);
+            expect(header.find(HeaderCell).length).toBe(4);
         });
     });
 
@@ -45,17 +60,19 @@ describe('DataGrid', () => {
         it('should render no data when gridData is empty', () => {
             // Arrange
             const props = {
-                gridData: {
-                    usernames: [],
-                    feedbackCategories: [],
-                    grandTotals: []
-                },
-                gridParams: { pageIndex: 1, pageSize: 100 }
+                settingType:[],
+                gridParams: { settingName: '' },
+                mainSettings: []
             };
-            const expectedBody = [<Row key='body1' className='no-data' ><Cell className='text-center'>ThereIsNoData</Cell></Row>];
+            const expectedBody = [
+            <Row className="no-data" >
+                <Cell className='text-center' colSpan={4}>
+                    {LangHelper.getResource('ThereIsNoData')}
+                </Cell>
+            </Row>];
             const container = shallow(<DataGrid {...props} />).instance();
             // Act
-            const actual = container.buildBody(props.gridData);
+            const actual = container.buildBody();
 
             // Assert
             expect(actual).toEqual(expectedBody);
@@ -64,95 +81,43 @@ describe('DataGrid', () => {
         it('should render expected rows when gridData has data', () => {
             // Arrange
             const container = shallow(<DataGrid {...initProps} />).instance();
-            container.renderMainCategoryRows = jest.fn(() => <div />);
+            container.renderRow = jest.fn(() => <div />);
 
             // Act
-            const actual = container.buildBody(initProps.gridData);
+            const actual = container.buildBody();
 
             // Assert
-            expect(actual).toEqual([[<div />]]);
+            expect(actual).toEqual([<div />]);
         });
 
-        it('row click call handleToggleRow', () => {
+        it('cell click call handleToggleRow', () => {
             // Arrange
             const container = mount(<DataGrid {...initProps} />);
             container.instance().handleToggleRow = jest.fn();
             // Act
-            container.find(Row).at(0).simulate('click');
+            container.find(Cell).at(0).simulate('click');
             // Assert
             expect(container.instance().handleToggleRow).toHaveBeenCalled();
-        });
-
-        it('cell click call handleShowDetails', () => {
-            // Arrange
-            const container = mount(<DataGrid {...initProps} />);
-            container.instance().handleShowDetails = jest.fn();
-            // Act
-            container.find('.link-click').at(0).simulate('click');
-            // Assert
-            expect(container.instance().handleShowDetails).toHaveBeenCalled();
         });
     });
 
     describe('handleToggleRow ', () => {
         it('should setState', () => {
             // Arrange
+            const event = {
+                stopPropagation: jest.fn()
+            };
             const container = shallow(<DataGrid {...initProps} />).instance();
             // Act
-            container.handleToggleRow(1);
+            container.handleToggleRow(event, 1);
 
             // Assert
+            expect(event.stopPropagation).toHaveBeenCalled();
             expect(container.state.toggleRow).toEqual([1]);
         });
     });
 
-    describe('renderCustomButton', () => {
-        it('click view chart call exact function', () => {
-            // Arrange
-            const container = shallow(<DataGrid {...initProps} />);
-            container.instance().handleViewChart = jest.fn();
-            // Act
-            const row = shallow(container.instance().renderCustomButton());
-            row.find('span').at(0).simulate('click');
-            // Assert
-            expect(container.instance().handleViewChart).toHaveBeenCalled();
-        });
-
-        it('click view detail call exact function', () => {
-            // Arrange
-            const container = shallow(<DataGrid {...initProps} />);
-            container.instance().handleShowDetails = jest.fn();
-            // Act
-            const row = shallow(container.instance().renderCustomButton());
-            row.find('span').at(1).simulate('click');
-            // Assert
-            expect(container.instance().handleShowDetails).toHaveBeenCalled();
-        });
-
-        it('click collapse call exact function', () => {
-            // Arrange
-            const container = shallow(<DataGrid {...initProps} />);
-            container.instance().handleCollapseExpand = jest.fn();
-            // Act
-            const row = shallow(container.instance().renderCustomButton());
-            row.find('span').at(2).simulate('click');
-            // Assert
-            expect(container.instance().handleCollapseExpand).toHaveBeenCalled();
-        });
-
-        it('click export excel call exact function', () => {
-            // Arrange
-            const container = shallow(<DataGrid {...initProps} />);
-            container.instance().handleExportExcel = jest.fn();
-            // Act
-            const row = shallow(container.instance().renderCustomButton());
-            row.find('span').at(3).simulate('click');
-            // Assert
-            expect(container.instance().handleExportExcel).toHaveBeenCalled();
-        });
-    });
-
-    describe('renderSubCategoryRows', () => {
+    describe('renderSubSetting ', () => {
         it('should return null', () => {
             // Arrange
             const state = {
@@ -161,94 +126,23 @@ describe('DataGrid', () => {
             const container = shallow(<DataGrid {...initProps} />).instance();
             container.setState(state);
             // Act
-            const actual = container.renderSubCategoryRows(1, null, '');
+            const actual = container.renderSubSetting(1, null);
             // Assert
             expect(actual).toBeNull();
         });
     });
 
-    describe('handleShowDetails ', () => {
+    describe('handleOpenUpdate', () => {
         it('should call exact function', () => {
             // Arrange
-            const params = {...initProps.gridParams, valueId: 1, mainCategoryId: 1, subCategoryId: 1};
+            const event = {preventDefault: jest.fn()};
             const container = shallow(<DataGrid {...initProps} />).instance();
             // Act
-            container.handleShowDetails(1, 1, 1);
+            container.handleOpenUpdate(event, 1);
             // Assert
-            expect(initProps.setOpenDetailPopup).toHaveBeenCalledWith({show: true});
-            expect(initProps.getDetails).toHaveBeenCalledWith(params);
-            expect(initProps.setGridParamDetails).toHaveBeenCalledWith(params);
-        });
-    });
-
-    describe('handleExportExcel  ', () => {
-        it('should call exact function', () => {
-            // Arrange
-            const container = shallow(<DataGrid {...initProps} />).instance();
-            // Act
-            container.handleExportExcel();
-            // Assert
-            expect(initProps.exportExcel).toHaveBeenCalledWith(initProps.gridParams);
-        });
-    });
-
-    describe('handleViewChart', () => {
-        it('should call exact function', () => {
-            // Arrange
-            const gridData = initProps.gridData;
-            const container = shallow(<DataGrid {...initProps} />).instance();
-            // Act
-            container.handleViewChart(gridData);
-            // Assert
-            expect(initProps.setOpenChartPopup).toHaveBeenCalledWith({show: true, chartInfo: gridData});
-        });
-    });
-
-    describe('handleCollapseExpand', () => {
-        it('should call setState when isCollapse is false', () => {
-            // Arrange
-            const state = {
-                isCollapse: false,
-                toggleRow: [2]
-            };
-            const container = shallow(<DataGrid {...initProps} />).instance();
-            container.setState(state);
-            // Act
-            container.handleCollapseExpand();
-            // Assert
-            expect(container.state.isCollapse).toBeTruthy();
-            expect(container.state.toggleRow).toEqual([2,3024]);
-        });
-
-        it('should call setState when isCollapse is true', () => {
-            // Arrange
-            const state = {
-                isCollapse: true,
-                toggleRow: [2]
-            };
-            const container = shallow(<DataGrid {...initProps} />).instance();
-            container.setState(state);
-            // Act
-            container.handleCollapseExpand();
-            // Assert
-            expect(container.state.isCollapse).toBeFalsy();
-            expect(container.state.toggleRow).toEqual([]);
-        });
-    });
-    
-
-    describe('onPaging', () => {
-        it('should call exactly function', () => {
-            // Arrange
-            const expectedGridParams = { pageIndex: 1, pageSize: 100 };
-            const container = shallow(<DataGrid {...initProps} />).instance();
-
-            // Act
-            container.onPaging(expectedGridParams.pageIndex, expectedGridParams.pageSize);
-
-            // Assert
-            expect(initProps.setGridParams).toHaveBeenCalledWith(expectedGridParams);
-            expect(initProps.getGridData).toHaveBeenCalledWith(expectedGridParams);
+            expect(initProps.setOpenUpdatePopup).toHaveBeenCalledWith({show: true, title: 'AddSubSettingTitle 1', parentId: 1});
+            expect(initProps.getMainSettingRelation).toHaveBeenCalled();
+            expect(event.preventDefault).toHaveBeenCalled();
         });
     });
 
@@ -256,7 +150,7 @@ describe('DataGrid', () => {
         it('should return null', () => {
             // Arrange
             const props = {
-                gridData: null
+                settingType : null
             };
             const container = shallow(<DataGrid {...props} />).instance();
 
