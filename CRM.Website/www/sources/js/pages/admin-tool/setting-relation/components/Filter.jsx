@@ -17,8 +17,6 @@ export class Filter extends Component {
         this.handleSubmit();
     }
 
-    renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
-
     handleSubmit = () => {
         const { settingName } = this.state;
         const params = {settingName};

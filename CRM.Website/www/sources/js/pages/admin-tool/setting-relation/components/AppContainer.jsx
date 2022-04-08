@@ -12,7 +12,7 @@ export class AppContainer extends Component {
   }
   
   handleCloseUpdatePopup = () =>{
-    this.props.setOpenUpdatePopup({ show: false, title: '', parentId: null});
+    this.props.setOpenUpdatePopup({ show: false, title: '', parentId: null });
     this.props.setMainSettingRelation(null);
   };
   
