@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Filter } from '../Filter';
+import { Button, Form } from 'react-bootstrap';
 
 describe('Filter', () => {
     afterAll(() => {
@@ -52,6 +53,20 @@ describe('Filter', () => {
             // Assert
             expect(initProps.setGridParams).toHaveBeenCalled();
             expect(initProps.getSettingTypes).toHaveBeenCalled();
+        });
+    });
+
+    describe('render', () => {
+        it('onClick call exactly function', () => {
+            // Arrange
+            const props = { ...initProps };
+
+            //Act
+            const container = shallow(<Filter {...props} />);
+            container.find(Form.Control).simulate('click', {target:{value: 'test'}});
+
+            // Assert
+            expect(container.instance().state.settingName).toEqual('test');
         });
     });
 });
