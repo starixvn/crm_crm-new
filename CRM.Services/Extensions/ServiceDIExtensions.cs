@@ -51,6 +51,7 @@
             services.AddTransient<ILogStatisticsService, LogStatisticsService>();
             services.AddTransient<IIssueStatisticsService, IssueStatisticsService>();
             services.AddTransient<IDynamicReportService, DynamicReportService>();
+            services.AddTransient<ICustomerReportService, CustomerReportService>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)

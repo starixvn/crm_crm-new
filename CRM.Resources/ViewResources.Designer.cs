@@ -223,6 +223,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer Report.
+        /// </summary>
+        public static string CustomerReport {
+            get {
+                return ResourceManager.GetString("CustomerReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily.
         /// </summary>
         public static string Daily {
