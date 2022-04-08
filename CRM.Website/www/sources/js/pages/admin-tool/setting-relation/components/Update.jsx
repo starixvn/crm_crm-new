@@ -13,6 +13,7 @@ export class Update extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            shouldResetScrollPosition: true,
             subSettingName: this.props.subSettingOptions[0].settingName,
             isSubmitting: false,
             settingRelation: []
@@ -121,6 +122,7 @@ export class Update extends Component {
                         body={this.buildBody()}
                         containerPadding={0}
                         adjustedHeight={10}
+                        shouldResetScrollPosition={this.state.shouldResetScrollPosition}
                     />
                 </Modal.Body>
                 <Modal.Footer>
@@ -144,7 +146,7 @@ export class Update extends Component {
     handleSubmit = event => {
         event.preventDefault();
         const {subSettingName, settingRelation} = this.state;
-        const {updatePopup, updateRelation, onClose, getSettingTypes, gridParams, setUpdate} = this.props;
+        const {updatePopup, updateRelation, onClose, getSettingTypes, gridParams, setUpdateResult} = this.props;
         const params = {
             parentId: parseInt(updatePopup.parentId, 10),
             settingName: subSettingName,
@@ -156,7 +158,7 @@ export class Update extends Component {
                 setTimeout(() => {
                     onClose();
                     getSettingTypes(gridParams);
-                    setUpdate(null);
+                    setUpdateResult(null);
                 }, 3000);
             } else {
                 this.setState({isSubmitting: true});
@@ -170,6 +172,7 @@ export class Update extends Component {
             parentId: parseInt(this.props.updatePopup.parentId, 10)
         };
         this.props.getMainSettingRelation(params);
+        this.setState({shouldResetScrollPosition: true});
     };
 
     onChangeDisplay = (value, displayOrder) =>{
@@ -181,7 +184,7 @@ export class Update extends Component {
                 displayOrder: setting.value === value ? displayOrder : setting.displayOrder
             };
         });
-        this.setState({settingRelation: settingRelationFilter});
+        this.setState({settingRelation: settingRelationFilter, shouldResetScrollPosition: false});
     }
 
     onChangeCheckBox = (value, checked) =>{
@@ -193,7 +196,7 @@ export class Update extends Component {
                 displayOrder: setting.displayOrder
             };
         });
-        this.setState({settingRelation: settingRelationFilter});
+        this.setState({settingRelation: settingRelationFilter, shouldResetScrollPosition: false});
     }
 
     render() {
