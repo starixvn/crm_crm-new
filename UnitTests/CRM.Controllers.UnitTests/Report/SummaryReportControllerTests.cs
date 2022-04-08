@@ -55,7 +55,7 @@
             };
 
             // Act
-            var result = await controller.getAllSettings();
+            var result = await controller.GetAllSettings();
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -134,7 +134,7 @@
                 TimeSpan = 12
             };
             optionsAppSettings.Value.Returns(appSettings);
-            return new SummaryReportController(summaryReportService, settingService, exportExcelService, optionsAppSettings);
+            return new SummaryReportController(summaryReportService, exportExcelService, optionsAppSettings);
         }
 
         #endregion Helpers
