@@ -501,4 +501,7 @@
   <data name="SettingRelationV2" xml:space="preserve">
     <value>Setting Relation v2</value>
   </data>
+  <data name="CustomerReport" xml:space="preserve">
+    <value>Customer Report</value>
+  </data>
 </root>

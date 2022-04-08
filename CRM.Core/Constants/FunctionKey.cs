@@ -33,6 +33,7 @@
         public const string FeedbackStatistics = "FeedbackStatistics";
         public const string DynamicReport = "DynamicReport";
         public const string RedemptionStatistics = "RedemptionStatistics";
+        public const string CustomerReport = "CustomerReport";
 
         public const string SettingRelationManagement = "SettingRelationshipManagement";
     }
