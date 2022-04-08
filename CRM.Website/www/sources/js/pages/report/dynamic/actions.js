@@ -10,7 +10,7 @@ import {
 
 const getDynamicReports = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('DynamicReport/GetDynamicReport');
+    const url = Site.resolveClientUrl('DynamicReport/GetDynamicReports');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setDynamicReports(response.data));
     }).then(() => Site.unblockUI());
