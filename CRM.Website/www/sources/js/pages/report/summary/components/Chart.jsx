@@ -95,7 +95,7 @@ export class Chart extends Component {
 }
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-const mapStateToProps = state => {
+const mapStateToProp = state => {
     const {
         gridData
     } = state;
@@ -104,4 +104,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chart);
+export default connect(mapStateToProp, mapDispatchToProps)(Chart);
