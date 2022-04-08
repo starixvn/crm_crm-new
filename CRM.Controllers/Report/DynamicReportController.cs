@@ -37,7 +37,7 @@
             return View("../Report/Dynamic/Index");
         }
 
-        public async Task<IActionResult> GetDynamicReport([FromBody] GetDynamicReportCriteria criteria)
+        public async Task<IActionResult> GetDynamicReports([FromBody] GetDynamicReportCriteria criteria)
         {
             var logs = await dynamicReportService.GetDynamicReportAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();

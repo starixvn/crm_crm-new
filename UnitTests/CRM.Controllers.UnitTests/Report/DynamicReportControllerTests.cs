@@ -60,7 +60,7 @@
             settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
-            var result = await controller.GetDynamicReport(param);
+            var result = await controller.GetDynamicReports(param);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);

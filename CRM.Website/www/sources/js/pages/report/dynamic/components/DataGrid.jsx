@@ -23,8 +23,8 @@ export class DataGrid extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={10}>#</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('RunningNo')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={22}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
                 <HeaderCell colWidth={45}>{LangHelper.getResource('MainCategoryAndSubCategory')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
@@ -133,17 +133,17 @@ export class DataGrid extends Component {
         return groupCategory.map((value,key) => {
             const filterMainCategory = mainCategories.find(element => element.settingId === value.mainCategoryId);
             return (
-                <>
+                <React.Fragment>
                     <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
                     {
                         value.subCategoryId.map((subId,index) => {
                             const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subId);
                             return(
-                                <div key={index} className="font-italic ml-3">{filterSubCategory.name}</div>
+                                <div key={index} className="font-italic ml-3">{filterSubCategory ? filterSubCategory.name : 'N/A'}</div>
                             );
                         })
                     }
-                </>
+                </React.Fragment>
             );
         });
     };

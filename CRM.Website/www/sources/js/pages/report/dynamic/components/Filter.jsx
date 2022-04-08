@@ -119,7 +119,7 @@ export class Filter extends Component {
 
     handleUpdateFromYear = firstDateYear => {
         this.minToDate = firstDateYear;
-        this.maxToDate = this.currentDate;
+        this.maxToDate = firstDateYear;
         this.setState({
             fromDate: firstDateYear,
             toDate: new Date(firstDateYear.getFullYear(), 11, 31)
