@@ -22,29 +22,17 @@
 
     public class SettingRelationController : BaseController
     {
-        private readonly ICommonService commonService;
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
-        private readonly IExportExcelService excelService;
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         public SettingRelationController(
-            ICommonService commonService,
             IBaseService baseService,
             ISettingService settingService,
-            IExportExcelService excelService,
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService)
+            INapSession napSession)
         {
-            this.commonService = commonService;
             this.baseService = baseService;
             this.settingService = settingService;
-            this.excelService = excelService;
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
         }
 
         [NapAuth(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Constant.Policy.Read)]
