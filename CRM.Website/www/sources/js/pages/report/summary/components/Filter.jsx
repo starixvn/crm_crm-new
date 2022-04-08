@@ -16,7 +16,7 @@ export class Filter extends PureComponent {
                 year: new Date().getFullYear(),
                 categories:'',
                 siteType: 0
-            },
+            }
         };
     }
 
@@ -94,8 +94,7 @@ export class Filter extends PureComponent {
         for (let i = minYear; i <= currentYear; i++) {
             if(i === currentYear){
                 options.push(<option selected value={i} key={i}>{i}</option>);
-            }
-            else{
+            }else{
                 options.push(<option value={i} key={i}>{i}</option>);
             }
         }

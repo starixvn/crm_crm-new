@@ -12,7 +12,7 @@ export class Chart extends PureComponent {
         super(props);
     }
 
-    AddCategorySummary = (categorySummary, obj, month) =>{
+    addCategorySummary = (categorySummary, obj, month) =>{
         categorySummary.summaries.map(report => {
             if (report.month === month && report.amount !== 0) {
                 if (obj[categorySummary.name]) {
@@ -29,7 +29,7 @@ export class Chart extends PureComponent {
         const data = months.map(month => {
             const obj = { name: month };
             categorySummaries.map(categorySummariy => {
-                this.AddCategorySummary(categorySummariy, obj, month);
+                this.addCategorySummary(categorySummariy, obj, month);
             });
             return obj;
         });
