@@ -13,7 +13,6 @@ export class DataGrid extends Component {
         };
     }
 
-
     buildHeader = () => {
         return (
             <HeaderRow>

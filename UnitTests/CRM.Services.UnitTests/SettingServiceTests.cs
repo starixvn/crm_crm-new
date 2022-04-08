@@ -127,7 +127,22 @@
             Assert.Equal(expected, actual);
             Assert.Equal("product", criteria.SettingName);
         }
-        
+
+        [Fact]
+        public async Task GetMainSettingRelationAsync_WhenCalled_ReturnExpectedMainSettingRelations()
+        {
+            // Arrange
+            var mainRelations = fixture.Create<IEnumerable<SettingRelation>>();
+            var criteria = fixture.Create<GetSettingRelationByNameCriteria>();
+            var service = GetService();
+            baseService.GetDataAsync<SettingRelation>(Arg.Do<GetSettingRelationByNameCriteria>(x => criteria = x)).Returns(mainRelations);
+
+            // Act
+            var actual = await service.GetMainSettingRelationAsync(criteria);
+
+            // Assert
+            Assert.Equal(mainRelations, actual);
+        }
 
         [Fact]
         public async Task GetSubCategoryAsync_WhenCalled_ReturnExpectedSettings()

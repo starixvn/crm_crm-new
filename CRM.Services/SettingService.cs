@@ -45,7 +45,6 @@
         public async Task<IEnumerable<Setting>>GetSettingByTypes(string settingName)
         {
                 var allSettings = await GetSettingAsync();
-                var test = allSettings.Where(s => s.SettingName == settingName);
                 IEnumerable<Setting> relations = await GetSettingRelationAsync();
                 IEnumerable<Setting> result = allSettings
                     .Where(s => s.SettingName == settingName)

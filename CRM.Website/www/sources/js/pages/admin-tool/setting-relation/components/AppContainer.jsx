@@ -15,6 +15,7 @@ export class AppContainer extends Component {
     this.props.setOpenUpdatePopup({ show: false, title: '', parentId: null});
     this.props.setMainSettingRelation(null);
   };
+  
   render() {
     const {mainSettings, updatePopup, gridParams} = this.props;
 
