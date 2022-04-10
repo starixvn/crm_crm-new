@@ -87,7 +87,7 @@ export class EditFeedbackSubject extends PureComponent {
                     <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button size="sm" type="button" variant="primary" size="sm" onClick={this.handleConfirmCancelPopup}>
+                    <Button size="sm" type="button" variant="primary" onClick={this.handleConfirmCancelPopup}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>

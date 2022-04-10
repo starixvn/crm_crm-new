@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Filter } from '../Filter';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 describe('Filter', () => {
     afterAll(() => {
@@ -25,10 +25,9 @@ describe('Filter', () => {
     describe('componentDidMount', () => {
         it('should call exactly function when did mount',() => {
             // Arrange
-            const props = { ...initProps };
 
             //Act
-            const container = shallow(<Filter {...props} />).instance();
+            const container = shallow(<Filter {...initProps} />).instance();
             container.handleSubmit = jest.fn();
 
             container.componentDidMount();
@@ -40,13 +39,12 @@ describe('Filter', () => {
     describe('handleSubmit', () => {
         it('should call exactly function',() => {
             // Arrange
-            const props = { ...initProps };
             const state = {
                 settingName: 'test'
             };
 
             //Act
-            const container = shallow(<Filter {...props} />).instance();
+            const container = shallow(<Filter {...initProps} />).instance();
             container.setState(state);
             container.handleSubmit = jest.fn();
 
@@ -59,11 +57,10 @@ describe('Filter', () => {
     describe('render', () => {
         it('onClick call exactly function', () => {
             // Arrange
-            const props = { ...initProps };
+            const container = shallow(<Filter {...initProps} />);
 
             //Act
-            const container = shallow(<Filter {...props} />);
-            container.find(Form.Control).simulate('click', {target:{value: 'test'}});
+            container.find(Form.Control).simulate('change', {target:{value: 'test'}});
 
             // Assert
             expect(container.instance().state.settingName).toEqual('test');
