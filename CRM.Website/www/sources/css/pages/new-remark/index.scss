@@ -1,20 +1,17 @@
-@import "../../../components/form-filter";
-@import "../../../components/react-grid/react-grid";
-@import "../../../components/forms";
-@import "../../../components/modal";
-@import "../../../components/icons";
-@import "../../../components/tables";
-@import '../../../components/date-picker/style';
-@import '../../../components/multiple-select/style';
+@import '../../components/form-filter';
+@import '../../components/react-grid/react-grid';
+@import '../../components/multiple-select/style';
+@import '../../components/date-picker/style';
+@import '../../components/messages';
+@import '../../components/modal';
+@import '../../components/tables';
+@import '../../components/react-select';
+@import '../../components/icons';
 
 .form-filter {
-    min-width: 1120px;
+    min-width: 1200px;
     
     .react-datepicker__input-container input{
         width: 100% !important;
-    }
-
-    .submit{
-        margin-left: 98px;
     }
 }

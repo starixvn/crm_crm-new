@@ -1,8 +1,11 @@
 ﻿namespace CRM.Controllers.Remark
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Models.Setting;
+    using CRM.Services;
     using CRM.Services.Remark;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -10,30 +13,31 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
-    public class NewRemarkController : BaseController
+    //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    public class NewRemarkController : Controller
     {
-        private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly IRemarkService remarkService;
+        private readonly ISettingService settingService;
 
         public NewRemarkController(
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
-            IRemarkService remarkService
+            IRemarkService remarkService,
+            ISettingService settingService
         )
         {
-            this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.remarkService = remarkService;
+            this.settingService = settingService;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> GetRemarkTitles()
+        {
+            var remarkSettings = await settingService.GetSettingAsync(SettingName.RemarkTitles, true);
+            var remarkSettingsOrder = remarkSettings.OrderBy(s => s.DisplayOrder).ToList();
+            return Json(remarkSettingsOrder);
         }
     }
 }

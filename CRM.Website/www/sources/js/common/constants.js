@@ -76,3 +76,14 @@ export const DefaultLanguages = {
     Cantonese: 1202
 };
 
+export const DateOption = [
+    {id: 0, name: 'Today'},
+    {id: 1, name: 'Yesterday'},
+    {id: 2, name: 'This Week'},
+    {id: 3, name: 'Last Week'},
+    {id: 4, name: 'This Month'},
+    {id: 5, name: 'Last Month'},
+    {id: 6, name: 'This Year'},
+    {id: 7, name: 'Specific Dates'}
+];
+
