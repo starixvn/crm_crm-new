@@ -161,6 +161,7 @@
     HeadlineType: 'Headline Type',
     Handler: 'Handler',
     HomeAddress: 'Home Address',
+    Headline: 'Headline',
     HeadlineDA: 'Headline/DA',
     HeadlineDirectAccount: 'Headline/Direct Account',
     Hour: 'Hour',

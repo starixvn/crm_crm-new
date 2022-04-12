@@ -11,5 +11,6 @@
         public IEnumerable<BaseModel> LicenseeTypes { get; set; } = new List<BaseModel>();
         public IEnumerable<SiteInfo> Sites { get; set; } = new List<SiteInfo>();
         public IEnumerable<SettingRelation> Titles { get; set; } = new List<SettingRelation>();
+        public IEnumerable<SettingRelation> Roles { get; set; } = new List<SettingRelation>();
     }
 }

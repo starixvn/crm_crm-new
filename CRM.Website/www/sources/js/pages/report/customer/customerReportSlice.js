@@ -3,11 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const customerReportSlice = createSlice({
     name: 'customerReport',
     initialState: {
-        customerReport: null
+        customerReport: null,
+        allSettings: null
     },
     reducers: {
         setCustomerReport: (state, action) => {
             state.customerReport = action.payload;
+        },
+        setAllSettings : (state, action) => {
+            state.allSettings = action.payload;
         }
     }
 });
@@ -15,7 +19,8 @@ const customerReportSlice = createSlice({
 const { actions, reducer } = customerReportSlice;
 
 export const {
-    setCustomerReport
+    setCustomerReport,
+    setAllSettings
 } = actions;
 
 export default reducer;
