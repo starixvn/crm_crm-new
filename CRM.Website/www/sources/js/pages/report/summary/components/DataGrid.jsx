@@ -205,7 +205,9 @@ export class DataGrid extends Component {
 
     render() {
         const { categorySummaries, grandTotals, months, reportTitle } = this.props.gridData;
-
+        if(reportTitle === null){
+            return null;
+        }
         const defaultWidth = 400;
         const totalWidth = defaultWidth + months.length * 60;
 

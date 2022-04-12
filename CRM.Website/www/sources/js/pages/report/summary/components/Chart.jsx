@@ -28,8 +28,8 @@ export class Chart extends Component {
     convertDataChart = (months, categorySummaries) => {
         const data = months.map(month => {
             const obj = { name: month };
-            categorySummaries.map(categorySummariy => {
-                this.addCategorySummary(categorySummariy, obj, month);
+            categorySummaries.map(categorySummary => {
+                this.addCategorySummary(categorySummary, obj, month);
             });
             return obj;
         });

@@ -12,26 +12,20 @@ export class Filter extends PureComponent {
         this.state = {
             categoryOptions: [],
             siteOptions: [],
-            gridParams: {
-                year: new Date().getFullYear(),
-                categories:'',
-                siteType: 0
-            }
+            year: new Date().getFullYear(),
+            categories: '',
+            siteType: 0
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.handleSettingOptions(this.props.allSettingData);
-        setInterval(this.inc, 1000);
     }
 
-    handleSettingOptions = allSettingData =>{
-        const {siteTypes, categories} = allSettingData;
-        const { gridParams } = this.state;
-
+    handleSettingOptions = allSettingData => {
+        const { siteTypes, categories } = allSettingData;
         const categoryIdFilters = [];
-
-        const categoryOptions = categories.map(item =>{
+        const categoryOptions = categories.map(item => {
             categoryIdFilters.push(item.mainCategoryID);
             return {
                 ...item,
@@ -39,78 +33,23 @@ export class Filter extends PureComponent {
             };
         });
 
-        const siteOptions = siteTypes.map(item =>{
-            return {
-                ...item
-            };
-        });
-
+        const siteOptions = siteTypes;
         const categoryIdFiltersJoin = categoryIdFilters.join(',');
-
-        gridParams.categories = categoryIdFiltersJoin;
-
         this.setState({
-            categoryOptions, siteOptions, gridParams
-        });
-    };
-
-    handleChangeCategory = selectedItemsKey => {
-        const { gridParams } = this.state;
-        gridParams.categories = selectedItemsKey;
-        this.setState({
-            gridParams
+            categoryOptions, siteOptions, categories: categoryIdFiltersJoin
         });
     };
 
     submitHandler = event => {
         event.preventDefault();
-        const { gridParams } = this.state;
-        this.props.setGridParams({ ...gridParams});
-        this.props.getGridData({ ...gridParams});
-    };
-
-    handleChangeYear = event => {
-        const value = +event.target.value;
-        const { gridParams } = this.state;
-        gridParams.year = value;
-        this.setState({
-            gridParams
-        });
-    };
-
-    handleChangeSite = event => {
-        const value = +event.target.value;
-        const { gridParams } = this.state;
-        gridParams.siteType = value;
-        this.setState({
-            gridParams
-        });
-    };
-
-    renderOptionsYear = () => {
-        const minYear = 2011;
-        const currentYear = (new Date()).getFullYear();
-        const options = [];
-        for (let i = minYear; i <= currentYear; i++) {
-            if(i === currentYear){
-                options.push(<option selected value={i} key={i}>{i}</option>);
-            }else{
-                options.push(<option value={i} key={i}>{i}</option>);
-            }
-        }
-        return options;
-    };
-
-    renderOptionsSite = siteTypes => {
-        const options = [];
-        siteTypes.map(item => {
-            options.push(<option value={item.id} key={item.id}>{item.name}</option>);
-        });
-        return options;
+        const { year, categories, siteType } = this.state;
+        const params = { year, categories, siteType };
+        this.props.setGridParams({ ...params });
+        this.props.getGridData({ ...params });
     };
 
     render() {
-        const {categoryOptions, siteOptions} = this.state;
+        const { categoryOptions, siteOptions } = this.state;
 
         return (
             <Form className="form-filter" onSubmit={this.submitHandler}>
@@ -118,18 +57,24 @@ export class Filter extends PureComponent {
                     <Form.Group>
                         <Form.Label htmlFor="year">Year</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none form-control-year"
-                            id="year" onChange={this.handleChangeYear}
+                            id="year" value={this.state.year} onChange={evt => this.setState({year: evt.target.value})}
                         >
-                            {this.renderOptionsYear()}
+                            {
+                                this.props.allSettingData.yearRange.map(key => <option key={key.value} value={key.value}>{key.value}</option>)
+                            }
                         </Form.Control>
                     </Form.Group>
 
                     <Form.Group>
                         <Form.Label htmlFor="site">Site</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none form-control-site"
-                            id="year" onChange={this.handleChangeSite}
+                            id="year" onChange={evt => this.setState({siteType: evt.target.value})}
                         >
-                            {this.renderOptionsSite(siteOptions)}
+                            {
+                                siteOptions.map(item =>
+                                   <option value={item.id} key={item.id}>{item.name}</option>
+                                )
+                            }
                         </Form.Control>
                     </Form.Group>
 
@@ -142,7 +87,9 @@ export class Filter extends PureComponent {
                                 keyField='mainCategoryID'
                                 maxDisplayItemCount={0}
                                 onChange={(currentItem, selectedItemsKey) => {
-                                    this.handleChangeCategory(selectedItemsKey);
+                                    this.setState({
+                                        categories: selectedItemsKey
+                                    });                                    
                                 }}
                                 hasSearchBox
                                 isNAOption
