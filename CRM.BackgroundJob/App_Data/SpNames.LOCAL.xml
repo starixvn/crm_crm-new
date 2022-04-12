@@ -49,7 +49,7 @@
     </Function>
     <Function Name="Chatbot ProblemAccount">
         <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Sel" SpName="Acc_CRM_Chatbot_ProblemAccounts_Sel_xtest" DbName="DBCUST.CustDB.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Import" SpName="Acc_CRM_Chatbot_ProblemAccounts_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Import" SpName="Acc_CRM_Chatbot_ProblemAccounts_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot Result Amendment">
         <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Sel" SpName="Acc_CRM_Chatbot_ResultAmendment_Sel" DbName="DBEXT.bodb02.bodbAdminNet" />
