@@ -4,3 +4,43 @@
 @import '../../../components/react-grid/react-grid';
 @import '../../../components/icons';
 @import '../../../components/tables';
+@import '../../../components/select-with-search-site';
+@import '../../../components/multiple-select/style';
+
+#app-container {
+    width: 1800px;
+}
+
+.form-filter {
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .group-field {
+        display: flex;
+        width: 320px;
+
+        label {
+            width: 105px;
+        }
+
+        .input-field {
+            width: 200px;
+        }
+    }
+
+    .multiple-select-container {
+        width: 200px;
+    }
+
+    .group-checkbox {
+        display: flex;
+        width: 320px;
+    }
+
+    .check-exclude {
+        padding-top: 5px;
+        padding-right: 5px;
+    }
+}

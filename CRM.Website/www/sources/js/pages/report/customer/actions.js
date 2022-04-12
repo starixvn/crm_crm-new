@@ -1,7 +1,8 @@
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import {
-    setCustomerReport
+    setCustomerReport,
+    setAllSettings
 } from './customerReportSlice';
 
 const getCustomerReport = params => async dispatch => {
@@ -12,6 +13,15 @@ const getCustomerReport = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const getAllSettings = () => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('CustomerReport/GetAllSettings');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setAllSettings(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
-    getCustomerReport
+    getCustomerReport,
+    getAllSettings
 };

@@ -6,11 +6,11 @@
 
         public string Headline { get; set; }
 
-        public int VipTypeId { get; set; }
+        public int VipId { get; set; }
 
         public string LanguageIds { get; set; }
 
-        public string SiteId { get; set; }
+        public string SiteIds { get; set; }
 
         public string PositionIds { get; set; }
 

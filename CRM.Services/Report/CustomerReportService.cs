@@ -29,9 +29,9 @@
             {
                 Username = param.Username,
                 Headline = param.Headline,
-                Vip = param.VipTypeId,
+                Vip = param.VipId,
                 LanguageId = param.LanguageIds,
-                SiteId = param.SiteId,
+                SiteId = param.SiteIds,
                 RoleId = param.PositionIds,
                 ExcludeIgnoredAcc = param.ExcludeIgnoredAccounts,
                 PageIndex = param.PageIndex,
