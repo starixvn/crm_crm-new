@@ -533,5 +533,8 @@
   </data>
   <data name="SettingManagement" xml:space="preserve">
     <value>Setting Management v2</value>
+  </data>s
+  <data name="DirectCustomerReport" xml:space="preserve">
+    <value>Direct Customer Report</value>
   </data>
 </root>
