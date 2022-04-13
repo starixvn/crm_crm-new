@@ -7,49 +7,35 @@
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
 
-.parent-level-0{
-    height: 29px;
-    font-weight: bold;
-
-    .complaints-text, td{
-        background-color: #e3e3e3 !important;
-        color: #0054a6 !important;
-
+.table-container {
+    .body-content {
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
-    .complaints-text{
-        cursor: pointer;
-    }
-}
+    .table {
+        tbody {
+            tr:nth-child(n) td {
+                background: #fff;
+            }
 
-.right{
-    text-align: right;
-}
+            tr:hover td {
+                background-color: #E0FFFF !important;
+            }
 
-.table{
-    overflow-x: hidden;
-    tbody tr {
-        &:hover td {
-            background-color: transparent;
-        }
+            .parent-level-0 {
+                height: 29px;
+                font-weight: bold;
 
-        td {
-            border: 0.5px solid #b7b7b7;
-            background-color: white !important;
-            color: #666;
-        }
-
-        &.last-row td {
-            background-color: #c0cbe2 !important;
-            color: #363636;
-            font-weight: bold;
+                .complaints-text,
+                td {
+                    background-color: #e3e3e3 !important;
+                    color: #0054a6 !important;
+                    cursor: pointer;
+                }
+            }
         }
     }
-}
-
-.table-container .body-content{
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .footer-content {
@@ -63,7 +49,11 @@
     }
 }
 
-.icon{
+.right {
+    text-align: right;
+}
+
+.icon {
     cursor: pointer;
 }
 
@@ -89,19 +79,21 @@
     }
 }
 
-.chart-modal-dialog{
-    .modal-content{
-        .recharts-default-legend{
+.chart-modal-dialog {
+    .modal-content {
+        .recharts-default-legend {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             border: 1px solid #b7b7b7;
             padding-top: 5px !important;
 
-            li{
+            li {
                 margin-left: 10px;
                 width: 270px;
-                .recharts-surface, .recharts-legend-item-text{
+
+                .recharts-surface,
+                .recharts-legend-item-text {
                     float: left;
                 }
             }

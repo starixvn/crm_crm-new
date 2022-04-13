@@ -1,12 +1,12 @@
 import LangHelper from '@jsroot/common/langHelper';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 
-export class Filter extends PureComponent {
+export class Filter extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -66,8 +66,8 @@ export class Filter extends PureComponent {
                     </Form.Group>
 
                     <Form.Group>
-                        <Form.Label htmlFor="site">Site</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none form-control-site"
+                        <Form.Label className='label-width' htmlFor="site">Site</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none "
                             id="year" onChange={evt => this.setState({siteType: evt.target.value})}
                         >
                             {
@@ -80,7 +80,7 @@ export class Filter extends PureComponent {
 
                     <Form.Group className='form-width'>
                         <Form.Label htmlFor="categoryId">{LangHelper.getResource('Category')}</Form.Label>
-                        <div className='form-control-wrapper Category-width'>
+                        <div className='form-control-wrapper'>
                             <MultipleSelect
                                 valueField='name'
                                 dataSource={categoryOptions}
