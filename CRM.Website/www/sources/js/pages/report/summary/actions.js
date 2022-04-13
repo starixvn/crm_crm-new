@@ -8,10 +8,10 @@ import {
     setChartPopup
 } from './summaryReportSlice';
 
-const getAllSetting = params => async dispatch => {
+const getAllSetting = () => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('SummaryReport/GetAllSettings');
-    await DataService.postDataAsync(url, params).then(response => {
+    await DataService.postDataAsync(url).then(response => {
         dispatch(setAllSetting(response.data));
     }).then(() => Site.unblockUI());
 };

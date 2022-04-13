@@ -155,15 +155,15 @@ export class DataGrid extends Component {
     };
 
     handleToggleRow = id => {
-        const Categories = this.state.toggleRowReport;
-        const index = Categories.indexOf(id);
+        const categories = this.state.toggleRowReport;
+        const index = categories.indexOf(id);
         if (index >= 0) {
-            Categories.splice(index, 1);
+            categories.splice(index, 1);
         } else {
-            Categories.push(id);
+            categories.push(id);
         }
 
-        this.setState({ Categories });
+        this.setState({ categories });
     };
 
     getMaxWidth = totalWidth => document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
@@ -205,7 +205,7 @@ export class DataGrid extends Component {
 
     render() {
         const { categorySummaries, grandTotals, months, reportTitle } = this.props.gridData;
-        if(reportTitle === null){
+        if(reportTitle === null || categorySummaries === null || grandTotals === null || months === null ){
             return null;
         }
         const defaultWidth = 400;
