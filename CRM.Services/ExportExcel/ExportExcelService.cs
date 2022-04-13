@@ -12,6 +12,7 @@
     using CRM.Models.Report.CustomerReport;
     using CRM.Models.Report.CategoriesSummaryReport;
     using CRM.Models.Report.DeletedFeedbackStatistic;
+    using CRM.Models.Report.DirectCustomerReport;
     using CRM.Models.Report.DynamicReport;
     using CRM.Models.Report.FeedbackStatistic;
     using CRM.Models.Report.LogStatistics;
@@ -33,6 +34,9 @@
 
         byte[] ExportSettlementReport(SettlementReportInfo reportInfo);
         byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo, int year);
+
+        byte[] ExportDirectCustomerReport(DirectCustomerReportInfo directreportInfo);
+
 
         byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
 
@@ -265,5 +269,14 @@
             var excel = new CustomerReportExcel(templatePath, customerReportInfo);
             return excel.Export();
         }
+        
+        public byte[] ExportDirectCustomerReport(DirectCustomerReportInfo directreportInfo)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/Direct_Customer_Report.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new DirectReportExcel(templatePath, directreportInfo);
+            return excel.Export();
+        }
+
     }
 }

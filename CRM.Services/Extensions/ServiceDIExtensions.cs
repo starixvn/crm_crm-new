@@ -50,6 +50,7 @@ namespace CRM.Services.Extensions
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<ILogStatisticsService, LogStatisticsService>();
             services.AddTransient<ISummaryReportService, SummaryReportService>();
+            services.AddTransient<IDirectReportService, DirectReportService>();
             services.AddTransient<IIssueStatisticsService, IssueStatisticsService>();
             services.AddTransient<IDynamicReportService, DynamicReportService>();
             services.AddTransient<ICustomerReportService, CustomerReportService>();

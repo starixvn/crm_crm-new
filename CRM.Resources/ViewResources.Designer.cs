@@ -322,6 +322,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Direct Customer Report.
+        /// </summary>
+        public static string DirectCustomerReport {
+            get {
+                return ResourceManager.GetString("DirectCustomerReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have permission to delete..
         /// </summary>
         public static string DoNotDeleteCommunicationLogPermission {
