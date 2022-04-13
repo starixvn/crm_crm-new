@@ -3,12 +3,16 @@ import { createSlice } from '@reduxjs/toolkit';
 const newRemarkSlice = createSlice({
     name: 'newRemark',
     initialState: {
-        remarkSetting: null,
+        remarkTitle: null,
+        gridParams: { pageIndex: 1, pageSize: 100 },
         gridData: null
     },
     reducers: {
-        setRemarkSetting: (state, action) => {
-            state.remarkSetting = action.payload;
+        setRemarkTitle: (state, action) => {
+            state.remarkTitle = action.payload;
+        },
+        setGridParams: (state, action) => {
+            state.gridParams = action.payload;
         },
         setRemarks: (state, action) => {
             state.gridData = action.payload;
@@ -19,8 +23,9 @@ const newRemarkSlice = createSlice({
 const { actions, reducer } = newRemarkSlice;
 
 export const {
-    setRemarks,
-    setRemarkSetting
+    setRemarkTitle,
+    setGridParams,
+    setRemarks
 } = actions;
 
 export default reducer;

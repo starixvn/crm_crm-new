@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Criteria.NewRemark;
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Remark;
@@ -39,5 +40,20 @@
             var remarkSettingsOrder = remarkSettings.OrderBy(s => s.DisplayOrder).ToList();
             return Json(remarkSettingsOrder);
         }
+
+        public async Task<IActionResult> GetNewRemarks([FromBody] GetNewRemarkCriteria criteria)
+        {
+            try
+            {
+                var newRemarks = await remarkService.GetNewRemarkAsync(criteria);
+                return Json(newRemarks);
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

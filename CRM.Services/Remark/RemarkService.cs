@@ -6,8 +6,10 @@
     using System.Web;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using CRM.Criteria.NewRemark;
     using CRM.Criteria.Remark;
     using CRM.Models.Remark;
+    using CRM.Models.RemarkNew;
     using CRM.Repositories;
 
     public interface IRemarkService
@@ -15,6 +17,8 @@
         Task<RemarkInfo> GetRemarkAsync(GetRemarkCriteria criteria);
 
         Task<CommandResult> EditRemarkAsync(EditRemarkCommand command);
+
+        Task<IEnumerable<RemarkNewInfo>> GetNewRemarkAsync(GetNewRemarkCriteria criteria);
     }
 
     public class RemarkService : IRemarkService
@@ -65,6 +69,12 @@
                         .Append(isSpecialText);
                 }
             }
+        }
+
+        public async Task<IEnumerable<RemarkNewInfo>> GetNewRemarkAsync(GetNewRemarkCriteria criteria)
+        {
+            var newRemarks = await baseService.GetDataAsync<RemarkNewInfo>(criteria);
+            return newRemarks;
         }
     }
 }

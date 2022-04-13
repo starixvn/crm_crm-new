@@ -14,12 +14,28 @@ export default class DateTimeService {
         return moment(date).endOf('day');
     }
 
+    static yesterday(date) {
+        return moment(date).add(-1, 'days');
+    }
+
     static firstDayOfWeek(date) {
         return moment(date).startOf('week');
     }
 
     static lastDayOfWeek(date) {
         return moment(date).endOf('week');
+    }
+
+    static firstDayOfLastWeek(date) {
+        return moment(date).subtract(1, 'weeks').startOf('week');
+    }
+
+    static firstDayOfLastMonth(date) {
+        return moment(date).subtract(1, 'months').startOf('months');
+    }
+
+    static firstDayOfYear(date) {
+        return moment(date).startOf('years');
     }
 
     static firstDayOfMonth(date) {

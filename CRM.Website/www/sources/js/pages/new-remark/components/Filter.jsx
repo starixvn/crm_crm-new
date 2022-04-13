@@ -3,48 +3,52 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
-import PropTypes from 'prop-types';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
-import { DateOption }from '@jsroot/common/constants';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
+import { DateTypeOption, DateType }from '@jsroot/common/constants';
 
 export class Filter extends Component {
-    static propTypes = {
-        getRemarksTitle: PropTypes.func
-    };
-
-    static defaultProps = {
-        getRemarksTitle: function () {
-            // nothing
-        }
-    };
     constructor(props) {
         super(props);
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        this.currentDate = currentDate;
         const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        const firstDateOfMonth = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDay)));
-        const fromDate = firstDateOfMonth;
+        this.firstDateOfMonth = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDay)));
         this.maxFromDate = currentDate;
         this.maxToDate = currentDate;
-        this.minToDate = fromDate;
+        this.minFromDate = new Date(1900, 1, 1);
+        this.minToDate = new Date(1900, 1, 1);
         this.state = {
             remarkContent: '',
             userName: '',
             isGuest: false,
             isShowHeadline: false,
             relatedToPICs: '',
-            fromDate: fromDate,
-            toDate: currentDate,
-            remarkTitle: 0,
-            dateSelect: 4
+            fromDate: this.firstDateOfMonth,
+            toDate: this.firstDateOfMonth,
+            remarkTitleOptions: [],
+            remarkTitleIds: '',
+            dateTypeSelect: 4
         };
     }
     componentDidMount(){
-        this.props.getRemarksTitle();
+        const remarkTitles = [];
+        const remarkTitleOptions = this.props.remarkTitle.map(title =>{
+            remarkTitles.push(title.settingId);
+            return {
+                id: title.settingId,
+                value: title.settingValue,
+                checked: true
+            };
+        });
+        const remarkTitleIds = remarkTitles.join(',');
+        this.setState({remarkTitleOptions, remarkTitleIds});
     }
 
     handleChangeFromDate = fromDate => {
+        this.handleChangeSpecificDate();
         this.minToDate = fromDate;
         this.setState({
             fromDate: fromDate
@@ -52,8 +56,13 @@ export class Filter extends Component {
     };
 
     handleChangeToDate = toDate => {
+        this.handleChangeSpecificDate();
         this.maxFromDate = toDate;
-        this.setState({ toDate });
+        let fromDate = this.state.fromDate;
+        if(fromDate > toDate){
+            fromDate = toDate;
+        }
+        this.setState({ toDate, fromDate });
     };
 
     handleChange = evt => {
@@ -62,6 +71,42 @@ export class Filter extends Component {
             [evt.target.name]: evt.target.value
         });
     };
+
+    handleChangeDateType = evt => {
+        const value = parseInt(evt.target.value, 10);
+        let date = this.currentDate;
+        switch(value){
+            case DateType.Yesterday:
+                date = new Date(DateTimeService.yesterday(date));
+                break;
+            case DateType.ThisWeek:
+                date = new Date(DateTimeService.firstDayOfWeek(date));
+                break;
+            case DateType.LastWeek:
+                date = new Date(DateTimeService.firstDayOfLastWeek(date));
+                break;
+            case DateType.ThisMonth:
+                date = this.firstDateOfMonth;
+                break;
+            case DateType.LastMonth:
+                date = new Date(DateTimeService.firstDayOfLastMonth(date));
+                break;
+            case DateType.ThisYear:
+                date = new Date(DateTimeService.firstDayOfYear(date));
+                break;
+            default:
+                break;
+        }
+        this.setState({
+            fromDate: date,
+            toDate: date,
+            dateTypeSelect : evt.target.value
+        });
+    };
+
+    handleChangeSpecificDate = () =>{
+        this.setState({dateTypeSelect: 7});
+    }
 
     handleChangeCheckbox = evt => {
         const name = evt.target.name;
@@ -73,38 +118,42 @@ export class Filter extends Component {
          });
     };
 
-    renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
+    handleChangeDropdown = (name, selectedItemsKey) => {
+        this.setState({
+            ...this.state,
+            [name]: selectedItemsKey
+        });
+    };
 
     handleSubmit = () => {
-        const { handler, fromDate, toDate, actionId } = this.state;
+        const { remarkContent,userName, isGuest, isShowHeadline, relatedToPICs, fromDate, toDate, remarkTitleIds, dateTypeSelect, remarkTitleOptions } = this.state;
 
         const params = {
-            username: handler !== '' ? handler : null,
-            actionId: actionId,
+            username: userName,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
+            remark: remarkContent,
+            remarkTitle: remarkTitleIds,
+            isGuest: isGuest,
+            relatedPICs: relatedToPICs,
+            showHeadline: isShowHeadline,
+            datePreset: dateTypeSelect,
             pageIndex: 1,
             pageSize: this.props.gridParams.pageSize
         };
 
         this.props.setGridParams(params);
-        this.props.getGridSettingLogs(params);
+        this.props.getNewRemarks(params);
     };
 
     render() {
-        const {remarkSetting} = this.props;
-        if(remarkSetting === null || !remarkSetting){
+        const {remarkTitle} = this.props;
+        if(remarkTitle === null || !remarkTitle){
             return null;
         }
        
-        const { remarkContent,userName, isGuest, isShowHeadline, relatedToPICs, fromDate, toDate, remarkTitle, dateSelect } = this.state;
-        const all = [
-            { settingValue: 'All', settingId: 0 }
-        ];
-
-        const remarkSettingOptions = [...all, ...remarkSetting];
+        const { remarkContent, userName, isGuest, isShowHeadline, relatedToPICs, fromDate, toDate, dateTypeSelect, remarkTitleOptions } = this.state;
         
-
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
@@ -121,15 +170,19 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group style={{width: 400}}>
                         <Form.Label htmlFor="action">{LangHelper.getResource('RemarkTitle')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="remarkTitle" id="remarkTitle"
-                            value={remarkTitle}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                remarkSettingOptions.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
-                            }
-                        </Form.Control>
+                        <div className='form-control-wrapper' >
+                            <MultipleSelect
+                                valueField='value'
+                                dataSource={remarkTitleOptions}
+                                keyField='id'
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.handleChangeDropdown('remarkTitleIds', selectedItemsKey);
+                                }}
+                                isAllTextShown
+                                maxDisplayItemCount={0}
+                                hasSearchBox
+                            />
+                        </div>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
@@ -201,12 +254,12 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group style={{width: 260}}>
                         <Form.Control as="select" size="sm"
-                            name="dateSelect" id="dateSelect"
-                            value={dateSelect}
-                            onChange={this.handleChange}
+                            name="dateTypeSelect" id="dateTypeSelect"
+                            value={dateTypeSelect}
+                            onChange={this.handleChangeDateType}
                         >
                             {
-                                DateOption.map((value, key) => this.renderOptions(value.name, value.id, key))
+                                DateTypeOption.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
                             }
                         </Form.Control>
                     </Form.Group>
@@ -229,8 +282,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { remarkSetting } = state;
-    return { remarkSetting };
+    const { remarkTitle, gridParams } = state;
+    return { remarkTitle, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

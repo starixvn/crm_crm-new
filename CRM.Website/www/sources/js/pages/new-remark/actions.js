@@ -1,7 +1,8 @@
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import {
-    setRemarkSetting,
+    setRemarkTitle,
+    setGridParams,
     setRemarks
 } from './newRemarkSlice';
 
@@ -10,17 +11,17 @@ const getRemarksTitle = () => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('NewRemark/GetRemarkTitles');
     await DataService.getDataAsync(url).then(response => {
-        dispatch(setRemarkSetting(response.data));
+        dispatch(setRemarkTitle(response.data));
     }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 
-const getRemarks = params => async dispatch => {
+const getNewRemarks = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('Remark/GetRemarks');
+    const url = Site.resolveClientUrl('NewRemark/GetNewRemarks');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setRemarks(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const editRemarks = params => async () => {
@@ -30,7 +31,9 @@ const editRemarks = params => async () => {
 
 export const ActionCreators = {
     getRemarksTitle,
-    setRemarkSetting,
-    getRemarks,
+    setRemarkTitle,
+    setGridParams,
+    getNewRemarks,
+    setRemarks,
     editRemarks
 };
