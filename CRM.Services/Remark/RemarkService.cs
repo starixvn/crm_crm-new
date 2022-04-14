@@ -19,6 +19,10 @@
         Task<CommandResult> EditRemarkAsync(EditRemarkCommand command);
 
         Task<IEnumerable<RemarkNewInfo>> GetNewRemarkAsync(GetNewRemarkCriteria criteria);
+
+        Task<CommandResult> ValidateUsernameAsyn(CustomerRemarkNewCheckCommand command);
+
+        Task<CommandResult> DeleteNewAsync(DeleteNewRemarkCommand command);
     }
 
     public class RemarkService : IRemarkService
@@ -75,6 +79,18 @@
         {
             var newRemarks = await baseService.GetDataAsync<RemarkNewInfo>(criteria);
             return newRemarks;
+        }
+
+        public async Task<CommandResult> ValidateUsernameAsyn(CustomerRemarkNewCheckCommand command)
+        {
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return commandResult;
+        }
+
+        public async Task<CommandResult> DeleteNewAsync(DeleteNewRemarkCommand command)
+        {
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return commandResult;
         }
     }
 }

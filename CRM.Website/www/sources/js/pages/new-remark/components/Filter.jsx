@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
+import { toast } from 'react-toastify';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
@@ -126,8 +127,16 @@ export class Filter extends Component {
     };
 
     handleSubmit = () => {
-        const { remarkContent,userName, isGuest, isShowHeadline, relatedToPICs, fromDate, toDate, remarkTitleIds, dateTypeSelect, remarkTitleOptions } = this.state;
+        const { remarkContent,userName, isGuest, isShowHeadline, relatedToPICs, fromDate, toDate, remarkTitleIds, dateTypeSelect } = this.state;
+        if (remarkTitleIds === '') {
+            toast.error(LangHelper.getResource('PleaseChooseRemarkTitle'));
+            return;
+        }
 
+        if (isGuest && userName === '') {
+            toast.error(LangHelper.getResource('PleaseInputUsername'));
+            return;
+        }
         const params = {
             username: userName,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
@@ -142,8 +151,21 @@ export class Filter extends Component {
             pageSize: this.props.gridParams.pageSize
         };
 
-        this.props.setGridParams(params);
-        this.props.getNewRemarks(params);
+        if(isGuest && userName !== ''){
+            this.props.validateUsername({username: userName, isGuest: isGuest}).then(response => {
+                if(response.isSuccessful){
+                    this.props.setGridParams(params);
+                    this.props.getNewRemarks(params);
+                }
+                else{
+                    toast.error(response.message);
+                    return;
+                }
+            });
+        }else{
+            this.props.setGridParams(params);
+            this.props.getNewRemarks(params);
+        }
     };
 
     render() {

@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import Filter from './Filter';
+import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
     componentDidMount(){
@@ -14,7 +15,10 @@ export class AppContainer extends Component {
             return null;
         }
         return (
-            <Filter />
+            <Fragment>
+                <Filter />
+                <DataGrid isHost={isHost}/>
+            </Fragment>
         );
     }
 }

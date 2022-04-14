@@ -10,10 +10,12 @@ const store = configureStore({
     reducer: newRemarkSlice
 });
 
+const isHost = document.getElementById('isHost').checked;
+
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer />
+            <AppContainer isHost={isHost}/>
         </Layout>
     </Provider>,
     document.getElementById('app-container'));

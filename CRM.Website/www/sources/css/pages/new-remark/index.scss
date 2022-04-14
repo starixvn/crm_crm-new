@@ -9,9 +9,15 @@
 @import '../../components/icons';
 
 .form-filter {
-    min-width: 1200px;
+    min-width: 1400px;
     
     .react-datepicker__input-container input{
         width: 100% !important;
     }
+}
+
+#tooltip-remark-content [class$="inner"] {
+    white-space: pre-wrap;
+    min-width: 360px;
+    text-align: left;
 }

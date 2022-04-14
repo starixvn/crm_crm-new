@@ -3,7 +3,9 @@ import Site from '@jsroot/common/site';
 import {
     setRemarkTitle,
     setGridParams,
-    setRemarks
+    setRemarks,
+    handleOpenConfirmDelete,
+    setDelete
 } from './newRemarkSlice';
 
 
@@ -15,6 +17,10 @@ const getRemarksTitle = () => async dispatch => {
     }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
+const validateUsername = params => async () => {
+    const url = Site.resolveClientUrl('NewRemark/ValidateUsername');
+    return await DataService.postDataAsync(url, params).then(response => response.data);
+};
 
 const getNewRemarks = params => async dispatch => {
     Site.blockUI();
@@ -29,11 +35,20 @@ const editRemarks = params => async () => {
     return await DataService.postDataAsync(url,params).then(response => response);
 };
 
+const deleteNewRemark = params => async () => {
+    const url = Site.resolveClientUrl('NewRemark/Delete');
+    return await DataService.postDataAsync(url,params).then(response => response.data);
+};
+
 export const ActionCreators = {
     getRemarksTitle,
     setRemarkTitle,
+    validateUsername,
     setGridParams,
     getNewRemarks,
     setRemarks,
-    editRemarks
+    editRemarks,
+    handleOpenConfirmDelete,
+    deleteNewRemark,
+    setDelete
 };

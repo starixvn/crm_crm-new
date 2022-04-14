@@ -8,7 +8,7 @@
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdate { get; set; }
         public int HeadlineID { get; set; }
-        public int HeadlineName { get; set; }
+        public string HeadlineName { get; set; }
         public int CustID { get; set; }
         public string UserName { get; set; }
         public string RemarkTitle { get; set; }

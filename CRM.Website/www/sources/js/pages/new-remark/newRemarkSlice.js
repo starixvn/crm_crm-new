@@ -5,7 +5,9 @@ const newRemarkSlice = createSlice({
     initialState: {
         remarkTitle: null,
         gridParams: { pageIndex: 1, pageSize: 100 },
-        gridData: null
+        gridData: null,
+        deleteResult: null,
+        popupDeleteConfirm: { show: false, id: null }
     },
     reducers: {
         setRemarkTitle: (state, action) => {
@@ -16,6 +18,12 @@ const newRemarkSlice = createSlice({
         },
         setRemarks: (state, action) => {
             state.gridData = action.payload;
+        },
+        handleOpenConfirmDelete: (state, action) => {
+            state.popupDeleteConfirm = action.payload;
+        },
+        setDelete: (state, action) => {
+            state.deleteResult = action.payload;
         }
     }
 });
@@ -25,7 +33,9 @@ const { actions, reducer } = newRemarkSlice;
 export const {
     setRemarkTitle,
     setGridParams,
-    setRemarks
+    setRemarks,
+    handleOpenConfirmDelete,
+    setDelete
 } = actions;
 
 export default reducer;
