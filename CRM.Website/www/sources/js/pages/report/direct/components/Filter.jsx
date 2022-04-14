@@ -11,14 +11,15 @@ export class Filter extends Component {
         this.state = {
             headline: null,
             username: null,
-            excludeIgnoredAcc: true
+            excludeIgnoredAcc: true,
+            pageIndex: 1
         };
     }
 
     submitHandler = event => {
         event.preventDefault();
-        const { headline, username, excludeIgnoredAcc} = this.state;
-        const { pageIndex, pageSize } = this.props.gridParams;
+        const { headline, username, excludeIgnoredAcc, pageIndex} = this.state;
+        const { pageSize } = this.props.gridParams;
         const params = { headline, username, excludeIgnoredAcc, pageIndex, pageSize };
         this.props.setGridParams({ ...params });
         this.props.getGridData({ ...params });
@@ -36,10 +37,11 @@ export class Filter extends Component {
                             autoComplete="off"
                             onChange={evt => this.setState({ headline: evt.target.value })}
                         />
-                        <Form.Check className="mr-5" type="checkbox" label={LangHelper.getResource('Exclude ignored accounts')}
+                        <Form.Check id="checkIgnoredAccountInput" className="mr-5" type="checkbox"
                             checked={this.state.excludeIgnoredAcc}
                             onChange={evt => this.setState({ excludeIgnoredAcc: evt.target.checked })}
                         />
+                        <Form.Label className="checkIgnoredAccount-setting" htmlFor="checkIgnoredAccountInput">{LangHelper.getResource('Exclude ignored accounts')}</Form.Label>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
