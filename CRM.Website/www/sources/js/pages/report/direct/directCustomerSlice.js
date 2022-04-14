@@ -6,7 +6,7 @@ const summaryReportSlice = createSlice({
         gridParams: {
             headline: null,
             username: null,
-            isExcludeIgnoredAccounts: true,
+            excludeIgnoredAcc: true,
             pageIndex: 1,
             pageSize: 50
         },

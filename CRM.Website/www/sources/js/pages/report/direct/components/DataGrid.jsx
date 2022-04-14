@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
@@ -9,16 +10,153 @@ import LangHelper from '@jsroot/common/langHelper';
 export class DataGrid extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            shouldResetScrollPosition: true,
-            toggleRowReport: [],
-            isCollapseReport: false
-        };
     }
-    render() {
-        const demo = this.props.gridData;
+
+    buildHeader = () => {
         return (
-           <p>data o day</p>
+            <HeaderRow>
+                <HeaderCell colWidth={50}>{LangHelper.getResource('No.')}</HeaderCell>
+                <HeaderCell colWidth={80}>{LangHelper.getResource('Group headline')}</HeaderCell>
+                <HeaderCell colWidth={45}>{LangHelper.getResource('Username')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Site')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Position')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Introduce by')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Languages')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Country')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Checker')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('VIP')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('First Name')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Last Name')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Phone 1')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Phone 2')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Phone 3')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('PIC 1')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('PIC 2')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('PIC 3')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('PIC 4')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Mobile')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Email')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Skype')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Telegram')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('WhatsApp')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Line')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('WeChat')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Letstalk')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('Zalo')}</HeaderCell>
+                <HeaderCell colWidth={40}>{LangHelper.getResource('QQ')}</HeaderCell>
+            </HeaderRow>
+        );
+    };
+
+    buildBody = customerList => {
+        const rows = [];
+        if (customerList.length > 0) {
+            rows.push(
+                customerList.map((item, index) =>
+                    this.renderRows(item, index))
+            );
+            return rows;
+        }
+        return [
+            <Row key={`body${1}`} className="no-data" >
+                <Cell className='text-center' colSpan={15}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+            </Row>
+        ];
+    };
+
+    renderRows = (item, index) => {
+        return (
+            <Row key={index}>
+                <Cell className='text-center'>{item.rowNum}</Cell>
+                <Cell className='text-center'>{item.headline ?? "not assign group"}</Cell>
+                <Cell className='text-center'>{item.username}</Cell>
+                <Cell className='text-center'>{item.status}</Cell>
+                <Cell className='text-center'>{item.site}</Cell>
+                <Cell className='text-center'>{item.currency}</Cell>
+                <Cell className='text-center'>{item.position}</Cell>
+                <Cell className='text-center'>{item.introducedBy}</Cell>
+                <Cell className='text-center'>{item.language_name}</Cell>
+                <Cell className='text-center'>{item.countryName}</Cell>
+                <Cell className='text-center'>{item.checker}</Cell>
+                <Cell className='text-center'>{item.isVIP}</Cell>
+                <Cell className='text-center'>{item.firstName}</Cell>
+                <Cell className='text-center'>{item.lastName}</Cell>
+                <Cell className='text-center'>{item.phone1}</Cell>
+                <Cell className='text-center'>{item.phone2}</Cell>
+                <Cell className='text-center'>{item.phone3}</Cell>
+                <Cell className='text-center'>{item.pIC1}</Cell>
+                <Cell className='text-center'>{item.pIC2}</Cell>
+                <Cell className='text-center'>{item.pIC3}</Cell>
+                <Cell className='text-center'>{item.pIC4}</Cell>
+                <Cell className='text-center'>{item.mobilePhone}</Cell>
+                <Cell className='text-center'>{item.email}</Cell>
+                <Cell className='text-center'>{item.skype}</Cell>
+                <Cell className='text-center'>{item.mSN}</Cell>
+                <Cell className='text-center'>{item.whatsApp}</Cell>
+                <Cell className='text-center'>{item.line}</Cell>
+                <Cell className='text-center'>{item.weChat}</Cell>
+                <Cell className='text-center'>{item.yahoo}</Cell>
+                <Cell className='text-center'>{item.bBM}</Cell>
+                <Cell className='text-center'>{item.qQ}</Cell>
+            </Row>
+        );
+    };
+
+    onPagingCommunication = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params['pageIndex'] = pageIndex;
+        params['pageSize'] = pageSize;
+        this.props.setGridParams(params);
+        this.props.getGridData(params);
+    };
+
+    handleExportExcel = () => {
+        const {excludeIgnoredAcc, username, headline } = this.props.gridParams
+        const params = { excludeIgnoredAcc, username, headline };
+        this.props.exportExcel(params);
+    };
+
+    render() {
+        if (!this.props.gridData || !this.props.gridData.customerList) {
+            return null;
+        }
+        const { totalCustomer, customerList } = this.props.gridData;
+        const { pageIndex, pageSize } = this.props.gridParams;
+
+        const pagingOption = {
+            PageIndex: pageIndex,
+            PageSize: pageSize,
+            TotalItem: totalCustomer,
+            PageList: [50, 100, 200, 500]
+        };
+
+        return (
+            <Fragment>
+                <div className='table-title'>
+                    <OverlayTrigger
+                        overlay={
+                            <Tooltip><span>Export to Excel</span></Tooltip>
+                        }
+                        placement="auto"
+                    >
+                        <span className="fa fa-file-excel-o icon-excel pl-3" onClick={() => this.handleExportExcel()} />
+                    </OverlayTrigger>
+                </div>
+                <Table
+                    minWidth={960}
+                    maxWidth={document.getElementById('app-container').clientWidth}
+                    autoWidth
+                    header={this.buildHeader()}
+                    body={this.buildBody(customerList)}
+                    isPaging
+                    pageOption={pagingOption}
+                    onPaging={this.onPagingCommunication}
+                    containerPadding={0}
+                    adjustedHeight={10}
+                />
+            </Fragment>
         );
     }
 }

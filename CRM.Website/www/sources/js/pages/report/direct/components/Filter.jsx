@@ -11,15 +11,14 @@ export class Filter extends Component {
         this.state = {
             headline: null,
             username: null,
-            excludeIgnoredAcc: true,
-            pageIndex: 1,
-            pageSize: 50
+            excludeIgnoredAcc: true
         };
     }
 
     submitHandler = event => {
         event.preventDefault();
-        const { headline, username, excludeIgnoredAcc, pageIndex, pageSize} = this.state;
+        const { headline, username, excludeIgnoredAcc} = this.state;
+        const { pageIndex, pageSize } = this.props.gridParams;
         const params = { headline, username, excludeIgnoredAcc, pageIndex, pageSize };
         this.props.setGridParams({ ...params });
         this.props.getGridData({ ...params });

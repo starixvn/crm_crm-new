@@ -502,6 +502,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Direct_Customer_Report.
+        /// </summary>
+        public static string FileNameDirectReport {
+            get {
+                return ResourceManager.GetString("FileNameDirectReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have permission to access.
         /// </summary>
         public static string Forbidden_Permission {
