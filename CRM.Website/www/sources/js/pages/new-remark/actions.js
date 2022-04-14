@@ -4,8 +4,14 @@ import {
     setRemarkTitle,
     setGridParams,
     setRemarks,
-    handleOpenConfirmDelete,
-    setDelete
+    setOpenAddPopup,
+    setAddResult,
+    setOpenEditPopup,
+    setEditResult,
+    setOpenConfirmDelete,
+    setDelete,
+    setValidateResult,
+    setInputAddUsername
 } from './newRemarkSlice';
 
 
@@ -17,9 +23,12 @@ const getRemarksTitle = () => async dispatch => {
     }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
-const validateUsername = params => async () => {
+const validateUsername = params => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('NewRemark/ValidateUsername');
-    return await DataService.postDataAsync(url, params).then(response => response.data);
+    return await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setValidateResult(response.data));
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getNewRemarks = params => async dispatch => {
@@ -48,7 +57,13 @@ export const ActionCreators = {
     getNewRemarks,
     setRemarks,
     editRemarks,
-    handleOpenConfirmDelete,
+    setOpenAddPopup,
+    setAddResult,
+    setOpenEditPopup,
+    setEditResult,
     deleteNewRemark,
-    setDelete
+    setDelete,
+    setOpenConfirmDelete,
+    setValidateResult,
+    setInputAddUsername
 };

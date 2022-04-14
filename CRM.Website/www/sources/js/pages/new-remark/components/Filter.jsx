@@ -133,10 +133,11 @@ export class Filter extends Component {
             return;
         }
 
-        if (isGuest && userName === '') {
-            toast.error(LangHelper.getResource('PleaseInputUsername'));
+        if (fromDate > toDate) {
+            toast.error(LangHelper.getResource('InvalidDateRange'));
             return;
         }
+
         const params = {
             username: userName,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
@@ -150,23 +151,13 @@ export class Filter extends Component {
             pageIndex: 1,
             pageSize: this.props.gridParams.pageSize
         };
-
-        if(isGuest && userName !== ''){
-            this.props.validateUsername({username: userName, isGuest: isGuest}).then(response => {
-                if(response.isSuccessful){
-                    this.props.setGridParams(params);
-                    this.props.getNewRemarks(params);
-                }
-                else{
-                    toast.error(response.message);
-                    return;
-                }
-            });
-        }else{
-            this.props.setGridParams(params);
-            this.props.getNewRemarks(params);
-        }
+        this.props.setGridParams(params);
+        this.props.getNewRemarks(params);
     };
+
+    handleOpenAdd = () =>{
+        this.props.setOpenAddPopup({show: true});
+    }
 
     render() {
         const {remarkTitle} = this.props;
@@ -291,7 +282,7 @@ export class Filter extends Component {
                         <Button variant="primary" size="sm" className='mr-4' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Search')}
                         </Button>
-                        <Button variant="primary" size="sm" onClick={this.handleSubmit}>
+                        <Button variant="primary" size="sm" onClick={this.handleOpenAdd}>
                             {LangHelper.getResource('Insert')}
                         </Button>
                     </Form.Group>

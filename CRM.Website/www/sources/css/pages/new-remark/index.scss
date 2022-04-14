@@ -5,8 +5,10 @@
 @import '../../components/messages';
 @import '../../components/modal';
 @import '../../components/tables';
+@import '../../abstracts/variables';
 @import '../../components/react-select';
 @import '../../components/icons';
+@import '../../components/forms';
 
 .form-filter {
     min-width: 1400px;
@@ -16,8 +18,25 @@
     }
 }
 
+.link-click {
+    cursor: pointer;
+    color: $link-color !important;
+}
+
+.link-click:hover {
+    color: $draft-color !important;
+}
+
 #tooltip-remark-content [class$="inner"] {
     white-space: pre-wrap;
     min-width: 360px;
     text-align: left;
+}
+
+.new-remark-modal{
+    .modal-content{
+        .modal-body{
+            
+        }
+    }
 }

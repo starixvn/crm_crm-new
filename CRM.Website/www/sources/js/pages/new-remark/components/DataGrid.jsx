@@ -16,15 +16,6 @@ export class DataGrid extends Component {
         super(props);
     }
 
-    onPaging = (pageIndex, pageSize) => {
-        const params = { ...this.props.gridParams };
-        params['pageIndex'] = pageIndex;
-        params['pageSize'] = pageSize;
-
-        this.props.setGridParams(params);
-        this.props.getNewRemarks(params);
-    };
-
     buildHeader = isHost => {
         return (
             <HeaderRow>
@@ -55,14 +46,14 @@ export class DataGrid extends Component {
             return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
         }
 
-        return [<Row key={`body${1}`} className="no-data"><Cell colSpan={isHost ? 16 : 15}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+        return [<Row key='new-remark-body' className="no-data"><Cell colSpan={isHost ? 16 : 15}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
     renderRow = (item, index, isHost) => {
         const remarkContent = item.remark.length > 75 ? (item.remark.substring(0, 75) + '...') : item.remark;
         return (
             <Row key={index}>
-                <Cell className='text-center'>{item.remarkID}</Cell>
+                <Cell className='text-center link-click'>{item.remarkID}</Cell>
                 <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
                 <Cell className='text-center'>{item.creator}</Cell>
                 <Cell className='text-center'>{item.HeadlineName}</Cell>
@@ -76,7 +67,7 @@ export class DataGrid extends Component {
                     }
                     placement="auto"
                 >
-                    <Cell>{remarkContent}</Cell>
+                    <Cell className='link-click'>{remarkContent}</Cell>
                 </OverlayTrigger>
                 <Cell className='text-center'>{item.relatedPICs}</Cell>
                 <Cell className='text-center'>
@@ -113,11 +104,11 @@ export class DataGrid extends Component {
     };
 
     handleShowPopupDelete = remarkID =>{
-        this.props.handleOpenConfirmDelete({show: true, id: remarkID});
+        this.props.setOpenEditPopup({show: true, id: remarkID});
     };
 
     handleCloseDelete = () =>{
-        this.props.handleOpenConfirmDelete({show: false , id: null});
+        this.props.setOpenEditPopup({show: false , id: null});
         this.props.setDelete(null);
     };
 
@@ -132,7 +123,7 @@ export class DataGrid extends Component {
             }else{
                 toast.error(response.message);
             }
-            this.props.handleOpenConfirmDelete({show: false , id: null});
+            this.props.setOpenEditPopup({show: false , id: null});
         });
     };
 
@@ -168,6 +159,15 @@ export class DataGrid extends Component {
         this.props.setRemarks({...this.props.gridData.data, data: gridDataSortAsc});
     };
 
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params['pageIndex'] = pageIndex;
+        params['pageSize'] = pageSize;
+
+        this.props.setGridParams(params);
+        this.props.getNewRemarks(params);
+    };
+
     render() {
         if (!this.props.gridData || this.props.gridData === null) {
             return null;
@@ -183,7 +183,6 @@ export class DataGrid extends Component {
             TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
-        const confirmMsg = this.renderConfirmMessage(popupDeleteConfirm.id);
         return (
             <Fragment>
                 <div className='table-title'>
@@ -207,7 +206,7 @@ export class DataGrid extends Component {
                     <ConfirmPopup
                         size='lg'
                         title={LangHelper.getResource('Confirmation')}
-                        content={confirmMsg}
+                        content={this.renderConfirmMessage(popupDeleteConfirm.id)}
                         onSubmit={() => this.handleDelete(popupDeleteConfirm.id)}
                         onClose={() =>  this.handleCloseDelete}
                     />
