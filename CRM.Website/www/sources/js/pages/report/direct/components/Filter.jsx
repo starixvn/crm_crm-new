@@ -9,8 +9,8 @@ export class Filter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            headline: '',
-            username: '',
+            headline: null,
+            username: null,
             excludeIgnoredAcc: true,
             pageIndex: 1,
             pageSize: 50
@@ -31,9 +31,9 @@ export class Filter extends Component {
             <Form className="form-filter">
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
-                        <Form.Label className="group-headline-setting" htmlFor="headlineInput">{LangHelper.getResource('Group Headline')}</Form.Label>
+                        <Form.Label className="groupHeadline-setting" htmlFor="groupHeadlineInput">{LangHelper.getResource('Group Headline')}</Form.Label>
                         <Form.Control type="text" size="sm" className="shadow-none"
-                            id="headlineInput"
+                            id="groupHeadlineInput"
                             autoComplete="off"
                             onChange={evt => this.setState({ headline: evt.target.value })}
                         />

@@ -38,9 +38,10 @@ namespace CRM.Controllers.Report
             return Json(report);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ExportDirectReport([FromBody] DirectCustomerReportCriteria criteria)
+        //[HttpPost]
+        public async Task<IActionResult> ExportDirectReport(DirectCustomerReportCriteria criteria)
         {
+            criteria.ExcludeIgnoredAcc = true;
             var reports = await _directCustomerReportService.GetReport(criteria);
             var bytes = _exportExcelService.ExportDirectCustomerReport(reports);
             string reportName = string.Format(ViewResources.DirectCustomerReport);
