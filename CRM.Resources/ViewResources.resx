@@ -537,4 +537,7 @@
   <data name="DirectCustomerReport" xml:space="preserve">
     <value>Direct Customer Report</value>
   </data>
+  <data name="FileNameDirectReport" xml:space="preserve">
+    <value>Direct_Customer_Report</value>
+  </data>
 </root>

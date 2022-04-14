@@ -6,29 +6,38 @@
 @import '../../../components/modal';
 @import '../../../components/icons';
 @import '../../../components/tables';
+@import '../../../components/date-picker/style';
 
 .form-filter {
     min-width: 700px;
+
     .form-row {
         .form-group {
             width: 700px;
-            .form-label{
+
+            .form-label {
                 width: 300px;
             }
+
             .form-control-sm {
                 width: 500px;
                 margin-right: 20px;
             }
-            .form-check-label{
+
+            .form-check-label {
                 width: 200px;
             }
-            .btn-submit{
+
+            .btn-submit {
                 width: 100px;
                 margin-right: 196px !important;
             }
         }
-        .communication-setting {
-            width: 80px !important; 
-        }    
     }
+}
+
+.table-title{
+        display: flex;
+        justify-content: flex-end;
+    
 }
