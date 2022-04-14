@@ -24,6 +24,11 @@
                 margin-right: 20px;
             }
 
+            .checkIgnoredAccount-setting {
+                margin-right: 86px;
+                margin-left: -40px;
+            }
+
             .form-check-label {
                 width: 200px;
             }
@@ -36,8 +41,35 @@
     }
 }
 
-.table-title{
-        display: flex;
-        justify-content: flex-end;
-    
+.table-title {
+    min-width: 700px !important;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.table-container {
+    min-width: 700px !important;
+    overflow-y: hidden;
+    .body-content {
+        overflow-y: hidden;
+        overflow-x: hidden;
+        .table {
+    overflow-y: auto;
+
+            tbody {
+                .checking {
+                    content: "\2713";
+                    font-size: 15px;
+                    font-weight: bold;
+                    color: blue;
+                }
+                tr:hover td {
+                    background-color: #E0FFFF !important;
+                }
+            }
+        }
+    }
+}
+.page-container{
+    min-width: 700px !important;
 }
