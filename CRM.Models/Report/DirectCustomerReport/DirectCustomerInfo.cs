@@ -6,7 +6,9 @@ namespace CRM.Models.Report.DirectCustomerReport
 {
     public class DirectCustomerInfo
     {
-        public string GroupHeadline { get; set; }
+        public int RowNum { get; set; }
+
+        public string Headline { get; set; }
 
         public string Username { get; set; }
 
@@ -18,15 +20,15 @@ namespace CRM.Models.Report.DirectCustomerReport
 
         public string Position { get; set; }
 
-        public string IntroduceBy { get; set; }
+        public string IntroducedBy { get; set; }
 
-        public string Languages { get; set; }
+        public string Language_name { get; set; }
 
-        public string Country { get; set; }
+        public string CountryName { get; set; }
 
         public string Checker { get; set; }
 
-        public bool VIP { get; set; }
+        public bool IsVIP { get; set; }
 
         public string FirstName { get; set; }
 
@@ -45,7 +47,7 @@ namespace CRM.Models.Report.DirectCustomerReport
 
         public string PIC4 { get; set; }
 
-        public string Mobile { get; set; }
+        public string MobilePhone { get; set; }
 
         public string Email { get; set; }
 

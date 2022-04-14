@@ -33,10 +33,10 @@
         byte[] ExportPICManagement(IEnumerable<BaseModel> communicationTools, PicReport picReport);
 
         byte[] ExportSettlementReport(SettlementReportInfo reportInfo);
+
         byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo, int year);
 
         byte[] ExportDirectCustomerReport(DirectCustomerReportInfo directreportInfo);
-
 
         byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
 

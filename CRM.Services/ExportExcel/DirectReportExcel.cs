@@ -1,8 +1,10 @@
 ﻿using CRM.Models.Report.DirectCustomerReport;
 using CRM.Resources;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace CRM.Services.ExportExcel
@@ -10,14 +12,11 @@ namespace CRM.Services.ExportExcel
     public class DirectReportExcel : ExcelBase
     {
         private readonly DirectCustomerReportInfo directreportInfo;
-        private const int widthColumnLarge = 45;
-        private const int heightRowLarge = 30;
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
         private const int FromRowMergeTitle = 3;
         private const int RowMergeHeader = 0b10;
-        private const int GrandTotalRow = 2;
-        private readonly byte LastColumns = 29;
+        private readonly byte LastColumns = 30;
         private int rowIndex = RowStartBody;
 
         public DirectReportExcel(string templatePath, DirectCustomerReportInfo report)
@@ -28,17 +27,95 @@ namespace CRM.Services.ExportExcel
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            throw new NotImplementedException();
+            foreach(var direct in directreportInfo.CustomerList)
+            {
+                RenderRow(worksheet, direct, rowIndex++);
+            }
+        }
+
+        protected internal virtual void RenderRow(ExcelWorksheet worksheet, DirectCustomerInfo direct, int rowIndex)
+        {
+            var colIndex = 1;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Headline ?? "not assign group";
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Username;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Status;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Site;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Currency;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Position;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.IntroducedBy;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Language_name;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.CountryName;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Checker;
+            worksheet.Cells[rowIndex, colIndex].Value = direct.IsVIP? "√" : "";
+            worksheet.Cells[rowIndex, colIndex++].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.FirstName;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.LastName;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Phone1;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Phone2;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Phone3;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.PIC1;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.PIC2;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.PIC3;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.PIC4;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.MobilePhone;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Email;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Skype;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.MSN;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.WhatsApp;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Line;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.WeChat;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Yahoo;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.BBM;
+            worksheet.Cells[rowIndex, colIndex].Value = direct.QQ;
+
+            Color colOpen = ColorTranslator.FromHtml("#E0FFFF");
+
+            if (rowIndex % 2 == 0)
+            {
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, LastColumns], colOpen);
+            }
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            throw new NotImplementedException();
+            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader, LastColumns]
+                    .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader, LastColumns]);
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            throw new NotImplementedException();
+            templateWorksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]
+                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]);
+            worksheet.Cells[1, 1, RowStartHeader - RowMergeHeader, LastColumns].Merge = true;
+            worksheet.Cells[FromRowMergeTitle, 1, RowStartHeader - 1, LastColumns].Merge = true;
+            worksheet.Cells[1, 1].Value = ViewResources.DirectCustomerReport;
+            worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+        }
+        protected internal override void ProcessUI(ExcelWorksheet worksheet)
+        {
+            SetDefaultStyle(worksheet);
+            SetBackground(worksheet.Cells[RowStartBody - 1, 1, RowStartBody - 1, LastColumns]);
+            DrawBorderCell(worksheet.Cells[RowStartBody - 1, 1, rowIndex-1, LastColumns]);
+        }
+
+        protected internal virtual void SetDefaultStyle(ExcelWorksheet worksheet)
+        {
+            var columnWidths = new[]{
+                20, 20, 12, 12, 20, 20, 20, 25, 25, 25, 25, 25, 25,
+                25, 25, 25, 25, 25, 25, 25,
+                30, 30, 20, 25, 25, 25, 25, 28, 20, 20
+            };
+            StyleDefault(worksheet);
+            for(int i = 0; i < columnWidths.Length; i++)
+            {
+                worksheet.Column(i + 1).Width = columnWidths[i];
+            }
+        }
+        protected internal virtual void SetBackground(ExcelRange cell)
+        {
+            SetBackgroundColor(cell, HeaderTitleColor);
+            cell.Style.Font.Color.SetColor(Color.White);
+            cell.Style.Font.Bold = true;
         }
     }
 }
