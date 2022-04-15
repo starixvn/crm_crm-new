@@ -41,7 +41,7 @@ export class Filter extends Component {
                     <Fragment>
                         <Form.Row bsPrefix='form-row'>
                             <Form.Group>
-                                <Form.Label className="groupHeadline-setting" htmlFor="groupHeadlineInput">{LangHelper.getResource('Group Headline')}</Form.Label>
+                                <Form.Label htmlFor="groupHeadlineInput">{LangHelper.getResource('Group Headline')}</Form.Label>
                                 <Form.Control type="text" size="sm" className="shadow-none"
                                     id="groupHeadlineInput"
                                     autoComplete="off"
@@ -58,7 +58,7 @@ export class Filter extends Component {
                         </Form.Row>
                         <Form.Row bsPrefix='form-row'>
                             <Form.Group>
-                                <Form.Label className="username-setting" htmlFor="userNameInput">{LangHelper.getResource('Username')}</Form.Label>
+                                <Form.Label htmlFor="userNameInput">{LangHelper.getResource('Username')}</Form.Label>
                                 <Form.Control type="text" size="sm" className="shadow-none"
                                     id="userNameInput"
                                     autoComplete="off"
