@@ -70,7 +70,7 @@ export class DataGrid extends Component {
         return (
             <Row key={index}>
                 <Cell className='text-center'>{item.rowNum}</Cell>
-                <Cell className='text-center'>{item.headline ?? "not assign group"}</Cell>
+                <Cell className='text-center'>{item.headline ?? 'not assign group'}</Cell>
                 <Cell className='text-center'>{item.username}</Cell>
                 <Cell className='text-center'>{item.status}</Cell>
                 <Cell className='text-center'>{item.site}</Cell>
@@ -80,7 +80,7 @@ export class DataGrid extends Component {
                 <Cell className='text-center'>{item.language_name}</Cell>
                 <Cell className='text-center'>{item.countryName}</Cell>
                 <Cell className='text-center'>{item.checker}</Cell>
-                <Cell className='text-center'>{item.isVIP ? <span className='checking'>&#10003;</span> : ""}</Cell>
+                <Cell className='text-center'>{item.isVIP ? <span className='checking'>&#10003;</span> : ''}</Cell>
                 <Cell className='text-center'>{item.firstName}</Cell>
                 <Cell className='text-center'>{item.lastName}</Cell>
                 <Cell className='text-center'>{item.phone}</Cell>
@@ -113,7 +113,7 @@ export class DataGrid extends Component {
     };
 
     handleExportExcel = () => {
-        const { excludeIgnoredAcc, username, headline } = this.props.gridParams
+        const { excludeIgnoredAcc, username, headline } = this.props.gridParams;
         const params = { excludeIgnoredAcc, username, headline };
         this.props.exportExcel(params);
     };

@@ -66,7 +66,7 @@
 
             Color colOpen = ColorTranslator.FromHtml("#E0FFFF");
 
-            if (rowIndex % 2 == 0)
+            if (rowIndex % rowMergeHeader == 0)
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, LastColumns], colOpen);
             }

@@ -21,7 +21,7 @@ export class Filter extends Component {
         event.preventDefault();
         const { headline, username, excludeIgnoredAcc, pageIndex } = this.state;
         const { pageSize } = this.props.gridParams;
-        const params = { headline: headline === "" ? null : headline, username: username === "" ? null : username, excludeIgnoredAcc, pageIndex, pageSize };
+        const params = { headline: headline === '' ? null : headline, username: username === '' ? null : username, excludeIgnoredAcc, pageIndex, pageSize };
         this.props.setGridParams({ ...params });
         this.props.getGridData({ ...params });
     };
@@ -51,7 +51,9 @@ export class Filter extends Component {
                                     checked={this.state.excludeIgnoredAcc}
                                     onChange={evt => this.setState({ excludeIgnoredAcc: evt.target.checked })}
                                 />
-                                <Form.Label className="checkIgnoredAccount-setting" htmlFor="checkIgnoredAccountInput">{LangHelper.getResource('Exclude ignored accounts')}</Form.Label>
+                                <Form.Label className="checkIgnoredAccount-setting" htmlFor="checkIgnoredAccountInput">
+                                    {LangHelper.getResource('Exclude ignored accounts')}
+                                </Form.Label>
                             </Form.Group>
                         </Form.Row>
                         <Form.Row bsPrefix='form-row'>
@@ -64,7 +66,7 @@ export class Filter extends Component {
                                 />
                                 <Button className="mr-4 btn-submit" variant="primary" size="sm" onClick={this.submitHandler}
                                 >
-                                    {LangHelper.getResource('Submit')}
+                                    {LangHelper.getResource('Submit ')}
                                 </Button>
                             </Form.Group>
                         </Form.Row>
@@ -73,8 +75,8 @@ export class Filter extends Component {
                 <div className='text-center filter-collapse'>
                     {
                         showFilter
-                            ? <span className='fa-sm fa fa-caret-up' onClick={() => this.handleToggleFilter(false)} />
-                            : <span className='fa-sm fa fa-caret-down' onClick={() => this.handleToggleFilter(true)} />
+                            ? <span className='fa-sm fa fa-caret-up ' onClick={() => this.handleToggleFilter(false)} />
+                            : <span className='fa-sm fa fa-caret-down ' onClick={() => this.handleToggleFilter(true)} />
                     }
                 </div>
             </Form>

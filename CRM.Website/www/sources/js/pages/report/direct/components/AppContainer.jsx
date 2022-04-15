@@ -5,7 +5,7 @@ import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 
-export class AppContainer extends Component {  
+export class AppContainer extends Component {
   constructor(props) {
     super(props);
   }
@@ -15,10 +15,10 @@ export class AppContainer extends Component {
 
     return (
       <Fragment>
-        <Filter />     
+        <Filter />
         {
           gridData === null ? null : <DataGrid />
-        }   
+        }
       </Fragment>
     );
   }
