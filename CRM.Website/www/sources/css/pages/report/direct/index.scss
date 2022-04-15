@@ -50,7 +50,7 @@
 .table-container {
     overflow: auto;
     min-width: 700px !important;
-
+    min-height: 340px !important;
     .header-content {
         border-bottom: none;
         position: sticky;
@@ -66,7 +66,7 @@
             tbody {
                 .checking {
                     content: "\2713";
-                    font-size: 15px;
+                    font-size: 18px;
                     font-weight: bold;
                     color: blue;
                 }

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const summaryReportSlice = createSlice({
-    name: 'summaryReport',
+const directReportSlice = createSlice({
+    name: 'directReport',
     initialState: {
         gridParams: {
             headline: null,
@@ -22,7 +22,7 @@ const summaryReportSlice = createSlice({
     }
 });
 
-const { actions, reducer } = summaryReportSlice;
+const { actions, reducer } = directReportSlice;
 
 export const {
     setGridParams,
