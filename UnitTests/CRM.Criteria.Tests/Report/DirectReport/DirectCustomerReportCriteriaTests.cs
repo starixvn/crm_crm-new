@@ -1,11 +1,8 @@
-﻿using CRM.Criteria.Report.DirectCustomerReport;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-
-namespace CRM.Criteria.Tests.Report.DirectReport
+﻿namespace CRM.Criteria.Tests.Report.DirectReport
 {
+    using CRM.Criteria.Report.DirectCustomerReport;
+    using Xunit;
+
     public class DirectCustomerReportCriteriaTests
     {
         [Fact]

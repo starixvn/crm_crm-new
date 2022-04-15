@@ -18,9 +18,9 @@ export class Filter extends Component {
 
     submitHandler = event => {
         event.preventDefault();
-        const { headline, username, excludeIgnoredAcc, pageIndex} = this.state;
+        const { headline, username, excludeIgnoredAcc, pageIndex } = this.state;
         const { pageSize } = this.props.gridParams;
-        const params = { headline, username, excludeIgnoredAcc, pageIndex, pageSize };
+        const params = { headline: headline === "" ? null : headline, username: username === "" ? null : username, excludeIgnoredAcc, pageIndex, pageSize };
         this.props.setGridParams({ ...params });
         this.props.getGridData({ ...params });
     };
@@ -52,7 +52,7 @@ export class Filter extends Component {
                             autoComplete="off"
                             onChange={evt => this.setState({ username: evt.target.value })}
                         />
-                        <Button className="mr-4 btn-submit" variant="primary" size="sm"   onClick={this.submitHandler}                          
+                        <Button className="mr-4 btn-submit" variant="primary" size="sm" onClick={this.submitHandler}
                         >
                             {LangHelper.getResource('Submit')}
                         </Button>

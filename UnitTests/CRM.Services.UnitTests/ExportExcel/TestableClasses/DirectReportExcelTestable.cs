@@ -1,12 +1,9 @@
-﻿using CRM.Models.Report.DirectCustomerReport;
-using CRM.Services.ExportExcel;
-using OfficeOpenXml;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CRM.Services.UnitTests.ExportExcel.TestableClasses
+﻿namespace CRM.Services.UnitTests.ExportExcel.TestableClasses
 {
+    using CRM.Models.Report.DirectCustomerReport;
+    using CRM.Services.ExportExcel;
+    using OfficeOpenXml;
+
     public class DirectReportExcelTestable : DirectReportExcel
     {
         public DirectReportExcelTestable(string templatePath, DirectCustomerReportInfo reportInfo)

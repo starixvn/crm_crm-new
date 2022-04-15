@@ -1,11 +1,7 @@
-﻿using Fanex.Data;
-using Fanex.Data.Repository;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CRM.Criteria.Report.DirectCustomerReport
+﻿namespace CRM.Criteria.Report.DirectCustomerReport
 {
+    using Fanex.Data.Repository;
+
     public class DirectCustomerReportCriteria : CriteriaBase
     {
         public string Headline { get; set; }

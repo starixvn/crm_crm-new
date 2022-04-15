@@ -1,17 +1,16 @@
-﻿using AutoFixture;
-using CRM.Controllers.Report;
-using CRM.Core.Constants;
-using CRM.Criteria.Report.DirectCustomerReport;
-using CRM.Models.Report.DirectCustomerReport;
-using CRM.Services;
-using CRM.Services.Report;
-using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace CRM.Controllers.UnitTests.Report
+﻿namespace CRM.Controllers.UnitTests.Report
 {
+    using AutoFixture;
+    using CRM.Controllers.Report;
+    using CRM.Core.Constants;
+    using CRM.Criteria.Report.DirectCustomerReport;
+    using CRM.Models.Report.DirectCustomerReport;
+    using CRM.Services;
+    using CRM.Services.Report;
+    using Microsoft.AspNetCore.Mvc;
+    using NSubstitute;
+    using System.Threading.Tasks;
+    using Xunit;
     public class DirectReportControllerTests
     {
         private IDirectReportService _directCustomerReportService;
@@ -77,8 +76,8 @@ namespace CRM.Controllers.UnitTests.Report
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var summaryReportInfoTemplates = (DirectCustomerReportInfo)jsonResult.Value;
-            Assert.Equal(templates, summaryReportInfoTemplates);
+            var directReportInfoTemplates = (DirectCustomerReportInfo)jsonResult.Value;
+            Assert.Equal(templates, directReportInfoTemplates);
         }
 
         #region Helpers

@@ -1,16 +1,13 @@
-﻿using AutoFixture;
-using CRM.Core.Services;
-using CRM.Criteria.Report.DirectCustomerReport;
-using CRM.Services.Report;
-using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace CRM.Services.UnitTests.Report
+﻿namespace CRM.Services.UnitTests.Report
 {
+    using AutoFixture;
+    using CRM.Core.Services;
+    using CRM.Criteria.Report.DirectCustomerReport;
+    using CRM.Services.Report;
+    using NSubstitute;
+    using System.Threading.Tasks;
+    using Xunit;
+
     public class DirectReportServiceTests
     {
         private IBaseService baseService;

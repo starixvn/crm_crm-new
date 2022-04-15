@@ -1,23 +1,19 @@
-﻿using CRM.Models.Report.DirectCustomerReport;
-using CRM.Resources;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-
-namespace CRM.Services.ExportExcel
+﻿namespace CRM.Services.ExportExcel
 {
+    using CRM.Models.Report.DirectCustomerReport;
+    using CRM.Resources;
+    using OfficeOpenXml;
+    using OfficeOpenXml.Style;
+    using System.Drawing;
     public class DirectReportExcel : ExcelBase
     {
         private readonly DirectCustomerReportInfo directreportInfo;
-        private const byte RowStartHeader = 4;
-        private const byte RowStartBody = 5;
-        private const int FromRowMergeTitle = 3;
-        private const int RowMergeHeader = 0b10;
+        private const byte rowStartHeader = 4;
+        private const byte rowStartBody = 5;
+        private const int fromRowMergeTitle = 3;
+        private const int rowMergeHeader = 0b10;
         private readonly byte LastColumns = 30;
-        private int rowIndex = RowStartBody;
+        private int rowIndex = rowStartBody;
 
         public DirectReportExcel(string templatePath, DirectCustomerReportInfo report)
     : base(templatePath, 0, string.Format(ViewResources.DirectCustomerReport))
@@ -78,24 +74,24 @@ namespace CRM.Services.ExportExcel
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader, LastColumns]
-                    .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader, LastColumns]);
+            templateWorksheet.Cells[rowStartHeader, 1, rowStartHeader, LastColumns]
+                    .Copy(worksheet.Cells[rowStartHeader, 1, rowStartHeader, LastColumns]);
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]
-                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, LastColumns]);
-            worksheet.Cells[1, 1, RowStartHeader - RowMergeHeader, LastColumns].Merge = true;
-            worksheet.Cells[FromRowMergeTitle, 1, RowStartHeader - 1, LastColumns].Merge = true;
+            templateWorksheet.Cells[1, 1, rowStartHeader - 1, LastColumns]
+                 .Copy(worksheet.Cells[1, 1, rowStartHeader - 1, LastColumns]);
+            worksheet.Cells[1, 1, rowStartHeader - rowMergeHeader, LastColumns].Merge = true;
+            worksheet.Cells[fromRowMergeTitle, 1, rowStartHeader - 1, LastColumns].Merge = true;
             worksheet.Cells[1, 1].Value = ViewResources.DirectCustomerReport;
             worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
         {
             SetDefaultStyle(worksheet);
-            SetBackground(worksheet.Cells[RowStartBody - 1, 1, RowStartBody - 1, LastColumns]);
-            DrawBorderCell(worksheet.Cells[RowStartBody - 1, 1, rowIndex-1, LastColumns]);
+            SetBackground(worksheet.Cells[rowStartBody - 1, 1, rowStartBody - 1, LastColumns]);
+            DrawBorderCell(worksheet.Cells[rowStartBody - 1, 1, rowIndex-1, LastColumns]);
         }
 
         protected internal virtual void SetDefaultStyle(ExcelWorksheet worksheet)

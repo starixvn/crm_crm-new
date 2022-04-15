@@ -1,17 +1,16 @@
-﻿using CRM.Core.Constants;
-using CRM.Criteria.Report.DirectCustomerReport;
-using CRM.Resources;
-using CRM.Services;
-using CRM.Services.Report;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CRM.Controllers.Report
+﻿namespace CRM.Controllers.Report
 {
-    //[CrmPermission(FunctionKey = FunctionKey.CategoriesSummaryReport, Policy = Policy.Read)]
+    using CRM.Core.Constants;
+    using CRM.Core.Filters;
+    using CRM.Criteria.Report.DirectCustomerReport;
+    using CRM.Resources;
+    using CRM.Services;
+    using CRM.Services.Report;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
+    using static Fanex.NAP.Core.Business.Constant;
+
+    //[CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
     public class DirectReportController : Controller
     {
         private readonly IDirectReportService _directCustomerReportService;
