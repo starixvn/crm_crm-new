@@ -10,6 +10,7 @@
     using CRM.Models;
     using CRM.Models.Common;
     using CRM.Models.Customer;
+    using Microsoft.Extensions.Configuration;
 
     public interface ICustomerService
     {
@@ -20,17 +21,22 @@
         Task<IEnumerable<string>> GetCustomerAutoSuggestionAsync(CustomerSuggestionCriteria criteria);
 
         Task<CustomerInfo> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria);
+
+        Task<IEnumerable<Models.Customer.UserInfo>> GetAllCustomerAsync();
     }
 
     public class CustomerService : ICustomerService
     {
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
+        private readonly string Environment;
+        private const string DefaultEnvironment = Constants.DefaultEnvironment;
 
-        public CustomerService(IBaseService baseService, ISettingService settingService)
+        public CustomerService(IBaseService baseService, ISettingService settingService, IConfiguration configuration)
         {
             this.baseService = baseService;
             this.settingService = settingService;
+            Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
         public async Task<CustomerInfo> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
@@ -142,6 +148,15 @@
             
 
             return customerInfo;
+        }
+
+        public async Task<IEnumerable<Models.Customer.UserInfo>> GetAllCustomerAsync()
+        {
+            var criteria = new GetAllCustomersCriteria 
+            {
+                Environment = Environment
+            };
+            return await baseService.GetDataAsync<Models.Customer.UserInfo>(criteria);
         }
 
         private async Task<bool> CheckDirectAccount(int customerId)

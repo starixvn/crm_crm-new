@@ -24,7 +24,7 @@ export class Filter extends Component {
         this.state = {
             remarkContent: '',
             userName: '',
-            isGuest: false,
+            isGuestFiler: false,
             isShowHeadline: false,
             relatedToPICs: '',
             fromDate: this.firstDateOfMonth,
@@ -36,7 +36,7 @@ export class Filter extends Component {
     }
     componentDidMount(){
         const remarkTitles = [];
-        const remarkTitleOptions = this.props.remarkTitle.map(title =>{
+        const remarkTitleOptions = this.props.remarkTitles.map(title =>{
             remarkTitles.push(title.settingId);
             return {
                 id: title.settingId,
@@ -127,7 +127,7 @@ export class Filter extends Component {
     };
 
     handleSubmit = () => {
-        const { remarkContent,userName, isGuest, isShowHeadline, relatedToPICs, fromDate, toDate, remarkTitleIds, dateTypeSelect } = this.state;
+        const { remarkContent,userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, remarkTitleIds, dateTypeSelect } = this.state;
         if (remarkTitleIds === '') {
             toast.error(LangHelper.getResource('PleaseChooseRemarkTitle'));
             return;
@@ -144,7 +144,7 @@ export class Filter extends Component {
             toDate: DateTimeService.toShortDateFormat(toDate),
             remark: remarkContent,
             remarkTitle: remarkTitleIds,
-            isGuest: isGuest,
+            isGuest: isGuestFiler,
             relatedPICs: relatedToPICs,
             showHeadline: isShowHeadline,
             datePreset: dateTypeSelect,
@@ -156,16 +156,16 @@ export class Filter extends Component {
     };
 
     handleOpenAdd = () =>{
-        this.props.setOpenAddPopup({show: true});
+        this.props.setOpenCreatePopup({show: true});
     }
 
     render() {
-        const {remarkTitle} = this.props;
-        if(remarkTitle === null || !remarkTitle){
+        const {remarkTitles} = this.props;
+        if(remarkTitles === null || !remarkTitles){
             return null;
         }
        
-        const { remarkContent, userName, isGuest, isShowHeadline, relatedToPICs, fromDate, toDate, dateTypeSelect, remarkTitleOptions } = this.state;
+        const { remarkContent, userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, dateTypeSelect, remarkTitleOptions } = this.state;
         
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
@@ -212,8 +212,8 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group style={{width: 60}} controlId="formBasicCheckboxGuest">
                         <Form.Check type="checkbox" label={LangHelper.getResource('Guest')}
-                            id='isGuest' name='isGuest'
-                            checked={isGuest}
+                            id='isGuestFiler' name='isGuestFiler'
+                            checked={isGuestFiler}
                             onChange={this.handleChangeCheckbox}
                         />
                     </Form.Group>
@@ -295,8 +295,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { remarkTitle, gridParams } = state;
-    return { remarkTitle, gridParams };
+    const { remarkTitles, gridParams } = state;
+    return { remarkTitles, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

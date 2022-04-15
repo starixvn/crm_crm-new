@@ -22,6 +22,10 @@
 
         Task<CommandResult> ValidateUsernameAsyn(CustomerRemarkNewCheckCommand command);
 
+        Task<CommandResult> CreateNewAsync(CreateNewReamarkCommand command);
+
+        Task<CommandResult> EditNewAsync(EditNewRemarkCommand command);
+
         Task<CommandResult> DeleteNewAsync(DeleteNewRemarkCommand command);
     }
 
@@ -82,6 +86,18 @@
         }
 
         public async Task<CommandResult> ValidateUsernameAsyn(CustomerRemarkNewCheckCommand command)
+        {
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return commandResult;
+        }
+
+        public async Task<CommandResult> CreateNewAsync(CreateNewReamarkCommand command)
+        {
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return commandResult;
+        }
+
+        public async Task<CommandResult> EditNewAsync(EditNewRemarkCommand command)
         {
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
             return commandResult;

@@ -9,6 +9,7 @@
 @import '../../components/react-select';
 @import '../../components/icons';
 @import '../../components/forms';
+@import '../../components/ckeditor';
 
 .form-filter {
     min-width: 1400px;
@@ -18,13 +19,24 @@
     }
 }
 
-.link-click {
-    cursor: pointer;
-    color: $link-color !important;
-}
+.table-container {
+    .body-content{
+        .link-click {
+            cursor: pointer;
+            color: $link-color !important;
+        }
+        
+        .link-click:hover {
+            color: $draft-color !important;
+        }
 
-.link-click:hover {
-    color: $draft-color !important;
+        .remark-content, .remark-content p{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 1px;
+        }
+    }
 }
 
 #tooltip-remark-content [class$="inner"] {
@@ -34,9 +46,14 @@
 }
 
 .new-remark-modal{
-    .modal-content{
-        .modal-body{
-            
+    .modal-lg, .modal-xl {
+        max-width: 900px;
+
+        .disable-content .ckeditor-container{
+            background-color: #e9ecef;
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events:none;
         }
     }
 }

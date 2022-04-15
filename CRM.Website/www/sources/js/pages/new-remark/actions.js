@@ -2,24 +2,32 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import {
     setRemarkTitle,
+    setAllSettings,
     setGridParams,
     setRemarks,
-    setOpenAddPopup,
-    setAddResult,
+    setOpenCreatePopup,
     setOpenEditPopup,
     setEditResult,
     setOpenConfirmDelete,
-    setDelete,
+    setOpenDeletePopup,
+    setCreateResult,
     setValidateResult,
     setInputAddUsername
 } from './newRemarkSlice';
 
-
-const getRemarksTitle = () => async dispatch => {
+const getRemarkTitles= () => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('NewRemark/GetRemarkTitles');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setRemarkTitle(response.data));
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+};
+
+const getAllSettings= () => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('NewRemark/GetAllSetting');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setAllSettings(response.data));
     }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
@@ -39,9 +47,18 @@ const getNewRemarks = params => async dispatch => {
     }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
-const editRemarks = params => async () => {
-    const url = Site.resolveClientUrl('Remark/EditRemarks');
-    return await DataService.postDataAsync(url,params).then(response => response);
+const editNewRemarks = params => async dispatch => {
+    const url = Site.resolveClientUrl('NewRemark/Edit');
+    await DataService.postDataAsync(url,params).then(response => {
+        dispatch(setEditResult(response.data));
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+};
+
+const createNewRemarks = params => async dispatch => {
+    const url = Site.resolveClientUrl('NewRemark/Create');
+    await DataService.postDataAsync(url,params).then(response => {
+        dispatch(setCreateResult(response.data));
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const deleteNewRemark = params => async () => {
@@ -50,19 +67,22 @@ const deleteNewRemark = params => async () => {
 };
 
 export const ActionCreators = {
-    getRemarksTitle,
+    getRemarkTitles,
     setRemarkTitle,
+    getAllSettings,
+    setAllSettings,
     validateUsername,
     setGridParams,
     getNewRemarks,
     setRemarks,
-    editRemarks,
-    setOpenAddPopup,
-    setAddResult,
+    setOpenCreatePopup,
     setOpenEditPopup,
-    setEditResult,
+    setOpenDeletePopup,
     deleteNewRemark,
-    setDelete,
+    createNewRemarks,
+    editNewRemarks,
+    setEditResult,
+    setCreateResult,
     setOpenConfirmDelete,
     setValidateResult,
     setInputAddUsername

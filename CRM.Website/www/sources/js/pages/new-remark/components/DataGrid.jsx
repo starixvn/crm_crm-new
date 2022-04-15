@@ -50,10 +50,9 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index, isHost) => {
-        const remarkContent = item.remark.length > 75 ? (item.remark.substring(0, 75) + '...') : item.remark;
         return (
             <Row key={index}>
-                <Cell className='text-center link-click'>{item.remarkID}</Cell>
+                <Cell className='text-center link-click' onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
                 <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
                 <Cell className='text-center'>{item.creator}</Cell>
                 <Cell className='text-center'>{item.HeadlineName}</Cell>
@@ -62,12 +61,12 @@ export class DataGrid extends Component {
                 <OverlayTrigger
                     overlay={
                         <Tooltip id="tooltip-remark-content">
-                            <span>{item.remark}</span>
+                            <span dangerouslySetInnerHTML={{__html: item.remark}} />
                         </Tooltip>
                     }
                     placement="auto"
                 >
-                    <Cell className='link-click'>{remarkContent}</Cell>
+                    <Cell className='link-click remark-content' dangerouslySetInnerHTML={{__html: item.remark}} onClick={() =>this.handleOpenEdit(item)}/>
                 </OverlayTrigger>
                 <Cell className='text-center'>{item.relatedPICs}</Cell>
                 <Cell className='text-center'>
@@ -82,33 +81,37 @@ export class DataGrid extends Component {
                 <Cell className='text-center'><span className='fa fa-history icon-edit'/></Cell>
                 {
                     isHost &&
-                    this.renderEditIcon(item.remarkID)
+                    this.renderEditIcon(item)
                 }
             </Row>
         );
     };
 
-    renderEditIcon = remarkID => {
+    renderEditIcon = item => {
         return (
             <Cell className='text-center'>
                 <div className='d-flex justify-content-between align-items-center'>
                     <span className='fa fa-pencil icon-edit'
-                        onClick={() => this.handleEdit(remarkID)}
+                        onClick={() => this.handleOpenEdit(item)}
                     />
                      <span className='fa fa-trash-o icon-delete'
-                         onClick={() => this.handleShowPopupDelete(remarkID)}
+                         onClick={() => this.handleShowPopupConfirmDelete(item.remarkID)}
                      />
                 </div>
             </Cell>
         );
     };
 
-    handleShowPopupDelete = remarkID =>{
-        this.props.setOpenEditPopup({show: true, id: remarkID});
+    handleOpenEdit = item =>{
+        this.props.setOpenEditPopup({show: true, data: item});
+    }
+
+    handleShowPopupConfirmDelete = remarkID =>{
+        this.props.setOpenConfirmDelete({show: true, id: remarkID});
     };
 
     handleCloseDelete = () =>{
-        this.props.setOpenEditPopup({show: false , id: null});
+        this.props.setOpenConfirmDelete({show: false , id: null});
         this.props.setDelete(null);
     };
 
@@ -123,7 +126,7 @@ export class DataGrid extends Component {
             }else{
                 toast.error(response.message);
             }
-            this.props.setOpenEditPopup({show: false , id: null});
+            this.handleCloseDelete();
         });
     };
 

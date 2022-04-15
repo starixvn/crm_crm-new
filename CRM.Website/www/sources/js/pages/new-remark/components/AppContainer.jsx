@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import NewRemark from './NewRemark';
+import EditRemark from './EditRemark';
+
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -21,24 +23,26 @@ export class AppContainer extends Component {
     };
 
     componentDidMount(){
-        this.props.getRemarksTitle();
+        this.props.getRemarkTitles();
     }
 
     handleCloseAddPopup = () => {
-        this.props.setOpenAddPopup({ show: false });
-        this.props.setAddResult(null);
-        this.props.setValidateResult(null);
+        this.props.setOpenCreatePopup({ show: false });
+        this.props.setCreateResult(null);
+        this.props.setValidateResult({isSuccessful: false});
         this.props.setInputAddUsername('');
+        this.props.getNewRemarks(this.props.gridParams);
     };
 
     handleCloseEditPopup = () => {
-        this.props.setOpenEditPopup({ show: false });
+        this.props.setOpenEditPopup({ show: false, data: null });
         this.props.setEditResult(null);
+        this.props.getNewRemarks(this.props.gridParams);
     };
     
     render() {
-        const { remarkTitle, popupAdd, popupEdit } = this.props;
-        if(remarkTitle === null || !remarkTitle){
+        const { remarkTitles, popupAdd, popupEdit } = this.props;
+        if(remarkTitles === null || !remarkTitles){
             return null;
         }
         return (
@@ -49,6 +53,10 @@ export class AppContainer extends Component {
                     popupAdd.show &&
                     <NewRemark onClose={this.handleCloseAddPopup}/>
                 }
+                {
+                    popupEdit.show &&
+                    <EditRemark onClose={this.handleCloseEditPopup}/>
+                }
             </Fragment>
         );
     }
@@ -57,8 +65,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { remarkTitle, popupAdd, popupEdit } = state;
-    return { remarkTitle, popupAdd, popupEdit };
+    const { gridParams, remarkTitles, popupAdd, popupEdit } = state;
+    return { gridParams, remarkTitles, popupAdd, popupEdit };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

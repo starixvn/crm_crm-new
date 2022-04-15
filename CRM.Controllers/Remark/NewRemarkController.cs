@@ -5,9 +5,11 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Criteria.Common;
     using CRM.Criteria.NewRemark;
     using CRM.Models.Setting;
     using CRM.Services;
+    using CRM.Services.Customer;
     using CRM.Services.Remark;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -15,14 +17,17 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
-    public class NewRemarkController : Controller
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    public class NewRemarkController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
         private readonly IRemarkService remarkService;
         private readonly ISettingService settingService;
+        private readonly ICommonService commonService;
+        private readonly ICustomerService customerService;
+        private const int PicOfHeadline = 8;
 
 
         public NewRemarkController(
@@ -30,7 +35,9 @@
             INapSettings napSettings,
             IUserService userService,
             IRemarkService remarkService,
-            ISettingService settingService
+            ISettingService settingService,
+            ICommonService commonService,
+            ICustomerService customerService
         )
         {
             this.napSession = napSession;
@@ -38,12 +45,14 @@
             this.userService = userService;
             this.remarkService = remarkService;
             this.settingService = settingService;
+            this.commonService = commonService;
+            this.customerService = customerService;
         }
 
         public IActionResult Index()
         {
-           //var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            return View(true);
+           var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            return View(isHost);
         }
 
         public async Task<IActionResult> GetRemarkTitles()
@@ -52,6 +61,20 @@
             var remarkSettingsOrder = remarkSettings.OrderBy(s => s.DisplayOrder).ToList();
             return Json(remarkSettingsOrder);
         }
+
+        public async Task<IActionResult> GetAllSetting()
+        {
+            var relatedPics = await commonService.GetRecipientAsync(new GetRecipientsCriteria { RecipientType = PicOfHeadline });
+            var users = await customerService.GetAllCustomerAsync();
+            var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            return Json(new {
+                relatedPics = relatedPics,
+                extentions = extentions,
+                users = users,
+                userId = napSession.UserId 
+            });
+        }
+
 
         public async Task<IActionResult> GetNewRemarks([FromBody] GetNewRemarkCriteria criteria)
         {
@@ -67,11 +90,29 @@
         }
 
         [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateNewReamarkCommand command)
+        {
+            command.CreatorID = napSession.UserId;
+            command.ModifierID = napSession.UserId;
+            command.IP = ClientIP;
+            CommandResult commandResult = await remarkService.CreateNewAsync(command);
+            return Json(commandResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] EditNewRemarkCommand command)
+        {
+            command.ModifierID = napSession.UserId;
+            command.IP = ClientIP;
+            CommandResult commandResult = await remarkService.EditNewAsync(command);
+            return Json(commandResult);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Delete([FromBody] DeleteNewRemarkCommand command)
         {
-           //command.UserID = napSession.UserId;
-            command.UserID = 1;
-            command.IP = "ClientIP";
+            command.UserID = napSession.UserId;
+            command.IP = ClientIP;
             CommandResult commandResult = await remarkService.DeleteNewAsync(command);
             return Json(commandResult);
         }
