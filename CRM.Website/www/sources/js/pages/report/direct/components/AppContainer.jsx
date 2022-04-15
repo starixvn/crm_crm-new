@@ -10,7 +10,7 @@ export class AppContainer extends Component {
     super(props);
   }
 
-  render() {    
+  render() {
     const { gridData} = this.props;
 
     return (
