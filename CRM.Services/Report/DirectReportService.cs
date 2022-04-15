@@ -1,15 +1,12 @@
-﻿using CRM.Core.Services;
-using CRM.Criteria.Report.DirectCustomerReport;
-using CRM.Models.Report.DirectCustomerReport;
-using CRM.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CRM.Services.Report
+﻿namespace CRM.Services.Report
 {
+    using CRM.Core.Services;
+    using CRM.Criteria.Report.DirectCustomerReport;
+    using CRM.Models.Report.DirectCustomerReport;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public interface IDirectReportService
     {
         Task<DirectCustomerReportInfo> GetReport(DirectCustomerReportCriteria criteria);
@@ -25,10 +22,10 @@ namespace CRM.Services.Report
         public async Task<DirectCustomerReportInfo> GetReport(DirectCustomerReportCriteria criteria)
         {
             var rawData = await baseService.GetDataAsync<DirectCustomerInfo>(criteria);
-            IList<DirectCustomerInfo> dataList = rawData.ToList();
+            IList<DirectCustomerInfo> customerList = rawData.ToList();
 
             return new DirectCustomerReportInfo {
-                CustomerList = dataList,
+                CustomerList = customerList,
                 TotalCustomer = criteria.TotalRows
             };
         }

@@ -1,10 +1,8 @@
-import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import { ActionCreators } from '../actions';
-import { shallow } from 'enzyme';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -28,36 +26,36 @@ describe('actionCreators', () => {
                 data: {
                     customerList: [
                         {
-                            BBM: "---",
-                            Checker: null,
-                            CountryName: null,
-                            Currency: "HK$",
-                            Email: "---",
+                            bBM: "---",
+                            checker: null,
+                            countryName: null,
+                            currency: "HK$",
+                            email: "---",
                             FirstName: "---",
-                            Headline: null,
-                            IntroducedBy: null,
-                            Language_name: "English",
-                            LastName: "---",
-                            Line: "---",
-                            MSN: "---",
-                            MobilePhone: "-----",
-                            PIC1: "-------",
-                            PIC2: "-------",
-                            PIC3: "-------",
-                            PIC4: "-------",
-                            Phone: "-----",
-                            Phone2: "-----",
-                            Phone3: "-----",
-                            Position: "Member",
-                            QQ: "---",
-                            Site: "BEST-ODDS",
-                            Skype: "---",
-                            Status: "Closed",
-                            Username: "0000HK",
-                            IsVIP: true,
-                            WeChat: "---",
-                            WhatsApp: "---",
-                            Yahoo: null
+                            headline: null,
+                            introducedBy: null,
+                            language_name: "English",
+                            lastName: "---",
+                            line: "---",
+                            mSN: "---",
+                            mobilePhone: "-----",
+                            pIC1: "-------",
+                            pIC2: "-------",
+                            pIC3: "-------",
+                            pIC4: "-------",
+                            phone: "-----",
+                            phone2: "-----",
+                            phone3: "-----",
+                            position: "Member",
+                            qQ: "---",
+                            site: "BEST-ODDS",
+                            skype: "---",
+                            status: "Closed",
+                            username: "0000HK",
+                            isVIP: true,
+                            weChat: "---",
+                            whatsApp: "---",
+                            yahoo: null
                         }
                     ],
                     totalCustomer: 1

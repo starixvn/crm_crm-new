@@ -10,6 +10,7 @@
 
         public const string SettlementIssuesReport = "SettlementIssuesReport";
         public const string CategoriesSummaryReport = "CategoriesSummaryReport";
+        public const string DirectCustomerReport = "DirectCustomerReport";
 
         public const string FeedbackSubject = "FBSubjectTemplateManagement";
         public const string PICAssignment = "PICAssignment";
