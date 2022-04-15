@@ -34,7 +34,7 @@ namespace CRM.Models.Report.DirectCustomerReport
 
         public string LastName { get; set; }
 
-        public string Phone1 { get; set; }
+        public string Phone { get; set; }
 
         public string Phone2 { get; set; }
 

@@ -50,7 +50,7 @@ namespace CRM.Services.ExportExcel
             worksheet.Cells[rowIndex, colIndex++].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.Cells[rowIndex, colIndex++].Value = direct.FirstName;
             worksheet.Cells[rowIndex, colIndex++].Value = direct.LastName;
-            worksheet.Cells[rowIndex, colIndex++].Value = direct.Phone1;
+            worksheet.Cells[rowIndex, colIndex++].Value = direct.Phone;
             worksheet.Cells[rowIndex, colIndex++].Value = direct.Phone2;
             worksheet.Cells[rowIndex, colIndex++].Value = direct.Phone3;
             worksheet.Cells[rowIndex, colIndex++].Value = direct.PIC1;
