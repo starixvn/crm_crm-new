@@ -48,14 +48,21 @@
 }
 
 .table-container {
+    overflow: auto;
     min-width: 700px !important;
-    overflow-y: hidden;
-    .body-content {
-        overflow-y: hidden;
-        overflow-x: hidden;
-        .table {
-    overflow-y: auto;
 
+    .header-content {
+        border-bottom: none;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .body-content {
+        overflow-y: unset;
+        overflow-x: unset;
+
+        .table {
             tbody {
                 .checking {
                     content: "\2713";
@@ -63,6 +70,7 @@
                     font-weight: bold;
                     color: blue;
                 }
+
                 tr:hover td {
                     background-color: #E0FFFF !important;
                 }
@@ -70,6 +78,7 @@
         }
     }
 }
-.page-container{
+
+.page-container {
     min-width: 700px !important;
 }

@@ -83,7 +83,7 @@ export class DataGrid extends Component {
                 <Cell className='text-center'>{item.isVIP ? <span className='checking'>&#10003;</span> : ""}</Cell>
                 <Cell className='text-center'>{item.firstName}</Cell>
                 <Cell className='text-center'>{item.lastName}</Cell>
-                <Cell className='text-center'>{item.phone1}</Cell>
+                <Cell className='text-center'>{item.phone}</Cell>
                 <Cell className='text-center'>{item.phone2}</Cell>
                 <Cell className='text-center'>{item.phone3}</Cell>
                 <Cell className='text-center'>{item.piC1}</Cell>
