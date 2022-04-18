@@ -88,7 +88,7 @@ export class DataGrid extends Component {
     buildHeader = months => {
         const headers = [];
         const cells = [];
-        cells.push(<HeaderCell className='sticky-header' colWidth={60}>{LangHelper.getResource('Categories')}</HeaderCell>);
+        cells.push(<HeaderCell key="header" className='sticky-header' colWidth={60}>{LangHelper.getResource('Categories')}</HeaderCell>);
         months.map(item => {
             cells.push(<HeaderCell key={item} colWidth={12}>{item}</HeaderCell>);
         });
@@ -103,9 +103,9 @@ export class DataGrid extends Component {
     renderFooter = data => {
         const cells = [];
         if(data.length > 0){
-            cells.push(<Cell>Grand Total</Cell>);
+            cells.push(<Cell key="grandtotal">Grand Total</Cell>);
             data.map(item => {
-                cells.push(<Cell className='right' key={item}>{item.amount}</Cell>);
+                cells.push(<Cell className='right' key={item.month+'-footer'}>{item.amount}</Cell>);
             });
             return (
                 [<Row key='footer' className='footer-container font-weight-bold'>
@@ -136,7 +136,7 @@ export class DataGrid extends Component {
         const toggle = this.state.toggleRowReport;
         if (!toggle.includes(parentId)) {
             const cells = [];
-            cells.push(<Cell className='child' style={{ width: 280, 'paddingLeft': 20 }}>{sub.name}</Cell>);
+            cells.push(<Cell key={sub.name+ "" +parentId} className='child' style={{ width: 280, 'paddingLeft': 20 }}>{sub.name}</Cell>);
             sub.summaries.map(sumMonth => {
                 cells.push(
                     <Cell key={sumMonth.month} className='complaints-text right'>
@@ -178,7 +178,7 @@ export class DataGrid extends Component {
         const toggles = this.state.toggleRowReport;
 
         cells.push(
-            <Cell className='complaints-text' >
+            <Cell key={item.id+'icon'} className='complaints-text' >
                 <span className={`expand-icon fa pr-2 ${!toggles.includes(item.id) ? 'fa-caret-down' : 'fa-caret-right'}`} />
                 <span >{item.name}</span>
             </Cell>

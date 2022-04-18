@@ -60,7 +60,7 @@ export class DataGrid extends Component {
             return rows;
         }
         return [
-            <Row key={`body${1}`} className="no-data" >
+            <Row key='body-NoData' className="no-data" >
                 <Cell className='text-center' colSpan={31}>{LangHelper.getResource('ThereIsNoData')}</Cell>
             </Row>
         ];
