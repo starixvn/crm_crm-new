@@ -89,7 +89,7 @@ export class Filter extends Component {
                                 onChange={(currentItem, selectedItemsKey) => {
                                     this.setState({
                                         categories: selectedItemsKey
-                                    });                                    
+                                    });
                                 }}
                                 hasSearchBox
                                 isNAOption
