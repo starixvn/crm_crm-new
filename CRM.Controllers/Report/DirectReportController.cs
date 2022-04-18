@@ -10,8 +10,8 @@
     using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
-    //[CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
-    public class DirectReportController : Controller
+    [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
+    public class DirectReportController : BaseController
     {
         private readonly IDirectReportService _directCustomerReportService;
         private readonly IExportExcelService _exportExcelService;
