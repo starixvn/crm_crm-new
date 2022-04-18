@@ -60,7 +60,7 @@
 }
 
 .table-container {
-    overflow: auto;
+    overflow: scroll;
     min-width: 700px !important;
 
     .header-content {
@@ -85,6 +85,10 @@
 
                 tr:hover td {
                     background-color: #E0FFFF !important;
+                }
+
+                .no-data{
+                    font-weight: bold;
                 }
             }
         }
