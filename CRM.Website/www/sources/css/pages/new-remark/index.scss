@@ -12,7 +12,7 @@
 @import '../../components/ckeditor';
 
 .form-filter {
-    min-width: 1400px;
+    min-width: 960px;
     
     .react-datepicker__input-container input{
         width: 100% !important;
@@ -36,6 +36,10 @@
             text-overflow: ellipsis;
             min-width: 1px;
         }
+
+        tbody tr td{
+            word-break: break-all;
+        }
     }
 }
 
@@ -54,6 +58,27 @@
             opacity: 0.6;
             cursor: not-allowed;
             pointer-events:none;
+        }
+    }
+}
+
+.history-container{
+    display: grid;
+    grid-template-columns: 300px auto;
+
+    .history-section{
+        .fa-backward{
+            cursor: pointer;
+        }
+
+        .history-info{
+            border: 1px solid #b7b7b7;
+            margin-right: 15px;
+            padding-left: 16px;
+
+            div:first-child, div > span:nth-child(2){
+                font-weight: bold;
+            }
         }
     }
 }

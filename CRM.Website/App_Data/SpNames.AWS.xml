@@ -259,6 +259,7 @@
         <Setting Key="Acc_CRM_CustomerRemarkNewDel" SpName="Acc_CRM_CustomerRemarkNewDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewIns" SpName="Acc_CRM_CustomerRemarkNewIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewUpd" SpName="Acc_CRM_CustomerRemarkNewUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerRemarkNewHistory" SpName="Acc_CRM_CustomerRemarkNewHistory" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Action Log">
         <Setting Key="Acc_CRM_ActivityLogList" SpName="Acc_CRM_ActivityLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet" >

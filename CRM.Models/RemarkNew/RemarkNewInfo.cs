@@ -10,6 +10,7 @@
         public int HeadlineID { get; set; }
         public string HeadlineName { get; set; }
         public int CustID { get; set; }
+        public bool IsGroupHeadLine { get; set; }
         public string UserName { get; set; }
         public string RemarkTitle { get; set; }
         public string RemarkName { get; set; }
@@ -27,5 +28,7 @@
         public string Approver { get; set; }
         public string Acknowledger { get; set; }
         public string Updater { get; set; }
+        public int CreatorID { get; set; }
+        public int ModifierID { get; set; }
     }
 }

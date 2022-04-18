@@ -12,7 +12,10 @@ import {
     setOpenDeletePopup,
     setCreateResult,
     setValidateResult,
-    setInputAddUsername
+    setInputAddUsername,
+    setRemarksHistory,
+    setShowHistory,
+    setHistoryGridParams
 } from './newRemarkSlice';
 
 const getRemarkTitles= () => async dispatch => {
@@ -66,6 +69,14 @@ const deleteNewRemark = params => async () => {
     return await DataService.postDataAsync(url,params).then(response => response.data);
 };
 
+const getNewRemarkHistory = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('NewRemark/getNewRemarkHistory');
+    await DataService.postDataAsync(url,params).then(response => {
+        dispatch(setRemarksHistory(response.data));
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     getRemarkTitles,
     setRemarkTitle,
@@ -85,5 +96,9 @@ export const ActionCreators = {
     setCreateResult,
     setOpenConfirmDelete,
     setValidateResult,
-    setInputAddUsername
+    setInputAddUsername,
+    setRemarksHistory,
+    getNewRemarkHistory,
+    setShowHistory,
+    setHistoryGridParams
 };

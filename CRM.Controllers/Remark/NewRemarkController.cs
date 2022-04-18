@@ -109,6 +109,14 @@
         }
 
         [HttpPost]
+        public async Task<IActionResult> GetNewRemarkHistory([FromBody] GetCustomerRemarkNewHistoryCriteria criteria)
+        {
+
+            var history = await remarkService.GetCustomerNewRemarkHistoryAsync(criteria);
+            return Json(new { data = history, totalItems = criteria.TotalRows });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Delete([FromBody] DeleteNewRemarkCommand command)
         {
             command.UserID = napSession.UserId;

@@ -9,12 +9,15 @@ const newRemarkSlice = createSlice({
         gridData: null,
         popupAdd: { show: false },
         editResult: null,
-        popupEdit: { show: false, data: null },
+        popupEdit: { show: false, data: null, isViewHistory: false },
         popupDeleteConfirm: { show: false, id: null },
         deleteResult: null,
         createResult: null,
         validateResult: {isSuccessful: false},
-        inputAddUsername: ''
+        inputAddUsername: '',
+        remarksHistory: null,
+        showHistory: {show: false},
+        historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''}
     },
     reducers: {
         setRemarkTitle: (state, action) => {
@@ -49,6 +52,15 @@ const newRemarkSlice = createSlice({
         },
         setInputAddUsername: (state, action) => {
             state.inputAddUsername = action.payload;
+        },
+        setRemarksHistory: (state, action) => {
+            state.remarksHistory = action.payload;
+        },
+        setShowHistory: (state, action) => {
+            state.showHistory = action.payload;
+        },
+        setHistoryGridParams: (state, action) => {
+            state.historyGridParams = action.payload;
         }
     }
 });
@@ -67,7 +79,10 @@ export const {
     setOpenConfirmDelete,
     setCreateResult,
     setValidateResult,
-    setInputAddUsername
+    setInputAddUsername,
+    setRemarksHistory,
+    setShowHistory,
+    setHistoryGridParams
 } = actions;
 
 export default reducer;

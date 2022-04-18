@@ -11,7 +11,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import CkEditor from '@jsroot/components/ckeditor/index';
 
-
 export class NewRemark extends Component {
     static defaultProps = {
         gridParams: {username: '', isGuest: false},
@@ -50,7 +49,7 @@ export class NewRemark extends Component {
         this.props.createNewRemarks(params).then(() => {
             if (this.props.createResult.isSuccessful) {
                 setTimeout(() => {
-                    this.props.onClose();
+                    this.props.onSuccess();
                 }, 3000);
             } else {
                 setSubmitting(false);

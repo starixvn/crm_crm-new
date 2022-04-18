@@ -152,6 +152,7 @@ export class Filter extends Component {
             pageSize: this.props.gridParams.pageSize
         };
         this.props.setGridParams(params);
+        this.props.setShowHistory({show: false});
         this.props.getNewRemarks(params);
     };
 

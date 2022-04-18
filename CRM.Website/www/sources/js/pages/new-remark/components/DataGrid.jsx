@@ -50,13 +50,14 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index, isHost) => {
+        const userNameFormat = `${item.isGroupHeadLine ? item.userName + 'headline' : item.userName}`;
         return (
             <Row key={index}>
                 <Cell className='text-center link-click' onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
                 <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
                 <Cell className='text-center'>{item.creator}</Cell>
                 <Cell className='text-center'>{item.HeadlineName}</Cell>
-                <Cell className='text-center'>{item.userName}</Cell>
+                <Cell className='text-center'>{userNameFormat}</Cell>
                 <Cell className='text-center'>{item.remarkName}</Cell>
                 <OverlayTrigger
                     overlay={
@@ -78,7 +79,11 @@ export class DataGrid extends Component {
                 <Cell className='text-center'>{item.requester}</Cell>
                 <Cell className='text-center'>{item.approver}</Cell>
                 <Cell className='text-center'>{item.acknowledger}</Cell>
-                <Cell className='text-center'><span className='fa fa-history icon-edit'/></Cell>
+                <Cell className='text-center'>
+                    <span className='fa fa-history icon-edit'
+                        onClick={() => this.handleShowHistory(userNameFormat, item)}
+                    />
+                </Cell>
                 {
                     isHost &&
                     this.renderEditIcon(item)
@@ -103,7 +108,7 @@ export class DataGrid extends Component {
     };
 
     handleOpenEdit = item =>{
-        this.props.setOpenEditPopup({show: true, data: item});
+        this.props.setOpenEditPopup({show: true, data: item, isViewHistory: false});
     }
 
     handleShowPopupConfirmDelete = remarkID =>{
@@ -113,6 +118,20 @@ export class DataGrid extends Component {
     handleCloseDelete = () =>{
         this.props.setOpenConfirmDelete({show: false , id: null});
         this.props.setDelete(null);
+    };
+
+    handleShowHistory = (userNameFormat, item) =>{
+        const historyParams = {
+            custID: item.custID,
+            remarkID: item.remarkID,
+            pageIndex: 1,
+            pageSize: 100,
+            userNameFormat: userNameFormat,
+            creator: item.creator,
+            createdDate: item.createdDate
+        };
+        this.props.setShowHistory({show: true});
+        this.props.setHistoryGridParams(historyParams);
     };
 
     handleDelete = id =>{
@@ -146,14 +165,12 @@ export class DataGrid extends Component {
         if(sortBy === 'createdDate'){
             if(sortOrder === 'asc'){
                 gridDataSortAsc = cloneGridData.sort((first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1);
-                this.props.setRemarks({...this.props.gridData.data, data: gridDataSortAsc});
             }else{
                 gridDataSortAsc = cloneGridData.sort((first, second) => new Date(first[`${sortBy}`]) < new Date(second[`${sortBy}`]) ? 1 : -1);
             }
         }else{
             if(sortOrder === 'asc'){
                 gridDataSortAsc = cloneGridData.sort((first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1);
-                this.props.setRemarks({...this.props.gridData.data, data: gridDataSortAsc});
             }else{
                 gridDataSortAsc = cloneGridData.sort((first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1);
             }
@@ -192,11 +209,10 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('Remark')}</span>
                 </div>
                 <Table
-                    minWidth={960}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
-                    autoWidth
-                    maxWidth={document.getElementById('app-container').clientWidth}
+                    autoWidth={false}
+                    width={document.getElementById('app-container').clientWidth}
                     isPaging
                     onSort={this.onSort}
                     containerPadding={0}
@@ -211,7 +227,7 @@ export class DataGrid extends Component {
                         title={LangHelper.getResource('Confirmation')}
                         content={this.renderConfirmMessage(popupDeleteConfirm.id)}
                         onSubmit={() => this.handleDelete(popupDeleteConfirm.id)}
-                        onClose={() =>  this.handleCloseDelete}
+                        onClose={() =>  this.handleCloseDelete()}
                     />
                 }
             </Fragment>

@@ -22,6 +22,8 @@
 
         Task<CommandResult> ValidateUsernameAsyn(CustomerRemarkNewCheckCommand command);
 
+        Task<IEnumerable<RemarkNewHistory>> GetCustomerNewRemarkHistoryAsync(GetCustomerRemarkNewHistoryCriteria criteria);
+
         Task<CommandResult> CreateNewAsync(CreateNewReamarkCommand command);
 
         Task<CommandResult> EditNewAsync(EditNewRemarkCommand command);
@@ -89,6 +91,11 @@
         {
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
             return commandResult;
+        }
+
+        public async Task<IEnumerable<RemarkNewHistory>> GetCustomerNewRemarkHistoryAsync(GetCustomerRemarkNewHistoryCriteria criteria)
+        {
+            return await baseService.GetDataAsync<RemarkNewHistory>(criteria);
         }
 
         public async Task<CommandResult> CreateNewAsync(CreateNewReamarkCommand command)

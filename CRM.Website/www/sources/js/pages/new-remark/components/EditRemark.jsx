@@ -41,17 +41,17 @@ export class EditRemark extends Component {
             custID: this.props.popupEdit.data.custID,
             remark: values.remarkContent,
             remarkTitle: values.remarkTitle,
+            acknowledgerID: values.acknowledgedBy === '' ? null : parseInt(values.acknowledgedBy, 10),
             relatedPICs: values.relatedPics,
             ext: values.extStation === '' ? null : parseInt(values.extStation, 10),
             handlerID: values.handledBy === '' ? null : parseInt(values.handledBy, 10),
             approverID: values.approvedBy === '' ? null : parseInt(values.approvedBy, 10),
-            acknowledgerID: values.acknowledgedBy === '' ? null : parseInt(values.acknowledgedBy, 10),
             requester: values.requestedBy        
         };
         this.props.editNewRemarks(params).then(() => {
             if (this.props.editResult.isSuccessful) {
                 setTimeout(() => {
-                    this.props.onClose();
+                    this.props.onSuccess();
                 }, 3000);
             } else {
                 setSubmitting(false);
@@ -88,7 +88,7 @@ export class EditRemark extends Component {
                     {
                         editResult &&
                         <ResponseMessage isSuccessful={editResult.isSuccessful}
-                            message={editResult.message || LangHelper.getResource('CreateNewRemarkSuccessfully')}
+                            message={editResult.message || LangHelper.getResource('EditNewRemarkSuccessfully')}
                         />
                     }
                     <Form.Group as={Row}>
@@ -123,10 +123,10 @@ export class EditRemark extends Component {
                             <MultipleSelect
                                 id="relatedToPICs"
                                 name="relatedToPICs"
-                                hasSearchBox
-                                dataSource={this.state.relatedPicsOption}
                                 keyField='id'
                                 isAllTextShown
+                                hasSearchBox
+                                dataSource={this.state.relatedPicsOption}
                                 valueField='name'
                                 statusField='checked'
                                 onChange={(currentItem, selectedItemsKey) => {
@@ -142,10 +142,10 @@ export class EditRemark extends Component {
                         <Col sm="2" md="2">
                             <Form.Control size="sm" type="text"
                                 name="requestedBy" id="requestedBy"
-                                value={values.requestedBy}
-                                isInvalid={touched.requestedBy && errors.requestedBy}
                                 className='shadow-none'
+                                value={values.requestedBy}
                                 autoComplete="off"
+                                isInvalid={touched.requestedBy && errors.requestedBy}
                                 onChange={handleChange}
                             /> 
                         </Col>
@@ -169,8 +169,8 @@ export class EditRemark extends Component {
                         <Col sm="2" md="2">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 isInvalid={touched.acknowledgedBy && errors.acknowledgedBy}
-                                name="acknowledgedBy" id="acknowledgedBy"
                                 onChange={handleChange}
+                                name="acknowledgedBy" id="acknowledgedBy"
                                 value={values.acknowledgedBy}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
