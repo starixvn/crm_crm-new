@@ -104,7 +104,7 @@ export class DataGrid extends Component {
         );
     };
 
-    onPagingCommunication = (pageIndex, pageSize) => {
+    onPagingDirect = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
         params['pageIndex'] = pageIndex;
         params['pageSize'] = pageSize;
@@ -161,7 +161,7 @@ export class DataGrid extends Component {
                     body={this.buildBody(customerList)}
                     isPaging
                     pageOption={pagingOption}
-                    onPaging={this.onPagingCommunication}
+                    onPaging={this.onPagingDirect}
                     containerPadding={0}
                     adjustedHeight={10}
                 />

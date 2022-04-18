@@ -64,11 +64,11 @@
             worksheet.Cells[rowIndex, colIndex++].Value = direct.BBM;
             worksheet.Cells[rowIndex, colIndex].Value = direct.QQ;
 
-            Color colOpen = ColorTranslator.FromHtml("#E0FFFF");
+            Color color = ColorTranslator.FromHtml("#e4f2fd");
 
             if (rowIndex % rowMergeHeader == 0)
             {
-                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, LastColumns], colOpen);
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, LastColumns], color);
             }
         }
 
