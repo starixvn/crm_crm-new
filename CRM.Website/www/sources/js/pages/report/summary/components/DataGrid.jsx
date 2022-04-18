@@ -136,7 +136,7 @@ export class DataGrid extends Component {
         const toggle = this.state.toggleRowReport;
         if (!toggle.includes(parentId)) {
             const cells = [];
-            cells.push(<Cell key={sub.name+ "" +parentId} className='child' style={{ width: 280, 'paddingLeft': 20 }}>{sub.name}</Cell>);
+            cells.push(<Cell key={sub.name} className='child' style={{ width: 280, 'paddingLeft': 20 }}>{sub.name}</Cell>);
             sub.summaries.map(sumMonth => {
                 cells.push(
                     <Cell key={sumMonth.month} className='complaints-text right'>
