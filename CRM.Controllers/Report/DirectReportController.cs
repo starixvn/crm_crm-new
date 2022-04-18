@@ -10,8 +10,8 @@
     using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
-    public class DirectReportController : BaseController
+    //[CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
+    public class DirectReportController : Controller
     {
         private readonly IDirectReportService _directCustomerReportService;
         private readonly IExportExcelService _exportExcelService;
@@ -40,7 +40,6 @@
         [HttpPost]
         public async Task<IActionResult> ExportDirectReport([FromBody] DirectCustomerReportCriteria criteria)
         {
-            criteria.ExcludeIgnoredAcc = true;
             var reports = await _directCustomerReportService.GetReport(criteria);
             var bytes = _exportExcelService.ExportDirectCustomerReport(reports);
             string reportName = string.Format(ViewResources.FileNameDirectReport);
