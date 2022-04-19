@@ -12,18 +12,21 @@ export class Filter extends Component {
             headline: null,
             username: null,
             excludeIgnoredAcc: true,
-            pageIndex: 1,
             showFilter: true
         };
     }
 
-    submitHandler = event => {
-        event.preventDefault();
-        const { headline, username, excludeIgnoredAcc, pageIndex } = this.state;
-        const { pageSize } = this.props.gridParams;
-        const params = { headline: headline === '' ? null : headline, username: username === '' ? null : username, excludeIgnoredAcc, pageIndex, pageSize };
-        this.props.setGridParams({ ...params });
-        this.props.getGridData({ ...params });
+    submitHandler = () => {
+        const { headline, username, excludeIgnoredAcc } = this.state;
+        const params = {
+             headline: headline === '' ? null : headline, 
+             username: username === '' ? null : username, 
+             excludeIgnoredAcc, 
+             pageIndex: 1, 
+             pageSize : this.props.gridParams.pageSize
+        };
+        this.props.setGridParams(params);
+        this.props.getGridData(params);
     };
 
     handleToggleFilter = value => {
@@ -41,7 +44,7 @@ export class Filter extends Component {
                     <Fragment>
                         <Form.Row bsPrefix='form-row'>
                             <Form.Group>
-                                <Form.Label htmlFor="groupHeadlineInput">{LangHelper.getResource('Group Headline')}</Form.Label>
+                                <Form.Label htmlFor="groupHeadlineInput">{LangHelper.getResource('GroupHeadline')}</Form.Label>
                                 <Form.Control type="text" size="sm" className="shadow-none"
                                     id="groupHeadlineInput"
                                     autoComplete="off"

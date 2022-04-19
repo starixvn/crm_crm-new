@@ -491,5 +491,9 @@
     FieldName: 'Field Name',
     OldValue: 'Old Value',
     Order: 'Order',
-    NewValue: 'New Value'
+    NewValue: 'New Value',
+    RowNum:'No.',
+    IntroduceBy:'Introduce by',
+    Languages: 'Languages',
+    WhatsApp: 'WhatsApp'
 };

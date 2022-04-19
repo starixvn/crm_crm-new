@@ -10,8 +10,7 @@
         private readonly DirectCustomerReportInfo directreportInfo;
         private const byte rowStartHeader = 4;
         private const byte rowStartBody = 5;
-        private const int fromRowMergeTitle = 3;
-        private const int rowMergeHeader = 0b10;
+        private const int numberTwo = 2;
         private readonly byte LastColumns = 30;
         private int rowIndex = rowStartBody;
 
@@ -66,7 +65,7 @@
 
             Color color = ColorTranslator.FromHtml("#e4f2fd");
 
-            if (rowIndex % rowMergeHeader == 0)
+            if (rowIndex % numberTwo == 0)
             {
                 SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, LastColumns], color);
             }
@@ -82,10 +81,6 @@
         {
             templateWorksheet.Cells[1, 1, rowStartHeader - 1, LastColumns]
                  .Copy(worksheet.Cells[1, 1, rowStartHeader - 1, LastColumns]);
-            worksheet.Cells[1, 1, rowStartHeader - rowMergeHeader, LastColumns].Merge = true;
-            worksheet.Cells[fromRowMergeTitle, 1, rowStartHeader - 1, LastColumns].Merge = true;
-            worksheet.Cells[1, 1].Value = ViewResources.DirectCustomerReport;
-            worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
         {

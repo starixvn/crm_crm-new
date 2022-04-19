@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
+import { PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -15,27 +16,27 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={30}>{LangHelper.getResource('No.')}</HeaderCell>
-                <HeaderCell colWidth={80}>{LangHelper.getResource('Group headline')}</HeaderCell>
+                <HeaderCell colWidth={30}>{LangHelper.getResource('RowNum')}</HeaderCell>
+                <HeaderCell colWidth={80}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
                 <HeaderCell colWidth={70}>{LangHelper.getResource('Username')}</HeaderCell>
                 <HeaderCell colWidth={55}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={70}>{LangHelper.getResource('Site')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Currency')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Position')}</HeaderCell>
-                <HeaderCell colWidth={80}>{LangHelper.getResource('Introduce by')}</HeaderCell>
+                <HeaderCell colWidth={80}>{LangHelper.getResource('IntroduceBy')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Languages')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Country')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Checker')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('VIP')}</HeaderCell>
-                <HeaderCell colWidth={100}>{LangHelper.getResource('First Name')}</HeaderCell>
-                <HeaderCell colWidth={100}>{LangHelper.getResource('Last Name')}</HeaderCell>
-                <HeaderCell colWidth={70}>{LangHelper.getResource('Phone 1')}</HeaderCell>
-                <HeaderCell colWidth={70}>{LangHelper.getResource('Phone 2')}</HeaderCell>
-                <HeaderCell colWidth={70}>{LangHelper.getResource('Phone 3')}</HeaderCell>
-                <HeaderCell colWidth={120}>{LangHelper.getResource('PIC 1')}</HeaderCell>
-                <HeaderCell colWidth={120}>{LangHelper.getResource('PIC 2')}</HeaderCell>
-                <HeaderCell colWidth={120}>{LangHelper.getResource('PIC 3')}</HeaderCell>
-                <HeaderCell colWidth={120}>{LangHelper.getResource('PIC 4')}</HeaderCell>
+                <HeaderCell colWidth={100}>{LangHelper.getResource('FirstName')}</HeaderCell>
+                <HeaderCell colWidth={100}>{LangHelper.getResource('LastName')}</HeaderCell>
+                <HeaderCell colWidth={70}>{LangHelper.getResource('Phone1')}</HeaderCell>
+                <HeaderCell colWidth={70}>{LangHelper.getResource('Phone2')}</HeaderCell>
+                <HeaderCell colWidth={70}>{LangHelper.getResource('Phone3')}</HeaderCell>
+                <HeaderCell colWidth={120}>{LangHelper.getResource('PIC1')}</HeaderCell>
+                <HeaderCell colWidth={120}>{LangHelper.getResource('PIC2')}</HeaderCell>
+                <HeaderCell colWidth={120}>{LangHelper.getResource('PIC3')}</HeaderCell>
+                <HeaderCell colWidth={120}>{LangHelper.getResource('PIC4')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Mobile')}</HeaderCell>
                 <HeaderCell colWidth={70}>{LangHelper.getResource('Email')}</HeaderCell>
                 <HeaderCell colWidth={70}>{LangHelper.getResource('Skype')}</HeaderCell>
@@ -51,13 +52,8 @@ export class DataGrid extends Component {
     };
 
     buildBody = customerList => {
-        const rows = [];
-        if (customerList.length > 0) {
-            rows.push(
-                customerList.map((item, index) =>
-                    this.renderRows(item, index))
-            );
-            return rows;
+        if (customerList.length > 0) {            
+            return customerList.map((item, index) => this.renderRows(item, index))            
         }
         return [
             <Row key='body-NoData' className="no-data" >
@@ -80,7 +76,7 @@ export class DataGrid extends Component {
                 <Cell className='text-center'>{item.language_name}</Cell>
                 <Cell className='text-center'>{item.countryName}</Cell>
                 <Cell className='text-center'>{item.checker}</Cell>
-                <Cell className='text-center'>{item.isVIP ? <span className='checking'>&#10003;</span> : ''}</Cell>
+                <Cell className='text-center'>{item.isVIP ? <i class="fa fa-check icon-check" aria-hidden="true"></i> : ''}</Cell>
                 <Cell className='text-center'>{item.firstName}</Cell>
                 <Cell className='text-center'>{item.lastName}</Cell>
                 <Cell className='text-center'>{item.phone}</Cell>
@@ -144,7 +140,7 @@ export class DataGrid extends Component {
             PageIndex: pageIndex,
             PageSize: pageSize,
             TotalItem: totalCustomer,
-            PageList: [50, 100, 200, 500]
+            PageList: PAGING_SIZES
         };
 
         return (
