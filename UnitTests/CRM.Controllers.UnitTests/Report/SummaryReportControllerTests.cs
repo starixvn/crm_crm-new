@@ -84,12 +84,10 @@
             var fixture = new Fixture();
             var criteria = fixture.Create<GetSummaryReportCriteria>();
             criteria.Year = 2021;
-            criteria.SiteType = 0;
-            criteria.Categories = "3003";
             var fileName = "Categories_Summary_2021.xlsx";
             var expected = fixture.Create<byte[]>();
             var controller = GetController();
-            var templates = await summaryReportService.GetSummaryReportAsync(criteria);
+            var templates = CreateReportInfo();
             exportExcelService.ExportSummaryReport(templates, criteria.Year).Returns(expected);
 
             // Act
@@ -107,11 +105,8 @@
             // Arrange
             var fixture = new Fixture();
             var criteria = fixture.Create<GetSummaryReportCriteria>();
-            criteria.Year = 2021;
-            criteria.SiteType = 0;
-            criteria.Categories = "3003";
             var controller = GetController();
-            var templates = await summaryReportService.GetSummaryReportAsync(criteria);
+            var templates = await summaryReportService.GetSummaryReportAsync(criteria); ;
 
             // Act
             var result = await controller.GetSummaryReport(criteria);
@@ -136,7 +131,53 @@
             optionsAppSettings.Value.Returns(appSettings);
             return new SummaryReportController(summaryReportService, exportExcelService, optionsAppSettings);
         }
+        private SummaryReportModel CreateReportInfo()
+        {
+            var title = "Categories Summary Report For Year 2021";
+            List<string> months = new List<string> { "FEB", "APR", "SEP" };
+            var grandTotals = new List<Summary>
+            {
+                new Summary(){
+                    Amount =1,
+                    Month = "FEB"
+                },
+                new Summary(){
+                    Amount =1,
+                    Month = "APR"
+                },
+                new Summary(){
+                    Amount =1,
+                    Month = "SEP"
+                }
+            };
+            var subCategories = new List<CategorySummary>
+            {
+                new CategorySummary(){
+                    Id = 4014,
+                    Name = "Super/Master/Agent",
+                    SubCategories = null,
+                    Summaries = grandTotals
+                }
+            };
+            var categorySummaries = new List<CategorySummary>
+            {
+                new CategorySummary
+                {
+                    Id = 3003,
+                    Name = "Open Account",
+                    SubCategories = subCategories,
+                    Summaries = grandTotals
+                }
+            };
 
+            return new SummaryReportModel
+            {
+                ReportTitle = title,
+                CategorySummaries = categorySummaries,
+                GrandTotals = grandTotals,
+                Months = months
+            };
+        }
         #endregion Helpers
     }
 }
