@@ -10,6 +10,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import CkEditor from '@jsroot/components/ckeditor/index';
+import RemarkInfo from './RemarkInfo';
 
 export class NewRemark extends Component {
     static defaultProps = {
@@ -167,7 +168,14 @@ export class NewRemark extends Component {
                             </Row>
                         </Col>
                     </Form.Group>
-                    <Form.Group as={Row}>
+                    {
+                        <RemarkInfo
+                            touched = {touched} errors={errors} values = {values}
+                            handleChange = {handleChange} remarkTitles = {remarkTitles} setFieldValue = {setFieldValue}
+                            relatedPicsOption = {allSettings.relatedPics} allSettings = {allSettings} isValidUsername={isValidUsername}
+                        />
+                    }
+                    {/* <Form.Group as={Row}>
                         <Form.Label column sm="2" md="2" className="required" htmlFor="remarkTitle">
                             {LangHelper.getResource('RemarkTitle')}
                         </Form.Label>
@@ -291,7 +299,7 @@ export class NewRemark extends Component {
                             username={window.currentUsername}
                             onChange={value => setFieldValue('remarkContent', value)}
                         />
-                    </div>
+                    </div> */}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>

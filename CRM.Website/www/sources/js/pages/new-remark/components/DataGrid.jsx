@@ -117,7 +117,6 @@ export class DataGrid extends Component {
 
     handleCloseDelete = () =>{
         this.props.setOpenConfirmDelete({show: false , id: null});
-        this.props.setDelete(null);
     };
 
     handleShowHistory = (userNameFormat, item) =>{

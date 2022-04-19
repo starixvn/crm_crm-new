@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Form, Modal, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import CkEditor from '@jsroot/components/ckeditor/index';
-
+import RemarkInfo from './RemarkInfo';
 
 export class EditRemark extends Component {
     constructor(props) {
@@ -99,127 +97,13 @@ export class EditRemark extends Component {
                             <span style={{fontWeight: 'bold'}}>{DateTimeService.toLongDateTimeFormat(popupEdit.data.createdDate)}</span>
                         </Form.Label>
                     </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" className="required" htmlFor="remarkTitle">
-                            {LangHelper.getResource('RemarkTitle')}
-                        </Form.Label>
-                        <Col sm="10" md="10">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                isInvalid={touched.remarkTitle && errors.remarkTitle}
-                                name="remarkTitle" id="remarkTitle"
-                                onChange={handleChange}
-                                value={values.remarkTitle}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {remarkTitles.map((value, key) => <option key={key} value={value.settingId}>{value.settingValue}</option>)}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" htmlFor="relatedToPICs">
-                            {LangHelper.getResource('RelatedToPICs')}
-                        </Form.Label>
-                        <Col sm="10" md="10">
-                            <MultipleSelect
-                                id="relatedToPICs"
-                                name="relatedToPICs"
-                                keyField='id'
-                                isAllTextShown
-                                hasSearchBox
-                                dataSource={this.state.relatedPicsOption}
-                                valueField='name'
-                                statusField='checked'
-                                onChange={(currentItem, selectedItemsKey) => {
-                                    handleChange('relatedPics')(selectedItemsKey);
-                                }}
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" htmlFor="requestedBy">
-                            {LangHelper.getResource('RequestedBy')}
-                        </Form.Label>
-                        <Col sm="2" md="2">
-                            <Form.Control size="sm" type="text"
-                                name="requestedBy" id="requestedBy"
-                                className='shadow-none'
-                                value={values.requestedBy}
-                                autoComplete="off"
-                                isInvalid={touched.requestedBy && errors.requestedBy}
-                                onChange={handleChange}
-                            /> 
-                        </Col>
-                        <Form.Label column sm="2" md="2" htmlFor="approvedBy">
-                            {LangHelper.getResource('ApprovedBy')}
-                        </Form.Label>
-                        <Col sm="2" md="2">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                isInvalid={touched.approvedBy && errors.approvedBy}
-                                name="approvedBy" id="approvedBy"
-                                onChange={handleChange}
-                                value={values.approvedBy}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {allSettings.users.map((value, key) => <option key={key} value={value.userId}>{value.username}</option>)}
-                            </Form.Control>
-                        </Col>
-                        <Form.Label column sm="2" md="2" htmlFor="acknowledgedBy">
-                            {LangHelper.getResource('AcknowledgedBy')}
-                        </Form.Label>
-                        <Col sm="2" md="2">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                isInvalid={touched.acknowledgedBy && errors.acknowledgedBy}
-                                onChange={handleChange}
-                                name="acknowledgedBy" id="acknowledgedBy"
-                                value={values.acknowledgedBy}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {allSettings.users.map((value, key) => <option key={key} value={value.userId}>{value.username}</option>)}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" htmlFor="handledBy">
-                            {LangHelper.getResource('HandledBy')}
-                        </Form.Label>
-                        <Col sm="2" md="2">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                            isInvalid={touched.handledBy && errors.handledBy}
-                            name="handledBy" id="handledBy"
-                            onChange={handleChange}
-                            value={values.handledBy}
-                        >
-                            <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                            {allSettings.users.map((value, key) => <option key={key} value={value.userId}>{value.username}</option>)}
-                        </Form.Control>
-                        </Col>
-                        <Form.Label column sm="2" md="2" htmlFor="extStation">
-                            {LangHelper.getResource('ExtStation')}
-                        </Form.Label>
-                        <Col sm="2" md="2">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                isInvalid={touched.extStation && errors.extStation}
-                                name="extStation" id="extStation"
-                                onChange={handleChange}
-                                value={values.extStation}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {allSettings.extentions.map((value, key) => <option key={key} value={value.id}>{value.value}</option>)}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="12" md="12" className="required">
-                                {LangHelper.getResource('RemarkContent')}
-                        </Form.Label>
-                    </Form.Group>
-                    <CkEditor
-                        name='remarkContent'
-                        isInvalid={touched.remarkContent && errors.remarkContent}
-                        data={values.remarkContent}
-                        username={window.currentUsername}
-                        onChange={value => setFieldValue('remarkContent', value)}
-                    />
+                    {
+                        <RemarkInfo
+                            touched = {touched} errors={errors} values = {values}
+                            handleChange = {handleChange} remarkTitles = {remarkTitles} setFieldValue = {setFieldValue}
+                            relatedPicsOption = {this.state.relatedPicsOption} allSettings = {allSettings} isValidUsername
+                        />
+                    }
                     <Form.Group as={Row}>
                         <Form.Label column sm="12" md="12">
                             <span>Updated By </span>
@@ -230,9 +114,12 @@ export class EditRemark extends Component {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                        {LangHelper.getResource('Save')}
-                    </Button>
+                    {
+                        !popupEdit.isViewHistory && 
+                        <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
+                            {LangHelper.getResource('Save')}
+                        </Button>
+                    }
                     <Button variant="primary" size="sm" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}
                     </Button>

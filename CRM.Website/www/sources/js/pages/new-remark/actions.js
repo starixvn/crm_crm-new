@@ -66,7 +66,7 @@ const createNewRemarks = params => async dispatch => {
 
 const deleteNewRemark = params => async () => {
     const url = Site.resolveClientUrl('NewRemark/Delete');
-    return await DataService.postDataAsync(url,params).then(response => response.data);
+    return await DataService.postDataAsync(url, params).then(response => response.data);
 };
 
 const getNewRemarkHistory = params => async dispatch => {

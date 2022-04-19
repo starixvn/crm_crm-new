@@ -21,15 +21,6 @@
 
 .table-container {
     .body-content{
-        .link-click {
-            cursor: pointer;
-            color: $link-color !important;
-        }
-        
-        .link-click:hover {
-            color: $draft-color !important;
-        }
-
         .remark-content, .remark-content p{
             white-space: nowrap;
             overflow: hidden;
@@ -41,6 +32,15 @@
             word-break: break-all;
         }
     }
+}
+
+.link-click {
+    cursor: pointer;
+    color: $link-color !important;
+}
+
+.link-click:hover {
+    color: $draft-color !important;
 }
 
 #tooltip-remark-content [class$="inner"] {

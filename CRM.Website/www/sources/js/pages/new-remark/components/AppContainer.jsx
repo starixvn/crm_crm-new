@@ -46,7 +46,7 @@ export class AppContainer extends Component {
     };
 
     handleCloseEditPopup = () => {
-        this.props.setOpenEditPopup({ show: false, data: null });
+        this.props.setOpenEditPopup({ show: false, data: null, isViewHistory: false });
         this.props.setEditResult(null);
     };
     

@@ -22,8 +22,8 @@ export class History extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={8}>{LangHelper.getResource('Version')}</HeaderCell>
-                <HeaderCell colWidth={15} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('DateOfUpdate')}</HeaderCell>
+                <HeaderCell colWidth={6}>{LangHelper.getResource('Version')}</HeaderCell>
+                <HeaderCell colWidth={18} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('DateOfUpdate')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedBy')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('RemarkTitle')}</HeaderCell>
                 <HeaderCell colWidth={35}>{LangHelper.getResource('RemarkContent')}</HeaderCell>
@@ -32,7 +32,7 @@ export class History extends Component {
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Requester')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Approver')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Acknowledger')}</HeaderCell>
-                <HeaderCell colWidth={8}>{LangHelper.getResource('View')}</HeaderCell>
+                <HeaderCell colWidth={6}>{LangHelper.getResource('View')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -81,10 +81,6 @@ export class History extends Component {
         const historyParams = this.props.historyGridParams;
         return (
             <div className='history-section'>
-                <div>
-                    <span className='fa fa-backward mr-2' onClick={() => this.handleGoBack()}/>
-                    <span>{LangHelper.getResource('BackToRemarksList')}</span>
-                </div>
                 <div className='history-info'>
                     <div>{`Edit History of Remark ${historyParams.remarkID}`}</div>
                     <div>
@@ -150,22 +146,28 @@ export class History extends Component {
             PageList: PAGING_SIZES
         };
         return (
-            <div className='history-container'>
-                {
-                    this.renderHistorySection()
-                }
-                <Table
-                    width={document.getElementById('app-container').clientWidth - 300}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
-                    autoWidth={false}
-                    isPaging
-                    onSort={this.onSort}
-                    containerPadding={0}
-                    adjustedHeight={10}
-                    pageOption={pagingOptions}
-                    onPaging={this.onPaging}
-                />
+            <div>
+                <div className='pb-2 link-click'  onClick={() => this.handleGoBack()}>
+                    <span className='fa fa-backward mr-2'/>
+                    <span>{LangHelper.getResource('BackToRemarksList')}</span>
+                </div>
+                <div className='history-container'>
+                    {
+                        this.renderHistorySection()
+                    }
+                    <Table
+                        width={document.getElementById('app-container').clientWidth - 300}
+                        header={this.buildHeader()}
+                        body={this.buildBody()}
+                        autoWidth={false}
+                        isPaging
+                        onSort={this.onSort}
+                        containerPadding={0}
+                        adjustedHeight={10}
+                        pageOption={pagingOptions}
+                        onPaging={this.onPaging}
+                    />
+                </div>
             </div>
         );
     }
