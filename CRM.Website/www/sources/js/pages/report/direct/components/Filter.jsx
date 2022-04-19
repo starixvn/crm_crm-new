@@ -55,7 +55,7 @@ export class Filter extends Component {
                                     onChange={evt => this.setState({ excludeIgnoredAcc: evt.target.checked })}
                                 />
                                 <Form.Label className="checkIgnoredAccount-setting" htmlFor="checkIgnoredAccountInput">
-                                    {LangHelper.getResource('Exclude ignored accounts')}
+                                    {LangHelper.getResource('ExcludeIgnoredAccounts')}
                                 </Form.Label>
                             </Form.Group>
                         </Form.Row>
@@ -69,7 +69,7 @@ export class Filter extends Component {
                                 />
                                 <Button className="mr-4 btn-submit" variant="primary" size="sm" onClick={this.submitHandler}
                                 >
-                                    {LangHelper.getResource('Submit ')}
+                                    {LangHelper.getResource('Submit')}
                                 </Button>
                             </Form.Group>
                         </Form.Row>
