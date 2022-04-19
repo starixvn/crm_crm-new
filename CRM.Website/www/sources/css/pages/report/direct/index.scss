@@ -76,11 +76,8 @@
 
         .table {
             tbody {
-                .checking {
-                    content: "\2713";
-                    font-size: 18px;
-                    font-weight: bold;
-                    color: blue;
+                .icon-check {
+                    color: #466ab6;
                 }
 
                 tr:hover td {

@@ -2,26 +2,31 @@
 {
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Core.Services;
     using CRM.Criteria.Report.DirectCustomerReport;
+    using CRM.Models.Report.DirectCustomerReport;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Report;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
     public class DirectReportController : BaseController
     {
-        private readonly IDirectReportService _directCustomerReportService;
-        private readonly IExportExcelService _exportExcelService;
+        private readonly IExportExcelService exportExcelService;
+        private readonly IBaseService baseService;
 
-        public DirectReportController(
-            IDirectReportService ditectCustomerReportService,
-            IExportExcelService exportExcelService)
+
+        public DirectReportController(            
+            IExportExcelService exportExcelService,
+            IBaseService baseService)
         {
-            _directCustomerReportService = ditectCustomerReportService;
-            _exportExcelService = exportExcelService;
+            this.exportExcelService = exportExcelService;
+            this.baseService = baseService;
 
         }
 
@@ -33,17 +38,29 @@
         [HttpPost]
         public async Task<IActionResult> GetDirectReport([FromBody] DirectCustomerReportCriteria criteria)
         {
-            var report = await _directCustomerReportService.GetReport(criteria);
+            var report = await GetReport(criteria);
             return Json(report);
         }
 
         [HttpPost]
         public async Task<IActionResult> ExportDirectReport([FromBody] DirectCustomerReportCriteria criteria)
         {
-            var reports = await _directCustomerReportService.GetReport(criteria);
-            var bytes = _exportExcelService.ExportDirectCustomerReport(reports);
+            var reports = await GetReport(criteria);
+            var bytes = exportExcelService.ExportDirectCustomerReport(reports);
             string reportName = string.Format(ViewResources.FileNameDirectReport);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
+
+        public async Task<DirectCustomerReportInfo> GetReport(DirectCustomerReportCriteria criteria)
+        {
+            var rawData = await baseService.GetDataAsync<DirectCustomerInfo>(criteria);
+            IList<DirectCustomerInfo> customerList = rawData.ToList();
+
+            return new DirectCustomerReportInfo
+            {
+                CustomerList = customerList,
+                TotalCustomer = criteria.TotalRows
+            };
         }
     }
 }

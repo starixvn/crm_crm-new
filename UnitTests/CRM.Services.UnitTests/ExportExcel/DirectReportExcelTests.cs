@@ -1,7 +1,6 @@
 ﻿namespace CRM.Services.UnitTests.ExportExcel
 {
     using CRM.Models.Report.DirectCustomerReport;
-    using CRM.Resources;
     using CRM.Services.UnitTests.ExportExcel.TestableClasses;
     using NSubstitute;
     using OfficeOpenXml;
@@ -27,7 +26,6 @@
 
             // Assert
             Assert.Equal(template.Cells[1, 2, 3, 4], worksheet.Cells[1, 2, 3, 4]);
-            Assert.Equal(ViewResources.DirectCustomerReport, worksheet.Cells[1, 1].Value);
         }
 
         [Fact]
@@ -120,58 +118,8 @@
             Assert.Equal(report.CustomerList[0].WeChat, worksheet.Cells[rowIndex, 27].Value);
             Assert.Equal(report.CustomerList[0].Yahoo, worksheet.Cells[rowIndex, 28].Value);
             Assert.Equal(report.CustomerList[0].BBM, worksheet.Cells[rowIndex, 29].Value);
-            Assert.Equal(report.CustomerList[0].QQ, worksheet.Cells[rowIndex, 30].Value);
-        }
-
-        [Fact]
-        public void SetValueRow_WhenCalledWithChildReportsCountEqualOne_ExpectedCellValue()
-        {
-            // Arrange
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var service = CreateService();
-            var report = CreateReportInfo();
-            var CustomerList = report.CustomerList[0];
-            var rowIndex = 5;
-            report.CustomerList = new List<DirectCustomerInfo>
-            {
-                CustomerList
-            };
-
-            // Act
-            service.Public_RenderRow(worksheet, reportInfo.CustomerList[0], 5);
-
-            // Assert
-            Assert.Equal(report.CustomerList[0].Headline ?? "not assign group", worksheet.Cells[rowIndex, 1].Value);
-            Assert.Equal(report.CustomerList[0].Username, worksheet.Cells[rowIndex, 2].Value);
-            Assert.Equal(report.CustomerList[0].Status, worksheet.Cells[rowIndex, 3].Value);
-            Assert.Equal(report.CustomerList[0].Site, worksheet.Cells[rowIndex, 4].Value);
-            Assert.Equal(report.CustomerList[0].Currency, worksheet.Cells[rowIndex, 5].Value);
-            Assert.Equal(report.CustomerList[0].Position, worksheet.Cells[rowIndex, 6].Value);
-            Assert.Equal(report.CustomerList[0].IntroducedBy, worksheet.Cells[rowIndex, 7].Value);
-            Assert.Equal(report.CustomerList[0].Language_name, worksheet.Cells[rowIndex, 8].Value);
-            Assert.Equal(report.CustomerList[0].CountryName, worksheet.Cells[rowIndex, 9].Value);
-            Assert.Equal(report.CustomerList[0].Checker, worksheet.Cells[rowIndex, 10].Value);
-            Assert.Equal("√", worksheet.Cells[rowIndex, 11].Value);
-            Assert.Equal(report.CustomerList[0].FirstName, worksheet.Cells[rowIndex, 12].Value);
-            Assert.Equal(report.CustomerList[0].LastName, worksheet.Cells[rowIndex, 13].Value);
-            Assert.Equal(report.CustomerList[0].Phone, worksheet.Cells[rowIndex, 14].Value);
-            Assert.Equal(report.CustomerList[0].Phone2, worksheet.Cells[rowIndex, 15].Value);
-            Assert.Equal(report.CustomerList[0].Phone3, worksheet.Cells[rowIndex, 16].Value);
-            Assert.Equal(report.CustomerList[0].PIC1, worksheet.Cells[rowIndex, 17].Value);
-            Assert.Equal(report.CustomerList[0].PIC2, worksheet.Cells[rowIndex, 18].Value);
-            Assert.Equal(report.CustomerList[0].PIC3, worksheet.Cells[rowIndex, 19].Value);
-            Assert.Equal(report.CustomerList[0].PIC4, worksheet.Cells[rowIndex, 20].Value);
-            Assert.Equal(report.CustomerList[0].MobilePhone, worksheet.Cells[rowIndex, 21].Value);
-            Assert.Equal(report.CustomerList[0].Email, worksheet.Cells[rowIndex, 22].Value);
-            Assert.Equal(report.CustomerList[0].Skype, worksheet.Cells[rowIndex, 23].Value);
-            Assert.Equal(report.CustomerList[0].MSN, worksheet.Cells[rowIndex, 24].Value);
-            Assert.Equal(report.CustomerList[0].WhatsApp, worksheet.Cells[rowIndex, 25].Value);
-            Assert.Equal(report.CustomerList[0].Line, worksheet.Cells[rowIndex, 26].Value);
-            Assert.Equal(report.CustomerList[0].WeChat, worksheet.Cells[rowIndex, 27].Value);
-            Assert.Equal(report.CustomerList[0].Yahoo, worksheet.Cells[rowIndex, 28].Value);
-            Assert.Equal(report.CustomerList[0].BBM, worksheet.Cells[rowIndex, 29].Value);
-            Assert.Equal(report.CustomerList[0].QQ, worksheet.Cells[rowIndex, 30].Value);
-        }
+            Assert.Equal(report.CustomerList[0].QQ, worksheet.Cells[rowIndex, lastCol].Value);
+        }        
 
         [Fact]
         public void SetBackgroundTotalRow_WhenCalled_CallProtectedSetBackgroundAndExpectedBackground()
@@ -179,15 +127,12 @@
             // Arrange
             var cell = excelPackage.Worksheets.Add("data").Cells[1, 1];
             var service = CreateService();
-            var white = Color.White;
-            var expectedColor = $"FF{white.R:X2}{white.G:X2}{white.B:X2}";
 
             // Act
             service.Public_SetBackground(cell);
 
             // Assert
-            service.Received().Protected("SetBackgroundColor", cell, Arg.Any<Color>());
-            Assert.Equal(expectedColor, cell.Style.Font.Color.Rgb);
+            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
             Assert.True(cell.Style.Font.Bold);
         }
 

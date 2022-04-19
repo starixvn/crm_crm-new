@@ -3,18 +3,19 @@
     using AutoFixture;
     using CRM.Controllers.Report;
     using CRM.Core.Constants;
+    using CRM.Core.Services;
     using CRM.Criteria.Report.DirectCustomerReport;
     using CRM.Models.Report.DirectCustomerReport;
     using CRM.Services;
-    using CRM.Services.Report;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Xunit;
     public class DirectReportControllerTests
     {
-        private IDirectReportService _directCustomerReportService;
-        private IExportExcelService _exportExcelService;
+        private IExportExcelService exportExcelService;
+        private IBaseService baseService;
 
         [Fact]
         public void Index_WhenCalled_ReturnExpectedViewResult()
@@ -37,16 +38,11 @@
             // Arrange
             var fixture = new Fixture();
             var criteria = fixture.Create<DirectCustomerReportCriteria>();
-            criteria.ExcludeIgnoredAcc = true;
-            criteria.Username = null;
-            criteria.Headline = null;
-            criteria.PageIndex = 0;
-            criteria.PageSize = 0;
             var fileName = "Direct_Customer_Report.xlsx";
             var expected = fixture.Create<byte[]>();
             var controller = GetController();
-            var templates = await _directCustomerReportService.GetReport(criteria);
-            _exportExcelService.ExportDirectCustomerReport(templates).Returns(expected);
+            var templates = CreateReportInfo();
+            exportExcelService.ExportDirectCustomerReport(templates).Returns(expected);
 
             // Act
             var result = await controller.ExportDirectReport(criteria);
@@ -63,13 +59,8 @@
             // Arrange
             var fixture = new Fixture();
             var criteria = fixture.Create<DirectCustomerReportCriteria>();
-            criteria.ExcludeIgnoredAcc = true;
-            criteria.Username = null;
-            criteria.Headline = null;
-            criteria.PageIndex = 0;
-            criteria.PageSize = 0;
             var controller = GetController();
-            var templates = await _directCustomerReportService.GetReport(criteria);
+            var templates = await controller.GetReport(criteria);
 
             // Act
             var result = await controller.GetDirectReport(criteria);
@@ -77,16 +68,62 @@
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
             var directReportInfoTemplates = (DirectCustomerReportInfo)jsonResult.Value;
-            Assert.Equal(templates, directReportInfoTemplates);
+            Assert.Equal(templates.TotalCustomer, directReportInfoTemplates.TotalCustomer);
+            Assert.Equal(templates.CustomerList, directReportInfoTemplates.CustomerList);
+
         }
 
         #region Helpers
         private DirectReportController GetController()
         {
-            _directCustomerReportService = Substitute.For<IDirectReportService>();
-            _exportExcelService = Substitute.For<IExportExcelService>();
+            exportExcelService = Substitute.For<IExportExcelService>();
+            baseService = Substitute.For<IBaseService>();
+            return new DirectReportController(exportExcelService, baseService);
+        }
+        private DirectCustomerReportInfo CreateReportInfo()
+        {
+            var CustomerList = new List<DirectCustomerInfo>
+            {
+                new DirectCustomerInfo
+                {
+                    BBM = "---",
+                    Checker= null,
+                    CountryName= null,
+                    Currency= "HK$",
+                    Email= "---",
+                    FirstName= "---",
+                    Headline= null,
+                    IntroducedBy= null,
+                    Language_name= "English",
+                    LastName= "---",
+                    Line= "---",
+                    MSN= "---",
+                    MobilePhone= "-----",
+                    PIC1= "-------",
+                    PIC2= "-------",
+                    PIC3= "-------",
+                    PIC4= "-------",
+                    Phone= "-----",
+                    Phone2= "-----",
+                    Phone3= "-----",
+                    Position= "Member",
+                    QQ= "---",
+                    Site= "BEST-ODDS",
+                    Skype= "---",
+                    Status= "Closed",
+                    Username= "0000HK",
+                    IsVIP= true,
+                    WeChat= "---",
+                    WhatsApp= "---",
+                    Yahoo= null
+                }
+            };
 
-            return new DirectReportController(_directCustomerReportService, _exportExcelService);
+            return new DirectCustomerReportInfo
+            {
+                CustomerList = CustomerList,
+                TotalCustomer = 1
+            };
         }
         #endregion Helpers
     }
