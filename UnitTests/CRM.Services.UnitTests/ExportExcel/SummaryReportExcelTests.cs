@@ -121,13 +121,13 @@ namespace CRM.Services.UnitTests.ExportExcel
             // Arrange
             var cell = excelPackage.Worksheets.Add("data").Cells[1, 1];
             var service = CreateService();
-            var white = Color.White;
 
             // Act
             service.Public_SetBackground(cell);
 
             // Assert
             service.Received().Protected("SetBackgroundColor", cell, Arg.Any<Color>());
+            cell.Style.Font.Color.Equals(Arg.Any<Color>());
             Assert.True(cell.Style.Font.Bold);
         }
 
