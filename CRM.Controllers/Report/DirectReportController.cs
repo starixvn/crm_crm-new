@@ -21,13 +21,12 @@
         private readonly IBaseService baseService;
 
 
-        public DirectReportController(            
+        public DirectReportController(
             IExportExcelService exportExcelService,
             IBaseService baseService)
         {
             this.exportExcelService = exportExcelService;
             this.baseService = baseService;
-
         }
 
         public IActionResult Index()

@@ -52,8 +52,8 @@ export class DataGrid extends Component {
     };
 
     buildBody = customerList => {
-        if (customerList.length > 0) {            
-            return customerList.map((item, index) => this.renderRows(item, index))            
+        if (customerList.length > 0) {
+            return customerList.map((item, index) => this.renderRows(item, index));
         }
         return [
             <Row key='body-NoData' className="no-data" >

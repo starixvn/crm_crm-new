@@ -19,10 +19,10 @@ export class Filter extends Component {
     submitHandler = () => {
         const { headline, username, excludeIgnoredAcc } = this.state;
         const params = {
-             headline: headline === '' ? null : headline, 
-             username: username === '' ? null : username, 
-             excludeIgnoredAcc, 
-             pageIndex: 1, 
+             headline: headline === '' ? null : headline,
+             username: username === '' ? null : username,
+             excludeIgnoredAcc,
+             pageIndex: 1,
              pageSize : this.props.gridParams.pageSize
         };
         this.props.setGridParams(params);
