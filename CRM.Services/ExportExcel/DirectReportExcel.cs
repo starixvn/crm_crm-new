@@ -63,11 +63,9 @@
             worksheet.Cells[rowIndex, colIndex++].Value = direct.BBM;
             worksheet.Cells[rowIndex, colIndex].Value = direct.QQ;
 
-            Color color = ColorTranslator.FromHtml("#e4f2fd");
-
             if (rowIndex % numberTwo == 0)
             {
-                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, LastColumns], color);
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, LastColumns], EvenRowColor);
             }
         }
 
