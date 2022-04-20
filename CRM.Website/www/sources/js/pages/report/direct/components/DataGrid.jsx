@@ -24,7 +24,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Currency')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Position')}</HeaderCell>
                 <HeaderCell colWidth={80}>{LangHelper.getResource('IntroduceBy')}</HeaderCell>
-                <HeaderCell colWidth={60}>{LangHelper.getResource('Languages')}</HeaderCell>
+                <HeaderCell colWidth={80}>{LangHelper.getResource('Languages')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Country')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Checker')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('VIP')}</HeaderCell>

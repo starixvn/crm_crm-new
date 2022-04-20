@@ -11,7 +11,7 @@ describe('DirectReport reducer', () => {
                 username: null,
                 excludeIgnoredAcc: true,
                 pageIndex: 1,
-                pageSize: 50
+                pageSize: 100
             },
             gridData: null
         });
@@ -26,7 +26,7 @@ describe('DirectReport reducer', () => {
                     username: null,
                     excludeIgnoredAcc: true,
                     pageIndex: 1,
-                    pageSize: 50
+                    pageSize: 100
                 }
             })
         ).toEqual({
@@ -35,7 +35,7 @@ describe('DirectReport reducer', () => {
                 username: null,
                 excludeIgnoredAcc: true,
                 pageIndex: 1,
-                pageSize: 50
+                pageSize: 100
             }
         });
     });
