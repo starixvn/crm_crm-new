@@ -11,11 +11,12 @@ const store = configureStore({
 });
 
 const isHost = document.getElementById('isHost').checked;
+const customerName = document.getElementById('customerName').value;
 
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer isHost={isHost}/>
+            <AppContainer isHost={isHost} customerName={customerName} />
         </Layout>
     </Provider>,
     document.getElementById('app-container'));

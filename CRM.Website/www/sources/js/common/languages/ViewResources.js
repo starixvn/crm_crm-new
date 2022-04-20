@@ -342,6 +342,8 @@
     RelatedToPICs: 'Related to PICs',
     Requester: 'Requester',
     RequestedBy: 'Requested By',
+    RemarkTitleMigrateRequired: 'Migrate from old Remark. Please update remark title before saving.',
+    RemarkContentMigrateRequired: 'Migrate from old Remark. Please update remark content before saving.',
     Save: 'Save',
     SaveAndContinue: 'Save & Continue',
     SaveInformHeadlinesSuccessfully: 'Save inform headlines successfully!',

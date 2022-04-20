@@ -49,9 +49,10 @@
             this.customerService = customerService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string customerName = "")
         {
-           var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            ViewBag.customerName = customerName;
             return View(isHost);
         }
 

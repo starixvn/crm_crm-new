@@ -21,17 +21,19 @@ export class Filter extends Component {
         this.maxToDate = currentDate;
         this.minFromDate = new Date(1900, 1, 1);
         this.minToDate = new Date(1900, 1, 1);
+        const { customerName } = this.props;
+        const isCustomerNotEmpty = customerName !== '';
         this.state = {
             remarkContent: '',
-            userName: '',
+            userName: customerName,
             isGuestFiler: false,
-            isShowHeadline: false,
+            isShowHeadline: isCustomerNotEmpty ? true : false,
             relatedToPICs: '',
-            fromDate: this.firstDateOfMonth,
-            toDate: this.firstDateOfMonth,
+            fromDate: isCustomerNotEmpty ? new Date(2021, 1, 1) :this.firstDateOfMonth,
+            toDate: isCustomerNotEmpty ? currentDate : this.firstDateOfMonth,
             remarkTitleOptions: [],
             remarkTitleIds: '',
-            dateTypeSelect: 4
+            dateTypeSelect: isCustomerNotEmpty ? 7 : 4
         };
     }
     componentDidMount(){
@@ -45,7 +47,11 @@ export class Filter extends Component {
             };
         });
         const remarkTitleIds = remarkTitles.join(',');
-        this.setState({remarkTitleOptions, remarkTitleIds});
+        this.setState({remarkTitleOptions, remarkTitleIds},() =>{
+            if(this.props.customerName !== ''){
+                this.handleSubmit();
+            }
+        });
     }
 
     handleChangeFromDate = fromDate => {
@@ -161,7 +167,7 @@ export class Filter extends Component {
     }
 
     render() {
-        const {remarkTitles} = this.props;
+        const {remarkTitles, customerName} = this.props;
         if(remarkTitles === null || !remarkTitles){
             return null;
         }
@@ -206,6 +212,7 @@ export class Filter extends Component {
                         </Form.Label>
                         <Form.Control size="sm" type="text"
                             name="userName" id="userName"
+                            disabled={customerName !== ''}
                             value={userName}
                             className="shadow-none" autoComplete="off"
                             onChange={this.handleChange}
@@ -214,6 +221,7 @@ export class Filter extends Component {
                     <Form.Group style={{width: 60}} controlId="formBasicCheckboxGuest">
                         <Form.Check type="checkbox" label={LangHelper.getResource('Guest')}
                             id='isGuestFiler' name='isGuestFiler'
+                            disabled={customerName !== ''}
                             checked={isGuestFiler}
                             onChange={this.handleChangeCheckbox}
                         />

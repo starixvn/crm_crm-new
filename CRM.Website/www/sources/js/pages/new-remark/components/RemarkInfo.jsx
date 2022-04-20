@@ -23,7 +23,7 @@ export default class RemarkInfo extends Component {
                         onChange={handleChange}
                         value={values.remarkTitle}
                     >
-                        <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                        <option value="">{LangHelper.getResource('PleaseSelect')}</option>
                         {remarkTitles.map((value, key) => <option key={key} value={value.settingId}>{value.settingValue}</option>)}
                     </Form.Control>
                 </Col>

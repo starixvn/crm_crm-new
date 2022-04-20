@@ -59,12 +59,23 @@ export class EditRemark extends Component {
 
     validateFormik = values => {
         const errors = {};
+        const remarkTitleId = parseInt(this.props.popupEdit.data.remarkTitle, 10);
         if(values.remarkTitle === ''){
-            errors.remarkTitle = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkTitle'));
+            if(remarkTitleId > 0){
+                errors.remarkTitle = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkTitle'));
+            }
+            else{
+                errors.remarkTitle = LangHelper.getResource('RemarkTitleMigrateRequired');
+            }
         }
 
         if(values.remarkContent === ''){
-            errors.remarkContent = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkContent'));
+            if(remarkTitleId > 0){
+                errors.remarkContent = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkContent'));
+            }
+            else{
+                errors.remarkContent = LangHelper.getResource('RemarkContentMigrateRequired');
+            }
         }
         return errors;
     };

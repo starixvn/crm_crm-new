@@ -21,9 +21,9 @@ export class AppContainer extends Component {
         isHost: false,
         popupAdd: { show: false },
         popupEdit: { show: false },
-        showHistory: { show: false }
+        showHistory: { show: false },
+        customerName : ''
     };
-
     componentDidMount(){
         this.props.getRemarkTitles();
     }
@@ -51,13 +51,13 @@ export class AppContainer extends Component {
     };
     
     render() {
-        const { remarkTitles, popupAdd, popupEdit, showHistory } = this.props;
+        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName } = this.props;
         if(remarkTitles === null || !remarkTitles){
             return null;
         }
         return (
             <Fragment>
-                <Filter />
+                <Filter customerName={customerName}/>
                 {
                     showHistory.show ?
                     <History/> :
@@ -66,6 +66,7 @@ export class AppContainer extends Component {
                 {
                     popupAdd.show &&
                     <NewRemark
+                        customerName={customerName}
                         onClose={this.handleCloseAddPopup}
                         onSuccess={this.handleCreateSuccess}
                     />

@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = ViewResources.Remark;
+    string customerName = ViewBag.customerName;
 }
 @section Styles {
     <environment include="Development">
@@ -18,5 +19,6 @@
     </environment>
 }
 <input type="checkbox" hidden id="isHost" @(Model ? "checked" : string.Empty) />
+<input type="text" hidden id="customerName" value="@customerName" />
 
 <div id="app-container"></div>
