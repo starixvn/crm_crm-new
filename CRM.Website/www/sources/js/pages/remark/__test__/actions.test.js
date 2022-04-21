@@ -47,7 +47,7 @@ describe('actionCreators', () => {
             // Arrange
             const expectedParams = { customerId: 1754, specialRemarks: ['test'], normalRemarks: ['testing'] };
             const store = mockStore({});
-            const response = { code: 0, isSuccessful: true };
+            const response = { data: {code: 0, isSuccessful: true }};
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
 

@@ -74,7 +74,6 @@ export const {
     setRemarks,
     setOpenCreatePopup,
     setOpenEditPopup,
-    setOpenDeletePopup,
     setEditResult,
     setOpenConfirmDelete,
     setCreateResult,
