@@ -59,8 +59,9 @@
             // Arrange
             var fixture = new Fixture();
             var criteria = fixture.Create<DirectCustomerReportCriteria>();
+            var rawData = fixture.Create<IEnumerable<DirectCustomerInfo>>();
             var controller = GetController();
-            var templates = await controller.GetReport(criteria);
+            baseService.GetDataAsync<DirectCustomerInfo>(Arg.Do<DirectCustomerReportCriteria>(x => criteria = x)).Returns(rawData);
 
             // Act
             var result = await controller.GetDirectReport(criteria);
@@ -68,8 +69,8 @@
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
             var directReportInfoTemplates = (DirectCustomerReportInfo)jsonResult.Value;
-            Assert.Equal(templates.TotalCustomer, directReportInfoTemplates.TotalCustomer);
-            Assert.Equal(templates.CustomerList, directReportInfoTemplates.CustomerList);
+            Assert.Equal(rawData, directReportInfoTemplates.CustomerList);
+            Assert.Equal(criteria.TotalRows, directReportInfoTemplates.TotalCustomer);
 
         }
 

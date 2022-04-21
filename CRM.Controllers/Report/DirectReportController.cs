@@ -20,7 +20,6 @@
         private readonly IExportExcelService exportExcelService;
         private readonly IBaseService baseService;
 
-
         public DirectReportController(
             IExportExcelService exportExcelService,
             IBaseService baseService)
@@ -50,11 +49,10 @@
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
 
-        public async Task<DirectCustomerReportInfo> GetReport(DirectCustomerReportCriteria criteria)
+        private async Task<DirectCustomerReportInfo> GetReport(DirectCustomerReportCriteria criteria)
         {
             var rawData = await baseService.GetDataAsync<DirectCustomerInfo>(criteria);
-            IList<DirectCustomerInfo> customerList = rawData.ToList();
-
+            IEnumerable<DirectCustomerInfo> customerList = rawData.ToList();
             return new DirectCustomerReportInfo
             {
                 CustomerList = customerList,
