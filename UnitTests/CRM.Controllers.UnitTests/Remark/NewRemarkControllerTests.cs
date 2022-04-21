@@ -1,0 +1,267 @@
+﻿namespace CRM.Controllers.UnitTests.Remark
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
+    using AutoFixture;
+    using CRM.Controllers.Remark;
+    using CRM.Core.Constants;
+    using CRM.Core.Models;
+    using CRM.Criteria.Common;
+    using CRM.Criteria.NewRemark;
+    using CRM.Models.RemarkNew;
+    using CRM.Models.Setting;
+    using CRM.Services;
+    using CRM.Services.Customer;
+    using CRM.Services.Remark;
+    using Fanex.NAP.Client.Configuration;
+    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using NSubstitute;
+    using Xunit;
+    using static Fanex.NAP.Core.Business.Constant;
+
+    public class NewRemarkControllerTests
+    {
+        private INapSession napSession;
+        private INapSettings napSettings;
+        private IUserService userService;
+        private IRemarkService remarkService;
+        private ISettingService settingService;
+        private ICommonService commonService;
+        private ICustomerService customerService;
+
+        [Fact]
+        public void Index_WhenCalled_ReturnExpectedViewResult()
+        {
+            // Arrange
+            var controller = GetController();
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+
+            // Act
+            var actual = controller.Index();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(actual);
+            var viewModel = Assert.IsType<bool>(viewResult.Model);
+            Assert.True(viewModel);
+        }
+
+        [Fact]
+        public async Task GetRemarkTitles_WhenCalled_ReturnExpectedJsonResult()
+        {
+            var remarkSettings = new List<Setting> { new Setting { Name = " test" } };
+            var expected = remarkSettings.OrderBy(s => s.DisplayOrder).ToList();
+
+            var controller = GetController();
+
+            settingService.GetSettingAsync(SettingName.RemarkTitles, true).Returns(remarkSettings);
+
+            var actual = await controller.GetRemarkTitles();
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(expected, jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetAllSetting_WhenCalled_ReturnExpectedJsonResult()
+        {
+            var fixture = new Fixture();
+            var relatedPics = fixture.Create<IEnumerable<Models.Common.RecipientModel>>();
+            var users = fixture.Create<IEnumerable<Models.Customer.UserInfo>>();
+            var extentions = fixture.Create<IEnumerable<SettingRelation>>(); 
+            var controller = GetController();
+
+            commonService.GetRecipientAsync(Arg.Any<GetRecipientsCriteria>()).Returns(relatedPics);
+            customerService.GetAllCustomerAsync().Returns(users);
+            settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active).Returns(extentions);
+
+            // Act
+            var actual = await controller.GetAllSetting();
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var relatedPicsJson = (IEnumerable<Models.Common.RecipientModel>)jsonResult.Value.GetType().GetProperty("relatedPics").GetValue(jsonResult.Value);
+            var extentionsJson = (IEnumerable<SettingRelation>)jsonResult.Value.GetType().GetProperty("extentions").GetValue(jsonResult.Value);
+            var usersJson = (IEnumerable<Models.Customer.UserInfo>)jsonResult.Value.GetType().GetProperty("users").GetValue(jsonResult.Value);
+
+            Assert.Equal(relatedPics, relatedPicsJson);
+            Assert.Equal(extentions, extentionsJson);
+            Assert.Equal(users, usersJson);
+        }
+
+        [Fact]
+        public async Task GetNewRemarks_WhenCalled_ReturnExpectedJsonResult()
+        {
+            var fixture = new Fixture();
+            var newRemarks = fixture.Create<IEnumerable<RemarkNewInfo>>();
+            var criteria = fixture.Create <GetNewRemarkCriteria>();
+
+            var controller = GetController();
+
+            remarkService.GetNewRemarkAsync(Arg.Any<GetNewRemarkCriteria>()).Returns(newRemarks);
+
+            // Act
+            var actual = await controller.GetNewRemarks(criteria);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var newRemarksJson = (IEnumerable<RemarkNewInfo>)jsonResult.Value.GetType().GetProperty("data").GetValue(jsonResult.Value);
+            var totalItems = (int)jsonResult.Value.GetType().GetProperty("totalItems").GetValue(jsonResult.Value);
+            Assert.Equal(newRemarks, newRemarksJson);
+            Assert.Equal(criteria.TotalRows, totalItems);
+        }
+
+        [Fact]
+        public async Task ValidateUsername_WhenCalled_ReturnExpectedCommandResult()
+        {
+            var fixture = new Fixture();
+            var commandResult = fixture.Create<CommandResult> ();
+            var criteria = fixture.Create<CustomerRemarkNewCheckCommand>();
+
+            var controller = GetController();
+
+            remarkService.ValidateUsernameAsyn(Arg.Any<CustomerRemarkNewCheckCommand>()).Returns(commandResult);
+
+            // Act
+            var actual = await controller.ValidateUsername(criteria);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult, jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task Create_WhenCalled_ReturnExpectedCommandResult()
+        {
+            var fixture = new Fixture();
+            var commandResult = fixture.Create<CommandResult>();
+            var criteria = fixture.Create<CreateNewReamarkCommand>();
+
+            var controller = GetController();
+            var clientIP = new DefaultHttpContext
+            {
+                Connection =
+                {
+                    RemoteIpAddress = new IPAddress(123456)
+                }
+            };
+
+            controller.ControllerContext.HttpContext = clientIP;
+            remarkService.CreateNewAsync(Arg.Any<CreateNewReamarkCommand>()).Returns(commandResult);
+
+            // Act
+            var actual = await controller.Create(criteria);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult, jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task Edit_WhenCalled_ReturnExpectedCommandResult()
+        {
+            var fixture = new Fixture();
+            var commandResult = fixture.Create<CommandResult>();
+            var criteria = fixture.Create<EditNewRemarkCommand>();
+
+            var controller = GetController();
+            var clientIP = new DefaultHttpContext
+            {
+                Connection =
+                {
+                    RemoteIpAddress = new IPAddress(123456)
+                }
+            };
+
+            controller.ControllerContext.HttpContext = clientIP;
+            remarkService.EditNewAsync(Arg.Any<EditNewRemarkCommand>()).Returns(commandResult);
+
+            // Act
+            var actual = await controller.Edit(criteria);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult, jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task Delete_WhenCalled_ReturnExpectedCommandResult()
+        {
+            var fixture = new Fixture();
+            var commandResult = fixture.Create<CommandResult>();
+            var criteria = fixture.Create<DeleteNewRemarkCommand>();
+
+            var controller = GetController();
+            var clientIP = new DefaultHttpContext
+            {
+                Connection =
+                {
+                    RemoteIpAddress = new IPAddress(123456)
+                }
+            };
+
+            controller.ControllerContext.HttpContext = clientIP;
+            remarkService.DeleteNewAsync(Arg.Any<DeleteNewRemarkCommand>()).Returns(commandResult);
+
+            // Act
+            var actual = await controller.Delete(criteria);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(commandResult, jsonResult.Value);
+        }
+
+        [Fact]
+        public async Task GetNewRemarkHistory_WhenCalled_ReturnExpectedCommandResult()
+        {
+            var fixture = new Fixture();
+            var history = fixture.Create<IEnumerable<RemarkNewHistory>>();
+            var criteria = fixture.Create<GetCustomerRemarkNewHistoryCriteria>();
+
+            var controller = GetController();
+
+            remarkService.GetCustomerNewRemarkHistoryAsync(Arg.Any<GetCustomerRemarkNewHistoryCriteria>()).Returns(history);
+
+            // Act
+            var actual = await controller.GetNewRemarkHistory(criteria);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var historyJson = (IEnumerable<RemarkNewInfo>)jsonResult.Value.GetType().GetProperty("data").GetValue(jsonResult.Value);
+            var totalItems = (int)jsonResult.Value.GetType().GetProperty("totalItems").GetValue(jsonResult.Value);
+            Assert.Equal(history, historyJson);
+            Assert.Equal(criteria.TotalRows, totalItems);
+        }
+
+
+        #region helper
+
+        private NewRemarkController GetController()
+        {
+            userService = Substitute.For<IUserService>();
+            napSession = Substitute.For<INapSession>();
+            napSettings = Substitute.For<INapSettings>();
+            settingService = Substitute.For<ISettingService>();
+            commonService = Substitute.For<ICommonService>();
+            remarkService = Substitute.For<IRemarkService>();
+            customerService = Substitute.For<ICustomerService>();
+
+            return new NewRemarkController(
+                napSession,
+                napSettings,
+                userService,
+                remarkService,
+                settingService,
+                commonService,
+                customerService
+           );
+
+        }
+
+        #endregion helper
+    }
+}
