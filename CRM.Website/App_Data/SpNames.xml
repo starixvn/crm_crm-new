@@ -134,7 +134,6 @@
         <Setting Key="Acc_Crm_Rpt_RedemptionStatisticsDetail" SpName="Acc_Crm_Rpt_RedemptionStatisticsDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_CustomerReport" SpName="Acc_Crm_Rpt_CustomerReport" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
             <Mapping DataField="VIP" ObjectProperty="IsVIP" />
-            <!--<Mapping DataField="@TotalRows" ObjectProperty="TotalRows" />-->
         </Setting>
     </Function>
 

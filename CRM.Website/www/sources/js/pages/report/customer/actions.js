@@ -2,7 +2,8 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import {
     setCustomerReport,
-    setAllSettings
+    setAllSettings,
+    setGridParams
 } from './customerReportSlice';
 
 const getCustomerReport = params => async dispatch => {
@@ -23,5 +24,6 @@ const getAllSettings = () => async dispatch => {
 
 export const ActionCreators = {
     getCustomerReport,
-    getAllSettings
+    getAllSettings,
+    setGridParams
 };
