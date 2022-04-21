@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { Form, Button, Row } from 'react-bootstrap';
+import { Form, Button, Row, Alert } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import ResponseMessage from '@jsroot/components/ResponseMessage';
 
 export class Filter extends Component {
 
@@ -12,16 +13,18 @@ export class Filter extends Component {
         super(props);
         this.state = {
             languageOptions: [],
-            potionOptions: [],
+            positionOptions: [],
             siteOptions: [],
             vipOptions: [],
             username: '',
-            headline: '',
+            headline: null,
             vipId: -1,
-            languageIds: '',
+            languageIds: null,
             positionIds: '',
-            siteIds: '',
-            excludeIgnoredAccounts: true
+            siteIds: null,
+            excludeIgnoredAccounts: true,
+            checkValidatePosition: false,
+            isShowFilter: true
         };
     }
 
@@ -38,7 +41,7 @@ export class Filter extends Component {
                 checked: true
             };
         });
-        const potionOptions = allSettings.roles.map(item => {
+        const positionOptions = allSettings.roles.map(item => {
             positionIds.push(item.displayOrder);
             return {
                 positionId: item.displayOrder,
@@ -64,7 +67,7 @@ export class Filter extends Component {
 
         this.setState({
             languageOptions: languageOptions,
-            potionOptions: potionOptions,
+            positionOptions: positionOptions,
             siteOptions: siteOptions,
             vipOptions: vipOptions,
             languageIds: languageIds.join(','),
@@ -93,6 +96,7 @@ export class Filter extends Component {
     };
 
     handleSubmit = event => {
+        this.setState({ checkValidatePosition: true });
         event.preventDefault();
 
         const { username, headline, vipId, languageIds, siteIds, positionIds, excludeIgnoredAccounts } = this.state;
@@ -102,109 +106,143 @@ export class Filter extends Component {
             vipId: vipId,
             languageIds: languageIds,
             siteIds: siteIds,
-            positionIds: positionIds,
+            positionIds: positionIds.replace('5', '5,6,7,8,9,10'),
             excludeIgnoredAccounts: excludeIgnoredAccounts,
             pageIndex: 1,
             pageSize: 100
         };
-        this.props.getCustomerReport(params);
+        this.props.setGridParams(params);
+        positionIds !== '' && this.props.getCustomerReport(params);
+    };
+
+    handleToggleFilter = () => {
+        this.setState(previousState => ({
+            isShowFilter: !previousState.isShowFilter
+        }));
+    };
+
+    isErrorPosition = () => {
+        const { checkValidatePosition, positionIds } = this.state;
+        if (checkValidatePosition && positionIds === '') {
+            return true;
+        }
+        return false;
     };
 
     render() {
         const { allSettings } = this.props;
-        const { languageOptions, potionOptions, siteOptions, vipOptions, excludeIgnoredAccounts } = this.state;
+        const { languageOptions, positionOptions, siteOptions, vipOptions, excludeIgnoredAccounts, isShowFilter } = this.state;
         if (!allSettings) {
             return null;
         }
 
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
-                <Form.Group as={Row}>
-                    <div className='group-field'>
-                        <Form.Label htmlFor="username" className="col-form-label">{LangHelper.getResource('Username')}</Form.Label>
-                        <Form.Control type="text" size="sm" className="shadow-none input-field"
-                            autoComplete="off"
-                            name="username"
-                            onChange={this.handleChange}
-                        />
-                    </div>
+                {
+                    isShowFilter &&
+                    <Fragment>
+                        {
+                            this.isErrorPosition() && (
+                                <Alert variant='danger'>
+                                    <ul className='list-message-error'>
+                                        <li>{LangHelper.getResource('PleaseChoosePosition')}</li>
+                                    </ul>
+                                </Alert>
+                            )
+                        }
+                        <Form.Group as={Row}>
+                            <div className='group-field'>
+                                <Form.Label htmlFor="username" className="col-form-label">{LangHelper.getResource('Username')}</Form.Label>
+                                <Form.Control type="text" size="sm" className="shadow-none input-field"
+                                    autoComplete="off"
+                                    name="username"
+                                    onChange={this.handleChange}
+                                />
+                            </div>
 
-                    <div className='group-field'>
-                        <Form.Label htmlFor="vip" className="col-form-label">{LangHelper.getResource('VIP')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none input-field"
-                            name="vipId"
-                            onChange={this.handleChange}
-                        >
-                            {
-                                vipOptions.map((item, key) => <option key={key} value={item.id}>{item.name}</option>)
-                            }
-                        </Form.Control>
-                    </div>
-                    
-                    <div className='group-field'>
-                        <Form.Label htmlFor="headline" className="col-form-label">{LangHelper.getResource('Headline')}</Form.Label>
-                        <Form.Control type="text" size="sm" className="shadow-none input-field"
-                            autoComplete="off"
-                            name="headline"
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                </Form.Group>
+                            <div className='group-field'>
+                                <Form.Label htmlFor="vip" className="col-form-label">{LangHelper.getResource('VIP')}</Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none input-field"
+                                    name="vipId"
+                                    onChange={this.handleChange}
+                                >
+                                    {
+                                        vipOptions.map((item, key) => <option key={key} value={item.id}>{item.name}</option>)
+                                    }
+                                </Form.Control>
+                            </div>
 
-                <Form.Group as={Row}>
-                    <div className='group-field'>
-                        <Form.Label htmlFor="language" className="col-form-label">{LangHelper.getResource('Language')}</Form.Label>
-                        <MultipleSelect
-                            dataSource={languageOptions}
-                            keyField='languageId' valueField='name'
-                            isNAOption
-                            maxDisplayItemCount={3}
-                            hasAllOption={languageOptions.length > 0}
-                            isAllTextShown={languageOptions.length > 0}
-                            onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('languageIds' ,currentItem, selectedItemsKey)}
-                        />
-                    </div>
+                            <div className='group-field'>
+                                <Form.Label htmlFor="headline" className="col-form-label">{LangHelper.getResource('Headline')}</Form.Label>
+                                <Form.Control type="text" size="sm" className="shadow-none input-field"
+                                    autoComplete="off"
+                                    name="headline"
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+                        </Form.Group>
 
-                    <div className='group-field'>
-                        <Form.Label htmlFor="site" className="col-form-label">{LangHelper.getResource('Site')}</Form.Label>
-                        <MultipleSelect
-                            dataSource={siteOptions}
-                            keyField='siteId' valueField='name'
-                            hasAllOption={siteOptions.length > 0}
-                            isAllTextShown={siteOptions.length > 0}
-                            isNAOption
-                            hasSearchBox
-                            maxDisplayItemCount={5}
-                            onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('siteIds', currentItem, selectedItemsKey)}
-                        />
-                    </div>
+                        <Form.Group as={Row}>
+                            <div className='group-field'>
+                                <Form.Label htmlFor="language" className="col-form-label">{LangHelper.getResource('Language')}</Form.Label>
+                                <MultipleSelect
+                                    dataSource={languageOptions}
+                                    keyField='languageId' valueField='name'
+                                    isNAOption
+                                    maxDisplayItemCount={2}
+                                    hasAllOption={languageOptions.length > 0}
+                                    isAllTextShown={languageOptions.length > 0}
+                                    onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('languageIds' ,currentItem, selectedItemsKey)}
+                                />
+                            </div>
 
-                    <div className='group-field'>
-                        <Form.Label htmlFor="position" className="col-form-label">{LangHelper.getResource('Position')}</Form.Label>
-                        <MultipleSelect
-                            dataSource={potionOptions}
-                            keyField='positionId' valueField='name'
-                            hasAllOption={potionOptions.length > 0}
-                            isAllTextShown={potionOptions.length > 0}
-                            isNAOption
-                            maxDisplayItemCount={3}
-                            onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('positionIds', currentItem, selectedItemsKey)}
-                        />
-                    </div>
-                </Form.Group>
+                            <div className='group-field'>
+                                <Form.Label htmlFor="site" className="col-form-label">{LangHelper.getResource('Site')}</Form.Label>
+                                <MultipleSelect
+                                    dataSource={siteOptions}
+                                    keyField='siteId' valueField='name'
+                                    hasAllOption={siteOptions.length > 0}
+                                    isAllTextShown={siteOptions.length > 0}
+                                    isNAOption
+                                    hasSearchBox
+                                    maxDisplayItemCount={2}
+                                    onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('siteIds', currentItem, selectedItemsKey)}
+                                />
+                            </div>
 
-                <Form.Group as={Row}>
-                    <div className='group-checkbox'>
-                        <Form.Check type="checkbox" className="check-exclude"
-                            checked={excludeIgnoredAccounts}
-                            onChange={this.handleCheckExclude}
-                        />
-                        <Form.Label htmlFor="excludeIgAccounts" className="col-form-label">{LangHelper.getResource('ExcludeIgnoredAccounts')}</Form.Label>
-                    </div>
-                    <div className='group-field'>
-                        <Button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
-                    </div>
-                </Form.Group>
+                            <div className='group-field'>
+                                <Form.Label htmlFor="position" className="col-form-label">{LangHelper.getResource('Position')}</Form.Label>
+                                <div className={this.isErrorPosition() ? 'danger-position' : ''}>
+                                    <MultipleSelect
+                                        dataSource={positionOptions}
+                                        keyField='positionId' valueField='name'
+                                        hasAllOption={positionOptions.length > 0}
+                                        isAllTextShown={positionOptions.length > 0}
+                                        isNAOption
+                                        maxDisplayItemCount={2}
+                                        onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('positionIds', currentItem, selectedItemsKey)}
+                                    />
+                                </div>
+                            </div>
+                        </Form.Group>
+
+                        <Form.Group as={Row}>
+                            <div className='group-checkbox'>
+                                <Form.Check type="checkbox" className="check-exclude"
+                                    checked={excludeIgnoredAccounts}
+                                    onChange={this.handleCheckExclude}
+                                />
+                                <Form.Label htmlFor="excludeIgAccounts" className="col-form-label">{LangHelper.getResource('ExcludeIgnoredAccounts')}</Form.Label>
+                            </div>
+                            <div className='group-field'>
+                                <Button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
+                            </div>
+                        </Form.Group>
+                    </Fragment>
+                }
+                <div className="show-filter">
+                    <span className={`${isShowFilter ? 'fa fa-caret-up' : 'fa fa-caret-down'} icon`} onClick={this.handleToggleFilter}></span>
+                </div>
             </Form>
         );
     }
