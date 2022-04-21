@@ -214,7 +214,7 @@
             var currencies = await settingService.GetCurrencyAsync();
             var newCurrencies = currencies.Select(c => new Setting { SettingId = c.Id, SettingValue = c.Name, SettingName = "Currency" }).ToList();
 
-            var settings = await settingService.GetSettingAsync("");
+            var settings = await settingService.GetSettingAsync();
             var settingList = (List<Setting>)settings;
             settingList.AddRange(newCountries);
             settingList.AddRange(newCurrencies);

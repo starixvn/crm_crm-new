@@ -1,10 +1,8 @@
 ﻿namespace CRM.Services.Report
 {
-    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Services;
     using CRM.Criteria.Report.CustomerReport;
-    using CRM.Models.Customer;
     using CRM.Models.Report.CustomerReport;
 
     public interface ICustomerReportService

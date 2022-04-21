@@ -1,7 +1,6 @@
 ﻿namespace CRM.Models.Report.CustomerReport
 {
     using System.Collections.Generic;
-    using CRM.Models.Customer;
 
     public class CustomerReportInfo
     {
