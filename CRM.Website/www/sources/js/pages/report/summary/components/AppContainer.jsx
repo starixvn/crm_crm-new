@@ -33,7 +33,7 @@ export class AppContainer extends Component {
       <Fragment>
         <Filter />
         {
-          gridData === null ? null : <DataGrid />
+          gridData === null || gridData === undefined ? null : <DataGrid />
         }
         {
           contentChartPopup.show && <Chart />
