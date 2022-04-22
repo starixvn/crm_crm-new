@@ -15,7 +15,6 @@ export class History extends Component {
     }
 
     componentDidMount() {
-        this.props.historyGridParams;
         this.props.getNewRemarkHistory(this.props.historyGridParams);
     }
 

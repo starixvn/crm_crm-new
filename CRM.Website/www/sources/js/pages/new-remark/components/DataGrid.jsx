@@ -46,7 +46,7 @@ export class DataGrid extends Component {
             return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
         }
 
-        return [<Row key='new-remark-body' className="no-data"><Cell colSpan={isHost ? 16 : 15}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+        return [<Row key='new-remark-body' className="no-data" ><Cell colSpan={isHost ? 16 : 15}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
     renderRow = (item, index, isHost) => {

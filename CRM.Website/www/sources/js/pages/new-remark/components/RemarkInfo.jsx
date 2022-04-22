@@ -44,7 +44,7 @@ export default class RemarkInfo extends Component {
                         valueField='name'
                         statusField='checked'
                         onChange={(currentItem, selectedItemsKey) => {
-                            handleChange('relatedPics')(selectedItemsKey);
+                            handleChange('relatedPics', selectedItemsKey);
                         }}
                     />
                 </Col>
