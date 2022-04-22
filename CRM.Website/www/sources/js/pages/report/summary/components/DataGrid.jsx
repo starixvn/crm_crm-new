@@ -85,7 +85,9 @@ export class DataGrid extends Component {
         this.props.exportExcel(params);
     };
 
-    buildHeader = months => {
+    buildHeader = () => {
+        const { months} = this.props.gridData;
+
         const headers = [];
         const cells = [];
         cells.push(<HeaderCell key="header" className='sticky-header' colWidth={60}>{LangHelper.getResource('Categories')}</HeaderCell>);
@@ -100,11 +102,12 @@ export class DataGrid extends Component {
         return headers;
     };
 
-    renderFooter = data => {
+    renderFooter = () => {
+        const {grandTotals} = this.props.gridData;
         const cells = [];
-        if(data.length > 0){
+        if(grandTotals.length > 0){
             cells.push(<Cell key="grandtotal">Grand Total</Cell>);
-            data.map(item => {
+            grandTotals.map(item => {
                 cells.push(<Cell className='right' key={item.month+'-footer'}>{item.amount}</Cell>);
             });
             return (
@@ -116,7 +119,9 @@ export class DataGrid extends Component {
         return null;
     };
 
-    buildBody = categorySummaries => {
+    buildBody = () => {
+        const { categorySummaries } = this.props.gridData;
+
         const rows = [];
         if (categorySummaries.length > 0) {
             rows.push(
@@ -222,9 +227,9 @@ export class DataGrid extends Component {
                 <Table
                     width={totalWidth}
                     autoWidth={false}
-                    header={this.buildHeader(months)}
-                    body={this.buildBody(categorySummaries)}
-                    footer={this.renderFooter(grandTotals)}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
+                    footer={this.renderFooter()}
                     isPaging={false}
                     containerPadding={0}
                     adjustedHeight={10}
