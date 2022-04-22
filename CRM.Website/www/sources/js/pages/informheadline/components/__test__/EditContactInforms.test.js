@@ -60,18 +60,20 @@ describe('EditContactInforms', () => {
     describe('handleSubmit', () => {
         it('should call exactly functions when submit', async () => {
             // Arrange
+            const promise = Promise.resolve({});
             const props = {
                 ...initProps,
                 titleDetail: {titleId: 123},
-                editContactInforms: jest.fn()
+                editContactInforms: jest.fn(() => promise)
             };
 
             // Act
             const container = shallow(<EditContactInforms {...props}/>);
             container.instance().handleSubmit();
+            await promise;
 
             // Assert
-            expect(await props.editContactInforms).toHaveBeenCalledWith({ titleId: 123, informs: [{ headlineId: 1234, groupId: 122, remark: '&amp;test'}] });
+            expect(props.editContactInforms).toHaveBeenCalledWith({ titleId: 123, informs: [{ headlineId: 1234, groupId: 122, remark: '&amp;test'}] });
         });
     });
 
@@ -97,8 +99,9 @@ describe('EditContactInforms', () => {
         it('should render null', () => {
             // Arrange
             const props = {
+                ...initProps,
                 titleDetail: null,
-                contactInformSettings: null,
+                //contactInformSettings: null,
                 contactInforms: null
             };
 
@@ -117,7 +120,7 @@ describe('EditContactInforms', () => {
             const props = {
                 ...initProps,
                 titleDetail: null,
-                contactInformSettings: null,
+                //contactInformSettings: null,
                 contactInforms: null
             };
 

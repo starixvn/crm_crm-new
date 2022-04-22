@@ -11,9 +11,9 @@ import ExcelIcon from '@jsroot/components/ExcelIcon';
 export class DataGrid extends Component {
 
     async componentDidMount() {
+        await this.props.getContactInformSettings();
+        await this.props.getAllSettings();
         await this.props.getInforms();
-        this.props.getAllSettings();
-        this.props.getContactInformSettings();
     }
 
     buildHeader = () => {
@@ -49,16 +49,16 @@ export class DataGrid extends Component {
     };
 
     handleEditContact = (titleId, status) => {
-        this.props.setEditContactInformDialog({show: true, titleId: titleId, status: status});
+        this.props.setEditContactInformDialog({show: true, titleId, status});
     };
 
     handleEdit = titleId => {
-        this.props.setEditInformDialog({show: true, titleId: titleId});
+        this.props.setEditInformDialog({show: true, titleId});
     };
 
     handleRemovedAccountLogs = titleId => {
         const params = {
-            titleId: titleId,
+            titleId,
             pageIndex: 1,
             pageSize: 100
         };
@@ -68,12 +68,12 @@ export class DataGrid extends Component {
     };
 
     handleCloseCase = titleId => {
-        this.props.editInformStatus({titleId: titleId, statusType: true});
+        this.props.editInformStatus({titleId, statusType: true});
         this.props.getInforms();
     };
 
     handleOpenCase = titleId => {
-        this.props.editInformStatus({titleId: titleId, statusType: false});
+        this.props.editInformStatus({titleId, statusType: false});
         this.props.getInforms();
     };
 

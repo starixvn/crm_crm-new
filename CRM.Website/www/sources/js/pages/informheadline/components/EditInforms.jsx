@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
@@ -12,13 +13,46 @@ import FilterEditInforms from './FilterEditInforms';
 import { Policy } from '@jsroot/common/constants';
 
 export class EditInforms extends Component {
+
+    static propTypes = {
+        titleDetail: PropTypes.shape({
+            title: PropTypes.string.isRequired,
+            currencies: PropTypes.string.isRequired,
+            sites: PropTypes.string.isRequired,
+            typeAccount: PropTypes.number.isRequired,
+            positions: PropTypes.string.isRequired,
+            isVip: PropTypes.number.isRequired,
+            excludeIgnoredAccounts: PropTypes.bool.isRequired
+        }),
+        allSettings: PropTypes.shape({
+            currencies: PropTypes.array.isRequired,
+            sites: PropTypes.arrayOf(PropTypes.shape({ childSites: PropTypes.array.isRequired}))
+        })
+    };
+
+    static defaultProps = {
+        titleDetail: {
+            title: '',
+            currencies: '',
+            sites: '',
+            typeAccount: 1,
+            positions: '',
+            isVip: 1,
+            excludeIgnoredAccounts: true
+        },
+        allSettings: {
+            currencies: [],
+            sites: [{ childSites: [] }],
+        }
+    };
+
     constructor(props) {
         super(props);
         this.state = {
-            saveResult: null
+            saveResult: null,
+            includeCurrencies: null,
+            includeSites: null
         };
-        this.includeCurrencies = null;
-        this.includeSites = null;
         this.saveEdit = React.createRef();
     }
 
@@ -34,8 +68,10 @@ export class EditInforms extends Component {
             sites: includeSites, isVip: titleDetail.isVip,
             excludeIgnoredAccounts: titleDetail.excludeIgnoredAccounts
         };
-        this.includeCurrencies = includeCurrencies;
-        this.includeSites = includeSites;
+        this.setState({
+            includeCurrencies: includeCurrencies,
+            includeSites: includeSites
+        });
         this.props.setFilterData({...this.props.filterData, values: {...params, title: titleDetail.title, changeFilter: false}});
         await this.props.getEditInforms(params);
     }
@@ -61,7 +97,7 @@ export class EditInforms extends Component {
         }, 3000);
     };
 
-    handleSubmit = async () => {
+    handleSubmit = () => {
         const { dataEditInforms, editedInforms } = this.props;
         const replaceDataEdit = dataEditInforms.map(element => editedInforms.find(item => item.headlineId === element.headlineId) || element);
         const editedData = remarkEncode(replaceDataEdit);
@@ -69,8 +105,9 @@ export class EditInforms extends Component {
         if (this.props.filterData.errors.title === 'err') {
             this.saveEdit.current.handleValidate();
         } else {
-            await this.props.editInforms({...this.props.filterData.values, informs: editedData});
-            this.setAlert();
+            this.props.editInforms({...this.props.filterData.values, informs: editedData}).then(() => {
+                this.setAlert();
+            });
         }
     };
 
@@ -101,8 +138,8 @@ export class EditInforms extends Component {
                     <FilterEditInforms
                         ref={this.saveEdit}
                         detail={titleDetail}
-                        includeCurrencies={this.includeCurrencies}
-                        includeSites={this.includeSites}
+                        includeCurrencies={this.state.includeCurrencies}
+                        includeSites={this.state.includeSites}
                         informData={dataEditInforms}
                         exportExcel={exportEditInforms}
                         isNewInform={false}

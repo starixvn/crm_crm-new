@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
@@ -11,22 +12,35 @@ import DataGridEdit from './DataGridEdit';
 import FilterContactInforms from './FilterContactInforms';
 
 export class EditContactInforms extends Component {
+
+    static propTypes = {
+        contactInformSettings: PropTypes.shape({ filterStatuses: PropTypes.array.isRequired }).isRequired,
+        titleId: PropTypes.number.isRequired
+    };
+
+    static defaultProps = {
+        contactInformSettings: { filterStatuses: [] },
+        titleId: 0
+    };
+
     constructor(props) {
         super(props);
         this.state = {
-            saveResult: null
+            saveResult: null,
+            selectedStatuses: ''
         };
-        this.selectedStatuses = null;
     }
 
-    async componentDidMount() {
-        await this.props.getTitleDetail({titleId: this.props.titleId});
-        const selectedStatuses = this.props.contactInformSettings.filterStatuses.map(item =>
+    componentDidMount() {
+        const { contactInformSettings, titleId } = this.props;
+        this.props.getTitleDetail({titleId: titleId});
+
+        const selectedStatuses = contactInformSettings.filterStatuses.map(item =>
             item.settingId
         ).join();
-        const params = {titleId: this.props.titleId, username: '', statusId: selectedStatuses};
-        this.selectedStatuses = selectedStatuses;
-        await this.props.getContactInforms(params);
+        const params = {titleId: titleId, username: '', statusId: selectedStatuses};
+        this.setState({ selectedStatuses: selectedStatuses });
+        this.props.getContactInforms(params);
     }
 
     setAlert = () => {
@@ -40,17 +54,19 @@ export class EditContactInforms extends Component {
         }, 3000);
     };
 
-    handleSubmit = async () => {
+    handleSubmit = () => {
         const { editedInforms, titleDetail } = this.props;
         const editedContactInforms = remarkEncode(editedInforms);
         if (editedContactInforms.length > 0) {
-            await this.props.editContactInforms({ titleId: titleDetail.titleId, informs: editedContactInforms });
-            this.setAlert();
+            this.props.editContactInforms({ titleId: titleDetail.titleId, informs: editedContactInforms }).then(() => {
+                this.setAlert();
+            });
         }
     };
 
     renderForm = () => {
         const { contactInforms, contactInformSettings } = this.props;
+        const { selectedStatuses } = this.state;
 
         return(
             <Modal.Body>
@@ -61,9 +77,14 @@ export class EditContactInforms extends Component {
                     />
                 }
 
-                <FilterContactInforms
-                    selectedStatuses={this.selectedStatuses}
-                />
+                {
+                    selectedStatuses &&
+                    (
+                        <FilterContactInforms
+                            selectedStatuses={selectedStatuses}
+                        />
+                    )
+                }
 
                 <DataGridEdit
                     status={this.props.status}

@@ -95,11 +95,12 @@ describe('EditInforms', () => {
     });
 
     describe('handleSubmit', () => {
-        it('should call exactly functions when not save', () => {
+        it('should call exactly functions when not save', async () => {
             // Arrange
+            const promise = Promise.resolve({});
             const props = {
                 ...initProps,
-                editInforms: jest.fn(),
+                editInforms: jest.fn(() => promise),
                 filterData: { values: { currencies: '1,2' }, errors: { title: 'err' } }
             };
 
@@ -109,6 +110,7 @@ describe('EditInforms', () => {
                 handleValidate: jest.fn()
             };
             container.handleSubmit();
+            await promise;
 
             // Assert
             expect(container.saveEdit.current.handleValidate).toHaveBeenCalled();
@@ -116,17 +118,19 @@ describe('EditInforms', () => {
 
         it('should call exactly functions when save', async () => {
             // Arrange
+            const promise = Promise.resolve({});
             const props = {
                 ...initProps,
-                editInforms: jest.fn()
+                editInforms: jest.fn(() => promise)
             };
 
             // Act
             const container = shallow(<EditInforms {...props} />);
             container.instance().handleSubmit();
+            await promise;
 
             // Assert
-            expect(await props.editInforms).toHaveBeenCalledWith({
+            expect(props.editInforms).toHaveBeenCalledWith({
                 currencies: '1,2',
                 informs: [{headlineId: 720, groupId: 12, username: 'test', remark: '&amp;t'}]
             });
