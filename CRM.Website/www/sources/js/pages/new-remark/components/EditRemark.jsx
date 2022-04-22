@@ -44,7 +44,7 @@ export class EditRemark extends Component {
             ext: values.extStation === '' ? null : parseInt(values.extStation, 10),
             handlerID: values.handledBy === '' ? null : parseInt(values.handledBy, 10),
             approverID: values.approvedBy === '' ? null : parseInt(values.approvedBy, 10),
-            requester: values.requestedBy   
+            requester: values.requestedBy
         };
         this.props.editNewRemarks(params).then(() => {
             if (this.props.editResult.isSuccessful) {

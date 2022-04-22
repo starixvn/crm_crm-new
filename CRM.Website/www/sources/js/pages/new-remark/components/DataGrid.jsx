@@ -161,27 +161,27 @@ export class DataGrid extends Component {
         let gridDataSortAsc = null;
         if(sortBy === 'createdDate'){
             if(sortOrder === 'asc'){
-                gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortDateAsc(first, second));
+                gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortDateAsc(sortBy, first, second));
             }else{
-                gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortDateDesc(first, second));
+                gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortDateDesc(sortBy, first, second));
             }
         }else{
             if(sortOrder === 'asc'){
-                gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringAsc(first, second));
+                gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringAsc(sortBy, first, second));
             }else{
-                gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringDesc(first, second));
+                gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringDesc(sortBy, first, second));
             }
         }
         this.props.setRemarks({...this.props.gridData.data, data: gridDataSortAsc});
     };
 
-    handleSortDateAsc = (first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1;
+    handleSortDateAsc = (sortBy, first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1;
 
-    handleSortDateDesc = (first, second) => new Date(first[`${sortBy}`]) < new Date(second[`${sortBy}`]) ? 1 : -1;
+    handleSortDateDesc = (sortBy, first, second) => new Date(first[`${sortBy}`]) < new Date(second[`${sortBy}`]) ? 1 : -1;
 
-    handleSortStringAsc = (first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
+    handleSortStringAsc = (sortBy, first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
 
-    handleSortStringDesc = (first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
+    handleSortStringDesc = (sortBy, first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };

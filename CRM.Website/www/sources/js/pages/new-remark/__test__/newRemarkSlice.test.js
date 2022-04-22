@@ -5,7 +5,6 @@ import newRemark, {
     setRemarks,
     setOpenCreatePopup,
     setOpenEditPopup,
-    setOpenDeletePopup,
     setEditResult,
     setOpenConfirmDelete,
     setCreateResult,

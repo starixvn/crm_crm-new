@@ -100,23 +100,23 @@ export class History extends Component {
     };
     handleOpenView = item =>{
         this.props.setOpenEditPopup({show: true, data: item, isViewHistory: true});
-    }
+    };
 
     onSort = (sortBy, sortOrder) => {
         const { remarksHistory } = this.props;
         const cloneGridData = [...remarksHistory.data];
         let gridDataSortAsc = null;
         if(sortOrder === 'asc'){
-            gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringAsc(first, second));
+            gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringAsc(sortBy, first, second));
         }else{
-            gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringDesc(first, second));
+            gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringDesc(sortBy, first, second));
         }
         this.props.setRemarksHistory({...this.props.remarksHistory.data, data: gridDataSortAsc});
     };
 
-    handleSortStringAsc = (first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
+    handleSortStringAsc = (sortBy, first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
 
-    handleSortStringDesc = (first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
+    handleSortStringDesc = (sortBy, first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
 
 
     onPaging = (pageIndex, pageSize) => {
