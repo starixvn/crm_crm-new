@@ -107,9 +107,9 @@ export class History extends Component {
         const cloneGridData = [...remarksHistory.data];
         let gridDataSortAsc = null;
         if(sortOrder === 'asc'){
-            gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringAsc(sortBy, first, second));
+            gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringAsc(sortBy, first, second));
         }else{
-            gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringDesc(sortBy, first, second));
+            gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringDesc(sortBy, first, second));
         }
         this.props.setRemarksHistory({...this.props.remarksHistory.data, data: gridDataSortAsc});
     };

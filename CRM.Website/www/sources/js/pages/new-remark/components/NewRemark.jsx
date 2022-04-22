@@ -43,7 +43,7 @@ export class NewRemark extends Component {
             handlerID: values.handledBy === '' ? null : parseInt(values.handledBy, 10),
             approverID: values.approvedBy === '' ? null : parseInt(values.approvedBy, 10),
             acknowledgerID: values.acknowledgedBy === '' ? null : parseInt(values.acknowledgedBy, 10),
-            requester: values.requestedBy        
+            requester: values.requestedBy
         };
         this.props.createNewRemarks(params).then(() => {
             if (this.props.createResult.isSuccessful) {
@@ -106,7 +106,7 @@ export class NewRemark extends Component {
         if(customerName !== '')
         {
             initUsername =  customerName;
-        }else{
+        } else{
             initUsername = validateResult ? username : '';
         }
         return initUsername;
