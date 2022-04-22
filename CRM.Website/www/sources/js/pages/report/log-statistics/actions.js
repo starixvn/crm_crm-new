@@ -54,6 +54,7 @@ const exportExcelDetails = params => async () => {
 export const ActionCreators = {
     getAllSettings,
     setGridParams,
+    setAllSettings,
     setGridParamDetails,
     getMainReport,
     setMainReport,
