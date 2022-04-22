@@ -49,7 +49,6 @@ export class AppContainer extends Component {
         this.props.setOpenEditPopup({ show: false, data: null, isViewHistory: false });
         this.props.setEditResult(null);
     };
-    
     render() {
         const { remarkTitles, popupAdd, popupEdit, showHistory, customerName } = this.props;
         if(remarkTitles === null || !remarkTitles){

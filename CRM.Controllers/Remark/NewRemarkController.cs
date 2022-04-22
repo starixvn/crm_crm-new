@@ -69,9 +69,9 @@
             var users = await customerService.GetAllCustomerAsync();
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             return Json(new {
-                relatedPics = relatedPics,
-                extentions = extentions,
-                users = users,
+                relatedPics,
+                extentions,
+                users,
                 userId = napSession.UserId 
             });
         }

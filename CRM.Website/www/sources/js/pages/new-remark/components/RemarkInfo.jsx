@@ -61,7 +61,7 @@ export default class RemarkInfo extends Component {
                         autoComplete="off"
                         isInvalid={touched.requestedBy && errors.requestedBy}
                         onChange={handleChange}
-                    /> 
+                    />
                 </Col>
                 <Form.Label column sm="2" md="2" htmlFor="approvedBy">
                     {LangHelper.getResource('ApprovedBy')}

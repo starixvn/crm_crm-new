@@ -1,4 +1,4 @@
-﻿import React, { Component, Fragment } from 'react';
+﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
@@ -98,7 +98,6 @@ export class History extends Component {
             </div>
         );
     };
-    
     handleOpenView = item =>{
         this.props.setOpenEditPopup({show: true, data: item, isViewHistory: true});
     }
@@ -108,12 +107,17 @@ export class History extends Component {
         const cloneGridData = [...remarksHistory.data];
         let gridDataSortAsc = null;
         if(sortOrder === 'asc'){
-            gridDataSortAsc = cloneGridData.sort((first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1);
+            gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringAsc(first, second));
         }else{
-            gridDataSortAsc = cloneGridData.sort((first, second) => new Date(first[`${sortBy}`]) < new Date(second[`${sortBy}`]) ? 1 : -1);
+            gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringDesc(first, second));
         }
         this.props.setRemarksHistory({...this.props.remarksHistory.data, data: gridDataSortAsc});
     };
+
+    handleSortStringAsc = (first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
+
+    handleSortStringDesc = (first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
+
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.historyGridParams };
@@ -128,7 +132,7 @@ export class History extends Component {
         this.props.setShowHistory({show: false});
         this.props.setRemarksHistory(null);
         this.props.setHistoryGridParams(null);
-    }
+    };
 
     render() {
         if (!this.props.remarksHistory || this.props.remarksHistory === null) {

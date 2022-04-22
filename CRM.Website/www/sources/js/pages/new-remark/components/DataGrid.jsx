@@ -60,14 +60,12 @@ export class DataGrid extends Component {
                 <Cell className='text-center'>{userNameFormat}</Cell>
                 <Cell className='text-center'>{item.remarkName}</Cell>
                 <OverlayTrigger
-                    overlay={
-                        <Tooltip id="tooltip-remark-content">
-                            <span dangerouslySetInnerHTML={{__html: item.remark}} />
-                        </Tooltip>
-                    }
                     placement="auto"
+                    overlay={
+                        <Tooltip id="tooltip-remark-content"><span dangerouslySetInnerHTML={{__html: item.remark}} /></Tooltip>
+                    }
                 >
-                    <Cell className='link-click remark-content' dangerouslySetInnerHTML={{__html: item.remark}} onClick={() =>this.handleOpenEdit(item)}/>
+                    <Cell className='link-click remark-content' onClick={() =>this.handleOpenEdit(item)} dangerouslySetInnerHTML={{__html: item.remark}}/>
                 </OverlayTrigger>
                 <Cell className='text-center'>{item.relatedPICs}</Cell>
                 <Cell className='text-center'>
@@ -109,7 +107,7 @@ export class DataGrid extends Component {
 
     handleOpenEdit = item =>{
         this.props.setOpenEditPopup({show: true, data: item, isViewHistory: false});
-    }
+    };
 
     handleShowPopupConfirmDelete = remarkID =>{
         this.props.setOpenConfirmDelete({show: true, id: remarkID});
@@ -163,20 +161,27 @@ export class DataGrid extends Component {
         let gridDataSortAsc = null;
         if(sortBy === 'createdDate'){
             if(sortOrder === 'asc'){
-                gridDataSortAsc = cloneGridData.sort((first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1);
+                gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortDateAsc(first, second));
             }else{
-                gridDataSortAsc = cloneGridData.sort((first, second) => new Date(first[`${sortBy}`]) < new Date(second[`${sortBy}`]) ? 1 : -1);
+                gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortDateDesc(first, second));
             }
         }else{
             if(sortOrder === 'asc'){
-                gridDataSortAsc = cloneGridData.sort((first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1);
+                gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringAsc(first, second));
             }else{
-                gridDataSortAsc = cloneGridData.sort((first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1);
+                gridDataSortAsc = cloneGridData.sort((first, second) => this.handleSortStringDesc(first, second));
             }
         }
-        
         this.props.setRemarks({...this.props.gridData.data, data: gridDataSortAsc});
     };
+
+    handleSortDateAsc = (first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1;
+
+    handleSortDateDesc = (first, second) => new Date(first[`${sortBy}`]) < new Date(second[`${sortBy}`]) ? 1 : -1;
+
+    handleSortStringAsc = (first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
+
+    handleSortStringDesc = (first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };

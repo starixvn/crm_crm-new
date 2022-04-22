@@ -66,7 +66,7 @@ export class NewRemark extends Component {
                 this.props.validateUsername({username: values.username, isGuest: values.isGuest});
             });
         }
-    }
+    };
 
     validateFirstLoadFormik = username => {
         const errors = {};
@@ -99,19 +99,18 @@ export class NewRemark extends Component {
     isValidUsername = values =>{
        const {validateResult, gridParams, inputAddUsername} = this.props;
        return  validateResult.isSuccessful && (values.username === inputAddUsername || values.username === gridParams.username);
-    }
+    };
 
     initUserName = (validateResult, username, customerName) => {
         let initUsername = '';
         if(customerName !== '')
         {
             initUsername =  customerName;
-        }
-        else{
+        }else{
             initUsername = validateResult ? username : '';
         }
         return initUsername;
-    }
+    };
 
     renderForm = ({
         values,
@@ -214,8 +213,9 @@ export class NewRemark extends Component {
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.createResult &&
-                        <ResponseMessage isSuccessful={this.props.createResult.isSuccessful}
+                        <ResponseMessage
                             message={this.props.createResult.message || LangHelper.getResource('CreateNewRemarkSuccessfully')}
+                            isSuccessful={this.props.createResult.isSuccessful}
                         />
                     }
                    <Form.Group as={Row}>

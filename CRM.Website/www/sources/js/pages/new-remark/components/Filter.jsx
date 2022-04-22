@@ -114,7 +114,7 @@ export class Filter extends Component {
 
     handleChangeSpecificDate = () =>{
         this.setState({dateTypeSelect: 7});
-    }
+    };
 
     handleChangeCheckbox = evt => {
         const name = evt.target.name;
@@ -165,16 +165,14 @@ export class Filter extends Component {
 
     handleOpenAdd = () =>{
         this.props.setOpenCreatePopup({show: true});
-    }
+    };
 
     render() {
         const {remarkTitles, customerName} = this.props;
         if(remarkTitles === null || !remarkTitles){
             return null;
         }
-       
         const { remarkContent, userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, dateTypeSelect, remarkTitleOptions } = this.state;
-        
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>

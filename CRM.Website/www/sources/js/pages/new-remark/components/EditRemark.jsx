@@ -44,7 +44,7 @@ export class EditRemark extends Component {
             ext: values.extStation === '' ? null : parseInt(values.extStation, 10),
             handlerID: values.handledBy === '' ? null : parseInt(values.handledBy, 10),
             approverID: values.approvedBy === '' ? null : parseInt(values.approvedBy, 10),
-            requester: values.requestedBy        
+            requester: values.requestedBy   
         };
         this.props.editNewRemarks(params).then(() => {
             if (this.props.editResult.isSuccessful) {
@@ -63,8 +63,7 @@ export class EditRemark extends Component {
         if(values.remarkTitle === ''){
             if(remarkTitleId > 0){
                 errors.remarkTitle = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkTitle'));
-            }
-            else{
+            }else{
                 errors.remarkTitle = LangHelper.getResource('RemarkTitleMigrateRequired');
             }
         }
@@ -72,8 +71,7 @@ export class EditRemark extends Component {
         if(values.remarkContent === ''){
             if(remarkTitleId > 0){
                 errors.remarkContent = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkContent'));
-            }
-            else{
+            }else{
                 errors.remarkContent = LangHelper.getResource('RemarkContentMigrateRequired');
             }
         }
@@ -126,7 +124,7 @@ export class EditRemark extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     {
-                        !popupEdit.isViewHistory && 
+                        !popupEdit.isViewHistory &&
                         <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
                             {LangHelper.getResource('Save')}
                         </Button>
