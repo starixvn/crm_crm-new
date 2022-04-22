@@ -208,8 +208,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { informs } = state;
-    return { informs };
+    const { informs, contactInformSettings } = state;
+    return { informs, contactInformSettings };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);
