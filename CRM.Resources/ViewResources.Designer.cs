@@ -232,6 +232,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer_Report.
+        /// </summary>
+        public static string CustomerReportExcel {
+            get {
+                return ResourceManager.GetString("CustomerReportExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily.
         /// </summary>
         public static string Daily {
@@ -1137,6 +1146,15 @@ namespace CRM.Resources {
         public static string Super {
             get {
                 return ResourceManager.GetString("Super", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to √.
+        /// </summary>
+        public static string Symbol_IsVIP {
+            get {
+                return ResourceManager.GetString("Symbol_IsVIP", resourceCulture);
             }
         }
         

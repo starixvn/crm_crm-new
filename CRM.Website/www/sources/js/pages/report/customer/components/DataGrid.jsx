@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import ExcelIcon from '@jsroot/components/ExcelIcon';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -103,6 +103,13 @@ export class DataGrid extends Component {
         );
     };
 
+    handleExportExcel = () => {
+        const params = { ...this.props.gridParams };
+        params['pageIndex'] = 0;
+        params['pageSize'] = 0;
+        this.props.exportExcel(params);
+    };
+
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
         params['pageSize'] = pageSize;
@@ -127,18 +134,26 @@ export class DataGrid extends Component {
         };
 
         return (
-            <Table
-                maxWidth={3800}
-                shouldUseMaxWidth
-                autoWidth={false}
-                header={this.buildHeader()}
-                body={this.buildBody()}
-                containerPadding={0}
-                adjustedHeight={10}
-                pageOption={pagingOption}
-                isPaging
-                onPaging={this.onPaging}
-            />
+            <Fragment>
+                <div className="table-title d-flex justify-content-between align-items-center">
+                    <span>{LangHelper.getResource('CustomerReport')}</span>
+                    {
+                        customerReport && <ExcelIcon handleExportExcel={this.handleExportExcel}/>
+                    }
+                </div>
+                <Table
+                    maxWidth={3800}
+                    shouldUseMaxWidth
+                    autoWidth={false}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
+                    containerPadding={0}
+                    adjustedHeight={10}
+                    pageOption={pagingOption}
+                    isPaging
+                    onPaging={this.onPaging}
+                />
+            </Fragment>
         );
     }
 }

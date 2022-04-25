@@ -9,6 +9,7 @@
     using CRM.Models.InformHeadline;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report;
+    using CRM.Models.Report.CustomerReport;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.DynamicReport;
     using CRM.Models.Report.FeedbackStatistic;
@@ -69,6 +70,8 @@
         byte[] ExportDynamicReport(DynamicReportInfo dynamicReportInfos, IEnumerable<Setting> mainCategories, string titleExcel);
 
         byte[] ExportRedemptionStatisticsDetail(IEnumerable<RedemptionStatisticsDetailEntity> redemptionStatisticsDetails);
+
+        byte[] ExportCustomerReport(CustomerReportInfo customerReportInfo);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -242,6 +245,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/RedemptionStatisticsDetail.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new RedemptionStatisticsDetailExcel(templatePath, redemptionStatisticsDetails.ToList());
+            return excel.Export();
+        }
+
+        public byte[] ExportCustomerReport(CustomerReportInfo customerReportInfo)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/CustomerReport.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new CustomerReportExcel(templatePath, customerReportInfo);
             return excel.Export();
         }
     }
