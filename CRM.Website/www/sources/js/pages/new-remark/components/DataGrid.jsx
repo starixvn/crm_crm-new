@@ -207,6 +207,7 @@ export class DataGrid extends Component {
             TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
+        const width = document.getElementById('app-container').clientWidth < 1890 ? 1890 : document.getElementById('app-container').clientWidth;
         return (
             <Fragment>
                 <div className='table-title'>
@@ -216,7 +217,7 @@ export class DataGrid extends Component {
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
                     autoWidth={false}
-                    width={document.getElementById('app-container').clientWidth}
+                    width={width}
                     isPaging
                     onSort={this.onSort}
                     containerPadding={0}
