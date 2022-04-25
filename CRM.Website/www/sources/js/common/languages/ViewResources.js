@@ -73,6 +73,7 @@
     Customer: 'Customer', 
     CustomerCommunicationLogs: 'Customer Communication Logs',
     CustomerRedemptionLogs: 'Customer Redemption Logs',
+    CustomerReport: 'Customer Report',
     ConfirmRemoveDirectAccounts: 'Are you sure you want to remove all selected direct accounts?',
     CustomerResponse: 'Customer Response',
     CannotCreateInactiveSite: 'Cannot create feedback for Inactive Site member.',

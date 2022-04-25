@@ -504,4 +504,10 @@
   <data name="CustomerReport" xml:space="preserve">
     <value>Customer Report</value>
   </data>
+  <data name="CustomerReportExcel" xml:space="preserve">
+    <value>Customer_Report</value>
+  </data>
+  <data name="Symbol_IsVIP" xml:space="preserve">
+    <value>√</value>
+  </data>
 </root>
