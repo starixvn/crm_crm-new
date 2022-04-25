@@ -25,7 +25,7 @@ export class EditInforms extends Component {
             excludeIgnoredAccounts: PropTypes.bool.isRequired
         }),
         allSettings: PropTypes.shape({
-            currencies: PropTypes.array.isRequired,
+            currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
             sites: PropTypes.arrayOf(PropTypes.shape({ childSites: PropTypes.array.isRequired}))
         })
     };

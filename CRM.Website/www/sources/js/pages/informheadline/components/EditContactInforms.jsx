@@ -14,7 +14,7 @@ import FilterContactInforms from './FilterContactInforms';
 export class EditContactInforms extends Component {
 
     static propTypes = {
-        contactInformSettings: PropTypes.shape({ filterStatuses: PropTypes.array.isRequired }).isRequired,
+        contactInformSettings: PropTypes.shape({ filterStatuses: PropTypes.arrayOf(PropTypes.object).isRequired }).isRequired,
         titleId: PropTypes.number.isRequired
     };
 
