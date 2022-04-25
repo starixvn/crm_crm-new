@@ -53,13 +53,6 @@ export class Filter extends Component {
         this.setState({toDate, fromDate});
     };
 
-    handleChange = event => {
-        this.setState({
-            ...this.state,
-            [event.target.name]: event.target.value
-        });
-    };
-
     handleChangeDropdown = (name, selectedKey) => {
         this.setState({
             ...this.state,
