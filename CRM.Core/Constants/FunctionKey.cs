@@ -36,5 +36,6 @@
         public const string CustomerReport = "CustomerReport";
 
         public const string SettingRelationManagement = "SettingRelationshipManagement";
+        public const string SettingManagement = "SettingManagement";
     }
 }

@@ -9,13 +9,10 @@
     using CRM.Core.Services;
     using CRM.Criteria.AdminTool;
     using CRM.Criteria.Setting;
-    using CRM.Models.Setting;
     using CRM.Services;
     using CRM.ViewModels;
     using Fanex.NAP.Client.AspNetCore.Attributes;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
@@ -43,18 +40,7 @@
 
         public async Task<IActionResult> GetMainSettings()
         {
-            var allSettings = await settingService.GetSettingAsync();
-            var settingGroups = allSettings
-                .GroupBy(x => new { Type = x.SettingName })
-                .Select(group => new { group.Key, Count = group.Count() });
-            var settingGroupByType = new List<Setting>();
-            foreach (var group in settingGroups)
-            {
-                var subList = allSettings.Where(s => s.SettingName == group.Key.Type).Select(s => s).OrderBy(s => s.DisplayOrder).ToList();
-                var setting = new Setting { SettingName = group.Key.Type, ChildSettings = subList };
-                settingGroupByType.Add(setting);
-            }
-            var settingGroupOrder = settingGroupByType.OrderBy(s => s.DisplayOrder).ToList();
+            var settingGroupOrder = await settingService.GetMainSettingAsync();
             return Json(settingGroupOrder);
         }
 

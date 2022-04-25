@@ -42,6 +42,23 @@
             return await baseService.GetDataAsync<Setting>(criteria);
         }
 
+        public async Task<IEnumerable<Setting>> GetMainSettingAsync()
+        {
+            var allSettings = await GetSettingAsync();
+            var settingGroups = allSettings
+                .GroupBy(x => new { Type = x.SettingName })
+                .Select(group => new { group.Key, Count = group.Count() });
+            var settingGroupByType = new List<Setting>();
+            foreach (var group in settingGroups)
+            {
+                var subList = allSettings.Where(s => s.SettingName == group.Key.Type).Select(s => s).OrderBy(s => s.DisplayOrder).ToList();
+                var setting = new Setting { SettingName = group.Key.Type, ChildSettings = subList };
+                settingGroupByType.Add(setting);
+            }
+            var settingGroupOrder = settingGroupByType.OrderBy(s => s.DisplayOrder).ToList();
+            return settingGroupOrder.ToList();
+        }
+
         public async Task<IEnumerable<Setting>>GetSettingByTypes(string settingName)
         {
                 var allSettings = await GetSettingAsync();
