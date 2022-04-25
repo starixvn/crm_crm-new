@@ -106,7 +106,7 @@ export class NewRemark extends Component {
         if(customerName !== '')
         {
             initUsername =  customerName;
-        }else{
+        } else{
             initUsername = validateResult ? username : '';
         }
         return initUsername;

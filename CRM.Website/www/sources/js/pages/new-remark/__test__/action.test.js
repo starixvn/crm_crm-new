@@ -12,7 +12,6 @@ import {
     setOpenEditPopup,
     setEditResult,
     setOpenConfirmDelete,
-    setOpenDeletePopup,
     setCreateResult,
     setValidateResult,
     setInputAddUsername,
