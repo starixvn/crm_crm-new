@@ -62,7 +62,7 @@
                 }
             };
             var controller = GetController();
-            settingService.GetSettingAsync().Returns(allSettings);
+            settingService.GetMainSettingAsync().Returns(allSettings);
 
             // Act
             var result = await controller.GetMainSettings();
