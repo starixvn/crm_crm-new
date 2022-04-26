@@ -1,7 +1,7 @@
 import React from 'react';
 import { DataGrid } from '../DataGrid';
-import { HeaderCell, HeaderRow, Row, Cell } from '@jsroot/components/react-grid/index';
-import { shallow, mount } from 'enzyme';
+import { HeaderCell, HeaderRow } from '@jsroot/components/react-grid/index';
+import { shallow } from 'enzyme';
 
 describe('DataGrid', () => {
     afterAll(() => {
@@ -467,5 +467,17 @@ describe('DataGrid', () => {
         row.find('span').at(3).simulate('click');
         // Assert
         expect(container.handleExportExcel).toHaveBeenCalled();
+    });
+
+    it('click handleToggleRow call exact function ', () => {
+        // Arrange
+        const container = shallow(<DataGrid {...props} />).instance();
+        container.handleToggleRow =jest.fn();
+        // Act
+        const rows = container.renderMainCategoryRows(props.mainReports.ibcReport.mainCategories[0],props.mainReports.ibcReport.communicationColumns,'mbc')[0];
+        const row = shallow(rows);
+        row.find('.parent-level-0').at(0).simulate('click');
+        // Assert
+        expect(container.handleToggleRow).toHaveBeenCalled();
     });
 });
