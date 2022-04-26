@@ -31,8 +31,7 @@ export class AppContainer extends Component {
     handleCloseAddPopup = () => {
         this.props.setOpenCreatePopup({ show: false });
         this.props.setCreateResult(null);
-        this.props.setValidateResult({isSuccessful: false});
-        this.props.setInputAddUsername('');
+        this.props.setValidateResult(null);
     };
 
     handleCreateSuccess = () => {

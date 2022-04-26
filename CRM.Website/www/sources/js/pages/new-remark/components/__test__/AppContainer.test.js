@@ -41,7 +41,6 @@ describe('AppContainer', () => {
                 setOpenCreatePopup: jest.fn(),
                 setCreateResult: jest.fn(),
                 setValidateResult: jest.fn(),
-                setInputAddUsername: jest.fn()
             };
 
             // Act
@@ -51,8 +50,7 @@ describe('AppContainer', () => {
             // Assert
             expect(props.setOpenCreatePopup).toHaveBeenCalledWith({ show: false });
             expect(props.setCreateResult).toHaveBeenCalledWith(null);
-            expect(props.setValidateResult).toHaveBeenCalledWith({isSuccessful: false});
-            expect(props.setInputAddUsername).toHaveBeenCalledWith('');
+            expect(props.setValidateResult).toHaveBeenCalledWith(null);
         });
     });
 

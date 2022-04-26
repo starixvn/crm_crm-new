@@ -32,8 +32,7 @@ describe('connect ', () => {
             gridParams: {pageIndex: 1, pageSize: 100, username: '', isGuest: false},
             remarkTitles: [{id: 0, name: null, settingId: 70000, settingName: "RemarkTitles", settingValue: "Internal Request"}],
             validateResult: { isSuccessful: false},
-            createResult: { isSuccessful: false},
-            inputAddUsername: { username: 'test' }
+            createResult: { isSuccessful: false}
         };
         const state = {
             allSettings:{ 
@@ -44,8 +43,7 @@ describe('connect ', () => {
             gridParams: {pageIndex: 1, pageSize: 100, username: '', isGuest: false},
             remarkTitles: [{id: 0, name: null, settingId: 70000, settingName: "RemarkTitles", settingValue: "Internal Request"}],
             validateResult: { isSuccessful: false},
-            createResult: { isSuccessful: false},
-            inputAddUsername: { username: 'test' }
+            createResult: { isSuccessful: false}
         };
 
         // Act

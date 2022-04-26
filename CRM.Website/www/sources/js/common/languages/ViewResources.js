@@ -432,6 +432,7 @@
     UsernameInvalid: 'Username is invalid',
     UpdatedBy: 'Updated By',
     UsernameIsChanged: 'Username is changed, please validate first before save',
+    UsernameIsNotValid: 'Username is invalid',
     Verify: 'Verify',
     VerifyCustomerInfo: 'Verify Customer Info',
     VerifyListOfUsernameBeforeInsertSetting: 'You must verify the list of usernames before inserting this setting!',

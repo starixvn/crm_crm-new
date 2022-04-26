@@ -30,7 +30,7 @@
         }
 
         tbody tr td{
-            word-break: break-all;
+            word-break: break-word;
         }
     }
 }
@@ -74,13 +74,32 @@
         }
 
         .validShow {
-            padding-left: 5px;
+            padding-left: 10px;
             border-left: 18px solid #008000;
         }
         
         .invalidShow {
-            padding-left: 5px;
+            padding-left: 10px;
             border-left: 18px solid #FF0000;
+        }
+
+        .txt-valid, .txt-invalid {
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .txt-valid {
+            color: #008000;
+        }
+        
+        .txt-invalid {
+            color: #FF0000;
+        }
+
+        .form-group-customer{
+            border: 1px solid #ced4da;
+            width: 537px;
+            padding: 10px;
         }
     }
 }

@@ -92,7 +92,6 @@ export class Filter extends Component {
                 break;
             case DateType.ThisWeek:
                 fromDate = new Date(DateTimeService.firstDayOfWeek(date));
-                toDate = new Date(DateTimeService.lastDayOfWeek(date));
                 break;
             case DateType.LastWeek:
                 fromDate = new Date(DateTimeService.firstDayOfLastWeek(date));

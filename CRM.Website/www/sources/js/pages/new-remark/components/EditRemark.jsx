@@ -110,7 +110,7 @@ export class EditRemark extends Component {
                         <RemarkInfo
                             touched = {touched} errors={errors} values = {values}
                             handleChange = {handleChange} remarkTitles = {remarkTitles} setFieldValue = {setFieldValue}
-                            relatedPicsOption = {this.state.relatedPicsOption} allSettings = {allSettings} isDisabled={false}
+                            relatedPicsOption = {this.state.relatedPicsOption} allSettings = {allSettings} isValidCustomer
                         />
                     }
                     <Form.Group as={Row}>

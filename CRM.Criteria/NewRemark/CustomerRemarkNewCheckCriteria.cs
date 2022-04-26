@@ -1,8 +1,9 @@
 ﻿namespace CRM.Criteria.NewRemark
 {
     using CRM.Core.Constants;
-    using CRM.Core.Models;
-    public class CustomerRemarkNewCheckCommand : BaseNonQueryCommand
+    using Fanex.Data.Repository;
+
+    public class CustomerRemarkNewCheckCriteria : CriteriaBase
     {
         public int UserRole { get; } = Constants.UserRole;
         public string Username { get; set; }

@@ -10,6 +10,7 @@
     using CRM.Core.Models;
     using CRM.Criteria.Common;
     using CRM.Criteria.NewRemark;
+    using CRM.Models.Customer;
     using CRM.Models.RemarkNew;
     using CRM.Models.Setting;
     using CRM.Services;
@@ -119,19 +120,19 @@
         public async Task ValidateUsername_WhenCalled_ReturnExpectedCommandResult()
         {
             var fixture = new Fixture();
-            var commandResult = fixture.Create<CommandResult> ();
-            var criteria = fixture.Create<CustomerRemarkNewCheckCommand>();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>> ();
+            var criteria = fixture.Create<CustomerRemarkNewCheckCriteria>();
 
             var controller = GetController();
 
-            remarkService.ValidateUsernameAsyn(Arg.Any<CustomerRemarkNewCheckCommand>()).Returns(commandResult);
+            remarkService.ValidateUsernameAsyn(Arg.Any<CustomerRemarkNewCheckCriteria>()).Returns(relatedCustomers);
 
             // Act
             var actual = await controller.ValidateUsername(criteria);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(commandResult, jsonResult.Value);
+            Assert.Equal(relatedCustomers, jsonResult.Value);
         }
 
         [Fact]

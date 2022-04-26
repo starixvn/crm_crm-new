@@ -8,6 +8,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.NewRemark;
     using CRM.Criteria.Remark;
+    using CRM.Models.Customer;
     using CRM.Models.Remark;
     using CRM.Models.RemarkNew;
     using CRM.Repositories;
@@ -20,7 +21,7 @@
 
         Task<IEnumerable<RemarkNewInfo>> GetNewRemarkAsync(GetNewRemarkCriteria criteria);
 
-        Task<CommandResult> ValidateUsernameAsyn(CustomerRemarkNewCheckCommand command);
+        Task<IEnumerable<RelatedCustomer>> ValidateUsernameAsyn(CustomerRemarkNewCheckCriteria command);
 
         Task<IEnumerable<RemarkNewHistory>> GetCustomerNewRemarkHistoryAsync(GetCustomerRemarkNewHistoryCriteria criteria);
 
@@ -87,10 +88,9 @@
             return newRemarks;
         }
 
-        public async Task<CommandResult> ValidateUsernameAsyn(CustomerRemarkNewCheckCommand command)
+        public async Task<IEnumerable<RelatedCustomer>> ValidateUsernameAsyn(CustomerRemarkNewCheckCriteria command)
         {
-            var commandResult = await baseService.ExecuteNonQueryAsync(command);
-            return commandResult;
+            return await baseService.GetDataAsync<RelatedCustomer>(command);
         }
 
         public async Task<IEnumerable<RemarkNewHistory>> GetCustomerNewRemarkHistoryAsync(GetCustomerRemarkNewHistoryCriteria criteria)

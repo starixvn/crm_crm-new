@@ -16,7 +16,7 @@ export default class RemarkInfo extends Component {
 
   render() {
     const { touched, errors, values, handleChange, setFieldValue,
-            remarkTitles, relatedPicsOption, allSettings, isDisabled } = this.props;
+            remarkTitles, relatedPicsOption, allSettings, isValidCustomer } = this.props;
             
     const userOptions = allSettings.users.map(item => {
         return {
@@ -45,7 +45,7 @@ export default class RemarkInfo extends Component {
                     <Form.Control as="select" size="sm" className="shadow-none"
                         isInvalid={touched.remarkTitle && errors.remarkTitle}
                         name="remarkTitle" id="remarkTitle"
-                        disabled={isDisabled}
+                        disabled={!isValidCustomer}
                         onChange={handleChange}
                         value={values.remarkTitle}
                     >
@@ -62,7 +62,7 @@ export default class RemarkInfo extends Component {
                     <MultipleSelect
                         id="relatedToPICs"
                         name="relatedToPICs"
-                        isDisable={isDisabled}
+                        isDisable={!isValidCustomer}
                         keyField='id'
                         isAllTextShown
                         hasSearchBox
@@ -157,7 +157,7 @@ export default class RemarkInfo extends Component {
                         {LangHelper.getResource('RemarkContent')}
                 </Form.Label>
             </Form.Group>
-            <div className={isDisabled ? 'disable-content' : ''}>
+            <div className={!isValidCustomer ? 'disable-content' : ''}>
                 <CkEditor
                     name='remarkContent'
                     isInvalid={touched.remarkContent && errors.remarkContent}

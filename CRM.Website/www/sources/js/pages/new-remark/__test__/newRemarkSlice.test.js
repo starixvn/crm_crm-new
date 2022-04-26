@@ -9,7 +9,6 @@ import newRemark, {
     setOpenConfirmDelete,
     setCreateResult,
     setValidateResult,
-    setInputAddUsername,
     setRemarksHistory,
     setShowHistory,
     setHistoryGridParams
@@ -28,8 +27,7 @@ describe('remarkSlice reducer', () => {
             popupDeleteConfirm: { show: false, id: null },
             deleteResult: null,
             createResult: null,
-            validateResult: {isSuccessful: false},
-            inputAddUsername: '',
+            validateResult: null,
             remarksHistory: null,
             showHistory: {show: false},
             historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''}
@@ -175,27 +173,6 @@ describe('remarkSlice reducer', () => {
         });
     });
 
-    it('should handle setInputAddUsername', () => {
-        expect(
-            newRemark({}, {
-                type: setInputAddUsername.type,
-                payload: 'test'
-            })
-        ).toEqual({
-            inputAddUsername: 'test'
-        });
-    });
-
-    it('should handle setInputAddUsername', () => {
-        expect(
-            newRemark({}, {
-                type: setInputAddUsername.type,
-                payload: 'test'
-            })
-        ).toEqual({
-            inputAddUsername: 'test'
-        });
-    });
 
     it('should handle setRemarksHistory', () => {
         expect(

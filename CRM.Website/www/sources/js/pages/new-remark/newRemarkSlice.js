@@ -13,7 +13,7 @@ const newRemarkSlice = createSlice({
         popupDeleteConfirm: { show: false, id: null },
         deleteResult: null,
         createResult: null,
-        validateResult: {isSuccessful: false},
+        validateResult: null,
         remarksHistory: null,
         showHistory: {show: false},
         historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''}

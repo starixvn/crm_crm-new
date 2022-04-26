@@ -84,10 +84,10 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> ValidateUsername([FromBody] CustomerRemarkNewCheckCommand command)
+        public async Task<IActionResult> ValidateUsername([FromBody] CustomerRemarkNewCheckCriteria command)
         {
-            CommandResult commandResult = await remarkService.ValidateUsernameAsyn(command);
-            return Json(commandResult);
+            var relatedCustomers = await remarkService.ValidateUsernameAsyn(command);
+            return Json(relatedCustomers);
         }
 
         [HttpPost]

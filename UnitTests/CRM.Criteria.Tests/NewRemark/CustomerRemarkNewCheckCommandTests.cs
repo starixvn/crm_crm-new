@@ -9,7 +9,7 @@
         public void GetSettingKey_ReturnCorrectSettingKey()
         {
             // Arrange
-            var criteria = new CustomerRemarkNewCheckCommand();
+            var criteria = new CustomerRemarkNewCheckCriteria();
             var expected = "Acc_CRM_CustomerRemarkNewCheck";
 
             // Act
@@ -23,7 +23,7 @@
         public void IsValid_ParamsAreInvalid_ReturnFalse()
         {
             // Arrange
-            var criteria = new CustomerRemarkNewCheckCommand
+            var criteria = new CustomerRemarkNewCheckCriteria
             {
                Username = ""
             };
@@ -38,7 +38,7 @@
         public void IsValid_ParamsArevalid_ReturnTrue()
         {
             // Arrange
-            var criteria = new CustomerRemarkNewCheckCommand
+            var criteria = new CustomerRemarkNewCheckCriteria
             {
                 Username = "test"
             };

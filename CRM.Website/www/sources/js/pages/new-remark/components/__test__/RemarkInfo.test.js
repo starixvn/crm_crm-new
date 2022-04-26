@@ -1,10 +1,11 @@
 import React from 'react';
 import RemarkInfo from '../RemarkInfo';
 import { shallow } from 'enzyme';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import CkEditor from '@jsroot/components/ckeditor/index';
+import Select from '@jsroot/components/CustomReactSelect';
 
 describe('RemarkInfo', () => {
     beforeAll(() => {
@@ -41,20 +42,60 @@ describe('RemarkInfo', () => {
         isValidUsername : false
     };
 
+    describe('handleChangeSelect ', () => {
+        it('should call exactly functions when name is not empty', () => {
+            // Arrange
+            const container = shallow(<RemarkInfo  {...initProps}/>).instance();
+            // Act
+            container.handleChangeSelect({value: 'value'}, initProps.setFieldValue, 'test');
+            // Assert
+            expect(initProps.setFieldValue).toHaveBeenCalledWith('test', 'value');
+        });
+    });
+
+    describe('handleChangeSelect ', () => {
+        it('should call exactly functions when name is empty', () => {
+            // Arrange
+            const container = shallow(<RemarkInfo  {...initProps}/>).instance();
+            // Act
+            container.handleChangeSelect(null, initProps.setFieldValue, 'test');
+            // Assert
+            expect(initProps.setFieldValue).toHaveBeenCalledWith('test', '');
+        });
+    });
+
     describe('render', () => {
-        it.each([
-            0,
-            2,
-            3,
-            4,
-            5
-          ])('should call exactly functions when change form control at  %s', (number) => {
+        it('should call exactly functions when change remark title', () => {
             // Arrange
             const container = shallow(<RemarkInfo  {...initProps}/>);
             // Act
-            container.find(Form.Control).at(number).simulate('change');
+            container.find(Form.Control).at(0).simulate('change');
             // Assert
             expect(initProps.handleChange).toHaveBeenCalled();
+        });
+
+        it('should call exactly functions when change requested by', () => {
+            // Arrange
+            const container = shallow(<RemarkInfo  {...initProps}/>);
+            // Act
+            container.find(Form.Control).at(1).simulate('change');
+            // Assert
+            expect(initProps.handleChange).toHaveBeenCalled();
+        });
+
+        it.each([
+            0,
+            1,
+            2,
+            3
+          ])("should call exactly functions when change select at '%s'", (number) => {
+            // Arrange
+            const container = shallow(<RemarkInfo  {...initProps}/>);
+            container.instance().handleChangeSelect = jest.fn();
+            // Act
+            container.find(Select).at(number).simulate('change');
+            // Assert
+            expect(container.instance().handleChangeSelect).toHaveBeenCalled();
         });
 
         it('should call exactly functions when change MultipleSelect', () => {
