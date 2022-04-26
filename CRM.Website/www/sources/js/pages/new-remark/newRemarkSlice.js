@@ -14,7 +14,6 @@ const newRemarkSlice = createSlice({
         deleteResult: null,
         createResult: null,
         validateResult: {isSuccessful: false},
-        inputAddUsername: '',
         remarksHistory: null,
         showHistory: {show: false},
         historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''}
@@ -50,9 +49,6 @@ const newRemarkSlice = createSlice({
         setValidateResult: (state, action) => {
             state.validateResult = action.payload;
         },
-        setInputAddUsername: (state, action) => {
-            state.inputAddUsername = action.payload;
-        },
         setRemarksHistory: (state, action) => {
             state.remarksHistory = action.payload;
         },
@@ -78,7 +74,6 @@ export const {
     setOpenConfirmDelete,
     setCreateResult,
     setValidateResult,
-    setInputAddUsername,
     setRemarksHistory,
     setShowHistory,
     setHistoryGridParams

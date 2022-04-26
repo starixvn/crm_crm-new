@@ -31,7 +31,7 @@ export class Filter extends Component {
             isShowHeadline: isCustomerNotEmpty ? true : false,
             relatedToPICs: '',
             fromDate: isCustomerNotEmpty ? new Date(2021, 1, 1) :this.firstDateOfMonth,
-            toDate: isCustomerNotEmpty ? currentDate : this.firstDateOfMonth,
+            toDate: currentDate,
             remarkTitleOptions: [],
             remarkTitleIds: '',
             dateTypeSelect: isCustomerNotEmpty ? 7 : 4
@@ -82,32 +82,38 @@ export class Filter extends Component {
 
     handleChangeDateType = evt => {
         const value = parseInt(evt.target.value, 10);
-        let date = this.currentDate;
+        const date = this.currentDate;
+        let fromDate = this.currentDate;
+        let toDate = this.currentDate;
         switch(value){
             case DateType.Yesterday:
-                date = new Date(DateTimeService.yesterday(date));
+                fromDate = new Date(DateTimeService.yesterday(date));
+                toDate = new Date(DateTimeService.yesterday(date));
                 break;
             case DateType.ThisWeek:
-                date = new Date(DateTimeService.firstDayOfWeek(date));
+                fromDate = new Date(DateTimeService.firstDayOfWeek(date));
+                toDate = new Date(DateTimeService.lastDayOfWeek(date));
                 break;
             case DateType.LastWeek:
-                date = new Date(DateTimeService.firstDayOfLastWeek(date));
+                fromDate = new Date(DateTimeService.firstDayOfLastWeek(date));
+                toDate = new Date(DateTimeService.LastDayOfLastWeek(date));
                 break;
             case DateType.ThisMonth:
-                date = this.firstDateOfMonth;
+                fromDate = this.firstDateOfMonth;
                 break;
             case DateType.LastMonth:
-                date = new Date(DateTimeService.firstDayOfLastMonth(date));
+                fromDate = new Date(DateTimeService.firstDayOfLastMonth(date));
+                toDate = new Date(DateTimeService.lastDayOfLastMonth(date));
                 break;
             case DateType.ThisYear:
-                date = new Date(DateTimeService.firstDayOfYear(date));
+                fromDate = new Date(DateTimeService.firstDayOfYear(date));
                 break;
             default:
                 break;
         }
         this.setState({
-            fromDate: date,
-            toDate: date,
+            fromDate: fromDate,
+            toDate: toDate,
             dateTypeSelect : evt.target.value
         });
     };
@@ -207,7 +213,7 @@ export class Filter extends Component {
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group style={{width: 700}}>
                         <Form.Label htmlFor="userName">
-                            {LangHelper.getResource('UserName')}
+                            {LangHelper.getResource('Username')}
                         </Form.Label>
                         <Form.Control size="sm" type="text"
                             name="userName" id="userName"

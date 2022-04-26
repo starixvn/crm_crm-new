@@ -11,7 +11,6 @@ import {
     setOpenConfirmDelete,
     setCreateResult,
     setValidateResult,
-    setInputAddUsername,
     setRemarksHistory,
     setShowHistory,
     setHistoryGridParams
@@ -94,7 +93,6 @@ export const ActionCreators = {
     setCreateResult,
     setOpenConfirmDelete,
     setValidateResult,
-    setInputAddUsername,
     setRemarksHistory,
     getNewRemarkHistory,
     setShowHistory,

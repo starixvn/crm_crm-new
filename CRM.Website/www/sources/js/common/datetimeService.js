@@ -30,8 +30,16 @@ export default class DateTimeService {
         return moment(date).subtract(1, 'weeks').startOf('week');
     }
 
+    static LastDayOfLastWeek(date) {
+        return moment(date).subtract(1, 'weeks').endOf('week');
+    }
+
     static firstDayOfLastMonth(date) {
         return moment(date).subtract(1, 'months').startOf('months');
+    }
+
+    static lastDayOfLastMonth(date) {
+        return moment(date).subtract(1, 'months').endOf('months');
     }
 
     static firstDayOfYear(date) {

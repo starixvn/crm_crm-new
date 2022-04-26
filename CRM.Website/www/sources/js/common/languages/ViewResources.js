@@ -428,7 +428,7 @@
     UpdateSetting: 'Update Setting',
     UpdatedTime: 'Updated Time',
     UpdateMultipleLogsSuccessfully: 'Update multiple logs successfully!',
-    Username: 'User name',
+    Username: 'Username',
     UsernameInvalid: 'Username is invalid',
     UpdatedBy: 'Updated By',
     UsernameIsChanged: 'Username is changed, please validate first before save',

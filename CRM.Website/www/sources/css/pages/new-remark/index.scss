@@ -11,6 +11,7 @@
 @import '../../components/forms';
 @import '../../components/ckeditor';
 
+
 .form-filter {
     min-width: 960px;
     
@@ -49,15 +50,37 @@
     text-align: left;
 }
 
-.new-remark-modal{
+.new-remark-modal, .edit-remark-modal{
     .modal-lg, .modal-xl {
         max-width: 900px;
+
+        .col-form-label{
+            width: 125px;
+        }
+
+        .small-label-width{
+            width: 100px !important;
+        }
+
+        .width-multiple-select{
+            width: 735px;
+        }
 
         .disable-content .ckeditor-container{
             background-color: #e9ecef;
             opacity: 0.6;
             cursor: not-allowed;
             pointer-events:none;
+        }
+
+        .validShow {
+            padding-left: 5px;
+            border-left: 18px solid #008000;
+        }
+        
+        .invalidShow {
+            padding-left: 5px;
+            border-left: 18px solid #FF0000;
         }
     }
 }

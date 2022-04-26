@@ -1,42 +1,68 @@
 import React, { Component, Fragment } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Form, Row } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import CkEditor from '@jsroot/components/ckeditor/index';
+import Select from '@jsroot/components/CustomReactSelect';
 
 export default class RemarkInfo extends Component {
+    handleChangeSelect = (value, setFieldValue, name) =>{
+      if(value !== null){
+        setFieldValue(name, value.value);
+      }else{
+        setFieldValue(name, '');
+      }
+  }
+
   render() {
     const { touched, errors, values, handleChange, setFieldValue,
-            remarkTitles, relatedPicsOption, allSettings, isValidUsername } = this.props;
+            remarkTitles, relatedPicsOption, allSettings, isDisabled } = this.props;
+            
+    const userOptions = allSettings.users.map(item => {
+        return {
+            value: item.userId,
+            label: item.username
+        };
+    });
+    const extentionOptions = allSettings.extentions.map(item => {
+        return {
+            value: item.id,
+            label: item.value
+        };
+    });
+    const approvedByDefault = userOptions.filter(x=> x.value === parseInt(values.approvedBy, 10));
+    const handledByDefault = userOptions.filter(x=> x.value === parseInt(values.handledBy, 10));
+    const acknowledgedByDefault = userOptions.filter(x=> x.value === parseInt(values.acknowledgedBy, 10));
+    const extentionDefault = extentionOptions.filter(x=> x.value === parseInt(values.extStation, 10));
 
     return (
       <Fragment>
           <Form.Group as={Row}>
-                <Form.Label column sm="2" md="2" className="required" htmlFor="remarkTitle">
+                <Form.Label className='pr-4 ml-4 col-form-label required' htmlFor="remarkTitle">
                     {LangHelper.getResource('RemarkTitle')}
                 </Form.Label>
-                <Col sm="10" md="10">
+                <div className='width-multiple-select'>
                     <Form.Control as="select" size="sm" className="shadow-none"
                         isInvalid={touched.remarkTitle && errors.remarkTitle}
                         name="remarkTitle" id="remarkTitle"
-                        disabled={!isValidUsername}
+                        disabled={isDisabled}
                         onChange={handleChange}
                         value={values.remarkTitle}
                     >
                         <option value="">{LangHelper.getResource('PleaseSelect')}</option>
                         {remarkTitles.map((value, key) => <option key={key} value={value.settingId}>{value.settingValue}</option>)}
                     </Form.Control>
-                </Col>
+                </div>
             </Form.Group>
             <Form.Group as={Row}>
-                <Form.Label column sm="2" md="2" htmlFor="relatedToPICs">
+                <Form.Label htmlFor="relatedToPICs" className='pr-4 ml-4 col-form-label'>
                     {LangHelper.getResource('RelatedToPICs')}
                 </Form.Label>
-                <Col sm="10" md="10">
+                <div className='width-multiple-select'>
                     <MultipleSelect
                         id="relatedToPICs"
                         name="relatedToPICs"
-                        isDisable={!isValidUsername}
+                        isDisable={isDisabled}
                         keyField='id'
                         isAllTextShown
                         hasSearchBox
@@ -47,13 +73,13 @@ export default class RemarkInfo extends Component {
                             handleChange('relatedPics', selectedItemsKey);
                         }}
                     />
-                </Col>
+                </div>
             </Form.Group>
             <Form.Group as={Row}>
-                <Form.Label column sm="2" md="2" htmlFor="requestedBy">
+                <Form.Label className='pr-4 ml-4 col-form-label' htmlFor="requestedBy">
                     {LangHelper.getResource('RequestedBy')}
                 </Form.Label>
-                <Col sm="2" md="2">
+                <div style={{width: 150, marginRight: 26}}>
                     <Form.Control size="sm" type="text"
                         name="requestedBy" id="requestedBy"
                         className='shadow-none'
@@ -62,72 +88,76 @@ export default class RemarkInfo extends Component {
                         isInvalid={touched.requestedBy && errors.requestedBy}
                         onChange={handleChange}
                     />
-                </Col>
-                <Form.Label column sm="2" md="2" htmlFor="approvedBy">
+                </div>
+                <Form.Label htmlFor="approvedBy" className='pr-2 ml-2 col-form-label small-label-width'>
                     {LangHelper.getResource('ApprovedBy')}
                 </Form.Label>
-                <Col sm="2" md="2">
-                    <Form.Control as="select" size="sm" className="shadow-none"
-                        isInvalid={touched.approvedBy && errors.approvedBy}
-                        name="approvedBy" id="approvedBy"
-                        onChange={handleChange}
-                        value={values.approvedBy}
-                    >
-                        <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                        {allSettings.users.map((value, key) => <option key={key} value={value.userId}>{value.username}</option>)}
-                    </Form.Control>
-                </Col>
-                <Form.Label column sm="2" md="2" htmlFor="acknowledgedBy">
+                <div style={{width: 150, marginRight: 26}}>
+                    <Select
+                        placeholder={LangHelper.getResource('PleaseSelect')}
+                        isClearable
+                        isSearchable
+                        defaultValue={approvedByDefault}
+                        noOptionsMessage={() => 'No results found'}
+                        onChange={value => this.handleChangeSelect(value, setFieldValue, 'approvedBy')}
+                        options={userOptions}
+                        value={values.userId}
+                    />
+                </div>
+                <Form.Label htmlFor="acknowledgedBy" className='pr-2 col-form-label'>
                     {LangHelper.getResource('AcknowledgedBy')}
                 </Form.Label>
-                <Col sm="2" md="2">
-                    <Form.Control as="select" size="sm" className="shadow-none"
-                        isInvalid={touched.acknowledgedBy && errors.acknowledgedBy}
-                        onChange={handleChange}
-                        name="acknowledgedBy" id="acknowledgedBy"
-                        value={values.acknowledgedBy}
-                    >
-                        <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                        {allSettings.users.map((value, key) => <option key={key} value={value.userId}>{value.username}</option>)}
-                    </Form.Control>
-                </Col>
+                <div style={{width: 150}}>
+                    <Select
+                        placeholder={LangHelper.getResource('PleaseSelect')}
+                        isClearable
+                        isSearchable
+                        defaultValue={acknowledgedByDefault}
+                        noOptionsMessage={() => 'No results found'}
+                        onChange={value => this.handleChangeSelect(value, setFieldValue, 'acknowledgedBy')}
+                        options={userOptions}
+                        value={values.userId}
+                    />
+                </div>
             </Form.Group>
             <Form.Group as={Row}>
-                <Form.Label column sm="2" md="2" htmlFor="handledBy">
+                <Form.Label className='pr-4 ml-4 col-form-label' htmlFor="handledBy">
                     {LangHelper.getResource('HandledBy')}
                 </Form.Label>
-                <Col sm="2" md="2">
-                <Form.Control as="select" size="sm" className="shadow-none"
-                    isInvalid={touched.handledBy && errors.handledBy}
-                    name="handledBy" id="handledBy"
-                    onChange={handleChange}
-                    value={values.handledBy}
-                >
-                    <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                    {allSettings.users.map((value, key) => <option key={key} value={value.userId}>{value.username}</option>)}
-                </Form.Control>
-                </Col>
-                <Form.Label column sm="2" md="2" htmlFor="extStation">
+                <div style={{width: 150, marginRight: 26}}>
+                    <Select
+                        placeholder={LangHelper.getResource('PleaseSelect')}
+                        isClearable
+                        isSearchable
+                        defaultValue={handledByDefault}
+                        noOptionsMessage={() => 'No results found'}
+                        onChange={value => this.handleChangeSelect(value, setFieldValue, 'handledBy')}
+                        options={userOptions}
+                        value={values.userId}
+                    />
+                </div>
+                <Form.Label className='pr-2 ml-2 col-form-label small-label-width' htmlFor="extStation">
                     {LangHelper.getResource('ExtStation')}
                 </Form.Label>
-                <Col sm="2" md="2">
-                    <Form.Control as="select" size="sm" className="shadow-none"
-                        isInvalid={touched.extStation && errors.extStation}
-                        name="extStation" id="extStation"
-                        onChange={handleChange}
-                        value={values.extStation}
-                    >
-                        <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                        {allSettings.extentions.map((value, key) => <option key={key} value={value.id}>{value.value}</option>)}
-                    </Form.Control>
-                </Col>
+                <div style={{width: 150}}>
+                    <Select
+                        placeholder={LangHelper.getResource('PleaseSelect')}
+                        isClearable
+                        isSearchable
+                        defaultValue={extentionDefault}
+                        noOptionsMessage={() => 'No results found'}
+                        onChange={value => this.handleChangeSelect(value, setFieldValue, 'extStation')}
+                        options={extentionOptions}
+                        value={values.id}
+                    />
+                </div>
             </Form.Group>
             <Form.Group as={Row}>
-                <Form.Label column sm="12" md="12" className="required">
+                <Form.Label className='pr-4 ml-4 col-form-label required'>
                         {LangHelper.getResource('RemarkContent')}
                 </Form.Label>
             </Form.Group>
-            <div className={!isValidUsername ? 'disable-content' : ''}>
+            <div className={isDisabled ? 'disable-content' : ''}>
                 <CkEditor
                     name='remarkContent'
                     isInvalid={touched.remarkContent && errors.remarkContent}

@@ -20,20 +20,20 @@ export class DataGrid extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={8}>{LangHelper.getResource('ID')}</HeaderCell>
-                <HeaderCell colWidth={15} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('CreatedDate')}</HeaderCell>
+                <HeaderCell colWidth={11} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('CreatedDate')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Creator')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Headline')}</HeaderCell>
                 <HeaderCell colWidth={15} sortOrder='desc' sortBy='userName'>{LangHelper.getResource('Username')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('RemarkTitle')}</HeaderCell>
-                <HeaderCell colWidth={35}>{LangHelper.getResource('RemarkContent')}</HeaderCell>
+                <HeaderCell colWidth={45}>{LangHelper.getResource('RemarkContent')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('RelatedTo')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedBy')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('LastUpdate')}</HeaderCell>
+                <HeaderCell colWidth={11}>{LangHelper.getResource('LastUpdate')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Requester')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Approver')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Acknowledger')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('History')}</HeaderCell>
+                <HeaderCell colWidth={8}>{LangHelper.getResource('History')}</HeaderCell>
                 {
                     isHost && <HeaderCell colWidth={8}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
