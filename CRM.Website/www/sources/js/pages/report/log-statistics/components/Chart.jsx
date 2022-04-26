@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import {
   BarChart,
   XAxis,
@@ -12,7 +12,7 @@ import { getBackGroundColor } from '@jsroot/common/shareScripts';
 import {Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 
-export default class Chart extends PureComponent {
+export class Chart extends Component {
     renderChart = report => {
         const mainCategories = report.mainCategories.map((item, index) => ({
             index: index,
@@ -69,3 +69,6 @@ export default class Chart extends PureComponent {
         );
     }
 }
+
+export default Chart;
+
