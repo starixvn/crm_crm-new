@@ -163,7 +163,7 @@ describe('NewRemark', () => {
                 username: LangHelper.getResource('UsernameIsChanged')
             };
 
-            const props = {...initProps, validateResult: null};
+            const props = {...initProps, validateResult: null, customerName: ''};
 
             const container = shallow(<NewRemark {...props} />);
             container.instance().setState(state);

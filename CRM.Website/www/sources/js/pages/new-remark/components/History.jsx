@@ -148,6 +148,8 @@ export class History extends Component {
             TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
+
+        const width = document.getElementById('app-container').clientWidth < 1589 ? 1589 : document.getElementById('app-container').clientWidth - 300;
         return (
             <div>
                 <div className='pb-2 link-click'  onClick={() => this.handleGoBack()}>
@@ -159,7 +161,7 @@ export class History extends Component {
                         this.renderHistorySection()
                     }
                     <Table
-                        width={document.getElementById('app-container').clientWidth - 300}
+                        width={width}
                         header={this.buildHeader()}
                         body={this.buildBody()}
                         autoWidth={false}

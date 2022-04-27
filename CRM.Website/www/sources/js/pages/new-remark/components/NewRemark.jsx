@@ -72,7 +72,7 @@ export class NewRemark extends Component {
             errors.username = LangHelper.getResource('UsernameIsNotValid');
         }
 
-        if(values.username !== '' && this.props.validateResult === null){
+        if(values.username !== '' && this.props.validateResult === null && this.props.customerName === ''){
             errors.username = LangHelper.getResource('UsernameIsChanged');
         }
 
