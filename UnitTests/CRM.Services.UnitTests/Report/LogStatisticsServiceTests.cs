@@ -12,6 +12,7 @@
     using CRM.Models.Report.LogStatistics;
     using CRM.Resources;
     using NSubstitute;
+    using Xunit;
 
     public class LogStatisticsServiceTests
     {
