@@ -61,6 +61,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        public static string Accept {
+            get {
+                return ResourceManager.GetString("Accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ActionLog.
         /// </summary>
         public static string ActionLog {
@@ -525,6 +534,15 @@ namespace CRM.Resources {
         public static string Grand_Total {
             get {
                 return ResourceManager.GetString("Grand_Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grand Total.
+        /// </summary>
+        public static string GrandTotal {
+            get {
+                return ResourceManager.GetString("GrandTotal", resourceCulture);
             }
         }
         
@@ -1051,6 +1069,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reject.
+        /// </summary>
+        public static string Reject {
+            get {
+                return ResourceManager.GetString("Reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remark.
         /// </summary>
         public static string Remark {
@@ -1272,6 +1299,33 @@ namespace CRM.Resources {
         public static string UpdateInformHeadlines {
             get {
                 return ResourceManager.GetString("UpdateInformHeadlines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Void/Refund.
+        /// </summary>
+        public static string VoidRefund {
+            get {
+                return ResourceManager.GetString("VoidRefund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wagers_Related_Report_{0}.
+        /// </summary>
+        public static string WagerReportExcelName {
+            get {
+                return ResourceManager.GetString("WagerReportExcelName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WAGER ACCEPT, REJECT, VOID/REDUND FOR YEAR {0}.
+        /// </summary>
+        public static string WagerReportTitle {
+            get {
+                return ResourceManager.GetString("WagerReportTitle", resourceCulture);
             }
         }
         

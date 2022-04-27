@@ -540,4 +540,22 @@
   <data name="FileNameDirectReport" xml:space="preserve">
     <value>Direct_Customer_Report</value>
   </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="VoidRefund" xml:space="preserve">
+    <value>Void/Refund</value>
+  </data>
+  <data name="GrandTotal" xml:space="preserve">
+    <value>Grand Total</value>
+  </data>
+  <data name="WagerReportExcelName" xml:space="preserve">
+    <value>Wagers_Related_Report_{0}</value>
+  </data>
+  <data name="WagerReportTitle" xml:space="preserve">
+    <value>WAGER ACCEPT, REJECT, VOID/REDUND FOR YEAR {0}</value>
+  </data>
 </root>
