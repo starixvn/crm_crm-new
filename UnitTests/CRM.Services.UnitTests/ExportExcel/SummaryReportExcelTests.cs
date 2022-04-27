@@ -1,13 +1,12 @@
-﻿using CRM.Models.Report.CategoriesSummaryReport;
-using CRM.Services.UnitTests.ExportExcel.TestableClasses;
-using NSubstitute;
-using OfficeOpenXml;
-using System.Collections.Generic;
-using System.Drawing;
-using Xunit;
-
-namespace CRM.Services.UnitTests.ExportExcel
+﻿namespace CRM.Services.UnitTests.ExportExcel
 {
+    using CRM.Models.Report.CategoriesSummaryReport;
+    using CRM.Services.UnitTests.ExportExcel.TestableClasses;
+    using NSubstitute;
+    using OfficeOpenXml;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using Xunit;
     public class SummaryReportExcelTests
     {
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();

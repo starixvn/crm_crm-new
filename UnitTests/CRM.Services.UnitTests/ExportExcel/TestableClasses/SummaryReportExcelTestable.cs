@@ -1,9 +1,8 @@
-﻿using CRM.Models.Report.CategoriesSummaryReport;
-using CRM.Services.ExportExcel;
-using OfficeOpenXml;
-
-namespace CRM.Services.UnitTests.ExportExcel.TestableClasses
+﻿namespace CRM.Services.UnitTests.ExportExcel.TestableClasses
 {
+    using CRM.Models.Report.CategoriesSummaryReport;
+    using CRM.Services.ExportExcel;
+    using OfficeOpenXml;
     public class SummaryReportExcelTestable : SummaryReportExcel
     {
         public SummaryReportExcelTestable(string templatePath, SummaryReportModel reportInfo, int year)
