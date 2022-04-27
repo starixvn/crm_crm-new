@@ -22,7 +22,7 @@ export class History extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={8}>{LangHelper.getResource('Version')}</HeaderCell>
-                <HeaderCell colWidth={18} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('DateOfUpdate')}</HeaderCell>
+                <HeaderCell colWidth={18} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('DateOfUpdateGM8')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedBy')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('RemarkTitle')}</HeaderCell>
                 <HeaderCell colWidth={35}>{LangHelper.getResource('RemarkContent')}</HeaderCell>

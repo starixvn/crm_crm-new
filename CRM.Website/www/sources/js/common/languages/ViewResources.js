@@ -108,7 +108,7 @@
     Done: 'Done',
     DoneBy: 'Done By',
     DeletedBy: 'Deleted By',
-    DateOfUpdate: 'Date of Update',	
+    DateOfUpdateGM8: 'Date of Update (GMT+8)',	
     Edit: 'Edit',
     EditedBy: 'Edited By',
     EditCommunicationLog: 'Edit Communication Log',

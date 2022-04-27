@@ -119,8 +119,12 @@
         public async Task<IActionResult> GetNewRemarkHistory([FromBody] GetCustomerRemarkNewHistoryCriteria criteria)
         {
 
-            var history = await remarkService.GetCustomerNewRemarkHistoryAsync(criteria);
-            return Json(new { data = history, totalItems = criteria.TotalRows });
+            var histories = await remarkService.GetCustomerNewRemarkHistoryAsync(criteria);
+            foreach(var history in histories)
+            {
+                history.LastUpdate = commonService.ConvertToClientDateTime(history.LastUpdate);
+            }
+            return Json(new { data = histories, totalItems = criteria.TotalRows });
         }
 
         [HttpPost]
