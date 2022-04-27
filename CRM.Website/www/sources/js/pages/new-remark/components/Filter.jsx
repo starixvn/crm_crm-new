@@ -159,7 +159,6 @@ export class Filter extends Component {
             isGuest: isGuestFiler,
             relatedPICs: relatedToPICs,
             showHeadline: isShowHeadline,
-            datePreset: dateTypeSelect,
             pageIndex: 1,
             pageSize: this.props.gridParams.pageSize
         };

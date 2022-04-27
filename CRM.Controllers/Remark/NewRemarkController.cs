@@ -78,7 +78,14 @@
 
         public async Task<IActionResult> GetNewRemarks([FromBody] GetNewRemarkCriteria criteria)
         {
+            criteria.Fromdate = commonService.ConvertToServerDateTime(criteria.Fromdate);
+            criteria.Todate = commonService.ConvertToServerDateTime(criteria.Todate);
             var newRemarks = await remarkService.GetNewRemarkAsync(criteria);
+            foreach(var remark in newRemarks)
+            {
+                remark.CreatedDate = commonService.ConvertToClientDateTime(remark.CreatedDate);
+                remark.LastUpdate = commonService.ConvertToClientDateTime(remark.LastUpdate);
+            }
             return Json(new{data = newRemarks, totalItems = criteria.TotalRows});
         }
 

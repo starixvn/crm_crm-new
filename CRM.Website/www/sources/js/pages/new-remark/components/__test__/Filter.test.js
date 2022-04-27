@@ -186,7 +186,6 @@ describe('Filter', () => {
                 isGuest: false, 
                 relatedPICs: '',
                 showHeadline: 'false',
-                datePreset: 7,
                 pageIndex: 1,
                 pageSize: 100
             };

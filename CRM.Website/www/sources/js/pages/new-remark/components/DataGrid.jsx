@@ -20,7 +20,7 @@ export class DataGrid extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={8}>{LangHelper.getResource('ID')}</HeaderCell>
-                <HeaderCell colWidth={12} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('CreatedDate')}</HeaderCell>
+                <HeaderCell colWidth={16} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Creator')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Headline')}</HeaderCell>
                 <HeaderCell colWidth={15} sortOrder='desc' sortBy='userName'>{LangHelper.getResource('Username')}</HeaderCell>
@@ -29,7 +29,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={15}>{LangHelper.getResource('RelatedTo')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedBy')}</HeaderCell>
-                <HeaderCell colWidth={12} sortOrder='desc' sortBy='lastUpdate'>{LangHelper.getResource('LastUpdate')}</HeaderCell>
+                <HeaderCell colWidth={16} sortOrder='desc' sortBy='lastUpdate'>{LangHelper.getResource('LastUpdateGM8')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Requester')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Approver')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Acknowledger')}</HeaderCell>

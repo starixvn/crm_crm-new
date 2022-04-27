@@ -13,7 +13,6 @@
         public bool IsGuest { get; set; }
         public string RelatedPICs { get; set; }
         public bool ShowHeadline { get; set; }
-        public int DatePreset { get; set; }
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public int TotalRows { get; set; }
