@@ -80,18 +80,18 @@ export class History extends Component {
         const historyParams = this.props.historyGridParams;
         return (
             <div className='history-section'>
+                <div className='pb-2 link-click'  onClick={() => this.handleGoBack()}>
+                    <span className='fa fa-backward mr-2'/>
+                    <span>{LangHelper.getResource('BackToRemarksList')}</span>
+                </div>
                 <div className='history-info'>
                     <div>{`Edit History of Remark ${historyParams.remarkID}`}</div>
                     <div>
-                        <span>Logged On: </span>
-                        <span>{historyParams.userNameFormat}</span>
-                    </div>
-                    <div>
-                        <span>Created By: </span>
-                        <span>{historyParams.creator}</span>
-                    </div>
-                    <div>
-                        <span>Created Date: </span>
+                        <span className='mr-2'>Logged On:</span>
+                        <span className='mr-4'>{historyParams.userNameFormat}</span>
+                        <span className='mr-2'>Created By:</span>
+                        <span className='mr-4'>{historyParams.creator}</span>
+                        <span className='mr-2'>Created Date:</span>
                         <span>{DateTimeService.toLongDateTimeFormat(historyParams.createdDate)}</span>
                     </div>
                 </div>
@@ -148,32 +148,26 @@ export class History extends Component {
             TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
-        const clientWidth = document.getElementById('app-container').clientWidth;
-        const width =  clientWidth < 1590 ? 1590 : clientWidth - 300;
+        // const clientWidth = document.getElementById('app-container').clientWidth;
+        // const width =  clientWidth < 1590 ? 1590 : clientWidth - 300;
 
         return (
             <div>
-                <div className='pb-2 link-click'  onClick={() => this.handleGoBack()}>
-                    <span className='fa fa-backward mr-2'/>
-                    <span>{LangHelper.getResource('BackToRemarksList')}</span>
-                </div>
-                <div className='history-container'>
-                    {
-                        this.renderHistorySection()
-                    }
-                    <Table
-                        width={width}
-                        header={this.buildHeader()}
-                        body={this.buildBody()}
-                        autoWidth={false}
-                        isPaging
-                        onSort={this.onSort}
-                        containerPadding={0}
-                        adjustedHeight={10}
-                        pageOption={pagingOptions}
-                        onPaging={this.onPaging}
-                    />
-                </div>
+                {
+                    this.renderHistorySection()
+                }
+                <Table
+                    width={1889}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
+                    autoWidth={false}
+                    isPaging
+                    onSort={this.onSort}
+                    containerPadding={0}
+                    adjustedHeight={10}
+                    pageOption={pagingOptions}
+                    onPaging={this.onPaging}
+                />
             </div>
         );
     }

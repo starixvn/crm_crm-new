@@ -104,23 +104,19 @@
     }
 }
 
-.history-container{
-    display: grid;
-    grid-template-columns: 300px auto;
 
-    .history-section{
-        .fa-backward{
-            cursor: pointer;
-        }
+.history-section{
+    .fa-backward{
+        cursor: pointer;
+    }
 
-        .history-info{
-            border: 1px solid #b7b7b7;
-            margin-right: 15px;
-            padding-left: 16px;
+    .history-info{
+        border: 1px solid #b7b7b7;
+        padding: 8px 0 8px 18px;
+        margin-bottom: 10px;
 
-            div:first-child, div > span:nth-child(2){
-                font-weight: bold;
-            }
+        div:first-child, div > span:nth-child(even){
+            font-weight: bold;
         }
     }
 }
