@@ -510,4 +510,7 @@
   <data name="Symbol_IsVIP" xml:space="preserve">
     <value>√</value>
   </data>
+  <data name="SettingManagement" xml:space="preserve">
+    <value>Setting Management v2</value>
+  </data>
 </root>
