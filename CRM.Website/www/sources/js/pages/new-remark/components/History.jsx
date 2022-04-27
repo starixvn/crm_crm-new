@@ -148,8 +148,9 @@ export class History extends Component {
             TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
+        const clientWidth = document.getElementById('app-container').clientWidth;
+        const width =  clientWidth < 1590 ? 1590 : clientWidth - 300;
 
-        const width = document.getElementById('app-container').clientWidth < 1589 ? 1589 : document.getElementById('app-container').clientWidth - 300;
         return (
             <div>
                 <div className='pb-2 link-click'  onClick={() => this.handleGoBack()}>
