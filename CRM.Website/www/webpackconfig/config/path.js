@@ -39,6 +39,7 @@ const cssPaths = {
     redemption_statistics: ['./www/sources/css/pages/report/redemption-statistics/index.scss'],
     dynamic_report: ['./www/sources/css/pages/report/dynamic/index.scss'],
     setting_relation: ['./www/sources/css/pages/admin-tool/setting-relation/index.scss'],
+    setting_management: ['./www/sources/css/pages/admin-tool/setting-management/index.scss'],
     customer_report: ['./www/sources/css/pages/report/customer/index.scss']
 };
 
@@ -81,6 +82,7 @@ const scriptPaths = {
     redemption_statistics: ['./www/sources/js/pages/report/redemption-statistics/index.js'],
     dynamic_report: ['./www/sources/js/pages/report/dynamic/index.js'],
     setting_relation: ['./www/sources/js/pages/admin-tool/setting-relation/index.js'],
+    setting_management: ['./www/sources/js/pages/admin-tool/setting-management/index.js'],
     customer_report: ['./www/sources/js/pages/report/customer/index.js']
 };
 
