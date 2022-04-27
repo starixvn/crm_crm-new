@@ -55,13 +55,13 @@ export default class RemarkInfo extends Component {
                 </div>
             </Form.Group>
             <Form.Group as={Row}>
-                <Form.Label htmlFor="relatedToPICs" className='pr-4 ml-4 col-form-label'>
+                <Form.Label htmlFor="relatedPics" className='pr-4 ml-4 col-form-label'>
                     {LangHelper.getResource('RelatedToPICs')}
                 </Form.Label>
                 <div className='width-multiple-select'>
                     <MultipleSelect
-                        id="relatedToPICs"
-                        name="relatedToPICs"
+                        id="relatedPics"
+                        name="relatedPics"
                         isDisable={!isValidCustomer}
                         keyField='id'
                         isAllTextShown
@@ -70,7 +70,7 @@ export default class RemarkInfo extends Component {
                         valueField='name'
                         statusField='checked'
                         onChange={(currentItem, selectedItemsKey) => {
-                            handleChange('relatedPics', selectedItemsKey);
+                            setFieldValue('relatedPics', selectedItemsKey);
                         }}
                     />
                 </div>

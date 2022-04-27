@@ -104,7 +104,7 @@ describe('RemarkInfo', () => {
             // Act
             container.find(MultipleSelect).at(0).simulate('change', 'currentItem', 'selectedItemsKey');
             // Assert
-            expect(initProps.handleChange).toHaveBeenCalled();
+            expect(initProps.setFieldValue).toHaveBeenCalled();
         });
 
         it('should call exactly functions when change ckEditor', () => {
