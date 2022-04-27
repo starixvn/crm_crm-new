@@ -18,6 +18,7 @@
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Report.RedemptionStatistics;
     using CRM.Models.Report.SettlementReport;
+    using CRM.Models.Report.WagerReport;
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services.ExportExcel;
@@ -37,6 +38,9 @@
         byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo, int year);
 
         byte[] ExportDirectCustomerReport(DirectCustomerReportInfo directreportInfo);
+
+        byte[] ExportWagerReport(WagerReportModel wagerreportInfo, int year);
+
 
         byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
 
@@ -275,6 +279,14 @@
             const string ExcelTemplatePath = "ExcelTemplates/Direct_Customer_Report.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new DirectReportExcel(templatePath, directreportInfo);
+            return excel.Export();
+        }
+
+        public byte[] ExportWagerReport(WagerReportModel wagerreportInfo, int year)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/Wagers_Related_Report.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new WagerReportExcel(templatePath, wagerreportInfo, year);
             return excel.Export();
         }
 
