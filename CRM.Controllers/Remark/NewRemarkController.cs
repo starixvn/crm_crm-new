@@ -76,7 +76,6 @@
             });
         }
 
-
         public async Task<IActionResult> GetNewRemarks([FromBody] GetNewRemarkCriteria criteria)
         {
             var newRemarks = await remarkService.GetNewRemarkAsync(criteria);
