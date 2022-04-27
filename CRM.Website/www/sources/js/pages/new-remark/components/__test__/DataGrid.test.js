@@ -274,12 +274,101 @@ describe('DataGrid', () => {
           ])("should call exact function when sort order is %p and sortBy is %s'", (sortBy, sortOrder) => {
             // arrange
             const container = shallow(<DataGrid  {...initProps}/>).instance();
+            container.handleSortDateAsc = jest.fn();
             
             // Act
             container.onSort(sortBy, sortOrder);
 
             // Assert
             expect(initProps.setRemarks).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleSortDateAsc', () => {
+        it('should return exact value', () => {
+            // arrange
+            const container = shallow(<DataGrid  {...initProps}/>).instance();
+            const first = [
+                {
+                    createdDate: '2021-01-01'
+                }
+            ];
+            const second = [
+                {
+                    createdDate: '2021-02-02'
+                }
+            ];
+            // Act
+            const actual = container.handleSortDateAsc('createdDate', first, second);
+
+            // Assert
+            expect(actual).toEqual(-1);
+        });
+    });
+
+    describe('handleSortDateDesc ', () => {
+        it('should return exact value', () => {
+            // arrange
+            const container = shallow(<DataGrid  {...initProps}/>).instance();
+            const first = [
+                {
+                    createdDate: '2021-01-01'
+                }
+            ];
+            const second = [
+                {
+                    createdDate: '2021-02-02'
+                }
+            ];
+            // Act
+            const actual = container.handleSortDateDesc('createdDate', first, second);
+
+            // Assert
+            expect(actual).toEqual(-1);
+        });
+    });
+
+    describe('handleSortStringAsc', () => {
+        it('should return exact value', () => {
+            // arrange
+            const container = shallow(<DataGrid  {...initProps}/>).instance();
+            const first = [
+                {
+                    username: 'username'
+                }
+            ];
+            const second = [
+                {
+                    username: 'test'
+                }
+            ];
+            // Act
+            const actual = container.handleSortStringAsc('username', first, second);
+
+            // Assert
+            expect(actual).toEqual(-1);
+        });
+    });
+
+    describe('handleSortStringDesc', () => {
+        it('should return exact value', () => {
+            // arrange
+            const container = shallow(<DataGrid  {...initProps}/>).instance();
+            const first = [
+                {
+                    username: 'username'
+                }
+            ];
+            const second = [
+                {
+                    username: 'test'
+                }
+            ];
+            // Act
+            const actual = container.handleSortStringDesc('username', first, second);
+
+            // Assert
+            expect(actual).toEqual(-1);
         });
     });
 

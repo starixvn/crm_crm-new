@@ -102,25 +102,24 @@ describe('NewRemark', () => {
     describe('handleValidateCustomer', () => {
         it('should call exactly functions', () => {
             // Arrange
-            const response = {};
+            const response = {data: {}};
             const promise = Promise.resolve(response);
-            initProps.validateUsername = jest.fn(() => promise); 
+            initProps.validateUsername = jest.fn(() => promise);
             const container = shallow(<NewRemark {...initProps} />);
             container.instance()['formik'] = {
                 errors: {username: 'error'}
             };
             const setFieldValue = jest.fn();
             // Act
-            container.instance().handleValidateCustomer({username: 'test1', isGuest: false, setFieldValue});
+            container.instance().handleValidateCustomer('test1', false, setFieldValue);
+            jest.runAllTimers();
             // Assert
             expect(container.instance().state.isValidCustomer).toEqual(false);
-            expect(container.instance().state.customerValidated).toEqual({custId : 1, isLicensee: false});
-            expect(container.instance()['formik'].errors.username).toEqual('');
             expect(initProps.validateUsername).toHaveBeenCalledWith({username: 'test1', isGuest: false});
         });
     });
 
-    describe('handleValidateCustomer', () => {
+    describe('validateFormik ', () => {
         it('should return exact errors', () => {
             // Arrange
             const values = {
@@ -139,6 +138,34 @@ describe('NewRemark', () => {
             };
 
             const container = shallow(<NewRemark {...initProps} />);
+            container.instance().setState(state);
+            // Act
+            const actual = container.instance().validateFormik(values);
+            // Assert
+            expect(actual).toEqual(expectedError);
+            
+        });
+
+        it('should return exact errors when not click validate', () => {
+            // Arrange
+            const values = {
+                username: 'test',
+                remarkTitle: '',
+                remarkContent : ''
+            };
+
+            const state = {
+                isValidCustomer: false
+            };
+            const expectedError = {
+                remarkContent: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkContent')),
+                remarkTitle: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkTitle')),
+                username: LangHelper.getResource('UsernameIsChanged')
+            };
+
+            const props = {...initProps, validateResult: null};
+
+            const container = shallow(<NewRemark {...props} />);
             container.instance().setState(state);
             // Act
             const actual = container.instance().validateFormik(values);
