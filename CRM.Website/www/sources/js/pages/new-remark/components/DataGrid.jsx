@@ -50,7 +50,7 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index, isHost) => {
-        const userNameFormat = `${item.isGroupHeadLine ? item.userName + 'headline' : item.userName}`;
+        const userNameFormat = `${item.isGroupHeadLine ? item.userName + ' (Headline)' : item.userName}`;
         return (
             <Row key={index}>
                 <Cell className='text-center link-click' onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
