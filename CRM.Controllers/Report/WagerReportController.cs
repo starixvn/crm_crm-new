@@ -35,16 +35,14 @@
         [HttpPost]
         public async Task<IActionResult> GetWagerReport([FromBody] GetWagerReportCriteria criteria)
         {
-            criteria.Year = 2022;
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             var report = await GetWagerReportAsync(criteria);
             return Json(report);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ExportWagerReport(GetWagerReportCriteria criteria)
+        [HttpPost]
+        public async Task<IActionResult> ExportWagerReport([FromBody] GetWagerReportCriteria criteria)
         {
-            criteria.Year = 2022;
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             var reports = await GetWagerReportAsync(criteria);
             var bytes = exportExcelService.ExportWagerReport(reports, criteria.Year);
