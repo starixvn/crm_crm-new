@@ -14,6 +14,8 @@
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 5;
         private const byte TotalCols = 31;
+        private const int MaxRowPerSheet = 20000;
+        private readonly int numberOfSheet;
 
         public CustomerReportExcel(
             string templatePath,
@@ -21,27 +23,56 @@
         ) : base (templatePath, 0, ViewResources.CustomerReport)
         {
             this.customerReportInfo = customerReportInfo;
+
+            var totalRows = customerReportInfo.CustomerList.ToList().Count;
+            numberOfSheet = (totalRows / MaxRowPerSheet) + (totalRows % MaxRowPerSheet != 0 ? 1 : 0);
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
-              .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
-            worksheet.Cells[1, 1].Value = ViewResources.CustomerReport;
+            for (var index = 0; index < numberOfSheet; index++)
+            {
+                if (index > 0)
+                {
+                    worksheet.Workbook.Worksheets.Add(string.Format("{0} - {1}", ViewResources.CustomerReport, index + 1));
+                }
+
+                templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
+                    .Copy(worksheet.Workbook.Worksheets[index].Cells[1, 1, RowStartHeader - 1, TotalCols]);
+                    worksheet.Workbook.Worksheets[index].Cells[1, 1].Value = ViewResources.CustomerReport;
+            }
+            if (numberOfSheet > 1)
+            {
+                worksheet.Workbook.Worksheets[0].Name = string.Format("{0} - {1}", ViewResources.CustomerReport, 1);
+            }
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, TotalCols]
-              .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, TotalCols]);
+            for (var index = 0; index < numberOfSheet; index++)
+            {
+                templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, TotalCols]
+                    .Copy(worksheet.Workbook.Worksheets[index].Cells[RowStartHeader, 1, RowStartHeader + 1, TotalCols]);
+            }
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
+            var customers = customerReportInfo.CustomerList.ToList();
+
             int rowIndex = RowStartBody;
-            for (var index = 0; index < customerReportInfo.CustomerList.Count(); index++)
+            int index = 1;
+            int key = 0;
+            foreach (var customer in customers)
             {
-                RenderRow(worksheet, customerReportInfo.CustomerList.ToList()[index], index + 1, rowIndex++);
+                if (index == MaxRowPerSheet)
+                {
+                    key++;
+                    index = 1;
+                    rowIndex = RowStartBody;
+                }
+                RenderRow(worksheet.Workbook.Worksheets[key], customer, index, rowIndex++);
+                index++;
             }
         }
 
@@ -88,8 +119,11 @@
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
         {
-            SetStyle(worksheet);
-            SetWidthColumn(worksheet);
+            for (var index = 0; index < numberOfSheet; index++)
+            {
+                SetStyle(worksheet.Workbook.Worksheets[index]);
+                SetWidthColumn(worksheet.Workbook.Worksheets[index]);
+            }
         }
 
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
@@ -109,7 +143,7 @@
             const int TotalColumn = 31;
             worksheet.DefaultColWidth = WidthNormal;
             worksheet.Cells.AutoFitColumns();
-            for (var index = 0; index < customerReportInfo.CustomerList.Count(); index++)
+            for (var index = 0; index < MaxRowPerSheet - 1; index++)
             {
                 worksheet.Row(RowStartBody + index).Height = RowHeight;
                 DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumn]);

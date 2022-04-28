@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { Form, Button, Row, Alert } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import ResponseMessage from '@jsroot/components/ResponseMessage';
 
 export class Filter extends Component {
 
@@ -130,12 +129,7 @@ export class Filter extends Component {
     };
 
     render() {
-        const { allSettings } = this.props;
         const { languageOptions, positionOptions, siteOptions, vipOptions, excludeIgnoredAccounts, isShowFilter } = this.state;
-        if (!allSettings) {
-            return null;
-        }
-
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
                 {
