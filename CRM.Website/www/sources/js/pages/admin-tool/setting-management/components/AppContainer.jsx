@@ -2,25 +2,47 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import Filter from './Filter';
-import DataGrid from './DataGrid';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
+import Filter from './Filter';
+import DataGrid from './DataGrid';
+import NewSettingValue from './NewSettingValue';
+import Edit from './Edit';
+import LicenseeMapping from './LicenseeMapping';
 
 export class AppContainer extends Component {
   componentDidMount() {
       this.props.getMainSettings();
   }
-  
-  // handleCloseUpdatePopup = () =>{
-  //   this.props.setOpenUpdatePopup({ show: false, title: '', parentId: null });
-  //   this.props.setMainSettingRelation(null);
-  // };
 
-  handleCloseEditStatusPopup = () =>{
-      this.props.setEditStatusPopup({ show: false });
+  handleCloseInsertNewSetting = () =>{
+    this.props.setOpenInsertNewSettingPopup({ show: false, settingName: '' });
+  }
+
+  handleSuccessInsertNewSetting = () =>{
+    this.handleCloseInsertNewSetting();
+    this.handleGetSettingType();
+    this.props.setInsertNewSettingResult(null);
+  }
+
+  handleGetSettingType = () =>{
+    this.props.getSettingTypes(this.props.gridParams);
+  }
+
+  handleCloseEdit = () =>{
+    this.props.setOpenEdiPopup({ show: false, data: null });
+  }
+
+  handleSuccessEdit = () =>{
+    this.handleCloseEdit();
+    this.handleGetSettingType();
+    this.props.setEditNewSettingResult(null);
+  }
+
+  handleCloseLicenseeMapping = () =>{
+    this.props.setOpenLicenseeMappingPopup({ show: false});
   }
 
   handleEditStatus = () =>{
@@ -28,7 +50,7 @@ export class AppContainer extends Component {
     this.props.editStatusSetting({settingId, isActive}).then(data =>{
       this.handleCloseEditStatusPopup();
       if(data.isSuccessful){
-          this.props.getSettingTypes(this.props.gridParams);
+        this.handleGetSettingType();
           if(isActive){
             toast.success(LangHelper.getResource('ActiveStatusSettingSuccess'));
           }else{
@@ -39,38 +61,61 @@ export class AppContainer extends Component {
       }
     });
   }
+
+  handleCloseEditStatusPopup = () =>{
+    this.props.setEditStatusPopup({ show: false });
+  }
   
   render() {
-    const {isHost, mainSettings, gridParams, insertNewSettingPopup, insertNewValuePopup, licenseeMappingPopup} = this.props;
+    const {isHost, mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, licenseeMappingPopup, editPopup} = this.props;
 
     if(!mainSettings || mainSettings === null){
       return null;
     }
-
-    //const subSettingOptions = mainSettings.filter(x=> x.settingName !== gridParams.settingName);
     return (
         <Fragment>
-              <Filter />
+              <Filter isHost={isHost}/>
               <DataGrid isHost={isHost} />
               {
-                    this.props.editStatusPopup.show &&
-                    <SweetModalDialog size="lg"
-                        title={LangHelper.getResource('Confirmation')}
-                        contents={
-                            <div>Are you sure you want to <span>{this.props.editStatusPopup.isActive ? 'deactivate' : 'activate'}
-                            </span> Setting <strong>{gridParams.settingName + ' ' + this.props.editStatusPopup.settingValue}</strong>?</div>
-                        }
-                        buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleEditStatus}>
-                                {LangHelper.getResource('OK')}
-                            </Button>,
-                            <Button variant="primary" size="sm" onClick={this.handleCloseEditStatusPopup}>
-                                {LangHelper.getResource('Cancel')}
-                            </Button>
-                        ]}
-                        onClose={this.handleCloseEditStatusPopup}
-                    />
-                }
+                insertNewSettingPopup.show && 
+                <NewSettingValue
+                    settingName={insertNewSettingPopup.settingName}
+                    onClose={this.handleCloseInsertNewSetting}
+                    onSuccess={this.handleSuccessInsertNewSetting}
+                />
+              }
+              {
+                editPopup.show &&
+                <Edit
+                    onClose={this.handleCloseEdit}
+                    onSuccess={this.handleSuccessEdit}
+                />
+              }
+              {
+                licenseeMappingPopup.show &&
+                <LicenseeMapping
+                    onClose={this.handleCloseLicenseeMapping}
+                />
+              }
+              {
+                editStatusPopup.show &&
+                <SweetModalDialog size="lg"
+                    title={LangHelper.getResource('Confirmation')}
+                    contents={
+                        <div>Are you sure you want to <span>{this.props.editStatusPopup.isActive ? 'deactivate' : 'activate'}
+                        </span> Setting <strong>{gridParams.settingName + ' ' + this.props.editStatusPopup.settingValue}</strong>?</div>
+                    }
+                    buttons={[
+                        <Button variant="primary" size="sm" onClick={this.handleEditStatus}>
+                            {LangHelper.getResource('OK')}
+                        </Button>,
+                        <Button variant="primary" size="sm" onClick={this.handleCloseEditStatusPopup}>
+                            {LangHelper.getResource('Cancel')}
+                        </Button>
+                    ]}
+                    onClose={this.handleCloseEditStatusPopup}
+                />
+              }
         </Fragment>
     );
   }
@@ -78,7 +123,7 @@ export class AppContainer extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 const mapStateToProps = state => {
-    const { mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, insertNewValuePopup, licenseeMappingPopup } = state;
-    return { mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, insertNewValuePopup, licenseeMappingPopup };
+    const { mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, insertNewValuePopup, licenseeMappingPopup, editPopup } = state;
+    return { mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, insertNewValuePopup, licenseeMappingPopup, editPopup };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
