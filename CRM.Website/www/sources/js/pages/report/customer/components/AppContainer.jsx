@@ -7,7 +7,15 @@ import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
 
+    componentDidMount() {
+        this.props.getAllSettings();
+    }
+
     render() {
+        const { allSettings } = this.props;
+        if (!allSettings) {
+            return null;
+        }
         return (
             <div>
                 <Filter />
@@ -20,8 +28,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { customerReport } = state;
-    return { customerReport };
+    const { allSettings } = state;
+    return { allSettings };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
