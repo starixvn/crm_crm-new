@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
@@ -134,7 +134,7 @@ export class DataGrid extends Component {
         };
 
         return (
-            <Fragment>
+            <div>
                 <div className="table-title d-flex justify-content-between align-items-center">
                     <span>{LangHelper.getResource('CustomerReport')}</span>
                     {
@@ -153,7 +153,7 @@ export class DataGrid extends Component {
                     isPaging
                     onPaging={this.onPaging}
                 />
-            </Fragment>
+            </div>
         );
     }
 }

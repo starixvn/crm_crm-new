@@ -27,9 +27,11 @@ export class Filter extends Component {
         };
     }
 
-    async componentDidMount() {
-        await this.props.getAllSettings();
+    componentDidMount() {
+        this.initSettingOptions();
+    }
 
+    initSettingOptions = () => {
         const { allSettings } = this.props;
         const languageIds = [], positionIds = [], siteIds = [0], siteOptions = [];
         const languageOptions = allSettings.languages.map(item => {
@@ -73,7 +75,7 @@ export class Filter extends Component {
             positionIds: positionIds.join(','),
             siteIds: siteIds.join(',')
         });
-    }
+    };
 
     handleChange = event => {
         const name = event.target.name;
@@ -245,8 +247,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { customerReport, allSettings } = state;
-    return { customerReport, allSettings };
+    const { allSettings } = state;
+    return { allSettings };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);
