@@ -53,7 +53,7 @@ function generateConfig(environment) {
             [`${cssPath}pages/report/customer/index`]: pathConfig.scriptPaths.customer_report,
             [`${jsPath}/pages/report/summary/index`]: pathConfig.scriptPaths.summary,
             [`${jsPath}/pages/report/direct/index`]: pathConfig.scriptPaths.direct,
-
+            [`${jsPath}/pages/report/wager/index`]: pathConfig.scriptPaths.wager,
 
             /*css*/
             [`${cssPath}/main`]: pathConfig.cssPaths.main,
@@ -92,8 +92,8 @@ function generateConfig(environment) {
             [`${cssPath}/pages/adminTool/setting-management/index`]: pathConfig.cssPaths.setting_management,
             [`${cssPath}/pages/report/customer/index`]: pathConfig.cssPaths.customer_report,
             [`${cssPath}/pages/report/summary/index`]: pathConfig.cssPaths.summary,
-            [`${cssPath}/pages/report/direct/index`]: pathConfig.cssPaths.direct
-
+            [`${cssPath}/pages/report/direct/index`]: pathConfig.cssPaths.direct,
+            [`${cssPath}/pages/report/wager/index`]: pathConfig.cssPaths.wager
 
         },
         output: {

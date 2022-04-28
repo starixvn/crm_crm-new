@@ -67,32 +67,188 @@
             {
                 new WagerRawData
                 {
-                    Month = "Feb",
-                    SubCategory = "Super/Master/Agent",
+                    Month = "Jan",
+                    SubCategory = "Accept",
                     NoOfIssues = 1
                 },
                 new WagerRawData
                 {
                     Month = "Feb",
-                    SubCategory = "Member",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Feb",
-                    SubCategory = "N/A",
+                    SubCategory = "Accept",
                     NoOfIssues = 1
                 },
                 new WagerRawData
                 {
                     Month = "Mar",
-                    SubCategory = "Match Information",
+                    SubCategory = "Accept",
                     NoOfIssues = 1
                 },
                 new WagerRawData
                 {
                     Month = "Apr",
-                    SubCategory = "Problem Account",
+                    SubCategory = "Accept",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "May",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Jun",
+                    SubCategory = "Accept",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Jul",
+                    SubCategory = "Accept",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Aug",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Sep",
+                    SubCategory = "Accept",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Oct",
+                    SubCategory = "Accept",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Nov",
+                    SubCategory = "Accept",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Dec",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Jan",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Feb",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Mar",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Apr",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Jun",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Jul",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Sep",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Oct",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Nov",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Dec",
+                    SubCategory = "Reject",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Jan",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Feb",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Jun",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Jul",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Oct",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Mar",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Apr",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Sep",
+                    SubCategory = "Void/Refund",
+                    NoOfIssues = 1
+                },
+                new WagerRawData
+                {
+                    Month = "Nov",
+                    SubCategory = "Void/Refund",
                     NoOfIssues = 1
                 }
             }.GroupBy(w => w.Month);

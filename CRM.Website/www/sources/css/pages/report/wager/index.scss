@@ -1,0 +1,59 @@
+@import "../../../components/form-filter";
+@import "../../../components/react-grid/react-grid";
+@import "../../../components/forms";
+@import "../../../components/modal";
+@import "../../../components/icons";
+@import "../../../components/tables";
+
+#app-container {
+    min-width: 800px;
+}
+
+.form-filter {
+    min-width: 800px;
+
+    .form-row {
+        .form-group {
+            width: 150px;
+
+            .form-label {
+                width: 50px;
+            }
+
+            .form-control {
+                width: calc(100% - 0.5rem - 50px);
+            }
+        }
+    }
+}
+
+.table-container {
+    min-width: 800px;
+
+    .body-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        .table {
+            tbody {
+                tr:nth-child(n) td {
+                    background: #fff;
+                } 
+                
+                tr:last-child td {
+                    border-bottom: 1px solid #b7b7b7; 
+                }               
+            }
+        }
+        .text-bold{
+            font-weight: bold;
+        }
+
+        
+    }
+    .footer-content {
+        td {
+            background: #c0cae3 !important;
+        }
+    }
+}
