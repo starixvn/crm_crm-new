@@ -28,10 +28,8 @@ export class DataGrid extends Component {
             return settingType.map((item, index) => this.renderRow(item, index));
         }
         return [
-            <Row className="no-data" >
-                <Cell className='text-center' colSpan={4}>
-                    {LangHelper.getResource('ThereIsNoData')}
-                </Cell>
+            <Row className="no-data">
+                <Cell className='text-center' colSpan={4}>{LangHelper.getResource('ThereIsNoData')}</Cell>
             </Row>
         ];
     };
@@ -39,11 +37,11 @@ export class DataGrid extends Component {
     renderRow = (item, index) => {
         return (
             <Row key={`setting-management-${index}`}>
-                <Cell className='text-center'>{item.settingValue}</Cell>
+                <Cell>{item.settingValue}</Cell>
                 <Cell className='text-right'>{item.settingId}</Cell>
                 <Cell className='text-right'>{item.displayOrder}</Cell>
                 <Cell className='text-center'><i className="rounded-circle fa fa-pencil icon-edit" aria-hidden="true"
-                    onClick={event => this.handleOpenEdit(event, item.settingId)}
+                    onClick={event => this.handleOpenEdit(event, item)}
                 />
                 </Cell>
                 <Cell className='text-center'>
@@ -59,15 +57,9 @@ export class DataGrid extends Component {
         this.props.setEditStatusPopup({show: true, settingId, settingValue, isActive});
     }
 
-    handleOpenEdit = (event, settingId) => {
+    handleOpenEdit = (event, item) => {
         event.preventDefault();
-        const title = `${LangHelper.getResource('AddSubSettingTitle')} ${value}`;
-        const params = {
-            settingName : this.props.mainSettings.slice(1)[0].settingName,
-            parentId: parseInt(value, 10)
-        };
-        this.props.setOpenUpdatePopup({ show: true, title: title, parentId: params.parentId});
-        this.props.getMainSettingRelation(params);
+        this.props.setOpenEdiPopup({ show: true, data: item});
     }
 
     render() {

@@ -24,12 +24,15 @@ export class Filter extends Component {
         this.props.getSettingTypes(params);
     };
 
-    handleInsertNewSetting = () => {
-        this.props.setOpenInsertNewSettingPopup({ show: true});
-    };
+    handleChangeSettingName = event =>{
+        event.preventDefault();
+        const settingName = event.target.value;
+        this.setState({settingName});
+        this.props.setGridParams({settingName});
+    }
 
-    handleInsertNewValue = () => {
-        this.props.setOpenInsertNewValuePopup({ show: true});
+    handleInsertNewSetting = settingName => {
+        this.props.setOpenInsertNewSettingPopup({ show: true, settingName:settingName});
     };
 
     handleLicenseeMapping = () => {
@@ -45,7 +48,7 @@ export class Filter extends Component {
                         <Form.Control as="select" size="sm" style={{width: 210}}
                             name="settingName" id="settingName"
                             value={settingName}
-                            onChange={evt => this.setState({settingName: evt.target.value})}
+                            onChange={this.handleChangeSettingName}
                         >
                             {
                                 this.props.mainSettings.map((value, key) => <option key={key} value={value.settingName}>{value.settingName}</option>)
@@ -56,15 +59,25 @@ export class Filter extends Component {
                         <Button variant="primary" size="sm" className='mr-3' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Search')}
                         </Button>
-                        <Button variant="primary" size="sm" className='mr-3' onClick={() => this.handleInsertNewSetting}>
-                            {LangHelper.getResource('InsertNewSetting')}
-                        </Button>
-                        <Button variant="primary" className='mr-3' onClick={() => this.handleInsertNewValue}>
-                            {LangHelper.getResource('InsertSettingValue') + settingName}
-                        </Button>
-                        <Button variant="primary" onClick={() => this.handleLicenseeMapping}>
-                            {LangHelper.getResource('LicenseeMapping')}
-                        </Button>
+                        {
+                            this.props.isHost &&
+                            <Button variant="primary" size="sm" className='mr-3' onClick={() => this.handleInsertNewSetting('')}>
+                                {LangHelper.getResource('InsertNewSetting')}
+                            </Button>
+                        }
+                        {
+                            this.props.isHost &&
+                            <Button variant="primary" className='mr-3' onClick={() =>  this.handleInsertNewSetting(this.props.gridParams.settingName)}>
+                                {LangHelper.getResource('InsertSettingValue') + settingName}
+                            </Button>
+                        }
+                        {
+                            this.props.isHost &&
+                            <Button variant="primary" onClick={this.handleLicenseeMapping}>
+                                {LangHelper.getResource('LicenseeMapping')}
+                            </Button>
+                        
+                        }
                     </Form.Group>
                 </Form.Row>
             </Form>
@@ -75,8 +88,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { mainSettings } = state;
-    return { mainSettings };
+    const { mainSettings, gridParams } = state;
+    return { mainSettings, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

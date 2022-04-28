@@ -6,6 +6,7 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.AdminTool.SettingManagement;
+    using CRM.Models.AdminTool;
     using CRM.Services;
     using CRM.ViewModels;
     using Fanex.NAP.Client.Configuration;
@@ -47,6 +48,41 @@
             return Json(mainSetting);
         }
 
+        public async Task<IActionResult> GetParentSettings()
+        {
+            var parents = await settingService.GetSettingAsync();
+            return Json(parents);
+        }
+
+        public async Task<IActionResult> GetLicensees()
+        {
+            try
+            {
+                var criteria = new GetLicenseeCriteria();
+                var licensees = await baseService.GetDataAsync<string>(criteria);
+                return Json(licensees);
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetLicenseesMapping([FromBody] GetLicenseeMappingCriteria criteria)
+        {
+            try
+            {
+                var licenseesMapping = await baseService.GetDataAsync<LicenseeMapping>(criteria);
+                return Json(licenseesMapping);
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> GetSettingByType([FromBody] SettingTypeViewModel settingType)
@@ -56,20 +92,31 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditStatusSettingAsync([FromBody] UpdateStatusCommand command)
+        public async Task<IActionResult> EditStatusSetting([FromBody] UpdateStatusCommand command)
         {
-            try
-            {
-                command.UserId = napSession.UserId;
-                command.IP = "ClientIP";
-                CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
-                return Json(commandResult);
-            }
-            catch (System.Exception e)
-            {
+            command.UserId = napSession.UserId;
+            command.IP = "ClientIP";
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+        }
 
-                throw;
-            }
+        [HttpPost]
+        public async Task<IActionResult> InsertNewSetting([FromBody] InsertNewSettingCommand command)
+        {
+            command.UserId = napSession.UserId;
+            command.IP = "ClientIP";
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditNewSetting([FromBody] EditNewSettingCommand command)
+        {
+            command.UserId = napSession.UserId;
+            command.IP = "ClientIP";
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
         }
     }
 }
