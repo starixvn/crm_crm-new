@@ -42,7 +42,8 @@ const cssPaths = {
     setting_management: ['./www/sources/css/pages/admin-tool/setting-management/index.scss'],
     summary:['./www/sources/css/pages/report/summary/index.scss'],
     customer_report: ['./www/sources/css/pages/report/customer/index.scss'],
-    direct:['./www/sources/css/pages/report/direct/index.scss']
+    direct:['./www/sources/css/pages/report/direct/index.scss'],
+    wager:['./www/sources/css/pages/report/wager/index.scss']
 };
 
 const scriptPaths = {
@@ -87,7 +88,8 @@ const scriptPaths = {
     setting_management: ['./www/sources/js/pages/admin-tool/setting-management/index.js'],
     summary:['./www/sources/js/pages/report/summary/index.js'],
     customer_report: ['./www/sources/js/pages/report/customer/index.js'],
-    direct:['./www/sources/js/pages/report/direct/index.js']
+    direct:['./www/sources/js/pages/report/direct/index.js'],
+    wager:['./www/sources/js/pages/report/wager/index.js']
 };
 
 module.exports = {

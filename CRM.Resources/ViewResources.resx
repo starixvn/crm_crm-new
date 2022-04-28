@@ -533,7 +533,7 @@
   </data>
   <data name="SettingManagement" xml:space="preserve">
     <value>Setting Management v2</value>
-  </data>s
+  </data>
   <data name="DirectCustomerReport" xml:space="preserve">
     <value>Direct Customer Report</value>
   </data>
@@ -557,5 +557,8 @@
   </data>
   <data name="WagerReportTitle" xml:space="preserve">
     <value>WAGER ACCEPT, REJECT, VOID/REDUND FOR YEAR {0}</value>
+  </data>
+  <data name="WagersRelatedReport" xml:space="preserve">
+    <value>Wagers-Related Report</value>
   </data>
 </root>

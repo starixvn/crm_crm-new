@@ -1330,6 +1330,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wagers-Related Report.
+        /// </summary>
+        public static string WagersRelatedReport {
+            get {
+                return ResourceManager.GetString("WagersRelatedReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WeChat.
         /// </summary>
         public static string WeChat {

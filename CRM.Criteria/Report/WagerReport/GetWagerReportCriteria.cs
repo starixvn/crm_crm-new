@@ -1,4 +1,5 @@
 ﻿using CRM.Core.Models;
+using Fanex.Data;
 using Fanex.Data.Repository;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ namespace CRM.Criteria.Report.WagerReport
     {
         public int Year { get; set; }
         public int TimeSpan { get; set; }
-
         public override string GetSettingKey()
         {
             return "Report_WagerReport_GetReport";
