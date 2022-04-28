@@ -23,7 +23,7 @@
 
         public async Task<CustomerReportInfo> GetCustomerReportAsync(GetCustomerReportParam param)
         {
-            var criteria = new CustomerReportCriteria
+            var criteria = new GetCustomerReportCriteria
             {
                 Username = param.Username,
                 Headline = param.Headline,

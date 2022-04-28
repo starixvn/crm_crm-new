@@ -1,10 +1,9 @@
 ﻿namespace CRM.Criteria.Report.CustomerReport
 {
     using CRM.Core.Constants;
-    using Fanex.Data;
     using Fanex.Data.Repository;
 
-    public class CustomerReportCriteria : CriteriaBase
+    public class GetCustomerReportCriteria : CriteriaBase
     {
         public string Username { get; set; }
 
