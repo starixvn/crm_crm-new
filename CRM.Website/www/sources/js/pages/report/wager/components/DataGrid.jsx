@@ -51,7 +51,11 @@ export class DataGrid extends Component {
                 </Fragment>
             ];
         }
-        return [<Row key={'body'} className="no-data"><Cell colSpan="4">{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+        return [
+            <Row key='body-NoData' className="no-data" >
+                <Cell className='text-center' colSpan={4}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+            </Row>
+        ];
     };
 
     renderRow = report => {

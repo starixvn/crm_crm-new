@@ -2,6 +2,7 @@
 {
     using CRM.Core.Constants;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Report.WagerReport;
     using CRM.Models.Report.WagerReport;
     using CRM.Resources;
@@ -18,12 +19,15 @@
     {
         private readonly IExportExcelService exportExcelService;
         private readonly AppSettings appSettings;
+        private readonly IBaseService baseService;
 
         public WagerReportController(
             IExportExcelService exportExcelService,
-            IOptionsSnapshot<AppSettings> appSettings)
+            IOptionsSnapshot<AppSettings> appSettings,
+            IBaseService baseService)
         {
             this.exportExcelService = exportExcelService;
+            this.baseService = baseService;
             this.appSettings = appSettings.Value;
         }
 

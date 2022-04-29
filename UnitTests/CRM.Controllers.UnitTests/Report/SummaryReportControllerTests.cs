@@ -106,7 +106,7 @@
             var fixture = new Fixture();
             var criteria = fixture.Create<GetSummaryReportCriteria>();
             var controller = GetController();
-            var templates = await summaryReportService.GetSummaryReportAsync(criteria); ;
+            var templates = await summaryReportService.GetSummaryReportAsync(criteria);
 
             // Act
             var result = await controller.GetSummaryReport(criteria);
