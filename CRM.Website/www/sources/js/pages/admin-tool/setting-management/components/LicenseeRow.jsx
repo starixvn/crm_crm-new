@@ -18,23 +18,24 @@ export default class LicenseeRow extends PureComponent {
         }else{
             this.setState({name: ''});
         }
-    }
+    };
 
     onCancel = () => {
         this.setState({licenseeManager: this.props.item.licenseeManager});
         this.props.handleCancel();
-    }
+    };
 
     onSave = settingId => {
         const {settingSource, licenseeManager}= this.state;
         this.props.handleSave(settingId, settingSource, licenseeManager);
-    }
+    };
 
     render() {
         const {item, index, sourceMappingDefault, licenseesOption,
             licenseesManagerOption, handleEdit, debounceHandleLicenseeManagerChange, isChangeableValue, isEdit} = this.props;
         const licenseeManagerDefault = [{value: item.licenseeManager, label: item.licenseeManager}];
         const {settingSource, licenseeManager}= this.state;
+        const isDisableClass = isEdit ? 'disabled-btn' : 'rounded-circle';
         return (
             <Row key={`setting-relation-update-${index}`}>
                 <Cell>{item.setting}</Cell>
@@ -87,10 +88,10 @@ export default class LicenseeRow extends PureComponent {
                     </Cell>
                     :
                     <Cell className={`text-center ${isEdit ? 'action-icon' : ''}`}>
-                        <span className={`fa fa-pencil icon-edit ${isEdit ? 'disabled-btn' : 'rounded-circle'}`}
+                        <span className={`fa fa-pencil icon-edit ${isDisableClass}`}
                             onClick={() => handleEdit(item.settingId)}
                         />
-                        <span  className={`fa fa-trash icon-delete ${isEdit ? 'disabled-btn' : 'rounded-circle'}`}
+                        <span  className={`fa fa-trash icon-delete ${isDisableClass}`}
                             onClick={() => this.handleDelete(item.settingId)}
                         />
                     </Cell>

@@ -10,14 +10,25 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class Edit extends Component {
+    validateFormik = values =>{
+        const errors = {};
+        if(values.settingValue === ''){
+            errors.settingValue = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingValue'));
+        }
+        if(values.settingName === ''){
+            errors.settingName = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingName'));
+        }
+        return errors;
+    };
+
     handleSubmit = (values, { setSubmitting }) => {
-        setSubmitting(true);
         const params = {
             settingId: values.settingId,
             settingName: values.settingName,
             settingValue: values.settingValue,
             displayOrder: values.displayOrder === '' ? 0 : values.displayOrder
         };
+        setSubmitting(true);
         this.props.editNewSetting(params).then(() => {
             if (this.props.editNewSettingResult.isSuccessful) {
                 setTimeout(() => {
@@ -28,17 +39,6 @@ export class Edit extends Component {
             }
         });
     };
-
-    validateFormik = values =>{
-        const errors = {};
-        if(values.settingName === ''){
-            errors.settingName = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingName'));
-        }
-        if(values.settingValue === ''){
-            errors.settingValue = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingValue'));
-        }
-        return errors;
-    }
 
     renderForm = ({
         values,
