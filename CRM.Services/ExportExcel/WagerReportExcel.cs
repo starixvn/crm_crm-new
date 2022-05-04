@@ -92,11 +92,11 @@ namespace CRM.Services.ExportExcel
         protected internal virtual void SetDefaultStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
-            const byte CountryColumn = 2;
+            const byte WagersColumn = 2;
             const byte AmountColumn = 3;
             worksheet.Column(1).Width = widthColumnSmall;
             worksheet.Column(LastColumns).Width = widthColumnNormal;
-            worksheet.Column(CountryColumn).Width = widthColumnLarge;
+            worksheet.Column(WagersColumn).Width = widthColumnLarge;
             worksheet.Column(AmountColumn).Width = widthColumnLarge;
         }
     }

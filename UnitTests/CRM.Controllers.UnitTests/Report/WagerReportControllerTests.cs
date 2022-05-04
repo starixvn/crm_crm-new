@@ -13,6 +13,7 @@
     using NSubstitute;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using Xunit;
@@ -39,7 +40,7 @@
         }
 
         [Fact]
-        public async Task ExportDirectReport_WhenCalled_ReturnExpectedResult()
+        public async Task ExportWagerReport_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
             var fixture = new Fixture();
@@ -61,22 +62,28 @@
         }
 
         [Fact]
-        public async Task GetDirectReport_WhenCalled_ReturnExpectedData()
+        public async Task GetWagerReport_WhenCalled_ReturnExpectedData()
         {
             // Arrange
             var fixture = new Fixture();
             var criteria = fixture.Create<GetWagerReportCriteria>();
             criteria.Year = 2020;
-            var rawData = fixture.Create<IEnumerable<WagerReportModel>>();
+            var expectedTitle = "WAGER ACCEPT, REJECT, VOID/REDUND FOR YEAR 2020";
+            var rawData = fixture.Create<IEnumerable<WagerRawData>>();
             var controller = GetController();
-            baseService.GetDataAsync<WagerReportModel>(Arg.Do<GetWagerReportCriteria>(x => criteria = x)).Returns(rawData);
+            baseService.GetDataAsync<WagerRawData>(criteria).Returns(rawData);
 
             // Act
             var result = await controller.GetWagerReport(criteria);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var directReportInfoTemplates = (WagerReportModel)jsonResult.Value;
+            var WagerReportInfoTemplates = (WagerReportModel)jsonResult.Value;
+            Assert.Equal(WagerReportInfoTemplates.WagerByMonths.First().Total, rawData.First().NoOfIssues);
+            Assert.Equal(WagerReportInfoTemplates.WagerByMonths.First().Wagers.First().Name, rawData.First().SubCategory);
+            Assert.Equal(WagerReportInfoTemplates.WagerByMonths.Last().Wagers.First().Name, rawData.Last().SubCategory);
+            Assert.Equal(WagerReportInfoTemplates.WagerByMonths.Last().Total, rawData.Last().NoOfIssues);
+            Assert.Equal(WagerReportInfoTemplates.ReportTitle, expectedTitle);
         }
 
         #region Helpers
