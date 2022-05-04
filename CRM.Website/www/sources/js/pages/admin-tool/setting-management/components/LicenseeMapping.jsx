@@ -1,29 +1,31 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Col, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
+import Select from '@jsroot/components/CustomReactSelect';
 
-export class LicenseeMapping extends Component {
+export class LicenseeMapping extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
+            sourceMapping: '',
             setting: '',
+            settingId: '',
             shouldResetScrollPosition: true,
             isSubmitting: false
         };
     }
 
-    async componentDidMount(){
+    componentDidMount(){
         if(this.props.licensees === null){
-            await this.props.getLicensees();
+            this.props.getLicensees();
         }
-        await this.props.getLicenseesMapping({setting: ''});
     }
 
     buildHeader = () => {
@@ -52,11 +54,46 @@ export class LicenseeMapping extends Component {
         ];
     };
 
+    handleEdit = settingId =>{
+        this.setState({settingId});
+    }
+
+    handleChangeSelect = (value, name) =>{
+        if(value !== null){
+          this.setState({name: value.value});
+        }else{
+            this.setState({name: ''});
+        }
+    }
+
     renderRow = (licensees, item, index) => {
+        const licenseesOption = licensees.map(item =>{
+            return {
+                value: item,
+                label: item
+            };
+        });
+        const sourceMappingDefault = licenseesOption.filter(x=> x.value === item.settingSource);
         return (
             <Row key={`setting-relation-update-${index}`}>
                 <Cell>{item.setting}</Cell>
-                <Cell>{item.settingSource}</Cell>
+                {
+                    this.state.settingId === item.settingId ?
+                    <Cell>
+                        <Select
+                            placeholder={LangHelper.getResource('PleaseSelect')}
+                            isClearable
+                            isSearchable
+                            isFocused
+                            isSelected
+                            defaultValue={sourceMappingDefault}
+                            noOptionsMessage={() => 'No results found'}
+                            onChange={value => this.handleChangeSelect(value, 'sourceMapping')}
+                            options={licenseesOption}
+                        />
+                    </Cell> :
+                    <Cell>{item.settingSource}</Cell>
+                }
                 <Cell>{item.licenseeManager}</Cell>
                 <Cell>{item.settingId}</Cell>
                 <Cell className="text-center">
@@ -146,10 +183,9 @@ export class LicenseeMapping extends Component {
 
     handleSearch = () => {
         const params = {
-            settingName : this.state.subSettingName,
-            parentId: parseInt(this.props.updatePopup.parentId, 10)
+            setting : this.state.setting
         };
-        this.props.getMainSettingRelation(params);
+        this.props.getLicenseesMapping(params);
         this.setState({shouldResetScrollPosition: true});
     };
    

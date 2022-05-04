@@ -36,7 +36,9 @@ export class Filter extends Component {
     };
 
     handleLicenseeMapping = () => {
-        this.props.setOpenLicenseeMappingPopup({ show: true});
+        this.props.getLicenseesMapping({setting: ''}).then(() =>{
+            this.props.setOpenLicenseeMappingPopup({ show: true});
+        });
     };
 
     render() {

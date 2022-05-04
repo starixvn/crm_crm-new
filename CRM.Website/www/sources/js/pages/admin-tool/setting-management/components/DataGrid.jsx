@@ -40,9 +40,10 @@ export class DataGrid extends Component {
                 <Cell>{item.settingValue}</Cell>
                 <Cell className='text-right'>{item.settingId}</Cell>
                 <Cell className='text-right'>{item.displayOrder}</Cell>
-                <Cell className='text-center'><i className="rounded-circle fa fa-pencil icon-edit" aria-hidden="true"
-                    onClick={event => this.handleOpenEdit(event, item)}
-                />
+                <Cell className='text-center'>
+                    <i className="rounded-circle fa fa-pencil icon-edit" aria-hidden="true"
+                        onClick={event => this.handleOpenEdit(event, item)}
+                    />
                 </Cell>
                 <Cell className='text-center'>
                     <input type="checkbox" checked={item.isActive} disabled={!this.props.isHost}
