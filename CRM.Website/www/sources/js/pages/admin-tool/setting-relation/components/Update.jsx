@@ -29,7 +29,7 @@ export class Update extends Component {
     handleSetState = mainSettingRelation =>{
         const settingRelation = [...mainSettingRelation];
         this.setState({settingRelation});
-    }
+    };
 
 
     buildHeader = () => {
@@ -140,9 +140,7 @@ export class Update extends Component {
        this.setState({subSettingName: event.target.value}, () =>{
             this.handleSearch();
        });
-    }
-
-    
+    };
     handleSubmit = event => {
         event.preventDefault();
         const {subSettingName, settingRelation} = this.state;
@@ -185,7 +183,7 @@ export class Update extends Component {
             };
         });
         this.setState({settingRelation: settingRelationFilter, shouldResetScrollPosition: false});
-    }
+    };
 
     onChangeCheckBox = (value, checked) =>{
         const settingRelationFilter = this.state.settingRelation.map(setting =>{
@@ -197,7 +195,7 @@ export class Update extends Component {
             };
         });
         this.setState({settingRelation: settingRelationFilter, shouldResetScrollPosition: false});
-    }
+    };
 
     render() {
         const {subSettingOptions}= this.props;

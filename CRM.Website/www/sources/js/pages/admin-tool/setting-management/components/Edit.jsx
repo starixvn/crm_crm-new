@@ -71,15 +71,13 @@ export class Edit extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" className="required" htmlFor="settingValue">
+                        <Form.Label column md="3"  sm="4" htmlFor="settingValue" className="required">
                             {LangHelper.getResource('SettingValue')}
                         </Form.Label>
                         <Col sm="8" md="9">
                             <Form.Control type="text" size="sm" value={values.settingValue}
-                                name="settingValue" id="settingValue"
-                                className="shadow-none" autoComplete="off"
-                                isInvalid={touched.settingValue && errors.settingValue}
-                                onChange={handleChange}
+                                name="settingValue" id="settingValue" className="shadow-none" autoComplete="off"
+                                isInvalid={touched.settingValue && errors.settingValue} onChange={handleChange}
                             />
                         </Col>
                     </Form.Group>

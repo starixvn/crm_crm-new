@@ -161,20 +161,19 @@ export class LicenseeMapping extends PureComponent {
     };
     handleSubmit = event => {
         event.preventDefault();
-        const {subSettingName, settingRelation} = this.state;
         const {updatePopup, updateRelation, onClose, getSettingTypes, gridParams, setUpdateResult} = this.props;
+        const {subSettingName, settingRelation} = this.state;
         const params = {
             parentId: parseInt(updatePopup.parentId, 10),
             settingName: subSettingName,
             subSettings: settingRelation
         };
-
         updateRelation(params).then(() => {
             if (this.props.updateResult.isSuccessful) {
                 setTimeout(() => {
-                    onClose();
-                    getSettingTypes(gridParams);
                     setUpdateResult(null);
+                    getSettingTypes(gridParams);
+                    onClose();
                 }, 3000);
             } else {
                 this.setState({isSubmitting: true});
@@ -189,7 +188,7 @@ export class LicenseeMapping extends PureComponent {
         this.props.getLicenseesMapping(params);
         this.setState({shouldResetScrollPosition: true});
     };
-   
+
     render() {
         const {licensees, licenseesMapping}= this.props;
         if(!licensees || !licenseesMapping){

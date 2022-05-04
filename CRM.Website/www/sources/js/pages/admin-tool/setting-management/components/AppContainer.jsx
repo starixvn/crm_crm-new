@@ -16,58 +16,52 @@ export class AppContainer extends Component {
   componentDidMount() {
       this.props.getMainSettings();
   }
-
   handleCloseInsertNewSetting = () =>{
-    this.props.setOpenInsertNewSettingPopup({ show: false, settingName: '' });
+      this.props.setOpenInsertNewSettingPopup({ show: false, settingName: '' });
   };
-
   handleSuccessInsertNewSetting = () =>{
-    this.handleCloseInsertNewSetting();
-    this.handleGetSettingType();
-    this.props.setInsertNewSettingResult(null);
+      this.handleCloseInsertNewSetting();
+      this.handleGetSettingType();
+      this.props.setInsertNewSettingResult(null);
   };
-
   handleGetSettingType = () =>{
-    this.props.getSettingTypes(this.props.gridParams);
+      this.props.getSettingTypes(this.props.gridParams);
   };
-
   handleCloseEdit = () =>{
-    this.props.setOpenEdiPopup({ show: false, data: null });
+      this.props.setOpenEdiPopup({ show: false, data: null });
   };
-
   handleSuccessEdit = () =>{
-    this.handleCloseEdit();
-    this.handleGetSettingType();
-    this.props.setEditNewSettingResult(null);
+      this.handleCloseEdit();
+      this.handleGetSettingType();
+      this.props.setEditNewSettingResult(null);
   };
-
   handleCloseLicenseeMapping = () =>{
-    this.props.setOpenLicenseeMappingPopup({ show: false});
+      this.props.setOpenLicenseeMappingPopup({ show: false});
   };
 
   handleSuccessUpdateLicenseeMapping = () =>{
-    this.props.setEditLicenseeMappingResult(null);
+      this.props.setEditLicenseeMappingResult(null);
   };
 
   handleEditStatus = () =>{
-    const {settingId, isActive} = this.props.editStatusPopup;
-    this.props.editStatusSetting({settingId, isActive}).then(data =>{
-      this.handleCloseEditStatusPopup();
-      if(data.isSuccessful){
-        this.handleGetSettingType();
-          if(isActive){
-            toast.success(LangHelper.getResource('ActiveStatusSettingSuccess'));
-          }else{
-            toast.success(LangHelper.getResource('DeActiveStatusSettingSuccess'));
-          }
-      }else{
-        toast.error(data.message);
-      }
-    });
+      const {settingId, isActive} = this.props.editStatusPopup;
+      this.props.editStatusSetting({settingId, isActive}).then(data =>{
+        this.handleCloseEditStatusPopup();
+        if(data.isSuccessful){
+          this.handleGetSettingType();
+            if(isActive){
+              toast.success(LangHelper.getResource('ActiveStatusSettingSuccess'));
+            }else{
+              toast.success(LangHelper.getResource('DeActiveStatusSettingSuccess'));
+            }
+        }else{
+          toast.error(data.message);
+        }
+      });
   };
 
   handleCloseEditStatusPopup = () =>{
-    this.props.setEditStatusPopup({ show: false });
+      this.props.setEditStatusPopup({ show: false });
   };
   render() {
     const {isHost, mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, licenseeMappingPopup, editPopup} = this.props;

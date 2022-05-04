@@ -14,9 +14,9 @@ export default class LicenseeRow extends PureComponent {
 
     handleChangeSelect = (value, name) =>{
         if(value !== null){
-          this.setState({name: value.value});
+          this.setState({[name]: value.value});
         }else{
-            this.setState({name: ''});
+            this.setState({[name]: ''});
         }
     };
 
