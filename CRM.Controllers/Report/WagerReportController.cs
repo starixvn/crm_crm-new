@@ -1,6 +1,7 @@
 ﻿namespace CRM.Controllers.Report
 {
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Report.WagerReport;
@@ -14,7 +15,9 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using static Fanex.NAP.Core.Business.Constant;
 
+    [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
     public class WagerReportController : Controller
     {
         private readonly IExportExcelService exportExcelService;
@@ -67,199 +70,10 @@
             };
             int grandTotal = 0;
 
-            var rawData = new List<WagerRawData>
-            {
-                new WagerRawData
-                {
-                    Month = "Jan",
-                    SubCategory = "Accept",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Feb",
-                    SubCategory = "Accept",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Mar",
-                    SubCategory = "Accept",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Apr",
-                    SubCategory = "Accept",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "May",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Jun",
-                    SubCategory = "Accept",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Jul",
-                    SubCategory = "Accept",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Aug",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Sep",
-                    SubCategory = "Accept",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Oct",
-                    SubCategory = "Accept",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Nov",
-                    SubCategory = "Accept",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Dec",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Jan",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Feb",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Mar",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Apr",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Jun",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Jul",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Sep",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Oct",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Nov",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Dec",
-                    SubCategory = "Reject",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Jan",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Feb",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Jun",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Jul",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Oct",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Mar",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Apr",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Sep",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                },
-                new WagerRawData
-                {
-                    Month = "Nov",
-                    SubCategory = "Void/Refund",
-                    NoOfIssues = 1
-                }
-            }.GroupBy(w => w.Month);
+            var rawData = await baseService.GetDataAsync<WagerRawData>(criteria);
 
-            //var rawData = await baseService.GetData<WagerRawData>(criteria)
-            //    .GroupBy(w => w.Month);
-            foreach (var month in rawData)
+            var dataList = rawData.GroupBy(w => w.Month);
+            foreach (var month in dataList)
             {
                 wagerByMonth = new WagerByMonth
                 {
