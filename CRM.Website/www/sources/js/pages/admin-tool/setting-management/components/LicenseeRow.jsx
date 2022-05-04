@@ -1,14 +1,13 @@
 import React, { PureComponent } from 'react';
 import { Cell, Row } from '@jsroot/components/react-grid/index';
 import Select from '@jsroot/components/CustomReactSelect';
-import { Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 
 export default class LicenseeRow extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            sourceMapping: '',
+            settingSource:  this.props.item.settingSource,
             licenseeManager: this.props.item.licenseeManager
         };
     }
@@ -21,16 +20,21 @@ export default class LicenseeRow extends PureComponent {
         }
     }
 
-    handleSave = settingId =>{
-        this.setState(prevState => ({settingId: '', isEdit: !prevState.isEdit}));
+    onCancel = () => {
+        this.setState({licenseeManager: this.props.item.licenseeManager});
+        this.props.handleCancel();
     }
 
-    handleCancel = settingId =>{
-        this.setState(prevState => ({settingId: '', isEdit: !prevState.isEdit}));
+    onSave = settingId => {
+        const {settingSource, licenseeManager}= this.state;
+        this.props.handleSave(settingId, settingSource, licenseeManager);
     }
 
     render() {
-      const {item, index, sourceMappingDefault, licenseesOption, handleEdit, isChangeableValue, isEdit} = this.props;
+        const {item, index, sourceMappingDefault, licenseesOption,
+            licenseesManagerOption, handleEdit, debounceHandleLicenseeManagerChange, isChangeableValue, isEdit} = this.props;
+        const licenseeManagerDefault = [{value: item.licenseeManager, label: item.licenseeManager}];
+        const {settingSource, licenseeManager}= this.state;
         return (
             <Row key={`setting-relation-update-${index}`}>
                 <Cell>{item.setting}</Cell>
@@ -45,36 +49,44 @@ export default class LicenseeRow extends PureComponent {
                             isSelected
                             defaultValue={sourceMappingDefault}
                             noOptionsMessage={() => 'No results found'}
-                            onChange={value => this.handleChangeSelect(value, 'sourceMapping')}
+                            onChange={value => this.handleChangeSelect(value, 'settingSource')}
                             options={licenseesOption}
                         />
                     </Cell> :
-                    <Cell>{item.settingSource}</Cell>
+                    <Cell>{settingSource}</Cell>
                 }
                 {
                     isChangeableValue ?
                     <Cell>
-                        <Form.Control type="text" size="sm" className="shadow-none"
-                            value={this.state.licenseeManager}
-                            onChange={e => this.setState({licenseeManager: e.target.value})}
+                        <Select
+                            placeholder={LangHelper.getResource('PleaseSelect')}
+                            isClearable
+                            isSearchable
+                            isFocused
+                            isSelected
+                            defaultValue={licenseeManagerDefault}
+                            noOptionsMessage={() => 'No results found'}
+                            onChange={value => this.handleChangeSelect(value, 'licenseeManager')}
+                            onInputChange={searchText => debounceHandleLicenseeManagerChange(searchText)}
+                            options={licenseesManagerOption}
                         />
                     </Cell>
                     :
-                    <Cell>{item.licenseeManager}</Cell>
+                    <Cell>{licenseeManager}</Cell>
                 }
                 <Cell>{item.settingId}</Cell>
                 {
                     isChangeableValue ?
                     <Cell className="text-center">
                         <span className='rounded-circle fa fa-floppy-o icon-edit'
-                            onClick={() => this.handleSave(item.settingId)}
+                            onClick={() => this.onSave(item.settingId)}
                         />
                         <span  className='rounded-circle fa fa-times icon-delete'
-                            onClick={() => this.handleCancel(item.settingId)}
+                            onClick={() => this.onCancel()}
                         />
                     </Cell>
                     :
-                    <Cell className="text-center action-icon">
+                    <Cell className={`text-center ${isEdit ? 'action-icon' : ''}`}>
                         <span className={`fa fa-pencil icon-edit ${isEdit ? 'disabled-btn' : 'rounded-circle'}`}
                             onClick={() => handleEdit(item.settingId)}
                         />

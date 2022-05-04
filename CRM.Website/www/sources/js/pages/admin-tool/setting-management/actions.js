@@ -5,6 +5,7 @@ import {
     setParentSettings,
     setLicensees,
     setLicenseeMapping,
+    setLicenseeManager,
     setGridParams,
     setSettingTypes,
     setEditStatusPopup,
@@ -12,7 +13,8 @@ import {
     setOpenLicenseeMappingPopup,
     setInsertNewSettingResult,
     setOpenEdiPopup,
-    setEditNewSettingResult
+    setEditNewSettingResult,
+    setEditLicenseeMappingResult
 } from './settingManagementSlice';
 
 const getMainSettings = () => async dispatch => {
@@ -35,6 +37,16 @@ const getLicensees = () => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/GetLicensees');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setLicensees(response.data));
+    }).catch(Site.handleAxiosError);
+};
+
+const getLicenseeManager = username => async dispatch => {
+    const url = Site.resolveClientUrl('SettingManagement/GetLicenseeManager');
+    await DataService.postDataAsync(url, username).then(response => {
+        const options = response.data.map(item => {
+            return { value: item.custId, label: item.username };
+        });
+        dispatch(setLicenseeManager(options));
     }).catch(Site.handleAxiosError);
 };
 
@@ -73,6 +85,13 @@ const editNewSetting = params => async dispatch => {
     }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
+const editLicenseeMapping = params => async dispatch => {
+    const url = Site.resolveClientUrl('SettingManagement/EditLicenseeMapping');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setEditLicenseeMappingResult(response.data));
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     getMainSettings,
     setMainSettings,
@@ -82,6 +101,8 @@ export const ActionCreators = {
     setLicensees,
     getLicenseesMapping,
     setLicenseeMapping,
+    getLicenseeManager,
+    setLicenseeManager,
     setGridParams,
     getSettingTypes,
     setSettingTypes,
@@ -93,5 +114,7 @@ export const ActionCreators = {
     setInsertNewSettingResult,
     setOpenEdiPopup,
     editNewSetting,
-    setEditNewSettingResult
+    setEditNewSettingResult,
+    editLicenseeMapping,
+    setEditLicenseeMappingResult
 };

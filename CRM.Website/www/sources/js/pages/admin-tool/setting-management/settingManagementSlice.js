@@ -8,6 +8,7 @@ const settingManagementSlice = createSlice({
         settingType: null,
         licensees: null,
         licenseesMapping: null,
+        licenseesManager: [],
         gridParams: {
             settingName: ''
         },
@@ -16,7 +17,8 @@ const settingManagementSlice = createSlice({
         licenseeMappingPopup: {show: false},
         insertNewSettingResult: null,
         editPopup: {show: false, data: null},
-        editNewSettingResult: null
+        editNewSettingResult: null,
+        licenseeMappingResult: null
     },
     reducers: {
         setMainSettings: (state, action) => {
@@ -33,6 +35,9 @@ const settingManagementSlice = createSlice({
         },
         setLicenseeMapping: (state, action) => {
             state.licenseesMapping = action.payload;
+        },
+        setLicenseeManager: (state, action) => {
+            state.licenseesManager = action.payload;
         },
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
@@ -54,6 +59,9 @@ const settingManagementSlice = createSlice({
         },
         setEditNewSettingResult: (state, action) => {
             state.editNewSettingResult = action.payload;
+        },
+        setEditLicenseeMappingResult: (state, action) => {
+            state.licenseeMappingResult = action.payload;
         }
     }
 });
@@ -66,13 +74,15 @@ export const {
     setSettingTypes,
     setLicensees,
     setLicenseeMapping,
+    setLicenseeManager,
     setGridParams,
     setEditStatusPopup,
     setOpenInsertNewSettingPopup,
     setOpenLicenseeMappingPopup,
     setInsertNewSettingResult,
     setOpenEdiPopup,
-    setEditNewSettingResult
+    setEditNewSettingResult,
+    setEditLicenseeMappingResult
 } = actions;
 
 export default reducer;

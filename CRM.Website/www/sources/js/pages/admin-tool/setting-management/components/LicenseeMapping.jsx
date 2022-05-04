@@ -8,6 +8,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
 import LicenseeRow from './LicenseeRow';
 import LangHelper from '@jsroot/common/langHelper';
+import Site from '@jsroot/common/site';
 
 export class LicenseeMapping extends PureComponent {
 
@@ -41,9 +42,9 @@ export class LicenseeMapping extends PureComponent {
     };
 
     buildBody = () => {
-        const {licensees, licenseesMapping}= this.props;
+        const {licenseesMapping}= this.props;
         if (licenseesMapping.length > 0) {
-            return licenseesMapping.map((item, index) => this.renderRow(licensees, item, index));
+            return licenseesMapping.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row className="no-data" >
@@ -58,7 +59,35 @@ export class LicenseeMapping extends PureComponent {
         this.setState(prevState => ({settingId, isEdit: !prevState.isEdit}));
     }
 
-    renderRow = (licensees, item, index) => {
+    handleSave = (settingId, settingSource, licenseeManager) =>{
+        const params = {
+            settingId, sourceMapping: settingSource, licenseeManager
+        };
+        this.props.editLicenseeMapping(params).then(() =>{
+            if(this.props.licenseeMappingResult.isSuccessful){
+                this.setState(prevState => ({settingId: '', isEdit: !prevState.isEdit}));
+                setTimeout(() => {
+                    this.props.onSuccess();
+                }, 3000);
+            }
+        });
+
+    }
+
+    handleCancel = () =>{
+        this.setState(prevState => ({settingId: '', isEdit: !prevState.isEdit}));
+    }
+
+    debounceHandleLicenseeManagerChange = Site.debounce(searchText => {
+        if (searchText.length >= 2) {
+            this.props.getLicenseeManager({username: searchText});
+        } else {
+            this.props.setLicenseeManager([]);
+        }
+    });
+
+    renderRow = (item, index) => {
+        const {licensees, licenseesManager}= this.props;
         const licenseesOption = licensees.map(item =>{
             return {
                 value: item,
@@ -73,26 +102,30 @@ export class LicenseeMapping extends PureComponent {
                 item={item} index={index}
                 sourceMappingDefault={sourceMappingDefault}
                 licenseesOption={licenseesOption}
+                licenseesManagerOption={licenseesManager}
                 handleEdit={this.handleEdit}
                 isChangeableValue={isChangeableValue}
                 isEdit={this.state.isEdit}
+                handleSave={this.handleSave}
+                handleCancel={this.handleCancel}
+                debounceHandleLicenseeManagerChange = {this.debounceHandleLicenseeManagerChange}
             />
         );
     };
 
 
     renderForm = () =>{
-        const { updateResult } = this.props;
+        const { licenseeMappingResult } = this.props;
         return (
-            <Form noValidate onSubmit={this.handleSubmit}>
+            <Form>
                 <Modal.Body>
                     {
-                        updateResult &&
-                        <ResponseMessage isSuccessful={updateResult.isSuccessful}
-                            message={updateResult.message || LangHelper.getResource('UpdateSettingRelationSuccessful')}
+                        licenseeMappingResult &&
+                        <ResponseMessage isSuccessful={licenseeMappingResult.isSuccessful}
+                            message={licenseeMappingResult.message || LangHelper.getResource('UpdateLicenseeMappingSuccessful')}
                         />
                     }
-                     <Form className='form-filter' onSubmit={this.handleSubmit}>
+                     <Form className='form-filter'>
                         <Form.Row bsPrefix='form-row'>
                             <Form.Group>
                                 <Form.Label>
@@ -120,10 +153,8 @@ export class LicenseeMapping extends PureComponent {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.handleSubmit}
-                        disabled={this.state.isSubmitting}
-                    >
-                        {LangHelper.getResource('Update')}
+                    <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>
+                        {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
             </Form>
@@ -184,8 +215,8 @@ export class LicenseeMapping extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { licensees, licenseesMapping } = state;
-    return { licensees, licenseesMapping };
+    const { licensees, licenseesMapping, licenseeMappingResult, licenseesManager } = state;
+    return { licensees, licenseesMapping, licenseeMappingResult, licenseesManager };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LicenseeMapping);

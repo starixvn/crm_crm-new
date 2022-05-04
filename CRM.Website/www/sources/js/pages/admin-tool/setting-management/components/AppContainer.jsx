@@ -45,6 +45,10 @@ export class AppContainer extends Component {
     this.props.setOpenLicenseeMappingPopup({ show: false});
   }
 
+  handleSuccessUpdateLicenseeMapping = () =>{
+    this.props.setEditLicenseeMappingResult(null);
+  }
+
   handleEditStatus = () =>{
     const {settingId, isActive} = this.props.editStatusPopup;
     this.props.editStatusSetting({settingId, isActive}).then(data =>{
@@ -94,6 +98,7 @@ export class AppContainer extends Component {
               {
                 licenseeMappingPopup.show &&
                 <LicenseeMapping
+                    onSuccess={this.handleSuccessUpdateLicenseeMapping}
                     onClose={this.handleCloseLicenseeMapping}
                 />
               }
