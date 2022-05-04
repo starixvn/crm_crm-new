@@ -35,7 +35,11 @@
         height: 650px !important;
         width: 830px;
         .table-container .body-content{
-            max-height: 350px !important;
+            max-height: 400px !important;
+
+            tbody tr td {
+                overflow: unset !important;
+            }
         }
     }
 }

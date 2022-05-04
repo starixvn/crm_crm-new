@@ -56,32 +56,17 @@
 
         public async Task<IActionResult> GetLicensees()
         {
-            try
-            {
-                var criteria = new GetLicenseeCriteria();
-                var licensees = await baseService.GetDataAsync<string>(criteria);
-                return Json(licensees);
-            }
-            catch (System.Exception e)
-            {
-
-                throw;
-            }
+            var criteria = new GetLicenseeCriteria();
+            var licensees = await baseService.GetDataAsync<string>(criteria);
+            return Json(licensees);
+            
         }
 
         [HttpPost]
         public async Task<IActionResult> GetLicenseesMapping([FromBody] GetLicenseeMappingCriteria criteria)
         {
-            try
-            {
-                var licenseesMapping = await baseService.GetDataAsync<LicenseeMapping>(criteria);
-                return Json(licenseesMapping);
-            }
-            catch (System.Exception e)
-            {
-
-                throw;
-            }
+            var licenseesMapping = await baseService.GetDataAsync<LicenseeMapping>(criteria);
+            return Json(licenseesMapping);
         }
 
         [HttpPost]
