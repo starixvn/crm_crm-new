@@ -38,15 +38,15 @@ export class Filter extends Component {
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
                         <Form.Label htmlFor="year">Year</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none" value={this.state.year}
-                            id="year" onChange={evt => this.setState({ year: evt.target.value })}
+                        <Form.Control as="select" size="sm" className="shadow-none " value={this.state.year}
+                            id="year" onChange={evt => this.setState({ year: evt.target.value }) }
                         >
                             {this.renderOptionsYear()}
                         </Form.Control>
                     </Form.Group>
                     <Form.Group>
-                        <Button variant="primary" size="sm" onClick={this.submitHandler}>
-                            {LangHelper.getResource('Submit')}
+                        <Button variant="primary" size="sm" onClick={this.submitHandler }>
+                            {LangHelper.getResource('Submit ')}
                         </Button>
                     </Form.Group>
                 </Form.Row>
