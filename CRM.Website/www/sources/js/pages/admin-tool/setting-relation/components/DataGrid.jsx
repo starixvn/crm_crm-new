@@ -27,7 +27,7 @@ export class DataGrid extends Component {
     buildBody = () => {
         const { settingType } = this.props;
         if ( settingType.length > 0) {
-            return settingType.map((item, index) => this.renderRow(item, index));
+            return settingType.map(item => this.renderRow(item));
         }
         return [
             <Row className="no-data" >
@@ -38,7 +38,7 @@ export class DataGrid extends Component {
         ];
     };
 
-    renderRow = (item, index) => {
+    renderRow = item => {
         const rows = [];
         rows.push(
             <Row key={`parent-${item.settingId}`} className='parent-level-0'>
@@ -49,7 +49,11 @@ export class DataGrid extends Component {
                     }
                     <span >{item.settingValue}</span>
                 </Cell>
-                <Cell className='text-center'><i className="fa fa-plus-circle icon-excel" aria-hidden="true" onClick={event => this.handleOpenUpdate(event, item.settingId)}/></Cell>
+                <Cell className='text-center'>
+                    <i className="fa fa-plus-circle icon-excel" aria-hidden="true"
+                        onClick={event => this.handleOpenUpdate(event, item.settingId)}
+                    />
+                </Cell>
                 <Cell className='text-right'>{item.settingId}</Cell>
                 <Cell className='text-right'>{item.displayOrder}</Cell>
             </Row>
@@ -103,7 +107,7 @@ export class DataGrid extends Component {
         };
         this.props.setOpenUpdatePopup({ show: true, title: title, parentId: params.parentId});
         this.props.getMainSettingRelation(params);
-    }
+    };
 
     render() {
         const { settingType, gridParams } = this.props;

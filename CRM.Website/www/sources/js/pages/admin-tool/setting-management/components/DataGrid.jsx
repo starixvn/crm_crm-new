@@ -65,20 +65,20 @@ export class DataGrid extends Component {
 
     render() {
         const { settingType, gridParams } = this.props;
-        if(!settingType || settingType === null){
+        if(!settingType){
             return null;
         }
 
         return (
             <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center'>
+                <div className='justify-content-between align-items-center table-title d-flex'>
                     <span>{`${LangHelper.getResource('SettingManagementTitle')} ${gridParams.settingName}`}</span>
                 </div>
                 <Table
-                    width={700}
-                    autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
+                    width={700}
+                    autoWidth={false}
                     onSort={this.onSort}
                     containerPadding={0}
                     adjustedHeight={10}

@@ -13,7 +13,6 @@ export class NewSettingValue extends Component {
     componentDidMount(){
         this.props.getParentSettings();
     }
-    
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const params = {
@@ -42,7 +41,7 @@ export class NewSettingValue extends Component {
             errors.settingValue = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingValue'));
         }
         return errors;
-    }
+    };
 
     renderForm = ({
         values,
