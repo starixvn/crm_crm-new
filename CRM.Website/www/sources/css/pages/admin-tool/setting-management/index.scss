@@ -40,6 +40,13 @@
             tbody tr td {
                 overflow: unset !important;
             }
+
+            .action-icon{
+                cursor: not-allowed !important;
+            }
+            .disabled-btn{
+                pointer-events: none !important;
+            }
         }
     }
 }
