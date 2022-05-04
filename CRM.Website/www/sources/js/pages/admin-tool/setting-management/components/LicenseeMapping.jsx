@@ -6,18 +6,18 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
+import LicenseeRow from './LicenseeRow';
 import LangHelper from '@jsroot/common/langHelper';
-import Select from '@jsroot/components/CustomReactSelect';
 
 export class LicenseeMapping extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
-            sourceMapping: '',
             setting: '',
             settingId: '',
             shouldResetScrollPosition: true,
+            isEdit: false,
             isSubmitting: false
         };
     }
@@ -55,15 +55,7 @@ export class LicenseeMapping extends PureComponent {
     };
 
     handleEdit = settingId =>{
-        this.setState({settingId});
-    }
-
-    handleChangeSelect = (value, name) =>{
-        if(value !== null){
-          this.setState({name: value.value});
-        }else{
-            this.setState({name: ''});
-        }
+        this.setState(prevState => ({settingId, isEdit: !prevState.isEdit}));
     }
 
     renderRow = (licensees, item, index) => {
@@ -74,37 +66,17 @@ export class LicenseeMapping extends PureComponent {
             };
         });
         const sourceMappingDefault = licenseesOption.filter(x=> x.value === item.settingSource);
+        const isChangeableValue =  this.state.isEdit && this.state.settingId === item.settingId;
+
         return (
-            <Row key={`setting-relation-update-${index}`}>
-                <Cell>{item.setting}</Cell>
-                {
-                    this.state.settingId === item.settingId ?
-                    <Cell>
-                        <Select
-                            placeholder={LangHelper.getResource('PleaseSelect')}
-                            isClearable
-                            isSearchable
-                            isFocused
-                            isSelected
-                            defaultValue={sourceMappingDefault}
-                            noOptionsMessage={() => 'No results found'}
-                            onChange={value => this.handleChangeSelect(value, 'sourceMapping')}
-                            options={licenseesOption}
-                        />
-                    </Cell> :
-                    <Cell>{item.settingSource}</Cell>
-                }
-                <Cell>{item.licenseeManager}</Cell>
-                <Cell>{item.settingId}</Cell>
-                <Cell className="text-center">
-                    <span className="rounded-circle fa fa-pencil icon-edit"
-                        onClick={() => this.handleEdit(item.settingId)}
-                    />
-                    <span className="rounded-circle fa fa-trash icon-delete"
-                        onClick={() => this.handleDelete(item.settingId)}
-                    />
-                </Cell>
-            </Row>
+            <LicenseeRow 
+                item={item} index={index}
+                sourceMappingDefault={sourceMappingDefault}
+                licenseesOption={licenseesOption}
+                handleEdit={this.handleEdit}
+                isChangeableValue={isChangeableValue}
+                isEdit={this.state.isEdit}
+            />
         );
     };
 
