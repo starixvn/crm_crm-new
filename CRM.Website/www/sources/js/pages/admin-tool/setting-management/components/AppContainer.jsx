@@ -19,35 +19,35 @@ export class AppContainer extends Component {
 
   handleCloseInsertNewSetting = () =>{
     this.props.setOpenInsertNewSettingPopup({ show: false, settingName: '' });
-  }
+  };
 
   handleSuccessInsertNewSetting = () =>{
     this.handleCloseInsertNewSetting();
     this.handleGetSettingType();
     this.props.setInsertNewSettingResult(null);
-  }
+  };
 
   handleGetSettingType = () =>{
     this.props.getSettingTypes(this.props.gridParams);
-  }
+  };
 
   handleCloseEdit = () =>{
     this.props.setOpenEdiPopup({ show: false, data: null });
-  }
+  };
 
   handleSuccessEdit = () =>{
     this.handleCloseEdit();
     this.handleGetSettingType();
     this.props.setEditNewSettingResult(null);
-  }
+  };
 
   handleCloseLicenseeMapping = () =>{
     this.props.setOpenLicenseeMappingPopup({ show: false});
-  }
+  };
 
   handleSuccessUpdateLicenseeMapping = () =>{
     this.props.setEditLicenseeMappingResult(null);
-  }
+  };
 
   handleEditStatus = () =>{
     const {settingId, isActive} = this.props.editStatusPopup;
@@ -64,12 +64,11 @@ export class AppContainer extends Component {
         toast.error(data.message);
       }
     });
-  }
+  };
 
   handleCloseEditStatusPopup = () =>{
     this.props.setEditStatusPopup({ show: false });
-  }
-  
+  };
   render() {
     const {isHost, mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, licenseeMappingPopup, editPopup} = this.props;
 
@@ -81,7 +80,7 @@ export class AppContainer extends Component {
               <Filter isHost={isHost}/>
               <DataGrid isHost={isHost} />
               {
-                insertNewSettingPopup.show && 
+                insertNewSettingPopup.show &&
                 <NewSettingValue
                     settingName={insertNewSettingPopup.settingName}
                     onClose={this.handleCloseInsertNewSetting}
@@ -108,13 +107,13 @@ export class AppContainer extends Component {
                     title={LangHelper.getResource('Confirmation')}
                     contents={
                         <div>Are you sure you want to <span>{this.props.editStatusPopup.isActive ? 'deactivate' : 'activate'}
-                        </span> Setting <strong>{gridParams.settingName + ' ' + this.props.editStatusPopup.settingValue}</strong>?</div>
+                        </span> Setting <strong>{`${gridParams.settingName} ' ' ${this.props.editStatusPopup.settingValue}`}</strong>?</div>
                     }
                     buttons={[
-                        <Button variant="primary" size="sm" onClick={this.handleEditStatus}>
+                        <Button onClick={this.handleEditStatus} variant="primary" size="sm" >
                             {LangHelper.getResource('OK')}
                         </Button>,
-                        <Button variant="primary" size="sm" onClick={this.handleCloseEditStatusPopup}>
+                        <Button onClick={this.handleCloseEditStatusPopup} variant="primary" size="sm">
                             {LangHelper.getResource('Cancel')}
                         </Button>
                     ]}

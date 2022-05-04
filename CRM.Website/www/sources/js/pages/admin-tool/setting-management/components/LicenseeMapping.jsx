@@ -57,7 +57,7 @@ export class LicenseeMapping extends PureComponent {
 
     handleEdit = settingId =>{
         this.setState(prevState => ({settingId, isEdit: !prevState.isEdit}));
-    }
+    };
 
     handleSave = (settingId, settingSource, licenseeManager) =>{
         const params = {
@@ -71,12 +71,11 @@ export class LicenseeMapping extends PureComponent {
                 }, 3000);
             }
         });
-
-    }
+    };
 
     handleCancel = () =>{
         this.setState(prevState => ({settingId: '', isEdit: !prevState.isEdit}));
-    }
+    };
 
     debounceHandleLicenseeManagerChange = Site.debounce(searchText => {
         if (searchText.length >= 2) {
@@ -98,7 +97,7 @@ export class LicenseeMapping extends PureComponent {
         const isChangeableValue =  this.state.isEdit && this.state.settingId === item.settingId;
 
         return (
-            <LicenseeRow 
+            <LicenseeRow
                 item={item} index={index}
                 sourceMappingDefault={sourceMappingDefault}
                 licenseesOption={licenseesOption}
@@ -160,7 +159,6 @@ export class LicenseeMapping extends PureComponent {
             </Form>
         );
     };
-    
     handleSubmit = event => {
         event.preventDefault();
         const {subSettingName, settingRelation} = this.state;

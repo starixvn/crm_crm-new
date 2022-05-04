@@ -17,19 +17,18 @@ export class Filter extends Component {
         this.handleSubmit();
     }
 
-    handleSubmit = () => {
-        const { settingName } = this.state;
-        const params = {settingName};
-        this.props.setGridParams(params);
-        this.props.getSettingTypes(params);
-    };
-
     handleChangeSettingName = event =>{
         event.preventDefault();
         const settingName = event.target.value;
         this.setState({settingName});
         this.props.setGridParams({settingName});
-    }
+    };
+
+    handleSubmit = () => {
+        const { settingName } = this.state;
+        this.props.getSettingTypes({settingName});
+        this.props.setGridParams({settingName});
+    };
 
     handleInsertNewSetting = settingName => {
         this.props.setOpenInsertNewSettingPopup({ show: true, settingName:settingName});
@@ -78,7 +77,6 @@ export class Filter extends Component {
                             <Button variant="primary" onClick={this.handleLicenseeMapping}>
                                 {LangHelper.getResource('LicenseeMapping')}
                             </Button>
-                        
                         }
                     </Form.Group>
                 </Form.Row>

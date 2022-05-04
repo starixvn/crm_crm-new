@@ -14,24 +14,12 @@ export class DataGrid extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={45}>{LangHelper.getResource('Setting')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('SettingId')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('Order')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('Edit')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('Active')}</HeaderCell>
+                <HeaderCell colWidth={13}>{LangHelper.getResource('SettingId')}</HeaderCell>
+                <HeaderCell colWidth={13}>{LangHelper.getResource('Order')}</HeaderCell>
+                <HeaderCell colWidth={13}>{LangHelper.getResource('Edit')}</HeaderCell>
+                <HeaderCell colWidth={13}>{LangHelper.getResource('Active')}</HeaderCell>
             </HeaderRow>
         );
-    };
-
-    buildBody = () => {
-        const { settingType } = this.props;
-        if ( settingType.length > 0) {
-            return settingType.map((item, index) => this.renderRow(item, index));
-        }
-        return [
-            <Row className="no-data">
-                <Cell className='text-center' colSpan={4}>{LangHelper.getResource('ThereIsNoData')}</Cell>
-            </Row>
-        ];
     };
 
     renderRow = (item, index) => {
@@ -54,14 +42,26 @@ export class DataGrid extends Component {
         );
     };
 
+    buildBody = () => {
+        const { settingType } = this.props;
+        if ( settingType.length > 0) {
+            return settingType.map((item, index) => this.renderRow(item, index));
+        }
+        return [
+            <Row className="no-data">
+                <Cell className='text-center' colSpan={4}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+            </Row>
+        ];
+    };
+
     handleEditStatus = (settingId, settingValue, isActive)=>{
         this.props.setEditStatusPopup({show: true, settingId, settingValue, isActive});
-    }
+    };
 
     handleOpenEdit = (event, item) => {
         event.preventDefault();
         this.props.setOpenEdiPopup({ show: true, data: item});
-    }
+    };
 
     render() {
         const { settingType, gridParams } = this.props;
