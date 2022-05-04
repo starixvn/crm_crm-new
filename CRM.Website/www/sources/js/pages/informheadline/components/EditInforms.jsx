@@ -42,7 +42,7 @@ export class EditInforms extends Component {
         },
         allSettings: {
             currencies: [],
-            sites: [{ childSites: [] }],
+            sites: [{ childSites: [] }]
         }
     };
 
