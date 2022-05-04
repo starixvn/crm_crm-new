@@ -14,8 +14,8 @@
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
-    //[CrmPermission(FunctionKey = FunctionKey.SettingManagement, Policy = Policy.Read)]
-    public class SettingManagementController : Controller
+    [CrmPermission(FunctionKey = FunctionKey.SettingManagement, Policy = Policy.Read)]
+    public class SettingManagementController : BaseController
     {
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
@@ -38,8 +38,8 @@
 
         public IActionResult Index()
         {
-           // var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.SettingManagement, Policy.Host);
-            return View(true);
+           var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.SettingManagement, Policy.Host);
+            return View(isHost);
         }
 
         public async Task<IActionResult> GetMainSettings()
@@ -59,7 +59,6 @@
             var criteria = new GetLicenseeCriteria();
             var licensees = await baseService.GetDataAsync<string>(criteria);
             return Json(licensees);
-            
         }
 
         [HttpPost]
@@ -67,6 +66,13 @@
         {
             var licenseesMapping = await baseService.GetDataAsync<LicenseeMapping>(criteria);
             return Json(licenseesMapping);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetLicenseeManager([FromBody] GetLicenseeManagerCriteria criteria)
+        {
+            var licenseeManagers = await baseService.GetDataAsync<LicenseeManager>(criteria);
+            return Json(licenseeManagers);
         }
 
         [HttpPost]
@@ -100,6 +106,14 @@
         {
             command.UserId = napSession.UserId;
             command.IP = "ClientIP";
+            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditLicenseeMapping([FromBody] EditLicenseeMappingCommand command)
+        {
+            command.UserId = napSession.UserId;
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }

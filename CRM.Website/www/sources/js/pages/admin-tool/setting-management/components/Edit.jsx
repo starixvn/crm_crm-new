@@ -46,7 +46,6 @@ export class Edit extends Component {
         touched,
         handleChange,
         handleSubmit,
-        setFieldValue,
         isSubmitting
     }) => {
         return (
