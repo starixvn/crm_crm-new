@@ -13,7 +13,7 @@
         {
             // Arrange
             var criteria = new GetWagerReportCriteria();
-            var expected = "Report_WagerReport_GetReport";
+            var expected = "Acc_CRM_Rpt_FeedbackStatisticsWagers";
 
             // Act
             var actual = criteria.GetSettingKey();

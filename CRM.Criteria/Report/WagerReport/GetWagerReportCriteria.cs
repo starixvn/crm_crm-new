@@ -13,7 +13,7 @@ namespace CRM.Criteria.Report.WagerReport
         public int TimeSpan { get; set; }
         public override string GetSettingKey()
         {
-            return "Report_WagerReport_GetReport";
+            return "Acc_CRM_Rpt_FeedbackStatisticsWagers";
         }
 
         public override bool IsValid()

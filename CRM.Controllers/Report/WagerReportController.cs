@@ -18,8 +18,8 @@
     using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
-    public class WagerReportController : Controller
+   [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
+    public class WagerReportController : BaseController
     {
         private readonly IExportExcelService exportExcelService;
         private readonly AppSettings appSettings;
