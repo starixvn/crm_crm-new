@@ -134,7 +134,6 @@
 
             // Assert
             service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
-            cell.Style.Font.Color.Equals(Arg.Any<Color>());
             Assert.True(cell.Style.Font.Bold);
         }
 

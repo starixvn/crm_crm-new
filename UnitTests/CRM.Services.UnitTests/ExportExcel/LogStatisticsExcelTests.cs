@@ -117,7 +117,6 @@
 
             // Assert
             service.Received().Protected("SetBackgroundColor", cell, Arg.Any<Color>());
-            cell.Style.Font.Color.Equals(Arg.Any<Color>());
             Assert.True(cell.Style.Font.Bold);
         }
 
@@ -135,7 +134,6 @@
             // Assert
             service.Received().Protected("SetBackgroundColor", cell, Arg.Any<Color>());
             service.Received().Protected("DrawBorderCell", cell);
-            cell.Style.Font.Color.Equals(Arg.Any<Color>());
             Assert.True(cell.Style.Font.Bold);
         }
 

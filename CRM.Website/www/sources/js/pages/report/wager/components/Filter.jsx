@@ -22,7 +22,7 @@ export class Filter extends Component {
         this.props.getGridData(params);
     };
 
-    renderOptionsYear = () => {
+    renderOptionsYears = () => {
         const minYear = 2011;
         const currentYear = (new Date()).getFullYear();
         const options = [];
@@ -41,12 +41,12 @@ export class Filter extends Component {
                         <Form.Control as="select" size="sm" className="shadow-none " value={this.state.year}
                             id="year" onChange={evt => this.setState({ year: evt.target.value }) }
                         >
-                            {this.renderOptionsYear()}
+                            {this.renderOptionsYears()}
                         </Form.Control>
                     </Form.Group>
                     <Form.Group>
                         <Button variant="primary" size="sm" onClick={this.submitHandler }>
-                            {LangHelper.getResource('Submit ')}
+                            {LangHelper.getResource('Submit' )}
                         </Button>
                     </Form.Group>
                 </Form.Row>
