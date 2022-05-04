@@ -18,7 +18,7 @@ export class DataGrid extends Component {
 
     renderCustomButtonReport = () => {
         return (
-            <div>                
+            <div>
                 <OverlayTrigger
                     overlay={
                         <Tooltip><span>Export to Excel</span></Tooltip>
@@ -120,7 +120,7 @@ export class DataGrid extends Component {
                     width={800}
                     autoWidth={false}
                     header={this.buildHeader()}
-                    body={this.buildBody()}    
+                    body={this.buildBody()}
                     footer={this.renderFooter(grandTotal)}
                     isPaging={false}
                     containerPadding={0}

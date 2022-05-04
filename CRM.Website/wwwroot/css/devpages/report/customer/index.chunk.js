@@ -25150,77 +25150,6 @@ class Layout extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
 
 /***/ }),
 
-/***/ "./www/sources/js/components/ResponseMessage.jsx":
-/*!*******************************************************!*\
-  !*** ./www/sources/js/components/ResponseMessage.jsx ***!
-  \*******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-class ResponseMessage extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
-  render() {
-    const {
-      isSuccessful,
-      message,
-      messages
-    } = this.props;
-    const variant = isSuccessful ? 'success' : 'danger';
-    const className = `fa ${isSuccessful ? 'fa-check' : 'fa-exclamation-triangle'}`;
-    return message ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Alert"], {
-      variant: variant,
-      className: "d-flex"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "d-inline"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: className
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "ml-2 d-inline"
-    }, message)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Alert"], {
-      variant: variant,
-      className: "d-flex flex-column"
-    }, messages.map((item, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "d-flex",
-      key: index
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "d-inline"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: className
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "ml-2 d-inline"
-    }, item))));
-  }
-
-}
-
-_defineProperty(ResponseMessage, "propTypes", {
-  isSuccessful: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  message: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  messages: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array
-});
-
-_defineProperty(ResponseMessage, "defaultProps", {
-  isSuccessful: false,
-  message: '',
-  messages: []
-});
-
-/* harmony default export */ __webpack_exports__["default"] = (ResponseMessage);
-
-/***/ }),
-
 /***/ "./www/sources/js/components/multiple-select/MultipleSelectLabel.jsx":
 /*!***************************************************************************!*\
   !*** ./www/sources/js/components/multiple-select/MultipleSelectLabel.jsx ***!
@@ -27061,7 +26990,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  componentDidMount() {
+    this.props.getAllSettings();
+  }
+
   render() {
+    const {
+      allSettings
+    } = this.props;
+
+    if (!allSettings) {
+      return null;
+    }
+
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Filter__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_5__["default"], null));
   }
 
@@ -27071,10 +27012,10 @@ const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_3__
 
 const mapStateToProps = state => {
   const {
-    customerReport
+    allSettings
   } = state;
   return {
-    customerReport
+    allSettings
   };
 };
 
@@ -27262,7 +27203,7 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       TotalItem: customerReport.totalCustomer,
       PageList: _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["PAGING_SIZES"]
     };
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "table-title d-flex justify-content-between align-items-center"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('CustomerReport')), customerReport && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ExcelIcon__WEBPACK_IMPORTED_MODULE_4__["default"], {
       handleExportExcel: this.handleExportExcel
@@ -27317,9 +27258,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
 /* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
 /* harmony import */ var _jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/components/multiple-select/index */ "./www/sources/js/components/multiple-select/index.jsx");
-/* harmony import */ var _jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/ResponseMessage */ "./www/sources/js/components/ResponseMessage.jsx");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -27331,6 +27270,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
+
+    _defineProperty(this, "initSettingOptions", () => {
+      const {
+        allSettings
+      } = this.props;
+      const languageIds = [],
+            positionIds = [],
+            siteIds = [0],
+            siteOptions = [];
+      const languageOptions = allSettings.languages.map(item => {
+        languageIds.push(item.languageId);
+        return {
+          languageId: item.languageId,
+          name: item.name,
+          checked: true
+        };
+      });
+      const positionOptions = allSettings.roles.map(item => {
+        positionIds.push(item.displayOrder);
+        return {
+          positionId: item.displayOrder,
+          name: item.value,
+          checked: true
+        };
+      });
+      allSettings.sites.forEach(item => {
+        item.childSites.forEach(element => {
+          siteIds.push(element.id);
+          siteOptions.push({
+            siteId: element.id,
+            name: element.name,
+            checked: true
+          });
+        });
+      });
+      const vipOptions = [{
+        id: -1,
+        name: 'All'
+      }, {
+        id: 1,
+        name: 'Yes'
+      }, {
+        id: 0,
+        name: 'No'
+      }];
+      this.setState({
+        languageOptions: languageOptions,
+        positionOptions: positionOptions,
+        siteOptions: siteOptions,
+        vipOptions: vipOptions,
+        languageIds: languageIds.join(','),
+        positionIds: positionIds.join(','),
+        siteIds: siteIds.join(',')
+      });
+    });
 
     _defineProperty(this, "handleChange", event => {
       const name = event.target.name;
@@ -27422,66 +27416,11 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     };
   }
 
-  async componentDidMount() {
-    await this.props.getAllSettings();
-    const {
-      allSettings
-    } = this.props;
-    const languageIds = [],
-          positionIds = [],
-          siteIds = [0],
-          siteOptions = [];
-    const languageOptions = allSettings.languages.map(item => {
-      languageIds.push(item.languageId);
-      return {
-        languageId: item.languageId,
-        name: item.name,
-        checked: true
-      };
-    });
-    const positionOptions = allSettings.roles.map(item => {
-      positionIds.push(item.displayOrder);
-      return {
-        positionId: item.displayOrder,
-        name: item.value,
-        checked: true
-      };
-    });
-    allSettings.sites.forEach(item => {
-      item.childSites.forEach(element => {
-        siteIds.push(element.id);
-        siteOptions.push({
-          siteId: element.id,
-          name: element.name,
-          checked: true
-        });
-      });
-    });
-    const vipOptions = [{
-      id: -1,
-      name: 'All'
-    }, {
-      id: 1,
-      name: 'Yes'
-    }, {
-      id: 0,
-      name: 'No'
-    }];
-    this.setState({
-      languageOptions: languageOptions,
-      positionOptions: positionOptions,
-      siteOptions: siteOptions,
-      vipOptions: vipOptions,
-      languageIds: languageIds.join(','),
-      positionIds: positionIds.join(','),
-      siteIds: siteIds.join(',')
-    });
+  componentDidMount() {
+    this.initSettingOptions();
   }
 
   render() {
-    const {
-      allSettings
-    } = this.props;
     const {
       languageOptions,
       positionOptions,
@@ -27490,11 +27429,6 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       excludeIgnoredAccounts,
       isShowFilter
     } = this.state;
-
-    if (!allSettings) {
-      return null;
-    }
-
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"], {
       className: "form-filter",
       onSubmit: this.handleSubmit
@@ -27620,11 +27554,9 @@ const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_3__
 
 const mapStateToProps = state => {
   const {
-    customerReport,
     allSettings
   } = state;
   return {
-    customerReport,
     allSettings
   };
 };
