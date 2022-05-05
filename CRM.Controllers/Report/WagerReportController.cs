@@ -71,6 +71,7 @@
             int grandTotal = 0;
             var rawData = await baseService.GetDataAsync<WagerRawData>(criteria);
             var dataList = rawData.GroupBy(w => w.Month);
+
             foreach (var month in dataList)
             {
                 wagerByMonth = new WagerByMonth
