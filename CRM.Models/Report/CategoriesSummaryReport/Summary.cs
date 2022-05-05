@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace CRM.Models.Report.CategoriesSummaryReport
+﻿namespace CRM.Models.Report.CategoriesSummaryReport
 {
+    using System;
+
     [Serializable]
     public class Summary
     {

@@ -52,7 +52,7 @@ export class DataGrid extends Component {
             ];
         }
         return [
-            <Row key='body-NoData' className="text-bold" >
+            <Row key='body-NoData' className="no-data" >
                 <Cell className='text-center' colSpan={4}>{LangHelper.getResource('ThereIsNoData')}</Cell>
             </Row>
         ];
@@ -81,25 +81,27 @@ export class DataGrid extends Component {
     };
 
     renderFooter = total => {
-        return total.wagers.map((item, index) => {
-            if (index === 0) {
-                return (
-                    <Row className="last-row" key={item.id + item.name}>
-                        <Cell className="text-center" rowSpan={total.wagers.length}>{total.month}</Cell>
-                        <Cell>{item.name}</Cell>
-                        <Cell className="text-right">{item.amount}</Cell>
-                        <Cell className="text-right" rowSpan={total.wagers.length}>{total.total}</Cell>
-                    </Row>
-                );
-            } else {
-                return (
-                    <Row className="last-row" key={item.id + item.name}>
-                        <Cell>{item.name}</Cell>
-                        <Cell className="text-right">{item.amount}</Cell>
-                    </Row>
-                );
-            }
-        });
+        if(total.total>0){
+            return total.wagers.map((item, index) => {
+                if (index === 0) {
+                    return (
+                        <Row className="last-row" key={item.id + item.name}>
+                            <Cell className="text-center" rowSpan={total.wagers.length}>{total.month}</Cell>
+                            <Cell>{item.name}</Cell>
+                            <Cell className="text-right">{item.amount}</Cell>
+                            <Cell className="text-right" rowSpan={total.wagers.length}>{total.total}</Cell>
+                        </Row>
+                    );
+                } else {
+                    return (
+                        <Row className="last-row" key={item.id + item.name}>
+                            <Cell>{item.name}</Cell>
+                            <Cell className="text-right">{item.amount}</Cell>
+                        </Row>
+                    );
+                }
+            });
+        }        
     };
 
     render() {

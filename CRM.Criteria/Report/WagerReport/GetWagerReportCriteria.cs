@@ -1,24 +1,16 @@
-﻿using CRM.Core.Models;
-using Fanex.Data;
-using Fanex.Data.Repository;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CRM.Criteria.Report.WagerReport
+﻿namespace CRM.Criteria.Report.WagerReport
 {
+    using Fanex.Data.Repository;
+
     public class GetWagerReportCriteria : CriteriaBase
     {
+        private readonly int minYear = 2011;
         public int Year { get; set; }
         public int TimeSpan { get; set; }
         public override string GetSettingKey()
         {
             return "Acc_CRM_Rpt_FeedbackStatisticsWagers";
         }
-
-        public override bool IsValid()
-        {
-            return Year > 0;
-        }
+        public override bool IsValid() => Year >= minYear;
     }
 }

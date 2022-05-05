@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CRM.Models.Report.CategoriesSummaryReport
+﻿namespace CRM.Models.Report.CategoriesSummaryReport
 {
+    using System;
+    using System.Collections.Generic;
     [Serializable]
     public class SubCategorySummary
     {
