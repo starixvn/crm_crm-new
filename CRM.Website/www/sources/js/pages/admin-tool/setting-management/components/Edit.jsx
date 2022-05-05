@@ -96,10 +96,10 @@ export class Edit extends Component {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
+                    <Button variant="primary" type="submit" size="sm" disabled={isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button variant="primary" size="sm" onClick={this.props.onClose}>
+                    <Button size="sm" variant="primary" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
@@ -121,13 +121,14 @@ export class Edit extends Component {
         };
 
         return (
-            <Modal show className="setting-modal" dialogAs={DraggableModalDialog}
+            <Modal className="setting-modal" show dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} centered size='lg'
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('EditSettingValue')}</Modal.Title>
                 </Modal.Header>
+                
                 <Formik
                     initialValues={initialValues}
                     validate={this.validateFormik}

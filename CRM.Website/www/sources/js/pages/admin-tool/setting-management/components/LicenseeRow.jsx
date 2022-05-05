@@ -36,6 +36,7 @@ export default class LicenseeRow extends PureComponent {
         const licenseeManagerDefault = [{value: item.licenseeManager, label: item.licenseeManager}];
         const {settingSource, licenseeManager}= this.state;
         const isDisableClass = isEdit ? 'disabled-btn' : 'rounded-circle';
+        const isEditClass = isEdit ? 'action-icon' : '';
         return (
             <Row key={`setting-relation-update-${index}`}>
                 <Cell>{item.setting}</Cell>
@@ -87,7 +88,7 @@ export default class LicenseeRow extends PureComponent {
                         />
                     </Cell>
                     :
-                    <Cell className={`text-center ${isEdit ? 'action-icon' : ''}`}>
+                    <Cell className={`text-center ${isEditClass}`}>
                         <span className={`fa fa-pencil icon-edit ${isDisableClass}`}
                             onClick={() => handleEdit(item.settingId)}
                         />

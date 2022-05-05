@@ -121,10 +121,10 @@ export class NewSettingValue extends Component {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
+                    <Button type="submit"  size="sm" variant="primary" disabled={isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button variant="primary" size="sm" onClick={this.props.onClose}>
+                    <Button size="sm"  variant="primary" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
@@ -146,13 +146,14 @@ export class NewSettingValue extends Component {
         };
 
         return (
-            <Modal show className="setting-modal" dialogAs={DraggableModalDialog}
-                backdrop="static" keyboard={false} centered size='lg'
+            <Modal className="setting-modal" dialogAs={DraggableModalDialog} 
+                backdrop="static" keyboard={false} show centered size='lg'
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('InsertNewSetting')}</Modal.Title>
                 </Modal.Header>
+                
                 <Formik
                     initialValues={initialValues}
                     validate={this.validateFormik}
