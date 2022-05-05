@@ -80,7 +80,7 @@ export class DataGrid extends Component {
         });
     };
 
-    renderFooter = total => {
+    renderFooter (total) {
         if (total.total > 0) {
             return total.wagers.map((item, index) => {
                 if (index === 0) {

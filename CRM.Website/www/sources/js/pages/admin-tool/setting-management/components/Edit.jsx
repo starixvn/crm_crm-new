@@ -126,12 +126,11 @@ export class Edit extends Component {
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title as="div">{LangHelper.getResource('EditSettingValue')}</Modal.Title>
+                    <Modal.Title as="div" >{LangHelper.getResource('EditSettingValue')}</Modal.Title>
                 </Modal.Header>
-                
                 <Formik
-                    initialValues={initialValues}
                     validate={this.validateFormik}
+                    initialValues={initialValues}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}

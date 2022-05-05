@@ -146,18 +146,17 @@ export class NewSettingValue extends Component {
         };
 
         return (
-            <Modal className="setting-modal" dialogAs={DraggableModalDialog} 
+            <Modal className="setting-modal" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} show centered size='lg'
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('InsertNewSetting')}</Modal.Title>
                 </Modal.Header>
-                
                 <Formik
-                    initialValues={initialValues}
-                    validate={this.validateFormik}
                     onSubmit={this.handleSubmit}
+                    validate={this.validateFormik}
+                    initialValues={initialValues}
                 >
                     {this.renderForm}
                 </Formik>
