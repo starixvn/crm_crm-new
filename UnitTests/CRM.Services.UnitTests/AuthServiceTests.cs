@@ -17,7 +17,6 @@ namespace CRM.Services.UnitTests
     {
         private INapSession napSession;
         private INapSettings napSettings;
-        private ISiteService siteService;
         private ISecurityService securityService;
         private IMaintenanceService maintenanceService;
 
@@ -67,23 +66,6 @@ namespace CRM.Services.UnitTests
         }
 
         [Fact]
-        public async Task GetRecheckInStatusAsync_SiteIsDeactivated_ReturnExpectedStatus()
-        {
-            // Arrange
-            var service = GetAuthService();
-            maintenanceService.IsUnderMaintenanceAsync().Returns(false);
-            napSettings.EnableReCheckIn.Returns(true);
-            napSession.OnUserId.Returns(1);
-            siteService.IsActivatedAsync(Arg.Any<int>()).Returns(false);
-
-            // Act
-            var actual = await service.GetRecheckInStatusAsync();
-
-            // Assert
-            Assert.Equal(RecheckInStatus.InvalidSite, actual);
-        }
-
-        [Fact]
         public async Task GetRecheckInStatusAsync_IsKickOut_ReturnExpectedStatus()
         {
             // Arrange
@@ -91,7 +73,6 @@ namespace CRM.Services.UnitTests
             maintenanceService.IsUnderMaintenanceAsync().Returns(false);
             napSettings.EnableReCheckIn.Returns(true);
             napSession.OnUserId.Returns(1);
-            siteService.IsActivatedAsync(Arg.Any<int>()).Returns(true);
             securityService.ReCheckInAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(1);
 
             // Act
@@ -109,7 +90,6 @@ namespace CRM.Services.UnitTests
             maintenanceService.IsUnderMaintenanceAsync().Returns(false);
             napSettings.EnableReCheckIn.Returns(true);
             napSession.OnUserId.Returns(1);
-            siteService.IsActivatedAsync(Arg.Any<int>()).Returns(true);
             securityService.ReCheckInAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(0);
 
             // Act
@@ -157,10 +137,9 @@ namespace CRM.Services.UnitTests
         {
             napSession = Substitute.For<INapSession>();
             napSettings = Substitute.For<INapSettings>();
-            siteService = Substitute.For<ISiteService>();
             securityService = Substitute.For<ISecurityService>();
             maintenanceService = Substitute.For<IMaintenanceService>();
-            var service = new AuthService(napSession, napSettings, siteService, securityService, maintenanceService);
+            var service = new AuthService(napSession, napSettings, securityService, maintenanceService);
 
             return service;
         }
