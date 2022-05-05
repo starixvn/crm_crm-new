@@ -10,15 +10,13 @@
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using static Fanex.NAP.Core.Business.Constant;
 
-   [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
     public class WagerReportController : BaseController
     {
         private readonly IExportExcelService exportExcelService;
@@ -69,10 +67,9 @@
                 { ViewResources.Reject, new Wager { Name = ViewResources.Reject, Amount = 0 } },
                 { ViewResources.VoidRefund, new Wager { Name = ViewResources.VoidRefund, Amount = 0 } },
             };
+
             int grandTotal = 0;
-
             var rawData = await baseService.GetDataAsync<WagerRawData>(criteria);
-
             var dataList = rawData.GroupBy(w => w.Month);
             foreach (var month in dataList)
             {

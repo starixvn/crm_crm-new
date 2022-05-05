@@ -1,11 +1,7 @@
-﻿using Fanex.Data;
-using Fanex.Data.Repository;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CRM.Criteria.Report.CategoriesSummaryReport
+﻿namespace CRM.Criteria.Report.CategoriesSummaryReport
 {
+    using Fanex.Data;
+    using Fanex.Data.Repository;
     public class GetSummaryReportCriteria : CriteriaBase
     {
         private readonly int minYear = 2011;

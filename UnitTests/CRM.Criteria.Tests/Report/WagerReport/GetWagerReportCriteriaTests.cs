@@ -1,9 +1,6 @@
 ﻿namespace CRM.Criteria.Tests.Report.WagerReport
 {
     using CRM.Criteria.Report.WagerReport;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
     using Xunit;
 
     public class GetWagerReportCriteriaTests
@@ -29,6 +26,22 @@
             var criteria = new GetWagerReportCriteria
             {
                 Year = 2010
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsValid_ParamsAreInvalid_ReturnTrue()
+        {
+            // Arrange
+            var criteria = new GetWagerReportCriteria
+            {
+                Year = 2019
             };
 
             // Act
