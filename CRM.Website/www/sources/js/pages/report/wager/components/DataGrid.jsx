@@ -1,4 +1,4 @@
-import React, {Fragment, Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -71,7 +71,7 @@ export class DataGrid extends Component {
                 );
             } else {
                 return (
-                    <Row key={item.name +report.month}>
+                    <Row key={item.name + report.month}>
                         <Cell>{item.name}</Cell>
                         <Cell className="text-right">{item.amount}</Cell>
                     </Row>
@@ -81,7 +81,7 @@ export class DataGrid extends Component {
     };
 
     renderFooter = total => {
-        if(total.total>0){
+        if (total.total > 0) {
             return total.wagers.map((item, index) => {
                 if (index === 0) {
                     return (
@@ -92,27 +92,26 @@ export class DataGrid extends Component {
                             <Cell className="text-right" rowSpan={total.wagers.length}>{total.total}</Cell>
                         </Row>
                     );
-                } else {
-                    return (
-                        <Row className="last-row" key={item.id + item.name}>
-                            <Cell>{item.name}</Cell>
-                            <Cell className="text-right">{item.amount}</Cell>
-                        </Row>
-                    );
                 }
+                return (
+                    <Row className="last-row" key={item.id + item.name}>
+                        <Cell>{item.name}</Cell>
+                        <Cell className="text-right">{item.amount}</Cell>
+                    </Row>
+                );
             });
-        }        
+        }
     };
 
     render() {
-        const { grandTotal, reportTitle, wagerByMonths} = this.props.gridData;
-        if(grandTotal === null || reportTitle === null || wagerByMonths === null ){
+        const { grandTotal, reportTitle, wagerByMonths } = this.props.gridData;
+        if (grandTotal === null || reportTitle === null || wagerByMonths === null) {
             return null;
         }
 
         return (
             <div className='table'>
-                <div style={{ width:800 }} className='table-title d-flex justify-content-between align-items-center'>
+                <div style={{ width: 800 }} className='table-title d-flex justify-content-between align-items-center'>
                     <span>{reportTitle}</span>
                     {
                         wagerByMonths.length > 0 && this.renderCustomButtonReport()
