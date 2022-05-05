@@ -71,7 +71,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var convertJsonResult = (IEnumerable<Setting>)jsonResult.Value;
             Assert.Equal(expected[0].SettingName, convertJsonResult.FirstOrDefault().SettingName);
-            Assert.Equal(expected[0].ChildSettings, convertJsonResult.FirstOrDefault().ChildSettings);
+            Assert.Equal(expected[0].ChildSettings.FirstOrDefault().ChildSettings, convertJsonResult.FirstOrDefault().ChildSettings);
 
         }
 
