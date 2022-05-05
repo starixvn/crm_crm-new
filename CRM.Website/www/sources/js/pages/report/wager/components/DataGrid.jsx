@@ -101,7 +101,8 @@ export class DataGrid extends Component {
                 );
             });
         }
-    };
+        return null;
+    }
 
     render() {
         const { grandTotal, reportTitle, wagerByMonths } = this.props.gridData;
