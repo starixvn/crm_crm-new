@@ -139,7 +139,7 @@ export class Filter extends Component {
     };
 
     handleSubmit = () => {
-        const { remarkContent,userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, remarkTitleIds, dateTypeSelect } = this.state;
+        const { fromDate, toDate, remarkTitleIds } = this.state;
         if (remarkTitleIds === '') {
             toast.error(LangHelper.getResource('PleaseChooseRemarkTitle'));
             return;
@@ -150,6 +150,20 @@ export class Filter extends Component {
             return;
         }
 
+        const params = this.getParams();
+        this.props.setGridParams(params);
+        this.props.setShowHistory({show: false});
+        this.props.getNewRemarks(params);
+    };
+
+    handleOpenAdd = () =>{
+        const params = this.getParams();
+        this.props.setGridParams(params);
+        this.props.setOpenCreatePopup({show: true});
+    };
+
+    getParams = () =>{
+        const { remarkContent,userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, remarkTitleIds } = this.state;
         const params = {
             username: userName,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
@@ -162,14 +176,8 @@ export class Filter extends Component {
             pageIndex: 1,
             pageSize: this.props.gridParams.pageSize
         };
-        this.props.setGridParams(params);
-        this.props.setShowHistory({show: false});
-        this.props.getNewRemarks(params);
-    };
-
-    handleOpenAdd = () =>{
-        this.props.setOpenCreatePopup({show: true});
-    };
+        return params;
+    }
 
     render() {
         const {remarkTitles, customerName} = this.props;
