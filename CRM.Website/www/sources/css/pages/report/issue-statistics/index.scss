@@ -90,7 +90,7 @@
 
     .header-content thead th:nth-child(2){
         z-index: 2;
-        left: 134px !important;
+        left: 147px !important;
     }
 
     .body-content table tbody, .footer-content .footer-container {
@@ -99,7 +99,7 @@
         }
 
         .fix-second-column{
-            left: 134px !important;
+            left: 147px !important;
         }
     }
 
@@ -122,6 +122,10 @@
     
         tr td{
             background-color: #fff !important;
+        }
+        
+        .no-data{
+            font-weight: bold;
         }
 
         max-height: none !important;

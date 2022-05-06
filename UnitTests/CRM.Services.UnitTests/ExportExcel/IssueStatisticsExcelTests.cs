@@ -232,7 +232,7 @@
             // Arrange
             var worksheet = excelPackage.Worksheets.Add("data");
             const int WidthLarge = 35;
-            const int WidthNormal = 25;
+            const int WidthNormal = 18;
             const int WithSmall = 15;
             const int timeColumn = 2;
             var excel = CreateExcel();
@@ -241,9 +241,9 @@
             excel.Public_SetWidthColumn(worksheet);
 
             // Assert
-            Assert.Equal(WithSmall, worksheet.DefaultColWidth);
+            Assert.Equal(WidthNormal, worksheet.DefaultColWidth);
             Assert.Equal(WidthLarge, worksheet.Column(1).Width);
-            Assert.Equal(WidthNormal, worksheet.Column(timeColumn).Width);
+            Assert.Equal(WithSmall, worksheet.Column(timeColumn).Width);
         }
 
         [Fact]
