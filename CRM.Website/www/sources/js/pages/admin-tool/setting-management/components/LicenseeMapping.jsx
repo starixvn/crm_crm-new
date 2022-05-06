@@ -9,6 +9,8 @@ import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/reac
 import LicenseeRow from './LicenseeRow';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
+import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 
 export class LicenseeMapping extends PureComponent {
 
@@ -17,9 +19,14 @@ export class LicenseeMapping extends PureComponent {
         this.state = {
             setting: '',
             settingId: '',
-            shouldResetScrollPosition: true,
             isEdit: false,
-            isSubmitting: false
+            isSubmitting: false,
+            editLicenseeMappingResult: null,
+            cancelLicenseeMappingResult: null,
+            errors: {
+            },
+            touched:{
+            }
         };
     }
 
@@ -55,36 +62,6 @@ export class LicenseeMapping extends PureComponent {
         ];
     };
 
-    handleEdit = settingId =>{
-        this.setState(prevState => ({settingId, isEdit: !prevState.isEdit}));
-    };
-
-    handleSave = (settingId, settingSource, licenseeManager) =>{
-        const params = {
-            settingId, sourceMapping: settingSource, licenseeManager
-        };
-        this.props.editLicenseeMapping(params).then(() =>{
-            if(this.props.licenseeMappingResult.isSuccessful){
-                this.setState(prevState => ({settingId: '', isEdit: !prevState.isEdit}));
-                setTimeout(() => {
-                    this.props.onSuccess();
-                }, 3000);
-            }
-        });
-    };
-
-    handleCancel = () =>{
-        this.setState(prevState => ({settingId: '', isEdit: !prevState.isEdit}));
-    };
-
-    debounceHandleLicenseeManagerChange = Site.debounce(searchText => {
-        if (searchText.length >= 2) {
-            this.props.getLicenseeManager({username: searchText});
-        } else {
-            this.props.setLicenseeManager([]);
-        }
-    });
-
     renderRow = (item, index) => {
         const {licensees, licenseesManager}= this.props;
         const licenseesOption = licensees.map(item =>{
@@ -108,20 +85,103 @@ export class LicenseeMapping extends PureComponent {
                 handleSave={this.handleSave}
                 handleCancel={this.handleCancel}
                 debounceHandleLicenseeManagerChange = {this.debounceHandleLicenseeManagerChange}
+                handleDelete={this.handleDelete}
             />
         );
     };
 
+    handleEdit = settingId =>{
+        this.setState(prevState => ({settingId, isEdit: !prevState.isEdit}));
+    };
+
+    handleSave = (settingId, settingSource, licenseeManager) =>{
+        const params = {
+            settingId, sourceMapping: settingSource, licenseeManager
+        };
+        if(settingSource === '' || licenseeManager === null || licenseeManager===''){
+            this.handelValidateUpdate(params);
+        }else{
+            this.setState({errors:{}, touched:{}});
+            this.props.editLicenseeMapping(params).then(data =>{
+                this.setState({editLicenseeMappingResult: data});
+                if(data.isSuccessful){
+                    this.handleSuccess();
+                    setTimeout(() => {
+                        this.setState({editLicenseeMappingResult: null});
+                    }, 3000);
+                }
+            });
+        }
+    };
+
+    handelValidateUpdate = params =>{
+        const errors = {};
+        const touched = {};
+        if(params.sourceMapping === ''){
+            touched.sourceMapping = true;
+            errors.sourceMapping = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingSource'));
+        }
+        if(params.licenseeManager === null || params.licenseeManager===''){
+            touched.licenseeManager = true;
+            errors.licenseeManager = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('LicenseeManager'));
+        }
+        this.setState({errors, touched});
+    }
+
+    handleDelete = (setting, settingId) =>{
+        this.props.setConfirmCancelPopup({show: true, setting, settingId});
+    };
+
+    handleCancel = () =>{
+        this.setState(prevState => ({settingId: '', isEdit: !prevState.isEdit, errors:{}, touched:{}}));
+    };
+
+    handleCancelSetting = settingId =>{
+        const params = {
+            settingId, sourceMapping: '', licenseeManager: ''
+        };
+        this.props.editLicenseeMapping(params).then(data =>{
+            this.setState({cancelLicenseeMappingResult: data});
+            this.props.oncloseConfirm();
+            if(data.isSuccessful){
+                this.handleSuccess();
+                setTimeout(() => {
+                    this.setState({cancelLicenseeMappingResult: null});
+                }, 3000);
+            }
+        });
+    }
+
+    handleSuccess = () =>{
+        this.setState({settingId: '', isEdit: false});
+        this.handleSearch();
+    }
+
+    debounceHandleLicenseeManagerChange = Site.debounce(searchText => {
+        if (searchText.length >= 2) {
+            this.props.getLicenseeManager({username: searchText});
+        } else {
+            this.props.setLicenseeManager([]);
+        }
+    });
+
 
     renderForm = () =>{
-        const { licenseeMappingResult } = this.props;
+        const { editLicenseeMappingResult, cancelLicenseeMappingResult } = this.state;
         return (
             <Form>
                 <Modal.Body>
+                    <FormikErrorMessage errors={this.state.errors} touched={this.state.touched} fieldNames={Object.keys({sourceMapping: '', licenseeManager:''})}/>
                     {
-                        licenseeMappingResult &&
-                        <ResponseMessage isSuccessful={licenseeMappingResult.isSuccessful}
-                            message={licenseeMappingResult.message || LangHelper.getResource('UpdateLicenseeMappingSuccessful')}
+                        editLicenseeMappingResult &&
+                        <ResponseMessage isSuccessful={editLicenseeMappingResult.isSuccessful}
+                            message={editLicenseeMappingResult.message || LangHelper.getResource('UpdateLicenseeMappingSuccessful')}
+                        />
+                    }
+                    {
+                        cancelLicenseeMappingResult &&
+                        <ResponseMessage isSuccessful={cancelLicenseeMappingResult.isSuccessful}
+                            message={cancelLicenseeMappingResult.message || LangHelper.getResource('UpdateLicenseeMappingSuccessful')}
                         />
                     }
                      <Form className='form-filter'>
@@ -148,7 +208,7 @@ export class LicenseeMapping extends PureComponent {
                         body={this.buildBody()}
                         containerPadding={0}
                         adjustedHeight={10}
-                        shouldResetScrollPosition={this.state.shouldResetScrollPosition}
+                        shouldResetScrollPosition={false}
                     />
                 </Modal.Body>
                 <Modal.Footer>
@@ -159,38 +219,16 @@ export class LicenseeMapping extends PureComponent {
             </Form>
         );
     };
-    handleSubmit = event => {
-        event.preventDefault();
-        const {updatePopup, updateRelation, onClose, getSettingTypes, gridParams, setUpdateResult} = this.props;
-        const {subSettingName, settingRelation} = this.state;
-        const params = {
-            parentId: parseInt(updatePopup.parentId, 10),
-            settingName: subSettingName,
-            subSettings: settingRelation
-        };
-        updateRelation(params).then(() => {
-            if (this.props.updateResult.isSuccessful) {
-                setTimeout(() => {
-                    setUpdateResult(null);
-                    getSettingTypes(gridParams);
-                    onClose();
-                }, 3000);
-            } else {
-                this.setState({isSubmitting: true});
-            }
-        });
-    };
 
     handleSearch = () => {
         const params = {
             setting : this.state.setting
         };
         this.props.getLicenseesMapping(params);
-        this.setState({shouldResetScrollPosition: true});
     };
 
     render() {
-        const {licensees, licenseesMapping}= this.props;
+        const {licensees, licenseesMapping, confirmCancelPopup, oncloseConfirm}= this.props;
         if(!licensees || !licenseesMapping){
             return null;
         }
@@ -204,6 +242,24 @@ export class LicenseeMapping extends PureComponent {
                     <Modal.Title as="div">{LangHelper.getResource('LicenseeMapping')}</Modal.Title>
                 </Modal.Header>
                 {this.renderForm()}
+                {
+                confirmCancelPopup.show &&
+                    <SweetModalDialog size="md" className='cancel-modal-dialog'
+                        title={LangHelper.getResource('Confirmation')}
+                        contents={
+                            <div>Are you sure you want to remove Source Mapping and Licensee Manager of <strong>{confirmCancelPopup.setting}</strong>?</div>
+                        }
+                        buttons={[
+                            <Button onClick={() => this.handleCancelSetting(confirmCancelPopup.settingId)} variant="primary" size="sm" >
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                            <Button onClick={oncloseConfirm} variant="primary" size="sm">
+                                {LangHelper.getResource('Cancel')}
+                            </Button>
+                        ]}
+                        onClose={oncloseConfirm}
+                    />
+                }
             </Modal>
         );
     }
@@ -212,8 +268,8 @@ export class LicenseeMapping extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { licensees, licenseesMapping, licenseeMappingResult, licenseesManager } = state;
-    return { licensees, licenseesMapping, licenseeMappingResult, licenseesManager };
+    const { licensees, licenseesMapping, licenseesManager, confirmCancelPopup } = state;
+    return { licensees, licenseesMapping, licenseesManager, confirmCancelPopup };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LicenseeMapping);

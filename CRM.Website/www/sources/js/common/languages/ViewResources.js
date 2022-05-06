@@ -418,6 +418,7 @@
     SettingManagementTitle: 'Setting Management By',
     SettingName: 'Setting Name',
     SettingValue: 'Setting Value',
+    SourceMapping: 'Source Mapping',
     TemplateContent: 'Template Content',
     TemplateId: 'Template Id',
     TemplateName: 'Template Name',
@@ -494,6 +495,5 @@
     NewValue: 'New Value',
     RowNum:'No.',
     IntroduceBy:'Introduce by',
-    Languages: 'Languages',
-    WhatsApp: 'WhatsApp'
+    Languages: 'Languages'
 };

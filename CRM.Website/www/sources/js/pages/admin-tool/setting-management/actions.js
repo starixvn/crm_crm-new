@@ -14,7 +14,7 @@ import {
     setInsertNewSettingResult,
     setOpenEdiPopup,
     setEditNewSettingResult,
-    setEditLicenseeMappingResult
+    setConfirmCancelPopup
 } from './settingManagementSlice';
 
 const getMainSettings = () => async dispatch => {
@@ -34,17 +34,18 @@ const getParentSettings = () => async dispatch => {
 };
 
 const getLicensees = () => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('SettingManagement/GetLicensees');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setLicensees(response.data));
-    }).catch(Site.handleAxiosError);
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getLicenseeManager = username => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/GetLicenseeManager');
     await DataService.postDataAsync(url, username).then(response => {
         const options = response.data.map(item => {
-            return { value: item.custId, label: item.username };
+            return { value: item.username, label: item.username };
         });
         dispatch(setLicenseeManager(options));
     }).catch(Site.handleAxiosError);
@@ -68,29 +69,30 @@ const getSettingTypes = params => async dispatch => {
 
 const editStatusSetting = params => async () => {
     const url = Site.resolveClientUrl('SettingManagement/EditStatusSetting');
-    return await DataService.postDataAsync(url, params).then(response => response.data);
+    return await DataService.postDataAsync(url, params).then(response => response.data)
+    .catch(Site.handleAxiosError);
 };
 
 const insertNewSetting = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/InsertNewSetting');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setInsertNewSettingResult(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError);
 };
 
 const editNewSetting = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/EditNewSetting');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setEditNewSettingResult(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError);
 };
 
-const editLicenseeMapping = params => async dispatch => {
+const editLicenseeMapping = params => async () => {
     const url = Site.resolveClientUrl('SettingManagement/EditLicenseeMapping');
-    await DataService.postDataAsync(url, params).then(response => {
-        dispatch(setEditLicenseeMappingResult(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    return await DataService.postDataAsync(url, params).then(response => response.data)
+    .catch(Site.handleAxiosError);
 };
+
 
 export const ActionCreators = {
     getMainSettings,
@@ -116,5 +118,5 @@ export const ActionCreators = {
     editNewSetting,
     setEditNewSettingResult,
     editLicenseeMapping,
-    setEditLicenseeMappingResult
+    setConfirmCancelPopup
 };

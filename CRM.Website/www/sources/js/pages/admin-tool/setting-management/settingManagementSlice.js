@@ -18,7 +18,7 @@ const settingManagementSlice = createSlice({
         insertNewSettingResult: null,
         editPopup: {show: false, data: null},
         editNewSettingResult: null,
-        licenseeMappingResult: null
+        confirmCancelPopup: {show: false, setting: '', settingId: 0}
     },
     reducers: {
         setMainSettings: (state, action) => {
@@ -60,8 +60,8 @@ const settingManagementSlice = createSlice({
         setEditNewSettingResult: (state, action) => {
             state.editNewSettingResult = action.payload;
         },
-        setEditLicenseeMappingResult: (state, action) => {
-            state.licenseeMappingResult = action.payload;
+        setConfirmCancelPopup: (state, action) => {
+            state.confirmCancelPopup = action.payload;
         }
     }
 });
@@ -82,7 +82,7 @@ export const {
     setInsertNewSettingResult,
     setOpenEdiPopup,
     setEditNewSettingResult,
-    setEditLicenseeMappingResult
+    setConfirmCancelPopup
 } = actions;
 
 export default reducer;

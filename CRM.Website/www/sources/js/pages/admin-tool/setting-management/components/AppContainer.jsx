@@ -43,6 +43,11 @@ export class AppContainer extends Component {
       this.props.setEditLicenseeMappingResult(null);
   };
 
+  handleCloseConfirmLicenseeMapping = () =>{
+    this.props.setConfirmCancelPopup({ show: false, setting: '', settingId: 0});
+};
+
+
   handleEditStatus = () =>{
       const {settingId, isActive} = this.props.editStatusPopup;
       this.props.editStatusSetting({settingId, isActive}).then(data =>{
@@ -93,6 +98,7 @@ export class AppContainer extends Component {
                 <LicenseeMapping
                     onSuccess={this.handleSuccessUpdateLicenseeMapping}
                     onClose={this.handleCloseLicenseeMapping}
+                    oncloseConfirm={this.handleCloseConfirmLicenseeMapping}
                 />
               }
               {
