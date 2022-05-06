@@ -41,8 +41,10 @@
             for (var index = 0; index < countries.Count; index++)
             {
                 worksheet.Cells[RowStartHeader, StartCountryColumnIndex + index + 1].Value = countries[index].CountryInfo.Name;
+                DrawBorderCell(worksheet.Cells[RowStartHeader + index, 1, RowStartHeader + index, StartCountryColumnIndex + countries.Count]);
             }
             worksheet.Cells[RowStartHeader, StartCountryColumnIndex + countries.Count + 1].Value = ViewResources.Total;
+            DrawBorderCell(worksheet.Cells[RowStartHeader, StartCountryColumnIndex + countries.Count + 1]);
         }
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -60,6 +62,7 @@
                 var countries = childData[index].ChildReports[0].ChildReports;
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = childData[index].ShortName;
+                worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = childData[index].ChildReports[0].ShortName;
 
                 for (var countryIndex = 0; countryIndex < totals.Count; countryIndex++)
@@ -75,6 +78,7 @@
                 rowIndex += timeReport.Count;
                 colIndex = 1;
                 SetBackgroundChildTotalRow(worksheet.Cells[rowIndex, colIndex, rowIndex, totalColumns]);
+                worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = totalChild.ShortName;
                 worksheet.Cells[rowIndex, colIndex++].Value = string.Empty;
                 for (var countryIndex = 0; countryIndex < totals.Count; countryIndex++)
@@ -113,6 +117,7 @@
                 rowIndex++;
                 var country = countryRemoveFirstElement[index];
                 var colIndex = StartCountryColumnIndex;
+                worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = country.ShortName;
                 foreach (var child in country.ChildReports)
                 {
@@ -159,14 +164,14 @@
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthLarge = 35;
-            const int WidthNormal = 25;
+            const int WidthNormal = 18;
             const int WithSmall = 15;
             const int timeColumn = 2;
 
-            worksheet.DefaultColWidth = WithSmall;
+            worksheet.DefaultColWidth = WidthNormal;
             worksheet.Cells.AutoFitColumns();
             worksheet.Column(1).Width = WidthLarge;
-            worksheet.Column(timeColumn).Width = WidthNormal;
+            worksheet.Column(timeColumn).Width = WithSmall;
         }
 
         protected internal virtual void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)

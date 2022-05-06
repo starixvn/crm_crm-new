@@ -62,13 +62,14 @@ export class Filter extends Component {
         this.setState({fromDate, toDate});
     };
 
+    getToMonthDate = fromMonthDate => fromMonthDate.getFullYear() === new Date().getFullYear() ? this.currentDate : new Date(DateTimeService.endMonthOfYear(fromMonthDate));
+
     handleChangeMonthFromDate = fromMonthDate  => {
         let toMonthDate = this.state.toMonthDate;
-        const endMonthOfYear = new Date(DateTimeService.endMonthOfYear(fromMonthDate));
         const fromMonthGetYear = fromMonthDate.getFullYear();
         const toMonthGetYear = toMonthDate.getFullYear();
-        if(fromMonthGetYear !== toMonthGetYear){
-            toMonthDate = endMonthOfYear;
+        if(fromMonthGetYear !== toMonthGetYear){            
+            toMonthDate = this.getToMonthDate(fromMonthDate);
         }
         this.minMonthToDate = fromMonthDate;
         this.setState({fromMonthDate, toMonthDate});
@@ -183,6 +184,7 @@ export class Filter extends Component {
                                             dropdownMode="select"
                                             showMonthDropdown
                                             showYearDropdown
+                                            peekNextMonth
                                             selected={fromDate}
                                             minDate={new Date(this.minFromDate)}
                                             maxDate={new Date(this.maxFromDate)}

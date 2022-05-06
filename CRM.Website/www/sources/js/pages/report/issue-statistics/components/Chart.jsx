@@ -59,19 +59,21 @@ export default class Chart extends PureComponent {
                     <Modal.Title as="div">{chartInfo.name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <ResponsiveContainer width="100%" height={700}>
+                <ResponsiveContainer width="100%" height={data.length > 5 ? 800 : 700}>
                     <BarChart
                         width={1100}
                         data={data}
                         margin={{
-                            top: 30, right: 30, left: 30, bottom: 20
+                            top: 30, right: 30, left: 30, bottom: data.length > 5 ? 200 : 30
                         }}
                         barCategoryGap={0}
                         barGap={0}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
                         <YAxis label={{ value: 'Issue(s)', position: 'top', dy: -10 }} />
+                        <XAxis dataKey="name" scaleToFit="true" verticalAnchor= "start"
+                            interval={0} angle= {data.length > 5 ? '-90' : '0'} dy={data.length > 5 ? 120 : 0}
+                        />
                         <Legend wrapperStyle={{ bottom: 5, left: 75 }} />
                         {labels.map((label, index) => (
                             <Bar dataKey={label} key={index} label={{ position: 'top'}}

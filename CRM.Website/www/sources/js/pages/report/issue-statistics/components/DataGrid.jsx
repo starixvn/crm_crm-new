@@ -11,7 +11,7 @@ export class DataGrid extends Component {
         const header = [];
         header.push(<HeaderCell colWidth={15}>{LangHelper.getResource('Date')}</HeaderCell>);
         header.push(<HeaderCell colWidth={12}>{LangHelper.getResource('Time')}</HeaderCell>);
-        countryArr.forEach(item =>{
+        countryArr.map(item =>{
             header.push(<HeaderCell colWidth={10}>{item.name}</HeaderCell>);
         });
         header.push(<HeaderCell colWidth={10}>{LangHelper.getResource('Total')}</HeaderCell>);
@@ -97,18 +97,21 @@ export class DataGrid extends Component {
     };
 
     renderFooter = gridData => {
-        const cells = [];
-        cells.push(<Cell className='fix-first-column'>Grand Total</Cell>);
-        cells.push(<Cell className='fix-second-column'/>);
-        gridData.total.childReports.forEach(item =>{
-            cells.push(<Cell className='text-center'>{item.numberOfIssues}</Cell>);
-        });
-        cells.push(<Cell className='text-center'>{gridData.total.numberOfIssues}</Cell>);
-        return (
-            [<Row key='footer' className='footer-container font-weight-bold'>
-               {cells}
-            </Row>]
-        );
+        if(gridData.total.numberOfIssues > 0){
+            const cells = [];
+            cells.push(<Cell className='fix-first-column'>Grand Total</Cell>);
+            cells.push(<Cell className='fix-second-column'/>);
+            gridData.total.childReports.forEach(item =>{
+                cells.push(<Cell className='text-center'>{item.numberOfIssues}</Cell>);
+            });
+            cells.push(<Cell className='text-center'>{gridData.total.numberOfIssues}</Cell>);
+            return (
+                [<Row key='footer' className='footer-container font-weight-bold'>
+                   {cells}
+                </Row>]
+            );
+        }
+        return null;
     };
 
     handleExportExcel = () => {
@@ -141,6 +144,8 @@ export class DataGrid extends Component {
         );
     };
 
+    isPagingCheck = () => this.props.gridParams.reportType === 1 ? true : false;
+
     render() {
         const { gridData } = this.props;
         if(!gridData){
@@ -150,13 +155,13 @@ export class DataGrid extends Component {
         const pagingOption = {
             PageIndex: pageIndex,
             PageSize: pageSize,
-            TotalItem: gridData.childReports.length,
+            TotalItem: gridData.totalChildReports,
             PageList: SMALL_PAGING_SIZES
         };
 
         const defaultWidth = 510;
         const countryArr = this.getCountriesArray(gridData);
-        const countriesWidth = countryArr.length * 80;
+        const countriesWidth = countryArr.length * 90;
         const totalWidth = defaultWidth + countriesWidth;
         const width = document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
         return (
@@ -171,7 +176,7 @@ export class DataGrid extends Component {
                     body={this.buildBody(gridData, countryArr)}
                     footer={this.renderFooter(gridData)}
                     isFixColumn
-                    isPaging
+                    isPaging = {this.isPagingCheck()}
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     containerPadding={0}
