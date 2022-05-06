@@ -12,6 +12,16 @@ export default class LicenseeRow extends PureComponent {
         };
     }
 
+    componentDidUpdate(prevProps){
+        const {settingSource, licenseeManager} = this.props.item;
+        if (settingSource !== prevProps.item.settingSource || licenseeManager !== prevProps.item.licenseeManager) {
+            this.setState({
+                settingSource:  settingSource,
+                licenseeManager: licenseeManager
+            });
+        }
+    }
+
     handleChangeSelect = (value, name) =>{
         if(value !== null){
           this.setState({[name]: value.value});
@@ -31,7 +41,7 @@ export default class LicenseeRow extends PureComponent {
     };
 
     render() {
-        const {item, index, sourceMappingDefault, licenseesOption,
+        const {item, index, sourceMappingDefault, licenseesOption, handleDelete,
             licenseesManagerOption, handleEdit, debounceHandleLicenseeManagerChange, isChangeableValue, isEdit} = this.props;
         const licenseeManagerDefault = [{value: item.licenseeManager, label: item.licenseeManager}];
         const {settingSource, licenseeManager}= this.state;
@@ -93,7 +103,7 @@ export default class LicenseeRow extends PureComponent {
                             onClick={() => handleEdit(item.settingId)}
                         />
                         <span  className={`fa fa-trash icon-delete ${isDisableClass}`}
-                            onClick={() => this.handleDelete(item.settingId)}
+                            onClick={() => handleDelete(item.setting, item.settingId)}
                         />
                     </Cell>
                 }
