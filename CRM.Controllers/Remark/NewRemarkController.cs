@@ -5,9 +5,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
-    using CRM.Criteria.Common;
     using CRM.Criteria.NewRemark;
-    using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.Services.Remark;
@@ -27,7 +25,6 @@
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
         private readonly ICustomerService customerService;
-        private const int PicOfHeadline = 8;
 
 
         public NewRemarkController(
@@ -65,15 +62,19 @@
 
         public async Task<IActionResult> GetAllSetting()
         {
-            var relatedPics = await commonService.GetRecipientAsync(new GetRecipientsCriteria { RecipientType = PicOfHeadline });
             var users = await customerService.GetAllCustomerAsync();
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             return Json(new {
-                relatedPics,
                 extentions,
                 users,
                 userId = napSession.UserId 
             });
+        }
+
+        public async Task<IActionResult> GetRelatedPicsByCustId([FromBody] GetRelatedPicsCriteria criteria)
+        {
+            var relatedPics = await remarkService.GetRelatedPicByCustIdAsync(criteria);
+            return Json(relatedPics);
         }
 
         public async Task<IActionResult> GetNewRemarks([FromBody] GetNewRemarkCriteria criteria)
@@ -104,6 +105,7 @@
             command.IP = ClientIP;
             CommandResult commandResult = await remarkService.CreateNewAsync(command);
             return Json(commandResult);
+            
         }
 
         [HttpPost]

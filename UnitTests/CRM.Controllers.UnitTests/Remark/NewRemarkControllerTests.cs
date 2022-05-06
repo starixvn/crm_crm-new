@@ -71,12 +71,10 @@
         public async Task GetAllSetting_WhenCalled_ReturnExpectedJsonResult()
         {
             var fixture = new Fixture();
-            var relatedPics = fixture.Create<IEnumerable<Models.Common.RecipientModel>>();
             var users = fixture.Create<IEnumerable<Models.Customer.UserInfo>>();
             var extentions = fixture.Create<IEnumerable<SettingRelation>>(); 
             var controller = GetController();
 
-            commonService.GetRecipientAsync(Arg.Any<GetRecipientsCriteria>()).Returns(relatedPics);
             customerService.GetAllCustomerAsync().Returns(users);
             settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active).Returns(extentions);
 
@@ -85,13 +83,27 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            var relatedPicsJson = (IEnumerable<Models.Common.RecipientModel>)jsonResult.Value.GetType().GetProperty("relatedPics").GetValue(jsonResult.Value);
             var extentionsJson = (IEnumerable<SettingRelation>)jsonResult.Value.GetType().GetProperty("extentions").GetValue(jsonResult.Value);
             var usersJson = (IEnumerable<Models.Customer.UserInfo>)jsonResult.Value.GetType().GetProperty("users").GetValue(jsonResult.Value);
 
-            Assert.Equal(relatedPics, relatedPicsJson);
             Assert.Equal(extentions, extentionsJson);
             Assert.Equal(users, usersJson);
+        }
+
+        [Fact]
+        public async Task GetRelatedPicsByCustId_WhenCalled_ReturnExpectedJsonResult()
+        {
+            var fixture = new Fixture();
+            var criteria = fixture.Create<GetRelatedPicsCriteria>();
+            var relatedPics = fixture.Create<IEnumerable<PicInfo>>();
+            var controller = GetController();
+
+            remarkService.GetRelatedPicByCustIdAsync(criteria).Returns(relatedPics);
+
+            var actual = await controller.GetRelatedPicsByCustId(criteria);
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            Assert.Equal(relatedPics, jsonResult.Value);
         }
 
         [Fact]

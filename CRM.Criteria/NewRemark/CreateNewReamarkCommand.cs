@@ -4,7 +4,7 @@
 
     public class CreateNewReamarkCommand : BaseNonQueryCommand
     {
-        public string Username { get; set; }
+        public int CustID { get; set; }
         public string Remark { get; set; }
         public int RemarkTitle { get; set; }
         public string RelatedPICs { get; set; }
@@ -19,6 +19,6 @@
 
         public override string GetSettingKey() => "Acc_CRM_CustomerRemarkNewIns";
 
-        public override bool IsValid() => RemarkTitle > 0 && !string.IsNullOrEmpty(Remark) && !string.IsNullOrEmpty(Username);
+        public override bool IsValid() => RemarkTitle > 0 && !string.IsNullOrEmpty(Remark);
     }
 }

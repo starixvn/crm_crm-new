@@ -15,11 +15,12 @@ describe('EditRemark', () => {
         jest.clearAllMocks();
         spy.mockRestore();
     });
-    const response = {};
+    const response = [{picID: 1, username: 'malcokm1_ss'}];
     const promise = Promise.resolve(response);
 
     const initProps = {
-        getAllSettings: jest.fn(() => promise),
+        getAllSettings: jest.fn(),
+        getRelatedPics: jest.fn(() => promise),
         gridParams: {pageIndex: 1, pageSize: 100, username: 'test', isGuest: false},
         allSettings: { 
             extentions: [{id: 2022, value: "N/A", displayOrder: 0, isChild: false, isActive: true}],
@@ -66,18 +67,16 @@ describe('EditRemark', () => {
     describe('componentDidMount', () => {
         it('should call exactly functions',async () => {
             // Arrange
-            const response = {};
-            const promise = Promise.resolve(response);
-            const props = {...initProps, getAllSettings: jest.fn(() => promise)};
             const picOptions = [{
-                id: 264, name: "malcokm1_ss", checked: true
+                picID: 1, username: "malcokm1_ss", checked: false
             }];
             // Act
-            const container = shallow(<EditRemark {...props} />);
+            const container = shallow(<EditRemark {...initProps} />);
             await promise;
             jest.runAllTimers();
             // Assert
-            expect(props.getAllSettings).toHaveBeenCalled();
+            expect(initProps.getAllSettings).toHaveBeenCalled();
+            expect(initProps.getRelatedPics).toHaveBeenCalled();
             expect(container.instance().state.relatedPicsOption).toEqual(picOptions);
         });
     });

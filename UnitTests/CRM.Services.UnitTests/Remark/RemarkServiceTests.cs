@@ -102,6 +102,22 @@
         }
 
         [Fact]
+        public async Task GetRelatedPicByCustIdAsync_WhenCall_ReturnExpectedNewRemark()
+        {
+            //Arrange
+            var relatedPics = fixture.Create<IEnumerable<PicInfo>>();
+            var service = GetService();
+            var param = fixture.Create<GetRelatedPicsCriteria>();
+            baseService.GetDataAsync<PicInfo>(param).Returns(relatedPics);
+
+            //Act
+            var actual = await service.GetRelatedPicByCustIdAsync(param);
+
+            //Assert
+            Assert.Equal(relatedPics, actual);
+        }
+
+        [Fact]
         public async Task GetCustomerNewRemarkHistoryAsync_WhenCall_ReturnExpectedHistory()
         {
             //Arrange

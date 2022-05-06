@@ -148,8 +148,6 @@ export class History extends Component {
             TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
-        // const clientWidth = document.getElementById('app-container').clientWidth;
-        // const width =  clientWidth < 1590 ? 1590 : clientWidth - 300;
 
         return (
             <div>

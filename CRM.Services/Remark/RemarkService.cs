@@ -21,6 +21,9 @@
 
         Task<IEnumerable<RemarkNewInfo>> GetNewRemarkAsync(GetNewRemarkCriteria criteria);
 
+        Task<IEnumerable<PicInfo>> GetRelatedPicByCustIdAsync(GetRelatedPicsCriteria criteria);
+
+
         Task<IEnumerable<RelatedCustomer>> ValidateUsernameAsyn(CustomerRemarkNewCheckCriteria command);
 
         Task<IEnumerable<RemarkNewHistory>> GetCustomerNewRemarkHistoryAsync(GetCustomerRemarkNewHistoryCriteria criteria);
@@ -86,6 +89,12 @@
         {
             var newRemarks = await baseService.GetDataAsync<RemarkNewInfo>(criteria);
             return newRemarks;
+        }
+
+        public async Task<IEnumerable<PicInfo>> GetRelatedPicByCustIdAsync(GetRelatedPicsCriteria criteria)
+        {
+            var relatedPics = await baseService.GetDataAsync<PicInfo>(criteria);
+            return relatedPics;
         }
 
         public async Task<IEnumerable<RelatedCustomer>> ValidateUsernameAsyn(CustomerRemarkNewCheckCriteria command)

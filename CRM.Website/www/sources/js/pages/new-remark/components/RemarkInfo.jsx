@@ -63,11 +63,11 @@ export default class RemarkInfo extends Component {
                         id="relatedPics"
                         name="relatedPics"
                         isDisable={!isValidCustomer}
-                        keyField='id'
-                        isAllTextShown
+                        keyField='picID'
+                        isAllTextShown={relatedPicsOption.length > 0}
                         hasSearchBox
                         dataSource={relatedPicsOption}
-                        valueField='name'
+                        valueField='username'
                         statusField='checked'
                         onChange={(currentItem, selectedItemsKey) => {
                             setFieldValue('relatedPics', selectedItemsKey);

@@ -204,7 +204,7 @@ describe('History', () => {
             container.instance().handleGoBack = jest.fn();
 
             // Act
-            container.find('div').at(1).simulate('click');
+            container.find('div').at(2).simulate('click');
 
             // Assert
             expect(container.instance().handleGoBack).toHaveBeenCalled();

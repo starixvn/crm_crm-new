@@ -20,7 +20,8 @@ export class NewRemark extends Component {
         this.state = {
             showConfirmClose: false,
             customerValidated: '',
-            isValidCustomer: this.props.customerName !== ''
+            isValidCustomer: this.props.customerName !== '',
+            relatedPicsOption: []
         };
     }
 
@@ -31,7 +32,7 @@ export class NewRemark extends Component {
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const params = {
-            username: this.state.customerValidated.val,
+            custId: this.state.customerValidated.custId,
             remark: values.remarkContent,
             remarkTitle: values.remarkTitle,
             relatedPICs: values.relatedPics,
@@ -53,6 +54,9 @@ export class NewRemark extends Component {
     };
 
     handleValidateCustomer = (username, isGuest, setFieldValue) =>{
+        if(this.state.customerValidated.val === username){
+            return;
+        }
         this.props.validateUsername({username, isGuest}).then(()=>{
             setFieldValue('username', '');
             if(this.props.validateResult.length > 0){
@@ -60,6 +64,12 @@ export class NewRemark extends Component {
                 const isValidCustomer = customerValidated.custId !== 0 && !customerValidated.isLicensee;
                 if(this.formik.errors !== null && isValidCustomer){
                     this.formik.errors.username = '';
+                }
+
+                if(isValidCustomer){
+                    this.props.getRelatedPics({custId: customerValidated.custId}).then(response =>{
+                        this.setState({relatedPicsOption: response});
+                    });
                 }
                 this.setState({customerValidated , isValidCustomer});
             }
@@ -167,7 +177,7 @@ export class NewRemark extends Component {
                         <RemarkInfo
                             touched = {touched} errors={errors} values = {values}
                             handleChange = {handleChange} remarkTitles = {remarkTitles} setFieldValue = {setFieldValue}
-                            relatedPicsOption = {allSettings.relatedPics} allSettings = {allSettings} isValidCustomer = {isValidCustomer}
+                            relatedPicsOption = {this.state.relatedPicsOption} allSettings = {allSettings} isValidCustomer = {isValidCustomer}
                         />
                     }
                 </Modal.Body>
@@ -227,9 +237,9 @@ export class NewRemark extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, remarkTitles, gridParams, createResult, validateResult } = state;
+    const { allSettings, relatedPics, remarkTitles, gridParams, createResult, validateResult } = state;
     return {
-        allSettings, remarkTitles, gridParams, createResult, validateResult
+        allSettings, relatedPics, remarkTitles, gridParams, createResult, validateResult
     };
 };
 

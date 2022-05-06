@@ -20,12 +20,14 @@ export class EditRemark extends Component {
     }
 
     componentDidMount(){
-        this.props.getAllSettings().then(() =>{
-            const picOptions = this.props.allSettings.relatedPics.map(item =>{
+        const data = this.props.popupEdit.data;
+        this.props.getAllSettings();
+        this.props.getRelatedPics({custId: data.custID}).then(response =>{
+            const picOptions = response.map(item =>{
                 return {
-                    id: item.id,
-                    name: item.name,
-                    checked: this.props.popupEdit.data.relatedPICs.includes(item.id)
+                    picID: item.picID,
+                    username: item.username,
+                    checked: data.relatedPICs.includes(item.picID)
                 };
             });
             this.setState({relatedPicsOption: picOptions});
@@ -33,6 +35,7 @@ export class EditRemark extends Component {
     }
 
     handleSubmit = (values, { setSubmitting }) => {
+        console.log('dsaasdasd');
         setSubmitting(true);
         const params = {
             remarkID: this.props.popupEdit.data.remarkID,

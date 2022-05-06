@@ -20,18 +20,15 @@
         }
 
         [Theory]
-        [InlineData(0, "", "")]
-        [InlineData(1, "", "")]
-        [InlineData(1, "remark", "")]
-        [InlineData(1, "", "username")]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(int remarkTitle, string remark, string username)
+        [InlineData(0, "")]
+        [InlineData(1, "")]
+        public void IsValid_ParamsAreInvalid_ReturnFalse(int remarkTitle, string remark)
         {
             // Arrange
             var criteria = new CreateNewReamarkCommand
             {
                 RemarkTitle = remarkTitle,
                 Remark = remark,
-                Username = username
             };
             // Act
             var actual = criteria.IsValid();
@@ -48,7 +45,6 @@
             {
                 RemarkTitle = 1,
                 Remark = "remark",
-                Username = "username"
             };
             // Act
             var actual = criteria.IsValid();

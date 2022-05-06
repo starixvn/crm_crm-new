@@ -191,4 +191,22 @@ describe('actionCreators', () => {
             expect(DataService.postDataAsync).toHaveBeenCalledWith('NewRemark/Delete', expectedParams);
         });
     });
+
+    describe('getRelatedPics', () => {
+        it('should return response when request has been done', async () => {
+            // Arrange
+            const expectedParams = { custId: 1 };
+            const store = mockStore({});
+            const response = { data: [{picId: 1, username: 'test'}] };
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+
+            // Act
+            const actual = await store.dispatch(ActionCreators.getRelatedPics(expectedParams));
+
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('NewRemark/GetRelatedPicsByCustId', expectedParams);
+            expect(actual).toEqual(response.data);
+        });
+    });
 });

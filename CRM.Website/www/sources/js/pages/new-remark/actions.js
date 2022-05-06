@@ -48,6 +48,11 @@ const getNewRemarks = params => async dispatch => {
     }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
+const getRelatedPics = params => async () => {
+    const url = Site.resolveClientUrl('NewRemark/GetRelatedPicsByCustId');
+    return await DataService.postDataAsync(url,params).then(response => response.data).catch(Site.handleAxiosError);
+};
+
 const editNewRemarks = params => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/Edit');
     await DataService.postDataAsync(url,params).then(response => {
@@ -84,6 +89,7 @@ export const ActionCreators = {
     setGridParams,
     getNewRemarks,
     setRemarks,
+    getRelatedPics,
     setOpenCreatePopup,
     setOpenEditPopup,
     deleteNewRemark,
