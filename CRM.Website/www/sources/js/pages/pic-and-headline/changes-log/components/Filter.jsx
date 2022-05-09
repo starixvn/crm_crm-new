@@ -89,7 +89,7 @@ export class Filter extends Component {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
 
         this.props.setGridParams(params);
@@ -116,6 +116,7 @@ export class Filter extends Component {
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
                                 maxDate={new Date(this.maxFromDate)}
+                                minDate={new Date('1/1/2011')}
                                 selected={fromDate}
                                 peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                 onChange={value => this.handleChangeFromDate(value)}
@@ -169,8 +170,8 @@ export class Filter extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 const mapStateToProps = state => {
-    const { actionType } = state;
-    return { actionType };
+    const { gridParams, actionType } = state;
+    return { gridParams, actionType };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

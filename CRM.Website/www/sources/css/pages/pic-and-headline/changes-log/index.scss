@@ -49,13 +49,17 @@
 
     .table-container {
         .body-content table tbody{
-            tr td{
+            tr td{                
                 word-break: break-word;
                 background-color: #fff !important;
             }
 
+            tr:hover td {
+                background-color: #E0FFFF !important;
+            }
+
             tr td:last-child{
-                padding: 0 !important;
+                padding: 0 !important;               
             }
 
             .detail-child-col {
@@ -64,7 +68,7 @@
                 justify-content: center;
                 flex-direction: column;
             }
-            
+
             .background-change {
                 background-color: #FFA;
             }
@@ -73,6 +77,10 @@
                 color: #FF3A60;
             }
             
+            .no-data{
+                font-weight: bold;
+            }
+
             .old-value {
                 color: #4E98B4;
             }

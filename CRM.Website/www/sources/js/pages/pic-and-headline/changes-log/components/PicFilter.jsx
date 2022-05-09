@@ -56,7 +56,7 @@ export class PicFilter extends Component {
           fromDate: DateTimeService.toShortDateFormat(fromDate),
           toDate: DateTimeService.toShortDateFormat(toDate),
           pageIndex: 1,
-          pageSize: 100
+          pageSize: this.props.gridParamsPic.pageSize
         };
 
         this.props.setGridParamsPic(params);
@@ -85,6 +85,7 @@ export class PicFilter extends Component {
                                 selected={fromDate}
                                 peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                 maxDate={new Date(this.maxFromDate)}
+                                minDate={new Date('1/1/2011')}
                                 onChange={value => this.handleChangeFromDate(value)}
                             />
                         </div>
@@ -123,4 +124,9 @@ export class PicFilter extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-export default connect(null, mapDispatchToProps)(PicFilter);
+const mapStateToProps = state => {
+    const { gridParamsPic, actionType } = state;
+    return { gridParamsPic, actionType };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PicFilter);
