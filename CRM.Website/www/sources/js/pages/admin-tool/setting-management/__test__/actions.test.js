@@ -340,10 +340,10 @@ describe('actionCreators', () => {
         it('should return expected data', async () => {
             // Arrange
             const expectedParams = {
-                displayOrder: 0,
-                settingId: 68005,
-                settingName: "111111111",
-                settingValue: "TestRuby11"
+                licenseeManager: null,
+                setting: "0sServices",
+                settingId: 6727,
+                settingSource: ""
             };
             const response = {
                 data: {
@@ -357,10 +357,10 @@ describe('actionCreators', () => {
             DataService.postDataAsync = jest.fn(() => promise);
 
             // Act
-            const actual = await store.dispatch(ActionCreators.editStatusSetting(expectedParams));
+            const actual = await store.dispatch(ActionCreators.editLicenseeMapping(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('SettingManagement/EditStatusSetting', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('SettingManagement/EditLicenseeMapping', expectedParams);
             expect(response.data).toEqual(actual);
         });
     });
