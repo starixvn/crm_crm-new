@@ -81,16 +81,15 @@
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var settingsResult = jsonResult.Value;
+            var customerResponsesJson = (IEnumerable<SettingRelation>)jsonResult.Value.GetType().GetProperty("customerResponses").GetValue(jsonResult.Value);
+            var mainCategoriesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("mainCategories").GetValue(jsonResult.Value);
+            var subCategoriesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("subCategories").GetValue(jsonResult.Value);
+            var communicationsJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("communications").GetValue(jsonResult.Value);
 
-            var expected = new
-            {
-                customerResponse,
-                mainCategories,
-                subCategories,
-                communications
-            };
-            expected.Equals(settingsResult);
+            Assert.Equal(customerResponsesJson, customerResponse);
+            Assert.Equal(mainCategoriesJson, mainCategories);
+            Assert.Equal(subCategoriesJson, subCategories);
+            Assert.Equal(communicationsJson, communications);
         }
 
         [Fact]

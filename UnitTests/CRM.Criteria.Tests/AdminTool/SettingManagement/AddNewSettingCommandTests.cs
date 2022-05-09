@@ -38,7 +38,7 @@ namespace CRM.Criteria.Tests.AdminTool.SettingManagement
 
         [Theory]
         [InlineData("", null)]
-        [InlineData("test", "test")]
+        [InlineData("test", null)]
         [InlineData("test", "")]
 
         public void IsValid_WhenCalled_ReturnFalse(string settingName, string settingValue)

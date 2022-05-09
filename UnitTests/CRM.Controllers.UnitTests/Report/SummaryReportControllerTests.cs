@@ -5,9 +5,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Criteria.Report.CategoriesSummaryReport;
-    using CRM.Models.Common;
     using CRM.Models.Report.CategoriesSummaryReport;
-    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Report.CategoriesSummaryReport;
     using Microsoft.AspNetCore.Mvc;
@@ -15,51 +13,35 @@
     using NSubstitute;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Xunit;
 
     public class SummaryReportControllerTests
     {
         private ISummaryReportService summaryReportService;
-        private ISettingService settingService;
         private IExportExcelService exportExcelService;
         private AppSettings appSettings;
+        private readonly Fixture fixture = new Fixture();
 
         [Fact]
-        public async Task getAllSettings_WhenCalled_ReturnAsExpectedResult()
+        public async Task GetAllSettings_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
+            fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList().ForEach(b => fixture.Behaviors.Remove(b));
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var allSettings = fixture.Create<AllSetting>();
+
+
             var controller = GetController();
-            var minReportDate = Convert.ToInt32(ViewResources.MinReportDate);
-            var currentYear = DateTime.Now.Year;
-            var yearRange = new List<Setting>();
-            for (int i = minReportDate; i <= currentYear; i++)
-            {
-                yearRange.Add(new Setting { Id = i, Value = i.ToString() });
-            }
-
-            var siteTypes = new List<Setting>
-            {
-                new Setting { Id = SiteConstants.All, Name = ViewResources.All },
-                new Setting { Id = SiteConstants.NA, Name = ViewResources.Symbol_NotApply },
-                new Setting { Id = SiteConstants.IBCGroup, Name = ViewResources.Credit },
-                new Setting { Id = SiteConstants.LicenseeGroup, Name = ViewResources.Licensee },
-            };
-            var categories = await settingService.GetMainCategoryAsync(SettingConstants.Active);
-
-            var expected = new
-            {
-                YearRange = yearRange,
-                SiteTypes = siteTypes,
-                Categories = categories
-            };
+            summaryReportService.AllSettings().Returns(allSettings);
 
             // Act
             var result = await controller.GetAllSettings();
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            expected.Equals(jsonResult.Value);
+            Assert.Equal(jsonResult.Value, allSettings);
         }
 
         [Fact]
@@ -81,7 +63,6 @@
         public async Task ExportSummaryReport_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
-            var fixture = new Fixture();
             var criteria = fixture.Create<GetSummaryReportCriteria>();
             criteria.Year = 2021;
             var fileName = "Categories_Summary_2021.xlsx";
@@ -103,7 +84,6 @@
         public async Task GetSummaryReport_WhenCalled_ReturnExpectedData()
         {
             // Arrange
-            var fixture = new Fixture();
             var criteria = fixture.Create<GetSummaryReportCriteria>();
             var controller = GetController();
             var templates = await summaryReportService.GetSummaryReportAsync(criteria);
@@ -121,7 +101,6 @@
         private SummaryReportController GetController()
         {
             summaryReportService = Substitute.For<ISummaryReportService>();
-            settingService = Substitute.For<ISettingService>();
             exportExcelService = Substitute.For<IExportExcelService>();
             var optionsAppSettings = Substitute.For<IOptionsSnapshot<AppSettings>>();
             appSettings = new AppSettings

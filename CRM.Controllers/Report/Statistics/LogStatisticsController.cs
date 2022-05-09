@@ -32,7 +32,7 @@
             return View("../Report/LogStatistics/Index");
         }
 
-        public async Task<IActionResult> getAllSettings()
+        public async Task<IActionResult> GetAllSettings()
         {
             var products = await settingService.GetProductAsync();
             var mainCategories = await settingService.GetMainCategoryAsync();

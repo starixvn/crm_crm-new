@@ -45,27 +45,35 @@
         public async Task GetAllSettings_WhenCalled_ReturnExpectedDataAsync()
         {
             //Arrange
-            var communicationTools = new List<Setting>();
-            var mainCategories = new List<Setting>();
-            var subCategories = new List<Setting>();
+            var communicationTools = new List<Setting>
+            {
+                new Setting {Id = 1, Name = "test"}
+            };
+            var mainCategories = new List<Setting>
+            {
+                new Setting {Id = 1, Name = "test"}
+            };
+            var subCategories = new List<Setting>
+            {
+                new Setting {Id = 1, Name = "test"}
+            };
             var controller = GetController();
-            settingService.GetCommunicationToolAsync().Returns(communicationTools);
+            settingService.GetCommunicationToolAsync(SettingConstants.Active).Returns(communicationTools);
             settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategories);
             settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategories);
-            var expected = new
-            {
-                communicationTools,
-                mainCategories,
-                subCategories
-            };
 
             // Act
             var result = await controller.GetAllSettings();
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var settingsResult = jsonResult.Value;
-            Assert.Equal(expected, settingsResult);
+            var communicationToolsJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("CommunicationTools").GetValue(jsonResult.Value);
+            var mainCategoriesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("MainCategories").GetValue(jsonResult.Value);
+            var subCategoriesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("SubCategories").GetValue(jsonResult.Value);
+
+            Assert.Equal(communicationTools, communicationToolsJson);
+            Assert.Equal(mainCategories, mainCategoriesJson);
+            Assert.Equal(subCategories, subCategoriesJson);
         }
 
         [Fact]
