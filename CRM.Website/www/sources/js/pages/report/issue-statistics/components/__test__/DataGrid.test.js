@@ -18,31 +18,31 @@ describe('DataGrid', () => {
     });
 
     const propsInit = {
-        gridData: { 
+        gridData: {
             name: 'test',
             childReports: [{
                 childReports: [{
                     shortName: "11:00 - 11:59",
                     numberOfIssues: 3,
                     childReports: [
-                        { numberOfIssues: 1},
-                        { numberOfIssues: 1}
+                        { numberOfIssues: 1 },
+                        { numberOfIssues: 1 }
                     ]
-                    },
-                    {
-                        shortName: "11:00 - 11:59",
-                        numberOfIssues: 3,
-                        childReports: [
-                            { numberOfIssues: 1},
-                            { numberOfIssues: 1}
-                        ]
-                    
-                    }
+                },
+                {
+                    shortName: "11:00 - 11:59",
+                    numberOfIssues: 3,
+                    childReports: [
+                        { numberOfIssues: 1 },
+                        { numberOfIssues: 1 }
+                    ]
+
+                }
                 ],
                 shortName: 'Feb 28, 2022', numberOfIssues: 1,
-                total: {shortName: 'grandTotal', childReports: [{countryInfo: [{id: 1, name: 'Antigua & Barbuda'}]}]}
+                total: { shortName: 'grandTotal', childReports: [{ countryInfo: [{ id: 1, name: 'Antigua & Barbuda' }] }] }
             }],
-            total: {shortName: 'grandTotal', childReports: [{countryInfo: [{id: 1, name: 'Antigua & Barbuda'}]}]} 
+            total: { shortName: 'grandTotal', childReports: [{ countryInfo: [{ id: 1, name: 'Antigua & Barbuda' }] }] }
         },
         gridParams: { pageIndex: 1, pageSize: 100 },
         exportExcel: jest.fn(),
@@ -54,10 +54,10 @@ describe('DataGrid', () => {
     describe('buildHeader', () => {
         it('should render expected header', () => {
             // arrange
-            const countryArr = [{id: 1, name: 'Antigua & Barbuda' }];
+            const countryArr = [{ id: 1, name: 'Antigua & Barbuda' }];
 
             // Act
-            const container = shallow(<DataGrid  {...propsInit}/>).instance();
+            const container = shallow(<DataGrid  {...propsInit} />).instance();
             const header = shallow(container.buildHeader(countryArr));
 
             // Assert
@@ -70,7 +70,7 @@ describe('DataGrid', () => {
             // Arrange
             const container = shallow(<DataGrid {...propsInit} />).instance();
             container.renderRow = jest.fn(() => <div />);
-            const countryArr = [{id: 1, name: 'Antigua & Barbuda' }];
+            const countryArr = [{ id: 1, name: 'Antigua & Barbuda' }];
             // Act
             const actual = container.buildBody(propsInit.gridData, countryArr);
 
@@ -81,10 +81,10 @@ describe('DataGrid', () => {
         it('should render no data when gridData is empty', () => {
             // Arrange
             const props = {
-                gridData: { 
+                gridData: {
                     name: 'test',
                     childReports: [],
-                    total: {shortName: 'grandTotal', childReports: [{countryInfo: [{id: 1, name: 'Antigua & Barbuda'}]}]} 
+                    total: { shortName: 'grandTotal', childReports: [{ countryInfo: [{ id: 1, name: 'Antigua & Barbuda' }] }] }
                 },
                 gridParams: { pageIndex: 1, pageSize: 100 }
             };
@@ -97,6 +97,26 @@ describe('DataGrid', () => {
             // Assert
             expect(actual).toEqual(expectedBody);
         });
+
+        it('should work exactly when render footer', () => {
+            // Arrange
+            const props = {
+                gridData: {
+                    name: 'test',
+                    childReports: [],
+                    total: { shortName: 'grandTotal', numberOfIssues: 1, childReports: [{ countryInfo: [{ id: 1, name: 'Antigua & Barbuda' }] }] }
+                },
+                gridParams: { pageIndex: 1, pageSize: 100 }
+            };
+            const expectedBody = [<Row className="footer-container font-weight-bold"><Cell className="fix-first-column">Grand Total</Cell><Cell className="fix-second-column" /><Cell className="text-center" /><Cell className="text-center">1</Cell></Row>];
+            const container = shallow(<DataGrid {...props} />).instance();
+
+            // Act
+            const actual = container.renderFooter(props.gridData);
+
+            // Assert
+            expect(actual.Cell).toEqual(expectedBody.Cell);
+        });
     });
 
     describe('handleExportExcel', () => {
@@ -104,9 +124,9 @@ describe('DataGrid', () => {
             // Arrange
 
             // Act
-            const container = shallow(<DataGrid {...propsInit}/>);
+            const container = shallow(<DataGrid {...propsInit} />);
             container.instance().handleExportExcel();
-           
+
             // Assert
             expect(propsInit.exportExcel).toHaveBeenCalledWith(propsInit.gridParams);
         });
