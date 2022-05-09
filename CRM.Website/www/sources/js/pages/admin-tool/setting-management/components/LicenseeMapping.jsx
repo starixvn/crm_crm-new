@@ -126,7 +126,7 @@ export class LicenseeMapping extends PureComponent {
             errors.licenseeManager = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('LicenseeManager'));
         }
         this.setState({errors, touched});
-    }
+    };
 
     handleDelete = (setting, settingId) =>{
         this.props.setConfirmCancelPopup({show: true, setting, settingId});
@@ -150,12 +150,12 @@ export class LicenseeMapping extends PureComponent {
                 }, 3000);
             }
         });
-    }
+    };
 
     handleSuccess = () =>{
         this.setState({settingId: '', isEdit: false});
         this.handleSearch();
-    }
+    };
 
     debounceHandleLicenseeManagerChange = Site.debounce(searchText => {
         if (searchText.length >= 2) {

@@ -3,7 +3,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Models;
 
-    public class UpdateStatusCommand : BaseNonQueryCommand
+    public class EditStatusCommand : BaseNonQueryCommand
     {
         public byte UserRole { get; } = Constants.UserRole;
         public int UserId { get; set; }
