@@ -1,6 +1,7 @@
 ﻿namespace CRM.Controllers.UnitTests.Customer
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
     using AutoFixture;
@@ -70,29 +71,32 @@
         {
             //Arrange
             var fixture = new Fixture();
-            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-            var sites = fixture.Create<IEnumerable<SiteSetting>>();
+            fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList().ForEach(b => fixture.Behaviors.Remove(b));
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var sites = fixture.Create<IEnumerable<SiteInfo>>();
             var countries = fixture.Create<IEnumerable<Country>>();
             var languages = fixture.Create<IEnumerable<Language>>();
+            var sitesLicenseeInactive = fixture.Create<IEnumerable<SiteInfo>>();
             var controller = GetController();
-            settingService.GetSiteAsync().Returns(sites);
+            settingService.GetAllSitesWithGroupAsync().Returns(sites);
             settingService.GetCountryAsync(SettingConstants.Active).Returns(countries);
             settingService.GetLanguageAsync(SettingConstants.Active).Returns(languages);
-
-            var expected = new
-            {
-                sites,
-                countries,
-                languages
-            };
+            settingService.GetAllSitesLicenseeInactive().Returns(sitesLicenseeInactive);
 
             //Act
             var result = await controller.GetSettings();
 
             //Asssert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var settingsResult = jsonResult.Value;
-            expected.Equals(settingsResult);
+            var sitesJson = (IEnumerable<SiteInfo>)jsonResult.Value.GetType().GetProperty("sites").GetValue(jsonResult.Value);
+            var countriesJson = (IEnumerable<Country>)jsonResult.Value.GetType().GetProperty("countries").GetValue(jsonResult.Value);
+            var languagesJson = (IEnumerable<Language>)jsonResult.Value.GetType().GetProperty("languages").GetValue(jsonResult.Value);
+            var siteInforJson = (IEnumerable<SiteInfo>)jsonResult.Value.GetType().GetProperty("sitesLicenseeInactive").GetValue(jsonResult.Value);
+
+            Assert.Equal(sitesJson, sites);
+            Assert.Equal(countriesJson, countries);
+            Assert.Equal(languagesJson, languages);
+            Assert.Equal(siteInforJson, sitesLicenseeInactive);
         }
 
         [Fact]

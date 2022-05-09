@@ -13,7 +13,7 @@ import{
 
 const getAllSettings = () => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('LogStatistics/getAllSettings');
+    const url = Site.resolveClientUrl('LogStatistics/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
     }).catch(Site.handleAxiosError).then(() => Site.unblockUI());

@@ -1,6 +1,7 @@
 ﻿namespace CRM.Controllers.UnitTests.Report.Statistics
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.Report.Statistics;
@@ -36,31 +37,33 @@
         }
 
         [Fact]
-        public async Task getAllSettings_WhenCalled_ReturnAsExpectedResult()
+        public async Task GetAllSettings_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
-            var products = new List<Product> { new Product { Id = 1, Name = "Product" } };
-            var mainCategories = new List<Setting> { new Setting { Id = 1, Name = "mainCategory" } };
-            var communicationTools = new List<Setting> { new Setting { Id = 1, Name = "communicationTool" } };
+            fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList().ForEach(b => fixture.Behaviors.Remove(b));
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+
+            var products = fixture.Create<IEnumerable<Product>>();
+            var mainCategories = fixture.Create<IEnumerable<Setting>>();
+            var communicationTools = fixture.Create<IEnumerable<Setting>>();
 
             var controller = GetController();
             settingService.GetProductAsync().Returns(products);
             settingService.GetMainCategoryAsync().Returns(mainCategories);
             settingService.GetCommunicationToolAsync(2, true).Returns(communicationTools);
 
-            var expected = new
-            {
-                products,
-                mainCategories,
-                communicationTools
-            };
-
             // Act
-            var result = await controller.getAllSettings();
+            var result = await controller.GetAllSettings();
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            expected.Equals(jsonResult.Value);
+            var productsJson = (IEnumerable<Product>)jsonResult.Value.GetType().GetProperty("products").GetValue(jsonResult.Value);
+            var mainCategoriesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("mainCategories").GetValue(jsonResult.Value);
+            var communicationToolsJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("communicationTools").GetValue(jsonResult.Value);
+
+            Assert.Equal(productsJson, products);
+            Assert.Equal(mainCategoriesJson, mainCategories);
+            Assert.Equal(communicationToolsJson, communicationTools);
         }
 
         [Fact]
@@ -68,20 +71,34 @@
         {
             // Arrange
             var ibcReport = fixture.Create<LogStatisticsViewModel>();
-            var licenseeReport = fixture.Create<LogStatisticsViewModel>();
             var criteria = fixture.Create<LogStatisticsCriteria>();
+            var criteriaIbc = new LogStatisticsCriteria
+            {
+                ProductId = criteria.ProductId,
+                MainCategoryId = criteria.MainCategoryId,
+                CommunicationId = criteria.CommunicationId,
+                FromDate = criteria.FromDate,
+                ToDate = criteria.ToDate,
+                ProductType = LogStatisticConstants.ProductTypeDetails,
+                CategoryType = LogStatisticConstants.SubCategory,
+                SiteType = LogStatisticConstants.IBC
+            };
 
             var controller = GetController();
-            logStatisticsService.GetReportDataAsync(criteria).Returns(ibcReport);
-            logStatisticsService.GetReportDataAsync(criteria).Returns(licenseeReport);
-            var expected = new { ibcReport, licenseeReport };
+            logStatisticsService.GetReportDataAsync(Arg.Do<LogStatisticsCriteria>(x => criteriaIbc = x)).Returns(ibcReport);
+
 
             // Act
             var result = await controller.GetMainReport(criteria);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            expected.Equals(jsonResult.Value);
+            var ibcReportJson = (LogStatisticsViewModel)jsonResult.Value.GetType().GetProperty("ibcReport").GetValue(jsonResult.Value);
+
+            Assert.Equal(ibcReportJson.ExcelFileName, ibcReport.ExcelFileName);
+            Assert.Equal(ibcReportJson.CommunicationColumns, ibcReport.CommunicationColumns);
+            Assert.Equal(ibcReportJson.GrandTotalOfCommunicationCount, ibcReport.GrandTotalOfCommunicationCount);
+            Assert.Equal(ibcReportJson.GrandTotalOfCommunicationSumByProduct, ibcReport.GrandTotalOfCommunicationSumByProduct);
         }
 
         [Fact]
@@ -111,23 +128,24 @@
             settingService.GetCommunicationToolAsync().Returns(communicationTools);
             settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active).Returns(extensions);
 
-            var expected = new
-            {
-                report,
-                mainCategories,
-                communicationTools,
-                products,
-                subProducts,
-                extensions,
-                totalRows = criteria.TotalRows
-            };
-
             // Act
             var result = await controller.GetReportDetails(criteria);
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            expected.Equals(jsonResult.Value);
+            var reportJson = (IEnumerable<StatisticsDetailbyDateModel>)jsonResult.Value.GetType().GetProperty("report").GetValue(jsonResult.Value);
+            var mainCategoriesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("mainCategories").GetValue(jsonResult.Value);
+            var productsJson = (IEnumerable<Product>)jsonResult.Value.GetType().GetProperty("products").GetValue(jsonResult.Value);
+            var subProductsJson = (IEnumerable<Product>)jsonResult.Value.GetType().GetProperty("subProducts").GetValue(jsonResult.Value);
+            var communicationToolsJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("communicationTools").GetValue(jsonResult.Value);
+            var extensionsJson = (IEnumerable<SettingRelation>)jsonResult.Value.GetType().GetProperty("extensions").GetValue(jsonResult.Value);
+
+            Assert.Equal(reportJson, report);
+            Assert.Equal(mainCategoriesJson, mainCategories);
+            Assert.Equal(productsJson, products);
+            Assert.Equal(subProductsJson, subProducts);
+            Assert.Equal(communicationToolsJson, communicationTools);
+            Assert.Equal(extensionsJson, extensions);
         }
 
         [Fact]

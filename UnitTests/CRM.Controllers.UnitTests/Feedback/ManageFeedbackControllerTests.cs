@@ -49,13 +49,15 @@
         [Fact]
         public async Task GetAllSettings_WhenCalled_ReturnAsExpectedResult()
         {
-            // Arrange            
-            var responses = new List<SettingRelation> { new SettingRelation { Id = 1, IsActive = false }, };
-            var mainCategories = new List<Setting> { new Setting { Id = 1 } };
-            var subCategories = new List<Setting> { new Setting { Id = 1 } };
-            var communications = new List<Setting> { new Setting { Id = 1 } };
-            var customerTypes = new List<Setting> { new Setting { Id = 1 } };
-            var status = new List<FeedbackStatus> { new FeedbackStatus { StatusId = 1 } };
+            // Arrange
+            fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList().ForEach(b => fixture.Behaviors.Remove(b));
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var responses = fixture.Create<IEnumerable<SettingRelation>>();
+            var mainCategories = fixture.Create<IEnumerable<Setting>>();
+            var subCategories = fixture.Create<IEnumerable<Setting>>();
+            var communications = fixture.Create<IEnumerable<Setting>>();
+            var customerTypes = fixture.Create<IEnumerable<Setting>>();
+            var status = fixture.Create<IEnumerable<FeedbackStatus>>();
             var controller = GetController();
             settingService.GetAllCustomerTypes().Returns(customerTypes);
             settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response).Returns(responses);
@@ -69,18 +71,20 @@
 
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var settingsResult = jsonResult.Value;
 
-            var expected = new
-            {
-                CustomerTypes = customerTypes,
-                Responses = responses,
-                MainCategories = mainCategories,
-                SubCategories = subCategories,
-                Communications = communications,
-                Statuses = status
-            };
-            expected.Equals(settingsResult);
+            var customerTypesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("CustomerTypes").GetValue(jsonResult.Value);
+            var responsesJson = (IEnumerable<SettingRelation>)jsonResult.Value.GetType().GetProperty("Responses").GetValue(jsonResult.Value);
+            var mainCategoriesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("MainCategories").GetValue(jsonResult.Value);
+            var subCategoriesJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("SubCategories").GetValue(jsonResult.Value);
+            var communicationsJson = (IEnumerable<Setting>)jsonResult.Value.GetType().GetProperty("Communications").GetValue(jsonResult.Value);
+            var statusJson = (IEnumerable<FeedbackStatus>)jsonResult.Value.GetType().GetProperty("Statuses").GetValue(jsonResult.Value);
+
+            Assert.Equal(customerTypesJson, customerTypes);
+            Assert.Equal(responsesJson, responses);
+            Assert.Equal(mainCategoriesJson, mainCategories);
+            Assert.Equal(subCategoriesJson, subCategories);
+            Assert.Equal(communicationsJson, communications);
+            Assert.Equal(statusJson, status);
         }
 
         [Fact]
