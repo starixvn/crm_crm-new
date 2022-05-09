@@ -53,7 +53,7 @@ export class NewRemark extends Component {
         });
     };
 
-    handleValidateCustomer = (username, isGuest, setFieldValue) =>{
+    handleValidateCustomer = (username, isGuest, setFieldValue, validateForm) =>{
         if(this.state.customerValidated.val === username){
             return;
         }
@@ -62,16 +62,14 @@ export class NewRemark extends Component {
             if(this.props.validateResult.length > 0){
                 const customerValidated = this.props.validateResult[0];
                 const isValidCustomer = customerValidated.custId !== 0 && !customerValidated.isLicensee;
-                if(this.formik.errors !== null && isValidCustomer){
-                    this.formik.errors.username = '';
-                }
-
                 if(isValidCustomer){
                     this.props.getRelatedPics({custId: customerValidated.custId}).then(response =>{
                         this.setState({relatedPicsOption: response});
                     });
                 }
-                this.setState({customerValidated , isValidCustomer});
+                this.setState({customerValidated , isValidCustomer}, () =>{
+                    validateForm();
+                });
             }
         });
     }
@@ -104,7 +102,8 @@ export class NewRemark extends Component {
         handleChange,
         handleSubmit,
         setFieldValue,
-        isSubmitting
+        isSubmitting,
+        validateForm
     }) => {
         const { allSettings, remarkTitles, customerName} = this.props;
         const {customerValidated, isValidCustomer} = this.state;
@@ -147,7 +146,7 @@ export class NewRemark extends Component {
                                 <Col sm="2" md="2">
                                     <Button variant="primary" size="sm" 
                                         disabled={values.username==='' || isDisabled}
-                                        onClick={() => this.handleValidateCustomer(values.username, values.isGuest, setFieldValue )}
+                                        onClick={() => this.handleValidateCustomer(values.username, values.isGuest, setFieldValue, validateForm )}
                                     >
                                         {LangHelper.getResource('Validate')}
                                     </Button>
