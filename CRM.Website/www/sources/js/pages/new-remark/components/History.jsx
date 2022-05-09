@@ -47,7 +47,7 @@ export class History extends Component {
     renderRow = (item, index) => {
         return (
             <Row key={index}>
-                <Cell className='text-center link-click' onClick={() =>this.handleOpenEdit(item)}>{item.versionID}</Cell>
+                <Cell className='text-center link-click'>{item.versionID}</Cell>
                 <Cell className='text-center' sortOrder='desc' sortBy='lastUpdate'>{DateTimeService.toLongDateTimeFormat(item.lastUpdate)}</Cell>
                 <Cell className='text-center'>{item.updater}</Cell>
                 <Cell className='text-center'>{item.remarkName}</Cell>
@@ -59,7 +59,7 @@ export class History extends Component {
                     }
                     placement="auto"
                 >
-                    <Cell className='link-click remark-content' dangerouslySetInnerHTML={{__html: item.remark}} onClick={() =>this.handleOpenEdit(item)}/>
+                    <Cell className='link-click remark-content' dangerouslySetInnerHTML={{__html: item.remark}}/>
                 </OverlayTrigger>
                 <Cell className='text-center'>{item.relatedPICs}</Cell>
                 <Cell className='text-center'>
