@@ -53,13 +53,20 @@ export class Filter extends Component {
         allSettings.sites.forEach(item => {
             item.childSites.forEach(element => {
                 siteIds.push(element.id);
-                siteOptions.push( {
-                    siteId: element.id,
-                    name: element.name,
-                    checked: true
-                });
+                // siteOptions.push( {
+                //     siteId: element.id,
+                //     name: element.name,
+                //     checked: true
+                // });
+            });
+            siteOptions.push({
+                siteId: item.id,
+                name: item.name,
+                checked: true,
+                subItem: item.childSites.map(x => ({key: x.id, value: x.name, checked: true}))
             });
         });
+        siteOptions.unshift({ siteId: 0, name: 'N/A', checked: true });
         const vipOptions = [
             { id: -1, name: 'All' },
             { id: 1, name: 'Yes' },
@@ -187,7 +194,6 @@ export class Filter extends Component {
                                     isNAOption
                                     maxDisplayItemCount={2}
                                     hasAllOption={languageOptions.length > 0}
-                                    isAllTextShown={languageOptions.length > 0}
                                     onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('languageIds' ,currentItem, selectedItemsKey)}
                                 />
                             </div>
@@ -198,10 +204,9 @@ export class Filter extends Component {
                                     dataSource={siteOptions}
                                     keyField='siteId' valueField='name'
                                     hasAllOption={siteOptions.length > 0}
-                                    isAllTextShown={siteOptions.length > 0}
                                     isNAOption
-                                    hasSearchBox
-                                    maxDisplayItemCount={2}
+                                    isAllToggle
+                                    maxDisplayItemCount={6}
                                     onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('siteIds', currentItem, selectedItemsKey)}
                                 />
                             </div>
@@ -213,7 +218,6 @@ export class Filter extends Component {
                                         dataSource={positionOptions}
                                         keyField='positionId' valueField='name'
                                         hasAllOption={positionOptions.length > 0}
-                                        isAllTextShown={positionOptions.length > 0}
                                         isNAOption
                                         maxDisplayItemCount={2}
                                         onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('positionIds', currentItem, selectedItemsKey)}
