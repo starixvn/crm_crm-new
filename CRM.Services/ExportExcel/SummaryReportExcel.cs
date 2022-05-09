@@ -1,14 +1,12 @@
-﻿using CRM.Models.Report.CategoriesSummaryReport;
-using CRM.Resources;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-
-namespace CRM.Services.ExportExcel
+﻿namespace CRM.Services.ExportExcel
 {
+    using CRM.Models.Report.CategoriesSummaryReport;
+    using CRM.Resources;
+    using OfficeOpenXml;
+    using OfficeOpenXml.Style;
+    using System;
+    using System.Drawing;
+
     public class SummaryReportExcel : ExcelBase
     {
         private readonly SummaryReportModel summaryreportInfo;
