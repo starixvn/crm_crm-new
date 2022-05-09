@@ -72,6 +72,7 @@
             // Assert
             service.Received().Protected("SetDefaultStyle", worksheet);
             service.Received().Protected("SetBackground", Arg.Any<ExcelRange>());
+            service.Received().Protected("DrawBorderCell", Arg.Any<ExcelRange>());
         }
 
         [Fact]

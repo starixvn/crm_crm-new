@@ -4,11 +4,9 @@
     using CRM.Services.UnitTests.ExportExcel.TestableClasses;
     using NSubstitute;
     using OfficeOpenXml;
-    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
-    using System.Text;
     using Xunit;
 
     public class WagerReportExcelTests
@@ -79,7 +77,7 @@
         }
 
         [Fact]
-        public void SetValueRow_WhenCalledWithChildReportsCountGreaterOne_ExpectedCellValue()
+        public void SetValueRow_WhenCalledWithReportsCountGreaterOne_ExpectedCellValue()
         {
             // Arrange
             var worksheet = excelPackage.Worksheets.Add("data");

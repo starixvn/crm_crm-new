@@ -56,7 +56,9 @@
             service.Public_RenderBody(template, worksheet);
 
             // Assert
+            service.Received().Protected("SetValueMonths", reportInfo, worksheet);
             service.Received().Protected("SetValueRow", reportInfo, worksheet);
+            service.Received().Protected("SetValueGrandTotal", reportInfo, worksheet);
         }
 
         [Fact]
@@ -72,10 +74,11 @@
             // Assert
             service.Received().Protected("SetDefaultStyle", worksheet);
             service.Received().Protected("SetBackground", Arg.Any<ExcelRange>());
+            service.Received().Protected("DrawBorderCell", Arg.Any<ExcelRange>());
         }
 
         [Fact]
-        public void SetValueRow_WhenCalledWithChildReportsCountGreaterOne_ExpectedCellValue()
+        public void SetValueRow_WhenCalledWithReportsCountGreaterOne_ExpectedCellValue()
         {
             // Arrange
             var worksheet = excelPackage.Worksheets.Add("data");
@@ -94,7 +97,7 @@
         }
 
         [Fact]
-        public void SetValueRow_WhenCalledWithChildReportsCountEqualOne_ExpectedCellValue()
+        public void SetValueRow_WhenCalledWithReportsCountEqualOne_ExpectedCellValue()
         {
             // Arrange
             var worksheet = excelPackage.Worksheets.Add("data");
@@ -115,7 +118,7 @@
         }
 
         [Fact]
-        public void SetBackgroundTotalRow_WhenCalled_CallProtectedSetBackgroundAndExpectedBackground()
+        public void SetBackgroundColor_WhenCalled_CallProtectedSetBackgroundAndExpectedBackground()
         {
             // Arrange
             var cell = excelPackage.Worksheets.Add("data").Cells[1, 1];
@@ -123,6 +126,21 @@
 
             // Act
             service.Public_SetBackground(cell);
+
+            // Assert
+            service.Received().Protected("SetBackgroundColor", cell, Arg.Any<Color>());
+            Assert.True(cell.Style.Font.Bold);
+        }
+
+        [Fact]
+        public void SetBackgroundCategories_WhenCalled_CallProtectedSetBackgroundAndExpectedBackground()
+        {
+            // Arrange
+            var cell = excelPackage.Worksheets.Add("data").Cells[1, 1];
+            var service = CreateService();
+
+            // Act
+            service.Public_SetBackgroundCategories(cell);
 
             // Assert
             service.Received().Protected("SetBackgroundColor", cell, Arg.Any<Color>());
