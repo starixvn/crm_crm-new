@@ -10,7 +10,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-   [CrmPermission(FunctionKey = FunctionKey.ChangesLog, Policy = Policy.Host)]
+    [CrmPermission(FunctionKey = FunctionKey.ChangesLog, Policy = Policy.Host)]
     public class ChangesLogController : BaseController
     {
         private readonly IBaseService baseService;
@@ -35,10 +35,6 @@
         {
             criteria.ToDate = criteria.ToDate.AddHours(EndHour).AddMinutes(EndMinuteSecond).AddSeconds(EndMinuteSecond);
             var logInfo = await baseService.GetDataAsync<ChangeHeadlineDALog>(criteria);
-            if (criteria.TotalRows > 0)
-            {
-                logInfo = logInfo.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-            }
             return Json(new { logInfo, totals = criteria.TotalRows });
         }
 
