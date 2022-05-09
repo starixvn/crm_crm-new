@@ -5,6 +5,7 @@
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
     using System.Drawing;
+
     public class DirectReportExcel : ExcelBase
     {
         private readonly DirectCustomerReportInfo directreportInfo;

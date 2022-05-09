@@ -1,10 +1,8 @@
 ﻿namespace CRM.Services.Report.CategoriesSummaryReport
 {
     using CRM.Core.Constants;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Report.CategoriesSummaryReport;
-    using CRM.Models;
     using CRM.Models.Common;
     using CRM.Models.Report.CategoriesSummaryReport;
     using CRM.Resources;

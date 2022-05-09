@@ -1,14 +1,11 @@
-﻿using CRM.Models.Report.WagerReport;
-using CRM.Resources;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-
-namespace CRM.Services.ExportExcel
+﻿namespace CRM.Services.ExportExcel
 {
+    using CRM.Models.Report.WagerReport;
+    using CRM.Resources;
+    using OfficeOpenXml;
+    using OfficeOpenXml.Style;
+    using System.Drawing;
+
     public class WagerReportExcel : ExcelBase
     {
         private readonly WagerReportModel wagerreportInfo;
