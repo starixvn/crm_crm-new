@@ -10,46 +10,56 @@ export class DataGrid extends Component {
         super(props);
     }
 
-    buildHeader = () => {
+    buildHeader = isHost => {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={45}>{LangHelper.getResource('Setting')}</HeaderCell>
                 <HeaderCell colWidth={13}>{LangHelper.getResource('SettingId')}</HeaderCell>
                 <HeaderCell colWidth={13}>{LangHelper.getResource('Order')}</HeaderCell>
-                <HeaderCell colWidth={13}>{LangHelper.getResource('Edit')}</HeaderCell>
-                <HeaderCell colWidth={13}>{LangHelper.getResource('Active')}</HeaderCell>
+                {
+                    isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Edit')}</HeaderCell>
+                }
+                {
+                    isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Active')}</HeaderCell>
+                }
             </HeaderRow>
         );
     };
 
-    renderRow = (item, index) => {
+    renderRow = (item, index, isHost) => {
         return (
             <Row key={`setting-management-${index}`}>
                 <Cell>{item.settingValue}</Cell>
                 <Cell className='text-right'>{item.settingId}</Cell>
                 <Cell className='text-right'>{item.displayOrder}</Cell>
-                <Cell className='text-center'>
-                    <i className="rounded-circle fa fa-pencil icon-edit" aria-hidden="true"
-                        onClick={event => this.handleOpenEdit(event, item)}
-                    />
-                </Cell>
-                <Cell className='text-center'>
-                    <input type="checkbox" checked={item.isActive} disabled={!this.props.isHost}
-                        onChange={() => this.handleEditStatus(item.settingId, item.settingValue, !item.isActive)}
-                    />
-                </Cell>
+                {
+                    isHost && 
+                    <Cell className='text-center'>
+                        <i className="rounded-circle fa fa-pencil icon-edit" aria-hidden="true"
+                            onClick={event => this.handleOpenEdit(event, item)}
+                        />
+                    </Cell>
+                }
+                {
+                    isHost &&
+                    <Cell className='text-center'>
+                        <input type="checkbox" checked={item.isActive} disabled={!this.props.isHost}
+                            onChange={() => this.handleEditStatus(item.settingId, item.settingValue, !item.isActive)}
+                        />
+                    </Cell>
+                }
             </Row>
         );
     };
 
-    buildBody = () => {
+    buildBody = isHost => {
         const { settingType } = this.props;
         if ( settingType.length > 0) {
-            return settingType.map((item, index) => this.renderRow(item, index));
+            return settingType.map((item, index) => this.renderRow(item, index, isHost));
         }
         return [
             <Row className="no-data">
-                <Cell className='text-center' colSpan={4}>{LangHelper.getResource('ThereIsNoData')}</Cell>
+                <Cell className='text-center' colSpan={isHost ? 5 : 3}>{LangHelper.getResource('ThereIsNoData')}</Cell>
             </Row>
         ];
     };
@@ -64,7 +74,7 @@ export class DataGrid extends Component {
     };
 
     render() {
-        const { settingType, gridParams } = this.props;
+        const { settingType, gridParams, isHost } = this.props;
         if(!settingType){
             return null;
         }
@@ -75,8 +85,8 @@ export class DataGrid extends Component {
                     <span>{`${LangHelper.getResource('SettingManagementTitle')} ${gridParams.settingName}`}</span>
                 </div>
                 <Table
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
+                    header={this.buildHeader(isHost)}
+                    body={this.buildBody(isHost)}
                     width={700}
                     autoWidth={false}
                     onSort={this.onSort}
