@@ -68,7 +68,7 @@ export class Filter extends Component {
         let toMonthDate = this.state.toMonthDate;
         const fromMonthGetYear = fromMonthDate.getFullYear();
         const toMonthGetYear = toMonthDate.getFullYear();
-        if(fromMonthGetYear !== toMonthGetYear){     
+        if(fromMonthGetYear !== toMonthGetYear){
             toMonthDate = this.getToMonthDate(fromMonthDate);
         }
         this.minMonthToDate = fromMonthDate;
