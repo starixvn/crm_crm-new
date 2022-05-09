@@ -83,19 +83,19 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditStatusSetting([FromBody] UpdateStatusCommand command)
+        public async Task<IActionResult> EditStatusSetting([FromBody] EditStatusCommand command)
         {
             command.UserId = napSession.UserId;
-            command.IP = "ClientIP";
+            command.IP = ClientIP;
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertNewSetting([FromBody] InsertNewSettingCommand command)
+        public async Task<IActionResult> InsertNewSetting([FromBody] AddNewSettingCommand command)
         {
             command.UserId = napSession.UserId;
-            command.IP = "ClientIP";
+            command.IP = ClientIP;
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
 
@@ -105,7 +105,7 @@
         public async Task<IActionResult> EditNewSetting([FromBody] EditNewSettingCommand command)
         {
             command.UserId = napSession.UserId;
-            command.IP = "ClientIP";
+            command.IP = ClientIP;
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }

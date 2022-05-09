@@ -2,10 +2,7 @@
 <Functions>
     <Function Name="System Setting">
         <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
-            <Mapping DataField="BotId" ObjectProperty="Id" />
-            <Mapping DataField="BotName" ObjectProperty="Name" />
-        </Setting>
+        <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Notification List">
         <Setting Key="Acc_CRM_ChatBot_NotificationList_Sel" SpName="Acc_CRM_ChatBot_NotificationList_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -120,7 +117,6 @@
 		<Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
 		<Setting Key="Acc_CRM_Rpt_FeedbackStatisticsWagers" SpName="Acc_CRM_Rpt_FeedbackStatisticsWagers" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
 		<Setting Key="Acc_Crm_Rpt_DirectCustomerReport" SpName="Acc_Crm_Rpt_DirectCustomerReport" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-
 		<Setting Key="Acc_CRM_Rpt_DailyStatistics" SpName="Acc_CRM_Rpt_DailyStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_DailyStatisticsDetail" SpName="Acc_CRM_Rpt_DailyStatisticsDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -306,6 +302,5 @@
         <Setting Key="Acc_CRM_LicenseeManagerSel" SpName="Acc_CRM_LicenseeManagerSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_LicenseeMappingSel" SpName="Acc_CRM_LicenseeMappingSel" DbName="DBLIC.bodb_LIC.bodbAdminNet" />
         <Setting Key="Acc_CRM_SourceLicenseeMappingUpd" SpName="Acc_CRM_SourceLicenseeMappingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        
     </Function>
 </Functions>
