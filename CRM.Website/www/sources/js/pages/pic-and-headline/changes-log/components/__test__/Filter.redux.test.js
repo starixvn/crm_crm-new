@@ -24,10 +24,12 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            actionType : [ { id: 1, name: 'pic assignment' } ]
+            actionType : [ { id: 1, name: 'pic assignment' } ],
+            gridParams: {}
         };
         const state = {
-            actionType: [ { id: 1, name: 'pic assignment' } ]
+            actionType: [ { id: 1, name: 'pic assignment' } ],
+            gridParams: {}
         };
 
         // Act

@@ -12,9 +12,9 @@ export class DataGrid extends Component {
             <HeaderRow>
                 <HeaderCell colWidth={5}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
                 <HeaderCell colWidth={7}>{LangHelper.getResource('LogID')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('LogDate')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('LogDate')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('EditBy')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('HeadlineDA')}</HeaderCell>
+                <HeaderCell colWidth={17}>{LangHelper.getResource('HeadlineDA')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('Action')}</HeaderCell>
                 <HeaderCell colWidth={60}>{LangHelper.getResource('Detail')}</HeaderCell>
             </HeaderRow>
