@@ -7,14 +7,13 @@
     using CRM.Core.Services;
     using CRM.Criteria.Report.WagerReport;
     using CRM.Models.Report.WagerReport;
+    using CRM.Resources;
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using NSubstitute;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Xunit;
 
@@ -45,8 +44,7 @@
             // Arrange
             var fixture = new Fixture();
             var criteria = fixture.Create<GetWagerReportCriteria>();
-            criteria.Year = 2020;
-            var fileName = "Wagers_Related_Report_2020.xlsx";
+            var fileName = string.Format(ViewResources.WagerReportExcelName, criteria.Year) + ".xlsx";
             var expected = fixture.Create<byte[]>();
             var controller = GetController();
             var templates = CreateReportInfo();
@@ -67,8 +65,7 @@
             // Arrange
             var fixture = new Fixture();
             var criteria = fixture.Create<GetWagerReportCriteria>();
-            criteria.Year = 2020;
-            var expectedTitle = "WAGER ACCEPT, REJECT, VOID/REDUND FOR YEAR 2020";
+            var expectedTitle = string.Format(ViewResources.WagerReportTitle, criteria.Year);
             var rawData = fixture.Create<IEnumerable<WagerRawData>>();
             var controller = GetController();
             baseService.GetDataAsync<WagerRawData>(criteria).Returns(rawData);

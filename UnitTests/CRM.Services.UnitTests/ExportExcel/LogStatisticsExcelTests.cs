@@ -4,7 +4,7 @@
     using CRM.Models.Report.LogStatistics;
     using CRM.Services.UnitTests.ExportExcel.TestableClasses;
     using NSubstitute;
-    using System;
+    using OfficeOpenXml;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
@@ -13,13 +13,10 @@
     public class LogStatisticsExcelTests
     {
         private readonly FakeExcelPackage excelPackage = new FakeExcelPackage();
-
         private LogStatisticsViewModel logStatistics;
         private int totalColumns;
-
         private const int RowStartBody = 6;
         private const byte RowStartHeader = 4;
-
         protected static readonly Color GroupBackgroundColor = Color.FromArgb(215, 215, 215);
         protected static readonly Color TotalBackgroundColor = Color.FromArgb(240, 237, 196);
         protected static readonly Color GroupColor = Color.FromArgb(0, 0, 205);
@@ -71,6 +68,9 @@
 
             // Assert
             service.Received().Protected("RenderRowValue", worksheet, logStatistics.MainCategories.First(), 6);
+            service.Received().Protected("SetBackgroundTotalRow", Arg.Any<ExcelRange>());
+            service.Received().Protected("SetStyleBodyMain", Arg.Any<ExcelRange>());
+            service.Received().Protected("DrawBorderCell", Arg.Any<ExcelRange>());
         }
 
         [Fact]
@@ -102,7 +102,6 @@
             Assert.True(worksheet.Cells[RowStartBody, 1, logStatistics.MainCategories.Count(), 1].Merge);
             Assert.True(worksheet.Cells[RowStartBody, 2, logStatistics.MainCategories.Count(), 2].Merge);
             Assert.Equal(logStatistics.MainCategories.First().Name, worksheet.Cells[RowStartBody, 1].Value);
-
         }
 
         [Fact]
@@ -149,6 +148,7 @@
 
             // Assert
             service.Received().Protected("StyleDefault", worksheet);
+            service.Received().Protected("DrawBorderCell", Arg.Any<ExcelRange>());
         }
 
         [Fact]

@@ -6,12 +6,12 @@
     using CRM.Core.Models;
     using CRM.Criteria.Report.CategoriesSummaryReport;
     using CRM.Models.Report.CategoriesSummaryReport;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Report.CategoriesSummaryReport;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using NSubstitute;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -64,8 +64,7 @@
         {
             // Arrange
             var criteria = fixture.Create<GetSummaryReportCriteria>();
-            criteria.Year = 2021;
-            var fileName = "Categories_Summary_2021.xlsx";
+            var fileName = string.Format(ViewResources.SheetNameSummaryReport, criteria.Year) + ".xlsx";
             var expected = fixture.Create<byte[]>();
             var controller = GetController();
             var templates = CreateReportInfo();
@@ -86,8 +85,8 @@
             // Arrange
             var criteria = fixture.Create<GetSummaryReportCriteria>();
             var controller = GetController();
-            var templates = await summaryReportService.GetSummaryReportAsync(criteria);
-
+            var templates = CreateReportInfo();
+            summaryReportService.GetSummaryReportAsync(criteria).Returns(templates);
             // Act
             var result = await controller.GetSummaryReport(criteria);
 
