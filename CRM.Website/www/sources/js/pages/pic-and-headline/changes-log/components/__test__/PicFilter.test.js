@@ -24,6 +24,23 @@ describe('PicFilter', () => {
     const promise = Promise.resolve(response);
 
     const props = {
+        gridParams: {
+            userName: null,
+            editBy: null,
+            actionTypeIds: '',
+            fromDate: null,
+            toDate: null,
+            pageIndex: 1,
+            pageSize: 100
+        },
+        gridParamsPic: {
+            picName: null,
+            editBy: null,
+            fromDate: null,
+            toDate: null,
+            pageIndex: 1,
+            pageSize: 100
+        },
         setGridParamsPic: jest.fn(),
         getPicReport: jest.fn()
     };

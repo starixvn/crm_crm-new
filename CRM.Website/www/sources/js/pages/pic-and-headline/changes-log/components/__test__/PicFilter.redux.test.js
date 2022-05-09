@@ -21,6 +21,24 @@ describe('connect ', () => {
         jest.clearAllMocks();
     });
 
+    it('props should be mapped correctly', () => {
+        // Arrange
+        const expected = {
+            actionType : [ { id: 1, name: 'pic assignment' } ],
+            gridParamsPic: {}
+        };
+        const state = {
+            actionType: [ { id: 1, name: 'pic assignment' } ],
+            gridParamsPic: {}
+        };
+
+        // Act
+        const actual = mapStateToProps(state);
+
+        // Assert
+        expect(actual).toEqual(expected);
+    });
+
     it('bindActionCreators should be called with correct parameter', () => {
         // Arrange
         const mockBindAction = jest.fn();

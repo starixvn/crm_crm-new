@@ -12,7 +12,7 @@ export class PicDataGrid extends Component {
             <HeaderRow>
                 <HeaderCell colWidth={5}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
                 <HeaderCell colWidth={7}>{LangHelper.getResource('LogID')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('LogDate')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('LogDate')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('EditBy')}</HeaderCell>
                 <HeaderCell colWidth={13}>{LangHelper.getResource('PicType')}</HeaderCell>
                 <HeaderCell colWidth={13}>{LangHelper.getResource('PIC')}</HeaderCell>

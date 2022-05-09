@@ -24,6 +24,23 @@ describe('Filter', () => {
     const promise = Promise.resolve(response);
 
     const props = {
+        gridParams: {
+            userName: null,
+            editBy: null,
+            actionTypeIds: '',
+            fromDate: null,
+            toDate: null,
+            pageIndex: 1,
+            pageSize: 100
+        },
+        gridParamsPic: {
+            picName: null,
+            editBy: null,
+            fromDate: null,
+            toDate: null,
+            pageIndex: 1,
+            pageSize: 100
+        },
         getActionTypes: jest.fn(() => promise),
         setGridParams: jest.fn(),
         getHeadlineDAReport: jest.fn()
