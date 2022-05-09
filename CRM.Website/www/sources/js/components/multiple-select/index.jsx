@@ -23,7 +23,8 @@ export default class MultipleSelect extends Component {
         texts: PropTypes.object,
         valueField: PropTypes.string,
         isDisable: PropTypes.bool,
-        isNAOption: PropTypes.bool
+        isNAOption: PropTypes.bool,
+        isAllToggle: PropTypes.bool
     };
 
     static defaultProps = {
@@ -34,7 +35,8 @@ export default class MultipleSelect extends Component {
         hasSearchBox: false,
         isDisable: false,
         textOptions: MULTI_SELECT_TEXT_OPTIONS,
-        isNAOption: false
+        isNAOption: false,
+        isAllToggle: false
     };
 
     constructor(props) {
@@ -45,7 +47,8 @@ export default class MultipleSelect extends Component {
             originalDataSource: null,
             searchText: '',
             showOptionList: false,
-            dataSource: []
+            dataSource: [],
+            isAllExpand: true
         };
 
         if (!props.id) {
@@ -75,7 +78,7 @@ export default class MultipleSelect extends Component {
     }
 
     get selectedItems() {
-        return this.state.dataSource.filter(item => item.checked);
+        return this.state.dataSource.filter(item => item.subItem.length <= 0 ? item.checked : true);
     }
 
     onChangeHandler = item => {
@@ -91,8 +94,40 @@ export default class MultipleSelect extends Component {
         const itemToUpdate = newDataSource.find(x => x.key === item.key);
         itemToUpdate.checked = item.checked;
 
+        if (itemToUpdate.subItem.length > 0) {
+            itemToUpdate.subItem.map(x => x.checked = item.checked);
+        };
+
         this._callBackToParent(selectedItem);
 
+        this.setState({ dataSource: newDataSource });
+    };
+
+    checkParentItem = item => {
+        if (item.subItem.some(x => x.checked === false)) {
+            item.checked = false;
+        }
+        if (item.subItem.every(x => x.checked === true)) {
+            item.checked = true;
+        }
+    };
+
+    onChangeSubHandler = (parentItem, subItem) => {
+        const { keyField, valueField, statusField } = this.props;
+
+        const selectedItem = {
+            [keyField]: subItem.key,
+            [valueField]: subItem.value,
+            [statusField]: subItem.checked
+        };
+
+        const newDataSource = [...this.state.dataSource];
+        const itemToUpdate = newDataSource.find(x => x.key === parentItem.key);
+        const subItemToUpdate = itemToUpdate.subItem.find(x => x.key === subItem.key);
+        subItemToUpdate.checked = subItem.checked;
+
+        this.checkParentItem(itemToUpdate);
+        this._callBackToParent(selectedItem);
         this.setState({ dataSource: newDataSource });
     };
 
@@ -115,7 +150,12 @@ export default class MultipleSelect extends Component {
 
     checkAllHandler = checked => {
         const dataSource = this.state.dataSource.slice(0);
-        dataSource.forEach(item => item.checked = checked);
+        dataSource.forEach(item => {
+            item.checked = checked;
+            if (item.subItem.length > 0) {
+                item.subItem.map(x => x.checked = checked);
+            }
+        });
         this.setState({
             dataSource: dataSource
         }, () => {
@@ -144,6 +184,12 @@ export default class MultipleSelect extends Component {
         this.onChangeSearchText('');
     };
 
+    onAllToggle = () => {
+        this.setState(previousState => ({
+            isAllExpand: !previousState.isAllExpand
+        }));
+    };
+
     _callBackToParent(selectedItem) {
         const selectedItemsKey = this._getSelectedItemKey();
         this.props.onChange && this.props.onChange(selectedItem, selectedItemsKey);
@@ -155,8 +201,16 @@ export default class MultipleSelect extends Component {
         for (let i = 0; i < dataSource.length; i++) {
             const item = dataSource[i];
 
-            if (item.checked) {
-                selectedItemKey.push(item.key);
+            if (item.subItem.length > 0) {
+                item.subItem.forEach(x => {
+                    if (x.checked) {
+                        selectedItemKey.push(x.key);
+                    }
+                });
+            } else {
+                if (item.checked) {
+                    selectedItemKey.push(item.key);
+                }
             }
         }
 
@@ -178,7 +232,10 @@ export default class MultipleSelect extends Component {
         if (this.props.hasAllOption && this.props.dataSource.length > 0) {
             const checkedItemCount = this.state.dataSource.filter(x => x.checked).length;
             const checkedAll = checkedItemCount === this.state.dataSource.length;
-            return (<OptionAll id={this.id} checked={checkedAll} textOptions={this.props.textOptions} onChange={this.checkAllHandler} />);
+            return (
+                <OptionAll id={this.id} checked={checkedAll} textOptions={this.props.textOptions}
+                    isAllToggle={this.props.isAllToggle} onAllToggle={this.onAllToggle} onChange={this.checkAllHandler} />
+            );
         }
 
         return null;
@@ -213,6 +270,18 @@ export default class MultipleSelect extends Component {
         </div>);
     }
 
+    getLengthDataSource = () => {
+        let count = 0;
+        this.state.dataSource.forEach(item => {
+            if (item.subItem.length > 0) {
+                count += item.subItem.length;
+            } else {
+                count += 1;
+            }
+        });
+        return count;
+    };
+
     render() {
         const { maxDisplayItemCount } = this.props;
         return (
@@ -222,7 +291,7 @@ export default class MultipleSelect extends Component {
                 <MultipleSelectLabel
                     textOptions={this.props.textOptions}
                     selectedItems={this.selectedItems}
-                    dataSourceSize={this.state.dataSource.length}
+                    dataSourceSize={this.getLengthDataSource()}
                     onToggle={this.onToggle}
                     texts={this.props.texts}
                     isAllTextShown={this.props.isAllTextShown}
@@ -238,6 +307,8 @@ export default class MultipleSelect extends Component {
                     <MultipleSelectOptionList id={this.id}
                         dataSource={this.state.dataSource}
                         onChange={this.onChangeHandler}
+                        onChangeSub={this.onChangeSubHandler}
+                        isAllExpand={this.state.isAllExpand}
                     />
                 </div>
             </div>

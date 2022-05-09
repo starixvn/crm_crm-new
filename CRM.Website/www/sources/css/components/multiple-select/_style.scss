@@ -79,12 +79,74 @@ $sub-menu-border: 1px solid #b7b7b7;
         padding: 5px;
         overflow: auto;
         max-height: 230px;
+
+        .toggle-select-item {
+            padding-left: 20px;
+        }
+
+        .sub-select {
+            padding-left: 45px;
+
+            &-item {
+                display: flex;
+                align-items: center;
+                padding: 5px 8px;
+                font-size: 13px;
+                user-select: none;
+                position: relative;
+    
+                &-label {
+                    margin-bottom: 0;
+                    padding-left: 10px;
+                }
+            }
+
+            &-item:before {
+                content: "";
+                display: block;
+                width: 13px;
+                border-top: 1px dashed #b7b7b7;
+                position: absolute;
+                top: 15px;
+                left: -12px;
+            }
+
+            &-item:after {
+                content: "";
+                display: block;
+                width: 2px;
+                height: 20px;
+                border-left: 1px dashed #b7b7b7;
+                position: absolute;
+                top: -5px;
+                left: -12px;
+            }
+        }
     }
 
     &-option-all {
         border-bottom: $border-option-list;
         padding-top: 0;
         padding-bottom: 0;
+        display: flex;
+        list-style-type: none;
+        align-items: center;
+
+        .icon-toggle-all {
+            background: url(http://crm.nexdev.net/local1/Content/site/images/list-muti-select.png);
+            height: 15px;
+            width: 15px;
+            margin-left: 38px;
+            cursor: pointer;
+        }
+
+        .expand-all {
+            background-position: 15px 0px;
+        }
+
+        .collapse-all {
+            background-position: 0px 0px;
+        }
     }
 
     &-item {
@@ -148,6 +210,11 @@ $sub-menu-border: 1px solid #b7b7b7;
             cursor: pointer;
             padding-left: 5px;
             font-size: 14px;
+        }
+
+        .caret-item {
+            position: relative;
+            left: -9px;
         }
     }
 

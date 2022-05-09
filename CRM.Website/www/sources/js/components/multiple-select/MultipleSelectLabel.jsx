@@ -19,9 +19,26 @@ export default class MultipleSelectLabel extends Component {
         super(props);
     }
 
+    handleSelectedItem = selectedItems => {
+        const selected = [];
+        selectedItems.forEach(item => {
+            if (item.subItem.length > 0) {
+                return item.subItem.forEach(x => {
+                    if (x.checked) {
+                        selected.push(x.value);
+                    }
+                });
+            } else {
+                selected.push(item.value);
+            }
+        });
+        return selected;
+    };
+
     get selectedItemsString() {
         const { isAllTextShown, selectedItems, maxDisplayItemCount, textOptions, dataSourceSize, isNAOption } = this.props;
-        const selectedValues = selectedItems.map(item => item.value);
+
+        const selectedValues = this.handleSelectedItem(selectedItems);
 
         let displayText = textOptions['SelectOptions'];
         const selectedItemCount = selectedValues.length;

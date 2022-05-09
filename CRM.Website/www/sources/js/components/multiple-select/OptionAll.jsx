@@ -8,7 +8,9 @@ export default class OptionAll extends Component {
         onChange: PropTypes.func,
         id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
         checked: PropTypes.bool,
-        textOptions: PropTypes.object
+        textOptions: PropTypes.object,
+        isAllToggle: PropTypes.bool,
+        onAllToggle: PropTypes.func
     };
 
     static defaultProps = {
@@ -22,14 +24,27 @@ export default class OptionAll extends Component {
             key: 'All',
             value: this.props.textOptions['Texts']
         };
+        this.state = {
+            isAllExpand: true
+        };
     }
 
     changeHandler = ({ checked }) => {
         this.props.onChange && this.props.onChange(checked);
     };
 
+    toggleAll = () => {
+        const { onAllToggle } = this.props;
+        this.setState(prevState => ({
+            isAllExpand: !prevState.isAllExpand
+        }));
+        if (onAllToggle) {
+            onAllToggle();
+        }
+    };
+
     render() {
-        const { id, checked } = this.props;
+        const { id, checked, isAllToggle } = this.props;
         this.itemData.checked = checked;
 
         return (
@@ -39,6 +54,9 @@ export default class OptionAll extends Component {
                     itemData={this.itemData}
                     onChange={this.changeHandler}
                 />
+                {
+                    isAllToggle && <li className={`icon-toggle-all ${this.state.isAllExpand ? 'expand-all' : 'collapse-all'}`} onClick={this.toggleAll}/>
+                }
             </ul>
         );
     }
