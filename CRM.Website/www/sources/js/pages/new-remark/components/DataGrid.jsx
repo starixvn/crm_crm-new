@@ -62,7 +62,9 @@ export class DataGrid extends Component {
                 <OverlayTrigger
                     placement="auto"
                     overlay={
-                        <Tooltip id="tooltip-remark-content"><span dangerouslySetInnerHTML={{__html: item.remark}} /></Tooltip>
+                        <Tooltip id="tooltip-remark-content">
+                            <span dangerouslySetInnerHTML={{__html: item.remark.substring(0, 500)}} />
+                        </Tooltip>
                     }
                 >
                     <Cell className='link-click remark-content' onClick={() =>this.handleOpenEdit(item)} dangerouslySetInnerHTML={{__html: item.remark}}/>
