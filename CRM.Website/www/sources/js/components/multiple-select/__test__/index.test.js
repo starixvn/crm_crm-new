@@ -109,7 +109,8 @@ describe('index', () => {
         const state = {
             dataSource: [
                 {
-                    checked: true
+                    checked: true,
+                    subItem: [{ key: 1, value: '2223', checked: true }]
                 }
             ]
         };
@@ -146,7 +147,8 @@ describe('index', () => {
             dataSource: [
                 {
                     key: 1,
-                    checked: true
+                    checked: true,
+                    subItem: [{ key: 1, value: '2223', checked: true }]
                 }
             ]
         };
@@ -167,9 +169,116 @@ describe('index', () => {
         expect(index.instance().state.dataSource).toEqual([
             {
                 key: 1,
-                checked: false
+                checked: false,
+                subItem: [{ key: 1, value: '2223', checked: false }]
             }
         ]);
+    });
+
+    it('checkParentItem run correctly change item checked false', () => {
+        // Arrange
+        const props = {
+            dataSource: []
+        };
+        var item = {
+            checked: true,
+            subItem: [{ key: 1, value: '2223', checked: false }]
+        }
+        const index = shallow(<Index {...props} />);
+
+        // Action
+        index.instance().checkParentItem(item);
+        expect(item.checked).toBe(false);
+    });
+
+    it('checkParentItem run correctly change item checked true', () => {
+        // Arrange
+        const props = {
+            dataSource: []
+        };
+        var item = {
+            checked: true,
+            subItem: [{ key: 1, value: '2223', checked: true }]
+        }
+        const index = shallow(<Index {...props} />);
+
+        // Action
+        index.instance().checkParentItem(item);
+
+        // Assert
+        expect(item.checked).toBe(true);
+    });
+
+    it('onChangeSubHandler should run correctly', () => {
+        // Arrange
+        const keyField = 'key';
+        const valueField = 'value';
+        const statusField = 'status';
+        const props = {
+            dataSource: [],
+            keyField,
+            valueField,
+            statusField
+        };
+
+        const item = {
+            key: 1,
+            value: 'value',
+            checked: false
+        };
+
+        const subItem = { key: 1, value: '2223', checked: true };
+
+        const state = {
+            dataSource: [
+                {
+                    key: 1,
+                    checked: true,
+                    subItem: [{ key: 1, value: '2223', checked: true }]
+                }
+            ]
+        };
+
+        const index = shallow(<Index {...props} />);
+        index.instance().setState(state);
+        index.instance()._callBackToParent = jest.fn();
+        index.instance().checkParentItem = jest.fn();
+
+        // Action
+        index.instance().onChangeSubHandler(item, subItem);
+
+        // Assert
+        expect(index.instance().checkParentItem).toHaveBeenCalled();
+        expect(index.instance()._callBackToParent).toHaveBeenCalledWith({
+            [keyField]: item.key,
+            [valueField]: '2223',
+            [statusField]: true
+        });
+        expect(index.instance().state.dataSource).toEqual([
+            {
+                key: 1,
+                checked: true,
+                subItem: [{ key: 1, value: '2223', checked: true }]
+            }
+        ]);
+    });
+
+    it('onAllToggle should set state exactly', () => {
+        // Arrange
+        const props = {
+            dataSource: []
+        };
+
+        const index = shallow(<Index {...props} />);
+        index.instance().setState({
+            isAllExpand: true
+        });
+
+        // Action
+        index.instance().onAllToggle();
+
+        // Assert
+        expect(index.state().isAllExpand).toBe(false);
     });
 
     it('onToggle should focus searchInputBox after state change', () => {
@@ -204,12 +313,13 @@ describe('index', () => {
         const state = {
             dataSource: [
                 {
-                    checked: true
+                    checked: true,
+                    subItem: [{ key: 1, value: '2223', checked: true }]
                 }
             ]
         };
 
-        const checked = false;
+        const checked = true;
         const index = shallow(<Index {...props} />);
         index.instance().setState(state);
         index.instance()._callBackToParent = jest.fn();
@@ -219,7 +329,8 @@ describe('index', () => {
 
         // Assert
         expect(index.instance().state.dataSource).toEqual([{
-            checked: checked
+            checked: checked,
+            subItem: [{ key: 1, value: '2223', checked: true }]
         }]);
         expect(index.instance()._callBackToParent).toHaveBeenCalledWith(null);
     });
@@ -235,7 +346,8 @@ describe('index', () => {
                 dataSource: [
                     {
                         visible: false,
-                        [VALUE_NAME]: 'value have length greater than 1'
+                        [VALUE_NAME]: 'value have length greater than 1',
+                        subItem: [{ key: 1, value: '2223', checked: true }]
                     }
                 ]
             };
@@ -251,7 +363,8 @@ describe('index', () => {
             expect(index.instance().state.dataSource).toEqual([
                 {
                     visible: true,
-                    [VALUE_NAME]: 'value have length greater than 1'
+                    [VALUE_NAME]: 'value have length greater than 1',
+                    subItem: [{ key: 1, value: '2223', checked: true }]
                 }
             ]);
         });
@@ -266,7 +379,8 @@ describe('index', () => {
                 dataSource: [
                     {
                         visible: false,
-                        [VALUE_NAME]: 'value have length greater than 1'
+                        [VALUE_NAME]: 'value have length greater than 1',
+                        subItem: [{ key: 1, value: '2223', checked: true }]
                     }
                 ]
             };
@@ -282,7 +396,8 @@ describe('index', () => {
             expect(index.instance().state.dataSource).toEqual([
                 {
                     visible: true,
-                    [VALUE_NAME]: 'value have length greater than 1'
+                    [VALUE_NAME]: 'value have length greater than 1',
+                    subItem: [{ key: 1, value: '2223', checked: true }]
                 }
             ]);
         });
@@ -325,7 +440,7 @@ describe('index', () => {
         expect(props.onChange).toHaveBeenCalledWith(selectedItem, expected);
     });
 
-    it('_getSelectedItemKey should return expected', () => {
+    it('_getSelectedItemKey have subItem should return expected', () => {
         // Arrange
         const props = {
             dataSource: []
@@ -337,15 +452,57 @@ describe('index', () => {
             dataSource: [
                 {
                     checked: true,
-                    key
+                    key,
+                    subItem: [{ key: 1, value: '2223', checked: true }]
                 },
                 {
                     checked: false,
-                    key
+                    key,
+                    subItem: [{ key: 2, value: '2224', checked: true }]
                 },
                 {
                     checked: true,
-                    key: key2
+                    key: key2,
+                    subItem: [{ key: 3, value: '2225', checked: true }]
+                }
+            ]
+        };
+
+        const expected = [key, key2].join(',');
+        const index = shallow(<Index {...props} />);
+        index.instance().setState(state);
+
+        // Action
+        const result = index.instance()._getSelectedItemKey();
+
+        // Assert
+        expect(result).toEqual("1,2,3");
+    });
+
+    it('_getSelectedItemKey no have subItem should return expected', () => {
+        // Arrange
+        const props = {
+            dataSource: []
+        };
+
+        const key = 'key';
+        const key2 = 'key2';
+        const state = {
+            dataSource: [
+                {
+                    checked: true,
+                    key,
+                    subItem: []
+                },
+                {
+                    checked: false,
+                    key,
+                    subItem: []
+                },
+                {
+                    checked: true,
+                    key: key2,
+                    subItem: []
                 }
             ]
         };
@@ -359,6 +516,24 @@ describe('index', () => {
 
         // Assert
         expect(result).toEqual(expected);
+    });
+
+    it('getLengthDataSource should return correctly', () => {
+        // Arrange
+        const props = {
+            dataSource: [{ subItem: [{ key: 2, value: '2224', checked: true }] }]
+        };
+
+        const index = shallow(<Index {...props} />);
+        index.instance().setState({
+            dataSource: [{ checked: true, subItem: [{ key: 2, value: '2224', checked: true }] }, { checked: true, subItem: [] }]
+        });
+
+        // Action
+        const actual = index.instance().getLengthDataSource();
+
+        // Assert
+        expect(actual).toBe(2);
     });
 
     it('_close should change state correctly', () => {
@@ -502,15 +677,18 @@ describe('index', () => {
                     }
                 ],
                 hasAllOption: true,
-                textOptions: {}
+                textOptions: {},
+                isAllToggle: false
             };
 
             const id = 1;
             const checkAllHandler = jest.fn();
-            const expected = <OptionAll id={id} checked textOptions={props.textOptions} onChange={checkAllHandler} />;
+            const onAllToggle = jest.fn();
+            const expected = <OptionAll id={id} checked textOptions={props.textOptions} isAllToggle={props.isAllToggle} onAllToggle={onAllToggle} onChange={checkAllHandler} />;
             const index = shallow(<Index {...props} />);
             index.instance().id = id;
             index.instance().checkAllHandler = checkAllHandler;
+            index.instance().onAllToggle = onAllToggle;
 
             // Action
             const result = index.instance()._renderOptionAll();
@@ -650,9 +828,11 @@ describe('index', () => {
             const _renderSearchBox = jest.fn();
             const _renderOptionAll = jest.fn();
             const onChangeHandler = jest.fn();
+            const onChangeSubHandler = jest.fn();
             const onToggle = jest.fn();
             const state = {
-                dataSource: []
+                dataSource: [],
+                isAllExpand: true
             };
 
             // Action
@@ -662,6 +842,7 @@ describe('index', () => {
             index.instance()._renderSearchBox = _renderSearchBox;
             index.instance()._renderOptionAll = _renderOptionAll;
             index.instance().onChangeHandler = onChangeHandler;
+            index.instance().onChangeSubHandler = onChangeSubHandler;
             index.setState(state);
 
             // Assert
@@ -681,6 +862,8 @@ describe('index', () => {
             expect(index.find(MultipleSelectOptionList).props().id).toEqual(id);
             expect(index.find(MultipleSelectOptionList).props().dataSource).toEqual(state.dataSource);
             expect(index.find(MultipleSelectOptionList).props().onChange).toEqual(onChangeHandler);
+            expect(index.find(MultipleSelectOptionList).props().onChangeSub).toEqual(onChangeSubHandler);
+            expect(index.find(MultipleSelectOptionList).props().isAllExpand).toEqual(state.isAllExpand);
         });
 
         it('should have first div with invalid className', () => {

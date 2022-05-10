@@ -46,6 +46,45 @@ describe('Option', () => {
         });
     });
 
+    it('componentDidUpdate should setState exactly', () => {
+        // Arrange
+        const props = {
+            itemData : {
+                subData: []
+            },
+            isAllExpand: true
+        };
+
+        const prevProps = { isAllExpand: false };
+        const option = shallow(<Option {...props} />);
+
+        // Action
+        option.instance().componentDidUpdate(prevProps);
+
+        // Assert
+        expect(option.state().isExpandedSubItem).toEqual(props.isAllExpand);
+    });
+
+    it('onChangeSubItem should call exactly props function', () => {
+        // Arrange
+        const props = {
+            itemData : {
+                subItem: [{ key: 1, value: '2223', checked: true }]
+            },
+            onChangeSub: jest.fn()
+        };
+        const subItem = { key: 1, value: '2223', checked: true };
+        const newSubItem = { key: 1, value: '2223', checked: false };
+
+        const option = shallow(<Option {...props} />);
+
+        // Action
+        option.instance().onChangeSubItem(subItem);
+
+        // Assert
+        expect(props.onChangeSub).toHaveBeenCalledWith(props.itemData, newSubItem);
+    });
+
     it('onClickExpandIcon change state correctly', () => {
         // Arrange
         const props = {
@@ -64,6 +103,26 @@ describe('Option', () => {
 
         // Assert
         expect(option.instance().state.isExpandedSubData).toEqual(!prevState.isExpandedSubData);
+    });
+
+    it('toggleItem change state correctly', () => {
+        // Arrange
+        const props = {
+            itemData : {
+                subItem: []
+            },
+            onChange: jest.fn()
+        };
+
+        const prevState = { isExpandedSubItem: true };
+        const option = shallow(<Option {...props} />);
+        option.instance().setState(prevState);
+
+        // Action
+        option.instance().toggleItem();
+
+        // Assert
+        expect(option.state().isExpandedSubItem).toEqual(!prevState.isExpandedSubItem);
     });
 
     it('renderSubData should return expected', () => {
@@ -90,6 +149,31 @@ describe('Option', () => {
         expect(result.find('ul').html()).toBe(expected);
     });
 
+    it('renderSubItem call exactly function', () => {
+        // Arrange
+        const props = {
+            itemData : {
+                subItem: [{ key: 1, value: '2223', checked: true }]
+            }
+        };
+
+        const subItemList = [{ key: 1, value: '2223', checked: true }];
+        const state = { isExpandedSubItem: true };
+
+        const onChangeSubItem = jest.fn();
+        
+        const option = shallow(<Option {...props} />);
+        option.instance().setState(state);
+        option.instance().onChangeSubItem = onChangeSubItem;
+
+        // Action
+        const result = shallow(option.instance().renderSubItem(subItemList));
+        result.find('input').simulate('change');
+
+        // Assert
+        expect(onChangeSubItem).toHaveBeenCalled();
+    });
+
     describe('render', () => {
         it('should return regular components', () => {
             // Arrange
@@ -110,7 +194,7 @@ describe('Option', () => {
             const result = shallow(option.instance().render());
 
             // Assert
-            expect(result.props().className).toBe('multiple-select-item');
+            expect(result.find('li').props().className).toBe(' multiple-select-item');
             expect(result.find('input').props().id).toEqual(props.id);
             expect(result.find('input').props().className).toBe('option-checkbox');
             expect(result.find('input').props().checked).toEqual(props.itemData.checked);
@@ -144,6 +228,25 @@ describe('Option', () => {
             expect(option.find('span').props().className).toBe('expand-icon fa fa-caret-down');
             expect(option.find('span').props().onClick).toEqual(onClickExpandIcon);
             expect(renderSubData).toHaveBeenCalledWith(props.itemData.subData);
+        });
+
+        it('should call exactly function when having subItem', () => {
+            // Arrange
+            const props = {
+                itemData : {
+                    subItem: [{ key: 1, value: '2223', checked: true }]
+                }
+            };
+
+            const renderSubItem = jest.fn();
+
+            // Action
+            const option = shallow(<Option {...props} />);
+            option.instance().renderSubItem = renderSubItem;
+            option.instance().render();
+
+            // Assert
+            expect(renderSubItem).toHaveBeenCalledWith(props.itemData.subItem);
         });
     });
 });
