@@ -56,7 +56,7 @@ export class DataGrid extends Component {
                 <Cell className='text-center link-click' onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
                 <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
                 <Cell className='text-center'>{item.creator}</Cell>
-                <Cell className='text-center'>{item.HeadlineName}</Cell>
+                <Cell className='text-center'>{item.headlineName}</Cell>
                 <Cell className='text-center'>{userNameFormat}</Cell>
                 <Cell className='text-center'>{item.remarkName}</Cell>
                 <OverlayTrigger
