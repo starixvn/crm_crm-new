@@ -63,7 +63,7 @@ export class DataGrid extends Component {
                     placement="auto"
                     overlay={
                         <Tooltip id="tooltip-remark-content">
-                            <span dangerouslySetInnerHTML={{__html: item.remark.substring(0, 500)}} />
+                            <span dangerouslySetInnerHTML={{__html: item.remark.substring(0, 550)}} />
                         </Tooltip>
                     }
                 >
