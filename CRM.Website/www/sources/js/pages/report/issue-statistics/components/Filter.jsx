@@ -116,7 +116,7 @@ export class Filter extends Component {
             subCategoryId: subCategoryId === -1 ? 0 : subCategoryId,
             isGetFullReport: groupBy !== 1,
             pageIndex: 1,
-            pageSize: 7
+            pageSize: this.props.gridParams.pageSize
         };
 
         this.props.setGridParams(params);
@@ -288,8 +288,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings } = state;
-    return { settings };
+    const { gridParams, settings } = state;
+    return { gridParams, settings };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

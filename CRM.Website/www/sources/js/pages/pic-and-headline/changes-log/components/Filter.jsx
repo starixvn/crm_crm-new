@@ -8,6 +8,8 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+
 
 export class Filter extends Component {
     static propTypes = {
@@ -82,6 +84,10 @@ export class Filter extends Component {
 
     handleSubmit = () => {
         const { headlineDA, fromDate, toDate, editBy, actionTypeIds } = this.state;
+        if(actionTypeIds === ''){
+            toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('ActionType')));
+            return;
+        }
         const params = {
             userName: headlineDA !== '' ? headlineDA : null,
             editBy: editBy !== '' ? editBy : null,

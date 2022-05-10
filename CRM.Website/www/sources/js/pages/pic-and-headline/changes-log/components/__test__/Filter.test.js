@@ -139,12 +139,13 @@ describe('Filter', () => {
                 editBy: '',
                 actionTypeIds : '',
                 fromDate: 'Sep 01, 2021',
-                toDate: 'Sep 01, 2021'
+                toDate: 'Sep 01, 2021',
+                actionTypeIds: "2,3"
             };
             const expectParams = {
                 userName: null,
                 editBy: null,
-                actionTypeIds: '',
+                actionTypeIds: '2,3',
                 fromDate: 'Sep 01, 2021',
                 toDate: 'Sep 01, 2021',
                 pageIndex: 1,
