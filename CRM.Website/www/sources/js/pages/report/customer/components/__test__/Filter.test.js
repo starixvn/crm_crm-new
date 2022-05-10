@@ -13,7 +13,7 @@ describe('Filter', () => {
         allSettings: {
             languages: [{ languageId: 1, name: 'english' }],
             roles: [{ displayOrder: 1, value: 'guest' }],
-            sites: [{ childSites: [{ id: 1, name: '5111' }] }]
+            sites: [{ id: 1, name: 'credit', childSites: [{ id: 1, name: '5111' }] }]
         },
         getAllSettings: jest.fn()
     };
@@ -41,7 +41,10 @@ describe('Filter', () => {
             const props = {...initProps};
             const expectedLanguages = [{ languageId: 1, name: 'english', checked: true }];
             const expectedPositions = [{ positionId: 1, name: 'guest', checked: true }];
-            const expectedSites = [{ siteId: 1, name: '5111', checked: true }];
+            const expectedSites = [
+                { siteId: 0, name: 'N/A', checked: true },
+                { siteId: 1, name: 'credit', checked: true,subItem: [{ key: 1, value: '5111', checked: true}] }
+            ];
             const expectedVips = [
                 { id: -1, name: 'All' },
                 { id: 1, name: 'Yes' },

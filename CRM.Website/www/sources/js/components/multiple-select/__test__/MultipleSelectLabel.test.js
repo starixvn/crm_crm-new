@@ -17,6 +17,39 @@ describe('MultipleSelectLabel', () => {
         expect(multipleSelectLabel).toMatchSnapshot();
     });
 
+    describe('handleSelectedItem', () => {
+        it('should return exactly', () => {
+            // Arrange
+            const props = {
+                isAllTextShown: true,
+                dataSourceSize: 0,
+                selectedItems: [],
+                textOptions: {
+                    Texts: 'Texts'
+                }
+            };
+            const selectedItems = [
+                {
+                    value: '2221',
+                    subItem: []
+                },
+                {
+                    value: '2222',
+                    subItem: [{ key: 1, value: '2223', checked: true }]
+                }
+            ];
+            
+    
+            const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
+    
+            // Action
+            const actual = multipleSelectLabel.instance().handleSelectedItem(selectedItems);
+
+            // Assert
+            expect(actual).toEqual(['2221', '2223']);
+        });
+    });
+
     describe('selectedItemsString', () => {
         it('should return All when isAllTextShown true and dataSourceSize equal to selectedItems length', () => {
             // Arrange
@@ -44,7 +77,8 @@ describe('MultipleSelectLabel', () => {
                 maxDisplayItemCount: 0,
                 selectedItems: [
                     {
-                        value: 'value'
+                        value: 'value',
+                        subItem: [{ key: 1, value: '2223', checked: true }]
                     }
                 ],
                 textOptions: {
@@ -67,10 +101,14 @@ describe('MultipleSelectLabel', () => {
                 maxDisplayItemCount: 10,
                 selectedItems: [
                     {
-                        value: 'value'
+                        value: 'value',
+                        subItem: [{ key: 1, value: '2223', checked: true }]
+
                     },
                     {
-                        value: 'value1'
+                        value: 'value1',
+                        subItem: [{ key: 2, value: '2224', checked: true }]
+
                     }
                 ],
                 textOptions: {}
@@ -82,7 +120,7 @@ describe('MultipleSelectLabel', () => {
             const result = multipleSelectLabel.instance().selectedItemsString;
 
             // Assert
-            expect(result).toEqual('value, value1');
+            expect(result).toEqual('2223, 2224');
         });
         
         it('should return no data value when dataSourceSize equal 0', () => {
@@ -122,6 +160,26 @@ describe('MultipleSelectLabel', () => {
 
             // Assert
             expect(result).toEqual(props.textOptions.SelectOptions);
+        });
+
+        it('should return NA when not having selectedItem and isNAOption is true', () => {
+            // Arrange
+            const props = {
+                selectedItems: [],
+                textOptions: {
+                    NA: 'NA'
+                },
+                dataSourceSize: 10,
+                isNAOption: true
+            };
+    
+            const multipleSelectLabel = shallow(<MultipleSelectLabel {...props} />);
+    
+            // Action
+            const result = multipleSelectLabel.instance().selectedItemsString;
+
+            // Assert
+            expect(result).toEqual(props.textOptions.NA);
         });
     });
 

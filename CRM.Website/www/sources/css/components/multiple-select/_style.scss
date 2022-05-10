@@ -85,7 +85,7 @@ $sub-menu-border: 1px solid #b7b7b7;
         }
 
         .sub-select {
-            padding-left: 45px;
+            padding-left: 35px;
 
             &-item {
                 display: flex;
@@ -104,11 +104,11 @@ $sub-menu-border: 1px solid #b7b7b7;
             &-item:before {
                 content: "";
                 display: block;
-                width: 13px;
+                width: 9px;
                 border-top: 1px dashed #b7b7b7;
                 position: absolute;
                 top: 15px;
-                left: -12px;
+                left: 0px;
             }
 
             &-item:after {
@@ -119,7 +119,7 @@ $sub-menu-border: 1px solid #b7b7b7;
                 border-left: 1px dashed #b7b7b7;
                 position: absolute;
                 top: -5px;
-                left: -12px;
+                left: -3px;
             }
         }
     }

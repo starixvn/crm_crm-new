@@ -99,7 +99,7 @@ export default class Option extends Component {
         const isHasSubData = itemData.subData && itemData.subData.length > 0;
         const isHasSubItem = itemData.subItem && itemData.subItem.length > 0;
         return (
-            <>
+            <div>
                 <li className={`${isHasSubItem ? 'toggle-select-item' : ''} multiple-select-item`}>
                     {
                         isHasSubItem &&
@@ -128,7 +128,7 @@ export default class Option extends Component {
                     isHasSubItem &&
                     this.renderSubItem(itemData.subItem)
                 }
-            </>
+            </div>
         );
     }
 }

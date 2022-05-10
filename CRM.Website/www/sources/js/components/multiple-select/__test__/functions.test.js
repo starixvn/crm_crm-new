@@ -8,11 +8,13 @@ describe('functions', () => {
         const valueField = 'value';
         const statusField = 'status';
         const subData = ['value'];
+        const subItem = [];
         const item1 = {
             key: 'key1',
             value: 'value1',
             status: 'status1',
-            subData
+            subData,
+            subItem
         };
         
         const item2 = {
@@ -28,6 +30,7 @@ describe('functions', () => {
                 [VALUE_NAME]: item1[valueField],
                 [STATUS_NAME]: item1[statusField],
                 subData: subData,
+                subItem: subItem,
                 visible: true
             },
             {
@@ -35,6 +38,7 @@ describe('functions', () => {
                 [VALUE_NAME]: item2[valueField],
                 [STATUS_NAME]: item2[statusField],
                 subData: [],
+                subItem: [],
                 visible: true
             }
         ];

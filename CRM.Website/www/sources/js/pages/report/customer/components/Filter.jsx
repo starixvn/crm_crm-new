@@ -53,11 +53,6 @@ export class Filter extends Component {
         allSettings.sites.forEach(item => {
             item.childSites.forEach(element => {
                 siteIds.push(element.id);
-                // siteOptions.push( {
-                //     siteId: element.id,
-                //     name: element.name,
-                //     checked: true
-                // });
             });
             siteOptions.push({
                 siteId: item.id,
