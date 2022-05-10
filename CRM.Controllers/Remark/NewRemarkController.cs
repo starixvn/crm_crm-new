@@ -15,8 +15,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
-    public class NewRemarkController : Controller
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    public class NewRemarkController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
@@ -48,9 +48,9 @@
 
         public IActionResult Index(string customerName = "")
         {
-            //var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             ViewBag.customerName = customerName;
-            return View(true);
+            return View(isHost);
         }
 
         public async Task<IActionResult> GetRemarkTitles()
@@ -102,7 +102,7 @@
         {
             command.CreatorID = napSession.UserId;
             command.ModifierID = napSession.UserId;
-            //command.IP = ClientIP;
+            command.IP = ClientIP;
             CommandResult commandResult = await remarkService.CreateNewAsync(command);
             return Json(commandResult);
             
@@ -112,7 +112,7 @@
         public async Task<IActionResult> Edit([FromBody] EditNewRemarkCommand command)
         {
             command.ModifierID = napSession.UserId;
-            //command.IP = ClientIP;
+            command.IP = ClientIP;
             CommandResult commandResult = await remarkService.EditNewAsync(command);
             return Json(commandResult);
         }
@@ -133,7 +133,7 @@
         public async Task<IActionResult> Delete([FromBody] DeleteNewRemarkCommand command)
         {
             command.UserID = napSession.UserId;
-            //command.IP = ClientIP;
+            command.IP = ClientIP;
             CommandResult commandResult = await remarkService.DeleteNewAsync(command);
             return Json(commandResult);
         }
