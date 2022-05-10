@@ -24,7 +24,7 @@ export default class Option extends Component {
                 isExpandedSubItem: this.props.isAllExpand
             });
         }
-    };
+    }
 
     onChange = event => {
         event.stopPropagation();
