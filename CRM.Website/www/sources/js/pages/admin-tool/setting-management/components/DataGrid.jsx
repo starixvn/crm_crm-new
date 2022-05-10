@@ -33,7 +33,7 @@ export class DataGrid extends Component {
                 <Cell className='text-right'>{item.settingId}</Cell>
                 <Cell className='text-right'>{item.displayOrder}</Cell>
                 {
-                    isHost && 
+                    isHost &&
                     <Cell className='text-center'>
                         <i className="rounded-circle fa fa-pencil icon-edit" aria-hidden="true"
                             onClick={event => this.handleOpenEdit(event, item)}
