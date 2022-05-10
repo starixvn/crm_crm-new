@@ -607,13 +607,12 @@ describe('Filter', () => {
                 getGridData: jest.fn()
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />);            
             filter.instance().handleSubmit = jest.fn();
-            const form = filter.find(Form);
+            functions.handleNewRemoveOptions = jest.fn();
 
             // Action
-            form.simulate('submit');
-
+            filter.find(Form).at(0).simulate('submit');
             // Assert
             expect(filter.instance().handleSubmit).toHaveBeenCalled();
         });
@@ -1034,6 +1033,8 @@ describe('Filter', () => {
             expect(row.find(Button).at(1).html()).toContain('AssignPIC');
         });
 
+                setGridParams: jest.fn(),
+                getGridData: jest.fn()
         it('should call handleToggleFilter when onClick icon show/hide', () => {
             // Arrange
             const promise = Promise.resolve({});

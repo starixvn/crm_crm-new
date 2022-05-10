@@ -361,6 +361,7 @@ describe('AddRelatedCustomerDialog', () => {
             // Arrange
             Site.blockUI = jest.fn();
             Site.unblockUI = jest.fn();
+            Site.Circular = jest.fn();
             const response = {
                 data: [
                     { headlineId: 1, custId: 1, username: 'sa', resultTypeId: 0 },
@@ -377,7 +378,8 @@ describe('AddRelatedCustomerDialog', () => {
                 'The system does not support to add related customer for deposit and guest customer. Please check usernames: test 2, test 3',
                 'These usernames do not belong to any headline or direct accounts without group headline: test 4',
                 'You are not allowed to add related customers for itself. Please check usernames: test 5',
-                'The system does not support to add related customer for internal accounts. Please check usernames: test 6'
+                'The system does not support to add related customer for internal accounts. Please check usernames: test 6',
+                
             ];
             const promise = Promise.resolve(response);
             const props = {
@@ -422,7 +424,7 @@ describe('AddRelatedCustomerDialog', () => {
                 },
                 verifyCustomerResults: [{ custId: 1, isHeadline: true }],
                 verifyRelatedCustomers: jest.fn(() => promise),
-                setRelatedCustomerResults: jest.fn()
+                setRelatedCustomerResults: jest.fn(() => promise)
             };
             const container = shallow(<AddRelatedCustomerDialog {...props} />).instance();
 

@@ -244,9 +244,9 @@ describe('DataGrid', () => {
                 expect(header.find(HeaderCell).at(2).html()).toContain('NotificationType');
                 expect(header.find(HeaderCell).at(3).props().colWidth).toBe(12);
                 expect(header.find(HeaderCell).at(3).html()).toContain('SendDateTimeGMTA8');
-                expect(header.find(HeaderCell).at(4).props().colWidth).toBe(19);
+                expect(header.find(HeaderCell).at(4).props().colWidth).toBe(16);
                 expect(header.find(HeaderCell).at(4).html()).toContain('LetstalkName');
-                expect(header.find(HeaderCell).at(5).props().colWidth).toBe(19);
+                expect(header.find(HeaderCell).at(5).props().colWidth).toBe(26);
                 expect(header.find(HeaderCell).at(5).html()).toContain('GroupHeadline');
                 expect(header.find(HeaderCell).at(6).props().colWidth).toBe(19);
                 expect(header.find(HeaderCell).at(6).html()).toContain('Recipient');
@@ -271,7 +271,7 @@ describe('DataGrid', () => {
                 const header = shallow(dataGrid.instance().buildNotificationListHeader(true));
                 
                 // Assert
-                expect(header.find(HeaderCell).at(9).props().colWidth).toBe(13);
+                expect(header.find(HeaderCell).at(9).props().colWidth).toBe(10);
                 expect(header.find(HeaderCell).at(9).html()).toContain('Action');
             });
             
@@ -289,7 +289,7 @@ describe('DataGrid', () => {
                 const header = shallow(dataGrid.instance().buildNotificationListHeader(true));
                 
                 // Assert
-                expect(header.find(HeaderCell).at(10).props().colWidth).toBe(11);
+                expect(header.find(HeaderCell).at(10).props().colWidth).toBe(10);
             });
             
             it('has button resend', () => {

@@ -25,12 +25,11 @@ describe('index', () => {
             const index = shallow(<Index {...props} />);
 
             // Assert
-            expect(index.props().className).toBe(`form-control form-control-sm datetime-picker ${props.className}`);
-            expect(index.props().dateFormat).toBe('MMM dd, yyyy hh:mm aa');
-            expect(index.props().timeFormat).toBe('hh:mm aa');
-            expect(index.props().timeIntervals).toEqual(5);
-            expect(index.props().customInput).toEqual(<CustomInput />);
-        });
+            expect(index.props().className).toBe(`datetime-picker ${props.className}`);
+            expect(index.props().dateFormat).toBe('MMM dd, yyyy');
+            expect(index.props().timeIntervals).toEqual(30);
+            expect(index.props().customInput).toEqual(<CustomInput isInvalid={false}/>);
+        });         
         
         it('should return DatePicker with showTimeSelect false', () => {
             // Arrange
