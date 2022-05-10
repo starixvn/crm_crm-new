@@ -19,7 +19,7 @@
     AllGroupHeadlineAndNotAssignedGroup: 'All Group Headline & Not Assigned Group',
     AddFeedbackSuccessfully: 'Add Feedback Successfully!',
     AllProducts: 'ALL PRODUCTS',
-    ActionType: 'Action  Type',
+    ActionType: 'Action Type',
     AddSubSettingTitle: 'Add sub setting for ',
     ActiveStatusSettingSuccess: 'Active status setting successfully!',
     BankInfo: 'Bank Info',

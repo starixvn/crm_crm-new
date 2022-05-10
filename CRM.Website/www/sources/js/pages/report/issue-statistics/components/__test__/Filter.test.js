@@ -16,6 +16,10 @@ describe('Filter', () => {
         showFilter: true
     };
     const propsInit = {
+        gridParams: {
+            pageIndex: 1,
+            pageSize: 7
+        },
         settings: {
             mainCategories: [{ mainCategoryID : 0 }],
             subCategories: [{ mainCategoryID : 0 }]

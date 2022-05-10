@@ -24,9 +24,11 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
+            gridParams: {},
             settings: { mainCategories: {id: 1, name: 'mainCategory'}, subCategories: {id: 2, name: 'subCategory'} }
         };
         const state = {
+            gridParams: {},
             settings: { mainCategories: {id: 1, name: 'mainCategory'}, subCategories: {id: 2, name: 'subCategory'} }
         };
 
