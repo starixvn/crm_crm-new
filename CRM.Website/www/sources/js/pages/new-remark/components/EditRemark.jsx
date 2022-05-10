@@ -35,7 +35,6 @@ export class EditRemark extends Component {
     }
 
     handleSubmit = (values, { setSubmitting }) => {
-        console.log('dsaasdasd');
         setSubmitting(true);
         const params = {
             remarkID: this.props.popupEdit.data.remarkID,

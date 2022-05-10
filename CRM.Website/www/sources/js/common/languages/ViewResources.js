@@ -268,6 +268,7 @@
     Now: 'Now',
     NoPermission: 'You don\'t have permission on this function!',
     NumberOfRemovedEditedAccounts: 'Number Of Removed Edited Accounts',
+    NoResultFound : 'No results found',
     OK: 'OK',
     OnlyShowUnassignedDirectAccounts: 'Only show unassigned direct accounts',
     Open: 'Open',

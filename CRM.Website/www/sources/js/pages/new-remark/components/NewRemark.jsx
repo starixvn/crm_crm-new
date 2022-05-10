@@ -72,7 +72,7 @@ export class NewRemark extends Component {
                 });
             }
         });
-    }
+    };
 
     validateFormik = values => {
         const errors = {};
@@ -93,7 +93,6 @@ export class NewRemark extends Component {
         }
         return errors;
     };
-    
 
     renderForm = ({
         values,
@@ -144,7 +143,7 @@ export class NewRemark extends Component {
                                     />
                                 </Col>
                                 <Col sm="2" md="2">
-                                    <Button variant="primary" size="sm" 
+                                    <Button variant="primary" size="sm"
                                         disabled={values.username==='' || isDisabled}
                                         onClick={() => this.handleValidateCustomer(values.username, values.isGuest, setFieldValue, validateForm )}
                                     >

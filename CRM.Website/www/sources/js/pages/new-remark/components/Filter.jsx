@@ -177,7 +177,7 @@ export class Filter extends Component {
             pageSize: this.props.gridParams.pageSize
         };
         return params;
-    }
+    };
 
     render() {
         const {remarkTitles, customerName} = this.props;
@@ -210,7 +210,7 @@ export class Filter extends Component {
                                     this.handleChangeDropdown('remarkTitleIds', selectedItemsKey);
                                 }}
                                 isAllTextShown
-                                maxDisplayItemCount={0}
+                                maxDisplayItemCount={1}
                                 hasSearchBox
                             />
                         </div>

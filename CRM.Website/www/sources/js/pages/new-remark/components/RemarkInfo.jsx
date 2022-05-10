@@ -12,12 +12,11 @@ export default class RemarkInfo extends Component {
       }else{
         setFieldValue(name, '');
       }
-  }
+  };
 
   render() {
     const { touched, errors, values, handleChange, setFieldValue,
             remarkTitles, relatedPicsOption, allSettings, isValidCustomer } = this.props;
-            
     const userOptions = allSettings.users.map(item => {
         return {
             value: item.userId,
@@ -34,7 +33,6 @@ export default class RemarkInfo extends Component {
     const handledByDefault = userOptions.filter(x=> x.value === parseInt(values.handledBy, 10));
     const acknowledgedByDefault = userOptions.filter(x=> x.value === parseInt(values.acknowledgedBy, 10));
     const extentionDefault = extentionOptions.filter(x=> x.value === parseInt(values.extStation, 10));
-
     return (
       <Fragment>
           <Form.Group as={Row}>
@@ -69,6 +67,7 @@ export default class RemarkInfo extends Component {
                         dataSource={relatedPicsOption}
                         valueField='username'
                         statusField='checked'
+                        maxDisplayItemCount={1}
                         onChange={(currentItem, selectedItemsKey) => {
                             setFieldValue('relatedPics', selectedItemsKey);
                         }}
@@ -98,7 +97,7 @@ export default class RemarkInfo extends Component {
                         isClearable
                         isSearchable
                         defaultValue={approvedByDefault}
-                        noOptionsMessage={() => 'No results found'}
+                        noOptionsMessage={() => LangHelper.getResource('NoResultFound')}
                         onChange={value => this.handleChangeSelect(value, setFieldValue, 'approvedBy')}
                         options={userOptions}
                         value={values.userId}
@@ -113,7 +112,7 @@ export default class RemarkInfo extends Component {
                         isClearable
                         isSearchable
                         defaultValue={acknowledgedByDefault}
-                        noOptionsMessage={() => 'No results found'}
+                        noOptionsMessage={() => LangHelper.getResource('NoResultFound')}
                         onChange={value => this.handleChangeSelect(value, setFieldValue, 'acknowledgedBy')}
                         options={userOptions}
                         value={values.userId}
@@ -130,7 +129,7 @@ export default class RemarkInfo extends Component {
                         isClearable
                         isSearchable
                         defaultValue={handledByDefault}
-                        noOptionsMessage={() => 'No results found'}
+                        noOptionsMessage={() => LangHelper.getResource('NoResultFound')}
                         onChange={value => this.handleChangeSelect(value, setFieldValue, 'handledBy')}
                         options={userOptions}
                         value={values.userId}
@@ -145,7 +144,7 @@ export default class RemarkInfo extends Component {
                         isClearable
                         isSearchable
                         defaultValue={extentionDefault}
-                        noOptionsMessage={() => 'No results found'}
+                        noOptionsMessage={() => LangHelper.getResource('NoResultFound')}
                         onChange={value => this.handleChangeSelect(value, setFieldValue, 'extStation')}
                         options={extentionOptions}
                         value={values.id}
