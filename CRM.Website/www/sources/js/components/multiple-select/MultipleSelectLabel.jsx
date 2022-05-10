@@ -23,7 +23,7 @@ export default class MultipleSelectLabel extends Component {
         const selected = [];
         selectedItems.forEach(item => {
             if (item.subItem.length > 0) {
-                return item.subItem.forEach(x => {
+                item.subItem.forEach(x => {
                     if (x.checked) {
                         selected.push(x.value);
                     }

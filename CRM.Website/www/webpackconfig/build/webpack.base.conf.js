@@ -50,7 +50,7 @@ function generateConfig(environment) {
             [`${jsPath}/pages/report/dynamic/index`]: pathConfig.scriptPaths.dynamic_report,
             [`${jsPath}/pages/adminTool/setting-relation/index`]: pathConfig.scriptPaths.setting_relation,
             [`${jsPath}/pages/adminTool/setting-management/index`]: pathConfig.scriptPaths.setting_management,
-            [`${cssPath}pages/report/customer/index`]: pathConfig.scriptPaths.customer_report,
+            [`${jsPath}/pages/report/customer/index`]: pathConfig.scriptPaths.customer_report,
             [`${jsPath}/pages/report/summary/index`]: pathConfig.scriptPaths.summary,
             [`${jsPath}/pages/report/direct/index`]: pathConfig.scriptPaths.direct,
             [`${jsPath}/pages/report/wager/index`]: pathConfig.scriptPaths.wager,

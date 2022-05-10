@@ -96,7 +96,7 @@ export default class MultipleSelect extends Component {
 
         if (itemToUpdate.subItem.length > 0) {
             itemToUpdate.subItem.map(x => x.checked = item.checked);
-        };
+        }
 
         this._callBackToParent(selectedItem);
 
