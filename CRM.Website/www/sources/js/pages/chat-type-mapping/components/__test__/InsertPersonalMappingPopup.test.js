@@ -291,6 +291,7 @@ describe('InsertPersonalMappingPopup', () => {
                 recipientTypeId: state.form.recipientType,
                 letstalkId: state.form.letstalkId,
                 groupHeadlineIds: state.form.groupHeadlines,
+                isTest: null,
                 recipientIds: state.form.recipient.value,
                 languageId: state.form.languageId,
                 remark: state.form.remark

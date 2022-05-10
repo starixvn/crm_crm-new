@@ -246,7 +246,7 @@ describe('Update', () => {
 
             // Assert
             expect(container.state.shouldResetScrollPosition).toEqual(false);
-            expect(container.state.expectedState).toEqual(expectedState);
+            expect(container.state.settingRelation).toEqual(expectedState);
         });
     });
 });

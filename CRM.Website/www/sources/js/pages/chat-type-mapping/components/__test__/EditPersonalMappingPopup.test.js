@@ -182,8 +182,12 @@ describe('EditPersonalMappingPopup', () => {
         });
 
         it('handleRecipientTypeChange with call correct props with correct params', () => {
+            const event = {
+                target: { value: 'value' }
+            };
             popup.instance().handleChange = jest.fn();
-            popup.instance().handleRecipientTypeChange('value');
+            popup.instance().handleRecipientTypeChange = jest.fn();
+            popup.instance().handleRecipientTypeChange(event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipientType', 'value');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipient', { value: '' });
             expect(popup.instance().handleChange).toHaveBeenCalledWith('groupHeadlines', '');
@@ -297,6 +301,7 @@ describe('EditPersonalMappingPopup', () => {
                 recipientTypeId: state.form.recipientType,
                 letstalkId: state.form.conversationId,
                 groupHeadlineIds: state.form.groupHeadlines,
+                isTest: null,
                 recipientIds: state.form.recipient.value,
                 languageId: state.form.languageId,
                 remark: state.form.remark

@@ -602,16 +602,17 @@ describe('Filter', () => {
             const props = {
                 settings: {},
                 gridParams: {},
-                getSettings: jest.fn(() => promise)
+                getSettings: jest.fn(() => promise),
+                setGridParams: jest.fn(),
+                getGridData: jest.fn((params, callback) => callback())
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />);            
             filter.instance().handleSubmit = jest.fn();
-            const form = filter.find(Form);
+            functions.handleNewRemoveOptions = jest.fn();
 
             // Action
-            form.simulate('submit');
-
+            filter.find(Form).at(0).simulate('submit');
             // Assert
             expect(filter.instance().handleSubmit).toHaveBeenCalled();
         });
@@ -830,7 +831,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = { persist: jest.fn() };
+            const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
             const control = filter.find(Form.Group).at(3).find(Form.Control);
@@ -881,7 +882,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = { persist: jest.fn() };
+            const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
             const control = filter.find(Form.Group).at(4).find(Form.Control);
@@ -932,7 +933,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = { persist: jest.fn() };
+            const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
             const control = filter.find(Form.Group).at(5).find(Form.Control);
@@ -983,7 +984,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = { persist: jest.fn() };
+            const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
             const control = filter.find(Form.Group).at(6).find(Form.Control);
@@ -1099,7 +1100,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = { persist: jest.fn() };
+            const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
             const input = filter.find(Form.Row).at(2).find('input').at(0);
@@ -1120,7 +1121,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = { persist: jest.fn() };
+            const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
             const input = filter.find(Form.Row).at(2).find('input').at(1);
@@ -1141,7 +1142,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const event = { persist: jest.fn() };
+            const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
             const input = filter.find(Form.Row).at(2).find('input').at(2);
@@ -1185,7 +1186,9 @@ describe('Filter', () => {
             const props = {
                 settings: {},
                 gridParams: {},
-                getSettings: jest.fn(() => promise)
+                getSettings: jest.fn(() => promise),
+                setGridParams: jest.fn(),
+                getGridData: jest.fn()
             };
 
             const filter = shallow(<Filter {...props} />);

@@ -371,7 +371,7 @@ describe('ValidateResend', () => {
                     const validateResend = shallow(<ValidateResend {...props} />);
     
                     // Assert
-                    expect(validateResend.find(Modal.Body).html()).toContain('ComfirnResendNotification');
+                    expect(validateResend.find(Modal.Body).html()).toContain("<div class=\"modal-body\">ConfirmResendNotification</div>");
                 });
                 
                 it('has invalid notification ids', () => {
@@ -433,7 +433,7 @@ describe('ValidateResend', () => {
                     const validateResend = shallow(<ValidateResend {...props} />);
     
                     // Assert
-                    expect(validateResend.find(Modal.Body).html()).toContain('ConfirmResendNotification');
+                    expect(validateResend.find(Modal.Body).html()).toContain("<div class=\"modal-body\">ComfirmResendNotification</div>");
                 });
                 
                 it('has both valid and invalid notification ids', () => {
