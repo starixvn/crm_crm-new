@@ -174,7 +174,7 @@ export class DataGrid extends Component {
                 gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringDesc(sortBy, first, second));
             }
         }
-        this.props.setRemarks({...this.props.gridData.data, data: gridDataSortAsc});
+        this.props.setRemarks({...this.props.gridData.data, data: gridDataSortAsc, totalItems:this.props.gridData.totalItems });
     };
 
     handleSortDateAsc = (sortBy, first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1;
