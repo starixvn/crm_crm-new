@@ -109,7 +109,7 @@ export class Edit extends Component {
 
     render() {
         const {editPopup} = this.props;
-        if(!editPopup && editPopup.data !== null){
+        if(!editPopup || editPopup.data === null){
             return null;
         }
 
