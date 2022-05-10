@@ -18,6 +18,7 @@
         public int Ext { get; set; }
         public string ExtStation { get; set; }
         public string RelatedPICs { get; set; }
+        public string UserNameRelatedPICs { get; set; }
         public int HandlerID { get; set; }
         public int UpdaterID { get; set; }
         public int ApproverID { get; set; }

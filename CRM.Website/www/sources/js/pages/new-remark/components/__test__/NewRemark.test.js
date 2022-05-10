@@ -26,7 +26,7 @@ describe('NewRemark', () => {
             relatedPics: [{letstalkIds: "sss,ssdsddscac", id: 264, name: "malcokm1_ss"}],
             userId: 62585686
         },
-        validateResult: [{custId : 1, isLicensee: false}],
+        validateResult: [{custId : 1, isCredit: false}],
         customerName: '',
         onSuccess: jest.fn()
     };
@@ -211,7 +211,8 @@ describe('NewRemark', () => {
                 touched: {},
                 handleChange: jest.fn(),
                 handleSubmit: jest.fn(),
-                setFieldValue: jest.fn()
+                setFieldValue: jest.fn(),
+                validateForm:  jest.fn()
             };
             const container = shallow(<NewRemark {...initProps} />);
             container.instance().handleValidateCustomer = jest.fn();
@@ -222,7 +223,7 @@ describe('NewRemark', () => {
 
             // Assert
             expect(container.instance().handleValidateCustomer).toHaveBeenCalledWith(
-                formikProps.values.username, formikProps.values.isGuest, formikProps.setFieldValue
+                formikProps.values.username, formikProps.values.isGuest, formikProps.setFieldValue, formikProps.validateForm
             );
         });
     });

@@ -61,7 +61,7 @@ export class NewRemark extends Component {
             setFieldValue('username', '');
             if(this.props.validateResult.length > 0){
                 const customerValidated = this.props.validateResult[0];
-                const isValidCustomer = customerValidated.custId !== 0 && !customerValidated.isLicensee;
+                const isValidCustomer = customerValidated.custId !== 0 && customerValidated.isCredit;
                 if(isValidCustomer){
                     this.props.getRelatedPics({custId: customerValidated.custId}).then(response =>{
                         this.setState({relatedPicsOption: response});

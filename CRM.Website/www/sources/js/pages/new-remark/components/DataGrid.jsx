@@ -69,7 +69,7 @@ export class DataGrid extends Component {
                 >
                     <Cell className='link-click remark-content' onClick={() =>this.handleOpenEdit(item)} dangerouslySetInnerHTML={{__html: item.remark}}/>
                 </OverlayTrigger>
-                <Cell className='text-center'>{item.relatedPICs}</Cell>
+                <Cell className='text-center'>{item.userNameRelatedPICs}</Cell>
                 <Cell className='text-center'>
                     <div>{item.handler}</div>
                     <div>{`(Ext: ${item.ext})`}</div>

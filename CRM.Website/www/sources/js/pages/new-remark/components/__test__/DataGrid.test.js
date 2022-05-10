@@ -28,10 +28,9 @@ describe('DataGrid', () => {
         }
     });
 
-
     const initProps = {
         gridData: { 
-            data: [{remarkID: 1504, createdDate: "Apr 18, 2022 10:35:19 PM", lastUpdate: "Apr 18, 2022 11:23:30 PM"}],
+            data: [{remarkID: 1504, createdDate: "Apr 18, 2022 10:35:19 PM", lastUpdate: "Apr 18, 2022 11:23:30 PM", remark: 'test'}],
             totalItems: 9 
         },
         gridParams: { pageIndex: 1, pageSize: 100 },

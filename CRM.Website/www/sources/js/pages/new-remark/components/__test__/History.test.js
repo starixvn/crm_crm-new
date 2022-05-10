@@ -131,20 +131,6 @@ describe('History', () => {
     });
 
     describe('renderRow', () => {
-        it.each([
-            0,
-            4
-          ])("when the cell at '%s' click call exact function", (number) => {
-            // Arrange
-            const container = shallow(<History  {...initProps}/>).instance();
-            container.handleOpenEdit = jest.fn();
-            // Act
-            const rows = shallow(container.renderRow(initProps.remarksHistory.data[0], 1, true));
-            rows.find(Cell).at(number).simulate('click');
-            // Assert
-            expect(container.handleOpenEdit).toHaveBeenCalled();
-        });
-
         it("click show history call exact function", () => {
             // Arrange
             const container = shallow(<History  {...initProps}/>).instance();
