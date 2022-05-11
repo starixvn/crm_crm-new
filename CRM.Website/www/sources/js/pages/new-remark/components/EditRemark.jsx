@@ -104,7 +104,7 @@ export class EditRemark extends Component {
                         <Form.Label column sm="12" md="12">
                             <span>Created By </span>
                             <span style={{fontWeight: 'bold'}}>{popupEdit.data.creator}</span>
-                            <span>on </span>
+                            <span> on </span>
                             <span style={{fontWeight: 'bold'}}>{DateTimeService.toLongDateTimeFormat(popupEdit.data.createdDate)}</span>
                         </Form.Label>
                     </Form.Group>
@@ -119,7 +119,7 @@ export class EditRemark extends Component {
                         <Form.Label column sm="12" md="12">
                             <span>Updated By </span>
                             <span style={{fontWeight: 'bold'}}>{popupEdit.data.updater}</span>
-                            <span>on </span>
+                            <span> on </span>
                             <span style={{fontWeight: 'bold'}}>{DateTimeService.toLongDateTimeFormat(popupEdit.data.lastUpdate)}</span>
                         </Form.Label>
                     </Form.Group>
@@ -164,7 +164,7 @@ export class EditRemark extends Component {
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title as="div">{`Member ${data.userName} Remark ${data.remarkID}`}</Modal.Title>
+                    <Modal.Title as="div">{`${data.userName} Remark ${data.remarkID}`}</Modal.Title>
                 </Modal.Header>
                 <Formik
                     initialValues={initialValues}

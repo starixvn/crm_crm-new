@@ -46,10 +46,11 @@
             this.customerService = customerService;
         }
 
-        public IActionResult Index(string customerName = "")
+        public IActionResult Index(string customerName = "", bool isGuest = false)
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             ViewBag.customerName = customerName;
+            ViewBag.isGuest = isGuest;
             return View(isHost);
         }
 
@@ -137,6 +138,5 @@
             CommandResult commandResult = await remarkService.DeleteNewAsync(command);
             return Json(commandResult);
         }
-
     }
 }

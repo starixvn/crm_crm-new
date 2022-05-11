@@ -55,10 +55,10 @@ export class DataGrid extends Component {
             <Row key={index}>
                 <Cell className='text-center link-click' onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
                 <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
-                <Cell className='text-center'>{item.creator}</Cell>
-                <Cell className='text-center'>{item.headlineName}</Cell>
-                <Cell className='text-center'>{userNameFormat}</Cell>
-                <Cell className='text-center'>{item.remarkName}</Cell>
+                <Cell>{item.creator}</Cell>
+                <Cell>{item.headlineName}</Cell>
+                <Cell>{userNameFormat}</Cell>
+                <Cell>{item.remarkName}</Cell>
                 <OverlayTrigger
                     placement="auto"
                     overlay={
@@ -69,16 +69,16 @@ export class DataGrid extends Component {
                 >
                     <Cell className='link-click remark-content' onClick={() =>this.handleOpenEdit(item)} dangerouslySetInnerHTML={{__html: item.remark}}/>
                 </OverlayTrigger>
-                <Cell className='text-center'>{item.userNameRelatedPICs}</Cell>
-                <Cell className='text-center'>
+                <Cell>{item.userNameRelatedPICs}</Cell>
+                <Cell>
                     <div>{item.handler}</div>
                     <div>{`(Ext: ${item.ext})`}</div>
                 </Cell>
-                <Cell className='text-center'>{item.updater}</Cell>
+                <Cell>{item.updater}</Cell>
                 <Cell className='text-center'>{item.lastUpdate}</Cell>
-                <Cell className='text-center'>{item.requester}</Cell>
-                <Cell className='text-center'>{item.approver}</Cell>
-                <Cell className='text-center'>{item.acknowledger}</Cell>
+                <Cell>{item.requester}</Cell>
+                <Cell>{item.approver}</Cell>
+                <Cell>{item.acknowledger}</Cell>
                 <Cell className='text-center'>
                     <span className='fa fa-history icon-edit'
                         onClick={() => this.handleShowHistory(userNameFormat, item)}

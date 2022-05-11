@@ -22,12 +22,12 @@ export class Filter extends Component {
         this.maxToDate = currentDate;
         this.minFromDate = new Date(1900, 1, 1);
         this.minToDate = new Date(1900, 1, 1);
-        const { customerName } = this.props;
+        const { customerName, isGuestSearch } = this.props;
         const isCustomerNotEmpty = customerName !== '';
         this.state = {
             remarkContent: '',
             userName: customerName,
-            isGuestFiler: false,
+            isGuestFiler: isCustomerNotEmpty ? isGuestSearch : false,
             isShowHeadline: isCustomerNotEmpty ? true : false,
             relatedToPICs: '',
             fromDate: isCustomerNotEmpty ? new Date(2021, 1, 1) :this.firstDateOfMonth,

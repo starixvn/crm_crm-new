@@ -11,9 +11,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import RemarkInfo from './RemarkInfo';
 
 export class NewRemark extends Component {
-    static defaultProps = {
-        gridParams: {username: '', isGuest: false}
-    };
     constructor(props) {
         super(props);
         this.formik = React.createRef();
@@ -135,13 +132,14 @@ export class NewRemark extends Component {
                                         onChange={handleChange}
                                     />
                                 </Col>
-                                <Col sm="1" md="1" className='mr-2 mt-1'  controlId="newCheckboxGuest">
+                                <div className='mr-2 mt-1'  controlId="newCheckboxGuest">
                                     <Form.Check type="checkbox" label={LangHelper.getResource('IsGuest')}
                                         id='isGuest' name='isGuest'
+                                        checked={values.isGuest}
                                         disabled={isDisabled}
                                         onChange={event => setFieldValue('isGuest', event.target.checked)}
                                     />
-                                </Col>
+                                </div>
                                 <Col sm="2" md="2">
                                     <Button variant="primary" size="sm"
                                         disabled={values.username==='' || isDisabled}
@@ -192,15 +190,15 @@ export class NewRemark extends Component {
     };
 
     render() {
-        const {gridParams, allSettings, customerName} = this.props;
+        const {allSettings, customerName, isGuestSearch} = this.props;
 
         if(allSettings === null || !allSettings){
             return null;
         }
 
         const initialValues = {
-            username: customerName !== '' ? customerName : gridParams.username,
-            isGuest: gridParams.isGuest,
+            username: customerName !== '' ? customerName : '',
+            isGuest: customerName !== '' ? isGuestSearch : false,
             remarkTitle: '',
             relatedPics: '',
             requestedBy: '',
@@ -235,9 +233,9 @@ export class NewRemark extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, relatedPics, remarkTitles, gridParams, createResult, validateResult } = state;
+    const { allSettings, relatedPics, remarkTitles, createResult, validateResult } = state;
     return {
-        allSettings, relatedPics, remarkTitles, gridParams, createResult, validateResult
+        allSettings, relatedPics, remarkTitles, createResult, validateResult
     };
 };
 
