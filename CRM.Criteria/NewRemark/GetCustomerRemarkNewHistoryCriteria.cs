@@ -12,6 +12,6 @@
 
         public override string GetSettingKey() => "Acc_CRM_CustomerRemarkNewHistory";
 
-        public override bool IsValid() => CustID > 0 && RemarkID > 0;
+        public override bool IsValid() => RemarkID > 0;
     }
 }
