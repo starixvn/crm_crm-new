@@ -233,9 +233,9 @@ export class NewRemark extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, relatedPics, remarkTitles, createResult, validateResult } = state;
+    const { allSettings, remarkTitles, createResult, validateResult } = state;
     return {
-        allSettings, relatedPics, remarkTitles, createResult, validateResult
+        allSettings, remarkTitles, createResult, validateResult
     };
 };
 
