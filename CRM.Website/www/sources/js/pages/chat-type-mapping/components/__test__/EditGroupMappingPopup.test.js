@@ -17,7 +17,7 @@ describe('EditGroupMappingPopup', () => {
         conversationGroupName: 'GroupName',
         conversationId: 'conversationId',
         headlines: [{ id: 1, name: 'headline' }],
-        recipients: [{ id: 1, name: 'recipient', recipientTypeId: 1 , letstalks: {letstalkId : 1}}],
+        recipients: [{ id: 1, name: 'recipient', recipientTypeId: 1, letstalks: { letstalkId: 1 } }],
         mappingStatusId: 1,
         mappingStatus: 'NotMapped',
         languageId: 1,
@@ -94,7 +94,7 @@ describe('EditGroupMappingPopup', () => {
                 recipients: {
                     letstalks: "1"
                 },
-                isBotRemoved:true
+                isBotRemoved: true
             },
             verifyLetstalkInGroup: jest.fn(() => promise),
             getRecipientByRecipientType: jest.fn(() => promise),
@@ -112,7 +112,7 @@ describe('EditGroupMappingPopup', () => {
             expect(popup.instance().state.form.recipientIds).toBe(value);
         });
 
-        it('componentDidMount should call expected props and execute correctly',async () => {
+        it('componentDidMount should call expected props and execute correctly', async () => {
             const expected = {
                 bot: {
                     id: initData.botId,
@@ -158,7 +158,7 @@ describe('EditGroupMappingPopup', () => {
             popup.instance().handleSubmitForm = jest.fn();
 
             popup.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
-            expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith('value');
+            expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
 
             expect(popup.find(Form.Group).at(4).find(MultipleSelect).length).toBe(1);
             expect(popup.find(Form.Group).at(6).find(MultipleSelect).length).toBe(1);
@@ -196,14 +196,15 @@ describe('EditGroupMappingPopup', () => {
             gridParams: {},
             updateGroupMappingData: { data: initData },
             updateGroupMappingResult: { isSuccessful: true },
-            letstalkVerification:{
+            letstalkVerification: {
                 recipients: [{
                     recipientTypeId: 1,
                     letstalks: [{
                         letstalkId: 1,
                         isGroupMember: true
                     }]
-            }]},
+                }]
+            },
             verifyLetstalkInGroup: jest.fn(() => promise),
             getRecipientByRecipientType: jest.fn(() => promise),
             getGroupHeadlineByRecipient: jest.fn(),
@@ -221,9 +222,23 @@ describe('EditGroupMappingPopup', () => {
         });
 
         it('handleRecipientTypeChange with call correct props with correct params', () => {
+            const event = {
+                nativeEvent: {
+                    target: {
+                        0: { text: 'value' },
+                        1: { text: 'value' },
+                        2: { text: 'value' },
+                        length: 3,
+                        selectedIndex: 2
+                    }
+                },
+                target: {
+                    value: 'value'
+                }
+            }
             popup.instance().handleChange = jest.fn();
             popup.instance().verifyLetstalk = jest.fn();
-            popup.instance().handleRecipientTypeChange('value');
+            popup.instance().handleRecipientTypeChange(event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipientTypeId', 'value');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipientIds', '');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('groupHeadlines', '');
@@ -247,7 +262,7 @@ describe('EditGroupMappingPopup', () => {
             popup.instance().verifyLetstalk(recipientIds);
             expect(props.verifyLetstalkInGroup).not.toHaveBeenCalled();
         });
-      
+
         it('renderEditGroupMappingOptions return expected result', () => {
             const item = {
                 id: 1, name: 'test'
@@ -344,11 +359,11 @@ describe('EditGroupMappingPopup', () => {
 
         it('handleSubmit will call expected props when Valid params and function call unsuccessful', async () => {
             const event = { preventDefault: jest.fn() };
-            props.updateGroupMappingResult = {isSuccessful: false};
-            const state = {isSubmitting : false};
+            props.updateGroupMappingResult = { isSuccessful: false };
+            const state = { isSubmitting: false };
             const edit = shallow(<EditGroupMappingPopup {...props} />);
             edit.instance().isValidParams = jest.fn().mockReturnValue(true);
-            edit.instance().setState({state});
+            edit.instance().setState({ state });
             edit.instance().getParams = jest.fn().mockReturnValue('valueParams');
             await promise;
             jest.runAllTimers();
@@ -356,7 +371,7 @@ describe('EditGroupMappingPopup', () => {
 
             await promise;
             jest.runAllTimers();
-            expect( edit.instance().state.isSubmitting).toEqual(false);
+            expect(edit.instance().state.isSubmitting).toEqual(false);
         });
 
         it('isDirtyForm return expected true value', () => {

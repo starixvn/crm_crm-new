@@ -607,12 +607,34 @@ describe('Filter', () => {
                 getGridData: jest.fn()
             };
 
+            const state = {
+                filter: {
+                    site: '1',
+                    currency: '1',
+                    status: '1',
+                    headlineType: 2,
+                    groupHeadline: '',
+                    picName: '',
+                    directAccount: '',
+                    position: '1',
+                    excludeAssignedAcc: false,
+                    excludeIgnoredAcc: true,
+                    excludeIsTest: true
+                },
+                siteOptions: [],
+                currencyOptions: [],
+                statusOptions: [],
+                positionOptions: [],
+                showFilter: true
+            };
+
             const filter = shallow(<Filter {...props} />);            
             filter.instance().handleSubmit = jest.fn();
+            filter.instance().setState(state);
             functions.handleNewRemoveOptions = jest.fn();
 
             // Action
-            filter.find(Form).at(0).simulate('submit');
+            filter.find(Form).simulate('submit');
             // Assert
             expect(filter.instance().handleSubmit).toHaveBeenCalled();
         });
@@ -822,6 +844,7 @@ describe('Filter', () => {
             expect(group.find('option').at(0).html()).toEqual('<option value="2">All</option>');
         });
 
+            const control = formRender.find(Form.Group).at(3).find(Form.Control);
         it('should have first Form Row having fifth Form Group', () => {
             // Arrange
             const promise = Promise.resolve({});
@@ -852,6 +875,7 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().value).toEqual(state.filter.groupHeadline);
         });
 
+            const control = formRender.find(Form.Group).at(4).find(Form.Control);
         it('should have first Form Row having sixth Form Group', () => {
             // Arrange
             const promise = Promise.resolve({});
@@ -882,6 +906,7 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().value).toEqual(state.filter.picName);
         });
 
+            const control = formRender.find(Form.Group).at(5).find(Form.Control);
         it('should have first Form Row having seventh Form Group', () => {
             // Arrange
             const promise = Promise.resolve({});
@@ -912,6 +937,7 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().value).toEqual(state.filter.directAccount);
         });
 
+            const control = formRender.find(Form.Group).at(6).find(Form.Control);
         it('should have first Form Row having eighth Form Group', () => {
             // Arrange
             const promise = Promise.resolve({});
@@ -1007,6 +1033,9 @@ describe('Filter', () => {
             expect(group.find('input').at(2).props().checked).toEqual(state.filter.excludeIsTest);
         });
 
+            const input = formRender.find(Form.Row).at(2).find('input').at(0);
+            const input = formRender.find(Form.Row).at(2).find('input').at(1);
+            const input = formRender.find(Form.Row).at(2).find('input').at(2);
         it('should have third Form Row', () => {
             // Arrange
             const promise = Promise.resolve({});
@@ -1035,6 +1064,8 @@ describe('Filter', () => {
 
                 setGridParams: jest.fn(),
                 getGridData: jest.fn()
+            const button = formRender.find(Form.Row).at(3).find(Button).at(0);
+            const button = formRender.find(Form.Row).at(3).find(Button).at(1);
         it('should call handleToggleFilter when onClick icon show/hide', () => {
             // Arrange
             const promise = Promise.resolve({});

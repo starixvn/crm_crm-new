@@ -3,6 +3,7 @@ import AutoComplete from '../AutoComplete';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow, mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
+import { Form } from 'react-bootstrap';
 
 describe('AutoComplete', () => {
     beforeAll(() => {
@@ -391,7 +392,8 @@ describe('AutoComplete', () => {
                 container.instance().handleKeyDown = jest.fn();
 
                 //Act
-                container.find('div input').first().simulate('keyDown');
+                const formRender = shallow(container.instance().render());
+                formRender.find(Form.Control).at(0).simulate('keyDown');
 
                 //Assert
                 expect(container.instance().handleKeyDown).toHaveBeenCalled();
@@ -404,7 +406,8 @@ describe('AutoComplete', () => {
                 container.instance().handleKeyDown = jest.fn();
 
                 //Act
-                container.find('div input').first().simulate('keyDown');
+                const formRender = shallow(container.instance().render());
+                formRender.find(Form.Control).at(0).simulate('keyDown');
 
                 //Assert
                 expect(container.instance().handleKeyDown).toHaveBeenCalled();

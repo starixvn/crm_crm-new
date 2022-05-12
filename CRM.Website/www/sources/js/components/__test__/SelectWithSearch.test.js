@@ -383,7 +383,8 @@ describe('SelectWithSearch', () => {
                 container.instance().clearSearchBox = jest.fn();
 
                 //Act
-                container.find('ul').first().find('li').first().find('div').first().find('span').first().simulate('click');
+                const formRender = shallow(container.instance().render());
+                formRender.find('ul').first().find('li').first().find('div').first().find('span').first().simulate('click');
 
                 //Assert
                 expect(container.instance().clearSearchBox).toHaveBeenCalled();
@@ -408,7 +409,8 @@ describe('SelectWithSearch', () => {
                 container.instance().toggleCollapseExpanse = jest.fn();
 
                 //Act
-                container.find('ul').first().find('li').at(1).find('div').first().find('span span').simulate('click');
+                const formRender = shallow(container.instance().render());
+                formRender.find('ul').first().find('li').at(1).find('div').first().find('span span').simulate('click');
 
                 //Assert
                 expect(container.instance().toggleCollapseExpanse).toHaveBeenCalled();

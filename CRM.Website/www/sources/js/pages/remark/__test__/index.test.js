@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 describe('index', () => {
     beforeEach(() => {
         const appContainer = document.createElement('div');
-        const isHost = document.createElement('div');
+        const id = document.createElement('div');
         appContainer.setAttribute('id', 'app-container');
+        id.setAttribute('id', 'id');
         document.body.appendChild(appContainer);
-        document.body.appendChild(isHost);
+        document.body.appendChild(id);
         ReactDOM.render = jest.fn();
     });
 
