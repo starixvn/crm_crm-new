@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
 import Filter from '../Filter';
 import DataGrid from '../DataGrid';
+import EditFeedback from '../../../edit-customer-feedback/AppContainer';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -132,7 +133,7 @@ describe('AppContainer', () => {
             // Arrange
             const props = {
                 getAllSettings: jest.fn(),
-                editFeedbackDialog: { show: true },
+                editFeedbackDialog: { show: true, feedbackId: 1 },
                 editNoOfInquiryDialog: { show: false },
                 editMultipleLogStatusDialog: { show: false },
                 viewRelatedCustomerDialog: { show: false },

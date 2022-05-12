@@ -607,12 +607,34 @@ describe('Filter', () => {
                 getGridData: jest.fn((params, callback) => callback())
             };
 
+            const state = {
+                filter: {
+                    site: '1',
+                    currency: '1',
+                    status: '1',
+                    headlineType: 2,
+                    groupHeadline: '',
+                    picName: '',
+                    directAccount: '',
+                    position: '1',
+                    excludeAssignedAcc: false,
+                    excludeIgnoredAcc: true,
+                    excludeIsTest: true
+                },
+                siteOptions: [],
+                currencyOptions: [],
+                statusOptions: [],
+                positionOptions: [],
+                showFilter: true
+            };
+
             const filter = shallow(<Filter {...props} />);            
             filter.instance().handleSubmit = jest.fn();
+            filter.instance().setState(state);
             functions.handleNewRemoveOptions = jest.fn();
 
             // Action
-            filter.find(Form).at(0).simulate('submit');
+            filter.find(Form).simulate('submit');
             // Assert
             expect(filter.instance().handleSubmit).toHaveBeenCalled();
         });
@@ -834,7 +856,8 @@ describe('Filter', () => {
             const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
-            const control = filter.find(Form.Group).at(3).find(Form.Control);
+            const formRender = shallow(filter.instance().render());
+            const control = formRender.find(Form.Group).at(3).find(Form.Control);
 
             // Action
             control.simulate('change', event);
@@ -885,7 +908,8 @@ describe('Filter', () => {
             const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
-            const control = filter.find(Form.Group).at(4).find(Form.Control);
+            const formRender = shallow(filter.instance().render());
+            const control = formRender.find(Form.Group).at(4).find(Form.Control);
 
             // Action
             control.simulate('change', event);
@@ -936,7 +960,8 @@ describe('Filter', () => {
             const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
-            const control = filter.find(Form.Group).at(5).find(Form.Control);
+            const formRender = shallow(filter.instance().render());
+            const control = formRender.find(Form.Group).at(5).find(Form.Control);
 
             // Action
             control.simulate('change', event);
@@ -987,7 +1012,8 @@ describe('Filter', () => {
             const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleChange = jest.fn();
-            const control = filter.find(Form.Group).at(6).find(Form.Control);
+            const formRender = shallow(filter.instance().render());
+            const control = formRender.find(Form.Group).at(6).find(Form.Control);
 
             // Action
             control.simulate('change', event);
@@ -1103,7 +1129,8 @@ describe('Filter', () => {
             const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
-            const input = filter.find(Form.Row).at(2).find('input').at(0);
+            const formRender = shallow(filter.instance().render());
+            const input = formRender.find(Form.Row).at(2).find('input').at(0);
 
             // Action
             input.simulate('change', event);
@@ -1124,7 +1151,8 @@ describe('Filter', () => {
             const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
-            const input = filter.find(Form.Row).at(2).find('input').at(1);
+            const formRender = shallow(filter.instance().render());
+            const input = formRender.find(Form.Row).at(2).find('input').at(1);
 
             // Action
             input.simulate('change', event);
@@ -1145,7 +1173,8 @@ describe('Filter', () => {
             const event = { persist: jest.fn(), target: { name: "test" } };
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleCheckBoxChange = jest.fn();
-            const input = filter.find(Form.Row).at(2).find('input').at(2);
+            const formRender = shallow(filter.instance().render());            
+            const input = formRender.find(Form.Row).at(2).find('input').at(2);
 
             // Action
             input.simulate('change', event);
@@ -1193,7 +1222,8 @@ describe('Filter', () => {
 
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleSubmit = jest.fn();
-            const button = filter.find(Form.Row).at(3).find(Button).at(0);
+            const formRender = shallow(filter.instance().render());
+            const button = formRender.find(Form.Row).at(3).find(Button).at(0);
 
             // Action
             button.simulate('click');
@@ -1215,7 +1245,8 @@ describe('Filter', () => {
 
             const filter = shallow(<Filter {...props} />);
             filter.instance().handleOpenAssignPicPopup = jest.fn();
-            const button = filter.find(Form.Row).at(3).find(Button).at(1);
+            const formRender = shallow(filter.instance().render());
+            const button = formRender.find(Form.Row).at(3).find(Button).at(1);
 
             // Action
             button.simulate('click');
