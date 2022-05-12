@@ -19,16 +19,13 @@
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(0, 1)]
-        [InlineData(1, 0)]
-        public void IsValid_ParamsAreInvalid_ReturnFalse(int remarkID, int custId)
+        [Fact]
+        public void IsValid_ParamsAreInvalid_ReturnFalse()
         {
             // Arrange
             var criteria = new GetCustomerRemarkNewHistoryCriteria
             {
-                RemarkID = remarkID,
-                CustID = custId,
+                RemarkID = 0
             };
             // Act
             var actual = criteria.IsValid();
