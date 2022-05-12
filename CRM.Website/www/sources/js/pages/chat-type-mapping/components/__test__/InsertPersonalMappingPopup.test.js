@@ -4,7 +4,6 @@ import { shallow, mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import { Form, Modal, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
-import { Promise } from 'q';
 import SelectWithSearch from 'react-select';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -63,7 +62,6 @@ describe('InsertPersonalMappingPopup', () => {
     });
 
     describe('handle change function tests', () => {
-        const promise = Promise.resolve([]);
         const props = {
             settings: {
                 bots: [{ id: 1, name: 'Bot1' }],
@@ -75,7 +73,6 @@ describe('InsertPersonalMappingPopup', () => {
             gridParams: {},
             insertPersonalMappingResult: { isSuccessful: true },
             letstalkName: '',
-            getLetstalkDisplayName: jest.fn(() => promise),
             getRecipientByRecipientType: jest.fn(),
             getGroupHeadlineByRecipient: jest.fn(),
             setInsertPersonalMappingResult: jest.fn(),
@@ -97,12 +94,16 @@ describe('InsertPersonalMappingPopup', () => {
             expect(popup.instance().state.form.chatType).toBe(value);
         });
 
-        it('handle functions should call correct functions with correct params when event triggered', () => {
+        it('handle functions should call correct functions with correct params when event triggered', async () => {
             const event = {
                 target: { value: 'value' },
                 preventDefault: jest.fn()
             };
-            const popup = mount(<InsertPersonalMappingPopup {...props} />);
+            const promise = Promise.resolve([]);
+
+            const initProps = { ...props, getLetstalkDisplayName: jest.fn(() => promise) };
+
+            const popup = mount(<InsertPersonalMappingPopup {...initProps} />);
             popup.instance().handleBotChange = jest.fn();
             popup.instance().handleGroupHeadlineChange = jest.fn();
             popup.instance().handleRecipientTypeChange = jest.fn();
@@ -112,19 +113,21 @@ describe('InsertPersonalMappingPopup', () => {
             popup.instance().onCloseInsertPopup = jest.fn();
             popup.instance().handleSubmit = jest.fn();
 
-            popup.find(Form.Group).at(0).find(Form.Control).at(0).simulate('change', event);
+            const test = shallow(popup.instance().renderForm());
+
+            test.find(Form.Group).at(0).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleBotChange).toHaveBeenCalledWith('value');
 
-            popup.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
+            test.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
 
             expect(popup.find(Form.Group).at(4).find(SelectWithSearch).length).toBe(1);
             expect(popup.find(Form.Group).at(6).find(MultipleSelect).length).toBe(1);
 
-            popup.find(Form.Group).at(7).find(Form.Control).at(0).simulate('change', event);
+            test.find(Form.Group).at(7).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('languageId', 'value');
 
-            popup.find(Form.Group).at(8).find(Form.Control).at(0).simulate('change', event);
+            test.find(Form.Group).at(8).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('remark', 'value');
         });
 
@@ -181,8 +184,20 @@ describe('InsertPersonalMappingPopup', () => {
         });
 
         it('handleRecipientTypeChange with call correct props with correct params', () => {
+            const event = {
+                target: { value: 'value' },
+                nativeEvent: {
+                    target: {
+                        0: { text: 'value' },
+                        1: { text: 'value' },
+                        2: { text: 'value' },
+                        length: 3,
+                        selectedIndex: 2
+                    }
+                }
+            };
             popup.instance().handleChange = jest.fn();
-            popup.instance().handleRecipientTypeChange('value');
+            popup.instance().handleRecipientTypeChange(event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipientType', 'value');
             expect(props.getRecipientByRecipientType).toHaveBeenCalledWith('value');
         });

@@ -67,7 +67,6 @@ describe('EditPersonalMappingPopup', () => {
     });
 
     describe('handle change function tests', () => {
-        const promise = Promise.resolve([]);
         const props = {
             settings: {
                 bots: [{ id: 1, name: 'Bot1' }],
@@ -80,7 +79,6 @@ describe('EditPersonalMappingPopup', () => {
             updatePersonalMappingData: { data: initData },
             updatePersonalMappingResult: { isSuccessful: true },
             letstalkName: '',
-            getLetstalkDisplayName: jest.fn(() => promise),
             getRecipientByRecipientType: jest.fn(),
             getGroupHeadlineByRecipient: jest.fn(),
             setUpdatePersonalMappingResult: jest.fn(),
@@ -102,35 +100,41 @@ describe('EditPersonalMappingPopup', () => {
             expect(popup.instance().state.form.chatType).toBe(value);
         });
 
-        // it('handle functions should call correct functions with correct params when event triggered', () => {
-        //     const event = {
-        //         target: { value: 'value' },
-        //         preventDefault: jest.fn()
-        //     };
-        //     const popup = mount(<EditPersonalMappingPopup {...props} />);
-        //     popup.instance().handleGroupHeadlineChange = jest.fn();
-        //     popup.instance().handleRecipientTypeChange = jest.fn();
-        //     popup.instance().handleRecipientChange = jest.fn();
-        //     popup.instance().handleLetstalkIdSelect = jest.fn();
-        //     popup.instance().handleChange = jest.fn();
-        //     popup.instance().onCloseEditPersonalPopup = jest.fn();
-        //     popup.instance().handleEditPersonalSubmitForm = jest.fn();
+        it('handle functions should call correct functions with correct params when event triggered', async () => {
+            const event = {
+                target: { value: 'value' },
+                preventDefault: jest.fn()
+            };
+            const promise = Promise.resolve([]);
 
-        //     popup.find(Form.Group).at(0).find(Form.Control).at(0).simulate('change', event);
-        //     expect(popup.instance().handleChange).toHaveBeenCalledWith('botId', 'value');
+            const initProps = { ...props, getLetstalkDisplayName: jest.fn(() => promise) };
 
-        //     popup.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
-        //     expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
+            const popup = shallow(<EditPersonalMappingPopup {...initProps} />);
+            popup.instance().handleGroupHeadlineChange = jest.fn();
+            popup.instance().handleRecipientTypeChange = jest.fn();
+            popup.instance().handleRecipientChange = jest.fn();
+            popup.instance().handleLetstalkIdSelect = jest.fn();
+            popup.instance().handleChange = jest.fn();
+            popup.instance().onCloseEditPersonalPopup = jest.fn();
+            popup.instance().handleEditPersonalSubmitForm = jest.fn();
 
-        //     expect(popup.find(Form.Group).at(4).find(SelectWithSearch).length).toBe(1);
-        //     expect(popup.find(Form.Group).at(6).find(MultipleSelect).length).toBe(1);
+            const test = shallow(popup.instance().renderForm());
 
-        //     popup.find(Form.Group).at(7).find(Form.Control).at(0).simulate('change', event);
-        //     expect(popup.instance().handleChange).toHaveBeenCalledWith('languageId', 'value');
+            test.find(Form.Group).at(0).find(Form.Control).at(0).simulate('change', event);
+            expect(popup.instance().handleChange).toHaveBeenCalledWith('botId', 'value');
 
-        //     popup.find(Form.Group).at(8).find(Form.Control).at(0).simulate('change', event);
-        //     expect(popup.instance().handleChange).toHaveBeenCalledWith('remark', 'value');
-        // });
+            test.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
+            expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
+
+            // expect(test.find(Form.Group).at(4).find(SelectWithSearch).length).toBe(1);
+            expect(popup.find(Form.Group).at(6).find(MultipleSelect).length).toBe(1);
+
+            test.find(Form.Group).at(7).find(Form.Control).at(0).simulate('change', event);
+            expect(popup.instance().handleChange).toHaveBeenCalledWith('languageId', 'value');
+
+            test.find(Form.Group).at(8).find(Form.Control).at(0).simulate('change', event);
+            expect(popup.instance().handleChange).toHaveBeenCalledWith('remark', 'value');
+        });
 
         it('render correct', () => {
             const state = {
@@ -175,10 +179,18 @@ describe('EditPersonalMappingPopup', () => {
 
         it('handleRecipientTypeChange with call correct props with correct params', () => {
             const event = {
-                target: { value: 'value' }
+                target: { value: 'value' },
+                nativeEvent: {
+                    target: {
+                        0: { text: 'value' },
+                        1: { text: 'value' },
+                        2: { text: 'value' },
+                        length: 3,
+                        selectedIndex: 2
+                    }
+                }
             };
             popup.instance().handleChange = jest.fn();
-            popup.instance().handleRecipientTypeChange = jest.fn();
             popup.instance().handleRecipientTypeChange(event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipientType', 'value');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipient', { value: '' });
@@ -200,7 +212,7 @@ describe('EditPersonalMappingPopup', () => {
             expect(props.getGroupHeadlineByRecipient).toHaveBeenCalledWith('value');
         });
 
-        it('handleLetstalkIdSelect with call correct props with correct params',async () => {
+        it('handleLetstalkIdSelect with call correct props with correct params', async () => {
             const event = {
                 target: { value: 'value' }
             };
@@ -311,11 +323,11 @@ describe('EditPersonalMappingPopup', () => {
             expect(props.getGridData).not.toHaveBeenCalled();
         });
 
-        it('handleSubmit will call expected props when Valid params',async () => {
+        it('handleSubmit will call expected props when Valid params', async () => {
             const event = { preventDefault: jest.fn() };
             jest.useFakeTimers();
-            const newProps = {...props};
-            newProps.updatePersonalMappingResult = {isSuccessful : true};
+            const newProps = { ...props };
+            newProps.updatePersonalMappingResult = { isSuccessful: true };
             const editPersonal = shallow(<EditPersonalMappingPopup {...newProps} />);
             editPersonal.instance().isValidParams = jest.fn().mockReturnValue(true);
             editPersonal.instance().getParams = jest.fn().mockReturnValue('valueParams');
@@ -328,11 +340,11 @@ describe('EditPersonalMappingPopup', () => {
             expect(props.getGridData).toHaveBeenCalledWith(props.gridParams);
         });
 
-        it('handleSubmit will call expected setState when unSuccessfully',async () => {
+        it('handleSubmit will call expected setState when unSuccessfully', async () => {
             const event = { preventDefault: jest.fn() };
             jest.useFakeTimers();
-            const newProps = {...props};
-            newProps.updatePersonalMappingResult = {isSuccessful : false};
+            const newProps = { ...props };
+            newProps.updatePersonalMappingResult = { isSuccessful: false };
             const editPersonal = shallow(<EditPersonalMappingPopup {...newProps} />);
             editPersonal.instance().isValidParams = jest.fn().mockReturnValue(true);
             editPersonal.instance().getParams = jest.fn().mockReturnValue('valueParams');
@@ -340,7 +352,7 @@ describe('EditPersonalMappingPopup', () => {
 
             await promise;
             jest.runAllTimers();
-          
+
             expect(editPersonal.instance().state.isSubmitting).toEqual(false);
         });
 
