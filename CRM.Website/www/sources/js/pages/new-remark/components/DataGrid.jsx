@@ -67,7 +67,10 @@ export class DataGrid extends Component {
                         </Tooltip>
                     }
                 >
-                    <Cell className='link-click remark-content' onClick={() =>this.handleOpenEdit(item)} dangerouslySetInnerHTML={{__html: item.remark}}/>
+                    <Cell className='link-click remark-content' 
+                        onClick={() =>this.handleOpenEdit(item)}
+                        dangerouslySetInnerHTML={{__html: item.remark}}
+                    />
                 </OverlayTrigger>
                 <Cell>{item.userNameRelatedPICs}</Cell>
                 <Cell>
@@ -209,17 +212,18 @@ export class DataGrid extends Component {
             TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
-        const width = document.getElementById('app-container').clientWidth < 1889 ? 1889 : document.getElementById('app-container').clientWidth;
         return (
             <Fragment>
                 <div className='table-title'>
                     <span>{LangHelper.getResource('Remark')}</span>
                 </div>
                 <Table
+                    maxWidth={2025}
+                    shouldUseMaxWidth
+                    width={document.getElementById('app-container').clientWidth}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
                     autoWidth={false}
-                    width={width}
                     isPaging
                     onSort={this.onSort}
                     containerPadding={0}

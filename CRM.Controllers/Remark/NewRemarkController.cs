@@ -46,11 +46,12 @@
             this.customerService = customerService;
         }
 
-        public IActionResult Index(string customerName = "", bool? isGuest = false)
+        public IActionResult Index(int custId, string customerName = "", bool? isGuest = false)
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             ViewBag.customerName = customerName;
             ViewBag.isGuest = isGuest;
+            ViewBag.custId = custId;
             return View(isHost);
         }
 

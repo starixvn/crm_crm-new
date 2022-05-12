@@ -12,12 +12,18 @@ const store = configureStore({
 
 const isHost = document.getElementById('isHost').checked;
 const customerName = document.getElementById('customerName').value;
+const custId = document.getElementById('custId').value;
 const isGuest = document.getElementById('isGuest').checked;
 
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer isHost={isHost} customerName={customerName} isGuestSearch={isGuest}/>
+            <AppContainer 
+                isHost={isHost}
+                customerName={customerName}
+                custId={custId}
+                isGuestSearch={isGuest}
+            />
         </Layout>
     </Provider>,
     document.getElementById('app-container'));

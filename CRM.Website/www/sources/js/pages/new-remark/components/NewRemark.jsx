@@ -24,12 +24,17 @@ export class NewRemark extends Component {
 
     componentDidMount(){
         this.props.getAllSettings();
+        if(this.props.customerName !== ''){
+            this.props.getRelatedPics({custId: this.props.custId}).then(response =>{
+                this.setState({relatedPicsOption: response});
+            });
+        }
     }
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const params = {
-            custId: this.state.customerValidated.custId,
+            custId: this.props.customerName !== '' ? this.props.custId  : this.state.customerValidated.custId,
             remark: values.remarkContent,
             remarkTitle: values.remarkTitle,
             relatedPICs: values.relatedPics,

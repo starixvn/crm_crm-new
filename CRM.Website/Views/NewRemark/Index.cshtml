@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = ViewResources.Remark;
     string customerName = ViewBag.customerName;
+    int custId = ViewBag.custId;
     bool isGuest = ViewBag.isGuest;
 }
 @section Styles {
@@ -21,6 +22,7 @@
 }
 <input type="checkbox" hidden id="isHost" @(Model ? "checked" : string.Empty) />
 <input type="text" hidden id="customerName" value="@customerName" />
+<input type="text" hidden id="custId" value="@custId" />
 <input type="checkbox" hidden id="isGuest" @(isGuest ? "checked" : string.Empty) />
 
 <div id="app-container"></div>

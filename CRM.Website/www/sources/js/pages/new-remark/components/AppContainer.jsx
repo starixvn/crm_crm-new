@@ -49,7 +49,7 @@ export class AppContainer extends Component {
         this.props.setEditResult(null);
     };
     render() {
-        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, isGuestSearch, isHost } = this.props;
+        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch, isHost } = this.props;
         if(remarkTitles === null || !remarkTitles){
             return null;
         }
@@ -65,6 +65,7 @@ export class AppContainer extends Component {
                     popupAdd.show &&
                     <NewRemark
                         customerName={customerName}
+                        custId={custId}
                         isGuestSearch={isGuestSearch}
                         onClose={this.handleCloseAddPopup}
                         onSuccess={this.handleCreateSuccess}

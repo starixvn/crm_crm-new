@@ -21,7 +21,11 @@
 }
 
 .table-container {
+    overflow-y: auto;
+    border: 1px solid #b7b7b7;
+
     .body-content{
+        overflow: unset !important; 
         .remark-content, .remark-content p{
             white-space: nowrap;
             overflow: hidden;
@@ -33,6 +37,15 @@
             word-break: break-word;
         }
     }
+}
+
+body {
+    overflow: hidden; 
+}
+
+.header-content, .body-content, .footer-content {
+    border: none;
+    padding: 0;
 }
 
 .link-click {

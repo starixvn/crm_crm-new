@@ -29,7 +29,6 @@ describe('connect ', () => {
                 relatedPics: [{letstalkIds: "sss,ssdsddscac", id: 264, name: "malcokm1_ss"}],
                 userId: 62585686
             },
-            gridParams: {pageIndex: 1, pageSize: 100, username: '', isGuest: false},
             remarkTitles: [{id: 0, name: null, settingId: 70000, settingName: "RemarkTitles", settingValue: "Internal Request"}],
             validateResult: { isSuccessful: false},
             createResult: { isSuccessful: false}
@@ -40,7 +39,6 @@ describe('connect ', () => {
                 relatedPics: [{letstalkIds: "sss,ssdsddscac", id: 264, name: "malcokm1_ss"}],
                 userId: 62585686
             },
-            gridParams: {pageIndex: 1, pageSize: 100, username: '', isGuest: false},
             remarkTitles: [{id: 0, name: null, settingId: 70000, settingName: "RemarkTitles", settingValue: "Internal Request"}],
             validateResult: { isSuccessful: false},
             createResult: { isSuccessful: false}

@@ -21,7 +21,7 @@ export class History extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={8}>{LangHelper.getResource('Version')}</HeaderCell>
+                <HeaderCell colWidth={7}>{LangHelper.getResource('Version')}</HeaderCell>
                 <HeaderCell colWidth={18} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('DateOfUpdateGM8')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedBy')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('RemarkTitle')}</HeaderCell>
@@ -47,10 +47,10 @@ export class History extends Component {
     renderRow = (item, index) => {
         return (
             <Row key={index}>
-                <Cell className='text-center link-click'>{item.versionID}</Cell>
+                <Cell className='text-center link-click' onClick={() => this.handleOpenView(item)}>{item.versionID}</Cell>
                 <Cell className='text-center' sortOrder='desc' sortBy='lastUpdate'>{DateTimeService.toLongDateTimeFormat(item.lastUpdate)}</Cell>
-                <Cell className='text-center'>{item.updater}</Cell>
-                <Cell className='text-center'>{item.remarkName}</Cell>
+                <Cell>{item.updater}</Cell>
+                <Cell>{item.remarkName}</Cell>
                 <OverlayTrigger
                     overlay={
                         <Tooltip id="tooltip-remark-content">
@@ -59,16 +59,19 @@ export class History extends Component {
                     }
                     placement="auto"
                 >
-                    <Cell className='link-click remark-content' dangerouslySetInnerHTML={{__html: item.remark}}/>
+                    <Cell className='link-click remark-content' 
+                        dangerouslySetInnerHTML={{__html: item.remark}} 
+                        onClick={() => this.handleOpenView(item)}
+                    />
                 </OverlayTrigger>
-                <Cell className='text-center'>{item.relatedPICs}</Cell>
-                <Cell className='text-center'>
+                <Cell>{item.userNameRelatedPICs}</Cell>
+                <Cell>
                     <div>{item.handler}</div>
                     <div>{`(Ext: ${item.ext})`}</div>
                 </Cell>
-                <Cell className='text-center'>{item.requester}</Cell>
-                <Cell className='text-center'>{item.approver}</Cell>
-                <Cell className='text-center'>{item.acknowledger}</Cell>
+                <Cell>{item.requester}</Cell>
+                <Cell>{item.approver}</Cell>
+                <Cell>{item.acknowledger}</Cell>
                 <Cell className='text-center'>
                     <span className='fa fa-eye-slash icon-edit' onClick={() => this.handleOpenView(item)} />
                 </Cell>
@@ -111,7 +114,7 @@ export class History extends Component {
         }else{
             gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringDesc(sortBy, first, second));
         }
-        this.props.setRemarksHistory({...this.props.remarksHistory.data, data: gridDataSortAsc});
+        this.props.setRemarksHistory({...this.props.remarksHistory.data, data: gridDataSortAsc, totalItems:this.props.remarksHistory.totalItems});
     };
 
     handleSortStringAsc = (sortBy, first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
@@ -155,7 +158,9 @@ export class History extends Component {
                     this.renderHistorySection()
                 }
                 <Table
-                    width={1889}
+                    maxWidth={2025}
+                    shouldUseMaxWidth
+                    width={document.getElementById('app-container').clientWidth}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     autoWidth={false}

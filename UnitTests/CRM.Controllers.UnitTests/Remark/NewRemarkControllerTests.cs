@@ -43,7 +43,7 @@
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
 
             // Act
-            var actual = controller.Index();
+            var actual = controller.Index(1);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);
