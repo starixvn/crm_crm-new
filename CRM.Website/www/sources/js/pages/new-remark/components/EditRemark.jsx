@@ -15,7 +15,8 @@ export class EditRemark extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            relatedPicsOption: []
+            relatedPicsOption: [],
+            isNoChange: false
         };
     }
 
@@ -36,18 +37,26 @@ export class EditRemark extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
+        this.setState({isNoChange: false});
+        const isChanged = this.isChangedValue(values);
+        if(!isChanged){
+            setSubmitting(false);
+            this.setState({isNoChange: true});
+            return;
+        }
         const params = {
             remarkID: this.props.popupEdit.data.remarkID,
             custID: this.props.popupEdit.data.custID,
             remark: values.remarkContent,
             remarkTitle: values.remarkTitle,
             acknowledgerID: values.acknowledgedBy === '' ? null : parseInt(values.acknowledgedBy, 10),
-            relatedPICs: values.relatedPics,
+            relatedPICs: values.relatedPics === '' ? null : values.relatedPics,
             ext: values.extStation === '' ? null : parseInt(values.extStation, 10),
             handlerID: values.handledBy === '' ? null : parseInt(values.handledBy, 10),
             approverID: values.approvedBy === '' ? null : parseInt(values.approvedBy, 10),
-            requester: values.requestedBy
+            requester: values.requestedBy === '' ? null : values.requestedBy
         };
+
         this.props.editNewRemarks(params).then(() => {
             if (this.props.editResult.isSuccessful) {
                 setTimeout(() => {
@@ -59,6 +68,33 @@ export class EditRemark extends Component {
         });
     };
 
+    isChangedValue = values => {
+        const data = this.props.popupEdit.data;
+        const oldValue = {
+            remarkTitle: parseInt(data.remarkTitle, 10),
+            relatedPics: data.relatedPICs,
+            requestedBy: data.requester,
+            approvedBy: data.approverID === 0 ? '' : data.approverID.toString(),
+            acknowledgedBy: data.acknowledgerID === 0 ? '' : data.acknowledgerID.toString(),
+            handledBy: data.handlerID === 0 ? '' : data.handlerID.toString(),
+            extStation: data.ext === 0 ? '' : data.ext.toString(),
+            remarkContent: data.remark
+        };
+
+        const newValue = {
+            remarkTitle: values.remarkTitle,
+            relatedPics: values.relatedPics,
+            requestedBy: values.requestedBy,
+            approvedBy: values.approvedBy,
+            acknowledgedBy: values.acknowledgedBy,
+            handledBy: values.handledBy,
+            extStation: values.extStation,
+            remarkContent: values.remarkContent
+        };
+
+        const isChange = JSON.stringify(oldValue) !== JSON.stringify(newValue);
+        return isChange;
+    }
     validateFormik = values => {
         const errors = {};
         const remarkTitleId = parseInt(this.props.popupEdit.data.remarkTitle, 10);
@@ -98,6 +134,12 @@ export class EditRemark extends Component {
                         editResult &&
                         <ResponseMessage isSuccessful={editResult.isSuccessful}
                             message={editResult.message || LangHelper.getResource('EditNewRemarkSuccessfully')}
+                        />
+                    }
+                    {
+                        this.state.isNoChange &&
+                        <ResponseMessage isSuccessful={false}
+                            message={LangHelper.getResource('ThereIsNoChangeValue')}
                         />
                     }
                     <Form.Group as={Row}>
@@ -164,7 +206,7 @@ export class EditRemark extends Component {
                 onHide={this.props.onClose}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title as="div">{`${data.userName} Remark ${data.remarkID}`}</Modal.Title>
+                    <Modal.Title as="div">{`${data.userName} > Remark ${data.remarkID}`}</Modal.Title>
                 </Modal.Header>
                 <Formik
                     initialValues={initialValues}

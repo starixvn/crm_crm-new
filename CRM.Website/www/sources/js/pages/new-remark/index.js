@@ -5,7 +5,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import Layout from '@jsroot/components/Layout';
 import newRemarkSlice from './newRemarkSlice';
 import AppContainer from './components/AppContainer';
-import LastFiveRemarkContainer from './components/LastFiveRemarkContainer';
+import LastFiveRemarkDataGrid from './components/LastFiveRemarkDataGrid';
 
 const store = configureStore({
     reducer: newRemarkSlice
@@ -21,8 +21,7 @@ ReactDOM.render(
         <Layout>
             {
                 isLastFiveRemark ?
-                <LastFiveRemarkContainer 
-                    isHost={isHost}
+                <LastFiveRemarkDataGrid 
                     custId={custId}
                 /> :
                 <AppContainer 

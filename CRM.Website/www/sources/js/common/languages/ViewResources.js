@@ -415,6 +415,7 @@
     TypeOfContact: 'Type Of Contact',
     ToMonth: 'To Month',
     Time: 'Time',
+    ThereIsNoChangeValue: 'There is no change value!',
     UnContactable: 'Uncontactable',
     Update: 'Update',
     UpdateChatTypeMappingSuccessfully: 'Update chat type mapping successfully!',

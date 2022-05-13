@@ -180,7 +180,7 @@ export class Filter extends Component {
     };
 
     render() {
-        const {remarkTitles, customerName} = this.props;
+        const {remarkTitles, customerName, isHost} = this.props;
         if(remarkTitles === null || !remarkTitles){
             return null;
         }
@@ -302,9 +302,12 @@ export class Filter extends Component {
                         <Button variant="primary" size="sm" className='mr-4' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Search')}
                         </Button>
-                        <Button variant="primary" size="sm" onClick={this.handleOpenAdd}>
-                            {LangHelper.getResource('Insert')}
-                        </Button>
+                        {
+                            isHost &&
+                            <Button variant="primary" size="sm" onClick={this.handleOpenAdd}>
+                                {LangHelper.getResource('Insert')}
+                            </Button>
+                        }
                     </Form.Group>
                 </Form.Row>
             </Form>

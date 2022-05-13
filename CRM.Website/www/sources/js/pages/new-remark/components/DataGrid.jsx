@@ -53,7 +53,7 @@ export class DataGrid extends Component {
         const userNameFormat = `${item.isGroupHeadLine ? item.userName + ' (Headline)' : item.userName}`;
         return (
             <Row key={index}>
-                <Cell className='text-center link-click' onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
+                <Cell className={`text-center ${isHost ? 'link-click' : 'disable-edit'}`} onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
                 <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
                 <Cell>{item.creator}</Cell>
                 <Cell>{item.headlineName}</Cell>
@@ -67,7 +67,7 @@ export class DataGrid extends Component {
                         </Tooltip>
                     }
                 >
-                    <Cell className='link-click remark-content' 
+                    <Cell className={`text-center remark-content ${isHost ? 'link-click' : 'disable-edit'}`}
                         onClick={() =>this.handleOpenEdit(item)}
                         dangerouslySetInnerHTML={{__html: item.remark}}
                     />
@@ -75,7 +75,7 @@ export class DataGrid extends Component {
                 <Cell>{item.userNameRelatedPICs}</Cell>
                 <Cell>
                     <div>{item.handler}</div>
-                    <div>{`(Ext: ${item.ext})`}</div>
+                    <div>{`(Ext: ${item.extStation})`}</div>
                 </Cell>
                 <Cell>{item.updater}</Cell>
                 <Cell className='text-center'>{item.lastUpdate}</Cell>

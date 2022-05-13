@@ -55,7 +55,7 @@ export class AppContainer extends Component {
         }
         return (
             <Fragment>
-                <Filter customerName={customerName} isGuestSearch={isGuestSearch}/>
+                <Filter isHost={isHost} customerName={customerName} isGuestSearch={isGuestSearch}/>
                 {
                     showHistory.show ?
                     <History/> :

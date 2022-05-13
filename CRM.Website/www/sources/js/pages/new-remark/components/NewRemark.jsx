@@ -37,12 +37,12 @@ export class NewRemark extends Component {
             custId: this.props.customerName !== '' ? this.props.custId  : this.state.customerValidated.custId,
             remark: values.remarkContent,
             remarkTitle: values.remarkTitle,
-            relatedPICs: values.relatedPics,
+            relatedPICs: values.relatedPics === '' ? null : values.relatedPics,
             ext: values.extStation === '' ? null : parseInt(values.extStation, 10),
             handlerID: values.handledBy === '' ? null : parseInt(values.handledBy, 10),
             approverID: values.approvedBy === '' ? null : parseInt(values.approvedBy, 10),
             acknowledgerID: values.acknowledgedBy === '' ? null : parseInt(values.acknowledgedBy, 10),
-            requester: values.requestedBy
+            requester: values.requestedBy === '' ? null : values.requestedBy
         };
         this.props.createNewRemarks(params).then(() => {
             if (this.props.createResult.isSuccessful) {

@@ -23,7 +23,7 @@
     }
 }
 
-.table-new-remarks{
+.table-new-remarks, .table-history{
     .table-container {
         overflow-y: auto;
         border: 1px solid #b7b7b7;
@@ -39,6 +39,10 @@
     
             tbody tr td{
                 word-break: break-word;
+            }
+
+            .disable-edit{
+                pointer-events: none;
             }
         }
     }

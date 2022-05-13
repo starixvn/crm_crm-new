@@ -153,7 +153,7 @@ export class History extends Component {
         };
 
         return (
-            <div>
+            <div className='table-history'>
                 {
                     this.renderHistorySection()
                 }

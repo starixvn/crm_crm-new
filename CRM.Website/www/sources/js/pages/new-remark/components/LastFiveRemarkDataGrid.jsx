@@ -13,6 +13,12 @@ export class LastFiveRemarkDataGrid extends Component {
         super(props);
     }
 
+    componentDidMount() {
+        const param = {custId: this.props.custId};
+        this.props.getLastFiveRemark(param);
+    }
+
+
     buildHeader = () => {
         return (
             <HeaderRow>
@@ -26,9 +32,9 @@ export class LastFiveRemarkDataGrid extends Component {
         );
     };
 
-    buildBody = isHost => {
+    buildBody = () => {
         if (this.props.lastFiveRemarks.length > 0) {
-            return this.props.lastFiveRemarks.map((item, index) => this.renderRow(item, index, isHost));
+            return this.props.lastFiveRemarks.map((item, index) => this.renderRow(item, index));
         }
 
         return [<Row key='new-remark-body' className="no-data" ><Cell colSpan={6}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
@@ -38,7 +44,7 @@ export class LastFiveRemarkDataGrid extends Component {
         const userNameFormat = `${item.isGroupHeadLine ? item.userName + ' (Headline)' : item.userName}`;
         return (
             <Row key={index}>
-                <Cell className={`text-center ${isHost ? 'link-click' : ''}`} onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
+                <Cell className='text-center'>{item.remarkID}</Cell>
                 <Cell>{item.remarkName}</Cell>
                 <OverlayTrigger
                     placement="auto"
@@ -48,7 +54,7 @@ export class LastFiveRemarkDataGrid extends Component {
                         </Tooltip>
                     }
                 >
-                    <Cell className={`remark-content ${isHost ? 'link-click' : ''}`} 
+                    <Cell className='remark-content'
                         onClick={() =>this.handleOpenEdit(item)}
                         dangerouslySetInnerHTML={{__html: item.remark}}
                     />
@@ -65,13 +71,16 @@ export class LastFiveRemarkDataGrid extends Component {
     };
 
     render() {
-        const { isHost} = this.props;
+        const {lastFiveRemarks} = this.props;
+        if(!lastFiveRemarks){
+            return null;
+        }
         return (
             <div className="table-last-five-remarks">
                 <Table
                     width={985}
                     header={this.buildHeader()}
-                    body={this.buildBody(isHost)}
+                    body={this.buildBody()}
                     autoWidth={false}
                     containerPadding={0}
                     adjustedHeight={10}
