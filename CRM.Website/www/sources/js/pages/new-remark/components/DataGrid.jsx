@@ -213,7 +213,7 @@ export class DataGrid extends Component {
             PageList: PAGING_SIZES
         };
         return (
-            <Fragment>
+            <div className="table-new-remarks">
                 <div className='table-title'>
                     <span>{LangHelper.getResource('Remark')}</span>
                 </div>
@@ -241,7 +241,7 @@ export class DataGrid extends Component {
                         onClose={() =>  this.handleCloseDelete()}
                     />
                 }
-            </Fragment>
+            </div>
         );
     }
 }

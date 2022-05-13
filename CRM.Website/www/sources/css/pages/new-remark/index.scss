@@ -11,6 +11,9 @@
 @import '../../components/forms';
 @import '../../components/ckeditor';
 
+.container-fluid{
+    padding: 0 !important;
+}
 
 .form-filter {
     min-width: 960px;
@@ -20,32 +23,42 @@
     }
 }
 
-.table-container {
-    overflow-y: auto;
-    border: 1px solid #b7b7b7;
-
-    .body-content{
-        overflow: unset !important; 
-        .remark-content, .remark-content p{
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-width: 1px;
+.table-new-remarks{
+    .table-container {
+        overflow-y: auto;
+        border: 1px solid #b7b7b7;
+    
+        .body-content{
+            overflow: unset !important; 
+            .remark-content, .remark-content p{
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                min-width: 1px;
+            }
+    
+            tbody tr td{
+                word-break: break-word;
+            }
         }
+    }
 
-        tbody tr td{
-            word-break: break-word;
+    .header-content, .body-content, .footer-content {
+        border: none;
+        padding: 0;
+    }
+}
+
+.table-last-five-remarks{
+    .table-container{
+        .body-content{
+            max-height: 180px !important;
         }
     }
 }
 
 body {
     overflow: hidden; 
-}
-
-.header-content, .body-content, .footer-content {
-    border: none;
-    padding: 0;
 }
 
 .link-click {
@@ -117,7 +130,6 @@ body {
         }
     }
 }
-
 
 .history-section{
     .fa-backward{

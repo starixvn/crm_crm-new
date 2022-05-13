@@ -235,6 +235,7 @@
     LogDate: 'Log Date (GMT+8)',
     LastUpdate: 'Last Update',
     LastUpdateGM8: 'Last Update (GMT+8)',
+    LoggedOn: 'Logged On',
     MappingStatus: 'Mapping Status',
     MessageID: 'Message ID',
     Month: 'Month',

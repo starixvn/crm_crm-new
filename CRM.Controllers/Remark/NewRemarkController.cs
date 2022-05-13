@@ -46,11 +46,12 @@
             this.customerService = customerService;
         }
 
-        public IActionResult Index(int? custId, string customerName = "", bool? isGuest = false)
+        public IActionResult Index(int? custId, string customerName = "", bool? isGuest = false, bool? isLastFiveRemark = false)
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             ViewBag.customerName = customerName;
             ViewBag.isGuest = isGuest;
+            ViewBag.isLastFiveRemark = isLastFiveRemark;
             ViewBag.custId = custId;
             return View(isHost);
         }
@@ -138,6 +139,17 @@
             command.IP = ClientIP;
             CommandResult commandResult = await remarkService.DeleteNewAsync(command);
             return Json(commandResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetLastFiveRemark([FromBody] GetLastFiveRemarksCriteria criteria)
+        {
+            var remarks = await remarkService.GetLastFiveRemarkAsync(criteria);
+            foreach (var remark in remarks)
+            {
+                remark.CreatedDate = commonService.ConvertToClientDateTime(remark.CreatedDate);
+            }
+            return Json(remarks);
         }
     }
 }

@@ -3,6 +3,7 @@
     string customerName = ViewBag.customerName;
     int custId = ViewBag.custId;
     bool isGuest = ViewBag.isGuest;
+    bool isLastFiveRemark = ViewBag.isLastFiveRemark;
 }
 @section Styles {
     <environment include="Development">
@@ -24,5 +25,5 @@
 <input type="text" hidden id="customerName" value="@customerName" />
 <input type="text" hidden id="custId" value="@custId" />
 <input type="checkbox" hidden id="isGuest" @(isGuest ? "checked" : string.Empty) />
-
+<input type="checkbox" hidden id="isLastFiveRemark" @(isLastFiveRemark ? "checked" : string.Empty) />
 <div id="app-container"></div>

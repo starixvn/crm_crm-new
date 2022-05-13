@@ -16,7 +16,8 @@ const newRemarkSlice = createSlice({
         validateResult: null,
         remarksHistory: null,
         showHistory: {show: false},
-        historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''}
+        historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''},
+        lastFiveRemarks: null
     },
     reducers: {
         setRemarkTitle: (state, action) => {
@@ -57,6 +58,9 @@ const newRemarkSlice = createSlice({
         },
         setHistoryGridParams: (state, action) => {
             state.historyGridParams = action.payload;
+        },
+        setLastFiveRemark: (state, action) => {
+            state.lastFiveRemarks = action.payload;
         }
     }
 });
@@ -76,7 +80,8 @@ export const {
     setValidateResult,
     setRemarksHistory,
     setShowHistory,
-    setHistoryGridParams
+    setHistoryGridParams,
+    setLastFiveRemark
 } = actions;
 
 export default reducer;
