@@ -64,10 +64,6 @@
         public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
             var feedbackDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
-            if (feedbackDetail.ToList().Count > 0)
-            {
-                feedbackDetail = feedbackDetail.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-            }
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
             var feedbacksOrder = feedbackDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
@@ -85,7 +81,7 @@
                             criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             feedbackStatistic.Title = title;
             var bytes = excelService.ExportStatisticFeedback(feedbackStatistic);
-            string reportName = string.Format(ViewResources.FeedbackStatisticDetail_ExcelFile, fromDateFormat, toDateFormat);
+            string reportName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
 

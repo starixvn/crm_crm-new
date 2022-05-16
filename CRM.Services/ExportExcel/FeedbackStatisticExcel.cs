@@ -18,7 +18,7 @@
         protected static readonly Color GroupBackgroundColor = Color.FromArgb(215, 215, 215);
 
         public FeedbackStatisticExcel(string templatePath, FeedbackStatisticInfo feedbackStatistic)
-            : base(templatePath, 0, ViewResources.FeedbackStatistics)
+            : base(templatePath, 0, ViewResources.FeedbackStatistics_SheetName)
         {
             this.feedbackStatistic = feedbackStatistic;
             totalColumns = feedbackStatistic.Usernames.Count() + StartUserNameColumnIndex;
@@ -38,6 +38,7 @@
             for (var index = 0; index < usernames.Count; index++)
             {
                 worksheet.Cells[RowStartHeader, StartUserNameColumnIndex + index + 1].Value = usernames[index].Name;
+                DrawBorderCell(worksheet.Cells[RowStartHeader, StartUserNameColumnIndex + index + 1]);
             }
         }
 
@@ -74,6 +75,7 @@
                 foreach (var total in fbCategories.SubTotal.Resolves)
                 {
                     worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex, colIndex].Style.Font.Bold = true;
                     worksheet.Cells[rowIndex, colIndex++].Value = total;
                 }
                 rowIndex++;

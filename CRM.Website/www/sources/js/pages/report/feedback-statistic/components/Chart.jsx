@@ -45,7 +45,7 @@ export default class Chart extends Component {
                     <Modal.Title as="div">{chartInfo.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <ResponsiveContainer width="100%" height={data.length > 5 ? 850 : 700}>
+                <ResponsiveContainer width="100%" height={data.length > 5 ? 790 : 830}>
                     <BarChart
                         width={1100}
                         data={data}

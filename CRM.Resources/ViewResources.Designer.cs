@@ -457,6 +457,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FeedbackStatistic-{0}-{1}.
+        /// </summary>
+        public static string FeedbackStatistic_ExcelFile {
+            get {
+                return ResourceManager.GetString("FeedbackStatistic_ExcelFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback Statistic Report From {0} To {1}.
         /// </summary>
         public static string FeedbackStatistic_ExcelTitle {
@@ -484,11 +493,20 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feedback Statistics v2.
+        ///   Looks up a localized string similar to Feedback Statistic.
         /// </summary>
-        public static string FeedbackStatistics {
+        public static string FeedbackStatistics_SheetName {
             get {
-                return ResourceManager.GetString("FeedbackStatistics", resourceCulture);
+                return ResourceManager.GetString("FeedbackStatistics_SheetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback Statistic Detail.
+        /// </summary>
+        public static string FeedbackStatisticsDetail_SheetName {
+            get {
+                return ResourceManager.GetString("FeedbackStatisticsDetail_SheetName", resourceCulture);
             }
         }
         

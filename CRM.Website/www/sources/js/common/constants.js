@@ -108,8 +108,7 @@ export const FeedbackSelectionType = [
     { name: 'By Product', id: 7 },
     { name: 'By Category', id: 8 },
     { name: 'By Licensees', id: 9 },
-    { name: 'By CommunicationTool', id: 10 },
-    { name: 'By Province', id: 11}
+    { name: 'By CommunicationTool', id: 10 }
 ];
 
 export const ReportBy = [

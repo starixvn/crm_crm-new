@@ -8,6 +8,19 @@ describe('DataGrid', () => {
         jest.clearAllMocks();
     });
 
+    beforeEach(() => {
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'app-container');
+        document.body.appendChild(appContainer);
+    });
+
+    afterEach(() => {
+        const appContainer = document.getElementById('app-container');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
+    });
+
     const initProps = {
         gridData: {
             feedbackCategories: [{

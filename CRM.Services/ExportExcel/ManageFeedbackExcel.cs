@@ -31,7 +31,7 @@
             IEnumerable<Setting> mainCategories,
             bool isManageFeedback,
             string excelTitle)
-        : base(templatePath, 0, isManageFeedback ? ViewResources.ManageFeedback : ViewResources.FeedbackStatistics)
+        : base(templatePath, 0, isManageFeedback ? ViewResources.ManageFeedback : ViewResources.FeedbackStatisticsDetail_SheetName)
         {
             this.feedbacks = feedbacks;
             this.mainCategories = mainCategories;

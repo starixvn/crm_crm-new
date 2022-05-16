@@ -11,9 +11,23 @@ export class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            shouldResetScrollPosition: true,
             toggleRow: [],
             isCollapse: false
         };
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.gridData !== nextProps.gridData) {
+            nextState.shouldResetScrollPosition = true;
+            nextState.toggleRow = [];
+            nextState.isCollapse = false;
+
+        }
+        if (this.state.toggleRow.length > 0) {
+            nextState.shouldResetScrollPosition = false;
+        }
+        return true;
     }
 
     buildHeader = gridData => {
@@ -85,7 +99,7 @@ export class DataGrid extends Component {
             );
             if(!toggleRow.includes(item.id)){
                 cellsSubTotal.push(
-                    <Cell className='child sub-total pl-4'>{`Sub Total ${item.subTotal.total}`}</Cell>
+                    <Cell className='child sub-total pl-4'>{`Sub Total (${item.subTotal.total})`}</Cell>
                 );
                 item.subTotal.resolves.forEach((count, index) =>{
                     cellsSubTotal.push(
@@ -112,7 +126,7 @@ export class DataGrid extends Component {
 
         if(!toggleRow.includes(parentId)){
             const cells = [];
-            cells.push(<Cell key={`sub-${sub.id}`} className='child pl-4'>{sub.name}</Cell>);
+            cells.push(<Cell key={`sub-${sub.id}`} className='child pl-4'>{sub.name + " ("+ sub.total + ")"}</Cell>);
             sub.resolves.forEach((count, index) =>{
                 cells.push(
                     <Cell key={`count-${index}`}
@@ -134,8 +148,8 @@ export class DataGrid extends Component {
     renderFooter = gridData => {
         const cells = [];
         cells.push(<Cell>Grand Total</Cell>);
-        gridData.grandTotals.forEach(item =>{
-            cells.push(<Cell className='text-center'>{item}</Cell>);
+        gridData.grandTotals.forEach((item,index) =>{
+            cells.push(<Cell className={`${item > 0 ? 'link-click cursor-pointer' : 'disable-click' } text-center`} onClick={() => this.handleShowDetails(gridData.usernames[index].id,0,0)}>{item}</Cell>);
         });
         return (
             [<Row key='footer' className='footer-container font-weight-bold'>
@@ -245,8 +259,10 @@ export class DataGrid extends Component {
 
         const defaultWidth = 420;
         const totalWidth = defaultWidth + gridData.usernames.length * 155;
+        const width = document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
+
         return (
-            <div style={{width: totalWidth}}>
+            <div style={{width: width}}>
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{gridData.title}</span>
                     {
@@ -254,7 +270,7 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={totalWidth}
+                    width={width}
                     autoWidth={false}
                     header={this.buildHeader(gridData)}
                     body={this.buildBody(gridData)}
@@ -264,6 +280,7 @@ export class DataGrid extends Component {
                     footer={this.renderFooter(gridData)}
                     containerPadding={0}
                     adjustedHeight={10}
+                    shouldResetScrollPosition={this.state.shouldResetScrollPosition}
                 />
             </div>
         );
