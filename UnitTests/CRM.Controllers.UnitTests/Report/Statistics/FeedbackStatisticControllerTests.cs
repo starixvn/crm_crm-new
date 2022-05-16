@@ -117,7 +117,7 @@
             var param = fixture.Create<GetFeedbackStatisticCriteria>();
             var fromDateFormat = param.FromDate.ToString("MMddyyyy");
             var toDateFormat = param.ToDate.ToString("MMddyyyy");
-            string fileName = string.Format(ViewResources.FeedbackStatisticDetail_ExcelFile, fromDateFormat, toDateFormat);
+            string fileName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
 
             var controller = GetController();
             commonService.ConvertClientFromTimeToServerTime(Arg.Any<DateTime>()).Returns(fromDateServer);

@@ -25,7 +25,7 @@ describe('Filter', () => {
 
                 // Assert
                 expect(container.state().fromDate).toEqual(new Date('2/5/2020 5:20:25 PM'));
-                expect(container.state().toDate).toEqual(new Date('4/8/2021 10:05:20 AM'));
+                expect(container.state().toDate).toEqual(new Date('2021-02-04T10:20:25.000Z'));
             });
 
             it('should not update toDate when fromDate is change', () => {

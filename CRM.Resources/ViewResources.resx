@@ -462,8 +462,8 @@
   <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>
-  <data name="FeedbackStatistics" xml:space="preserve">
-    <value>Feedback Statistics v2</value>
+  <data name="FeedbackStatisticsDetail_SheetName" xml:space="preserve">
+    <value>Feedback Statistic Detail</value>
   </data>
   <data name="FeedbackStatisticTitle" xml:space="preserve">
     <value>Feedback Statistics Report from {0} to {1}</value>
@@ -560,5 +560,11 @@
   </data>
   <data name="WagersRelatedReport" xml:space="preserve">
     <value>Wagers-Related Report</value>
+  </data>
+  <data name="FeedbackStatistics_SheetName" xml:space="preserve">
+    <value>Feedback Statistic</value>
+  </data>
+  <data name="FeedbackStatistic_ExcelFile" xml:space="preserve">
+    <value>FeedbackStatistic-{0}-{1}</value>
   </data>
 </root>

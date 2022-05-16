@@ -38,7 +38,7 @@ export class Filter extends Component {
         this.minToDate = fromDate;
         this.maxToDate = (fromDateTime < this.currentDate) ? fromDateTime : this.currentDate;
         this.setState({
-            toDate: this.state.toDate < fromDate ? fromDate : this.state.toDate,
+            toDate: this.maxToDate,
             fromDate: fromDate
         });
     };
@@ -134,7 +134,7 @@ export class Filter extends Component {
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
                                 dropdownMode="select"
-                                minDate={new Date(this.minToDate)}
+                                minDate={new Date(fromDate)}
                                 maxDate={new Date(this.maxToDate)}
                                 showYearDropdown peekNextMonth showMonthDropdown
                                 selected={toDate}
