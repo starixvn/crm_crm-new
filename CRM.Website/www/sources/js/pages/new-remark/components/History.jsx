@@ -59,8 +59,8 @@ export class History extends Component {
                     }
                     placement="auto"
                 >
-                    <Cell className='link-click remark-content' 
-                        dangerouslySetInnerHTML={{__html: item.remark}} 
+                    <Cell className='link-click remark-content'
+                        dangerouslySetInnerHTML={{__html: item.remark}}
                         onClick={() => this.handleOpenView(item)}
                     />
                 </OverlayTrigger>

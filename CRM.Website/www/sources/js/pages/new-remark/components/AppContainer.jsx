@@ -49,7 +49,7 @@ export class AppContainer extends Component {
         this.props.setEditResult(null);
     };
     render() {
-        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch, isHost, isLastFiveRemark } = this.props;
+        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch, isHost } = this.props;
         if(remarkTitles === null || !remarkTitles){
             return null;
         }

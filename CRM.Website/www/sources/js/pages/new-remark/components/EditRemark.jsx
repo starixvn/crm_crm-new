@@ -94,7 +94,8 @@ export class EditRemark extends Component {
 
         const isChange = JSON.stringify(oldValue) !== JSON.stringify(newValue);
         return isChange;
-    }
+    };
+
     validateFormik = values => {
         const errors = {};
         const remarkTitleId = parseInt(this.props.popupEdit.data.remarkTitle, 10);

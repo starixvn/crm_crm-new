@@ -20,6 +20,7 @@ describe('remarkSlice reducer', () => {
             remarkTitles: null,
             allSettings: null,
             gridParams: { pageIndex: 1, pageSize: 100, username: '', isGuest: false},
+            lastFiveRemarks: null,
             gridData: null,
             popupAdd: { show: false },
             editResult: null,

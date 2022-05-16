@@ -7,16 +7,19 @@ describe('index', () => {
         const customerName = document.createElement('div');
         const custId = document.createElement('div');
         const isGuest = document.createElement('div');
+        const isLastFiveRemark = document.createElement('div');
         appContainer.setAttribute('id', 'app-container');
         isHost.setAttribute('id', 'isHost');
         customerName.setAttribute('id', 'customerName');
         custId.setAttribute('id', 'custId');
         isGuest.setAttribute('id', 'isGuest');
+        isLastFiveRemark.setAttribute('id', 'isLastFiveRemark');
         document.body.appendChild(appContainer);
         document.body.appendChild(isHost);
         document.body.appendChild(customerName);
         document.body.appendChild(custId);
         document.body.appendChild(isGuest);
+        document.body.appendChild(isLastFiveRemark);
         ReactDOM.render = jest.fn();
     });
 
@@ -27,6 +30,7 @@ describe('index', () => {
         const customerName = document.getElementById('customerName');
         const custId = document.getElementById('custId');
         const isGuest = document.getElementById('isGuest');
+        const isLastFiveRemark = document.getElementById('isLastFiveRemark');
         if (appContainer) {
             document.body.removeChild(appContainer);
         }
@@ -45,6 +49,10 @@ describe('index', () => {
 
         if (isGuest) {
             document.body.removeChild(isGuest);
+        }
+
+        if (isLastFiveRemark) {
+            document.body.removeChild(isLastFiveRemark);
         }
     });
 

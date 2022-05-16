@@ -170,7 +170,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getNewRemarkHistory(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('NewRemark/getNewRemarkHistory', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('NewRemark/GetNewRemarkHistory', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
