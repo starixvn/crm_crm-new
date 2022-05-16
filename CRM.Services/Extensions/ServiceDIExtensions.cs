@@ -53,6 +53,7 @@ namespace CRM.Services.Extensions
             services.AddTransient<IIssueStatisticsService, IssueStatisticsService>();
             services.AddTransient<IDynamicReportService, DynamicReportService>();
             services.AddTransient<ICustomerReportService, CustomerReportService>();
+            services.AddTransient<IHomeService, HomeService>();
         }
 
         public static void ResolveLetstalkServiceDI(this IServiceCollection services, IList<BotConfig> botConfigs)
