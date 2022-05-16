@@ -43,9 +43,7 @@ export class Header extends Component {
     };
 
     isIgnoreMenu = item => {
-        if (item.subMenus.length === 0 && (item.url.includes('n/a') || item.url.length === 0))
-            return false;
-        return true;
+        return !(item.subMenus.length === 0 && (item.url.includes('n/a') || item.url.length === 0));
     };
 
     renderListMenu = (item, index) => {
