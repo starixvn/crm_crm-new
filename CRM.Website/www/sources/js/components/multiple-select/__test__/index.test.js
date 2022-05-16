@@ -821,7 +821,6 @@ describe('index', () => {
                 textOptions: {},
                 texts: {},
                 isAllTextShown: true,
-                maxDisplayItemCount: 10
             };
 
             const id = 1;
