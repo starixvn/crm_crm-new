@@ -100,6 +100,22 @@ describe('History', () => {
         });
     });
 
+    describe('renderRow', () => {
+        it.each([
+            0,
+            4
+        ])('onClick call exact function', (number) => {
+            // Arrange
+            const container = shallow(<History {...initProps} />).instance();
+            container.handleOpenView = jest.fn();
+            // Act
+            const row = shallow(container.renderRow(initProps.remarksHistory.data[0], 1));
+            row.find(Cell).at(number).simulate('click');
+            // Assert
+            expect(container.handleOpenView).toHaveBeenCalled();
+        });
+    });
+
     describe('onPaging', () => {
         it('should call exactly function', () => {
             // Arrange

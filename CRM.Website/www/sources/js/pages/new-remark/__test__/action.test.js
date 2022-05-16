@@ -16,7 +16,8 @@ import {
     setValidateResult,
     setRemarksHistory,
     setShowHistory,
-    setHistoryGridParams
+    setHistoryGridParams,
+    setLastFiveRemark
 } from '../newRemarkSlice';
 
 const middlewares = [thunk];
@@ -207,6 +208,25 @@ describe('actionCreators', () => {
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('NewRemark/GetRelatedPicsByCustId', expectedParams);
             expect(actual).toEqual(response.data);
+        });
+    });
+
+    describe('getLastFiveRemark', () => {
+        it('should handle setLastFiveRemark when request has been done', async () => {
+            // Arrange
+            const expectedParams = {custId: 1};
+            const store = mockStore({ });
+            const response = { data: [{remarkID: 1506, createdDate: "Apr 20, 2022 04:11:09 AM", lastUpdate: "Apr 20, 2022 04:35:19 AM"}], totalItems: 2 };
+            const promise = Promise.resolve(response);
+            const expectedActions = [{ type: setLastFiveRemark.type, payload: response.data }];
+            DataService.postDataAsync = jest.fn(() => promise);
+
+            // Act
+            await store.dispatch(ActionCreators.getLastFiveRemark(expectedParams));
+
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('NewRemark/GetLastFiveRemark', expectedParams);
+            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 });

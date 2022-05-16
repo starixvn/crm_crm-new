@@ -82,6 +82,35 @@ describe('EditRemark', () => {
     });
 
     describe('handleSubmit', () => {
+        it('should setState if no change', async () => {
+            // Arrange
+            const setSubmitting = jest.fn();
+            const response = {isSuccessful: true};
+            const promise = Promise.resolve(response);
+            const props = {...initProps, editResult: response, editNewRemarks: jest.fn(() => promise)};
+            const values = {
+                username: 'test',
+                remarkContent: 'remarkContent',
+                remarkTitle: 0,
+                relatedPics: '1,2',
+                extStation: '1',
+                handledBy: '1',
+                approvedBy: '1',
+                acknowledgedBy: '1',
+                requestedBy: 'requestedBy'
+            };
+            // Act
+            const container = shallow(<EditRemark {...props} />);
+            container.instance().isChangedValue = jest.fn(() => false);
+            container.instance().handleSubmit(values, {setSubmitting});
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(container.instance().isNoChange).tobeTrue;
+            expect(setSubmitting).toHaveBeenCalledWith(false);
+        });
+
         it('should call exactly functions when successful', async () => {
             // Arrange
             const setSubmitting = jest.fn();
@@ -139,6 +168,34 @@ describe('EditRemark', () => {
     });
 
     describe('validateFormik', () => {
+        it('should return exact error when remarkId smaller than zero', () => {
+            // Arrange
+            const values = {
+                remarkTitle: '',
+                remarkContent: ''
+            };
+            const expected = {
+                remarkTitle: LangHelper.getResource('RemarkTitleMigrateRequired'),
+                remarkContent: LangHelper.getResource('RemarkContentMigrateRequired')
+            };
+            const props = {
+                ...initProps,
+                popupEdit:{
+                    ...initProps.popupEdit,
+                    data: {
+                        ...initProps.popupEdit.data,
+                        remarkTitle: 0
+                    }
+                }
+            };
+            const container = shallow(<EditRemark {...props} />);
+            
+            // Act
+            const actual = container.instance().validateFormik(values);
+            // Assert
+            expect(actual).toEqual(expected);
+        });
+
         it('should return exact error when remarkId greater than zero', () => {
             // Arrange
             const values = {

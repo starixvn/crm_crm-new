@@ -32,13 +32,20 @@ describe('NewRemark', () => {
     };
 
     describe('componentDidMount', () => {
-        it('should call exactly functions', () => {
+        it('should call exactly functions', async () => {
             // Arrange
+            const response = [{picId: 1, username: 'test'}];
+            const promise = Promise.resolve(response);
+            const props = {
+                ...initProps, customerName: 'test', getRelatedPics: jest.fn(() => promise)
+            };
             // Act
-            shallow(<NewRemark {...initProps} />);
-
+            const container = shallow(<NewRemark {...props} />);
+            await
             // Assert
-            expect(initProps.getAllSettings).toHaveBeenCalled();
+            expect(props.getAllSettings).toHaveBeenCalled();
+            expect(props.getRelatedPics).toHaveBeenCalled();
+            expect(container.instance().state.relatedPicsOption).toEqual(response);
         });
     });
 
@@ -100,6 +107,24 @@ describe('NewRemark', () => {
     });
 
     describe('handleValidateCustomer', () => {
+        it('should do nothing if not change value username', () => {
+            // Arrange
+            const state = {
+                customerValidated: {
+                    val: 'test'
+                }
+            };
+            const props = {...initProps, validateUsername: jest.fn()};
+            const setFieldValue = jest.fn();
+            const container = shallow(<NewRemark {...props} />).instance();
+            container.setState(state);
+            // Act
+            container.handleValidateCustomer('test', false, setFieldValue);
+            
+            // Assert
+            expect(props.validateUsername).not.toHaveBeenCalled();
+        });
+
         it('should call exactly functions', () => {
             // Arrange
             const response = {data: {}};
