@@ -495,5 +495,7 @@
     NewValue: 'New Value',
     RowNum:'No.',
     IntroduceBy:'Introduce by',
-    Languages: 'Languages'
+    Languages: 'Languages',
+    Welcome: 'Welcome',
+    SignOut: 'Sign Out'
 };
