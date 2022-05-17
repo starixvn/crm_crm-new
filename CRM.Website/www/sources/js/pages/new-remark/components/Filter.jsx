@@ -108,7 +108,7 @@ export class Filter extends Component {
                 fromDate = new Date(DateTimeService.firstDayOfYear(date));
                 break;
             case DateType.SpecificDates:
-                fromDate = this.firstDateOfMonth;
+                fromDate = new Date(DateTimeService.firstDayOfYear(date));
                 break;
             default:
                 break;

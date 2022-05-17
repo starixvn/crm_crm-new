@@ -99,7 +99,7 @@ export class EditRemark extends Component {
     validateFormik = values => {
         const errors = {};
         const remarkTitleId = parseInt(this.props.popupEdit.data.remarkTitle, 10);
-        if(values.remarkTitle === ''){
+        if(values.remarkTitle === '' || values.remarkTitle === null){
             if(remarkTitleId > 0){
                 errors.remarkTitle = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkTitle'));
             }else{
@@ -107,7 +107,7 @@ export class EditRemark extends Component {
             }
         }
 
-        if(values.remarkContent === ''){
+        if(values.remarkContent === '' || values.remarkContent === null){
             if(remarkTitleId > 0){
                 errors.remarkContent = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkContent'));
             }else{
