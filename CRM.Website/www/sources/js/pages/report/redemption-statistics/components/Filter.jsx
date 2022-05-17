@@ -7,6 +7,7 @@ import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import { toast } from 'react-toastify';
 import { ReportBy }from '@jsroot/common/constants';
 
 export class Filter extends Component {
@@ -14,10 +15,12 @@ export class Filter extends Component {
         super(props);
         this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
         const currentDate = this.currentDate;
+        const firstDateFirstMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() , 1);
+        const firstDateOfMonthFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDateFirstMonth)));
         this.maxFromDate = currentDate;
         this.maxToDate = currentDate;
         this.state = {
-            fromDate: currentDate,
+            fromDate: firstDateOfMonthFormat,
             toDate: currentDate,
             statusOptions: [],
             currencyOptions: [],
@@ -106,6 +109,14 @@ export class Filter extends Component {
 
     handleSubmit = () => {
         const { fromDate, toDate, reportBy, statusIds, currencyIds, subject} = this.state;
+        if(statusIds === ""){
+            toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Status')));
+            return;
+        }
+        if(currencyIds === ""){
+            toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency')));
+            return;
+        }
         const params = {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
@@ -141,7 +152,7 @@ export class Filter extends Component {
                                 <Form.Label className='label-width' >{LangHelper.getResource('ToDate')}</Form.Label>
                                 <div className='react-datepicker-wrapper-container'>
                                     <DatePicker
-                                        minDate={new Date(this.minToDate)}
+                                        minDate={fromDate}
                                         maxDate={new Date(this.maxToDate)}
                                         selected={toDate}
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode='select'

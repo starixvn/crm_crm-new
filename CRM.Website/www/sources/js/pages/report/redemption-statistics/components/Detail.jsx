@@ -28,8 +28,8 @@ export class Detail extends Component {
 
     buildBody = () => {
         const { gridDataDetails } = this.props;
-        if (gridDataDetails.length > 0) {
-            return gridDataDetails.map((item, index) => this.renderRow(item, index));
+        if (gridDataDetails.totalRows > 0) {
+            return gridDataDetails.details.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row className="no-data" >
@@ -77,7 +77,7 @@ export class Detail extends Component {
         const pagingOption = {
             PageIndex: gridParamDetails.pageIndex,
             PageSize: gridParamDetails.pageSize,
-            TotalItem: gridDataDetails.length,
+            TotalItem: gridDataDetails.totalRows,
             PageList: PAGING_SIZES
         };
 
@@ -95,7 +95,7 @@ export class Detail extends Component {
                             <span className="fa fa-arrow-circle-left icon pl-3 fa-lg" onClick={() => this.handleGoBack()} />
                         </OverlayTrigger>
                         {
-                            gridDataDetails.length > 0 &&
+                            gridDataDetails.totalRows > 0 &&
                             <OverlayTrigger
                                 overlay={
                                     <Tooltip><span>Export to Excel</span></Tooltip>

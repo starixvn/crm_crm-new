@@ -209,7 +209,7 @@ describe('DataGrid', () => {
             actual.find(Cell).at(1).simulate('click');
 
             // Assert
-            expect(container.handleOpenDetail).toHaveBeenCalledWith(1, 2021, 12, 'RedemptionStatisticsDetailTitleRM');
+            expect(container.handleOpenDetail).toHaveBeenCalledWith(1, 0, 0, 'RedemptionStatisticsDetailTitleRM');
         });
     });
 });
