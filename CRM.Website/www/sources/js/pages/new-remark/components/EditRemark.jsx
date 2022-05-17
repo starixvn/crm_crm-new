@@ -28,7 +28,7 @@ export class EditRemark extends Component {
                 return {
                     picID: item.picID,
                     username: item.username,
-                    checked: data.relatedPICs.includes(item.picID)
+                    checked: data.relatedPICs !== null && data.relatedPICs.includes(item.picID)
                 };
             });
             this.setState({relatedPicsOption: picOptions});

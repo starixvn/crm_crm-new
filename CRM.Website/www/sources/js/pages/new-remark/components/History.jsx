@@ -67,7 +67,7 @@ export class History extends Component {
                 <Cell>{item.userNameRelatedPICs}</Cell>
                 <Cell>
                     <div>{item.handler}</div>
-                    <div>{`(Ext: ${item.ext})`}</div>
+                    <div>{`(Ext: ${item.extStation})`}</div>
                 </Cell>
                 <Cell>{item.requester}</Cell>
                 <Cell>{item.approver}</Cell>
@@ -95,7 +95,7 @@ export class History extends Component {
                         <span className='mr-2'>Created By:</span>
                         <span className='mr-4'>{historyParams.creator}</span>
                         <span className='mr-2'>Created Date:</span>
-                        <span>{DateTimeService.toLongDateTimeFormat(historyParams.createdDate)}</span>
+                        <span>{`${DateTimeService.toLongDateTimeFormat(historyParams.createdDate)} (GMT+8)`}</span>
                     </div>
                 </div>
             </div>

@@ -30,7 +30,7 @@ export class Filter extends Component {
             isGuestFiler: isCustomerNotEmpty ? isGuestSearch : false,
             isShowHeadline: isCustomerNotEmpty ? true : false,
             relatedToPICs: '',
-            fromDate: isCustomerNotEmpty ? new Date(2021, 1, 1) :this.firstDateOfMonth,
+            fromDate: isCustomerNotEmpty ? new Date(2021, 1, 1) : this.firstDateOfMonth,
             toDate: currentDate,
             remarkTitleOptions: [],
             remarkTitleIds: '',
@@ -106,6 +106,9 @@ export class Filter extends Component {
                 break;
             case DateType.ThisYear:
                 fromDate = new Date(DateTimeService.firstDayOfYear(date));
+                break;
+            case DateType.SpecificDates:
+                fromDate = this.firstDateOfMonth;
                 break;
             default:
                 break;
