@@ -51,7 +51,7 @@ export class DataGrid extends Component {
         return (
             <Row key={`redemption-${index}`}>
                 <Cell className='text-center link-click' onClick={() => this.handleOpenDetail(0, item.year, item.month, titleYearDetail)}>{dateFormat}</Cell>
-                <Cell className='text-center link-click' onClick={() => this.handleOpenDetail(item.currencyId, item.year, item.month, titleCurrencyDetail)}>{item.currency}</Cell>
+                <Cell className='text-center link-click' onClick={() => this.handleOpenDetail(item.currencyId, 0, 0, titleCurrencyDetail)}>{item.currency}</Cell>
                 <Cell className='text-center'>{Number(item.amount).toFixed(2)}</Cell>
             </Row>
         );
@@ -62,16 +62,16 @@ export class DataGrid extends Component {
         return (
             <Fragment>
                 <Row key='totals-1' className='background-total'>
-                    <Cell className='text-center' rowSpan={totalArr.length}>{LangHelper.getResource('Total')}</Cell>
-                    <Cell className='text-center'>{totalArr[0][0]}</Cell>
-                    <Cell className='text-center'>{Number(totalArr[0][1]).toFixed(2)}</Cell>
+                    <Cell className='text-center text-bold' rowSpan={totalArr.length}>{LangHelper.getResource('Total')}</Cell>
+                    <Cell className='text-center text-bold'>{totalArr[0][0]}</Cell>
+                    <Cell className='text-center text-bold'>{Number(totalArr[0][1]).toFixed(2)}</Cell>
                 </Row>
                 {
                     totalArr.length > 1 &&
                     totalArr.slice(1).map((element, key) => (
                         <Row key={`amount-${key}`} className='background-total'>
-                            <Cell className='text-center'>{element[0]}</Cell>
-                            <Cell className='text-center'>{Number(element[1]).toFixed(2)}</Cell>
+                            <Cell className='text-center text-bold'>{element[0]}</Cell>
+                            <Cell className='text-center text-bold'>{Number(element[1]).toFixed(2)}</Cell>
                         </Row>
                     ))
                 }

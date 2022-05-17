@@ -57,7 +57,7 @@ namespace CRM.Services.UnitTests.ExportExcel
             service.Public_RenderBody(template, worksheet);
 
             // Assert
-            Assert.Equal("2021 Oct", worksheet.Cells[5, 1].Value);
+            Assert.Equal("October 2021", worksheet.Cells[5, 1].Value);
             Assert.Equal("Euro", worksheet.Cells[5, 2].Value);
             Assert.Equal("2", worksheet.Cells[5, 3].Value);
 

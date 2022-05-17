@@ -56,7 +56,8 @@
                 colIndex = 1;
                 var redemption = redemptionStatistics[index];
                 var isReportByYear = reportBy == ReportByYear;
-                var date = isReportByYear ? redemption.Year.ToString() : GetDateString(redemption.Year, redemption.Month);
+                var date = isReportByYear ? redemption.Year.ToString() 
+                    : ((new DateTime(2022, redemption.Month, 1)).ToString("MMMM") + " " + redemption.Year.ToString());
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = date;
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;

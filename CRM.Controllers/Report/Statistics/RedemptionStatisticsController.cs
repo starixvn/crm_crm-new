@@ -42,7 +42,23 @@
 
         public async Task<IActionResult> GetAllSettings()
         {
-            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.Redemption);
+            var statusList = await settingService.GetStatusAsync(ViewTypeConstants.Redemption);
+            var statuses = statusList.ToList();
+            int deleteIndex = -1;
+            for (int i = 0; i < statuses.Count; i++)
+            {
+                if (statuses[i].Name == "Deleted")
+                {
+                    deleteIndex = i;
+                    break;
+                }
+            }
+
+            if (deleteIndex >= 0)
+            {
+                statuses.RemoveAt(deleteIndex);
+            }
+
             var currencies = await settingService.GetCurrencyRedemptionAsync();
             return Json(new
             {
@@ -82,12 +98,7 @@
             {
                 detail.ClaimTime = commonService.ConvertToClientDateTime(detail.ClaimTime);
             }
-            var totalItems = details.ToList().Count;
-            if (totalItems > 0)
-            {
-                details = details.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
-            }
-            return Json(details);
+            return Json(new { details, criteria.TotalRows });
         }
 
         [HttpPost]
@@ -95,8 +106,8 @@
         {
             var title = string.Format(ViewResources.RedemptionStatistics_Title,
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
-            var fromDateFormat = criteria.FromDate.ToString("MMddyyyy");
-            var toDateFormat = criteria.ToDate.ToString("MMddyyyy");
+            var fromDateFormat = criteria.FromDate.ToString("yyyyMMdd");
+            var toDateFormat = criteria.ToDate.ToString("yyyyMMdd");
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var redemptions = await baseService.GetDataAsync<RedemptionStatisticsEntity>(criteria);

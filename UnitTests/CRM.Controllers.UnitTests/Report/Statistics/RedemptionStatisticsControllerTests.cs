@@ -123,7 +123,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
 
             // Assert
-            Assert.Equal(details, jsonResult.Value);
+            Assert.Equal(details.ToList(), jsonResult.Value);
         }
 
         [Fact]
@@ -140,7 +140,7 @@
 
             baseService.GetDataAsync<RedemptionStatisticsEntity>(criteria).Returns(redemptions);
             var fileName = string.Format(ViewResources.RedemptionStatistics_ExcelFile,
-                criteria.FromDate.ToString("MMddyyyy"), criteria.ToDate.ToString("MMddyyyy"));
+                criteria.FromDate.ToString("yyyyMMdd"), criteria.ToDate.ToString("yyyyMMdd"));
 
             // Act
             var result = await controller.ExportExcel(criteria);

@@ -49,12 +49,24 @@ describe('Detail', () => {
                 gridParamDetails: { pageIndex: 1, pageSize: 100 }
             };
             const container = shallow(<Detail {...props} />).instance();
+            const expected = [                  
+                   <Row
+                     className="no-data"
+                   >
+                     <Cell
+                       className="text-center"
+                       colSpan={7}
+                     >
+                       ThereIsNoData
+                     </Cell>
+                   </Row>,
+                  ]
             container.renderRow = jest.fn(() => <div />);
 
             // Act
             const actual = container.buildBody();
             // Assert
-            expect(actual).toEqual([<div />]);
+            expect(actual).toEqual(expected);
         });
     });
    
