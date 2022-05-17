@@ -219,11 +219,11 @@ export class DataGrid extends Component {
                 </div>
                 <Table
                     maxWidth={2025}
+                    autoWidth={false}
                     shouldUseMaxWidth
                     width={document.getElementById('app-container').clientWidth}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
-                    autoWidth={false}
                     isPaging
                     onSort={this.onSort}
                     containerPadding={0}

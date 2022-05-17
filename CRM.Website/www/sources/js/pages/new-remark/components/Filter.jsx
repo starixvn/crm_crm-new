@@ -30,7 +30,7 @@ export class Filter extends Component {
             isGuestFiler: isCustomerNotEmpty ? isGuestSearch : false,
             isShowHeadline: isCustomerNotEmpty ? true : false,
             relatedToPICs: '',
-            fromDate: isCustomerNotEmpty ? new Date(2021, 1, 1) : this.firstDateOfMonth,
+            fromDate: isCustomerNotEmpty ? new Date(DateTimeService.firstDayOfYear(currentDate)) : this.firstDateOfMonth,
             toDate: currentDate,
             remarkTitleOptions: [],
             remarkTitleIds: '',
