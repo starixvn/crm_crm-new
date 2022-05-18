@@ -106,8 +106,8 @@ export class AppContainer extends Component {
                 <SweetModalDialog size="lg"
                     title={LangHelper.getResource('Confirmation')}
                     contents={
-                        <div>Are you sure you want to <span>{this.props.editStatusPopup.isActive ? 'deactivate' : 'activate'}
-                        </span> Setting <strong>{`${gridParams.settingName} ' ' ${this.props.editStatusPopup.settingValue}`}</strong>?</div>
+                        <div>Are you sure you want to <span>{this.props.editStatusPopup.isActive ? 'activate' : 'deactivate'}
+                        </span> Setting <strong>{`${gridParams.settingName} ${this.props.editStatusPopup.settingValue}`}</strong>?</div>
                     }
                     buttons={[
                         <Button onClick={this.handleEditStatus} variant="primary" size="sm" >
