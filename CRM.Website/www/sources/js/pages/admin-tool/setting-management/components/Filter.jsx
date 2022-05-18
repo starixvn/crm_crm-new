@@ -56,7 +56,7 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group style={{width: 570}}>
+                    <Form.Group style={{width: 700}}>
                         <Button variant="primary" size="sm" className='mr-3' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Search')}
                         </Button>

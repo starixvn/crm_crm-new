@@ -13,6 +13,13 @@
             cursor: pointer;
             background-color: rgb(227, 227, 227) !important;
         }
+        .table {
+            tbody {
+                tr:hover td {
+                    background-color: #E0FFFF !important;
+                }
+            }
+        }
     }
 }
 
@@ -22,8 +29,8 @@
 
 .update-setting-relation{
     .modal-content{
-        width: 650px !important;
-        height: 650px !important;
+        width: 660px !important;
+        height: 660px !important;
 
         .table-container .body-content{
             max-height: 350px !important;
