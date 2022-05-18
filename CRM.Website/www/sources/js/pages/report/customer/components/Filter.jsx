@@ -112,7 +112,7 @@ export class Filter extends Component {
             positionIds: positionIds.replace('5', '5,6,7,8,9,10'),
             excludeIgnoredAccounts: excludeIgnoredAccounts,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
         this.props.setGridParams(params);
         positionIds !== '' && this.props.getCustomerReport(params);
@@ -246,8 +246,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings } = state;
-    return { allSettings };
+    const { allSettings, gridParams } = state;
+    return { allSettings, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

@@ -26,7 +26,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 <HeaderCell colWidth={22}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
                 <HeaderCell colWidth={45}>{LangHelper.getResource('MainCategoryAndSubCategory')}</HeaderCell>
-                <HeaderCell colWidth={30}>{LangHelper.getResource('Subject')}</HeaderCell>
+                <HeaderCell colWidth={41}>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Duration')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Username')}</HeaderCell>
@@ -242,7 +242,7 @@ export class DataGrid extends Component {
             <div>
                 <div className="table-title d-flex justify-content-between align-items-center">
                     { this.renderGenerateTitle() }
-                    { this.renderToolBox() }
+                    { dynamicReports.data.childReports.length > 0 && this.renderToolBox() }
                 </div>
                 <Table
                     width={1200}
