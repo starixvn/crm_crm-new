@@ -318,7 +318,7 @@ export class Filter extends Component {
             reviewer: reviewer,
             subject: subject,
             pageIndex: 0,
-            pageSize: 100
+            pageSize:  this.props.gridParams.pageSize
         };
 
         this.props.getDynamicReports(params);
@@ -534,8 +534,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings } = state;
-    return { allSettings };
+    const { allSettings, gridParams } = state;
+    return { allSettings, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

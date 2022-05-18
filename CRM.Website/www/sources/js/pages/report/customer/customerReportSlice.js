@@ -5,7 +5,10 @@ const customerReportSlice = createSlice({
     initialState: {
         customerReport: null,
         allSettings: null,
-        gridParams: {}
+        gridParams: {
+            pageIndex: 1,
+            pageSize: 100
+        }
     },
     reducers: {
         setCustomerReport: (state, action) => {

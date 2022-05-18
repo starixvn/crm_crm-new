@@ -5,7 +5,10 @@ const dynamicReportSlice = createSlice({
     initialState: {
         dynamicReports: null,
         allSettings: null,
-        gridParams: {},
+        gridParams: {
+            pageIndex: 1,
+            pageSize: 100
+        },
         viewCommunicationDialog: { show: false },
         viewChartDialog: { show: false, chartInfo: {} }
     },
