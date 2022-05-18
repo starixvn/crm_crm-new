@@ -105,7 +105,7 @@ export class Filter extends Component {
         const { username, headline, vipId, languageIds, siteIds, positionIds, excludeIgnoredAccounts } = this.state;
         const params = {
             username: username,
-            headline: headline,
+            headline: headline === "" ? null : headline,
             vipId: vipId,
             languageIds: languageIds,
             siteIds: siteIds,
