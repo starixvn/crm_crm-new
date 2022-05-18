@@ -121,9 +121,10 @@
             // Act
             var result = await controller.GetRedemptionDetails(criteria);
             var jsonResult = Assert.IsType<JsonResult>(result);
+            var detailsJson = jsonResult.Value.GetType().GetProperty("details").GetValue(jsonResult.Value);
 
             // Assert
-            Assert.Equal(details.ToList(), jsonResult.Value);
+            Assert.Equal(details, detailsJson);
         }
 
         [Fact]

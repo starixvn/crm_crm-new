@@ -160,7 +160,7 @@
                 "{0}\n{1}\n{2}\n{3}",
                 feedback.Subject,
                 "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
+                "By " + feedback.Creator + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
                 "Solving Duration: " + feedback.DurationTime);
 
             if (!string.IsNullOrEmpty(feedback.ReviewerName))
