@@ -49,7 +49,7 @@ describe('DataGrid', () => {
                 ...initProps,
                 customerReport: { customerList: [] }             
             };
-            const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={31}>ThereIsNoData</Cell></Row>];
+            const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center no-data' colSpan={31}>ThereIsNoData</Cell></Row>];
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act

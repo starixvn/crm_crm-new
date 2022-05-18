@@ -90,7 +90,7 @@
                 "{0}\n{1}\n{2}\n{3}\n{4}",
                 feedback.Subject,
                 "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
+                "By " + feedback.Creator + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
                 "Solving Duration: " + feedback.DurationTime,
                 string.Format("Reviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat()));
             var categoryCellValue = "Special Notification\n  Abnormal Bets";
@@ -120,7 +120,7 @@
                 "{0}\n{1}\n{2}\n{3}\n{4}",
                 feedback.Subject,
                 "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
+                "By " + feedback.Creator + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
                 "Solving Duration: " + feedback.DurationTime,
                 string.Format("Reviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat()));
             var categoryCellValue = "Special Notification\n  Abnormal Bets";
@@ -222,7 +222,7 @@
                 Subject = "Special Notification",
                 Status = "Closed",
                 RelatedCustomer = "test1,test2",
-                CreatorName = "sa",
+                Creator = "sa",
                 ReviewerName = "sa",
                 Settings = new List<FeedbackSettingRelation>
                 {
