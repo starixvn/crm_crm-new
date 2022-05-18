@@ -9,7 +9,7 @@
 
         public string Username { get; set; }
 
-        public string CreatorName { get; set; }
+        public string Creator { get; set; }
 
         public DateTime FeedbackDate { get; set; }
 
