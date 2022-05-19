@@ -118,12 +118,12 @@ export class DataGrid extends Component {
         this.setState({ toggles });
     };
 
-    checkIsExpand = (isExpand) => {
+    checkIsExpand = isExpand => {
         if(isExpand){
             return false;
         }
         return true;
-    }
+    };
 
     handleToggleAll = () => {
         const { isExpand } = this.state;
