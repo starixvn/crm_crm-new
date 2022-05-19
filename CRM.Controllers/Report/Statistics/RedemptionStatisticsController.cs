@@ -50,7 +50,6 @@
                 if (statuses[i].Name == "Deleted")
                 {
                     deleteIndex = i;
-                    break;
                 }
             }
 

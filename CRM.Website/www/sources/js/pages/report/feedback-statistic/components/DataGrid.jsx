@@ -10,6 +10,8 @@ import { PAGING_SIZES } from '@jsroot/common/constants';
 export class DataGrid extends Component {
     constructor(props) {
         super(props);
+        this.styleCLick = 'link-click cursor-pointer';
+        this.styleDisableCLick= 'disable-click';
         this.state = {
             shouldResetScrollPosition: true,
             toggleRow: [],
@@ -103,8 +105,8 @@ export class DataGrid extends Component {
                 );
                 item.subTotal.resolves.forEach((count, index) =>{
                     cellsSubTotal.push(
-                        <Cell key={`sub-total-count-${index}`}
-                            className={`child ${count > 0 ? 'link-click cursor-pointer' : 'disable-click' } text-center`}
+                        <Cell key={`sub-total-count-${index}`} 
+                            className={`child ${count > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
                             onClick={() => this.handleShowDetails(usernames[index].id, item.id, 0)}
                         >
                             {count}
@@ -126,11 +128,11 @@ export class DataGrid extends Component {
 
         if(!toggleRow.includes(parentId)){
             const cells = [];
-            cells.push(<Cell key={`sub-${sub.id}`} className='child pl-4'>{sub.name + " ("+ sub.total + ")"}</Cell>);
+            cells.push(<Cell key={`sub-${sub.id}`} className='child pl-4'>{`${sub.name} (${sub.total})`}</Cell>);
             sub.resolves.forEach((count, index) =>{
                 cells.push(
                     <Cell key={`count-${index}`}
-                        className={`child ${count > 0 ? 'link-click cursor-pointer' : 'disable-click' } text-center`}
+                        className={`child ${count > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
                         onClick={() => this.handleShowDetails(usernames[index].id, parentId, sub.id)}
                     >{count}</Cell>);
             });
@@ -149,7 +151,8 @@ export class DataGrid extends Component {
         const cells = [];
         cells.push(<Cell>Grand Total</Cell>);
         gridData.grandTotals.forEach((item,index) =>{
-            cells.push(<Cell className={`${item > 0 ? 'link-click cursor-pointer' : 'disable-click' } text-center`} onClick={() => this.handleShowDetails(gridData.usernames[index].id,0,0)}>{item}</Cell>);
+            cells.push(<Cell className={`${item > 0 ? this.styleCLick : this.styleDisableCLick } text-center`} 
+            onClick={() => this.handleShowDetails(gridData.usernames[index].id,0,0)}>{item}</Cell>);
         });
         return (
             [<Row key='footer' className='footer-container font-weight-bold'>
