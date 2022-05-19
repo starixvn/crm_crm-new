@@ -118,6 +118,13 @@ export class DataGrid extends Component {
         this.setState({ toggles });
     };
 
+    checkIsExpand = (isExpand) => {
+        if(isExpand){
+            return false;
+        }
+        return true;
+    }
+
     handleToggleAll = () => {
         const { isExpand } = this.state;
         const { gridParams } = this.props;
@@ -125,12 +132,12 @@ export class DataGrid extends Component {
         const keyToggle = pageSize * (pageIndex -1);
         const allItem = [];
         if (isExpand) {
-            this.setState({ toggles: [], isExpand: !isExpand });
+            this.setState({ toggles: [], isExpand: this.checkIsExpand(isExpand) });
         } else {
             for(let i = 0; i < this.props.dynamicReports.data.childReports.length; i++) {
                 allItem.push(keyToggle + i + 1);
             }
-            this.setState({ toggles: allItem, isExpand: !isExpand});
+            this.setState({ toggles: allItem, isExpand: this.checkIsExpand(isExpand)});
         }
     };
 
