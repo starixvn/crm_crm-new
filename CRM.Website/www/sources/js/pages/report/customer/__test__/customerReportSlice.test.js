@@ -9,7 +9,10 @@ describe('customerReportSlice reducer', () => {
         expect(customerReport(undefined, {})).toEqual({
             customerReport: null,
             allSettings: null,
-            gridParams: {}
+            gridParams: {
+                pageIndex: 1,
+                pageSize: 100,
+            }
         });
     });
 
@@ -28,10 +31,10 @@ describe('customerReportSlice reducer', () => {
         expect(
             customerReport({}, {
                 type: setAllSettings.type,
-                payload: { languageIds: [{ id: 1, value: 'test'}] }
+                payload: { languageIds: [{ id: 1, value: 'test' }] }
             })
         ).toEqual({
-            allSettings: { languageIds: [{ id: 1, value: 'test'}] }
+            allSettings: { languageIds: [{ id: 1, value: 'test' }] }
         });
     });
 
@@ -39,10 +42,10 @@ describe('customerReportSlice reducer', () => {
         expect(
             customerReport({}, {
                 type: setGridParams.type,
-                payload: { feedbackId: 720, userName:"test" }
+                payload: { feedbackId: 720, userName: "test" }
             })
         ).toEqual({
-            gridParams: { feedbackId: 720, userName:"test" }
+            gridParams: { feedbackId: 720, userName: "test" }
         });
     });
 });

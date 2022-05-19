@@ -50,9 +50,13 @@ export class DataGrid extends Component {
     };
 
     buildBody = () => {
-        const { dynamicReports } = this.props;
+        const { dynamicReports, gridParams } = this.props;
+        const { pageIndex, pageSize } = gridParams;
+        const keyToggle = pageSize * (pageIndex -1);
+
+
         if (dynamicReports.data.childReports.length > 0) {
-            return dynamicReports.data.childReports.map((item, index) => this.renderGroupRow(item, index));
+            return dynamicReports.data.childReports.map((item, index) => this.renderGroupRow(item, index, keyToggle));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
@@ -61,30 +65,31 @@ export class DataGrid extends Component {
         ];
     };
 
-    renderGroupRow = (group, keyToggle) => {
+    renderGroupRow = (group,index, keyToggle) => {
+        const keyToggleRow = keyToggle + index + 1;
         return (
             <React.Fragment>
-                <Row key={keyToggle}>
-                    <Cell colSpan={10} className="group-collapse-expand" onClick={() => this.handleToggleEach(keyToggle)}>
-                        <span className={`pr-2 fa ${this.state.toggles.includes(keyToggle) ? 'fa-caret-right' : 'fa-caret-down'}`}/>
-                        <span>{keyToggle + 1}</span>
+                <Row key={keyToggleRow}>
+                    <Cell colSpan={10} className="group-collapse-expand" onClick={() => this.handleToggleEach(keyToggleRow)}>
+                        <span className={`pr-2 fa ${this.state.toggles.includes(keyToggleRow) ? 'fa-caret-right' : 'fa-caret-down'}`}/>
+                        <span>{keyToggleRow}</span>
                     </Cell>
                 </Row>
                 {
-                    group.childReports.map((item, index) => this.renderRow(item, index, keyToggle))
+                    group.childReports.map((item, index) => this.renderRow(item, index, keyToggleRow, keyToggle))
                 }
             </React.Fragment>
         );
     };
 
-    renderRow = (item, index, keyToggle) => {
-        if (this.state.toggles.includes(keyToggle)) {
+    renderRow = (item, index, keyToggleRow, keyToggle) => {
+        if (this.state.toggles.includes(keyToggleRow)) {
             return null;
         }
         const colorRow = item.status ? item.status.toLowerCase() : '';
         return (
             <Row key={index} className={colorRow}>
-                <Cell>{index + 1}</Cell>
+                <Cell>{keyToggle + index + 1}</Cell>
                 <Cell className='link-click' onClick={() => this.handleViewCommunication(item.feedbackId)}>{item.feedbackId}</Cell>
                 <Cell className="text-center">{DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</Cell>
                 <Cell>{this.renderCategoryColumn(item)}</Cell>
@@ -115,12 +120,15 @@ export class DataGrid extends Component {
 
     handleToggleAll = () => {
         const { isExpand } = this.state;
+        const { gridParams } = this.props;
+        const { pageIndex, pageSize } = gridParams;
+        const keyToggle = pageSize * (pageIndex -1);
         const allItem = [];
         if (isExpand) {
             this.setState({ toggles: [], isExpand: !isExpand });
         } else {
             for(let i = 0; i < this.props.dynamicReports.data.childReports.length; i++) {
-                allItem.push(i);
+                allItem.push(keyToggle + i + 1);
             }
             this.setState({ toggles: allItem, isExpand: !isExpand});
         }

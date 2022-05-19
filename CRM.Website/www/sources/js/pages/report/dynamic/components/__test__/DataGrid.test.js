@@ -84,7 +84,7 @@ describe('DataGrid', () => {
             actual.find(Cell).at(0).simulate('click');
 
             // Assert
-            expect(container.instance().handleToggleEach).toHaveBeenCalledWith(1);
+            expect(container.instance().handleToggleEach).toHaveBeenCalledWith(NaN);
             expect(container.instance().renderRow).toHaveBeenCalled();
         });
 
@@ -103,7 +103,7 @@ describe('DataGrid', () => {
             const actual = mount(container.instance().renderGroupRow(data, keyToggle));
 
             // Assert
-            expect(actual.find('span').at(0).props().className).toEqual('pr-2 fa fa-caret-right');
+            expect(actual.find('span').at(0).props().className).toEqual('pr-2 fa fa-caret-down');
         });
 
         it('should render exactly className of span when no have toggle', () => {
@@ -223,7 +223,7 @@ describe('DataGrid', () => {
             container.instance().handleToggleAll();
 
             // Assert
-            expect(container.state()).toEqual({ toggles: [], isExpand: true });
+            expect(container.state()).toEqual({shouldResetScrollPosition: true, toggles: [1], isExpand: true });
         });
 
         it('should setState exactly when isExpand true', () => {
@@ -237,7 +237,7 @@ describe('DataGrid', () => {
             container.instance().handleToggleAll();
 
             // Assert
-            expect(container.state()).toEqual({ toggles: [0], isExpand: false });
+            expect(container.state()).toEqual({ toggles: [], isExpand: false, shouldResetScrollPosition: true });
         });
     });
 
@@ -471,7 +471,7 @@ describe('DataGrid', () => {
             container.instance().onPaging(1, 100);
 
             // Assert
-            expect(container.state()).toEqual({ toggles: [], isExpand: true });
+            expect(container.state()).toEqual({ toggles: [], isExpand: true, shouldResetScrollPosition: true });
             expect(props.setGridParams).toHaveBeenCalledWith({ pageIndex: 1, pageSize: 100 });
             expect(props.getDynamicReports).toHaveBeenCalledWith({ pageIndex: 0, pageSize: 100 });
         });
