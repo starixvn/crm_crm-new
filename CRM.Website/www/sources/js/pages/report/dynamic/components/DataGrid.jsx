@@ -14,9 +14,22 @@ export class DataGrid extends Component {
         super(props);
 
         this.state = {
+            shouldResetScrollPosition: true,
             toggles: [],
-            isExpand: true
+            isExpand: false
         };
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.dynamicReports !== nextProps.dynamicReports) {
+            nextState.shouldResetScrollPosition = true;
+            nextState.toggles = [];
+            nextState.isExpand = false;
+        }
+        if (this.state.toggles.length > 0) {
+            nextState.shouldResetScrollPosition = false;
+        }
+        return true;
     }
 
     buildHeader = () => {
@@ -103,13 +116,13 @@ export class DataGrid extends Component {
     handleToggleAll = () => {
         const { isExpand } = this.state;
         const allItem = [];
-        if (!isExpand) {
-            this.setState({ toggles: [], isExpand: true });
+        if (isExpand) {
+            this.setState({ toggles: [], isExpand: !isExpand });
         } else {
             for(let i = 0; i < this.props.dynamicReports.data.childReports.length; i++) {
                 allItem.push(i);
             }
-            this.setState({ toggles: allItem, isExpand: false});
+            this.setState({ toggles: allItem, isExpand: !isExpand});
         }
     };
 
@@ -254,7 +267,7 @@ export class DataGrid extends Component {
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
-                    shouldResetScrollPosition={false}
+                    shouldResetScrollPosition={this.state.shouldResetScrollPosition}
                 />
             </div>
         );

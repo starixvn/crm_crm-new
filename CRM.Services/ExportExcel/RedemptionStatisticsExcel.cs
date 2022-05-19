@@ -133,11 +133,5 @@
             cell.Style.Font.Color.SetColor(Color.White);
             cell.Style.Font.Bold = true;
         }
-
-        private static string GetDateString(int year, int month)
-        {
-            DateTime date = new DateTime(year, month, 1);
-            return year.ToString() + " " +  date.ToString("MMM");
-        }
     }
 }

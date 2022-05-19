@@ -85,6 +85,10 @@
     }
 }
 
+.no-data{
+    font-weight: bold;
+}
+
 .react-datepicker-popper {
     width: 200px;
 }
@@ -118,6 +122,17 @@ td.group-collapse-expand {
 .table-title, .page-container {
     min-width: 1200px !important;
     width: 1200px !important;
+}
+
+
+.table-container {
+    .table {
+        tbody {
+            tr:hover td {
+                background-color: #E0FFFF !important;
+            }
+        }
+    }
 }
 
 .link-click {

@@ -87,7 +87,7 @@ export class Filter extends Component {
         this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
         this.setState({
             fromDate: fromDate,
-            toDate: currentToDate
+            toDate: this.maxToDate
         });
     };
 
