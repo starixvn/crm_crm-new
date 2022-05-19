@@ -43,7 +43,7 @@
             }
             else
             {
-                context.Result = new RedirectToActionResult("SignOut", "Auth", null);
+                context.Result = new RedirectToActionResult("SignIn", "Auth", null);
             }
         }
 

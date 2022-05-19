@@ -95,8 +95,8 @@ function generateConfig(environment) {
             [`${cssPath}/pages/report/customer/index`]: pathConfig.cssPaths.customer_report,
             [`${cssPath}/pages/report/summary/index`]: pathConfig.cssPaths.summary,
             [`${cssPath}/pages/report/direct/index`]: pathConfig.cssPaths.direct,
-            [`${cssPath}/pages/report/wager/index`]: pathConfig.cssPaths.wager
-
+            [`${cssPath}/pages/report/wager/index`]: pathConfig.cssPaths.wager,
+            [`${cssPath}/pages/auth/login`]: pathConfig.cssPaths.auth
         },
         output: {
             path: pathConfig.projectRoot,

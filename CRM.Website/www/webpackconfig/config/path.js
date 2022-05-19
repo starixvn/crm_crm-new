@@ -43,7 +43,8 @@ const cssPaths = {
     summary:['./www/sources/css/pages/report/summary/index.scss'],
     customer_report: ['./www/sources/css/pages/report/customer/index.scss'],
     direct:['./www/sources/css/pages/report/direct/index.scss'],
-    wager:['./www/sources/css/pages/report/wager/index.scss']
+    wager:['./www/sources/css/pages/report/wager/index.scss'],
+    auth:['./www/sources/css/pages/auth/login.scss']
 };
 
 const scriptPaths = {

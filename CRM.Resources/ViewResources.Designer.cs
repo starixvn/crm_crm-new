@@ -925,6 +925,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Permission.
+        /// </summary>
+        public static string NoPermission {
+            get {
+                return ResourceManager.GetString("NoPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification List.
         /// </summary>
         public static string NotificationList {
@@ -1321,6 +1330,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Not Existed.
+        /// </summary>
+        public static string UserNotExisted {
+            get {
+                return ResourceManager.GetString("UserNotExisted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Void/Refund.
         /// </summary>
         public static string VoidRefund {
@@ -1380,6 +1398,15 @@ namespace CRM.Resources {
         public static string WhatsApp {
             get {
                 return ResourceManager.GetString("WhatsApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong Username or Password.
+        /// </summary>
+        public static string WrongUsernameOrPassword {
+            get {
+                return ResourceManager.GetString("WrongUsernameOrPassword", resourceCulture);
             }
         }
         

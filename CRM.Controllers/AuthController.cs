@@ -2,153 +2,254 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Models.Auth;
+    using CRM.Resources;
     using CRM.Services;
     using Fanex.Data;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Models;
+    using Fanex.NAP.Client.Models.ParameterObject;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
 
     public class AuthController : Controller
     {
-        private readonly ILogger logger;
         private readonly IUserService userService;
         private readonly INapSession napSession;
         private readonly ISecurityService securityService;
+        private readonly IGroupService groupService;
         private readonly IAuthService authService;
+        private readonly INapSettings napSettings;
+        private readonly ISiteService siteService;
         private readonly AppSettings appSettings;
-        private readonly IEnumerable<ExternalRedirectMapping> redirectMappings;
 
         public AuthController(
-            ILogger<AuthController> logger,
             IUserService userService,
             INapSession napSession,
             ISecurityService securityService,
+            IGroupService groupService,
             IAuthService authService,
-            IOptionsSnapshot<AppSettings> appSettings,
-            IOptionsSnapshot<List<ExternalRedirectMapping>> redirectMappings)
+            INapSettings napSettings,
+            ISiteService siteService,
+            IOptionsSnapshot<AppSettings> appSettings)
         {
-            this.logger = logger;
             this.userService = userService;
             this.napSession = napSession;
             this.securityService = securityService;
+            this.groupService = groupService;
             this.authService = authService;
+            this.napSettings = napSettings;
+            this.siteService = siteService;
             this.appSettings = appSettings.Value;
-            this.redirectMappings = redirectMappings.Value;
         }
 
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public async Task<IActionResult> SignIn(SignIn model)
         {
-            if (string.IsNullOrWhiteSpace(model.Username))
-            {
-                return View();
-            }
-
+            string errorMsg = string.Empty;
             User user = await userService.GetAsync(model.Username);
-            if (user != null && IsValidPassword(user, model))
+            if (user != null)
             {
-                int.TryParse(Cryptography.DecryptPassword(model.OnUserId.Replace(" ", "+")), out int onUserId);
-                await DoSignInAsync(user, onUserId);
+                if (!IsValidPassword(user, model))
+                {
+                    errorMsg = ViewResources.WrongUsernameOrPassword;
+                }
+                else if (!await IsExistNapSite(user) || !await IsExistNapGroup(user))
+                {
+                    errorMsg = ViewResources.NoPermission;
+                }
+                else
+                {
+                    var onUserId = await LoginCheckIn(user);
+                    await DoSignInAsync(user, onUserId);
+
+                    return Redirect(!string.IsNullOrWhiteSpace(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl) ? model.ReturnUrl : "~/Home");
+                }
+            }
+            else
+            {
+                errorMsg = ViewResources.UserNotExisted;
             }
 
-            var mapping = GetExternalRedirectMapping();
-            return new RedirectResult(mapping?.ExternalHomePageUrl, false);
+            ViewBag.Message = errorMsg;
+            return View();
+        }
+
+        [CrmAuthorize]
+        [HttpPost]
+        public async Task<ActionResult> CheckUserOnlineStatus()
+        {
+            var recheckInStatus = await RecheckIn();
+            return Json(new
+            {
+                napSession.OnUserId,
+                ErrCode = (int)recheckInStatus
+            });
+        }
+
+        private async Task<RecheckInStatus> RecheckIn()
+        {
+            if (napSession.OnUserId <= 0)
+            {
+                return RecheckInStatus.KickOut;
+            }
+            else
+            {
+                if (!napSettings.EnableReCheckIn)
+                {
+                    return RecheckInStatus.Success;
+                }
+
+                if (!await siteService.IsActivatedAsync(napSettings.SiteId))
+                {
+                    return RecheckInStatus.InvalidSite;
+                }
+
+                var status = await securityService.ReCheckInAsync(napSession.OnUserId, napSettings.SiteId);
+
+                return status > 0 ? RecheckInStatus.KickOut : RecheckInStatus.Success;
+            }
+        }
+
+        private async Task<bool> IsExistNapSite(User user)
+        {
+            return (await userService.GetSiteLevelAsync(user.Id, napSettings.Environment)).Any(s => s.Site.Id == napSettings.SiteId && s.IsActive);
+        }
+
+        private async Task<bool> IsExistNapGroup(User user)
+        {
+            if (user.Group != null)
+            {
+                var group = await groupService.GetAsync(user.Group.Id);
+
+                if (group != null && !group.IsActive)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private async Task<int> LoginCheckIn(User user)
+        {
+            var loginParam = new LoginParameter
+            {
+                UserId = user.Id,
+                SiteId = napSettings.SiteId,
+                Domain = HttpContext.Request?.Host.ToString(),
+                Ip = GetClientIP(HttpContext),
+                BrowserName = Request?.Headers["User-Agent"].ToString(),
+                CountryCode = ResolveCountry(HttpContext.Request)?.GeoId.ToString(CultureInfo.CurrentCulture),
+                NetSessionId = HttpContext.Session.Id,
+                Platform = Environment.OSVersion.Platform.ToString(),
+                LoginDate = DateTime.Now
+            };
+
+            return await securityService.LoginAsync(loginParam);
+        }
+
+        private static string GetClientIP(HttpContext httpContext)
+        {
+            var clientIP = httpContext.Request?.Headers["x-forwarded-for"].ToString();
+            if (string.IsNullOrWhiteSpace(clientIP))
+            {
+                clientIP = httpContext?.Connection?.RemoteIpAddress?.ToString();
+            }
+
+            return clientIP;
+        }
+
+        private static RegionInfo ResolveCountry(HttpRequest request)
+        {
+            var culture = ResolveCulture(request);
+
+            if (culture != null)
+            {
+                return new RegionInfo(culture.LCID);
+            }
+
+            return null;
+        }
+
+        private static CultureInfo ResolveCulture(HttpRequest request)
+        {
+            var userLangs = request.Headers["Accept-Language"].ToString();
+            var firstLang = userLangs.Split(',').FirstOrDefault();
+            var defaultLang = string.IsNullOrEmpty(firstLang) ? "en" : firstLang;
+            return CultureInfo.CreateSpecificCulture(defaultLang);
         }
 
         public async Task<IActionResult> SingleSignOn(SingleSignOn model)
         {
-            if (IsValidTime(model.Time))
+            var isValidTime = IsValidTime(model.Time);
+            if (isValidTime)
             {
-                int.TryParse(Cryptography.DecryptPassword(model.UserId.Replace(" ", "+")), out int userId);
-                User user = await userService.GetAsync(userId);
-                if (user != null)
+                var userId = int.Parse(Cryptography.DecryptPassword(model.UserId.Replace(" ", "+")));
+                var onUserid = int.Parse(Cryptography.DecryptPassword(model.OnUserId.Replace(" ", "+")));
+
+                var newOnUserId = await SSOLogin(userId, onUserid);
+
+                if (newOnUserId > 0)
                 {
-                    int.TryParse(Cryptography.DecryptPassword(model.OnUserId.Replace(" ", "+")), out int onUserId);
-                    await DoSignInAsync(user, onUserId);
+                    var user = await userService.GetAsync(userId);
+                    if (user != null)
+                    {
+                        await DoSignInAsync(user, newOnUserId);
+
+                        return Redirect(!string.IsNullOrWhiteSpace(model.RedirectUrl) && Url.IsLocalUrl(model.RedirectUrl) ? model.RedirectUrl : "~/Home");
+                    }
                 }
             }
 
-            var mapping = GetExternalRedirectMapping();
-            return new RedirectResult(mapping?.ExternalHomePageUrl, false);
+            return new RedirectResult("~/Auth/SignIn");
+        }
+
+        private async Task<int> SSOLogin(int userId, int onuserId)
+        {
+            var ssoLoginParam = new SSOLoginParameter
+            {
+                UserId = userId,
+                SiteId = napSettings.SiteId,
+                Domain = HttpContext.Request?.Host.ToString(),
+                CheckOnUserId = onuserId,
+                IP = GetClientIP(HttpContext),
+                BrowserName = Request?.Headers["User-Agent"].ToString(),
+                CountryCode = ResolveCountry(HttpContext.Request)?.GeoId.ToString(CultureInfo.CurrentCulture),
+                NetSessionId = HttpContext?.Session.Id,
+                Platform = Environment.OSVersion.Platform.ToString(),
+                LoginDate = DateTime.Now
+            };
+            return await securityService.SSOLoginAsync(ssoLoginParam);
         }
 
         public async Task<IActionResult> SignOut()
         {
             await DoSignOutAsync();
 
-            var mapping = GetExternalRedirectMapping();
-            return new RedirectResult(mapping?.ExternalSignInUrl, false);
-        }
-
-        [CrmAuthorize]
-        public IActionResult ReCheckIn()
-        {
-            return View();
-        }
-
-        [CrmAuthorize]
-        [HttpPost]
-        public async Task<IActionResult> CheckUserOnlineStatus()
-        {
-            RecheckInStatus recheckInStatus = await authService.GetRecheckInStatusAsync();
-            if (recheckInStatus != RecheckInStatus.Success)
-            {
-                logger.LogInformation(string.Format("UserId: {0}\nUsername: {1}\nRecheckInStatus: {2}", napSession.UserId, napSession.UserName, recheckInStatus));
-            }
-
-            if (recheckInStatus == RecheckInStatus.UnderMaintenance)
-            {
-                var mapping = GetExternalRedirectMapping();
-                return new RedirectResult(mapping?.ExternalUnderMaintenanceUrl, false);
-            }
-
-            if (recheckInStatus != RecheckInStatus.Success)
-            {
-                await DoSignOutAsync();
-                var mapping = GetExternalRedirectMapping();
-                return new RedirectResult(mapping?.ExternalSignInUrl, false);
-            }
-
-            return Ok();
-        }
-
-        private ExternalRedirectMapping GetExternalRedirectMapping()
-        {
-            var request = HttpContext.Request;
-            var roorUrl = Url.Content("~");
-            roorUrl = roorUrl.EndsWith("/") ? roorUrl.Substring(0, roorUrl.Length - 1) : roorUrl;
-            var config = new ExternalRedirectMapping();
-            foreach (var element in redirectMappings)
-            {
-                var localPath = element.DomainUri.LocalPath.EndsWith("/")
-                           ? element.DomainUri.LocalPath.Substring(0, element.DomainUri.LocalPath.Length - 1)
-                           : element.DomainUri.LocalPath;
-                if (element.DomainUri.Host.Equals(request.Host.Host, StringComparison.OrdinalIgnoreCase)
-                    && (!element.IncludePort || element.DomainUri.Port == request.Host.Port)
-                    && localPath.Equals(roorUrl, StringComparison.OrdinalIgnoreCase))
-                {
-                    config = element;
-                }
-            }
-
-            return config;
+            return new RedirectResult("~/Auth/SignIn");
         }
 
         private bool IsValidPassword(User user, SignIn signIn)
         {
-            var hashPassword = authService.HashText(string.Format("{0}{1}", user.Password, signIn.Token));
-            return string.Equals(signIn.Password, hashPassword, StringComparison.CurrentCulture);
+            return string.Equals(signIn.Password, user.Password, StringComparison.CurrentCulture);
         }
 
         private async Task DoSignInAsync(User user, int onUserId)
@@ -156,6 +257,9 @@
             napSession.UserId = user.Id;
             napSession.UserName = user.Username;
             napSession.OnUserId = onUserId;
+            napSession.MenuItemList = (await userService.GetMenuItemAsync(user.Id, napSettings.SiteId,
+      napSettings.Environment, true)).Where(x => !string.IsNullOrWhiteSpace(x.Url))
+      .OrderBy(x => x.DisplayOrder).ToList();
 
             var claims = new List<Claim>
             {
@@ -178,6 +282,8 @@
 
         private async Task DoSignOutAsync()
         {
+            await securityService.LogoutAsync(napSession.OnUserId);
+            napSession.ClearAll();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }

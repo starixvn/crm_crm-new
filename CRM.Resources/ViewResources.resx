@@ -567,4 +567,13 @@
   <data name="FeedbackStatistic_ExcelFile" xml:space="preserve">
     <value>FeedbackStatistic-{0}-{1}</value>
   </data>
+  <data name="WrongUsernameOrPassword" xml:space="preserve">
+    <value>Wrong Username or Password</value>
+  </data>
+  <data name="NoPermission" xml:space="preserve">
+    <value>No Permission</value>
+  </data>
+  <data name="UserNotExisted" xml:space="preserve">
+    <value>User Not Existed</value>
+  </data>
 </root>
