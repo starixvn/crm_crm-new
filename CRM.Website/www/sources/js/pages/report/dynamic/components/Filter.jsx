@@ -76,13 +76,6 @@ export class Filter extends Component {
         maxDateEndWeek.setDate(maxDate.getDate() - maxDate.getDay() + 6);
         maxDate = maxDateEndWeek;
 
-        let currentToDate = this.state.toDate;
-        if (currentToDate < fromDate) {
-            currentToDate = fromDate;
-        } else if (currentToDate > maxDate) {
-            currentToDate = maxDate;
-        }
-
         this.minToDate = fromDate;
         this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
         this.setState({
@@ -134,7 +127,7 @@ export class Filter extends Component {
             highlightDates[i] = date;
         }
         return highlightDates;
-    }
+    };
 
     renderFilterDate = () => {
         let resFromDate = {}, resToDate = {};

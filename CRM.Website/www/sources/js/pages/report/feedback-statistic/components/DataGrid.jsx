@@ -105,7 +105,7 @@ export class DataGrid extends Component {
                 );
                 item.subTotal.resolves.forEach((count, index) =>{
                     cellsSubTotal.push(
-                        <Cell key={`sub-total-count-${index}`} 
+                        <Cell key={`sub-total-count-${index}`}
                             className={`child ${count > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
                             onClick={() => this.handleShowDetails(usernames[index].id, item.id, 0)}
                         >
@@ -151,7 +151,7 @@ export class DataGrid extends Component {
         const cells = [];
         cells.push(<Cell>Grand Total</Cell>);
         gridData.grandTotals.forEach((item,index) =>{
-            cells.push(<Cell className={`${item > 0 ? this.styleCLick : this.styleDisableCLick } text-center`} 
+            cells.push(<Cell className={`${item > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
             onClick={() => this.handleShowDetails(gridData.usernames[index].id,0,0)}>{item}</Cell>);
         });
         return (
