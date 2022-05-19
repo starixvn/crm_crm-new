@@ -1402,11 +1402,11 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wrong Username or Password.
+        ///   Looks up a localized string similar to Wrong Password.
         /// </summary>
-        public static string WrongUsernameOrPassword {
+        public static string WrongPassword {
             get {
-                return ResourceManager.GetString("WrongUsernameOrPassword", resourceCulture);
+                return ResourceManager.GetString("WrongPassword", resourceCulture);
             }
         }
         

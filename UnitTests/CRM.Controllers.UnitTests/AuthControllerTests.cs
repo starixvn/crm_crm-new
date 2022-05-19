@@ -3,340 +3,315 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using AutoFixture;
-    using CRM.Core.Enumerables;
     using CRM.Core.Models;
     using CRM.Models.Auth;
-    using CRM.Services;
+    using CRM.Resources;
     using Fanex.Data;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Models;
+    using Fanex.NAP.Client.Models.ParameterObject;
+    using Fanex.NAP.Client.Models.ValueObject;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Routing;
-    using Microsoft.Extensions.Logging;
+    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
 
     public class AuthControllerTests
     {
-        private ILogger<AuthController> logger;
         private IUserService userService;
         private INapSession napSession;
         private ISecurityService securityService;
-        private IAuthService authService;
-        private AppSettings appSettings;
-        private IEnumerable<ExternalRedirectMapping> redirectMappings;
-        private readonly Fixture fixture = new Fixture();
-        private const int SingleSignOnExpiredTime = 30;
-
-        #region SignIn
+        private IGroupService groupService;
+        private INapSettings napSettings;
+        private ISiteService siteService;
+        private IOptionsSnapshot<AppSettings> appSettings;
 
         [Fact]
-        public async Task SignIn_InvalidUsername_ReturnExpectedViewResult()
+        public void Index_WhenCalled_ReturnView()
         {
-            // Arrange
-            var model = new SignIn();
             var controller = GetController();
+            //Actual
+            IActionResult actual = controller.SignIn();
 
-            //Act
-            var actual = await controller.SignIn(model);
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
+            //Assert
+            Assert.IsType<ViewResult>(actual);
         }
 
         [Fact]
-        public async Task SignIn_UserIsNull_ReturnExpectedRedirectResult()
+        public async Task Logout_WhenCalled_ExecutedExpectedMethodsAndReturnViewResult()
         {
-            // Arrange
-            User user = null;
-            var model = fixture.Create<SignIn>();
-            var controller = GetController();
-            controller.ControllerContext = MockControllerContext();
-            controller.Url = MockUrlHelper();
-            userService.GetAsync(model.Username).Returns(user);
-
-            //Act
-            var actual = await controller.SignIn(model);
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal("home/index", redirectResult.Url);
-        }
-
-        [Fact]
-        public async Task SignIn_InvalidPassword_ReturnExpectedRedirectResult()
-        {
-            // Arrange
-            User user = null;
-            var model = fixture.Create<SignIn>();
-            var controller = GetController();
-            controller.ControllerContext = MockControllerContext();
-            controller.Url = MockUrlHelper();
-            userService.GetAsync(model.Username).Returns(user);
-            authService.HashText(Arg.Any<string>()).Returns("invalid-password");
-
-            //Act
-            var actual = await controller.SignIn(model);
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal("home/index", redirectResult.Url);
-        }
-
-        [Fact]
-        public async Task SignIn_UserIsExist_ReturnExpectedRedirectResult()
-        {
-            // Arrange
-            var model = fixture.Create<SignIn>();
-            model.OnUserId = Cryptography.EncryptPassword("1");
-            var user = new User
-            {
-                Id = 1,
-                Username = "sa"
-            };
-            var controller = GetController();
-            controller.ControllerContext = MockControllerContext();
-            controller.Url = MockUrlHelper();
-            userService.GetAsync(model.Username).Returns(user);
-            authService.HashText(Arg.Any<string>()).Returns(model.Password);
-
-            //Act
-            var actual = await controller.SignIn(model);
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal("home/index", redirectResult.Url);
-            napSession.UserId = user.Id;
-            napSession.UserName = user.Username;
-            napSession.OnUserId = 1;
-        }
-
-        #endregion SignIn
-
-        #region SingleSignOn
-
-        [Fact]
-        public async Task SingleSignOn_InvalidTime_ReturnExpectedRedirectResult()
-        {
-            // Arrange
-            var time = DateTime.Now;
-            var expirationTime = time.AddSeconds(SingleSignOnExpiredTime + 1);
-            var model = fixture.Create<SingleSignOn>();
-            model.Time = Cryptography.EncryptPassword(time.ToLongTimeString());
-            var controller = GetController();
-            controller.ControllerContext = MockControllerContext();
-            controller.Url = MockUrlHelper();
-            securityService.GetTime().Returns(expirationTime.ToLongTimeString());
-
-            //Act
-            var actual = await controller.SingleSignOn(model);
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal("home/index", redirectResult.Url);
-        }
-
-        [Fact]
-        public async Task SingleSignOn_UserIsNull_ReturnExpectedRedirectResult()
-        {
-            // Arrange
-            var time = DateTime.Now;
-            var expirationTime = time.AddSeconds(SingleSignOnExpiredTime - 1);
-            User user = null;
-            var model = new SingleSignOn
-            {
-                UserId = Cryptography.EncryptPassword("1"),
-                Time = Cryptography.EncryptPassword(time.ToLongTimeString())
-            };
-            model.Time = Cryptography.EncryptPassword(time.ToLongTimeString());
-            var controller = GetController();
-            controller.ControllerContext = MockControllerContext();
-            controller.Url = MockUrlHelper();
-            securityService.GetTime().Returns(Cryptography.EncryptPassword(expirationTime.ToLongTimeString()));
-            userService.GetAsync(1).Returns(user);
-
-            //Act
-            var actual = await controller.SingleSignOn(model);
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal("home/index", redirectResult.Url);
-        }
-
-        [Fact]
-        public async Task SingleSignOn_UserIsExist_ReturnExpectedRedirectResult()
-        {
-            // Arrange
-            var time = DateTime.Now;
-            var expirationTime = time.AddSeconds(SingleSignOnExpiredTime - 1);
-            var user = new User
-            {
-                Id = 1,
-                Username = "sa"
-            };
-            var model = new SingleSignOn
-            {
-                UserId = Cryptography.EncryptPassword("1"),
-                OnUserId = Cryptography.EncryptPassword("2"),
-                Time = Cryptography.EncryptPassword(time.ToLongTimeString())
-            };
-            model.Time = Cryptography.EncryptPassword(time.ToLongTimeString());
-            var controller = GetController();
-            controller.ControllerContext = MockControllerContext();
-            controller.Url = MockUrlHelper();
-            securityService.GetTime().Returns(Cryptography.EncryptPassword(expirationTime.ToLongTimeString()));
-            userService.GetAsync(1).Returns(user);
-
-            //Act
-            var actual = await controller.SingleSignOn(model);
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal("home/index", redirectResult.Url);
-            napSession.UserId = user.Id;
-            napSession.UserName = user.Username;
-            napSession.OnUserId = 2;
-        }
-
-        #endregion SingleSignOn
-
-        [Fact]
-        public async Task SignOut_WhenCalled_ReturnExpectedRedirectResult()
-        {
-            // Arrange
-            var controller = GetController();
-            controller.ControllerContext = MockControllerContext();
-            controller.Url = MockUrlHelper();
-
-            //Act
+            var controller = FakeDoCheckInController();
+            //Actual
             var actual = await controller.SignOut();
 
-            // Assert
-            var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal("auth/signin", redirectResult.Url);
+            //Assert
+            await securityService.Received().LogoutAsync(Arg.Any<int>());
+            napSession.Received().ClearAll();
+            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
+            Assert.Equal("SignIn", viewResult.ActionName);
         }
+
+        #region SSO Login Tests
 
         [Fact]
-        public void ReCheckIn_WhenCalled_ReturnExpectedViewResult()
+        public async Task SSO_IsNotValidTime_RedirectToAction()
         {
-            // Arrange
             var controller = GetController();
-
-            // Act
-            var actual = controller.ReCheckIn();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
-        }
-
-        #region CheckUserOnlineStatus
-
-        [Fact]
-        public async Task CheckUserOnlineStatus_IsSuccessfull_ReturnOkResult()
-        {
-            // Arrange
-            var controller = GetController();
-            authService.GetRecheckInStatusAsync().Returns(RecheckInStatus.Success);
-
-            // Act
-            var actual = await controller.CheckUserOnlineStatus();
-
-            // Assert
-            Assert.IsType<OkResult>(actual);
-        }
-
-        [Fact]
-        public async Task CheckUserOnlineStatus_IsUnsuccessfull_ReturnExpectedRedirectResult()
-        {
-            // Arrange
-            var controller = GetController();
-            controller.ControllerContext = MockControllerContext();
-            controller.Url = MockUrlHelper();
-            authService.GetRecheckInStatusAsync().Returns(RecheckInStatus.KickOut);
-
-            //Act
-            var actual = await controller.CheckUserOnlineStatus();
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectResult>(actual);
-            Assert.Equal("auth/signin", redirectResult.Url);
-        }
-
-        #endregion CheckUserOnlineStatus
-
-        #region Helpers
-
-        private AuthController GetController()
-        {
-            logger = Substitute.For<ILogger<AuthController>>();
-            userService = Substitute.For<IUserService>();
-            napSession = Substitute.For<INapSession>();
-            securityService = Substitute.For<ISecurityService>();
-            authService = Substitute.For<IAuthService>();
-            var settings = Substitute.For<IOptionsSnapshot<AppSettings>>();
-            var mappings = Substitute.For<IOptionsSnapshot<List<ExternalRedirectMapping>>>();
-            appSettings = new AppSettings
+            var sso = new SingleSignOn
             {
-                SingleSignOnExpiredTime = SingleSignOnExpiredTime
+                OnUserId = Cryptography.EncryptPassword("8"),
+                UserId = Cryptography.EncryptPassword("8"),
+                Time = Cryptography.EncryptPassword(DateTime.Now.ToString()),
+                RedirectUrl = "/Test"
             };
-            redirectMappings = new List<ExternalRedirectMapping>
+            securityService.GetTimeAsync().Returns(DateTime.Now.AddYears(1).ToString());
+            //Actual
+            var actual = await controller.SingleSignOn(sso);
+
+            //Assert
+            var result = Assert.IsType<RedirectResult>(actual);
+            Assert.Equal("~/Auth/SignIn", result.Url);
+        }
+
+        [Fact]
+        public async Task SSO_IsValidTimeAndCannotSSOLogin_RedirectToAction()
+        {
+            var controller = FakeDoCheckInController();
+            var sso = new SingleSignOn
             {
-                new ExternalRedirectMapping
-                {
-                    Domain = "http://localhost:8081",
-                    ExternalHomePageUrl = "home/index",
-                    ExternalSignInUrl = "auth/signin"
-                }
+                OnUserId = Cryptography.EncryptPassword("8"),
+                UserId = Cryptography.EncryptPassword("8"),
+                Time = Cryptography.EncryptPassword(DateTime.Now.ToString()),
+                RedirectUrl = "/Test"
+            };
+            securityService.GetTimeAsync().Returns(DateTime.Now.AddYears(-1).ToString());
+            securityService.SSOLoginAsync(Arg.Any<SSOLoginParameter>()).Returns(0);
+            //Actual
+            var actual = await controller.SingleSignOn(sso);
+
+            //Assert
+            var result = Assert.IsType<RedirectResult>(actual);
+            Assert.Equal("~/Auth/SignIn", result.Url);
+        }
+
+        [Fact]
+        public async Task SSO_IsValidTimeAndSSOLoginSuccess_ButNoUser_RedirectAction()
+        {
+            var controller = FakeDoCheckInController();
+            var sso = new SingleSignOn
+            {
+                OnUserId = Cryptography.EncryptPassword("8"),
+                UserId = Cryptography.EncryptPassword("8"),
+                Time = Cryptography.EncryptPassword(DateTime.Now.ToString()),
+                RedirectUrl = "/Test"
+            };
+            securityService.GetTimeAsync().Returns(DateTime.Now.AddYears(-1).ToString());
+            securityService.SSOLoginAsync(Arg.Any<SSOLoginParameter>()).Returns(8);
+            //Actual
+            var actual = await controller.SingleSignOn(sso);
+
+            //Assert
+            var result = Assert.IsType<RedirectResult>(actual);
+            Assert.Equal("~/Auth/SignIn", result.Url);
+        }
+
+        [Fact]
+        public async Task SSO_IsValidTimeAndSSOLoginSuccess_GetUserSuccess_RedirectAction()
+        {
+            var controller = FakeDoCheckInController();
+            var sso = new SingleSignOn
+            {
+                OnUserId = Cryptography.EncryptPassword("8"),
+                UserId = Cryptography.EncryptPassword("8"),
+                Time = Cryptography.EncryptPassword(DateTime.Now.ToString()),
+                RedirectUrl = "/Test"
+            };
+            var user = new User
+            {
+                Id = 8,
+                Name = "sa",
+                Username = "sa",
+            };
+            securityService.SSOLoginAsync(Arg.Any<SSOLoginParameter>()).Returns(8);
+            userService.GetAsync(Arg.Any<int>()).Returns(user);
+            securityService.GetTimeAsync().Returns(DateTime.Now.AddYears(-1).ToString());
+            var menuItems = new List<MenuItem>
+            {
+                new MenuItem {Id = 1, Name = "Test", Url = "/Test"},
+                new MenuItem {Id = 2, Name = "Sub", Url = "Sub" }
+            };
+            userService.GetMenuItemAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), true).Returns(menuItems);
+
+            //Actual
+            var actual = await controller.SingleSignOn(sso);
+
+            //Assert
+            var result = Assert.IsType<RedirectResult>(actual);
+            Assert.Equal("/Test", result.Url);
+        }
+
+        #endregion SSO Login Tests
+
+        #region SignIn tests
+
+        [Fact]
+        public async Task SignIn_WhenNoUser_ReturnExpectedResult()
+        {
+            var controller = GetController();
+            //Actual
+            var actual = await controller.SignIn(new SignIn());
+
+            //Assert
+            Assert.IsType<ViewResult>(actual);
+            Assert.Equal(ViewResources.UserNotExisted, controller.ViewBag.Message);
+        }
+
+        [Fact]
+        public async Task SignIn_WrongPassword_ReturnExpectedResult()
+        {
+            var controller = GetController();
+            var userLogin = new SignIn
+            {
+                Username = "sa",
+                Password = "1234"
             };
 
-            settings.Value.Returns(appSettings);
-            mappings.Value.Returns(redirectMappings);
-            return new AuthController(
-                logger,
-                userService,
-                napSession,
-                securityService,
-                authService,
-                settings,
-                mappings);
+            var user = new User
+            {
+                Username = "sa",
+                Password = "Test"
+            };
+            userService.GetAsync(Arg.Any<string>()).Returns(user);
+
+            //Actual
+            var actual = await controller.SignIn(userLogin);
+
+            //Assert
+            Assert.IsType<ViewResult>(actual);
+            Assert.Equal(ViewResources.WrongPassword, controller.ViewBag.Message);
         }
 
-        private IServiceProvider MockServiceProvider()
+        [Fact]
+        public async Task SignIn_NoPermission_ReturnExpectedResult()
         {
-            var authServiceMock = Substitute.For<IAuthenticationService>();
-            var serviceProviderMock = Substitute.For<IServiceProvider>();
-            serviceProviderMock.GetService(typeof(IAuthenticationService))
-                .Returns(authServiceMock);
-            return serviceProviderMock;
+            var controller = GetController();
+            var userLogin = new SignIn
+            {
+                Username = "sa",
+                Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234")
+            };
+
+            var user = new User
+            {
+                Username = "sa",
+                Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234"),
+                Group = new Group { Id = 2, Name = "Test" }
+            };
+
+            userService.GetAsync(Arg.Any<string>()).Returns(user);
+            groupService.GetAsync(Arg.Any<int>()).Returns(new Group { Id = 2, Name = "Test", IsActive = true });
+            //Actual
+            var actual = await controller.SignIn(userLogin);
+
+            //Assert
+            Assert.IsType<ViewResult>(actual);
+            Assert.Equal(ViewResources.NoPermission, controller.ViewBag.Message);
         }
 
-        private IUrlHelper MockUrlHelper()
+        [Fact]
+        public async Task SignIn_Valid_ReturnExpectedResult()
         {
-            var urlHelperMock = Substitute.For<IUrlHelper>();
-            urlHelperMock.Action(Arg.Any<UrlActionContext>()).Returns(string.Empty);
-            return urlHelperMock;
+            var controller = FakeDoCheckInController();
+            var userLogin = new SignIn
+            {
+                Username = "sa",
+                Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234aa"),
+                ReturnUrl = "/Test"
+            };
+
+            var user = new User
+            {
+                Username = "sa",
+                Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234aa"),
+                Group = new Group { Id = 2, Name = "Test" }
+            };
+            var siteLevel = new List<SiteLevel>
+            {
+                new SiteLevel { Site = new Site { Id = 69}, IsActive = true }
+            };
+            napSettings.SiteId.Returns(69);
+            userService.GetAsync(Arg.Any<string>()).Returns(user);
+            groupService.GetAsync(Arg.Any<int>())
+                .Returns(new Group { Id = 2, Name = "Test", IsActive = true });
+            userService.GetSiteLevelAsync(Arg.Any<int>(), Arg.Any<string>())
+                   .Returns(siteLevel);
+            //Actual
+            var actual = await controller.SignIn(userLogin);
+
+            //Assert
+            var result = Assert.IsType<RedirectResult>(actual);
+
+            Assert.Equal("/Test", result.Url);
         }
 
-        private ControllerContext MockControllerContext()
+        #endregion SignIn tests
+
+        #region helper
+
+        private AuthController FakeDoCheckInController()
         {
+            var authService = Substitute.For<IAuthenticationService>();
+            var urlHelper = Substitute.For<IUrlHelper>();
+            var urlHelperFactory = Substitute.For<IUrlHelperFactory>();
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            var session = Substitute.For<ISession>();
+            var tempData = Substitute.For<ITempDataDictionaryFactory>();
+            serviceProvider.GetService(typeof(IAuthenticationService)).Returns(authService);
+            serviceProvider.GetService(typeof(IUrlHelper)).Returns(urlHelper);
+            serviceProvider.GetService(typeof(IUrlHelperFactory)).Returns(urlHelperFactory);
+            serviceProvider.GetService(typeof(ITempDataDictionaryFactory)).Returns(tempData);
+
             var request = Substitute.For<HttpRequest>();
             request.Host.Returns(new HostString("localhost", 8081));
             var httpContext = Substitute.For<HttpContext>();
             httpContext.Request.Returns(request);
-            httpContext.RequestServices = MockServiceProvider();
-            return new ControllerContext()
+            httpContext.RequestServices.Returns(serviceProvider);
+            httpContext.Session.Returns(session);
+
+            var controllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
+
+            var controller = GetController();
+            controller.ControllerContext = controllerContext;
+            controller.ControllerContext.HttpContext.Connection.RemoteIpAddress = System.Net.IPAddress.Any;
+            controller.ControllerContext.HttpContext.Request.Headers["User-Agent"] = "12345";
+            controller.Url.IsLocalUrl(Arg.Any<string>()).Returns(true);
+
+            return controller;
         }
 
-        #endregion Helpers
+        private AuthController GetController()
+        {
+            userService = Substitute.For<IUserService>();
+            groupService = Substitute.For<IGroupService>();
+            napSettings = Substitute.For<INapSettings>();
+            securityService = Substitute.For<ISecurityService>();
+            napSession = Substitute.For<INapSession>();
+            siteService = Substitute.For<ISiteService>();
+            appSettings = Substitute.For<IOptionsSnapshot<AppSettings>>();
+            appSettings.Value.Returns(new AppSettings { SingleSignOnExpiredTime = -1 });
+
+            return new AuthController(userService, napSession, securityService, groupService, napSettings, siteService, appSettings);
+        }
+
+        #endregion helper
     }
 }

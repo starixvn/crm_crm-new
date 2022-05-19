@@ -11,7 +11,6 @@
     using CRM.Core.Models;
     using CRM.Models.Auth;
     using CRM.Resources;
-    using CRM.Services;
     using Fanex.Data;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -30,7 +29,6 @@
         private readonly INapSession napSession;
         private readonly ISecurityService securityService;
         private readonly IGroupService groupService;
-        private readonly IAuthService authService;
         private readonly INapSettings napSettings;
         private readonly ISiteService siteService;
         private readonly AppSettings appSettings;
@@ -40,7 +38,6 @@
             INapSession napSession,
             ISecurityService securityService,
             IGroupService groupService,
-            IAuthService authService,
             INapSettings napSettings,
             ISiteService siteService,
             IOptionsSnapshot<AppSettings> appSettings)
@@ -49,7 +46,6 @@
             this.napSession = napSession;
             this.securityService = securityService;
             this.groupService = groupService;
-            this.authService = authService;
             this.napSettings = napSettings;
             this.siteService = siteService;
             this.appSettings = appSettings.Value;
@@ -63,13 +59,13 @@
         [HttpPost]
         public async Task<IActionResult> SignIn(SignIn model)
         {
-            string errorMsg = string.Empty;
             User user = await userService.GetAsync(model.Username);
+            string errorMsg;
             if (user != null)
             {
                 if (!IsValidPassword(user, model))
                 {
-                    errorMsg = ViewResources.WrongUsernameOrPassword;
+                    errorMsg = ViewResources.WrongPassword;
                 }
                 else if (!await IsExistNapSite(user) || !await IsExistNapGroup(user))
                 {
@@ -199,7 +195,8 @@
 
         public async Task<IActionResult> SingleSignOn(SingleSignOn model)
         {
-            var isValidTime = IsValidTime(model.Time);
+            var isValidTime = await IsValidTime(model.Time);
+
             if (isValidTime)
             {
                 var userId = int.Parse(Cryptography.DecryptPassword(model.UserId.Replace(" ", "+")));
@@ -216,6 +213,10 @@
 
                         return Redirect(!string.IsNullOrWhiteSpace(model.RedirectUrl) && Url.IsLocalUrl(model.RedirectUrl) ? model.RedirectUrl : "~/Home");
                     }
+                }
+                else
+                {
+                    return new RedirectResult("~/Auth/SignIn");
                 }
             }
 
@@ -244,7 +245,7 @@
         {
             await DoSignOutAsync();
 
-            return new RedirectResult("~/Auth/SignIn");
+            return new RedirectToActionResult("SignIn", "Auth", false);
         }
 
         private bool IsValidPassword(User user, SignIn signIn)
@@ -257,9 +258,6 @@
             napSession.UserId = user.Id;
             napSession.UserName = user.Username;
             napSession.OnUserId = onUserId;
-            napSession.MenuItemList = (await userService.GetMenuItemAsync(user.Id, napSettings.SiteId,
-      napSettings.Environment, true)).Where(x => !string.IsNullOrWhiteSpace(x.Url))
-      .OrderBy(x => x.DisplayOrder).ToList();
 
             var claims = new List<Claim>
             {
@@ -271,10 +269,10 @@
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
         }
 
-        private bool IsValidTime(string time)
+        private async Task<bool> IsValidTime(string time)
         {
             DateTime.TryParse(Cryptography.DecryptPassword(time.Replace(" ", "+")), out DateTime descryptTime1);
-            DateTime.TryParse(securityService.GetTime(), out DateTime descryptTime2);
+            DateTime.TryParse(await securityService.GetTimeAsync(), out DateTime descryptTime2);
             var expiration = descryptTime2 - descryptTime1;
 
             return expiration.TotalSeconds <= appSettings.SingleSignOnExpiredTime;

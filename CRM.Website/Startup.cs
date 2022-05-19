@@ -1,5 +1,9 @@
 ﻿namespace CRM.Website
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using CRM.Core;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
@@ -36,10 +40,6 @@
     using ONEbook.UM.Transport;
     using Sentry;
     using StackExchange.Redis;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -113,7 +113,6 @@
             });
 
             services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
-            services.Configure<List<ExternalRedirectMapping>>(options => Configuration.GetSection("ExternalRedirectMapping").Bind(options));
             var botConfigs = Configuration.GetSection("LetstalkBotConfigurations");
             services.Configure<List<BotConfig>>(options => botConfigs.Bind(options));
 
