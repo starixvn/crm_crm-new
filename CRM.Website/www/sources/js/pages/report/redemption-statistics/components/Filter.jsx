@@ -109,11 +109,11 @@ export class Filter extends Component {
 
     handleSubmit = () => {
         const { fromDate, toDate, reportBy, statusIds, currencyIds, subject} = this.state;
-        if(statusIds.trim() == ""){
+        if(statusIds === ''){
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Status')));
             return;
         }
-        if(currencyIds.trim() == ""){
+        if(currencyIds === ''){
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency')));
             return;
         }
