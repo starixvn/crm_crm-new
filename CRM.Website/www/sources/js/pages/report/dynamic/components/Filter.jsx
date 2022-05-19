@@ -126,6 +126,16 @@ export class Filter extends Component {
         });
     };
 
+    handleHighlightDates = () => {
+        const highlightDates = [];
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(this.state.fromDate);
+            date.setDate(date.getDate() + i);
+            highlightDates[i] = date;
+        }
+        return highlightDates;
+    }
+
     renderFilterDate = () => {
         let resFromDate = {}, resToDate = {};
         let dateFormat = '';
@@ -140,11 +150,12 @@ export class Filter extends Component {
                 };
                 break;
             case 2:
-                const propsDate = { showWeekNumbers: true };
+                const propsDate = {  };
                 dateFormat = 'ww (MMM dd, yyyy)';
                 resFromDate = {
                     ...propsDate,
-                    onChange: this.handleUpdateFromWeek
+                    onChange: this.handleUpdateFromWeek,
+                    highlightDates: this.handleHighlightDates()
                 };
                 resToDate = {
                     ...propsDate,
@@ -190,10 +201,10 @@ export class Filter extends Component {
                         <DatePicker
                             dropdownMode="select"
                             showMonthDropdown
+                            showWeekNumbers
                             showYearDropdown
                             selected={this.state.fromDate}
                             dateFormat={dateFormat}
-                            maxDate={new Date(this.maxFromDate)}
                             {...resFromDate}
                         />
                     </div>
@@ -205,9 +216,9 @@ export class Filter extends Component {
                         <DatePicker
                             selected={this.state.toDate}
                             dateFormat={dateFormat}
-                            minDate={new Date(this.minToDate)}
-                            maxDate={new Date(this.maxToDate)}
+                            weekNumber={true}
                             showMonthDropdown
+                            showWeekNumbers
                             dropdownMode="select"
                             showYearDropdown
                             {...resToDate}
@@ -222,7 +233,7 @@ export class Filter extends Component {
 
     handleChangeReportType = event => {
         const value = parseInt(event.target.value, 10);
-        this.setState({ reportType : value });
+        this.setState({ reportType: value });
 
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
 
@@ -269,7 +280,7 @@ export class Filter extends Component {
         this.setState({ siteId: site.id });
     };
 
-    filterSubCategoryOptions = (subCategories, mainCategoryId) =>{
+    filterSubCategoryOptions = (subCategories, mainCategoryId) => {
         if (mainCategoryId === 0) {
             return [];
         }
@@ -318,11 +329,11 @@ export class Filter extends Component {
             reviewer: reviewer,
             subject: subject,
             pageIndex: 0,
-            pageSize:  this.props.gridParams.pageSize
+            pageSize: this.props.gridParams.pageSize
         };
 
         this.props.getDynamicReports(params);
-        this.props.setGridParams({...params, pageIndex: params.pageIndex + 1 });
+        this.props.setGridParams({ ...params, pageIndex: params.pageIndex + 1 });
     };
 
     render() {
@@ -347,12 +358,12 @@ export class Filter extends Component {
                                     onChange={this.handleChangeReportType}
                                 >
                                     {
-                                        allSettings.periodTypes.map((item,key) => this.renderItems(item.name, item.id, key))
+                                        allSettings.periodTypes.map((item, key) => this.renderItems(item.name, item.id, key))
                                     }
                                 </Form.Control>
                             </div>
 
-                            { this.renderFilterDate() }
+                            {this.renderFilterDate()}
 
                             <div className="group-field-tool">
                                 <Form.Label htmlFor="status" className="col-form-label label-tool">{LangHelper.getResource('Status')}</Form.Label>
@@ -362,7 +373,7 @@ export class Filter extends Component {
                                 >
                                     <option value={0}>All</option>
                                     {
-                                        allSettings.statuses.map((item,key) => this.renderItems(item.name, item.statusId, key))
+                                        allSettings.statuses.map((item, key) => this.renderItems(item.name, item.statusId, key))
                                     }
                                 </Form.Control>
                             </div>
@@ -377,7 +388,7 @@ export class Filter extends Component {
                                 >
                                     <option value={0}>All</option>
                                     {
-                                        allSettings.responses.map((item,key) => this.renderItems(item.value, item.id, key))
+                                        allSettings.responses.map((item, key) => this.renderItems(item.value, item.id, key))
                                     }
                                 </Form.Control>
                             </div>
@@ -390,7 +401,7 @@ export class Filter extends Component {
                                 >
                                     <option value={0}>All</option>
                                     {
-                                        allSettings.products.map((item,key) => this.renderItems(item.value, item.id, key))
+                                        allSettings.products.map((item, key) => this.renderItems(item.value, item.id, key))
                                     }
                                 </Form.Control>
                             </div>
@@ -403,7 +414,7 @@ export class Filter extends Component {
                                 >
                                     <option value={0}>All</option>
                                     {
-                                        subProductOptions.map((item,key) => this.renderItems(item.value, item.id, key))
+                                        subProductOptions.map((item, key) => this.renderItems(item.value, item.id, key))
                                     }
                                 </Form.Control>
                             </div>
@@ -446,7 +457,7 @@ export class Filter extends Component {
                                 >
                                     <option value={0}>All</option>
                                     {
-                                        allSettings.roles.map((item,key) => this.renderItems(item.value, item.id, key))
+                                        allSettings.roles.map((item, key) => this.renderItems(item.value, item.id, key))
                                     }
                                 </Form.Control>
                             </div>
@@ -459,7 +470,7 @@ export class Filter extends Component {
                                 >
                                     <option value={0}>All</option>
                                     {
-                                        allSettings.communicationTools.map((item,key) => this.renderItems(item.name, item.id, key))
+                                        allSettings.communicationTools.map((item, key) => this.renderItems(item.name, item.id, key))
                                     }
                                 </Form.Control>
                             </div>
@@ -474,7 +485,7 @@ export class Filter extends Component {
                                 >
                                     <option value={0}>All</option>
                                     {
-                                        allSettings.extensions.map((item,key) => this.renderItems(item.value, item.id, key))
+                                        allSettings.extensions.map((item, key) => this.renderItems(item.value, item.id, key))
                                     }
                                 </Form.Control>
                             </div>
@@ -487,7 +498,7 @@ export class Filter extends Component {
                                 >
                                     <option value={0}>All</option>
                                     {
-                                        allSettings.mainCategories.map((item,key) => this.renderItems(item.name, item.mainCategoryID, key))
+                                        allSettings.mainCategories.map((item, key) => this.renderItems(item.name, item.mainCategoryID, key))
                                     }
                                 </Form.Control>
                             </div>
@@ -500,7 +511,7 @@ export class Filter extends Component {
                                 >
                                     <option value={0}>All</option>
                                     {
-                                        subCategoryOptions.map((item,key) => this.renderItems(item.name, item.subCategoryId, key))
+                                        subCategoryOptions.map((item, key) => this.renderItems(item.name, item.subCategoryId, key))
                                     }
                                 </Form.Control>
                             </div>

@@ -65,8 +65,8 @@
             {
                 var range = string.Format("A{0}:J{0}", RowStart);
                 worksheet.Cells[range].Merge = true;
+                worksheet.Cells[RowStart, ColumnReviewer].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 worksheet.Cells[range].Value = string.Format("{0} [{1}]", dynamicReportInfo.Name, dynamicReportInfo.TotalChildReports);
-                worksheet.Cells[range].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 worksheet.Cells[range].Style.Font.Color.SetColor(Color.Blue);
                 worksheet.Cells[range].Style.Font.Bold = true;
                 SetBackgroundColor(worksheet.Cells[range], ColorTranslator.FromHtml("#d4d2d2"));
@@ -88,12 +88,17 @@
                 var colIndex = 1;
                 var categoryContents = BuildCategoryContent(dynamic);
                 var categoryCellValue = string.Join("\n\n", categoryContents);
+                worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = indexNumber;
+                worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 worksheet.Cells[rowIndex, colIndex++].Value = dynamic.FeedbackId;
+                worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = dynamic.FeedbackDate.ToLongDateTimeFormat();
                 worksheet.Cells[rowIndex, colIndex++].Value = categoryCellValue;
                 worksheet.Cells[rowIndex, colIndex++].Value = dynamic.Subject;
+                worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = dynamic.Status;
+                worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = Regex.Replace(dynamic.Duration, @"[\s+g]", "");
                 worksheet.Cells[rowIndex, colIndex++].Value = dynamic.UserName;
                 worksheet.Cells[rowIndex, colIndex++].Value = dynamic.Handler;
@@ -127,18 +132,13 @@
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
-            worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Column(ColumnRunningNo).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-            worksheet.Column(ColumnFeedbackDate).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Column(ColumnStatus).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Column(ColumnDuration).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthSmall = 10;
             const int WidthNormal = 15;
-            const int RowHeight = 60;
+            const int RowHeight = 30;
             const int WidthLarge = 25;
             const int WidthLarger = 40;
 

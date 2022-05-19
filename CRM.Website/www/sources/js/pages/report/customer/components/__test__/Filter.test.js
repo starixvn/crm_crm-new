@@ -146,6 +146,10 @@ describe('Filter', () => {
             // Arrange
             const props = {
                 ...initProps,
+                gridParams: {
+                    pageIndex: 1,
+                    pageSize: 100
+                },
                 setGridParams: jest.fn(),
                 getCustomerReport: jest.fn()
             };
