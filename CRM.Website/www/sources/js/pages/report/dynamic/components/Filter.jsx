@@ -150,7 +150,7 @@ export class Filter extends Component {
                 };
                 break;
             case 2:
-                const propsDate = {  };
+                const propsDate = { showWeekNumbers: true };
                 dateFormat = 'ww (MMM dd, yyyy)';
                 resFromDate = {
                     ...propsDate,
@@ -201,10 +201,10 @@ export class Filter extends Component {
                         <DatePicker
                             dropdownMode="select"
                             showMonthDropdown
-                            showWeekNumbers
                             showYearDropdown
                             selected={this.state.fromDate}
                             dateFormat={dateFormat}
+                            maxDate={new Date(this.maxFromDate)}
                             {...resFromDate}
                         />
                     </div>
@@ -217,8 +217,9 @@ export class Filter extends Component {
                             selected={this.state.toDate}
                             dateFormat={dateFormat}
                             weekNumber={true}
+                            minDate={new Date(this.minToDate)}
+                            maxDate={new Date(this.maxToDate)}
                             showMonthDropdown
-                            showWeekNumbers
                             dropdownMode="select"
                             showYearDropdown
                             {...resToDate}

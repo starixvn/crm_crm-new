@@ -157,24 +157,6 @@
         }
 
         [Fact]
-        public void SetStyle_WhenCalled_ExpectedStyle()
-        {
-            // Arrange
-            var worksheet = excelPackage.Worksheets.Add("data");
-            var excel = CreateExcel();
-
-            // Act
-            excel.Public_SetStyle(worksheet);
-
-            // Assert
-            Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Column(1).Style.HorizontalAlignment);
-            Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Column(3).Style.HorizontalAlignment);
-            Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Column(6).Style.HorizontalAlignment);
-            Assert.Equal(ExcelHorizontalAlignment.Center, worksheet.Column(7).Style.HorizontalAlignment);
-            Assert.Equal(ExcelHorizontalAlignment.Left, worksheet.Column(2).Style.HorizontalAlignment);
-        }
-
-        [Fact]
         public void SetWidthColumn_WhenCalled_ExpectedColumnWidth()
         {
             // Arrange
