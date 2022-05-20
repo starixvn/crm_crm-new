@@ -420,6 +420,23 @@ export class DataGrid extends Component {
             pics
         });
 
+    renderTitle = (isRenderCommunication, totalUnassignedDirectAccount) =>{
+        return(
+            <div className={`table-title d-flex justify-content-between ${!isRenderCommunication ? 'header-pic-max-width' : ''}`}>
+                <div>{LangHelper.getResource('PICAssignment')}</div>
+                <div>
+                    {
+                        LangHelper.formatString(LangHelper.getResource('ThereAreUnassignedDirectAccounts'), totalUnassignedDirectAccount)
+                    }
+                    <span
+                        className='fa fa-file-excel-o ml-3 icon-excel'
+                        onClick={() => functions.exportExcel(this.props.gridParams)}
+                    />
+                </div>
+            </div>
+        );
+    }
+
     render() {
         if (!this.props.picAssignmentGridData || !this.props.picAssignmentGridData.data) {
             return null;
@@ -450,34 +467,26 @@ export class DataGrid extends Component {
         const totalAssignmentWidth = 1225;
 
         const calMaxWidth = totalAssignmentWidth + totalWidthComm;
-
-        return <Fragment>
-            <div className={`table-title d-flex justify-content-between ${!isRenderCommunication ? 'header-pic-max-width' : ''}`}>
-                <div>{LangHelper.getResource('PICAssignment')}</div>
-                <div>
-                    {
-                        LangHelper.formatString(LangHelper.getResource('ThereAreUnassignedDirectAccounts'), totalUnassignedDirectAccount)
-                    }
-                    <span
-                        className='fa fa-file-excel-o ml-3 icon-excel'
-                        onClick={() => functions.exportExcel(this.props.gridParams)}
-                    />
-                </div>
+        const title = this.renderTitle(isRenderCommunication, totalUnassignedDirectAccount);
+        return (
+            <div className='pic-assignment-container'>
+                <Table
+                    maxWidth={isRenderCommunication ? calMaxWidth : 1350}
+                    shouldUseMaxWidth
+                    width={isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
+                    autoWidth={false}
+                    title={title}
+                    isFixColumn
+                    header={this.buildPicManagementHeader(isHost, isRenderCommunication, uniqueCommunication)}
+                    body={this.buildPicManagementBody(isHost, isRenderCommunication)}
+                    isPaging
+                    pageOption={pagingOption}
+                    onPaging={this.onPaging}
+                    containerPadding={0}
+                    shouldResetScrollPosition={this.props.removeOptions.shouldResetScrollPosition}
+                />
             </div>
-            <Table
-                maxWidth={isRenderCommunication ? calMaxWidth : 1350}
-                shouldUseMaxWidth
-                width={isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
-                autoWidth={false}
-                header={this.buildPicManagementHeader(isHost, isRenderCommunication, uniqueCommunication)}
-                body={this.buildPicManagementBody(isHost, isRenderCommunication)}
-                isPaging
-                pageOption={pagingOption}
-                onPaging={this.onPaging}
-                containerPadding={0}
-                shouldResetScrollPosition={this.props.removeOptions.shouldResetScrollPosition}
-            />
-        </Fragment>;
+        );
     }
 }
 

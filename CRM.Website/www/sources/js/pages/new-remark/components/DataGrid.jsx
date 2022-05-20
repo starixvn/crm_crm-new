@@ -197,6 +197,8 @@ export class DataGrid extends Component {
         this.props.getNewRemarks(params);
     };
 
+    renderTitle = () => <div className='table-title'><span>{LangHelper.getResource('Remark')}</span></div>;
+
     render() {
         if (!this.props.gridData || this.props.gridData === null) {
             return null;
@@ -214,9 +216,6 @@ export class DataGrid extends Component {
         };
         return (
             <div className="table-new-remarks">
-                <div className='table-title'>
-                    <span>{LangHelper.getResource('Remark')}</span>
-                </div>
                 <Table
                     maxWidth={2025}
                     autoWidth={false}
@@ -225,6 +224,8 @@ export class DataGrid extends Component {
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
                     isPaging
+                    isFixColumn
+                    title={this.renderTitle()}
                     onSort={this.onSort}
                     containerPadding={0}
                     adjustedHeight={10}

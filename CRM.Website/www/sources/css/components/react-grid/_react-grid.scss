@@ -4,6 +4,46 @@ $paddingRightContainer: 17px;
 
 .table-container {
     overflow-x: auto;
+
+    .body-content {
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+.fix-table-container {
+    border-right: 1px solid rgb(183, 183, 183);
+
+    .fix-table{
+        overflow: auto;
+        border-top: 1px solid rgb(183, 183, 183);
+        border-bottom: 1px solid rgb(183, 183, 183);
+
+        .header-content, .body-content, .footer-content{
+            border-top: 0;
+            border-bottom: 0;
+        }
+
+        .header-content{
+            position: sticky;
+            top: 0;
+            z-index: 1;
+    
+            table{
+                border-right: 1px solid rgb(183, 183, 183);
+            }
+        }
+    
+        .footer-content{
+            position: sticky;
+            bottom: 0;
+            clear: both;
+        }
+    }
+
+    .page-container{
+        border-right: 0 !important;
+    }
 }
 
 .header-content,
@@ -21,6 +61,10 @@ $paddingRightContainer: 17px;
             }
         }
     }
+}
+
+.footer-content .footer-container td{
+    border-bottom: 0;
 }
 
 .table {
@@ -57,8 +101,6 @@ $paddingRightContainer: 17px;
 }
 
 .body-content {
-    overflow-y: auto;
-    overflow-x: auto;
     border-top: none;
 
     &.hasScroll {

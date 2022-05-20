@@ -10,6 +10,7 @@
 @import '../../components/icons';
 @import '../../components/forms';
 @import '../../components/ckeditor';
+@import '../../components/fix-table-container';
 
 .container-fluid{
     padding: 0 !important;
@@ -20,18 +21,6 @@
     
     .react-datepicker__input-container input{
         width: 100% !important;
-    }
-}
-
-.table-new-remarks{
-    .table-container {
-        overflow-y: auto;
-        border: 1px solid #b7b7b7;
-    }
-
-    .header-content, .body-content, .footer-content {
-        border: none;
-        padding: 0;
     }
 }
 
