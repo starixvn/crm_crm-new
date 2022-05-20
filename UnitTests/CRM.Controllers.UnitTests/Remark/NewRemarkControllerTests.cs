@@ -9,6 +9,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Criteria.Common;
+    using CRM.Criteria.Customer;
     using CRM.Criteria.NewRemark;
     using CRM.Models.Customer;
     using CRM.Models.RemarkNew;
@@ -75,7 +76,7 @@
             var extentions = fixture.Create<IEnumerable<SettingRelation>>(); 
             var controller = GetController();
 
-            customerService.GetAllCustomerAsync().Returns(users);
+            customerService.GetAllCustomerAsync(Arg.Any<GetAllCustomersCriteria>()).Returns(users);
             settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active).Returns(extentions);
 
             // Act

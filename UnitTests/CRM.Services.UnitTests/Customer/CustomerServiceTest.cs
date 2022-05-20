@@ -137,7 +137,7 @@
             baseService.GetDataAsync<Models.Customer.UserInfo>(Arg.Do<GetAllCustomersCriteria>(x => param = x)).Returns(expected);
 
             //Act
-            var actual = await service.GetAllCustomerAsync();
+            var actual = await service.GetAllCustomerAsync(param);
 
             //Assert
             Assert.Equal(expected, actual);
