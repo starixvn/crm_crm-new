@@ -23,28 +23,10 @@
     }
 }
 
-.table-new-remarks, .table-history{
+.table-new-remarks{
     .table-container {
         overflow-y: auto;
         border: 1px solid #b7b7b7;
-    
-        .body-content{
-            overflow: unset !important; 
-            .remark-content, .remark-content p{
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                min-width: 1px;
-            }
-    
-            tbody tr td{
-                word-break: break-word;
-            }
-
-            .disable-edit{
-                pointer-events: none;
-            }
-        }
     }
 
     .header-content, .body-content, .footer-content {
@@ -75,9 +57,10 @@ body {
 }
 
 #tooltip-remark-content [class$="inner"] {
-    white-space: pre-wrap;
-    min-width: 360px;
-    max-height: 500px;
+    min-width: 410px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 450px;
     text-align: left;
 }
 
@@ -135,18 +118,44 @@ body {
     }
 }
 
-.history-section{
-    .fa-backward{
-        cursor: pointer;
+.table-new-remarks, .table-history{
+        .body-content{
+            overflow: unset !important; 
+            .remark-content, .remark-content p{
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                min-width: 1px;
+            }
+    
+            tbody tr td{
+                word-break: break-word;
+            }
+    
+            .disable-edit{
+                pointer-events: none;
+            }
+        }
+}
+
+.table-history{
+    .history-section{
+        .fa-backward{
+            cursor: pointer;
+        }
+    
+        .history-info{
+            border: 1px solid #b7b7b7;
+            padding: 8px 0 8px 18px;
+            margin-bottom: 10px;
+    
+            div:first-child, div > span:nth-child(even){
+                font-weight: bold;
+            }
+        }
     }
 
-    .history-info{
-        border: 1px solid #b7b7b7;
-        padding: 8px 0 8px 18px;
-        margin-bottom: 10px;
-
-        div:first-child, div > span:nth-child(even){
-            font-weight: bold;
-        }
+    .page-container{
+        max-width: 1750px !important;
     }
 }

@@ -63,11 +63,11 @@ export class DataGrid extends Component {
                     placement="auto"
                     overlay={
                         <Tooltip id="tooltip-remark-content">
-                            <span dangerouslySetInnerHTML={{__html: item.remark.substring(0, 550)}} />
+                            <span dangerouslySetInnerHTML={{__html: item.remark}} />
                         </Tooltip>
                     }
                 >
-                    <Cell className={`text-center remark-content ${isHost ? 'link-click' : 'disable-edit'}`}
+                    <Cell className={`remark-content ${isHost ? 'link-click' : 'disable-edit'}`}
                         onClick={() =>this.handleOpenEdit(item)}
                         dangerouslySetInnerHTML={{__html: item.remark}}
                     />

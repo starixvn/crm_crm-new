@@ -21,16 +21,16 @@ export class History extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={7}>{LangHelper.getResource('Version')}</HeaderCell>
-                <HeaderCell colWidth={18} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('DateOfUpdateGM8')}</HeaderCell>
+                <HeaderCell colWidth={8}>{LangHelper.getResource('Version')}</HeaderCell>
+                <HeaderCell colWidth={14} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('DateOfUpdateGM8')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedBy')}</HeaderCell>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('RemarkTitle')}</HeaderCell>
-                <HeaderCell colWidth={35}>{LangHelper.getResource('RemarkContent')}</HeaderCell>
+                <HeaderCell colWidth={30}>{LangHelper.getResource('RemarkTitle')}</HeaderCell>
+                <HeaderCell colWidth={50}>{LangHelper.getResource('RemarkContent')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('RelatedTo')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Requester')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Approver')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Acknowledger')}</HeaderCell>
+                <HeaderCell colWidth={12}>{LangHelper.getResource('Acknowledger')}</HeaderCell>
                 <HeaderCell colWidth={6}>{LangHelper.getResource('View')}</HeaderCell>
             </HeaderRow>
         );
@@ -158,9 +158,7 @@ export class History extends Component {
                     this.renderHistorySection()
                 }
                 <Table
-                    maxWidth={2025}
-                    shouldUseMaxWidth
-                    width={document.getElementById('app-container').clientWidth}
+                    width={1750}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     autoWidth={false}

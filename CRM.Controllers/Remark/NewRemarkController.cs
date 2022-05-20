@@ -5,6 +5,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Criteria.Customer;
     using CRM.Criteria.NewRemark;
     using CRM.Services;
     using CRM.Services.Customer;
@@ -46,7 +47,7 @@
             this.customerService = customerService;
         }
 
-        public IActionResult Index(int? custId, string customerName = "", bool? isGuest = false, bool? isLastFiveRemark = false)
+        public IActionResult Index(int? custId=0, string customerName = "", bool? isGuest = false, bool? isLastFiveRemark = false)
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             ViewBag.customerName = customerName;
@@ -65,7 +66,11 @@
 
         public async Task<IActionResult> GetAllSetting()
         {
-            var users = await customerService.GetAllCustomerAsync();
+            var userCriteria = new GetAllCustomersCriteria
+            {
+                SiteId = napSettings.SiteId
+            };
+            var users = await customerService.GetAllCustomerAsync(userCriteria);
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             return Json(new {
                 extentions,

@@ -85,7 +85,8 @@ export default class CkEditor extends PureComponent {
                         toolbar: TOOLBAR,
                         allowedContent: true,
                         removePlugins: REMOVE_PLUGINS,
-                        language: 'en'
+                        language: 'en',
+                        enterMode: 2
                     }}
                     onLoaded={editor => this.editor = editor}
                     onNamespaceLoaded={this.onLoadPlugin}

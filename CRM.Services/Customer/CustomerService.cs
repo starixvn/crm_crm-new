@@ -22,7 +22,7 @@
 
         Task<CustomerInfo> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria);
 
-        Task<IEnumerable<Models.Customer.UserInfo>> GetAllCustomerAsync();
+        Task<IEnumerable<Models.Customer.UserInfo>> GetAllCustomerAsync(GetAllCustomersCriteria criteria);
     }
 
     public class CustomerService : ICustomerService
@@ -150,12 +150,9 @@
             return customerInfo;
         }
 
-        public async Task<IEnumerable<Models.Customer.UserInfo>> GetAllCustomerAsync()
+        public async Task<IEnumerable<Models.Customer.UserInfo>> GetAllCustomerAsync(GetAllCustomersCriteria criteria)
         {
-            var criteria = new GetAllCustomersCriteria 
-            {
-                Environment = Environment
-            };
+            criteria.Environment = Environment;
             return await baseService.GetDataAsync<Models.Customer.UserInfo>(criteria);
         }
 
