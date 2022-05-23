@@ -256,7 +256,7 @@ describe('Filter', () => {
 
             // Assert
             expect(container.find(DatePicker).length).toBe(2);
-            expect(container.find(DatePicker).at(0).props().dateFormat).toEqual('ww (MMM dd, yyyy)');
+            expect(container.find(DatePicker).at(0).props().dateFormat).toEqual('13 (MMM dd, yyyy)');
         });
 
         it('should render DateTimePicker correctly when reportType is 3', () => {

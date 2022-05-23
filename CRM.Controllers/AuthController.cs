@@ -248,7 +248,7 @@
             return new RedirectToActionResult("SignIn", "Auth", false);
         }
 
-        private bool IsValidPassword(User user, SignIn signIn)
+        private static bool IsValidPassword(User user, SignIn signIn)
         {
             return string.Equals(signIn.Password, user.Password, StringComparison.CurrentCulture);
         }
