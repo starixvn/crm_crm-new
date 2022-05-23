@@ -129,6 +129,19 @@ export class Filter extends Component {
         return highlightDates;
     };
 
+    getWeekYear(){
+        const date = new Date(this.state.fromDate);
+        var oneJan = new Date(date.getFullYear(),0,1);
+        var numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000)) - 7;
+        var result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
+        if(result === 0){
+            oneJan = new Date(date.getFullYear()-1,0,1);
+            numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000)) - 7;
+            result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
+        }
+        return result;
+      }
+
     renderFilterDate = () => {
         let resFromDate = {}, resToDate = {};
         let dateFormat = '';
@@ -144,7 +157,7 @@ export class Filter extends Component {
                 break;
             case 2:
                 const propsDate = { showWeekNumbers: true };
-                dateFormat = 'ww (MMM dd, yyyy)';
+                dateFormat = this.getWeekYear() + ' (MMM dd, yyyy)';
                 resFromDate = {
                     ...propsDate,
                     onChange: this.handleUpdateFromWeek,
