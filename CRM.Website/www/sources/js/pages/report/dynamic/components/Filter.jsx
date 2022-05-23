@@ -131,9 +131,9 @@ export class Filter extends Component {
 
     getWeekYear(){
         const date = new Date(this.state.fromDate);
-        var oneJan = new Date(date.getFullYear(),0,1);
-        var numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000)) - 7;
-        var result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
+        const oneJan = new Date(date.getFullYear(),0,1);
+        const numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000)) - 7;
+        const result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
         if(result === 0){
             oneJan = new Date(date.getFullYear()-1,0,1);
             numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000)) - 7;
