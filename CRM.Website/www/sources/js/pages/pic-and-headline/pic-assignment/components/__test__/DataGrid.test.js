@@ -1647,10 +1647,6 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Assert
-            expect(dataGrid.find('div').at(0).props().className).toBe('table-title d-flex justify-content-between ');
-            expect(dataGrid.find('div').at(1).html()).toContain('PICAssignment');
-            expect(dataGrid.find('div').at(2).html()).toContain('ThereAreUnassignedDirectAccounts');
-            expect(dataGrid.find('span').props().className).toBe('fa fa-file-excel-o ml-3 icon-excel');
             expect(dataGrid.find(Table).props().maxWidth).toEqual(calMaxWidth);
             expect(dataGrid.find(Table).props().width).toEqual(document.getElementById('app-container').clientWidth);
             expect(dataGrid.find(Table).props().autoWidth).toBeFalse;
@@ -1694,10 +1690,6 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Assert
-            expect(dataGrid.find('div').at(0).props().className).toBe('table-title d-flex justify-content-between header-pic-max-width');
-            expect(dataGrid.find('div').at(1).html()).toContain('PICAssignment');
-            expect(dataGrid.find('div').at(2).html()).toContain('ThereAreUnassignedDirectAccounts');
-            expect(dataGrid.find('span').props().className).toBe('fa fa-file-excel-o ml-3 icon-excel');
             expect(dataGrid.find(Table).props().maxWidth).toEqual(1350);
             expect(dataGrid.find(Table).props().width).toEqual(1350);
             expect(dataGrid.find(Table).props().autoWidth).toBeFalse;
@@ -1723,10 +1715,11 @@ describe('DataGrid', () => {
             };
 
             const dataGrid = shallow(<DataGrid {...props} />);
+            const title = shallow(dataGrid.instance().renderTitle(true, 1));
             functions.exportExcel = jest.fn();
 
             // Action
-            dataGrid.find('span').simulate('click');
+            title.find('span').simulate('click');
 
             // Assert
             expect(functions.exportExcel).toHaveBeenCalledWith(props.gridParams);

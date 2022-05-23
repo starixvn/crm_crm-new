@@ -435,7 +435,7 @@ export class DataGrid extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
     render() {
         if (!this.props.picAssignmentGridData || !this.props.picAssignmentGridData.data) {
