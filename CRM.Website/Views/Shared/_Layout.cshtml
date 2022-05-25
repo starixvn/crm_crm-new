@@ -57,7 +57,7 @@
         window.serverTimezone = @appSettings.Value.ServerTimezone;
         window.currentClientTime = '@currentClientTime';
         window.customerInfo = @Json.Serialize(sessionService.CustomerInfo);
-        window.menus = @Json.Serialize(sessionService.Menus);
+        window.menus = @Json.Serialize(napSession.MenuItemList);
 </script>
 
     <environment include="Development">

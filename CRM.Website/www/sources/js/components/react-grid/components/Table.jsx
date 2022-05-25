@@ -201,8 +201,9 @@ class Table extends Component {
 
     _getUpdatedColumnLayout() {
         const { width, autoWidth, containerPadding } = this.props;
+        const leftContainerWidth = window.customerInfo !== null ? document.getElementById('left-row-container').clientWidth + 30 : 30;
         let sumOfColumnWidth = autoWidth ? this.state.maxWidth : width;
-        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH;
+        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH - 30 - leftContainerWidth;
 
         const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth =>
             sumOfColumnWidth / this.columnWidthSum * cellWidth);
@@ -257,8 +258,9 @@ class Table extends Component {
 
     render() {
         const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding, shouldUseMaxWidth, isFixColumn } = this.props;
-        const maxWidth = this.state.maxWidth - containerPadding;
-        const actualWidth = width - containerPadding;
+        const leftContainerWidth = window.customerInfo !== null ? document.getElementById('left-row-container').clientWidth + 30 : 30;
+        const maxWidth = this.state.maxWidth - containerPadding - leftContainerWidth;
+        const actualWidth = width - containerPadding - leftContainerWidth;
         const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ?
             this._getUpdatedColumnLayout() :
             this.state.columnsWidth;

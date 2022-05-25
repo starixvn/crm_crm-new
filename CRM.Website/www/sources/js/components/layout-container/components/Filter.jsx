@@ -7,17 +7,17 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 export default class Filter extends Component {
     componentDidMount(){
         if(window.customerInfo !== null){
-            this.props.getDataGrid(this.props.params);
+            this.props.getDataGrid();
         }
     }
 
     handleSubmit = event => {
         event.preventDefault();
-        this.props.getDataGrid(this.props.params);
+        this.props.getDataGrid();
     };
 
     render() {
-        const {username, customerSuggestions, isGuest, handleChange, showEmptyCustomerInfoPopup,
+        const {username, customerSuggestions, isGuest, handleChange, showEmptyCustomerInfoPopup, debounceUserNameInputChange, handleChangeSuggestion,
             handleCloseEmptyCustomerInfoPopup, showEmptyConfirmPopup, handleGetCustomerIsGuest, handleCloseEmptyConfirm} = this.props;
         return (
             <div className='row-search'>
@@ -28,8 +28,8 @@ export default class Filter extends Component {
                                 value={username}
                                 options={customerSuggestions}
                                 placeholder='Phone or Username or Nickname'
-                                onChange={value => this.handleChangeSuggestion(value)}
-                                onInputChange={searchText => this.debounceUserNameInputChange(searchText)}
+                                onChange={value => handleChangeSuggestion(value)}
+                                onInputChange={searchText => debounceUserNameInputChange(searchText)}
                             />
                             <Button onClick={this.handleSubmit} className="buttonSearch" variant="primary" size="sm">
                                 <span className="fa fa-search" />

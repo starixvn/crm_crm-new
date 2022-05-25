@@ -260,7 +260,8 @@
             napSession.UserName = user.Username;
             napSession.OnUserId = onUserId;
             var menus = userService.GetMenuItem(user.Id, napSettings.SiteId, napSettings.Environment, true).ToList();
-            sessionService.Menus = menus;
+            napSession.MenuItemList = menus;
+            //sessionService.Menus = menus;
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),

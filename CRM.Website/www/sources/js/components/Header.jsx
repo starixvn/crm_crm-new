@@ -20,7 +20,7 @@ export class Header extends Component {
     }
 
     initDataMenu = menus => {
-        const presentMenus = menus.filter(item => item.parentName === null);
+        const presentMenus = menus.filter(item => item.parentName === '');
         presentMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
         presentMenus.forEach(item => item.subMenus = this.getSubMenus(item, menus));
         presentMenus.forEach(item => item.subMenus.forEach(element => element.subMenus = this.getSubMenus(element, menus)));
@@ -29,7 +29,7 @@ export class Header extends Component {
     };
 
     getSubMenus = (menuItem, menus) => {
-        const subMenus = menus.filter(item => item.parentName !== null && item.parentId === menuItem.id);
+        const subMenus = menus.filter(item => item.parentName !== '' && item.parentId === menuItem.id);
         subMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
         return subMenus;
     };

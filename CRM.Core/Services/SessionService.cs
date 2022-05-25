@@ -9,7 +9,6 @@
     public interface ISessionService
     {
         CustomerSession CustomerInfo { get; set; }
-        IEnumerable<MenuItem> Menus { get; set; }
         void ClearKey(string key);
     }
 
@@ -17,7 +16,6 @@
     {
         private readonly ISession session;
         private const string CurrentCustomerKey = "CurrentCustomer";
-        private const string CurrentUserMenuKey = "CurrentUserMenu";
 
         public SessionService(ISession session)
         {
@@ -34,13 +32,7 @@
             get => session.Get<CustomerSession>(CurrentCustomerKey);
             set => session.Set(CurrentCustomerKey, value);
         }
-
-        public IEnumerable<MenuItem> Menus
-        {
-            get => session.Get<IEnumerable<MenuItem>>(CurrentUserMenuKey);
-            set => session.Set(CurrentUserMenuKey, value);
-        }
-
+        
         public void ClearKey(string key)
         {
             session.Remove(key);

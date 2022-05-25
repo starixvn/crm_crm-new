@@ -96,7 +96,8 @@ export default class AppContainer extends Component {
         this.props.setEditCustomerInfoPopup({ show: false });
     };
 
-    getDataGrid = async params =>{
+    getDataGrid = async () =>{
+        const params = this.getParams();
         await this.getCustomerInfo(params);
         await this.getSetting();
     }
@@ -134,10 +135,10 @@ export default class AppContainer extends Component {
                 <Header />
                 <Filter
                     isHost={isHost} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username}
-                    customerSuggestions={customerSuggestions} handleChange={this.handleChange}
+                    customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
                     showEmptyCustomerInfoPopup={this.showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
                     showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
-                    handleCloseEmptyConfirm={this.handleCloseEmptyConfirm}
+                    handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                 />
                 {
                     editCustomerInfoPopup.show &&

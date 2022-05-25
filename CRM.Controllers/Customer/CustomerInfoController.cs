@@ -36,12 +36,6 @@
             this.settingService = settingService;
         }
 
-        public IActionResult Index()
-        {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            return View(isHost);
-        }
-
         public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
         {
             CustomerInfo customerInfo = await customerService.GetCustomerInfoAsync(criteria);
