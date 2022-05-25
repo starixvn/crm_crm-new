@@ -211,7 +211,7 @@
             {
                 Username = "sa",
                 Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234"),
-                Group = new Group { Id = 2, Name = "Test" }
+                GroupId = 2
             };
 
             userService.GetAsync(Arg.Any<string>()).Returns(user);
@@ -239,11 +239,11 @@
             {
                 Username = "sa",
                 Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234aa"),
-                Group = new Group { Id = 2, Name = "Test" }
+                GroupId = 2
             };
             var siteLevel = new List<SiteLevel>
             {
-                new SiteLevel { Site = new Site { Id = 69}, IsActive = true }
+                new SiteLevel { SiteId = 69, IsActive = true }
             };
             napSettings.SiteId.Returns(69);
             userService.GetAsync(Arg.Any<string>()).Returns(user);
