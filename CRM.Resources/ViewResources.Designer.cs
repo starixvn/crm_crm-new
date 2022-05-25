@@ -628,7 +628,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}_Issue_Statistic_Report_From_{1}_{2}.
+        ///   Looks up a localized string similar to {0}_Issue_Statistic_Report_From_{1}_To_{2}.
         /// </summary>
         public static string IssueStatistics_ExcelFile {
             get {
