@@ -10,12 +10,7 @@
             this.Id = napUser.Id;
             this.Name = napUser.Name;
             this.Username = napUser.Username;
-            this.Group = napUser.Group;
             this.Password = napUser.Password;
-            this.LastLoginDate = napUser.LastLoginDate;
-            this.Creator = napUser.Creator;
-            this.CreatedDate = napUser.CreatedDate;
-            this.ModifiedDate = napUser.ModifiedDate;
             this.FirstName = napUser.FirstName;
             this.LastName = napUser.LastName;
             this.Email = napUser.Email;
