@@ -22,6 +22,10 @@
     .react-datepicker__input-container input{
         width: 100% !important;
     }
+
+    .react-datepicker-popper{
+        z-index: 999 !important;
+    }
 }
 
 .table-last-five-remarks{
