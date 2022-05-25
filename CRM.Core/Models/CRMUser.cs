@@ -10,6 +10,7 @@
             this.Id = napUser.Id;
             this.Name = napUser.Name;
             this.Username = napUser.Username;
+            this.GroupId = napUser.GroupId;
             this.Password = napUser.Password;
             this.FirstName = napUser.FirstName;
             this.LastName = napUser.LastName;

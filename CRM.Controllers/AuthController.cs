@@ -113,11 +113,6 @@
                     return RecheckInStatus.Success;
                 }
 
-                if (!await siteService.IsActivatedAsync(napSettings.SiteId))
-                {
-                    return RecheckInStatus.InvalidSite;
-                }
-
                 var status = await securityService.ReCheckInAsync(napSession.OnUserId, napSettings.SiteId);
 
                 return status > 0 ? RecheckInStatus.KickOut : RecheckInStatus.Success;
@@ -126,14 +121,16 @@
 
         private async Task<bool> IsExistNapSite(User user)
         {
-            return (await userService.GetSiteLevelAsync(user.Id, napSettings.Environment)).Any(s => s.Site.Id == napSettings.SiteId && s.IsActive);
+            var siteLevels = await userService.GetSiteLevelAsync(user.Id, napSettings.Environment);
+
+            return siteLevels.Any(s => s.SiteId == napSettings.SiteId && s.IsActive);
         }
 
         private async Task<bool> IsExistNapGroup(User user)
         {
-            if (user.Group != null)
+            if (user.GroupId > 0)
             {
-                var group = await groupService.GetAsync(user.Group.Id);
+                var group = await groupService.GetAsync(user.GroupId);
 
                 if (group != null && !group.IsActive)
                 {
