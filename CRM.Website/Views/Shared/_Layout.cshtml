@@ -2,9 +2,13 @@
 @using CRM.Services
 @using Fanex.NAP.Client.Helpers.Web
 @using Microsoft.Extensions.Options
+@using CRM.Core.Extensions;
+@using Microsoft.AspNetCore.Http;
+@using CRM.Core.Services;
 @inject IOptionsSnapshot<AppSettings> appSettings
 @inject ICommonService commonService
 @inject INapSession napSession
+@inject ISessionService sessionService
 @{
     var currentClientTime = commonService.ConvertToClientDateTime(DateTime.Now);
     var currentUsername = napSession.UserName;
@@ -25,10 +29,8 @@
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <div class="container-fluid">
-        <main role="main">
-            @RenderBody()
-        </main>
+    <div class="crm-container">
+        @RenderBody()
     </div>
     <div id="loadingProcess" class="loading-process" style="display: none;">
         <svg class="icon-loading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="64" height="64" fill="#439ff0">
@@ -49,12 +51,15 @@
 
     <input type="hidden" id="RootUrl" value="@Url.Content("~/")" />
     @Html.AntiForgeryToken()
-    <script type="text/javascript">
+<script type="text/javascript">
         window.currentUsername = '@currentUsername';
         window.clientTimezone = @appSettings.Value.ClientTimezone;
         window.serverTimezone = @appSettings.Value.ServerTimezone;
         window.currentClientTime = '@currentClientTime';
-    </script>
+        window.customerInfo = @Json.Serialize(sessionService.CustomerInfo);
+        window.menus = @Json.Serialize(sessionService.Menus);
+</script>
+
     <environment include="Development">
         <script src="~/js/dev/main.chunk.js"></script>
         <script src="~/js/dev/lib/lang-en-US.chunk.js"></script>

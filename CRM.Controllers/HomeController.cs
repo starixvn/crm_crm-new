@@ -1,39 +1,36 @@
 ﻿namespace CRM.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
+    using CRM.Core.Filters;
+    using CRM.Core.Services;
     using CRM.Services;
-    using Fanex.NAP.Client.Models;
     using Fanex.NAP.Client.Services;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    [Authorize]
-    public class HomeController : BaseController
+    [CrmAuthorize]
+    public class HomeController : Controller
     {
         private readonly IHomeService homeService;
         private readonly IUserService userService;
+        private readonly ISessionService sessionService;
 
         public HomeController(
             IHomeService homeService,
-            IUserService userService
+            IUserService userService,
+            ISessionService sessionService
         )
         {
             this.homeService = homeService;
             this.userService = userService;
+            this.sessionService = sessionService;
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        [HttpGet]
-        public IEnumerable<MenuItem> GettingUserMenu()
-        {
-            var menus = userService.GetMenuItem(8, 96, "UAT", true).ToList();
+            var menus = sessionService.Menus.ToList();
             var currentUserMenu = homeService.EditMenuLanguage(menus);
-            return currentUserMenu;
+            sessionService.Menus = currentUserMenu;
+            return View();
         }
     }
 }

@@ -1,0 +1,223 @@
+@import './react-grid/react-grid';
+@import './forms';
+@import './icons';
+@import './messages';
+@import './modal';
+@import './tables';
+@import './multiple-select/style';
+@import './select-with-search-site';
+@import './autocomplete';
+
+.row-search{
+    display: flex;
+    #left-container {
+        background-color: #464d5d;
+        margin: 0;
+        padding: 0;
+        height: 35px;
+        width: 22%;
+
+        .checked-guest{
+            padding-top: 8px;
+            background-color: #464d5d;
+            color: #ebebeb;
+        }
+        
+
+        // .check-guest {
+        //     background-color: #464d5d;
+        //     margin: 0;
+        //     color: #ebebeb;
+        //     // input{
+        //     //     margin: 2px 2px 0 0;
+        //     //     margin-left: 10px;
+        //     // }
+        // }
+
+        .buttonSearch {
+            padding-top: 5px;
+            background-color: transparent;
+            cursor: pointer;
+            vertical-align: middle;
+            width: 16px;
+            border: none;
+            margin: -8px 0 0 -10px;
+            position: absolute;
+            top: 10px;
+            font-size: 12px;
+        }
+    }
+
+    .right-container{
+        width: 78%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .breadcrumb{
+        background-color: #464d5d;
+        border-radius: 0;
+        height: 35px;
+        color: white;
+        width: 78%;
+        border-left: 1px solid #252525;
+    }
+}
+
+.autocomplete-container {
+    input {
+        background: none;
+        border: none;
+        color: white;
+        height: 35px;
+        line-height: 25px;
+        padding: 5px 0 5px 35px;
+        width: 100%;
+        position: relative;
+        text-align: left;
+        text-decoration: none;
+        font-size: 11px;
+
+        &:focus {
+            background-color: transparent;
+            color: white;
+        }
+    }
+}
+
+#left-row-container{
+    width: 22%;
+}
+
+.left-row-empty{
+    width: 0;
+}
+
+#right-row-container{
+    padding: 15px;
+}
+
+#left-row-hidden{
+    visibility: hidden;
+}
+
+.right-row-full{
+    width: 100%;
+}
+
+#left-container{
+    .buttonSearch:hover, span:hover {
+        background-color: transparent;
+    }
+
+    .buttonSearch span:hover {
+        background-color: transparent;
+    }
+    
+    .buttonSearch:active {
+        background-color: transparent;
+    }
+
+    .text-search {
+        background-color: #373e4e;
+        input::placeholder {
+            color: white;
+            font-style: italic;
+        }
+    }
+
+} 
+
+.item {
+    margin: 0;
+    padding: 4px 6px;
+    background-color: #e8e8e8;
+    border-top: 1px solid white;
+    border-bottom: 1px solid #c3c3c3;
+}
+
+.modal-backdrop {
+    z-index: 1050 !important
+}
+
+.modal-dialog {
+    max-width: 650px;
+}
+
+.left-form-customer {
+    background-color: #e8e8e8;
+    border: 1px solid #b7b7b7;
+    .item.current {
+        background-color: #c0cbe1;
+    }
+    
+    .item .status {
+        font-style: italic;
+    }
+    
+    .item.no-border-bg {
+        background: none;
+        border: none;
+        padding: 0 6px;
+    }
+    
+    
+    .item.title {
+        background: linear-gradient(#e7e7e7, #e2e2e2);
+        color: #2f70b4;
+        border-top: 1px solid #e1e1e1;
+        border-bottom: 1px solid #e1e1e1;
+        margin-top: 7px;
+        padding: 3px 6px 8px;
+        font-size: 13px;
+        height: 28px;
+    }
+    
+    .text-right {
+        text-align: right;
+    }
+    
+    .tex-left {
+        text-align: left;
+    }
+    
+    .lv0 {
+        background-color: white;
+        padding: 2px 4px;
+    }
+    
+    .mrb0 {
+        margin-bottom: 0;
+    } 
+    
+    .textbox {
+        display: inline;
+    }
+    .textbox.code-country {
+        margin-right: 1%;
+        padding: 0 2px;
+        width: 19%;
+    }
+    
+    .textbox.code-area {
+        margin-right: 1%;
+        padding: 0 1px;
+        width: 20%;
+    }
+    
+    .textbox.phone {
+        padding: 0 1px;
+        width: 59%;
+    }
+    
+    .textbox.pic-name {
+        margin-right: 1%;
+        padding: 0 2px;
+        width: 40%;
+    }
+    
+    .inactive-site{
+        color: red;
+    }
+}

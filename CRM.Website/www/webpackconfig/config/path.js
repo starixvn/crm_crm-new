@@ -18,7 +18,6 @@ const cssPaths = {
     feedback_subject: ['./www/sources/css/pages/admin-tool/feedback-subject/index.scss'],
     latest_feedback: ['./www/sources/css/pages/feedback/latest-feedback.scss'],
     add_feedback: ['./www/sources/css/pages/feedback/add-feedback/index.scss'],
-    customer_info: ['./www/sources/css/pages/customer/customer-info/index.scss'],
     create_multiple_logs: ['./www/sources/css/pages/feedback/multiple-logs/create.scss'],
     deleted_feedback: ['./www/sources/css/pages/feedback/deleted-feedback/index.scss'],
     manage_feedback: ['./www/sources/css/pages/feedback/manage-feedback/index.scss'],
@@ -48,7 +47,7 @@ const cssPaths = {
 
 const scriptPaths = {
     build: 'wwwroot/js',
-
+    home: ['./www/sources/js/pages/home/index.js'],
     language: ['./www/sources/js/common/languages/ViewResources.js'],
     main: ['./www/sources/js/main.js'],
     recheckin: ['./www/sources/js/pages/auth/recheckin.js'],
@@ -63,7 +62,6 @@ const scriptPaths = {
     feedback_subject: ['./www/sources/js/pages/admin-tool/feedback-subject/index.js'],
     latest_feedback: ['./www/sources/js/pages/feedback/latest-feedback/index.js'],
     add_guest_feedback: ['./www/sources/js/pages/feedback/add-feedback/add-guest-feedback/index.js'],
-    customer_info: ['./www/sources/js/pages/customer/customer-info/index.js'],
     create_multiple_logs: ['./www/sources/js/pages/feedback/multiple-logs/create/index.js'],
     deleted_feedback: ['./www/sources/js/pages/feedback/deleted-feedback/index.js'],
     manage_feedback: ['./www/sources/js/pages/feedback/manage-feedback/index.js'],

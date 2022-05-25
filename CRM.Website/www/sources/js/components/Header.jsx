@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import DataService from '@jsroot/common/dataService';
-import Site from '@jsroot/common/site';
 import LangHelper from '@jsroot/common/langHelper';
 
-import {
-    BrowserRouter as Router,
-    Link
-} from 'react-router-dom';
+const location = window.location.origin;
 
 export class Header extends Component {
 
@@ -18,17 +13,14 @@ export class Header extends Component {
         };
     }
 
-    async componentDidMount() {
-        const url = Site.resolveClientUrl('Home/GettingUserMenu');
-        await DataService.getDataAsync(url).then(response => {
-            if (response.data) {
-                this.initDataMenu(response.data);
-            }
-        });
+    componentDidMount() {
+        if(window.menus !== null){
+            this.initDataMenu(window.menus);
+        }
     }
 
     initDataMenu = menus => {
-        const presentMenus = menus.filter(item => item.parent === null);
+        const presentMenus = menus.filter(item => item.parentName === null);
         presentMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
         presentMenus.forEach(item => item.subMenus = this.getSubMenus(item, menus));
         presentMenus.forEach(item => item.subMenus.forEach(element => element.subMenus = this.getSubMenus(element, menus)));
@@ -37,7 +29,7 @@ export class Header extends Component {
     };
 
     getSubMenus = (menuItem, menus) => {
-        const subMenus = menus.filter(item => item.parent !== null && item.parent.id === menuItem.id);
+        const subMenus = menus.filter(item => item.parentName !== null && item.parentId === menuItem.id);
         subMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
         return subMenus;
     };
@@ -48,9 +40,9 @@ export class Header extends Component {
         return (
             <li key={index + item.id} className='menu-item'>
                 <div className='menu-title'>
-                <Link to={item.url} className='title'>{item.name}</Link>
+                <a className='title' href={ location + item.url}>{item.name}</a>
                     {
-                        item.subMenus.length > 0 && <span className='fa fa-caret-down icon'></span>
+                        item.subMenus.length > 0 && <span className='fa fa-caret-down icon' />
                     }
                 </div>
                 {
@@ -60,16 +52,16 @@ export class Header extends Component {
                             {
                                 item.subMenus.map((element, key) => (
                                     <div key={key} className='layer-first'>
-                                        <Link to={element.url} className='title'>{element.name}</Link>
+                                        <a className='title' href={location + element.url}>{element.name}</a>
                                         {
                                             element.subMenus.length > 0 &&
                                             (
                                                 <>
-                                                    <span className='fa fa-caret-right icon pr-3 pt-1 float-right'></span>
+                                                    <span className='fa fa-caret-right icon pr-3 pt-1 float-right' />
                                                     <div className='layer-second'>
                                                         {
                                                             element.subMenus.map((ele, num) => (
-                                                                <Link key={num} to={ele.url} className='layer-first'>{ele.name}</Link>
+                                                                <a className='layer-first' key={num} href={location + ele.url}>{ele.name}</a>
                                                             ))
                                                         }
                                                     </div>
@@ -93,30 +85,28 @@ export class Header extends Component {
         }
 
         return (
-            <Router>
-                <div className='header'>
-                    <div className='left-header'>
-                        <img src='../../css/images/icon/logo-crm.png'></img>
-                        <span className='icon-bar'><i class="fa fa-bars" aria-hidden="true"></i></span>
-                    </div>
-                    <div className='right-header'>
-                        <ul>
-                            {
-                                menus.map((item, key) => (
-                                    this.isIgnoreMenu(item) && this.renderListMenu(item, key)
-                                ))
-                            }
-                        </ul>
+            <div className='header'>
+                <div className='left-header'>
+                    <img src='../../css/images/icon/logo-crm.png' />
+                    <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" /></span>
+                </div>
+                <div className='right-header'>
+                    <ul>
+                        {
+                            menus.map((item, key) => (
+                                this.isIgnoreMenu(item) && this.renderListMenu(item, key)
+                            ))
+                        }
+                    </ul>
 
-                        <div className='item-end float-right'>
-                            <img src='../../css/images/icon/user.png'></img>
-                            <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{this.props.username}</span></span>
-                            <img src='../../css/images/icon/icon-logout.png'></img>
-                            <span className='sign-out'>{LangHelper.getResource('SignOut')}</span>
-                        </div>
+                    <div className='item-end float-right'>
+                        <img src='../../css/images/icon/user.png' />
+                        <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{window.currentUsername}</span></span>
+                        <img src='../../css/images/icon/icon-logout.png' />
+                        <a className='sign-out' href={location + '/Auth/SignOut'}>{LangHelper.getResource('SignOut')}</a>
                     </div>
                 </div>
-            </Router>
+            </div>
         );
     }
 }

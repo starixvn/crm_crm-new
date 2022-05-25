@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import Layout from '@jsroot/components/Layout';
+import Layout from '@jsroot/components/layout-container/index';
 import PicManagementReducer from './picManagementSlice';
 import AppContainer from './components/AppContainer';
 

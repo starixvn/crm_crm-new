@@ -7,6 +7,8 @@ $font-size-sm: 1rem;
 @import '~react-toastify/scss/main';
 @import '../css/components/buttons';
 @import '../css/components/react-select';
+@import '../css/components/layout';
+
 
 html {
     position: relative;
@@ -71,8 +73,24 @@ body {
     }
 }
 
-.container-fluid {
-    padding: 15px;
+.crm-container{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-width: 1380px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 4px;
+
+    .container-fluid {
+        padding: 15px;
+    }
+
+    .search-breadbrumb{
+        margin: 0;
+    }
 }
 
 .loading-process {
@@ -211,7 +229,7 @@ body {
             color: #FFFFFF;
             margin-left: 15px;
 
-            .welcome {
+            .welcome{
                 padding: 0 10px;
             }
 
@@ -222,6 +240,7 @@ body {
 
             .sign-out {
                 padding: 0 10px;
+                color: white;
             }
 
             .sign-out:hover {

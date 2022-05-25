@@ -15,6 +15,7 @@
             services.AddSingleton<IBaseService, BaseService>();
             services.AddScoped<ILogger, Logger>();
             services.AddScoped<ICRMLogService, CRMLogService>();
+            services.AddScoped<ISessionService, SessionService>();
         }
     }
 }

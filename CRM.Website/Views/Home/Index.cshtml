@@ -1,8 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model bool
+@section Scripts{
+    <environment include="Development">
+        <script src="~/js/dev/pages/home/index.chunk.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/pro/pages/home/index.chunk.js" asp-append-version="true"></script>
+    </environment>
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div id="home-container"></div>
