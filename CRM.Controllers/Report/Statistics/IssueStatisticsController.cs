@@ -1,7 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using CRM.Core;
 using CRM.Core.Constants;
 using CRM.Criteria.Report.IssuesStatistics;
+using CRM.Resources;
 using CRM.Services;
 using CRM.Services.Report;
 using Fanex.NAP.Client.AspNetCore.Attributes;
@@ -15,14 +16,17 @@ namespace CRM.Controllers.Report.Statistics
     {
         private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
+        private readonly IExportExcelService excelService;
 
         public IssueStatisticsController(
             IIssueStatisticsService issueStatisticsService,
-            ISettingService settingService
+            ISettingService settingService,
+            IExportExcelService excelService
         )
         {
             this.issueStatisticsService = issueStatisticsService;
             this.settingService = settingService;
+            this.excelService = excelService;
         }
 
         [NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
