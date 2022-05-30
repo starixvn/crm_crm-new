@@ -9,7 +9,6 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
-    using CRM.Core.Services;
     using CRM.Models.Auth;
     using CRM.Resources;
     using Fanex.Data;
@@ -33,7 +32,6 @@
         private readonly INapSettings napSettings;
         private readonly ISiteService siteService;
         private readonly AppSettings appSettings;
-        private readonly ISessionService sessionService;
 
         public AuthController(
             IUserService userService,
@@ -42,8 +40,7 @@
             IGroupService groupService,
             INapSettings napSettings,
             ISiteService siteService,
-            IOptionsSnapshot<AppSettings> appSettings,
-            ISessionService sessionService)
+            IOptionsSnapshot<AppSettings> appSettings)
         {
             this.userService = userService;
             this.napSession = napSession;
@@ -52,7 +49,6 @@
             this.napSettings = napSettings;
             this.siteService = siteService;
             this.appSettings = appSettings.Value;
-            this.sessionService = sessionService;
         }
 
         public IActionResult SignIn()
@@ -261,7 +257,6 @@
             napSession.OnUserId = onUserId;
             var menus = userService.GetMenuItem(user.Id, napSettings.SiteId, napSettings.Environment, true).ToList();
             napSession.MenuItemList = menus;
-            //sessionService.Menus = menus;
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),

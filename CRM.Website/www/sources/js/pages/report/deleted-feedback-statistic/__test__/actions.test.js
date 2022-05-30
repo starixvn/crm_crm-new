@@ -40,7 +40,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getDeletedFeedbackStatistic(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('DeletedFeedbackStatistic/GetDeletedFeedbackStatistics', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('DeletedFeedbackStatistics/GetDeletedFeedbackStatistics', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });

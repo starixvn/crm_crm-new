@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import Filter from './Filter';
 import PropTypes from 'prop-types';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import LangHelper from '@jsroot/common/langHelper';
-import { Button } from 'react-bootstrap';
 import { ToastContainer, Slide } from 'react-toastify';
-import Header from '@jsroot/components/Header';
+import Header from './Header';
 import DataGrid from './DataGrid';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
@@ -23,9 +20,10 @@ export default class AppContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: window.customerInfo !== null ? window.customerInfo.username : null,
-            isGuest: window.customerInfo !== null ? window.customerInfo.isGuest : false,
-            customerInfo: null,
+            menus: [],
+            username: !window.currentCustomer ? null : window.currentCustomer.name,
+            isGuest: !window.currentCustomer ? false : window.currentCustomer.isGuest,
+            customerInfo: window.customerInfo,
             settings: null,
             gridParams: {
                 username: null,
@@ -33,9 +31,35 @@ export default class AppContainer extends Component {
             },
             showEmptyConfirmPopup: false,
             showEmptyCustomerInfoPopup: false,
-            customerSuggestions: []
+            customerSuggestions: [],
+            editCustomerInfoPopup: { show: false}
         };
     }
+
+    async componentDidMount() {
+        if(window.customerInfo !== null){
+            await this.getSetting();
+        }
+
+        if(window.menus !== null){
+            this.initDataMenu(window.menus);
+        }
+    }
+
+    initDataMenu = menus => {
+        const presentMenus = menus.filter(item => item.parentName === '');
+        presentMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
+        presentMenus.forEach(item => item.subMenus = this.getSubMenus(item, menus));
+        presentMenus.forEach(item => item.subMenus.forEach(element => element.subMenus = this.getSubMenus(element, menus)));
+
+        this.setState({ menus: presentMenus });
+    };
+
+    getSubMenus = (menuItem, menus) => {
+        const subMenus = menus.filter(item => item.parentName !== '' && item.parentId === menuItem.id);
+        subMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
+        return subMenus;
+    };
 
     handleChange = event => {
         const target = event.target;
@@ -61,6 +85,10 @@ export default class AppContainer extends Component {
             isGuest: this.state.isGuest
         };
     };
+
+    setGridParams = gridParams =>{
+        this.setState({gridParams});
+    }
 
     handleCloseEmptyConfirm = () => {
         this.setState({ showEmptyConfirmPopup: false });
@@ -93,16 +121,16 @@ export default class AppContainer extends Component {
     });
 
     handleCloseEditCustomerInfoPopup = () => {
-        this.props.setEditCustomerInfoPopup({ show: false });
+        this.setState({editCustomerInfoPopup: {show: false}});
     };
 
     getDataGrid = async () =>{
-        const params = this.getParams();
-        await this.getCustomerInfo(params);
+        await this.getCustomerInfo();
         await this.getSetting();
     }
 
-    getCustomerInfo = async params => {
+    getCustomerInfo = async () => {
+        const params = this.getParams();
         this.setState({gridParams: params});
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
@@ -128,39 +156,28 @@ export default class AppContainer extends Component {
     }
 
     render() {
-        const { isHost, editCustomerInfoPopup } = this.props;
-        const {customerInfo, settings, isGuest, customerSuggestions, showEmptyConfirmPopup, username} = this.state;
+        const { isHost } = this.props;
+        const {customerInfo, settings, isGuest, customerSuggestions, showEmptyConfirmPopup,
+               username, showEmptyCustomerInfoPopup, gridParams, menus } = this.state;
         return (
             <div>
-                <Header />
+                <Header menus={menus}/>
                 <Filter
-                    isHost={isHost} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username}
+                    isHost={isHost} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus}
                     customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
-                    showEmptyCustomerInfoPopup={this.showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
+                    showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
                     showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
                     handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                 />
-                {
-                    editCustomerInfoPopup.show &&
-                    <SweetModalDialog size="lg"
-                        title={LangHelper.getResource('Confirmation')}
-                        contents={
-                            <div>{LangHelper.getResource('EditCustomerInfoSuccessfully')}</div>
-                        }
-                        buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleCloseEditCustomerInfoPopup}>
-                                {LangHelper.getResource('OK')}
-                            </Button>
-                        ]}
-                        onClose={this.handleCloseEditCustomerInfoPopup}
-                    />
-                }
                 {
                     <div className="d-flex">
                         <div id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'}>
                         {
                             customerInfo !== null && settings !== null &&
-                            <DataGrid customerInfo={customerInfo} settings = {this.state.settings} getCustomerInfo={this.getCustomerInfo}/>
+                            <DataGrid 
+                                customerInfo={customerInfo} settings = {this.state.settings} gridParams={gridParams} setGridParams={this.setGridParams}
+                                getCustomerInfo={this.getCustomerInfo} handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup}
+                            />
                         }
                         </div>
                         <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>

@@ -7,19 +7,17 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
-    using CRM.Models;
-    using CRM.Models.Common;
     using CRM.Models.Customer;
 
     public interface ICustomerService
     {
-        Task<CustomerInfo> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria);
+        Task<CustomerSession> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria);
 
         Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command);
 
         Task<IEnumerable<string>> GetCustomerAutoSuggestionAsync(CustomerSuggestionCriteria criteria);
 
-        Task<CustomerInfo> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria);
+        Task<CustomerSession> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria);
     }
 
     public class CustomerService : ICustomerService
@@ -33,10 +31,10 @@
             this.settingService = settingService;
         }
 
-        public async Task<CustomerInfo> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
+        public async Task<CustomerSession> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
         {
-            var (customers, languageIds) = await baseService.FetchMultipleAsync<CustomerInfo, int>(criteria);
-            CustomerInfo customerInfo = null;
+            var (customers, languageIds) = await baseService.FetchMultipleAsync<CustomerSession, int>(criteria);
+            CustomerSession customerInfo = null;
             if (customers.Any())
             {
                 customerInfo = customers.FirstOrDefault();
@@ -46,7 +44,7 @@
                 customerInfo.LanguageIds = string.Join(",", languageIds);
 
                 var site = await settingService.GetSiteByIdAsync(customerInfo.SiteId);
-                customerInfo.SiteSetting = new Site
+                customerInfo.SiteSetting = new BaseSetting
                 {
                     Id = site.Id,
                     Name = site.Name
@@ -61,11 +59,11 @@
             return customerInfo;
         }
 
-        protected internal virtual async Task<IEnumerable<CustomerInfo>> GetUplineInfoAsync(int custId)
+        protected internal virtual async Task<IEnumerable<CustomerSession>> GetUplineInfoAsync(int custId)
         {
             var criteria = new GetUplineInfoOfUserCriteria { CustId = custId };
-            var uplineInfos = new List<CustomerInfo>();
-            var customers = await baseService.GetDataAsync<CustomerInfo>(criteria);
+            var uplineInfos = new List<CustomerSession>();
+            var customers = await baseService.GetDataAsync<CustomerSession>(criteria);
             foreach (var item in customers)
             {
                 if (criteria.CustId == item.CustId || item.RoleId == RoleIdConstants.Headline)
@@ -100,15 +98,15 @@
             return await baseService.GetDataAsync<string>(criteria);
         }
 
-        private CustomerInfo GetUnAssignedCustomerInfo()
+        private CustomerSession GetUnAssignedCustomerInfo()
         {
-            return new CustomerInfo
+            return new CustomerSession
             {
                 Username = "Unassigned",
                 IsActive = false,
                 IsClosed = false,
                 IsSuspended = false,
-                Role = new BaseModel
+                Role = new BaseSetting
                 {
                     Id = RoleIdConstants.Headline,
                     Name = RoleSettingService.GetRoleName(RoleIdConstants.Headline)
@@ -116,11 +114,11 @@
             };
         }
 
-        public async Task<CustomerInfo> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria)
+        public async Task<CustomerSession> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria)
         {
-            var (customer, languages) = await baseService.FetchMultipleAsync<CustomerInfo, CustomerLanguageInfo>(criteria);
+            var (customer, languages) = await baseService.FetchMultipleAsync<CustomerSession, CustomerLanguageInfo>(criteria);
             var listLanguages = new List<int>();
-            CustomerInfo customerInfo = null;
+            CustomerSession customerInfo = null;
             if (customer.Any())
             {
                 customerInfo = customer.FirstOrDefault();
@@ -132,7 +130,7 @@
                 }
                 customerInfo.Languages = listLanguages;
                 customerInfo.LanguageIds = string.Join(",", listLanguages);
-                customerInfo.SiteSetting = new Site
+                customerInfo.SiteSetting = new BaseSetting
                 {
                     Id = site.Id,
                     Name = site.Name

@@ -96,14 +96,14 @@
 
         #region Helpers
 
-        private DeletedFeedbackStatisticController GetController()
+        private DeletedFeedbackStatisticsController GetController()
         {
             feedbackRepository = Substitute.For<IFeedbackRepository>();
             commonService = Substitute.For<ICommonService>();
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
             
-            return new DeletedFeedbackStatisticController(feedbackRepository, commonService, settingService, excelService);
+            return new DeletedFeedbackStatisticsController(feedbackRepository, commonService, settingService, excelService);
         }
 
         #endregion Helpers

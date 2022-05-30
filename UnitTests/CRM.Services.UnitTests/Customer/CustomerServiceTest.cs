@@ -25,12 +25,12 @@
             var fixture = new Fixture();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var param = new GetCustomerInfoByUsernameCriteria { Username = "test", IsGuest = false };
-            var customerInfos = fixture.Create<IEnumerable<CustomerInfo>>();
+            var customerInfos = fixture.Create<IEnumerable<CustomerSession>>();
             var languages = fixture.Create<List<int>>();
             var site = fixture.Create<SiteSetting>();
             var tuple = (customerInfos, languages);
             var service = GetCustomerService();
-            baseService.FetchMultipleAsync<CustomerInfo, int>(Arg.Do<GetCustomerInfoByUsernameCriteria>(x => param = x)).Returns(tuple);
+            baseService.FetchMultipleAsync<CustomerSession, int>(Arg.Do<GetCustomerInfoByUsernameCriteria>(x => param = x)).Returns(tuple);
             settingService.GetSiteByIdAsync(Arg.Any<int>()).Returns(site);
             var expected = customerInfos.First();
 
@@ -48,12 +48,12 @@
             var fixture = new Fixture();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var param = new GetCustomerInfoByUsernameCriteria { Username = "test", IsGuest = true };
-            var customerInfos = fixture.Create<IEnumerable<CustomerInfo>>();
+            var customerInfos = fixture.Create<IEnumerable<CustomerSession>>();
             var languages = fixture.Create<List<int>>();
             var site = fixture.Create<SiteSetting>();
             var tuple = (customerInfos, languages);
             var service = GetCustomerService();
-            baseService.FetchMultipleAsync<CustomerInfo, int>(Arg.Do<GetCustomerInfoByUsernameCriteria>(x => param = x)).Returns(tuple);
+            baseService.FetchMultipleAsync<CustomerSession, int>(Arg.Do<GetCustomerInfoByUsernameCriteria>(x => param = x)).Returns(tuple);
             settingService.GetSiteByIdAsync(Arg.Any<int>()).Returns(site);
             var expected = customerInfos.First();
 
@@ -63,7 +63,7 @@
             //Assert
             Assert.Equal(expected, actual);
             Assert.Equal(site.Name, actual.SiteSetting.Name);
-            Assert.Equal(new List<CustomerInfo>(), actual.UplineInfo);
+            Assert.Equal(new List<CustomerSession>(), actual.UplineInfo);
         }
 
         [Fact]
@@ -107,13 +107,13 @@
             var fixture = new Fixture();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var param = fixture.Create<GetCustomerInfoDetailByIdCriteria>();
-            var customerInfoDetail = fixture.Create<IEnumerable<CustomerInfo>>();
+            var customerInfoDetail = fixture.Create<IEnumerable<CustomerSession>>();
             var customerLanguageInfo = fixture.Create<IEnumerable<CustomerLanguageInfo>>();
 
             var site = fixture.Create<SiteSetting>();
             var tuple = (customerInfoDetail, customerLanguageInfo);
             var service = GetCustomerService();
-            baseService.FetchMultipleAsync<CustomerInfo, CustomerLanguageInfo>(Arg.Do<GetCustomerInfoDetailByIdCriteria>(x => param = x)).Returns(tuple);
+            baseService.FetchMultipleAsync<CustomerSession, CustomerLanguageInfo>(Arg.Do<GetCustomerInfoDetailByIdCriteria>(x => param = x)).Returns(tuple);
             settingService.GetSiteByIdAsync(Arg.Any<int>()).Returns(site);
             var expected = customerInfoDetail.First();
 

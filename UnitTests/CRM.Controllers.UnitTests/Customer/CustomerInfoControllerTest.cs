@@ -7,15 +7,13 @@
     using AutoFixture;
     using CRM.Core.Constants;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models;
-    using CRM.Models.Customer;
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Customer;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -25,26 +23,10 @@
     public class CustomerInfoControllerTest : BaseController
     {
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ICustomerService customerService;
         private ISettingService settingService;
+        private ISessionService sessionService;
 
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            //Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
-
-            //Act
-            var result = controller.Index();
-
-            //Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
 
         [Fact]
         public async Task GetCustomerInfo_WhenCalled_ReturnExpectedData()
@@ -52,7 +34,7 @@
             //Arrange
             var fixture = new Fixture();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-            var customer = fixture.Create<CustomerInfo>();
+            var customer = fixture.Create<CustomerSession>();
             var param = fixture.Create<GetCustomerInfoByUsernameCriteria>();
             var controller = GetController();
             customerService.GetCustomerInfoAsync(param).Returns(customer);
@@ -144,9 +126,8 @@
             customerService = Substitute.For<ICustomerService>();
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
-            var controller = new CustomerInfoController(napSession, napSettings, userService, customerService, settingService);
+            sessionService = Substitute.For<ISessionService>();
+            var controller = new CustomerInfoController(napSession, customerService, settingService, sessionService);
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
                 Connection =

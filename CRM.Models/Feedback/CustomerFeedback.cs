@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using CRM.Models.Customer;
 
-    public class CustomerFeedback : CustomerInfo
+    public class CustomerFeedback : CustomerInfoDetails
     {
         public int FeedbackId { get; set; }
 

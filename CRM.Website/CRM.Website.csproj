@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\css\dev\pages\auth\" />
-    <Folder Include="wwwroot\css\images\login\" />
     <Folder Include="www\sources\css\pages\customer\customer-info\" />
     <Folder Include="www\sources\js\pages\pic-and-headline\pic-assignment\" />
   </ItemGroup>

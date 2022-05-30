@@ -2,8 +2,6 @@
 @using CRM.Services
 @using Fanex.NAP.Client.Helpers.Web
 @using Microsoft.Extensions.Options
-@using CRM.Core.Extensions;
-@using Microsoft.AspNetCore.Http;
 @using CRM.Core.Services;
 @inject IOptionsSnapshot<AppSettings> appSettings
 @inject ICommonService commonService
@@ -58,6 +56,7 @@
         window.currentClientTime = '@currentClientTime';
         window.customerInfo = @Json.Serialize(sessionService.CustomerInfo);
         window.menus = @Json.Serialize(napSession.MenuItemList);
+        window.currentCustoer = @Json.Serialize(sessionService.CurrentCustomer);
 </script>
 
     <environment include="Development">

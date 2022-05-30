@@ -22,29 +22,19 @@
             background-color: #464d5d;
             color: #ebebeb;
         }
-        
 
-        // .check-guest {
-        //     background-color: #464d5d;
-        //     margin: 0;
-        //     color: #ebebeb;
-        //     // input{
-        //     //     margin: 2px 2px 0 0;
-        //     //     margin-left: 10px;
-        //     // }
-        // }
 
-        .buttonSearch {
-            padding-top: 5px;
-            background-color: transparent;
+        .btn-search {
+            background: url('../../../css/images/icon-search.png') 0 0 no-repeat;
             cursor: pointer;
+            height: 16px;
             vertical-align: middle;
             width: 16px;
             border: none;
-            margin: -8px 0 0 -10px;
+            margin: -1px 0 0 23px;
             position: absolute;
+            left: 6px;
             top: 10px;
-            font-size: 12px;
         }
     }
 
@@ -53,6 +43,56 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        background-color: #464d5d;
+        border-radius: 0;
+        height: 35px;
+        color: white;
+        border-left: 1px solid #252525;
+
+        #divSubMenu{
+            .breadcrumbsMenu{
+                margin: 6px 14px 0;
+                .icon-home{
+                    background: url('../../../css/images/home-ico.png') no-repeat;
+                    height: 16px;
+                    width: 16px;
+                    display: block;
+                    cursor: pointer;
+                }
+                li{
+                    padding: 2px 23px 2px 11px;
+                    float: left;
+
+                    &:first-child{
+                        padding: 2px 23px 2px 11px;
+                        float: left;
+                        background: url('../../../css/images/br-arrow-ico.png') right 8px no-repeat;
+                    }
+
+                    &:not(:last-child){
+                        background: url('../../../css/images/br-arrow-ico.png') right 8px no-repeat;
+                    }
+
+                    &:last-child{
+                        background: none;
+                        color: #aaa9a9;
+                    }
+                }
+            }
+
+            .list-inline{
+                padding-left: 0;
+                list-style: none;
+            }
+        }
+
+        .timezone{
+            background: url('../../../css/images/clock.png') left center no-repeat;
+            padding-left: 20px;
+            color: #bbbbbb;
+            margin: 7px 10px 0 0;
+        }
     }
     
     .breadcrumb{

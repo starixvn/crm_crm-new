@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
@@ -7,8 +7,11 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { RoleIds } from '@jsroot/common/constants';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
+import { toast } from 'react-toastify';
 
-export default class DataGrid extends Component {
+export default class DataGrid extends PureComponent {
     static defaultProps = {
         customerInfo: null,
         editCustomerInfoResult: {},
@@ -220,6 +223,7 @@ export default class DataGrid extends Component {
                             keyField='languageId'
                             valueField='name'
                             statusField='checked'
+                            isNAOption
                             isAllTextShown
                             onChange={(currentItem, selectedItemsKey) => {
                                 setFieldValue('languageId', selectedItemsKey);
@@ -413,7 +417,7 @@ export default class DataGrid extends Component {
         });
     };
 
-    handleSubmit = (values, { setSubmitting }) => {
+    handleSubmit = async (values, { setSubmitting }) => {
         const data = {
             custId: values.custId,
             site: this.state.siteId || values.siteId,
@@ -448,12 +452,19 @@ export default class DataGrid extends Component {
         };
 
         setSubmitting(true);
-        this.props.editCustomerInfo(data).then(() => {
-            setSubmitting(false);
-            if (this.props.editCustomerInfoResult.isSuccessful) {
-                this.props.setEditCustomerInfoPopup({ show: true });
+        Site.blockUI();
+        const url = Site.resolveClientUrl('CustomerInfo/EditCustomerInfo');
+        await DataService.postDataAsync(url,data).then(response => {
+            if (response.data.isSuccessful) {
+                this.props.handleCloseEditCustomerInfoPopup();
+                this.props.getCustomerInfo();
+                toast.success(LangHelper.getResource('UpdateCRMInfoSuccessful'));
+            } else {
+                toast.error(LangHelper.getResource(response.data.message));
+                this.props.handleCloseEditCustomerInfoPopup();
+                setSubmitting(false);
             }
-        });
+        }).then(() => Site.unblockUI());
     };
 
     handleSearchUplineInfo = username => {
@@ -462,7 +473,7 @@ export default class DataGrid extends Component {
             username
         };
         this.props.setGridParams(params);
-        this.props.getCustomerInfo(params);
+        this.props.getCustomerInfo();
     };
 
     render() {

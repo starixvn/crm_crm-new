@@ -1,38 +1,11 @@
 import React, { Component } from 'react';
 import LangHelper from '@jsroot/common/langHelper';
-
-const location = window.location.origin;
+import Site from '@jsroot/common/site';
 
 export class Header extends Component {
-
     constructor(props) {
         super(props);
-
-        this.state = {
-            menus: []
-        };
     }
-
-    componentDidMount() {
-        if(window.menus !== null){
-            this.initDataMenu(window.menus);
-        }
-    }
-
-    initDataMenu = menus => {
-        const presentMenus = menus.filter(item => item.parentName === '');
-        presentMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
-        presentMenus.forEach(item => item.subMenus = this.getSubMenus(item, menus));
-        presentMenus.forEach(item => item.subMenus.forEach(element => element.subMenus = this.getSubMenus(element, menus)));
-
-        this.setState({ menus: presentMenus });
-    };
-
-    getSubMenus = (menuItem, menus) => {
-        const subMenus = menus.filter(item => item.parentName !== '' && item.parentId === menuItem.id);
-        subMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
-        return subMenus;
-    };
 
     isIgnoreMenu = item => !(item.subMenus.length === 0 && (item.url.includes('n/a') || item.url.length === 0));
 
@@ -40,7 +13,7 @@ export class Header extends Component {
         return (
             <li key={index + item.id} className='menu-item'>
                 <div className='menu-title'>
-                <a className='title' href={ location + item.url}>{item.name}</a>
+                <a className='title' href={Site.resolveClientUrl(item.url.slice(1))}>{item.name}</a>
                     {
                         item.subMenus.length > 0 && <span className='fa fa-caret-down icon' />
                     }
@@ -52,7 +25,7 @@ export class Header extends Component {
                             {
                                 item.subMenus.map((element, key) => (
                                     <div key={key} className='layer-first'>
-                                        <a className='title' href={location + element.url}>{element.name}</a>
+                                        <a className='title' href={Site.resolveClientUrl(element.url.slice(1))}>{element.name}</a>
                                         {
                                             element.subMenus.length > 0 &&
                                             (
@@ -61,7 +34,7 @@ export class Header extends Component {
                                                     <div className='layer-second'>
                                                         {
                                                             element.subMenus.map((ele, num) => (
-                                                                <a className='layer-first' key={num} href={location + ele.url}>{ele.name}</a>
+                                                                <a className='layer-first' key={num} href={Site.resolveClientUrl(ele.url.slice(1))}>{ele.name}</a>
                                                             ))
                                                         }
                                                     </div>
@@ -79,8 +52,8 @@ export class Header extends Component {
     };
 
     render() {
-        const { menus } = this.state;
-        if (menus.length <= 0) {
+        const { menus } = this.props;
+        if (!menus || menus.length <= 0) {
             return null;
         }
 
@@ -103,7 +76,7 @@ export class Header extends Component {
                         <img src='../../css/images/icon/user.png' />
                         <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{window.currentUsername}</span></span>
                         <img src='../../css/images/icon/icon-logout.png' />
-                        <a className='sign-out' href={location + '/Auth/SignOut'}>{LangHelper.getResource('SignOut')}</a>
+                        <a className='sign-out' href={Site.resolveClientUrl('Auth/SignOut')}>{LangHelper.getResource('SignOut')}</a>
                     </div>
                 </div>
             </div>

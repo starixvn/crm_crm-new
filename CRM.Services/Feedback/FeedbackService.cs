@@ -81,7 +81,7 @@
                 feedback.Settings = settingItems.ToList();
 
                 var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteId);
-                feedback.SiteSetting = new Models.Common.Site
+                feedback.SiteSetting = new BaseSetting
                 {
                     Id = siteSetting.Id,
                     Name = siteSetting.Name

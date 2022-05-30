@@ -14,13 +14,13 @@
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
 
-    public class DeletedFeedbackStatisticController : BaseController
+    public class DeletedFeedbackStatisticsController : BaseController
     {
         private readonly IFeedbackRepository feedbackRepository;
         private readonly ICommonService commonService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
-        public DeletedFeedbackStatisticController(IFeedbackRepository feedbackRepository,
+        public DeletedFeedbackStatisticsController(IFeedbackRepository feedbackRepository,
             ICommonService commonService,
             ISettingService settingService,
             IExportExcelService excelService)

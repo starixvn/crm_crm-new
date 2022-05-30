@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
-import Layout from '../../../components/Layout';
+import Layout from '@jsroot/components/layout-container/index';
 
 export class AppContainer extends Component {
     constructor(props) {

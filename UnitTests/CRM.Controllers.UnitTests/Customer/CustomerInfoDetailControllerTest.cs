@@ -57,7 +57,7 @@
         {
             //Arrange
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-            var customer = fixture.Create<CustomerInfo>();
+            var customer = fixture.Create<CustomerSession>();
             var param = fixture.Create<GetCustomerInfoDetailByIdCriteria>();
             var controller = GetController();
             customerService.GetCustomerByIdAsync(param).Returns(customer);

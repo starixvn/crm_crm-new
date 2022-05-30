@@ -3,13 +3,12 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Customer;
-    using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Customer;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -17,28 +16,32 @@
     public class CustomerInfoController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
+        private readonly ISessionService sessionService;
 
         public CustomerInfoController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             ICustomerService customerService,
-            ISettingService settingService)
+            ISettingService settingService,
+            ISessionService sessionService)
         {
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.customerService = customerService;
             this.settingService = settingService;
+            this.sessionService = sessionService;
         }
 
         public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
         {
-            CustomerInfo customerInfo = await customerService.GetCustomerInfoAsync(criteria);
+            CustomerSession customerInfo = await customerService.GetCustomerInfoAsync(criteria);
+            CurrentCustomer currentCustomer = new CurrentCustomer
+            {
+                Name = criteria.Username,
+                IsGuest = criteria.IsGuest
+            };
+            sessionService.CustomerInfo = customerInfo;
+            sessionService.CurrentCustomer = currentCustomer;
             return Json(customerInfo);
         }
 
