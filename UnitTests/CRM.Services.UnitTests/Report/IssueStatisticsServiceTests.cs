@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Services;
-    using CRM.Criteria.Report.IssuesStatistics;
+    using CRM.Criteria.Report;
     using CRM.Models.Report;
     using CRM.Services.Report;
     using NSubstitute;

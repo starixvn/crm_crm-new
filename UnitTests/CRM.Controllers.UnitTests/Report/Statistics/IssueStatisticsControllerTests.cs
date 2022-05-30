@@ -4,12 +4,10 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.Report.Statistics;
-    using CRM.Core;
     using CRM.Core.Constants;
-    using CRM.Criteria.Report.IssuesStatistics;
+    using CRM.Criteria.Report;
     using CRM.Models.Report;
     using CRM.Models.Setting;
-    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Report;
     using Microsoft.AspNetCore.Mvc;
