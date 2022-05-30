@@ -9,7 +9,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
-    public class HomeController : BaseController
+    public class HomeController : Controller
     {
         private readonly IHomeService homeService;
         private readonly IUserService userService;
