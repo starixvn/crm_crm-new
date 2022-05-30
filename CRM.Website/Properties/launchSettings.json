@@ -1,15 +1,15 @@
 {
     "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iis": {
-      "applicationUrl": "http://localhost/CRM.Website",
-      "sslPort": 0
-    },
-    "iisExpress": {
-      "applicationUrl": "http://localhost:52207",
-      "sslPort": 44345
-    }
+        "windowsAuthentication": false,
+        "anonymousAuthentication": true,
+        "iis": {
+            "applicationUrl": "http://localhost/CRM.Website",
+            "sslPort": 0
+        },
+        "iisExpress": {
+            "applicationUrl": "http://localhost:52206",
+            "sslPort": 44345
+        }
     },
     "profiles": {
         "IIS Express": {
