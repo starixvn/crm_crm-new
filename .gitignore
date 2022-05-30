@@ -47,3 +47,4 @@ node_modules
 /CRM.Website/coverage
 /CoverageReports
 *.cobertura.xml
+__snapshots__/
