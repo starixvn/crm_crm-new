@@ -1,15 +1,12 @@
 ﻿import React from 'react';
 import AppContainerWrapper, { AppContainer } from '../AppContainer';
-import Filter from '../Filter';
-import DataGrid from '../DataGrid';
-import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
-import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
 import { toast } from 'react-toastify';
 import NewNotificationTypeWrapper from '../NewNotificationType';
 import EditNotificationTypeWrapper from '../EditNotificationType';
+import toJson from 'enzyme-to-json';
 
 jest.mock('react-toastify');
 const mockStore = configureMockStore();
@@ -29,11 +26,7 @@ describe('AppContainer', () => {
         const container = shallow(<AppContainer/>);
 
         // Assert
-        expect(container).toMatchSnapshot();
-        expect(container.find(Filter).length).toBe(1);
-        expect(container.find(DataGrid).length).toBe(1);
-        expect(container.find(NewNotificationTypeWrapper).length).toBe(0);
-        expect(container.find(EditNotificationTypeWrapper).length).toBe(0);
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     describe('create notification type', () => {
@@ -46,7 +39,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
+            expect(toJson(container)).toMatchSnapshot();
             expect(container.find(NewNotificationTypeWrapper).length).toBe(1);
         });
 
@@ -95,7 +88,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
+            expect(toJson(container)).toMatchSnapshot();
             expect(container.find(EditNotificationTypeWrapper).length).toBe(1);
         });
 
@@ -145,11 +138,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(ConfirmPopup).length).toBe(1);
-            expect(container.find(ConfirmPopup).props().title).toEqual('Confirmation');
-            expect(container.find(ConfirmPopup).props().content)
-                .toEqual(<div>Are you sure you want to delete <strong>test123</strong>?</div>);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should call correct functions when close popup', () => {

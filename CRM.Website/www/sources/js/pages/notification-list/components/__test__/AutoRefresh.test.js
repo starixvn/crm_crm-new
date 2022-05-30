@@ -5,6 +5,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import configureMockStore from 'redux-mock-store';
 import functions from '../../functions';
 import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
+import toJson from 'enzyme-to-json';
 
 describe('AutoRefresh', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -25,7 +26,7 @@ describe('AutoRefresh', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

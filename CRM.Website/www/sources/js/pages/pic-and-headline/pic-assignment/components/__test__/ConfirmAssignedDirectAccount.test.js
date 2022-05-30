@@ -7,6 +7,7 @@ import functions from '../../common.functions';
 import { Button, Modal } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import toJson from 'enzyme-to-json';
 
 describe('ConfirmAssignedDirectAccount', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -28,7 +29,7 @@ describe('ConfirmAssignedDirectAccount', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

@@ -2,6 +2,7 @@
 import { Filter } from '../Filter';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
+import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
     beforeAll(() => {
@@ -16,7 +17,7 @@ describe('Filter', () => {
         const container = shallow(<Filter />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     describe('methods', () => {

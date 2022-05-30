@@ -4,6 +4,7 @@ import SweetModalDialog from '../SweetModalDialog';
 import { Modal } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('SweetModalDialog', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -13,7 +14,7 @@ describe('SweetModalDialog', () => {
         const sweetModalDialog = shallow(<SweetModalDialog />);
 
         // Assert
-        expect(sweetModalDialog).toMatchSnapshot();
+        expect(toJson(sweetModalDialog)).toMatchSnapshot();
     });
 
     describe('render', () => {

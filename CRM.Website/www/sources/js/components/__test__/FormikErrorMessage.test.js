@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert } from 'react-bootstrap';
 import FormikErrorMessage from '../FormikErrorMessage';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('FormikErrorMessage', () => {
     it('has correct snapshots', () => {
@@ -9,7 +10,7 @@ describe('FormikErrorMessage', () => {
         const component = shallow(<FormikErrorMessage />);
 
         // Assert
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 
     describe('render', () => {

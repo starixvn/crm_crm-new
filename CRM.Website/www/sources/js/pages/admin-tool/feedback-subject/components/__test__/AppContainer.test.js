@@ -2,11 +2,9 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import Filter from '../Filter';
-import DataGrid from '../DataGrid';
 import NewFeedbackSubject from '../NewFeedbackSubject';
 import EditFeedbackSubject from '../EditFeedbackSubject';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import toJson from 'enzyme-to-json';
 
 jest.mock('react-toastify');
 
@@ -20,9 +18,7 @@ describe('AppContainer', () => {
         const container = shallow(<AppContainer />);
 
         // Assert
-        expect(container).toMatchSnapshot();
-        expect(container.find(Filter).length).toBe(1);
-        expect(container.find(DataGrid).length).toBe(1);
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     describe('create feedback subject', () => {
@@ -36,8 +32,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(NewFeedbackSubject).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should call exactly functions when close popup', () => {
@@ -87,7 +82,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
+            expect(toJson(container)).toMatchSnapshot();
             expect(container.find(EditFeedbackSubject).length).toBe(1);
         });
 
@@ -140,10 +135,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(SweetModalDialog).length).toBe(1);
-            expect(container.find(SweetModalDialog).props().contents)
-                .toStrictEqual(<div>Are you sure you want to <span>deactivate</span> Feedback Subject Template <strong>1</strong>?</div>);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should call exactly functions when close popup', () => {

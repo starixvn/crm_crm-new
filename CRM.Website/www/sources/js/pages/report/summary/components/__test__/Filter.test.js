@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 import { Filter } from '../Filter';
 import { shallow } from 'enzyme';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
     afterAll(() => {
@@ -23,7 +24,7 @@ describe('Filter', () => {
         const container = shallow(<Filter {...props} />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('componentDidMount should run correctly', () => {

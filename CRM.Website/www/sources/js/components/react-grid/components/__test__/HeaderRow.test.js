@@ -1,6 +1,7 @@
 import React from 'react';
 import HeaderRow from '../HeaderRow';
 import { render, shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('HeaderRow', () => {
     it('should have correct snapshot', () => {
@@ -8,7 +9,7 @@ describe('HeaderRow', () => {
         const headerRow = shallow(<HeaderRow />);
 
         // Assert
-        expect(headerRow).toMatchSnapshot();
+        expect(toJson(headerRow)).toMatchSnapshot();
     });
 
     it('_renderChildren should return expected', () => {

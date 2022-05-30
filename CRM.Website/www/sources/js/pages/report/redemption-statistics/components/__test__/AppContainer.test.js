@@ -5,6 +5,7 @@ import { AppContainer } from '../AppContainer';
 import Filter from '../Filter';
 import DataGrid from '../DataGrid';
 import Detail from '../Detail';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     beforeAll(() => {
@@ -59,9 +60,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Detail).length).toBe(1);
-            expect(container.find(Filter).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should render datagrid', () => {
@@ -76,9 +75,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(DataGrid).length).toBe(1);
-            expect(container.find(Filter).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 });

@@ -11,6 +11,7 @@ import { contentPopup } from '../../../notification-list/reducers/dataHandlerRed
 import { toast } from 'react-toastify';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import toJson from 'enzyme-to-json';
 
 describe('DataGrid', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -35,7 +36,7 @@ describe('DataGrid', () => {
         // Assert
         it('component renders correctly', () => {
             const grid = mount(<DataGridWrapper store={store} />);
-            expect(grid).toMatchSnapshot();
+            expect(toJson(grid)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

@@ -6,6 +6,7 @@ import MultipleSelect from '../../../../components/multiple-select/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import { Formik } from 'formik';
+import toJson from 'enzyme-to-json';
 
 const commonFunction = require('../../common.functions');
 
@@ -23,11 +24,7 @@ describe('NewNotificationType', () => {
         const wrapper = mount(<NewNotificationType/>);
 
         // Assert
-        expect(wrapper).toMatchSnapshot();
-        expect(wrapper.find(Form)).toHaveLength(1);
-        expect(wrapper.find(Modal.Body)).toHaveLength(1);
-        expect(wrapper.find(Modal.Footer)).toHaveLength(1);
-        expect(wrapper.find(MultipleSelect)).toHaveLength(2);
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should close popup when click close button', () => {

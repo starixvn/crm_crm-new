@@ -1,9 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
-import LangHelper from '@jsroot/common/langHelper';
 import EditForm from '../EditForm';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -32,7 +31,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer />);
 
             //Assert
-            expect(container).toMatchSnapshot();
+            expect(toJson(container)).toMatchSnapshot();
             expect(container.find(EditForm).length).toBe(1);
         });
 
@@ -46,10 +45,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(SweetModalDialog).length).toBe(1);
-            expect(container.find(SweetModalDialog).props().contents)
-                .toStrictEqual(<div>{LangHelper.getResource('EditCustomerInfoSuccessfully')}</div>);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 });

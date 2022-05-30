@@ -2,14 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
 import DataGridRemark from '../DataGridRemark';
-import DataGridRedemption from '../DataGridRedemption';
-import DataGridCommunication from '../DataGridCommunication';
-import CustomerInfoVerify from '../CustomerInfoVerify';
-import EditCustomerInfoVerify from '../EditCustomerInfoVerify';
-import EditRedemptionLog from '../../../redemption/components/EditRedemptionLog';
-import EditNoOfInquiry from '../../../feedback/edit-no-of-inquiry/AppContainer';
-import EditCommunicationLog from '../../../communication-log/components/EditCommunicationLog';
-import CreateCommunicationLog from '../../../communication-log/components/CreateCommunicationLog';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -168,57 +161,8 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer />);
 
             // Assert
-            expect(container).toMatchSnapshot();
+            expect(toJson(container)).toMatchSnapshot();
             expect(container.find(DataGridRemark).length).toBe(1);
-        });
-
-        it('should render CustomerInfoVerify correctly', () => {
-            // Act
-            const container = shallow(<AppContainer />);
-
-            // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(CustomerInfoVerify).length).toBe(1);
-        });
-
-        it('should render DataGridRedemption correctly', () => {
-            // Act
-            const container = shallow(<AppContainer />);
-
-            // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(DataGridRedemption).length).toBe(1);
-        });
-
-        it('should render DataGridCommunication correctly', () => {
-            // Act
-            const container = shallow(<AppContainer />);
-
-            // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(DataGridCommunication).length).toBe(1);
-        });
-
-        it('should render dialog correctly', () => {
-            //Arrange
-            const props = {
-                editRedemptionDialog: { show: true },
-                noOfInquiryDialog: { show: true },
-                editCommunicationDialog: { show: true },
-                createCommunicationDialog: { show: true },
-                editCustomerVerifyDialog: { show: true }
-            };
-
-            //Act
-            const container = shallow(<AppContainer {...props} />);
-
-            //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(EditRedemptionLog).length).toBe(1);
-            expect(container.find(EditNoOfInquiry).length).toBe(1);
-            expect(container.find(EditCommunicationLog).length).toBe(1);
-            expect(container.find(CreateCommunicationLog).length).toBe(1);
-            expect(container.find(EditCustomerInfoVerify).length).toBe(1);
         });
     });
 });

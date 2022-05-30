@@ -6,6 +6,7 @@ import functions, { handleNewResendOptions } from '../../functions';
 import { Modal, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import toJson from 'enzyme-to-json';
 
 describe('ValidateResend', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -21,7 +22,7 @@ describe('ValidateResend', () => {
         const wrapper = shallow(<ValidateResendWrapper store={store} />);
 
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

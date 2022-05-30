@@ -1,14 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import Filter from '../Filter';
-import DataGrid from '../DataGrid';
-import NewSettingValue from '../NewSettingValue';
-import Edit from '../Edit';
-import LicenseeMapping from '../LicenseeMapping';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     beforeAll(() => {
@@ -250,13 +245,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...initProps} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Filter).length).toBe(1);
-            expect(container.find(DataGrid).length).toBe(1);
-            expect(container.find(NewSettingValue).length).toBe(1);
-            expect(container.find(Edit).length).toBe(1);
-            expect(container.find(LicenseeMapping).length).toBe(1);
-            expect(container.find(SweetModalDialog ).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should render null', () => {

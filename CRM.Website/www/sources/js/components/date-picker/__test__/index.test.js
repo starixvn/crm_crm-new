@@ -1,8 +1,8 @@
 import React from 'react';
 import Index from '../index';
-import DatePicker from 'react-datepicker';
 import CustomInput from '../CustomInput';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('index', () => {
     it('should have correct snapshots', () => {
@@ -10,7 +10,7 @@ describe('index', () => {
         const index = shallow(<Index />);
 
         // Assert
-        expect(index).toMatchSnapshot();
+        expect(toJson(index)).toMatchSnapshot();
     });
 
     describe('render', () => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import AppContainerWrapper, { AppContainer } from '../AppContainer';
-import Filter from '../Filter';
 import DataGrid from '../DataGrid';
 import Content from '../Content';
 import ViewDetail from '../ViewDetail';
@@ -9,6 +8,7 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import configureMockStore from 'redux-mock-store';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     beforeEach(() => {
@@ -42,7 +42,7 @@ describe('AppContainer', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {
@@ -146,8 +146,8 @@ describe('AppContainer', () => {
             const appContainer = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(appContainer).toMatchSnapshot();
-            expect(appContainer.find(Filter).length).toBe(1);
+            
+            expect(toJson(appContainer)).toMatchSnapshot();
             expect(appContainer.find(DataGrid).props().isHost).toEqual(document.getElementById('is-host').checked);
         });
 
@@ -169,7 +169,7 @@ describe('AppContainer', () => {
                 const appContainer = shallow(<AppContainer {...props} />);
     
                 // Assert
-                expect(appContainer).toMatchSnapshot();
+                expect(toJson(appContainer)).toMatchSnapshot();
                 expect(appContainer.find(Content).props().data).toEqual(props.contentPopup.data);
             });
     
@@ -216,7 +216,7 @@ describe('AppContainer', () => {
                 const appContainer = shallow(<AppContainer {...props} />);
         
                 // Assert
-                expect(appContainer).toMatchSnapshot();
+                expect(toJson(appContainer)).toMatchSnapshot();
                 expect(appContainer.find(ViewDetail).props().data).toEqual(props.viewDetailPopup.data);
             });
 
@@ -260,7 +260,7 @@ describe('AppContainer', () => {
             const appContainer = shallow(<AppContainer {...props} />);
     
             // Assert
-            expect(appContainer).toMatchSnapshot();
+            expect(toJson(appContainer)).toMatchSnapshot();
             expect(appContainer.find(ValidateResend).length).toBe(1);
         });
 

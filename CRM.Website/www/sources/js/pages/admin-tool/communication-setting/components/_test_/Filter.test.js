@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import { Form, Button } from 'react-bootstrap';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
     afterAll(() => {
@@ -25,7 +26,7 @@ describe('Filter', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

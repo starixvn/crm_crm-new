@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
 import Filter from '../Filter';
 import DataGrid from '../DataGrid';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -19,9 +20,7 @@ describe('AppContainer', () => {
         const container = shallow(<AppContainer {...props} />);
 
         // Assert
-        expect(container).toMatchSnapshot();
-        expect(container.find(Filter).length).toBe(1);
-        expect(container.find(DataGrid).length).toBe(0);
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('should render correctly when gridData undefined', () => {
@@ -34,9 +33,7 @@ describe('AppContainer', () => {
         const container = shallow(<AppContainer {...props} />);
 
         // Assert
-        expect(container).toMatchSnapshot();
-        expect(container.find(Filter).length).toBe(1);
-        expect(container.find(DataGrid).length).toBe(0);
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('should render correctly when gridData has data', () => {

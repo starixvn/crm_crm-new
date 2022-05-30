@@ -2,6 +2,7 @@
 import { EditNotificationTemplate } from '../EditNotificationTemplate';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
+import toJson from 'enzyme-to-json';
 
 describe('EditNotificationTemplate', () => {
     beforeAll(() => {
@@ -18,7 +19,7 @@ describe('EditNotificationTemplate', () => {
         const container = shallow(<EditNotificationTemplate />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     describe('methods', () => {
@@ -109,7 +110,7 @@ describe('EditNotificationTemplate', () => {
                 const form = shallow(container.renderForm(formikProps));
 
                 // Assert
-                expect(form).toMatchSnapshot();
+                expect(toJson(form)).toMatchSnapshot();
             });
 
             it('should render correctly when languages have data', () => {
@@ -123,7 +124,7 @@ describe('EditNotificationTemplate', () => {
                 const form = shallow(container.renderForm(formikProps));
 
                 // Assert
-                expect(form).toMatchSnapshot();
+                expect(toJson(form)).toMatchSnapshot();
             });
 
             it('should show response message', () => {
@@ -137,7 +138,7 @@ describe('EditNotificationTemplate', () => {
                 const form = shallow(container.renderForm(formikProps));
 
                 // Assert
-                expect(form).toMatchSnapshot();
+                expect(toJson(form)).toMatchSnapshot();
             });
         });
     });

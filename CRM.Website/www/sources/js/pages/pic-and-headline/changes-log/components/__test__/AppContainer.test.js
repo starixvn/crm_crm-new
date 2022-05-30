@@ -1,10 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import AppContainer from '../AppContainer';
-import DataGrid from '../DataGrid';
-import Filter from '../Filter';
-import PicFilter from '../PicFilter';
-import PicDataGrid from '../PicDataGrid';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -20,9 +17,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props}/>);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Filter).length).toBe(1);
-            expect(container.find(DataGrid).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should render correctly with tab 2', () => {
@@ -33,9 +28,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props}/>);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(PicFilter).length).toBe(1);
-            expect(container.find(PicDataGrid).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 });

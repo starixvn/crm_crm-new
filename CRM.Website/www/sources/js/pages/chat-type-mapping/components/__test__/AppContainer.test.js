@@ -1,9 +1,9 @@
 ﻿import React from 'react';
 import AppContainerWrapper, { AppContainer } from '../AppContainer';
-import Filter from '../Filter';
-import DataGrid from '../DataGrid';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
+import toJson from 'enzyme-to-json';
+
 
 describe('AppContainer', () => {
     beforeEach(() => {
@@ -26,13 +26,7 @@ describe('AppContainer', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
-        });
-
-        it('render correct components', () => {
-            const component = shallow(<AppContainer />);
-            expect(component.find(Filter).length).toBe(1);
-            expect(component.find(DataGrid).length).toBe(1);
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
     });
 });

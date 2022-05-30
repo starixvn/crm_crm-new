@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import configureMockStore from 'redux-mock-store';
 import AutoComplete from '@jsroot/components/AutoComplete';
+import toJson from 'enzyme-to-json';
 
 describe('filter', () => {
     beforeAll(() => {
@@ -22,7 +23,7 @@ describe('filter', () => {
         const wrapper = shallow(<Filter store={store} />);
 
         // Assert
-        expect(wrapper).toMatchSnapshot();
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('component has correct initialState', () => {

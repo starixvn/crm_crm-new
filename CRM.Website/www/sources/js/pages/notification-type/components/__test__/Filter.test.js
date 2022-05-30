@@ -3,6 +3,7 @@ import React from 'react';
 import FilterWrapper, { Filter } from '../Filter';
 import { shallow, mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
+import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
 
@@ -19,7 +20,7 @@ describe('Filter', () => {
         const wrapper = shallow(<FilterWrapper store={store} />);
 
         // Assert
-        expect(wrapper).toMatchSnapshot();
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('component has correct initialState', () => {

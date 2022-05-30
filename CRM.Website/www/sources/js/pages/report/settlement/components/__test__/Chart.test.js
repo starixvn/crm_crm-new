@@ -2,6 +2,7 @@ import React from 'react';
 import { Chart } from '../Chart';
 import { shallow } from 'enzyme';
 import { Modal } from 'react-bootstrap';
+import toJson from 'enzyme-to-json';
 
 describe('Chart', () => {
     afterAll(() => {
@@ -57,7 +58,7 @@ describe('Chart', () => {
         const data = container.instance().convertDataChart(chartInfo.childReports);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
         expect(data).toEqual(expectedData);
         expect(labels).toEqual(expectedLabels);
     });

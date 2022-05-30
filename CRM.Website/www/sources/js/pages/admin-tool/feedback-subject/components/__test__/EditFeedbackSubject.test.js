@@ -5,6 +5,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Form, Modal } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Formik } from 'formik';
+import toJson from 'enzyme-to-json';
 
 describe('EditFeedbackSubject', () => {
     beforeAll(() => {
@@ -21,7 +22,7 @@ describe('EditFeedbackSubject', () => {
         const container = shallow(<EditFeedbackSubject />);
 
         // Assert 
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('renders Modal, Formik components', () => {
@@ -157,7 +158,7 @@ describe('EditFeedbackSubject', () => {
                 const form = shallow(container.renderForm(formikProps));
         
                 // Assert 
-                expect(form).toMatchSnapshot();
+                expect(toJson(form)).toMatchSnapshot();
             });
 
             describe('isInvalid', () =>  {

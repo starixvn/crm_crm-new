@@ -5,6 +5,7 @@ import Site from '@jsroot/common/site';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('Remark', () => {
     beforeAll(() => {
@@ -208,7 +209,7 @@ describe('Remark', () => {
             const container = shallow(<Remark {...props} />);
 
             //Assert
-            expect(container).toMatchSnapshot();
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('handle message responses if unsuccessful', () => {

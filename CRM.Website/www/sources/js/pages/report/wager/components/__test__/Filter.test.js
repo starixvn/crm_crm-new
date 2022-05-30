@@ -3,6 +3,7 @@ import { Button, Form, Span } from 'react-bootstrap';
 import { Filter } from '../Filter';
 import { shallow } from 'enzyme';
 import { fn } from 'moment';
+import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
     afterAll(() => {
@@ -21,7 +22,7 @@ describe('Filter', () => {
         const container = shallow(<Filter {...props} />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
     
     it('should work exactly submitHandler function', () => {

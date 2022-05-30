@@ -1,11 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import Filter from '../Filter';
-import DataGrid from '../DataGrid';
-import NewRemark from '../NewRemark';
-import EditRemark from '../EditRemark';
-import History from '../History';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -138,11 +134,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(History).length).toBe(1);
-            expect(container.find(Filter).length).toBe(1);
-            expect(container.find(NewRemark).length).toBe(1);
-            expect(container.find(EditRemark).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should render null', () => {

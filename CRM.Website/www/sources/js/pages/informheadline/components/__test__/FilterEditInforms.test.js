@@ -6,6 +6,7 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ExcelIcon from '@jsroot/components/ExcelIcon';
 import { FilterEditInforms } from '../FilterEditInforms';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import toJson from 'enzyme-to-json';
 
 describe('FilterEditInforms', () => {
     afterAll(() => {
@@ -572,8 +573,7 @@ describe('FilterEditInforms', () => {
             const form = shallow(container.instance().renderFilterForm(param));
             
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(form.find(FormikErrorMessage).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should render ExcelIcon correctly', () => {

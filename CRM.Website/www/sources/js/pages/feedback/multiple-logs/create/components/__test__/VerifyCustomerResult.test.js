@@ -2,6 +2,7 @@
 import { shallow } from 'enzyme';
 import { VerifyCustomerResult } from '../VerifyCustomerResult';
 import LangHelper from '@jsroot/common/langHelper';
+import toJson from 'enzyme-to-json';
 
 describe('VerifyCustomerResult', () => {
     beforeAll(() => {
@@ -63,7 +64,7 @@ describe('VerifyCustomerResult', () => {
             const actual = container.renderCustomerItem(customer, 1);
 
             // Assert
-            expect(shallow(actual).html()).toMatchSnapshot();
+            expect(toJson(shallow(actual).html())).toMatchSnapshot();
         });
 
         it('should match snapshot when customer is guest', () => {
@@ -75,7 +76,7 @@ describe('VerifyCustomerResult', () => {
             const actual = container.renderCustomerItem(customer, 1);
 
             // Assert
-            expect(shallow(actual).html()).toMatchSnapshot();
+            expect(toJson(shallow(actual).html())).toMatchSnapshot();
         });
 
         it('should match snapshot when customer is invalid', () => {
@@ -87,7 +88,7 @@ describe('VerifyCustomerResult', () => {
             const actual = container.renderCustomerItem(customer, 1);
 
             // Assert
-            expect(shallow(actual).html()).toMatchSnapshot();
+            expect(toJson(shallow(actual).html())).toMatchSnapshot();
         });
 
         it('should call correct function when click on delete icon', () => {
@@ -125,7 +126,7 @@ describe('VerifyCustomerResult', () => {
             const container = shallow(<VerifyCustomerResult {...props} />);
 
             // Assert
-            expect(container.html()).toMatchSnapshot();
+            expect(toJson(container.html())).toMatchSnapshot();
         });
 
         it('should match snapshot when edit related customer', () => {
@@ -143,7 +144,7 @@ describe('VerifyCustomerResult', () => {
             const container = shallow(<VerifyCustomerResult {...props} />);
 
             // Assert
-            expect(container.html()).toMatchSnapshot();
+            expect(toJson(container.html())).toMatchSnapshot();
         });
     });
 });

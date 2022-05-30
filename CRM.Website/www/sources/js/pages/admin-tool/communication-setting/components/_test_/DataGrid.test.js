@@ -7,6 +7,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('DataGrid', () => {
     beforeAll(() => {
@@ -34,12 +35,7 @@ describe('DataGrid', () => {
         const wrapper = shallow(<DataGridWrapper store={store} />);
 
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
-        });
-
-        it('component has correct props', () => {
-            expect(wrapper.props().children.props.gridParamsCommunication).toEqual(initialState.gridParamsCommunication);
-            expect(wrapper.props().children.props.gridDataCommunication).toEqual(initialState.gridDataCommunication);
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
     });
 

@@ -8,6 +8,7 @@ import { PAGING_SIZES } from '@jsroot/common/constants';
 import { Form } from 'react-bootstrap';
 import functions, { handleNewResendOptions } from '../../functions';
 import AutoRefresh from '../AutoRefresh';
+import toJson from 'enzyme-to-json';
 
 describe('DataGrid', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -28,7 +29,7 @@ describe('DataGrid', () => {
 
         // Assert
         it('component renders correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

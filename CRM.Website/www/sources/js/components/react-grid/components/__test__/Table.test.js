@@ -8,6 +8,7 @@ import functions from '../../functions';
 import Site from '@jsroot/common/site';
 import { shallow } from 'enzyme';
 import { Tab } from 'bootstrap';
+import toJson from 'enzyme-to-json';
 
 describe('Table', () => {
     const clientWidth = document.body.clientWidth;
@@ -26,7 +27,7 @@ describe('Table', () => {
         const table = shallow(<Table {...props} />);
 
         // Assert
-        expect(table).toMatchSnapshot();
+        expect(toJson(table)).toMatchSnapshot();
     });
 
     it('componentDidMount should run correctly', () => {

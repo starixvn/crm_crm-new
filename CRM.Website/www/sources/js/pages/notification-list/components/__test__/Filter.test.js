@@ -10,6 +10,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import Select from '@jsroot/components/CustomReactSelect';
 import { Form, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -33,7 +34,7 @@ describe('Filter', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

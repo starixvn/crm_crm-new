@@ -1,10 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import Filter from '../Filter';
-import DataGrid from '../DataGrid';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
+import toJson from 'enzyme-to-json';
 
 jest.mock('react-toastify');
 
@@ -18,9 +16,7 @@ describe('AppContainer', () => {
         const container = shallow(<AppContainer />);
 
         //Assert
-        expect(container).toMatchSnapshot();
-        expect(container.find(Filter).length).toBe(1);
-        expect(container.find(DataGrid).length).toBe(1);
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     describe('edit customer info', () => {
@@ -34,10 +30,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(SweetModalDialog).length).toBe(1);
-            expect(container.find(SweetModalDialog).props().contents)
-                .toStrictEqual(<div>{LangHelper.getResource('EditCustomerInfoSuccessfully')}</div>);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should call exactly functions when close popup', () => {

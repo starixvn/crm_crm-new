@@ -2,6 +2,7 @@ import React from 'react';
 import { ToastContainer, Slide } from 'react-toastify';
 import Layout from '../Layout';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('Layout', () => {
     it('has correct snapshots', () => {
@@ -9,7 +10,7 @@ describe('Layout', () => {
         const component = shallow(<Layout />);
 
         // Assert
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
     
     describe('render', () => {

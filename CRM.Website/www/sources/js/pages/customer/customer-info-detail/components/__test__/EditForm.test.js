@@ -5,6 +5,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import MultipleSelect from '../../../../../components/multiple-select/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { EditForm } from '../EditForm';
+import toJson from 'enzyme-to-json';
 
 describe('EditForm', () => {
     afterAll(() => {
@@ -428,8 +429,7 @@ describe('EditForm', () => {
             const container = shallow(<EditForm {...props} />);
 
             //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Form).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
         it('should render EditForm not correctly', () => {
             //Act

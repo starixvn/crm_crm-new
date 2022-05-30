@@ -6,6 +6,7 @@ import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
+import toJson from 'enzyme-to-json';
 
 describe('NewPicManagement', () => {
     const mockDate = new Date(1466424490000);
@@ -41,7 +42,7 @@ describe('NewPicManagement', () => {
         // Act
         const container = shallow(<NewPicManagement {...props} />);
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('component has correct initialState', () => {

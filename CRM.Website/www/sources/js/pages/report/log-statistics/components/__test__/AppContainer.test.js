@@ -5,7 +5,7 @@ import Filter from '../Filter';
 import DataGrid from '../DataGrid';
 import Chart from '../Chart';
 import Detail from '../Detail';
-
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -32,10 +32,7 @@ describe('AppContainer', () => {
             // Act
             const container = shallow(<AppContainer {...props} />);
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Filter).length).toBe(0);
-            expect(container.find(DataGrid).length).toBe(0);
-            expect(container.find(Chart).length).toBe(0);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should render correctly when settings is empty', () => {
@@ -61,11 +58,7 @@ describe('AppContainer', () => {
             // Act
             const container = shallow(<AppContainer {...props} />);
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Filter).length).toBe(1);
-            expect(container.find(DataGrid).length).toBe(1);
-            expect(container.find(Detail).length).toBe(0);
-            expect(container.find(Chart).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should render correctly when show detail report', () => {
@@ -91,11 +84,7 @@ describe('AppContainer', () => {
             // Act
             const container = shallow(<AppContainer {...props} />);
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Filter).length).toBe(1);
-            expect(container.find(DataGrid).length).toBe(0);
-            expect(container.find(Detail).length).toBe(1);
-            expect(container.find(Chart).length).toBe(0);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should render correctly when settings is empty', () => {

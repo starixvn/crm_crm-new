@@ -5,6 +5,7 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import { toast } from 'react-toastify';
+import toJson from 'enzyme-to-json';
 
 jest.mock('react-toastify');
 
@@ -35,7 +36,7 @@ describe('Filter', () => {
         const container = shallow(<Filter {...props} />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('component has correct initialState', () => {

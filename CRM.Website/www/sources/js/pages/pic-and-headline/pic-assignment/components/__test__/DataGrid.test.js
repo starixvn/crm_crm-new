@@ -7,7 +7,7 @@ import functions from '../../common.functions';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
-    
+import toJson from 'enzyme-to-json';
 
 describe('DataGrid', () => {
     beforeEach(() => {
@@ -43,7 +43,7 @@ describe('DataGrid', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

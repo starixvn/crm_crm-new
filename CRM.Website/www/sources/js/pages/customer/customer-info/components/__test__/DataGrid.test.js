@@ -3,10 +3,11 @@ import { DataGrid } from '../DataGrid';
 import { shallow, mount } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Formik } from 'formik';
 import MultipleSelect from '../../../../../components/multiple-select';
 const commonFunction = require('../../common.functions');
+import toJson from 'enzyme-to-json';
+
 
 describe('DataGridCustomerInfo', () => {
     beforeAll(() => {
@@ -28,7 +29,7 @@ describe('DataGridCustomerInfo', () => {
         const container = shallow(<DataGrid {...props} />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('render Formik component', () => {
@@ -135,7 +136,7 @@ describe('DataGridCustomerInfo', () => {
                 const form = shallow(container.renderForm(formikProps));
 
                 // Assert
-                expect(form).toMatchSnapshot();
+                expect(toJson(form)).toMatchSnapshot();
             });
 
             it('should call exacly funtion', () => {

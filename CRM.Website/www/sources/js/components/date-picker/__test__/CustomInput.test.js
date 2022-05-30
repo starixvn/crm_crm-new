@@ -2,6 +2,7 @@ import React from 'react';
 import CustomInput from '../CustomInput';
 import { Form } from 'react-bootstrap';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('CustomInput', () => {
     it('should have correct snapshots', () => {
@@ -9,7 +10,7 @@ describe('CustomInput', () => {
         const customInput = shallow(<CustomInput />);
 
         // Assert
-        expect(customInput).toMatchSnapshot();
+        expect(toJson(customInput)).toMatchSnapshot();
     });
 
     it('render should return correct component', () => {

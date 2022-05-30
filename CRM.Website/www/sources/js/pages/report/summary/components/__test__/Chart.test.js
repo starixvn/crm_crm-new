@@ -1,7 +1,6 @@
 import React from 'react';
 import { Chart } from '../Chart';
 import { shallow } from 'enzyme';
-import { Modal } from 'react-bootstrap';
 
 describe('Chart', () => {
     afterAll(() => {
@@ -80,7 +79,6 @@ describe('Chart', () => {
         const data = container.instance().convertDataChart(props.gridData.months, props.gridData.categorySummaries);
 
         // Assert
-        expect(container).toMatchSnapshot();
         expect(data).toEqual([{"Open Account": 1, "name": "FEB"}, {"Open Account": 1, "name": "APR"}, {"Open Account": 1, "name": "SEP"}]);
         expect(labels).toEqual(["Open Account"]);
     });
@@ -193,7 +191,6 @@ describe('Chart', () => {
         const data = container.instance().convertDataChart(props.gridData.months, props.gridData.categorySummaries);
 
         // Assert
-        expect(container).toMatchSnapshot();
         expect(data).toEqual([{"Open Account": 1, "name": "FEB"}, {"Open Account": 1, "name": "APR"}, {"Open Account": 1, "name": "SEP"}]);
         expect(labels).toEqual(["Open Account"]);
     });

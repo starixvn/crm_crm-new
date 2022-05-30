@@ -7,6 +7,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import configureMockStore from 'redux-mock-store';
 import MultipleSelect from '../../../../components/multiple-select/index';
 import { Formik } from 'formik';
+import toJson from 'enzyme-to-json';
 
 const commonFunction = require('../../common.functions');
 const mockStore = configureMockStore();
@@ -28,7 +29,7 @@ describe('EditNotificationType', () => {
         const wrapper = shallow(<EditNotificationTypeWrapper store={store} />);
 
         // Assert
-        expect(wrapper).toMatchSnapshot();
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should close popup when click close button', () => {

@@ -8,6 +8,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import NewPicManagement from '../NewPicManagement';
 import EditPicManagement from '../EditPicManagement';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import toJson from 'enzyme-to-json';
 
 jest.mock('react-toastify');
 
@@ -26,7 +27,7 @@ describe('AppContainer', () => {
         const container = shallow(<AppContainer />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('renders default component correctly', () => {
@@ -54,8 +55,7 @@ describe('AppContainer', () => {
         const container = shallow(<AppContainer {...props} />);
 
         // Assert
-        expect(container).toMatchSnapshot();
-        expect(container.find(NewPicManagement).length).toBe(1);
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('render EditPicManagement component correctly', () => {

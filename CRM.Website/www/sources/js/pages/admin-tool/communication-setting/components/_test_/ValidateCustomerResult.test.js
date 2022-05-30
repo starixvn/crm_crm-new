@@ -2,12 +2,13 @@ import React from 'react';
 import ValidateCustomerResult from '../ValidateCustomerResult';
 import { Form, Col } from 'react-bootstrap';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('ValidateCustomerResult', () => {
     const wrapper = shallow(<ValidateCustomerResult />);
 
     it('component render correctly', () => {
-        expect(wrapper).toMatchSnapshot();
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('render null when listOfCustomers empty', () => {

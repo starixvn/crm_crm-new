@@ -1,6 +1,7 @@
 import React from 'react';
 import Pager from '../Pager';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('Pager', () => {
     it('should have correct snapshot', () => {
@@ -8,7 +9,7 @@ describe('Pager', () => {
         const pager = shallow(<Pager />);
 
         // Assert
-        expect(pager).toMatchSnapshot();
+        expect(toJson(pager)).toMatchSnapshot();
     });
 
     it('should have correct default state', () => {
