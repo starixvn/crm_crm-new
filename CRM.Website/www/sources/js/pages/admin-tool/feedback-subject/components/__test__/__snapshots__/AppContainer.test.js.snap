@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AppContainer create feedback subject should render correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer edit feedback subject should render correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer edit status feedback subject should render correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer should render correctly 1`] = `ShallowWrapper {}`;

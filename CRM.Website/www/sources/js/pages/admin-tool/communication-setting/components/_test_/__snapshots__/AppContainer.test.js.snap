@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AppContainer create communication setting render component correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer delete Communition Setting render component correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer edit communication setting render component correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer renders component correctly 1`] = `ShallowWrapper {}`;

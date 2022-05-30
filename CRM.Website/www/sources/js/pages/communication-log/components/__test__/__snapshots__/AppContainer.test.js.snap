@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AppContainer render should render DataGrid correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer render should render Filter correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer render should render dialog message correctly 1`] = `ShallowWrapper {}`;

@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AppContainer render should render datagrid 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer render should render detail 1`] = `ShallowWrapper {}`;
