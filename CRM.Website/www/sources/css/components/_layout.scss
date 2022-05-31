@@ -17,6 +17,27 @@
         height: 35px;
         width: 22%;
 
+        .autocomplete-container {
+            input {
+                background: none;
+                border: none;
+                color: white;
+                height: 35px;
+                line-height: 25px;
+                padding: 5px 0 5px 35px;
+                width: 100%;
+                position: relative;
+                text-align: left;
+                text-decoration: none;
+                font-size: 11px;
+        
+                &:focus {
+                    background-color: transparent;
+                    color: white;
+                }
+            }
+        }
+
         .checked-guest{
             padding-top: 8px;
             background-color: #464d5d;
@@ -102,27 +123,6 @@
         color: white;
         width: 78%;
         border-left: 1px solid #252525;
-    }
-}
-
-.autocomplete-container {
-    input {
-        background: none;
-        border: none;
-        color: white;
-        height: 35px;
-        line-height: 25px;
-        padding: 5px 0 5px 35px;
-        width: 100%;
-        position: relative;
-        text-align: left;
-        text-decoration: none;
-        font-size: 11px;
-
-        &:focus {
-            background-color: transparent;
-            color: white;
-        }
     }
 }
 

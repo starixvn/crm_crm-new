@@ -201,14 +201,21 @@ class Table extends Component {
 
     _getUpdatedColumnLayout() {
         const { width, autoWidth, containerPadding } = this.props;
-        const leftContainerWidth = window.customerInfo !== null ? document.getElementById('left-row-container').clientWidth + 30 : 30;
+        const widthRemain = this._calculateWidth();
         let sumOfColumnWidth = autoWidth ? this.state.maxWidth : width;
-        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH - 30 - leftContainerWidth;
+        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH - 30 - widthRemain;
 
         const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth =>
             sumOfColumnWidth / this.columnWidthSum * cellWidth);
 
         return newColumnsWidth;
+    }
+
+    _calculateWidth = () =>{
+        const isFullWidthClient = this.props.width === clientWidth;
+        const leftContainerWidth = window.customerInfo !== null ? document.getElementById('left-row-container').clientWidth + 30 : 30;
+        const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
+        return widthRemain;
     }
 
     renderFixColumn = fixProps =>{
@@ -258,9 +265,10 @@ class Table extends Component {
 
     render() {
         const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding, shouldUseMaxWidth, isFixColumn } = this.props;
-        const leftContainerWidth = window.customerInfo !== null ? document.getElementById('left-row-container').clientWidth + 30 : 30;
-        const maxWidth = this.state.maxWidth - containerPadding - leftContainerWidth;
-        const actualWidth = width - containerPadding - leftContainerWidth;
+        const widthRemain = this._calculateWidth();
+        const maxWidthRemain = shouldUseMaxWidth ? 0 : widthRemain;
+        const maxWidth = this.state.maxWidth - containerPadding - maxWidthRemain;
+        const actualWidth = width - containerPadding - widthRemain;
         const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ?
             this._getUpdatedColumnLayout() :
             this.state.columnsWidth;

@@ -32,7 +32,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getFeedBackSubject(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('FeedbackSubject/GetFeedbackSubject', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('FeedbackSubjectManagement/GetFeedbackSubject', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -49,7 +49,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getAllActiveFeedbackSubject());
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('FeedbackSubject/GetAllActiveFeedbackSubject');
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('FeedbackSubjectManagement/GetAllActiveFeedbackSubject');
         });
     });
 
@@ -67,7 +67,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.createFeedbackSubject(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('FeedbackSubject/CreateFeedbackSubject', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('FeedbackSubjectManagement/CreateFeedbackSubject', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -86,7 +86,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.editFeedbackSubject(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('FeedbackSubject/EditFeedbackSubject', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('FeedbackSubjectManagement/EditFeedbackSubject', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -103,7 +103,7 @@ describe('actionCreators', () => {
             const actual = await store.dispatch(ActionCreators.editStatusFeedbackSubject(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('FeedbackSubject/EditStatusFeedbackSubject', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('FeedbackSubjectManagement/EditStatusFeedbackSubject', expectedParams);
             expect(actual).toEqual(response);
         });
     });

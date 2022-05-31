@@ -52,10 +52,13 @@ export default class Filter extends Component {
     }
 
     renderBreadcrumbsMenu = breadcrumbsMenu =>{
+        const isHome = breadcrumbsMenu[0].toLowerCase() === 'home';
         return (
             <ul className='breadcrumbsMenu list-inline list-unstyled'>
                 <li><span className='icon-home touchable-element'/></li>
                 {
+                    isHome ?
+                    this.renderHomeSubMenu() :
                     breadcrumbsMenu.map((item, key) =>{
                         return (
                             <li key={key}>{item}</li>
@@ -65,6 +68,12 @@ export default class Filter extends Component {
             </ul>
         );
     }
+
+    renderHomeSubMenu = () =>{
+        return (
+            <div>dsadaadsasd</div>
+        );
+    };
 
     handleConcatMenu = menus => {
         let menusArr = [];

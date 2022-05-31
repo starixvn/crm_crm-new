@@ -60,7 +60,7 @@ export class Header extends Component {
         return (
             <div className='header'>
                 <div className='left-header'>
-                    <img src='../../css/images/icon/logo-crm.png' />
+                    <img src='../../css/images/icon/logo-crm.png' onClick={() => window.location = Site.resolveClientUrl('Dashboard/Index')}/>
                     <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" /></span>
                 </div>
                 <div className='right-header'>
@@ -71,7 +71,6 @@ export class Header extends Component {
                             ))
                         }
                     </ul>
-
                     <div className='item-end float-right'>
                         <img src='../../css/images/icon/user.png' />
                         <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{window.currentUsername}</span></span>

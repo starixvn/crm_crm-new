@@ -7,6 +7,11 @@
 @import '../../../components/tables';
 @import '../../../components/autocomplete';
 
+
+.child-app-container {
+    width: 920px;
+}
+
 .form-filter {
     .form-row {
         .form-group {
@@ -23,8 +28,4 @@
 
 .modal-dialog {
     max-width: 600px;
-}
-
-#app-container {
-    width: 920px;
 }

@@ -50,6 +50,7 @@
             this.excelService = excelService;
         }
 
+        [Route("PicOfHeadline")]
         public IActionResult Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICAssignment, Policy.Host);

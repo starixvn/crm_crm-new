@@ -156,9 +156,12 @@ export default class AppContainer extends Component {
     }
 
     render() {
-        const { isHost } = this.props;
         const {customerInfo, settings, isGuest, customerSuggestions, showEmptyConfirmPopup,
-               username, showEmptyCustomerInfoPopup, gridParams, menus } = this.state;
+            username, showEmptyCustomerInfoPopup, gridParams, menus } = this.state;
+        if(!menus){
+            return null;
+        }
+        const { isHost } = this.props;
         return (
             <div>
                 <Header menus={menus}/>
@@ -181,9 +184,11 @@ export default class AppContainer extends Component {
                         }
                         </div>
                         <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>
+                            <div className='child-app-container'>
                             {
                                 this.props.children
                             }
+                            </div>
                         </div>
                     </div>
                 }

@@ -135,13 +135,13 @@
         }
         #region Helpers
 
-        private FeedbackSubjectController GetController()
+        private FeedbackSubjectManagementController GetController()
         {
             feedbackSubjectService = Substitute.For<IFeedbackSubjectService>();
             napSession = Substitute.For<INapSession>();
             napSettings = Substitute.For<INapSettings>();
             userService = Substitute.For<IUserService>();
-            return new FeedbackSubjectController(feedbackSubjectService, napSession, napSettings, userService);
+            return new FeedbackSubjectManagementController(feedbackSubjectService, napSession, napSettings, userService);
         }
 
         #endregion Helpers

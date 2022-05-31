@@ -16,33 +16,33 @@ import {
 
 const getFeedBackSubject = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('FeedbackSubject/GetFeedbackSubject');
+    const url = Site.resolveClientUrl('FeedbackSubjectManagement/GetFeedbackSubject');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setFeedBackSubject(response.data));
     }).then(() => Site.unblockUI());
 };
 
 const getAllActiveFeedbackSubject = () => async dispatch => {
-    const url = Site.resolveClientUrl('FeedbackSubject/GetAllActiveFeedbackSubject');
+    const url = Site.resolveClientUrl('FeedbackSubjectManagement/GetAllActiveFeedbackSubject');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllActiveFeedbackSubject(response.data));
     });
 };
 
 const createFeedbackSubject = data => async dispatch => {
-    const url = Site.resolveClientUrl('FeedbackSubject/CreateFeedbackSubject');
+    const url = Site.resolveClientUrl('FeedbackSubjectManagement/CreateFeedbackSubject');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setCreateFeedbackSubjectResult(response.data));
     });
 };
 
 const editStatusFeedbackSubject = data => async dispatch => {
-    const url = Site.resolveClientUrl('FeedbackSubject/EditStatusFeedbackSubject');
+    const url = Site.resolveClientUrl('FeedbackSubjectManagement/EditStatusFeedbackSubject');
     return await DataService.postDataAsync(url, data).then(response => response);
 };
 
 const editFeedbackSubject = data => async dispatch => {
-    const url = Site.resolveClientUrl('FeedbackSubject/EditFeedbackSubject');
+    const url = Site.resolveClientUrl('FeedbackSubjectManagement/EditFeedbackSubject');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setEditFeedbackSubjectResult(response.data));
     });

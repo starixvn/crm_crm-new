@@ -14,14 +14,14 @@
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.FeedbackSubject, Policy = Policy.Read)]
-    public class FeedbackSubjectController : BaseController
+    public class FeedbackSubjectManagementController : BaseController
     {
         private readonly IFeedbackSubjectService feedbackSubjectService;
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
 
-        public FeedbackSubjectController(
+        public FeedbackSubjectManagementController(
             IFeedbackSubjectService feedbackSubjectService,
             INapSession napSession,
             INapSettings napSettings,

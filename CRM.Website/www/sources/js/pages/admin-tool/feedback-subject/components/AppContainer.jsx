@@ -40,7 +40,6 @@ export class AppContainer extends Component {
     };
 
     componentDidMount() {
-        this.props.getFeedBackSubject(this.props.gridParams);
         this.props.getAllActiveFeedbackSubject();
     }
 

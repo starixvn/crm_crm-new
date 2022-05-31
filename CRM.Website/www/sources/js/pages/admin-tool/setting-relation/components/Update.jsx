@@ -116,7 +116,7 @@ export class Update extends Component {
                         </Col>
                     </div>
                     <Table
-                        width={550}
+                        width={630}
                         autoWidth={false}
                         header={this.buildHeader()}
                         body={this.buildBody()}

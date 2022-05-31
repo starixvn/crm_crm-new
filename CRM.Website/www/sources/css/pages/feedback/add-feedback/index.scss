@@ -10,7 +10,7 @@
 @import '../../../components/autocomplete';
 @import '../../../components/select-with-search-site';
 
-#app-container {
+.child-app-container {
     min-width: 1450px;
     .panel-group {
         padding: 0px 15px;
