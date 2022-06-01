@@ -10,8 +10,15 @@
 @import './edit-customer-feedback';
 
 .child-app-container {
-    width: 1200px;
+    max-width: 1200px !important;
+    min-width: 1142px !important;
+    .table-container{
+        max-width: 1200px;
+        min-width: 1142px;
+    }
 }
+
+
 
 .link-click {
     cursor: pointer;
