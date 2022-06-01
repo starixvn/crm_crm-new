@@ -28,6 +28,7 @@ namespace CRM.Controllers.AdminTool
         }
 
         [CrmPermission(FunctionKey = FunctionKey.SettingLog, Policy = Policy.Read)]
+        [Route("ActionLog/SettingLog")]
         public IActionResult Index()
         {
             return View();

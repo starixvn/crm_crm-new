@@ -13,6 +13,7 @@
     using static Fanex.NAP.Core.Business.Constant;
 
     [Route("Report/Settlement")]
+    [Route("SettlementReport")]
     [CrmPermission(FunctionKey = FunctionKey.SettlementIssuesReport, Policy = Policy.Read)]
     public class SettlementReportController : BaseController
     {
@@ -31,7 +32,6 @@
         }
 
         [Route("Index")]
-        [Route("")]
         public IActionResult Index()
         {
             return View("../Report/Settlement/Index");

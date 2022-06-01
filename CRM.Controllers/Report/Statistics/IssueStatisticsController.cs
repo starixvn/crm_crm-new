@@ -30,6 +30,7 @@ namespace CRM.Controllers.Report.Statistics
         }
 
         [NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
+        [Route("StatisticReport/Index")]
         public IActionResult Index()
         {
             return View("../Report/IssueStatistics/Index");

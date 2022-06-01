@@ -37,6 +37,7 @@
         }
 
         [NapAuth(FunctionKey = FunctionKey.FeedbackStatistics, Policy = Constant.Policy.Read)]
+        [Route("FeedbackStatisticReport/Index")]
         public IActionResult Index()
         {
             return View("../Report/FeedbackStatistic/Index");

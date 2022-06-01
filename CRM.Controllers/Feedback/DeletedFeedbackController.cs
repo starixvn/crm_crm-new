@@ -31,6 +31,7 @@
             this.feedbackService = feedbackService;
         }
 
+        [Route("Feedbacks/DeletedFeedback")]
         public IActionResult Index()
         {
             return View();

@@ -35,6 +35,7 @@
         }
 
         [NapAuth(FunctionKey = FunctionKey.RedemptionStatistics, Policy = Constant.Policy.Read)]
+        [Route("RedemptionStatisticsReport/Index")]
         public IActionResult Index()
         {
             return View("../Report/RedemptionStatistics/Index");

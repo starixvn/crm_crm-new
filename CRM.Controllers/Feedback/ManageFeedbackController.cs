@@ -44,6 +44,7 @@
             this.exportExcelService = exportExcelService;
         }
 
+        [Route("Feedbacks/ManageFeedback")]
         public IActionResult Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);

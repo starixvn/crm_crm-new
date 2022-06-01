@@ -27,6 +27,7 @@
             this.baseService = baseService;
         }
 
+        [Route("DirectCustomerReport/Index")]
         public IActionResult Index()
         {
             return View("../Report/Direct/Index");

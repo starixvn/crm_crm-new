@@ -42,6 +42,7 @@
             this.feedbackService = feedbackService;
         }
 
+        [Route("Feedbacks/LatestFeedback")]
         public IActionResult Index()
         {
             var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
