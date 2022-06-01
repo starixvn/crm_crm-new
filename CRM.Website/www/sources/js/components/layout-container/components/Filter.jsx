@@ -3,6 +3,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Button, Form, Col, Row } from 'react-bootstrap';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import Site from '@jsroot/common/site';
 
 export default class Filter extends Component {
     constructor(props) {
@@ -13,14 +14,16 @@ export default class Filter extends Component {
     }
     handleSubmit = event => {
         event.preventDefault();
-        this.props.getDataGrid();
+        this.props.getDataGrid().then(()=>{
+            window.location = Site.resolveClientUrl('Dashboard/Index');
+        });
     };
 
     renderRightContainer = () =>{
         return(
             <div className='right-container'>
                 <div sm="9" md="9" id="divSubMenu">
-                    {this.renderSubmenu()}
+                    {!window.currentCustomer ? null : this.renderSubmenu()}
                 </div>
                 <div sm="3" md="3">
                     <div className="pull-right timezone">
@@ -54,11 +57,11 @@ export default class Filter extends Component {
     renderBreadcrumbsMenu = breadcrumbsMenu =>{
         const isHome = breadcrumbsMenu[0].toLowerCase() === 'home';
         return (
-            <ul className='breadcrumbsMenu list-inline list-unstyled'>
+            isHome ?
+            this.renderHomeSubMenu() :
+            <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
                 <li><span className='icon-home touchable-element'/></li>
                 {
-                    isHome ?
-                    this.renderHomeSubMenu() :
                     breadcrumbsMenu.map((item, key) =>{
                         return (
                             <li key={key}>{item}</li>
@@ -71,9 +74,26 @@ export default class Filter extends Component {
 
     renderHomeSubMenu = () =>{
         return (
-            <div>dsadaadsasd</div>
+            window.currentCustomer.hasCreateFeedbackPermission ?
+            <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
+                <li><span className='icon-home touchable-element'/></li>
+                <li id="li-main" className='active'><a href={Site.resolveClientUrl('Dashboard/Index')}>{LangHelper.getResource('Main')}</a></li>
+                <li id="li-communication-log">{LangHelper.getResource('CommunicationLog')}</li>
+                <li id="li-special-remark">{LangHelper.getResource('SpecialRemark')}</li>
+                <li id="li-redemption">{LangHelper.getResource('Redemption')}</li>
+                <li id="li-activity-log">{LangHelper.getResource('ActivityLog')}</li>
+            </ul> :
+            <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
+                <li><span className='icon-home touchable-element'/></li>
+                <li id="li-main" className='active'><a href="#">{LangHelper.getResource('Main')}</a></li>
+            </ul>
         );
     };
+
+    handleMenuDashboardClick = event =>{
+        event.preventDefault();
+        window.location = Site.resolveClientUrl('Dashboard/Index');
+    }
 
     handleConcatMenu = menus => {
         let menusArr = [];

@@ -13,6 +13,20 @@
 
 .child-app-container {
     width: 1319px;
+
+    .alert-boxer{
+        width: 800px;
+        background: #fff;
+        border: solid 1px #b2c671;
+        padding: 2px 2px 5px;
+        margin: 2px;
+        font-weight: 700;
+        border-color: #db6955;
+
+        span{
+            color: #b40b0b;
+        }
+    }
 }
 
 .link-detail {

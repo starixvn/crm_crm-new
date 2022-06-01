@@ -84,20 +84,36 @@
                 li{
                     padding: 2px 23px 2px 11px;
                     float: left;
+                }
+            }
 
-                    &:first-child{
-                        padding: 2px 23px 2px 11px;
-                        float: left;
-                        background: url('../../../css/images/br-arrow-ico.png') right 8px no-repeat;
-                    }
+            .sub-menu li{
+                &:first-child{
+                    padding: 2px 23px 2px 11px;
+                    float: left;
+                    background: url('../../../css/images/br-arrow-ico.png') right 8px no-repeat;
+                }
 
-                    &:not(:last-child){
-                        background: url('../../../css/images/br-arrow-ico.png') right 8px no-repeat;
-                    }
+                &:not(:last-child){
+                    background: url('../../../css/images/br-arrow-ico.png') right 8px no-repeat;
+                }
 
-                    &:last-child{
-                        background: none;
-                        color: #aaa9a9;
+                &:last-child{
+                    background: none;
+                    color: #aaa9a9;
+                }
+            }
+
+            .sub-main-menu{
+                li{
+                    cursor: pointer;
+                    padding: 5px 10px 8px;
+                }
+
+                .active{
+                    background-color: #f1f1f1;
+                    a{
+                        color: #0054a6;
                     }
                 }
             }

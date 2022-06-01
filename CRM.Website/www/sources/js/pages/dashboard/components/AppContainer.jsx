@@ -63,11 +63,18 @@ export class AppContainer extends Component {
     };
 
     render() {
+        if(!window.currentCustomer){
+            return(
+                <div className='alert-boxer'>
+                    <span className="fa fa-exclamation-triangle pr-2" aria-hidden="true" />
+                    <span>Please search customer first!</span>
+                </div>
+            )
+        }
         const {
             editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
             createCommunicationDialog, editCustomerVerifyDialog
         } = this.props;
-
         return (
             <div>
                 <div className="d-flex justify-content-between">

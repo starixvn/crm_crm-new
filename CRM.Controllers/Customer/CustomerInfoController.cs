@@ -8,7 +8,9 @@
     using CRM.Criteria.Customer;
     using CRM.Services;
     using CRM.Services.Customer;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -19,26 +21,35 @@
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
         private readonly ISessionService sessionService;
+        private readonly IUserService userService;
+        private readonly INapSettings napSettings;
+
 
         public CustomerInfoController(
             INapSession napSession,
             ICustomerService customerService,
             ISettingService settingService,
-            ISessionService sessionService)
+            ISessionService sessionService,
+            IUserService userService,
+            INapSettings napSettings)
         {
             this.napSession = napSession;
             this.customerService = customerService;
             this.settingService = settingService;
             this.sessionService = sessionService;
+            this.userService = userService;
+            this.napSettings = napSettings;
         }
 
         public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
         {
+            var permission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo);
             CustomerSession customerInfo = await customerService.GetCustomerInfoAsync(criteria);
             CurrentCustomer currentCustomer = new CurrentCustomer
             {
                 Name = criteria.Username,
-                IsGuest = criteria.IsGuest
+                IsGuest = criteria.IsGuest,
+                HasCreateFeedbackPermission = permission > 0
             };
             sessionService.CustomerInfo = customerInfo;
             sessionService.CurrentCustomer = currentCustomer;
