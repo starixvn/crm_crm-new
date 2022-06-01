@@ -8,8 +8,7 @@
 @import '../../../components/multiple-select/style';
 
 .form-filter {
-
-    min-width: 1200px;
+    min-width: 1142px;
     .react-datepicker__input-container input{
         width: 100% !important;
     }
@@ -38,29 +37,32 @@
     max-width: 900px;
 }
 
-.table-container .body-content{
-    .background-total td{
-        background-color: #c0cbe2 !important;
-        color: black !important;
-    }
-
-    .text-bold{
-        font-weight: bold;
-    }
-
-    .background-total td:first-child{
-        border-bottom: none !important;
-    }
-
-    .link-click {
-        cursor: pointer;
-        color: $link-color !important;
+.table-container{
+    max-width: 900px !important;
+    .body-content{
+        .background-total td{
+            background-color: #c0cbe2 !important;
+            color: black !important;
+        }
     
-        &:hover {
-            color: $draft-color !important;
+        .text-bold{
+            font-weight: bold;
+        }
+    
+        .background-total td:first-child{
+            border-bottom: none !important;
+        }
+    
+        .link-click {
+            cursor: pointer;
+            color: $link-color !important;
+        
+            &:hover {
+                color: $draft-color !important;
+            }
         }
     }
-}
+} 
 
 .details{
     .title-detail, .page-container{

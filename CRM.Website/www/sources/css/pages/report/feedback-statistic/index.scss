@@ -8,6 +8,8 @@
 @import '../../../components/multiple-select/style';
 
 .form-filter {
+    min-width: 1142px;
+
     .react-datepicker__input-container input{
         width: 100% !important;
     }
@@ -35,10 +37,6 @@
             -moz-appearance: textfield;
         }
     }
-}
-
-.form-filter {
-     min-width: 1200px;
 }
 
 .cursor-pointer{
@@ -116,7 +114,7 @@
 }
 
 .feedback-detail .modal-content{
-    width: 1200px;
+    width: 11142px;
     max-height: 875px;
 
     .table-container{

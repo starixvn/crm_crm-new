@@ -11,7 +11,12 @@
 @import "../../../components/modal";
 
 .child-app-container {
-    width: 1800px;
+    min-width: 1142px;
+}
+
+.table-title, .page-container, .table-container{
+    min-width: 1142px !important;
+    max-width: 1200px !important;
 }
 
 .form-filter {
@@ -118,12 +123,6 @@ td.group-collapse-expand {
 .icon {
     cursor: pointer;
 }
-
-.table-title, .page-container {
-    min-width: 1200px !important;
-    width: 1200px !important;
-}
-
 
 .table-container {
     .table {
