@@ -94,3 +94,12 @@ export const ReportBy = [
     { name: 'Year', id: 2 }
 ];
 
+export const SubMainMenu = [
+    {id: 1, url: '/Dashboard'},
+    {id: 2, url: '/CustomerInfoDetail'},
+    {id: 3, url: '/CommunicationLog'},
+    {id: 4, url: '/Remark'},
+    {id: 5, url: '/Redemption'},
+    {id: 6, url: '/ActionLog'}
+];
+

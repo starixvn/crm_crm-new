@@ -10,12 +10,10 @@ const store = configureStore({
     reducer: redemption
 });
 
-const id = document.getElementById('id').value;
-
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer id={id}/>
+            <AppContainer id={window.currentCustomer.custId} />
         </Layout>
     </Provider>,
     document.getElementById('app-container'));

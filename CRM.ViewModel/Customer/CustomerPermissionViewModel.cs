@@ -7,7 +7,5 @@
         public int UpdateHeadlineInfoPolicy { get; set; }
 
         public int CreateUpdateFeedbackPermission { get; set; }
-
-        public int Id { get; set; }
     }
 }

@@ -4,6 +4,7 @@ import { Button, Form, Col, Row } from 'react-bootstrap';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import Site from '@jsroot/common/site';
+import { SubMainMenu }from '@jsroot/common/constants';
 
 export default class Filter extends Component {
     constructor(props) {
@@ -15,7 +16,9 @@ export default class Filter extends Component {
     handleSubmit = event => {
         event.preventDefault();
         this.props.getDataGrid().then(()=>{
-            window.location = Site.resolveClientUrl('Dashboard/Index');
+            if(this.props.customerInfo !== null){
+                window.location = Site.resolveClientUrl('Dashboard');
+            }
         });
     };
 
@@ -27,6 +30,7 @@ export default class Filter extends Component {
                 </div>
                 <div sm="3" md="3">
                     <div className="pull-right timezone">
+                        <span className="fa fa-clock-o fa-lg pr-2" aria-hidden="true" />
                         <span id="span-timezoneContainer">
                             {window.currentClientTime + LangHelper.getResource('Gmt8')}
                         </span>
@@ -41,26 +45,33 @@ export default class Filter extends Component {
         const pathname = window.location.pathname;
         const menus = this.handleConcatMenu(this.props.menus);
         const currentMenu = menus.filter(menu => menu.url.toLowerCase() === pathname.toLowerCase())[0];
-        if(!currentMenu) {
-            return null;
-        }else if(currentMenu.parentId > 0){
-            const parentNames = this.recursiveFindParentName(menus, currentMenu.parentId);
-            breadcrumbsMenu = [...breadcrumbsMenu, ...parentNames, currentMenu.name];
+        if(!currentMenu){
+            return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
         }else{
-            breadcrumbsMenu = [...breadcrumbsMenu, currentMenu.name];
+            if(pathname === '/') {
+                return null;
+            }else if(currentMenu.parentId > 0){
+                const parentNames = this.recursiveFindParentName(menus, currentMenu.parentId);
+                breadcrumbsMenu = [...breadcrumbsMenu, ...parentNames, currentMenu.name];
+            }else{
+                breadcrumbsMenu = [...breadcrumbsMenu, currentMenu.name];
+            }
+            return (
+                this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname)
+            );
         }
-        return (
-            this.renderBreadcrumbsMenu(breadcrumbsMenu)
-        );
     }
 
-    renderBreadcrumbsMenu = breadcrumbsMenu =>{
-        const isHome = breadcrumbsMenu[0].toLowerCase() === 'home';
+    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={() => window.location = Site.resolveClientUrl('Dashboard')}/></li>;
+
+    renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) =>{
+        const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home' 
+                        || SubMainMenu.filter(x=> x.url.toLowerCase() === pathname.toLowerCase()).length > 0;
         return (
             isHome ?
-            this.renderHomeSubMenu() :
+            this.renderHomeSubMenu(pathname) :
             <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
-                <li><span className='icon-home touchable-element'/></li>
+                {this.renderIconHome(pathname)}
                 {
                     breadcrumbsMenu.map((item, key) =>{
                         return (
@@ -72,20 +83,47 @@ export default class Filter extends Component {
         );
     }
 
-    renderHomeSubMenu = () =>{
+    isActiveTab = (pathname, index) => pathname.toLowerCase() === SubMainMenu[index].url.toLowerCase();
+
+    renderHomeSubMenu = pathname =>{
         return (
             window.currentCustomer.hasCreateFeedbackPermission ?
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
-                <li><span className='icon-home touchable-element'/></li>
-                <li id="li-main" className='active'><a href={Site.resolveClientUrl('Dashboard/Index')}>{LangHelper.getResource('Main')}</a></li>
-                <li id="li-communication-log">{LangHelper.getResource('CommunicationLog')}</li>
-                <li id="li-special-remark">{LangHelper.getResource('SpecialRemark')}</li>
-                <li id="li-redemption">{LangHelper.getResource('Redemption')}</li>
-                <li id="li-activity-log">{LangHelper.getResource('ActivityLog')}</li>
+                 {this.renderIconHome()}
+                <li id="li-main" className={this.isActiveTab(pathname, 0) ? 'active' : ''}>
+                    <a href={Site.resolveClientUrl('Dashboard')}>
+                        {LangHelper.getResource('Main')}
+                    </a>
+                </li>
+                <li id="li-main" className={this.isActiveTab(pathname, 1) ? 'active' : ''}>
+                    <a href={Site.resolveClientUrl('CustomerInfoDetail')}>
+                        {LangHelper.getResource('Detail')}
+                    </a>
+                </li>
+                <li id="li-communication-log" className={this.isActiveTab(pathname, 2) ? 'active' : ''}>
+                    <a href={Site.resolveClientUrl('CommunicationLog')}>
+                        {LangHelper.getResource('CommunicationLog')}
+                    </a>
+                </li>
+                <li id="li-special-remark" className={this.isActiveTab(pathname, 3) ? 'active' : ''}>
+                    <a href={Site.resolveClientUrl('Remark')}>
+                        {LangHelper.getResource('SpecialRemark')}
+                    </a>
+                </li>
+                <li id="li-redemption" className={this.isActiveTab(pathname, 4) ? 'active' : ''}>
+                    <a href={Site.resolveClientUrl('Redemption')}>
+                        {LangHelper.getResource('Redemption')}
+                    </a>
+                </li>
+                <li id="li-activity-log" className={this.isActiveTab(pathname, 5) ? 'active' : ''}>
+                    <a href={Site.resolveClientUrl('ActionLog')}>
+                        {LangHelper.getResource('ActivityLog')}
+                    </a>
+                </li>
             </ul> :
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
-                <li><span className='icon-home touchable-element'/></li>
-                <li id="li-main" className='active'><a href="#">{LangHelper.getResource('Main')}</a></li>
+                 {this.renderIconHome()}
+                <li id="li-main" className='active'><a href={Site.resolveClientUrl('Dashboard')}>{LangHelper.getResource('Main')}</a></li>
             </ul>
         );
     };

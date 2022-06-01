@@ -32,7 +32,7 @@ export default class AppContainer extends Component {
             showEmptyConfirmPopup: false,
             showEmptyCustomerInfoPopup: false,
             customerSuggestions: [],
-            editCustomerInfoPopup: { show: false}
+            editCustomerInfoPopup: { show: false},
         };
     }
 
@@ -158,7 +158,7 @@ export default class AppContainer extends Component {
     render() {
         const {customerInfo, settings, isGuest, customerSuggestions, showEmptyConfirmPopup,
             username, showEmptyCustomerInfoPopup, gridParams, menus } = this.state;
-        if(!menus){
+        if(menus.length <=0){
             return null;
         }
         const { isHost } = this.props;
@@ -166,13 +166,14 @@ export default class AppContainer extends Component {
             <div>
                 <Header menus={menus}/>
                 <Filter
-                    isHost={isHost} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus}
+                    isHost={isHost} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                     customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
                     showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
                     showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
                     handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                 />
                 {
+                    !showEmptyCustomerInfoPopup &&
                     <div className="d-flex">
                         <div id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'}>
                         {
@@ -183,13 +184,15 @@ export default class AppContainer extends Component {
                             />
                         }
                         </div>
-                        <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>
-                            <div className='child-app-container'>
-                            {
-                                this.props.children
-                            }
+                        {
+                            <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>
+                                <div className='child-app-container'>
+                                {
+                                    this.props.children
+                                }
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 }
                 

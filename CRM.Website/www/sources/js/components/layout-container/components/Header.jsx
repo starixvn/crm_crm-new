@@ -60,7 +60,7 @@ export class Header extends Component {
         return (
             <div className='header'>
                 <div className='left-header'>
-                    <img src='../../css/images/icon/logo-crm.png' onClick={() => window.location = Site.resolveClientUrl('Dashboard/Index')}/>
+                    <img src={Site.resolveClientUrl('css/images/icon/logo-crm.png')} onClick={() => window.location = Site.resolveClientUrl('Dashboard')}/>
                     <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" /></span>
                 </div>
                 <div className='right-header'>
@@ -72,9 +72,9 @@ export class Header extends Component {
                         }
                     </ul>
                     <div className='item-end float-right'>
-                        <img src='../../css/images/icon/user.png' />
+                        <span className='fa fa-user fa-lg' />
                         <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{window.currentUsername}</span></span>
-                        <img src='../../css/images/icon/icon-logout.png' />
+                        <img src={Site.resolveClientUrl('css/images/icon/icon-logout.png')} />
                         <a className='sign-out' href={Site.resolveClientUrl('Auth/SignOut')}>{LangHelper.getResource('SignOut')}</a>
                     </div>
                 </div>

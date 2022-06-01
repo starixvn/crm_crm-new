@@ -47,6 +47,7 @@
             CustomerSession customerInfo = await customerService.GetCustomerInfoAsync(criteria);
             CurrentCustomer currentCustomer = new CurrentCustomer
             {
+                CustId = customerInfo.CustId,
                 Name = criteria.Username,
                 IsGuest = criteria.IsGuest,
                 HasCreateFeedbackPermission = permission > 0

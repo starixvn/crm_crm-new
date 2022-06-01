@@ -37,8 +37,7 @@
         {
             var permission = new CustomerPermissionViewModel
             {
-                CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
-                Id = custId
+                CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
             };
             return View(permission);
         }
