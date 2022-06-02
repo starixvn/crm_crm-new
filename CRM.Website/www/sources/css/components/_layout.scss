@@ -16,6 +16,7 @@
         padding: 0;
         height: 35px;
         width: 22%;
+        border-right: 1px solid #252525;
 
         .autocomplete-container {
             input {
@@ -69,7 +70,6 @@
         border-radius: 0;
         height: 35px;
         color: white;
-        border-left: 1px solid #252525;
 
         #divSubMenu{
             .breadcrumbsMenu{

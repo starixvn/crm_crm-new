@@ -45,6 +45,11 @@ export default class AppContainer extends Component {
         if(window.menus !== null){
             this.initDataMenu(window.menus);
         }
+
+        const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
+        if(showingLeftPanel !== null){
+            window.localStorage.removeItem('isShowingLeftPanel');
+        }
     }
 
     initDataMenu = menus => {
@@ -158,6 +163,9 @@ export default class AppContainer extends Component {
 
     handleCollapseExpandLayout = event =>{
         event.preventDefault();
+        if(!this.state.customerInfo){
+            return;
+        }
         this.setState(prevState => ({
             isShowingLeftPanel: !prevState.isShowingLeftPanel
         }), () =>{
