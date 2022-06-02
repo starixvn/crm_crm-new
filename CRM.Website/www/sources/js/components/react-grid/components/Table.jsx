@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RowLayout from './RowLayout';
 import PropTypes from 'prop-types';
 import createTableSection from './tableSection';
-import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH } from '../constants';
+import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH, DEFAULT_PADDING } from '../constants';
 import Pager from './Pager';
 import functions from '../functions';
 import Site from '@jsroot/common/site';
@@ -183,11 +183,17 @@ class Table extends Component {
                 this.setState({ contentHeight: bodyHeight });
             }
         }
-
         const { maxWidth, shouldUseMaxWidth} = this.props;
-        const maxWidthCal = shouldUseMaxWidth ? maxWidth : document.body.clientWidth - this.diffWidth;
-        if (this.state.maxWidth !== maxWidthCal) {
-            this.setState({ maxWidth: maxWidthCal });
+        const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
+        if(showingLeftPanel !== null){
+            window.localStorage.removeItem('isShowingLeftPanel');
+            const reCalcWidth = !showingLeftPanel ? document.getElementById('left-row-container').clientWidth + DEFAULT_PADDING - this.diffWidth : clientWidth;
+            this.setState({ maxWidth: reCalcWidth });
+        }else{
+            const maxWidthCal = shouldUseMaxWidth ? maxWidth : clientWidth - this.diffWidth;
+            if (this.state.maxWidth !== maxWidthCal) {
+                this.setState({ maxWidth: maxWidthCal });
+            }
         }
     };
 
@@ -203,7 +209,7 @@ class Table extends Component {
         const { width, autoWidth, containerPadding } = this.props;
         const widthRemain = this._calculateWidth();
         let sumOfColumnWidth = autoWidth ? this.state.maxWidth : width;
-        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH - 30 - widthRemain;
+        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH - DEFAULT_PADDING - widthRemain;
 
         const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth =>
             sumOfColumnWidth / this.columnWidthSum * cellWidth);
@@ -213,7 +219,7 @@ class Table extends Component {
 
     _calculateWidth = () =>{
         const isFullWidthClient = this.props.width === clientWidth;
-        const leftContainerWidth = window.customerInfo !== null ? document.getElementById('left-row-container').clientWidth + 30 : 30;
+        const leftContainerWidth = window.customerInfo !== null ? document.getElementById('left-row-container').clientWidth + DEFAULT_PADDING : DEFAULT_PADDING;
         const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
         return widthRemain;
     }

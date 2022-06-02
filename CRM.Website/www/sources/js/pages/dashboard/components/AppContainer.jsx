@@ -69,20 +69,21 @@ export class AppContainer extends Component {
                     <span className="fa fa-exclamation-triangle pr-2" aria-hidden="true" />
                     <span>Please search customer first!</span>
                 </div>
-            )
+            );
         }
         const {
             editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
             createCommunicationDialog, editCustomerVerifyDialog
         } = this.props;
+        const custId = window.currentCustomer.custId;
         return (
             <div>
                 <div className="d-flex justify-content-between">
-                    <div className="dataGrid-remark"><DataGridRemark id={this.props.id} /></div>
-                    <div className="information"><CustomerInfoVerify id={this.props.id}/></div>
+                    <div className="dataGrid-remark"><DataGridRemark id={custId} /></div>
+                    <div className="information"><CustomerInfoVerify id={custId}/></div>
                 </div>
-                <DataGridRedemption id={this.props.id} />
-                <DataGridCommunication id={this.props.id} />
+                <DataGridRedemption id={custId} />
+                <DataGridCommunication id={custId} />
                 {
                     editRedemptionDialog.show &&
                     <EditRedemptionLog logId={editRedemptionDialog.redemptionId}

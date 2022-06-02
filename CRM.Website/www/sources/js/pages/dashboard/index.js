@@ -13,7 +13,7 @@ const store = configureStore({
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer id={window.currentCustomer.custId}/>
+            <AppContainer/>
         </Layout>
     </Provider>,
     document.getElementById('app-container'));

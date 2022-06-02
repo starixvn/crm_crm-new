@@ -33,6 +33,7 @@ export default class AppContainer extends Component {
             showEmptyCustomerInfoPopup: false,
             customerSuggestions: [],
             editCustomerInfoPopup: { show: false},
+            isShowingLeftPanel: true
         };
     }
 
@@ -88,7 +89,7 @@ export default class AppContainer extends Component {
 
     setGridParams = gridParams =>{
         this.setState({gridParams});
-    }
+    };
 
     handleCloseEmptyConfirm = () => {
         this.setState({ showEmptyConfirmPopup: false });
@@ -127,7 +128,7 @@ export default class AppContainer extends Component {
     getDataGrid = async () =>{
         await this.getCustomerInfo();
         await this.getSetting();
-    }
+    };
 
     getCustomerInfo = async () => {
         const params = this.getParams();
@@ -153,18 +154,67 @@ export default class AppContainer extends Component {
         await DataService.getDataAsync(url).then(response => {
              this.setState({ settings: response.data});
         }).then(() => Site.unblockUI());
+    };
+
+    handleCollapseExpandLayout = event =>{
+        event.preventDefault();
+        this.setState(prevState => ({
+            isShowingLeftPanel: !prevState.isShowingLeftPanel
+        }), () =>{
+            window.localStorage.setItem('isShowingLeftPanel', this.state.isShowingLeftPanel);
+            window.dispatchEvent(new Event('resize'));
+        });
+    };
+
+    renderLeftRightContent = customerInfo =>{
+        const {settings, gridParams} = this.state;
+        return (
+            <div className="d-flex">
+                <div id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'}>
+                {
+                    customerInfo !== null && settings !== null &&
+                    <DataGrid 
+                        customerInfo={customerInfo} settings = {settings} gridParams={gridParams} setGridParams={this.setGridParams}
+                        getCustomerInfo={this.getCustomerInfo} handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup}
+                    />
+                }
+                </div>
+                <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>
+                    <div className='child-app-container'>
+                    {
+                        this.props.children
+                    }
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    renderFullWidthContent = () =>{
+        return (
+            <div>
+                <div id='left-row-container' style={{width:0}} />
+                <div id='right-row-container' style={{width:'100%'}}>
+                    <div className='child-app-container'>
+                    {
+                        this.props.children
+                    }
+                    </div>
+                </div> 
+            </div>
+        );
     }
 
     render() {
-        const {customerInfo, settings, isGuest, customerSuggestions, showEmptyConfirmPopup,
-            username, showEmptyCustomerInfoPopup, gridParams, menus } = this.state;
+        const {customerInfo, isGuest, customerSuggestions, showEmptyConfirmPopup,
+            username, showEmptyCustomerInfoPopup, menus, isShowingLeftPanel } = this.state;
         if(menus.length <=0){
             return null;
         }
         const { isHost } = this.props;
         return (
             <div>
-                <Header menus={menus}/>
+                <Header menus={menus} handleCollapseExpandLayout={this.handleCollapseExpandLayout}/>
                 <Filter
                     isHost={isHost} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                     customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
@@ -174,24 +224,11 @@ export default class AppContainer extends Component {
                 />
                 {
                     !showEmptyCustomerInfoPopup &&
-                    <div className="d-flex">
-                        <div id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'}>
+                    <div>
                         {
-                            customerInfo !== null && settings !== null &&
-                            <DataGrid 
-                                customerInfo={customerInfo} settings = {this.state.settings} gridParams={gridParams} setGridParams={this.setGridParams}
-                                getCustomerInfo={this.getCustomerInfo} handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup}
-                            />
-                        }
-                        </div>
-                        {
-                            <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>
-                                <div className='child-app-container'>
-                                {
-                                    this.props.children
-                                }
-                                </div>
-                            </div>
+                            isShowingLeftPanel ?
+                            this.renderLeftRightContent(customerInfo) :
+                            this.renderFullWidthContent()
                         }
                     </div>
                 }

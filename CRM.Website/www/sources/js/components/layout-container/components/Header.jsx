@@ -52,7 +52,7 @@ export class Header extends Component {
     };
 
     render() {
-        const { menus } = this.props;
+        const { menus, handleCollapseExpandLayout } = this.props;
         if (!menus || menus.length <= 0) {
             return null;
         }
@@ -61,7 +61,7 @@ export class Header extends Component {
             <div className='header'>
                 <div className='left-header'>
                     <img src={Site.resolveClientUrl('css/images/icon/logo-crm.png')} onClick={() => window.location = Site.resolveClientUrl('Dashboard')}/>
-                    <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" /></span>
+                    <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>
                 </div>
                 <div className='right-header'>
                     <ul>
