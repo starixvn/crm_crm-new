@@ -135,12 +135,13 @@
 .recharts-default-legend{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     border: 1px solid #b7b7b7;
     padding-top: 5px !important;
     width: 1010px !important;
 
     li{
+        margin-right: -22 !important;
         margin-left: 10px;
         width: 170px;
 
