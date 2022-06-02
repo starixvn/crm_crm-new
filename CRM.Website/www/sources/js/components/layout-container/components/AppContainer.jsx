@@ -33,7 +33,7 @@ export default class AppContainer extends Component {
             showEmptyCustomerInfoPopup: false,
             customerSuggestions: [],
             editCustomerInfoPopup: { show: false},
-            isShowingLeftPanel: true
+            isShowingLeftPanel : true
         };
     }
 
@@ -46,8 +46,12 @@ export default class AppContainer extends Component {
             this.initDataMenu(window.menus);
         }
 
-        const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
-        if(showingLeftPanel !== null){
+        const isShowingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
+        const isKeepLeftPanel = window.localStorage.getItem('isKeepLeftPanel');
+        if(isKeepLeftPanel !== null){
+            this.setState({isShowingLeftPanel: JSON.parse(isKeepLeftPanel)});
+        }
+        if(isShowingLeftPanel !== null){
             window.localStorage.removeItem('isShowingLeftPanel');
         }
     }
@@ -138,6 +142,7 @@ export default class AppContainer extends Component {
     getCustomerInfo = async () => {
         const params = this.getParams();
         this.setState({gridParams: params});
+        this.handleSetStorage(true);
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url,params).then(response => {
@@ -169,10 +174,15 @@ export default class AppContainer extends Component {
         this.setState(prevState => ({
             isShowingLeftPanel: !prevState.isShowingLeftPanel
         }), () =>{
-            window.localStorage.setItem('isShowingLeftPanel', this.state.isShowingLeftPanel);
-            window.dispatchEvent(new Event('resize'));
+           this.handleSetStorage(this.state.isShowingLeftPanel);
+           window.dispatchEvent(new Event('resize'));
         });
     };
+
+    handleSetStorage = isShowLeft =>{
+        window.localStorage.setItem('isShowingLeftPanel', isShowLeft);
+        window.localStorage.setItem('isKeepLeftPanel', isShowLeft);
+    }
 
     renderLeftRightContent = customerInfo =>{
         const {settings, gridParams} = this.state;

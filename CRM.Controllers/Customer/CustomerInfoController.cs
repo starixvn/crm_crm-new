@@ -45,15 +45,18 @@
         {
             var permission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo);
             CustomerSession customerInfo = await customerService.GetCustomerInfoAsync(criteria);
-            CurrentCustomer currentCustomer = new CurrentCustomer
+            if (customerInfo != null)
             {
-                CustId = customerInfo.CustId,
-                Name = criteria.Username,
-                IsGuest = criteria.IsGuest,
-                HasCreateFeedbackPermission = permission > 0
-            };
+                CurrentCustomer currentCustomer = new CurrentCustomer
+                {
+                    CustId = customerInfo.CustId,
+                    Name = criteria.Username,
+                    IsGuest = criteria.IsGuest,
+                    HasCreateFeedbackPermission = permission > 0
+                };
+                sessionService.CurrentCustomer = currentCustomer;
+            }
             sessionService.CustomerInfo = customerInfo;
-            sessionService.CurrentCustomer = currentCustomer;
             return Json(customerInfo);
         }
 

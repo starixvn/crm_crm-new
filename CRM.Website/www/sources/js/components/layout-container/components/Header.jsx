@@ -9,6 +9,11 @@ export class Header extends Component {
 
     isIgnoreMenu = item => !(item.subMenus.length === 0 && (item.url.includes('n/a') || item.url.length === 0));
 
+    handleLogout = () =>{
+        window.localStorage.clear();
+        window.location = Site.resolveClientUrl('Auth/SignOut');
+    }
+
     renderListMenu = (item, index) => {
         return (
             <li key={index + item.id} className='menu-item'>
@@ -75,7 +80,7 @@ export class Header extends Component {
                         <span className='fa fa-user fa-lg' />
                         <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{window.currentUsername}</span></span>
                         <img src={Site.resolveClientUrl('css/images/icon/icon-logout.png')} />
-                        <a className='sign-out' href={Site.resolveClientUrl('Auth/SignOut')}>{LangHelper.getResource('SignOut')}</a>
+                        <a className='sign-out' onClick={() =>this.handleLogout()}>{LangHelper.getResource('SignOut')}</a>
                     </div>
                 </div>
             </div>
