@@ -40,11 +40,13 @@ export default class Filter extends Component {
         );
     };
 
+    getUrlPath = url => Site.resolveClientUrl(url.slice(1)).toLowerCase();
+
     renderSubmenu = () =>{
         let breadcrumbsMenu = [];
         const pathname = window.location.pathname;
         const menus = this.handleConcatMenu(this.props.menus);
-        const currentMenu = menus.filter(menu => menu.url.toLowerCase() === pathname.toLowerCase())[0];
+        const currentMenu = menus.filter(menu => this.getUrlPath(menu.url) === pathname.toLowerCase())[0];
         if(!currentMenu){
             return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
         }else{
@@ -66,7 +68,7 @@ export default class Filter extends Component {
 
     renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) =>{
         const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home' 
-                        || SubMainMenu.filter(x=> x.url.toLowerCase() === pathname.toLowerCase()).length > 0;
+                        || SubMainMenu.filter(x=> this.getUrlPath(x.url) === pathname.toLowerCase()).length > 0;
         return (
             isHome ?
             this.renderHomeSubMenu(pathname) :
@@ -83,7 +85,7 @@ export default class Filter extends Component {
         );
     }
 
-    isActiveTab = (pathname, index) => pathname.toLowerCase() === SubMainMenu[index].url.toLowerCase();
+    isActiveTab = (pathname, index) => pathname.toLowerCase() === this.getUrlPath(SubMainMenu[index].url);
 
     renderHomeSubMenu = pathname =>{
         return (
