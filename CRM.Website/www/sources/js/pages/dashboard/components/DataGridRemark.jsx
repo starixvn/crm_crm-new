@@ -31,8 +31,7 @@ export class DataGridRemark extends Component {
         return (
             <Row key={index}>
                 <Cell>
-                    <div className="pb-2">{index+1}.</div>
-                    <div dangerouslySetInnerHTML={{ __html: item}}></div>
+                    <div dangerouslySetInnerHTML={{ __html: (index + 1 + ". " + item)}}></div>
                 </Cell>
             </Row>
         );

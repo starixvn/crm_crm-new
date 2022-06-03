@@ -29,8 +29,6 @@ export class EditCustomerInfoVerify extends Component {
         data.push({ name: 'Passport Number', value: info.passport, isChecked: info.isVerifyPassport });
         data.push({ name: 'BirthDay', value: DateTimeService.toShortDateFormat(info.birthDay), isChecked: info.isVerifyBirthday });
         data.push({ name: 'Secret Code', value: info.secretCode, isChecked: info.isVerifySecretCode });
-        data.push({ name: 'Bet Credit', value: `${info.betCredit}.00`, isChecked: info.isVerifyBetCredit });
-        data.push({ name: 'Given Credit', value: `${info.givenCredit}.00`, isChecked: info.isVerifyGivenCredit });
         this.setState({ data: data });
     }
 
@@ -48,9 +46,7 @@ export class EditCustomerInfoVerify extends Component {
             isVerifyEmail: data[0].isChecked,
             isVerifyPassport: data[1].isChecked,
             isVerifyBirthday: data[2].isChecked,
-            isVerifySecretCode: data[3].isChecked,
-            isVerifyBetCredit: data[4].isChecked,
-            isVerifyGivenCredit: data[5].isChecked
+            isVerifySecretCode: data[3].isChecked
         };
         Site.blockUI();
         this.setState({ isSubmitting: true });

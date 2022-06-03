@@ -28,8 +28,6 @@ export class CustomerInfoVerify extends Component {
             listVerify.push(customerInfoVerify.isVerifyPassport);
             listVerify.push(customerInfoVerify.isVerifyBirthday);
             listVerify.push(customerInfoVerify.isVerifySecretCode);
-            listVerify.push(customerInfoVerify.isVerifyBetCredit);
-            listVerify.push(customerInfoVerify.isVerifyGivenCredit);
 
             listVerify.forEach(item => {
                 if (item === true) {
@@ -38,7 +36,7 @@ export class CustomerInfoVerify extends Component {
             });
             this.setState({
                 numberVerified: countVerified,
-                energy: Math.round(16.6667*countVerified)
+                energy: Math.round(25*countVerified)
             });
         }
     }
@@ -60,7 +58,7 @@ export class CustomerInfoVerify extends Component {
                     <span className="percent-process">{energy}%</span>
                     <ProgressBar now={energy} />
                 </div>
-                <div className="info-text">{numberVerified}/6 Information Verified</div>
+                <div className="info-text">{numberVerified}/4 Information Verified</div>
                 <Button variant="primary" size="sm" onClick={() => this.handleEditCustomerVerifyDialog()}>
                     {LangHelper.getResource('Verify')}
                 </Button>

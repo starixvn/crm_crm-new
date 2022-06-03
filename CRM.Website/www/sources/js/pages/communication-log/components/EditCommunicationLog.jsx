@@ -439,6 +439,9 @@ export class EditCommunicationLog extends Component {
                             <Col sm="6" md="6" className="react-datepicker-wrapper-container form-control-wrapper">
                                 <DatePicker timeInputLabel="Time:" showTimeInput isInvalid={touched.startTime && errors.startTime}
                                     selected={values.startTime}
+                                    dropdownMode="select"
+                                    showMonthDropdown
+                                    showYearDropdown
                                     onChange={value => setFieldValue('startTime', value)}
                                 />
                             </Col>
@@ -469,6 +472,9 @@ export class EditCommunicationLog extends Component {
                             <Col md="6" sm="6" className="react-datepicker-wrapper-container form-control-wrapper">
                                 <DatePicker timeInputLabel="Time:" showTimeInput
                                     selected={values.endTime}
+                                    dropdownMode="select"
+                                    showMonthDropdown
+                                    showYearDropdown
                                     onChange={value => setFieldValue('endTime', value)}
                                 />
                             </Col>

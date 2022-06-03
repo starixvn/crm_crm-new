@@ -457,6 +457,9 @@ export class CreateCommunicationLog extends Component {
                             <Col sm="6" md="6" className="react-datepicker-wrapper-container form-control-wrapper">
                                 <DatePicker isInvalid={touched.startTime && errors.startTime}
                                     timeInputLabel="Time:"
+                                    dropdownMode="select"
+                                    showMonthDropdown
+                                    showYearDropdown
                                     showTimeInput
                                     selected={values.startTime}
                                     onChange={value => this.onChangeStartTime(setFieldValue, value, values.endTime)}
@@ -490,6 +493,9 @@ export class CreateCommunicationLog extends Component {
                                 <DatePicker
                                     timeInputLabel="Time:"
                                     showTimeInput
+                                    dropdownMode="select"
+                                    showMonthDropdown
+                                    showYearDropdown
                                     selected={values.endTime}
                                     onChange={value => this.onChangeEndTime(setFieldValue, values.startTime, value)}
                                 />

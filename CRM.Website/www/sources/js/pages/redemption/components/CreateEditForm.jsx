@@ -16,6 +16,9 @@ export class CreateEditForm extends Component {
                                 <Form.Label column sm="4" md="4" htmlFor="ClaimedTime">{LangHelper.getResource('ClaimedTime')}</Form.Label>
                                 <Col md="7" sm="7" className="react-datepicker-wrapper-container form-control-wrapper">
                                     <DatePicker selected={values.claimTime}
+                                        dropdownMode="select"
+                                        showMonthDropdown
+                                        showYearDropdown
                                         onChange={value => setFieldValue('claimTime', value)}
                                     />
                                 </Col>
@@ -32,7 +35,7 @@ export class CreateEditForm extends Component {
                                     >
                                         <option value="0">N/A</option>
                                         {
-                                            statuses.currencies.map((value,key) => <option key={key} value={value.id}>{value.name}</option>)
+                                            statuses.currencies.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
                                         }
                                     </Form.Control>
                                 </Col>
@@ -89,7 +92,7 @@ export class CreateEditForm extends Component {
                                         value={values.statusId} onChange={handleChange}
                                     >
                                         {
-                                            statuses.statuses.map((value,key) => <option key={key} value={value.statusId}>{value.name}</option>)
+                                            statuses.statuses.map((value, key) => <option key={key} value={value.statusId}>{value.name}</option>)
                                         }
                                     </Form.Control>
                                 </Col>

@@ -33,7 +33,7 @@ export class AppContainer extends Component {
     handleCloseEditRedemptionDialog = isSuccessful => {
         this.props.setEditRedemptionDialog({ show: false });
         if (isSuccessful) {
-            this.props.getRedemptionLogs({ customerId: this.props.id });
+            this.props.getRedemptionLogs({ customerId: window.currentCustomer.custId });
         }
     };
 
@@ -44,21 +44,21 @@ export class AppContainer extends Component {
     handleCloseEditCommunicationDialog = isSuccessful => {
         this.props.setEditCommunicationDialog({ show: false });
         if (isSuccessful) {
-            this.props.getCommunicationLogs({ customerId: this.props.id });
+            this.props.getCommunicationLogs({ customerId: window.currentCustomer.custId });
         }
     };
 
     handleCloseCreateCmnDiaLog = isSuccessful => {
         this.props.setCreateCommunicationDialog({ show: false });
         if (isSuccessful) {
-            this.props.getCommunicationLogs({ customerId: this.props.id });
+            this.props.getCommunicationLogs({ customerId: window.currentCustomer.custId });
         }
     };
 
     handleCloseEditCustomerVerify = isSuccessful => {
         this.props.setEditCustomerVerifyDialog({ show: false });
         if (isSuccessful) {
-            this.props.getCustomerInfoVerify({ customerId: this.props.id });
+            this.props.getCustomerInfoVerify({ customerId: window.currentCustomer.custId });
         }
     };
 
@@ -105,7 +105,7 @@ export class AppContainer extends Component {
                 {
                     createCommunicationDialog.show &&
                     <CreateCommunicationLog
-                        id={this.props.id}
+                        id={custId}
                         onClose={this.handleCloseCreateCmnDiaLog}
                         options={createCommunicationDialog.options}
                     />
@@ -113,7 +113,7 @@ export class AppContainer extends Component {
                 {
                     editCustomerVerifyDialog.show &&
                     <EditCustomerInfoVerify
-                        id={this.props.id}
+                        id={custId}
                         onClose={this.handleCloseEditCustomerVerify}
                     />
                 }
