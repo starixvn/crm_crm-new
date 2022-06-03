@@ -94,6 +94,14 @@ export class Filter extends Component {
         });
     };
 
+    handleChangeMainCategory = evt => {
+        this.setState({
+            ...this.state,
+            [evt.target.name]: parseInt(evt.target.value, 10),
+            subCategoryId: -1
+        });
+    };
+
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     handleSubmit = () => {
@@ -247,7 +255,7 @@ export class Filter extends Component {
                             <Form.Group className='form-group-main-category'>
                                 <Form.Label htmlFor="mainCategoryId">{LangHelper.getResource('MainCategory')}</Form.Label>
                                 <Form.Control as="select" size="sm" name="mainCategoryId" id="mainCategoryId"
-                                    value={mainCategoryId} onChange={this.handleChange}
+                                    value={mainCategoryId} onChange={this.handleChangeMainCategory}
                                 >
                                     {
                                         mainCategoryOptions.map((value, key) => this.renderOptions(value.name, value.mainCategoryID, key))
