@@ -11,13 +11,10 @@ const store = configureStore({
     reducer: addCustomerFeedbackReducer
 });
 
-const id = document.getElementById('id').value;
-const name = document.getElementById('name').value;
-
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer id={id} name={name}/>
+            <AppContainer/>
         </Layout>
     </Provider>,
     document.getElementById('app-container'));

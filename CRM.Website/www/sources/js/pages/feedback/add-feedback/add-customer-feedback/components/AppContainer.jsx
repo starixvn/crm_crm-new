@@ -30,7 +30,7 @@ export class AppContainer extends Component {
     componentDidMount() {
         this.props.getAllSettings();
         this.props.getBalanceUpday();
-        this.props.getCustomerDetail({customerId: this.props.id});
+        this.props.getCustomerDetail({customerId: window.currentCustomer.custId});
     }
 
     render() {

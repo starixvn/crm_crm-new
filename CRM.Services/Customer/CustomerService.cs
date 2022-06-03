@@ -100,7 +100,7 @@
 
         private CustomerSession GetUnAssignedCustomerInfo()
         {
-            return new CustomerSession
+            return new CustomerInfoDetails
             {
                 Username = "Unassigned",
                 IsActive = false,
@@ -116,9 +116,9 @@
 
         public async Task<CustomerSession> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria)
         {
-            var (customer, languages) = await baseService.FetchMultipleAsync<CustomerSession, CustomerLanguageInfo>(criteria);
+            var (customer, languages) = await baseService.FetchMultipleAsync<CustomerInfoDetails, CustomerLanguageInfo>(criteria);
             var listLanguages = new List<int>();
-            CustomerSession customerInfo = null;
+            CustomerInfoDetails customerInfo = null;
             if (customer.Any())
             {
                 customerInfo = customer.FirstOrDefault();

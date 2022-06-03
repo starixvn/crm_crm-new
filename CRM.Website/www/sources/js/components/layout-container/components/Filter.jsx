@@ -15,6 +15,9 @@ export default class Filter extends Component {
     }
     handleSubmit = event => {
         event.preventDefault();
+        if(this.props.username > 0){
+            return;
+        }
         this.props.getDataGrid().then(()=>{
             if(this.props.customerInfo !== null){
                 window.location = Site.resolveClientUrl('Dashboard');
@@ -89,7 +92,7 @@ export default class Filter extends Component {
 
     renderHomeSubMenu = pathname =>{
         return (
-            window.currentCustomer.hasCreateFeedbackPermission ?
+            this.props.isHost ?
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className={this.isActiveTab(pathname, 0) ? 'active' : ''}>

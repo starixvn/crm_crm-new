@@ -12,7 +12,7 @@
 @import '../../components/verify-customer';
 
 .child-app-container {
-    width: 1319px;
+    max-width: 1319px;
 
     .alert-boxer{
         width: 800px;

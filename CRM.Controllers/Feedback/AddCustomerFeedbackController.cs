@@ -41,14 +41,10 @@
             this.userService = userService;
         }
 
-        public IActionResult Index(int custid, string custname)
+        [Route("Feedbacks/AddCustomerFeedback")]
+        public IActionResult Index()
         {
-            var customerInfo = new BaseModel
-            {
-                Id = custid,
-                Name = custname
-            };
-            return View(customerInfo);
+            return View();
         }
 
         public async Task<ActionResult> AllSetting()

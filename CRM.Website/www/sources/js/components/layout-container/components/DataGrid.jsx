@@ -21,7 +21,8 @@ export default class DataGrid extends PureComponent {
         super(props);
         this.state = {
             languages: [],
-            siteId: null
+            siteId: null,
+            isShowDetail: true
         };
     }
 
@@ -67,7 +68,7 @@ export default class DataGrid extends PureComponent {
                                         {
                                             value.username === 'Unassigned'
                                                 ? value.username
-                                                : <a href="#" onClick={() => this.handleSearchUplineInfo(value.username)}>{value.username}</a>
+                                                : <span className='upline-username' onClick={() => this.handleSearchUplineInfo(value.username)}>{value.username}</span>
                                         }
                                     </Col>
                                     <Col md="4" className="status text-right">
@@ -231,8 +232,12 @@ export default class DataGrid extends PureComponent {
                         />
                     </Col>
                 </Form.Group>
-
-                { this.renderCommunicationTool(values, handleChange, isSubmitting) }
+                { 
+                    this.renderCommunicationTool(values, handleChange, isSubmitting)
+                }
+                {
+                    this.renderDetail(isShowInactiveMsg)
+                }
             </Form>
         );
     };
@@ -241,7 +246,6 @@ export default class DataGrid extends PureComponent {
         return (
             <div>
                 <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
-
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="phoneCountryCode" >
                         {LangHelper.getResource('Phone1')}
@@ -399,7 +403,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg pb-2">
+                <Form.Group className="row item no-border-bg">
                     <Col md="3" />
                     <Col md="9">
                         <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
@@ -410,6 +414,44 @@ export default class DataGrid extends PureComponent {
             </div>
         );
     };
+
+    renderDetail = isShowInactiveMsg =>{
+        return (
+            <div>
+                <Row className="item title text-left btn-detail" onClick={() => this.setState(prevState =>({isShowDetail: !prevState.isShowDetail}))}>
+                    {LangHelper.getResource('Detail')}
+                </Row>
+                {
+                    this.state.isShowDetail &&
+                    <Form.Group className="row item no-border-bg">
+                        <ul className='list-unstyled list-menu pull-left'>
+                            <li>
+                                <i className="fa fa-angle-right" aria-hidden="true" />
+                                <a href={Site.resolveClientUrl('CustomerInfoDetail')}>{LangHelper.getResource('CRMInfo')}</a>
+                            </li>
+                            <li>
+                                <i className="fa fa-angle-right" aria-hidden="true" />
+                                <a href={Site.resolveClientUrl('Feedbacks/LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
+                            </li>
+                        </ul>
+                        <ul className='list-unstyled list-menu pull-left'>
+                            {
+                                !isShowInactiveMsg &&
+                                <li>
+                                    <i className="fa fa-angle-right" aria-hidden="true" />
+                                    <a href={Site.resolveClientUrl('Feedbacks/AddCustomerFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
+                                </li>
+                            }
+                            <li>
+                                <i className="fa fa-angle-right" aria-hidden="true" />
+                                <a href={Site.resolveClientUrl('Feedbacks/ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                            </li>
+                        </ul>
+                    </Form.Group>
+                }
+            </div>
+        );
+    }
 
     handleChangeSite = item => {
         this.setState({
@@ -472,6 +514,7 @@ export default class DataGrid extends PureComponent {
             ...this.props.gridParams,
             username
         };
+        this.props.setUserName(username);
         this.props.setGridParams(params);
         this.props.getCustomerInfo();
     };

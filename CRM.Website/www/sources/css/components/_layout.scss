@@ -153,6 +153,7 @@
 
 #right-row-container{
     padding: 15px;
+    border-left: 1px solid #b7b7b7;
 }
 
 #left-row-hidden{
@@ -199,8 +200,12 @@
 }
 
 .left-form-customer {
-    background-color: #e8e8e8;
-    border: 1px solid #b7b7b7;
+    background-color: rgb(241,241,241);
+
+    .upline-username{
+        color: #2f70b4;
+        cursor: pointer;
+    }
     .item.current {
         background-color: #c0cbe1;
     }
@@ -212,16 +217,16 @@
     .item.no-border-bg {
         background: none;
         border: none;
-        padding: 0 6px;
+        padding: 0;
     }
     
     
     .item.title {
-        background: linear-gradient(#e7e7e7, #e2e2e2);
+        background: linear-gradient(#e7e7e7,#e2e2e2);;
         color: #2f70b4;
         border-top: 1px solid #e1e1e1;
         border-bottom: 1px solid #e1e1e1;
-        margin-top: 7px;
+        margin-top: 0;
         padding: 3px 6px 8px;
         font-size: 13px;
         height: 28px;
@@ -272,5 +277,27 @@
     
     .inactive-site{
         color: red;
+    }
+
+    .btn-detail{
+        cursor: pointer;
+    }
+
+    .list-menu{
+        li{
+            text-align: left;
+            background: url('../../../css/images/br-arrow-ico.png') no-repeat left center;
+            line-height: 20px;
+            padding-right: 25px;
+
+            a{
+                color: #0255a5;
+            }
+
+            i{
+                padding-right: 4px;
+                color: #0255a5;
+            }
+        }
     }
 }

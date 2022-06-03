@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Filter from './Filter';
-import PropTypes from 'prop-types';
 import { ToastContainer, Slide } from 'react-toastify';
 import Header from './Header';
 import DataGrid from './DataGrid';
@@ -8,15 +7,6 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 
 export default class AppContainer extends Component {
-    static propTypes = {
-        editCustomerInfoPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        isHost: PropTypes.bool.isRequired
-    };
-
-    static defaultProps = {
-        editCustomerInfoPopup: { show: false },
-        isHost: false
-    };
     constructor(props) {
         super(props);
         this.state = {
@@ -99,6 +89,10 @@ export default class AppContainer extends Component {
     setGridParams = gridParams =>{
         this.setState({gridParams});
     };
+    
+    setUserName = username =>{
+        this.setState({username});
+    }
 
     handleCloseEmptyConfirm = () => {
         this.setState({ showEmptyConfirmPopup: false });
@@ -192,7 +186,7 @@ export default class AppContainer extends Component {
                 {
                     customerInfo !== null && settings !== null &&
                     <DataGrid 
-                        customerInfo={customerInfo} settings = {settings} gridParams={gridParams} setGridParams={this.setGridParams}
+                        customerInfo={customerInfo} settings = {settings} gridParams={gridParams} setGridParams={this.setGridParams} setUserName={this.setUserName}
                         getCustomerInfo={this.getCustomerInfo} handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup}
                     />
                 }
@@ -229,12 +223,12 @@ export default class AppContainer extends Component {
         if(menus.length <=0){
             return null;
         }
-        const { isHost } = this.props;
+        const hasCreateFeedbackPermission = window.currentCustomer?.hasCreateFeedbackPermission;
         return (
             <div>
                 <Header menus={menus} handleCollapseExpandLayout={this.handleCollapseExpandLayout}/>
                 <Filter
-                    isHost={isHost} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
+                    isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                     customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
                     showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
                     showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
