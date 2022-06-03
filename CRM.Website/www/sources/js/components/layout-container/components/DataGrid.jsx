@@ -402,7 +402,6 @@ export default class DataGrid extends PureComponent {
                         />
                     </Col>
                 </Form.Group>
-
                 <Form.Group className="row item no-border-bg">
                     <Col md="3" />
                     <Col md="9">

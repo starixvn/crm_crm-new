@@ -4,8 +4,8 @@
 @import '../../components/tables';
 @import '../../components/date-picker/style';
 
-.child-app-container {
-    max-width: 1319px;
+.table-title, .page-container{
+    max-width: 1200px !important;
 }
 
 .react-datepicker-wrapper input{

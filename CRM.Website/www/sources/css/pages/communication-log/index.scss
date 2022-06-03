@@ -11,10 +11,9 @@
 @import '../../components/verify-customer';
 @import '../../components/date-picker/style';
 
-.child-app-container {
-    max-width: 1319px;
+.table-title, .page-container {
+    max-width: 1200px !important;
 }
-
 .body-content {
     overflow-x: hidden !important;
 }

@@ -110,7 +110,7 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('CustomerRedemptionLogs')}</span>
                 </div>
                 <Table
-                    width={1400}
+                    width={1200}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
