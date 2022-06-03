@@ -83,6 +83,9 @@ export class Filter extends Component {
                         </Form.Label>
                         <div className="react-datepicker-wrapper-container">
                             <DatePicker
+                                dropdownMode="select"
+                                showMonthDropdown
+                                showYearDropdown
                                 maxDate={this.state.maxFromDate}
                                 minDate={this.state.minFromDate}
                                 selected={this.state.fromDate}
@@ -96,6 +99,9 @@ export class Filter extends Component {
                         </Form.Label>
                         <div className="react-datepicker-wrapper-container">
                             <DatePicker
+                                dropdownMode="select"
+                                showMonthDropdown
+                                showYearDropdown
                                 maxDate={this.state.maxToDate}
                                 minDate={this.state.minToDate}
                                 selected={this.state.toDate}

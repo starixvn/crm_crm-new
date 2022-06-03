@@ -81,6 +81,9 @@ export class Filter extends Component {
                         </Form.Label>
                         <div className="react-datepicker-wrapper-container">
                             <DatePicker
+                                dropdownMode="select"
+                                showMonthDropdown
+                                showYearDropdown
                                 selected={this.state.fromDate}
                                 maxDate={this.state.maxFromDate}
                                 minDate={this.state.minFromDate}
@@ -94,6 +97,9 @@ export class Filter extends Component {
                         </Form.Label>
                         <div className="react-datepicker-wrapper-container">
                             <DatePicker
+                                dropdownMode="select"
+                                showMonthDropdown
+                                showYearDropdown
                                 selected={this.state.toDate}
                                 maxDate={this.state.maxToDate}
                                 minDate={this.state.minToDate}
@@ -110,7 +116,7 @@ export class Filter extends Component {
                         >
                             <option value="0">All</option>
                             {
-                                allStatus.statuses.map((value,key) => <option key={key} value={value.statusId}>{value.name}</option>)
+                                allStatus.statuses.map((value, key) => <option key={key} value={value.statusId}>{value.name}</option>)
                             }
                         </Form.Control>
                     </Form.Group>
