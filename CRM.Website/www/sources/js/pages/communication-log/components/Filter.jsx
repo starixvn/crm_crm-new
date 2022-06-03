@@ -92,6 +92,9 @@ export class Filter extends Component {
                         <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('FromDate')}</Form.Label>
                         <div className="react-datepicker-wrapper-container">
                             <DatePicker
+                                dropdownMode="select"
+                                showMonthDropdown
+                                showYearDropdown
                                 maxDate={this.state.maxFromDate}
                                 minDate={this.state.minFromDate}
                                 selected={this.state.fromDate}
@@ -103,6 +106,9 @@ export class Filter extends Component {
                         <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('ToDate')}</Form.Label>
                         <div className="react-datepicker-wrapper-container">
                             <DatePicker
+                                dropdownMode="select"
+                                showMonthDropdown
+                                showYearDropdown
                                 maxDate={this.state.maxToDate}
                                 minDate={this.state.minToDate}
                                 selected={this.state.toDate}
@@ -117,7 +123,7 @@ export class Filter extends Component {
                         >
                             <option value="0">All</option>
                             {
-                                statusFilter.map((value,key) => this.renderOptions(value.name,value.statusId,key))
+                                statusFilter.map((value, key) => this.renderOptions(value.name, value.statusId, key))
                             }
                         </Form.Control>
                     </Form.Group>

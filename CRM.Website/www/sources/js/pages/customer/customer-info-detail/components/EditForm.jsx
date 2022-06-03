@@ -179,7 +179,7 @@ export class EditForm extends Component {
                 checked: values.languages.includes(item.languageId)
             };
         });
-        return(
+        return (
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('personalInfo')}
                     aria-controls="collapse-expand-personalInfo"
@@ -230,9 +230,12 @@ export class EditForm extends Component {
                                     <Form.Label column sm="4" md="4" htmlFor="birthDay">{LangHelper.getResource('Birthday')}</Form.Label>
                                     <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
                                         <DatePicker
+                                            dropdownMode="select"
+                                            showMonthDropdown
+                                            showYearDropdown
                                             selected={values.birthDay}
                                             maxDate={values.maxDate}
-                                            onChange={value => this.handleChangeValue('birthDay',value)}
+                                            onChange={value => this.handleChangeValue('birthDay', value)}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -269,7 +272,7 @@ export class EditForm extends Component {
                                             isAllTextShown
                                             isNAOption
                                             onChange={(currentItem, selectedItemsKey) => {
-                                                this.handleChangeValue('languages',selectedItemsKey);
+                                                this.handleChangeValue('languages', selectedItemsKey);
                                             }}
                                         />
                                     </Col>
@@ -285,7 +288,7 @@ export class EditForm extends Component {
                                             value={values.siteId}
                                             name={customerInfo.siteSetting.name}
                                             isHideNA={false}
-                                            OnChangeValue={item => this.handleChangeValue('siteId',item.id)}
+                                            OnChangeValue={item => this.handleChangeValue('siteId', item.id)}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -315,7 +318,7 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
 
-                            { this.renderCheckVipIgnore(customerInfo, values) }
+                            {this.renderCheckVipIgnore(customerInfo, values)}
                         </Form.Group>
                     </div>
                 </Collapse>
@@ -381,7 +384,7 @@ export class EditForm extends Component {
     };
 
     renderCommunicationTool = values => {
-        return(
+        return (
             <Fragment>
                 <Form.Group as={Row}>
                     <Col sm="4" md="4">
@@ -486,7 +489,7 @@ export class EditForm extends Component {
     };
 
     renderCustomerInformation = values => {
-        return(
+        return (
             <Fragment>
                 <Form.Group as={Row}>
                     <Col md="4" sm="4">
@@ -601,7 +604,7 @@ export class EditForm extends Component {
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
                             <Form.Label htmlFor="pic4" sm="4" md="4" column>{LangHelper.getResource('PIC4')}</Form.Label>
-                            <Col md="8"  sm="8">
+                            <Col md="8" sm="8">
                                 <div className="d-flex">
                                     <div className="picName">
                                         <Form.Control type="text" size="sm" className="shadow-none" value={values.pic4Name}
@@ -623,7 +626,7 @@ export class EditForm extends Component {
     };
 
     renderCommunicationInfo = values => {
-        return(
+        return (
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('communicationInfo')}
                     aria-controls="collapse-expand-communicationInfo"
@@ -709,8 +712,8 @@ export class EditForm extends Component {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-                        { this.renderCustomerInformation(values) }
-                        { this.renderCommunicationTool(values) }
+                        {this.renderCustomerInformation(values)}
+                        {this.renderCommunicationTool(values)}
                     </div>
                 </Collapse>
             </div>
@@ -718,7 +721,7 @@ export class EditForm extends Component {
     };
 
     renderHomeAddress = values => {
-        return(
+        return (
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('homeAddress')}
                     aria-controls="collapse-expand-homeAddress"
@@ -755,7 +758,7 @@ export class EditForm extends Component {
                         <Form.Group as={Row}>
                             <Col sm="12" md="12">
                                 <Form.Group as={Row}>
-                                    <Form.Label  htmlFor="line3" column sm="2" md="2">{LangHelper.getResource('Line3')}</Form.Label>
+                                    <Form.Label htmlFor="line3" column sm="2" md="2">{LangHelper.getResource('Line3')}</Form.Label>
                                     <Col md="10" sm="10">
                                         <Form.Control size="sm" className="shadow-none" value={values.homeAddressLine3}
                                             name="homeAddressLine3" type="text" id="homeAddressLine3" autoComplete="off" onChange={this.handleChange}
@@ -818,7 +821,7 @@ export class EditForm extends Component {
     };
 
     renderBankInfo = values => {
-        return(
+        return (
             <div className="panel-group">
                 <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('bankInfo')}
                     aria-controls="collapse-expand-bankInfo"
@@ -834,7 +837,7 @@ export class EditForm extends Component {
                                     <Form.Label column sm="4" md="4" htmlFor="accName">{LangHelper.getResource('AccName')}</Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" value={values.bankInfoHolderName}
-                                            name="bankInfoHolderName" id="bankInfoHolderName" autoComplete="off" onChange={this.handleChange}/>
+                                            name="bankInfoHolderName" id="bankInfoHolderName" autoComplete="off" onChange={this.handleChange} />
                                     </Col>
                                 </Form.Group>
                             </Col>
@@ -905,7 +908,7 @@ export class EditForm extends Component {
                                     </Form.Label>
                                     <Col sm="10" md="10">
                                         <Form.Control type="text" value={values.bankAddressLine3} name="bankAddressLine3" id="bankAddressLine3"
-                                             size="sm" className="shadow-none" autoComplete="off" onChange={this.handleChange}
+                                            size="sm" className="shadow-none" autoComplete="off" onChange={this.handleChange}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -927,7 +930,7 @@ export class EditForm extends Component {
                                     <Form.Label column sm="4" htmlFor="bankState" md="4">{LangHelper.getResource('State')}</Form.Label>
                                     <Col md="8" sm="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" value={values.bankAddressState}
-                                             autoComplete="off" onChange={this.handleChange} name="bankAddressState" id="bankAddressState"
+                                            autoComplete="off" onChange={this.handleChange} name="bankAddressState" id="bankAddressState"
                                         /></Col>
                                 </Form.Group>
                             </Col>
