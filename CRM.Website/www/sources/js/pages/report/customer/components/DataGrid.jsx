@@ -119,6 +119,17 @@ export class DataGrid extends Component {
         this.props.getCustomerReport(params);
     };
 
+    handleTitle(customerReport) {
+        return (
+            <div className="table-title d-flex justify-content-between align-items-center">
+                <span>{LangHelper.getResource('CustomerReport')}</span>
+                {
+                    customerReport && <ExcelIcon handleExportExcel={this.handleExportExcel} />
+                }
+            </div>
+        );
+    }
+
     render() {
         const { customerReport, gridParams } = this.props;
         if (!customerReport) {
@@ -135,15 +146,11 @@ export class DataGrid extends Component {
 
         return (
             <div>
-                <div className="table-title d-flex justify-content-between align-items-center">
-                    <span>{LangHelper.getResource('CustomerReport')}</span>
-                    {
-                        customerReport && <ExcelIcon handleExportExcel={this.handleExportExcel}/>
-                    }
-                </div>
                 <Table
                     maxWidth={3800}
                     shouldUseMaxWidth
+                    title={this.handleTitle(customerReport)}
+                    isFixColumn
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}

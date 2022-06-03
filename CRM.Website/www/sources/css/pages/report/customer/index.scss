@@ -62,28 +62,3 @@
         }
     }
 }
-
-.table-container {
-    .header-content {
-        border-bottom: none;
-        position: sticky;
-        top: 0;
-        z-index: 1;
-    }
-    .body-content {
-        overflow: unset !important;
-        .table {
-            tbody {                
-                tr:hover td {
-                    background-color: #E0FFFF !important;
-                }    
-            }
-        }
-        .no-data{
-            font-weight: bold;
-        }
-        .icon-check {
-            color: #466ab6;
-        }
-    }
-}
