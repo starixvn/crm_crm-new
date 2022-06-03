@@ -145,6 +145,10 @@
 
 #left-row-container{
     width: 22%;
+    #left-form-container{
+        border-right: 1px solid #b7b7b7;
+        border-bottom: 1px solid #b7b7b7;
+    }
 }
 
 .left-row-empty{
@@ -153,7 +157,6 @@
 
 #right-row-container{
     padding: 15px;
-    border-left: 1px solid #b7b7b7;
 }
 
 #left-row-hidden{
