@@ -68,6 +68,10 @@
 }
 
 .fix-table-container{
+    .header-content, .body-content, .footer-content {
+        border: 0 !important;
+    }
+    
     .header-content table thead th:first-child, thead th:nth-child(2), .fix-first-column, .fix-second-column{
         position: sticky !important;
         border-left: none !important;
