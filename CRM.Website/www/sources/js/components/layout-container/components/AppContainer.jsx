@@ -192,7 +192,7 @@ export default class AppContainer extends Component {
                 }
                 </div>
                 <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>
-                    <div className='child-app-container'>
+                    <div id='child-app-container'>
                     {
                         this.props.children
                     }
@@ -207,7 +207,7 @@ export default class AppContainer extends Component {
             <div>
                 <div id='left-row-container' style={{width:0}} />
                 <div id='right-row-container' style={{width:'100%'}}>
-                    <div className='child-app-container'>
+                    <div id='child-app-container'>
                     {
                         this.props.children
                     }

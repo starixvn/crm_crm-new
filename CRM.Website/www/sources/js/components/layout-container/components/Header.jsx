@@ -18,7 +18,7 @@ export class Header extends Component {
         return (
             <li key={index + item.id} className='menu-item'>
                 <div className='menu-title'>
-                <a className='title' href={Site.resolveClientUrl(item.url.slice(1))}>{item.name}</a>
+                <a className='title' href={item.url !== '' ? Site.resolveClientUrl(item.url.slice(1)) : undefined}>{item.name}</a>
                     {
                         item.subMenus.length > 0 && <span className='fa fa-caret-down icon' />
                     }

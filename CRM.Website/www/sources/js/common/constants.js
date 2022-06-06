@@ -103,3 +103,9 @@ export const SubMainMenu = [
     {id: 6, url: '/ActionLog'}
 ];
 
+export const DetailMenu = [
+    {id: 1, url: '/LatestFeedback'},
+    {id: 2, url: '/AddFeedback'},
+    {id: 3, url: '/ManageFeedback'}
+];
+

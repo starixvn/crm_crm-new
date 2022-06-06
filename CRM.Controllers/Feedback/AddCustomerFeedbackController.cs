@@ -41,7 +41,7 @@
             this.userService = userService;
         }
 
-        [Route("Feedbacks/AddCustomerFeedback")]
+        [Route("AddFeedback")]
         public IActionResult Index()
         {
             return View();

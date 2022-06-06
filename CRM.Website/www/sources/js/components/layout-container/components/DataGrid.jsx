@@ -417,7 +417,9 @@ export default class DataGrid extends PureComponent {
     renderDetail = isShowInactiveMsg =>{
         return (
             <div>
-                <Row className="item title text-left btn-detail" onClick={() => this.setState(prevState =>({isShowDetail: !prevState.isShowDetail}))}>
+                <Row className="item title text-left btn-detail" 
+                    onClick={() => this.setState(prevState =>({isShowDetail: !prevState.isShowDetail}))}
+                >
                     {LangHelper.getResource('Detail')}
                 </Row>
                 {
@@ -430,7 +432,7 @@ export default class DataGrid extends PureComponent {
                             </li>
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a href={Site.resolveClientUrl('Feedbacks/LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
+                                <a href={Site.resolveClientUrl('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
                             </li>
                         </ul>
                         <ul className='list-unstyled list-menu pull-left'>
@@ -438,12 +440,12 @@ export default class DataGrid extends PureComponent {
                                 !isShowInactiveMsg &&
                                 <li>
                                     <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a href={Site.resolveClientUrl('Feedbacks/AddCustomerFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
+                                    <a href={Site.resolveClientUrl('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
                                 </li>
                             }
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a href={Site.resolveClientUrl('Feedbacks/ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                                <a href={Site.resolveClientUrl('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
                             </li>
                         </ul>
                     </Form.Group>

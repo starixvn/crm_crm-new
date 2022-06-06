@@ -4,7 +4,8 @@ import { Button, Form, Col, Row } from 'react-bootstrap';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import Site from '@jsroot/common/site';
-import { SubMainMenu }from '@jsroot/common/constants';
+import { SubMainMenu, DetailMenu }from '@jsroot/common/constants';
+import BreadcrumbTime from './BreadcrumbTime';
 
 export default class Filter extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ export default class Filter extends Component {
             breadcrumb: []
         };
     }
+
     handleSubmit = event => {
         event.preventDefault();
         if(this.props.username > 0){
@@ -29,16 +31,9 @@ export default class Filter extends Component {
         return(
             <div className='right-container'>
                 <div sm="9" md="9" id="divSubMenu">
-                    {!window.currentCustomer ? null : this.renderSubmenu()}
+                    {this.renderSubmenu()}
                 </div>
-                <div sm="3" md="3">
-                    <div className="pull-right timezone">
-                        <span className="fa fa-clock-o fa-lg pr-2" aria-hidden="true" />
-                        <span id="span-timezoneContainer">
-                            {window.currentClientTime + LangHelper.getResource('Gmt8')}
-                        </span>
-                    </div>
-                </div>
+                {<BreadcrumbTime />}
             </div>
         );
     };
@@ -46,28 +41,45 @@ export default class Filter extends Component {
     getUrlPath = url => Site.resolveClientUrl(url.slice(1)).toLowerCase();
 
     renderSubmenu = () =>{
-        let breadcrumbsMenu = [];
         const pathname = window.location.pathname;
         const menus = this.handleConcatMenu(this.props.menus);
         const currentMenu = menus.filter(menu => this.getUrlPath(menu.url) === pathname.toLowerCase())[0];
-        if(!currentMenu){
-            return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
+        const isLefDetailMenu = DetailMenu.filter(x => this.getUrlPath(x.url) === pathname.toLowerCase()).length > 0;
+        if(isLefDetailMenu){
+            return this.renderDetailBreadcrumbsMenu(pathname);
         }else{
-            if(pathname === '/') {
+            if(!currentMenu){
+                return this.renderBreadcrumbsMenu([], pathname);
+            }else if(pathname === '/'){
                 return null;
-            }else if(currentMenu.parentId > 0){
-                const parentNames = this.recursiveFindParentName(menus, currentMenu.parentId);
-                breadcrumbsMenu = [...breadcrumbsMenu, ...parentNames, currentMenu.name];
             }else{
-                breadcrumbsMenu = [...breadcrumbsMenu, currentMenu.name];
+                const breadcrumbsMenu = this.getBreadcrumbsMenu(pathname, currentMenu, menus);
+                return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
             }
-            return (
-                this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname)
-            );
         }
     }
 
-    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={() => window.location = Site.resolveClientUrl('Dashboard')}/></li>;
+    renderDetailBreadcrumbsMenu = pathname =>{
+        return (
+            <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
+                 {this.renderIconHome()}
+                <li><a>{LangHelper.getResource(pathname.substring(1))}</a></li>
+            </ul>
+        );
+    }
+
+    getBreadcrumbsMenu = (pathname, currentMenu, menus) =>{
+        let breadcrumbsMenu = [];
+        if(currentMenu.parentId > 0){
+            const parentNames = this.recursiveFindParentName(menus, currentMenu.parentId);
+            breadcrumbsMenu = [...breadcrumbsMenu, ...parentNames, currentMenu.name];
+        }else{
+            breadcrumbsMenu = [...breadcrumbsMenu, currentMenu.name];
+        }
+        return breadcrumbsMenu;
+    }
+
+    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={this.handleMenuDashboardClick}/></li>;
 
     renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) =>{
         const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home' 
