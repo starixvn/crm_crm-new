@@ -257,6 +257,9 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('From')}</Form.Label>
                         <div className='react-datepicker-wrapper-container form-control-wrapper'>
                             <DatePicker disabled={this.isDisabledDateParam()}
+                                dropdownMode="select"
+                                showMonthDropdown
+                                showYearDropdown
                                 maxDate={this.state.maxDate}
                                 selected={this.state.filter.fromDate}
                                 onChange={value => this.handleFromDateChange(value)}
@@ -267,6 +270,9 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('To')}</Form.Label>
                         <div className='react-datepicker-wrapper-container form-control-wrapper'>
                             <DatePicker disabled={this.isDisabledDateParam()}
+                                dropdownMode="select"
+                                showMonthDropdown
+                                showYearDropdown
                                 minDate={this.state.minToDate}
                                 maxDate={this.state.maxToDate}
                                 selected={this.state.filter.toDate}
