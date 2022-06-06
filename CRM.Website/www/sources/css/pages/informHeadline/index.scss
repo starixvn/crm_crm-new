@@ -35,6 +35,10 @@
     cursor: pointer;
 }
 
+.body-content, .footer-content, .header-content {
+    border: 0 !important;
+}
+
 .body-content{
     tr{
         &.open td{
