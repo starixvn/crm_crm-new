@@ -18,7 +18,7 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}
+                <HeaderCell colWidth={22}>{LangHelper.getResource('RunningNo')}
                     <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('feedbackId')}/>
                 </HeaderCell>
                 {
