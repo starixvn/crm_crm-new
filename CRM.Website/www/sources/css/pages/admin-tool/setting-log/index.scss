@@ -8,8 +8,7 @@
 @import '../../../components/react-select';
 
 .form-filter {
-    min-width: 1250px;
-    width: 1250px;
+    max-width: 1250px;
 
     .width-60{
         width: 60px !important;
@@ -29,8 +28,6 @@
 }
 
 .table-container {
-    overflow-x: hidden !important;
-
     .word-wrap {
         max-width: 170px;
         word-wrap: break-word;
@@ -42,7 +39,5 @@
 }
 
 .table-title, .page-container, .table-container{
-    min-width: 1250px !important;
-    width: 1250px !important;
+    max-width: 1250px !important;
 }
-

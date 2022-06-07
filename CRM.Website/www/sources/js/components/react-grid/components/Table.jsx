@@ -189,9 +189,7 @@ class Table extends Component {
             this.setState({ maxWidth });
             window.localStorage.removeItem('isShowingLeftPanel');
         }else{
-            const minWidthContainer = 1485;
-            const widthCal = document.body.clientWidth <= minWidthContainer ? minWidthContainer : document.body.clientWidth;
-            const maxWidthCal = shouldUseMaxWidth ? maxWidth : widthCal - this.diffWidth;
+            const maxWidthCal = shouldUseMaxWidth ? maxWidth : document.body.clientWidth - this.diffWidth;
             if (this.state.maxWidth !== maxWidthCal) {
                 this.setState({ maxWidth: maxWidthCal });
             }
