@@ -32,7 +32,6 @@ namespace CRM.Controllers.Report.Statistics
         }
 
         [CrmPermission(FunctionKey = FunctionKey.IssueStatistics, Policy = Policy.Read)]
-        [Route("StatisticReport/Index")]
         public IActionResult Index()
         {
             return View("../Report/IssueStatistics/Index");

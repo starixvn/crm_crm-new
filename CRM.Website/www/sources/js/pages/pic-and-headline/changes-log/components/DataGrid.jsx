@@ -44,8 +44,8 @@ export class DataGrid extends Component {
                 <Cell className='text-center'>{index + this.startIndex}</Cell>
                 <Cell className='text-center'>{item.logId}</Cell>
                 <Cell className='text-center' style={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{ __html: item.logTime}} />
-                <Cell className='text-center'>{item.editBy}</Cell>
-                <Cell className='text-center'>{item.directAccount}</Cell>
+                <Cell>{item.editBy}</Cell>
+                <Cell>{item.directAccount}</Cell>
                 <Cell>{item.action}</Cell>
                 <Cell>{detailValue}</Cell>
             </Row>
