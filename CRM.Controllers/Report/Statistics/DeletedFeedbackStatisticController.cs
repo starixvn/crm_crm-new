@@ -4,15 +4,15 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
     using CRM.Criteria.Report.DeletedFeedbackStatisticsCriteria;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Setting;
     using CRM.Repositories;
     using CRM.Resources;
     using CRM.Services;
-    using Fanex.NAP.Client.AspNetCore.Attributes;
-    using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Core.Business.Constant;
 
     public class DeletedFeedbackStatisticController : BaseController
     {
@@ -31,14 +31,13 @@
             this.excelService = excelService;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/DeleteFeedbackStatistic/Index");
         }
 
         [HttpPost]
-        [NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetDeletedFeedbackStatistics([FromBody] DeletedFeedbackStatisticsCriteria criteria)
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);

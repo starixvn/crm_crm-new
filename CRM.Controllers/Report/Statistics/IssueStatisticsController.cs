@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CRM.Core;
 using CRM.Core.Constants;
+using CRM.Core.Filters;
 using CRM.Criteria.Report;
 using CRM.Resources;
 using CRM.Services;
@@ -8,6 +9,7 @@ using CRM.Services.Report;
 using Fanex.NAP.Client.AspNetCore.Attributes;
 using Fanex.NAP.Core.Business;
 using Microsoft.AspNetCore.Mvc;
+using static Fanex.NAP.Core.Business.Constant;
 
 namespace CRM.Controllers.Report.Statistics
 {
@@ -29,7 +31,8 @@ namespace CRM.Controllers.Report.Statistics
             this.excelService = excelService;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.IssueStatistics, Policy = Policy.Read)]
+        [Route("StatisticReport/Index")]
         public IActionResult Index()
         {
             return View("../Report/IssueStatistics/Index");

@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using CRM.Core;
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
     using CRM.Core.Services;
     using CRM.Criteria.Report.RedemptionStatistics;
     using CRM.Models.Report.RedemptionStatistics;
@@ -14,6 +15,7 @@
     using Fanex.NAP.Client.AspNetCore.Attributes;
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Core.Business.Constant;
 
     public class RedemptionStatisticsController : BaseController
     {
@@ -34,7 +36,7 @@
             this.excelService = excelService;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.RedemptionStatistics, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.RedemptionStatistics, Policy = Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/RedemptionStatistics/Index");

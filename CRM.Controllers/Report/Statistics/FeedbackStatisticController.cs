@@ -6,6 +6,7 @@
     using CRM.Controllers;
     using CRM.Core;
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
     using CRM.Criteria.Report.FeedbackStatistic;
     using CRM.Models.Feedback;
     using CRM.Models.Setting;
@@ -15,6 +16,7 @@
     using Fanex.NAP.Client.AspNetCore.Attributes;
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Core.Business.Constant;
 
     public class FeedbackStatisticController : BaseController
     {
@@ -36,7 +38,7 @@
             this.excelService = excelService;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.FeedbackStatistics, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.FeedbackStatistics, Policy = Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/FeedbackStatistic/Index");
