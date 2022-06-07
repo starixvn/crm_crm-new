@@ -14,9 +14,9 @@
     using Fanex.Logging.Sentry;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Sentry;
     using Serilog;
 
@@ -31,8 +31,6 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             var connections = Configuration.GetSection("ConnectionStrings")
                       .GetChildren()
                       .AsEnumerable()
@@ -71,7 +69,7 @@
             services.ResolveWebhookServices(Configuration);
         }
 
-        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -85,11 +83,11 @@
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Auth}/{action=Index}/{id?}");
             });
         }
     }

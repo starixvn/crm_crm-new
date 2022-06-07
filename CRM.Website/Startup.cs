@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using CRM.Core;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
@@ -34,6 +33,7 @@
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using ONEbook.UM.AspNetCore;
     using ONEbook.UM.Configurations;
     using ONEbook.UM.Helpers;
@@ -124,24 +124,25 @@
                 options.Cookie.SameSite = SameSiteMode.None;
             });
 
-
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);
 
+            services.AddControllers();
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).AddJsonOptions(options =>
-            {
-                options.SerializerSettings.DateFormatString = DateTimeExtensions.LongDateTimeFormat;
             });
+
+            //.AddJsonOptions(options =>
+            //{
+            //    options.SerializerSettings.DateFormatString = DateTimeExtensions.LongDateTimeFormat;
+            //});
 
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -163,17 +164,18 @@
             app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthentication();
-            ////app.UseStatusCodePagesWithReExecute("/Error/{0}");
+            app.UseRouting();
+            app.UseAuthorization();
 
             NapClientManager
               .UseConfig(app.ApplicationServices.GetService<INapSettings>())
               .UseSession(app.ApplicationServices.GetService<INapSession>());
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Auth}/{action=Index}/{id?}");
             });
         }
 
