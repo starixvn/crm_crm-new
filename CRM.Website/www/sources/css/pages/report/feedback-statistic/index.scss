@@ -6,7 +6,7 @@
 @import "../../../components/tables";
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
-@import "../../../components/rechart.scss";
+@import "../../../components/rechart";
 
 .form-filter {
     .react-datepicker__input-container input{
@@ -93,8 +93,13 @@
 
 .modal-dialog {
     .modal-content {
-        .recharts-legend-wrapper {
-            width: 1010px !important;
+        .recharts-legend-wrapper{
+            width: 1030px !important;
+            .recharts-default-legend{
+                li{
+                    width: 150px;
+                }
+            }
         }
     }
 }
