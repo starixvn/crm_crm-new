@@ -95,7 +95,7 @@ export class DataGrid extends Component {
                 <div className='detail-child-col col-title-detail'>
                     <div className='p-2'>{isGroupHl ? LangHelper.getResource('GroupHeadline') : LangHelper.getResource('PIC')}</div>
                 </div>
-                <div className='detail-child-col border-right-0 ml-5'>
+                <div className='detail-child-col border-right-0'>
                     <div className='p-2'>{isGroupHl ? item.newDAInfo.groupHeadline : picsValue}</div>
                 </div>
             </div>
@@ -156,7 +156,7 @@ export class DataGrid extends Component {
                 <div className='detail-child-col col-title-detail'>
                     <div className='p-2'>{name}</div>
                 </div>
-                <div className={`detail-child-col border-right-none ml-5 ${!isGroupHeadline ? backgroundChange : ''}`}>
+                <div className={`detail-child-col border-right-none ${!isGroupHeadline ? backgroundChange : ''}`}>
                     {!isGroupHeadline ? value : 'Yes'}
                 </div>
             </div>
