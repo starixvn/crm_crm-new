@@ -201,7 +201,7 @@ export class Details extends Component {
             <Fragment>
                 <Modal show className="feedback-detail" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl" centered aria-label="contained-modal-title-vcenter"
-                    onHide={() => this.props.onClose(false)}
+                    onHide={this.props.onClose}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('FeedbackDetailTitle')}</Modal.Title>

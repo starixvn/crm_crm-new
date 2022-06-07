@@ -31,7 +31,7 @@ namespace CRM.Controllers.Report.Statistics
             this.excelService = excelService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.IssueStatistics, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/IssueStatistics/Index");

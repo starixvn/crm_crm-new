@@ -497,5 +497,6 @@
     IntroduceBy:'Introduce by',
     Languages: 'Languages',
     Welcome: 'Welcome',
-    SignOut: 'Sign Out'
+    SignOut: 'Sign Out',
+    CommunicationType: 'Communication Type'
 };

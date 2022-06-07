@@ -30,7 +30,7 @@
             this.napSession = napSession;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View();

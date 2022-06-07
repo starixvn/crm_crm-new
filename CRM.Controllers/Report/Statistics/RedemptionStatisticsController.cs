@@ -36,7 +36,7 @@
             this.excelService = excelService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.RedemptionStatistics, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.RedemptionStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/RedemptionStatistics/Index");

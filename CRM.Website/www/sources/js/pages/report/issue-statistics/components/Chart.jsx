@@ -72,7 +72,7 @@ export default class Chart extends PureComponent {
                         <CartesianGrid strokeDasharray="3 3" />
                         <YAxis label={{ value: 'Issue(s)', position: 'top', dy: -10 }} />
                         <XAxis dataKey="name" scaleToFit="true" verticalAnchor= "start"
-                            interval={0} angle= {data.length > 5 ? '-90' : '0'} dy={data.length > 5 ? 120 : 0}
+                            interval={0} angle= {data.length > 5 ? -90 : 0} dy={data.length > 5 ? 120 : 0}
                         />
                         <Legend wrapperStyle={{ bottom: 5, left: 75 }} />
                         {labels.map((label, index) => (

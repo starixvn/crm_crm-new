@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import colors from '@jsroot/common/colorColumnChart';
 import {
+  Bar,
   BarChart,
   XAxis,
   YAxis,
@@ -13,15 +15,39 @@ import {Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 
 export class Chart extends Component {
+    onCloseChart = () => {
+        this.props.setChartData({show: false, title: '', data: ''});
+
+    };
+    getLabels = reports => {
+        const labels = [];
+        reports.mainCategories.forEach(report => {
+            const index = labels.findIndex(label => label === report.name);
+            if (index === -1) {
+                labels.push(report.name);
+            }
+        });
+        return labels;
+    };
     renderChart = report => {
-        const mainCategories = report.mainCategories.map((item, index) => ({
-            index: index,
-            id: item.id,
-            name: item.name
-        }));
-        const label = report.communicationColumns.map(item => ({
-            name: item.name
-        }));
+        const labels = this.getLabels(report);
+        const data = report.communicationColumns.map((item, index) => {
+            const obj = { name: item.name };
+            report.mainCategories.map(category => {
+                const listOfCommunicationSum = [];
+                const communicationColumnCount = report.communicationColumns.length;
+                const listOfCommunicationCount = category.listOfCommunicationCount;
+
+                for (let i = 0; i < communicationColumnCount; i++) {
+                    listOfCommunicationSum[i] = 0;
+                    for (let j = i; j < listOfCommunicationCount.length; j = j + communicationColumnCount) {
+                        listOfCommunicationSum[i] += listOfCommunicationCount[j];
+                    }
+                }
+                obj[category.name] = listOfCommunicationSum[index] === 0 ? null : listOfCommunicationSum[index];
+            });
+            return obj;
+        });
 
         return (
             <Form>
@@ -29,7 +55,7 @@ export class Chart extends Component {
                 <ResponsiveContainer width="100%" height={800}>
                     <BarChart
                         width={993}
-                        data={label}
+                        data={data}
                         margin={{
                             top: 30, right: 30, left: 30, bottom: 20
                         }}
@@ -38,16 +64,14 @@ export class Chart extends Component {
                     >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
-                    <YAxis label={{ value: 'Feedback(s)', position: 'top', dy: -10 }} />
-                    <Legend
-                        wrapperStyle={{ bottom: 5, left: 90, width: 993 }}
-                        payload={mainCategories.map((item, index) => ({
-                            id: item.id,
-                            type: 'square',
-                            value: item.name,
-                            color: getBackGroundColor(index)
-                        }))}
-                    />
+                    <YAxis label={{ value: 'Feedback(s)', position: 'top', dy: -10 }} />                    
+                    <Legend wrapperStyle={{ bottom: 5, left: 90, width: 993 }} />
+                        {labels.map((label, index) => (                            
+                            <Bar dataKey={label} key={index} label={{ position: 'top' }}
+                                fill={colors[index % 20]}
+                            />
+                        )
+                        )}
                     </BarChart>
                 </ResponsiveContainer>
                 </Modal.Body>

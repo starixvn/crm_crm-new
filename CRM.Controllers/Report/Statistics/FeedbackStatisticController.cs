@@ -38,7 +38,7 @@
             this.excelService = excelService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.FeedbackStatistics, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.FeedbackStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/FeedbackStatistic/Index");

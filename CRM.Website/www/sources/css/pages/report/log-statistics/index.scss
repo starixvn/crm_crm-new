@@ -15,7 +15,7 @@
     }
 
     .label-width{
-        width: 120px !important;
+        width: 140px !important;
     }
 
     .form-width {
@@ -172,25 +172,25 @@
     }
 }
 
-.chart-modal-dialog{
-    .modal-content{
-        .recharts-default-legend{
+.chart-modal-dialog {
+    .modal-content {
+        .recharts-default-legend {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             border: 1px solid #b7b7b7;
             padding-top: 5px !important;
 
-            li{
+            li {
                 margin-left: 10px;
                 width: 270px;
 
-                .recharts-surface, .recharts-legend-item-text{
+                .recharts-surface,
+                .recharts-legend-item-text {
                     float: left;
                 }
             }
         }
     }
 }
-
 
