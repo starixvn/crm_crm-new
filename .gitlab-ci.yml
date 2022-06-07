@@ -1,0 +1,4 @@
+include:
+  - project: 'ci/repos-ci/nexus_nap_crm_website'
+    ref: master
+    file: 'gitlab-ci.yml'
