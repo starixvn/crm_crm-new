@@ -163,7 +163,8 @@ export class DataGrid extends Component {
         const countryArr = this.getCountriesArray(gridData);
         const countriesWidth = countryArr.length * 90;
         const totalWidth = defaultWidth + countriesWidth;
-        const width = document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
+        const clientWidth = document.getElementById('right-row-container').clientWidth;
+        const width =  clientWidth < totalWidth ? clientWidth : totalWidth;
         return (
             <Fragment>
                 <Table

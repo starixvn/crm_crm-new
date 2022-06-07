@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -247,6 +247,17 @@ export class DataGrid extends Component {
         this.props.setGridParams(params);
     };
 
+    renderTitle = gridData =>{
+        return (
+            <div className='table-title d-flex justify-content-between align-items-center'>
+                    <span>{gridData.title}</span>
+                    {
+                        gridData.feedbackCategories.length > 0 && this.renderCustomButton()
+                    }
+            </div>
+        );
+    };
+
     render() {
         const {gridData, gridParams} = this.props;
         if(gridData === null){
@@ -262,22 +273,20 @@ export class DataGrid extends Component {
 
         const defaultWidth = 420;
         const totalWidth = defaultWidth + gridData.usernames.length * 155;
-        const rightWidthContainer = document.getElementById('child-app-container').clientWidth;
-        const width =  totalWidth <  rightWidthContainer ? totalWidth : rightWidthContainer;
+        const clientWidth = document.getElementById('right-row-container').clientWidth;
+        const width =  clientWidth < totalWidth ? clientWidth : totalWidth;
 
         return (
-            <div style={{width: width}}>
-                <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>{gridData.title}</span>
-                    {
-                        gridData.feedbackCategories.length > 0 && this.renderCustomButton()
-                    }
-                </div>
+            <Fragment>
                 <Table
+                    maxWidth={totalWidth}
+                    shouldUseMaxWidth
                     width={width}
                     autoWidth={false}
                     header={this.buildHeader(gridData)}
                     body={this.buildBody(gridData)}
+                    isFixColumn
+                    title={this.renderTitle(gridData)}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
@@ -286,7 +295,7 @@ export class DataGrid extends Component {
                     adjustedHeight={10}
                     shouldResetScrollPosition={this.state.shouldResetScrollPosition}
                 />
-            </div>
+            </Fragment>
         );
     }
 }

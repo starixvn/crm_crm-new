@@ -8,10 +8,12 @@
 @import '../../../components/multiple-select/style';
 
 .form-filter {
-    //min-width: 1142px;
-
     .react-datepicker__input-container input{
         width: 100% !important;
+    }
+
+    .react-datepicker-popper{
+        z-index: 9999 !important;
     }
 
     .small-width{
