@@ -5,6 +5,7 @@ import AutoComplete from '@jsroot/components/AutoComplete';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import Site from '@jsroot/common/site';
 import { SubMainMenu, DetailMenu }from '@jsroot/common/constants';
+import { toast } from 'react-toastify';
 import BreadcrumbTime from './BreadcrumbTime';
 
 export default class Filter extends Component {
@@ -17,7 +18,8 @@ export default class Filter extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        if(this.props.username > 0){
+        if(this.props.username === '' || this.props.username === null){
+            toast.error(`${LangHelper.getResource('PleaseInputUsername')}`);
             return;
         }
         this.props.getDataGrid().then(()=>{

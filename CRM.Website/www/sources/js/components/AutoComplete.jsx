@@ -5,6 +5,7 @@ import { Form } from 'react-bootstrap';
 export default class AutoComplete extends Component {
     static propTypes = {
         value: PropTypes.string,
+        placeholder: PropTypes.string,
         options: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
         displayField: PropTypes.string,
         onChange: PropTypes.func,
@@ -13,6 +14,7 @@ export default class AutoComplete extends Component {
 
     static defaultProps = {
         value: '',
+        placeholder: '',
         options: [],
         displayField: '',
         isInvalid: false
@@ -25,6 +27,7 @@ export default class AutoComplete extends Component {
         this.state = {
             showOptionList: false,
             searchValue: props.value,
+            placeholder: props.placeholder,
             selectedItem: -1
         };
     }
@@ -150,13 +153,14 @@ export default class AutoComplete extends Component {
     };
 
     render() {
-        const { showOptionList, searchValue } = this.state;
+        const { showOptionList, searchValue, placeholder } = this.state;
         const { options, displayField, isInvalid } = this.props;
         return (
             <div className="autocomplete-container" ref={this.wrapperRef}>
                 <Form.Control type="text" size="sm" autoComplete="off"
                     className="shadow-none" isInvalid={isInvalid}
                     value={searchValue}
+                    placeholder ={placeholder}
                     onChange={this.handleChange}
                     onKeyDown={this.handleKeyDown}
                 />

@@ -469,5 +469,6 @@
     IntroduceBy:'Introduce by',
     Languages: 'Languages',
     Welcome: 'Welcome',
-    SignOut: 'Sign Out'
+    SignOut: 'Sign Out',
+    PleaseInputUsername: 'Please Input Username!'
 };
