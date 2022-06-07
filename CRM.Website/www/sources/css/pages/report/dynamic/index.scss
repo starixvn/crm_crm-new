@@ -9,6 +9,7 @@
 @import '../../../components/multiple-select/style';
 @import '../../../components/verify-customer';
 @import "../../../components/modal";
+@import "../../../components/rechart";
 
 #child-app-container {
     min-width: 1142px;
@@ -192,20 +193,6 @@ td.group-collapse-expand {
 }
 
 .modal-content {
-    .recharts-default-legend {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        border: 1px solid #b7b7b7;
-        padding-top: 5px !important;
-
-        li {
-            margin-left: 10px;
-            .recharts-surface, .recharts-legend-item-text {
-                float: left;
-            }
-        }
-    }
     .recharts-xAxis {
         .recharts-text {
             tspan {

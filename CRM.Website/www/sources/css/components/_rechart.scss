@@ -1,0 +1,16 @@
+.recharts-default-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    border: 1px solid #b7b7b7;
+    padding-top: 5px !important;
+    padding-top: 5px !important;
+
+    li {
+        width: 180px;
+        margin-left: 10px;
+        .recharts-surface, .recharts-legend-item-text {
+            float: left;
+        }
+    }
+}

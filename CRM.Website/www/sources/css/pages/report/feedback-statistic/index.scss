@@ -6,6 +6,7 @@
 @import "../../../components/tables";
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
+@import "../../../components/rechart.scss";
 
 .form-filter {
     .react-datepicker__input-container input{
@@ -93,23 +94,7 @@
 .modal-dialog {
     .modal-content {
         .recharts-legend-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            width: 995px !important;
-            justify-content: space-between;
-            border: 1px solid #b7b7b7;
-            padding-top: 5px !important;
-            margin-left: 15px !important;
-
-            li {
-                margin-left: 10px;
-                width: 270px;
-
-                .recharts-surface,
-                .recharts-legend-item-text {
-                    float: left;
-                }
-            }
+            width: 1010px !important;
         }
     }
 }

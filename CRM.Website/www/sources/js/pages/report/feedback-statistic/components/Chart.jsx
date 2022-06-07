@@ -56,7 +56,7 @@ export default class Chart extends Component {
                         barGap={0}
                     >
                         <XAxis dataKey="name" scaleToFit="true" verticalAnchor= "start"
-                            interval={0} angle= {data.length > 5 ? '-90' : '0'} dy={data.length > 5 ? 120 : 0}
+                            interval={0} angle= {data.length > 5 ? -90 : 0} dy={data.length > 5 ? 120 : 0}
                         />
                         <YAxis label={{ position: 'top', dy: -10, value: 'Feedback(s)'}} />
                         <Legend wrapperStyle={{ bottom: 5, left: 75 }} />
