@@ -6,8 +6,8 @@
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Services;
     using CRM.Services.Report;
+    using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class LogStatisticsController : BaseController
     {
