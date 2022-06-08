@@ -2,7 +2,6 @@
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
     using Serilog;
 
     public static class Program
@@ -14,13 +13,7 @@
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-             .ConfigureAppConfiguration((hostingContext, config) =>
-             {
-                 var env = hostingContext.HostingEnvironment;
-                 config.SetBasePath(env.ContentRootPath);
-                 config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                 config.AddEnvironmentVariables();
-             })
+            .UseUrls($"http://*:5000")
             .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration))
             .UseStartup<Startup>();
     }
