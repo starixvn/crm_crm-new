@@ -20,16 +20,12 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
     <ItemGroup>
-      <Compile Remove="Controllers\**" />
       <Compile Remove="Filters\**" />
       <Compile Remove="Views\**" />
-      <Content Remove="Controllers\**" />
       <Content Remove="Filters\**" />
       <Content Remove="Views\**" />
-      <EmbeddedResource Remove="Controllers\**" />
       <EmbeddedResource Remove="Filters\**" />
       <EmbeddedResource Remove="Views\**" />
-      <None Remove="Controllers\**" />
       <None Remove="Filters\**" />
       <None Remove="Views\**" />
     </ItemGroup>
