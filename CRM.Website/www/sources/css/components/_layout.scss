@@ -16,7 +16,6 @@
         padding: 0;
         height: 35px;
         width: 22%;
-        border-right: 1px solid #252525;
 
         .autocomplete-container {
             input {
@@ -64,6 +63,7 @@
         width: 78%;
         display: flex;
         align-items: center;
+        border-left: 1px solid #252525;
         justify-content: space-between;
 
         background-color: #464d5d;
