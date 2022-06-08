@@ -12,6 +12,10 @@ $suspended-color: #f8ded7;
 $closed-color: #f8ded7;
 $disabled-color: #a0a97a;
 
+body{
+    overflow-x: hidden;
+}
+
 button:focus {
     outline: none;
 }
