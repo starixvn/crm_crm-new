@@ -70,13 +70,13 @@ export class DataGridRedemption extends Component {
         }
 
         return (
-            <div>
+            <div className='redemption-grid'>
                 <div className='table-title d-flex align-items-center justify-content-between'>
                     <span>{LangHelper.getResource('LastFiveRedemptionLog')}</span>
                 </div>
 
                 <Table
-                    width={1319}
+                    width={980}
                     autoWidth={false}
                     containerPadding={0}
                     adjustedHeight={10}

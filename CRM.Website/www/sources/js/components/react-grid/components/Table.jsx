@@ -185,11 +185,12 @@ class Table extends Component {
         }
         const { maxWidth, shouldUseMaxWidth} = this.props;
         const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
+        const calWidth = document.body.clientWidth < 1485 ? 1485 : document.body.clientWidth;
         if(showingLeftPanel !== null){
             this.setState({ maxWidth });
             window.localStorage.removeItem('isShowingLeftPanel');
         }else{
-            const maxWidthCal = shouldUseMaxWidth ? maxWidth : document.body.clientWidth - this.diffWidth;
+            const maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
             if (this.state.maxWidth !== maxWidthCal) {
                 this.setState({ maxWidth: maxWidthCal });
             }
