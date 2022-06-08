@@ -16,6 +16,8 @@
         <SelfContained>true</SelfContained>
         <_IsPortable>false</_IsPortable>
         <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
+        <UserSecretsId>c6191107-6326-45fb-b4bb-3f2d9239f558</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="Controllers\**" />
@@ -34,7 +36,6 @@
     <ItemGroup>
       <Compile Remove="Services\BackgroundService.cs" />
       <Compile Remove="Services\CustomWebHostService.cs" />
-      <Compile Remove="Startup.cs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -121,6 +122,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta05" />
         <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />

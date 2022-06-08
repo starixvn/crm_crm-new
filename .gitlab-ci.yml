@@ -6,3 +6,7 @@ include:
   - project: 'ci/repos-ci/nexus_nap_crm_letstalk_webhook'
     ref: master
     file: 'gitlab-ci-mixing.yml'
+
+  - project: 'ci/repos-ci/nexus_nap_crm_background_jobs'
+    ref: master
+    file: 'gitlab-ci-mixing.yml'
