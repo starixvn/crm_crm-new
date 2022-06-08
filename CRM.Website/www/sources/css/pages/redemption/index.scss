@@ -7,8 +7,8 @@
 @import '../../components/ckeditor';
 @import '../../components/date-picker/style';
 
-.table-title, .page-container {
-    max-width: 1200px !important;
+.table-title, .page-container, .table-container{
+    width: 1200px !important;
 }
 
 .react-datepicker-wrapper input{
