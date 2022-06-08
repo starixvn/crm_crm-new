@@ -64,6 +64,7 @@
                 builder.AddSerilog(dispose: true);
             });
 
+            services.AddControllers();
             services.ResolveCoreDI();
             services.ResolveLetstalkServices(Configuration);
             services.ResolveWebhookServices(Configuration);
