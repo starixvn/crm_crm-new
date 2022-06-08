@@ -12,6 +12,8 @@ COPY ["CRM.Criteria/CRM.Criteria.csproj", "CRM.Criteria/"]
 COPY ["CRM.Letstalk.Client/CRM.Letstalk.Client.csproj", "CRM.Letstalk.Client/"]
 COPY ["CRM.ViewModel/CRM.ViewModels.csproj", "CRM.ViewModel/"]
 COPY ["CRM.Controllers/CRM.Controllers.csproj", "CRM.Controllers/"]
+COPY ["nuget.config", ""]
+
 RUN dotnet restore "CRM.Website/CRM.Website.csproj"
 
 COPY . .
