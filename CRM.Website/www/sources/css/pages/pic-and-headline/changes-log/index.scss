@@ -5,6 +5,10 @@
 @import "../../../components/multiple-select/style";
 @import '../../../components/date-picker/style';
 
+html{
+    overflow-x: hidden;
+}
+
 #app-container{
     .nav-tabs{
         .active{
