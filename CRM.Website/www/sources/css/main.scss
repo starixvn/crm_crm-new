@@ -94,16 +94,18 @@ body {
     }
 
     .fix-header-menu{
-        position: fixed;
+        position: sticky;
         width: 100%;
         top: 0;
         z-index: 1;
+
+        .header{
+            min-width: 1485px;
+        }
     }
     
     .row-content{
-        margin-top: 78px;
-        // overflow: auto;
-        // max-height: 850px;
+        min-width: 1485px;
     }
 
     .search-breadbrumb{

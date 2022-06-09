@@ -185,7 +185,8 @@ class Table extends Component {
         }
         const { maxWidth, shouldUseMaxWidth} = this.props;
         const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
-        const calWidth = document.body.clientWidth < 1485 ? 1485 : document.body.clientWidth;
+        const minWidthContainer = 1485;
+        const calWidth = document.body.clientWidth < minWidthContainer ? minWidthContainer : document.body.clientWidth;
         if(showingLeftPanel !== null){
             this.setState({ maxWidth });
             window.localStorage.removeItem('isShowingLeftPanel');
@@ -219,7 +220,8 @@ class Table extends Component {
 
     _calculateWidth = () =>{
         const isFullWidthClient = this.props.width === clientWidth;
-        const leftContainerWidth = window.customerInfo !== null ? document.getElementById('left-row-container').clientWidth + DEFAULT_PADDING : DEFAULT_PADDING;
+        const leftRowContainer = document.getElementById('left-row-container');
+        const leftContainerWidth = window.customerInfo !== null && leftRowContainer !== null  ? leftRowContainer.width + DEFAULT_PADDING : DEFAULT_PADDING;
         const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
         return widthRemain;
     }

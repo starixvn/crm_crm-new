@@ -9,8 +9,10 @@
 @import './autocomplete';
 
 .row-search{
+    min-width: 1485px;
     display: flex;
     height: 35px;
+
     #left-container {
         background-color: #464d5d;
         margin: 0;

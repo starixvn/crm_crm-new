@@ -237,7 +237,7 @@ export default class AppContainer extends Component {
                     />
                 </div>
                 {
-                    !showEmptyCustomerInfoPopup &&
+                    !showEmptyCustomerInfoPopup && customerInfo !== null &&
                     <div className='row-content'>
                         {
                             isShowingLeftPanel ?

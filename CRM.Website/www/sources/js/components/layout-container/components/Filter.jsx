@@ -88,7 +88,7 @@ export default class Filter extends Component {
                         || SubMainMenu.filter(x=> this.getUrlPath(x.url) === pathname.toLowerCase()).length > 0;
         return (
             isHome ?
-            this.renderHomeSubMenu(pathname) :
+            this.props.customerInfo !== null && this.renderHomeSubMenu(pathname) :
             <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
                 {this.renderIconHome(pathname)}
                 {
