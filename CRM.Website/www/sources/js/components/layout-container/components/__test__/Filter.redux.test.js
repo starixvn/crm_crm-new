@@ -1,8 +1,6 @@
 jest.mock('react-redux');
 jest.mock('redux');
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { ActionCreators } from '../../actions';
 
 describe('filter', () => {
     let mapStateToProps, mapDispatchToProps;
@@ -20,38 +18,4 @@ describe('filter', () => {
     afterAll(() => {
         jest.clearAllMocks();
     });
-
-    it('props should be mapped correctly', () => {
-        // Arrange
-        const expected = {
-            gridParams: {},
-            customerInfo: {},
-            customerSuggestions: []
-        };
-        const state = {
-            gridParams: {},
-            customerInfo: {},
-            customerSuggestions: []
-        };
-
-        // Act
-        const actual = mapStateToProps(state);
-
-        // Assert
-        expect(actual).toEqual(expected);
-    });
-
-    it('bindActionCreators should be called with correct parameter', () => {
-        // Arrange
-        const mockBindAction = jest.fn();
-        bindActionCreators.mockImplementationOnce(mockBindAction);
-        const dispatch = {};
-
-        // Act
-        mapDispatchToProps(dispatch);
-
-        // Assert
-        expect(mockBindAction).toHaveBeenCalledWith(ActionCreators, dispatch);
-    });
-
 });
