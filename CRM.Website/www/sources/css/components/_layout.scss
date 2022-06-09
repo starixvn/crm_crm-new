@@ -10,6 +10,7 @@
 
 .row-search{
     display: flex;
+    height: 35px;
     #left-container {
         background-color: #464d5d;
         margin: 0;
@@ -150,6 +151,7 @@
 #right-row-container{
     padding: 15px;
     border-left: 1px solid #b7b7b7;
+    min-height: calc(100vh - 78px);
 }
 
 .left-row-empty{

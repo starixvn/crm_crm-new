@@ -225,18 +225,20 @@ export default class AppContainer extends Component {
         }
         const hasCreateFeedbackPermission = window.currentCustomer?.hasCreateFeedbackPermission;
         return (
-            <div style={{height: '100%'}}>
-                <Header menus={menus} handleCollapseExpandLayout={this.handleCollapseExpandLayout}/>
-                <Filter
-                    isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
-                    customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
-                    showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
-                    showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
-                    handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
-                />
+            <div>
+                <div className='fix-header-menu'>
+                    <Header menus={menus} handleCollapseExpandLayout={this.handleCollapseExpandLayout}/>
+                    <Filter
+                        isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
+                        customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
+                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
+                        showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
+                        handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
+                    />
+                </div>
                 {
                     !showEmptyCustomerInfoPopup &&
-                    <div>
+                    <div className='row-content'>
                         {
                             isShowingLeftPanel ?
                             this.renderLeftRightContent(customerInfo) :
