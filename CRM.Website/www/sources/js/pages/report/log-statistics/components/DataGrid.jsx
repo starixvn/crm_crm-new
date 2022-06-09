@@ -147,8 +147,8 @@ export class DataGrid extends Component {
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
         const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
         const title = tableName === 'mbc' ?
-            `MBC Daily Customer Complaints/Enquiries From ${fromDateFormat}-${toFormat}` :
-            `Licensee Daily Customer Complaints/Enquiries From ${fromDateFormat}-${toFormat}`;
+            `MBC Daily Log Statistics | ${fromDateFormat} - ${toFormat}` :
+            `Licensee Daily Log Statistics | ${fromDateFormat} - ${toFormat}`;
         return title;
     };
 
@@ -169,7 +169,7 @@ export class DataGrid extends Component {
 
     handleViewChart = tableName =>{
         const data = tableName === 'mbc' ? this.props.mainReports.ibcReport : this.props.mainReports.licenseeReport;
-        const title = this.getTitle();
+        const title = this.getTitle(tableName);
         this.props.setChartData({show: true, title: title, data: data});
     };
 
