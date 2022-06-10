@@ -48,13 +48,13 @@ export class DataGrid extends Component {
         return headers;
     };
 
-    renderHeaderCellsCommunications = communicationColumns =>{
+    renderHeaderCellsCommunications = communicationColumns => {
         const headerCells = [];
-        communicationColumns.map(item =>{
+        communicationColumns.map(item => {
             headerCells.push(<HeaderCell colWidth={12}>{item.name}</HeaderCell>);
         });
         headerCells.push(<HeaderCell colWidth={12}>{LangHelper.getResource('Total')}</HeaderCell>);
-        return  headerCells;
+        return headerCells;
     };
 
     buildBody = (data, tableName) => {
@@ -63,7 +63,7 @@ export class DataGrid extends Component {
             rows.push(
                 data.mainCategories.map(item =>
                     this.renderMainCategoryRows(item, data.communicationColumns, tableName))
-                );
+            );
             return rows;
         }
         return [
@@ -97,13 +97,13 @@ export class DataGrid extends Component {
                 <span >{item.name}</span>
             </Cell>
         );
-        cells.push(<ChildRow isParent currentRow={item} communicationColumns={communicationColumns}/>);
+        cells.push(<ChildRow isParent currentRow={item} communicationColumns={communicationColumns} />);
         rows.push(
             <Row key={`parent-${item.id}`} className='parent-level-0' onClick={() => this.handleToggleRow(item.id, tableName)}>
                 {cells}
             </Row>
         );
-        if(item.subCategories.length > 0){
+        if (item.subCategories.length > 0) {
             rows.push(
                 item.subCategories.map(sub => this.renderSubCategoryRows(item.id, sub, communicationColumns, tableName))
             );
@@ -113,7 +113,7 @@ export class DataGrid extends Component {
 
     renderSubCategoryRows = (parentId, sub, communicationColumns, tableName) => {
         const toggle = this.getToggleRows(tableName);
-        if(!toggle.includes(parentId)){
+        if (!toggle.includes(parentId)) {
             const cells = [];
             cells.push(<Cell className='child'>{sub.name}</Cell>);
             cells.push(<ChildRow currentRow={sub} communicationColumns={communicationColumns} />);
@@ -134,7 +134,7 @@ export class DataGrid extends Component {
             listOfCommunicationSumByProduct: data.grandTotalOfCommunicationSumByProduct
         };
         cells.push(<Cell>Grand Total</Cell>);
-        cells.push(<ChildRow currentRow={grandTotal} communicationColumns={data.communicationColumns}/>);
+        cells.push(<ChildRow currentRow={grandTotal} communicationColumns={data.communicationColumns} />);
         return (
             [<Row key='footer' className='footer-container font-weight-bold'>
                 {cells}
@@ -142,8 +142,8 @@ export class DataGrid extends Component {
         );
     };
 
-    getTitle = tableName =>{
-        const {gridParams} = this.props;
+    getTitle = tableName => {
+        const { gridParams } = this.props;
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
         const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
         const title = tableName === 'mbc' ?
@@ -152,32 +152,42 @@ export class DataGrid extends Component {
         return title;
     };
 
+    getTitleDetail = tableName => {
+        const { gridParams } = this.props;
+        const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
+        const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
+        const title = tableName === 'mbc' ?
+            `MBC Daily Customer Complaints/Enquiries From ${fromDateFormat} To ${toFormat}` :
+            `Licensee Daily Customer Complaints/Enquiries From ${fromDateFormat} To ${toFormat}`;
+        return title;
+    };
+
     handleShowDetails = tableName => {
         const siteType = tableName === 'mbc' ? 0 : 1;
-        const title = this.getTitle(tableName);
-        const params = {...this.props.gridParams , siteType: siteType, pageIndex: 1, pageSize: 100};
-        this.props.setDetailsDataGrid({show: true, title: title});
+        const title = this.getTitleDetail(tableName);
+        const params = { ...this.props.gridParams, siteType: siteType, pageIndex: 1, pageSize: 100 };
+        this.props.setDetailsDataGrid({ show: true, title: title });
         this.props.setGridParamDetails(params);
         this.props.getReportDetails(params);
     };
 
     handleExportExcel = tableName => {
         const siteType = tableName === 'mbc' ? 0 : 1;
-        const params = {...this.props.gridParams, ...{siteType:siteType}};
+        const params = { ...this.props.gridParams, ...{ siteType: siteType } };
         this.props.exportExcel(params);
     };
 
-    handleViewChart = tableName =>{
+    handleViewChart = tableName => {
         const data = tableName === 'mbc' ? this.props.mainReports.ibcReport : this.props.mainReports.licenseeReport;
         const title = this.getTitle(tableName);
-        this.props.setChartData({show: true, title: title, data: data});
+        this.props.setChartData({ show: true, title: title, data: data });
     };
 
-    handleCollapseExpandLicensee = () =>{
-        const {toggleRowLicensee, isCollapseLicensee} = this.state;
-        if(!isCollapseLicensee){
+    handleCollapseExpandLicensee = () => {
+        const { toggleRowLicensee, isCollapseLicensee } = this.state;
+        if (!isCollapseLicensee) {
             this.props.mainReports.ibcReport.mainCategories.forEach(main => {
-                if(toggleRowLicensee.indexOf(main) < 0){
+                if (toggleRowLicensee.indexOf(main) < 0) {
                     toggleRowLicensee.push(main.id);
                 }
             });
@@ -185,7 +195,7 @@ export class DataGrid extends Component {
                 toggleRowLicensee,
                 isCollapseLicensee: !prevState.isCollapseLicensee
             }));
-        } else{
+        } else {
             this.setState(prevState => ({
                 toggleRowLicensee: [],
                 isCollapseLicensee: !prevState.isCollapseLicensee
@@ -193,11 +203,11 @@ export class DataGrid extends Component {
         }
     };
 
-    handleCollapseExpandDaily = () =>{
-        const {toggleRowDaily, isCollapseDaily} = this.state;
-        if(!isCollapseDaily){
+    handleCollapseExpandDaily = () => {
+        const { toggleRowDaily, isCollapseDaily } = this.state;
+        if (!isCollapseDaily) {
             this.props.mainReports.ibcReport.mainCategories.forEach(main => {
-                if(toggleRowDaily.indexOf(main) < 0){
+                if (toggleRowDaily.indexOf(main) < 0) {
                     toggleRowDaily.push(main.id);
                 }
             });
@@ -205,7 +215,7 @@ export class DataGrid extends Component {
                 toggleRowDaily,
                 isCollapseDaily: !prevState.isCollapseDaily
             }));
-        }else{
+        } else {
             this.setState(prevState => ({
                 toggleRowDaily: [],
                 isCollapseDaily: !prevState.isCollapseDaily
@@ -244,7 +254,7 @@ export class DataGrid extends Component {
         );
     };
 
-    renderCustomButtonDailyLog= () => {
+    renderCustomButtonDailyLog = () => {
         return (
             <div>
                 <OverlayTrigger
@@ -283,7 +293,7 @@ export class DataGrid extends Component {
         );
     };
 
-    renderTitle = (gridData, fromDateFormat, toFormat) =>{
+    renderTitle = (gridData, fromDateFormat, toFormat) => {
         return (
             <div className='table-title d-flex justify-content-between align-items-center'>
                 <span>{`MBC Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
@@ -294,7 +304,7 @@ export class DataGrid extends Component {
         );
     };
 
-    renderTitleLicensee = (licenseeReport, fromDateFormat, toFormat) =>{
+    renderTitleLicensee = (licenseeReport, fromDateFormat, toFormat) => {
         return (
             <div className='table-title d-flex justify-content-between align-items-center'>
                 <span>{`Licensee Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
@@ -306,7 +316,7 @@ export class DataGrid extends Component {
     };
 
     renderDailyLogStatistic = (fromDateFormat, toFormat) => {
-        const {ibcReport} = this.props.mainReports;
+        const { ibcReport } = this.props.mainReports;
         const defaultWidth = 400;
         const totalWidth = defaultWidth + ibcReport.communicationColumns.length * 115;
         const maxWidth = this.getMaxWidth(totalWidth);
@@ -333,7 +343,7 @@ export class DataGrid extends Component {
     getMaxWidth = totalWidth => document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
 
     renderLicenseeDailyStatistic = (fromDateFormat, toFormat) => {
-        const {licenseeReport} = this.props.mainReports;
+        const { licenseeReport } = this.props.mainReports;
         const defaultWidth = 400;
         const totalWidth = defaultWidth + licenseeReport.communicationColumns.length * 115;
         const maxWidth = this.getMaxWidth(totalWidth);
@@ -360,8 +370,8 @@ export class DataGrid extends Component {
     };
 
     render() {
-        const {mainReports, gridParams} = this.props;
-        if(mainReports === null){
+        const { mainReports, gridParams } = this.props;
+        if (mainReports === null) {
             return null;
         }
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);

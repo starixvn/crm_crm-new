@@ -394,16 +394,16 @@
     <value>{0} {1} To {2}</value>
   </data>
   <data name="LicenseeDailyLogStatisticsDetail" xml:space="preserve">
-    <value>Licensee Daily Customer Complaints/Enquiries</value>
+    <value>Licensee Daily Customer Complaints/Enquiries From</value>
   </data>
   <data name="LogStatisticsDetail_FileName" xml:space="preserve">
-    <value>Licensee_Daily_Customer_Complaints_Enquiries</value>
+    <value>Licensee_Daily_Customer_Complaints_Enquiries_From</value>
   </data>
   <data name="MBCDailyLogStatisticsDetail" xml:space="preserve">
-    <value>MBC Daily Customer Complaints/Enquiries</value>
+    <value>MBC Daily Customer Complaints/Enquiries From</value>
   </data>
   <data name="MBCDailyLogStatisticsDetail_FileName" xml:space="preserve">
-    <value>MBC_Daily_Customer_Complaints_Enquiries</value>
+    <value>MBC_Daily_Customer_Complaints_Enquiries_From</value>
   </data>
   <data name="ChangesLog" xml:space="preserve">
     <value>Changes Log</value>
@@ -575,5 +575,11 @@
   </data>
   <data name="IssueStatistics_ExcelFile" xml:space="preserve">
     <value>{0}_Issue_Statistic_Report_From_{1}_To_{2}</value>
+  </data>
+  <data name="Telegram" xml:space="preserve">
+    <value>Telegram</value>
+  </data>
+  <data name="Zalo" xml:space="preserve">
+    <value>Zalo</value>
   </data>
 </root>

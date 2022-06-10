@@ -56,11 +56,11 @@ namespace CRM.Controllers.Report.Statistics
         public async Task<IActionResult> ExportExcel([FromBody] GetIssuesStatisticReportCriteria criteria)
         {
             var typeName = criteria.ReportType == 1 ? ViewResources.Daily : ViewResources.Monthly;
+            var titleExcel = string.Format(ViewResources.IssueStatistics_ExcelTitle, typeName,
+                                criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
             var fileName = string.Format(ViewResources.IssueStatistics_ExcelFile, typeName,
                                             criteria.FromDate.ToShortDateFormatDash(), criteria.ToDate.ToShortDateFormatDash());
-            var titleExcel = string.Format(ViewResources.IssueStatistics_ExcelTitle, typeName,
-                                            criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             var bytes = excelService.ExportIssueStatisticsReport(data, titleExcel);
             return File(bytes, MimeType.XLSX, $"{fileName}.xlsx");
         }
