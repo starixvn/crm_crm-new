@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataGrid } from '../DataGrid';
+import  DataGrid  from '../DataGrid';
 import { shallow, mount } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
@@ -116,7 +116,10 @@ describe('DataGridCustomerInfo', () => {
                         uplineInfo: [],
                         role: { name: 'test' }
                     },
-                    getSettings: jest.fn()
+                    getSettings: jest.fn(),
+                    settings: {
+                        languages: []
+                    }
                 };
                 const formikProps = {
                     values: {
@@ -148,8 +151,10 @@ describe('DataGridCustomerInfo', () => {
                         uplineInfo: [],
                         role: { name: 'test' }
                     },
-
-                    getSettings: jest.fn()
+                    getSettings: jest.fn(),
+                    settings: {
+                        languages: []
+                    }
                 };
                 const formikProps = {
                     values: {
@@ -195,7 +200,10 @@ describe('DataGridCustomerInfo', () => {
             };
 
             const props = {
-                getSettings: jest.fn()
+                getSettings: jest.fn(),
+                settings: {
+                    languages: []
+                }
             };
 
             const container = shallow(<DataGrid {...props} />);
@@ -219,7 +227,10 @@ describe('DataGridCustomerInfo', () => {
                         uplineInfo: [],
                         role: { name: 'test' }
                     },
-                    getSettings: jest.fn()
+                    getSettings: jest.fn(),
+                    settings: {
+                        languages: []
+                    }
                 };
                 const values = {
                     languageId: null
@@ -282,7 +293,10 @@ describe('DataGridCustomerInfo', () => {
                         otherSportsDangerLevel: 0,
                         site: ''
                     },
-                    getSettings: jest.fn()
+                    getSettings: jest.fn(),
+                    settings: {
+                        languages: []
+                    }
                 };
                 const customerInfo = props.customerInfo;
                 const values = {
@@ -361,7 +375,10 @@ describe('DataGridCustomerInfo', () => {
                 };
 
                 const props = {
-                    getSettings: jest.fn()
+                    getSettings: jest.fn(),
+                    settings: {
+                        languages: []
+                    }
                 };
 
                 const container = shallow(<DataGrid {...props} />);
@@ -378,11 +395,15 @@ describe('DataGridCustomerInfo', () => {
             it('should call setState', () => {
                 //Arrange
                 const expected = {
+                    isShowDetail: true,
                     languages: [],
                     siteId: 1
                 };
                 const props = {
-                    getSettings: jest.fn()
+                    getSettings: jest.fn(),
+                    settings: {
+                        languages: []
+                    }
                 };
                 const container = shallow(<DataGrid {...props} />);
 
@@ -495,7 +516,7 @@ describe('DataGridCustomerInfo', () => {
                 jest.runAllTimers();
 
                 // Assert
-                expect(formikBag.setSubmitting.mock.calls.length).toBe(2);
+                expect(formikBag.setSubmitting.mock.calls.length).toBe(1);
                 expect(formikBag.setSubmitting.mock.calls[0][0]).toBe(true);
                 expect(props.editCustomerInfo).toHaveBeenCalledWith(params);
                 expect(props.setEditCustomerInfoPopup).toHaveBeenCalled();
@@ -516,7 +537,10 @@ describe('DataGridCustomerInfo', () => {
                     },
                     setEditCustomerInfoPopup: jest.fn(),
                     editCustomerInfo: jest.fn(() => promise),
-                    getSettings: jest.fn()
+                    getSettings: jest.fn(),                    
+                    settings: {
+                        languages: []
+                    }
                 };
                 const values = {
                     siteId: '',
@@ -531,7 +555,7 @@ describe('DataGridCustomerInfo', () => {
                 jest.runAllTimers();
 
                 // Assert
-                expect(secondParam.setSubmitting).toHaveBeenCalledTimes(2);
+                expect(secondParam.setSubmitting).toHaveBeenCalledTimes(1);
                 expect(props.editCustomerInfo).toHaveBeenCalledTimes(1);
                 expect(secondParam.setSubmitting.mock.calls[0][0]).toBe(true);
                 expect(secondParam.setSubmitting.mock.calls[1][0]).toBe(false);
@@ -544,9 +568,13 @@ describe('DataGridCustomerInfo', () => {
                     setGridParams: jest.fn(),
                     getCustomerInfo: jest.fn(),
                     getSettings: jest.fn(),
+                    setUserName: jest.fn(),
                     gridParams: {
                         username: 'test',
                         isGuest: false
+                    },
+                    settings: {
+                        languages: []
                     }
                 };
                 const username = "test1";

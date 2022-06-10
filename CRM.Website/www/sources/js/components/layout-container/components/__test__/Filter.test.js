@@ -1,5 +1,5 @@
 import React from 'react';
-import { Filter } from '../Filter';
+import Filter from '../Filter';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import configureMockStore from 'redux-mock-store';
@@ -387,6 +387,7 @@ describe('filter', () => {
                     setCustomerSuggestions: jest.fn()
                 };
                 const container = shallow(<Filter {...props} />);
+                container.instance().debounceUserNameInputChange = jest.fn();
 
                 //Act
                 container.instance().debounceUserNameInputChange(searchText);

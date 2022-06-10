@@ -67,7 +67,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.exportExcel(expectedParams));
 
             // Assert
-            expect(DataService.getFileAsync).toHaveBeenCalledWith('DeletedFeedbackStatistic/ExportExcel', expectedParams);
+            expect(DataService.getFileAsync).toHaveBeenCalledWith('DeletedFeedbackStatistics/ExportExcel', expectedParams);
             expect(Site.downloadFile).toHaveBeenCalledWith(response.data, filename);
         });
     });

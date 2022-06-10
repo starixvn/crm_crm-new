@@ -5,15 +5,15 @@ import { shallow } from 'enzyme';
 
 describe('DataGrid', () => {
     beforeEach(() => {
-        const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'app-container');
-        document.body.appendChild(appContainer);
+        const rightRowContainer = document.createElement('div');
+        rightRowContainer.setAttribute('id', 'right-row-container');
+        document.body.appendChild(rightRowContainer);
     });
 
     afterEach(() => {
-        const appContainer = document.getElementById('app-container');
-        if (appContainer) {
-            document.body.removeChild(appContainer);
+        const rightRowContainer = document.getElementById('right-row-container');
+        if (rightRowContainer) {
+            document.body.removeChild(rightRowContainer);
         }
     });
 

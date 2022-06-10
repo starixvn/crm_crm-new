@@ -36,9 +36,7 @@ describe('EditCustomerInfoVerify', () => {
                 { isChecked: true, name: 'Email', value: '___' },
                 { isChecked: false, name: 'Passport Number', value: '---' },
                 { isChecked: false, name: 'BirthDay', value: 'Sep 09, 2021' },
-                { isChecked: false, name: 'Secret Code', value: '---' },
-                { isChecked: false, name: 'Bet Credit', value: '0.00' },
-                { isChecked: false, name: 'Given Credit', value: '0.00' }
+                { isChecked: false, name: 'Secret Code', value: '---' }
             ];
             const container = shallow(<EditCustomerInfoVerify {...props} />).instance();
 

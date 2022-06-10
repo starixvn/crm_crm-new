@@ -54,7 +54,7 @@ describe('CustomerInfoVerify', () => {
 
             // Asset
             expect(container.state.numberVerified).toBe(2);
-            expect(container.state.energy).toBe(33);
+            expect(container.state.energy).toBe(50);
         });
     });
 

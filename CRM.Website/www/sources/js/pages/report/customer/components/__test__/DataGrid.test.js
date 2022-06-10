@@ -151,7 +151,7 @@ describe('DataGrid', () => {
             const form = shallow(container.instance().render());
 
             // Assert
-            expect(form.find(ExcelIcon).length).toBe(1);
+            expect(form.find('ExcelIcon').length).toBe(1);
         });
     });
 });
