@@ -23,39 +23,7 @@ describe('AppContainer', () => {
         container.instance().render();
         //Assert
         expect(container).toMatchSnapshot();
-        expect(container.find(Filter).length).toBe(1);
-        expect(container.find(DataGrid).length).toBe(1);
-    });
-
-    describe('edit customer info', () => {
-        it('should render correctly', () => {
-            //Arrange
-            const props = {
-                editCustomerInfoPopup: { show: true }
-            };
-
-            //Act
-            const container = shallow(<AppContainer {...props} />);
-
-            //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(SweetModalDialog).length).toBe(1);
-            expect(container.find(SweetModalDialog).props().contents)
-                .toStrictEqual(<div>{LangHelper.getResource('EditCustomerInfoSuccessfully')}</div>);
-        });
-
-        it('should call exactly functions when close popup', () => {
-            //Arrange
-            const props = {
-                setEditCustomerInfoPopup: jest.fn()
-            };
-            const container = shallow(<AppContainer {...props} />).instance();
-
-            //Act
-            container.handleCloseEditCustomerInfoPopup();
-
-            //Assert
-            expect(props.setEditCustomerInfoPopup).toHaveBeenCalledWith( { show: false });
-        });
+        expect(container.find(Filter).length).toBe(0);
+        expect(container.find(DataGrid).length).toBe(0);
     });
 });

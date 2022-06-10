@@ -28,10 +28,7 @@ describe('filter', () => {
     it('component has correct initialState', () => {
         //Arrang
         const initialState = {
-            username: '',
-            isGuest: false,
-            showEmptyConfirmPopup: false,
-            showEmptyCustomerInfoPopup: false
+            breadcrumb: []
         };
         const props = {
             gridParams: {},
@@ -362,7 +359,8 @@ describe('filter', () => {
                 const searchText = 'length > 2';
                 const props = {
                     getCustomerSuggestions: jest.fn(),
-                    setCustomerSuggestions: jest.fn()
+                    setCustomerSuggestions: jest.fn(),
+                    debounceUserNameInputChange: jest.fn()
                 };
                 const params = {
                     username: 'test',
