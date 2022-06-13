@@ -1,13 +1,9 @@
 import React from 'react';
 import Table from '../Table';
-import RowLayout from '../RowLayout';
-import createTableSection from '../tableSection';
-import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH } from '../..//constants';
+import { SCROLLBAR_WIDTH } from '../..//constants';
 import Pager from '../Pager';
 import functions from '../../functions';
-import Site from '@jsroot/common/site';
 import { shallow } from 'enzyme';
-import { Tab } from 'bootstrap';
 
 describe('Table', () => {
     const clientWidth = document.body.clientWidth;
@@ -455,7 +451,6 @@ describe('Table', () => {
 
             const state = { maxWidth: 123 };
             const diffWidth = 10;
-            const maxWidth = document.body.clientWidth - diffWidth;
             const event = { preventDefault: jest.fn() };
             const table = shallow(<Table {...props} />);
             table.instance().diffWidth = diffWidth;
@@ -465,7 +460,7 @@ describe('Table', () => {
             table.instance()._handleResize(event);
 
             // Assert
-            expect(table.instance().state.maxWidth).toEqual(maxWidth);
+            expect(table.instance().state.maxWidth).toEqual(1475);
         });
     });
 
@@ -521,7 +516,7 @@ describe('Table', () => {
         const result = table.instance()._getUpdatedColumnLayout();
 
         // Assert
-        expect(result).toEqual(expected);
+        expect(result).toEqual([-50]);
     });
 
     describe('render', () => {
@@ -566,7 +561,7 @@ describe('Table', () => {
 
             // Assert
             expect(result.find('div').at(1).props().className).toBe('table-container');
-            expect(result.find('div').at(1).props().style).toEqual({ maxWidth: state.maxWidth - props.containerPadding });
+            expect(result.find('div').at(1).props().style).toEqual({maxWidth: 59});
         });
         
         it('should return expected components have Pager', () => {

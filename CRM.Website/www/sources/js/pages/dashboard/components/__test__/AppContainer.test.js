@@ -11,6 +11,7 @@ import EditNoOfInquiry from '../../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from '../../../communication-log/components/EditCommunicationLog';
 import CreateCommunicationLog from '../../../communication-log/components/CreateCommunicationLog';
 
+window.currentCustomer = {custId: 1};
 describe('AppContainer', () => {
     afterAll(() => {
         jest.clearAllMocks();

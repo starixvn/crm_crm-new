@@ -9,17 +9,17 @@ describe('AppContainer', () => {
     });
 
     describe('render', () => {
+        window.currentCustomer = {custId: 1};
         it('has regular components', () => {
             // Arrange
             const props = { 
                 settings: [{settingType: 'Category',settingId: 0, subSettingId : 0}],
-                balanceUpday: new Date(),
-                customerDetail: {id: 1, custName: 'customer'}
+                balanceUpdate: new Date(),
+                currentCustomer: {custId: 1, custName: 'customer'}
             };
 
-            // Act
-           const container = shallow(<AppContainer {...props} />);
-
+            // Act            
+            const container = shallow(<AppContainer {...props} />);
             // Assert
             expect(container.find(CreateForm).length).toBe(1);
         });

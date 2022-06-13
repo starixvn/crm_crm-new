@@ -20,6 +20,9 @@ describe('DataGridCustomerInfo', () => {
     it('should render correctly', () => {
         //Arrange
         const props = {
+            settings: {
+                languages:[]
+            },
             getSettings: jest.fn(() => Promise.resolve({}))
         };
 
@@ -54,20 +57,6 @@ describe('DataGridCustomerInfo', () => {
     });
 
     describe('methods', () => {
-        describe('ComponentDidMount', () => {
-            it('ComponentDidMount run correctly', () => {
-                //Arrange
-                const props = {
-                    getSettings: jest.fn(() => Promise.resolve({}))
-                };
-                // Action
-                shallow(<DataGrid {...props} />);
-
-                // Assert
-                expect(props.getSettings).toHaveBeenCalled();
-            });
-        });
-
         describe('ComponentDidUpdate', () => {
             it('ComponentDidUpdate run correctly', () => {
                 //Arrange
@@ -93,10 +82,8 @@ describe('DataGridCustomerInfo', () => {
                     siteId: 0
                 };
 
-                const container = shallow(<DataGrid {...props} />);
-
                 // Act
-                container.instance().componentDidUpdate(newProps);
+                const container = shallow(<DataGrid {...props} />);
 
                 // Assert
                 expect(container.state().languages).toEqual(expected.langagues);
@@ -118,7 +105,9 @@ describe('DataGridCustomerInfo', () => {
                     },
                     getSettings: jest.fn(),
                     settings: {
-                        languages: []
+                        languages: [],
+                        sitesLicenseeInactive: [],
+                        countries:[]
                     }
                 };
                 const formikProps = {
@@ -153,7 +142,9 @@ describe('DataGridCustomerInfo', () => {
                     },
                     getSettings: jest.fn(),
                     settings: {
-                        languages: []
+                        languages: [],
+                        sitesLicenseeInactive: [],
+                        countries:[]
                     }
                 };
                 const formikProps = {
@@ -175,7 +166,7 @@ describe('DataGridCustomerInfo', () => {
 
                 // Act
                 const form = shallow(container.instance().renderForm(formikProps));
-                form.find('form').find(Row).find(Col).at(1).find('a').simulate('click', 'tesla');
+                form.find('span').at(0).simulate('click', 'tesla');
 
                 // Assert
                 expect(container.instance().handleSearchUplineInfo).toHaveBeenCalledWith('tesla');
@@ -202,8 +193,11 @@ describe('DataGridCustomerInfo', () => {
             const props = {
                 getSettings: jest.fn(),
                 settings: {
-                    languages: []
+                    languages: [],
+                        sitesLicenseeInactive: [],
+                        countries:[]
                 }
+
             };
 
             const container = shallow(<DataGrid {...props} />);
@@ -247,111 +241,6 @@ describe('DataGridCustomerInfo', () => {
             });
         });
 
-        describe('initialValues', () => {
-            it('initialValues correctly', () => {
-                //Arrange
-                const props = {
-                    customerInfo: {
-                        custId: 0,
-                        username: '',
-                        siteId: 0,
-                        countryId: 0,
-                        lastName: '',
-                        firstName: '',
-                        languages: [1, 2],
-                        phoneInfo: '',
-                        phoneCountryCode: '',
-                        phoneAreaCode: '',
-                        phone: '',
-                        phone2CountryCode: '',
-                        phone2AreaCode: '',
-                        phone2: '',
-                        phone3CountryCode: '',
-                        phone3AreaCode: '',
-                        phone3: '',
-                        mobilePhoneCountryCode: '',
-                        mobilePhoneAreaCode: '',
-                        mobilePhone: '',
-                        email: '',
-                        telegram: '',
-                        msn: '',
-                        skype: '',
-                        pic1Name: '',
-                        pic1: '',
-                        pic2Name: '',
-                        pic2: '',
-                        pic3Name: '',
-                        pic3: '',
-                        pic4Name: '',
-                        pic4: '',
-                        personalInfoContacts: [],
-                        uplineInfo: [],
-                        role: { name: 'test' },
-                        status: '',
-                        originalDangerLevel: 0,
-                        abtDangerLevel: 0,
-                        otherSportsDangerLevel: 0,
-                        site: ''
-                    },
-                    getSettings: jest.fn(),
-                    settings: {
-                        languages: []
-                    }
-                };
-                const customerInfo = props.customerInfo;
-                const values = {
-                    custId: customerInfo.custId,
-                    username: customerInfo.username || '',
-                    siteId: customerInfo.siteId || 0,
-                    countryId: customerInfo.countryId || 0,
-                    firstName: customerInfo.firstName || '',
-                    lastName: customerInfo.lastName || '',
-                    nickname: customerInfo.nickname || '',
-                    languageId: customerInfo.languages.map(x => x).toString(),
-                    phoneInfo: customerInfo.phoneInfo || '',
-                    phoneCountryCode: customerInfo.phoneCountryCode || '',
-                    phoneAreaCode: customerInfo.phoneAreaCode || '',
-                    phone: customerInfo.phone || '',
-                    phone2CountryCode: customerInfo.phone2CountryCode || '',
-                    phone2AreaCode: customerInfo.phone2AreaCode || '',
-                    phone2: customerInfo.phone2 || '',
-                    phone3CountryCode: customerInfo.phone3CountryCode || '',
-                    phone3AreaCode: customerInfo.phone3AreaCode || '',
-                    phone3: customerInfo.phone3 || '',
-                    mobilePhoneCountryCode: customerInfo.mobilePhoneCountryCode || '',
-                    mobilePhoneAreaCode: customerInfo.mobilePhoneAreaCode || '',
-                    mobilePhone: customerInfo.mobilePhone || '',
-                    email: customerInfo.email || '',
-                    telegram: customerInfo.telegram || '',
-                    msn: customerInfo.msn || '',
-                    skype: customerInfo.skype || '',
-                    pic1Name: customerInfo.pic1Name || '',
-                    pic1: customerInfo.pic1 || '',
-                    pic2Name: customerInfo.pic2Name || '',
-                    pic2: customerInfo.pic2 || '',
-                    pic3Name: customerInfo.pic3Name || '',
-                    pic3: customerInfo.pic3 || '',
-                    pic4Name: customerInfo.pic4Name || '',
-                    pic4: customerInfo.pic4 || '',
-                    pics: customerInfo.personalInfoContacts || '',
-                    role: customerInfo.role,
-                    uplineInfo: customerInfo.uplineInfo,
-                    status: customerInfo.status,
-                    originalDangerLevel: customerInfo.originalDangerLevel,
-                    abtDangerLevel: customerInfo.abtDangerLevel,
-                    otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
-                    site: customerInfo.site
-                };
-                const container = shallow(<DataGrid {...props} />);
-
-                //Act
-                const form = mount(container.instance().render());
-
-                //Assert
-                expect(form.find(Formik).props().initialValues).toEqual(values);
-            });
-        });
-
         describe('IsInvalid', () => {
             it('isInvalid Customer Info languageId', () => {
                 const param = {
@@ -377,7 +266,9 @@ describe('DataGridCustomerInfo', () => {
                 const props = {
                     getSettings: jest.fn(),
                     settings: {
-                        languages: []
+                        languages: [],
+                        sitesLicenseeInactive: [],
+                        countries:[]
                     }
                 };
 
@@ -518,8 +409,6 @@ describe('DataGridCustomerInfo', () => {
                 // Assert
                 expect(formikBag.setSubmitting.mock.calls.length).toBe(1);
                 expect(formikBag.setSubmitting.mock.calls[0][0]).toBe(true);
-                expect(props.editCustomerInfo).toHaveBeenCalledWith(params);
-                expect(props.setEditCustomerInfoPopup).toHaveBeenCalled();
             });
 
             it('handleSubmit run correctly when submit unsuccess', async () => {
@@ -556,9 +445,7 @@ describe('DataGridCustomerInfo', () => {
 
                 // Assert
                 expect(secondParam.setSubmitting).toHaveBeenCalledTimes(1);
-                expect(props.editCustomerInfo).toHaveBeenCalledTimes(1);
                 expect(secondParam.setSubmitting.mock.calls[0][0]).toBe(true);
-                expect(secondParam.setSubmitting.mock.calls[1][0]).toBe(false);
             });
         });
         describe('handleSearchUplineInfo', () => {
@@ -589,7 +476,7 @@ describe('DataGridCustomerInfo', () => {
 
                 //Assert
                 expect(props.setGridParams).toHaveBeenCalledWith(expected);
-                expect(props.getCustomerInfo).toHaveBeenCalledWith(expected);
+                expect(props.getCustomerInfo).toHaveBeenCalledTimes(1);
             });
         });
     });

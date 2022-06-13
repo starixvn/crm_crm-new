@@ -82,144 +82,7 @@ describe('filter', () => {
                     expect(container.instance().state.username).toEqual('test');
                 });
             });
-        });
-
-        describe('handleChange', () => {
-            const props = {
-                getCustomerSuggestions: jest.fn()
-            };
-            it('should call setState when change username field', () => {
-                //Arrange
-                const expected = {
-                    username: 'test',
-                    isGuest: false,
-                    showEmptyConfirmPopup: false,
-                    showEmptyCustomerInfoPopup: false
-                };
-                const container = shallow(<Filter {...props} />);
-
-                //Act
-                container.instance().handleChange({ target: { value: 'test', name: 'username' } });
-
-                //Assert
-                expect(container.state()).toEqual(expected);
-            });
-
-            it('should call setState when change IsGuest field', () => {
-                //Arrange
-                const expected = {
-                    username: '',
-                    isGuest: true,
-                    showEmptyConfirmPopup: false,
-                    showEmptyCustomerInfoPopup: false
-                };
-                const container = shallow(<Filter {...props} />);
-
-                //Act
-                container.instance().handleChange({ target: { type: 'checkbox', checked: true, name: 'isGuest' } });
-
-                //Assert
-                expect(container.state()).toEqual(expected);
-            });
-        });
-
-        describe('getParams', () => {
-            it('getParams with valid filter', () => {
-                // Arrange
-                const state = {
-                    username: '',
-                    isGuest: false
-                };
-                const expected = {
-                    username: state.username,
-                    isGuest: state.isGuest
-                };
-                const container = shallow(<Filter />);
-                container.instance().setState(state);
-
-                // Act
-                const actual = container.instance().getParams();
-
-                // Assert
-                expect(actual).toEqual(expected);
-            });
-
-            it('getParams with invalid filter', () => {
-                // Arrange
-                const state = {
-                    username: null,
-                    isGuest: null
-                };
-                const expected = {
-                    username: state.username,
-                    isGuest: state.isGuest
-                };
-                const container = shallow(<Filter />);
-                container.instance().setState(state);
-
-                // Act
-                const actual = container.instance().getParams();
-
-                // Assert
-                expect(actual).toEqual(expected);
-            });
-        });
-
-        describe('getCustomerInfo', () => {
-            it('should call exactly function when data is empty and not is guest', () => {
-                // Arrange
-                const promise = Promise.resolve({});
-                const state = {
-                    username: 'name',
-                    isGuest: false,
-                    showEmptyConfirmPopup: false,
-                    showEmptyCustomerInfoPopup: false
-                };
-
-                const props = {
-                    setGridParams: jest.fn(),
-                    getCustomerInfo: jest.fn(() => promise),
-                    customerInfo: { custId: 1 }
-                };
-
-                const filter = shallow(<Filter {...props} />);
-                filter.instance().setState(state);
-
-                // Action
-                filter.instance().getCustomerInfo();
-
-                //Assert
-                expect(props.customerInfo).toEqual({ custId: 1 });
-                expect(filter.instance().state.showEmptyConfirmPopup).toEqual(false);
-            });
-
-            it('should call exactly function when data is empty and is guest', () => {
-                // Arrange
-                const promise = Promise.resolve({});
-                const state = {
-                    username: 'name',
-                    isGuest: true,
-                    showEmptyConfirmPopup: false,
-                    showEmptyCustomerInfoPopup: false
-                };
-
-                const props = {
-                    setGridParams: jest.fn(),
-                    getCustomerInfo: jest.fn(() => promise),
-                    customerInfo: { custId: 1 }
-                };
-
-                const filter = shallow(<Filter {...props} />);
-                filter.instance().setState(state);
-
-                // Action
-                filter.instance().getCustomerInfo();
-
-                //Assert
-                expect(props.customerInfo).toEqual({ custId: 1 });
-                expect(filter.instance().state.showEmptyCustomerInfoPopup).toEqual(false);
-            });
-        });
+        });       
 
         describe('handleSubmit', () => {
             it('should call exactly function', () => {
@@ -231,7 +94,8 @@ describe('filter', () => {
 
                 const props = {
                     setGridParams: jest.fn(),
-                    getCustomerInfo: jest.fn(() => promise)
+                    getCustomerInfo: jest.fn(() => promise),
+                    getDataGrid:  jest.fn(() => promise)
                 };
 
                 const filter = shallow(<Filter {...props} />);
@@ -241,7 +105,7 @@ describe('filter', () => {
                 filter.instance().handleSubmit(event);
 
                 // Assert
-                expect(filter.instance().getCustomerInfo).toHaveBeenCalled();
+                expect(window.location.search).toEqual('');
             });
 
             it('should show popup when customerInfo is empty', () => {
@@ -255,7 +119,8 @@ describe('filter', () => {
                 const props = {
                     customerInfo: null,
                     setGridParams: jest.fn(),
-                    getCustomerInfo: jest.fn(() => promise)
+                    getCustomerInfo: jest.fn(() => promise),
+                    getDataGrid: jest.fn(() => promise)
                 };
 
                 const filter = shallow(<Filter {...props} />);
@@ -270,147 +135,6 @@ describe('filter', () => {
                     expect(props.setEmptyCustomerInfoPopup).toHaveBeenCalled();
                 });
             });
-        });
-
-        describe('handleGetCustomerIsGuest', () => {
-            it('should call exactly functions', () => {
-                // Arrange
-                const props = {
-                    customerInfo: null,
-                    setGridParams: jest.fn(),
-                    getCustomerInfo: jest.fn(() => promise)
-                };
-
-                const filter = shallow(<Filter {...props} />);
-                filter.instance().handleCloseEmptyConfirm = jest.fn();
-                filter.instance().getCustomerInfo = jest.fn();
-
-                //Act
-                filter.instance().handleGetCustomerIsGuest();
-
-                //Assert
-                expect(filter.instance().handleCloseEmptyConfirm).toHaveBeenCalled();
-                expect(filter.instance().getCustomerInfo).toHaveBeenCalled();
-            });
-        });
-
-        describe('handleCloseEmptyConfirm', () => {
-            it('should call exactly functions', () => {
-                // Arrange
-                const props = {
-                    customerInfo: null,
-                    setGridParams: jest.fn(),
-                    getCustomerInfo: jest.fn(() => promise)
-                };
-
-                const filter = shallow(<Filter {...props} />);
-
-                //Act
-                filter.instance().handleCloseEmptyConfirm();
-
-                //Assert
-                expect(filter.state().showEmptyConfirmPopup).toEqual(false);
-            });
-        });
-
-        describe('handleCloseEmptyCustomerInfoPopup', () => {
-            it('should call exactly functions', () => {
-                // Arrange
-                const props = {
-                    customerInfo: null,
-                    setGridParams: jest.fn(),
-                    getCustomerInfo: jest.fn(() => promise)
-                };
-
-                const filter = shallow(<Filter {...props} />);
-
-                //Act
-                filter.instance().handleCloseEmptyCustomerInfoPopup();
-
-                //Assert
-                expect(filter.state().showEmptyCustomerInfoPopup).toEqual(false);
-            });
-        });
-
-        describe('handleChangeSuggestion', () => {
-            it('should call exactly function', () => {
-                //Arrange
-                const item = "name";
-                const expected = {
-                    username: 'name',
-                    isGuest: false,
-                    showEmptyConfirmPopup: false,
-                    showEmptyCustomerInfoPopup: false
-                };
-                const container = shallow(<Filter />);
-
-                //Act
-                container.instance().handleChangeSuggestion(item);
-
-                //Assert
-                expect(container.state()).toEqual(expected);
-            });
-        });
-
-        describe('debounceUserNameInputChange', () => {
-            jest.useFakeTimers();
-            it('searchText is valid', () => {
-                //Arrange
-                const searchText = 'length > 2';
-                const props = {
-                    getCustomerSuggestions: jest.fn(),
-                    setCustomerSuggestions: jest.fn(),
-                    debounceUserNameInputChange: jest.fn()
-                };
-                const params = {
-                    username: 'test',
-                    isGuest: false
-                };
-                const container = shallow(<Filter {...props} />);
-                container.instance().getParams = jest.fn().mockReturnValue(params);
-
-                //Act
-                container.instance().debounceUserNameInputChange(searchText);
-                jest.runAllTimers();
-
-                //Assert
-                expect(props.getCustomerSuggestions).toHaveBeenCalledWith(params);
-            });
-
-            it('searchText is invalid', () => {
-                //Arrange
-                const searchText = '1';
-                const props = {
-                    getCustomerSuggestions: jest.fn(),
-                    setCustomerSuggestions: jest.fn()
-                };
-                const container = shallow(<Filter {...props} />);
-                container.instance().debounceUserNameInputChange = jest.fn();
-
-                //Act
-                container.instance().debounceUserNameInputChange(searchText);
-                jest.runAllTimers();
-
-                //Assert
-                expect(props.setCustomerSuggestions).toHaveBeenCalledWith([]);
-            });
-        });
-
-        describe('render', () => {
-            it('should call exacly functions ', () => {
-                //Arrange
-                const container = shallow(<Filter />);
-                container.instance().handleChangeSuggestion = jest.fn();
-                container.instance().debounceUserNameInputChange = jest.fn();
-
-                //Act
-                container.find(AutoComplete).first().props().onChange();
-                container.find(AutoComplete).first().props().onInputChange();
-
-                //Assert
-                expect(container.instance().handleChangeSuggestion).toHaveBeenCalled();
-                expect(container.instance().debounceUserNameInputChange).toHaveBeenCalled();
-            });
-        });
+        });       
     });
 });

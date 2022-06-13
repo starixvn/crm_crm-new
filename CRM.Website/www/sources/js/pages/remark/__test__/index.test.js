@@ -21,6 +21,7 @@ describe('index', () => {
 
     it('renders dom correctly', () => {
         // Action
+        window.currentCustomer = {custId: 1};        
         require('../index');
 
         // Assert
