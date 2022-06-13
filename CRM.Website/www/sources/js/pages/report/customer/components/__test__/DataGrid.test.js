@@ -1,7 +1,7 @@
 import React from 'react';
 import { DataGrid } from '../DataGrid';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import ExcelIcon from '@jsroot/components/ExcelIcon';
 
 describe('DataGrid', () => {
@@ -148,7 +148,7 @@ describe('DataGrid', () => {
 
             // Act
             const container = shallow(<DataGrid {...props} />);
-            const form = shallow(container.instance().render());
+            const form = mount(container.instance().render());
 
             // Assert
             expect(form.find('ExcelIcon').length).toBe(1);
