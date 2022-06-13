@@ -33,7 +33,7 @@
                     JoinCommunication(ViewResources.WeChat, customerInfo.WeChat),
                     JoinCommunication(ViewResources.WhatsApp, customerInfo.WhatsApp),
                     JoinCommunication(ViewResources.Line, customerInfo.Line),
-                    JoinCommunication(ViewResources.Yahoo, customerInfo.Yahoo),
+                    JoinCommunication(ViewResources.Letstalk, customerInfo.Yahoo),
                     JoinCommunication(ViewResources.QQ, customerInfo.QQ),
                     JoinCommunication(ViewResources.Zalo, customerInfo.BBM));
         }

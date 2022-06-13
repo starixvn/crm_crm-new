@@ -664,6 +664,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Letstalk.
+        /// </summary>
+        public static string Letstalk {
+            get {
+                return ResourceManager.GetString("Letstalk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} does not exist in Letstalk application..
         /// </summary>
         public static string LetstalkInvalidMessage {
