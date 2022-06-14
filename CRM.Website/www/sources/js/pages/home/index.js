@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
-import Layout from '@jsroot/components/layout-container/index';
+import LoadableApp from "./LoadableApp";
 ReactDOM.render(
-    <Layout />,
+    <StrictMode>
+        <LoadableApp />
+    </StrictMode>,
 document.getElementById('home-container'));

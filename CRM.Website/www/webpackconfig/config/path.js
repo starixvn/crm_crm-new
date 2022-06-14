@@ -1,9 +1,9 @@
 ﻿const path = require('path');
 
-const projectRoot = path.resolve(__dirname, '../../../');
+const projectRoot = path.resolve(__dirname, '../../dist');
 
 const cssPaths = {
-    build: 'wwwroot/css',
+    build: 'css',
 
     main: ['./www/sources/css/main.scss'],
     error: ['./www/sources/css/pages/error.scss'],
@@ -47,7 +47,7 @@ const cssPaths = {
 };
 
 const scriptPaths = {
-    build: 'wwwroot/js',
+    build: 'js',
     home: ['./www/sources/js/pages/home/index.js'],
     layout: ['./www/sources/js/components/layout-container/index'],
     language: ['./www/sources/js/common/languages/ViewResources.js'],

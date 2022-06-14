@@ -15,10 +15,10 @@
 
         public IActionResult Index()
         {
-            if(sessionService.CurrentCustomer != null)
-            {
-                return RedirectToAction("Index", "Dashboard");
-            }
+            //if(sessionService.CurrentCustomer != null)
+            //{
+            //    return RedirectToAction("Index", "Dashboard");
+            //}
             return View();
         }
     }

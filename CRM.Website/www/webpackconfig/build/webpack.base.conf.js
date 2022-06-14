@@ -97,10 +97,10 @@ function generateConfig(environment) {
             // [`${cssPath}/pages/auth/login`]: pathConfig.cssPaths.auth
         },
         output: {
-            publicPath: "/",
+            publicPath: "/www/dist/",
             path: pathConfig.projectRoot,
-            filename: "[name].chunk.js"
-            //chunkFilename: `${jsPath}/lib/[name].chunk.js`
+            filename: "[name].chunk.js",
+            chunkFilename: `${jsPath}/lib/[name].chunk.js`
         },
         module: {
             rules: [
@@ -110,6 +110,31 @@ function generateConfig(environment) {
                     exclude: /node_modules/
                 }
             ]
+        },
+        optimization: {
+            splitChunks: {
+                cacheGroups: {
+                    default: false,
+                    vendors: false,
+                    // vendor chunk
+                    vendor: {
+                        // sync + async chunks
+                        chunks: 'all',
+                        name:'vendor',
+                        // import file path containing node_modules
+                        test: /node_modules/,
+                        priority: 20
+                    },
+                    common: {
+                        name: 'common',
+                        minChunks: 2,
+                        chunks: 'async',
+                        priority: 10,
+                        reuseExistingChunk: true,
+                        enforce: true
+                    }
+                }
+            }
         },
         // stats: {
         //     assets: false,
