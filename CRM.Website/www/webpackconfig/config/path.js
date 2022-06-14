@@ -49,6 +49,7 @@ const cssPaths = {
 const scriptPaths = {
     build: 'wwwroot/js',
     home: ['./www/sources/js/pages/home/index.js'],
+    layout: ['./www/sources/js/components/layout-container/index'],
     language: ['./www/sources/js/common/languages/ViewResources.js'],
     main: ['./www/sources/js/main.js'],
     recheckin: ['./www/sources/js/pages/auth/recheckin.js'],

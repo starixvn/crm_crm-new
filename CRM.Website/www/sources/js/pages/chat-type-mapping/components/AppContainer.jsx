@@ -1,7 +1,24 @@
 ﻿import React, { Component } from 'react';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
-import Layout from '@jsroot/components/layout-container/index';
+import { Provider } from 'react-redux';
+
+import Store from '@jsroot/common/store';
+import reducer from '../reducers/index';
+
+const store = Store.createStore(reducer, {
+    gridData: { data: null, totalItems: 0 },
+    updateActiveStatusResult: null,
+    insertPersonalMappingData: { isShow: false },
+    insertPersonalMappingResult: null,
+    updatePersonalMappingData: { isShow: false, data: null },
+    updatePersonalMappingResult: null,
+    updateGroupMappingData: { isShow: false, data: null },
+    updateGroupMappingResult: null,
+    recipients: [],
+    groupHeadline: [],
+    letstalkVerification: { isBotRemoved: false, recipients: [] }
+});
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -11,10 +28,10 @@ export class AppContainer extends Component {
 
     render() {
         return (
-            <Layout>
+            <Provider store={store}>
                 <Filter isHost={this.isHost} />
                 <DataGrid isHost={this.isHost} />
-            </Layout>
+            </Provider>
         );
     }
 }

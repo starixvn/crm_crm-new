@@ -7,6 +7,13 @@ import DataGrid from './DataGrid';
 import Filter from './Filter';
 import EditRedemptionLog from './EditRedemptionLog';
 import CreateRedemptionLog from './CreateRedemptionLog';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import redemption from '../redemptionSlice';
+
+const store = configureStore({
+    reducer: redemption
+});
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -36,7 +43,7 @@ export class AppContainer extends Component {
     render() {
         const { editRedemptionDialog, createRedemptionDialog } = this.props;
         return (
-            <div>
+            <Provider store={store}>
                 <Filter id={this.props.id}/>
                 <DataGrid />
                 {
@@ -52,7 +59,7 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseCreateRedemptionDialog}
                     />
                 }
-            </div>
+            </Provider>
         );
     }
 }

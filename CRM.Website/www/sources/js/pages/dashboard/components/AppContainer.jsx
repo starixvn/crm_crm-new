@@ -13,6 +13,14 @@ import CreateCommunicationLog from '../../communication-log/components/CreateCom
 import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
 
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import dashboard from '../dashboardSlice';
+
+const store = configureStore({
+    reducer: dashboard
+});
+
 export class AppContainer extends Component {
     static propTypes = {
         editRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
@@ -77,7 +85,7 @@ export class AppContainer extends Component {
         } = this.props;
         const custId = window.currentCustomer.custId;
         return (
-            <div>
+            <Provider store={store}>
                 <div className="d-flex justify-content-between">
                     <div className="dataGrid-remark"><DataGridRemark id={custId} /></div>
                     <div className="information"><CustomerInfoVerify id={custId}/></div>
@@ -117,7 +125,7 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditCustomerVerify}
                     />
                 }
-            </div>
+            </Provider>
         );
     }
 }

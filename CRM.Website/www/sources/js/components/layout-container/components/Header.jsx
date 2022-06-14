@@ -1,6 +1,33 @@
-import React, { Component } from 'react';
+import React, { Component, lazy  } from "react";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link
+} from "react-router-dom";
+
+import loadable from '@loadable/component';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
+import Home from './Home';
+//const Home =  import(/* webpackPrefetch: true */ './Home');
+
+// const LoadableComponent = React.lazy(() =>
+//   import("@jsroot/pages/remark/components/AppContainer").then(
+//     module => ({
+//       default: module.Test
+//     })
+//   )
+// );
+//import Test1 from '@jsroot/pages/remark/components/AppContainer';
+
+// const LoadableComponent = loadable(() => import('@jsroot/pages/remark/components/AppContainer'));
+//const TestComponent = loadable(() => import('@jsroot/pages/chat-type-mapping/components/AppContainer'));
+// import AppContainer from '@jsroot/pages/remark/components/AppContainer';
+// import AppContainer1 from '@jsroot/pages/chat-type-mapping/components/AppContainer';
+
+// const Topics = lazy(() => import('@jsroot/pages/chat-type-mapping'));
+// const Settings = lazy(() => import('@jsroot/pages/chat-type-mapping'));
 
 export class Header extends Component {
     constructor(props) {
@@ -62,29 +89,9 @@ export class Header extends Component {
             return null;
         }
 
-        return (
-            <div className='header'>
-                <div className='left-header'>
-                    <img src={Site.resolveClientUrl('css/images/icon/logo-crm.png')} onClick={() => window.location = Site.resolveClientUrl('Dashboard')}/>
-                    <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>
-                </div>
-                <div className='right-header'>
-                    <ul>
-                        {
-                            menus.map((item, key) => (
-                                this.isIgnoreMenu(item) && this.renderListMenu(item, key)
-                            ))
-                        }
-                    </ul>
-                    <div className='item-end float-right'>
-                        <span className='fa fa-user fa-lg' />
-                        <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{window.currentUsername}</span></span>
-                        <img src={Site.resolveClientUrl('css/images/icon/icon-logout.png')} />
-                        <a className='sign-out' onClick={() =>this.handleLogout()}>{LangHelper.getResource('SignOut')}</a>
-                    </div>
-                </div>
-            </div>
-        );
+    return (
+        <Home />
+    );
     }
 }
 
