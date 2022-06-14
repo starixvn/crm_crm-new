@@ -55,6 +55,9 @@ namespace CRM.Controllers.Report.Statistics
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetIssuesStatisticReportCriteria criteria)
         {
+            criteria.PageIndex = 0;
+            criteria.PageSize = 0;
+            criteria.IsGetFullReport = true;
             var typeName = criteria.ReportType == 1 ? ViewResources.Daily : ViewResources.Monthly;
             var titleExcel = string.Format(ViewResources.IssueStatistics_ExcelTitle, typeName,
                                 criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
