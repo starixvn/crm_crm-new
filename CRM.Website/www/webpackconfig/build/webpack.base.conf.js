@@ -15,90 +15,17 @@ function generateConfig(environment) {
         entry: {
             /*js*/
             [`${jsPath}/pages/home/index`]: pathConfig.scriptPaths.home,
-            // [`${jsPath}/pages/layout/index`]: pathConfig.scriptPaths.layout,
-            // [`${jsPath}/lib/lang-en-US`]: pathConfig.scriptPaths.language,
-            // [`${jsPath}/main`]: pathConfig.scriptPaths.main,
-            // [`${jsPath}/pages/auth/recheckin`]: pathConfig.scriptPaths.recheckin,
-            // [`${jsPath}/pages/notificationlist/index`]: pathConfig.scriptPaths.notification_list,
-            // [`${jsPath}/pages/notificationtemplate/index`]: pathConfig.scriptPaths.notification_template,
-            // [`${jsPath}/pages/notificationtype/index`]: pathConfig.scriptPaths.notification_type,
-            // [`${jsPath}/pages/chattypemapping/index`]: pathConfig.scriptPaths.chattype_mapping,
-            // [`${jsPath}/pages/adminTool/communicationsetting/index`]: pathConfig.scriptPaths.communication_setting,
-            // [`${jsPath}/pages/picandheadline/picassignment/index`]: pathConfig.scriptPaths.pic_assignment,
-            // [`${jsPath}/pages/picandheadline/management/index`]: pathConfig.scriptPaths.pic_management,
-            // [`${jsPath}/pages/report/settlement/index`]: pathConfig.scriptPaths.report_settlement,
-            // [`${jsPath}/pages/adminTool/feedbacksubject/index`]: pathConfig.scriptPaths.feedback_subject,
-            // [`${jsPath}/pages/feedback/add-guest-feedback/index`]: pathConfig.scriptPaths.add_guest_feedback,
-            // [`${jsPath}/pages/feedback/latest-feedback`]: pathConfig.scriptPaths.latest_feedback,
-            // [`${jsPath}/pages/feedback/multiple-logs/create`]: pathConfig.scriptPaths.create_multiple_logs,
-            // [`${jsPath}/pages/feedback/deleted-feedback/index`]: pathConfig.scriptPaths.deleted_feedback,
-            // [`${jsPath}/pages/feedback/manage-feedback/index`]: pathConfig.scriptPaths.manage_feedback,
-            // [`${jsPath}/pages/informHeadline/index`]: pathConfig.scriptPaths.inform_headline,
-            // [`${jsPath}/pages/customer/customerinfodetail/index`]: pathConfig.scriptPaths.customer_info_detail,
-            // [`${jsPath}/pages/communicationlog/index`]: pathConfig.scriptPaths.communication_log,
-            [`${jsPath}/pages/new-remark/index`]: pathConfig.scriptPaths.new_remark,
-            // [`${jsPath}/pages/redemption/index`]: pathConfig.scriptPaths.redemption,
-            // [`${jsPath}/pages/actionlog/index`]: pathConfig.scriptPaths.action_log,
-            // [`${jsPath}/pages/dashboard/index`]: pathConfig.scriptPaths.dashboard,
-            // [`${jsPath}/pages/adminTool/setting-log/index`]: pathConfig.scriptPaths.setting_log,
-            // [`${jsPath}/pages/report/deleted-feedback-statistic/index`]: pathConfig.scriptPaths.deleted_feedback_statistic,
-            // [`${jsPath}/pages/report/log-statistics/index`]: pathConfig.scriptPaths.log_statistics,
-            // [`${jsPath}/pages/report/issue-statistics/index`]: pathConfig.scriptPaths.issue_statistics,
-            // [`${jsPath}/pages/picandheadline/changesLog/index`]: pathConfig.scriptPaths.change_log,
-            // [`${jsPath}/pages/feedback/add-customer-feedback/index`]: pathConfig.scriptPaths.add_customer_feedback,
-            // [`${jsPath}/pages/report/feedback-statistic/index`]: pathConfig.scriptPaths.feedback_statistic,
-            // [`${jsPath}/pages/report/redemption-statistics/index`]: pathConfig.scriptPaths.redemption_statistics,
-            // [`${jsPath}/pages/report/dynamic/index`]: pathConfig.scriptPaths.dynamic_report,
-            // [`${jsPath}/pages/adminTool/setting-relation/index`]: pathConfig.scriptPaths.setting_relation,
-            // [`${jsPath}/pages/adminTool/setting-management/index`]: pathConfig.scriptPaths.setting_management,
-            // [`${jsPath}/pages/report/customer/index`]: pathConfig.scriptPaths.customer_report,
-            // [`${jsPath}/pages/report/summary/index`]: pathConfig.scriptPaths.summary,
-            // [`${jsPath}/pages/report/direct/index`]: pathConfig.scriptPaths.direct,
-            // [`${jsPath}/pages/report/wager/index`]: pathConfig.scriptPaths.wager,
+            [`${jsPath}/lib/lang-en-US`]: pathConfig.scriptPaths.language,
+            [`${jsPath}/pages/auth/recheckin`]: pathConfig.scriptPaths.recheckin,
 
             /*css*/
-            // [`${cssPath}/main`]: pathConfig.cssPaths.main,
-            // [`${cssPath}/error`]: pathConfig.cssPaths.error,
-            // [`${cssPath}/pages/notificationlist/index`]: pathConfig.cssPaths.notification_list,
-            // [`${cssPath}/pages/notificationtemplate/index`]: pathConfig.cssPaths.notification_template,
-            // [`${cssPath}/pages/notificationtype/index`]: pathConfig.cssPaths.notification_type,
-            // [`${cssPath}/pages/chattypemapping/index`]: pathConfig.cssPaths.chattype_mapping,
-            // [`${cssPath}/pages/adminTool/communicationsetting/index`]: pathConfig.cssPaths.communication_setting,
-            // [`${cssPath}/pages/picandheadline/picassignment/index`]: pathConfig.cssPaths.pic_assignment,
-            // [`${cssPath}/pages/picandheadline/management/index`]: pathConfig.cssPaths.pic_management,
-            // [`${cssPath}/pages/report/settlement/index`]: pathConfig.cssPaths.report_settlement,
-            // [`${cssPath}/pages/adminTool/feedbacksubject/index`]: pathConfig.cssPaths.feedback_subject,
-            // [`${cssPath}/pages/feedback/add-feedback/index`]: pathConfig.cssPaths.add_feedback,
-            // [`${cssPath}/pages/feedback/latest-feedback`]: pathConfig.cssPaths.latest_feedback,
-            // [`${cssPath}/pages/feedback/multiple-logs/create`]: pathConfig.cssPaths.create_multiple_logs,
-            // [`${cssPath}/pages/feedback/deleted-feedback/index`]: pathConfig.cssPaths.deleted_feedback,
-            // [`${cssPath}/pages/feedback/manage-feedback/index`]: pathConfig.cssPaths.manage_feedback,
-            // [`${cssPath}/pages/informHeadline/index`]: pathConfig.cssPaths.inform_headline,
-            // [`${cssPath}/pages/customer/customerinfodetail/index`]: pathConfig.cssPaths.customer_info_detail,
-            // [`${cssPath}/pages/communicationlog/index`]: pathConfig.cssPaths.communication_log,
-            // [`${cssPath}/pages/remark/index`]: pathConfig.cssPaths.remark,
-            [`${cssPath}/pages/new-remark/index`]: pathConfig.cssPaths.new_remark,
-            // [`${cssPath}/pages/actionlog/index`]: pathConfig.cssPaths.action_log,
-            // [`${cssPath}/pages/dashboard/index`]: pathConfig.cssPaths.dashboard,
-            // [`${cssPath}/pages/adminTool/setting-log/index`]: pathConfig.cssPaths.setting_log,
-            // [`${cssPath}/pages/report/deleted-feedback-statistic/index`]: pathConfig.cssPaths.deleted_feedback_statistic,
-            // [`${cssPath}/pages/report/log-statistics/index`]: pathConfig.cssPaths.log_statistics,
-            // [`${cssPath}/pages/report/issue-statistics/index`]: pathConfig.cssPaths.issue_statistics,
-            // [`${cssPath}/pages/picandheadline/changesLog/index`]: pathConfig.cssPaths.changes_log,
-            // [`${cssPath}/pages/report/feedback-statistic/index`]: pathConfig.cssPaths.feedback_statistic,
-            // [`${cssPath}/pages/report/redemption-statistics/index`]: pathConfig.cssPaths.redemption_statistics,
-            // [`${cssPath}/pages/report/dynamic/index`]: pathConfig.cssPaths.dynamic_report,
-            // [`${cssPath}/pages/adminTool/setting-relation/index`]: pathConfig.cssPaths.setting_relation,
-            // [`${cssPath}/pages/adminTool/setting-management/index`]: pathConfig.cssPaths.setting_management,
-            // [`${cssPath}/pages/report/customer/index`]: pathConfig.cssPaths.customer_report,
-            // [`${cssPath}/pages/report/summary/index`]: pathConfig.cssPaths.summary,
-            // [`${cssPath}/pages/report/direct/index`]: pathConfig.cssPaths.direct,
-            // [`${cssPath}/pages/report/wager/index`]: pathConfig.cssPaths.wager,
-            // [`${cssPath}/pages/auth/login`]: pathConfig.cssPaths.auth
+            [`${cssPath}/main`]: pathConfig.cssPaths.main,
+            [`${cssPath}/error`]: pathConfig.cssPaths.error,
+            [`${cssPath}/pages/auth/login`]: pathConfig.cssPaths.auth
         },
         output: {
             publicPath: "/www/dist/",
-            path: pathConfig.projectRoot,
+            path: pathConfig.distPath,
             filename: "[name].chunk.js",
             chunkFilename: `${jsPath}/lib/[name].chunk.js`
         },
@@ -111,19 +38,45 @@ function generateConfig(environment) {
                 }
             ]
         },
+        plugins: pluginGenerator(environment),
+        stats: {
+            assets: false,
+            colors: true,
+            version: false,
+            hash: false,
+            timings: true,
+            chunks: false,
+            chunkModules: false,
+            children: true
+        },
         optimization: {
+            minimizer: [
+                new UglifyJsPlugin({
+                    sourceMap: true,
+                    uglifyOptions: {
+                        output: {
+                            comments: false
+                        }
+                    }
+                }),
+                new OptimizeCssAssetsPlugin()
+            ],
             splitChunks: {
+                chunks: 'all',
+                minSize: 30000,
+                maxSize: 0,
+                minChunks: 2,
+                maxAsyncRequests: 5,
+                maxInitialRequests: 3,
                 cacheGroups: {
                     default: false,
                     vendors: false,
-                    // vendor chunk
                     vendor: {
-                        // sync + async chunks
                         chunks: 'all',
                         name:'vendor',
-                        // import file path containing node_modules
                         test: /node_modules/,
-                        priority: 20
+                        priority: 20,
+                        enforce: true
                     },
                     common: {
                         name: 'common',
@@ -135,56 +88,7 @@ function generateConfig(environment) {
                     }
                 }
             }
-        },
-        // stats: {
-        //     assets: false,
-        //     colors: true,
-        //     version: false,
-        //     hash: false,
-        //     timings: true,
-        //     chunks: false,
-        //     chunkModules: false,
-        //     children: true
-        // },
-        // optimization: {
-        //     minimizer: [
-        //         new UglifyJsPlugin({
-        //             sourceMap: true,
-        //             uglifyOptions: {
-        //                 output: {
-        //                     comments: false
-        //                 }
-        //             }
-        //         }),
-        //         new OptimizeCssAssetsPlugin()
-        //     ],
-        //     splitChunks: {
-        //         chunks: 'all',
-        //         minSize: 30000,
-        //         maxSize: 0,
-        //         minChunks: 2,
-        //         maxAsyncRequests: 5,
-        //         maxInitialRequests: 3,
-        //         name: false,
-        //         cacheGroups: {
-        //             // disable default cache group
-        //             default: false,
-        //             vendors: false,
-        //             reactVendor: {
-        //                 name: 'react-vendor',
-        //                 test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-        //                 minChunks: 2,
-        //                 priority: -10
-        //             },
-        //             reactBootstrapVendor: {
-        //                 name: 'react-bootstrap-vendor',
-        //                 test: /[\\/]node_modules[\\/](react-bootstrap)[\\/]/,
-        //                 minChunks: 2,
-        //                 priority: -10
-        //             }
-        //         }
-        //     }
-        // }
+        }
     };
 }
 

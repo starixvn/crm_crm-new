@@ -7,8 +7,8 @@ const environment = 'dev';
 const pathConfig = require('../config/path');
 const baseConfigs = baseWebpackConfigGenerator(environment);
 
-const cssRootPath = `${pathConfig.cssPaths.build}/${environment}`;
-const jsRootPath = `${pathConfig.scriptPaths.build}/${environment}`;
+const cssRootPath = `www/dist/${pathConfig.cssPaths.build}/${environment}`;
+const jsRootPath = `www/dist/${pathConfig.scriptPaths.build}/${environment}`;
 module.exports = merge(baseConfigs,
     utils.setDefinePlugin('process.env.NODE_ENV', 'development'),
     {

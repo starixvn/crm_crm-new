@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{50:function(e,n,o){"use strict";var a=o(0),p=o.n(a);n.a=(e=>p.a.createElement("span",{style:{color:"red"}},"Hello Component!"))}}]);

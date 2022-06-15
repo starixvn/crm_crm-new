@@ -5,7 +5,6 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import Layout from '@jsroot/components/layout-container/index';
 import ChangesLogReducer from './changesLogSlice';
-import AppContainer from './components/AppContainer';
 import TabContainer from './components/TabContainer';
 
 const store = configureStore({

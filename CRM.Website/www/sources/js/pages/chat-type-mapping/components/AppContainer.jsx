@@ -2,9 +2,9 @@
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import { Provider } from 'react-redux';
-
 import Store from '@jsroot/common/store';
 import reducer from '../reducers/index';
+import '@cssroot/pages/chat-type-mapping/index.scss';
 
 const store = Store.createStore(reducer, {
     gridData: { data: null, totalItems: 0 },

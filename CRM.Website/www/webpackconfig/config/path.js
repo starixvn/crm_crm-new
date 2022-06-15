@@ -1,99 +1,25 @@
 ﻿const path = require('path');
 
-const projectRoot = path.resolve(__dirname, '../../dist');
+const projectRoot = path.resolve(__dirname, '../../../');
+const distPath = path.resolve(__dirname, '../../dist');
 
 const cssPaths = {
     build: 'css',
-
     main: ['./www/sources/css/main.scss'],
     error: ['./www/sources/css/pages/error.scss'],
-    notification_list: ['./www/sources/css/pages/notification-list/index.scss'],
-    notification_template: ['./www/sources/css/pages/notification-template/index.scss'],
-    notification_type: ['./www/sources/css/pages/notification-type/index.scss'],
-    chattype_mapping: ['./www/sources/css/pages/chat-type-mapping/index.scss'],
-    communication_setting: ['./www/sources/css/pages/admin-tool/communication-setting/index.scss'],
-    pic_assignment: ['./www/sources/css/pages/pic-and-headline/pic-assignment/index.scss'],
-    pic_management: ['./www/sources/css/pages/pic-and-headline/management/index.scss'],
-    report_settlement: ['./www/sources/css/pages/report/settlement/index.scss'],
-    feedback_subject: ['./www/sources/css/pages/admin-tool/feedback-subject/index.scss'],
-    latest_feedback: ['./www/sources/css/pages/feedback/latest-feedback.scss'],
-    add_feedback: ['./www/sources/css/pages/feedback/add-feedback/index.scss'],
-    create_multiple_logs: ['./www/sources/css/pages/feedback/multiple-logs/create.scss'],
-    deleted_feedback: ['./www/sources/css/pages/feedback/deleted-feedback/index.scss'],
-    manage_feedback: ['./www/sources/css/pages/feedback/manage-feedback/index.scss'],
-    inform_headline: ['./www/sources/css/pages/informHeadline/index.scss'],
-    customer_info_detail: ['./www/sources/css/pages/customer/customer-info-detail/index.scss'],
-    communication_log: ['./www/sources/css/pages/communication-log/index.scss'],
-    remark: ['./www/sources/css/pages/remark/index.scss'],
-    new_remark: ['./www/sources/css/pages/new-remark/index.scss'],
-    redemption: ['./www/sources/css/pages/redemption/index.scss'],
-    action_log: ['./www/sources/css/pages/action-log/index.scss'],
-    dashboard: ['./www/sources/css/pages/dashboard/index.scss'],
-    setting_log: ['./www/sources/css/pages/admin-tool/setting-log/index.scss'],
-    deleted_feedback_statistic: ['./www/sources/css/pages/report/deleted-feedback-statistic/index.scss'],
-    log_statistics: ['./www/sources/css/pages/report/log-statistics/index.scss'],
-    issue_statistics: ['./www/sources/css/pages/report/issue-statistics/index.scss'],
-    changes_log: ['./www/sources/css/pages/pic-and-headline/changes-log/index.scss'],
-    feedback_statistic: ['./www/sources/css/pages/report/feedback-statistic/index.scss'],
-    redemption_statistics: ['./www/sources/css/pages/report/redemption-statistics/index.scss'],
-    dynamic_report: ['./www/sources/css/pages/report/dynamic/index.scss'],
-    setting_relation: ['./www/sources/css/pages/admin-tool/setting-relation/index.scss'],
-    setting_management: ['./www/sources/css/pages/admin-tool/setting-management/index.scss'],
-    summary:['./www/sources/css/pages/report/summary/index.scss'],
-    customer_report: ['./www/sources/css/pages/report/customer/index.scss'],
-    direct:['./www/sources/css/pages/report/direct/index.scss'],
-    wager:['./www/sources/css/pages/report/wager/index.scss'],
     auth:['./www/sources/css/pages/auth/login.scss']
 };
 
 const scriptPaths = {
     build: 'js',
     home: ['./www/sources/js/pages/home/index.js'],
-    layout: ['./www/sources/js/components/layout-container/index'],
     language: ['./www/sources/js/common/languages/ViewResources.js'],
-    main: ['./www/sources/js/main.js'],
-    recheckin: ['./www/sources/js/pages/auth/recheckin.js'],
-    notification_list: ['./www/sources/js/pages/notification-list/index.js'],
-    notification_template: ['./www/sources/js/pages/notification-template/index.js'],
-    notification_type: ['./www/sources/js/pages/notification-type/index.js'],
-    chattype_mapping: ['./www/sources/js/pages/chat-type-mapping/index.js'],
-    communication_setting: ['./www/sources/js/pages/admin-tool/communication-setting/index.js'],
-    pic_assignment: ['./www/sources/js/pages/pic-and-headline/pic-assignment/index.js'],
-    pic_management: ['./www/sources/js/pages/pic-and-headline/management/index.js'],
-    report_settlement: ['./www/sources/js/pages/report/settlement/index.js'],
-    feedback_subject: ['./www/sources/js/pages/admin-tool/feedback-subject/index.js'],
-    latest_feedback: ['./www/sources/js/pages/feedback/latest-feedback/index.js'],
-    add_guest_feedback: ['./www/sources/js/pages/feedback/add-feedback/add-guest-feedback/index.js'],
-    create_multiple_logs: ['./www/sources/js/pages/feedback/multiple-logs/create/index.js'],
-    deleted_feedback: ['./www/sources/js/pages/feedback/deleted-feedback/index.js'],
-    manage_feedback: ['./www/sources/js/pages/feedback/manage-feedback/index.js'],
-    inform_headline: ['./www/sources/js/pages/informHeadline/index.js'],
-    customer_info_detail: ['./www/sources/js/pages/customer/customer-info-detail/index.js'],
-    communication_log: ['./www/sources/js/pages/communication-log/index.js'],
-    remark: ['./www/sources/js/pages/remark/index.js'],
-    new_remark: ['./www/sources/js/pages/new-remark/index.js'],
-    redemption: ['./www/sources/js/pages/redemption/index.js'],
-    action_log: ['./www/sources/js/pages/action-log/index.js'],
-    dashboard: ['./www/sources/js/pages/dashboard/index.js'],
-    setting_log: ['./www/sources/js/pages/admin-tool/setting-log/index.js'],
-    deleted_feedback_statistic: ['./www/sources/js/pages/report/deleted-feedback-statistic/index.js'],
-    log_statistics: ['./www/sources/js/pages/report/log-statistics/index.js'],
-    issue_statistics: ['./www/sources/js/pages/report/issue-statistics/index.js'],
-    change_log: ['./www/sources/js/pages/pic-and-headline/changes-log/index.js'],
-    add_customer_feedback: ['./www/sources/js/pages/feedback/add-feedback/add-customer-feedback/index.js'],
-    feedback_statistic: ['./www/sources/js/pages/report/feedback-statistic/index.js'],
-    redemption_statistics: ['./www/sources/js/pages/report/redemption-statistics/index.js'],
-    dynamic_report: ['./www/sources/js/pages/report/dynamic/index.js'],
-    setting_relation: ['./www/sources/js/pages/admin-tool/setting-relation/index.js'],
-    setting_management: ['./www/sources/js/pages/admin-tool/setting-management/index.js'],
-    summary:['./www/sources/js/pages/report/summary/index.js'],
-    customer_report: ['./www/sources/js/pages/report/customer/index.js'],
-    direct:['./www/sources/js/pages/report/direct/index.js'],
-    wager:['./www/sources/js/pages/report/wager/index.js']
+    recheckin: ['./www/sources/js/pages/auth/recheckin.js']
 };
 
 module.exports = {
     projectRoot: projectRoot,
+    distPath: distPath,
     cssPaths: cssPaths,
     scriptPaths: scriptPaths
 };

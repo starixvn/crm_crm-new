@@ -8,10 +8,10 @@
 </head>
 @section Styles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/dev/pages/auth/login.chunk.css" />
+        <link rel="stylesheet" href="~/www/dist/css/dev/pages/auth/login.chunk.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/pro/pages/auth/login.chunk.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/www/dist/css/pro/pages/auth/login.chunk.css" asp-append-version="true" />
     </environment>
 }
 <body>
@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-    <script src="~/lib/CryptoJS.js"></script>
+    <script src="~/www/dist/lib/CryptoJS.js"></script>
     <script>
         const form = document.getElementById('frmLogin');
         form.addEventListener('submit', function (e) {

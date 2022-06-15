@@ -1,0 +1,239 @@
+body {
+  font-family: 'Lucida Sans', Tahoma, Arial, Helvetica, sans-serif;
+  background: #D8D6D8 url("../../../images/login/pattern6.png");
+  margin: 0;
+  padding: 0; }
+
+.center {
+  width: 456px;
+  height: 294px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -232px;
+  margin-top: -175px; }
+
+.msgbox {
+  transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out; }
+
+#login-box {
+  position: relative;
+  padding: 0;
+  width: 456px;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2); }
+
+#msg {
+  position: absolute;
+  top: -60px;
+  width: 454px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 5px;
+  background: #e26661;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px; }
+
+#login-box .header {
+  background: -moz-linear-gradient(#6c8ccd, #5c7cbe);
+  background: -webkit-linear-gradient(#6c8ccd, #5c7cbe);
+  background-color: #6c8ccd;
+  border-radius: 5px 5px 0 0;
+  padding: 0 45px;
+  height: 54px; }
+
+#login-box .header .welcome {
+  background: url("../../../images/login/logo.png") no-repeat center left;
+  width: 313px;
+  height: 53px;
+  display: inline-block; }
+
+#login-box .header .secure {
+  background: url("../../../images/login/lock.png") no-repeat center right;
+  width: 46px;
+  height: 53px;
+  display: inline-block;
+  float: right; }
+
+#login-box .auth {
+  background-color: #3b5998 !important;
+  border-radius: 0 0 5px 5px;
+  padding: 40px 46px 20px 46px; }
+
+#username, #password, #btnLogin {
+  font-family: 'Lucida Sans', Tahoma, Arial, Helvetica, sans-serif; }
+
+#username, #password {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 16px;
+  text-indent: 60px;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out; }
+
+#password {
+  font-size: 12px !important; }
+
+.ie9 #username, .ie9 #password, .ie8 #username, .ie8 #password {
+  text-transform: lowercase;
+  line-height: 40px; }
+
+#username:active, #username:focus, #password:active, #password:focus {
+  border: none;
+  box-shadow: 0 0 1px #ccc; }
+
+#username.err, #password.err {
+  border: 1px solid #CF4742; }
+
+#username {
+  background: #7e97cc url("../../../images/login/username.png") no-repeat left center; }
+
+#password {
+  background: #7e97cc url("../../../images/login/password.png") no-repeat left center; }
+
+#btnLogin {
+  display: block;
+  width: 366px;
+  height: 40px;
+  background: #ededed;
+  background: -webkit-linear-gradient(#f4f4f4, #ededed);
+  /* For Safari */
+  background: -o-linear-gradient(#f4f4f4, #ededed);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#f4f4f4, #ededed);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#f4f4f4, #ededed);
+  border: none;
+  box-shadow: 0 1px 0 #FFF inset;
+  color: #464d5d;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 6px 11px;
+  text-shadow: 1px 1px 0 #FFF;
+  text-transform: uppercase;
+  outline: none; }
+
+#btnLogin:hover {
+  background-color: #E7EAEB; }
+
+#btnLogin:active, #btnLogin:focus {
+  background-color: #E7EAEB; }
+
+#btnLogin:disabled {
+  border: solid 1px #999;
+  background: #aaa;
+  background: -moz-linear-gradient(#bbb, #aaa) #aaa;
+  background: -webkit-linear-gradient(#bbb, #aaa) #aaa;
+  cursor: default; }
+
+/* --- NOT SUPPORTED BROWSERS --- */
+#not-supported-browser-panel {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  left: 0px;
+  background-color: #f9edbe;
+  text-align: center;
+  padding: 20px;
+  z-index: 9999; }
+
+#not-supported-browser-panel a {
+  font-size: 1.6em;
+  text-decoration: none;
+  color: #222;
+  background-color: #E8DCAD;
+  padding: 0 10px; }
+
+#not-supported-browser-panel a:hover {
+  background-color: #0c0;
+  color: #fff; }
+
+.bestview {
+  margin-top: 16px;
+  font-size: 0.8em;
+  padding: 1px;
+  text-align: center; }
+
+.bestview .ff4 {
+  background: url("../../../images/login/firefox_original.png") 0 0 no-repeat;
+  padding: 1px 1px 1px 18px;
+  margin-left: 6px; }
+
+.bestview .ie8 {
+  margin-left: 6px;
+  background: url("../../../images/login/ie.png") 0 0 no-repeat;
+  padding: 1px 18px; }
+
+.dropdown {
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block;
+  z-index: 9999; }
+  .dropdown .dropbtn {
+    color: white;
+    padding: 4px 5px;
+    font-size: 13px;
+    border: solid 1px #888888;
+    cursor: pointer;
+    margin-top: 7px;
+    margin-right: 10px;
+    background-color: #394a6c;
+    text-align: left;
+    width: 165px; }
+  .dropdown .dropbtn:hover, .dropdown .dropbtn:focus {
+    outline: none;
+    color: #fbcc50; }
+  .dropdown .dropdown-content {
+    display: none;
+    font-size: 13px;
+    margin-top: 2px;
+    border: solid 1px #888888;
+    position: absolute;
+    background-color: #394a6c;
+    min-width: 190px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1; }
+  .dropdown .dropdown-content a {
+    color: white;
+    padding: 7px 10px;
+    text-decoration: none;
+    display: block; }
+  .dropdown a:hover {
+    color: #fbcc50;
+    background-color: white; }
+  .dropdown .show {
+    display: block; }
+  .dropdown .icon-flag {
+    display: inline-block;
+    width: 20px;
+    height: 14px;
+    margin-right: 5px;
+    margin-bottom: -2px; }
+  .dropdown .en-flag {
+    background: url("../../../images/login/english-flag.png"); }
+  .dropdown .zh-flag {
+    background: url("../../../images/login/chinese-flag.png"); }
+  .dropdown .icon-arrow {
+    display: inline-block;
+    width: 7px;
+    height: 5px;
+    background: url("../../../images/login/small-arrow-down.png") no-repeat;
+    float: right;
+    margin-top: 7px; }
+
+
+/*# sourceMappingURL=login.chunk.css.map*/

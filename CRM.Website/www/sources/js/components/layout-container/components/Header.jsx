@@ -1,4 +1,4 @@
-import React, { Component, lazy  } from "react";
+import React, { Component, lazy, Suspense  } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -6,28 +6,10 @@ import {
     Link
 } from "react-router-dom";
 
-import loadable from '@loadable/component';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
-import Home from './Home';
-//const Home =  import(/* webpackPrefetch: true */ './Home');
-
-// const LoadableComponent = React.lazy(() =>
-//   import("@jsroot/pages/remark/components/AppContainer").then(
-//     module => ({
-//       default: module.Test
-//     })
-//   )
-// );
-//import Test1 from '@jsroot/pages/remark/components/AppContainer';
-
-// const LoadableComponent = loadable(() => import('@jsroot/pages/remark/components/AppContainer'));
-//const TestComponent = loadable(() => import('@jsroot/pages/chat-type-mapping/components/AppContainer'));
-// import AppContainer from '@jsroot/pages/remark/components/AppContainer';
-// import AppContainer1 from '@jsroot/pages/chat-type-mapping/components/AppContainer';
-
-// const Topics = lazy(() => import('@jsroot/pages/chat-type-mapping'));
-// const Settings = lazy(() => import('@jsroot/pages/chat-type-mapping'));
+const RemarkComponentPromise  = lazy(() => import('@jsroot/pages/remark/components/AppContainer'));
+const ChatTypeMappingComponentPromise  = lazy(() => import('@jsroot/pages/notification-template/index'));
 
 export class Header extends Component {
     constructor(props) {
@@ -90,7 +72,26 @@ export class Header extends Component {
         }
 
     return (
-        <Home />
+        <Router>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+          </ul>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+                <Route exact path="/" />
+                <Route path="/about" element={<RemarkComponentPromise />} />
+                <Route path="/dashboard" element={<ChatTypeMappingComponentPromise />} />
+            </Routes>
+          </Suspense>
+      </Router>
     );
     }
 }

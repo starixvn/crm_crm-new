@@ -52,7 +52,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@loadable/component": "^5.15.2",
         "@reduxjs/toolkit": "^1.6.1",
         "autosize": "^5.0.1",
         "axios": "^0.21.4",
