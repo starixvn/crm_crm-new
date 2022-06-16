@@ -313,7 +313,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleted Feedback Statistic.
+        ///   Looks up a localized string similar to Deleted Feedback Statistics.
         /// </summary>
         public static string DeletedFeedbackStatistic {
             get {

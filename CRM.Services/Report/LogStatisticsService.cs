@@ -14,7 +14,7 @@
     public interface ILogStatisticsService
     {
         Task<LogStatisticsViewModel> GetReportDataAsync(LogStatisticsCriteria criteria);
-        Task<StatisticsDetailReportByDateModel> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria);
+        Task<StatisticsDetailReportByDateModel> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria, bool IsConvertCreateDate);
     }
     public class LogStatisticsService : ILogStatisticsService
     {
@@ -62,7 +62,7 @@
             return logStatistic;
         }
 
-        public async Task<StatisticsDetailReportByDateModel> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria)
+        public async Task<StatisticsDetailReportByDateModel> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria, bool IsConvertCreateDate)
         {
             var reportTitle = string.Format(
                ViewResources.LogStatistics_Detail_ExcelTitle,
@@ -83,7 +83,9 @@
             {
                 report.FeedbackDate = commonService.ConvertToClientDateTime(report.FeedbackDate);
                 report.ResolutionDate = commonService.ConvertToClientDateTime(report.ResolutionDate);
-                report.CreateDate = commonService.ConvertToClientDateTime(report.CreateDate);
+                if (IsConvertCreateDate) { 
+                    report.CreateDate = commonService.ConvertToClientDateTime(report.CreateDate);
+                }
             }
             var result = new StatisticsDetailReportByDateModel
             {

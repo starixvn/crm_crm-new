@@ -78,7 +78,7 @@
         [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
-            var reportDetails = await logStatisticsService.GetReportDetailsAsync(criteria);
+            var reportDetails = await logStatisticsService.GetReportDetailsAsync(criteria, true);
             var report = reportDetails.ChildReports;
             var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
             var communicationTools = await settingService.GetCommunicationToolAsync();
@@ -118,7 +118,7 @@
         {
             criteria.PageIndex = 0;
             criteria.PageSize = 0;
-            var logStatisticsDetail = await logStatisticsService.GetReportDetailsAsync(criteria);
+            var logStatisticsDetail = await logStatisticsService.GetReportDetailsAsync(criteria, false);
             var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
             var communicationTools = await settingService.GetCommunicationToolAsync();
             var products = await settingService.GetProductAsync();

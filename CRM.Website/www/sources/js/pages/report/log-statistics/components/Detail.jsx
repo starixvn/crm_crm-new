@@ -60,14 +60,14 @@ export class Detail extends Component {
                                     settings.filter(x=> x.isActive && x.id === settingId);
         const settingDistinct = filterSettingActive.map(item => isValueProperty ? item.value : item.name).filter((value, index, self) => self.indexOf(value) === index);
         const nameSetting = settingDistinct.length > 0 ? settingDistinct[0] : 'N/A';
-        return nameSetting;
+        return nameSetting === 'N/A.' ? 'N/A' : nameSetting;
     };
 
     getSubCategoryValue = (mainCategoryId, subCategoryId, mainCategories) =>{
         const mainCategoriesFilter = mainCategories.filter(x=> x.mainCategoryID === mainCategoryId);
         if(mainCategoriesFilter.length > 0){
             const subCategory = mainCategoriesFilter[0].childSettings.filter(x=> x.subCategoryId === subCategoryId)[0].name;
-            return subCategory;
+            return subCategory ;
         }else{
             return 'N/A';
         }
@@ -106,7 +106,7 @@ export class Detail extends Component {
                 <Cell className='text-center'>{item.language}</Cell>
                 <Cell className='text-center'>{item.response}</Cell>
                 <Cell className='text-center'>{item.creatorName}</Cell>
-                <Cell className='text-center'>{DateTimeService.toShortDateFormat(item.createDate)}</Cell>
+                <Cell className='text-center'>{item.createDate}</Cell>
             </Row>
         );
     };
