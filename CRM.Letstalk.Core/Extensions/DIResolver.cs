@@ -13,7 +13,6 @@
     using CRM.Letstalk.Core.Services.Interfaces;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using RestSharp;
 
     public static class DIResolver
     {
