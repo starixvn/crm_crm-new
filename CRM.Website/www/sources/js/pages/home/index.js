@@ -5,4 +5,4 @@ ReactDOM.render(
     <StrictMode>
         <Layout />
     </StrictMode>,
-document.getElementById('home-container'));
+document.getElementById('app-container'));

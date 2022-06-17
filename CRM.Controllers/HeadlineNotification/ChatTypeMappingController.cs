@@ -54,12 +54,6 @@
             this.excelService = excelService;
         }
 
-        public IActionResult Index()
-        {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ChatTypeMapping, Policy.Host);
-            return View(isHost);
-        }
-
         public async Task<IActionResult> GetSettings()
         {
             var bots = commonService.GetConversationBotAsync();

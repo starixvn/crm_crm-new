@@ -23,9 +23,9 @@ export default class Filter extends Component {
             return;
         }
         this.props.getDataGrid().then(()=>{
-            if(this.props.customerInfo !== null){
-                window.location = Site.resolveClientUrl('Dashboard');
-            }
+            // if(this.props.customerInfo !== null){
+            //     window.location = Site.resolveClientUrl('Dashboard');
+            // }
         });
     };
 

@@ -42,11 +42,11 @@
             this.commonService = commonService;
         }
 
-        public IActionResult Index()
-        {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.NotificationList, Policy.Host);
-            return View(isHost);
-        }
+        //public IActionResult Index()
+        //{
+        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.NotificationList, Policy.Host);
+        //    return View(isHost);
+        //}
 
         public async Task<IActionResult> GetSettings()
         {

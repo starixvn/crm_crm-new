@@ -9,13 +9,17 @@ export default class DataService {
 
 
     static async postDataAsync(url, params) {
+        const token = document.getElementById('xsrfToken').value;
+        if(!token){
+            return;
+        }
         return await axios.post(
             url,
             params,
             {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
-                    'RequestVerificationToken': Site.getXsrfToken()
+                    'RequestVerificationToken': token
                 }
             }).then(response => response).catch(Site.handleAxiosError);
     }

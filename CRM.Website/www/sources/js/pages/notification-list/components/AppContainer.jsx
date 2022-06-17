@@ -14,7 +14,8 @@ export class AppContainer extends Component {
     constructor(props) {
         super(props);
 
-        this.isHost = document.getElementById('is-host').checked;
+        // this.isHost = document.getElementById('is-host').checked;
+        this.isHost = true;
     }
 
     closeConfirmPopup = () => this.props.setConfirmPopup({ show: false });

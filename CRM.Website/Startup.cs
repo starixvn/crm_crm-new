@@ -137,6 +137,11 @@
                 options.SerializerSettings.DateFormatString = DateTimeExtensions.LongDateTimeFormat;
             });
 
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "www/dist";
+            });
+
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
         }
 
@@ -159,6 +164,17 @@
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
+            
+            app.UseCookiePolicy();
+            app.UseSession();
+            app.UseAuthentication();
+
+            ////app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
+            NapClientManager
+              .UseConfig(app.ApplicationServices.GetService<INapSettings>())
+              .UseSession(app.ApplicationServices.GetService<INapSession>());
+
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -166,21 +182,17 @@
                 Path.Combine(env.ContentRootPath, "www/dist")),
                 RequestPath = "/www/dist"
             });
-
-            app.UseCookiePolicy();
-            app.UseSession();
-            app.UseAuthentication();
-            ////app.UseStatusCodePagesWithReExecute("/Error/{0}");
-
-            NapClientManager
-              .UseConfig(app.ApplicationServices.GetService<INapSettings>())
-              .UseSession(app.ApplicationServices.GetService<INapSession>());
-
+            app.UseSpaStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "www";
             });
         }
 

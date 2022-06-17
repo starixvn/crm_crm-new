@@ -455,10 +455,16 @@ class DataService {
   }
 
   static async postDataAsync(url, params) {
+    const token = document.getElementById('xsrfToken').value;
+
+    if (!token) {
+      return;
+    }
+
     return await axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(url, params, {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'RequestVerificationToken': _site__WEBPACK_IMPORTED_MODULE_1__["default"].getXsrfToken()
+        'RequestVerificationToken': token
       }
     }).then(response => response).catch(_site__WEBPACK_IMPORTED_MODULE_1__["default"].handleAxiosError);
   }
@@ -1402,6 +1408,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _DataGrid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DataGrid */ "./www/sources/js/components/layout-container/components/DataGrid.jsx");
 /* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
 /* harmony import */ var _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/dataService */ "./www/sources/js/common/dataService.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -1411,6 +1418,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+const NotificationListComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-list/index */ "./www/sources/js/pages/notification-list/index.js")));
+const NotificationTemplateComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
 class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
@@ -1493,7 +1503,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         if (searchText.length >= 2) {
           const params = this.getParams();
           const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetCustomerAutoSuggestion');
-          await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].postDataAsync(url, params).then(response => {
+          await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].postDataAsync(url, params, this.state.antiToken).then(response => {
             this.setState({
               customerSuggestions: response.data
             });
@@ -1527,7 +1537,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       this.handleSetStorage(true);
       _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
       const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetCustomerInfo');
-      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].postDataAsync(url, params).then(response => {
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].postDataAsync(url, params, this.state.antiToken).then(response => {
         this.setState({
           customerInfo: response.data
         });
@@ -1544,6 +1554,14 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
     });
 
+    _defineProperty(this, "getAntiForgeryToken", async () => {
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Antiforgery/GenerateAntiForgeryTokens');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
+        document.getElementById('xsrfToken').value = response.data.requestToken;
+      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
+    });
+
     _defineProperty(this, "getSetting", async () => {
       _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
       const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetSettings');
@@ -1551,6 +1569,14 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         this.setState({
           settings: response.data
         });
+      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
+    });
+
+    _defineProperty(this, "getMenus", async () => {
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Home/GetMenus');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
+        this.initDataMenu(response.data);
       }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
     });
 
@@ -1572,6 +1598,23 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     _defineProperty(this, "handleSetStorage", isShowLeft => {
       window.localStorage.setItem('isShowingLeftPanel', isShowLeft);
       window.localStorage.setItem('isKeepLeftPanel', isShowLeft);
+    });
+
+    _defineProperty(this, "renderMenuComponent", () => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Suspense"], {
+        fallback: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading...")
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Routes"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
+        exact: true,
+        path: "/"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
+        exact: true,
+        path: "/NotificationList",
+        element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationListComponent, null)
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
+        exact: true,
+        path: "/NotificationTemplate",
+        element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTemplateComponent, null)
+      })));
     });
 
     _defineProperty(this, "renderLeftRightContent", customerInfo => {
@@ -1598,7 +1641,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "child-app-container"
-      }, this.props.children)));
+      }, this.renderMenuComponent())));
     });
 
     _defineProperty(this, "renderFullWidthContent", () => {
@@ -1614,7 +1657,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "child-app-container"
-      }, this.props.children)));
+      }, this.renderMenuComponent())));
     });
 
     this.state = {
@@ -1642,10 +1685,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       await this.getSetting();
     }
 
-    if (window.menus !== null) {
-      this.initDataMenu(window.menus);
-    }
-
+    this.getMenus();
     const isShowingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
     const isKeepLeftPanel = window.localStorage.getItem('isKeepLeftPanel');
 
@@ -1658,6 +1698,8 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     if (isShowingLeftPanel !== null) {
       window.localStorage.removeItem('isShowingLeftPanel');
     }
+
+    this.getAntiForgeryToken();
   }
 
   render() {
@@ -1679,7 +1721,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
 
     const hasCreateFeedbackPermission = (_window$currentCustom = window.currentCustomer) === null || _window$currentCustom === void 0 ? void 0 : _window$currentCustom.hasCreateFeedbackPermission;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "fix-header-menu"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {
       menus: menus,
@@ -1700,9 +1742,15 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       handleGetCustomerIsGuest: this.handleGetCustomerIsGuest,
       handleCloseEmptyConfirm: this.handleCloseEmptyConfirm,
       debounceUserNameInputChange: this.debounceUserNameInputChange
-    })), !showEmptyCustomerInfoPopup && customerInfo !== null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "row-content"
-    }, isShowingLeftPanel ? this.renderLeftRightContent(customerInfo) : this.renderFullWidthContent()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_toastify__WEBPACK_IMPORTED_MODULE_2__["ToastContainer"], {
+    })), this.renderMenuComponent() // !showEmptyCustomerInfoPopup && customerInfo !== null &&
+    // <div className='row-content'>
+    //     {
+    //         isShowingLeftPanel ?
+    //         this.renderLeftRightContent(customerInfo) :
+    //         this.renderFullWidthContent()
+    //     }
+    // </div>
+    , /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_toastify__WEBPACK_IMPORTED_MODULE_2__["ToastContainer"], {
       limit: 1,
       position: "top-center",
       autoClose: 3000,
@@ -1711,7 +1759,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       closeOnClick: false,
       pauseOnHover: true,
       draggable: false
-    }));
+    })));
   }
 
 }
@@ -2535,10 +2583,9 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         return;
       }
 
-      this.props.getDataGrid().then(() => {
-        if (this.props.customerInfo !== null) {
-          window.location = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Dashboard');
-        }
+      this.props.getDataGrid().then(() => {// if(this.props.customerInfo !== null){
+        //     window.location = Site.resolveClientUrl('Dashboard');
+        // }
       });
     });
 
@@ -2792,8 +2839,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-const RemarkComponentPromise = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/remark/components/AppContainer */ "./www/sources/js/pages/remark/components/AppContainer.jsx")));
-const ChatTypeMappingComponentPromise = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
 class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
@@ -2811,9 +2856,9 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         className: "menu-item"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "menu-title"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        className: "title",
-        href: item.url !== '' ? _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl(item.url.slice(1)) : undefined
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        to: item.url !== '' ? _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl(item.url.slice(1)) : '',
+        className: "title"
       }, item.name), item.subMenus.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "fa fa-caret-down icon"
       })), item.subMenus.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -2821,17 +2866,17 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, item.subMenus.map((element, key) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         key: key,
         className: "layer-first"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        className: "title",
-        href: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl(element.url.slice(1))
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        to: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl(element.url.slice(1)),
+        className: "title"
       }, element.name), element.subMenus.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "fa fa-caret-right icon pr-3 pt-1 float-right"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "layer-second"
-      }, element.subMenus.map((ele, num) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+      }, element.subMenus.map((ele, num) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        to: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl(ele.url.slice(1)),
         className: "layer-first",
-        key: num,
-        href: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl(ele.url.slice(1))
+        key: num
       }, ele.name))))))));
     });
   }
@@ -2846,24 +2891,35 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       return null;
     }
 
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-      to: "/"
-    }, "Home")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-      to: "/about"
-    }, "About")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-      to: "/dashboard"
-    }, "Dashboard"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Suspense"], {
-      fallback: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading...")
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Routes"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-      exact: true,
-      path: "/"
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-      path: "/about",
-      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(RemarkComponentPromise, null)
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-      path: "/dashboard",
-      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ChatTypeMappingComponentPromise, null)
-    }))));
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "header"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "left-header"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      src: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl('www/dist/css/images/icon/logo-crm.png'),
+      onClick: () => window.location = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl('Dashboard')
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "icon-bar"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fa fa-bars",
+      "aria-hidden": "true",
+      onClick: handleCollapseExpandLayout
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "right-header"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, menus.map((item, key) => this.isIgnoreMenu(item) && this.renderListMenu(item, key))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "item-end float-right"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "fa fa-user fa-lg"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "welcome"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Welcome'), " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "username"
+    }, window.currentUsername)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      src: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl('css/images/icon/icon-logout.png')
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+      className: "sign-out",
+      onClick: () => this.handleLogout()
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('SignOut')))));
   }
 
 }
@@ -3756,7 +3812,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["StrictMode"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_layout_container_index__WEBPACK_IMPORTED_MODULE_2__["default"], null)), document.getElementById('home-container'));
+react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["StrictMode"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_layout_container_index__WEBPACK_IMPORTED_MODULE_2__["default"], null)), document.getElementById('app-container'));
 
 /***/ }),
 

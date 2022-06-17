@@ -37,12 +37,6 @@
             this.settingService = settingService;
         }
 
-        public IActionResult Index()
-        {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.NotificationTemplate, Policy.Host);
-            return View(isHost);
-        }
-
         [HttpPost]
         public async Task<IActionResult> GetNotificationTemplate([FromBody] GetNotificationTemplateParam param)
         {

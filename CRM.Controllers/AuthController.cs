@@ -278,8 +278,11 @@
 
         private async Task DoSignOutAsync()
         {
-            await securityService.LogoutAsync(napSession.OnUserId);
-            napSession.ClearAll();
+            if(napSession.OnUserId != 0)
+            {
+                await securityService.LogoutAsync(napSession.OnUserId);
+                napSession.ClearAll();
+            }
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }

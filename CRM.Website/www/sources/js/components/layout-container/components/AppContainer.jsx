@@ -1,10 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense  } from "react";
 import Filter from './Filter';
 import { ToastContainer, Slide } from 'react-toastify';
 import Header from './Header';
 import DataGrid from './DataGrid';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route
+} from "react-router-dom";
+const NotificationListComponent  = lazy(() => import('@jsroot/pages/notification-list/index'));
+const NotificationTemplateComponent = lazy(() => import('@jsroot/pages/notification-template/index'));
 
 export default class AppContainer extends Component {
     constructor(props) {
@@ -31,10 +38,7 @@ export default class AppContainer extends Component {
         if(window.customerInfo !== null){
             await this.getSetting();
         }
-
-        if(window.menus !== null){
-            this.initDataMenu(window.menus);
-        }
+        this.getMenus();
 
         const isShowingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
         const isKeepLeftPanel = window.localStorage.getItem('isKeepLeftPanel');
@@ -44,6 +48,7 @@ export default class AppContainer extends Component {
         if(isShowingLeftPanel !== null){
             window.localStorage.removeItem('isShowingLeftPanel');
         }
+        this.getAntiForgeryToken();
     }
 
     initDataMenu = menus => {
@@ -115,7 +120,7 @@ export default class AppContainer extends Component {
             if (searchText.length >= 2) {
                 const params = this.getParams();
                 const url = Site.resolveClientUrl('CustomerInfo/GetCustomerAutoSuggestion');
-                await DataService.postDataAsync(url,params).then(response => {
+                await DataService.postDataAsync(url,params, this.state.antiToken).then(response => {
                     this.setState({customerSuggestions: response.data});
                 });
             } else {
@@ -139,7 +144,7 @@ export default class AppContainer extends Component {
         this.handleSetStorage(true);
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
-        await DataService.postDataAsync(url,params).then(response => {
+        await DataService.postDataAsync(url,params, this.state.antiToken).then(response => {
             this.setState({customerInfo: response.data});
             if (response.data === null && !this.state.isGuest) {
                 this.setState({
@@ -152,11 +157,27 @@ export default class AppContainer extends Component {
         }}).then(() => Site.unblockUI());
     };
 
+    getAntiForgeryToken = async () =>{
+        Site.blockUI();
+        const url = Site.resolveClientUrl('Antiforgery/GenerateAntiForgeryTokens');
+        await DataService.getDataAsync(url).then(response => {
+            document.getElementById('xsrfToken').value = response.data.requestToken;
+        }).then(() => Site.unblockUI());
+    };
+
     getSetting = async () =>{
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetSettings');
         await DataService.getDataAsync(url).then(response => {
              this.setState({ settings: response.data});
+        }).then(() => Site.unblockUI());
+    };
+
+    getMenus = async () =>{
+        Site.blockUI();
+        const url = Site.resolveClientUrl('Home/GetMenus');
+        await DataService.getDataAsync(url).then(response => {
+             this.initDataMenu(response.data);
         }).then(() => Site.unblockUI());
     };
 
@@ -178,6 +199,18 @@ export default class AppContainer extends Component {
         window.localStorage.setItem('isKeepLeftPanel', isShowLeft);
     }
 
+    renderMenuComponent = () =>{
+        return (
+            <Suspense fallback={<div>Loading...</div>}>
+                <Routes>
+                    <Route exact path="/" />
+                    <Route exact path="/NotificationList" element={<NotificationListComponent />} />
+                    <Route exact path="/NotificationTemplate" element={<NotificationTemplateComponent />} />
+                </Routes>
+            </Suspense>
+        );
+    }
+
     renderLeftRightContent = customerInfo =>{
         const {settings, gridParams} = this.state;
         return (
@@ -193,9 +226,7 @@ export default class AppContainer extends Component {
                 </div>
                 <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>
                     <div id='child-app-container'>
-                    {
-                        this.props.children
-                    }
+                        {this.renderMenuComponent()}
                     </div>
                 </div>
             </div>
@@ -208,9 +239,7 @@ export default class AppContainer extends Component {
                 <div id='left-row-container' style={{width:0}} />
                 <div id='right-row-container' style={{width:'100%'}}>
                     <div id='child-app-container'>
-                    {
-                        this.props.children
-                    }
+                    {this.renderMenuComponent()}
                     </div>
                 </div> 
             </div>
@@ -226,37 +255,40 @@ export default class AppContainer extends Component {
         const hasCreateFeedbackPermission = window.currentCustomer?.hasCreateFeedbackPermission;
         return (
             <div>
-                <div className='fix-header-menu'>
-                    <Header menus={menus} handleCollapseExpandLayout={this.handleCollapseExpandLayout}/>
-                    <Filter
-                        isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
-                        customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
-                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
-                        showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
-                        handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
-                    />
-                </div>
-                {
-                    !showEmptyCustomerInfoPopup && customerInfo !== null &&
-                    <div className='row-content'>
-                        {
-                            isShowingLeftPanel ?
-                            this.renderLeftRightContent(customerInfo) :
-                            this.renderFullWidthContent()
-                        }
+                <Router>
+                    <div className='fix-header-menu'>
+                        <Header menus={menus} handleCollapseExpandLayout={this.handleCollapseExpandLayout}/>
+                        <Filter
+                            isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
+                            customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
+                            showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
+                            showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
+                            handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
+                        />
                     </div>
-                }
-                
-                <ToastContainer
-                    limit={1}
-                    position='top-center'
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    transition={Slide}
-                    closeOnClick={false}
-                    pauseOnHover
-                    draggable={false}
-                />
+                    {
+                        this.renderMenuComponent()
+                        // !showEmptyCustomerInfoPopup && customerInfo !== null &&
+                        // <div className='row-content'>
+                        //     {
+                        //         isShowingLeftPanel ?
+                        //         this.renderLeftRightContent(customerInfo) :
+                        //         this.renderFullWidthContent()
+                        //     }
+                        // </div>
+                    }
+                    
+                    <ToastContainer
+                        limit={1}
+                        position='top-center'
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        transition={Slide}
+                        closeOnClick={false}
+                        pauseOnHover
+                        draggable={false}
+                    />
+                </Router>
             </div>
         );
     }

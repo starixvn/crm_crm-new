@@ -1,15 +1,9 @@
-import React, { Component, lazy, Suspense  } from "react";
+import React, { Component } from "react";
 import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
     Link
 } from "react-router-dom";
-
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
-const RemarkComponentPromise  = lazy(() => import('@jsroot/pages/remark/components/AppContainer'));
-const ChatTypeMappingComponentPromise  = lazy(() => import('@jsroot/pages/notification-template/index'));
 
 export class Header extends Component {
     constructor(props) {
@@ -27,7 +21,7 @@ export class Header extends Component {
         return (
             <li key={index + item.id} className='menu-item'>
                 <div className='menu-title'>
-                <a className='title' href={item.url !== '' ? Site.resolveClientUrl(item.url.slice(1)) : undefined}>{item.name}</a>
+                <Link to={item.url !== '' ? Site.resolveClientUrl(item.url.slice(1)) : ''} className='title'>{item.name}</Link>
                     {
                         item.subMenus.length > 0 && <span className='fa fa-caret-down icon' />
                     }
@@ -39,7 +33,7 @@ export class Header extends Component {
                             {
                                 item.subMenus.map((element, key) => (
                                     <div key={key} className='layer-first'>
-                                        <a className='title' href={Site.resolveClientUrl(element.url.slice(1))}>{element.name}</a>
+                                        <Link to={Site.resolveClientUrl(element.url.slice(1))} className='title'>{element.name}</Link>
                                         {
                                             element.subMenus.length > 0 &&
                                             (
@@ -48,7 +42,7 @@ export class Header extends Component {
                                                     <div className='layer-second'>
                                                         {
                                                             element.subMenus.map((ele, num) => (
-                                                                <a className='layer-first' key={num} href={Site.resolveClientUrl(ele.url.slice(1))}>{ele.name}</a>
+                                                                <Link to={Site.resolveClientUrl(ele.url.slice(1))} className='layer-first' key={num}>{ele.name}</Link>
                                                             ))
                                                         }
                                                     </div>
@@ -71,28 +65,29 @@ export class Header extends Component {
             return null;
         }
 
-    return (
-        <Router>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
-          </ul>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Routes>
-                <Route exact path="/" />
-                <Route path="/about" element={<RemarkComponentPromise />} />
-                <Route path="/dashboard" element={<ChatTypeMappingComponentPromise />} />
-            </Routes>
-          </Suspense>
-      </Router>
-    );
+        return (
+            <div className='header'>
+                <div className='left-header'>
+                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')} onClick={() => window.location = Site.resolveClientUrl('Dashboard')}/>
+                    <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>
+                </div>
+                <div className='right-header'>
+                    <ul>
+                        {
+                            menus.map((item, key) => (
+                                this.isIgnoreMenu(item) && this.renderListMenu(item, key)
+                            ))
+                        }
+                    </ul>
+                    <div className='item-end float-right'>
+                        <span className='fa fa-user fa-lg' />
+                        <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{window.currentUsername}</span></span>
+                        <img src={Site.resolveClientUrl('css/images/icon/icon-logout.png')} />
+                        <a className='sign-out' onClick={() =>this.handleLogout()}>{LangHelper.getResource('SignOut')}</a>
+                    </div>
+                </div>
+            </div>
+        );
     }
 }
 

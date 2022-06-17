@@ -14,8 +14,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
-    public class CustomerInfoController : BaseController
+    //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    public class CustomerInfoController : Controller
     {
         private readonly INapSession napSession;
         private readonly ICustomerService customerService;
@@ -77,7 +77,7 @@
         public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
         {
             command.UserId = napSession.UserId;
-            command.IP = ClientIP;
+            //command.IP = ClientIP;
             var result = await customerService.UpdateCustomerInfoAsync(command);
             return Json(result);
         }

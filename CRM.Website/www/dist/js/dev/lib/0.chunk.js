@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[0],{
 
-/***/ "./www/sources/css/pages/notification-template/index.scss":
-/*!****************************************************************!*\
-  !*** ./www/sources/css/pages/notification-template/index.scss ***!
-  \****************************************************************/
+/***/ "./www/sources/css/pages/notification-list/index.scss":
+/*!************************************************************!*\
+  !*** ./www/sources/css/pages/notification-list/index.scss ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11,908 +11,270 @@
 
 /***/ }),
 
-/***/ "./www/sources/js/components/react-grid/components/Cell.jsx":
-/*!******************************************************************!*\
-  !*** ./www/sources/js/components/react-grid/components/Cell.jsx ***!
-  \******************************************************************/
+/***/ "./www/sources/js/common/createReducer.js":
+/*!************************************************!*\
+  !*** ./www/sources/js/common/createReducer.js ***!
+  \************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+const createReducer = (initialState, handlers) => {
+  return (state = initialState, action) => {
+    if (handlers.hasOwnProperty(action.type)) {
+      return handlers[action.type](state, action);
+    } else {
+      return state;
+    }
+  };
+};
 
-
-const Cell = props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", props, props.children);
-
-/* harmony default export */ __webpack_exports__["default"] = (Cell);
+/* harmony default export */ __webpack_exports__["default"] = (createReducer);
 
 /***/ }),
 
-/***/ "./www/sources/js/components/react-grid/components/HeaderCell.jsx":
-/*!************************************************************************!*\
-  !*** ./www/sources/js/components/react-grid/components/HeaderCell.jsx ***!
-  \************************************************************************/
+/***/ "./www/sources/js/common/store.js":
+/*!****************************************!*\
+  !*** ./www/sources/js/common/store.js ***!
+  \****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return HeaderCell; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-const _excluded = ["colWidth", "sortBy", "sortOrder", "onSort", "children"];
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Store; });
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js");
 
 
-
-class HeaderCell extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(props) {
-    super(props);
-
-    _defineProperty(this, "onClick", () => {
-      if (!this.props.sortBy) {
-        return;
-      }
-
-      const {
-        onSort
-      } = this.props;
-      const sortOrder = this.props.sortOrder;
-      const newSortOrder = !sortOrder || sortOrder === 'desc' ? 'asc' : 'desc';
-      onSort && onSort(this.props.sortBy, newSortOrder);
-    });
-  }
-
-  render() {
-    const _this$props = this.props,
-          {
-      colWidth,
-      sortBy,
-      sortOrder,
-      onSort,
-      children
-    } = _this$props,
-          rest = _objectWithoutProperties(_this$props, _excluded);
-
-    let sortableHeader = null;
-
-    if (sortBy) {
-      const upArrow = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        style: {
-          display: 'block',
-          color: `${sortOrder === 'asc' ? '#111' : '#777'}`
-        },
-        className: 'asc'
-      });
-      const downArrow = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        style: {
-          display: 'block',
-          marginTop: '2px',
-          color: `${sortOrder === 'desc' ? '#111' : '#777'}`
-        },
-        className: 'desc'
-      });
-      sortableHeader = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", _extends({}, rest, {
-        className: 'sortable sorting',
-        style: {
-          position: 'relative',
-          backgroundClip: 'padding-box'
-        },
-        onClick: this.onClick
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        style: {
-          width: '90%'
-        }
-      }, children), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        style: {
-          float: 'right',
-          position: 'absolute',
-          top: '40%',
-          right: '2px'
-        }
-      }, upArrow, downArrow));
-    }
-
-    return sortableHeader || /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", rest, children);
+class Store {
+  static createStore(reducer, initialState) {
+    const enhancer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["compose"])(Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"]));
+    return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(reducer, initialState, enhancer);
   }
 
 }
 
-_defineProperty(HeaderCell, "propTypes", {
-  sortOrder: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  sortBy: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  onSort: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
-});
-
-_defineProperty(HeaderCell, "defaultProps", {
-  sortOrder: null,
-  sortBy: null,
-  onSort: null
-});
-
 /***/ }),
 
-/***/ "./www/sources/js/components/react-grid/components/HeaderRow.jsx":
-/*!***********************************************************************!*\
-  !*** ./www/sources/js/components/react-grid/components/HeaderRow.jsx ***!
-  \***********************************************************************/
+/***/ "./www/sources/js/components/ConfirmPopup.jsx":
+/*!****************************************************!*\
+  !*** ./www/sources/js/components/ConfirmPopup.jsx ***!
+  \****************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return HeaderRow; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-const _excluded = ["onSort", "sortBy", "sortOrder"];
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _DraggableModalDialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+class ConfirmPopup extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
+  render() {
+    const {
+      size,
+      title,
+      content,
+      requestResponse
+    } = this.props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"], {
+      show: true,
+      backdrop: "static",
+      dialogAs: _DraggableModalDialog__WEBPACK_IMPORTED_MODULE_3__["default"],
+      className: "confirmation-modal",
+      keyboard: false,
+      size: size,
+      centered: true,
+      onHide: this.props.onClose
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Header, {
+      closeButton: true
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Title, {
+      as: "div"
+    }, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Body, null, requestResponse && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Alert"], {
+      variant: requestResponse.isSuccessful ? 'success' : 'danger',
+      className: "d-flex"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: `fa ${requestResponse.isSuccessful ? 'fa-check' : 'fa-exclamation-triangle'}`
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "ml-2"
+    }, requestResponse.message)), content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+      variant: "primary",
+      size: "sm",
+      onClick: this.props.onSubmit,
+      disabled: requestResponse && requestResponse.isSuccessful
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('OK')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+      variant: "primary",
+      size: "sm",
+      onClick: this.props.onClose
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('Cancel'))));
+  }
+
+}
+
+_defineProperty(ConfirmPopup, "propTypes", {
+  size: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf(['sm', 'lg', 'xl', 'md']),
+  title: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  content: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.element]),
+  requestResponse: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
+    isSuccessful: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+    message: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string
+  }),
+  onSubmit: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+  onClose: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
+});
+
+_defineProperty(ConfirmPopup, "defaultProps", {
+  size: 'sm',
+  title: '',
+  content: '',
+  requestResponse: null
+});
+
+/* harmony default export */ __webpack_exports__["default"] = (ConfirmPopup);
+
+/***/ }),
+
+/***/ "./www/sources/js/components/CustomReactSelect.jsx":
+/*!*********************************************************!*\
+  !*** ./www/sources/js/components/CustomReactSelect.jsx ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomReactSelect; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.browser.esm.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+const _excluded = ["components", "styles", "placeholder"];
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
-class HeaderRow extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(props) {
-    super(props);
-  }
+class CustomReactSelect extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  render() {
+    const _this$props = this.props,
+          {
+      components,
+      styles,
+      placeholder
+    } = _this$props,
+          rest = _objectWithoutProperties(_this$props, _excluded);
 
-  _renderChildren() {
-    const {
-      onSort,
-      children,
-      sortBy,
-      sortOrder
-    } = this.props;
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.Children.map(children, child => child && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(child, {
-      onSort: onSort,
-      sortOrder: sortBy === child.props.sortBy ? sortOrder : null
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_1__["default"], _extends({
+      className: "react-select-container",
+      classNamePrefix: "react-select",
+      placeholder: placeholder || _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('PleaseSelect')
+    }, rest, {
+      components: _objectSpread({
+        IndicatorSeparator: () => null
+      }, components),
+      styles: _objectSpread({
+        control: base => _objectSpread(_objectSpread({}, base), {}, {
+          borderRadius: 0,
+          minHeight: 'unset',
+          boxShadow: 'none'
+        }),
+        input: base => _objectSpread(_objectSpread({}, base), {}, {
+          lineHeight: 1
+        }),
+        multiValue: base => _objectSpread(_objectSpread({}, base), {}, {
+          margin: '0 4px 0 0'
+        })
+      }, styles)
     }));
   }
 
-  render() {
-    const _this$props = this.props,
-          {
-      onSort,
-      sortBy,
-      sortOrder
-    } = _this$props,
-          rest = _objectWithoutProperties(_this$props, _excluded);
+}
 
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", rest, this._renderChildren());
+/***/ }),
+
+/***/ "./www/sources/js/components/date-picker/CustomInput.jsx":
+/*!***************************************************************!*\
+  !*** ./www/sources/js/components/date-picker/CustomInput.jsx ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomInput; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+
+
+class CustomInput extends react__WEBPACK_IMPORTED_MODULE_0___default.a.PureComponent {
+  render() {
+    const {
+      disabled,
+      onClick,
+      value,
+      isInvalid
+    } = this.props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Form"].Control, {
+      as: "input",
+      className: "shadow-none",
+      isInvalid: isInvalid,
+      readOnly: true,
+      disabled: disabled,
+      onClick: onClick,
+      value: value
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "date-picker-icon fa fa-calendar",
+      onClick: onClick
+    }));
   }
 
 }
 
-_defineProperty(HeaderRow, "propTypes", {
-  onSort: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
-});
-
-_defineProperty(HeaderRow, "defaultProps", {
-  onSort: null
-});
-
 /***/ }),
 
-/***/ "./www/sources/js/components/react-grid/components/Pager.jsx":
-/*!*******************************************************************!*\
-  !*** ./www/sources/js/components/react-grid/components/Pager.jsx ***!
-  \*******************************************************************/
+/***/ "./www/sources/js/components/date-picker/index.jsx":
+/*!*********************************************************!*\
+  !*** ./www/sources/js/components/date-picker/index.jsx ***!
+  \*********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Pager; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DatePickerField; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-class Pager extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(props) {
-    super(props);
-
-    _defineProperty(this, "onKeyUpHandle", (e, totalPage) => {
-      const code = e.keyCode ? e.keyCode : e.which;
-
-      if (code === 13) {
-        const value = parseInt(this.state.inputValue, 10);
-
-        if (value > 0 && value <= totalPage) {
-          this.goToPage(value, this.props.pageOption.PageSize);
-        }
-      }
-    });
-
-    _defineProperty(this, "onInputChangeHandler", event => {
-      const pattern = /^\d*$/;
-      const regex = new RegExp(pattern);
-      const {
-        value
-      } = event.target;
-      const isValidNumber = regex.test(value); // NOSONAR
-
-      if (isValidNumber) {
-        this._updateState(value);
-      }
-    });
-
-    this.state = {
-      inputValue: props.pageOption.PageIndex
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    const pageIndex = this.props.pageOption.PageIndex;
-
-    if (pageIndex !== prevProps.pageOption.PageIndex) {
-      this._updateState(pageIndex);
-    }
-  }
-
-  goToPage(index, pageSize) {
-    this.props.onPaging && this.props.onPaging(index, pageSize);
-  }
-
-  onClickHandle(isDisable, handleFunc) {
-    if (!isDisable) {
-      handleFunc();
-    }
-  }
-
-  _updateState(inputValue) {
-    this.setState({
-      inputValue
-    });
-  }
-
-  _renderPageSizeSelection(isDisable, pageSize) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-      className: "pagesize-select",
-      disabled: isDisable,
-      value: pageSize,
-      onChange: event => this.goToPage(1, Number(event.target.value))
-    }, this._renderPageSizeOption(this.props.pageOption.PageList));
-  }
-
-  _renderPageSizeOption(pageList) {
-    return pageList.map((item, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-      key: `pagesize${index}`,
-      value: item
-    }, item));
-  }
-
-  _renderPageIcon(iconClass, isDisable, onClickFunc) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-      className: `fa ${iconClass} ${isDisable ? 'disable' : ''}`,
-      onClick: () => this.onClickHandle(isDisable, onClickFunc)
-    });
-  }
-
-  _renderPageInput(index, totalPage) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "page-input"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Page "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-      type: "text",
-      className: "page-form",
-      value: index,
-      maxLength: "4",
-      size: "2",
-      onChange: this.onInputChangeHandler,
-      onKeyUp: event => this.onKeyUpHandle(event, totalPage)
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, ` of ${totalPage}`, " "));
-  }
-
-  _renderPageLabel(index, totalPage) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "page-input"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Page ", `${index} of ${totalPage} `));
-  }
-
-  _renderPageInfo(index, pageSize, totalItem) {
-    const viewFrom = (index - 1) * pageSize + 1;
-    const viewTo = index * pageSize;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-      className: "page-info"
-    }, `Display ${viewFrom} to ${viewTo > totalItem ? totalItem : viewTo} of ${totalItem} item(s)`);
-  }
-
-  render() {
-    const {
-      isShowPagingInfo,
-      isAllowInputPageIndex,
-      pageOption,
-      minWidth,
-      maxWidth
-    } = this.props;
-    const {
-      PageIndex,
-      PageSize,
-      TotalItem
-    } = pageOption;
-    const {
-      inputValue
-    } = this.state;
-    const isShow = TotalItem > 0;
-    const isDisable = isNaN(parseInt(inputValue, 10));
-    const totalPage = Math.ceil(TotalItem / PageSize);
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "page-container",
-      style: {
-        minWidth,
-        maxWidth,
-        display: `${isShow ? 'block' : 'none'}`
-      }
-    }, "Page size ", this._renderPageSizeSelection(isDisable, PageSize), this._renderPageIcon('fa-angle-double-left', PageIndex === 1, () => this.goToPage(1, PageSize)), this._renderPageIcon('fa-angle-left', isDisable || PageIndex <= 1 || PageIndex > totalPage, () => this.goToPage(PageIndex - 1, PageSize)), isAllowInputPageIndex ? this._renderPageInput(inputValue, totalPage) : this._renderPageLabel(PageIndex, totalPage), this._renderPageIcon('fa-angle-right', isDisable || PageIndex >= totalPage || PageIndex < 1, () => this.goToPage(PageIndex + 1, PageSize)), this._renderPageIcon('fa-angle-double-right', PageIndex === totalPage, () => this.goToPage(totalPage, PageSize)), isShowPagingInfo && this._renderPageInfo(PageIndex, PageSize, TotalItem));
-  }
-
-}
-
-_defineProperty(Pager, "propTypes", {
-  pageOption: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
-    PageIndex: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    PageSize: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    PageList: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number),
-    TotalItem: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number
-  }),
-  onPaging: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  isShowPagingInfo: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  isAllowInputPageIndex: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool
-});
-
-_defineProperty(Pager, "defaultProps", {
-  pageOption: {
-    PageIndex: 1,
-    PageSize: 50,
-    PageList: [50, 100, 200],
-    TotalItem: 0
-  },
-  isShowPagingInfo: true,
-  isAllowInputPageIndex: true
-});
-
-/***/ }),
-
-/***/ "./www/sources/js/components/react-grid/components/Row.jsx":
-/*!*****************************************************************!*\
-  !*** ./www/sources/js/components/react-grid/components/Row.jsx ***!
-  \*****************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-
-const Row = props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", props, props.children);
-
-/* harmony default export */ __webpack_exports__["default"] = (Row);
-
-/***/ }),
-
-/***/ "./www/sources/js/components/react-grid/components/RowLayout.jsx":
-/*!***********************************************************************!*\
-  !*** ./www/sources/js/components/react-grid/components/RowLayout.jsx ***!
-  \***********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-class RowLayout extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(props) {
-    super(props);
-  }
-
-  _getRowLayout() {
-    const {
-      columnLayout
-    } = this.props;
-    return columnLayout.map((cellWidth, index) => {
-      const width = isNaN(cellWidth) ? cellWidth : `${cellWidth}px`;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
-        key: `cellLayout${index}`,
-        style: {
-          width: width
-        }
-      });
-    });
-  }
-
-  render() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
-      className: "first-row"
-    }, this._getRowLayout());
-  }
-
-}
-
-_defineProperty(RowLayout, "propTypes", {
-  columnLayout: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string])).isRequired
-});
-
-/* harmony default export */ __webpack_exports__["default"] = (RowLayout);
-
-/***/ }),
-
-/***/ "./www/sources/js/components/react-grid/components/Table.jsx":
-/*!*******************************************************************!*\
-  !*** ./www/sources/js/components/react-grid/components/Table.jsx ***!
-  \*******************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _RowLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RowLayout */ "./www/sources/js/components/react-grid/components/RowLayout.jsx");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _tableSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tableSection */ "./www/sources/js/components/react-grid/components/tableSection.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants */ "./www/sources/js/components/react-grid/constants.js");
-/* harmony import */ var _Pager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Pager */ "./www/sources/js/components/react-grid/components/Pager.jsx");
-/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../functions */ "./www/sources/js/components/react-grid/functions.js");
-/* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
-
-const clientWidth = document.body.clientWidth;
-
-class Table extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(props) {
-    super(props);
-
-    _defineProperty(this, "_getWidthByCells", (headerRows, columnsWidth, currentNextCellIndexByRow, cells, currentRowIndex) => {
-      for (let i = 0; i < cells.length; i++) {
-        const cell = cells[i];
-
-        if (cell) {
-          this._handleWidthOneCell(headerRows, columnsWidth, currentNextCellIndexByRow, cell, currentRowIndex);
-        }
-      }
-    });
-
-    _defineProperty(this, "_handleWidthOneCell", (headerRows, columnsWidth, currentNextCellIndexByRow, cell, currentRowIndex) => {
-      const cellProps = cell.props;
-      const colspan = Number(cellProps.colSpan);
-
-      if (colspan && colspan > 1) {
-        const nextRowIndex = currentRowIndex + 1;
-
-        if (currentNextCellIndexByRow[nextRowIndex] === undefined) {
-          currentNextCellIndexByRow[nextRowIndex] = 0;
-        }
-
-        const fromNextCellIndex = currentNextCellIndexByRow[nextRowIndex];
-        const toNextCellIndex = fromNextCellIndex + colspan - 1;
-        const nextCells = headerRows[nextRowIndex].props.children;
-
-        const nextColspanCells = this._getNextColspanCells(nextCells, fromNextCellIndex, toNextCellIndex);
-
-        currentNextCellIndexByRow[nextRowIndex] += nextColspanCells.length;
-
-        this._getWidthByCells(headerRows, columnsWidth, currentNextCellIndexByRow, nextColspanCells, nextRowIndex);
-      } else {
-        const cellWidth = cellProps.colWidth ? cellProps.colWidth : _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_COLUMN_WIDTH"];
-        columnsWidth.push(cellWidth);
-      }
-    });
-
-    _defineProperty(this, "_handleResize", event => {
-      event && event.preventDefault();
-
-      if (this.bodyWrapper && this.props.autoHeight) {
-        const bodyHeight = this._calculateBodyHeight();
-
-        if (this.state.contentHeight !== bodyHeight) {
-          this.setState({
-            contentHeight: bodyHeight
-          });
-        }
-      }
-
-      const {
-        maxWidth,
-        shouldUseMaxWidth
-      } = this.props;
-      const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
-      const minWidthContainer = 1485;
-      const calWidth = document.body.clientWidth < minWidthContainer ? minWidthContainer : document.body.clientWidth;
-
-      if (showingLeftPanel !== null) {
-        this.setState({
-          maxWidth
-        });
-        window.localStorage.removeItem('isShowingLeftPanel');
-      } else {
-        const maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
-
-        if (this.state.maxWidth !== maxWidthCal) {
-          this.setState({
-            maxWidth: maxWidthCal
-          });
-        }
-      }
-    });
-
-    _defineProperty(this, "_calculateWidth", () => {
-      const isFullWidthClient = this.props.width === clientWidth;
-      const leftRowContainer = document.getElementById('left-row-container');
-      const leftContainerWidth = window.customerInfo !== null && leftRowContainer !== null ? leftRowContainer.width + _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"] : _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"];
-      const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
-      return widthRemain;
-    });
-
-    _defineProperty(this, "renderFixColumn", fixProps => {
-      const {
-        header,
-        body,
-        footer,
-        sectionProps,
-        headerSectionProps,
-        maxWidth,
-        rowLayout,
-        isPaging,
-        pageOption,
-        onPaging
-      } = fixProps;
-      let maxHeightContainer = 0;
-
-      if (this.headerWrapper !== null) {
-        maxHeightContainer = this.headerWrapper.offsetHeight + this.state.contentHeight;
-      }
-
-      const increaseMaxWidth = maxWidth + 1;
-      const maxWidthCal = maxWidth + _constants__WEBPACK_IMPORTED_MODULE_4__["SCROLLBAR_WIDTH"] + 1;
-
-      const footerSectionProps = _objectSpread(_objectSpread({}, sectionProps), {}, {
-        maxWidth: maxWidthCal
-      });
-
-      const fixHeaderSectionProps = _objectSpread(_objectSpread({}, headerSectionProps), {}, {
-        maxWidth: increaseMaxWidth
-      });
-
-      const fixSectionProps = _objectSpread(_objectSpread({}, sectionProps), {}, {
-        maxWidth: increaseMaxWidth
-      });
-
-      const {
-        Header,
-        Body,
-        Footer
-      } = this;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "fix-table-container",
-        style: {
-          maxWidth: maxWidthCal
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        style: {
-          maxWidth: maxWidthCal
-        }
-      }, this.props.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "fix-table",
-        style: {
-          maxWidth: maxWidthCal,
-          maxHeight: maxHeightContainer
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Header, fixHeaderSectionProps, rowLayout, header), body && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Body, fixSectionProps, rowLayout, body), footer && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Footer, fixSectionProps, rowLayout, footer)), isPaging && pageOption && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Pager__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({
-        pageOption: pageOption,
-        onPaging: onPaging
-      }, footerSectionProps)));
-    });
-
-    this.headerWrapper = null;
-    this.bodyWrapper = null;
-    this.footerWrapper = null;
-    const headerContainerProps = {
-      className: 'header-content',
-      isHeader: true,
-      getRef: element => this.headerWrapper = element
-    };
-    this.Header = Object(_tableSection__WEBPACK_IMPORTED_MODULE_3__["default"])(headerContainerProps);
-    const bodyContainerProps = {
-      className: 'body-content',
-      getRef: element => this.bodyWrapper = element
-    };
-    this.Body = Object(_tableSection__WEBPACK_IMPORTED_MODULE_3__["default"])(bodyContainerProps);
-    const footerContainerProps = {
-      className: 'footer-content',
-      getRef: element => this.footerWrapper = element
-    };
-    this.Footer = Object(_tableSection__WEBPACK_IMPORTED_MODULE_3__["default"])(footerContainerProps);
-    const {
-      maxWidth: _maxWidth,
-      bodyHeight: _bodyHeight,
-      adjustedHeight
-    } = this.props;
-    const maxWidthValue = _maxWidth || clientWidth;
-    this.diffWidth = clientWidth - maxWidthValue;
-    this.adjustedHeight = adjustedHeight;
-    this.debounceResizing = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_7__["default"].debounce(this._handleResize);
-    this.state = {
-      maxWidth: maxWidthValue,
-      contentHeight: _bodyHeight,
-      columnsWidth: this._getColumnsWidth(props.header)
-    };
-  }
-
-  componentDidMount() {
-    this._handleResize();
-
-    window.addEventListener('resize', this.debounceResizing);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.maxWidth !== prevProps.maxWidth) {
-      const maxWidthValue = this.props.maxWidth || clientWidth;
-      this.diffWidth = clientWidth - maxWidthValue;
-      this.setState({
-        maxWidth: maxWidthValue
-      });
-    }
-
-    if (this.props.header !== prevProps.header || this.props.maxWidth !== prevProps.maxWidth) {
-      this.setState({
-        columnsWidth: this._getColumnsWidth(this.props.header)
-      });
-    }
-
-    if (this.props.shouldResetScrollPosition && prevProps.body !== this.props.body) {
-      _functions__WEBPACK_IMPORTED_MODULE_6__["default"].scrollToTop(this.bodyWrapper, 200);
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.debounceResizing);
-  }
-
-  get columnWidthSum() {
-    const columnsWidth = this.state.columnsWidth;
-    return !columnsWidth || !columnsWidth.length || columnsWidth.find(x => typeof x !== 'number') ? null : columnsWidth.reduce((prev, current) => prev + current, 0);
-  }
-
-  _getNextColspanCells(cells, fromCellIndex, toCellIndex) {
-    const colspanCells = [];
-    let toCellInternalIndex = toCellIndex;
-
-    for (let i = fromCellIndex; i <= toCellInternalIndex; i++) {
-      const cell = cells[i];
-      const hasNext = i < cells.length;
-
-      if (!(!cell && hasNext)) {
-        if (cell.props.colSpan) {
-          toCellInternalIndex -= 1;
-        }
-
-        colspanCells.push(cell);
-      } else {
-        toCellInternalIndex += 1;
-      }
-    }
-
-    return colspanCells;
-  }
-
-  _getColumnsWidth(headerRows) {
-    const headerIsArray = Array.isArray(headerRows);
-
-    if (headerIsArray && headerRows.length === 0) {
-      return null;
-    }
-
-    const columnsWidth = [];
-    const currentNextCellIndexByRow = {};
-    const currentRowIndex = 0;
-    const cellList = headerIsArray ? headerRows[currentRowIndex].props.children : headerRows.props.children;
-
-    this._getWidthByCells(headerRows, columnsWidth, currentNextCellIndexByRow, cellList, currentRowIndex);
-
-    return columnsWidth;
-  }
-
-  _calculateBodyHeight() {
-    const windowHeight = window.innerHeight;
-    const footerHeight = this.footerWrapper ? this.footerWrapper.offsetHeight : 0;
-    const tableContentHeight = windowHeight - (this.bodyWrapper.offsetTop + footerHeight + 70) - this.adjustedHeight;
-    return tableContentHeight;
-  }
-
-  _getUpdatedColumnLayout() {
-    const {
-      width,
-      autoWidth,
-      containerPadding
-    } = this.props;
-
-    const widthRemain = this._calculateWidth();
-
-    let sumOfColumnWidth = autoWidth ? this.state.maxWidth : width;
-    sumOfColumnWidth = sumOfColumnWidth - containerPadding - _constants__WEBPACK_IMPORTED_MODULE_4__["SCROLLBAR_WIDTH"] - _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"] - widthRemain;
-    const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth => sumOfColumnWidth / this.columnWidthSum * cellWidth);
-    return newColumnsWidth;
-  }
-
-  render() {
-    const {
-      width,
-      autoWidth,
-      minWidth,
-      header,
-      body,
-      footer,
-      isPaging,
-      pageOption,
-      onPaging,
-      containerPadding,
-      shouldUseMaxWidth,
-      isFixColumn
-    } = this.props;
-
-    const widthRemain = this._calculateWidth();
-
-    const maxWidthRemain = shouldUseMaxWidth ? 0 : widthRemain;
-    const maxWidth = this.state.maxWidth - containerPadding - maxWidthRemain;
-    const actualWidth = width - containerPadding - widthRemain;
-    const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ? this._getUpdatedColumnLayout() : this.state.columnsWidth;
-
-    if (!newColumnLayout) {
-      return null;
-    }
-
-    const sectionProps = {
-      width: actualWidth,
-      autoWidth,
-      minWidth,
-      maxWidth,
-      shouldUseMaxWidth
-    };
-    const headerSectionProps = {
-      onSort: this.props.onSort,
-      width: actualWidth,
-      autoWidth,
-      minWidth,
-      maxWidth,
-      shouldUseMaxWidth
-    };
-    const rowLayout = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RowLayout__WEBPACK_IMPORTED_MODULE_1__["default"], {
-      columnLayout: newColumnLayout
-    });
-    const {
-      Header,
-      Body,
-      Footer
-    } = this;
-    const fixProps = {
-      header,
-      body,
-      footer,
-      sectionProps,
-      headerSectionProps,
-      maxWidth,
-      width,
-      rowLayout,
-      isPaging,
-      pageOption,
-      onPaging
-    };
-    return isFixColumn ? this.renderFixColumn(_objectSpread({}, fixProps)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "table-container",
-      style: {
-        maxWidth
-      }
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Header, headerSectionProps, rowLayout, header), body && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Body, _extends({}, sectionProps, {
-      maxHeight: this.state.contentHeight
-    }), rowLayout, body), footer && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Footer, sectionProps, rowLayout, footer)), isPaging && pageOption && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Pager__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({
-      pageOption: pageOption,
-      onPaging: onPaging
-    }, sectionProps)));
-  }
-
-}
-
-_defineProperty(Table, "propTypes", {
-  onSort: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
-  width: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.number, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string]),
-  maxWidth: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.number,
-  minWidth: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.number,
-  autoWidth: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
-  bodyHeight: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.number,
-  autoHeight: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
-  title: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object)]),
-  header: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object, prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object)]).isRequired,
-  body: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object),
-  footer: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object),
-  isFixColumn: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
-  isPaging: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
-  onPaging: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
-  pageOption: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object,
-  adjustedHeight: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.number,
-  containerPadding: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.number,
-  shouldResetScrollPosition: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
-  shouldUseMaxWidth: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
-});
-
-_defineProperty(Table, "defaultProps", {
-  onSort: null,
-  width: clientWidth,
-  maxWidth: clientWidth,
-  autoWidth: true,
-  isFixColumn: false,
-  isPaging: false,
-  adjustedHeight: 0,
-  bodyHeight: 0,
-  autoHeight: true,
-  containerPadding: 30,
-  shouldResetScrollPosition: true,
-  shouldUseMaxWidth: false
-});
-
-/* harmony default export */ __webpack_exports__["default"] = (Table);
-
-/***/ }),
-
-/***/ "./www/sources/js/components/react-grid/components/tableSection.js":
-/*!*************************************************************************!*\
-  !*** ./www/sources/js/components/react-grid/components/tableSection.js ***!
-  \*************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./www/sources/js/components/react-grid/constants.js");
-const _excluded = ["onSort", "tableClass", "width", "autoWidth", "maxWidth", "minWidth", "maxHeight"],
-      _excluded2 = ["isHeader", "getRef"];
+/* harmony import */ var react_datepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-datepicker */ "./node_modules/react-datepicker/dist/react-datepicker.min.js");
+/* harmony import */ var react_datepicker__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_datepicker__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _CustomInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CustomInput */ "./www/sources/js/components/date-picker/CustomInput.jsx");
+/* harmony import */ var _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @jsroot/common/dateTimeService */ "./www/sources/js/common/dateTimeService.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+const _excluded = ["className", "selected", "isInvalid"];
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -920,379 +282,382 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 
 
-const createTableSection = (extendedContainerProps, extendedTableProps) => {
-  var _class;
 
-  return _class = class TableSection extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-    constructor(props) {
-      super(props);
+class DatePickerField extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  constructor(props) {
+    super(props);
 
-      _defineProperty(this, "onSort", (sortBy, sortOrder) => {
-        const onSort = this.props.onSort;
-        this.setState({
-          sortBy: sortBy,
-          sortOrder: sortOrder
-        }, () => {
-          onSort && onSort(sortBy, sortOrder);
-        });
+    _defineProperty(this, "handleTimeNow", () => {
+      this.setState({
+        selected: new Date(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_3__["default"].toLongDateTimeFormat(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_3__["default"].toClientDateTime(new Date())))
       });
+    });
 
-      this.state = {
-        sortBy: null,
-        sortOrder: null
-      };
-    }
+    this.state = {
+      selected: this.props.selected
+    };
+  }
 
-    get containerWidth() {
-      const {
-        autoWidth,
-        maxWidth,
-        width,
-        shouldUseMaxWidth
-      } = this.props;
-      return shouldUseMaxWidth || autoWidth ? maxWidth : width;
-    }
-
-    get containerStyle() {
-      const {
-        minWidth,
-        maxHeight
-      } = this.props;
-      return _objectSpread(_objectSpread({}, this.props.style), {}, {
-        width: this.containerWidth,
-        minWidth,
-        maxHeight
+  componentDidUpdate(prevProps) {
+    if (prevProps.selected !== this.props.selected) {
+      this.setState({
+        selected: this.props.selected
       });
     }
+  }
 
-    get tableStyle() {
-      const {
-        minWidth,
-        autoWidth,
-        maxWidth,
-        shouldUseMaxWidth
-      } = this.props;
-      const maxWidthTable = minWidth ? Math.max(this.containerWidth, minWidth) : this.containerWidth;
-      const tableWidth = shouldUseMaxWidth ? maxWidthTable : maxWidthTable - _constants__WEBPACK_IMPORTED_MODULE_2__["SCROLLBAR_WIDTH"];
-      return {
-        width: tableWidth
-      };
-    }
+  render() {
+    const _this$props = this.props,
+          {
+      className,
+      selected,
+      isInvalid
+    } = _this$props,
+          rest = _objectWithoutProperties(_this$props, _excluded);
 
-    _renderHeaderChildren() {
-      const children = this.props.children;
-      const {
-        sortBy,
-        sortOrder
-      } = this.state; // register onSort event
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_datepicker__WEBPACK_IMPORTED_MODULE_1___default.a, _extends({
+      className: `datetime-picker ${className}`,
+      dateFormat: this.props.showTimeInput ? 'MMM dd, yyyy hh:mm aa' : 'MMM dd, yyyy',
+      customInput: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CustomInput__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        isInvalid: isInvalid
+      }),
+      selected: this.state.selected
+    }, rest), this.props.showTimeInput && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "react-datepicker__input-time-container btn-now",
+      type: "button",
+      onClick: this.handleTimeNow
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('Now')));
+  }
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.Children.map(children, child => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(child, {
-        onSort: this.onSort,
-        sortBy,
-        sortOrder
-      }));
-    }
+}
 
-    render() {
-      const _this$props = this.props,
-            {
-        onSort,
-        tableClass,
-        width,
-        autoWidth,
-        maxWidth,
-        minWidth,
-        maxHeight
-      } = _this$props,
-            rest = _objectWithoutProperties(_this$props, _excluded);
+_defineProperty(DatePickerField, "defaultProps", {
+  isInvalid: false
+});
 
-      const {
-        isHeader,
-        getRef
-      } = extendedContainerProps,
-            restContainerProps = _objectWithoutProperties(extendedContainerProps, _excluded2);
+/***/ }),
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", _extends({}, rest, {
-        style: this.containerStyle,
-        ref: getRef
-      }, restContainerProps), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "table-wrapper"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", _extends({
-        style: this.tableStyle,
-        className: tableClass
-      }, extendedTableProps), isHeader ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, this._renderHeaderChildren()) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, this.props.children))));
-    }
+/***/ "./www/sources/js/pages/notification-list/actions/dataHandlerActions.js":
+/*!******************************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/actions/dataHandlerActions.js ***!
+  \******************************************************************************/
+/*! exports provided: setGridParams, setGridData, getGridData, setContentPopup, setViewDetailPopup, setResendOptions, setInvalidParams, setSettings, getSettings, setViewDetail, editNotificationList, validateResend, setValidateResend, setConfirmPopup, getHeadlineOptions, getRecipientOptions, setHeadlineOptions, setRecipientOptions, setAutoRefresh, setIsRefresh, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-  }, _defineProperty(_class, "propTypes", {
-    onSort: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-    tableClass: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    width: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string]).isRequired,
-    maxWidth: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number.isRequired,
-    minWidth: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    autoWidth: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-    maxHeight: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    headerContainerProps: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-    shouldUseMaxWidth: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool
-  }), _defineProperty(_class, "defaultProps", {
-    onSort: null,
-    tableClass: "table",
-    autoWidth: true,
-    shouldUseMaxWidth: false
-  }), _class;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setGridParams", function() { return setGridParams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setGridData", function() { return setGridData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGridData", function() { return getGridData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setContentPopup", function() { return setContentPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setViewDetailPopup", function() { return setViewDetailPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setResendOptions", function() { return setResendOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setInvalidParams", function() { return setInvalidParams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSettings", function() { return setSettings; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSettings", function() { return getSettings; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setViewDetail", function() { return setViewDetail; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editNotificationList", function() { return editNotificationList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateResend", function() { return validateResend; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setValidateResend", function() { return setValidateResend; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setConfirmPopup", function() { return setConfirmPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getHeadlineOptions", function() { return getHeadlineOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRecipientOptions", function() { return getRecipientOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setHeadlineOptions", function() { return setHeadlineOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRecipientOptions", function() { return setRecipientOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAutoRefresh", function() { return setAutoRefresh; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setIsRefresh", function() { return setIsRefresh; });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./www/sources/js/pages/notification-list/actions/types.js");
+/* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
+/* harmony import */ var _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/common/dataService */ "./www/sources/js/common/dataService.js");
+
+
+ // Grid
+
+const setGridParams = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].GRID_PARAMS,
+    data
+  };
 };
+const setGridData = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].GRID_DATA,
+    data
+  };
+};
+const getGridData = (params, callback) => async dispatch => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
 
-/* harmony default export */ __webpack_exports__["default"] = (createTableSection);
+  if (params.messageId !== '' || params.notificationIdLower !== '') {
+    params.fromDate = null;
+    params.toDate = null;
+  }
 
-/***/ }),
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('NotificationList/GetGridData');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].postDataAsync(url, params).then(response => {
+    if (!response) {
+      return;
+    }
 
-/***/ "./www/sources/js/components/react-grid/constants.js":
-/*!***********************************************************!*\
-  !*** ./www/sources/js/components/react-grid/constants.js ***!
-  \***********************************************************/
-/*! exports provided: SCROLLBAR_WIDTH, GUTTER, DEFAULT_COLUMN_WIDTH, DEFAULT_PADDING */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SCROLLBAR_WIDTH", function() { return SCROLLBAR_WIDTH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GUTTER", function() { return GUTTER; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_COLUMN_WIDTH", function() { return DEFAULT_COLUMN_WIDTH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_PADDING", function() { return DEFAULT_PADDING; });
-const SCROLLBAR_WIDTH = 19;
-const GUTTER = 15;
-const DEFAULT_COLUMN_WIDTH = 100;
-const DEFAULT_PADDING = 31;
-
-/***/ }),
-
-/***/ "./www/sources/js/components/react-grid/functions.js":
-/*!***********************************************************!*\
-  !*** ./www/sources/js/components/react-grid/functions.js ***!
-  \***********************************************************/
-/*! exports provided: scrollToTop, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scrollToTop", function() { return scrollToTop; });
-const scrollToTop = (element, scrollDuration) => {
-  const scrollStep = -element.scrollTop / (scrollDuration / 15);
-  requestAnimationFrame(() => {
-    let scrollInterval = null;
-    scrollInterval = setInterval(() => {
-      if (element.scrollTop !== 0) {
-        element.scrollTop += scrollStep;
-      } else {
-        clearInterval(scrollInterval);
+    if (typeof callback === 'function') {
+      if (response.data || response.data.data) {
+        callback(response.data.data);
       }
-    }, 15);
+    }
+
+    dispatch(setGridData(response.data));
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+};
+const setContentPopup = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].CONTENT_POPUP_DATA,
+    data
+  };
+};
+const setViewDetailPopup = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].VIEW_DETAIL_POPUP_DATA,
+    data
+  };
+};
+const setResendOptions = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].RESEND_OPTIONS_DATA,
+    data
+  };
+};
+const setInvalidParams = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].INVALID_PARAMS_DATA,
+    data
+  };
+};
+const setSettings = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].SETTINGS_DATA,
+    data
+  };
+};
+const getSettings = () => async dispatch => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('NotificationList/GetSettings');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].getDataAsync(url).then(response => {
+    dispatch(setSettings(response.data));
+  }).catch(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].handleAxiosError).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+};
+const setViewDetail = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].VIEW_DETAIL_DATA,
+    data
+  };
+};
+const editNotificationList = params => async dispatch => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('NotificationList/EditNotificationList');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].postDataAsync(url, params).then(response => {
+    dispatch(setViewDetail(response.data));
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+};
+const validateResend = params => async dispatch => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('NotificationList/ValidateNotificationList');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].postDataAsync(url, params).then(response => {
+    dispatch(setValidateResend({
+      show: true,
+      result: response.data
+    }));
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+};
+const setValidateResend = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].VALIDATE_RESEND_DATA,
+    data
+  };
+};
+const setConfirmPopup = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].CONFIRM_POPUP_DATA,
+    data
+  };
+};
+const getHeadlineOptions = searchText => async dispatch => {
+  const params = {
+    username: searchText,
+    limit: 10,
+    excludeNotAssignedGroup: true
+  };
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('Common/GetHeadlines');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].postDataAsync(url, params).then(response => {
+    const options = response.data.map(item => {
+      return {
+        value: item.name,
+        label: item.name
+      };
+    });
+    dispatch(setHeadlineOptions(options));
   });
 };
-const functions = {
-  scrollToTop
+const getRecipientOptions = searchText => async dispatch => {
+  const params = {
+    recipientName: searchText,
+    limit: 10
+  };
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('Common/GetRecipients');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].postDataAsync(url, params).then(response => {
+    const options = response.data.map(item => {
+      return {
+        value: item.name,
+        label: item.name
+      };
+    });
+    dispatch(setRecipientOptions(options));
+  });
 };
-/* harmony default export */ __webpack_exports__["default"] = (functions);
+const setHeadlineOptions = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].HEADLINE_OPTIONS_DATA,
+    data
+  };
+};
+const setRecipientOptions = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].RECIPIENT_OPTIONS_DATA,
+    data
+  };
+};
+const setAutoRefresh = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].AUTO_REFRESH_DATA,
+    data
+  };
+};
+const setIsRefresh = data => {
+  return {
+    type: _types__WEBPACK_IMPORTED_MODULE_0__["default"].IS_REFRESH_DATA,
+    data
+  };
+};
+const actions = {
+  setGridParams,
+  setGridData,
+  getGridData,
+  setContentPopup,
+  setResendOptions,
+  setViewDetailPopup,
+  setInvalidParams,
+  setSettings,
+  getSettings,
+  editNotificationList,
+  setViewDetail,
+  validateResend,
+  setValidateResend,
+  setConfirmPopup,
+  getHeadlineOptions,
+  setHeadlineOptions,
+  getRecipientOptions,
+  setRecipientOptions,
+  setAutoRefresh,
+  setIsRefresh
+};
+/* harmony default export */ __webpack_exports__["default"] = (actions);
 
 /***/ }),
 
-/***/ "./www/sources/js/components/react-grid/index.jsx":
-/*!********************************************************!*\
-  !*** ./www/sources/js/components/react-grid/index.jsx ***!
-  \********************************************************/
-/*! exports provided: Table, HeaderRow, Row, HeaderCell, Cell, Pager */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Table */ "./www/sources/js/components/react-grid/components/Table.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Table", function() { return _components_Table__WEBPACK_IMPORTED_MODULE_0__["default"]; });
-
-/* harmony import */ var _components_HeaderRow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/HeaderRow */ "./www/sources/js/components/react-grid/components/HeaderRow.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HeaderRow", function() { return _components_HeaderRow__WEBPACK_IMPORTED_MODULE_1__["default"]; });
-
-/* harmony import */ var _components_Row__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Row */ "./www/sources/js/components/react-grid/components/Row.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Row", function() { return _components_Row__WEBPACK_IMPORTED_MODULE_2__["default"]; });
-
-/* harmony import */ var _components_HeaderCell__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/HeaderCell */ "./www/sources/js/components/react-grid/components/HeaderCell.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HeaderCell", function() { return _components_HeaderCell__WEBPACK_IMPORTED_MODULE_3__["default"]; });
-
-/* harmony import */ var _components_Cell__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Cell */ "./www/sources/js/components/react-grid/components/Cell.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Cell", function() { return _components_Cell__WEBPACK_IMPORTED_MODULE_4__["default"]; });
-
-/* harmony import */ var _components_Pager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Pager */ "./www/sources/js/components/react-grid/components/Pager.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Pager", function() { return _components_Pager__WEBPACK_IMPORTED_MODULE_5__["default"]; });
-
-
-
-
-
-
-
-
-
-/***/ }),
-
-/***/ "./www/sources/js/pages/notification-template/actions.js":
-/*!***************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/actions.js ***!
-  \***************************************************************/
+/***/ "./www/sources/js/pages/notification-list/actions/index.js":
+/*!*****************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/actions/index.js ***!
+  \*****************************************************************/
 /*! exports provided: ActionCreators */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActionCreators", function() { return ActionCreators; });
-/* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
-/* harmony import */ var _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/dataService */ "./www/sources/js/common/dataService.js");
-/* harmony import */ var _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./notificationTemplateSlice */ "./www/sources/js/pages/notification-template/notificationTemplateSlice.js");
+/* harmony import */ var _dataHandlerActions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dataHandlerActions */ "./www/sources/js/pages/notification-list/actions/dataHandlerActions.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
-
-
-const getNotificationTypes = () => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('Common/GetNotificationTypes');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getDataAsync(url).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setNotificationTypes"])(response.data));
-  });
-};
-
-const getLanguages = () => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('NotificationTemplate/GetLanguages');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getDataAsync(url).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setLanguages"])(response.data));
-  });
-};
-
-const getGridData = params => async dispatch => {
-  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('NotificationTemplate/GetNotificationTemplate');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setGridData"])(response.data));
-  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
-};
-
-const getTemplateById = (templateId, callback) => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl(`NotificationTemplate/GetById/${templateId}`);
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getDataAsync(url).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setSelectedTemplate"])(response.data));
-
-    if (typeof callback === 'function') {
-      callback();
-    }
-  });
-};
-
-const createTemplate = data => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('NotificationTemplate/Create');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, data).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setCreateTemplateResult"])(response.data));
-  });
-};
-
-const editTemplate = data => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('NotificationTemplate/Edit');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, data).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setEditTemplateResult"])(response.data));
-  });
-};
-
-const deleteTemplate = params => async () => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl(`NotificationTemplate/Delete`);
-  return await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => response);
-};
-
-const ActionCreators = {
-  setNotificationTypes: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setNotificationTypes"],
-  setLanguages: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setLanguages"],
-  setGridParams: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setGridParams"],
-  setGridData: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setGridData"],
-  setSelectedTemplate: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setSelectedTemplate"],
-  setCreateTemplatePopup: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setCreateTemplatePopup"],
-  setCreateTemplateResult: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setCreateTemplateResult"],
-  setEditTemplatePopup: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setEditTemplatePopup"],
-  setEditTemplateResult: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setEditTemplateResult"],
-  setDeleteTemplatePopup: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setDeleteTemplatePopup"],
-  setContentDetailPopup: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setContentDetailPopup"],
-  getNotificationTypes,
-  getLanguages,
-  getGridData,
-  getTemplateById,
-  createTemplate,
-  editTemplate,
-  deleteTemplate
-};
+const ActionCreators = _objectSpread({}, _dataHandlerActions__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/common.functions.js":
-/*!************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/common.functions.js ***!
-  \************************************************************************/
-/*! exports provided: renderNotificationTypeOption, validateFormik */
+/***/ "./www/sources/js/pages/notification-list/actions/types.js":
+/*!*****************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/actions/types.js ***!
+  \*****************************************************************/
+/*! exports provided: NOTIFICATIONTYPE_DATA, GRID_PARAMS, GRID_DATA, CONTENT_POPUP_DATA, RESEND_OPTIONS_DATA, VIEW_DETAIL_POPUP_DATA, INVALID_PARAMS_DATA, SETTINGS_DATA, VIEW_DETAIL_DATA, MESSAGE_RESULT_DATA, VALIDATE_RESEND_DATA, CONFIRM_POPUP_DATA, HEADLINE_OPTIONS_DATA, RECIPIENT_OPTIONS_DATA, AUTO_REFRESH_DATA, IS_REFRESH_DATA, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderNotificationTypeOption", function() { return renderNotificationTypeOption; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateFormik", function() { return validateFormik; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
-
-
-const renderNotificationTypeOption = item => {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    key: item.notificationTypeId,
-    value: item.notificationTypeId
-  }, item.notificationTypeName);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NOTIFICATIONTYPE_DATA", function() { return NOTIFICATIONTYPE_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GRID_PARAMS", function() { return GRID_PARAMS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GRID_DATA", function() { return GRID_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CONTENT_POPUP_DATA", function() { return CONTENT_POPUP_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RESEND_OPTIONS_DATA", function() { return RESEND_OPTIONS_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VIEW_DETAIL_POPUP_DATA", function() { return VIEW_DETAIL_POPUP_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INVALID_PARAMS_DATA", function() { return INVALID_PARAMS_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SETTINGS_DATA", function() { return SETTINGS_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VIEW_DETAIL_DATA", function() { return VIEW_DETAIL_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MESSAGE_RESULT_DATA", function() { return MESSAGE_RESULT_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALIDATE_RESEND_DATA", function() { return VALIDATE_RESEND_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CONFIRM_POPUP_DATA", function() { return CONFIRM_POPUP_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HEADLINE_OPTIONS_DATA", function() { return HEADLINE_OPTIONS_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECIPIENT_OPTIONS_DATA", function() { return RECIPIENT_OPTIONS_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTO_REFRESH_DATA", function() { return AUTO_REFRESH_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IS_REFRESH_DATA", function() { return IS_REFRESH_DATA; });
+const NOTIFICATIONTYPE_DATA = 'NOTIFICATIONTYPE_DATA';
+const GRID_PARAMS = 'GRID_PARAMS';
+const GRID_DATA = 'GRID_DATA';
+const CONTENT_POPUP_DATA = 'CONTENT_POPUP_DATA';
+const RESEND_OPTIONS_DATA = 'RESEND_OPTIONS_DATA';
+const VIEW_DETAIL_POPUP_DATA = 'VIEW_DETAIL_POPUP_DATA';
+const INVALID_PARAMS_DATA = 'INVALID_PARAMS_DATA';
+const SETTINGS_DATA = 'SETTINGS_DATA';
+const VIEW_DETAIL_DATA = 'VIEW_DETAIL_DATA';
+const MESSAGE_RESULT_DATA = 'MESSAGE_RESULT_DATA';
+const VALIDATE_RESEND_DATA = 'VALIDATE_RESEND_DATA';
+const CONFIRM_POPUP_DATA = 'CONFIRM_POPUP_DATA';
+const HEADLINE_OPTIONS_DATA = 'HEADLINE_OPTIONS_DATA';
+const RECIPIENT_OPTIONS_DATA = 'RECIPIENT_OPTIONS_DATA';
+const AUTO_REFRESH_DATA = 'AUTO_REFRESH_DATA';
+const IS_REFRESH_DATA = 'IS_REFRESH_DATA';
+const types = {
+  NOTIFICATIONTYPE_DATA,
+  GRID_PARAMS,
+  GRID_DATA,
+  CONTENT_POPUP_DATA,
+  RESEND_OPTIONS_DATA,
+  VIEW_DETAIL_POPUP_DATA,
+  INVALID_PARAMS_DATA,
+  SETTINGS_DATA,
+  VIEW_DETAIL_DATA,
+  MESSAGE_RESULT_DATA,
+  VALIDATE_RESEND_DATA,
+  CONFIRM_POPUP_DATA,
+  HEADLINE_OPTIONS_DATA,
+  RECIPIENT_OPTIONS_DATA,
+  AUTO_REFRESH_DATA,
+  IS_REFRESH_DATA
 };
-const validateFormik = (values, languages = []) => {
-  const errors = {};
-
-  if (!values.notificationTypeId) {
-    errors.notificationTypeId = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('NotificationTypeRequired');
-  }
-
-  if (!values.notificationTemplateName || values.notificationTemplateName.trim().length === 0) {
-    errors.notificationTemplateName = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('TemplateNameRequired');
-  } else {
-    if (values.notificationTemplateName.trim().length > 1000) {
-      errors.notificationTemplateName = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('FieldMaxLength'), _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('TemplateName'), 1000);
-    }
-  }
-
-  if (!values.title || values.title.trim().length === 0) {
-    errors.title = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('TitleRequired');
-  } else {
-    if (values.title.trim().length > 2000) {
-      errors.title = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('FieldMaxLength'), _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Title'), 2000);
-    }
-  }
-
-  languages.map(item => {
-    if (!values['language_' + item.settingId] || values['language_' + item.settingId].trim().length === 0) {
-      errors['language_' + item.settingId] = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('FieldRequired'), `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Content')} (${item.settingValue})`);
-    }
-  });
-  return errors;
-};
+/* harmony default export */ __webpack_exports__["default"] = (types);
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/AppContainer.jsx":
-/*!********************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/AppContainer.jsx ***!
-  \********************************************************************************/
+/***/ "./www/sources/js/pages/notification-list/components/AppContainer.jsx":
+/*!****************************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/components/AppContainer.jsx ***!
+  \****************************************************************************/
 /*! exports provided: AppContainer, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1301,25 +666,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppContainer", function() { return AppContainer; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
-/* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Filter */ "./www/sources/js/pages/notification-template/components/Filter.jsx");
-/* harmony import */ var _DataGrid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./DataGrid */ "./www/sources/js/pages/notification-template/components/DataGrid.jsx");
-/* harmony import */ var _NewNotificationTemplate__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./NewNotificationTemplate */ "./www/sources/js/pages/notification-template/components/NewNotificationTemplate.jsx");
-/* harmony import */ var _EditNotificationTemplate__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./EditNotificationTemplate */ "./www/sources/js/pages/notification-template/components/EditNotificationTemplate.jsx");
-/* harmony import */ var _ContentDetailModalDialog__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ContentDetailModalDialog */ "./www/sources/js/pages/notification-template/components/ContentDetailModalDialog.jsx");
-/* harmony import */ var _jsroot_components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @jsroot/components/SweetModalDialog */ "./www/sources/js/components/SweetModalDialog.jsx");
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/index */ "./www/sources/js/pages/notification-list/actions/index.js");
+/* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Filter */ "./www/sources/js/pages/notification-list/components/Filter.jsx");
+/* harmony import */ var _DataGrid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./DataGrid */ "./www/sources/js/pages/notification-list/components/DataGrid.jsx");
+/* harmony import */ var _Content__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Content */ "./www/sources/js/pages/notification-list/components/Content.jsx");
+/* harmony import */ var _ViewDetail__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ViewDetail */ "./www/sources/js/pages/notification-list/components/ViewDetail.jsx");
+/* harmony import */ var _ValidateResend__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ValidateResend */ "./www/sources/js/pages/notification-list/components/ValidateResend.jsx");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @jsroot/components/ConfirmPopup */ "./www/sources/js/components/ConfirmPopup.jsx");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
 
 
 
@@ -1334,253 +691,296 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
-    super(props);
+    super(props); // this.isHost = document.getElementById('is-host').checked;
 
-    _defineProperty(this, "handleCloseCreatePopup", () => {
-      this.props.setCreateTemplatePopup({
+    _defineProperty(this, "closeConfirmPopup", () => this.props.setConfirmPopup({
+      show: false
+    }));
+
+    _defineProperty(this, "handleCloseContent", () => {
+      this.props.setContentPopup({
         show: false
       });
-      this.props.setCreateTemplateResult(null);
+      this.props.setIsRefresh(true);
     });
 
-    _defineProperty(this, "handleCreateSuccess", () => {
-      this.handleCloseCreatePopup();
-      this.props.getGridData(this.props.gridParams);
-    });
-
-    _defineProperty(this, "handleCloseEditPopup", () => {
-      this.props.setEditTemplatePopup({
+    _defineProperty(this, "handleCloseViewDetail", () => {
+      this.props.setViewDetailPopup({
         show: false
       });
-      this.props.setSelectedTemplate(null);
-      this.props.setEditTemplateResult(null);
+      this.props.setIsRefresh(true);
     });
 
-    _defineProperty(this, "handleEditSuccess", () => {
-      this.handleCloseEditPopup();
-      this.props.getGridData(this.props.gridParams);
-    });
-
-    _defineProperty(this, "handleCloseViewContentPopup", () => {
-      this.props.setContentDetailPopup({
-        show: false
-      });
-      this.props.setSelectedTemplate(null);
-    });
-
-    _defineProperty(this, "handleCloseDeletePopup", () => {
-      this.props.setDeleteTemplatePopup({
-        show: false
-      });
-    });
-
-    _defineProperty(this, "handleDelete", () => {
-      const {
-        templateId,
-        name
-      } = this.props.deleteTemplatePopup;
-      const params = {
-        notificationTemplateId: templateId,
-        notificationTemplateName: name
-      };
-      this.props.deleteTemplate(params).then(response => {
-        const data = response.data;
-        this.handleCloseDeletePopup();
-        this.props.getGridData(this.props.gridParams);
-
-        if (data.isSuccessful) {
-          react_toastify__WEBPACK_IMPORTED_MODULE_3__["toast"].success(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__["default"].getResource('DeleteNotificationTemplateSuccessfully'));
-        } else {
-          react_toastify__WEBPACK_IMPORTED_MODULE_3__["toast"].error(data.message);
-        }
-      });
-    });
-  }
-
-  componentDidMount() {
-    this.props.getNotificationTypes();
-    this.props.getLanguages();
+    this.isHost = true;
   }
 
   render() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Filter__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      isHost: this.props.isHost
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_8__["default"], {
-      isHost: this.props.isHost
-    }), this.props.createTemplatePopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NewNotificationTemplate__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      onClose: this.handleCloseCreatePopup,
-      onSuccess: this.handleCreateSuccess
-    }), this.props.editTemplatePopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EditNotificationTemplate__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      onClose: this.handleCloseEditPopup,
-      onSuccess: this.handleEditSuccess
-    }), this.props.deleteTemplatePopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      title: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__["default"].getResource('Confirmation'),
-      contents: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Are you sure you want to delete ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.props.deleteTemplatePopup.name), "?"),
-      buttons: [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
-        variant: "primary",
-        size: "sm",
-        onClick: this.handleDelete
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__["default"].getResource('OK')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
-        variant: "primary",
-        size: "sm",
-        onClick: this.handleCloseDeletePopup
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__["default"].getResource('Cancel'))],
-      onClose: this.handleCloseDeletePopup
-    }), this.props.contentDetailPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ContentDetailModalDialog__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      onClose: this.handleCloseViewContentPopup
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Filter__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      isHost: this.isHost
+    }), this.props.contentPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Content__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      onClose: () => this.handleCloseContent(),
+      data: this.props.contentPopup.data
+    }), this.props.viewDetailPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ViewDetail__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      onClose: () => this.handleCloseViewDetail(),
+      data: this.props.viewDetailPopup.data
+    }), this.props.validateResendResult.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ValidateResend__WEBPACK_IMPORTED_MODULE_8__["default"], null), this.props.confirmPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      size: "lg",
+      title: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('Confirmation'),
+      content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('ThereAreSomeChangesConfirmMessage')),
+      onSubmit: () => {
+        this.closeConfirmPopup();
+        this.props.confirmPopup.onOk();
+      },
+      onClose: () => this.closeConfirmPopup()
     }));
   }
 
 }
 
-_defineProperty(AppContainer, "propTypes", {
-  contentDetailPopup: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape({
-    show: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
-  }).isRequired,
-  createTemplatePopup: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape({
-    show: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
-  }).isRequired,
-  deleteTemplatePopup: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape({
-    show: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
-  }).isRequired,
-  editTemplatePopup: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape({
-    show: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
-  }).isRequired,
-  getLanguages: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
-  getNotificationTypes: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
-  isHost: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool.isRequired
-});
-
-_defineProperty(AppContainer, "defaultProps", {
-  contentDetailPopup: {
-    show: false
-  },
-  createTemplatePopup: {
-    show: false
-  },
-  deleteTemplatePopup: {
-    show: false
-  },
-  editTemplatePopup: {
-    show: false
-  },
-  getLanguages: function () {// nothing
-  },
-  getNotificationTypes: function () {// nothing
-  },
-  isHost: false
-});
-
-const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_5__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_6__["ActionCreators"], dispatch);
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__["bindActionCreators"])(_actions_index__WEBPACK_IMPORTED_MODULE_3__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
-    gridParams,
-    createTemplatePopup,
-    editTemplatePopup,
-    deleteTemplatePopup,
-    deleteTemplateResult,
-    contentDetailPopup
+    contentPopup,
+    viewDetailPopup,
+    validateResendResult,
+    confirmPopup,
+    autoRefresh
   } = state;
   return {
-    gridParams,
-    createTemplatePopup,
-    editTemplatePopup,
-    deleteTemplatePopup,
-    deleteTemplateResult,
-    contentDetailPopup
+    contentPopup,
+    viewDetailPopup,
+    validateResendResult,
+    confirmPopup,
+    autoRefresh
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["connect"])(mapStateToProps, mapDispatchToProps)(AppContainer));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(AppContainer));
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/ContentDetailModalDialog.jsx":
-/*!********************************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/ContentDetailModalDialog.jsx ***!
-  \********************************************************************************************/
-/*! exports provided: ContentDetailModalDialog, default */
+/***/ "./www/sources/js/pages/notification-list/components/AutoRefresh.jsx":
+/*!***************************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/components/AutoRefresh.jsx ***!
+  \***************************************************************************/
+/*! exports provided: AutoRefresh, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContentDetailModalDialog", function() { return ContentDetailModalDialog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AutoRefresh", function() { return AutoRefresh; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var _jsroot_components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/components/SweetModalDialog */ "./www/sources/js/components/SweetModalDialog.jsx");
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/index */ "./www/sources/js/pages/notification-list/actions/index.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../functions */ "./www/sources/js/pages/notification-list/functions.js");
+/* harmony import */ var _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/constants */ "./www/sources/js/common/constants.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 
 
 
-const ContentDetailModalDialog = props => {
-  const template = props.template;
-  const buttons = [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
-    variant: "primary",
-    size: "sm",
-    onClick: props.onClose
-  }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Close'))];
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    size: "lg",
-    backdropClassName: "notification-template-content-modal-backdrop",
-    className: "notification-template-content-modal",
-    title: template.title,
-    contents: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, template.contents.map(item => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], {
-        key: item.languageId
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "font-weight-bold"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Content'), " (", item.language, ")"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "border p-2 mt-2 mb-3 content"
-      }, item.content));
-    })),
-    buttons: buttons,
-    onClose: props.onClose
-  });
-};
-ContentDetailModalDialog.propTypes = {
-  template: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
-    notificationTemplateId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    notificationTypeId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    notificationTemplateName: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    title: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    contents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object)
-  }).isRequired
-};
-ContentDetailModalDialog.defaultProps = {
-  template: {
-    notificationTemplateId: 0,
-    notificationTypeId: 0,
-    notificationTemplateName: '',
-    title: '',
-    contents: []
+
+
+class AutoRefresh extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+
+    _defineProperty(this, "componentDidMount", () => {
+      this.countDownFunc();
+      document.addEventListener('mousedown', this.handleClickOutside);
+    });
+
+    _defineProperty(this, "componentDidUpdate", prevProps => {
+      if (prevProps.autoRefresh.value !== this.props.autoRefresh.value) {
+        this.props.setAutoRefresh(_objectSpread(_objectSpread({}, this.props.autoRefresh), {}, {
+          countDown: this.props.autoRefresh.value
+        }));
+      }
+
+      if (this.props.autoRefresh.countDown === 0 && this.props.isRefresh && this.props.autoRefresh.value > 0) {
+        this.props.setAutoRefresh(_objectSpread(_objectSpread({}, this.props.autoRefresh), {}, {
+          countDown: this.props.autoRefresh.value
+        }));
+
+        const params = _objectSpread(_objectSpread({}, this.props.gridParams), {}, {
+          pageIndex: 1
+        });
+
+        this.props.setGridParams(params);
+        this.props.getGridData(params, data => _functions__WEBPACK_IMPORTED_MODULE_5__["default"].handleNewResendOptions(data, this.props.setResendOptions));
+      }
+    });
+
+    _defineProperty(this, "componentWillUnmount", () => {
+      clearInterval(this.countDownFunc);
+      document.removeEventListener('mousedown', this.handleClickOutside);
+    });
+
+    _defineProperty(this, "handleClickOutside", event => {
+      if (this.autoRefresh && !this.autoRefresh.current.contains(event.target) && this.state.isOpenDropdown) {
+        this.setState({
+          isOpenDropdown: false
+        });
+      }
+    });
+
+    _defineProperty(this, "countDownFunc", () => setInterval(() => {
+      if (this.props.isRefresh) {
+        this.props.setAutoRefresh(_objectSpread(_objectSpread({}, this.props.autoRefresh), {}, {
+          countDown: this.props.autoRefresh.countDown - 1
+        }));
+      }
+    }, 1000));
+
+    _defineProperty(this, "handleAutoRefreshChange", value => {
+      this.setState({
+        isOpenDropdown: false
+      });
+      this.props.setIsRefresh(value !== 0);
+      this.props.setAutoRefresh(_objectSpread(_objectSpread({}, this.props.autoRefresh), {}, {
+        value: value
+      }));
+    });
+
+    _defineProperty(this, "handleRefresh", () => {
+      const params = _objectSpread(_objectSpread({}, this.props.gridParams), {}, {
+        pageIndex: 1
+      });
+
+      this.props.setGridParams(params);
+      this.props.getGridData(params, data => _functions__WEBPACK_IMPORTED_MODULE_5__["default"].handleNewResendOptions(data, this.props.setResendOptions));
+      this.props.setAutoRefresh(_objectSpread(_objectSpread({}, this.props.autoRefresh), {}, {
+        countDown: this.props.autoRefresh.value
+      }));
+    });
+
+    _defineProperty(this, "toggleAutoFreshDropdown", () => this.setState({
+      isOpenDropdown: !this.state.isOpenDropdown
+    }));
+
+    this.state = {
+      isOpenDropdown: false
+    };
+    this.autoRefresh = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
   }
-};
+
+  render() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "d-flex align-items-center",
+      ref: this.autoRefresh
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "auto-refresh"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "d-flex justify-content-between align-items-center auto-refresh-value",
+      onClick: () => this.toggleAutoFreshDropdown()
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.props.autoRefresh.value !== 0 ? this.props.autoRefresh.countDown : _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('NotRefresh')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: `fa fa-caret-${this.state.isOpenDropdown ? 'up' : 'down'}`
+    })), this.state.isOpenDropdown && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+      className: "auto-refresh-dropdown"
+    }, _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_6__["AUTO_REFRESH_TIMES"].map(time => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: time,
+      value: time,
+      onClick: () => this.handleAutoRefreshChange(time)
+    }, time)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      onClick: () => this.handleAutoRefreshChange(0),
+      value: 0
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('NotRefresh')))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "fa fa-refresh link-click",
+      onClick: () => this.handleRefresh()
+    }));
+  }
+
+}
+
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__["bindActionCreators"])(_actions_index__WEBPACK_IMPORTED_MODULE_3__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
-    selectedTemplate
+    gridParams,
+    autoRefresh,
+    isRefresh
   } = state;
   return {
-    template: selectedTemplate
+    gridParams,
+    autoRefresh,
+    isRefresh
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps)(ContentDetailModalDialog));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(AutoRefresh));
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/DataGrid.jsx":
-/*!****************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/DataGrid.jsx ***!
-  \****************************************************************************/
+/***/ "./www/sources/js/pages/notification-list/components/Content.jsx":
+/*!***********************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/components/Content.jsx ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Content; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
+
+
+
+
+class Content extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const {
+      data,
+      onClose
+    } = this.props;
+    const LogIdDisplay = `(${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('LogID')}: ${data.referenceId})`;
+    const messageIdDisplay = `(${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('MessageID')}: ${data.referenceId})`;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
+      show: true,
+      backdrop: "static",
+      keyboard: false,
+      size: "lg",
+      centered: true,
+      onHide: onClose,
+      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_3__["default"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Header, {
+      closeButton: true
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Title, {
+      as: "div"
+    }, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('NotificationID')}: ${data.notificationId} `, data.dataSource === 'MessageId' ? messageIdDisplay : data.referenceId > 0 && LogIdDisplay)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('LetstalkName')}: ${data.letstalkName}`), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "border p-2 mt-2 mb-3 notification-content"
+    }, data.content)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      onClick: onClose,
+      variant: "primary",
+      size: "sm"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Close'))));
+  }
+
+}
+
+/***/ }),
+
+/***/ "./www/sources/js/pages/notification-list/components/DataGrid.jsx":
+/*!************************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/components/DataGrid.jsx ***!
+  \************************************************************************/
 /*! exports provided: DataGrid, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1591,15 +991,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
+/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/index */ "./www/sources/js/pages/notification-list/actions/index.js");
 /* harmony import */ var _jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/components/react-grid/index */ "./www/sources/js/components/react-grid/index.jsx");
 /* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
-/* harmony import */ var _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/constants */ "./www/sources/js/common/constants.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../functions */ "./www/sources/js/pages/notification-list/functions.js");
+/* harmony import */ var _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/common/constants */ "./www/sources/js/common/constants.js");
+/* harmony import */ var _AutoRefresh__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AutoRefresh */ "./www/sources/js/pages/notification-list/components/AutoRefresh.jsx");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
 
 
 
@@ -1615,132 +1021,236 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     _defineProperty(this, "onPaging", (pageIndex, pageSize) => {
       const params = _objectSpread({}, this.props.gridParams);
 
-      params['pageIndex'] = pageIndex;
-      params['pageSize'] = pageSize;
+      params.pageIndex = pageIndex;
+      params.pageSize = pageSize;
+      this.getGridData(params);
+    });
+
+    _defineProperty(this, "getGridData", params => {
       this.props.setGridParams(params);
-      this.props.getGridData(params);
+      this.props.getGridData(_objectSpread({}, params), data => _functions__WEBPACK_IMPORTED_MODULE_7__["default"].handleNewResendOptions(data, this.props.setResendOptions));
     });
 
-    _defineProperty(this, "handleEdit", id => {
-      this.props.getTemplateById(id, () => this.props.setEditTemplatePopup({
-        show: true
-      }));
-    });
+    _defineProperty(this, "buildNotificationListHeader", isHost => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderRow"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 5
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('SymbolNo')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 15
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('NotificationID')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('ReferenceId'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 23
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Sender'), "/", _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 12
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('SendDateTimeGMTA8')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 16
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('LetstalkName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 26
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('GroupHeadline')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 19
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Recipient')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 20
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Title'), "/", _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Content')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 12
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Status')), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 10
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Action')), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      colWidth: 10
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      type: "button",
+      value: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Resend'),
+      disabled: this.props.resendOptions.isDisabledResend,
+      onClick: this.resendNotificationAll
+    }), this.props.resendOptions.isHaveResendAll && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Control, {
+      className: "checkbox-cell-style margin-top-10",
+      type: "checkbox",
+      onChange: this.handleChangeResendAllCheckbox,
+      checked: this.props.resendOptions.isCheckedAll
+    }))));
 
-    _defineProperty(this, "handleViewContent", id => {
-      this.props.getTemplateById(id, () => this.props.setContentDetailPopup({
-        show: true
-      }));
-    });
-
-    _defineProperty(this, "handleDelete", (id, name) => {
-      this.props.setDeleteTemplatePopup({
-        show: true,
-        templateId: id,
-        name: name
-      });
-    });
-
-    _defineProperty(this, "buildGridHeader", isHost => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderRow"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 5
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('SymbolNo')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 30
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 30
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('TemplateName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 80
-      }, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Title')}/${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Content')}`), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 10
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Action')));
-    });
-
-    _defineProperty(this, "buildGridBody", isHost => {
+    _defineProperty(this, "buildNotificationListBody", isHost => {
       const {
         pageIndex,
         pageSize
       } = this.props.gridParams;
       this.startIndex = (pageIndex - 1) * pageSize + 1;
 
-      if (this.props.gridData.data.length > 0) {
-        return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
+      if (this.props.notificationListGridData.data.length > 0) {
+        return this.props.notificationListGridData.data.map((item, index) => this.renderRow(item, index, isHost));
       }
 
       return [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Row"], {
         key: `body${1}`,
         className: "no-data"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
-        colSpan: "5"
+        colSpan: isHost ? 11 : 9
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('ThereIsNoData')))];
     });
 
+    _defineProperty(this, "openContentPopup", item => {
+      this.props.setContentPopup({
+        show: true,
+        data: item
+      });
+      this.setIsRefresh(false);
+    });
+
+    _defineProperty(this, "openViewDetailPopup", item => {
+      this.props.setViewDetailPopup({
+        show: true,
+        data: item
+      });
+      this.setIsRefresh(false);
+    });
+
+    _defineProperty(this, "setIsRefresh", isRefresh => {
+      this.setNotShouldResetScrollPosition();
+      this.props.setIsRefresh(isRefresh);
+    });
+
+    _defineProperty(this, "setNotShouldResetScrollPosition", () => this.props.setResendOptions(_objectSpread(_objectSpread({}, this.props.resendOptions), {}, {
+      shouldResetScrollPosition: false
+    })));
+
+    _defineProperty(this, "isError", status => status.toLowerCase() === _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Error').toLowerCase());
+
+    _defineProperty(this, "isResolved", status => status.toLowerCase() === _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Resolved').toLowerCase());
+
+    _defineProperty(this, "isDuplicated", status => status.toLowerCase() === _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Duplicated').toLowerCase());
+
+    _defineProperty(this, "validateResend", notificationId => {
+      this.setIsRefresh(false);
+      this.props.validateResend({
+        notificationIds: notificationId,
+        isSingle: true
+      });
+    });
+
     _defineProperty(this, "renderRow", (item, index, isHost) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Row"], {
-      key: item.notificationTemplateId
+      key: index
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
       className: "text-center"
-    }, index + this.startIndex), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.notificationTypeName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.notificationTemplateName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-      href: "#",
-      onClick: () => this.handleViewContent(item.notificationTemplateId)
-    }, item.title)), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+    }, index + this.startIndex), this.renderReferenceId(item), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, item.sender), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, item.notificationTypeName)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
       className: "text-center"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-      className: "rounded-circle fa fa-pencil icon-edit",
-      onClick: () => this.handleEdit(item.notificationTemplateId)
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-      className: "rounded-circle fa fa-trash icon-delete",
-      onClick: () => this.handleDelete(item.notificationTemplateId, item.notificationTemplateName)
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, item.sendDateString), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, item.sendTimeString)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.letstalkName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+      className: "text-center"
+    }, _functions__WEBPACK_IMPORTED_MODULE_7__["default"].getHeadlines(item.headlines)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, _functions__WEBPACK_IMPORTED_MODULE_7__["default"].getRecipients(item.recipients)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+      className: "link-click",
+      onClick: () => this.openContentPopup(item)
+    }, item.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+      className: `text-center status-font ${item.status.toLowerCase()}-color`
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource(item.status)), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+      className: "text-center"
+    }, (this.isError(item.status) || this.isResolved(item.status)) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      onClick: () => this.openViewDetailPopup(item),
+      className: "action-style link-click"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('ViewDetail')), this.isError(item.status) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      onClick: () => this.validateResend(item.notificationId),
+      className: "action-style link-click"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Resend'))), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+      className: "text-center"
+    }, this.isError(item.status) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Control, {
+      className: "checkbox-cell-style",
+      id: `resend-${item.notificationId}-${item.messageId}`,
+      type: "checkbox",
+      checked: this.props.resendOptions.dataList[index] && this.props.resendOptions.dataList[index].isResent,
+      onChange: () => this.handleChangeResendCheckbox(index)
     }))));
+
+    _defineProperty(this, "renderReferenceId", item => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        className: "text-center"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, item.notificationId), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, item.dataSource === 'MessageId' ? `(Msg: ${item.referenceId})` : item.referenceId > 0 && `(Log: ${item.referenceId})`), this.isDuplicated(item.status) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, `(Related ID: ${item.relatedNotificationIds})`));
+    });
+
+    _defineProperty(this, "handleChangeResendCheckbox", index => {
+      const dataList = [...this.props.resendOptions.dataList];
+      dataList[index].isResent = !this.props.resendOptions.dataList[index].isResent;
+      const isDisabledResend = dataList.filter(item => this.isError(item.status) && item.isResent).length <= 0;
+      const notCheckedDataList = dataList.filter(item => this.isError(item.status) && !item.isResent);
+      this.setIsRefresh(isDisabledResend);
+      this.props.setResendOptions({
+        isCheckedAll: notCheckedDataList.length <= 0,
+        isDisabledResend,
+        isHaveResendAll: this.props.resendOptions.isHaveResendAll,
+        shouldResetScrollPosition: false,
+        dataList
+      });
+    });
+
+    _defineProperty(this, "handleChangeResendAllCheckbox", () => {
+      const checked = !this.props.resendOptions.isCheckedAll;
+      const dataList = [...this.props.resendOptions.dataList];
+      dataList.forEach(item => item.isResent = checked);
+      this.setIsRefresh(!checked);
+      this.props.setResendOptions({
+        isCheckedAll: checked,
+        isDisabledResend: !checked,
+        isHaveResendAll: this.props.resendOptions.isHaveResendAll,
+        shouldResetScrollPosition: false,
+        dataList
+      });
+    });
+
+    _defineProperty(this, "resendNotificationAll", () => {
+      const resendList = this.props.resendOptions.dataList.filter(item => this.isError(item.status) && item.isResent);
+      this.props.validateResend({
+        notificationIds: resendList.map(item => item.notificationId).join(','),
+        isSingle: false
+      });
+    });
   }
 
   render() {
-    if (!this.props.gridData || !this.props.gridData.data) {
+    if (!this.props.notificationListGridData || !this.props.notificationListGridData.data) {
       return null;
     }
 
     const {
-      isHost
-    } = this.props;
-    const {
       totalItems
-    } = this.props.gridData;
+    } = this.props.notificationListGridData;
     const {
       pageIndex,
       pageSize
     } = this.props.gridParams;
+    const {
+      isHost
+    } = this.props;
     const pagingOption = {
       PageIndex: pageIndex,
       PageSize: pageSize,
       TotalItem: totalItems,
-      PageList: _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_6__["PAGING_SIZES"]
+      PageList: _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["PAGING_SIZES"]
     };
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "table-title"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('NotificationTemplate')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Table"], {
-      minWidth: 720,
+      className: "d-flex table-title justify-content-between align-items-center"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('NotificationList')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AutoRefresh__WEBPACK_IMPORTED_MODULE_9__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Table"], {
+      minWidth: 960,
       maxWidth: document.getElementById('app-container').clientWidth,
       autoWidth: true,
-      header: this.buildGridHeader(isHost),
-      body: this.buildGridBody(isHost),
+      header: this.buildNotificationListHeader(isHost),
+      body: this.buildNotificationListBody(isHost),
       isPaging: true,
       pageOption: pagingOption,
       onPaging: this.onPaging,
       containerPadding: 0,
-      adjustedHeight: 10
+      shouldResetScrollPosition: this.props.resendOptions.shouldResetScrollPosition
     }));
   }
 
 }
 
-const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_3__["ActionCreators"], dispatch);
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__["bindActionCreators"])(_actions_index__WEBPACK_IMPORTED_MODULE_3__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
     gridParams,
-    gridData
+    notificationListGridData,
+    resendOptions,
+    isRefresh
   } = state;
   return {
     gridParams,
-    gridData
+    notificationListGridData,
+    resendOptions,
+    isRefresh
   };
 };
 
@@ -1748,285 +1258,10 @@ const mapStateToProps = state => {
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/EditNotificationTemplate.jsx":
-/*!********************************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/EditNotificationTemplate.jsx ***!
-  \********************************************************************************************/
-/*! exports provided: EditNotificationTemplate, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditNotificationTemplate", function() { return EditNotificationTemplate; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
-/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
-/* harmony import */ var _jsroot_components_FormikErrorMessage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/components/FormikErrorMessage */ "./www/sources/js/components/FormikErrorMessage.jsx");
-/* harmony import */ var _jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/components/ResponseMessage */ "./www/sources/js/components/ResponseMessage.jsx");
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
-/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/notification-template/common.functions.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-class EditNotificationTemplate extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(props) {
-    super(props);
-
-    _defineProperty(this, "renderForm", ({
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleSubmit,
-      setFieldValue,
-      isSubmitting
-    }) => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"], {
-        noValidate: true,
-        onSubmit: handleSubmit
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_FormikErrorMessage__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        touched: touched,
-        errors: errors,
-        fieldNames: Object.keys(values)
-      }), this.props.editTemplateResult && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        isSuccessful: this.props.editTemplateResult.isSuccessful,
-        message: this.props.editTemplateResult.message || _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('EditNotificationTemplateSuccessfully')
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "notificationTypeId"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        as: "select",
-        size: "sm",
-        className: "shadow-none",
-        name: "notificationTypeId",
-        id: "notificationTypeId",
-        isInvalid: touched.notificationTypeId && errors.notificationTypeId,
-        onChange: handleChange,
-        value: values.notificationTypeId
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "",
-        disabled: true,
-        hidden: true
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('PleaseSelect')), this.props.notificationTypes.map(_common_functions__WEBPACK_IMPORTED_MODULE_11__["renderNotificationTypeOption"])))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "notificationTemplateName"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('TemplateName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        type: "text",
-        size: "sm",
-        value: values.notificationTemplateName,
-        className: "shadow-none",
-        autoComplete: "off",
-        name: "notificationTemplateName",
-        id: "notificationTemplateName",
-        isInvalid: touched.notificationTemplateName && errors.notificationTemplateName,
-        onChange: handleChange
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "title"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Title')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        type: "text",
-        size: "sm",
-        value: values.title,
-        className: "shadow-none",
-        autoComplete: "off",
-        name: "title",
-        id: "title",
-        isInvalid: touched.title && errors.title,
-        onChange: handleChange
-      }))), this.props.languages !== null && this.props.languages.map(item => {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-          key: `language${item.settingId}`,
-          as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-          column: true,
-          sm: "4",
-          md: "3",
-          className: "required",
-          htmlFor: 'language_' + item.settingId
-        }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Content'), " (", item.settingValue, ")"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-          sm: "8",
-          md: "9"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-          as: "textarea",
-          value: values['language_' + item.settingId],
-          className: "shadow-none form-control",
-          name: 'language_' + item.settingId,
-          id: 'language_' + item.settingId,
-          rows: "4",
-          isInvalid: touched['language_' + item.settingId] && errors['language_' + item.settingId],
-          onChange: handleChange
-        })));
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Button"], {
-        type: "submit",
-        variant: "primary",
-        size: "sm",
-        disabled: isSubmitting
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Save')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Button"], {
-        type: "submit",
-        variant: "primary",
-        size: "sm",
-        onClick: this.props.onClose
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Cancel'))));
-    });
-
-    _defineProperty(this, "handleSubmit", (values, {
-      setSubmitting
-    }) => {
-      setSubmitting(true);
-      const template = {
-        notificationTemplateId: values.notificationTemplateId,
-        notificationTypeId: values.notificationTypeId,
-        notificationTemplateName: values.notificationTemplateName,
-        title: values.title,
-        contents: []
-      };
-      this.props.languages !== null && this.props.languages.map(item => {
-        template.contents.push({
-          languageId: item.settingId,
-          content: values['language_' + item.settingId]
-        });
-      });
-      this.props.editTemplate(template).then(() => {
-        if (this.props.editTemplateResult.isSuccessful) {
-          setTimeout(() => {
-            this.props.onSuccess();
-          }, 3000);
-        } else {
-          setSubmitting(false);
-        }
-      });
-    });
-  }
-
-  render() {
-    const template = this.props.template;
-    const initialValues = {
-      notificationTemplateId: template.notificationTemplateId,
-      notificationTypeId: template.notificationTypeId,
-      notificationTemplateName: template.notificationTemplateName,
-      title: template.title
-    };
-    this.props.languages !== null && this.props.languages.map(item => {
-      initialValues['language_' + item.settingId] = '';
-      const index = template.contents.findIndex(x => x.languageId === item.settingId);
-
-      if (index >= 0) {
-        initialValues['language_' + item.settingId] = template.contents[index].content;
-      }
-    });
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"], {
-      show: true,
-      className: "notification-template-modal",
-      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_7__["default"],
-      onHide: this.props.onClose,
-      backdrop: "static",
-      keyboard: false,
-      size: "lg",
-      centered: true
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Header, {
-      closeButton: true
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Title, {
-      as: "div"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('EditNotificationTemplate'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["Formik"], {
-      validate: values => Object(_common_functions__WEBPACK_IMPORTED_MODULE_11__["validateFormik"])(values, this.props.languages),
-      onSubmit: this.handleSubmit,
-      initialValues: initialValues
-    }, this.renderForm));
-  }
-
-}
-
-_defineProperty(EditNotificationTemplate, "propTypes", {
-  languages: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object),
-  notificationTypes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object),
-  template: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
-    notificationTemplateId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    notificationTypeId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    notificationTemplateName: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    title: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    contents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object)
-  }).isRequired
-});
-
-_defineProperty(EditNotificationTemplate, "defaultProps", {
-  languages: [],
-  notificationTypes: [],
-  template: {
-    notificationTemplateId: 0,
-    notificationTypeId: 0,
-    notificationTemplateName: '',
-    title: '',
-    contents: []
-  }
-});
-
-const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_3__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_4__["ActionCreators"], dispatch);
-
-const mapStateToProps = state => {
-  const {
-    editTemplateResult,
-    selectedTemplate,
-    notificationTypes,
-    languages
-  } = state;
-  return {
-    editTemplateResult,
-    template: selectedTemplate,
-    notificationTypes,
-    languages
-  };
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(EditNotificationTemplate));
-
-/***/ }),
-
-/***/ "./www/sources/js/pages/notification-template/components/Filter.jsx":
-/*!**************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/Filter.jsx ***!
-  \**************************************************************************/
+/***/ "./www/sources/js/pages/notification-list/components/Filter.jsx":
+/*!**********************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/components/Filter.jsx ***!
+  \**********************************************************************/
 /*! exports provided: Filter, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2035,15 +1270,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Filter", function() { return Filter; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions/index */ "./www/sources/js/pages/notification-list/actions/index.js");
+/* harmony import */ var _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/dateTimeService */ "./www/sources/js/common/dateTimeService.js");
 /* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
-/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/notification-template/common.functions.js");
+/* harmony import */ var _jsroot_components_date_picker_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/date-picker/index */ "./www/sources/js/components/date-picker/index.jsx");
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../functions */ "./www/sources/js/pages/notification-list/functions.js");
+/* harmony import */ var _jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/components/CustomReactSelect */ "./www/sources/js/components/CustomReactSelect.jsx");
+/* harmony import */ var _jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @jsroot/components/multiple-select/index */ "./www/sources/js/components/multiple-select/index.jsx");
+/* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_12__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
 
 
 
@@ -2057,132 +1306,535 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
 
-    _defineProperty(this, "handleNotificationTypeChange", event => {
+    _defineProperty(this, "handleFilterChange", (name, value) => this.setState(prevState => ({
+      filter: _objectSpread(_objectSpread({}, prevState.filter), {}, {
+        [name]: value
+      })
+    })));
+
+    _defineProperty(this, "handleFilterChangeProps", (name, value) => {
+      this.setNotShouldResetScrollPosition();
+      this.props.setGridParams(_objectSpread(_objectSpread({}, this.props.gridParams), {}, {
+        [name]: value
+      }));
+    });
+
+    _defineProperty(this, "handleNotificationTypeChange", (currentItem, selectedItemsKey) => {
+      this.handleFilterChange('notificationTypes', selectedItemsKey);
+      this.handleFilterChangeProps('notificationTypeIds', selectedItemsKey);
+    });
+
+    _defineProperty(this, "handleFromDateChange", value => {
+      let maxToDate = new Date(value);
+      maxToDate.setMonth(maxToDate.getMonth() + 1);
       this.setState({
-        notificationTypeId: event.target.value
+        minToDate: value
+      });
+      this.handleFilterChange('fromDate', value);
+      this.handleFilterChangeProps('fromDate', _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_5__["default"].startOfDay(value));
+
+      if (maxToDate - this.state.maxDate > 0) {
+        maxToDate = this.state.maxDate;
+      }
+
+      if (this.state.filter.toDate - maxToDate > 0) {
+        this.handleToDateChange(maxToDate);
+      } else if (this.state.filter.toDate - value < 0) {
+        this.handleToDateChange(value);
+      }
+
+      this.setState({
+        maxToDate
       });
     });
 
-    _defineProperty(this, "handleTemplateNameChange", event => {
-      this.setState({
-        notificationTemplateName: event.target.value
-      });
+    _defineProperty(this, "handleToDateChange", value => {
+      this.handleFilterChange('toDate', value);
+      this.handleFilterChangeProps('toDate', _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_5__["default"].startOfDay(value));
+    });
+
+    _defineProperty(this, "handleHeadlineChange", value => {
+      this.handleFilterChange('headline', value);
+      this.handleFilterChangeProps('headline', value ? value.value : '');
+    });
+
+    _defineProperty(this, "handleRecipientChange", value => {
+      this.handleFilterChange('recipient', value);
+      this.handleFilterChangeProps('recipientName', value ? value.value : '');
+    });
+
+    _defineProperty(this, "handleStatusChange", (currentItem, selectedItemsKey) => {
+      this.handleFilterChange('statuses', selectedItemsKey);
+      this.handleFilterChangeProps('status', selectedItemsKey);
+    });
+
+    _defineProperty(this, "handleChangeFilterControl", e => {
+      if (e.target.validity.valid) {
+        this.handleFilterChange(e.target.name, e.target.value);
+        this.handleFilterChangeProps(e.target.name, e.target.value);
+      }
+    });
+
+    _defineProperty(this, "handleChange", e => {
+      this.handleFilterChange(e.target.name, e.target.value);
+      this.handleFilterChangeProps(e.target.name, e.target.value);
     });
 
     _defineProperty(this, "getParams", () => {
       return {
-        notificationTypeId: parseInt(this.state.notificationTypeId, 10),
-        notificationTemplateName: this.state.notificationTemplateName,
-        pageIndex: 1,
-        pageSize: 100
+        notificationTypeIds: this.state.filter.notificationTypes,
+        fromDate: _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_5__["default"].toLongDateTimeFormat(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_5__["default"].startOfDay(this.state.filter.fromDate)),
+        toDate: _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_5__["default"].toLongDateTimeFormat(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_5__["default"].endOfDay(this.state.filter.toDate)),
+        headline: this.state.filter.headline ? this.state.filter.headline.value : '',
+        recipientName: this.state.filter.recipient ? this.state.filter.recipient.value : '',
+        messageId: this.state.filter.messageId,
+        notificationIdLower: this.state.filter.notificationIdLower,
+        notificationIdUpper: this.state.filter.notificationIdUpper,
+        content: this.state.filter.content,
+        status: this.state.filter.statuses,
+        pageIndex: this.props.gridParams.pageIndex,
+        pageSize: this.props.gridParams.pageSize
       };
     });
 
-    _defineProperty(this, "handleSubmit", event => {
-      event.preventDefault();
+    _defineProperty(this, "setNotShouldResetScrollPosition", () => this.props.setResendOptions(_objectSpread({
+      shouldResetScrollPosition: false
+    }, this.props.resendOptions)));
+
+    _defineProperty(this, "submitHandler", e => {
+      e.preventDefault();
+      this.props.setInvalidParams({});
       const params = this.getParams();
-      this.props.setGridParams(params);
-      this.props.getGridData(params);
+      params.pageIndex = 1;
+
+      if (this.isValidateParams(params)) {
+        this.props.setGridParams(params);
+        this.props.getGridData(_objectSpread({}, params), data => Object(_functions__WEBPACK_IMPORTED_MODULE_8__["handleNewResendOptions"])(data, this.props.setResendOptions));
+        this.props.setAutoRefresh(_objectSpread(_objectSpread({}, this.props.autoRefresh), {}, {
+          isSubmit: true,
+          countDown: this.props.autoRefresh.value
+        }));
+      }
     });
 
-    _defineProperty(this, "handleOpenCreatePopup", () => this.props.setCreateTemplatePopup({
-      show: true
+    _defineProperty(this, "isDisabledDateParam", () => this.state.filter.messageId !== '' || this.state.filter.notificationIdLower !== '' || this.state.filter.notificationIdUpper !== '');
+
+    _defineProperty(this, "isValidateParams", params => {
+      if (params.notificationTypeIds === '') {
+        react_toastify__WEBPACK_IMPORTED_MODULE_12__["toast"].error(`${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('PleaseChoose')} a ${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('NotificationType')}`);
+        return false;
+      }
+
+      if (params.notificationIdLower !== '' && params.notificationIdUpper === '') {
+        this.props.setInvalidParams({
+          isInvalidNotificationIdUpper: true
+        });
+        react_toastify__WEBPACK_IMPORTED_MODULE_12__["toast"].error(`${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('NotificationIDMustHaveBoth')}`);
+        return false;
+      }
+
+      if (params.notificationIdUpper !== '' && params.notificationIdLower === '') {
+        this.props.setInvalidParams({
+          isInvalidNotificationIdLower: true
+        });
+        react_toastify__WEBPACK_IMPORTED_MODULE_12__["toast"].error(`${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('NotificationIDMustHaveBoth')}`);
+        return false;
+      }
+
+      if (parseInt(params.notificationIdLower, 10) > parseInt(params.notificationIdUpper, 10)) {
+        react_toastify__WEBPACK_IMPORTED_MODULE_12__["toast"].error(`${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('NotificationIDFromNotGreaterThanTo')}`);
+        return false;
+      }
+
+      if (params.status === '') {
+        react_toastify__WEBPACK_IMPORTED_MODULE_12__["toast"].error(`${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('PleaseChoose')} a ${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Status')}`);
+        return false;
+      }
+
+      return true;
+    });
+
+    _defineProperty(this, "debounceHandleHeadlineInputChange", _jsroot_common_site__WEBPACK_IMPORTED_MODULE_11__["default"].debounce(searchText => {
+      if (searchText.length >= 2) {
+        this.props.getHeadlineOptions(searchText);
+      } else {
+        this.props.setHeadlineOptions([]);
+      }
     }));
 
+    _defineProperty(this, "debounceHandleRecipientInputChange", _jsroot_common_site__WEBPACK_IMPORTED_MODULE_11__["default"].debounce(searchText => {
+      if (searchText.length >= 2) {
+        this.props.getRecipientOptions(searchText);
+      } else {
+        this.props.setRecipientOptions([]);
+      }
+    }));
+
+    const now = new Date(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_5__["default"].toShortDateFormat(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_5__["default"].toClientDateTime(new Date())));
     this.state = {
-      notificationTypeId: '',
-      notificationTemplateName: ''
+      filter: {
+        notificationTypes: '',
+        statuses: '',
+        fromDate: now,
+        toDate: now,
+        headline: null,
+        recipient: null,
+        notificationIdLower: '',
+        notificationIdUpper: '',
+        messageId: '',
+        content: ''
+      },
+      maxDate: now,
+      minToDate: now,
+      maxToDate: now,
+      notificationTypeOptions: [],
+      statusOptions: []
     };
   }
 
+  componentDidMount() {
+    this.props.getSettings().then(() => {
+      // notification type
+      const notificationTypeIds = [];
+      const notificationTypeOptions = this.props.settings.notificationTypes.map(x => {
+        notificationTypeIds.push(x.notificationTypeId);
+        return {
+          id: x.notificationTypeId,
+          name: x.notificationTypeName,
+          checked: true
+        };
+      }); // status
+
+      const statusOptions = this.props.settings.statuses.map(x => {
+        return {
+          id: x,
+          name: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource(x),
+          checked: true
+        };
+      });
+      this.setState(prevState => ({
+        notificationTypeOptions,
+        statusOptions,
+        filter: _objectSpread(_objectSpread({}, prevState.filter), {}, {
+          notificationTypes: notificationTypeIds.toString(),
+          statuses: this.props.settings.statuses.toString()
+        })
+      }));
+    });
+  }
+
   render() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"], {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"], {
       className: "form-filter",
-      onSubmit: this.handleSubmit
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Row, {
+      onSubmit: e => this.submitHandler(e)
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Row, {
       bsPrefix: "form-row"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Label, {
-      htmlFor: "filterNotificationTypeId"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Control, {
-      as: "select",
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      id: "notification-type",
+      dataSource: this.state.notificationTypeOptions,
+      keyField: "id",
+      valueField: "name",
+      statusField: "checked",
+      isSubmited: false,
+      isAllTextShown: true,
+      onChange: (currentItem, selectedItemsKey) => this.handleNotificationTypeChange(currentItem, selectedItemsKey)
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('From')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "react-datepicker-wrapper-container form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_date_picker_index__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      disabled: this.isDisabledDateParam(),
+      dropdownMode: "select",
+      showMonthDropdown: true,
+      showYearDropdown: true,
+      maxDate: this.state.maxDate,
+      selected: this.state.filter.fromDate,
+      onChange: value => this.handleFromDateChange(value)
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('To')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "react-datepicker-wrapper-container form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_date_picker_index__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      disabled: this.isDisabledDateParam(),
+      dropdownMode: "select",
+      showMonthDropdown: true,
+      showYearDropdown: true,
+      minDate: this.state.minToDate,
+      maxDate: this.state.maxToDate,
+      selected: this.state.filter.toDate,
+      onChange: value => this.handleToDateChange(value)
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('GroupHeadline')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      placeholder: " ",
+      isClearable: true,
+      noOptionsMessage: () => 'No results found',
+      onChange: value => this.handleHeadlineChange(value),
+      options: this.props.headlineOptions,
+      onInputChange: searchText => this.debounceHandleHeadlineInputChange(searchText),
+      value: this.state.filter.headline
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Recipient')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      placeholder: " ",
+      isClearable: true,
+      noOptionsMessage: () => 'No results found',
+      onChange: value => this.handleRecipientChange(value),
+      options: this.props.recipientOptions,
+      onInputChange: searchText => this.debounceHandleRecipientInputChange(searchText),
+      value: this.state.filter.recipient
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('MessageID')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
+      as: "input",
+      type: "text",
+      pattern: "[0-9]*",
       size: "sm",
       className: "shadow-none",
-      id: "filterNotificationTypeId",
-      value: this.state.notificationTypeId,
-      onChange: this.handleNotificationTypeChange
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-      value: ""
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('All')), this.props.notificationTypes.map(_common_functions__WEBPACK_IMPORTED_MODULE_7__["renderNotificationTypeOption"]))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Label, {
-      htmlFor: "filterNotificationTemplateName"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('TemplateName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Control, {
+      name: "messageId",
+      value: this.state.filter.messageId,
+      onChange: e => this.handleChangeFilterControl(e)
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('NotificationID')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "form-control-wrapper d-flex align-items-center notification-id-container"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
+      className: `shadow-none ${this.props.invalidParams.isInvalidNotificationIdLower ? 'invalid-input' : 'valid-input'} notification-id-input`,
+      as: "input",
+      type: "text",
+      pattern: "[0-9]*",
+      size: "sm",
+      name: "notificationIdLower",
+      value: this.state.filter.notificationIdLower,
+      onChange: e => this.handleChangeFilterControl(e)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "notification-concate text-center"
+    }, "-"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
+      className: `shadow-none ${this.props.invalidParams.isInvalidNotificationIdUpper ? 'invalid-input' : 'valid-input'} notification-id-input`,
+      as: "input",
+      type: "text",
+      pattern: "[0-9]*",
+      size: "sm",
+      name: "notificationIdUpper",
+      value: this.state.filter.notificationIdUpper,
+      onChange: e => this.handleChangeFilterControl(e)
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Content')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
+      as: "input",
       type: "text",
       size: "sm",
       className: "shadow-none",
-      id: "filterNotificationTemplateName",
+      name: "content",
+      value: this.state.filter.content,
       autoComplete: "off",
-      value: this.state.notificationTemplateName,
-      onChange: this.handleTemplateNameChange
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Button"], {
-      className: "mr-4",
+      onChange: e => this.handleChange(e)
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Status')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      dataSource: this.state.statusOptions,
+      keyField: "id",
+      valueField: "name",
+      statusField: "checked",
+      isSubmited: false,
+      isAllTextShown: true,
+      onChange: (currentItem, selectedItemsKey) => this.handleStatusChange(currentItem, selectedItemsKey)
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
       variant: "primary",
       size: "sm",
-      onClick: this.handleSubmit
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Submit')), this.props.isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Button"], {
-      variant: "primary",
-      size: "sm",
-      onClick: this.handleOpenCreatePopup
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Insert')))));
+      type: "submit"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Submit')))));
   }
 
 }
 
-_defineProperty(Filter, "propTypes", {
-  notificationTypes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object)
-});
-
-_defineProperty(Filter, "defaultProps", {
-  notificationTypes: []
-});
-
-const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_3__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_5__["ActionCreators"], dispatch);
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__["bindActionCreators"])(_actions_index__WEBPACK_IMPORTED_MODULE_4__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
-    notificationTypes
+    gridParams,
+    invalidParams,
+    settings,
+    headlineOptions,
+    recipientOptions,
+    autoRefresh,
+    resendOptions
   } = state;
   return {
-    notificationTypes
+    gridParams,
+    invalidParams,
+    settings,
+    headlineOptions,
+    recipientOptions,
+    autoRefresh,
+    resendOptions
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Filter));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Filter));
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/NewNotificationTemplate.jsx":
-/*!*******************************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/NewNotificationTemplate.jsx ***!
-  \*******************************************************************************************/
-/*! exports provided: NewNotificationTemplate, default */
+/***/ "./www/sources/js/pages/notification-list/components/ValidateResend.jsx":
+/*!******************************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/components/ValidateResend.jsx ***!
+  \******************************************************************************/
+/*! exports provided: ValidateResend, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewNotificationTemplate", function() { return NewNotificationTemplate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ValidateResend", function() { return ValidateResend; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
-/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
-/* harmony import */ var _jsroot_components_FormikErrorMessage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/components/FormikErrorMessage */ "./www/sources/js/components/FormikErrorMessage.jsx");
-/* harmony import */ var _jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/components/ResponseMessage */ "./www/sources/js/components/ResponseMessage.jsx");
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
-/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/notification-template/common.functions.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions/index */ "./www/sources/js/pages/notification-list/actions/index.js");
+/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../functions */ "./www/sources/js/pages/notification-list/functions.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+
+class ValidateResend extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+
+    _defineProperty(this, "onClose", () => {
+      if (this.props.resendOptions.dataList.filter(item => _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Error') === item.status && item.isResent).length <= 0) {
+        this.props.setIsRefresh(true);
+      }
+
+      this.props.setValidateResend({
+        show: false
+      });
+    });
+
+    _defineProperty(this, "resendNotifications", notificationIds => {
+      this.onClose();
+      _functions__WEBPACK_IMPORTED_MODULE_7__["default"].resendNotifications({
+        notificationIds
+      }, this.callBackSuccess);
+    });
+
+    _defineProperty(this, "callBackSuccess", () => {
+      this.props.setIsRefresh(true);
+      this.props.getGridData(this.props.gridParams, data => _functions__WEBPACK_IMPORTED_MODULE_7__["default"].handleNewResendOptions(data, this.props.setResendOptions));
+      this.props.setAutoRefresh(_objectSpread(_objectSpread({}, this.props.autoRefresh), {}, {
+        countDown: this.props.autoRefresh.value
+      }));
+    });
+
+    _defineProperty(this, "renderBody", (isSingle, isAllValidate, isAllInActive, resendIdsString, inActiveNotificationIdsString) => {
+      if (isSingle) {
+        if (isAllValidate) {
+          return _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('ConfirmResendNotification'), '', resendIdsString);
+        } else {
+          return _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('TheRecipientOfNotificationIdHasBeenInactive'), '', '', inActiveNotificationIdsString);
+        }
+      } else {
+        if (isAllInActive) {
+          return _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('TheRecipientOfNotificationIdHasBeenInactive'), '', 's', inActiveNotificationIdsString);
+        } else {
+          if (isAllValidate) {
+            return _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('ComfirmResendNotification'), 's', resendIdsString);
+          } else {
+            return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('TheRecipientOfNotificationIdHasBeenInactive'), '1. ', 's', inActiveNotificationIdsString)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('TheSelectedNotificationsAreAbleToResend'), resendIdsString)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('ConfirmResendListAndIgnoreNotification')));
+          }
+        }
+      }
+    });
+  }
+
+  render() {
+    const {
+      inActiveNotificationIds,
+      isSingle,
+      resendIds
+    } = this.props.validateResendResult.result;
+    const inActiveNotificationIdsString = inActiveNotificationIds.join(', ');
+    const resendIdsString = resendIds.join(', ');
+    const isAllValidate = inActiveNotificationIds.length <= 0;
+    const isAllInActive = resendIds.length === 0;
+    const hasOnlyOkButton = isSingle && inActiveNotificationIds.length > 0 || !isSingle && isAllInActive;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
+      show: true,
+      backdrop: "static",
+      keyboard: false,
+      size: "md",
+      centered: true,
+      onHide: () => this.onClose(),
+      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_6__["default"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Header, {
+      closeButton: true
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Title, {
+      as: "div"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Confirmation'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Body, null, this.renderBody(isSingle, isAllValidate, isAllInActive, resendIdsString, inActiveNotificationIdsString)), hasOnlyOkButton ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      onClick: () => this.onClose(),
+      variant: "primary",
+      size: "sm"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('OK'))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      variant: "primary",
+      size: "sm",
+      onClick: () => this.resendNotifications(resendIds.toString())
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('OK')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      onClick: () => this.onClose(),
+      variant: "primary",
+      size: "sm"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Cancel'))));
+  }
+
+}
+
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_4__["bindActionCreators"])(_actions_index__WEBPACK_IMPORTED_MODULE_5__["ActionCreators"], dispatch);
+
+const mapStateToProps = state => {
+  const {
+    validateResendResult,
+    gridParams,
+    resendOptions,
+    autoRefresh
+  } = state;
+  return {
+    validateResendResult,
+    gridParams,
+    resendOptions,
+    autoRefresh
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])(mapStateToProps, mapDispatchToProps)(ValidateResend));
+
+/***/ }),
+
+/***/ "./www/sources/js/pages/notification-list/components/ViewDetail.jsx":
+/*!**************************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/components/ViewDetail.jsx ***!
+  \**************************************************************************/
+/*! exports provided: ViewDetail, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ViewDetail", function() { return ViewDetail; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @jsroot/components/react-grid/index */ "./www/sources/js/components/react-grid/index.jsx");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../actions/index */ "./www/sources/js/pages/notification-list/actions/index.js");
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../functions */ "./www/sources/js/pages/notification-list/functions.js");
+/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -2194,226 +1846,234 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-
-
-class NewNotificationTemplate extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+class ViewDetail extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
 
-    _defineProperty(this, "renderForm", ({
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleSubmit,
-      setFieldValue,
-      isSubmitting
-    }) => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"], {
-        noValidate: true,
-        onSubmit: handleSubmit
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_FormikErrorMessage__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        touched: touched,
-        errors: errors,
-        fieldNames: Object.keys(values)
-      }), this.props.createTemplateResult && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        isSuccessful: this.props.createTemplateResult.isSuccessful,
-        message: this.props.createTemplateResult.message || _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('InsertNotificationTemplateSuccessfully')
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "notificationTypeId"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        as: "select",
-        size: "sm",
-        className: "shadow-none",
-        isInvalid: touched.notificationTypeId && errors.notificationTypeId,
-        name: "notificationTypeId",
-        id: "notificationTypeId",
-        value: values.notificationTypeId,
-        onChange: handleChange
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "",
-        hidden: true,
-        disabled: true
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('PleaseSelect')), this.props.notificationTypes.map(_common_functions__WEBPACK_IMPORTED_MODULE_11__["renderNotificationTypeOption"])))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "notificationTemplateName"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('TemplateName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        type: "text",
-        size: "sm",
-        value: values.notificationTemplateName,
-        name: "notificationTemplateName",
-        id: "notificationTemplateName",
-        className: "shadow-none",
-        autoComplete: "off",
-        isInvalid: touched.notificationTemplateName && errors.notificationTemplateName,
-        onChange: handleChange
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "title"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Title')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        type: "text",
-        size: "sm",
-        value: values.title,
-        name: "title",
-        id: "title",
-        className: "shadow-none",
-        autoComplete: "off",
-        isInvalid: touched.title && errors.title,
-        onChange: handleChange
-      }))), this.props.languages !== null && this.props.languages.map(item => {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-          key: `language${item.settingId}`,
-          as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-          column: true,
-          sm: "4",
-          md: "3",
-          className: "required",
-          htmlFor: 'language_' + item.settingId
-        }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Content'), " (", item.settingValue, ")"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-          sm: "8",
-          md: "9"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-          as: "textarea",
-          className: "shadow-none form-control",
-          value: values['language_' + item.settingId],
-          name: 'language_' + item.settingId,
-          id: 'language_' + item.settingId,
-          rows: "4",
-          isInvalid: touched['language_' + item.settingId] && errors['language_' + item.settingId],
-          onChange: handleChange
-        })));
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Button"], {
-        type: "submit",
-        variant: "primary",
-        size: "sm",
-        disabled: isSubmitting
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Save')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Button"], {
-        type: "submit",
-        variant: "primary",
-        size: "sm",
-        onClick: this.props.onClose
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Cancel'))));
+    _defineProperty(this, "componentDidMount", () => this.setState({
+      remark: this.props.data.resolvedRemark ? this.props.data.resolvedRemark : '',
+      oldRemark: this.props.data.resolvedRemark ? this.props.data.resolvedRemark : '',
+      modalWidth: document.getElementById('view-detail-modal-body').clientWidth
+    }));
+
+    _defineProperty(this, "buildHeader", () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["HeaderRow"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["HeaderCell"], {
+      colWidth: 0.2 * this.state.modalWidth
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('LetstalkName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["HeaderCell"], {
+      colWidth: 0.2 * this.state.modalWidth
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('GroupHeadline')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["HeaderCell"], {
+      colWidth: 0.2 * this.state.modalWidth
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Recipient')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["HeaderCell"], {
+      colWidth: 0.4 * this.state.modalWidth
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Reason'))));
+
+    _defineProperty(this, "buildBody", data => [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["Row"], {
+      key: data.notificationId
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["Cell"], null, data.letstalkName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["Cell"], null, _functions__WEBPACK_IMPORTED_MODULE_7__["default"].getHeadlines(data.headlines)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["Cell"], null, _functions__WEBPACK_IMPORTED_MODULE_7__["default"].getRecipients(data.recipients)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["Cell"], {
+      className: "error-color"
+    }, data.reason))]);
+
+    _defineProperty(this, "editNotificationList", notificationId => this.setState({
+      isResolved: true
+    }, () => this.props.editNotificationList({
+      notificationId,
+      remark: this.state.remark
+    })));
+
+    _defineProperty(this, "handleChange", e => {
+      this.setState({
+        [e.target.name]: e.target.value
+      });
     });
 
-    _defineProperty(this, "handleSubmit", (values, {
-      setSubmitting
-    }) => {
-      setSubmitting(true);
-      const template = {
-        notificationTypeId: values.notificationTypeId,
-        notificationTemplateName: values.notificationTemplateName,
-        title: values.title,
-        contents: []
-      };
-      this.props.languages !== null && this.props.languages.map(item => {
-        template.contents.push({
-          languageId: item.settingId,
-          content: values['language_' + item.settingId]
+    _defineProperty(this, "onClose", close => {
+      if (this.state.isResolved) {
+        this.props.setViewDetail({
+          resolvedBy: ''
         });
-      });
-      this.props.createTemplate(template).then(() => {
-        if (this.props.createTemplateResult.isSuccessful) {
-          setTimeout(() => {
-            this.props.onSuccess();
-          }, 3000);
+        close();
+        this.props.getGridData(this.props.gridParams, data => _functions__WEBPACK_IMPORTED_MODULE_7__["default"].handleNewResendOptions(data, this.props.setResendOptions));
+        this.props.setAutoRefresh(_objectSpread(_objectSpread({}, this.props.autoRefresh), {}, {
+          countDown: this.props.autoRefresh.value
+        }));
+      } else {
+        if (this.state.remark !== this.state.oldRemark) {
+          this.props.setConfirmPopup({
+            show: true,
+            onOk: close
+          });
         } else {
-          setSubmitting(false);
+          close();
         }
-      });
+      }
     });
+
+    this.state = {
+      isResolved: false,
+      modalWidth: 0
+    };
   }
 
   render() {
-    const initialValues = {
-      notificationTypeId: '',
-      notificationTemplateName: '',
-      title: ''
-    };
-    this.props.languages !== null && this.props.languages.map(item => {
-      initialValues['language_' + item.settingId] = '';
-    });
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"], {
+    const {
+      data,
+      onClose
+    } = this.props;
+    const isResolved = this.state.isResolved || data.status === _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Resolved');
+    const resolvedBy = this.props.viewDetail.resolvedBy || data.resolvedBy;
+    const title = isResolved ? _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('ResolvedNotification') : _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('ErrorNotification');
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
       show: true,
-      className: "notification-template-modal",
-      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_7__["default"],
       backdrop: "static",
       keyboard: false,
       size: "lg",
       centered: true,
-      onHide: this.props.onClose
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Header, {
+      onHide: () => this.onClose(onClose),
+      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_8__["default"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Header, {
       closeButton: true
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Title, {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Title, {
       as: "div"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('InsertNotificationTemplate'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["Formik"], {
-      initialValues: initialValues,
-      validate: values => Object(_common_functions__WEBPACK_IMPORTED_MODULE_11__["validateFormik"])(values, this.props.languages),
-      onSubmit: this.handleSubmit
-    }, this.renderForm));
+    }, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      id: "view-detail-modal-body"
+    }, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('NotificationID')}: `, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, data.notificationId)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('NotificationTemplate')}: `, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, data.title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('SentAt')}: `, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", null, `${data.sendDateString} ${data.sendTimeString}`)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "error-occured-message error-resolved-row"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('ErrorOccuredWhileSendingTheNotificationToTheFollowingRecipient')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_3__["Table"], {
+      width: this.state.modalWidth - 1,
+      autoWidth: false,
+      header: this.buildHeader(),
+      body: this.buildBody(data),
+      containerPadding: 0
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "error-resolved-row"
+    }, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Remark')}: `, isResolved && this.state.remark), !isResolved && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+      className: "view-detail-remark",
+      rows: "3",
+      onChange: e => this.handleChange(e),
+      name: "remark",
+      value: this.state.remark
+    })), isResolved && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('ResolvedBy')}: ${resolvedBy}`)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Footer, null, !isResolved && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      onClick: () => this.editNotificationList(data.notificationId),
+      variant: "primary",
+      size: "sm"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Resolve')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      onClick: () => this.onClose(onClose),
+      variant: "primary",
+      size: "sm"
+    }, isResolved ? _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Close') : _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Cancel'))));
   }
 
 }
 
-_defineProperty(NewNotificationTemplate, "propTypes", {
-  languages: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object),
-  notificationTypes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object)
-});
-
-_defineProperty(NewNotificationTemplate, "defaultProps", {
-  languages: [],
-  notificationTypes: []
-});
-
-const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_3__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_4__["ActionCreators"], dispatch);
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_5__["bindActionCreators"])(_actions_index__WEBPACK_IMPORTED_MODULE_6__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
-    notificationTypes,
-    languages,
-    createTemplateResult
+    viewDetail,
+    gridParams,
+    autoRefresh
   } = state;
   return {
-    notificationTypes,
-    languages,
-    createTemplateResult
+    viewDetail,
+    gridParams,
+    autoRefresh
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(NewNotificationTemplate));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["connect"])(mapStateToProps, mapDispatchToProps)(ViewDetail));
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/index.js":
+/***/ "./www/sources/js/pages/notification-list/functions.js":
 /*!*************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/index.js ***!
+  !*** ./www/sources/js/pages/notification-list/functions.js ***!
   \*************************************************************/
+/*! exports provided: handleNewResendOptions, getHeadlines, getRecipients, resendNotifications, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewResendOptions", function() { return handleNewResendOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getHeadlines", function() { return getHeadlines; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRecipients", function() { return getRecipients; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resendNotifications", function() { return resendNotifications; });
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
+/* harmony import */ var _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/common/dataService */ "./www/sources/js/common/dataService.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
+
+
+const handleNewResendOptions = (data, done) => {
+  const resendList = data.filter(item => item.status === _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getResource('Error'));
+  const dataList = data.map(item => {
+    return {
+      notificationId: item.notificationId,
+      status: item.status,
+      isResent: false
+    };
+  });
+  done({
+    isCheckedAll: false,
+    isDisabledResend: true,
+    isHaveResendAll: resendList.length > 0,
+    dataList
+  });
+};
+const getHeadlines = headlines => {
+  if (headlines && headlines.length > 0) {
+    return headlines.map(headline => headline.headlineName).join(', ');
+  }
+
+  return '';
+};
+const getRecipients = recipients => {
+  if (recipients && recipients.length > 0) {
+    return recipients.map((recipient, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      key: index
+    }, `${recipient.recipientName} (${recipient.roleName})`));
+  }
+
+  return '';
+};
+const resendNotifications = async (params, callback) => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('NotificationList/ResendNotificationList');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].postDataAsync(url, params).then(response => {
+    const {
+      message,
+      isSuccessful
+    } = response.data;
+
+    if (typeof callback === 'function') {
+      callback();
+    }
+
+    if (isSuccessful) {
+      react_toastify__WEBPACK_IMPORTED_MODULE_4__["toast"].success(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getResource('ResentSuccessfully'));
+    } else {
+      react_toastify__WEBPACK_IMPORTED_MODULE_4__["toast"].error(message);
+    }
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+};
+const functions = {
+  handleNewResendOptions,
+  getHeadlines,
+  getRecipients,
+  resendNotifications
+};
+/* harmony default export */ __webpack_exports__["default"] = (functions);
+
+/***/ }),
+
+/***/ "./www/sources/js/pages/notification-list/index.js":
+/*!*********************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/index.js ***!
+  \*********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2423,138 +2083,234 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
-/* harmony import */ var _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./notificationTemplateSlice */ "./www/sources/js/pages/notification-template/notificationTemplateSlice.js");
-/* harmony import */ var _components_AppContainer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/AppContainer */ "./www/sources/js/pages/notification-template/components/AppContainer.jsx");
-/* harmony import */ var _cssroot_pages_notification_template_index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @cssroot/pages/notification-template/index.scss */ "./www/sources/css/pages/notification-template/index.scss");
-/* harmony import */ var _cssroot_pages_notification_template_index_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_cssroot_pages_notification_template_index_scss__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _jsroot_common_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/common/store */ "./www/sources/js/common/store.js");
+/* harmony import */ var _components_AppContainer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/AppContainer */ "./www/sources/js/pages/notification-list/components/AppContainer.jsx");
+/* harmony import */ var _reducers_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./reducers/index */ "./www/sources/js/pages/notification-list/reducers/index.js");
+/* harmony import */ var _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/constants */ "./www/sources/js/common/constants.js");
+/* harmony import */ var _cssroot_pages_notification_list_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @cssroot/pages/notification-list/index.scss */ "./www/sources/css/pages/notification-list/index.scss");
+/* harmony import */ var _cssroot_pages_notification_list_index_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_cssroot_pages_notification_list_index_scss__WEBPACK_IMPORTED_MODULE_6__);
 
 
 
 
 
-const store = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__["configureStore"])({
-  reducer: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_3__["default"]
+
+
+const store = _jsroot_common_store__WEBPACK_IMPORTED_MODULE_2__["default"].createStore(_reducers_index__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  gridParams: {
+    pageIndex: 1,
+    pageSize: 100
+  },
+  invalidParams: {},
+  contentPopup: {
+    show: false
+  },
+  viewDetailPopup: {
+    show: false
+  },
+  resendOptions: {
+    isCheckedAll: false,
+    isDisabledResend: true,
+    isHaveResendAll: false,
+    shouldResetScrollPosition: true,
+    dataList: []
+  },
+  settings: {
+    notificationTypes: [],
+    statuses: []
+  },
+  headlineOptions: [],
+  recipientOptions: [],
+  viewDetail: {
+    resolvedBy: '',
+    result: {
+      code: 1,
+      message: '',
+      isSuccessful: false
+    }
+  },
+  validateResendResult: {
+    show: false,
+    result: {
+      isSingle: false,
+      inActiveNotificationIds: [],
+      resendIds: []
+    }
+  },
+  confirmPopup: {
+    show: false,
+    onOk: null
+  },
+  autoRefresh: {
+    value: _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_5__["AUTO_REFRESH_TIMES"][0],
+    countDown: _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_5__["AUTO_REFRESH_TIMES"][0],
+    isSubmit: false
+  },
+  isRefresh: true
 });
-
-const isHost = true;
 class index extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], {
       store: store
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      isHost: isHost
-    }));
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_3__["default"], null));
   }
 
 }
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/notificationTemplateSlice.js":
-/*!*********************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/notificationTemplateSlice.js ***!
-  \*********************************************************************************/
-/*! exports provided: setNotificationTypes, setLanguages, setGridParams, setGridData, setSelectedTemplate, setCreateTemplatePopup, setCreateTemplateResult, setEditTemplatePopup, setEditTemplateResult, setDeleteTemplatePopup, setContentDetailPopup, default */
+/***/ "./www/sources/js/pages/notification-list/reducers/dataHandlerReducer.js":
+/*!*******************************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/reducers/dataHandlerReducer.js ***!
+  \*******************************************************************************/
+/*! exports provided: gridParams, notificationListGridData, contentPopup, resendOptions, viewDetailPopup, invalidParams, settings, viewDetail, validateResendResult, confirmPopup, headlineOptions, recipientOptions, autoRefresh, isRefresh, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setNotificationTypes", function() { return setNotificationTypes; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setLanguages", function() { return setLanguages; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setGridParams", function() { return setGridParams; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setGridData", function() { return setGridData; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSelectedTemplate", function() { return setSelectedTemplate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setCreateTemplatePopup", function() { return setCreateTemplatePopup; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setCreateTemplateResult", function() { return setCreateTemplateResult; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEditTemplatePopup", function() { return setEditTemplatePopup; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEditTemplateResult", function() { return setEditTemplateResult; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDeleteTemplatePopup", function() { return setDeleteTemplatePopup; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setContentDetailPopup", function() { return setContentDetailPopup; });
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "gridParams", function() { return gridParams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "notificationListGridData", function() { return notificationListGridData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "contentPopup", function() { return contentPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resendOptions", function() { return resendOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "viewDetailPopup", function() { return viewDetailPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "invalidParams", function() { return invalidParams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "settings", function() { return settings; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "viewDetail", function() { return viewDetail; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateResendResult", function() { return validateResendResult; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "confirmPopup", function() { return confirmPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "headlineOptions", function() { return headlineOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recipientOptions", function() { return recipientOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "autoRefresh", function() { return autoRefresh; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isRefresh", function() { return isRefresh; });
+/* harmony import */ var _jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @jsroot/common/createReducer */ "./www/sources/js/common/createReducer.js");
+/* harmony import */ var _actions_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../actions/types */ "./www/sources/js/pages/notification-list/actions/types.js");
 
-const notificationTemplateSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlice"])({
-  name: 'notificationTemplate',
-  initialState: {
-    notificationTypes: [],
-    languages: [],
-    gridParams: {
-      notificationTypeId: '',
-      notificationTemplateName: '',
-      pageIndex: 1,
-      pageSize: 100
-    },
-    gridData: null,
-    selectedTemplate: null,
-    createTemplatePopup: {
-      show: false
-    },
-    createTemplateResult: null,
-    editTemplatePopup: {
-      show: false
-    },
-    editTemplateResult: null,
-    deleteTemplatePopup: {
-      show: false
-    },
-    contentDetailPopup: {
-      show: false
-    }
-  },
-  reducers: {
-    setNotificationTypes: (state, action) => {
-      state.notificationTypes = action.payload;
-    },
-    setLanguages: (state, action) => {
-      state.languages = action.payload;
-    },
-    setGridParams: (state, action) => {
-      state.gridParams = action.payload;
-    },
-    setGridData: (state, action) => {
-      state.gridData = action.payload;
-    },
-    setSelectedTemplate: (state, action) => {
-      state.selectedTemplate = action.payload;
-    },
-    setCreateTemplatePopup: (state, action) => {
-      state.createTemplatePopup = action.payload;
-    },
-    setCreateTemplateResult: (state, action) => {
-      state.createTemplateResult = action.payload;
-    },
-    setEditTemplatePopup: (state, action) => {
-      state.editTemplatePopup = action.payload;
-    },
-    setEditTemplateResult: (state, action) => {
-      state.editTemplateResult = action.payload;
-    },
-    setDeleteTemplatePopup: (state, action) => {
-      state.deleteTemplatePopup = action.payload;
-    },
-    setContentDetailPopup: (state, action) => {
-      state.contentDetailPopup = action.payload;
-    }
+ // Grid
+
+const gridParams = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].GRID_PARAMS](state, action) {
+    return action.data;
   }
+
 });
-const {
-  actions,
-  reducer
-} = notificationTemplateSlice;
-const {
-  setNotificationTypes,
-  setLanguages,
-  setGridParams,
-  setGridData,
-  setSelectedTemplate,
-  setCreateTemplatePopup,
-  setCreateTemplateResult,
-  setEditTemplatePopup,
-  setEditTemplateResult,
-  setDeleteTemplatePopup,
-  setContentDetailPopup
-} = actions;
-/* harmony default export */ __webpack_exports__["default"] = (reducer);
+const notificationListGridData = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].GRID_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const contentPopup = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].CONTENT_POPUP_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const resendOptions = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].RESEND_OPTIONS_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const viewDetailPopup = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].VIEW_DETAIL_POPUP_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const invalidParams = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].INVALID_PARAMS_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const settings = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].SETTINGS_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const viewDetail = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].VIEW_DETAIL_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const validateResendResult = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].VALIDATE_RESEND_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const confirmPopup = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].CONFIRM_POPUP_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const headlineOptions = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].HEADLINE_OPTIONS_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const recipientOptions = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].RECIPIENT_OPTIONS_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const autoRefresh = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].AUTO_REFRESH_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const isRefresh = Object(_jsroot_common_createReducer__WEBPACK_IMPORTED_MODULE_0__["default"])({}, {
+  [_actions_types__WEBPACK_IMPORTED_MODULE_1__["default"].IS_REFRESH_DATA](state, action) {
+    return action.data;
+  }
+
+});
+const reducers = {
+  gridParams,
+  notificationListGridData,
+  contentPopup,
+  viewDetailPopup,
+  resendOptions,
+  invalidParams,
+  settings,
+  viewDetail,
+  validateResendResult,
+  confirmPopup,
+  headlineOptions,
+  recipientOptions,
+  autoRefresh,
+  isRefresh
+};
+/* harmony default export */ __webpack_exports__["default"] = (reducers);
+
+/***/ }),
+
+/***/ "./www/sources/js/pages/notification-list/reducers/index.js":
+/*!******************************************************************!*\
+  !*** ./www/sources/js/pages/notification-list/reducers/index.js ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _dataHandlerReducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dataHandlerReducer */ "./www/sources/js/pages/notification-list/reducers/dataHandlerReducer.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])(_objectSpread({}, _dataHandlerReducer__WEBPACK_IMPORTED_MODULE_1__["default"])));
 
 /***/ })
 

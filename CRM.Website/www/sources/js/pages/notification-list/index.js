@@ -1,11 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import Layout from '@jsroot/components/layout-container/index';
 import Store from '@jsroot/common/store';
 import AppContainer from './components/AppContainer';
 import reducer from './reducers/index';
 import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
+import '@cssroot/pages/notification-list/index.scss';
 
 const store = Store.createStore(reducer, {
     gridParams: {
@@ -56,10 +55,12 @@ const store = Store.createStore(reducer, {
     isRefresh: true
 });
 
-ReactDOM.render(
-	<Provider store={store}>
-        <Layout>
-            <AppContainer />
-        </Layout>
-	</Provider>,
-	document.getElementById('app-container'));
+export default class index extends Component {
+    render(){
+        return(
+            <Provider store={store}>
+                    <AppContainer />
+            </Provider>
+        );
+    }
+}
