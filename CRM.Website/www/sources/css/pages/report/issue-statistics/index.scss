@@ -67,6 +67,10 @@
     }
 }
 
+.header-content, .body-content, .footer-content {
+    border: 0 !important;
+}
+
 .fix-table-container{
     .header-content table thead th:first-child, thead th:nth-child(2), .fix-first-column, .fix-second-column{
         position: sticky !important;
@@ -90,7 +94,7 @@
 
     .header-content thead th:nth-child(2){
         z-index: 2;
-        left: 146px !important;
+        left: 147px !important;
     }
 
     .body-content table tbody, .footer-content .footer-container {
@@ -99,7 +103,7 @@
         }
 
         .fix-second-column{
-            left: 146px !important;
+            left: 147px !important;
         }
     }
 

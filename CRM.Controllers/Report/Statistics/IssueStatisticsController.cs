@@ -14,7 +14,7 @@ using static Fanex.NAP.Core.Business.Constant;
 namespace CRM.Controllers.Report.Statistics
 {
 
-    public class IssueStatisticsController : BaseController
+    public class IssueStatisticsController : Controller
     {
         private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
@@ -31,7 +31,7 @@ namespace CRM.Controllers.Report.Statistics
             this.excelService = excelService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
+       // [CrmPermission(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/IssueStatistics/Index");

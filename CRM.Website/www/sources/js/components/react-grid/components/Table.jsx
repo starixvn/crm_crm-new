@@ -23,6 +23,8 @@ class Table extends Component {
         body: PropTypes.arrayOf(PropTypes.object),
         footer: PropTypes.arrayOf(PropTypes.object),
         isFixColumn: PropTypes.bool,
+        fixColumns: PropTypes.array,
+        widthFixColumns: PropTypes.array,
         isPaging: PropTypes.bool,
         onPaging: PropTypes.func,
         pageOption: PropTypes.object,
@@ -38,6 +40,8 @@ class Table extends Component {
         maxWidth: clientWidth,
         autoWidth: true,
         isFixColumn: false,
+        fixColumns: [],
+        widthFixColumns: [],
         isPaging: false,
         adjustedHeight: 0,
         bodyHeight: 0,
@@ -138,7 +142,6 @@ class Table extends Component {
         const currentRowIndex = 0;
         const cellList = headerIsArray ? headerRows[currentRowIndex].props.children : headerRows.props.children;
         this._getWidthByCells(headerRows, columnsWidth, currentNextCellIndexByRow, cellList, currentRowIndex);
-
         return columnsWidth;
     }
 
@@ -170,6 +173,7 @@ class Table extends Component {
             this._getWidthByCells(headerRows, columnsWidth, currentNextCellIndexByRow, nextColspanCells, nextRowIndex);
         } else {
             const cellWidth = cellProps.colWidth ? cellProps.colWidth : DEFAULT_COLUMN_WIDTH;
+
             columnsWidth.push(cellWidth);
         }
     };
@@ -200,8 +204,8 @@ class Table extends Component {
     }
 
     _getUpdatedColumnLayout() {
-        const { width, autoWidth, containerPadding } = this.props;
-        let sumOfColumnWidth = autoWidth ? this.state.maxWidth : width;
+        const { width, autoWidth, containerPadding, shouldUseMaxWidth } = this.props;
+        let sumOfColumnWidth = autoWidth || shouldUseMaxWidth ? this.state.maxWidth : width;
         sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH;
 
         const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth =>
@@ -266,10 +270,14 @@ class Table extends Component {
         if (!newColumnLayout) {
             return null;
         }
-
+        if(this.props.isFixColumn && this.props.fixColumns.length > 0){
+            this.props.fixColumns.map(item => {
+                newColumnLayout[item] = this.props.widthFixColumns[item];
+            })
+        }
         const sectionProps = { width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
         const headerSectionProps = { onSort: this.props.onSort, width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
-        const rowLayout = <RowLayout columnLayout={newColumnLayout} />;
+        const rowLayout = <RowLayout columnLayout={newColumnLayout}/>;
         const { Header, Body, Footer } = this;
         const fixProps = {header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout,isPaging, pageOption, onPaging};
 

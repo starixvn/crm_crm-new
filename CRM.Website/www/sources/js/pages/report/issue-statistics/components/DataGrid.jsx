@@ -9,7 +9,7 @@ import LangHelper from '@jsroot/common/langHelper';
 export class DataGrid extends Component {
     buildHeader = countryArr => {
         const header = [];
-        header.push(<HeaderCell colWidth={15}>{LangHelper.getResource('Date')}</HeaderCell>);
+        header.push(<HeaderCell colWidth={12}>{LangHelper.getResource('Date')}</HeaderCell>);
         header.push(<HeaderCell colWidth={12}>{LangHelper.getResource('Time')}</HeaderCell>);
         countryArr.map(item =>{
             header.push(<HeaderCell colWidth={10}>{item.name}</HeaderCell>);
@@ -176,6 +176,8 @@ export class DataGrid extends Component {
                     body={this.buildBody(gridData, countryArr)}
                     footer={this.renderFooter(gridData)}
                     isFixColumn
+                    fixColumns = {[0]}
+                    widthFixColumns = {[147]}
                     isPaging = {this.isPagingCheck()}
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
