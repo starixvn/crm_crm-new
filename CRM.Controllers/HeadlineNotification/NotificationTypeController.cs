@@ -48,11 +48,11 @@ namespace CRM.Controllers
             return Json(result);
         }
 
-        public IActionResult Index()
-        {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.NotificationType, Policy.Host);
-            return View(isHost);
-        }
+        //public IActionResult Index()
+        //{
+        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.NotificationType, Policy.Host);
+        //    return View(isHost);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> GetNotificationType([FromBody] GetNotificationTypeParam param)

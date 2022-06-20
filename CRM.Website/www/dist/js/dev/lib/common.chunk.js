@@ -1,5 +1,292 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["common"],{
 
+/***/ "./www/sources/js/components/ConfirmPopup.jsx":
+/*!****************************************************!*\
+  !*** ./www/sources/js/components/ConfirmPopup.jsx ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _DraggableModalDialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+class ConfirmPopup extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
+  render() {
+    const {
+      size,
+      title,
+      content,
+      requestResponse
+    } = this.props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"], {
+      show: true,
+      backdrop: "static",
+      dialogAs: _DraggableModalDialog__WEBPACK_IMPORTED_MODULE_3__["default"],
+      className: "confirmation-modal",
+      keyboard: false,
+      size: size,
+      centered: true,
+      onHide: this.props.onClose
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Header, {
+      closeButton: true
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Title, {
+      as: "div"
+    }, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Body, null, requestResponse && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Alert"], {
+      variant: requestResponse.isSuccessful ? 'success' : 'danger',
+      className: "d-flex"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: `fa ${requestResponse.isSuccessful ? 'fa-check' : 'fa-exclamation-triangle'}`
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "ml-2"
+    }, requestResponse.message)), content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+      variant: "primary",
+      size: "sm",
+      onClick: this.props.onSubmit,
+      disabled: requestResponse && requestResponse.isSuccessful
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('OK')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+      variant: "primary",
+      size: "sm",
+      onClick: this.props.onClose
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('Cancel'))));
+  }
+
+}
+
+_defineProperty(ConfirmPopup, "propTypes", {
+  size: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf(['sm', 'lg', 'xl', 'md']),
+  title: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  content: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.element]),
+  requestResponse: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
+    isSuccessful: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+    message: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string
+  }),
+  onSubmit: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+  onClose: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
+});
+
+_defineProperty(ConfirmPopup, "defaultProps", {
+  size: 'sm',
+  title: '',
+  content: '',
+  requestResponse: null
+});
+
+/* harmony default export */ __webpack_exports__["default"] = (ConfirmPopup);
+
+/***/ }),
+
+/***/ "./www/sources/js/components/ResponseMessage.jsx":
+/*!*******************************************************!*\
+  !*** ./www/sources/js/components/ResponseMessage.jsx ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+class ResponseMessage extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
+  render() {
+    const {
+      isSuccessful,
+      message,
+      messages
+    } = this.props;
+    const variant = isSuccessful ? 'success' : 'danger';
+    const className = `fa ${isSuccessful ? 'fa-check' : 'fa-exclamation-triangle'}`;
+    return message ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Alert"], {
+      variant: variant,
+      className: "d-flex"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "d-inline"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: className
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "ml-2 d-inline"
+    }, message)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Alert"], {
+      variant: variant,
+      className: "d-flex flex-column"
+    }, messages.map((item, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "d-flex",
+      key: index
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "d-inline"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: className
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "ml-2 d-inline"
+    }, item))));
+  }
+
+}
+
+_defineProperty(ResponseMessage, "propTypes", {
+  isSuccessful: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  message: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  messages: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array
+});
+
+_defineProperty(ResponseMessage, "defaultProps", {
+  isSuccessful: false,
+  message: '',
+  messages: []
+});
+
+/* harmony default export */ __webpack_exports__["default"] = (ResponseMessage);
+
+/***/ }),
+
+/***/ "./www/sources/js/components/date-picker/CustomInput.jsx":
+/*!***************************************************************!*\
+  !*** ./www/sources/js/components/date-picker/CustomInput.jsx ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomInput; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+
+
+class CustomInput extends react__WEBPACK_IMPORTED_MODULE_0___default.a.PureComponent {
+  render() {
+    const {
+      disabled,
+      onClick,
+      value,
+      isInvalid
+    } = this.props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Form"].Control, {
+      as: "input",
+      className: "shadow-none",
+      isInvalid: isInvalid,
+      readOnly: true,
+      disabled: disabled,
+      onClick: onClick,
+      value: value
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "date-picker-icon fa fa-calendar",
+      onClick: onClick
+    }));
+  }
+
+}
+
+/***/ }),
+
+/***/ "./www/sources/js/components/date-picker/index.jsx":
+/*!*********************************************************!*\
+  !*** ./www/sources/js/components/date-picker/index.jsx ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DatePickerField; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_datepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-datepicker */ "./node_modules/react-datepicker/dist/react-datepicker.min.js");
+/* harmony import */ var react_datepicker__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_datepicker__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _CustomInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CustomInput */ "./www/sources/js/components/date-picker/CustomInput.jsx");
+/* harmony import */ var _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @jsroot/common/dateTimeService */ "./www/sources/js/common/dateTimeService.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+const _excluded = ["className", "selected", "isInvalid"];
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+class DatePickerField extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  constructor(props) {
+    super(props);
+
+    _defineProperty(this, "handleTimeNow", () => {
+      this.setState({
+        selected: new Date(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_3__["default"].toLongDateTimeFormat(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_3__["default"].toClientDateTime(new Date())))
+      });
+    });
+
+    this.state = {
+      selected: this.props.selected
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.selected !== this.props.selected) {
+      this.setState({
+        selected: this.props.selected
+      });
+    }
+  }
+
+  render() {
+    const _this$props = this.props,
+          {
+      className,
+      selected,
+      isInvalid
+    } = _this$props,
+          rest = _objectWithoutProperties(_this$props, _excluded);
+
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_datepicker__WEBPACK_IMPORTED_MODULE_1___default.a, _extends({
+      className: `datetime-picker ${className}`,
+      dateFormat: this.props.showTimeInput ? 'MMM dd, yyyy hh:mm aa' : 'MMM dd, yyyy',
+      customInput: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CustomInput__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        isInvalid: isInvalid
+      }),
+      selected: this.state.selected
+    }, rest), this.props.showTimeInput && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "react-datepicker__input-time-container btn-now",
+      type: "button",
+      onClick: this.handleTimeNow
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('Now')));
+  }
+
+}
+
+_defineProperty(DatePickerField, "defaultProps", {
+  isInvalid: false
+});
+
+/***/ }),
+
 /***/ "./www/sources/js/components/react-grid/components/Cell.jsx":
 /*!******************************************************************!*\
   !*** ./www/sources/js/components/react-grid/components/Cell.jsx ***!

@@ -1,6 +1,7 @@
 ﻿import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
+    resetState,
     setNotificationTypeGridParams,
     setNotificationTypeGridData,
     setSettings,
@@ -12,11 +13,10 @@ import {
 } from './notificationTypeSlice';
 
 export const getSettings = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('NotificationType/GetSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError);
 };
 
 export const deleteNotificationType = data => async dispatch => {
@@ -33,11 +33,10 @@ export const editNotificationType = data => async dispatch => {
 };
 
 export const getNotificationTypeGridData = params => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('NotificationType/GetNotificationType');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setNotificationTypeGridData(response.data));
-    }).then(() => Site.unblockUI());
+    });
 };
 
 export const createNotificationType = data => async dispatch => {
@@ -49,6 +48,7 @@ export const createNotificationType = data => async dispatch => {
 };
 
 export const ActionCreators = {
+    resetState,
     setNotificationTypeGridParams,
     getNotificationTypeGridData,
     setNotificationTypeGridData,

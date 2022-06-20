@@ -13,14 +13,6 @@ import CreateCommunicationLog from '../../communication-log/components/CreateCom
 import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
 
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import dashboard from '../dashboardSlice';
-
-const store = configureStore({
-    reducer: dashboard
-});
-
 export class AppContainer extends Component {
     static propTypes = {
         editRedemptionDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
@@ -41,7 +33,7 @@ export class AppContainer extends Component {
     handleCloseEditRedemptionDialog = isSuccessful => {
         this.props.setEditRedemptionDialog({ show: false });
         if (isSuccessful) {
-            this.props.getRedemptionLogs({ customerId: window.currentCustomer.custId });
+            this.props.getRedemptionLogs({ customerId: this.props.custId });
         }
     };
 
@@ -52,26 +44,26 @@ export class AppContainer extends Component {
     handleCloseEditCommunicationDialog = isSuccessful => {
         this.props.setEditCommunicationDialog({ show: false });
         if (isSuccessful) {
-            this.props.getCommunicationLogs({ customerId: window.currentCustomer.custId });
+            this.props.getCommunicationLogs({ customerId: this.props.custId });
         }
     };
 
     handleCloseCreateCmnDiaLog = isSuccessful => {
         this.props.setCreateCommunicationDialog({ show: false });
         if (isSuccessful) {
-            this.props.getCommunicationLogs({ customerId: window.currentCustomer.custId });
+            this.props.getCommunicationLogs({ customerId: this.props.custId });
         }
     };
 
     handleCloseEditCustomerVerify = isSuccessful => {
         this.props.setEditCustomerVerifyDialog({ show: false });
         if (isSuccessful) {
-            this.props.getCustomerInfoVerify({ customerId: window.currentCustomer.custId });
+            this.props.getCustomerInfoVerify({ customerId: this.props.custId });
         }
     };
 
     render() {
-        if(!window.currentCustomer){
+        if(!this.props.custId){
             return(
                 <div className='alert-boxer'>
                     <span className="fa fa-exclamation-triangle pr-2" aria-hidden="true" />
@@ -81,11 +73,10 @@ export class AppContainer extends Component {
         }
         const {
             editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
-            createCommunicationDialog, editCustomerVerifyDialog
+            createCommunicationDialog, editCustomerVerifyDialog, custId
         } = this.props;
-        const custId = window.currentCustomer.custId;
         return (
-            <Provider store={store}>
+            <div>
                 <div className="d-flex justify-content-between">
                     <div className="dataGrid-remark"><DataGridRemark id={custId} /></div>
                     <div className="information"><CustomerInfoVerify id={custId}/></div>
@@ -125,7 +116,7 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditCustomerVerify}
                     />
                 }
-            </Provider>
+            </div>
         );
     }
 }

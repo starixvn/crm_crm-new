@@ -38,14 +38,14 @@
             this.dashboardService = dashboardService;
         }
 
-        public IActionResult Index()
-        {
-            var permission = new CustomerPermissionViewModel
-            {
-                CreateUpdateFeedbackPermission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
-            };
-            return View(permission);
-        }
+        //public IActionResult Index()
+        //{
+        //    var permission = new CustomerPermissionViewModel
+        //    {
+        //        CreateUpdateFeedbackPermission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
+        //    };
+        //    return View(permission);
+        //}
 
         public async Task<IActionResult> GetCustomerRemarks(GetCustomerRemarksCriteria criteria)
         {

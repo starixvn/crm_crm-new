@@ -7,9 +7,14 @@ import { Table } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class DataGridRemark extends Component {
-
     componentDidMount() {
         this.props.getCustomerRemarks({ customerId: this.props.id });
+    }
+    
+    componentDidUpdate(prevProps) {
+        if ( this.props.id !== prevProps.id ) {
+            this.props.getCustomerRemarks({ customerId: this.props.id });
+        }
     }
 
     buildBody = () => {

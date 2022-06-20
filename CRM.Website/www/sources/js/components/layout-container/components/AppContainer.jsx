@@ -10,17 +10,20 @@ import {
     Routes,
     Route
 } from "react-router-dom";
+
 const NotificationListComponent  = lazy(() => import('@jsroot/pages/notification-list/index'));
 const NotificationTemplateComponent = lazy(() => import('@jsroot/pages/notification-template/index'));
+const NotificationTypeComponent = lazy(() => import('@jsroot/pages/notification-type/index'));
+const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 
 export default class AppContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
             menus: [],
-            username: !window.currentCustomer ? null : window.currentCustomer.name,
-            isGuest: !window.currentCustomer ? false : window.currentCustomer.isGuest,
-            customerInfo: window.customerInfo,
+            username: null,
+            isGuest: false,
+            customerInfo: null,
             settings: null,
             gridParams: {
                 username: null,
@@ -35,21 +38,61 @@ export default class AppContainer extends Component {
     }
 
     async componentDidMount() {
-        if(window.customerInfo !== null){
-            await this.getSetting();
-        }
-        this.getMenus();
+        const storage = window.localStorage;
+        this.getInitInfo();
 
-        const isShowingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
-        const isKeepLeftPanel = window.localStorage.getItem('isKeepLeftPanel');
+        const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
+        const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
         if(isKeepLeftPanel !== null){
             this.setState({isShowingLeftPanel: JSON.parse(isKeepLeftPanel)});
         }
         if(isShowingLeftPanel !== null){
-            window.localStorage.removeItem('isShowingLeftPanel');
+            storage.removeItem('isShowingLeftPanel');
         }
         this.getAntiForgeryToken();
     }
+
+    getInitInfo = async () =>{
+        await this.getSetting();
+        await this.getMenus();
+        await this.getCurrentCustomer();
+    }
+
+    getAntiForgeryToken = async () =>{
+        Site.blockUI();
+        const url = Site.resolveClientUrl('Antiforgery/GenerateAntiForgeryTokens');
+        await DataService.getDataAsync(url).then(response => {
+            document.getElementById('xsrfToken').value = response.data.requestToken;
+        }).then(() => Site.unblockUI());
+    };
+
+    getSetting = async () =>{
+        Site.blockUI();
+        const url = Site.resolveClientUrl('CustomerInfo/GetSettings');
+        await DataService.getDataAsync(url).then(response => {
+             this.setState({ settings: response.data});
+        }).then(() => Site.unblockUI());
+    };
+
+    getMenus = async () =>{
+        Site.blockUI();
+        const url = Site.resolveClientUrl('Home/GetMenus');
+        await DataService.getDataAsync(url).then(response => {
+             this.initDataMenu(response.data);
+        }).then(() => Site.unblockUI());
+    };
+
+    getCurrentCustomer = async () =>{
+        const url = Site.resolveClientUrl('CustomerInfo/GetCurrentCustomerInfo');
+        await DataService.getDataAsync(url).then(response => {
+            const data = response.data;
+            if(data !== undefined && data !== null){
+                this.setState({username: data.name, isGuest: data.isGuest} , () =>{
+                    this.getCustomerInfo();
+                });
+            }
+        });
+    };
 
     initDataMenu = menus => {
         const presentMenus = menus.filter(item => item.parentName === '');
@@ -157,30 +200,6 @@ export default class AppContainer extends Component {
         }}).then(() => Site.unblockUI());
     };
 
-    getAntiForgeryToken = async () =>{
-        Site.blockUI();
-        const url = Site.resolveClientUrl('Antiforgery/GenerateAntiForgeryTokens');
-        await DataService.getDataAsync(url).then(response => {
-            document.getElementById('xsrfToken').value = response.data.requestToken;
-        }).then(() => Site.unblockUI());
-    };
-
-    getSetting = async () =>{
-        Site.blockUI();
-        const url = Site.resolveClientUrl('CustomerInfo/GetSettings');
-        await DataService.getDataAsync(url).then(response => {
-             this.setState({ settings: response.data});
-        }).then(() => Site.unblockUI());
-    };
-
-    getMenus = async () =>{
-        Site.blockUI();
-        const url = Site.resolveClientUrl('Home/GetMenus');
-        await DataService.getDataAsync(url).then(response => {
-             this.initDataMenu(response.data);
-        }).then(() => Site.unblockUI());
-    };
-
     handleCollapseExpandLayout = event =>{
         event.preventDefault();
         if(!this.state.customerInfo){
@@ -204,8 +223,10 @@ export default class AppContainer extends Component {
             <Suspense fallback={<div>Loading...</div>}>
                 <Routes>
                     <Route exact path="/" />
-                    <Route exact path="/NotificationList" element={<NotificationListComponent />} />
-                    <Route exact path="/NotificationTemplate" element={<NotificationTemplateComponent />} />
+                    <Route path="/NotificationList" element={<NotificationListComponent />} />
+                    <Route path="/NotificationTemplate" element={<NotificationTemplateComponent />} />
+                    <Route path="/NotificationType" element={<NotificationTypeComponent />} />
+                    <Route path="/Dashboard" element={<DashboardComponent custId={this.state.customerInfo?.custId}/>} />
                 </Routes>
             </Suspense>
         );
@@ -267,15 +288,14 @@ export default class AppContainer extends Component {
                         />
                     </div>
                     {
-                        this.renderMenuComponent()
-                        // !showEmptyCustomerInfoPopup && customerInfo !== null &&
-                        // <div className='row-content'>
-                        //     {
-                        //         isShowingLeftPanel ?
-                        //         this.renderLeftRightContent(customerInfo) :
-                        //         this.renderFullWidthContent()
-                        //     }
-                        // </div>
+                        !showEmptyCustomerInfoPopup &&
+                        <div className='row-content'>
+                            {
+                                isShowingLeftPanel && customerInfo !== null ?
+                                this.renderLeftRightContent(customerInfo) :
+                                this.renderFullWidthContent()
+                            }
+                        </div>
                     }
                     
                     <ToastContainer

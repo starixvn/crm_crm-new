@@ -103,7 +103,7 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"0":1,"1":1};
+/******/ 		var cssChunks = {"0":1,"1":1,"2":1,"3":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
@@ -261,7 +261,7 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([0,"vendor"]);
+/******/ 	deferredModules.push([0,4]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
@@ -1350,6 +1350,32 @@ _defineProperty(SweetModalDialog, "defaultProps", {
 
 /***/ }),
 
+/***/ "./www/sources/js/components/WithNavigation.jsx":
+/*!******************************************************!*\
+  !*** ./www/sources/js/components/WithNavigation.jsx ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+const WithNavigation = Component => props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Component, _extends({}, props, {
+  navigate: Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useNavigate"])(),
+  location: Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])()
+}));
+
+/* harmony default export */ __webpack_exports__["default"] = (WithNavigation);
+
+/***/ }),
+
 /***/ "./www/sources/js/components/layout-container/common.functions.js":
 /*!************************************************************************!*\
   !*** ./www/sources/js/components/layout-container/common.functions.js ***!
@@ -1419,11 +1445,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-const NotificationListComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-list/index */ "./www/sources/js/pages/notification-list/index.js")));
-const NotificationTemplateComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
+const NotificationListComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e("common"), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-list/index */ "./www/sources/js/pages/notification-list/index.js")));
+const NotificationTemplateComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e("common"), __webpack_require__.e(2)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
+const NotificationTypeComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e("common"), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-type/index */ "./www/sources/js/pages/notification-type/index.js")));
+const DashboardComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e("common"), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/dashboard/index */ "./www/sources/js/pages/dashboard/index.js")));
 class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
+
+    _defineProperty(this, "getInitInfo", async () => {
+      await this.getSetting();
+      await this.getMenus();
+      await this.getCurrentCustomer();
+    });
+
+    _defineProperty(this, "getAntiForgeryToken", async () => {
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Antiforgery/GenerateAntiForgeryTokens');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
+        document.getElementById('xsrfToken').value = response.data.requestToken;
+      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
+    });
+
+    _defineProperty(this, "getSetting", async () => {
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetSettings');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
+        this.setState({
+          settings: response.data
+        });
+      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
+    });
+
+    _defineProperty(this, "getMenus", async () => {
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Home/GetMenus');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
+        this.initDataMenu(response.data);
+      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
+    });
+
+    _defineProperty(this, "getCurrentCustomer", async () => {
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetCurrentCustomerInfo');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
+        const data = response.data;
+
+        if (data !== undefined && data !== null) {
+          this.setState({
+            username: data.name,
+            isGuest: data.isGuest
+          }, () => {
+            this.getCustomerInfo();
+          });
+        }
+      });
+    });
 
     _defineProperty(this, "initDataMenu", menus => {
       const presentMenus = menus.filter(item => item.parentName === '');
@@ -1554,32 +1630,6 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
     });
 
-    _defineProperty(this, "getAntiForgeryToken", async () => {
-      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
-      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Antiforgery/GenerateAntiForgeryTokens');
-      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
-        document.getElementById('xsrfToken').value = response.data.requestToken;
-      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
-    });
-
-    _defineProperty(this, "getSetting", async () => {
-      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
-      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetSettings');
-      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
-        this.setState({
-          settings: response.data
-        });
-      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
-    });
-
-    _defineProperty(this, "getMenus", async () => {
-      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
-      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Home/GetMenus');
-      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
-        this.initDataMenu(response.data);
-      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
-    });
-
     _defineProperty(this, "handleCollapseExpandLayout", event => {
       event.preventDefault();
 
@@ -1601,19 +1651,27 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     });
 
     _defineProperty(this, "renderMenuComponent", () => {
+      var _this$state$customerI;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Suspense"], {
         fallback: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading...")
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Routes"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
         exact: true,
         path: "/"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-        exact: true,
         path: "/NotificationList",
         element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationListComponent, null)
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-        exact: true,
         path: "/NotificationTemplate",
         element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTemplateComponent, null)
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
+        path: "/NotificationType",
+        element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTypeComponent, null)
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
+        path: "/Dashboard",
+        element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DashboardComponent, {
+          custId: (_this$state$customerI = this.state.customerInfo) === null || _this$state$customerI === void 0 ? void 0 : _this$state$customerI.custId
+        })
       })));
     });
 
@@ -1662,9 +1720,9 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     this.state = {
       menus: [],
-      username: !window.currentCustomer ? null : window.currentCustomer.name,
-      isGuest: !window.currentCustomer ? false : window.currentCustomer.isGuest,
-      customerInfo: window.customerInfo,
+      username: null,
+      isGuest: false,
+      customerInfo: null,
       settings: null,
       gridParams: {
         username: null,
@@ -1681,13 +1739,10 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   }
 
   async componentDidMount() {
-    if (window.customerInfo !== null) {
-      await this.getSetting();
-    }
-
-    this.getMenus();
-    const isShowingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
-    const isKeepLeftPanel = window.localStorage.getItem('isKeepLeftPanel');
+    const storage = window.localStorage;
+    this.getInitInfo();
+    const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
+    const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
 
     if (isKeepLeftPanel !== null) {
       this.setState({
@@ -1696,7 +1751,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
 
     if (isShowingLeftPanel !== null) {
-      window.localStorage.removeItem('isShowingLeftPanel');
+      storage.removeItem('isShowingLeftPanel');
     }
 
     this.getAntiForgeryToken();
@@ -1742,15 +1797,9 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       handleGetCustomerIsGuest: this.handleGetCustomerIsGuest,
       handleCloseEmptyConfirm: this.handleCloseEmptyConfirm,
       debounceUserNameInputChange: this.debounceUserNameInputChange
-    })), this.renderMenuComponent() // !showEmptyCustomerInfoPopup && customerInfo !== null &&
-    // <div className='row-content'>
-    //     {
-    //         isShowingLeftPanel ?
-    //         this.renderLeftRightContent(customerInfo) :
-    //         this.renderFullWidthContent()
-    //     }
-    // </div>
-    , /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_toastify__WEBPACK_IMPORTED_MODULE_2__["ToastContainer"], {
+    })), !showEmptyCustomerInfoPopup && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "row-content"
+    }, isShowingLeftPanel && customerInfo !== null ? this.renderLeftRightContent(customerInfo) : this.renderFullWidthContent()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_toastify__WEBPACK_IMPORTED_MODULE_2__["ToastContainer"], {
       limit: 1,
       position: "top-center",
       autoClose: 3000,
@@ -2548,7 +2597,6 @@ _defineProperty(DataGrid, "defaultProps", {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Filter; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
@@ -2560,6 +2608,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
 /* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _BreadcrumbTime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./BreadcrumbTime */ "./www/sources/js/components/layout-container/components/BreadcrumbTime.jsx");
+/* harmony import */ var _WithNavigation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../WithNavigation */ "./www/sources/js/components/WithNavigation.jsx");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -2571,9 +2620,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
 class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(props) {
-    super(props);
+  constructor(...args) {
+    super(...args);
 
     _defineProperty(this, "handleSubmit", event => {
       event.preventDefault();
@@ -2583,9 +2634,14 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         return;
       }
 
-      this.props.getDataGrid().then(() => {// if(this.props.customerInfo !== null){
-        //     window.location = Site.resolveClientUrl('Dashboard');
-        // }
+      this.props.getDataGrid().then(() => {
+        if (this.props.customerInfo !== null) {
+          this.props.navigate('/Dashboard', {
+            state: {
+              id: this.props.customerInfo.custId
+            }
+          });
+        }
       });
     });
 
@@ -2732,10 +2788,6 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
       return parentNames;
     });
-
-    this.state = {
-      breadcrumb: []
-    };
   }
 
   render() {
@@ -2815,6 +2867,9 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   }
 
 }
+
+const FunctionBarWithNavigation = Object(_WithNavigation__WEBPACK_IMPORTED_MODULE_9__["default"])(Filter);
+/* harmony default export */ __webpack_exports__["default"] = (FunctionBarWithNavigation);
 
 /***/ }),
 

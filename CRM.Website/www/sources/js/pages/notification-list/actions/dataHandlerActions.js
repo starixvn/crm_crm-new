@@ -76,11 +76,10 @@ export const setSettings = data => {
 };
 
 export const getSettings = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('NotificationList/GetSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError);
 };
 
 export const setViewDetail = data => {

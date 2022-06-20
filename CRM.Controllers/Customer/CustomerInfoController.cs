@@ -56,8 +56,12 @@
                 };
                 sessionService.CurrentCustomer = currentCustomer;
             }
-            sessionService.CustomerInfo = customerInfo;
             return Json(customerInfo);
+        }
+
+        public async Task<IActionResult> GetCurrentCustomerInfo()
+        {
+            return Json(sessionService.CurrentCustomer);
         }
 
         public async Task<IActionResult> GetSettings()

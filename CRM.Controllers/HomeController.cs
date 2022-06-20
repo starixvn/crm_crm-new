@@ -36,8 +36,15 @@
 
         public IActionResult GetMenus()
         {
-            var menus = userService.GetMenuItem(napSession.UserId, napSettings.SiteId, napSettings.Environment, true).ToList();
-            return Json(menus);
+            if(sessionService.MenuItems != null)
+            {
+                return Json(sessionService.MenuItems);
+            }
+            else
+            {
+                var menus = userService.GetMenuItem(napSession.UserId, napSettings.SiteId, napSettings.Environment, true).ToList();
+                return Json(menus);
+            }
         }
     }
 }

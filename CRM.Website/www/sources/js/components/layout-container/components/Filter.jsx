@@ -7,15 +7,9 @@ import Site from '@jsroot/common/site';
 import { SubMainMenu, DetailMenu }from '@jsroot/common/constants';
 import { toast } from 'react-toastify';
 import BreadcrumbTime from './BreadcrumbTime';
+import WithNavigation from '../../WithNavigation';
 
-export default class Filter extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            breadcrumb: []
-        };
-    }
-
+class Filter extends Component {
     handleSubmit = event => {
         event.preventDefault();
         if(this.props.username === '' || this.props.username === null){
@@ -23,9 +17,9 @@ export default class Filter extends Component {
             return;
         }
         this.props.getDataGrid().then(()=>{
-            // if(this.props.customerInfo !== null){
-            //     window.location = Site.resolveClientUrl('Dashboard');
-            // }
+            if(this.props.customerInfo !== null){
+                this.props.navigate('/Dashboard', {state: {id: this.props.customerInfo.custId}});
+            }
         });
     };
 
@@ -244,3 +238,6 @@ export default class Filter extends Component {
         );
     }
 }
+
+const FunctionBarWithNavigation = WithNavigation(Filter);
+export default FunctionBarWithNavigation;

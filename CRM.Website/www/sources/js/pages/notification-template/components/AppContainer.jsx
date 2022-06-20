@@ -38,13 +38,13 @@ export class AppContainer extends Component {
         isHost: false
     };
 
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         this.props.getNotificationTypes();
         this.props.getLanguages();
+    }
+    
+    componentWillUnmount(){
+        this.props.resetState();
     }
 
     handleCloseCreatePopup = () => {

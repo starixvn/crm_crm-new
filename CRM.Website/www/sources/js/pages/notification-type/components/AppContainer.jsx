@@ -18,8 +18,8 @@ export class AppContainer extends Component {
         isHost: false
     };
 
-    constructor(props) {
-        super(props);
+    componentWillUnmount(){
+        this.props.resetState();
     }
 
     handleCloseCreatePopup = () => {

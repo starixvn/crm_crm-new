@@ -10,9 +10,14 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import { Policy } from '@jsroot/common/constants';
 
 export class DataGridCommunication extends Component {
-
     componentDidMount() {
         this.props.getCommunicationLogs({ customerId: this.props.id });
+    }
+
+    componentDidUpdate(prevProps) {
+        if ( this.props.id !== prevProps.id ) {
+            this.props.getCommunicationLogs({ customerId: this.props.id });
+        }
     }
 
     buildHeader = () => {
@@ -200,7 +205,7 @@ export class DataGridCommunication extends Component {
                         value.subSettingId.map((elementId,index) => {
                             const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === elementId);
                             return(
-                                <div key={index} className="ml-3 font-italic">{filterSubCategory.name}</div>
+                                <div key={index} className="ml-3 font-italic">{filterSubCategory?.name}</div>
                             );
                         })
                     }

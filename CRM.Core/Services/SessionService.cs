@@ -1,12 +1,14 @@
 ﻿namespace CRM.Core.Services
 {
+    using System.Collections.Generic;
     using CRM.Core.Extensions;
     using CRM.Core.Models;
+    using Fanex.NAP.Client.Models;
     using Microsoft.AspNetCore.Http;
 
     public interface ISessionService
     {
-        CustomerSession CustomerInfo { get; set; }
+        IEnumerable<MenuItem> MenuItems { get; set; }
         CurrentCustomer CurrentCustomer { get; set; }
         void ClearKey(string key);
     }
@@ -14,7 +16,7 @@
     public class SessionService : ISessionService
     {
         private readonly ISession session;
-        private const string CustomerInfoKey = "CustomerInfo";
+        private const string MenuItemsKey = "MenuItems";
         private const string CurrentCustomerKey = "CurrentCustomer";
 
 
@@ -28,10 +30,10 @@
             session = accessor.HttpContext.Session;
         }
 
-        public CustomerSession CustomerInfo
+        public IEnumerable<MenuItem> MenuItems
         {
-            get => session.Get<CustomerSession>(CustomerInfoKey);
-            set => session.Set(CustomerInfoKey, value);
+            get => session.Get<IEnumerable<MenuItem>>(MenuItemsKey);
+            set => session.Set(MenuItemsKey, value);
         }
         public CurrentCustomer CurrentCustomer
         {

@@ -1,26 +1,29 @@
 ﻿import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    notificationTypes: [],
+    languages: [],
+    gridParams: {
+        notificationTypeId: '',
+        notificationTemplateName: '',
+        pageIndex: 1,
+        pageSize: 100
+    },
+    gridData: null,
+    selectedTemplate: null,
+    createTemplatePopup: { show: false },
+    createTemplateResult: null,
+    editTemplatePopup: { show: false },
+    editTemplateResult: null,
+    deleteTemplatePopup: { show: false },
+    contentDetailPopup: { show: false }
+};
+
 const notificationTemplateSlice = createSlice({
     name: 'notificationTemplate',
-    initialState: {
-        notificationTypes: [],
-        languages: [],
-        gridParams: {
-            notificationTypeId: '',
-            notificationTemplateName: '',
-            pageIndex: 1,
-            pageSize: 100
-        },
-        gridData: null,
-        selectedTemplate: null,
-        createTemplatePopup: { show: false },
-        createTemplateResult: null,
-        editTemplatePopup: { show: false },
-        editTemplateResult: null,
-        deleteTemplatePopup: { show: false },
-        contentDetailPopup: { show: false }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setNotificationTypes: (state, action) => {
             state.notificationTypes = action.payload;
         },
@@ -60,6 +63,7 @@ const notificationTemplateSlice = createSlice({
 const { actions, reducer } = notificationTemplateSlice;
 
 export const {
+    resetState,
     setNotificationTypes,
     setLanguages,
     setGridParams,
