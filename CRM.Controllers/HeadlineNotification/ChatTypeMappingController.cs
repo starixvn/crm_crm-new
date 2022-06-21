@@ -11,7 +11,6 @@
     using CRM.Criteria.Common;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Models;
-    using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.ChatTypeMapping;
@@ -33,6 +32,7 @@
         private readonly Func<int, ILetstalkService> letstalkService;
         private readonly IExportExcelService excelService;
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public ChatTypeMappingController(
             INapSession napSession,
             INapSettings napSettings,
@@ -254,7 +254,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Read)]
-        public async Task<IActionResult> ExportExcel([FromBody]ChatTypeFilterViewModel filter)
+        public async Task<IActionResult> ExportExcel([FromBody] ChatTypeFilterViewModel filter)
         {
             var criteria = new GetChatTypeMappingCriteria
             {
