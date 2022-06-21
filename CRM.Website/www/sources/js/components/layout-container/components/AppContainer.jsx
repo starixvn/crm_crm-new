@@ -86,14 +86,16 @@ export default class AppContainer extends Component {
         const url = Site.resolveClientUrl('Home/GetSessionData');
         await DataService.getDataAsync(url).then(response => {
             const data = response.data;
-            this.setState({
-                ...this.state.sessionData,
-                currentUsername: data.currentUsername,
-                currentClientTime: data.currentClientTime,
-                clientTimezone: data.clientTimezone,
-                serverTimezone: data.clientTimezone,
-                hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
-            });
+            this.setState(state => ({
+                sessionData: {
+                    ...state.sessionData,
+                    currentUsername: data.currentUsername,
+                    currentClientTime: data.currentClientTime,
+                    clientTimezone: data.clientTimezone,
+                    serverTimezone: data.clientTimezone,
+                    hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
+                }
+            }));
             this.initDataMenu(data.menus);
         }).then(() => Site.unblockUI());
     };

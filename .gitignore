@@ -44,6 +44,7 @@ SUMMARY.DISPLAY.xml
 node_modules
 /CRM.Website/wwwroot/css/dev
 /CRM.Website/wwwroot/js/dev
+/CRM.Website/www/dist/css/dev/CRM.Website/wwwroot/dist/js/dev
 /CRM.Website/coverage
 /CoverageReports
 *.cobertura.xml
