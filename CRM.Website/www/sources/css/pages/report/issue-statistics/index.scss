@@ -14,7 +14,7 @@
     .filter-collapse {
         .fa {
             font-size: 11px;
-            width: 26px;
+            width: 25px;
             background-color: #464D5D;
             color: white;
             cursor: pointer;
@@ -49,6 +49,10 @@
     .month-datepicker{
         .react-datepicker__month-container{
             width: 180px !important;
+
+            .react-datepicker__month-wrapper{
+                padding-top: 7px !important;
+            }
         }
     }
 

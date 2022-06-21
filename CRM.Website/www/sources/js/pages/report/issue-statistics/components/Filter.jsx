@@ -275,7 +275,7 @@ export class Filter extends Component {
                                 </Form.Control>
                             </Form.Group>
                             <div>
-                                <Button variant="primary" size="sm" className={groupBy === 3 ? 'ml-1' : ''} onClick={this.handleSubmit}>
+                                <Button variant="primary" size="sm" onClick={this.handleSubmit}>
                                     {LangHelper.getResource('Submit')}
                                 </Button>
                             </div>
