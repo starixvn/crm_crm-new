@@ -11,7 +11,7 @@
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.ChangesLog, Policy = Policy.Read)]
-    public class ChangesLogController : BaseController
+    public class ChangesLogController : Controller
     {
         private readonly IBaseService baseService;
 
@@ -31,7 +31,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetHeadlineDAReportAsync([FromBody] GetHeadlineDALogCriteria criteria)
+        public async Task<IActionResult> GetHeadlineDAReport([FromBody] GetHeadlineDALogCriteria criteria)
         {
             criteria.ToDate = criteria.ToDate.AddHours(EndHour).AddMinutes(EndMinuteSecond).AddSeconds(EndMinuteSecond);
             var logInfo = await baseService.GetDataAsync<ChangeHeadlineDALog>(criteria);
@@ -39,7 +39,7 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetPicReportAsync([FromBody] GetPicLogCriteria criteria)
+        public async Task<ActionResult> GetPicReport([FromBody] GetPicLogCriteria criteria)
         {
             criteria.ToDate = criteria.ToDate.AddHours(EndHour).AddMinutes(EndMinuteSecond).AddSeconds(EndMinuteSecond);
             var picInfo = await baseService.GetDataAsync<ChangePicLogInfo>(criteria);
@@ -50,7 +50,7 @@
             return Json(new { picInfo, totals = criteria.TotalRows });
         }
 
-        public async Task<ActionResult> GetActionTypesAsync()
+        public async Task<IActionResult> GetActionTypes()
         {
             var criteria = new GetActionTypeCriteria();
             var actionTypes = await baseService.GetDataAsync<ActionType>(criteria);
