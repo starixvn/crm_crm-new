@@ -42,7 +42,7 @@
         public async Task<IActionResult> GetDeletedFeedbackStatistics([FromBody] DeletedFeedbackStatisticsCriteria criteria)
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var deletedFeedbacks = await feedbackRepository.GetDeletedFeedbackStatisticAsync(criteria);
             var deletedFeedbackGroup = deletedFeedbacks.GroupBy(p => p.Handler);
             var deletedFeedbackByHandler = deletedFeedbackGroup.Select(p =>
@@ -60,7 +60,7 @@
         public async Task<IActionResult> ExportExcel([FromBody] DeletedFeedbackStatisticsCriteria criteria)
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var deletedFeedbacks = await feedbackRepository.GetDeletedFeedbackStatisticAsync(criteria);
             var deletedFeedbackGroup = deletedFeedbacks.GroupBy(p => p.Handler);
             var deletedFeedbackByHandler = deletedFeedbackGroup.Select(p =>
