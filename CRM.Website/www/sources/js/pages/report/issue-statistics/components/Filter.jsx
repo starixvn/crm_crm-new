@@ -171,9 +171,10 @@ export class Filter extends Component {
                     showFilter &&
                     <Fragment>
                         <Form.Row bsPrefix='form-row'>
-                            <Form.Group>
+                            <Form.Group style={{width: "210px"}}>
                                 <Form.Label htmlFor="groupBy">{LangHelper.getResource('GroupBy')}</Form.Label>
                                 <Form.Control as="select" size="sm"
+                                    style={{width: "100px"}}
                                     name="groupBy" id="groupBy"
                                     value={groupBy}
                                     onChange={this.handleChange}
@@ -185,7 +186,7 @@ export class Filter extends Component {
                             </Form.Group>
                             {
                                 groupBy === 1 &&
-                                <Form.Group>
+                                <Form.Group className="form-group-date-picker">
                                     <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
                                     <div className='react-datepicker-wrapper-container'>
                                         <DatePicker
@@ -203,7 +204,7 @@ export class Filter extends Component {
                             }
                             {
                                 groupBy === 1 &&
-                                <Form.Group>
+                                <Form.Group className="form-group-date-picker">
                                     <Form.Label htmlFor="fromDate">{LangHelper.getResource('ToDate')}</Form.Label>
                                     <div className='react-datepicker-wrapper-container'>
                                         <DatePicker
@@ -220,7 +221,7 @@ export class Filter extends Component {
                             }
                             {
                                 groupBy === 3 &&
-                                <Form.Group className='form-group-month-picker'>
+                                <Form.Group className='form-group-date-picker'>
                                     <Form.Label htmlFor="fromMonth">{LangHelper.getResource('FromMonth')}</Form.Label>
                                     <div className='react-datepicker-wrapper-container month-datepicker'>
                                         <DatePicker
@@ -236,7 +237,7 @@ export class Filter extends Component {
                             }
                             {
                                 groupBy === 3 &&
-                                <Form.Group className='form-group-month-picker'>
+                                <Form.Group className='form-group-date-picker'>
                                     <Form.Label htmlFor="toMonth">{LangHelper.getResource('ToMonth')}</Form.Label>
                                     <div className='react-datepicker-wrapper-container month-datepicker'>
                                         <DatePicker

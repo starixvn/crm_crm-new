@@ -4,6 +4,7 @@
 @import "../../../components/tables";
 @import "../../../components/multiple-select/style";
 @import '../../../components/date-picker/style';
+@import "../../../components/buttons";
 
 body{
     overflow-x: hidden;
@@ -11,9 +12,16 @@ body{
 
 #app-container{
     .nav-tabs{
+        a{
+            border-radius: 0;
+            font-size: 13px;
+            padding: 2px 12px;
+            outline: none;
+            height: 27px;
+        }
         .active{
             background-color:#466ab6 !important;
-            border-color:466ab6;
+            border-color:#466ab6;
             color:#fff !important;
         }
 
