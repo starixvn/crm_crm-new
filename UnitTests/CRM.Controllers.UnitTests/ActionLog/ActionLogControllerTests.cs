@@ -27,7 +27,7 @@
             var controller = GetController();
 
             // Act
-            var result = controller.Index(1754);
+            var result = controller.Index();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);

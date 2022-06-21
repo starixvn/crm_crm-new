@@ -131,11 +131,3 @@ export const DetailMenu = [
     {id: 2, url: '/AddFeedback'},
     {id: 3, url: '/ManageFeedback'}
 ];
-
-];
-
-export const ReportBy = [
-    { name: 'Month', id: 1 },
-    { name: 'Year', id: 2 }
-];
-

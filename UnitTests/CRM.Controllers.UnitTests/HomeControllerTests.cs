@@ -1,10 +1,7 @@
 ﻿namespace CRM.Controllers.UnitTests
 {
     using AutoFixture;
-    using CRM.Services;
-    using Fanex.NAP.Client.Services;
-    using Fanex.NAP.Client.Models;
-    using Fanex.NAP.Client.Services;
+    using CRM.Core.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -12,7 +9,7 @@
     public class HomeControllerTests
     {
 
-        private IUserService userService;
+        private ISessionService sessionService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -29,30 +26,14 @@
             Assert.Null(viewResult.ViewName);
         }
 
-       
-                   Url = "/test"
-               }
-            };
-
-            var controller = GetController();
-            homeService.EditMenuLanguage(Arg.Any<List<MenuItem>>()).Returns(currentUserMenu);
-
-            //Act
-            var result = controller.GettingUserMenu();
-
-            //Assert
-            Assert.Equal(result, currentUserMenu);
-        }
-
 
         #region Helpers
 
         private HomeController GetController()
         {
-            homeService = Substitute.For<IHomeService>();
-            userService = Substitute.For<IUserService>();
+            sessionService = Substitute.For<ISessionService>();
 
-            return new HomeController(homeService, userService);
+            return new HomeController(sessionService);
         }
 
         #endregion Helpers

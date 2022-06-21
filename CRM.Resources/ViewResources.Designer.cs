@@ -1445,16 +1445,7 @@ namespace CRM.Resources {
                 return ResourceManager.GetString("Yearly", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yearly.
-        /// </summary>
-        public static string Yearly {
-            get {
-                return ResourceManager.GetString("Yearly", resourceCulture);
-            }
-        }
-        
+           
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>

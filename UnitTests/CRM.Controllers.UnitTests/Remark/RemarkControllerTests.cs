@@ -40,7 +40,6 @@
             var viewResult = Assert.IsType<ViewResult>(actual);
             var permission = (CustomerPermissionViewModel)viewResult.Model;
             Assert.Equal(2, permission.CustomerInfoPolicy);
-            Assert.Equal(1754, permission.Id);
         }
 
         [Fact]

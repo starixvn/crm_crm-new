@@ -13,7 +13,9 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Customer;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -26,6 +28,8 @@
         private ICustomerService customerService;
         private ISettingService settingService;
         private ISessionService sessionService;
+        private IUserService userService;
+        private INapSettings napSettings;
 
 
         [Fact]
@@ -127,7 +131,9 @@
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
             sessionService = Substitute.For<ISessionService>();
-            var controller = new CustomerInfoController(napSession, customerService, settingService, sessionService);
+            userService = Substitute.For<IUserService>();
+            napSettings = Substitute.For<INapSettings>();
+            var controller = new CustomerInfoController(napSession, customerService, settingService, sessionService, userService, napSettings);
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
                 Connection =

@@ -99,7 +99,6 @@ export class Filter extends Component {
             ...this.state,
             [evt.target.name]: parseInt(evt.target.value, 10),
             subCategoryId: -1
-            subCategoryId: -1
         });
     };
 

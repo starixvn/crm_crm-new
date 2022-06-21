@@ -42,14 +42,13 @@
             userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo).Returns(2);
 
             // Act
-            var result = controller.Index(1754);
+            var result = controller.Index();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             var permission = (CustomerPermissionViewModel)viewResult.Model;
             Assert.Equal(2, permission.CustomerInfoPolicy);
             Assert.Equal(2, permission.CreateUpdateFeedbackPermission);
-            Assert.Equal(1754, permission.Id);
         }
 
         [Fact]
