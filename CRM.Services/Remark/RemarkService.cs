@@ -6,8 +6,11 @@
     using System.Web;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using CRM.Criteria.NewRemark;
     using CRM.Criteria.Remark;
+    using CRM.Models.Customer;
     using CRM.Models.Remark;
+    using CRM.Models.RemarkNew;
     using CRM.Repositories;
 
     public interface IRemarkService
@@ -15,6 +18,22 @@
         Task<RemarkInfo> GetRemarkAsync(GetRemarkCriteria criteria);
 
         Task<CommandResult> EditRemarkAsync(EditRemarkCommand command);
+
+        Task<IEnumerable<RemarkNewInfo>> GetNewRemarkAsync(GetNewRemarkCriteria criteria);
+
+        Task<IEnumerable<PicInfo>> GetRelatedPicByCustIdAsync(GetRelatedPicsCriteria criteria);
+
+        Task<IEnumerable<RelatedCustomer>> ValidateUsernameAsyn(CustomerRemarkNewCheckCriteria command);
+
+        Task<IEnumerable<RemarkNewHistory>> GetCustomerNewRemarkHistoryAsync(GetCustomerRemarkNewHistoryCriteria criteria);
+
+        Task<IEnumerable<RemarkNewInfo>> GetLastFiveRemarkAsync(GetLastFiveRemarksCriteria criteria);
+
+        Task<CommandResult> CreateNewAsync(CreateNewReamarkCommand command);
+
+        Task<CommandResult> EditNewAsync(EditNewRemarkCommand command);
+
+        Task<CommandResult> DeleteNewAsync(DeleteNewRemarkCommand command);
     }
 
     public class RemarkService : IRemarkService
@@ -65,6 +84,51 @@
                         .Append(isSpecialText);
                 }
             }
+        }
+
+        public async Task<IEnumerable<RemarkNewInfo>> GetNewRemarkAsync(GetNewRemarkCriteria criteria)
+        {
+            var newRemarks = await baseService.GetDataAsync<RemarkNewInfo>(criteria);
+            return newRemarks;
+        }
+
+        public async Task<IEnumerable<PicInfo>> GetRelatedPicByCustIdAsync(GetRelatedPicsCriteria criteria)
+        {
+            var relatedPics = await baseService.GetDataAsync<PicInfo>(criteria);
+            return relatedPics;
+        }
+
+        public async Task<IEnumerable<RelatedCustomer>> ValidateUsernameAsyn(CustomerRemarkNewCheckCriteria command)
+        {
+            return await baseService.GetDataAsync<RelatedCustomer>(command);
+        }
+
+        public async Task<IEnumerable<RemarkNewHistory>> GetCustomerNewRemarkHistoryAsync(GetCustomerRemarkNewHistoryCriteria criteria)
+        {
+            return await baseService.GetDataAsync<RemarkNewHistory>(criteria);
+        }
+
+        public async Task<IEnumerable<RemarkNewInfo>> GetLastFiveRemarkAsync(GetLastFiveRemarksCriteria criteria)
+        {
+            return await baseService.GetDataAsync<RemarkNewInfo>(criteria);
+        }
+
+        public async Task<CommandResult> CreateNewAsync(CreateNewReamarkCommand command)
+        {
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return commandResult;
+        }
+
+        public async Task<CommandResult> EditNewAsync(EditNewRemarkCommand command)
+        {
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return commandResult;
+        }
+
+        public async Task<CommandResult> DeleteNewAsync(DeleteNewRemarkCommand command)
+        {
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return commandResult;
         }
     }
 }

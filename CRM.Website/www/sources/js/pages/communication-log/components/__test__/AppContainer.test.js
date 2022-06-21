@@ -1,11 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import Filter from '../Filter';
-import DataGrid from '../DataGrid';
-import EditNoOfInquiry from '../../../feedback/edit-no-of-inquiry/AppContainer';
-import EditCommunicationLog from '../EditCommunicationLog';
-import CreateCommunicationLog from '../CreateCommunicationLog';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -74,35 +70,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer />);
 
             //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Filter).length).toBe(1);
-        });
-
-        it('should render DataGrid correctly', () => {
-            //Act
-            const container = shallow(<AppContainer />);
-
-            //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(DataGrid).length).toBe(1);
-        });
-
-        it('should render dialog message correctly', () => {
-            //Arrange
-            const props = {
-                editNoOfInquiryDialog: { show: true },
-                editCommunicationDialog: { show: true },
-                createCommunicationDialog: { show: true }
-            };
-
-            //Act
-            const container = shallow(<AppContainer {...props} />);
-
-            //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(EditNoOfInquiry).length).toBe(1);
-            expect(container.find(EditCommunicationLog).length).toBe(1);
-            expect(container.find(CreateCommunicationLog).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 });

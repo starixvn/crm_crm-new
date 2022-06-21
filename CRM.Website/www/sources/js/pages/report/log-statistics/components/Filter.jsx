@@ -18,6 +18,7 @@ export class Filter extends Component {
         const firstDayOfWeekFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDayOfWeek)));
         this.maxFromDate = this.currentDate;
         this.maxToDate = this.currentDate;
+        this.minToDate = firstDayOfWeekFormat;
         this.state = {
             fromDate: firstDayOfWeekFormat,
             toDate: this.currentDate,
@@ -45,12 +46,7 @@ export class Filter extends Component {
         fromDateTime.setDate(fromDate.getDate() - 1);
         this.maxToDate = fromDateTime < currentTime ? fromDateTime : currentTime;
         this.minToDate = fromDate;
-        let toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
-        const isOver1Year = DateTimeService.toDiffDays(currentTime, fromDate) > 365;
-        if(isOver1Year) {
-            toDate = this.maxToDate;
-        }
-        this.setState({toDate, fromDate});
+        this.setState({toDate: this.maxToDate, fromDate});
     };
 
     handleChangeDropdown = (name, selectedKey) => {
@@ -154,7 +150,7 @@ export class Filter extends Component {
                         <DatePicker
                             maxDate={new Date(this.maxFromDate)}
                             selected={fromDate}
-                            peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                            peekNextMonth useShortMonthInDropdown showMonthDropdown showYearDropdown dropdownMode="select"
                             onChange={value => this.handleChangeFromDate(value)}
                         />
                     </div>
@@ -165,7 +161,7 @@ export class Filter extends Component {
                         <DatePicker
                             maxDate={new Date(this.maxToDate)}
                             minDate={new Date(this.minToDate)}
-                            peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                            peekNextMonth useShortMonthInDropdown showMonthDropdown showYearDropdown dropdownMode="select"
                             selected={toDate}
                             onChange={value => this.handleChangeToDate(value)}
                         />

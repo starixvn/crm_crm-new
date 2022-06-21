@@ -6,8 +6,10 @@
     using AutoFixture;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using CRM.Criteria.NewRemark;
     using CRM.Criteria.Remark;
     using CRM.Models.Remark;
+    using CRM.Models.RemarkNew;
     using CRM.Repositories;
     using CRM.Services.Remark;
     using NSubstitute;
@@ -78,6 +80,102 @@
 
             //Act
             var actual = await service.EditRemarkAsync(param);
+
+            //Assert
+            Assert.Equal(commandResult, actual);
+        }
+
+        [Fact]
+        public async Task GetNewRemarkAsync_WhenCall_ReturnExpectedNewRemark()
+        {
+            //Arrange
+            var newRemarks = fixture.Create<IEnumerable<RemarkNewInfo>>();
+            var service = GetService();
+            var param = fixture.Create<GetNewRemarkCriteria>();
+            baseService.GetDataAsync<RemarkNewInfo>(param).Returns(newRemarks);
+
+            //Act
+            var actual = await service.GetNewRemarkAsync(param);
+
+            //Assert
+            Assert.Equal(newRemarks, actual);
+        }
+
+        [Fact]
+        public async Task GetRelatedPicByCustIdAsync_WhenCall_ReturnExpectedNewRemark()
+        {
+            //Arrange
+            var relatedPics = fixture.Create<IEnumerable<PicInfo>>();
+            var service = GetService();
+            var param = fixture.Create<GetRelatedPicsCriteria>();
+            baseService.GetDataAsync<PicInfo>(param).Returns(relatedPics);
+
+            //Act
+            var actual = await service.GetRelatedPicByCustIdAsync(param);
+
+            //Assert
+            Assert.Equal(relatedPics, actual);
+        }
+
+        [Fact]
+        public async Task GetCustomerNewRemarkHistoryAsync_WhenCall_ReturnExpectedHistory()
+        {
+            //Arrange
+            var history = fixture.Create<IEnumerable<RemarkNewHistory>>();
+            var service = GetService();
+            var param = fixture.Create<GetCustomerRemarkNewHistoryCriteria>();
+            baseService.GetDataAsync<RemarkNewHistory>(param).Returns(history);
+
+            //Act
+            var actual = await service.GetCustomerNewRemarkHistoryAsync(param);
+
+            //Assert
+            Assert.Equal(history, actual);
+        }
+
+        [Fact]
+        public async Task CreateNewAsync_WhenCall_ReturnExpectedCommand()
+        {
+            //Arrange
+            var commandResult = fixture.Create<CommandResult>();
+            var service = GetService();
+            var param = fixture.Create<CreateNewReamarkCommand>();
+            baseService.ExecuteNonQueryAsync(Arg.Do<CreateNewReamarkCommand>(x => param = x)).Returns(commandResult);
+
+            //Act
+            var actual = await service.CreateNewAsync(param);
+
+            //Assert
+            Assert.Equal(commandResult, actual);
+        }
+
+        [Fact]
+        public async Task EditNewAsync_WhenCall_ReturnExpectedCommand()
+        {
+            //Arrange
+            var commandResult = fixture.Create<CommandResult>();
+            var service = GetService();
+            var param = fixture.Create<EditNewRemarkCommand>();
+            baseService.ExecuteNonQueryAsync(Arg.Do<EditNewRemarkCommand>(x => param = x)).Returns(commandResult);
+
+            //Act
+            var actual = await service.EditNewAsync(param);
+
+            //Assert
+            Assert.Equal(commandResult, actual);
+        }
+
+        [Fact]
+        public async Task DeleteNewAsync_WhenCall_ReturnExpectedCommand()
+        {
+            //Arrange
+            var commandResult = fixture.Create<CommandResult>();
+            var service = GetService();
+            var param = fixture.Create<DeleteNewRemarkCommand>();
+            baseService.ExecuteNonQueryAsync(Arg.Do<DeleteNewRemarkCommand>(x => param = x)).Returns(commandResult);
+
+            //Act
+            var actual = await service.DeleteNewAsync(param);
 
             //Assert
             Assert.Equal(commandResult, actual);

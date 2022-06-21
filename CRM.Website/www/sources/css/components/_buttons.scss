@@ -1,6 +1,15 @@
 ﻿.btn {
     outline: none;
     min-width: 50px;
+    background-color: #466ab6;
+    border-color: #3c5b9c;
+    border-radius: 0;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 12px;
+    outline: none;
+    height: 25px;
+    margin-top: 1px;
 
     &.btn-primary {
         background-color: #466ab6;

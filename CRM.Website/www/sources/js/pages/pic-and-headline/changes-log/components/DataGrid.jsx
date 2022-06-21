@@ -44,8 +44,8 @@ export class DataGrid extends Component {
                 <Cell className='text-center'>{index + this.startIndex}</Cell>
                 <Cell className='text-center'>{item.logId}</Cell>
                 <Cell className='text-center' style={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{ __html: item.logTime}} />
-                <Cell className='text-center'>{item.editBy}</Cell>
-                <Cell className='text-center'>{item.directAccount}</Cell>
+                <Cell>{item.editBy}</Cell>
+                <Cell>{item.directAccount}</Cell>
                 <Cell>{item.action}</Cell>
                 <Cell>{detailValue}</Cell>
             </Row>
@@ -95,8 +95,8 @@ export class DataGrid extends Component {
                 <div className='detail-child-col col-title-detail'>
                     <div className='p-2'>{isGroupHl ? LangHelper.getResource('GroupHeadline') : LangHelper.getResource('PIC')}</div>
                 </div>
-                <div className='detail-child-col border-right-0 ml-5'>
-                    <div className='p-2'>{isGroupHl ? item.newDAInfo.groupHeadline : picsValue}</div>
+                <div className='detail-child-col border-right-0'>
+                    <div className='p-2 pl-5'>{isGroupHl ? item.newDAInfo.groupHeadline : picsValue}</div>
                 </div>
             </div>
         );
@@ -129,10 +129,10 @@ export class DataGrid extends Component {
                     </div>
                     {
                         isGroupHeadline ?
-                        <div className= {`detail-child-col col-value-detail border-right-none ${ backGroundChangeGroupHl }`}>
+                        <div className= {`detail-child-col col-value-detail ${ backGroundChangeGroupHl }`}>
                             {isGroupHeadlineValue}
                         </div> :
-                        <div className= {`detail-child-col col-value-detail border-right-none ${ backGroundChangePic }`}>
+                        <div className= {`detail-child-col col-value-detail ${ backGroundChangePic }`}>
                             {picsValue}
                         </div>
                     }
@@ -156,7 +156,7 @@ export class DataGrid extends Component {
                 <div className='detail-child-col col-title-detail'>
                     <div className='p-2'>{name}</div>
                 </div>
-                <div className={`detail-child-col border-right-none ml-5 ${!isGroupHeadline ? backgroundChange : ''}`}>
+                <div className={`detail-child-col ${!isGroupHeadline ? backgroundChange : 'p-2 pl-5'}`}>
                     {!isGroupHeadline ? value : 'Yes'}
                 </div>
             </div>
@@ -179,12 +179,12 @@ export class DataGrid extends Component {
             isChange ?
             <div>
                 <div className='new-value'>
-                    <div className='p-2'>{newValue}</div>
+                    <div className='p-2 pl-5'>{newValue}</div>
                 </div><div className='old-value'>
-                    <div className='p-2'>{oldValue}</div>
+                    <div className='p-2 pl-5'>{oldValue}</div>
                 </div>
             </div>
-            : <div className='p-2'>{newValue}</div>
+            : <div className='p-2 pl-5'>{newValue}</div>
         );
     };
 

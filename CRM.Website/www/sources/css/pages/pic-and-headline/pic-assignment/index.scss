@@ -6,10 +6,15 @@
 @import "../../../components/tables";
 @import "../../../components/messages";
 @import "../../../components/multiple-select/style";
+@import "../../../components/fix-table-container";
 
 $suspended-color: #f8ded7;
 $closed-color: #f8ded7;
 $disabled-color: #a0a97a;
+
+body{
+    overflow-x: hidden;
+}
 
 button:focus {
     outline: none;
@@ -138,11 +143,10 @@ input[type="checkbox"]:disabled {
     max-width: 650px;
 }
 .filter-collapse {
-    margin-top: -10px;
     .fa {
-        height: 14px;
-        width: 27px;
-        background-color: #464d5d;
+        font-size: 11px;
+        width: 25px;
+        background-color: #464D5D;
         color: white;
         cursor: pointer;
     }
@@ -159,7 +163,6 @@ input[type="checkbox"]:disabled {
 .header-comm{
     padding: 0;
 }
-
 
 .table-container {
     overflow-y: auto;

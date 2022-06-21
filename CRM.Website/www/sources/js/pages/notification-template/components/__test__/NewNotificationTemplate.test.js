@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { NewNotificationTemplate } from '../NewNotificationTemplate';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
-import * as commonFunctions from '../../common.functions';
+import toJson from 'enzyme-to-json';
 
 describe('NewNotificationTemplate', () => {
     beforeAll(() => {
@@ -20,7 +20,7 @@ describe('NewNotificationTemplate', () => {
         const container = shallow(<NewNotificationTemplate />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     describe('methods', () => {
@@ -111,7 +111,7 @@ describe('NewNotificationTemplate', () => {
                 const form = shallow(container.renderForm(formikProps));
 
                 // Assert
-                expect(form).toMatchSnapshot();
+                expect(toJson(form)).toMatchSnapshot();
             });
 
             it('should render correctly when languages have data', () => {
@@ -125,7 +125,7 @@ describe('NewNotificationTemplate', () => {
                 const form = shallow(container.renderForm(formikProps));
 
                 // Assert
-                expect(form).toMatchSnapshot();
+                expect(toJson(form)).toMatchSnapshot();
             });
 
             it('should show response message', () => {
@@ -139,7 +139,7 @@ describe('NewNotificationTemplate', () => {
                 const form = shallow(container.renderForm(formikProps));
 
                 // Assert
-                expect(form).toMatchSnapshot();
+                expect(toJson(form)).toMatchSnapshot();
             });
         });
     });

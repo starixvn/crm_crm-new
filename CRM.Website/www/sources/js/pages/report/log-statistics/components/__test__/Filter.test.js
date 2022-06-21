@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { toast } from 'react-toastify';
 import DatePicker from '@jsroot/components/date-picker/index';
-
+import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
     afterAll(() => {
@@ -50,7 +50,7 @@ describe('Filter', () => {
         const container = shallow(<Filter {...props} />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('should call setState with new toDate when changed input toDate', () => {

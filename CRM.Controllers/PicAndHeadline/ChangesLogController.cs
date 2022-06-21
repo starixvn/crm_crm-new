@@ -10,7 +10,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.ChangesLog, Policy = Policy.Host)]
+    [CrmPermission(FunctionKey = FunctionKey.ChangesLog, Policy = Policy.Read)]
     public class ChangesLogController : BaseController
     {
         private readonly IBaseService baseService;

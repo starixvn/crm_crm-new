@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { PAGING_SIZES } from '@jsroot/common/constants';
+import toJson from 'enzyme-to-json';
 
 describe('DataGrid', () => {
     beforeEach(() => {
@@ -30,7 +31,7 @@ describe('DataGrid', () => {
         const wrapper = shallow(<DataGridWrapper store={store} />);
 
         // Assert
-        expect(wrapper).toMatchSnapshot();
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('render null when notificationTypeGridData invalid', () => {

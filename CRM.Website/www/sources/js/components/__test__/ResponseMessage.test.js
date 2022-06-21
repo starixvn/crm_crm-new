@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert } from 'react-bootstrap';
 import ResponseMessage from '../ResponseMessage';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('ResponseMessage', () => {
     it('has correct snapshots', () => {
@@ -9,7 +10,7 @@ describe('ResponseMessage', () => {
         const component = shallow(<ResponseMessage />);
 
         // Assert
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 
     describe('render', () => {

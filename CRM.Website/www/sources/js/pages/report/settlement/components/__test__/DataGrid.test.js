@@ -3,6 +3,7 @@ import { DataGrid } from '../DataGrid';
 import { shallow } from 'enzyme';
 import { Table, Row, Cell, HeaderCell, HeaderRow } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
+import toJson from 'enzyme-to-json';
 
 describe('DataGrid', () => {
     beforeAll(() => {
@@ -62,7 +63,7 @@ describe('DataGrid', () => {
         const container = shallow(<DataGrid {...props} />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('render null', () => {

@@ -8,6 +8,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import { Formik } from 'formik';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
+import toJson from 'enzyme-to-json';
 
 const mockStore = configureMockStore();
 
@@ -34,12 +35,7 @@ describe('NewCommunitionSetting', () => {
 
         //Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
-        });
-
-        it('component has correct props', () => {
-            expect(wrapper.props().children.props.createCommunicationResult).toEqual(initialState.createCommunicationResult);
-            expect(wrapper.props().children.props.settings).toEqual(initialState.settings);
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
     });
 

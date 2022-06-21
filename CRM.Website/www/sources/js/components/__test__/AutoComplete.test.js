@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import AutoComplete from '../AutoComplete';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow, mount } from 'enzyme';
-import configureMockStore from 'redux-mock-store';
+import toJson from 'enzyme-to-json';
 import { Form } from 'react-bootstrap';
 
 describe('AutoComplete', () => {
@@ -34,7 +34,7 @@ describe('AutoComplete', () => {
         const container = shallow(<AutoComplete {...props} />);
         container.instance().setState(initialState);
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('component has correct initialState', () => {

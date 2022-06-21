@@ -81,7 +81,7 @@
                     }
                 }
             }
-
+            rowIndex++;
             SetBackgroundTotalRow(worksheet.Cells[rowIndex, 1, rowIndex, TotalColumns]);
             worksheet.Cells[rowIndex, 1].Value = string.Format("Grand Total ({0})", countTotalGrant);
         }

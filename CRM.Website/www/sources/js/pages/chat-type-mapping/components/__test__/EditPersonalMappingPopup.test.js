@@ -7,6 +7,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import SelectWithSearch from 'react-select';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import toJson from 'enzyme-to-json';
 
 describe('EditPersonalMappingPopup', () => {
     beforeAll(() => {
@@ -53,7 +54,7 @@ describe('EditPersonalMappingPopup', () => {
         // Assert
         it('component renders correctly', () => {
             const grid = shallow(<EditPersonalMappingPopupWrapper store={store} />);
-            expect(grid).toMatchSnapshot();
+            expect(toJson(grid)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

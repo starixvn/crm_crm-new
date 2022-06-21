@@ -3,6 +3,7 @@ import { ContentDetailModalDialog } from '../ContentDetailModalDialog';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { Button } from 'react-bootstrap';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('ContentDetailModalDialog', () => {
     afterEach(() => {
@@ -14,7 +15,7 @@ describe('ContentDetailModalDialog', () => {
         const container = shallow(<ContentDetailModalDialog />);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('props should be mapped correctly', () => {

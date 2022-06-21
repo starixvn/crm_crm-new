@@ -8,6 +8,7 @@ import Select from '@jsroot/components/CustomReactSelect';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
+import toJson from 'enzyme-to-json';
 
 describe('DefaultPic', () => {
     describe('component with redux', () => {
@@ -26,7 +27,7 @@ describe('DefaultPic', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

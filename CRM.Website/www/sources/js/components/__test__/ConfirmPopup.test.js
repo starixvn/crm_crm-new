@@ -4,6 +4,7 @@ import DraggableModalDialog from '../DraggableModalDialog';
 import ConfirmPopup from '../ConfirmPopup';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('ConfirmPopup', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -13,7 +14,7 @@ describe('ConfirmPopup', () => {
         const confirmPopup = shallow(<ConfirmPopup />);
 
         // Assert
-        expect(confirmPopup).toMatchSnapshot();
+        expect(toJson(confirmPopup)).toMatchSnapshot();
     });
 
     describe('render', () => {

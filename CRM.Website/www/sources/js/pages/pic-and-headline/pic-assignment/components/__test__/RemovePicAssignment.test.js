@@ -8,6 +8,7 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import functions from '../../common.functions';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
+import toJson from 'enzyme-to-json';
 
 describe('RemovePicAssignment', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -27,7 +28,7 @@ describe('RemovePicAssignment', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

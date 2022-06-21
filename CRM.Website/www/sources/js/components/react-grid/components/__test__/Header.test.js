@@ -1,6 +1,7 @@
 import React from 'react';
 import HeaderCell from '../HeaderCell';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('HeaderCell', () => {
     it('should have correct snapshots', () => {
@@ -8,7 +9,7 @@ describe('HeaderCell', () => {
         const headerCell = shallow(<HeaderCell />);
 
         // Assert
-        expect(headerCell).toMatchSnapshot();
+        expect(toJson(headerCell)).toMatchSnapshot();
     });
 
     describe('onClick', () => {

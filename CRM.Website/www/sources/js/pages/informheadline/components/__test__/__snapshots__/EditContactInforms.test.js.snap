@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`EditContactInforms renderForm should render correctly 1`] = `ShallowWrapper {}`;
-
-exports[`EditContactInforms renderForm should render null 1`] = `ShallowWrapper {}`;

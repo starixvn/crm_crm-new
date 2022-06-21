@@ -1,6 +1,7 @@
 import React from 'react';
 import Loading from '../Loading';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('Loading', () => {
     it('has correct snapshots', () => {
@@ -8,7 +9,7 @@ describe('Loading', () => {
         const component = shallow(<Loading />);
 
         // Assert
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 
     it('renderChildCircle runs correctly', () => {

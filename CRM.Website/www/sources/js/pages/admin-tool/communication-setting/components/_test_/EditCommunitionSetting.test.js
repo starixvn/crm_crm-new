@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
+import toJson from 'enzyme-to-json';
 
 const mockStore = configureMockStore();
 describe('EditCommunitionSetting', () => {
@@ -33,7 +34,7 @@ describe('EditCommunitionSetting', () => {
 
         //Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

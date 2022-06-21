@@ -3,6 +3,7 @@ import { ModalDialog } from 'react-bootstrap';
 import Draggable from 'react-draggable';
 import DraggableModalDialog from '../DraggableModalDialog';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('DraggableModalDialog', () => {
     it('has correct snapshots', () => {
@@ -10,7 +11,7 @@ describe('DraggableModalDialog', () => {
         const component = shallow(<DraggableModalDialog />);
 
         // Assert
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 
     it('has correct children with props', () => {

@@ -3,11 +3,11 @@
 @import "../../../components/forms";
 @import "../../../components/modal";
 @import "../../../components/icons";
+@import "../../../components/buttons";
 @import "../../../components/tables";
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
 @import '../../../components/rechart';
-
 
 .form-filter {
 
@@ -16,7 +16,7 @@
     }
 
     .label-width{
-        width: 120px !important;
+        width: 140px !important;
     }
 
     .form-width {
@@ -181,14 +181,13 @@
     }
 }
 
-.chart-modal-dialog{
-    .modal-content{
-        .recharts-default-legend{
-            li{
-                width: 270px;
+.chart-modal-dialog {
+    .modal-content {
+        .recharts-default-legend {         
+            li {
+                width: 300px;
             }
         }
     }
 }
-
 

@@ -7,6 +7,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import SelectWithSearch from 'react-select';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import toJson from 'enzyme-to-json';
 
 describe('InsertPersonalMappingPopup', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -35,7 +36,7 @@ describe('InsertPersonalMappingPopup', () => {
         // Assert
         it('component renders correctly', () => {
             const grid = mount(<InsertPersonalMappingPopupWrapper store={store} />);
-            expect(grid).toMatchSnapshot();
+            expect(toJson(grid)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

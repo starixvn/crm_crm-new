@@ -1,0 +1,25 @@
+.fix-table-container{
+    .fix-table{
+        .footer-content{
+            bottom: -2px !important;
+        }
+    }
+
+    .body-content{
+        tbody .child{ 
+            background-color: #fff !important;
+        }
+
+        .total-background {
+            background: #F0EDC4 !important;
+        }
+    }
+    
+    .footer-content{
+        border-bottom: 0;
+    }
+
+    .table-title{
+        border-right: 0;
+    }
+}

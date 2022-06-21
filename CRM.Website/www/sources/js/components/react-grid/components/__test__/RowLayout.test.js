@@ -1,6 +1,7 @@
 import React from 'react';
 import RowLayout from '../RowLayout';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('RowLayout', () => {
     it('should have correct snapshot', () => {
@@ -13,7 +14,7 @@ describe('RowLayout', () => {
         const rowLayout = shallow(<RowLayout {...props} />);
 
         // Assert
-        expect(rowLayout).toMatchSnapshot();
+        expect(toJson(rowLayout)).toMatchSnapshot();
     });
 
     describe('_getRowLayout', () => {

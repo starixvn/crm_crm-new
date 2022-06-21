@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { RelatedCustomerGrid } from '../RelatedCustomerGrid';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
+import toJson from 'enzyme-to-json';
 
 describe('RelatedCustomerGrid', () => {
     beforeAll(() => {
@@ -111,7 +112,7 @@ describe('RelatedCustomerGrid', () => {
             const actual = container.renderRelatedCustomerColumn(customer);
 
             // Assert
-            expect(shallow(actual).html()).toMatchSnapshot();
+            expect(toJson(shallow(actual).html())).toMatchSnapshot();
         });
 
         it('should return as expected when relatedCustomers length is greater than MaximumDisplayRelatedCustomer', () => {

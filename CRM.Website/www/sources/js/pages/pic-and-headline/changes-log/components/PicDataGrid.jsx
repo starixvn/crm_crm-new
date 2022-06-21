@@ -45,9 +45,9 @@ export class PicDataGrid extends Component {
                 <Cell className='text-center'>{index + this.startIndex}</Cell>
                 <Cell className='text-center'>{item.logId}</Cell>
                 <Cell className='text-center' style={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{ __html: item.logTime}} />
-                <Cell className='text-center'>{item.editBy}</Cell>
-                <Cell className='text-center'>{item.picTypeName}</Cell>
-                <Cell className='text-center'>{item.pic}</Cell>
+                <Cell>{item.editBy}</Cell>
+                <Cell>{item.picTypeName}</Cell>
+                <Cell>{item.pic}</Cell>
                 <Cell >{item.action}</Cell>
                 <Cell>{detailValuePic}</Cell>
             </Row>

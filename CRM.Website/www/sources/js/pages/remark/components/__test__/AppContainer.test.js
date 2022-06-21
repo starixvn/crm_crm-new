@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import Remark from '../Remark';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -14,8 +14,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer />);
 
             //Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Remark).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 });

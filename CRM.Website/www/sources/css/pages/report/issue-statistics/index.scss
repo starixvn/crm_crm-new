@@ -3,6 +3,7 @@
 @import "../../../components/forms";
 @import "../../../components/modal";
 @import "../../../components/icons";
+@import "../../../components/buttons";
 @import "../../../components/tables";
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
@@ -12,11 +13,10 @@
 .form-filter {
     min-width: 890px;
     .filter-collapse {
-        margin-top: -10px;
         .fa {
-            height: 14px;
-            width: 27px;
-            background-color: #464d5d;
+            font-size: 11px;
+            width: 25px;
+            background-color: #464D5D;
             color: white;
             cursor: pointer;
         }
@@ -39,12 +39,22 @@
         }
     }
 
-    .month-datepicker .react-datepicker-wrapper{
-        width: 189px !important;
+    .form-group-date-picker{
+        width: 230px !important;
     }
 
-    .form-group-month-picker{
-        width: 265px !important;
+    .month-datepicker .react-datepicker-wrapper{
+        width: 134px !important;
+    }
+    
+    .month-datepicker{
+        .react-datepicker__month-container{
+            width: 180px !important;
+
+            .react-datepicker__month-wrapper{
+                padding-top: 7px !important;
+            }
+        }
     }
 
     .form-group-main-category{
@@ -136,9 +146,21 @@
         max-height: none !important;
     }
 }
-
 .recharts-default-legend{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    border: 1px solid #b7b7b7;
+    padding-top: 5px !important;
+    width: 1010px !important;
+
     li{
-        width: 150px;
+        margin-right: -22 !important;
+        margin-left: 10px;
+        width: 170px;
+
+        .recharts-surface, .recharts-legend-item-text{
+            float: left;
+        }
     }
 }

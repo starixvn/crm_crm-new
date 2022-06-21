@@ -2,8 +2,8 @@ import React from 'react';
 import { Filter } from '../Filter';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
-import { parseAsync } from '@babel/core';
 import AutoComplete from '@jsroot/components/AutoComplete';
+import toJson from 'enzyme-to-json';
 
 describe('filter', () => {
     beforeAll(() => {
@@ -140,7 +140,7 @@ describe('filter', () => {
             const container = shallow(<Filter />);
     
             // Assert
-            expect(container).toMatchSnapshot();
+            expect(toJson(container)).toMatchSnapshot();
         });
     
         it('should render not correctly', () => {

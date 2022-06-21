@@ -7,6 +7,7 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import configureMockStore from 'redux-mock-store';
 import functions, { getHeadlines, getRecipients } from '../../functions';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import toJson from 'enzyme-to-json';
 
 describe('ViewDetail', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -39,7 +40,7 @@ describe('ViewDetail', () => {
         const viewDetail = shallow(<ViewDetail {...props} />);
 
         // Assert
-        expect(viewDetail).toMatchSnapshot();
+        expect(toJson(viewDetail)).toMatchSnapshot();
     });
 
     it('render general child element', () => {

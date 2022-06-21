@@ -8,6 +8,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Promise } from 'q';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import toJson from 'enzyme-to-json';
 
 describe('EditGroupMappingPopup', () => {
     const initData = {
@@ -46,7 +47,7 @@ describe('EditGroupMappingPopup', () => {
         // Assert
         it('component renders correctly', () => {
             const grid = shallow(<EditGroupMappingPopupWrapper store={store} />);
-            expect(grid).toMatchSnapshot();
+            expect(toJson(grid)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {
@@ -495,7 +496,7 @@ describe('EditGroupMappingPopup', () => {
             const tree = renderer
                 .create(verification)
                 .toJSON();
-            expect(tree).toMatchSnapshot();
+            expect(toJson(tree)).toMatchSnapshot();
         });
     });
 });

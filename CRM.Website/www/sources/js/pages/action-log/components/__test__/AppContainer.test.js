@@ -1,8 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import DataGrid from '../DataGrid';
-import Filter from '../Filter';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -15,9 +14,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Filter).length).toBe(1);
-            expect(container.find(DataGrid).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 });

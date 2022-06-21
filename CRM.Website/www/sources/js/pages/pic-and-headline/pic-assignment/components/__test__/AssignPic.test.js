@@ -10,6 +10,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import ConfirmAssignedDirectAccount from '../ConfirmAssignedDirectAccount';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Select from '@jsroot/components/CustomReactSelect';
+import toJson from 'enzyme-to-json';
 
 describe('AssignPic', () => {
     LangHelper.formatString = jest.fn(value => value);
@@ -35,7 +36,7 @@ describe('AssignPic', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

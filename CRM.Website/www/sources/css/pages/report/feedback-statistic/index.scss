@@ -3,6 +3,7 @@
 @import "../../../components/forms";
 @import "../../../components/modal";
 @import "../../../components/icons";
+@import "../../../components/buttons";
 @import "../../../components/tables";
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
@@ -93,14 +94,7 @@
 
 .modal-dialog {
     .modal-content {
-        .recharts-legend-wrapper{
-            width: 1030px !important;
-            .recharts-default-legend{
-                li{
-                    width: 150px;
-                }
-            }
-        }
+        width: 1010px !important;
     }
 }
 

@@ -30,7 +30,7 @@
             this.napSession = napSession;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View();
@@ -41,7 +41,6 @@
             var settingGroupOrder = await settingService.GetMainSettingAsync();
             return Json(settingGroupOrder);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> GetSettingByType([FromBody] SettingTypeViewModel settingType)

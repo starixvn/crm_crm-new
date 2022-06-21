@@ -6,6 +6,8 @@ import functions from '../../common.functions';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import { toast } from 'react-toastify';
+import toJson from 'enzyme-to-json';
+
 
 jest.mock('react-toastify');
 
@@ -25,7 +27,7 @@ describe('Filter', () => {
 
         // Assert
         it('component render correctly', () => {
-            expect(wrapper).toMatchSnapshot();
+            expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('component has correct props', () => {

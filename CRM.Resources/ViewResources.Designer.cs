@@ -313,7 +313,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleted Feedback Statistic.
+        ///   Looks up a localized string similar to Deleted Feedback Statistics.
         /// </summary>
         public static string DeletedFeedbackStatistic {
             get {
@@ -664,6 +664,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Letstalk.
+        /// </summary>
+        public static string Letstalk {
+            get {
+                return ResourceManager.GetString("Letstalk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} does not exist in Letstalk application..
         /// </summary>
         public static string LetstalkInvalidMessage {
@@ -691,7 +700,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Licensee Daily Customer Complaints/Enquiries.
+        ///   Looks up a localized string similar to Licensee Daily Customer Complaints/Enquiries From.
         /// </summary>
         public static string LicenseeDailyLogStatisticsDetail {
             get {
@@ -772,7 +781,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Licensee_Daily_Customer_Complaints_Enquiries.
+        ///   Looks up a localized string similar to Licensee_Daily_Customer_Complaints_Enquiries_From.
         /// </summary>
         public static string LogStatisticsDetail_FileName {
             get {
@@ -826,7 +835,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MBC Daily Customer Complaints/Enquiries.
+        ///   Looks up a localized string similar to MBC Daily Customer Complaints/Enquiries From.
         /// </summary>
         public static string MBCDailyLogStatisticsDetail {
             get {
@@ -835,7 +844,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MBC_Daily_Customer_Complaints_Enquiries.
+        ///   Looks up a localized string similar to MBC_Daily_Customer_Complaints_Enquiries_From.
         /// </summary>
         public static string MBCDailyLogStatisticsDetail_FileName {
             get {
@@ -1314,6 +1323,15 @@ namespace CRM.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Total.
         /// </summary>
+        public static string Telegram {
+            get {
+                return ResourceManager.GetString("Telegram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
         public static string Total {
             get {
                 return ResourceManager.GetString("Total", resourceCulture);
@@ -1429,11 +1447,29 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yearly.
+        /// </summary>
+        public static string Yearly {
+            get {
+                return ResourceManager.GetString("Yearly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         public static string Yes {
             get {
                 return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zalo.
+        /// </summary>
+        public static string Zalo {
+            get {
+                return ResourceManager.GetString("Zalo", resourceCulture);
             }
         }
     }

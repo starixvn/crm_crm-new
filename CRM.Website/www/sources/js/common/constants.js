@@ -76,6 +76,29 @@ export const DefaultLanguages = {
     Cantonese: 1202
 };
 
+export const DateTypeOption = [
+    {id: 0, name: 'Today'},
+    {id: 1, name: 'Yesterday'},
+    {id: 2, name: 'This Week'},
+    {id: 3, name: 'Last Week'},
+    {id: 4, name: 'This Month'},
+    {id: 5, name: 'Last Month'},
+    {id: 6, name: 'This Year'},
+    {id: 7, name: 'Specific Dates'}
+];
+
+export const DateType = {
+    Today: 0,
+    Yesterday: 1,
+    ThisWeek: 2,
+    LastWeek: 3,
+    ThisMonth: 4,
+    LastMonth: 5,
+    ThisYear: 6,
+    SpecificDates: 7
+};
+
+
 export const FeedbackSelectionType = [
     { name: 'By Creator', id: 1 },
     { name: 'By Country', id: 2 },
@@ -107,5 +130,12 @@ export const DetailMenu = [
     {id: 1, url: '/LatestFeedback'},
     {id: 2, url: '/AddFeedback'},
     {id: 3, url: '/ManageFeedback'}
+];
+
+];
+
+export const ReportBy = [
+    { name: 'Month', id: 1 },
+    { name: 'Year', id: 2 }
 ];
 

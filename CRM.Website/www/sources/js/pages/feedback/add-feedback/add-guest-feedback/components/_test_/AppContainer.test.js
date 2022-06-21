@@ -2,6 +2,7 @@ import React from 'react';
 import { AppContainer } from '../AppContainer';
 import CreateForm from "../../../CreateForm";
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -32,22 +33,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(CreateForm).length).toBe(1);
-        });
-
-        it('return null if props setting is null', () => {
-            // Arrange
-            const props = {
-                settings : null
-            };
-
-            // Act
-            const container = shallow(<AppContainer {...props} />);
-
-            // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(CreateForm).length).toBe(0);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 });

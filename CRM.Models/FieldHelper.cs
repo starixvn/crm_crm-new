@@ -29,13 +29,13 @@
                     pic,
                     JoinCommunication(ViewResources.Skype, customerInfo.Skype),
                     JoinCommunication(ViewResources.Email, customerInfo.Email),
-                    JoinCommunication(ViewResources.MSN, customerInfo.MSN),
+                    JoinCommunication(ViewResources.Telegram, customerInfo.MSN),
                     JoinCommunication(ViewResources.WeChat, customerInfo.WeChat),
                     JoinCommunication(ViewResources.WhatsApp, customerInfo.WhatsApp),
                     JoinCommunication(ViewResources.Line, customerInfo.Line),
-                    JoinCommunication(ViewResources.Yahoo, customerInfo.Yahoo),
+                    JoinCommunication(ViewResources.Letstalk, customerInfo.Yahoo),
                     JoinCommunication(ViewResources.QQ, customerInfo.QQ),
-                    JoinCommunication(ViewResources.BBM, customerInfo.BBM));
+                    JoinCommunication(ViewResources.Zalo, customerInfo.BBM));
         }
 
         private static string JoinCommunication(string label, string value)

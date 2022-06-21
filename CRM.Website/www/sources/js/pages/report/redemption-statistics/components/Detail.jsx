@@ -115,7 +115,7 @@ export class Detail extends Component {
                     onPaging={this.onPaging}
                     header={this.buildHeader()}
                     body={this.buildBody()}
-                    containerPadding={0}
+                    containerPadding={10}
                     shouldResetScrollPosition={false}
                 />
             </div>

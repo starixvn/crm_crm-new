@@ -5,6 +5,7 @@ import RelatedCustomerGrid from '../RelatedCustomerGrid';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
+import toJson from 'enzyme-to-json';
 
 describe('AddRelatedCustomerDialog', () => {
     beforeAll(() => {
@@ -30,7 +31,7 @@ describe('AddRelatedCustomerDialog', () => {
             const actual = container.renderRelatedCustomerItem(customer, 1);
 
             // Assert
-            expect(shallow(actual).html()).toMatchSnapshot();
+            expect(toJson(shallow(actual).html())).toMatchSnapshot();
         });
 
         it('should match snapshot when customer is invalid', () => {

@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`RelatedCustomerGrid renderRelatedCustomerColumn should return as expected when relatedCustomers length is greater than MaximumDisplayRelatedCustomer 1`] = `"<a href=\\"#\\">21 customers</a>"`;
-
-exports[`RelatedCustomerGrid renderRelatedCustomerColumn should return as expected when relatedCustomers length is less than MaximumDisplayRelatedCustomer 1`] = `"<span>test, test1</span>"`;

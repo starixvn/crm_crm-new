@@ -1,9 +1,7 @@
 import React from 'react';
 import { EditContactInforms } from '../EditContactInforms';
 import { shallow } from 'enzyme';
-import FilterContactInforms from '../FilterContactInforms';
-import DataGridEdit from '../DataGridEdit';
-import ResponseMessage from '@jsroot/components/ResponseMessage';
+import toJson from 'enzyme-to-json';
 
 describe('EditContactInforms', () => {
     afterAll(() => {
@@ -90,10 +88,7 @@ describe('EditContactInforms', () => {
             container.setState({saveResult: {isSuccessful: true}})
             
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(ResponseMessage).length).toBe(1);
-            expect(container.find(FilterContactInforms).length).toBe(1);
-            expect(container.find(DataGridEdit).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should render null', () => {
@@ -109,8 +104,7 @@ describe('EditContactInforms', () => {
             const container = shallow(<EditContactInforms {...props} />);
             
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.type()).toEqual(null);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 

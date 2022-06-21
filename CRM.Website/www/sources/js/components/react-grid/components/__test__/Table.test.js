@@ -4,6 +4,7 @@ import { SCROLLBAR_WIDTH } from '../..//constants';
 import Pager from '../Pager';
 import functions from '../../functions';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('Table', () => {
     const clientWidth = document.body.clientWidth;
@@ -22,7 +23,7 @@ describe('Table', () => {
         const table = shallow(<Table {...props} />);
 
         // Assert
-        expect(table).toMatchSnapshot();
+        expect(toJson(table)).toMatchSnapshot();
     });
 
     it('componentDidMount should run correctly', () => {

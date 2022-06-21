@@ -2,6 +2,7 @@ import React from 'react';
 import SelectWithSearch from '../SelectWithSearch';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('SelectWithSearch', () => {
     beforeAll(() => {
@@ -38,7 +39,7 @@ describe('SelectWithSearch', () => {
         container.instance().setState(initialState);
 
         // Assert
-        expect(container).toMatchSnapshot();
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     it('component has correct initialState', () => {

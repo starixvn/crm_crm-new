@@ -1,12 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import DataGrid from '../DataGrid';
-import EditContactInforms from '../EditContactInforms';
-import EditInforms from '../EditInforms';
-import RemovedAccountLogs from '../RemovedAccountLogs';
-import RemovedAccountLogDetails from '../RemovedAccountLogDetails';
-import NewInforms from '../NewInforms';
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -157,13 +152,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(DataGrid).length).toBe(1);
-            expect(container.find(EditContactInforms).length).toBe(1);
-            expect(container.find(EditInforms).length).toBe(1);
-            expect(container.find(RemovedAccountLogs).length).toBe(1);
-            expect(container.find(RemovedAccountLogDetails).length).toBe(1);
-            expect(container.find(NewInforms).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 });

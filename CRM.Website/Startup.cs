@@ -122,6 +122,7 @@
                 options.Cookie.SameSite = SameSiteMode.None;
             });
 
+
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);

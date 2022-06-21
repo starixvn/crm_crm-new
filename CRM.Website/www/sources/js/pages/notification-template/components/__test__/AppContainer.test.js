@@ -8,6 +8,7 @@ import NewNotificationTemplate from '../NewNotificationTemplate';
 import EditNotificationTemplate from '../EditNotificationTemplate';
 import ContentDetailModalDialog from '../ContentDetailModalDialog';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import toJson from 'enzyme-to-json';
 
 jest.mock('react-toastify');
 
@@ -21,9 +22,7 @@ describe('AppContainer', () => {
         const container = shallow(<AppContainer />);
 
         // Assert
-        expect(container).toMatchSnapshot();
-        expect(container.find(Filter).length).toBe(1);
-        expect(container.find(DataGrid).length).toBe(1);
+        expect(toJson(container)).toMatchSnapshot();
     });
 
     describe('create notification template', () => {
@@ -37,7 +36,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
+            expect(toJson(container)).toMatchSnapshot();
             expect(container.find(NewNotificationTemplate).length).toBe(1);
         });
 
@@ -86,7 +85,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
+            expect(toJson(container)).toMatchSnapshot();
             expect(container.find(EditNotificationTemplate).length).toBe(1);
         });
 
@@ -137,10 +136,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(SweetModalDialog).length).toBe(1);
-            expect(container.find(SweetModalDialog).props().contents)
-                .toEqual(<div>Are you sure you want to delete <strong>voiding abnormal bet</strong>?</div>);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should call exactly functions when close popup', () => {
@@ -216,8 +212,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props} />);
 
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(ContentDetailModalDialog).length).toBe(1);
+            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('should calls exactly functions when close popup', () => {

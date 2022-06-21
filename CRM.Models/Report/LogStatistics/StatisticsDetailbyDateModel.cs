@@ -146,11 +146,7 @@
         private string GetResolvingTime()
         {
             var totalDays = ResolutionDate - FeedbackDate;
-            return string.Format(
-                "{0}:{1}:{2}",
-                totalDays.Days,
-                totalDays.Hours,
-                totalDays.Minutes);
+            return string.Format("{0:dd\\:hh\\:mm}", totalDays);
         }
 
         private string GetAutoFieldText()

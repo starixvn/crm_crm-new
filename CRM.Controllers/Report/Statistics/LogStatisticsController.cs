@@ -2,11 +2,10 @@
 {
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
     using CRM.Criteria.Report.LogStatistics;
-    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Report;
-    using Fanex.NAP.Client.AspNetCore.Attributes;
     using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +25,7 @@
             this.excelService = excelService;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/LogStatistics/Index");
@@ -46,7 +45,7 @@
         }
 
         [HttpPost]
-        [NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
             var ibcReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
@@ -76,10 +75,10 @@
         }
 
         [HttpPost]
-        [NapAuth(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
-            var reportDetails = await logStatisticsService.GetReportDetailsAsync(criteria);
+            var reportDetails = await logStatisticsService.GetReportDetailsAsync(criteria, true);
             var report = reportDetails.ChildReports;
             var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
             var communicationTools = await settingService.GetCommunicationToolAsync();
@@ -119,7 +118,7 @@
         {
             criteria.PageIndex = 0;
             criteria.PageSize = 0;
-            var logStatisticsDetail = await logStatisticsService.GetReportDetailsAsync(criteria);
+            var logStatisticsDetail = await logStatisticsService.GetReportDetailsAsync(criteria, false);
             var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
             var communicationTools = await settingService.GetCommunicationToolAsync();
             var products = await settingService.GetProductAsync();

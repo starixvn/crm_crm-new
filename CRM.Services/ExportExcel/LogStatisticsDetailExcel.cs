@@ -128,8 +128,8 @@
             worksheet.Cells[rowIndex, colIndex++].Value = extensionValue;
             worksheet.Cells[rowIndex, colIndex++].Value = data.Role;
             worksheet.Cells[rowIndex, colIndex++].Value = RemoveHtmlTags(data.Contact);
-            worksheet.Cells[rowIndex, colIndex++].Value = productValue;
-            worksheet.Cells[rowIndex, colIndex++].Value = subproductValue;
+            worksheet.Cells[rowIndex, colIndex++].Value = productValue == "N/A." ? "N/A" : productValue ;
+            worksheet.Cells[rowIndex, colIndex++].Value = subproductValue == "N/A." ? "N/A" : subproductValue;
             worksheet.Cells[rowIndex, colIndex++].Value = data.CountryName;
             worksheet.Cells[rowIndex, colIndex++].Value = mainCategoryValue;
             worksheet.Cells[rowIndex, colIndex++].Value = subCategoryValue;
@@ -140,7 +140,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = data.Language;
             worksheet.Cells[rowIndex, colIndex++].Value = data.Response;
             worksheet.Cells[rowIndex, colIndex++].Value = data.CreatorName;
-            worksheet.Cells[rowIndex, colIndex].Value = data.CreateDate.ToString("MMM dd, yyyy");
+            worksheet.Cells[rowIndex, colIndex].Value = data.CreateDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
         }
 
         private string GetCommunicationValue(int id)

@@ -1,10 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { AppContainer } from "../AppContainer";
-import Filter from "../Filter";
-import DataGrid from "../DataGrid";
-import Chart from "../Chart";
-import FeedbackDetails from "../../../deleted-feedback-statistic/components/FeedbackDetails";
+import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     afterAll(() => {
@@ -52,13 +49,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props}/>);
         
             // Assert
-            expect(container).toMatchSnapshot();
-            expect(container.find(Filter).length).toBe(1);
-            expect(container.find(DataGrid).length).toBe(1);
-            expect(container.find(FeedbackDetails).length).toBe(1);
-            expect(container.find(Chart).length).toBe(1);
-            expect(container.find(FeedbackDetails).props().feedbackId).toEqual(1);
-            expect(container.find(Chart).props().chartInfo).toEqual([{ id: 1, value: 'test' }]);
+            expect(toJson(container)).toMatchSnapshot();
         });
     });
 });

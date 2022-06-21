@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomReactSelect from '../CustomReactSelect';
-import Select from 'react-select';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 describe('CustomReactSelect', () => {
     it('should have correct snapshot', () => {
@@ -9,7 +9,7 @@ describe('CustomReactSelect', () => {
         const customReactSelect = shallow(<CustomReactSelect />);
 
         // Assert
-        expect(customReactSelect).toMatchSnapshot();
+        expect(toJson(customReactSelect)).toMatchSnapshot();
     });
 
     describe('render', () => {

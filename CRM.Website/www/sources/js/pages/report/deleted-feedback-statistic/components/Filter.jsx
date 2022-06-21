@@ -117,7 +117,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group className="submit">
+                    <Form.Group>
                         <Button variant="primary" size="sm" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>

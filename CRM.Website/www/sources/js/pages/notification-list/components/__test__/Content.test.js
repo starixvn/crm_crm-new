@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 import { Button, Modal } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import toJson from 'enzyme-to-json';
 
 describe('Content', () => {
     it('renders component correctly', () => {
@@ -18,7 +19,7 @@ describe('Content', () => {
         const content = shallow(<Content {...props} />);
 
         // Assert
-        expect(content).toMatchSnapshot();
+        expect(toJson(content)).toMatchSnapshot();
     });
     
     it('has Modal onHide', () => {

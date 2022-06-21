@@ -4,15 +4,15 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
     using CRM.Criteria.Report.DeletedFeedbackStatisticsCriteria;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Setting;
     using CRM.Repositories;
     using CRM.Resources;
     using CRM.Services;
-    using Fanex.NAP.Client.AspNetCore.Attributes;
-    using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Core.Business.Constant;
 
     public class DeletedFeedbackStatisticsController : BaseController
     {
@@ -31,18 +31,18 @@
             this.excelService = excelService;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Policy.Read)]
         public IActionResult Index()
         {
             return View("../Report/DeleteFeedbackStatistic/Index");
         }
 
         [HttpPost]
-        [NapAuth(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Policy.Read)]
         public async Task<IActionResult> GetDeletedFeedbackStatistics([FromBody] DeletedFeedbackStatisticsCriteria criteria)
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var deletedFeedbacks = await feedbackRepository.GetDeletedFeedbackStatisticAsync(criteria);
             var deletedFeedbackGroup = deletedFeedbacks.GroupBy(p => p.Handler);
             var deletedFeedbackByHandler = deletedFeedbackGroup.Select(p =>
@@ -60,7 +60,7 @@
         public async Task<IActionResult> ExportExcel([FromBody] DeletedFeedbackStatisticsCriteria criteria)
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var deletedFeedbacks = await feedbackRepository.GetDeletedFeedbackStatisticAsync(criteria);
             var deletedFeedbackGroup = deletedFeedbacks.GroupBy(p => p.Handler);
             var deletedFeedbackByHandler = deletedFeedbackGroup.Select(p =>
