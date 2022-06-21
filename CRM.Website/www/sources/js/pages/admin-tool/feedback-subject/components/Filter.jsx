@@ -67,21 +67,19 @@ export class Filter extends Component {
                             onInputChange={search => this.handleInputChange(search)}
                         />
                     </Form.Group>
-                    <Form.Group>
-                        <Button className="mr-4" variant="primary" size="sm"
-                            onClick={this.handleSubmit}
+                    <Button className="mr-4" variant="primary" size="sm"
+                        onClick={this.handleSubmit}
+                    >
+                        {LangHelper.getResource('Search')}
+                    </Button>
+                    {
+                        isHost &&
+                        <Button variant="primary" size="sm"
+                            onClick={this.handleOpenCreatePopup}
                         >
-                            {LangHelper.getResource('Search')}
+                            {LangHelper.getResource('FeedbackSubjectInsert')}
                         </Button>
-                        {
-                            isHost &&
-                            <Button variant="primary" size="sm"
-                                onClick={this.handleOpenCreatePopup}
-                            >
-                                {LangHelper.getResource('FeedbackSubjectInsert')}
-                            </Button>
-                        }
-                    </Form.Group>
+                    }
                 </Form.Row>
             </Form>
         );
