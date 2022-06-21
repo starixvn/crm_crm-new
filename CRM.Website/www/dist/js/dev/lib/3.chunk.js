@@ -1208,16 +1208,15 @@ const mapStateToProps = state => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return index; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 /* harmony import */ var _components_AppContainer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/AppContainer */ "./www/sources/js/pages/notification-type/components/AppContainer.jsx");
 /* harmony import */ var _notificationTypeSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./notificationTypeSlice */ "./www/sources/js/pages/notification-type/notificationTypeSlice.js");
-/* harmony import */ var _jsroot_components_WithNavigation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/components/WithNavigation */ "./www/sources/js/components/WithNavigation.jsx");
-/* harmony import */ var _cssroot_pages_notification_type_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @cssroot/pages/notification-type/index.scss */ "./www/sources/css/pages/notification-type/index.scss");
-/* harmony import */ var _cssroot_pages_notification_type_index_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_cssroot_pages_notification_type_index_scss__WEBPACK_IMPORTED_MODULE_6__);
-
+/* harmony import */ var _cssroot_pages_notification_type_index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @cssroot/pages/notification-type/index.scss */ "./www/sources/css/pages/notification-type/index.scss");
+/* harmony import */ var _cssroot_pages_notification_type_index_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_cssroot_pages_notification_type_index_scss__WEBPACK_IMPORTED_MODULE_5__);
 
 
 
@@ -1228,11 +1227,8 @@ const store = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__["configureSto
   reducer: _notificationTypeSlice__WEBPACK_IMPORTED_MODULE_4__["default"]
 });
 const isHost = true;
-
-class index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
+class index extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
-    const location = this.props.location;
-    console.log(location.state.id);
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], {
       store: store
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -1241,9 +1237,6 @@ class index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   }
 
 }
-
-const FunctionBarWithNavigation = Object(_jsroot_components_WithNavigation__WEBPACK_IMPORTED_MODULE_5__["default"])(index);
-/* harmony default export */ __webpack_exports__["default"] = (FunctionBarWithNavigation);
 
 /***/ }),
 

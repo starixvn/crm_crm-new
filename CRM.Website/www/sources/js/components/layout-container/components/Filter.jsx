@@ -49,7 +49,7 @@ class Filter extends Component {
             }else if(pathname === '/'){
                 return null;
             }else{
-                const breadcrumbsMenu = this.getBreadcrumbsMenu(pathname, currentMenu, menus);
+                const breadcrumbsMenu = this.getBreadcrumbsMenu(currentMenu, menus);
                 return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
             }
         }
@@ -64,7 +64,7 @@ class Filter extends Component {
         );
     }
 
-    getBreadcrumbsMenu = (pathname, currentMenu, menus) =>{
+    getBreadcrumbsMenu = (currentMenu, menus) =>{
         let breadcrumbsMenu = [];
         if(currentMenu.parentId > 0){
             const parentNames = this.recursiveFindParentName(menus, currentMenu.parentId);

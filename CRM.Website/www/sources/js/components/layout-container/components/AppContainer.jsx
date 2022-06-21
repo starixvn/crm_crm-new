@@ -29,6 +29,13 @@ export default class AppContainer extends Component {
                 username: null,
                 isGuest: false
             },
+            sessionData: {
+                currentUsername: '',
+                currentClientTime: new Date(),
+                clientTimezone: 0,
+                serverTimezone: 0,
+                hasCreateFeedbackPermission: false
+            },
             showEmptyConfirmPopup: false,
             showEmptyCustomerInfoPopup: false,
             customerSuggestions: [],
@@ -54,7 +61,7 @@ export default class AppContainer extends Component {
 
     getInitInfo = async () =>{
         await this.getSetting();
-        await this.getMenus();
+        await this.getSessionData();
         await this.getCurrentCustomer();
     }
 
@@ -74,11 +81,20 @@ export default class AppContainer extends Component {
         }).then(() => Site.unblockUI());
     };
 
-    getMenus = async () =>{
+    getSessionData = async () =>{
         Site.blockUI();
-        const url = Site.resolveClientUrl('Home/GetMenus');
+        const url = Site.resolveClientUrl('Home/GetSessionData');
         await DataService.getDataAsync(url).then(response => {
-             this.initDataMenu(response.data);
+            const data = response.data;
+            this.setState({
+                ...this.state.sessionData,
+                currentUsername: data.currentUsername,
+                currentClientTime: data.currentClientTime,
+                clientTimezone: data.clientTimezone,
+                serverTimezone: data.clientTimezone,
+                hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
+            });
+            this.initDataMenu(data.menus);
         }).then(() => Site.unblockUI());
     };
 
@@ -273,7 +289,7 @@ export default class AppContainer extends Component {
         if(menus.length <=0){
             return null;
         }
-        const hasCreateFeedbackPermission = window.currentCustomer?.hasCreateFeedbackPermission;
+        const hasCreateFeedbackPermission = this.state.sessionData.hasCreateFeedbackPermission;
         return (
             <div>
                 <Router>

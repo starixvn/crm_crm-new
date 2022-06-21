@@ -1,9 +1,8 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import AppContainer from './components/AppContainer';
 import notificationTypeReducer from './notificationTypeSlice';
-import WithNavigation from '@jsroot/components/WithNavigation';
 import '@cssroot/pages/notification-type/index.scss';
 
 const store = configureStore({
@@ -12,10 +11,8 @@ const store = configureStore({
 
 const isHost = true;
 
-class index extends PureComponent {
+export default class index extends Component {
     render(){
-        const location = this.props.location;
-        console.log(location.state.id);
         return(
             <Provider store={store}>
                 <AppContainer isHost={isHost} />
@@ -23,6 +20,3 @@ class index extends PureComponent {
         );
     }
 }
-
-const FunctionBarWithNavigation = WithNavigation(index);
-export default FunctionBarWithNavigation;

@@ -1435,6 +1435,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
 /* harmony import */ var _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/dataService */ "./www/sources/js/common/dataService.js");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -1455,7 +1459,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     _defineProperty(this, "getInitInfo", async () => {
       await this.getSetting();
-      await this.getMenus();
+      await this.getSessionData();
       await this.getCurrentCustomer();
     });
 
@@ -1477,11 +1481,19 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
     });
 
-    _defineProperty(this, "getMenus", async () => {
+    _defineProperty(this, "getSessionData", async () => {
       _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
-      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Home/GetMenus');
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Home/GetSessionData');
       await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
-        this.initDataMenu(response.data);
+        const data = response.data;
+        this.setState(_objectSpread(_objectSpread({}, this.state.sessionData), {}, {
+          currentUsername: data.currentUsername,
+          currentClientTime: data.currentClientTime,
+          clientTimezone: data.clientTimezone,
+          serverTimezone: data.clientTimezone,
+          hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
+        }));
+        this.initDataMenu(data.menus);
       }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
     });
 
@@ -1728,6 +1740,13 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         username: null,
         isGuest: false
       },
+      sessionData: {
+        currentUsername: '',
+        currentClientTime: new Date(),
+        clientTimezone: 0,
+        serverTimezone: 0,
+        hasCreateFeedbackPermission: false
+      },
       showEmptyConfirmPopup: false,
       showEmptyCustomerInfoPopup: false,
       customerSuggestions: [],
@@ -1758,8 +1777,6 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   }
 
   render() {
-    var _window$currentCustom;
-
     const {
       customerInfo,
       isGuest,
@@ -1775,7 +1792,7 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       return null;
     }
 
-    const hasCreateFeedbackPermission = (_window$currentCustom = window.currentCustomer) === null || _window$currentCustom === void 0 ? void 0 : _window$currentCustom.hasCreateFeedbackPermission;
+    const hasCreateFeedbackPermission = this.state.sessionData.hasCreateFeedbackPermission;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "fix-header-menu"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -2671,7 +2688,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         } else if (pathname === '/') {
           return null;
         } else {
-          const breadcrumbsMenu = this.getBreadcrumbsMenu(pathname, currentMenu, menus);
+          const breadcrumbsMenu = this.getBreadcrumbsMenu(currentMenu, menus);
           return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
         }
       }
@@ -2683,7 +2700,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, this.renderIconHome(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource(pathname.substring(1)))));
     });
 
-    _defineProperty(this, "getBreadcrumbsMenu", (pathname, currentMenu, menus) => {
+    _defineProperty(this, "getBreadcrumbsMenu", (currentMenu, menus) => {
       let breadcrumbsMenu = [];
 
       if (currentMenu.parentId > 0) {
