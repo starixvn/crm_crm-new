@@ -56,12 +56,12 @@ export default class DateTimeService {
 
     static toClientDateTime(date) {
         date = moment(date, LongDateTimeFormat);
-        return moment.utc(date).utcOffset(window.clientTimezone);
+        return moment.utc(date).utcOffset(document.getElementById('clientTimezone').value);
     }
 
     static toServerDateTime(date) {
         date = moment(date, LongDateTimeFormat);
-        return moment(date).utc().utcOffset(window.serverTimezone);
+        return moment(date).utc().utcOffset(document.getElementById('serverTimezone').value);
     }
 
     static toShortDateFormat(date) {

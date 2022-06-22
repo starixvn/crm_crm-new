@@ -13,7 +13,8 @@ import { toast } from 'react-toastify';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const currentClientTime = document.getElementById('currentClientTime').value;
+        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const firstDayOfWeek = moment(this.currentDate).startOf('week');
         const firstDayOfWeekFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDayOfWeek)));
         this.maxFromDate = this.currentDate;
@@ -40,7 +41,8 @@ export class Filter extends Component {
     };
 
     handleChangeFromDate = fromDate => {
-        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const currentClientTime = document.getElementById('currentClientTime').value;
+        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const fromDateTime = new Date(fromDate.getTime());
         fromDateTime.setMonth(fromDate.getMonth() + 3);
         fromDateTime.setDate(fromDate.getDate() - 1);

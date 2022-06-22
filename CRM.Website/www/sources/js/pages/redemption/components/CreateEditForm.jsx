@@ -106,7 +106,7 @@ export class CreateEditForm extends Component {
                     </Form.Group>
                     <div className="panel-content">
                         <CkEditor isInvalid={touched.remark && errors.remark}
-                            data={values.remark} username={window.currentUsername}
+                            data={values.remark} username={document.getElementById('currentUsername').value}
                             onChange={value => setFieldValue('remark', value)}
                         />
                     </div>

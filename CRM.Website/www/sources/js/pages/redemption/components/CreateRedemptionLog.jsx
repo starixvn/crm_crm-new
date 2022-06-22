@@ -30,9 +30,10 @@ export class CreateRedemptionLog extends Component {
     }
 
     initFormikData = () => {
+        const currentClientTime = document.getElementById('currentClientTime').value;
         return {
             subject: '',
-            claimTime: new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime))),
+            claimTime: new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime))),
             remark: '',
             statusId: this.props.settings.statuses[0].statusId,
             currencyId: 0,

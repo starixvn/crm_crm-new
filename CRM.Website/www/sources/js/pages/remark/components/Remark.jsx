@@ -144,7 +144,7 @@ export class Remark extends Component {
                                 specialRemarks.map((item, index) => (
                                     <div className="generate-remark" key={`${item}-${index}`}>
                                         <span className={index + 1 === specialRemarks.length ? 'opacity' : ''}>{index + 1}.</span>
-                                        <CkEditor data={dataSpecialRemarks[index]} username={window.currentUsername}
+                                        <CkEditor data={dataSpecialRemarks[index]} username={document.getElementById('currentUsername').value}
                                             onChange={value => this.handleChange(value, index, 'dataSpecialRemarks', dataSpecialRemarks)}
                                         />
                                         {
@@ -174,7 +174,7 @@ export class Remark extends Component {
                                 normalRemarks.map((item, index) => (
                                     <div className="generate-remark" key={`${item}-${index}`}>
                                         <span className={index + 1 === normalRemarks.length ? 'opacity' : ''}>{index + 1}.</span>
-                                        <CkEditor data={dataNormalRemarks[index]} username={window.currentUsername}
+                                        <CkEditor data={dataNormalRemarks[index]} username={document.getElementById('currentUsername').value}
                                             onChange={value => this.handleChange(value, index, 'dataNormalRemarks', dataNormalRemarks)}
                                         />
                                         {

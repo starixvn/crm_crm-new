@@ -85,20 +85,30 @@ export default class AppContainer extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('Home/GetSessionData');
         await DataService.getDataAsync(url).then(response => {
-            const data = response.data;
-            this.setState(state => ({
-                sessionData: {
-                    ...state.sessionData,
-                    currentUsername: data.currentUsername,
-                    currentClientTime: data.currentClientTime,
-                    clientTimezone: data.clientTimezone,
-                    serverTimezone: data.clientTimezone,
-                    hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
-                }
-            }));
-            this.initDataMenu(data.menus);
+            if(response || response !== null){
+                const data = response.data;
+                this.setDataToElementId(data);
+                this.setState(state => ({
+                    sessionData: {
+                        ...state.sessionData,
+                        currentUsername: data.currentUsername,
+                        currentClientTime: data.currentClientTime,
+                        clientTimezone: data.clientTimezone,
+                        serverTimezone: data.clientTimezone,
+                        hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
+                    }
+                }));
+                this.initDataMenu(data.menus);
+            }
         }).then(() => Site.unblockUI());
     };
+
+    setDataToElementId = data =>{
+        document.getElementById('currentUsername').value = data.currentUsername;
+        document.getElementById('currentClientTime').value = data.currentClientTime;
+        document.getElementById('serverTimezone').value = data.serverTimezone;
+        document.getElementById('hasCreateFeedbackPermission').value = data.hasCreateFeedbackPermission;
+    }
 
     getCurrentCustomer = async () =>{
         const url = Site.resolveClientUrl('CustomerInfo/GetCurrentCustomerInfo');

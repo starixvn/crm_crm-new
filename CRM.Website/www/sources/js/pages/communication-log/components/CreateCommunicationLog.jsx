@@ -86,9 +86,10 @@ export class CreateCommunicationLog extends Component {
     initFormikData = () => {
         const { options } = this.props;
         const { allSettings } = this.state;
+        const currentClientTime = document.getElementById('currentClientTime').value;
         const remarkDuplicated = '<div><font color=\"#ff0000\">This is a duplicated entry</font></div>\n\n';
-        const startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
-        const endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+        const endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         endTime.setMinutes(endTime.getMinutes() + 1);
         const initTools = this.getInitDataTool(options, allSettings);
         const initSite = this.getInitDataSite(options);

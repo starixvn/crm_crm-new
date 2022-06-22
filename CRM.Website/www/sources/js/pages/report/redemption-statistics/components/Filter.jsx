@@ -13,7 +13,8 @@ import { ReportBy }from '@jsroot/common/constants';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const currentClientTime = document.getElementById('currentClientTime').value;
+        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const currentDate = this.currentDate;
         const firstDateFirstMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() , 1);
         const firstDateOfMonthFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDateFirstMonth)));

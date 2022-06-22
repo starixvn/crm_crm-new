@@ -11,8 +11,9 @@ export class Filter extends Component {
 
     constructor(props) {
         super(props);
+        const currentClientTime = document.getElementById('currentClientTime').value;
         const date = new Date();
-        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const fromDate = new Date(DateTimeService.firstDayOfMonth(date));
 
         this.state = {

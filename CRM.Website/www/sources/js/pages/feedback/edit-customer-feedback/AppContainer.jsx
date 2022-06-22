@@ -202,12 +202,12 @@ export default class AppContainer extends Component {
 
     initFormikData = (feedback, settings) => {
         const feedbackSettings = this.getFeedbackSettings(feedback, settings);
-
+        const currentClientTime = document.getElementById('currentClientTime').value;
         return {
             feedbackId: feedback.feedbackId,
             // cust info
             custId: feedback.custId,
-            maxDate: new Date(DateTimeService.toShortDateFormat(new Date(window.currentClientTime))),
+            maxDate: new Date(DateTimeService.toShortDateFormat(new Date(currentClientTime))),
             birthday: feedback.birthday ? new Date(feedback.birthday) : null,
             siteId: feedback.siteSetting.id,
             siteName: feedback.siteSetting.name,

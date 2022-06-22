@@ -5,6 +5,7 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 
 export class RenderCollapse extends Component {
     render() {
+        const currentUsername = document.getElementById('currentUsername').value;
         const { values, errors, touched, collapse, setFieldValue, handleChange, handleCollapseExpand, isEdit } = this.props;
         return (
             <div>
@@ -36,7 +37,7 @@ export class RenderCollapse extends Component {
                     </Form.Group>
                     <Collapse in={!collapse.remark}>
                         <div className="panel-content" id="collapse-expand-remark">
-                            <CkEditor data={values.remark} username={window.currentUsername}
+                            <CkEditor data={values.remark} username={currentUsername}
                                 isInvalid={touched.remark && errors.remark}
                                 onChange={value => setFieldValue('remark', value)}
                             />
@@ -53,7 +54,7 @@ export class RenderCollapse extends Component {
                     </Form.Group>
                     <Collapse in={!collapse.solution}>
                         <div className="panel-content" id="collapse-expand-solution">
-                            <CkEditor data={values.solution} username={window.currentUsername}
+                            <CkEditor data={values.solution} username={currentUsername}
                                 isInvalid={touched.solution && errors.solution}
                                 onChange={value => setFieldValue('solution', value)}
                             />
@@ -76,7 +77,7 @@ export class RenderCollapse extends Component {
                             </Form.Group>
                             <Collapse in={values.isReviewed}>
                                 <div className="panel-content">
-                                    <CkEditor data={values.review} username={window.currentUsername}
+                                    <CkEditor data={values.review} username={currentUsername}
                                         isInvalid={touched.review && errors.review}
                                         onChange={value => setFieldValue('review', value)}
                                     />

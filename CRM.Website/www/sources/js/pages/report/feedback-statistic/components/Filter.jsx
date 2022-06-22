@@ -12,7 +12,8 @@ import { toast } from 'react-toastify';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const currentClientTime = document.getElementById('currentClientTime').value;
+        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const currentDate = this.currentDate;
         const fromDate = new Date(currentDate);
         const previousWeek = fromDate.setDate(fromDate.getDate() - 7);

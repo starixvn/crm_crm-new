@@ -65,6 +65,8 @@ export class Header extends Component {
             return null;
         }
 
+        const currentUsername = document.getElementById('currentUsername').value;
+
         return (
             <div className='header'>
                 <div className='left-header'>
@@ -81,7 +83,7 @@ export class Header extends Component {
                     </ul>
                     <div className='item-end float-right'>
                         <span className='fa fa-user fa-lg' />
-                        <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{window.currentUsername}</span></span>
+                        <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{currentUsername}</span></span>
                         <img src={Site.resolveClientUrl('css/images/icon/icon-logout.png')} />
                         <a className='sign-out' onClick={() =>this.handleLogout()}>{LangHelper.getResource('SignOut')}</a>
                     </div>

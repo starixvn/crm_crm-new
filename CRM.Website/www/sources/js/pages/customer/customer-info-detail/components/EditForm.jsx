@@ -15,6 +15,7 @@ export class EditForm extends Component {
 
     constructor(props) {
         super(props);
+        const currentClientTime = document.getElementById('currentClientTime').value;
         this.state = {
             collapse: {
                 personalInfo: false,
@@ -27,7 +28,7 @@ export class EditForm extends Component {
             titleId: 0,
             firstName: '',
             lastName: '',
-            maxDate: new Date(DateTimeService.toShortDateFormat(new Date(window.currentClientTime))),
+            maxDate: new Date(DateTimeService.toShortDateFormat(new Date(currentClientTime))),
             birthDay: '',
             passport: '',
             refCode2: '',

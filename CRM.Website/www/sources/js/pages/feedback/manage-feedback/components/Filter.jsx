@@ -10,8 +10,9 @@ import LangHelper from '@jsroot/common/langHelper';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
-        const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        this.currentClientTime = document.getElementById('currentClientTime').value;
+        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
+        const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         fromDate.setDate(fromDate.getDate() - 1);
         this.maxFromDate = currentDate;
         this.maxToDate = currentDate;
@@ -34,7 +35,8 @@ export class Filter extends Component {
     }
 
     handleChangeFromDate = fromDate => {
-        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        
+        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         const maxDate = new Date(fromDate.getTime());
         maxDate.setMonth(fromDate.getMonth() + 12);
         maxDate.setDate(fromDate.getDate() - 1);
